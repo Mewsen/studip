@@ -431,32 +431,33 @@ class StudygroupModel
     /**
      * invites a member to a given studygroup.
      *
-     * @param string user id
-     * @param string id of a studygroup
+     * @param string $user_id
+     * @param string $sem_id id of a studygroup
      */
     public static function inviteMember($user_id, $sem_id)
     {
-        $query = "REPLACE INTO studygroup_invitations (sem_id, user_id, mkdate)
-                  VALUES (?, ?, UNIX_TIMESTAMP())";
-        $stmt = DBManager::get()->prepare($query);
-        $stmt->execute([$sem_id, $user_id]);
+        $invitation = new StudygroupInvitation([$sem_id, $user_id]);
+        $invitation->mkdate = time();
+        $invitation->store();
     }
 
     /**
      * cancels invitation.
      *
-     * @param string username
-     * @param string id of a studygroup
+     * @param string $username
+     * @param string $sem_id id of a studygroup
      */
     public static function cancelInvitation($username, $sem_id)
     {
-        $query = "DELETE FROM studygroup_invitations
-                  WHERE sem_id = ? AND user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([
-            $sem_id,
-            get_userid($username)
-        ]);
+        $user = User::findOneByUsername($username);
+        if (!$user) {
+            return;
+        }
+
+        StudygroupInvitation::deleteBySQL(
+            'sem_id = ? AND user_id = ?',
+            [$sem_id, $user->id]
+        );
     }
 
     /**
@@ -464,6 +465,7 @@ class StudygroupModel
      *
      * @param string id of a studygroup
      * @return array invited members
+     * @deprecated Will be removed in Stud.IP 6.2
      */
     public static function getInvitations($sem_id)
     {
@@ -474,7 +476,7 @@ class StudygroupModel
                   LEFT JOIN auth_user_md5 USING (user_id)
                   LEFT JOIN user_info USING (user_id)
                   WHERE studygroup_invitations.sem_id = ?
-                  ORDER BY studygroup_invitations.mkdate ASC";
+                  ORDER BY studygroup_invitations.mkdate";
 
         $stmt = DBManager::get()->prepare($query);
         $stmt->execute([$sem_id]);
@@ -485,19 +487,16 @@ class StudygroupModel
     /**
      * checks if a user is already invited.
      *
-     * @param string user id
-     * @param string id of a studygroup
-     * @return array invited members
+     * @param string $user_id
+     * @param string $sem_id id of a studygroup
+     * @return bool
      */
     public static function isInvited($user_id, $sem_id)
     {
-        $query = "SELECT 1
-                  FROM studygroup_invitations
-                  WHERE user_id = ? AND sem_id = ?";
-        $stmt = DBManager::get()->prepare($query);
-        $stmt->execute([$user_id, $sem_id]);
-
-        return (bool) $stmt->fetchColumn();
+        return (bool) StudygroupInvitation::countBySql(
+            'sem_id = ? AND user_id = ?',
+            [$sem_id, $user_id]
+        );
     }
 
     /**

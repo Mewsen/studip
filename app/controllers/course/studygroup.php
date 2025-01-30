@@ -288,7 +288,7 @@ class Course_StudygroupController extends AuthenticatedController
                             foreach ($tags as $tag) {
                                 $tag_ids[] = $tag->id;
                                 $relation = TagRelation::findOneBySQL(
-                                    "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` = :tag_id", 
+                                    "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` = :tag_id",
                                     [
                                         'tag_id'    => $tag->id,
                                         'course_id' => $course->id
@@ -303,7 +303,7 @@ class Course_StudygroupController extends AuthenticatedController
                                 }
                             }
                             TagRelation::deleteBySQL(
-                                "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` NOT IN (:ids)", 
+                                "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` NOT IN (:ids)",
                                 [
                                     'ids'       => $tag_ids,
                                     'course_id' => $course->id
@@ -446,7 +446,7 @@ class Course_StudygroupController extends AuthenticatedController
         $this->autors           = $sem->getMembersWithStatus('autor');
         $this->accepted         = $sem->admission_applicants->findBy('status', 'accepted');
         $this->sem_class        = $sem->getSemClass();
-        $this->invitedMembers   = StudygroupModel::getInvitations($id);
+        $this->invitedMembers   = StudygroupInvitation::findBySQL('sem_id = ? ORDER BY mkdate', $id);
         $this->rechte           = $GLOBALS['perm']->have_studip_perm('tutor', $id);
         $this->page = null;
         $this->setupMembersSidebar($sem);
