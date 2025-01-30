@@ -26,12 +26,12 @@
         </thead>
         <? if ($count) : ?>
             <? foreach ($stgteile as $stgteil): ?>
-                <tbody class="<?php if (!$stgteil->count_versionen) echo 'empty' ?>  <?= $stgteil_id === $stgteil->getId() ? 'not-collapsed' : 'collapsed' ?>">
+                <tbody class="<?php if (!$stgteil->count_versionen) echo 'empty' ?>  <?= $stgteil_id === $stgteil->id ? 'not-collapsed' : 'collapsed' ?>">
                     <tr class="header-row">
                         <td class="toggle-indicator">
                             <? if ($stgteil->count_versionen) : ?>
                                 <a class="mvv-load-in-new-row"
-                                   href="<?= $controller->action_link('details/' . $stgteil->getId()) ?>">
+                                   href="<?= $controller->action_link('details/' . $stgteil->id) ?>">
                                     <?= htmlReady($stgteil->fach_name) ?>
                                     <? if ($stgteil->count_contacts) : ?>
                                         <?= Icon::create('community', Icon::ROLE_INFO, ['title' => sprintf(ngettext('%s Kontakt zugeordnet', '%s Kontakte zugeordnet', $stgteil->count_contacts), $stgteil->count_contacts)]) ?>
@@ -51,21 +51,21 @@
                             <? $actionMenu = ActionMenu::get()->setContext($stgteil->fach_name) ?>
                             <? if (MvvPerm::havePermCreate('StgteilVersion')) : ?>
                                 <? $actionMenu->addLink(
-                                    $controller->action_url('version/' . $stgteil->getId()),
+                                    $controller->action_url('version/' . $stgteil->id),
                                     _('Neue Version anlegen'),
                                     Icon::create('file', Icon::ROLE_CLICKABLE, ['title' => _('Neue Version anlegen')])
                                 ) ?>
                             <? endif; ?>
                             <? if (MvvPerm::havePermWrite($stgteil)) : ?>
                                 <? $actionMenu->addLink(
-                                    $controller->action_url('stgteil/' . $stgteil->getId()),
+                                    $controller->action_url('stgteil/' . $stgteil->id),
                                     _('Studiengangteil bearbeiten'),
                                     Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Studiengangteil bearbeiten')])
                                 ) ?>
                             <? endif; ?>
                             <? if (MvvPerm::havePermCreate('StudiengangTeil')) : ?>
                                 <? $actionMenu->addLink(
-                                    $controller->action_url('copy/' . $stgteil->getId()),
+                                    $controller->action_url('copy/' . $stgteil->id),
                                     _('Studiengangteil kopieren'),
                                     Icon::create('files', Icon::ROLE_CLICKABLE, ['title' => _('Studiengangteil kopieren')])
                                 ) ?>
@@ -76,7 +76,7 @@
                                     _('Studiengangteil löschen'),
                                     Icon::create('trash', Icon::ROLE_CLICKABLE, [
                                         'title'        => _('Studiengangteil löschen'),
-                                        'formaction'   => $controller->action_url('delete/' . $stgteil->getId()),
+                                        'formaction'   => $controller->action_url('delete/' . $stgteil->id),
                                         'data-confirm' => sprintf(_('Wollen Sie wirklich den Studiengangteil "%s" löschen?'), $stgteil->getDisplayName()),
                                     ])
                                 ) ?>
@@ -84,8 +84,8 @@
                             <?= $actionMenu->render() ?>
                         </td>
                     </tr>
-                    <? if (!empty($stgteil_id) && ($stgteil_id == $stgteil->getId())) : ?>
-                        <? $versionen = StgteilVersion::findByStgteil($stgteil->getId()); ?>
+                    <? if (!empty($stgteil_id) && ($stgteil_id == $stgteil->id)) : ?>
+                        <? $versionen = StgteilVersion::findByStgteil($stgteil->id); ?>
                         <tr class="loaded-details nohover">
                             <?= $this->render_partial('studiengaenge/studiengangteile/details', compact('stgteil_id', 'versionen')) ?>
                         </tr>

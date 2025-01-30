@@ -355,7 +355,6 @@ abstract class SharedVersionController extends MVVController
 
     public function abschnitte_action($version_id)
     {
-        $this->abschnitt_id = null;
         $this->abschnitte($version_id);
         if (Request::isXhr()) {
             $this->render_template('studiengaenge/versionen/abschnitte');
@@ -674,7 +673,10 @@ abstract class SharedVersionController extends MVVController
 
     public function details_abschnitt_action($abschnitt_id, $modul_id = null)
     {
-        $this->modul_id = $modul_id;
+        if ($modul_id) {
+            $this->modul = Modul::find($modul_id);
+            $this->modul_id = $this->modul->id;
+        }
         $this->abschnitt = StgteilAbschnitt::find($abschnitt_id);
         if (!$this->abschnitt) {
             PageLayout::postError(_('Unbekannter Abschnitt'));
@@ -720,10 +722,8 @@ abstract class SharedVersionController extends MVVController
         if (Request::isXhr()) {
             $this->render_template('studiengaenge/versionen/details_abschnitt');
         } else {
-            if ($modul_id) {
-                $this->modul = Modul::find($modul_id);
+            if ($this->modul_id) {
                 $this->abschnitt_id = $this->abschnitt->id;
-                $this->modul_id = $this->modul->id;
                 $this->stgteil_id = $this->version->studiengangteil->id;
             }
             $this->abschnitte_action($this->version_id);
