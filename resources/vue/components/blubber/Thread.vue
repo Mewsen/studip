@@ -235,10 +235,10 @@ export default {
         emptyBlubber: {
             handler(isEmpty) {
                 if (!isEmpty) {
-                    this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
-
                     // when everything is initialized
                     this.$nextTick(() => {
+                        this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
+
                         if (this.comments.length > 0) {
                             this.scrollDown();
                         }

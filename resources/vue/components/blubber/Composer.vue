@@ -116,7 +116,7 @@ export default {
         });
     },
     watch: {
-        text(newText) {
+        modelValue(newText) {
             if (this.localText !== newText) {
                 this.localText = newText;
                 this.focusTextarea();
