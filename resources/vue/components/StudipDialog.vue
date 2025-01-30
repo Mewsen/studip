@@ -288,7 +288,7 @@ export default {
                 const style = getComputedStyle(el);
                 return Math.max(acc, Number.parseInt(style.zIndex, 10));
             },
-            1
+            1000
         );
         this.zIndex = maxZIndex + 1;
     }
