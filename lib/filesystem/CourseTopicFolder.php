@@ -22,7 +22,7 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
 
     public static function getTypeName()
     {
-        return _('Themen-Ordner');
+        return _('Themenordner');
     }
 
     public static function availableInRange($range_id_or_object, $user_id)

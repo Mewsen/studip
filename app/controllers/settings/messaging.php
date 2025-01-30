@@ -100,7 +100,7 @@ class Settings_MessagingController extends Settings_SettingsController
     {
         if ($action === 'reset') {
             $question = _('Durch das Zurücksetzen werden die persönliche Messaging-Einstellungen '
-                         .'auf die Startwerte zurückgesetzt und die persönlichen Nachrichten-Ordner '
+                         .'auf die Startwerte zurückgesetzt und die persönlichen Nachrichtenordner '
                          .'gelöscht. ' . "\n\n" . 'Nachrichten werden nicht entfernt.');
             PageLayout::postQuestion(
                 $question,
