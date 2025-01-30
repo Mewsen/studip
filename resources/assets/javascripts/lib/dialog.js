@@ -357,6 +357,9 @@ Dialog.show = function(content, options = {}) {
         width: instance.dimensions.width,
         height: instance.dimensions.height,
         dialogClass: Dialog.getClasses(options),
+        classes: {
+            'ui-dialog-content': 'studip-dialog-content',
+        },
         buttons: options.buttons || {},
         title: options.title,
         modal: true,

@@ -2,7 +2,7 @@
     <v-select ref="select"
               v-bind="{...$props, ...$attrs}"
               :model-value="modelValue"
-              @update:modelValue="value => $emit('update:modelValue', value)"
+              @update:modelValue="value => updateValue(value)"
               :calculate-position="withPopper"
               class="studip-v-select"
               append-to-body
@@ -34,7 +34,6 @@ export default {
     },
     methods: {
         updateValue(val) {
-            console.log('Updating value', val);
             this.$emit('update:modelValue', val)
         },
         withPopper(dropdownList, component, { width }) {
