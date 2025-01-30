@@ -30,7 +30,7 @@ class CourseDateFolder extends PermissionEnabledFolder implements FolderType
 
     public static function getTypeName()
     {
-        return _('Sitzungs-Ordner');
+        return _('Sitzungsordner');
     }
 
     public static function availableInRange($range_id_or_object, $user_id)
