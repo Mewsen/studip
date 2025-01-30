@@ -356,18 +356,18 @@ class ExternElement {
 
                     case "height" :
                         $fault[$form_name][$i] = (!preg_match("/^\d{0,3}$/", $value[$i])
-                                || $value[$i]> 2000 || $value[$i]< 0);
+                                || (int) $value[$i] > 2000 || (int) $value[$i] < 0);
                         break;
                     case "cellpadding" :
                     case "cellspacing" :
                     case "border" :
                     case "sort" :
                         $fault[$form_name][$i] = (!preg_match("/^\d{0,2}$/", $value[$i])
-                                || $value[$i]> 100 || $value[$i]< 0);
+                                || (int) $value[$i] > 100 || (int) $value[$i] < 0);
                         break;
                     case "width" :
                         $fault[$form_name][$i] = (!preg_match("/^\d{0,4}$/", $value[$i])
-                                || $value[$i]> 2000 || $value[$i]< 0);
+                                || (int) $value[$i] > 2000 || (int) $value[$i] < 0);
                         if ($_POST["{$form_name}pp"] == "%") {
                             if (is_array($_POST[$form_name])) {
                                 $_POST[$form_name][$i] = $_POST[$form_name][$i] . "%";
