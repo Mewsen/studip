@@ -1,7 +1,7 @@
 <?php
 /**
  * Visibility_Me.php - Verifies if the visibility belongs to me
- * 
+ *
  * For all other users (except root) it is not possible to see the content
  *
  * This program is free software; you can redistribute it and/or
@@ -13,24 +13,23 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class Visibility_Me extends VisibilityAbstract {
-
+class Visibility_Me extends VisibilityAbstract
+{
     // Should this state be used?
     protected $activated = true;
-    
+
     // What number does this state get in the database?
     protected $int_representation = 1;
-    
-    // How is the state displayed in the settings?
-    protected $display_name = "nur mich selbst";
-    
-    // Description for the state
-    protected $description = "nur für mich sichtbar";
+
+    public function __construct()
+    {
+        $this->display_name = _('nur mich selbst');
+        $this->description = _('nur für mich sichtbar');
+    }
 
     // When do two users have this state
-    function verify($user_id, $other_id)
+    public function verify($user_id, $other_id)
     {
-        return $user_id == $other_id;
+        return $user_id === $other_id;
     }
 }
-?>

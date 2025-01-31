@@ -1,7 +1,20 @@
-<?
-# Lifter010: TODO
-use Studip\Button, Studip\LinkButton;
+<?php
+use Studip\Button;
 
+/**
+ * @var Settings_PrivacyController $controller
+ * @var string $global_visibility
+ * @var string $user_perm
+ * @var UserDomain[] $user_domains
+ * @var User $user
+ * @var bool $online_visibility
+ * @var bool $search_visibility
+ * @var bool $email_visibility
+ * @var string[] $visibilities
+ * @var int $colCount
+ * @var array $homepage_elements
+ * @var string $default_homepage_visibility
+ */
 ?>
 <form method="post" action="<?= $controller->url_for('settings/privacy/global') ?>" class="default">
     <?= CSRFProtection::tokenTag() ?>

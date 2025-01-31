@@ -14,12 +14,9 @@
 
 /**
  * Defines basic attributes and functions a visibilitySetting needs
- * 
- * @abstract
  */
 abstract class VisibilityAbstract
 {
-
     protected $activated;
     protected $int_representation;
     protected $display_name;
@@ -36,8 +33,8 @@ abstract class VisibilityAbstract
 
     /**
      * Returns if a visibiltySetting is activated
-     * 
-     * @return boolean true if the visibilitySetting is activated 
+     *
+     * @return boolean true if the visibilitySetting is activated
      */
     public function isActivated()
     {
@@ -46,8 +43,8 @@ abstract class VisibilityAbstract
 
     /**
      * Returns the int representation of the visibilitySetting in the database
-     * 
-     * @return int the visibilitySetting in the database 
+     *
+     * @return int the visibilitySetting in the database
      */
     public function getIntRepresentation()
     {
@@ -56,8 +53,8 @@ abstract class VisibilityAbstract
 
     /**
      * Returns the displayname of a visibilitySetting
-     * 
-     * @return string the displayname 
+     *
+     * @return string the displayname
      */
     public function getDisplayName()
     {
@@ -66,7 +63,7 @@ abstract class VisibilityAbstract
 
     /**
      * Returns the description of a visibilitySetting
-     * 
+     *
      * @return string  description of the visibilitySetting
      */
     public function getDescription()
