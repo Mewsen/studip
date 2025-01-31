@@ -6,7 +6,7 @@
         </div>
 
         <label>
-            <input type="checkbox" v-model="val_clone.mandatory">
+            <input type="checkbox" v-model.number="val_clone.mandatory" true-value="1" false-value="0">
             {{ $gettext('Pflichtfrage') }}
         </label>
     </div>
@@ -23,7 +23,7 @@ export default {
     created() {
         this.setDefaultValues({
             description: '',
-            mandatory: '0',
+            mandatory: 0,
         });
     },
     mounted() {
