@@ -38,7 +38,7 @@ class UserPrivacy
 
     /**
      * Returns all the categorys and it's items
-     * @return array categorys and it's items
+     * @return User_Visibility_Settings[] categorys and it's items
      */
     public function getProfileSettings()
     {

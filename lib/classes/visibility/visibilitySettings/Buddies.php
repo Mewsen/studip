@@ -20,14 +20,14 @@ class Visibility_Buddies extends VisibilityAbstract
     // What number does this state get in the database?
     protected $int_representation = 2;
 
-    // How is the state displayed in the settings?
-    protected $display_name = 'Kontakte';
-
-    // Description for the state
-    protected $description = "nur für meine Kontakte sichtbar";
+    public function __construct()
+    {
+        $this->display_name = _('Kontakte');
+        $this->description = _('nur für meine Kontakte sichtbar');
+    }
 
     // When do two users have this state
-    function verify($user_id, $other_id)
+    public function verify($user_id, $other_id)
     {
         if ($other_id === 'nobody') {
             return false;
@@ -36,4 +36,3 @@ class Visibility_Buddies extends VisibilityAbstract
         return $user_id == $other_id || Contact::CountBySQL('owner_id=? AND user_id=?', [$user_id, $other_id]);
     }
 }
-?>

@@ -67,7 +67,7 @@ class VisibilitySettings
      * On first construct we scan the visibilitySettings folder and load all
      * applied visibilitySettings
      */
-    function __construct()
+    public function __construct()
     {
         foreach (self::$CLASSES as $classname) {
             $tmp = new $classname;

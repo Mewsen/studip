@@ -20,11 +20,11 @@ class Visibility_Domain extends VisibilityAbstract
     // What number does this state get in the database?
     protected $int_representation = 3;
 
-    // How is the state displayed in the settings?
-    protected $display_name = "Domain";
-
-    // Description for the state
-    protected $description = "nur für meine Nutzerdomäne sichtbar";
+    public function __construct()
+    {
+        $this->display_name = _('Domäne');
+        $this->description = _('nur für meine Nutzerdomäne sichtbar');
+    }
 
     // When do two users have this state
     public function verify($user_id, $other_id)
