@@ -81,9 +81,9 @@
     <? endif; ?>
     <? foreach (array_filter($datafields_list, function ($e) use ($structure) { return isset($structure[$e->getId()]); }) as $entry): ?>
         <td>
-        <? if ($role_entries[$entry->getId()] && $role_entries[$entry->getId()]->getValue() !== 'default_value'): ?>
+        <? if (!empty($role_entries[$entry->getId()]) && (string) $role_entries[$entry->getId()]->getValue() !== 'default_value'): ?>
             <?= $role_entries[$entry->getId()]->getDisplayValue() ?>
-        <? elseif ($default_entries[$entry->getId()]): ?>
+        <? elseif (!empty($default_entries[$entry->getId()])): ?>
             <?= $default_entries[$entry->getId()]->getDisplayValue() ?>
         <? endif; ?>
         </td>
