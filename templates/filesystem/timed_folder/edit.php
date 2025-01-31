@@ -15,9 +15,9 @@
 </label>
 <label>
     <input name="perm_read" type="checkbox" value="1" <? if (isset($folder->data_content['permission']) && $folder->data_content['permission'] & 4) echo 'checked'; ?>>
-    <strong>r</strong> - <?= _('Lesen (Dateien können heruntergeladen werden)') ?>
+    <?= _('Lesen (Dateien können heruntergeladen werden)') ?>
 </label>
 <label>
     <input name="perm_write" type="checkbox" value="1" <? if (isset($folder->data_content['permission']) && $folder->data_content['permission'] & 2) echo 'checked'; ?>>
-    <strong>w</strong> - <?= _('Schreiben (Dateien können hochgeladen werden)') ?>
+    <?= _('Schreiben (Dateien können hochgeladen werden)') ?>
 </label>
