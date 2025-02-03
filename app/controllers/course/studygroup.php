@@ -446,7 +446,7 @@ class Course_StudygroupController extends AuthenticatedController
         $this->autors           = $sem->getMembersWithStatus('autor');
         $this->accepted         = $sem->admission_applicants->findBy('status', 'accepted');
         $this->sem_class        = $sem->getSemClass();
-        $this->invitedMembers   = StudygroupInvitation::findBySQL('sem_id = ? ORDER BY mkdate', $id);
+        $this->invitedMembers   = StudygroupInvitation::findBySQL('sem_id = ? ORDER BY mkdate', [$id]);
         $this->rechte           = $GLOBALS['perm']->have_studip_perm('tutor', $id);
         $this->page = null;
         $this->setupMembersSidebar($sem);
