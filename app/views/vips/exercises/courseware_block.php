@@ -10,8 +10,6 @@
  * @var string $user_id
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <? if ($tries_left > 0 && !$show_solution): ?>
     <?= MessageBox::warning(sprintf(ngettext(
             'Ihr Lösungsversuch war nicht korrekt. Sie haben noch %d weiteren Versuch.',
@@ -75,5 +73,3 @@
         </label>
     <? endif ?>
 <? endif ?>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

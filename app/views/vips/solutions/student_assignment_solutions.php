@@ -7,8 +7,6 @@
  * @var string $feedback
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <h1 class="width-1200">
     <?= htmlReady($assignment->test->title) ?>
 </h1>
@@ -121,5 +119,3 @@
         <?= formatReady($feedback) ?>
     </div>
 <? endif ?>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

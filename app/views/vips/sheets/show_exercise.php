@@ -16,8 +16,6 @@
  */
 ?>
 
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <? if ($assignment->type == 'exam' && !$assignment->checkEditPermission()) : ?>
     <div id="exam_timer" data-time="<?= $remaining_time ?>">
         <?= _('Restzeit') ?>: <span class="time"><?= round($remaining_time / 60) ?></span> min
@@ -105,5 +103,3 @@
         </footer>
     </form>
 <? endif ?>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

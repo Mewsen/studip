@@ -4,8 +4,6 @@
  * @var Vips_SolutionsController $controller
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <? if (count($assignments)) : ?>
     <table class="default">
         <caption>
@@ -91,5 +89,3 @@
         </tbody>
     </table>
 <? endif ?>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

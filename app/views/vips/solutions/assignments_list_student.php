@@ -8,8 +8,6 @@
  * @var float $sum_max_points
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <table class="default collapsable">
     <caption>
         <?= _('Freigegebene Ergebnisse') ?>
@@ -131,5 +129,3 @@
         </tr>
     </tfoot>
 </table>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

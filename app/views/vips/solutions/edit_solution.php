@@ -13,8 +13,6 @@
  * @var float $max_points
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <? /* breadcrumb navigation */ ?>
 <div class="breadcrumb width-1200">
     <? /* overview */ ?>
@@ -212,5 +210,3 @@
         </label>
     </footer>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

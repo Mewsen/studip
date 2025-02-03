@@ -12,8 +12,6 @@
  * @var array $participants
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <table class="default">
     <caption>
         <? if ($display === 'points') : ?>
@@ -221,5 +219,3 @@
         <? endforeach ?>
     </tbody>
 </table>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

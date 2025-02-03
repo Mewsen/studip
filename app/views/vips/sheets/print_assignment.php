@@ -76,7 +76,6 @@
     <? endforeach ?>
 
     <? if ($print_correction): ?>
-        <? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
         <? $max_points = $assignment->test->getTotalPoints(); ?>
         <? $reached_points = $assignment->getUserPoints($user_id); ?>
         <? $feedback = $assignment->getUserFeedback($user_id); ?>
@@ -101,6 +100,5 @@
                 <?= formatReady($feedback) ?>
             <? endif ?>
         </div>
-        <? setlocale(LC_NUMERIC, 'C') ?>
     <? endif ?>
 </div>

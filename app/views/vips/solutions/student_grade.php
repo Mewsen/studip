@@ -6,8 +6,6 @@
  * @var string $user_id
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <table class="default">
     <caption>
         <?= _('Note') ?>
@@ -105,5 +103,3 @@
 
     <? endforeach ?>
 </table>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

@@ -338,8 +338,6 @@ class Vips_SolutionsController extends AuthenticatedController
 
             $data = [$columns];
 
-            setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
-
             $row = [_('Maximalpunktzahl:')];
 
             foreach ($exercises as $exercise) {
@@ -365,8 +363,6 @@ class Vips_SolutionsController extends AuthenticatedController
 
                 $data[] = $row;
             }
-
-            setlocale(LC_NUMERIC, 'C');
 
             $this->render_csv($data, $assignment->test->title . '.csv');
         } else {
@@ -1246,8 +1242,6 @@ class Vips_SolutionsController extends AuthenticatedController
             $solution->points = round($reached_points * 2) / 2;
             $solution->feedback = $feedback ?: null;
 
-            setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
-
             if ($solution->points > $max_points) {
                 PageLayout::postInfo(sprintf(_('Sie haben Bonuspunkte vergeben: %g von %g.'), $solution->points, $max_points));
             } else if ($solution->points < 0) {
@@ -1255,8 +1249,6 @@ class Vips_SolutionsController extends AuthenticatedController
             } else if ($solution->points != $reached_points) {
                 PageLayout::postWarning(sprintf(_('Die eingegebene Punktzahl wurde auf halbe Punkte gerundet: %g.'), $solution->points));
             }
-
-            setlocale(LC_NUMERIC, 'C');
 
             $upload = $_FILES['upload'] ?: ['name' => []];
 
@@ -1449,8 +1441,6 @@ class Vips_SolutionsController extends AuthenticatedController
 
             $data = [$columns];
 
-            setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
-
             if ($display == 'points' || $this->overall['weighting']) {
                 if ($display == 'points') {
                     $row = [_('Maximalpunktzahl'), '', '', ''];
@@ -1528,8 +1518,6 @@ class Vips_SolutionsController extends AuthenticatedController
 
                 $data[] = $row;
             }
-
-            setlocale(LC_NUMERIC, 'C');
 
             $this->render_csv($data, _('Notenliste.csv'));
         } else {
@@ -1663,8 +1651,6 @@ class Vips_SolutionsController extends AuthenticatedController
 
             $data = [$columns];
 
-            setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
-
             foreach ($assignments as $assignment) {
                 if (count($assignment['exercises'])) {
                     $data[] = [
@@ -1701,8 +1687,6 @@ class Vips_SolutionsController extends AuthenticatedController
                     }
                 }
             }
-
-            setlocale(LC_NUMERIC, 'C');
 
             $this->render_csv($data, _('Statistik.csv'));
         } else {

@@ -8,8 +8,6 @@
  * @var float $sum_max_points
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <form class="default" action="<?= $controller->link_for('vips/admin/store_weight') ?>" method="POST">
     <?= CSRFProtection::tokenTag() ?>
     <button hidden name="store_weight"></button>
@@ -186,5 +184,3 @@
         </tfoot>
     </table>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

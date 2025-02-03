@@ -13,8 +13,6 @@
  *
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <form action="" method="POST" id="post_form">
     <?= CSRFProtection::tokenTag() ?>
 </form>
@@ -304,5 +302,3 @@
         <? endif ?>
     </table>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

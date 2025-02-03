@@ -429,8 +429,6 @@ class Vips_SheetsController extends AuthenticatedController
         $widget = new ViewsWidget();
         $widget->setTitle(_('Aufgabenblatt'));
 
-        setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
-
         foreach ($assignment->getExerciseRefs($solver_id) as $i => $item) {
             $this->item = $item;
             $this->position = $i + 1;
@@ -438,8 +436,6 @@ class Vips_SheetsController extends AuthenticatedController
             $element->active = $item->task_id === $exercise->id;
             $widget->addElement($element, 'exercise-' . $item->task_id);
         }
-
-        setlocale(LC_NUMERIC, 'C');
 
         Sidebar::get()->addWidget($widget);
     }

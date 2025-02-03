@@ -11,8 +11,6 @@
  * @var string $solver_id
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <? if ($assignment->type === 'exam' && isset($assignment_attempt) && $remaining_time > 0) : ?>
     <div id="exam_timer" data-time="<?= $remaining_time ?>">
         <?= _('Restzeit') ?>: <span class="time"><?= round($remaining_time / 60) ?></span> min
@@ -175,5 +173,3 @@
         <?= MessageBox::info(_('Keine Aufgaben gefunden.')) ?>
     <? endif ?>
 <? endif ?>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

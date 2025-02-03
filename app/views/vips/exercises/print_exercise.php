@@ -9,8 +9,6 @@
  * @var bool $print_correction
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <div class="exercise">
     <h3>
         <?= $exercise_position ?>.
@@ -60,5 +58,3 @@
         </div>
     <? endif ?>
 </div>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

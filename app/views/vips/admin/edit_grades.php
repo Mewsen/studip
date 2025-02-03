@@ -7,8 +7,6 @@
  * @var string[] $comments
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <form class="default" action="<?= $controller->link_for('vips/admin/store_grades') ?>" data-secure method="post">
     <?= CSRFProtection::tokenTag() ?>
 
@@ -52,5 +50,3 @@
         <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
     </footer>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

@@ -7,8 +7,6 @@
  * @var float $max_points
  */
 ?>
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <div class="breadcrumb width-1200">
     <div style="display: inline-block; width: 20%;">
         <? if (isset($prev_exercise_id)) : ?>
@@ -73,5 +71,3 @@
         </div>
     </fieldset>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

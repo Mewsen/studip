@@ -256,8 +256,6 @@
     </fieldset>
 
     <table class="default" id="exercises">
-        <? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
         <? if (count($test->exercise_refs)): ?>
             <thead>
                 <tr>
@@ -323,7 +321,5 @@
                 </td>
             </tr>
         </tfoot>
-
-        <? setlocale(LC_NUMERIC, 'C') ?>
     </table>
 </form>

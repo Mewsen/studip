@@ -9,8 +9,6 @@
  */
 ?>
 
-<? setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8') ?>
-
 <?= $contentbar->render() ?>
 
 <form class="default width-1200" action="<?= $controller->store_exercise() ?>" data-secure method="POST" enctype="multipart/form-data">
@@ -157,5 +155,3 @@
         <?= Studip\Button::createAccept(_('Speichern'), 'store_exercise') ?>
     </footer>
 </form>
-
-<? setlocale(LC_NUMERIC, 'C') ?>

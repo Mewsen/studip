@@ -896,7 +896,6 @@ class Course_LtiController extends StudipController
         }
 
         $data = [$columns];
-        setlocale(LC_NUMERIC, $_SESSION['_language'] . '.UTF-8');
 
         foreach (CourseMember::findByCourseAndStatus($this->course_id, 'autor') as $member) {
             $row = [$member->nachname, $member->vorname];
