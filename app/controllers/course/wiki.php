@@ -272,14 +272,16 @@ class Course_WikiController extends AuthenticatedController
                 [
                     'page_id' => $page->id,
                     'range_id' => $page['range_id'],
-                    'search' => '%' . $oldname . '%',
+                    'search' => '%' . addcslashes($oldname, '\%_') . '%',
                 ]
             );
 
             foreach ($other_pages as $p2) {
-                $p2['content'] = preg_replace(
-                    "/\[\[\s*" . $oldname . "\b/",
-                    "[[ " . $values['name'],
+                $p2['content'] = preg_replace_callback(
+                    "/\[\[\s*" . preg_quote($oldname, '/') . "\b/",
+                    function () use ($values): string {
+                        return '[[ ' . $values['name'];
+                    },
                     $p2['content']
                 );
                 if ($p2->isDirty()) {
@@ -931,13 +933,15 @@ class Course_WikiController extends AuthenticatedController
                         "`range_id` = :range_id AND `content` LIKE :search",
                         [
                             'range_id' => $this->range->id,
-                            'search' => '%' . $values['name'] . '%',
+                            'search' => '%' . addcslashes($values['name'], '\%_') . '%',
                         ]
                     );
                     foreach ($pages as $page) {
-                        $page->content = preg_replace(
-                            "/\b" . $values['name'] . "\b/",
-                            '[[ ' . $values['name'] . ' ]]',
+                        $page->content = preg_replace_callback(
+                            "/\b" . preg_quote($values['name'], '/') . "\b/",
+                            function () use ($values): string {
+                                return '[[ ' . $values['name'] . ' ]]';
+                            },
                             $page->content
                         );
                         if ($page->isDirty()) {
@@ -985,7 +989,7 @@ class Course_WikiController extends AuthenticatedController
                     )
                 ORDER BY `is_in_name` DESC, `is_in_content` DESC, `is_in_old_name` DESC, `is_in_history` DESC
             ");
-            $search = str_replace(['\\', '_', '%'], ['\\\\', '\\_', '\\%'], Request::get('search'));
+            $search = addcslashes(Request::get('search'), '\%_');
             $perm = $GLOBALS['perm']->get_perm();
             if (in_array($perm, ['admin', 'root'])) {
                 $perm = 'dozent';
@@ -1040,7 +1044,7 @@ class Course_WikiController extends AuthenticatedController
         if (!Request::get('search')) {
             throw new Exception('No search text.');
         }
-        $search = str_replace(['\\', '_', '%'], ['\\\\', '\\_', '\\%'], Request::get('search'));
+        $search = addcslashes(Request::get('search'), '\%_');
         $this->versions = WikiVersion::findBySQL("`page_id` = :page_id AND (`wiki_versions`.`content` LIKE :searchterm OR `wiki_versions`.`name` LIKE :searchterm) ORDER BY `mkdate` DESC ", [
             'page_id' => $page->id,
             'searchterm' => '%' . $search . '%'
