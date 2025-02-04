@@ -1721,13 +1721,6 @@ class Course_MembersController extends AuthenticatedController
             }
 
             $options = new OptionsWidget();
-            $options->addCheckbox(
-                _('Diese Seite für Studierende verbergen'),
-                $this->getToolActivation()->getVisibilityPermission() === 'tutor',
-                $this->url_for('course/members/course_members_hide/1'),
-                $this->url_for('course/members/course_members_hide/0'),
-                ['title' => _('Über diese Option können Sie die Teilnehmendenliste für Studierende der Veranstaltung unsichtbar machen')]
-            );
 
             if ($this->is_dozent) {
                 $options->addCheckbox(
@@ -1807,24 +1800,6 @@ class Course_MembersController extends AuthenticatedController
 
         $this->redirect($this->indexURL());
     }
-
-    public function course_members_hide_action($state)
-    {
-        if (!$this->is_tutor) {
-            throw new AccessDeniedException();
-        }
-
-        $tool_activation = $this->getToolActivation();
-        if ($state) {
-            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_TEACHERS);
-        } else {
-            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_STUDENTS);
-        }
-        $tool_activation->store();
-
-        $this->redirect($this->indexURL());
-    }
-
 
     public function circular_mail_action()
     {
@@ -2277,17 +2252,5 @@ class Course_MembersController extends AuthenticatedController
         if (count($invalid_user_ids) > 0) {
             throw new AccessDeniedException(_('Sie dürfen keine Lehrenden oder Tutor/-innen aus dieser Veranstaltungen austragen.'));
         }
-    }
-
-    private function getToolActivation(): ToolActivation
-    {
-        return ToolActivation::findOneBySQL(
-            "range_id = ? AND range_type = 'course' AND plugin_id IN (
-                SELECT pluginid
-                FROM plugins
-                WHERE pluginclassname = 'CoreParticipants'
-            )",
-            [$this->course_id]
-        );
     }
 }
