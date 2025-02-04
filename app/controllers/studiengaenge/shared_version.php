@@ -554,7 +554,7 @@ abstract class SharedVersionController extends MVVController
                     $status = Request::optionArray('status');
                     $is_modified = false;
                     foreach (array_keys(Request::intArray('fachsemester')) as $i) {
-                        if ($fachsem[$i]) {
+                        if (isset($fachsem[$i])) {
                             $fachsem[$i]->differenzierung = $status[$i];
                             $is_modified = $fachsem[$i]->isDirty();
                             $fachsem[$i]->store();
