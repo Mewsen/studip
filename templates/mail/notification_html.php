@@ -77,6 +77,39 @@
                 padding-top: 15px;
                 width: 100%;
             }
+
+            table.default {
+                border-collapse: collapse;
+                margin-bottom: 2em;
+                width: 100%;
+            }
+
+            table.default th,
+            table.default td {
+                padding: 10px 5px;
+                text-align: left;
+            }
+
+            table.default th:first-child,
+            table.default td:first-child {
+                padding-left: 10px;
+            }
+
+            table.default th:last-child,
+            table.default td:last-child {
+                padding-right: 10px;
+            }
+
+            .table_header_bold {
+                background-color: #ededed;
+                border-color: #ededed;
+                border-style: solid;
+                border-width: 0 0 1px 0;
+                color: #fff;
+                font-size: 12pt;
+                padding: 3px 5px;
+            }
+
         </style>
     </head>
     <body>
@@ -105,23 +138,27 @@
         </header>
         <section class="studip-mail-message">
             <table class="default">
-              <? foreach ($news as $sem_titel => $data) : ?>
-                <tr class="table_header_bold">
-                  <td style="font-weight: bold;">
-                    <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['again' => 'yes', 'sso' => $sso, 'to' => $data[0]['seminar_id']]) ?>">
-                      <?= htmlReady($sem_titel) ?>
-                      <?= (($semester = Course::find($data[0]['range_id'])->semester_text) ? ' ('.$semester.')' : '') ?>
-                    </a>
-                  </td>
-                </tr>
-                <? foreach ($data as $module) : ?>
-                <tr>
-                  <td>
-                    <a href="<?= URLHelper::getLink($module['url'], ['sso' => $sso]) ?>"><?= htmlReady($module['text']) ?></a>
-                  </td>
-                </tr>
+                <? foreach ($news as $sem_titel => $data) : ?>
+                    <tr class="table_header_bold">
+                        <td style="font-weight: bold;">
+                            <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['again' => 'yes', 'sso' => $sso, 'to' => $data[0]['seminar_id']]) ?>">
+                                <?= htmlReady($sem_titel) ?>
+                                <?= (($semester = Course::find($data[0]['range_id'])->semester_text) ? ' ('.$semester.')' : '') ?>
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <? foreach ($data as $module) : ?>
+                    <tr>
+                        <td>
+                            <a href="<?= URLHelper::getLink($module['url'], ['sso' => $sso]) ?>"><?= htmlReady($module['text']) ?></a>
+                        </td>
+                        <td>
+                            <a href="<?= URLHelper::getLink($module['url'], ['sso' => $sso]) ?>"><?= $module['icon']->asImg(['title' => $module['text']]) ?></a>
+                        </td>
+                    </tr>
+                    <? endforeach ?>
                 <? endforeach ?>
-              <? endforeach ?>
             </table>
         </section>
         <footer>
