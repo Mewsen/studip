@@ -142,6 +142,7 @@ class ForumAbo
 
                 $htmlMessage = $template->render([
                     'snd_fullname' => '',
+                    'rec_username' => '',
                     'rec_fullname' => $user->getFullName(),
                     'message' => $content,
                     'attachments' => [],
