@@ -16,7 +16,7 @@
         </colgroup>
         <? foreach ($abschnitte as $abschnitt) : ?>
             <tbody id="<?= $abschnitt->id ?>"
-                   class="<?= ($abschnitt_id === $abschnitt->id ? 'not-collapsed' : 'collapsed') ?><?= MvvPerm::haveFieldPermPosition($abschnitt, MvvPerm::PERM_WRITE) ? ' sort_items' : '' ?>">
+                   class="<?= isset($abschnitt_id) && $abschnitt_id === $abschnitt->id ? 'not-collapsed' : 'collapsed' ?><?= MvvPerm::haveFieldPermPosition($abschnitt, MvvPerm::PERM_WRITE) ? ' sort_items' : '' ?>">
                 <tr class="header-row sort_item" id="abschnittt_<?= $abschnitt->id ?>">
                     <td class="toggle-indicator">
                         <a class="mvv-load-in-new-row"
