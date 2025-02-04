@@ -13,7 +13,9 @@
  * @category    Stud.IP
  */
 
-define('K_PATH_IMAGES', $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/');
+if (!defined('K_PATH_IMAGES')) {
+    define('K_PATH_IMAGES', $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/');
+}
 
 /**
  * Class to create an PDF by putting in Stud.IP-formatted code.

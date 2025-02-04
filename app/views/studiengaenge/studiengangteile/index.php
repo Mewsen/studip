@@ -26,7 +26,7 @@
         </thead>
         <? if ($count) : ?>
             <? foreach ($stgteile as $stgteil): ?>
-                <tbody class="<?php if (!$stgteil->count_versionen) echo 'empty' ?>  <?= $stgteil_id === $stgteil->id ? 'not-collapsed' : 'collapsed' ?>">
+                <tbody class="<?php if (!$stgteil->count_versionen) echo 'empty' ?>  <?= isset($stgteil_id) && $stgteil_id === $stgteil->id ? 'not-collapsed' : 'collapsed' ?>">
                     <tr class="header-row">
                         <td class="toggle-indicator">
                             <? if ($stgteil->count_versionen) : ?>

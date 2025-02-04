@@ -18,7 +18,7 @@
                 <col style="width: 1%">
             </colgroup>
         <? foreach ($assignments as $assignment) : ?>
-            <tbody class="<?= count($assignment->modul->modulteile) ? '' : 'empty' ?> <?= ($modul_id == $assignment->modul->id ? 'not-collapsed' : 'collapsed') ?><?= MvvPerm::haveFieldPermPosition($assignment, MvvPerm::PERM_WRITE) ? ' sort_items' : '' ?>" id="<?= $assignment->id ?>">
+            <tbody class="<?= count($assignment->modul->modulteile) ? '' : 'empty' ?> <?= isset($modul_id) && $modul_id == $assignment->modul->id ? 'not-collapsed' : 'collapsed' ?><?= MvvPerm::haveFieldPermPosition($assignment, MvvPerm::PERM_WRITE) ? ' sort_items' : '' ?>" id="<?= $assignment->id ?>">
                 <tr id="modul_<?= $assignment->modul->id ?>" class="header-row sort_item">
                     <td class="toggle-indicator">
                         <? if (count($assignment->modul->modulteile)) : ?>
