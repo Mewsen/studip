@@ -216,10 +216,10 @@ class Calendar_ScheduleController extends AuthenticatedController
                 );
 
                 $schedule_course = ScheduleCourseDate::findOneBySQL(
-                    '`course_id` = :course_id AND `user_id` = :user_id',
+                    '`metadate_id` = :cycle_date_id AND `user_id` = :user_id',
                     [
-                        'course_id' => $cycle_date->seminar_id,
-                        'user_id' => $GLOBALS['user']->id
+                        'cycle_date_id' => $cycle_date->id,
+                        'user_id'       => $GLOBALS['user']->id
                     ]
                 );
                 $is_hidden = $schedule_course && !$schedule_course->visible;
@@ -294,7 +294,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     'course',
                     $cycle_date->seminar_id,
                     [
-                        'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
+                        'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->id)
                     ],
                     [],
                     Icon::create($event_icon ?: '', Icon::ROLE_INFO)->asImagePath()
@@ -463,11 +463,16 @@ class Calendar_ScheduleController extends AuthenticatedController
     /**
      * Displays information about a course in the schedule.
      *
-     * @param string $course_id The ID of the course.
+     * @param string $cycle_date_id The ID of the cycle date of the course.
      */
-    public function course_info_action(string $course_id)
+    public function course_info_action(string $cycle_date_id)
     {
-        $this->course = Course::find($course_id);
+        $this->cycle_date = SeminarCycleDate::find($cycle_date_id);
+        if (!$this->cycle_date) {
+            PageLayout::postError(_('Der Veranstaltungstermin wurde nicht gefunden.'));
+            return;
+        }
+        $this->course = $this->cycle_date->course ?? null;
         if (!$this->course) {
             PageLayout::postError(_('Die Veranstaltung wurde nicht gefunden.'));
             return;
@@ -476,14 +481,14 @@ class Calendar_ScheduleController extends AuthenticatedController
             '`seminar_id` = :course_id AND `user_id` = :user_id',
             [
                 'course_id' => $this->course->id,
-                'user_id' => $GLOBALS['user']->id
+                'user_id'   => $GLOBALS['user']->id
             ]
         );
         $this->schedule_course_entry = ScheduleCourseDate::findOneBySQL(
-            '`course_id` = :course_id AND `user_id` = :user_id',
+            '`metadate_id` = :cycle_date_id AND `user_id` = :user_id',
             [
-                'course_id' => $this->course->id,
-                'user_id' => $GLOBALS['user']->id
+                'cycle_date_id' => $this->cycle_date->id,
+                'user_id'       => $GLOBALS['user']->id
             ]
         );
 
@@ -493,44 +498,44 @@ class Calendar_ScheduleController extends AuthenticatedController
     /**
      * Hides a course in the schedule.
      *
-     * @param string $course_id The ID of the course.
+     * @param string $cycle_date_id The ID of the cycle date to hide.
      */
-    public function hide_course_action(string $course_id)
+    public function hide_course_action(string $cycle_date_id)
     {
         CSRFProtection::verifyUnsafeRequest();
         $success = false;
 
-        $course = Course::find($course_id);
-        if ($course) {
+        $cycle_date = SeminarCycleDate::find($cycle_date_id);
+        if ($cycle_date) {
             $this->membership = CourseMember::findOneBySQL(
                 '`seminar_id` = :course_id AND `user_id` = :user_id',
                 [
-                    'course_id' => $course->id,
-                    'user_id' => $GLOBALS['user']->id
+                    'course_id' => $cycle_date->seminar_id,
+                    'user_id'   => $GLOBALS['user']->id
                 ]
             );
 
-            //Hide the course.
+            //Hide the cycle date.
             if ($this->membership) {
-                //Hide the course in the schedule by creating a new schedule course entry
+                //Hide the cycle date in the schedule by creating a new schedule course entry
                 //with the visibility set to 0:
                 $entry = ScheduleCourseDate::findOneBySQL(
-                    '`user_id` = :user_id AND `course_id` = :course_id',
-                    ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                    '`user_id` = :user_id AND `metadate_id` = :cycle_date_id',
+                    ['user_id' => $GLOBALS['user']->id, 'cycle_date_id' => $cycle_date->id]
                 );
                 if (!$entry) {
-                    $entry = new ScheduleCourseDate();
-                    $entry->user_id = $GLOBALS['user']->id;
-                    $entry->course_id = $course->id;
-                    $entry->metadate_id = '';
+                    $entry              = new ScheduleCourseDate();
+                    $entry->user_id     = $GLOBALS['user']->id;
+                    $entry->course_id   = $cycle_date->seminar_id;
+                    $entry->metadate_id = $cycle_date->id;
                 }
                 $entry->visible = false;
                 $success = $entry->store() !== false;
             } else {
-                //Remove the entry of the marked course from the schedule.
+                //Remove the entry of the marked cycle date from the schedule.
                 $success = ScheduleCourseDate::deleteBySQL(
-                        '`user_id` = :user_id AND `course_id` = :course_id',
-                        ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                        '`user_id` = :user_id AND `metadate_id` = :cycle_date_id',
+                        ['user_id' => $GLOBALS['user']->id, 'cycle_date_id' => $cycle_date->id]
                     ) > 0;
             }
         }
@@ -547,19 +552,19 @@ class Calendar_ScheduleController extends AuthenticatedController
     /**
      * Makes a hidden course visible again in the schedule.
      *
-     * @param string $course_id The ID of the course.
+     * @param string $cycle_date_id The ID of the cycle date of the course.
      */
-    public function show_course_action(string $course_id)
+    public function show_course_action(string $cycle_date_id)
     {
         CSRFProtection::verifyUnsafeRequest();
         $success = false;
 
-        $course = Course::find($course_id);
-        if ($course) {
-            //Make a hidden course visible again.
+        $cycle_date = SeminarCycleDate::find($cycle_date_id);
+        if ($cycle_date) {
+            //Make a hidden cycle date visible again.
             $entry = ScheduleCourseDate::findOneBySQL(
-                '`user_id` = :user_id AND `course_id` = :course_id',
-                ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
+                '`user_id` = :user_id AND `metadate_id` = :cycle_date_id',
+                ['user_id' => $GLOBALS['user']->id, 'cycle_date_id' => $cycle_date->id]
             );
             if ($entry) {
                 $entry->visible = true;
@@ -567,8 +572,8 @@ class Calendar_ScheduleController extends AuthenticatedController
             } else {
                 $success = true;
             }
-            //In case no entry exists, the course is not hidden since an entry in schedule_courses
-            //must exist with its visible set to zero to make a course disappear from the schedule.
+            //In case no entry exists, the cycle date is not hidden since an entry in schedule_courses
+            //must exist with its visible set to zero to make a cycle date disappear from the schedule.
         }
         if ($success) {
             if (Request::isDialog()) {

@@ -1,12 +1,13 @@
 <?php
 /**
  * @var AuthenticatedController $controller
+ * @var SeminarCycleDate $cycle_date
  * @var Course $course
  * @var CourseMember $membership
  * @var ScheduleCourseDate $schedule_course_entry
  */
 ?>
-<? if ($course) : ?>
+<? if ($cycle_date && $course) : ?>
     <form class="default" method="post" data-dialog="reload-on-close"
           action="<?= $controller->link_for('calendar/schedule/course_info/' . $course->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
@@ -76,15 +77,15 @@
             ) ?>
             <? if ($schedule_course_entry && !$schedule_course_entry->visible) : ?>
                 <?= \Studip\Button::create(
-                    _('Veranstaltung einblenden'),
+                    _('Termin einblenden'),
                     'show',
-                    ['formaction' => $controller->url_for('calendar/schedule/show_course/' . $course->id)]
+                    ['formaction' => $controller->url_for('calendar/schedule/show_course/' . $cycle_date->id)]
                 ) ?>
             <? else : ?>
                 <?= \Studip\Button::create(
-                    _('Veranstaltung ausblenden'),
+                    _('Termin ausblenden'),
                     'hide',
-                    ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $course->id)]
+                    ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $cycle_date->id)]
                 ) ?>
             <? endif ?>
             <?= \Studip\Button::createCancel(_('Abbrechen')) ?>
