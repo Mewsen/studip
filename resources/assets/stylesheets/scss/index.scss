@@ -115,6 +115,10 @@ $gap-between-boxes: calc($login-page-margin / 2);
     position: relative;
     overflow-y: auto;
 
+    &.hidden {
+        display: none;
+    }
+
     #login-faq-content-wrapper {
         height: calc(100% - 32px);
         max-height: 430px;
@@ -143,6 +147,10 @@ $gap-between-boxes: calc($login-page-margin / 2);
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
+
+    &.hidden {
+        display: none;
+    }
 
     #login-news-content-wrapper {
         height: calc(100% - 60px);
