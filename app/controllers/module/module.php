@@ -1172,7 +1172,7 @@ class Module_ModuleController extends MVVController
             $this->reset_page();
             // responsible Institutes
             $this->filter['mvv_modul_inst.gruppe'] = 'hauptverantwortlich';
-            if (!$this->filter['mvv_modul_inst.institut_id']) {
+            if (empty($this->filter['mvv_modul_inst.institut_id'])) {
                 // only institutes the user has an assigned MVV role
                 $this->filter['mvv_modul_inst.institut_id'] = MvvPerm::getOwnInstitutes();
             }
