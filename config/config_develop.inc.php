@@ -240,24 +240,106 @@ $TERMIN_TYP[6]=["name"=>_("Sondersitzung"), "sitzung"=>0, "color"=>"#a85d45"];
 $TERMIN_TYP[7]=["name"=>_("Vorlesung"), "sitzung"=>1, "color"=>"#ca9eaf"];
 // more types can be added here
 
-
-// Configure the categories for the personal calendar
-$PERS_TERMIN_KAT[1]=["name"=>_("Sonstiges"), "color"=>"#008512"];
-$PERS_TERMIN_KAT[2]=["name"=>_("Sitzung"), "color"=>"#682c8b"];
-$PERS_TERMIN_KAT[3]=["name"=>_("Vorbesprechung"), "color"=>"#b02e7c"];
-$PERS_TERMIN_KAT[4]=["name"=>_("Klausur"), "color"=>"#129c94"];
-$PERS_TERMIN_KAT[5]=["name"=>_("Exkursion"), "color"=>"#f26e00"];
-$PERS_TERMIN_KAT[6]=["name"=>_("Sondersitzung"), "color"=>"#a85d45"];
-$PERS_TERMIN_KAT[7]=["name"=>_("Prüfung"), "color"=>"#6ead10"];
-$PERS_TERMIN_KAT[8]=["name"=>_("Telefonat"), "color"=>"#d60000"];
-$PERS_TERMIN_KAT[9]=["name"=>_("Besprechung"), "color"=>"#ffbd33"];
-$PERS_TERMIN_KAT[10]=["name"=>_("Verabredung"), "color"=>"#66b570"];
-$PERS_TERMIN_KAT[11]=["name"=>_("Geburtstag"), "color"=>"#a480b9"];
-$PERS_TERMIN_KAT[12]=["name"=>_("Familie"), "color"=>"#d082b0"];
-$PERS_TERMIN_KAT[13]=["name"=>_("Urlaub"), "color"=>"#70c3bf"];
-$PERS_TERMIN_KAT[14]=["name"=>_("Reise"), "color"=>"#f7a866"];
-$PERS_TERMIN_KAT[15]=["name"=>_("Vorlesung"), "color"=>"#ca9eaf"];
-// more categories can be added here
+//Configuration for the date categories in the personal calendar:
+$PERS_TERMIN_KAT = [
+    '1' => [
+        'name'         => _('Sonstiges'),
+        'border_color' => '#682c8b',
+        'bgcolor'      => '#c2aad0',
+        'fgcolor'      => '#000000'
+    ],
+    '2' => [
+        'name'         => _('Sitzung'),
+        'border_color' => '#af2d7b',
+        'bgcolor'      => '#dfabca',
+        'fgcolor'      => '#000000'
+    ],
+    '3' => [
+        'name'         => _('Vorbesprechung'),
+        'border_color' => '#d60000',
+        'bgcolor'      => '#ef9999',
+        'fgcolor'      => '#000000'
+    ],
+    '4' => [
+        'name'         => _('Klausur'),
+        'border_color' => '#f26e00',
+        'bgcolor'      => '#fac599',
+        'fgcolor'      => '#000000'
+    ],
+    '5' => [
+        'name'         => _('Exkursion'),
+        'border_color' => '#ffbd33',
+        'bgcolor'      => '#ffe4ad',
+        'fgcolor'      => '#000000'
+    ],
+    '6' => [
+        'name'         => _('Sondersitzung'),
+        'border_color' => '#6ead10',
+        'bgcolor'      => '#c5dea0',
+        'fgcolor'      => '#000000'
+    ],
+    '7' => [
+        'name'         => _('Prüfung'),
+        'border_color' => '#008512',
+        'bgcolor'      => '#99cea0',
+        'fgcolor'      => '#000000'
+    ],
+    '8' => [
+        'name'         => _('Telefonat'),
+        'border_color' => '#129c94',
+        'bgcolor'      => '#a0d7d4',
+        'fgcolor'      => '#000000'
+    ],
+    '9' => [
+        'name'         => _('Besprechung'),
+        'border_color' => '#a85d45',
+        'bgcolor'      => '#dcbeb4',
+        'fgcolor'      => '#000000'
+    ],
+    '10' => [
+        'name'         => _('Verabredung'),
+        'border_color' => '#c2aad0',
+        'bgcolor'      => '#e0d4e7',
+        'fgcolor'      => '#000000'
+    ],
+    '11' => [
+        'name'         => _('Geburtstag'),
+        'border_color' => '#dfabca',
+        'bgcolor'      => '#efd5e4',
+        'fgcolor'      => '#000000'
+    ],
+    '12' => [
+        'name'         => _('Familie'),
+        'border_color' => '#ef9999',
+        'bgcolor'      => '#f7cccc',
+        'fgcolor'      => '#000000'
+    ],
+    '13' => [
+        'name'         => _('Urlaub'),
+        'border_color' => '#fac599',
+        'bgcolor'      => '#fce2cc',
+        'fgcolor'      => '#000000'
+    ],
+    '14' => [
+        'name'         => _('Reise'),
+        'border_color' => '#ffe4ad',
+        'bgcolor'      => '#fff2d6',
+        'fgcolor'      => '#000000'
+    ],
+    '15' => [
+        'name'         => _('Vorlesung'),
+        'border_color' => '#c5dea0',
+        'bgcolor'      => '#e2efcf',
+        'fgcolor'      => '#000000'
+    ],
+    '16' => [
+        'name'         => _('Videokonferenz'),
+        'border_color' => '#99cea0',
+        'bgcolor'      => '#cce6cf',
+        'fgcolor'      => '#000000'
+    ]
+    //More categories can be added here.
+];
 
 //standard times for date-begin and date-end
 $TIME_PRESETS =  [ //starthour, startminute, endhour, endminute
