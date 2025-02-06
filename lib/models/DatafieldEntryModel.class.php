@@ -33,6 +33,9 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
             'class_name' => DataField::class,
             'foreign_key' => 'datafield_id'
         ];
+
+        $config['registered_callbacks']['before_store'][] = 'cbBeforeStore';
+
         $config['additional_fields']['name'] = ['datafield', 'name'];
         parent::configure($config);
     }
@@ -188,6 +191,7 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
             }
             $ret[$c]->setData($row, true);
             if (!$row['isset_content']) {
+                $ret[$c]->setValue('content', $row['default_value']);
                 $ret[$c]->setValue('range_id', (string) $range_id);
                 $ret[$c]->setValue('sec_range_id', (string) $sec_range_id);
                 $ret[$c]->setValue('lang', '');
@@ -256,5 +260,23 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
                 $storage->addTabularData(_('Datenfeld Einträge'), 'datafields_entries', $field_data);
             }
         }
+    }
+
+    public function cbBeforeStore(): bool
+    {
+        $current = $this->getValue('content');
+        $default = $this->datafield->default_value;
+
+        if ($this->datafield->type === 'bool') {
+            $current = (bool) $current;
+            $default = (bool) $default;
+        }
+
+        if ($current != $default) {
+            return true;
+        }
+
+        $this->delete();
+        return false;
     }
 }
