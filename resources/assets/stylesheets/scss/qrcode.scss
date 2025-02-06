@@ -1,8 +1,4 @@
 .qr-code-display {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
 
@@ -11,27 +7,40 @@
     }
 
     .code {
-        flex: 0 1 auto;
-        max-height: 90%; // TODO This will not scale well if description grows
-        width: 100%;
+        height: 90%;
         text-align: center;
+        width: auto;
 
         canvas {
+            height: 100%;
             margin: auto;
-            max-height: 100%;
             object-fit: contain;
+            width: auto;
+        }
+    }
+
+    @media (orientation: portrait) {
+        .code {
+            height: auto;
+            width: 100%;
+
+            canvas {
+                height: auto;
+                width: 100%;
+            }
         }
     }
 
     .url,
     .description {
-        flex: 0 0 auto;
         margin-top: 1em;
         text-align: center;
+        word-break: auto-phrase;
     }
 
     &:fullscreen {
         background: var(--white);
+        padding-top: 2em;
 
         h1 {
             display: initial;
