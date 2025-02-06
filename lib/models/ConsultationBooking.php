@@ -40,7 +40,20 @@ class ConsultationBooking extends SimpleORMap implements PrivacyObject
             'class_name'        => CalendarDate::class,
             'foreign_key'       => 'student_event_id',
             'assoc_foreign_key' => 'id',
-            'on_delete'         => 'delete',
+            'on_delete'         => function (ConsultationBooking $booking): void {
+                if (!$booking->event || count($booking->event->calendars) === 0) {
+                    return;
+                }
+
+                // Suppress mails for deleted events if either the user who
+                // provides the consultation no longer exists or the slot
+                // is in the past.
+                $booking->event->calendars->each(function (CalendarDateAssignment $assignment) use ($booking): void {
+                    $assignment->suppress_mails = $booking->slot->end_time < time()
+                                               || !$assignment->user;
+                    $assignment->delete();
+                });
+            },
         ];
 
         // Create student event
