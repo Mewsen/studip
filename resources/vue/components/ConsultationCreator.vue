@@ -495,20 +495,31 @@ export default {
         },
         recalculationProperty: {
             handler() {
-                STUDIP.jsonapi.withPromises().GET('consultation-slots/count', {
-                    data: {
-                        start: this.combineDateAndTime(this.startDate, this.startTime).toISOString(),
-                        end: this.combineDateAndTime(this.endDate, this.endTime).toISOString(),
-                        dow: this.dayOfWeek,
-                        interval: this.interval,
-                        duration: this.duration,
-                        pause_time: this.pause ? this.pauseTime : null,
-                        pause_duration: this.pause ? this.pauseDuration : null,
-                    }
-                }).then((count) => {
-                    this.slotCount = count;
-                    this.confirmed = count <= this.slotCountThreshold;
-                });
+                const start = this.combineDateAndTime(this.startDate, this.startTime).toISOString();
+                const end = this.combineDateAndTime(this.endDate, this.endTime).toISOString();
+
+                if (start < end) {
+                    STUDIP.jsonapi.withPromises().GET('consultation-slots/count', {
+                        data: {
+                            start,
+                            end,
+                            dow: this.dayOfWeek,
+                            interval: this.interval,
+                            duration: this.duration,
+                            pause_time: this.pause ? this.pauseTime : null,
+                            pause_duration: this.pause ? this.pauseDuration : null,
+                        }
+                    }).then(
+                        (count) => {
+                            this.slotCount = count;
+                            this.confirmed = count <= this.slotCountThreshold;
+                        },
+                        () => null
+                    );
+                } else {
+                    this.slotCount = 0;
+                    this.confirmed = false;
+                }
             },
             immediate: true
         },
