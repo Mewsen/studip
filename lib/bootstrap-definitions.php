@@ -16,6 +16,9 @@ use Psr\Log\LoggerInterface;
 use function DI\create;
 
 return [
+    \Flexi\Factory::class => DI\factory(function () {
+        return new \Flexi\Factory("{$GLOBALS['STUDIP_BASE_PATH']}/templates");
+    }),
     LoggerInterface::class => DI\factory(function () {
         return new Logger('studip', [
             new StreamHandler(

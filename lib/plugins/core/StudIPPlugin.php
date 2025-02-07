@@ -1,4 +1,10 @@
 <?php
+
+use Slim\Interfaces\RouteCollectorProxyInterface;
+use Studip\Plugins\DefaultLegacyRouteStrategy;
+use Studip\Plugins\LegacyRouteStrategy;
+use Studip\Plugins\TrailsLegacyRouteStrategy;
+
 /**
  * StudIPPlugin.php - generic plugin base class
  *
@@ -192,45 +198,26 @@ abstract class StudIPPlugin
      */
     public function perform($unconsumed_path)
     {
-
     }
 
-    /**
-     * This method returns callable for slim app
-     *
-     * @param string $unconsumed_path part of the dispatch path that was not consumed
-     *
-     * @return Closure
-     * @throws \Trails\Exceptions\UnknownAction
-     */
-    public function getRouteCallable(string $unconsumed_path): Closure
+    public function registerSlimRoutes(
+        RouteCollectorProxyInterface $app,
+        string $unconsumed_path,
+    ): void {
+        $strategy = $this->getLegacyRouteStrategy($unconsumed_path);
+        $app->any('{path_info:.*}', $strategy->getCallable($unconsumed_path));
+    }
+
+    protected function getLegacyRouteStrategy(string $unconsumed_path): LegacyRouteStrategy
     {
-        $this->perform($unconsumed_path);
         $args = explode('/', $unconsumed_path);
-        $action = $args[0] !== '' ? array_shift($args).'_action' : 'show_action';
+        $action = $args[0] !== '' ? array_shift($args) . '_action' : 'show_action';
 
-        if (!method_exists($this, $action)) {
-            try {
-                $dispatcher = app(PluginDispatcher::class, ['plugin' => $this]);
-                return $dispatcher->getRouteCallable($unconsumed_path);
-            } catch (Trails\Exceptions\UnknownAction $exception) {
-                if (count($args) > 0) {
-                    throw $exception;
-                } else {
-                    throw new Exception(_('unbekannte Plugin-Aktion: ') . $unconsumed_path);
-                }
-            }
-        } else {
-            $that = $this;
-            return function ($request, $response, array $otherargs) use ($action, $args, $that) {
-                ob_start();
-                call_user_func_array([$that, $action], $args);
-                $content = ob_get_clean();
-                $response->getBody()->write($content);
-                return $response;
-            };
-        }
+        return method_exists($this, $action)
+            ? app(DefaultLegacyRouteStrategy::class)
+            : app(TrailsLegacyRouteStrategy::class);
     }
+
     /**
      * Callback function called after enabling a plugin.
      * The plugin's ID is transmitted for convenience.

@@ -124,7 +124,7 @@ Assets::set_assets_url($GLOBALS['ASSETS_URL']);
 Assets::set_assets_path($GLOBALS['ASSETS_PATH']);
 
 // globale template factory anlegen
-$GLOBALS['template_factory'] = new Flexi\Factory("{$STUDIP_BASE_PATH}/templates");
+$GLOBALS['template_factory'] = app(Flexi\Factory::class);
 
 // set default pdo connection
 try {
