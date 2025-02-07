@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a2daa57e8228dca24a4ab68a05bb5a3",
+    "content-hash": "2d334aeeaac9b0c0745b0936f7f82913",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -9619,6 +9619,61 @@
                 "source": "https://github.com/woohoolabs/yang"
             },
             "time": "2023-09-06T09:39:12+00:00"
+        },
+        {
+            "name": "zorac/phpstan-php-di",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zorac/phpstan-php-di.git",
+                "reference": "9718748382f1f1817ef34c331b4f42df3092d1fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zorac/phpstan-php-di/zipball/9718748382f1f1817ef34c331b4f42df3092d1fa",
+                "reference": "9718748382f1f1817ef34c331b4f42df3092d1fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "php-di/php-di": "^7.0",
+                "phpstan/phpstan": "^1.10|^2.0"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zorac\\PhpStanPhpDI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Rigby-Jones",
+                    "email": "mark@rigby-jones.net",
+                    "homepage": "https://mark.rigby-jones.net/"
+                }
+            ],
+            "description": "Extansion adding support for PHP-DI to PHPStan.",
+            "homepage": "https://www.github.com/zorac/phpstan-php-di/",
+            "keywords": [
+                "PHPStan",
+                "php-di"
+            ],
+            "support": {
+                "issues": "https://github.com/zorac/phpstan-php-di/issues",
+                "source": "https://github.com/zorac/phpstan-php-di/tree/1.0.1"
+            },
+            "time": "2024-12-24T11:33:19+00:00"
         }
     ],
     "aliases": [],
@@ -9641,11 +9696,12 @@
         "ext-pdo": "*",
         "ext-mbstring": "*",
         "ext-dom": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

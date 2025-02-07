@@ -20,3 +20,6 @@ parameters:
         -
             message: '#Unsafe usage of new static\(\)\.#'
             path: lib/classes/SimpleORMap.php
+
+includes:
+  - ./composer/zorac/phpstan-php-di/extension.neon
