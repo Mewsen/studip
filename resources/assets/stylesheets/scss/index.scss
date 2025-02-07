@@ -427,9 +427,13 @@ responsive settings
 * * * * * * * * * */
 html:not(.size-large) {
     #login-wrapper {
-        margin: 0 15px;
-        width: 100%;
+        margin: 0 auto;
         top: 0;
+
+        &.with-infobox {
+            width: 100%;
+        }
+
         #login-content-wrapper {
             margin-top: 0;
             #login-infobox {
@@ -458,8 +462,11 @@ html:not(.size-medium) {
     }
     #login-wrapper {
         margin: 0;
+        width: 100%;
+
         #login-content-wrapper {
             height: unset;
+            min-height: unset;
             margin-top: 0;
             flex-wrap: wrap;
 

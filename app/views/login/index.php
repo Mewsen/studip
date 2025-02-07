@@ -34,7 +34,7 @@ $enable_news = count($news_entries) > 0;
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
     <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
 
-    <div id="login-wrapper">
+    <div id="login-wrapper" class="<?= $enable_faq || $enable_news ? 'with-infobox' : 'no-infobox' ?>">
 
         <div id="login-content-wrapper">
             <div id="loginbox">
