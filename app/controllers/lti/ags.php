@@ -48,7 +48,9 @@ class Lti_AgsController extends StudipController
         $line_item_repo = new LineItemRepository();
         $validator = new RequestAccessTokenValidator($reg_manager);
         $handler = null;
-        if ($action === 'line_item') {
+        $deployment_id = $action;
+        $real_action = $args[0];
+        if ($real_action === 'line_item') {
             if (empty($args)) {
                 if (Request::isPut()) {
                     //Update a line item:
@@ -60,12 +62,12 @@ class Lti_AgsController extends StudipController
                     //Get a line item:
                     $handler = new GetLineItemServiceServerRequestHandler($line_item_repo);
                 }
-            } elseif ($args[0] === 'results') {
+            } elseif ($args[1] === 'results') {
                 $handler = new ResultServiceServerRequestHandler($line_item_repo, new Studip\LTI13a\ResultRepository());
-            } elseif ($args[0] === 'scores') {
+            } elseif ($args[1] === 'scores') {
                 $handler = new ScoreServiceServerRequestHandler($line_item_repo,new \Studip\LTI13a\ScoreRepository());
             }
-        } elseif ($action === 'line_items') {
+        } elseif ($real_action === 'line_items') {
             if (Request::isPost()) {
                 //Create a line item:
                 $handler = new CreateLineItemServiceServerRequestHandler($line_item_repo);

@@ -312,8 +312,8 @@ class Course_LtiController extends StudipController
                                     'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
                                     'https://purl.imsglobal.org/spec/lti-ags/scope/score'
                                 ],
-                                $this->url_for('lti/ags/line_items', $ags_url_parameters),
-                                $this->url_for('lti/ags/line_item', $ags_url_parameters)
+                                $this->url_for(sprintf('lti/ags/%d/line_items', $this->resource_link->deployment->id), $ags_url_parameters),
+                                $this->url_for(sprintf('lti/ags/%d/line_item', $this->resource_link->deployment->id), $ags_url_parameters)
                             )
                         ],
                         $this->resource_link->deployment->getCustomLtiParameterArray(),
