@@ -92,8 +92,6 @@ class CronjobTask extends SimpleORMap
         ];
 
         $config['registered_callbacks']['after_initialize'][] = 'loadClass';
-        $config['registered_callbacks']['before_store'][]     = 'cbLogActivation';
-        $config['registered_callbacks']['before_delete'][]    = 'cbLogDeleting';
 
         parent::configure($config);
     }
@@ -121,21 +119,6 @@ class CronjobTask extends SimpleORMap
         require_once $filename;
 
         $this->valid = class_exists($this->class);
-    }
-
-    protected function cbLogActivation($type)
-    {
-        if ($this->active && !$this->content_db['active']) {
-            StudipLog::log('CRONJOB_TASK_ACTIVATED', null, null, $this->name);
-        }
-        if (!$this->active && $this->content_db['active']) {
-            StudipLog::log('CRONJOB_TASK_DEACTIVATED', null, null, $this->name);
-        }
-    }
-
-    protected function cbLogDeleting($type)
-    {
-        StudipLog::log('CRONJOB_TASK_DELETED', null, null, $this->name);
     }
 
     /**
