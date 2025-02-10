@@ -40,8 +40,10 @@ class LineItemRepository implements LineItemRepositoryInterface
     {
         //$lineItemIdentifier contains the full URL to the line item.
         //We must extract the course-ID, tool-ID and deployment-ID
-        //from the URL parameters first, before searching a grading definition.
+        //from the URL or its parameters first, before searching a grading definition.
         $url_parts = parse_url($line_item_identifier);
+        $deployment_id = '';
+        sscanf($line_item_identifier, 'dispatch.php/lti/ags/%d/', $deployment_id);
         $parameters = [];
         if (empty($url_parts['query'])) {
             //Nothing we can convert.
@@ -55,7 +57,7 @@ class LineItemRepository implements LineItemRepositoryInterface
 
         $search_parameters = [
             'course_id' => $parameters['cid'],
-            'tool'      => self::getGradingToolName($parameters['tool_id'], $parameters['deployment_id'])
+            'tool'      => self::getGradingToolName($parameters['tool_id'], $deployment_id)
         ];
         if (!empty($parameters['definition_id'])) {
             $search_parameters['definition_id'] = $parameters['definition_id'];
