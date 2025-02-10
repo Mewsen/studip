@@ -35,7 +35,7 @@ class UpdateStudygroupHelpTour extends Migration
                 (:tour_id, 7, '', 'Die Laufzeit von Studiengruppen ist standardmäßig auf zwei\rJahre festgelegt. Gruppenadmins werden rechtzeitig vor Ablauf per E-Mail informiert und können die Laufzeit bei Bedarf verlängern. Diese Einstellung ist besonders hilfreich für zeitlich begrenzte Projekte.', 'R', 0, '#wizard-datepicker', 'dispatch.php/my_studygroups', '', '', 'root@localhost', 1405685652, 0),
                 (:tour_id, 8, '', 'Fügen Sie optional Schlagwörter hinzu, die Ihre Gruppe beschreiben (z. B. „Mathe“, „Projektarbeit“). Dies erhöht die Sichtbarkeit für Interessierte.', 'R', 0, '#studygroup-wizard-tags', 'dispatch.php/my_studygroups', '', '', 'root@localhost', 1405685652, 0),
                 (:tour_id, 9, 'Studiengruppe speichern', 'Mit dem Klick auf den Button Studiengruppe anlegen wird die Studiengruppe erstellt. Sie können jetzt Mitglieder hinzufügen, Inhalte teilen und gemeinsam arbeiten.', 'T', 0, '.ui-dialog-buttonset', 'dispatch.php/my_studygroups', '.sidebar-widget:eq(1) li:eq(0) a:eq(0)', '', 'root@localhost', 1405686068, 0),
-                (:tour_id, 10, '', 'Alle Einstellungen können jederzeit über die Verwaltungsoptionen der Gruppe angepasst werden.', 'B', 0, '', 'dispatch.php/my_studygroups', '', '.ui-dialog-titlebar-close:eq(0)', 'root@localhost', 1405686068, 0)";
+                (:tour_id, 10, '', 'Alle Einstellungen können jederzeit über die Verwaltungsoptionen der Gruppe angepasst werden.', '', 0, '', 'dispatch.php/my_studygroups', '', '.ui-dialog-titlebar-close:eq(0)', 'root@localhost', 1405686068, 0)";
 
         $this->updateTour($tour_id, $tour, $settings, $steps);
 
