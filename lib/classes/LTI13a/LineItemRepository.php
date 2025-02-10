@@ -42,8 +42,9 @@ class LineItemRepository implements LineItemRepositoryInterface
         //We must extract the course-ID, tool-ID and deployment-ID
         //from the URL or its parameters first, before searching a grading definition.
         $url_parts = parse_url($line_item_identifier);
-        $deployment_id = '';
-        sscanf($line_item_identifier, 'dispatch.php/lti/ags/%d/', $deployment_id);
+        $matches = [];
+        preg_match('dispatch\.php\/lti\/ags\/([1-9]+)\/', $line_item_identifier, $matches);
+        $deployment_id = $matches[1] ?? '';
         $parameters = [];
         if (empty($url_parts['query'])) {
             //Nothing we can convert.
