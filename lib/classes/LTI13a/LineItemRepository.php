@@ -39,29 +39,31 @@ class LineItemRepository implements LineItemRepositoryInterface
     public static function getSearchParametersFromLineItemIdentifier(string $line_item_identifier) : array
     {
         //$lineItemIdentifier contains the full URL to the line item.
-        //We must extract the course-ID, tool-ID and deployment-ID
-        //from the URL or its parameters first, before searching a grading definition.
-        $url_parts = parse_url($line_item_identifier);
+        //We must extract the deployment-ID to get the course-ID and the LTI tool ID
+        //before searching a grading definition.
         $matches = [];
         preg_match('/dispatch\.php\/lti\/ags\/([1-9][0-9]*)\//', $line_item_identifier, $matches);
         $deployment_id = $matches[1] ?? '';
-        $parameters = [];
-        if (empty($url_parts['query'])) {
+        if (!$deployment_id) {
             //Nothing we can convert.
             return [];
         }
-        parse_str($url_parts['query'], $parameters);
-        if (empty($parameters)) {
+        $deployment = \LtiDeployment::find($deployment_id);
+        if (!$deployment) {
             //Same as above.
             return [];
         }
 
         $search_parameters = [
-            'course_id' => $parameters['cid'],
-            'tool'      => self::getGradingToolName($parameters['tool_id'], $deployment_id)
+            'course_id' => $deployment->course_id,
+            'tool'      => self::getGradingToolName($deployment->tool_id, $deployment->id)
         ];
-        if (!empty($parameters['definition_id'])) {
-            $search_parameters['definition_id'] = $parameters['definition_id'];
+
+        $url_parameters = [];
+        $url_parts = parse_url($line_item_identifier);
+        parse_str($url_parts['query'], $url_parameters);
+        if (!empty($url_parameters['definition_id'])) {
+            $search_parameters['definition_id'] = $url_parameters['definition_id'];
         }
 
         return $search_parameters;
