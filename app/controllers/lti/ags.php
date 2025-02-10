@@ -44,12 +44,12 @@ class Lti_AgsController extends StudipController
         //All the work is done by the OAT-SA library and
         //the implementation of its interfaces in Stud.IP.
         //Only the handler changes for the endpoints.
-        $reg_manager = new RegistrationManager();
+        $reg_manager    = new RegistrationManager();
         $line_item_repo = new LineItemRepository();
-        $validator = new RequestAccessTokenValidator($reg_manager);
-        $handler = null;
-        $deployment_id = $action;
-        $real_action = $args[0];
+        $validator      = new RequestAccessTokenValidator($reg_manager);
+        $handler        = null;
+        $deployment_id  = $action;
+        $real_action    = $args[0];
         if ($real_action === 'line_item') {
             if (empty($args)) {
                 if (Request::isPut()) {
