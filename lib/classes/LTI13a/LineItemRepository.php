@@ -43,7 +43,7 @@ class LineItemRepository implements LineItemRepositoryInterface
         //from the URL or its parameters first, before searching a grading definition.
         $url_parts = parse_url($line_item_identifier);
         $matches = [];
-        preg_match('dispatch\.php\/lti\/ags\/([1-9]+)\/', $line_item_identifier, $matches);
+        preg_match('/dispatch\.php\/lti\/ags\/([1-9][0-9]*)\//', $line_item_identifier, $matches);
         $deployment_id = $matches[1] ?? '';
         $parameters = [];
         if (empty($url_parts['query'])) {
