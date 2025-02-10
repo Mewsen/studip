@@ -61,7 +61,9 @@ class LineItemRepository implements LineItemRepositoryInterface
 
         $url_parameters = [];
         $url_parts = parse_url($line_item_identifier);
-        parse_str($url_parts['query'], $url_parameters);
+        if (!empty($url_parts['query'])) {
+            parse_str($url_parts['query'], $url_parameters);
+        }
         if (!empty($url_parameters['definition_id'])) {
             $search_parameters['definition_id'] = $url_parameters['definition_id'];
         }
