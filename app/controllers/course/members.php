@@ -661,10 +661,8 @@ class Course_MembersController extends AuthenticatedController
                 }
             }
         }
-        $csv_count_contingent_full = 0;
         $csv_count_present = 0;
         $csv_not_found = [];
-        $consider_contingent = false;
         if (Request::get('csv_import')) {
             // remove duplicate users from csv-import
             $csv_lines = array_unique($csv_request);
@@ -705,21 +703,13 @@ class Course_MembersController extends AuthenticatedController
                 } elseif (count($csv_users) > 0) {
                     $row = reset($csv_users);
                     if (!$row['is_present']) {
-                        $consider_contingent = Request::option('consider_contingent_csv');
                         $user = User::find($row['user_id']);
-                        $failure = false;
                         if ($user) {
                             try {
-                                $course->addMember($user, 'autor', $consider_contingent);
+                                $course->addMember($user);
                                 $csv_count_insert++;
                             } catch (\Studip\Exception $e) {
-                                $failure = true;
                             }
-                        } else {
-                            $failure = true;
-                        }
-                        if ($failure && isset($consider_contingent)) {
-                            $csv_count_contingent_full++;
                         }
                     } else {
                         $csv_count_present++;
@@ -738,12 +728,9 @@ class Course_MembersController extends AuthenticatedController
                 $user = User::findByUsername($selected_user);
                 if ($user) {
                     try {
-                        $course->addMember($user, 'autor', $consider_contingent);
+                        $course->addMember($user);
                         $csv_count_insert++;
                     } catch (\Studip\Exception $e) {
-                        if (isset($consider_contingent)) {
-                            $csv_count_contingent_full++;
-                        }
                     }
                 }
             }
@@ -772,11 +759,6 @@ class Course_MembersController extends AuthenticatedController
         }
         if (is_array($csv_not_found) && count($csv_not_found) > 0) {
             PageLayout::postError(sprintf(_('%s konnten <b>nicht</b> zugeordnet werden!'), htmlReady(join(',', $csv_not_found))));
-        }
-
-        if ($csv_count_contingent_full) {
-            PageLayout::postError(sprintf(_('%s Personen konnten <b>nicht</b> zugeordnet werden, da das ausgewählte Kontingent keine freien Plätze hat.'),
-                $csv_count_contingent_full));
         }
 
         $this->relocate('course/members/index');
@@ -924,7 +906,6 @@ class Course_MembersController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $this->flash['users'] = Request::getArray('user');
-        $this->flash['consider_contingent'] = Request::get('consider_contingent');
 
         // select the additional method
         switch (Request::get('action_user')) {
@@ -965,7 +946,6 @@ class Course_MembersController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $this->flash['users'] = Request::getArray('awaiting');
-        $this->flash['consider_contingent'] = Request::get('consider_contingent');
         $waiting_type = Request::option('waiting_type');
         // select the additional method
         switch (Request::get('action_awaiting')) {
@@ -1000,8 +980,6 @@ class Course_MembersController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $this->flash['users'] = Request::getArray('accepted');
-        $this->flash['consider_contingent'] = Request::get('consider_contingent');
-
 
         // select the additional method
         switch (Request::get('action_accepted')) {
@@ -1038,10 +1016,6 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie dürfen keine lehrenden Personen oder Hilfspersonen in diese Veranstaltung eintragen.'));
         }
 
-        if (isset($this->flash['consider_contingent'])) {
-            Request::set('consider_contingent', $this->flash['consider_contingent']);
-        }
-
         $users = [];
         // create a usable array
         if($this->flash['users']) {
@@ -1064,7 +1038,7 @@ class Course_MembersController extends AuthenticatedController
                             $course->addMember(
                                 $user,
                                 $target_status,
-                                Request::bool('consider_contingent', false),
+                                false,
                                 true,
                                 false
                             );
