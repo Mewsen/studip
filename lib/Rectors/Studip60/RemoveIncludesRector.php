@@ -7,10 +7,8 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\Include_;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Expression;
-use PhpParser\NodeVisitor;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Rector\AbstractRector;
-use RectorPrefix202411\Webmozart\Assert\Assert;
 
 final class RemoveIncludesRector extends AbstractRector implements ConfigurableRectorInterface
 {
@@ -42,8 +40,6 @@ final class RemoveIncludesRector extends AbstractRector implements ConfigurableR
      */
     public function configure(array $configuration): void
     {
-        Assert::allString($configuration);
-        Assert::isList($configuration);
         $this->removeIncludes = $configuration;
     }
 
