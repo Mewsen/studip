@@ -382,9 +382,16 @@ Dialog.show = function(content, options = {}) {
             instance.fixedDimensions = true;
             instance.dimensions = ui.size;
         },
-        open() {
+        open(event) {
             PageLayout.title = dialog_options.title;
 
+            // Prevent tooltips from being automatically focussed
+            if (event.target.querySelector('[autofocus]') === null) {
+                $(':tabbable.tooltip:focus').data('tooltipObject')?.hide();
+                $(':tabbable:not(.tooltip):first', event.target).trigger('focus');
+            }
+
+            // Adjust titlebar of dialog
             const helpbar_element = $('.helpbar a[href*="hilfe.studip.de"]');
             const tooltip = helpbar_element.text();
             const link = options.wiki_link || helpbar_element.attr('href');
