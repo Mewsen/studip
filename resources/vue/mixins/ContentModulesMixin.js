@@ -24,7 +24,7 @@ export default {
                 return this.sortedModules.filter(module => module.active);
             },
             set(modules) {
-                this.sortedModules = modules;
+                this.sortedModules = [...modules, ...this.inactiveModules];
             }
         },
         inactiveModules() {
