@@ -374,18 +374,22 @@ Dialog.show = function(content, options = {}) {
             instance.fixedDimensions = true;
             instance.dimensions = ui.size;
         },
-        open: function() {
+        open(event) {
             PageLayout.title = dialog_options.title;
 
-            var helpbar_element = $('.helpbar a[href*="hilfe.studip.de"]');
-            var tooltip = helpbar_element.text();
-            var link = options.wiki_link || helpbar_element.attr('href');
-            var element = $('<a class="ui-dialog-titlebar-wiki"' + ' target="_blank" rel="noopener noreferrer">')
-                    .attr('href', link)
-                    .attr('title', tooltip);
-            var buttons = $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset .ui-button');
+            // Prevent tooltips from being automatically focussed
+            if (event.target.querySelector('[autofocus]') === null) {
+                $(':tabbable.tooltip:focus').data('tooltipObject')?.hide();
+                $(':tabbable:not(.tooltip):first', event.target).trigger('focus');
+            }
+
+            // Adjust titlebar of dialog
+            const helpbar_element = $('.helpbar a[href*="hilfe.studip.de"]');
+            const tooltip = helpbar_element.text();
+            const link = options.wiki_link || helpbar_element.attr('href');
+            const element = $('<a class="ui-dialog-titlebar-wiki"' + ' target="_blank" rel="noopener noreferrer">')
+                .attr('href', link)
+                .attr('title', tooltip);
 
             if (options.wikilink) {
                 $(this)
