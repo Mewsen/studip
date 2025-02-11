@@ -48,10 +48,9 @@ class Lti_AgsController extends StudipController
         $line_item_repo = new LineItemRepository();
         $validator      = new RequestAccessTokenValidator($reg_manager);
         $handler        = null;
-        $deployment_id  = $action;
-        $real_action    = $args[0];
+        $real_action    = $args[0] ?? '';
         if ($real_action === 'line_item') {
-            if (empty($args)) {
+            if (count($args) === 1) {
                 if (Request::isPut()) {
                     //Update a line item:
                     $handler = new UpdateLineItemServiceServerRequestHandler($line_item_repo);
@@ -77,7 +76,7 @@ class Lti_AgsController extends StudipController
             }
         } else {
             //Invalid endpoint.
-            throw new AccessDeniedException(studip_interpolate('Invalid endpoint: %{endpoint}', ['endpoint' => $action]));
+            throw new AccessDeniedException(studip_interpolate('Invalid endpoint: %{endpoint}', ['endpoint' => $real_action]));
         }
         if (!$handler) {
             throw new \Studip\LTIException('No handler available for this request.');
