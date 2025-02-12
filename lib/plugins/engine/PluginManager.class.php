@@ -56,8 +56,16 @@ class PluginManager
     /**
      * Comparison function used to order plugins by position.
      */
-    private static function positionCompare ($plugin1, $plugin2)
+    private static function positionCompare (array $plugin1, array $plugin2): int
     {
+        if ($plugin1['core'] && !$plugin2['core']) {
+            return -1;
+        }
+
+        if (!$plugin1['core'] && $plugin2['core']) {
+            return 1;
+        }
+
         return $plugin1['position'] - $plugin2['position'];
     }
 
