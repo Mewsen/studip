@@ -53,6 +53,14 @@ div.messagebox_details {
     overflow: hidden;
 }
 
+// Adjustments for some regions where messageboxes need a little more space
+form.default fieldset,
+section.contentbox {
+    .messagebox {
+        margin: 10px;
+    }
+}
+
 // Messagebox definitions
 @mixin messagebox($name, $color, $background-color, $border-color: $color, $image: $name) {
     div.messagebox_#{$name} {
