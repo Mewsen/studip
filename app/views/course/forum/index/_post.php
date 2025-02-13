@@ -132,16 +132,24 @@
             <span <?= (empty($perms['edit_close']) && empty($perms['remove_entry'])) ? 'class="hideWhenClosed"': '' ?>
                 <?= (!$perms['edit'] && !$perms['remove_entry']) ? 'style="display: none"' : '' ?>>
                 <? $confirmLink = $controller->url_for('course/forum/index/delete_entry/' . $post['topic_id'])  ?>
-                <? $confirmLinkApproved = $controller->url_for('course/forum/index/delete_entry/' .
-                    $post['topic_id'] . '?approve_delete=1&section=' . $section .'&page=' . ForumHelpers::getPage())  ?>
                 <? if ($constraint['depth'] == $post['depth']) : /* this is not only a posting, but a thread */ ?>
-                    <? $confirmText = _('Wenn Sie diesen Beitrag löschen wird ebenfalls das gesamte Thema gelöscht. Sind Sie sicher, dass Sie das tun möchten?')  ?>
-                    <?= Studip\LinkButton::create(_('Thema löschen'), $confirmLink,
-                        ['onClick' => "STUDIP.Forum.showDialog('$confirmText', '$confirmLinkApproved'); return false;"]) ?>
+                    <?= Studip\Button::create(
+                        _('Thema löschen'),
+                        'delete_topic',
+                        [
+                            'data-confirm' => _('Wenn Sie diesen Beitrag löschen wird ebenfalls das gesamte Thema gelöscht. Sind Sie sicher, dass Sie das tun möchten?'),
+                            'formaction'   => $confirmLink,
+                        ]
+                    ) ?>
                 <? else : ?>
-                    <? $confirmText = _('Möchten Sie diesen Beitrag wirklich löschen?') ?>
-                    <?= Studip\LinkButton::create(_('Beitrag löschen'), $confirmLink,
-                        ['onClick' => "STUDIP.Forum.showDialog('$confirmText', '$confirmLinkApproved'); return false;"]) ?>
+                    <?= Studip\Button::create(
+                        _('Beitrag löschen'),
+                        'delete_post',
+                        [
+                            'data-confirm' => _('Möchten Sie diesen Beitrag wirklich löschen?'),
+                            'formaction'   => $confirmLink,
+                        ]
+                    ) ?>
                 <? endif ?>
             </span>
 

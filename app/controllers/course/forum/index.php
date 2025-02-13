@@ -402,35 +402,24 @@ class Course_Forum_IndexController extends ForumController
         $page = ForumEntry::getPostingPage($topic_id);
         URLHelper::addLinkParam('page', $page);
         $parent = null;
-        if (ForumPerm::hasEditPerms($topic_id) || ForumPerm::check('remove_entry', $this->getId(), $topic_id)) {
+        if (
+            ForumPerm::hasEditPerms($topic_id)
+            || ForumPerm::check('remove_entry', $this->getId(), $topic_id)
+        ) {
+            CSRFProtection::verifyUnsafeRequest();
             $path = ForumEntry::getPathToPosting($topic_id);
             $topic  = array_pop($path);
             $parent = array_pop($path);
 
             if ($topic_id != $this->getId()) {
-                // only delete directly if passed by ajax, otherwise ask for confirmation
-                if (Request::isXhr() || Request::isPost() || Request::get('approve_delete')) {
-                    CSRFProtection::verifyUnsafeRequest();
-                    ForumEntry::delete($topic_id);
-                    $this->flash['messages'] = ['success' => sprintf(_('Der Eintrag %s wurde gelöscht!'), $topic['name'])];
-                } else {
-                    $this->flash['messages'] = ['info_html' =>
-                        sprintf(_('Sind sie sicher dass Sie den Eintrag %s löschen möchten?'), $topic['name'])
-                        . '<br>'. \Studip\LinkButton::createAccept(_('Ja'), $this->url_for('course/forum/index/delete_entry/'. $topic_id .'?approve_delete=1'))
-                        . \Studip\LinkButton::createCancel(_('Nein'), $this->url_for('course/forum/index/index/'. ForumEntry::getParentTopicId($topic_id) .'/'. $page))
-                    ];
-                }
+                ForumEntry::delete($topic_id);
+                PageLayout::postSuccess(sprintf(_('Der Eintrag %s wurde gelöscht!'), htmlReady($topic['name'])));
             } else {
-                $this->flash['messages'] = ['success' => _('Sie können nicht die gesamte Veranstaltung löschen!')];
+                PageLayout::postWarning(_('Sie können nicht die gesamte Veranstaltung löschen!'));
             }
         }
 
-        if (Request::isXhr()) {
-            $this->render_template('course/forum/messages');
-            $this->flash['messages'] = null;
-        } else {
-            $this->redirect('course/forum/index/index/' . $parent['id'] .'/'. $page);
-        }
+        $this->redirect('course/forum/index/index/' . $parent['id'] .'/'. $page);
     }
 
     /**
@@ -618,7 +607,7 @@ class Course_Forum_IndexController extends ForumController
         if (Request::isXhr()) {
             $this->render_text(MessageBox::success($success_text));
         } else {
-            $this->flash['messages'] = ['success' => $success_text];
+            PageLayout::postSuccess($success_text);
             $this->redirect('course/forum/index/index/' . $redirect . '/' . $page);
         }
     }
@@ -641,7 +630,7 @@ class Course_Forum_IndexController extends ForumController
         if (Request::isXhr()) {
             $this->render_text(MessageBox::success($success_text));
         } else {
-            $this->flash['messages'] = ['success' => $success_text];
+            PageLayout::postSuccess($success_text);
             $this->redirect('course/forum/index/index/' . $redirect . '/' . $page);
         }
     }
