@@ -65,7 +65,7 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
         $semester_condition = '';
 
         // visibility
-        if (!$GLOBALS['perm']->have_perm('admin')) {
+        if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
             $visibility = "courses.`visible` = 1 AND ";
         }
 
