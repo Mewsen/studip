@@ -758,7 +758,10 @@ class Course_MembersController extends AuthenticatedController
             return;
         }
         if (is_array($csv_not_found) && count($csv_not_found) > 0) {
-            PageLayout::postError(sprintf(_('%s konnten <b>nicht</b> zugeordnet werden!'), htmlReady(join(',', $csv_not_found))));
+            PageLayout::postError(
+                _('Folgende Einträge konnten <b>nicht</b> zugeordnet werden:'),
+                array_map('htmlReady', $csv_not_found)
+            );
         }
 
         $this->relocate('course/members/index');
