@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
-    </div>
+    <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
 </template>
 
 <script>
@@ -30,7 +28,7 @@ export default {
         },
     },
     beforeMount() {
-        this.onSelectThread(this.initialThreadId, false);
+        this.onSelectThread(this.initialThreadId);
     },
 };
 </script>
