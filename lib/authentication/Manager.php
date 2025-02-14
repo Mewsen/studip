@@ -92,13 +92,6 @@ class Manager
                 }
             }
         } else {
-            if (
-                $this->auth['uid'] !== 'nobody'
-                && Request::get('again')
-                && !match_route('dispatch.php/login')
-            ) {
-                return false;
-            }
             $this->setAuthenticatedUser($this->auth['uid'] !== 'nobody' ? User::find($this->auth['uid']) : User::build(['user_id' => 'nobody', 'perms' => null]));
         }
         return true;
