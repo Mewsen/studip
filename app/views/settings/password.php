@@ -9,17 +9,21 @@
         </legend>
         <label>
             <span class="required"><?= _('Aktuelles Passwort') ?></span>
-            <input required type="password" id="password" name="password">
+            <input required type="password" id="password" name="password"
+                   class="allow-plaintext-toggle"
+            >
         </label>
         <label>
             <span class="required"><?= _('Neues Passwort') ?></span>
             <input required type="password" pattern=".{8,}"
                    id="new_password" name="new_password"
+                   class="allow-plaintext-toggle"
                    data-message="<?= _('Das Passwort ist zu kurz. Es sollte mindestens 8 Zeichen lang sein.') ?>">
         </label>
         <label>
             <span class="required"><?= _('Passwort bestätigen') ?></span>
             <input required type="password" pattern=".{8,}"
+                   class="allow-plaintext-toggle"
                    id="new_password_confirm" name="new_password_confirm"
                    data-must-equal="#new_password">
         </label>

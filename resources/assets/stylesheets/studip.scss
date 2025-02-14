@@ -627,3 +627,23 @@ mark {
     width: var(--icon-size-inline);
     height: var(--icon-size-inline);
 }
+
+/** Password plain toggle **/
+input.allow-plaintext-toggle {
+    padding-right: 28px !important;
+
+    +.password-display-toggle {
+        @include hide-text;
+        @extend .studip-icon;
+
+        cursor: pointer;
+        position: absolute;
+        transform: translateY(-50%);
+
+        @include background-icon(visibility-invisible);
+
+        &.password-is-hidden {
+            @include background-icon(visibility-checked);
+        }
+    }
+}

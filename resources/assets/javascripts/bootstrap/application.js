@@ -1,5 +1,7 @@
 import { $gettext } from '../lib/gettext';
 import eventBus from "../lib/event-bus.ts";
+import allowPlaintextToggle from "../../../vue/directives/allow-plaintext-toggle";
+
 
 /* ------------------------------------------------------------------------
  * application.js
@@ -365,8 +367,6 @@ STUDIP.domReady(function () {
     const passwordInput = document.getElementById('password');
     const usernameInput = document.getElementById('loginname');
     const passwordCapsText = document.getElementById('password-caps');
-    const iconPasswordVisible = document.getElementById('visible-password');
-    const iconPasswordInVisible = document.getElementById('invisible-password');
 
     [usernameInput, passwordInput].forEach((input) => {
         input.addEventListener('keydown', (event) => {
@@ -391,16 +391,11 @@ STUDIP.domReady(function () {
             event.preventDefault();
         });
     }
+});
 
-    document.getElementById('password-toggle').addEventListener('click', () => {
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            iconPasswordVisible.style.display = 'none';
-            iconPasswordInVisible.style.display = '';
-        } else {
-            passwordInput.type = 'password';
-            iconPasswordVisible.style.display = '';
-            iconPasswordInVisible.style.display = 'none';
-        }
-    });
+/* Allow password inputs to display the password as plain text */
+STUDIP.ready(() => {
+    document.querySelectorAll('input[type="password"].allow-plaintext-toggle').forEach((node) => {
+        allowPlaintextToggle(node);
+    })
 });

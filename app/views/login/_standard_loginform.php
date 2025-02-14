@@ -27,21 +27,13 @@ $password_tooltip_text = (string) Config::get()->PASSWORD_TOOLTIP_TEXT;
             <span class="sr-only"><?= _('Passwort') ?></span>
 
             <input type="password" <?= mb_strlen($uname ?? '') && !$hidden ? 'autofocus' : '' ?> id="password"
-                name="password" autocomplete="current-password" size="20" required placeholder="<?= _('Passwort') ?>"
+                   class="allow-plaintext-toggle"
+                   name="password"
+                   autocomplete="current-password"
+                   size="20"
+                   required
+                   placeholder="<?= _('Passwort') ?>"
             >
-
-            <i id="password-toggle" tabindex="0" role="button" class="enter-accessible">
-                <?= Icon::create('visibility-checked')->asImg(20, [
-                    'id' => 'visible-password',
-                    'title' => _('Passwort anzeigen'),
-                ]) ?>
-                <?= Icon::create('visibility-invisible')->asImg(20, [
-                    'id' => 'invisible-password',
-                    'style' => 'display: none',
-                    'title' => _('Passwort verstecken'),
-                ]) ?>
-            </i>
-
         </label>
         <? if ($password_tooltip_text): ?>
             <?= tooltipIcon($password_tooltip_text) ?>

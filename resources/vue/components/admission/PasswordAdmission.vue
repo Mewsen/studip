@@ -12,15 +12,17 @@
             </studip-message-box>
             <label>
                 {{ $gettext('Zugangspasswort') }}
-                <input :type="passwordVisible ? 'text' : 'password'" v-model="password1" ref="password1">
-                <studip-icon class="password-visibility" @click="togglePasswordVisible"
-                             :shape="passwordVisible ? 'visibility-invisible' : 'visibility-visible'"></studip-icon>
+                <input type="password"
+                       v-model="password1"
+                       v-allow-plaintext-toggle
+                >
             </label>
             <label>
                 {{ $gettext('Passwort wiederholen') }}
-                <input :type="passwordVisible ? 'text' : 'password'" v-model="password2" ref="password2">
-                <studip-icon class="password-visibility" @click="togglePasswordVisible"
-                             :shape="passwordVisible ? 'visibility-invisible' : 'visibility-visible'"></studip-icon>
+                <input type="password"
+                       v-model="password2"
+                       v-allow-plaintext-toggle
+                >
             </label>
         </section>
     </form>
@@ -43,14 +45,10 @@ export default {
             messageText: this.message || this.$gettext('Für die Anmeldung ist ein Passwort erforderlich.'),
             password1: '',
             password2: '',
-            passwordVisible: false,
             passwordSet: this.hasPassword
         }
     },
     methods: {
-        togglePasswordVisible() {
-            this.passwordVisible = !this.passwordVisible;
-        },
         setRuleData(data) {
             if (data.attributes.payload.password !== '') {
                 this.passwordSet = true;
