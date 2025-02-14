@@ -22,6 +22,7 @@ function initialize(el: HTMLElement): void {
     const y = (bbox.y - parentBbox.y) + bbox.height / 2;
 
     const toggle = document.createElement('button');
+    toggle.setAttribute('type', 'button');
     toggle.classList.add('as-link', 'password-display-toggle', 'password-is-hidden');
     toggle.setAttribute('title', messages[1]);
     toggle.innerText = messages[1];
