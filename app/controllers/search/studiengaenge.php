@@ -364,7 +364,7 @@ class Search_StudiengaengeController extends MVVController
                     $this->current_version->id,
                     $language,
                     'big',
-                    null, 
+                    null,
                     true
                 );
                 $widget->addLink(
@@ -376,6 +376,16 @@ class Search_StudiengaengeController extends MVVController
             }
 
             Sidebar::get()->addWidget($widget, 'mhb_export');
+
+            if (Config::get()->STUDYGROUP_ON_STGTEIL_ENABLE) {
+                $widget = new ActionsWidget();
+                $widget->addLink(
+                    _('Neue Studiengruppe erstellen'),
+                    URLHelper::getURL('dispatch.php/course/wizard', ['studygroup' => 1, 'stgteil_id' => $this->stg_teil->id] ),
+                    Icon::create('add')
+                );
+                Sidebar::Get()->addWidget($widget);
+            }
         }
         if ($this->breadcrumb) {
             $this->breadcrumb->append($this->studiengang, 'studiengang');
