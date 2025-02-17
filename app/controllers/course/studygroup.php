@@ -326,8 +326,12 @@ class Course_StudygroupController extends AuthenticatedController
         $actions->addLink(
             _('Diese Studiengruppe löschen'),
             $this->deleteURL(),
-            Icon::create('trash')
-        );
+            Icon::create('trash'),
+            [
+                'data-confirm' => ('Sind Sie sicher, dass Sie diese Studiengruppe löschen möchten?'),
+                'data-secure-disable' => '',
+            ]
+        )->asButton();
 
         Sidebar::get()->addWidget($actions);
 
@@ -745,42 +749,29 @@ class Course_StudygroupController extends AuthenticatedController
 
     /**
      * deletes a studygroup
-     *
-     * @param string id of a studypgroup
-     * @param boolean approveDelete
-     * @param string studipticket
-     *
-     * @return void
-     *
      */
-    public function delete_action($approveDelete = false)
+    public function delete_action(): void
     {
-        global $perm;
+        CSRFProtection::verifyUnsafeRequest();
 
-        $id = Context::getId();
-
-        if ($perm->have_studip_perm('dozent', $id)) {
-
-            if ($approveDelete && check_ticket(Request::get('studip_ticket'))) {
-                $course = Course::find($id);
-                if (!$course->delete()) {
-                    PageLayout::postError(_('Die Studiengruppe konnte nicht gelöscht werden.'));
-                }
-                $this->redirect(URLHelper::getURL('dispatch.php/studygroup/browse', [], true));
-                return;
-            } elseif (!$approveDelete) {
-                PageLayout::postQuestion(
-                    _('Sind Sie sicher, dass Sie diese Studiengruppe löschen möchten?'),
-                    $this->deleteURL('true')
-                )->includeTicket();
-
-                $this->redirect('course/studygroup/edit');
-                return;
-            }
+        if (!$GLOBALS['perm']->have_studip_perm('dozent', Context::getId())) {
+            throw new AccessDeniedException();
         }
-        throw new Trails\Exception(401);
-    }
 
+        $course = Context::get();
+
+        if (!($course instanceof Course) || !$course->isStudygroup()) {
+            throw new InvalidArgumentException(_('Studiengruppe nicht vorhanden oder Veranstaltung ist keine Studiengruppe'));
+        }
+
+        if (!Context::get()->delete()) {
+            PageLayout::postError(_('Die Studiengruppe konnte nicht gelöscht werden.'));
+        } else {
+            PageLayout::postSuccess(_('Die Studiengruppe wurde gelöscht.'));
+        }
+
+        $this->redirect(URLHelper::getURL('dispatch.php/studygroup/browse', [], true));
+    }
 
     /**
      * Displays admin settings concerning the studygroups

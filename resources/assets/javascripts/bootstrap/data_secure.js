@@ -51,79 +51,88 @@ import { $gettext } from '../lib/gettext';
  * @since   Stud.IP 3.4
  */
 
-/**
- * Normalize arbitrary input to config option object
- *
- * @param mixed input Arbitrary input
- * @return Object config
- */
-function normalizeConfig(input) {
-    var config = {
-        always: null,
-        exists: false
-    };
-    if ($.isPlainObject(input)) {
-        config = $.extend(config, input);
-    } else if (input === false || input === true) {
-        config.always = input;
-    } else {
-        config.exists = input || false;
+const DataSecurity = {
+    // Set this to true to disable all security checks
+    disabled: false,
+
+    /**
+     * Normalize arbitrary input to config option object
+     *
+     * @param {any} input Arbitrary input
+     * @return Object config
+     */
+    normalizeConfig(input) {
+        let config = {
+            always: null,
+            exists: false
+        };
+        if ($.isPlainObject(input)) {
+            config = $.extend(config, input);
+        } else if (input === false || input === true) {
+            config.always = input;
+        } else {
+            config.exists = input || false;
+        }
+        return config;
+    },
+
+    /**
+     * Detect any changes on elements with the data-secure attribute
+     * in a given context.
+     *
+     * @param {any} context Optional context in which the elements should be
+     *                      located
+     * @return bool indicating whether any changes have occured
+     */
+    detectChanges(context = null) {
+        if (DataSecurity.disabled) {
+            return false;
+        }
+
+        let changed = false;
+
+        $('[data-secure]', context ?? document).each(function() {
+            if (
+                $(this)
+                    .closest('form')
+                    .data().secureSkip
+            ) {
+                return;
+            }
+
+            const data = $(this).data().secure;
+            const config = DataSecurity.normalizeConfig(data);
+            const items = $(this).is('form') ? $(this).find(':input:not([data-secure])') : $(this);
+
+            if (config.always === true) {
+                changed = true;
+            } else if (config.always !== false && config.exists === false) {
+                items
+                    .filter('[name]')
+                    .filter(':not(:checkbox,:radio)')
+                    .each(function() {
+                        changed = changed || (this.defaultValue !== undefined && this.value !== this.defaultValue);
+                    });
+                items
+                    .filter('[name]')
+                    .filter(':checkbox,:radio')
+                    .each(function() {
+                        changed = changed || (this.defaultChecked !== undefined && this.checked !== this.defaultChecked);
+                    });
+            }
+
+            if (!changed && config.exists !== false) {
+                changed = $(config.exists, this).length > 0;
+            }
+        });
+
+        return changed;
     }
-    return config;
-}
-
-/**
- * Detect any changes on elements with the data-secure attribute
- * in a given context.
- *
- * @param mixed context Optional context in which the elements should be
- *                      located
- * @return bool indicating whether any changes have occured
- */
-function detectChanges(context) {
-    var changed = false;
-
-    $('[data-secure]', context || document).each(function() {
-        if (
-            $(this)
-                .closest('form')
-                .data().secureSkip
-        ) {
-            return;
-        }
-
-        var data = $(this).data().secure;
-        var config = normalizeConfig(data);
-        var items = $(this).is('form') ? $(this).find(':input:not([data-secure])') : $(this);
-
-        if (config.always === true) {
-            changed = true;
-        } else if (config.always !== false && config.exists === false) {
-            items
-                .filter('[name]')
-                .filter(':not(:checkbox,:radio)')
-                .each(function() {
-                    changed = changed || (this.defaultValue !== undefined && this.value !== this.defaultValue);
-                });
-            items
-                .filter('[name]')
-                .filter(':checkbox,:radio')
-                .each(function() {
-                    changed = changed || (this.defaultChecked !== undefined && this.checked !== this.defaultChecked);
-                });
-        }
-
-        if (!changed && config.exists !== false) {
-            changed = $(config.exists, this).length > 0;
-        }
-    });
-
-    return changed;
 }
 
 // Secure browser window on refresh via the beforeunload event
 $(window).on('beforeunload', function(event) {
-    if (detectChanges() === false) {
+    if (DataSecurity.detectChanges() === false) {
         return;
     }
 
@@ -134,7 +143,7 @@ $(window).on('beforeunload', function(event) {
 
 // Secure dialogs on close via the dialogbeforeclose event
 $(document).on('dialogbeforeclose', function(event) {
-    if (detectChanges(event.target) === false) {
+    if (DataSecurity.detectChanges(event.target) === false) {
         return true;
     }
 
@@ -158,4 +167,7 @@ $(document)
         $(this)
             .closest('form')
             .data('secure-skip', false);
+    })
+    .on('submit', 'form[data-secure-disable],form:has(button[data-secure-disable])', () => {
+        DataSecurity.disabled = true;
     });
