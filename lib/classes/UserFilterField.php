@@ -213,15 +213,19 @@ class UserFilterField
     {
         if (self::$available_filter_fields === null) {
             $fields = [];
-            $i = new FileSystemIterator(
-                $GLOBALS['STUDIP_BASE_PATH'] . '/lib/classes/UserFilterFields' . ($context !== '' ? '/' . $context : ''),
-                FileSystemIterator::SKIP_DOTS
-            );
+            try {
+                $i = new FileSystemIterator(
+                    $GLOBALS['STUDIP_BASE_PATH'] . '/lib/classes/UserFilterFields' . ($context !== '' ? '/' . $context : ''),
+                    FileSystemIterator::SKIP_DOTS
+                );
 
-            foreach ($i as $class) {
-                if ($class->isFile()) {
-                    require_once $class;
+                foreach ($i as $class) {
+                    if ($class->isFile()) {
+                        require_once $class;
+                    }
                 }
+            } catch (UnexpectedValueException $e) {
+                Log::error($e->getMessage());
             }
 
             // Get all classes in given context.
