@@ -21,11 +21,17 @@
         </studip-message-box>
         <component v-else :is="displayComponent" :icon-size="iconSize"></component>
 
-        <Teleport to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list" name="sidebar-switch">
+        <Teleport v-if="hasSidebarElements"
+                  to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list"
+                  name="sidebar-switch"
+        >
             <MyCoursesSidebarSwitch />
         </Teleport>
 
-        <Teleport to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list" name="sidebar-content-toggle">
+        <Teleport v-if="hasSidebarElements"
+                  to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list"
+                  name="sidebar-content-toggle"
+        >
             <MyCoursesNewContentToggle />
         </Teleport>
     </div>
@@ -46,6 +52,11 @@ export default {
         MyCoursesTiles,
         MyCoursesSidebarSwitch,
         MyCoursesNewContentToggle,
+    },
+    data() {
+        return {
+            hasSidebarElements: true,
+        };
     },
     computed: {
         displayComponent () {
@@ -70,8 +81,17 @@ export default {
         }
     },
     beforeMount() {
-        document.querySelector('#tiled-courses-sidebar-switch .widget-list').innerHTML = '';
-        document.querySelector('#tiled-courses-new-contents-toggle .widget-list').innerHTML = '';
+        [
+            '#tiled-courses-sidebar-switch .widget-list',
+            '#tiled-courses-new-contents-toggle .widget-list'
+        ].forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.innerHTML = '';
+            } else {
+                this.hasSidebarElements = false;
+            }
+        })
     }
 }
 </script>
