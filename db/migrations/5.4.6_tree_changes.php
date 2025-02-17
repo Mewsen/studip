@@ -1,8 +1,6 @@
-<?
-
+<?php
 final class TreeChanges extends Migration
 {
-
     const FIELDS = [
         'RANGE_TREE_ADMIN_PERM',
         'SEM_TREE_ADMIN_PERM'
