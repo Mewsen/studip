@@ -110,11 +110,11 @@ class Manager
             $this->auth['uid'] = null;
         }
 
-        $maintenance_mode = Config::get()->getValue('MAINTENANCE_MODE');
+        $maintenance_mode = Config::get()->getValue('MAINTENANCE_MODE_ENABLE');
 
         //check if the user got kicked meanwhile, or if user is locked out
         $user = null;
-        if (!empty($this->auth['uid']) && !in_array($this->auth['uid'], ['nobody'])) {
+        if (!empty($this->auth['uid']) && $this->auth['uid'] != 'nobody') {
             if (isset($GLOBALS['user']) && $GLOBALS['user']->id === $this->auth['uid']) {
                 $user = User::findCurrent();
             } else {
