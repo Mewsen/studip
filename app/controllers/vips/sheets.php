@@ -1751,6 +1751,9 @@ class Vips_SheetsController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $course_id = Context::getId();
+        $user_id = $GLOBALS['user']->id;
+        $range_id = $course_id ?: $user_id;
+        $range_type = $course_id ? 'course' : 'user';
 
         if ($course_id) {
             VipsModule::requireStatus('tutor', $course_id);
@@ -1775,12 +1778,12 @@ class Vips_SheetsController extends AuthenticatedController
             $text = file_get_contents($_FILES['upload']['tmp_name'][$i]);
 
             if (str_contains($text, '<?xml')) {
-                $assignment = VipsAssignment::importXML($text, $GLOBALS['user']->id, $course_id);
+                $assignment = VipsAssignment::importXML($text, $user_id, $range_id, $range_type);
             } else {
                 // convert from windows-1252 if legacy text format
                 $text = mb_decode_numericentity(mb_convert_encoding($text, 'UTF-8', 'WINDOWS-1252'), [0x100, 0xffff, 0, 0xffff], 'UTF-8');
                 $test_title = trim(basename($_FILES['upload']['name'][$i], '.txt'));
-                $assignment = VipsAssignment::importText($test_title, $text, $GLOBALS['user']->id, $course_id);
+                $assignment = VipsAssignment::importText($test_title, $text, $user_id, $range_id, $range_type);
             }
 
             $num_assignments += 1;

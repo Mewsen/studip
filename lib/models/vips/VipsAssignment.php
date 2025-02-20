@@ -128,7 +128,8 @@ class VipsAssignment extends SimpleORMap
         string $title,
         string $string,
         string $user_id,
-        string $course_id
+        string $range_id,
+        string $range_type = 'course'
     ): VipsAssignment {
         $duration = 7 * 24 * 60 * 60;  // one week
 
@@ -139,8 +140,8 @@ class VipsAssignment extends SimpleORMap
         ];
         $data = [
             'type'       => 'practice',
-            'range_id'   => $course_id ?: $user_id,
-            'range_type' => $course_id ? 'course' : 'user',
+            'range_id'   => $range_id,
+            'range_type' => $range_type,
             'start'      => strtotime(date('Y-m-d H:00:00')),
             'end'        => strtotime(date('Y-m-d H:00:00', time() + $duration))
         ];
@@ -179,7 +180,8 @@ class VipsAssignment extends SimpleORMap
     public static function importXML(
         string $string,
         string $user_id,
-        string $course_id
+        string $range_id,
+        string $range_type = 'course'
     ): VipsAssignment {
         // default options
         $options = [
@@ -196,8 +198,8 @@ class VipsAssignment extends SimpleORMap
         ];
         $data = [
             'type'        => 'practice',
-            'range_id'    => $course_id ?: $user_id,
-            'range_type'  => $course_id ? 'course' : 'user',
+            'range_id'    => $range_id,
+            'range_type'  => $range_type,
             'start'       => strtotime(date('Y-m-d H:00:00')),
             'end'         => strtotime(date('Y-m-d H:00:00', time() + $duration)),
             'options'     => $options
@@ -252,11 +254,11 @@ class VipsAssignment extends SimpleORMap
         if ($test['duration']) {
             $data['options']['duration'] = (int) $test['duration'];
         }
-        if ($test['block'] && $course_id) {
-            $block = VipsBlock::findOneBySQL('name = ? AND range_id = ?', [$test['block'], $course_id]);
+        if ($test['block'] && $range_type === 'course') {
+            $block = VipsBlock::findOneBySQL('name = ? AND range_id = ?', [$test['block'], $range_id]);
 
             if (!$block) {
-                $block = VipsBlock::create(['name' => $test['block'], 'range_id' => $course_id]);
+                $block = VipsBlock::create(['name' => $test['block'], 'range_id' => $range_id]);
             }
 
             $data['block_id'] = $block->id;
