@@ -133,7 +133,7 @@ class SingleDate
                             $assign_object->resource_id = $this->resource_id;
                             $assign_object->begin = $start;
                             $assign_object->end = $end;
-                            $assign_object->repeat_end = $end;
+                            $assign_object->repeat_end = null;
                             $assign_object->store();
                         }
                     } else {
@@ -645,7 +645,7 @@ class SingleDate
             $changeAssign->range_id = $this->termin_id;
             $changeAssign->begin = $this->date;
             $changeAssign->end = $this->end_time;
-            $changeAssign->repeat_end = $this->end_time;
+            $changeAssign->repeat_end = null;
             $changeAssign->repetition_interval = '';
             if ($preparation_time > 0) {
                 $changeAssign->preparation_time = $preparation_time * 60;
