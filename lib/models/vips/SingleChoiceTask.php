@@ -34,7 +34,7 @@ class SingleChoiceTask extends Exercise
      */
     public static function getTypeIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
-        return Icon::create('assessment', $role);
+        return Icon::create('task-single-choice', $role);
     }
 
     /**

@@ -34,7 +34,7 @@ class MultipleChoiceTask extends Exercise
      */
     public static function getTypeIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
-        return Icon::create('assessment-mc', $role);
+        return Icon::create('task-multiple-choice', $role);
     }
 
     /**

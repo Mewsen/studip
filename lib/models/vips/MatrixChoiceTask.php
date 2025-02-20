@@ -34,7 +34,7 @@ class MatrixChoiceTask extends Exercise
      */
     public static function getTypeIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
-        return Icon::create('timetable', $role);
+        return Icon::create('task-matrix-choice', $role);
     }
 
     /**

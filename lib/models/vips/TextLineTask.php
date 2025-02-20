@@ -34,7 +34,7 @@ class TextLineTask extends Exercise
      */
     public static function getTypeIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
-        return Icon::create('edit-line', $role);
+        return Icon::create('task-text-line', $role);
     }
 
     /**

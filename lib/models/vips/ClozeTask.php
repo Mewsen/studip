@@ -34,7 +34,7 @@ class ClozeTask extends Exercise
      */
     public static function getTypeIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
-        return Icon::create('log', $role);
+        return Icon::create('task-cloze', $role);
     }
 
     /**
