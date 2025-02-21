@@ -4,6 +4,7 @@ use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBu
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
@@ -114,6 +115,17 @@ class Course_LtiController extends StudipController
         }
 
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
+        if (Request::get('deployment_id')) {
+            $deployment = LtiDeployment::find(Request::get('deployment_id'));
+            if ($deployment) {
+                if (Request::get('lti_msg')) {
+                    PageLayout::postInfo(htmlReady($deployment->title . ': ' . Request::get('lti_msg')));
+                }
+                if (Request::get('lti_errormsg')) {
+                    PageLayout::postError(htmlReady($deployment->title . ': ' . Request::get('lti_errormsg')));
+                }
+            }
+        }
     }
 
     public function select_tool_action()
@@ -246,6 +258,10 @@ class Course_LtiController extends StudipController
                     ]
                 );
 
+                $return_url = !isset($this->deployment->options['document_target']) ?
+                    URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment_id]) : '';
+                $document_target = isset($this->deployment->options['document_target']) ? 'iframe' : 'window';
+                $locale = str_replace('_', '-', $_SESSION['_language']);
                 $registration = new Registration($this->deployment->tool);
                 $builder = new LtiResourceLinkLaunchRequestBuilder();
 
@@ -273,6 +289,13 @@ class Course_LtiController extends StudipController
                                 ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
                                 $this->course->veranstaltungsnummer ?? '',
                                 $this->course?->getFullName() ?? ''
+                            ),
+                            new LaunchPresentationClaim(
+                                $document_target,
+                                null,
+                                null,
+                                $return_url,
+                                $locale
                             ),
                             new AgsClaim(
                                 [
@@ -522,7 +545,7 @@ class Course_LtiController extends StudipController
 
             foreach ($custom_parameters as $param) {
                 if (strpos($param, '=') !== false) {
-                    list($key, $value) = explode('=', $param, 2);
+                    [$key, $value] = explode('=', $param, 2);
                     $lti_link->addCustomParameter(trim($key), trim($value));
                 }
             }
@@ -685,7 +708,7 @@ class Course_LtiController extends StudipController
 
         foreach ($custom_parameters as $param) {
             if (strpos($param, '=') !== false) {
-                list($key, $value) = explode('=', $param, 2);
+                [$key, $value] = explode('=', $param, 2);
                 $lti_link->addCustomParameter(trim($key), trim($value));
             }
         }
