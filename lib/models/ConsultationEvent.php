@@ -32,6 +32,10 @@ class ConsultationEvent extends SimpleORMap
         $config['registered_callbacks'] = [
             'before_delete' => [
                 function (ConsultationEvent $event) {
+                    if (!isset($event->event->calendars)) {
+                        return;
+                    }
+
                     // Suppress all mails from calendar for users that do not
                     // want to receive emails about consultation bookings
                     $event->event->calendars->each(function (CalendarDateAssignment $assignment) {
