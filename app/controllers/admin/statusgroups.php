@@ -108,6 +108,7 @@ class Admin_StatusgroupsController extends AuthenticatedController
                     AND auth_user_md5.visible <> 'never'
                 ORDER BY Vorname, Nachname";
         $this->searchType = new SQLSearch($query, _('Teilnehmende/n suchen'), 'username');
+        $this->addQuickfilter = count($this->groups) * count($this->membersOfInstitute) < 500;
     }
 
     /**
