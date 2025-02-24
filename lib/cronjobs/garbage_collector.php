@@ -168,15 +168,6 @@ class GarbageCollectorJob extends CronJob
         // Remove old plugin assets
         PluginAsset::deleteBySQL('chdate < ?', [time() - PluginAsset::CACHE_DURATION]);
 
-        // Remove expired oauth server nonces
-        $query = "DELETE FROM `oauth_server_nonce`
-                  WHERE `osn_timestamp` < UNIX_TIMESTAMP(NOW() - INTERVAL 6 HOUR)";
-        $removed = DBManager::get()->exec($query);
-
-        if ($removed > 0 && $parameters['verbose']) {
-            printf(_('Gelöschte Server-Nonces: %u') . "\n", (int)$removed);
-        }
-
         // Remove expired consultation slots
         $condition = "LEFT JOIN `consultation_slots` USING (`block_id`)
                       JOIN `config_values`
