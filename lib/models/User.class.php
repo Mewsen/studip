@@ -374,7 +374,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         $joins  = [];
         $where  = [];
 
-        $query = "SELECT au.*, ui.*
+        $query = "SELECT ui.*, au.*
                   FROM `auth_user_md5` au
                   LEFT JOIN `user_online` uo ON (au.`user_id` = uo.`user_id`)
                   LEFT JOIN `user_info` ui ON (au.`user_id` = ui.`user_id`)";
