@@ -6,6 +6,7 @@
  * @var array $not_assigned
  * @var string $tutor
  * @var string $searchType
+ * @var bool $addQuickfilter
  */
 ?>
 <a name="group-<?= $group->id ?>"></a>
@@ -26,15 +27,17 @@
                 <? $menu = ActionMenu::get()->setContext($group->name) ?>
                 <? $menu->addLink($controller->url_for("admin/statusgroups/editGroup/{$group->id}"),
                         _('Gruppe bearbeiten'), Icon::create('edit'), ['data-dialog' => 'size=auto']) ?>
-                <? $menu->addMultiPersonSearch(
-                    MultiPersonSearch::get("add_statusgroup" . $group->id)
+                <? $search = MultiPersonSearch::get("add_statusgroup" . $group->id)
                         ->setLinkText(_('Personen hinzufügen'))
                         ->setDefaultSelectedUser($group->members->pluck('user_id'))
                         ->setExecuteURL($controller->url_for("admin/statusgroups/memberAdd/{$group->id}"))
                         ->setSearchObject($searchType)
-                        ->addQuickfilter(_("aktuelle Einrichtung"), $membersOfInstitute)
-                        ->addQuickfilter(_('Nicht zugeordnet'), $not_assigned)
-                   ) ?>
+                ?>
+                <? if ($addQuickfilter): ?>
+                    <? $search->addQuickfilter(_("aktuelle Einrichtung"), $membersOfInstitute)
+                              ->addQuickfilter(_('Nicht zugeordnet'), $not_assigned) ?>
+                <? endif ?>
+                <? $menu->addMultiPersonSearch($search) ?>
                 <? $menu->addButton(
                     'delete',
                     _('Gruppe löschen'),
