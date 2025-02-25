@@ -2,7 +2,7 @@
     <SidebarWidget :title="$gettext('Konversationen')" @scroll="handleScroll">
         <template #content>
             <div class="scrollable_area blubber_thread_widget" :class="{ scrolled }" ref="scrollableArea">
-                <transition-group name="blubberthreadwidget-list" tag="ol">
+                <ol>
                     <li
                         v-for="thread in sortedThreads"
                         :key="thread.id"
@@ -28,7 +28,7 @@
                     <li class="more" v-if="hasMoreThreads" key="more" ref="more">
                         <studip-asset-img file="loading-indicator.svg" width="20"></studip-asset-img>
                     </li>
-                </transition-group>
+                </ol>
             </div>
         </template>
 
