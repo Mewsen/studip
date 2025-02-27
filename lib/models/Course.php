@@ -1041,28 +1041,34 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $db = DBManager::get();
 
-        //In case the course only allows users of the institute to be members,
-        //we must check if the user is a member of the institute:
-        $course_category = $this->getCourseCategory();
-        if ($course_category->only_inst_user) {
-            //Only institute members are allowed:
-            $stmt = $db->prepare(
-                "SELECT 1
-                 FROM `user_inst`
-                 JOIN `seminar_inst` USING (`institut_id`)
-                 WHERE `user_inst`.`user_id` = :user_id
-                 AND `seminar_inst`.`seminar_id` = :course_id"
-            );
-            $stmt->execute([
-                'course_id' => $this->id,
-                'user_id'   => $user->id,
-            ]);
-            $user_in_institute = $stmt->fetchColumn();
-            if (!$user_in_institute) {
-                throw new \Studip\EnrolmentException(
-                    _('Die einzutragende Person ist kein Mitglied einer Einrichtung, zu der die Veranstaltung zugeordnet ist.'),
-                    \Studip\EnrolmentException::NO_INSTITUTE_MEMBER
+        if (!in_array($permission_level, ['user', 'autor'])) {
+            //The user shall be added with "tutor" or "dozent" permissions.
+            //In case the course only allows users of the institute to be members,
+            //we must check if the user is a member of the institute:
+            $course_category = $this->getCourseCategory();
+            if ($course_category->only_inst_user) {
+                //Only institute members are allowed:
+                $stmt = $db->prepare(
+                    "SELECT 1
+                    FROM `user_inst`
+                    JOIN `seminar_inst` USING (`institut_id`)
+                    WHERE `user_inst`.`user_id` = :user_id
+                    AND `seminar_inst`.`seminar_id` = :course_id"
                 );
+                $stmt->execute([
+                    'course_id' => $this->id,
+                    'user_id' => $user->id,
+                ]);
+                $user_in_institute = $stmt->fetchColumn();
+                if (!$user_in_institute) {
+                    throw new \Studip\EnrolmentException(
+                        sprintf(
+                            _('Die einzutragende Person hat die Rechtestufe "%s", ist aber kein Mitglied einer Einrichtung, zu der die Veranstaltung zugeordnet ist.'),
+                            $permission_level
+                        ),
+                        \Studip\EnrolmentException::NO_INSTITUTE_MEMBER
+                    );
+                }
             }
         }
 
