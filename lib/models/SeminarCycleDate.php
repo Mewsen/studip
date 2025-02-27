@@ -244,12 +244,19 @@ class SeminarCycleDate extends SimpleORMap
             } elseif ($format === 'long-start') {
                 $text = _('%{weekday}, %{beginning} - %{end}, %{interval}');
                 $room = $this->getMostBookedRoom();
+
                 if ($room) {
                     $parameters['room_name'] = sprintf(
                         '<a href="%1$s" data-dialog="size=auto">%2$s</a>',
                         $room->getActionLink(),
                         htmlReady($room->name)
                     );
+                } else {
+                    //Use the freetext room name:
+                    $room = $this->getMostUsedFreetextRoomName();
+                    if ($room) {
+                        $parameters['room_name'] = $room;
+                    }
                 }
                 $first_date = $this->getFirstDate();
                 if ($first_date) {
