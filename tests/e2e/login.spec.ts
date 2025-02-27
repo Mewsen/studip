@@ -2,15 +2,9 @@ import { test, expect } from '@playwright/test';
 import { credentials } from './credentials.ts';
 
 test.describe('Loggin In - HTML Web Form @auth', () => {
-    test.describe('Coming from homepage', () => {
+    test.describe('Visiting the homepage', () => {
         test('should take us to the login form @smoke', async ({ page, baseURL }) => {
             await page.goto('');
-
-            await expect(page.locator('#loginbox')).toBeVisible();
-
-            const loginLink = page.getByRole('link', { name: 'Login für registrierte Nutzende' });
-            await expect(loginLink).toBeVisible();
-            await loginLink.click();
 
             const benutzername = page.getByLabel(/Benutzername/i);
             await expect(benutzername).toBeVisible();
@@ -22,12 +16,12 @@ test.describe('Loggin In - HTML Web Form @auth', () => {
         });
     });
 
-    test.describe('Unauthorized', () => {
+    test.describe('Unauthorized access', () => {
         test('redirects to the login form @smoke', async ({ page }) => {
             await page.goto('dispatch.php/start');
 
             await expect(page.getByLabel(/Passwort/)).toBeVisible();
-            await expect(page.locator('#avatar-menu-container')).not.toBeVisible();
+            await expect(page.locator('#avatar-menu')).not.toBeVisible();
         });
     });
 
@@ -44,7 +38,7 @@ test.describe('Loggin In - HTML Web Form @auth', () => {
             await benutzername.fill('username');
             await passwort.fill('password');
             await submit.click();
-            await expect(page.locator('css=.messagebox_error')).toBeVisible();
+            await expect(page.locator('css=.system-notification-exception')).toBeVisible();
         });
 
         test('redirects to start page', async ({ page, baseURL }) => {
@@ -55,8 +49,9 @@ test.describe('Loggin In - HTML Web Form @auth', () => {
             await benutzername.fill(credentials.autor.username);
             await passwort.fill(credentials.autor.password);
             await submit.click();
-            await expect(page.locator('#notification-wrapper')).toBeVisible();
-            await expect(page).toHaveURL(`${baseURL}dispatch.php/start`);
+            await page.getByLabel('Profilmenü').click();
+            await page.getByText('Logout').click();
+            await expect(page).toHaveURL(`${baseURL}/dispatch.php/login`);
         });
     });
 });

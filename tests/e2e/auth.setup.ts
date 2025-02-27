@@ -38,5 +38,5 @@ async function login(page, { username, password }) {
     await page.getByLabel(/Benutzername/i).fill(username);
     await page.getByLabel(/Passwort/i).fill(password);
     await page.getByRole('button', { name: 'Anmelden' }).click();
-    await expect(page.locator('#avatar-menu-container')).toBeVisible();
+    await expect(page.locator('#avatar-menu')).toBeVisible();
 }
