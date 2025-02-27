@@ -73,7 +73,8 @@ docs:
   - cd docs
   - yarn install
   - yarn build
-  - mv ./build ../../public
+  - rm -rf ../public
+  - mv ./build ../public
   artifacts:
     paths:
     - public
