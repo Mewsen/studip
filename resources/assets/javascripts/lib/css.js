@@ -6,61 +6,59 @@
  * @license GPL2 or any later version
  * @since Stud.IP 3.1
  */
+
 // "Private" stylesheet rules are applied to, generated from a dynamically
 // inserted style tag in the document's header
-var sheet = null;
+let sheet = null;
 
-/**
- * Dynamically add a ruleset for a given selector to the current site
- *
- * @param {string} selector - CSS selector to add rules for
- * @param {object} css - Actual css rules as hash object
- * @param {array} vendors - Optional array of vendor prefixes to apply
- */
-function addRule(selector, css, vendors) {
-    vendors = vendors || [];
-    vendors.push('');
 
-    var style, propText;
-    if (sheet === null) {
-        style = document.createElement('style');
-        sheet = document.head.appendChild(style).sheet;
+// Expose functions to global STUDIP object, namespaced under CSS
+class CSS {
+    /**
+     * Dynamically add a ruleset for a given selector to the current site
+     *
+     * @param {string} selector - CSS selector to add rules for
+     * @param {object} css - Actual css rules as hash object
+     * @param {array} vendors - Optional array of vendor prefixes to apply
+     */
+    static addRule(selector, css, vendors) {
+        vendors = vendors ?? [];
+        vendors.push('');
+
+        if (sheet === null) {
+            let style = document.createElement('style');
+            sheet = document.head.appendChild(style).sheet;
+        }
+
+        let propText = Object.keys(css)
+            .map(p => {
+                let result = [];
+                for (let i = 0; i < vendors.length; i += 1) {
+                    result.push(vendors[i] + p + ':' + css[p]);
+                }
+                return result.join(';');
+            })
+            .join(';');
+
+        sheet.insertRule(selector + '{' + propText + '}', sheet.cssRules.length);
     }
 
-    propText = Object.keys(css)
-        .map(function(p) {
-            var result = [],
-                i;
-            for (i = 0; i < vendors.length; i += 1) {
-                result.push(vendors[i] + p + ':' + css[p]);
-            }
-            return result.join(';');
-        })
-        .join(';');
+    /**
+     * Removes a currently added, dynamic ruleset.
+     *
+     * @param {string} selector - CSS selector to remove rules for
+     */
+    static removeRule(selector) {
+        if (sheet === null) {
+            return;
+        }
 
-    sheet.insertRule(selector + '{' + propText + '}', sheet.cssRules.length);
-}
-
-/**
- * Removes a currently added, dynamic ruleset.
- *
- * @param {string} selector - CSS selector to remove rules for
- */
-function removeRule(selector) {
-    var i;
-    if (sheet !== null) {
-        for (i = sheet.cssRules.length - 1; i >= 0; i -= 1) {
+        for (let i = sheet.cssRules.length - 1; i >= 0; i -= 1) {
             if (sheet.cssRules[i].selectorText === selector) {
                 sheet.deleteRule(i);
             }
         }
     }
 }
-
-// Expose functions to global STUDIP object, namespaced under CSS
-const CSS = {
-    addRule,
-    removeRule
-};
 
 export default CSS;

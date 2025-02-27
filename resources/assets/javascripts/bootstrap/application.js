@@ -358,6 +358,25 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
     });
 }(jQuery));
 
+/* Fix issue with ckeditor toolbar positioning */
+(() => {
+    let lastTop = null;
+    STUDIP.Scroll.addHandler('cke-fix', () => {
+        const topBarHeight = document.getElementById('top-bar')?.offsetHeight ?? 0;
+        const contentBarHeight = document.getElementById('contentbar')?.offsetHeight ?? 0;
+        const top = topBarHeight + contentBarHeight;
+
+        if (lastTop !== top) {
+            STUDIP.CSS.removeRule('.ck .ck-sticky-panel .ck-sticky-panel__content_sticky');
+
+            STUDIP.CSS.addRule(
+                '.ck-sticky-panel .ck-sticky-panel__content_sticky',
+                {top: `${top}px !important`}
+            );
+        }
+    })
+})();
+
 STUDIP.domReady(function () {
     const loginForm = document.getElementById('login-form');
     if (!loginForm) {
