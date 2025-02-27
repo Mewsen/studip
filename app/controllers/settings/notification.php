@@ -83,7 +83,7 @@ class Settings_NotificationController extends Settings_SettingsController
                         []
                     ),
                 ])
-                ->withStore(
+                ->withVuexStore(
                     'MyCoursesStore',
                     'mycoursesnotificationstore',
                     app(MyCoursesHelper::class)->createVueAppData('')

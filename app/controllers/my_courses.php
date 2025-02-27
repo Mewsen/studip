@@ -173,7 +173,7 @@ class MyCoursesController extends AuthenticatedController
                     'store-url' => $this->store_groupsURL($studygroups),
                     'cid'       => Request::get('option', ''),
                 ])
-                ->withStore(
+                ->withVuexStore(
                     'MyCoursesStore',
                     'mycoursesgroupselector',
                     $this->helper->createVueAppData(''),
