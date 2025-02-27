@@ -440,7 +440,7 @@ release:
           link_type: package
 
 docs:
-  stage: deploy
+  stage: docs
   interruptible: true
   script:
   - apk update && apk --no-cache add git
