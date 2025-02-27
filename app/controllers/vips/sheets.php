@@ -2225,21 +2225,23 @@ class Vips_SheetsController extends AuthenticatedController
         $toc->setURL($this->url_for("vips/sheets/{$view}_assignment", ['assignment_id' => $assignment->id]));
         $toc->setActive($exercise_id === null);
 
-        if ($view === 'edit') {
+        if ($view === 'edit' && !empty($assignment->test->exercise_refs)) {
             $exercise_refs = $assignment->test->exercise_refs;
         } else {
             $exercise_refs = $assignment->getExerciseRefs($solver_id);
         }
 
-        foreach ($exercise_refs as $i => $item) {
-            $child = new TOCItem(sprintf('%d. %s', $i + 1, $item->exercise->title));
-            $child->setURL($this->url_for(
-                "vips/sheets/{$view}_exercise",
-                ['assignment_id' => $assignment->id, 'exercise_id' => $item->task_id, 'solver_id' => $solver_id]
-            ));
+        if (!empty($exercise_refs)) {
+            foreach ($exercise_refs as $i => $item) {
+                $child = new TOCItem(sprintf('%d. %s', $i + 1, $item->exercise->title));
+                $child->setURL($this->url_for(
+                    "vips/sheets/{$view}_exercise",
+                    ['assignment_id' => $assignment->id, 'exercise_id' => $item->task_id, 'solver_id' => $solver_id]
+                ));
 
-            $child->setActive($item->task_id == $exercise_id);
-            $toc->children[] = $child;
+                $child->setActive($item->task_id == $exercise_id);
+                $toc->children[] = $child;
+            }
         }
 
         foreach ($toc->children as $i => $item) {

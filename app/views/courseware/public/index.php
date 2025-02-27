@@ -1,4 +1,4 @@
-<? if (!$expired && !$invalid): ?>
+<? if (empty($expired) && empty($invalid)): ?>
 <div
     id="courseware-public-app"
     link-id="<?= htmlReady($link_id) ?>"
@@ -8,9 +8,9 @@
 >
 </div>
 <? endif; ?>
-<? if ($expired): ?>
+<? if (!empty($expired)): ?>
     <?= MessageBox::warning(_('Der Link zu dieser Seite ist abgelaufen.'))->hideClose() ?>
 <? endif; ?>
-<? if ($invalid): ?>
+<? if (!empty($invalid)): ?>
     <?= MessageBox::error(_('Es wurde kein gültiger Link aufgerufen.'))->hideClose() ?>
 <? endif; ?>

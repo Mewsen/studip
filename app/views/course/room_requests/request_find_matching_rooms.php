@@ -15,7 +15,7 @@
                     <?= $this->render_partial('course/room_requests/_room_with_properties') ?>
                 <? endif ?>
 
-                <? if ($available_room_categories): ?>
+                <? if (!empty($available_room_categories)): ?>
                     <label>
                         <?= _('Raumkategorie') ?>
                         <span class="flex-row">
@@ -58,7 +58,7 @@
 
                 <? if ($step === 2) : ?>
                     <!-- After choosing a category or room -->
-                    <? if ($available_properties) : ?>
+                    <? if (!empty($available_properties)) : ?>
                         <? foreach ($available_properties as $property) : ?>
                             <?= $property->toHtmlInput(
                                 $selected_properties[$property->name] ?? '',

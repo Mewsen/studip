@@ -80,11 +80,11 @@ class LibrarySearchManager
                 $catalog_class = $catalog_data['class_name'];
                 $catalog_config = [
                     'base_url' => $catalog_data['base_url'],
-                    'additional_url_parameters' => $catalog_data['additional_url_parameters'],
-                    'settings' => $catalog_data['settings']
+                    'additional_url_parameters' => $catalog_data['additional_url_parameters'] ?? [],
+                    'settings' => $catalog_data['settings'] ?? ''
                 ];
                 $search = new $catalog_class($catalog_config);
-                if ($catalog_data['local_catalog']) {
+                if (!empty($catalog_data['local_catalog'])) {
                     $local_catalog_result_set = $search->query(
                         $search_parameters,
                         $order_by,

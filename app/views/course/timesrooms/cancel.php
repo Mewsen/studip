@@ -4,6 +4,6 @@
     <?= $this->render_partial('course/timesrooms/_cancel_form.php', compact('termin')) ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Übernehmen'), 'editDeletedSingleDate') ?>
-        <?= Studip\LinkButton::createCancel(_('Abbrechen'), '?#' . $termin_id) ?>
+        <?= Studip\LinkButton::createCancel(_('Abbrechen'), '?#' . $termin->id) ?>
     </footer>
 </form>

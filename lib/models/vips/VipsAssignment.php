@@ -1286,7 +1286,7 @@ class VipsAssignment extends SimpleORMap
                 $group = $this->getUserGroup($user_id);
             }
 
-            if ($group) {
+            if (!empty($group)) {
                 $members = $this->getGroupMembers($group);
             } else if ($user_id) {
                 $members = [(object) compact('user_id')];

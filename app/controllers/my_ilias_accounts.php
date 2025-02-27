@@ -96,7 +96,7 @@ class MyIliasAccountsController extends AuthenticatedController
             }
         }
 
-        if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) {
+        if (!empty(Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths'])) {
             // get semesters and set up filter widget
             $semesters = new SimpleCollection(Semester::getAll());
             $semesters = $semesters->orderBy('beginn desc');
@@ -147,7 +147,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     ) {
                         $this->courses_list[$ilias_index][$crs_id]['studip_object'] = $this->connected_courses_list[$ilias_list_index][$crs_id];
                     }
-                    
+
                     // filter offline courses for mere members
                     if (
                         !Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_offline']
@@ -156,7 +156,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     ) {
                         unset($this->courses_list[$ilias_list_index][$crs_id]);
                     }
-                    
+
                     // filter by semester
                     if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) {
                         $this->courses_list[$ilias_list_index][$crs_id]['path'] = $ilias->soap_client->getPath($crs_id);
