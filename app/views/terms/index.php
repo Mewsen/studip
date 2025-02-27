@@ -5,6 +5,7 @@
  * @var string $redirect_token
  * @var string $denial_message
  * @var string $compulsory
+ * @var array{type: string, url: string} $terms_of_use
  */
 ?>
 <form action="<?= $controller->link_for('terms', compact('return_to', 'redirect_token')) ?>" method="post">
@@ -25,9 +26,9 @@
     <? endif; ?>
     <footer style="text-align: center">
     <? if ($denial_message): ?>
-        <form action="<?= URLHelper::getLink('logout.php') ?>" method="post">
-            <?= Studip\Button::createAccept(_('Verstanden')) ?>
-        </form>
+        <?= Studip\Button::createAccept(_('Verstanden'), 'deny', [
+            'formaction' => URLHelper::getURL('dispatch.php/logout'),
+        ]) ?>
     <? else: ?>
         <?= Studip\Button::createAccept(_('Ich erkenne die Nutzungsbedingungen an'), 'accept') ?>
 

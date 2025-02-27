@@ -260,6 +260,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
             && $GLOBALS['user']->needsToAcceptTerms()
             && !match_route('dispatch.php/terms')
             && !match_route('dispatch.php/siteinfo/*')
+            && !match_route('dispatch.php/logout')
         ) {
             if (!\Request::isXhr()) {
                 $response = $this->response_factory->createResponse(302);
