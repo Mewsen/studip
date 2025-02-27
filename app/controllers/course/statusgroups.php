@@ -556,33 +556,37 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         CSRFProtection::verifyUnsafeRequest();
+
         /*
          * Check if a valid end time was given.
          */
-        if (Request::int('selfassign', 0)) {
-            $endtime = strtotime(Request::get('selfassign_end', 'now'));
-            $starttime = strtotime(Request::get('selfassign_start', 'now'));
-            if ($endtime <= $starttime) {
-                $endtime = 0;
+        $selfassign = Request::int('selfassign', 0);
+        $start_time = 0;
+        $end_time = 0;
+        if ($selfassign) {
+            $end_time = strtotime(Request::get('selfassign_end', 'now'));
+            $start_time = strtotime(Request::get('selfassign_start', 'now'));
+            if ($end_time <= $start_time) {
+                $end_time = 0;
             }
         }
         $position = 1;
         if (Statusgruppen::exists($group_id)) {
             $position = Statusgruppen::find($group_id)->position;
         }
-        $selfassign = Request::int('selfassign', 0);
         // Exclusive entry makes sense only when selfassign is set in general.
         if ($selfassign !== 0) {
             $selfassign += Request::int('exclusive', 0);
         // Selfassign is not set but exclusive selfassign or some timeframe -> show warning message
         } else if (
             Request::bool('exclusive')
-            || Request::get('selfassign_start')
-            || Request::get('selfassign_end')
+            || $start_time
+            || $end_time
         ) {
             PageLayout::postWarning(_('Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können ' .
                 'nur gespeichert werden, wenn der Selbsteintrag aktiviert ist.'));
         }
+
         $group = Statusgruppen::createOrUpdate(
             $group_id,
             Request::get('name'),
@@ -590,12 +594,8 @@ class Course_StatusgroupsController extends AuthenticatedController
             $this->course_id,
             Request::int('size', 0),
             $selfassign,
-            $selfassign
-                ? strtotime(Request::get('selfassign_start', 'now'))
-                : 0,
-            $selfassign && Request::get('selfassign_end')
-                ? strtotime(Request::get('selfassign_end'))
-                : 0,
+            $start_time,
+            $end_time,
             Request::bool('makefolder', false),
             Request::getArray('dates'),
             Request::bool('blubber', false)

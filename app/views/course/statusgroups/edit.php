@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var Course_StatusgroupsController $controller
+ * @var Statusgruppen $group
+ */
+?>
 <form class="default collapsable" action="<?= $controller->url_for('course/statusgroups/save', $group->id) ?>" method="post" data-secure>
     <?= CSRFProtection::tokenTag() ?>
 
@@ -34,7 +40,7 @@
         <?php endif ?>
 
         <label>
-            <input type="checkbox" name="blubber" value="1"<?= BlubberStatusgruppeThread::findByStatusgruppe_id($group->id) ? " checked" : "" ?>>
+            <input type="checkbox" name="blubber" value="1"<?= $group->hasBlubber() ? " checked" : "" ?>>
             <?= _('Blubber in der Gruppe erlauben') ?>
         </label>
 

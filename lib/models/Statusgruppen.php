@@ -138,7 +138,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
      * @param int|null    $position          position or null if automatic position after other groups
      * @param string      $range_id          ID of the object this group belongs to
      * @param int         $size              max number of members or 0 if unlimited
-     * @param bool        $selfassign        may users join this group by themselves?
+     * @param int         $selfassign        may users join this group by themselves?
      * @param int         $selfassign_start  group joining is possible starting at ...
      * @param int         $selfassign_end    group joining is possible until ...
      * @param bool        $makefolder        create a document folder assigned to this group?
@@ -155,7 +155,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
         ?int $position,
         string $range_id,
         int $size,
-        bool $selfassign,
+        int $selfassign,
         int $selfassign_start,
         int $selfassign_end,
         bool $makefolder,
@@ -432,7 +432,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
      */
     public function updateBlubber(bool $set): void
     {
-        if ($set && $this->hasBlubber()) {
+        if ($set && !$this->hasBlubber()) {
             BlubberStatusgruppeThread::create([
                 'context_type'      => 'course',
                 'context_id'        => $this->range_id,
