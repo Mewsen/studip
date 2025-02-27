@@ -13,12 +13,12 @@ use Studip\Button, Studip\LinkButton;
 
 <?= $delete_question ?>
 
-<form class="default" action="<?= $controller->url_for('tour/save/' . $tour->tour_id) ?>" method="post">
+<form class="default" action="<?= $controller->link_for('tour/save/' . $tour->tour_id) ?>" method="post">
     <?= CSRFProtection::tokenTag(); ?>
     <fieldset>
         <legend><?= _('Grunddaten') ?></legend>
 
-    <? if (!count($tour->steps)) : ?>
+    <? if (empty($tour->steps)) : ?>
         <label>
            <span class="required">
                 <?= _('Sprache der Tour:') ?>
@@ -78,7 +78,7 @@ use Studip\Button, Studip\LinkButton;
             </select>
         </label>
 
-    <? if (!count($tour->steps)) : ?>
+    <? if (empty($tour->steps)) : ?>
         <label>
             <span class="required"><?= _('Startseite der Tour') ?>:</span>
             <input type="text" size="60" maxlength="255" name="tour_startpage"
