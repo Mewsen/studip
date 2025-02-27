@@ -25,7 +25,12 @@ class FilesystemVueDataManager
                 'order' => $file->getAdditionalColumnOrderWeigh($index)
             ];
         }
-        $actionMenu = $file->getActionMenu()->setContext($file->getFilename());
+        $actionMenu = $file->getActionMenu();
+
+        if ($actionMenu) {
+            $actionMenu->setContext($file->getFilename());
+        }
+
         return [
             'id' => $file->getId(),
             'name' => $file->getFilename(),
