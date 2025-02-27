@@ -45,6 +45,9 @@ final class VueApp implements Stringable
     private array $storeData = [];
     private array $components = [];
 
+    private array $vuexStores = [];
+    private array $vuexStoreData = [];
+
     /**
      * Private constructor since we want to enforce the use of VueApp::create().
      */
@@ -114,14 +117,18 @@ final class VueApp implements Stringable
     /**
      * Adds a store
      */
-    public function withStore(string $store, ?string $index = null, ?array $data = null): VueApp
+    public function withStore(string $store, ?string $command = null, ?array $data = null): VueApp
     {
         $clone = clone $this;
 
-        $clone->stores[$index ?? $store] = $store;
+        if ($command === null) {
+            $command = 'use' . strtopascalcase($store) . 'Store';
+        }
+
+        $clone->stores[$store] = $command;
 
         if ($data !== null) {
-            $clone->storeData[$index ?? $store] = $data;
+            $clone->storeData[$store] = $data;
         }
 
         return $clone;
@@ -141,6 +148,38 @@ final class VueApp implements Stringable
     public function getStoreData(): array
     {
         return $this->storeData;
+    }
+
+    /**
+     * Adds a vuex store
+     */
+    public function withVuexStore(string $store, ?string $index = null, ?array $data = null): VueApp
+    {
+        $clone = clone $this;
+
+        $clone->vuexStores[$index ?? $store] = $store;
+
+        if ($data !== null) {
+            $clone->vuexStoreData[$index ?? $store] = $data;
+        }
+
+        return $clone;
+    }
+
+    /**
+     * Returns all vuex stores
+     */
+    public function getVuexStores(): array
+    {
+        return $this->vuexStores;
+    }
+
+    /**
+     * Returns all vuex store data
+     */
+    public function getVuexStoreData(): array
+    {
+        return $this->vuexStoreData;
     }
 
     /**
@@ -194,6 +233,10 @@ final class VueApp implements Stringable
             $data['stores'] = $this->stores;
         }
 
+        if (count($this->vuexStores) > 0) {
+            $data['vuexStores'] = $this->vuexStores;
+        }
+
         if (count($this->plugins) > 0) {
             $data['plugins'] = $this->plugins;
         }
@@ -203,6 +246,7 @@ final class VueApp implements Stringable
         $template->attributes = ['data-vue-app' => json_encode($data)];
         $template->props = $this->getPreparedProps();
         $template->storeData = $this->storeData;
+        $template->vuexStoreData = $this->vuexStoreData;
         $template->slots = $this->getSlots();
         return $template;
     }

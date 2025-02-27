@@ -30,6 +30,6 @@ $unsortable_fields = [
                 'sort-by' => $sortby,
                 'sort-flag' => $sortflag,
             ])
-            ->withStore('AdminCoursesStore', 'admincourses', $store_data) ?>
+            ->withVuexStore('AdminCoursesStore', 'admincourses', $store_data) ?>
 
 <? endif; ?>

@@ -29,7 +29,7 @@ class MyCoursesWidget extends CorePlugin implements PortalPlugin
         $controller = app(MyCoursesController::class, ['dispatcher' => app(\Trails\Dispatcher::class)]);
 
         return Studip\VueApp::create('MyCourses')
-            ->withStore(
+            ->withVuexStore(
                 'MyCoursesStore',
                 'mycourses',
                 $controller->getPortalWidgetData()

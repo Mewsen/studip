@@ -1,5 +1,6 @@
 import { createApp as vueCreateApp } from 'vue';
 import { createStore as vuexCreateStore } from 'vuex';
+import { createPinia } from 'pinia';
 import eventBus from '../lib/event-bus';
 import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
@@ -21,7 +22,7 @@ const getHttpClient = () =>
 
 const httpClient = getHttpClient();
 
-const createStore = () => {
+const createVuexStore = () => {
     const store = vuexCreateStore({});
 
     store.registerModule('studip', StudipStore);
@@ -33,8 +34,9 @@ const createStore = () => {
     return store;
 }
 
-// Setup store
-const store = createStore();
+// Setup stores
+const store = createVuexStore();
+const pinia = createPinia();
 
 // Define createApp function
 function createApp(options = {}, ...args) {
@@ -62,6 +64,7 @@ function createApp(options = {}, ...args) {
     app.use(gettext);
     app.use(PortalVue);
     app.use(store);
+    app.use(pinia);
 
     // Register global components and directives
     registerGlobalComponents(app);

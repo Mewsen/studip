@@ -27,23 +27,18 @@ final class VueCollector extends DataCollector implements Renderable
             }
         }
 
-        $stores = $this->app->getStores();
-        if (count($stores) > 0) {
-            ksort($stores);
-            $storeData = $this->app->getStoreData();
-
-            $data['== STORES =='] = '';
-
-            foreach ($stores as $index => $store) {
-                $data[$index] = $store === $index ? '' : "({$store})";
-
-                $tmp = $storeData[$index] ?? [];
-                ksort($tmp);
-                foreach ($tmp as $key => $value) {
-                    $data["- {$key}"] = $this->dumpVar($value);
-                }
-            }
-        }
+        $this->addStores(
+            $data,
+            'PINIA STORES',
+            $this->app->getStores(),
+            $this->app->getStoreData()
+        );
+        $this->addStores(
+            $data,
+            'VUEX STORES',
+            $this->app->getVuexStores(),
+            $this->app->getVuexStoreData()
+        );
 
         $slots = $this->app->getSlots();
         if (count($slots) > 0) {
@@ -110,5 +105,27 @@ final class VueCollector extends DataCollector implements Renderable
         }
 
         return $variable;
+    }
+
+    private function addStores(
+        array &$data,
+        string $index,
+        array $stores,
+        array $storeData
+    ): void {
+        if (count($stores) > 0) {
+            ksort($stores);
+            $data["== {$index} =="] = '';
+
+            foreach ($stores as $index => $store) {
+                $data[$index] = $store === $index ? '' : "({$store})";
+
+                $tmp = $storeData[$index] ?? [];
+                ksort($tmp);
+                foreach ($tmp as $key => $value) {
+                    $data["- {$key}"] = $this->dumpVar($value);
+                }
+            }
+        }
     }
 }

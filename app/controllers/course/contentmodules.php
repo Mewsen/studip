@@ -88,7 +88,7 @@ class Course_ContentmodulesController extends AuthenticatedController
                 ->withProps([
                     'range-type' => get_class($this->sem),
                 ])
-                ->withStore('ContentModulesStore', 'contentmodules', [
+                ->withVuexStore('ContentModulesStore', 'contentmodules', [
                     'setCategories'  => $this->categories,
                     'setHighlighted' => $this->highlighted_modules,
                     'setModules'     => array_values($this->modules),

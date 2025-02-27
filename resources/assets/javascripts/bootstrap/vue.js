@@ -1,4 +1,5 @@
 import { defineAsyncComponent } from 'vue';
+import { isFunction } from "lodash";
 
 function attachComponents(app, configuredComponents) {
     configuredComponents.forEach(component => {
@@ -36,7 +37,8 @@ STUDIP.ready(() => {
             {
                 components: [],
                 plugins: {},
-                stores: {}
+                stores: {},
+                vuexStores: {}
             },
             JSON.parse(node.dataset.vueApp)
         );
@@ -45,19 +47,42 @@ STUDIP.ready(() => {
 
         const promises = [Promise.resolve()];
 
-        for (const [index, name] of Object.entries(config.stores)) {
-
+        // Set up vuex stores
+        for (const [index, name] of Object.entries(config.vuexStores)) {
             promises.push(
-                import(`../../../vue/store/${name}.js`).then(storeConfig => {
+                import(`../../../vue/store/${name}`).then(storeConfig => {
                     if (!store.hasModule(index)) {
                         store.registerModule(index, storeConfig.default);
                     }
 
-                    const dataElement = document.getElementById(`vue-store-data-${index}`);
+                    const dataElement = document.getElementById(`vue-vuex-store-data-${index}`);
                     if (dataElement) {
                         const data = JSON.parse(dataElement.innerText);
                         Object.keys(data).forEach(command => {
                             store.commit(`${index}/${command}`, data[command]);
+                        });
+
+                        dataElement.remove();
+                    }
+                })
+            );
+        }
+
+        // Set up pinia stores
+        for (const [name, command] of Object.entries(config.stores)) {
+            promises.push(
+                import(`../../../vue/store/pinia/${name}`).then((storeConfig) => {
+                    const piniaStore = storeConfig[command]();
+
+                    const dataElement = document.getElementById(`vue-store-data-${name}`);
+                    if (dataElement) {
+                        const data = JSON.parse(dataElement.innerText);
+                        Object.keys(data).forEach(command => {
+                            if (isFunction(piniaStore[command])) {
+                                piniaStore[command](data[command]);
+                            } else {
+                                piniaStore[command] = data[command];
+                            }
                         });
 
                         dataElement.remove();

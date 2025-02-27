@@ -111,7 +111,7 @@ class MyCoursesController extends AuthenticatedController
         $this->setupSidebar($sem_key, $group_field, $this->check_for_new($sem_courses, $group_field));
 
         $this->vueApp = Studip\VueApp::create('my-courses/MyCourses')
-            ->withStore(
+            ->withVuexStore(
                 'MyCoursesStore',
                 'mycourses',
                 $this->helper->getVueAppData($sem_courses, $group_field)
