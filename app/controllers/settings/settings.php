@@ -211,6 +211,7 @@ abstract class Settings_SettingsController extends AuthenticatedController
 
         if ($should_logout) {
             $this->redirect('dispatch.php/logout');
+            return;
         }
 
         parent::after_filter($action, $args);
