@@ -10,14 +10,14 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Farbe') ?></legend>
-        <table class="colour-selector">
-            <tr>
-                <?= $this->render_partial(
-                    'calendar/schedule/_colour_selector',
-                    ['selected_colour_id' => $entry->colour_id]
-                ) ?>
-            </tr>
-        </table>
+        <?= Studip\VueApp::create('ColourSelector')
+            ->withProps([
+                'autofocus' => true,
+                'colours' => collect($GLOBALS['PERS_TERMIN_KAT'])->map(
+                    fn($data, $id) => ['id' => $id, 'colour' => $data['bgcolor']]
+                )->values(),
+                'model-value' => $entry->colour_id,
+            ]) ?>
     </fieldset>
     <fieldset>
         <legend><?= _('Zeit') ?></legend>

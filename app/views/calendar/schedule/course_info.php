@@ -14,17 +14,19 @@
         <? if ($membership) : ?>
             <fieldset>
                 <legend><?= _('Farbe') ?></legend>
-                <table class="default mycourses-group-selector">
-                    <tr>
-                        <?= $this->render_partial(
-                            'my_courses/group_selector',
-                            [
-                                'course_id'         => $course->id,
-                                'selected_group_id' => $membership->gruppe
+                <?= Studip\VueApp::create('ColourSelector')
+                    ->withProps([
+                        'autofocus' => true,
+                        'colours' => collect()->range(0, 8)->map(
+                            fn($group) => [
+                                'id' => $group,
+                                'class' => 'gruppe' . $group,
+                                'label' => sprintf(_('Gruppe %u zuordnen'), $group + 1),
                             ]
-                        ) ?>
-                    </tr>
-                </table>
+                        )->values(),
+                        'input-name' => 'gruppe[' . htmlReady($course->id) . ']',
+                        'model-value' => $membership->gruppe,
+                    ]) ?>
             </fieldset>
         <? endif ?>
         <fieldset>

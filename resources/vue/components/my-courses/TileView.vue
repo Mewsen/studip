@@ -11,7 +11,7 @@
                 <section class="studip-grid">
                     <template v-for="course in getOrderedCourses(subgroup.ids)" :key="course.id">
                         <div class="course-group-label" v-if="isParent(course)">
-                            {{ getCourseName(course, getConfig('sem_number')) }}
+                            {{ getCourseName(course) }}
                         </div>
 
                         <article class="studip-grid-element" :data-course-id="course.id" :class="getCourseCssClasses(course)">
@@ -24,12 +24,10 @@
                                     ></studip-action-menu>
                                 </span>
 
-                                <a :href="urlFor('dispatch.php/course/go', {to: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
+                                <a :href="getCourseURL(course)" class="tiles-grid-element-header-content" :title="getCourseName(course)">
                                     <span :style="{backgroundImage: `url(${course.avatar})`}" class="tiles-grid-element-header-image"></span>
                                     <span class="tiled-grid-element-header-title">
-                                        {{ getCourseName(course, getConfig('sem_number')) }}
-                                        <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
-
+                                        {{ getCourseName(course) }}
                                     </span>
                                 </a>
 
@@ -39,10 +37,10 @@
                                 </span>
                             </header>
                             <footer class="tiles-grid-element-footer">
-                                <my-courses-navigation :navigation="getNavigationForCourse(course)" :icon-size="iconSize"></my-courses-navigation>
+                                <navigation :navigation="getNavigationForCourse(course)" :icon-size="iconSize"></navigation>
                             </footer>
 
-                            <my-courses-color-picker v-if="showColorPickerForCourse(course)" :course="course" v-on:color-picked="changeColor"></my-courses-color-picker>
+                            <color-picker v-if="showColorPickerForCourse(course)" :course="course" v-on:color-picked="changeColor"></color-picker>
                         </article>
                     </template>
                 </section>
@@ -53,13 +51,13 @@
 
 
 <script>
-import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
-import MyCoursesColorPicker from './MyCoursesColorPicker.vue';
+import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
+import ColorPicker from './ColorPicker.vue';
 
 export default {
-    name: 'my-courses-tiles',
+    name: 'TileView',
     mixins: [MyCoursesMixin],
-    components: {MyCoursesColorPicker},
+    components: {ColorPicker},
     props: {
         iconSize: {
             type: Number,
@@ -158,10 +156,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/stylesheets/mixins';
-@use '../../assets/stylesheets/scss/breakpoints' as *;
-@use '../../assets/stylesheets/scss/variables';
-@import '../../assets/stylesheets/scss/visibility'; // Needs to be imported (breakpoint variables are missing)
+@use '../../../assets/stylesheets/mixins';
+@use '../../../assets/stylesheets/scss/breakpoints' as *;
+@use '../../../assets/stylesheets/scss/variables';
+@import '../../../assets/stylesheets/scss/visibility'; // Needs to be imported (breakpoint variables are missing)
 
 $tile-border-width: 1px;
 $tile-color-width: 15px;

@@ -1,0 +1,51 @@
+.colour-selector {
+    $padding: 2px;
+
+    position: relative;
+
+    background-clip: padding-box;
+    width: var(--icon-size-default);
+
+    &.mycourses-group-selector {
+        border: 1px solid var(--color--table-border);
+    }
+
+    input[type="radio"] {
+        @extend .sr-only;
+
+        &:focus + label {
+            // Replicates the focus on the label
+            // @see https://css-tricks.com/copy-the-browsers-native-focus-styles/
+            outline: 5px auto Highlight;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: 1px;
+        }
+
+        &:checked + label {
+            // We need to insert a pseudo element since the above focus
+            // indicator would be lost
+            &::before {
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                outline: 2px solid var(--white);
+                outline-offset: -4px;
+            }
+        }
+    }
+
+    label {
+        box-sizing: border-box;
+        cursor: pointer;
+        height: calc(var(--icon-size-default) + 2 * $padding);
+        margin: 0 !important;
+        padding: $padding;
+        position: relative;
+        text-indent: 0 !important;
+        width: calc(var(--icon-size-default) + 2 * $padding);
+    }
+}

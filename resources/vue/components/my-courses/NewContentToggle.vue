@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Sidebar from "../../assets/javascripts/lib/sidebar.js";
-import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
+import Sidebar from "../../../assets/javascripts/lib/sidebar.js";
+import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
 
 export default {
     name: 'my-courses-new-content-toggle',

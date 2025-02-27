@@ -25,33 +25,33 @@
                   to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list"
                   name="sidebar-switch"
         >
-            <MyCoursesSidebarSwitch />
+            <SidebarSwitch />
         </Teleport>
 
         <Teleport v-if="hasSidebarElements"
                   to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list"
                   name="sidebar-content-toggle"
         >
-            <MyCoursesNewContentToggle />
+            <NewContentToggle />
         </Teleport>
     </div>
 </template>
 
 <script>
-import MyCoursesTables from './MyCoursesTables.vue';
-import MyCoursesTiles from './MyCoursesTiles.vue';
-import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
-import MyCoursesSidebarSwitch from "./MyCoursesSidebarSwitch.vue";
-import MyCoursesNewContentToggle from "./MyCoursesNewContentToggle.vue";
+import TableView from './TableView.vue';
+import TileView from './TileView.vue';
+import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
+import SidebarSwitch from './SidebarSwitch.vue';
+import NewContentToggle from './NewContentToggle.vue';
 
 export default {
     name: 'MyCourses',
     mixins: [MyCoursesMixin],
     components: {
-        MyCoursesTables,
-        MyCoursesTiles,
-        MyCoursesSidebarSwitch,
-        MyCoursesNewContentToggle,
+        TableView,
+        TileView,
+        SidebarSwitch,
+        NewContentToggle,
     },
     data() {
         return {
@@ -61,8 +61,8 @@ export default {
     computed: {
         displayComponent () {
             return this.displayedType === 'tiles'
-                 ? MyCoursesTiles
-                 : MyCoursesTables;
+                 ? TileView
+                 : TableView;
         },
         displayedType () {
             return this.getViewConfig('tiled') ? 'tiles' : 'table';

@@ -77,9 +77,7 @@ class ModulesNotification
         $this->subject = _("Stud.IP Benachrichtigung");
     }
 
-
-
-    public function getAllNotifications ($user_id = null)
+    public function getAllNotifications($user_id = null)
     {
         if ($user_id === null) {
             $user_id = $GLOBALS['user']->id;

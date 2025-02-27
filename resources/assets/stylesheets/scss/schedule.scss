@@ -3,18 +3,6 @@ form.default.schedule-entry {
     section.nowrap {
         flex-wrap: nowrap;
     }
-
-    table.colour-selector td.colour {
-        label {
-            width: 1.5em;
-            height: 1.5em;
-
-            .studip-icon {
-                height: 1.5em;
-                filter: drop-shadow(0 0 2px var(--white))
-            }
-        }
-    }
 }
 
 .fc.schedule {

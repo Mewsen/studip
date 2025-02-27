@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    name: 'my-courses-navigation',
+    name: 'Navigation',
     props: {
         navigation: Object,
         iconSize: {

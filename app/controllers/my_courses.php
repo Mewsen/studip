@@ -23,15 +23,17 @@
  * @category  Stud.IP
  * @since     3.1
  */
-require_once 'lib/meine_seminare_func.inc.php';
+
+use DI\Attribute\Inject;
+
 require_once 'lib/object.inc.php';
 
 class MyCoursesController extends AuthenticatedController
 {
-    /**
-     * @var Callable
-     */
-    private $performance_timer = null;
+    #[Inject]
+    private readonly MyCoursesHelper $helper;
+
+    private ?Closure $performance_timer = null;
 
     public function before_filter(&$action, &$args)
     {
@@ -84,13 +86,7 @@ class MyCoursesController extends AuthenticatedController
         $sem_key     = $this->getSemesterKey();
         $group_field = $this->getGroupField();
 
-        $sem_courses  = MyRealmModel::getPreparedCourses($sem_key, [
-            'group_field'         => $group_field,
-            'order_by'            => null,
-            'order'               => 'asc',
-            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
-            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ]);
+        $sem_courses  = $this->helper->getCourses($sem_key, $group_field);
 
         // Waiting list
         $this->waiting_list = MyRealmModel::getWaitingList($GLOBALS['user']->id);
@@ -114,11 +110,11 @@ class MyCoursesController extends AuthenticatedController
 
         $this->setupSidebar($sem_key, $group_field, $this->check_for_new($sem_courses, $group_field));
 
-        $this->vueApp = Studip\VueApp::create('MyCourses')
+        $this->vueApp = Studip\VueApp::create('my-courses/MyCourses')
             ->withStore(
                 'MyCoursesStore',
                 'mycourses',
-                $this->getMyCoursesData($sem_courses, $group_field)
+                $this->helper->getVueAppData($sem_courses, $group_field)
             );
     }
 
@@ -165,69 +161,24 @@ class MyCoursesController extends AuthenticatedController
 
         PageLayout::setTitle($this->title);
 
-
         PageLayout::setHelpKeyword('Basis.VeranstaltungenOrdnen');
         Navigation::activateItem('/browse/my_courses/list');
 
         $this->current_semester = $sem ?: Semester::findCurrent()->semester_id;
         $this->semesters = Semester::findAllVisible();
 
-        $group_field = $this->getGroupField();
-
-        $temp = MyRealmModel::getPreparedCourses('', [
-            'group_field'         => $group_field,
-            'order_by'            => null,
-            'order'               => 'asc',
-            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
-            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ]);
-
-        $groups = [];
-        $my_sem = [];
-        foreach ($temp as $courses) {
-            foreach ($courses as $course) {
-                $my_sem[$course['seminar_id']] = $course;
-                if ($group_field) {
-                    fill_groups($groups, $course[$group_field], [
-                        'seminar_id' => $course['seminar_id'],
-                        'sem_nr'     => $course['veranstaltungsnummer'],
-                        'name'       => $course['name'],
-                        'gruppe'     => $course['gruppe']
-                    ]);
-                }
-            }
-        }
-
-        if ($group_field == 'sem_number') {
-            correct_group_sem_number($groups, $my_sem);
-        } else {
-            add_sem_name($my_sem);
-        }
-
-        sort_groups($group_field, $groups);
-
-        // Ensure that a seminar is never in multiple groups
-        $sem_ids = [];
-        foreach ($groups as $group_id => $seminars) {
-            foreach ($seminars as $index => $seminar) {
-                if (in_array($seminar['seminar_id'], $sem_ids)) {
-                    unset($seminars[$index]);
-                } else {
-                    $sem_ids[] = $seminar['seminar_id'];
-                }
-            }
-            if (empty($seminars)) {
-                unset($groups[$group_id]);
-            } else {
-                $groups[$group_id] = $seminars;
-            }
-        }
-        $this->studygroups         = $studygroups;
-        $this->groups              = $groups;
-        $this->group_names         = get_group_names($group_field, $groups);
-        $this->group_field         = $group_field;
-        $this->my_sem              = $my_sem;
-        $this->cid                 = Request::get('cid', '');
+        $this->render_vue_app(
+            Studip\VueApp::create('my-courses/ColorGroupSelector')
+                ->withProps([
+                    'store-url' => $this->store_groupsURL($studygroups),
+                    'cid'       => Request::get('option', ''),
+                ])
+                ->withStore(
+                    'MyCoursesStore',
+                    'mycoursesgroupselector',
+                    $this->helper->createVueAppData(''),
+                )
+        );
     }
 
     /**
@@ -246,33 +197,34 @@ class MyCoursesController extends AuthenticatedController
             Request::get('select_group_field', $GLOBALS['user']->cfg->MY_COURSES_GROUPING)
         );
         $gruppe = Request::getArray('gruppe');
-        if (!empty($gruppe)) {
-            foreach ($gruppe as $key => $value) {
-                $updated = CourseMember::findEachBySQL(
-                    function (CourseMember $cm) use ($value) {
-                        $cm->gruppe = $value;
-                        $cm->store();
+
+        if (count($gruppe) > 0) {
+            CourseMember::findEachBySQL(
+                function (CourseMember $member) use (&$gruppe) {
+                    $member->gruppe = $gruppe[$member->seminar_id];
+                    $member->store();
+
+                    unset($gruppe[$member->seminar_id]);
+                },
+                'user_id = ? AND Seminar_id IN (?)',
+                [
+                    User::findCurrent()->id,
+                    array_keys($gruppe)
+                ]
+            );
+
+            if (count($gruppe) > 0 && $deputies_enabled) {
+                Deputy::findEachBySQL(
+                    function (Deputy $deputy) use ($gruppe) {
+                        $deputy->gruppe = $gruppe[$deputy->range_id];
+                        $deputy->store();
                     },
-                    'Seminar_id = ? AND user_id = ?',
+                    'user_id = ? AND range_id IN ?',
                     [
-                        $key,
-                        $GLOBALS['user']->id
+                        User::findCurrent()->id,
+                        array_keys($gruppe),
                     ]
                 );
-
-                if ($deputies_enabled && !$updated) {
-                    Deputy::findEachBySQL(
-                        function (Deputy $deputy) use ($value) {
-                            $deputy->gruppe = $value;
-                            $deputy->store();
-                        },
-                        'range_id = ? AND user_id = ?',
-                        [
-                            $key,
-                            $GLOBALS['user']->id
-                        ]
-                    );
-                }
             }
         }
 
@@ -653,125 +605,9 @@ class MyCoursesController extends AuthenticatedController
         $sem_key     = $this->getSemesterKey();
         $group_field = $this->getGroupField();
 
-        $sem_courses  = MyRealmModel::getPreparedCourses($sem_key, [
-            'group_field'         => $group_field,
-            'order_by'            => null,
-            'order'               => 'asc',
-            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
-            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ]);
+        $sem_courses  = $this->helper->getCourses($sem_key, $group_field);
 
-        return $this->getMyCoursesData($sem_courses, $group_field);
-    }
-
-    /**
-     * Get the data array for presenting the course list in Vue.
-     *
-     * @param array|null $sem_courses
-     * @param string $group_field
-     * @return array{
-     *     courses: array,
-     *     groups: array,
-     *     user_id: string,
-     *     config: array{
-     *         allow_dozent_visibility: bool,
-     *         open_groups: array,
-     *         sem_number: bool,
-     *         display_type: string,
-     *         responsive_type: string,
-     *         navigation_show_only_new: bool,
-     *         group_by: string
-     *     }
-     * }
-     */
-    private function getMyCoursesData(?array $sem_courses, string $group_field): array
-    {
-        $sem_data = Semester::getAllAsArray();
-        $temp_courses = [];
-        $groups = [];
-
-        if (is_array($sem_courses)) {
-            foreach ($sem_courses as $_outer_index => $_outer) {
-                if ($group_field === 'sem_number') {
-                    $_courses = [];
-
-                    foreach ($_outer as $course) {
-                        $_courses[$course['seminar_id']] = $course;
-                        if (!empty($course['children']) && is_array($course['children'])) {
-                            foreach ($course['children'] as $child) {
-                                $_courses[$child['seminar_id']] = $child;
-                            }
-                        }
-                    }
-
-                    if ($_outer_index) {
-                        $groups[] = [
-                            'id' => $_outer_index,
-                            'name' => (string)$sem_data[$_outer_index]['name'],
-                            'data' => [
-                                [
-                                    'id' => md5($_outer_index),
-                                    'label' => false,
-                                    'ids' => array_keys($_courses),
-                                ],
-                            ],
-                        ];
-                    }
-                    $temp_courses = array_merge($temp_courses, $_courses);
-                } else {
-                    $count = 1;
-                    $_groups = [];
-                    foreach ($_outer as $_inner_index => $_inner) {
-                        $_courses = [];
-
-                        foreach ($_inner as $course) {
-                            $_courses[$course['seminar_id']] = $course;
-                            if (isset($course['children']) && is_array($course['children'])) {
-                                foreach ($course['children'] as $child) {
-                                    $_courses[$child['seminar_id']] = $child;
-                                }
-                            }
-                        }
-
-                        $label = $_inner_index;
-                        if ($group_field === 'sem_tree_id' && !$label) {
-                            $label = _('keine Zuordnung');
-                        } elseif ($group_field === 'gruppe') {
-                            $label = _('Gruppe') . ' ' . $count++;
-                        }
-
-                        $_groups[] = [
-                            'id' => md5($_outer_index . $_inner_index),
-                            'label' => $label,
-                            'ids' => array_keys($_courses),
-                        ];
-
-                        $temp_courses = array_merge($temp_courses, $_courses);
-                    }
-
-                    if ($_outer_index) {
-                        $groups[] = [
-                            'id' => $_outer_index,
-                            'name' => (string)$sem_data[$_outer_index]['name'],
-                            'data' => $_groups,
-                        ];
-                    }
-                }
-            }
-        }
-
-        return [
-            'setCourses' => $this->sanitizeNavigations(array_map([$this, 'convertCourse'], $temp_courses)),
-            'setGroups'  => $groups,
-            'setUserId'  => $GLOBALS['user']->id,
-            'setConfig'  => [
-                'allow_dozent_visibility'  => Config::get()->ALLOW_DOZENT_VISIBILITY,
-                'open_groups'              => array_values($GLOBALS['user']->cfg->MY_COURSES_OPEN_GROUPS),
-                'sem_number'               => Config::get()->IMPORTANT_SEMNUMBER,
-                'view_settings'            => $GLOBALS['user']->cfg->MY_COURSES_VIEW_SETTINGS,
-                'group_by'                 => $this->getGroupField(),
-            ],
-        ];
+        return $this->helper->getVueAppData($sem_courses, $group_field);
     }
 
     /**
@@ -942,137 +778,6 @@ class MyCoursesController extends AuthenticatedController
         );
     }
 
-    private function convertCourse($course)
-    {
-        $is_teacher = in_array($course['user_status'], ['tutor', 'dozent']);
-
-        $avatar = $course['sem_class']['studygroup_mode']
-                ? StudygroupAvatar::getAvatar($course['seminar_id'])
-                : CourseAvatar::getAvatar($course['seminar_id']);
-
-        $extra_navigation = false;
-        if ($is_teacher) {
-            $adminmodule = $course['sem_class']->getAdminModuleObject();
-            if ($adminmodule) {
-                $adminnavigation = $adminmodule->getIconNavigation($course['seminar_id'], 0, $GLOBALS['user']->id);
-                $extra_navigation = [
-                    'url'   => URLHelper::getURL($adminnavigation->getURL(), ['cid' => $course['seminar_id']]),
-                    'icon'  => $adminnavigation->getImage()->getShape(),
-                    'label' => $adminnavigation->getLinkAttributes()['title'] ?? _('Verwaltung'),
-                ];
-            }
-        }
-
-        return [
-            'id'                => (string) $course['seminar_id'],
-            'name'              => (string) $course['name'],
-            'number'            => (string) $course['veranstaltungsnummer'],
-            'group'             => (int) $course['gruppe'],
-            'admission_binding' => (bool) $course['admission_binding'],
-            'children'          => array_column($course['children'] ?? [], 'seminar_id'),
-            'parent'            => $course['parent_course'] ?? null,
-
-            'is_teacher'    => in_array($course['user_status'], ['tutor', 'dozent']),
-            'is_studygroup' => (bool) $course['sem_class']['studygroup_mode'],
-            'is_hidden'     => !$course['visible'],
-            'is_deputy'     => (bool) $course['is_deputy'],
-            'is_group'      => (bool) $course['is_group'],
-
-            'avatar' => $avatar->getURL(Avatar::MEDIUM),
-
-            'navigation'       => $this->reduceNavigation($course['navigation']),
-            'extra_navigation' => $extra_navigation,
-        ];
-    }
-
-    private function reduceNavigation($nav)
-    {
-        if (!$nav) {
-            return [];
-        }
-
-        $result = [];
-        foreach (MyRealmModel::array_rtrim($nav) as $key => $n) {
-            if (!$n || !$n->isVisible(true)) {
-                $item = false;
-            } else {
-                $attr = $n->getLinkAttributes();
-                if (empty($attr['title']) && $n->getImage()) {
-                    $attr['title'] = (string) ($n->getImage()->getAttributes()['title'] ?? '');
-                }
-                if (empty($attr['title'])) {
-                    $attr['title'] = (string) $n->getTitle();
-                }
-                $attr['title'] = (string) $attr['title'];
-
-                $item = [
-                    'url'       => $n->getURL(),
-                    'icon'      => $this->convertIcon($n->getImage()),
-                    'attr'      => $attr,
-                    'important' => $n->getImage()->signalsAttention(),
-                ];
-            }
-            $result[$key] = $item;
-        }
-
-        return $result;
-    }
-
-    private function sanitizeNavigations(array $courses)
-    {
-        // Count occurences of slots
-        $counters = [];
-        foreach ($courses as $course) {
-            foreach ($course['navigation'] as $key => $value) {
-                if (!isset($counters[$key])) {
-                    $counters[$key] = 0;
-                }
-                if ($value) {
-                    $counters[$key] += 1;
-                }
-            }
-        }
-
-        // Detect which slots are not set at all
-        $remove = array_keys(array_filter($counters, function ($counter) {
-            return !$counter;
-        }));
-
-        // Set positions by predefined positions without the always empty slots
-        $positions = array_diff(array_keys(MyRealmModel::getDefaultModules()), $remove);
-
-        // Get other positions based on count
-        arsort($counters);
-        foreach ($counters as $key => $count) {
-            if ($count && !in_array($key, $positions)) {
-                $positions[] = $key;
-            }
-        }
-
-        // Sort and filter course navigations
-        return array_map(
-            function ($course) use ($positions) {
-                $course['navigation'] = array_filter($course['navigation'], function ($key) use ($positions) {
-                    return in_array($key, $positions);
-                }, ARRAY_FILTER_USE_KEY);
-                uksort($course['navigation'], function ($a, $b) use ($positions) {
-                    return array_search($a, $positions) - array_search($b, $positions);
-                });
-                $course['navigation'] = array_values($course['navigation']);
-                return $course;
-            },
-            $courses
-        );
-    }
-
-    private function convertIcon(Icon $icon)
-    {
-        return [
-            'role' => $icon->getRole(),
-            'shape' => $icon->getShape(),
-        ];
-    }
-
     private function getSemesterKey()
     {
         $config_sem = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE;
@@ -1104,7 +809,7 @@ class MyCoursesController extends AuthenticatedController
     {
         $group_field = $GLOBALS['user']->cfg->MY_COURSES_GROUPING;
 
-        $forced_grouping = in_array(Config::get()->MY_COURSES_FORCE_GROUPING, getValidGroupingFields())
+        $forced_grouping = in_array(Config::get()->MY_COURSES_FORCE_GROUPING, $this->getValidGroupingFields())
                          ? Config::get()->MY_COURSES_FORCE_GROUPING
                          : 'sem_number';
 
@@ -1112,7 +817,7 @@ class MyCoursesController extends AuthenticatedController
             $forced_grouping = 'sem_number';
         }
 
-        if (!$group_field || !in_array($group_field, getValidGroupingFields())) {
+        if (!$group_field || !in_array($group_field, $this->getValidGroupingFields())) {
             $group_field = 'sem_number';
         }
 
@@ -1121,6 +826,24 @@ class MyCoursesController extends AuthenticatedController
         }
 
         return $group_field === 'not_grouped' ? 'sem_number' : $group_field;
+    }
+
+    private function getValidGroupingFields(): array
+    {
+        $valid = [
+            'not_grouped',
+            'sem_number',
+            'sem_tree_id',
+            'sem_status',
+            'gruppe',
+            'dozent_id',
+        ];
+
+        if (LvgruppeSeminar::countBySql('1') > 0) {
+            $valid[] = 'mvv';
+        }
+
+        return $valid;
     }
 
     /**

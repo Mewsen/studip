@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use '../../assets/stylesheets/mixins.scss';
+@use '../../../assets/stylesheets/mixins.scss';
 
 .my-courses-color-picker {
     list-style: none;

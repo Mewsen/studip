@@ -1,6 +1,4 @@
 <?php
-require_once 'lib/meine_seminare_func.inc.php';
-
 class MyInstitutesController extends AuthenticatedController
 {
     public function before_filter(&$action, &$args)

@@ -46,9 +46,12 @@ STUDIP.ready(() => {
         const promises = [Promise.resolve()];
 
         for (const [index, name] of Object.entries(config.stores)) {
+
             promises.push(
                 import(`../../../vue/store/${name}.js`).then(storeConfig => {
-                    store.registerModule(index, storeConfig.default);
+                    if (!store.hasModule(index)) {
+                        store.registerModule(index, storeConfig.default);
+                    }
 
                     const dataElement = document.getElementById(`vue-store-data-${index}`);
                     if (dataElement) {
@@ -106,5 +109,10 @@ STUDIP.ready(() => {
         plugins.forEach(plugin => app.use(plugin, { store }))
 
         app.mount(node);
+
+        const dialog = node.closest('.studip-dialog');
+        if (dialog !== null) {
+            $(dialog).on('dialogclose', () => app.unmount());
+        }
     });
 });

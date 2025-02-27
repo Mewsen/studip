@@ -15,6 +15,12 @@
 
 require_once 'lib/messaging.inc.php';
 
+/**
+ * @property User $user
+ * @property bool $restricted
+ * @property UserConfig $config
+ * @property email_validation_class $validator
+ */
 abstract class Settings_SettingsController extends AuthenticatedController
 {
     // Stores message which shall be send to the user via email

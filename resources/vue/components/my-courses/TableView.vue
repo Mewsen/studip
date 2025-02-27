@@ -56,9 +56,8 @@
                         {{ course.number }}
                     </td>
                     <td :class="{'subcourse-indented': isChild(course)}">
-                        <a :href="urlFor('dispatch.php/course/go', {to: course.id})">
-                            {{ getCourseName(course, getConfig('sem_number') && responsiveDisplay) }}
-                            <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
+                        <a :href="getCourseURL(course)">
+                            {{ getCourseName(course) }}
                         </a>
                         <span v-if="course.is_hidden" class="course-hidden-info">
                             {{ $gettext('[versteckt]') }}
@@ -72,11 +71,11 @@
                                 ></studip-action-menu>
                             </div>
 
-                            <my-courses-navigation :navigation="getNavigationForCourse(course)" :icon-size="iconSize"></my-courses-navigation>
+                            <navigation :navigation="getNavigationForCourse(course)" :icon-size="iconSize"></navigation>
                         </div>
                     </td>
                     <td v-if="!responsiveDisplay" class="course-navigation">
-                        <my-courses-navigation :navigation="getNavigationForCourse(course, true)" :icon-size="iconSize"></my-courses-navigation>
+                        <navigation :navigation="getNavigationForCourse(course, true)" :icon-size="iconSize"></navigation>
                     </td>
                     <td v-if="!responsiveDisplay" class="actions">
                         <studip-action-menu :items="getActionMenuForCourse(course)"></studip-action-menu>
@@ -88,7 +87,7 @@
 </template>
 
 <script>
-import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
+import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
 
 const defaultIconSize = parseInt(
     getComputedStyle(document.body).getPropertyValue('--icon-size-default'),
@@ -96,7 +95,7 @@ const defaultIconSize = parseInt(
 );
 
 export default {
-    name: 'MyCoursesTables',
+    name: 'TableView',
     mixins: [MyCoursesMixin],
     props: {
         iconSize: {
