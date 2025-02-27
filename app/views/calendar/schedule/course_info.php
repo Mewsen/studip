@@ -52,7 +52,7 @@
                     <? endforeach ?>
                 </ul>
                 <h3><?= _('Veranstaltungszeiten') ?></h3>
-                <?= $course->getAllDatesInSemester()->toHtml() ?>
+                <?= $course->getAllDatesInSemester()->toHtml(false, true) ?>
             </section>
             <section>
                 <?
