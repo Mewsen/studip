@@ -1,0 +1,53 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #28497c;
+  --ifm-color-primary-dark: #28497CFF;
+  --ifm-color-primary-darker: #28497c;
+  --ifm-color-primary-darkest: #1f3f70;
+  --ifm-color-primary-light: #7e92b0;
+  --ifm-color-primary-lighter: #a9b6cb;
+  --ifm-color-primary-lightest: #d4dbe5;
+  --ifm-code-font-size: 95%;
+  --base-color: #28497c;
+  --content-color-20: #e7ebf1;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #7e92b0;
+  --ifm-color-primary-dark: #a9b6cb;
+  --ifm-color-primary-darker: #d4dbe5;
+  --ifm-color-primary-darkest: #536d96;
+  --ifm-color-primary-light: #36598f;
+  --ifm-color-primary-lighter: #28497c;
+  --ifm-color-primary-lightest: #1f3f70;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: #d60000;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+a {
+  color: var(--base-color);
+}
+
+.main-entry-button {
+ color: var(--content-color-20) !important;
+}
+
+.main-entry-button:hover, .main-entry-button:active {
+  color: var(--ifm-color-gray-900) !important;
+}
+
+.landing-page-box img {
+  width: 120px;
+}

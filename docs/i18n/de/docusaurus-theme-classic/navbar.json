@@ -1,0 +1,26 @@
+{
+  "logo.alt": {
+    "message": "Stud.IP Entwicklung",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Quickstart": {
+    "message": "Quickstart",
+    "description": "Navbar item with label Quickstart"
+  },
+  "item.label.Dokumentation": {
+    "message": "Dokumentation",
+    "description": "Navbar item with label Dokumentation"
+  },
+  "item.label.Organisation": {
+    "message": "Organisation",
+    "description": "Navbar item with label Organisation"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Stud.IP GitLab": {
+    "message": "Stud.IP GitLab",
+    "description": "Navbar item with label Stud.IP GitLab"
+  }
+}

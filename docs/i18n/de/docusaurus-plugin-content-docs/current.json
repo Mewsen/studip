@@ -1,0 +1,54 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Plugins": {
+    "message": "Plugins",
+    "description": "The label for category Plugins in sidebar docs"
+  },
+  "sidebar.docs.category.Visual Style Guide": {
+    "message": "Visual Style Guide",
+    "description": "The label for category Visual Style Guide in sidebar docs"
+  },
+  "sidebar.docs.category.JSON:API": {
+    "message": "JSON:API",
+    "description": "The label for category JSON:API in sidebar docs"
+  },
+  "sidebar.docs.category.REST-API": {
+    "message": "REST-API",
+    "description": "The label for category REST-API in sidebar docs"
+  },
+  "sidebar.docs.category.Barrierefreiheit": {
+    "message": "Barrierefreiheit",
+    "description": "The label for category Barrierefreiheit in sidebar docs"
+  },
+  "sidebar.docs.category.Exporte": {
+    "message": "Exporte",
+    "description": "The label for category Exporte in sidebar docs"
+  },
+  "sidebar.docs.category.Testing": {
+    "message": "Testing",
+    "description": "The label for category Testing in sidebar docs"
+  },
+  "sidebar.docs.category.Vue.js": {
+    "message": "Vue.js",
+    "description": "The label for category Vue.js in sidebar docs"
+  },
+  "sidebar.docs.category.Funktionen": {
+    "message": "Funktionen",
+    "description": "The label for category Funktionen in sidebar docs"
+  },
+  "sidebar.docs.link.Erstellung eines Plugins": {
+    "message": "Erstellung eines Plugins",
+    "description": "The label for link Erstellung eines Plugins in sidebar docs, linking to https://develop.studip.de/studip/dispatch.php/document/download/5747961f81b385b1520cf7dc393f1db6"
+  },
+  "sidebar.quickstartSidebar.category.Quickstart": {
+    "message": "Quickstart",
+    "description": "The label for category Quickstart in sidebar quickstartSidebar"
+  },
+  "sidebar.rulesSidebar.category.Allgemeines": {
+    "message": "Allgemeines",
+    "description": "The label for category Allgemeines in sidebar rulesSidebar"
+  }
+}
