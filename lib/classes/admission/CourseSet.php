@@ -88,6 +88,7 @@ class CourseSet implements UserFilterRange
         $this->algorithm = new RandomAlgorithm();
         // Autoload admission rules.
         AdmissionRule::getAvailableAdmissionRules();
+        UserFilterField::getAvailableFilterFields();
         if ($setId) {
             $this->load();
         }
