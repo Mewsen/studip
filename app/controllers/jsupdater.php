@@ -274,7 +274,7 @@ class JsupdaterController extends AuthenticatedController
                 if ($page->isEditable()) {
                     $onlineData = [
                         'user_id' => $user->id,
-                        'page_id' => $page->id
+                        'page_id' => $page->id,
                     ];
                     $online = WikiOnlineEditingUser::findOneBySQL(
                         '`user_id` = :user_id AND `page_id` = :page_id',
@@ -307,7 +307,7 @@ class JsupdaterController extends AuthenticatedController
                                 $online->editing_request = false;
                                 $online->editing = true;
                             }
-                        } elseif (!$pageInfo['online']) {
+                        } else {
                             $other_users = WikiOnlineEditingUser::countBySql('`page_id` = ? AND `user_id` != ?', [
                                 $page->id,
                                 $user->id,
