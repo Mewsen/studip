@@ -215,7 +215,9 @@ export default {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
     },
     beforeUnmount() {
-        this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
+        if (!this.emptyBlubber) {
+            this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
+        }
     },
     beforeUpdate() {
         if (!this.emptyBlubber) {
