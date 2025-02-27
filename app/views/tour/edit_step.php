@@ -13,7 +13,7 @@ use Studip\Button, Studip\LinkButton;
 
 <div id="edit_tour_step" class="edit_tour_step">
     <form id="edit_tour_form" class="default"
-          action="<?= $controller->url_for('tour/edit_step/' . $tour_id . '/' . $step->step . '/save') ?>"
+          action="<?= $controller->link_for('tour/edit_step/' . $tour_id . '/' . $step->step . '/save') ?>"
           method="post">
         <?= CSRFProtection::tokenTag(); ?>
         <fieldset>
@@ -64,7 +64,7 @@ use Studip\Button, Studip\LinkButton;
 
             <? endif ?>
         </fieldset>
-    <? if ($step->css_selector) : ?>
+    <? if (isset($step->css_selector)) : ?>
         <fieldset>
             <legend><?= _('Orientierung') ?></legend>
             <div class="tour_step_orientation">
@@ -180,7 +180,7 @@ use Studip\Button, Studip\LinkButton;
             <?= Button::createAccept(_('Speichern'), 'confirm', ['data-dialog' => '']) ?>
         <? else: ?>
             <?= Button::createAccept(_('Speichern'), 'submit') ?>
-        <? endif; ?>
+        <? endif ?>
             <?= LinkButton::createCancel(_('Abbrechen'), $controller->url_for('tour/admin_overview'), []) ?>
         </footer>
     </form>
@@ -188,7 +188,7 @@ use Studip\Button, Studip\LinkButton;
 
 <script>
 jQuery(function ($) {
-    $('input[name=step_css]').change(function () {
+    $('input[name=step_css]').on('change', function () {
         if ($('input[name=step_css]').val()) {
             $('.tour_step_orientation').show();
         } else {
