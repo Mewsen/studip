@@ -123,12 +123,30 @@ class Calendar_ContentboxController extends StudipController
             foreach ($relevant_courses as $course) {
                 $course_dates = $course->getDatesWithExdates()->findBy('end_time', [$this->start, $this->start + $this->timespan], '><');
                 foreach ($course_dates as $course_date) {
-                    $this->titles[$course_date->id] = sprintf(
-                        '%1$s: %2$s',
-                        $course_date->course->name,
-                        $course_date->getFullName()
-                    );
-                    $this->termine[] = $course_date;
+                    //Check if the date belongs to a regular course date and if that is
+                    //made invisible via the schedule:
+                    $show_date = true;
+                    if (!empty($course_date->cycle)) {
+                        $show_date = ScheduleCourseDate::countBySql(
+                            "`user_id` = :user_id
+                            AND `course_id` = :course_id
+                            AND `metadate_id` = :metadate_id
+                            AND `visible` = '0'",
+                            [
+                                'user_id'     => $id,
+                                'course_id'   => $course_date->range_id,
+                                'metadate_id' => $course_date->metadate_id
+                            ]
+                        ) === 0;
+                    }
+                    if ($show_date) {
+                        $this->titles[$course_date->id] = sprintf(
+                            '%1$s: %2$s',
+                            $course_date->course->name,
+                            $course_date->getFullName()
+                        );
+                        $this->termine[] = $course_date;
+                    }
                 }
             }
         }
