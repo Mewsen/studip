@@ -566,21 +566,15 @@ $sidebarOut: -330px;
 
             ul {
                 li {
-                    &:not(#responsive-toggle-fullscreen):not(#responsive-toggle-focusmode) {
-                        padding: 0;
-                    }
-
-                    .helpbar-container {
-                        right: 0;
-                    }
+                    margin: 2px 0 0;
+                    padding: 0;
                 }
             }
-        }
 
-        #responsive-toggle-fullscreen,
-        #responsive-toggle-focusmode {
-            margin-top: 4px;
-            padding: 4px 0 0;
+            .helpbar {
+                padding-top: 5px;
+                padding-right: 9px;
+            }
         }
 
         #responsive-toggle-fullscreen {
