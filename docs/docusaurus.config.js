@@ -76,13 +76,5 @@ module.exports = {
       },
     ],
   ],
-  plugins: [
-    [
-      require.resolve("@cmfcmf/docusaurus-search-local"),
-      {
-        language: 'de'// Options here
-      },
-    ],
-  ],
   themes: ['@docusaurus/theme-mermaid'],
 };
