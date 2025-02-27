@@ -112,6 +112,7 @@ td.rahmen_table_row_odd {
     display: none;
 }
 
+
 #main-footer {
     width: 100%;
     text-align: center;
@@ -192,4 +193,36 @@ a.link-extern {
 
 .formatted-content {
     display: inline;
+}
+
+
+#context-title {
+    font-size: 24px;
+    color: var(--color--font-primary);
+    height: 30px;
+    padding: 10px 15px 5px 15px;
+    margin-bottom: 10px;
+    max-height: 30px;
+    overflow: hidden;
+    background-color: var(--color--main-navigation-background);
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 110px);
+    white-space: nowrap;
+
+    > .context-avatar {
+        margin: 0 5px 0 -6px;
+        vertical-align: top;
+        max-width: 36px;
+        max-height: 36px;
+    }
+
+    > .course-type {
+        font-style: normal;
+    }
+    > .course-name {
+        font-weight: 700;
+    }
+    > .course-semester {
+        font-style: oblique;
+    }
 }
