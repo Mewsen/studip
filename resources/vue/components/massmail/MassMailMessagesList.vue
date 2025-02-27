@@ -43,7 +43,7 @@
                             type="info">
             {{ $gettext('Es wurden keine Nachrichten gefunden.') }}
         </studip-message-box>
-        <mounting-portal mount-to="#message-views">
+        <teleport to="#message-views">
             <sidebar-widget id="views-widget" class="sidebar-widget" :title="$gettext('Ansichten')">
                 <template #content>
                     <ul class="widget-list widget-links sidebar-views"
@@ -69,7 +69,7 @@
                     </ul>
                 </template>
             </sidebar-widget>
-        </mounting-portal>
+        </teleport>
     </div>
 </template>
 
