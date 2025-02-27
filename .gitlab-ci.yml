@@ -71,6 +71,7 @@ docs:
   script:
   - apk update && apk --no-cache add git
   - cd docs
+  - pwd
   - yarn install
   - yarn build
   - mv ./build ../public
