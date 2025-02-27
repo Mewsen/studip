@@ -43,7 +43,7 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 /* ckeditor third party */
-import Mathematics from 'ckeditor5-math/src/math';
+import Mathematics from '@isaul32/ckeditor5-math/src/math';
 /* ckeditor elan */
 import StudipA11YDialog from '../cke/studip-a11y-dialog/a11y-dialog.js';
 import StudipUpload from '../cke/StudipUpload.js';
