@@ -16,7 +16,7 @@
                 <form class="default" @submit.prevent="">
                     <label class="col-3">
                         {{ $gettext('Beschriftung') }}
-                        <input type="text" v-model="currentLabel" @focusout="buildChart" />
+                        <input type="text" v-model="currentLabel"  />
                     </label>
                     <label class="col-3">
                         {{ $gettext('Typ') }}
@@ -25,7 +25,6 @@
                             :options="chartTypes"
                             :reduce="chartTypes => chartTypes.value"
                             :clearable="false"
-                            @option:selected="buildChart"
                         >
                             <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
@@ -40,6 +39,7 @@
                     </label>
                 </form>
                 <button class="button add" @click="addItem">{{ $gettext('Datensatz hinzufügen') }}</button>
+                <button class="button" @click="buildChart">{{ $gettext('Diagramm aktualisieren') }}</button>
                 <courseware-tabs
                     v-if="currentContent.length > 0"
                     :setSelected="setItemTab"
@@ -56,7 +56,7 @@
                         <form class="default" @submit.prevent="">
                             <label class="col-1">
                                 {{ $gettext('Wert') }}
-                                <input type="number" v-model="item.value" @change="buildChart" />
+                                <input type="number" v-model="item.value" />
                             </label>
                             <label class="col-2">
                                 {{ $gettext('Farbe') }}
@@ -66,7 +66,6 @@
                                     label="rgb"
                                     :clearable="false"
                                     v-model="item.color"
-                                    @option:selected="buildChart"
                                 >
                                     <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
@@ -84,7 +83,7 @@
                             </label>
                             <label class="col-3">
                                 {{ $gettext('Bezeichnung') }}
-                                <input type="text" v-model="item.label" @focusout="buildChart" />
+                                <input type="text" v-model="item.label" />
                             </label>
                             <button
                                 v-if="currentContent.length > 1"
@@ -166,6 +165,7 @@ export default {
     },
     mounted() {
         this.initCurrentData();
+        this.buildChart();
     },
     methods: {
         ...mapActions({
@@ -197,11 +197,13 @@ export default {
         },
 
         removeItem(recordIndex) {
-            this.currentContent = this.currentContent.filter((val, index) => {
+            const content = this.currentContent.filter((val, index) => {
                 return !(index === recordIndex);
             });
-            this.buildChart();
-            this.$nextTick(() => { this.setItemTab = 0; });
+            this.currentContent = [];
+            this.$nextTick().then(() => {
+                this.currentContent = content;
+            });
         },
 
         buildChart() {
@@ -314,11 +316,6 @@ export default {
                     });
                     break;
             }
-        },
-    },
-    watch: {
-        currentType() {
-            this.buildChart();
         },
     },
 };
