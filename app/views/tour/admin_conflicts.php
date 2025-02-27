@@ -9,16 +9,16 @@
 use Studip\LinkButton;
 ?>
 <h1><?= _('Versions-Konflikte der Touren') ?></h1>
-<form action="<?= $controller->url_for('tour/admin_conflicts') ?>" id="admin_tour_form" method="post">
+<form action="<?= $controller->link_for('tour/admin_conflicts') ?>" id="admin_tour_form" method="post">
     <?= CSRFProtection::tokenTag(); ?>
 <? if (count($conflicts) > 0) : ?>
     <? foreach ($conflicts as $conflict) : ?>
         <table class="default">
             <? $keys = array_keys($conflict); ?>
             <colgroup>
-                <col width="20%">
-                <col width="40%">
-                <col width="40%">
+                <col style="width: 20%">
+                <col style="width: 40%">
+                <col style="width: 40%">
             </colgroup>
             <tbody>
                 <tr>

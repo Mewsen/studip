@@ -11,7 +11,7 @@ use Studip\Button;
 ?>
 <?= $delete_question ?>
 
-<form action="<?= $controller->url_for('tour/admin_overview') ?>" id="admin_tour_form" method="post" class="default">
+<form action="<?= $controller->link_for('tour/admin_overview') ?>" id="admin_tour_form" method="post" class="default">
     <input type="hidden" name="tour_filter" value="set">
     <input type="hidden" name="tour_filter_term" value="<?= htmlReady($tour_searchterm) ?>">
     <?= CSRFProtection::tokenTag(); ?>
@@ -47,7 +47,7 @@ use Studip\Button;
                 <th class="actions"><?= _('Aktionen') ?></th>
             </tr>
         </thead>
-    <? if (count($tours)) : ?>
+    <? if (!empty($tours)) : ?>
         <tbody>
         <? foreach ($tours as $tour_id => $tour) : ?>
             <tr>
