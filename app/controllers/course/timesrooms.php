@@ -489,11 +489,15 @@ class Course_TimesroomsController extends AuthenticatedController
                     $singledate->bookRoom($room_id, $preparation_time ?: 0);
                 }
             } else if ($old_room_id && !$singledate->resource_id) {
-                $this->course->createInfo(
-                    sprintf(
-                        _('Die Raumbuchung für den Termin %s wurde aufgehoben, da die neuen Zeiten außerhalb der alten liegen!'),
-                        '<strong>'.htmlReady( $singledate->toString()) .'</strong>'
-                    ));
+                if ($singledate->bookRoom($old_room_id)) {
+                    $this->course->appendMessages($singledate->getMessages());
+                } else {
+                    $this->course->createInfo(
+                        sprintf(
+                            _('Die Raumbuchung für den Termin %s wurde aufgehoben, da die neuen Zeiten außerhalb der alten liegen!'),
+                            '<strong>'.htmlReady( $singledate->toString()) .'</strong>'
+                        ));
+                }
             } else if (Request::get('room_id_parameter')) {
                 $this->course->createInfo(
                     _('Um eine Raumbuchung durchzuführen, müssen Sie einen Raum aus dem Suchergebnis auswählen!')
