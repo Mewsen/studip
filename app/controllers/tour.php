@@ -45,7 +45,7 @@ class TourController extends AuthenticatedController
         ];
 
         $this->help_admin = $GLOBALS['perm']->have_perm('root')
-                         || $GLOBALS['user']->getAuthenticatedUser()->hasRole('Hilfe-Administrator(in)');
+            || $GLOBALS['user']->getAuthenticatedUser()->hasRole('Hilfe-Administrator(in)');
     }
 
     /**
@@ -738,12 +738,12 @@ class TourController extends AuthenticatedController
                     }
                 }
                 $this->redirect('tour/admin_details?tour_name=' . Request::get('tour_name')
-                                . '&tour_language=' . Request::get('tour_language')
-                                . '&tour_description=' . Request::get('tour_description')
-                                . '&tour_type=' . Request::get('tour_type')
-                                . '&tour_access=' . Request::get('tour_access')
-                                . '&tour_startpage=' . Request::get('tour_startpage')
-                                . $roles);
+                    . '&tour_language=' . Request::get('tour_language')
+                    . '&tour_description=' . Request::get('tour_description')
+                    . '&tour_type=' . Request::get('tour_type')
+                    . '&tour_access=' . Request::get('tour_access')
+                    . '&tour_startpage=' . Request::get('tour_startpage')
+                    . $roles);
             }
         }
         $this->redirect('tour/admin_details/' . $this->tour->tour_id);
