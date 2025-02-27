@@ -146,7 +146,6 @@
         "vue-resizable": "^2.1.7",
         "vue-router": "^4.5.0",
         "vue-select": "^4.0.0-beta.6",
-        "vue-typer": "^1.2.0",
         "vue3-gettext": "^3.0.0-beta.5",
         "vuedraggable": "^4.1.0",
         "vuex": "^4.1.0",

@@ -1,24 +1,17 @@
 <template>
     <div class="cw-block cw-block-typewriter">
         <courseware-default-block
-        :block="block"
-        :canEdit="canEdit"
-        :isTeacher="isTeacher"
-        :preview="true"
-        @showEdit="initCurrentData"
-        @storeEdit="storeText"
-        @closeEdit="initCurrentData"
+            :block="block"
+            :canEdit="canEdit"
+            :isTeacher="isTeacher"
+            :preview="true"
+            @showEdit="initCurrentData"
+            @storeEdit="storeText"
+            @closeEdit="initCurrentData"
         >
             <template #content>
-                <div class="cw-typewriter-content">
-                    <vue-typer
-                        :text="currentText"
-                        initial-action="typing"
-                        :repeat="0"
-                        :type-delay="typeDelay"
-                        caret-animation="smooth"
-                        :class="[currentFont, currentSize]"
-                    ></vue-typer>
+                <div class="cw-typewriter-content" :class="[currentFont, currentSize]">
+                    <span class="typewriter-text">{{ typedText }}</span>
                 </div>
             </template>
             <template v-if="canEdit" #edit>
@@ -69,13 +62,12 @@
 <script>
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
-import { VueTyper } from 'vue-typer';
 import { mapActions } from 'vuex';
 
 export default {
     name: 'courseware-typewriter-block',
     mixins: [blockMixin],
-    components: Object.assign(BlockComponents, { VueTyper }),
+    components: Object.assign(BlockComponents, {}),
     props: {
         block: Object,
         canEdit: Boolean,
@@ -85,16 +77,12 @@ export default {
         return {
             speeds: [200, 100, 50, 25],
             typing: false,
-            speedClasses: [
-                'cw-typewriter-letter-fadein-slow',
-                'cw-typewriter-letter-fadein-normal',
-                'cw-typewriter-letter-fadein-fast',
-                'cw-typewriter-letter-fadein-veryfast',
-            ],
             currentText: ' ',
             currentSpeed: '',
             currentFont: '',
             currentSize: '',
+            typedText: '',
+            currentIndex: 0,
         };
     },
     computed: {
@@ -114,6 +102,11 @@ export default {
             return this.block?.attributes?.payload?.size;
         }
     },
+    watch: {
+        currentText(newText) {
+            this.startTyping(newText);
+        }
+    },
     mounted() {
         this.initCurrentData();
     },
@@ -126,11 +119,24 @@ export default {
             this.currentSpeed = this.speed;
             this.currentFont = this.font;
             this.currentSize = this.size;
+            this.startTyping(this.currentText);
+        },
+        startTyping(text) {
+            this.currentIndex = 0;
+            this.typedText = '';
+            this.typingEffect(text);
+        },
+        typingEffect(text) {
+            if (this.currentIndex < text.length) {
+                this.typedText += text.charAt(this.currentIndex);
+                this.currentIndex++;
+                setTimeout(() => this.typingEffect(text), this.typeDelay);
+            }
         },
         restartTyping() {
             let text = this.currentText;
             this.currentText = ' ';
-            this.$nextTick(()=> {
+            this.$nextTick(() => {
                 this.currentText = text;
             });
         },
@@ -151,6 +157,8 @@ export default {
     },
 };
 </script>
+
 <style scoped lang="scss">
 @import '../../../../assets/stylesheets/scss/courseware/blocks/typewriter';
+
 </style>
