@@ -249,6 +249,13 @@ class CronjobScheduler
         }
 
         foreach ($schedules as $schedule) {
+            $lock = new FileLock("cronjob-{$schedule->schedule_id}");
+
+            // Check whether a previous cronjob worker is still running.
+            if (!$lock->tryLock()) {
+                continue;
+            }
+
             $log = new CronjobLog();
             $log->schedule_id = $schedule->schedule_id;
             $log->scheduled   = $schedule->next_execution;
@@ -257,13 +264,6 @@ class CronjobScheduler
             $log->duration    = -1;
 
             try {
-                $lock = new FileLock("cronjob-{$schedule->schedule_id}");
-
-                // Check whether a previous cronjob worker is still running.
-                if (!$lock->tryLock()) {
-                    continue;
-                }
-
                 // Skip schedules with missing task classes
                 if (!$schedule->task->valid) {
                     throw new Exception(_('Die Klasse für den Cronjob-Task konnte nicht gefunden werden'));
