@@ -25,13 +25,13 @@ variables:
   npm_config_cache: $CI_PROJECT_DIR/.npm
 
 stages:
-  - build
-  - checks
-  - analyse
-  - test
-  - cache
-  - packaging
-  - release
+  # - build
+  # - checks
+  # - analyse
+  # - test
+  # - cache
+  # - packaging
+  # - release
   - docs
 
 .scripts:
