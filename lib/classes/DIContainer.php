@@ -2,6 +2,7 @@
 
 namespace Studip;
 
+use DI\Container;
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 
@@ -9,19 +10,18 @@ class DIContainer
 {
     /**
      * The current globally available container.
-     *
-     * @var static
      */
-    protected static $instance;
+    protected static ?Container $instance = null;
 
     /**
      * Get the globally available instance of the container.
      *
-     * @return ContainerInterface
+     * @return Container
+     * @throws \Exception
      */
-    public static function getInstance()
+    public static function getInstance(): Container
     {
-        if (is_null(static::$instance)) {
+        if (static::$instance === null) {
             $builder = static::createBuilder();
             static::$instance = $builder->build();
         }
@@ -32,10 +32,10 @@ class DIContainer
     /**
      * Set the instance of the container.
      *
-     * @param  \Psr\Container\ContainerInterface|null  $container
-     * @return \Psr\Container\ContainerInterface|static
+     * @param ContainerInterface|null $container
+     * @return ContainerInterface
      */
-    public static function setInstance(ContainerInterface $container = null)
+    public static function setInstance(?ContainerInterface $container = null): ContainerInterface
     {
         return static::$instance = $container;
     }
@@ -46,7 +46,7 @@ class DIContainer
     protected static function createBuilder(): ContainerBuilder
     {
         $builder = new ContainerBuilder();
-        if (\Studip\ENV == 'production') {
+        if (ENV === 'production') {
             $builder->enableCompilation(
                 self::getCompilationPath(),
                 self::getCompilationClass()
@@ -64,11 +64,17 @@ class DIContainer
         return $builder;
     }
 
+    /**
+     * Returns the path to the compiled container
+     */
     public static function getCompilationPath(): string
     {
         return $GLOBALS['TMP_PATH'];
     }
 
+    /**
+     * Returns the class of the compiled container
+     */
     public static function getCompilationClass(): string
     {
         return 'CompiledContainer';
