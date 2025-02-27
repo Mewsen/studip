@@ -88,6 +88,9 @@ export default {
             textarea.style.height = '';
             textarea.style.height = (textarea.scrollHeight + heightOffset) + 'px';
         },
+        scrollIntoView() {
+            this.$refs.textarea.scrollIntoView();
+        },
         simulateClick(event) {
             if (event.code === 'Enter') {
                 this.$refs.label.click();
@@ -112,7 +115,7 @@ export default {
     mounted() {
         this.localText = this.modelValue;
         this.$nextTick(() => {
-            this.resizeTextarea();
+            this.$refs.textarea.focus();
         });
     },
     watch: {

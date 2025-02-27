@@ -213,6 +213,10 @@ export default {
     },
     mounted() {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+
+        this.$nextTick(() => {
+            this.$refs.composer.scrollIntoView();
+        });
     },
     beforeUnmount() {
         if (!this.emptyBlubber) {
