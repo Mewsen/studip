@@ -67,7 +67,7 @@ stages:
 docs:
   stage: docs
   interruptible: true
-  image: node:22.11.0-alpine3.16
+  image: node:22-alpine3.16
   script:
   - apk update && apk --no-cache add git
   - cd docs
