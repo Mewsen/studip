@@ -65,7 +65,7 @@ stages:
      command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
 
 docs:
-  stage: build
+  stage: docs
   interruptible: true
   image: node:16.19.1-alpine3.16
   script:
