@@ -135,9 +135,9 @@ class Massmail_MessageController extends \AuthenticatedController
                         }
                     ],
                     'course_perm' => [
-                        'type' => 'select',
+                        'type' => 'multiselect',
                         'label' => _('Berechtigungsebene wählen'),
-                        'value' => $message->config['perm'] ?? 'autor',
+                        'value' => $message->config['perm'] ?? ['autor'],
                         'if' => 'target === "courses"',
                         'options' => [
                             'dozent' => get_title_for_status('dozent', 2, 1),

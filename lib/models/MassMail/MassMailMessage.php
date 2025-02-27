@@ -242,7 +242,7 @@ class MassMailMessage extends \SimpleORMap implements \UserFilterRange
                 $permission = $this->config['perm'];
 
                 $ids = DBManager::get()->fetchFirst(
-                    "SELECT DISTINCT `user_id` FROM `seminar_user` WHERE `Seminar_id` IN (:courses) AND `status` = :perm",
+                    "SELECT DISTINCT `user_id` FROM `seminar_user` WHERE `Seminar_id` IN (:courses) AND `status` IN (:perm)",
                     ['courses' => $courses, 'perm' => $permission]
                 );
 

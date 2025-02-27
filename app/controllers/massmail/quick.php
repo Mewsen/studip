@@ -20,7 +20,9 @@ class Massmail_QuickController extends \AuthenticatedController
     {
         $GLOBALS['perm']->check('admin');
 
-        Navigation::activateItem('/messaging/massmail/message');
+        if (!Request::isXhr()) {
+            Navigation::activateItem('/messaging/massmail/message');
+        }
         PageLayout::setTitle(_('Nachricht an Zielgruppe schreiben'));
 
         $message = new \MassMail\MassMailMessage();
@@ -46,9 +48,9 @@ class Massmail_QuickController extends \AuthenticatedController
                         }
                     ],
                     'course_perm' => [
-                        'type' => 'select',
+                        'type' => 'multiselect',
                         'label' => _('Berechtigungsebene wählen'),
-                        'value' => 'autor',
+                        'value' => ['autor'],
                         'options' => [
                             'dozent' => get_title_for_status('dozent', 2, 1),
                             'tutor' => get_title_for_status('tutor', 2, 1),
