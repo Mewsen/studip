@@ -81,7 +81,6 @@ class Authentication
         ) {
             $GLOBALS['user'] = new \Seminar_User($user);
             $GLOBALS['MAIL_VALIDATE_BOX'] = false;
-            sess()->destroy();
             setTempLanguage($user->id);
         }
 
