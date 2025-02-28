@@ -235,7 +235,10 @@ class MassMailMessage extends \SimpleORMap implements \UserFilterRange
             // Course members having the specified permission level.
             case 'courses':
 
-                $courses = $this->config['courses']->getArrayCopy();
+                $courses = array_map(
+                    fn ($course) => $course['id'],
+                    $this->config['courses']->getArrayCopy()
+                );
                 $permission = $this->config['perm']->getArrayCopy();
 
                 $ids = DBManager::get()->fetchFirst(

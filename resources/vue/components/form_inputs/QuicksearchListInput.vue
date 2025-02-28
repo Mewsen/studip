@@ -32,6 +32,7 @@ import quicksearch from '../Quicksearch.vue';
 export default {
     name: 'QuicksearchList',
     components: [ quicksearch ],
+    emits: ['update:modelValue'],
     props: {
         name: {
             type: String,
@@ -57,7 +58,7 @@ export default {
     },
     computed: {
         realValue() {
-            this.$emit('input', JSON.stringify(this.elements));
+            this.$emit('update:modelValue', JSON.stringify(this.elements));
             return JSON.stringify(this.elements);
         }
     },

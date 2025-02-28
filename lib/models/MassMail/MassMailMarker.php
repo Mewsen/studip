@@ -112,7 +112,7 @@ class MassMailMarker extends \SimpleORMap
                     $matches = [];
                     preg_match_all('/{{([a-zA-Z0-9\-_]+)}}/m', $replacement, $matches);
                     foreach ($matches[1] as $match) {
-                        $replacement = str_replace('{' . $match . '}',
+                        $replacement = str_replace('{{' . $match . '}}',
                             MassMailMarker::findOneByMarker(trim($match))->replaceMarker($user),
                             $replacement
                         );

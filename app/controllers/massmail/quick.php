@@ -44,7 +44,10 @@ class Massmail_QuickController extends \AuthenticatedController
                         'value' => implode(',', $courses),
                         'store' => function($value, $input) {
                             $input->getContextObject()->config = [];
-                            $input->getContextObject()->config['courses'] = explode(',', $value);
+                            $input->getContextObject()->config['courses'] = Course::findAndMapMany(
+                                fn ($course) => ['id' => $course->id, 'name' => $course->getFullname()],
+                                explode(',', $value)
+                            );
                         }
                     ],
                     'course_perm' => [
