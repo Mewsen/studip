@@ -1,3 +1,42 @@
+__??.??.2025 V 6.0__
+- System: Nachrichtenversand und Serienmails an ad hoc definierbare Zielgruppen (wie vormals beim „Garuda“-Plugin) ist jetzt im Kernsystem.
+- System: Studiengruppen wurde um nützliche Funktionen erweitert und können an Lehrveranstaltungen gekoppelt werden
+- System: Assistent für Roots nach Updates
+- System: Accountmanagement für verknüpfte ILIAS-Accounts in Stud.IP
+- System: Anzeige von ILIAS-Kursen auf "Mein Arbeitsplatz"
+- System: Erweiterte Rollenzuweisung für ILIAS-Accounts
+
+- Raumverwaltung: Einfachen Raumbuchungen kann einfacher tägliche Wiederholungen hinzugefügt werden
+
+- Barrierefreiheit: Überarbeitetet HTML-Struktur für bessere Nutzbarkeit mit Screenreadern
+
+- MVV: Stundenplanansicht für Überschneidungsfreiheitschecks
+- MVV: JsonApi-Routen zur Ausgabe eines externen modularisierten Veranstaltungsverzeichnisses
+- MVV: Sprachauswahl für Originalfassung der Modul(teil)-Deskriptoren
+
+- Veranstaltungen: LTI-Schnittstelle nun auch in Version 1.3A verfügbar, Kopplung moderner Tools ist damit möglich
+- Veranstaltungen: Erfassung der tatsächlichen Teilnehmendenzahl
+- Veranstaltungen: Das Hochladen von Dateien in den Hauptordner einer Veranstaltung lässt sich abschalten
+- Veranstaltungen: Einbau von Vips als Aufgabentool in Stud.IP (#4258)
+- Veranstaltungen: Automatisierte Angaben in Fragebögen
+- Veranstaltungen: Teilnehmende lassen sich inkl. Gruppenzugehörigkeit kopieren
+
+- Courseware: Peer-Review
+- Courseware: Rechte und Sichtbarkeit funktionieren nach unterschiedlichen Kriterien
+- Courseware: Dynamische URL ermöglicht Einsprung an spezifischen Stellen einer Seite
+
+- Design: Neues Layout für die Sidebar (#4200)
+- Design: Neues Layout für Standard-Elemente (#4201)
+- Design: ContentBar 2.0
+
+- Unter der Haube: Refaktorisierung der Seminar-Klasse
+- Unter der Haube: Umbau der Verwaltung von Anmeldesets auf Vue.js
+- Unter der Haube: Umstellung auf Vue3
+- Unter der Haube: Evaluation ausbauen
+- Unter der Haube: Ausbau der Elearning Schnittstelle
+- Unter der Haube: Ausbau der SOAP/XMLRPC Webservices
+- Unter der Haube: PHPLib wurde ausgebaut und Dispatch-Mechanismen konsolidiert
+
 __15.03.2024 V 5.5__
 - System: Neues Registrierungsformular
 - System: Neue Login-Seite
