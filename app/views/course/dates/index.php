@@ -14,9 +14,7 @@
     $lostDateKeys = [];
 
     if (!count($dates)) {
-        PageLayout::postMessage(
-            MessageBox::info(_('Keine Termine vorhanden'))
-        );
+        echo MessageBox::info(_('Keine Termine vorhanden'));
     }
 ?>
 

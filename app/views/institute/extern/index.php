@@ -6,7 +6,7 @@
  */
 
 if (count($configs) == 0)  :
-    PageLayout::postInfo(_('Es wurde noch keine externe Seite angelegt.'),
+    echo MessageBox::info(_('Es wurde noch keine externe Seite angelegt.'),
         [
             sprintf(_('Um eine neue externe Seite anzulegen, klicken sie %shier%s.'),
                 '<a href="' . $controller->new() . '" data-dialog="size=870x500">',

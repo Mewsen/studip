@@ -129,5 +129,5 @@
     </tbody>
 </table>
 <? else : ?>
-    <? PageLayout::postInfo(_('Keine Themen vorhanden.')) ?>
+    <?= MessageBox::info(_('Keine Themen vorhanden.')) ?>
 <? endif ?>
