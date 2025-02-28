@@ -11,7 +11,7 @@
  */
 final class ExceptionDisplay implements Stringable
 {
-    private const MARKUP_REGEXP = '~(?<file>(?:\w+/)*\w+\.\w+)(?:\((?<line0>\d+)\)| on line (?<line1>\d+))~m';
+    private const MARKUP_REGEXP = '~(?<file>(?:[\w-]+/)*[\w-]+\.\w+)(?:\((?<line0>\d+)\)| on line (?<line1>\d+))~m';
 
     public static function from(Throwable $e): self
     {
