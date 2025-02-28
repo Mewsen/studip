@@ -12,32 +12,31 @@
             <template #content>
                 <div
                     class="cw-block-headline-content"
-                    :class="[
-                        currentStyle,
-                        currentHeight,
-                        hasGradient ? currentGradient : ''
-                    ]"
+                    :class="[currentStyle, currentHeight, hasGradient ? currentGradient : '']"
                     :style="headlineStyle"
                 >
-                    <div
-                        class="cw-block-headline-iconbox"
-                        :class="['border-' + currentIconColor, currentHeight]"
-                    >
+                    <div class="cw-block-headline-iconbox" :class="['border-' + currentIconColor, currentHeight]">
                         <div
                             class="icon-layer"
                             :class="['icon-' + currentIconColor + '-' + currentIcon, currentHeight]"
-                        >
-                        </div>
+                        ></div>
                     </div>
                     <div
                         class="cw-block-headline-textbox"
                         :class="['border-' + currentIconColor, currentHeight]"
                         :style="currentStyle === 'ribbon' ? headlineTextboxStyle.rgba : {}"
                     >
-                        <div class="cw-block-headline-title" :style="currentStyle === 'vertical' ? headlineTextboxStyle.hex : {}">
+                        <div
+                            class="cw-block-headline-title"
+                            :style="currentStyle === 'vertical' ? headlineTextboxStyle.hex : {}"
+                        >
                             <h1 :style="textStyle">{{ currentTitle }}</h1>
                         </div>
-                        <div v-show="hasSubtitle && subtitleIsSet" class="cw-block-headline-subtitle" :style="currentStyle === 'vertical' ? headlineTextboxStyle.rgba : {}">
+                        <div
+                            v-show="hasSubtitle && subtitleIsSet"
+                            class="cw-block-headline-subtitle"
+                            :style="currentStyle === 'vertical' ? headlineTextboxStyle.rgba : {}"
+                        >
                             <h2 :style="textStyle">{{ currentSubtitle }}</h2>
                         </div>
                         <div v-show="hasSecondSubtitle" class="cw-block-headline-second-subtitle">
@@ -97,8 +96,8 @@
                                 {{ $gettext('Textfarbe') }}
                                 <studip-select
                                     :options="colors"
-                                    label="hex"
-                                    :reduce="color => color.hex"
+                                    label="name"
+                                    :reduce="(color) => color.hex"
                                     :clearable="false"
                                     v-model="currentTextColor"
                                 >
@@ -108,11 +107,19 @@
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #selected-option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>
@@ -120,8 +127,8 @@
                                 {{ $gettext('Texthintergrundfarbe') }}
                                 <studip-select
                                     :options="colors"
-                                    label="hex"
-                                    :reduce="color => color.hex"
+                                    label="name"
+                                    :reduce="(color) => color.hex"
                                     :clearable="false"
                                     v-model="currentTextBackgroundColor"
                                 >
@@ -131,11 +138,19 @@
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #selected-option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>
@@ -150,10 +165,12 @@
                                             {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                         </template>
                                         <template #selected-option="option">
-                                            <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
+                                            <studip-icon :shape="option.label" />
+                                            <span class="vs__option-with-icon">{{ option.label }}</span>
                                         </template>
                                         <template #option="option">
-                                            <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
+                                            <studip-icon :shape="option.label" />
+                                            <span class="vs__option-with-icon">{{ option.label }}</span>
                                         </template>
                                     </studip-select>
                                 </label>
@@ -162,7 +179,7 @@
                                     <studip-select
                                         :options="iconColors"
                                         label="name"
-                                        :reduce="iconColor => iconColor.class"
+                                        :reduce="(iconColor) => iconColor.class"
                                         :clearable="false"
                                         v-model="currentIconColor"
                                     >
@@ -172,11 +189,19 @@
                                         <template #no-options>
                                             {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                         </template>
-                                        <template #selected-option="{name, hex}">
-                                            <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                        <template #selected-option="option">
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                         </template>
-                                        <template #option="{name, hex}">
-                                            <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                        <template #option="option">
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                         </template>
                                     </studip-select>
                                 </label>
@@ -197,12 +222,12 @@
                                     <option value="structural-element-image">{{ $gettext('Seiten-Bild') }}</option>
                                 </select>
                             </label>
-                            <label  v-if="currentBackgroundType === 'color'">
+                            <label v-if="currentBackgroundType === 'color'">
                                 {{ $gettext('Hintergrundfarbe') }}
                                 <studip-select
                                     :options="colors"
-                                    label="hex"
-                                    :reduce="color => color.hex"
+                                    label="name"
+                                    :reduce="(color) => color.hex"
                                     v-model="currentBackgroundColor"
                                     :clearable="false"
                                 >
@@ -212,16 +237,23 @@
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #selected-option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>
                             <label v-if="currentBackgroundType === 'image'">
-
                                 <div>{{ $gettext('Hintergrundbild') }}</div>
 
                                 <template v-if="currentBackgroundImageId">
@@ -232,7 +264,7 @@
                                         <StockImageSelectableImageCard
                                             :stock-image="selectedStockImage"
                                             v-if="selectedStockImage"
-                                            />
+                                        />
                                     </template>
                                     <label>
                                         <button class="button" type="button" @click="onClickRemoveBackgroundImage">
@@ -259,9 +291,8 @@
                                         v-if="showStockImageSelector"
                                         @close="showStockImageSelector = false"
                                         @select="onSelectStockImage"
-                                        />
+                                    />
                                 </template>
-
                             </label>
                             <label v-if="currentBackgroundType === 'gradient'">
                                 {{ $gettext('Hintergrundfarbverlauf') }}
@@ -289,7 +320,6 @@
                         </form>
                     </courseware-tab>
                 </courseware-tabs>
-
             </template>
             <template #info>{{ $gettext('Informationen zum Blickfang-Block') }}</template>
         </courseware-default-block>
@@ -405,7 +435,7 @@ export default {
             return this.mixinColors;
         },
         iconColors() {
-            return this.mixinColors.filter(color => color.icon && color.class !== 'studip-lightblue');
+            return this.mixinColors.filter((color) => color.icon && color.class !== 'studip-lightblue');
         },
         textStyle() {
             let style = {};
@@ -427,7 +457,6 @@ export default {
                 } else {
                     style['background-color'] = '#28497c';
                 }
-
             }
             if (this.hasGradient) {
                 style['background-color'] = 'transparent';
@@ -438,7 +467,7 @@ export default {
         headlineTextboxStyle() {
             return {
                 rgba: { 'background-color': this.hexToRgbA(this.currentTextBackgroundColor, '0.5') },
-                hex: { 'background-color': this.currentTextBackgroundColor }
+                hex: { 'background-color': this.currentTextBackgroundColor },
             };
         },
         hasSubtitle() {
@@ -563,7 +592,8 @@ export default {
             }
             if (this.currentBackgroundType === 'image') {
                 attributes.payload.background_image_id = this.currentBackgroundImageId;
-                attributes.payload.background_image_type = this.currentBackgroundImageType;            }
+                attributes.payload.background_image_type = this.currentBackgroundImageType;
+            }
             if (this.currentBackgroundType === 'gradient') {
                 attributes.payload.gradient = this.currentGradient;
             }
@@ -608,10 +638,10 @@ export default {
             let hex = comp.toString(16);
             return hex.length === 1 ? '0' + hex : hex;
         },
-        hexToRgbA(hex, a){
+        hexToRgbA(hex, a) {
             const RGB = this.calcRGB(hex);
 
-            return 'rgba(' + RGB.r + ',' + RGB.g + ',' + RGB.b + ',' + a +')';
+            return 'rgba(' + RGB.r + ',' + RGB.g + ',' + RGB.b + ',' + a + ')';
         },
         onSelectStockImage(stockImage) {
             this.updateCurrentBackgroundImage({
@@ -633,5 +663,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/headline.scss";
+@import "../../../../assets/stylesheets/scss/courseware/blocks/headline.scss";
 </style>
