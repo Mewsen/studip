@@ -27,13 +27,6 @@
                    value="<?= htmlReady($user->privadr) ?>"
                     <? if (!$controller->shallChange('user_info.privadr')) echo 'disabled'; ?>>
         </label>
-        <? if (Config::get()->ENABLE_SKYPE_INFO): ?>
-            <label>
-                <?= _('Skype Name') ?>
-                <input type="text" name="skype_name"
-                       value="<?= htmlReady($config->SKYPE_NAME) ?>">
-            </label>
-        <? endif; ?>
         <label>
             <?= _('Motto') ?>
             <input type="text" name="motto" id="motto"

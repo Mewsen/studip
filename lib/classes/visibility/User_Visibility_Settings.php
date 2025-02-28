@@ -125,7 +125,6 @@ class User_Visibility_Settings extends SimpleORMap
 
             'picture' => _('Eigenes Bild'),
             'motto' => _('Motto'),
-            'skype_name' => _('Skype Name'),
             'private_phone' => _('Private Telefonnummer'),
             'private_cell' => _('Private Handynummer'),
             'privadr' => _('Private Adresse'),

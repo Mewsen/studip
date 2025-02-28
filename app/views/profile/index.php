@@ -28,11 +28,6 @@
             <dd><?= htmlReady($private_cell) ?></dd>
         <? endif ?>
 
-        <? if ($skype_name) : ?>
-            <dt><?= _('Skype') ?>:</dt>
-            <dd><?= htmlReady($skype_name) ?></dd>
-        <? endif ?>
-
         <? if ($privadr) : ?>
             <dt><?= _('Adresse (privat)') ?>:</dt>
             <dd><?= htmlReady($privadr) ?></dd>

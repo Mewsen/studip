@@ -846,15 +846,6 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
                 'identifier' => 'privatedata'
             ];
         }
-        if (Config::get()->ENABLE_SKYPE_INFO) {
-            if ($GLOBALS['user']->cfg->getValue('SKYPE_NAME') && empty($GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['skype_name'])) {
-                $homepage_elements['skype_name'] = [
-                    'name'       => _('Skype Name'),
-                    'visibility' => $homepage_visibility['skype_name'] ?? get_default_homepage_visibility($this->id),
-                    'identifier' => 'privatedata'
-                ];
-            }
-        }
         if ($this->info->privatnr && empty($GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['Private Daten_phone'])) {
             $homepage_elements['private_phone'] = [
                 'name'       => _('Private Telefonnummer'),
