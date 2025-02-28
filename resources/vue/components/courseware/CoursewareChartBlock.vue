@@ -26,15 +26,16 @@
                             :reduce="chartTypes => chartTypes.value"
                             :clearable="false"
                             @option:selected="buildChart"
+                            label="name"
                         >
                             <template #open-indicator="selectAttributes">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                             </template>
-                            <template #selected-option="{name}">
-                                <span>{{name}}</span>
+                            <template #selected-option="option">
+                                <span>{{ option.name }}</span>
                             </template>
-                            <template #option="{name}">
-                                <span>{{name}}</span>
+                            <template #option="option">
+                                <span>{{ option.name }}</span>
                             </template>
                         </studip-select>
                     </label>
@@ -63,7 +64,7 @@
                                 <studip-select
                                     :options="colors"
                                     :reduce="colors => colors.value"
-                                    label="rgb"
+                                    label="name"
                                     :clearable="false"
                                     v-model="item.color"
                                     @option:selected="buildChart"
@@ -74,11 +75,11 @@
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{name, rgb}">
-                                        <span class="vs__option-color" :style="{'background-color': 'rgb(' + rgb + ')'}"></span><span>{{name}}</span>
+                                    <template #selected-option="option">
+                                        <span class="vs__option-color" :style="{'background-color': 'rgb(' + option.rgb + ')'}"></span><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{name, rgb}">
-                                        <span class="vs__option-color" :style="{'background-color': 'rgb(' + rgb + ')'}"></span><span>{{name}}</span>
+                                    <template #option="option">
+                                        <span class="vs__option-color" :style="{'background-color': 'rgb(' + option.rgb + ')'}"></span><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>
@@ -95,7 +96,7 @@
                             </button>
                         </form>
                     </courseware-tab>
-                </courseware-tabs>                
+                </courseware-tabs>
             </template>
             <template #info>
                 <p>{{ $gettext('Informationen zum Diagramm-Block') }}</p>

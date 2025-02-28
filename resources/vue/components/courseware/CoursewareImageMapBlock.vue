@@ -28,7 +28,7 @@
                         :title="area.title"
                         :href="area.external_target"
                         :target="area.link_target"
-                        @click=" 
+                        @click="
                             if (area.target_type === 'internal') {
                                 areaLink(area.internal_target);
                             }
@@ -639,7 +639,7 @@ export default {
             this.currentShapes.forEach((value, key) => {
                 let shape = value;
                 // if the event target is the draggable area, check for the shape area normally
-                // else check if the click was on a resizable area that belongs to a shape since 
+                // else check if the click was on a resizable area that belongs to a shape since
                 // resizable areas are partly outside the shape
                 if (data.target.classList.contains('cw-draggable-area')) {
                     if (this.mouseHit(mouseX, mouseY, shape)) {

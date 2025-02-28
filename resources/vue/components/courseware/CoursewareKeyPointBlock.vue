@@ -32,7 +32,7 @@
                         {{ $gettext('Farbe') }}
                         <studip-select
                             :options="colors"
-                            label="icon"
+                            label="name"
                             :clearable="false"
                             :reduce="option => option.icon"
                             v-model="currentColor"
@@ -110,7 +110,7 @@ export default {
             return contentIcons;
         },
         colors() {
-            return this.mixinColors.filter(color => 
+            return this.mixinColors.filter(color =>
                 color.icon && color.class !== 'white' && color.class !== 'studip-lightblue'
             );
         },
