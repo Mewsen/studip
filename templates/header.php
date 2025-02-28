@@ -161,7 +161,6 @@ if ($navigation) {
                             </div>
                         <? if (PersonalNotifications::isAudioActivated()): ?>
                             <audio id="audio_notification" preload="none">
-                                <source src="<?= Assets::url('sounds/blubb.ogg') ?>" type="audio/ogg">
                                 <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
                             </audio>
                         <? endif; ?>
@@ -209,7 +208,7 @@ if ($navigation) {
                         </form>
                     </li>
                 <? endif; ?>
-                
+
             <? endif; ?>
         <? else: ?>
                 <li>
