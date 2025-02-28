@@ -1,27 +1,21 @@
 <? if (!empty($studygroups)) : ?>
-    <table class="default sortable-table" id="my_seminars">
+    <table class="default sortable-table mycourses">
         <caption>
             <?= _('Meine Studiengruppen') ?>
         </caption>
         <colgroup>
-            <col width="10px">
-            <col width="25px">
+            <col style="width: 7px">
+            <col style="width: 5px">
             <col>
             <col>
-            <col width="<?= $nav_elements * 27 ?>px">
+            <col style="width: "<?= $nav_elements * 27 ?>px">
             <? if (!$is_widget) : ?>
-                <col width="45px">
+                <col style="width: 45px">
             <? endif ?>
         </colgroup>
         <thead>
-            <tr class="sortable" title="<?= _('Klicken, um die Sortierung zu ändern') ?>">
-
-                <th colspan="2" nowrap align="center">
-                    <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups/all/true') ?>"
-                       data-dialog="size=normal">
-                        <?= Icon::create('group')->asImg(['title' => _('Gruppe ändern'), 'class' => 'middle']) ?>
-                    </a>
-                </th>
+            <tr class="sortable">
+                <th colspan="2"></th>
                 <th data-sort="text"><?= _('Name') ?></th>
                 <th data-sort="digit"><?= _('gegründet') ?></th>
                 <th><?= _('Inhalt') ?></th>
