@@ -77,7 +77,11 @@ export default {
     },
     methods: {
         addContact(user_id, name) {
-            this.$set(this.users, user_id, {id: user_id, name: name, write_permissions: false});
+            this.users[user_id] = {
+                id: user_id,
+                name: name,
+                write_permissions: false
+            };
         },
         removeContact(user_id) {
             if (this.users[user_id] !== undefined) {
