@@ -1,8 +1,10 @@
 <? if (!empty($studygroups)) : ?>
     <table class="default sortable-table mycourses">
+        <? if (!$is_widget) :?>
         <caption>
             <?= _('Meine Studiengruppen') ?>
         </caption>
+        <? endif ?>
         <colgroup>
             <col style="width: 7px">
             <col style="width: 5px">
