@@ -31,8 +31,8 @@ $enable_faq = count($faq_entries) > 0;
 $enable_news = count($news_entries) > 0;
 ?>
 <main id="content" class="loginpage">
-    <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
-    <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
+    <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat center center/cover;"></div>
+    <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat center center/cover;"></div>
 
     <div id="login-wrapper" class="<?= $enable_faq || $enable_news ? 'with-infobox' : 'no-infobox' ?>">
 
