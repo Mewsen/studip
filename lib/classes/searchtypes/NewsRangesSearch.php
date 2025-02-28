@@ -75,7 +75,7 @@ class NewsRangesSearch extends SearchType
                                      AND su.`user_id` = :user_id
                                      AND su.`status` IN ('tutor', 'dozent')
                                    GROUP BY s.`Seminar_id`
-                                   ORDER BY `semester_data`.`start_time` DESC
+                                   ORDER BY `semester_data`.`beginn` DESC
                                ) AS course_select ";
             $parameters[':user_id'] = $user->id;
         }
