@@ -381,6 +381,10 @@ $editor-min-height: 8em;
     min-height: $editor-min-height;
 }
 
+.ck.ck-powered-by-balloon.ck-balloon-panel_visible {
+    display: none;
+}
+
 /* forum fixes */
 #forum .ck-source-editing-area textarea {
     height: 100%;
