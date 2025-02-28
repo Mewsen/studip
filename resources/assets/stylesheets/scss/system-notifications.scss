@@ -147,6 +147,15 @@
     a:not(.system-notification-message) {
         color: var(--color--white);
         text-decoration-line: underline;
+
+        &.link-intern {
+            &::before {
+                background: unset;
+                content: "";
+                height: 0;
+                width: 0;
+            }
+        }
     }
 
     a.system-notification-message {
