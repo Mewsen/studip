@@ -34,18 +34,18 @@ stages:
   - release
 
 .scripts:
-  mkdir-caches: &mkdir-caches
+  mkdir-caches:
     - mkdir -p $CACHE_DIR
-  mkdir-reports: &mkdir-reports
+  mkdir-reports:
     - mkdir -p $REPORT_DIR
-  install-composer: &install-composer
+  install-composer:
     - make composer-dev
-  configure-studip: &configure-studip
-    - *install-composer
+  configure-studip:
+    - !reference [.scripts, install-composer]
     - cp docker/studip/config_local.php config/config_local.inc.php
     - cp config/config.inc.php.dist config/config.inc.php
-  initialize-studip-database: &initialize-studip-database
-    - *configure-studip
+  initialize-studip-database:
+    - !reference [.scripts, configure-studip]
     - chmod +x .gitlab/scripts/install_db.sh
     - .gitlab/scripts/install_db.sh
     - cli/studip migrate
@@ -58,7 +58,7 @@ stages:
     paths:
       - composer/
     policy: pull
-  npm: &npm-cache
+  npm:
     key:
       files:
         - package-lock.json
@@ -66,13 +66,35 @@ stages:
       - .npm
 
 .definitions:
-  mariadb-service: &mariadb-service
+  mariadb-service:
    - name: mariadb
      command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
+  php-changed:
+    - changes:
+        paths:
+          - "**/*.php"
+          - composer.lock
+        compare_to: 'refs/heads/main'
+  css-changed:
+    - changes:
+        paths:
+          - "resources/assets/stylesheets/**/*"
+          - package-lock.json
+        compare_to: 'refs/heads/main'
+  js-changed:
+    - changes:
+        paths:
+          - "resources/assets/javascripts/**/*"
+          - "resources/vue/**/*"
+          - package-lock.json
+        compare_to: 'refs/heads/main'
 
 build-composer:
   stage: build
   needs: []
+  rules:
+    - !reference [.definitions, php-changed]
+    -  when: manual
   interruptible: true
   variables:
     COMPOSER_CACHE: $CACHE_DIR/composer-cache
@@ -81,7 +103,7 @@ build-composer:
   script:
     - composer install
   cache:
-    - *composer-cache
+    - !reference [.caches, composer]
     - key: composer-package-cache
       paths:
         - $COMPOSER_CACHE
@@ -90,20 +112,22 @@ build-composer:
 lint-php:
   stage: checks
   needs: [build-composer]
+  rules:
+    - !reference [.definitions, php-changed]
   variables:
     CACHE_LOCATION: $CACHE_DIR/phplint-cache
     PHPLINT_JSON_REPORT: $REPORT_DIR/phplint-report.json
     PHPLINT_CODE_QUALITY_REPORT: $REPORT_DIR/phplint-codequality.json
   interruptible: true
   cache:
-    - *composer-cache
+    - !reference [.caches, composer]
     - key: "$CI_JOB_NAME_SLUG:$CI_COMMIT_REF_SLUG"
       paths:
         - $CACHE_LOCATION
   before_script:
-    - *mkdir-caches
-    - *mkdir-reports
-    - *install-composer
+    - !reference [.scripts, mkdir-caches]
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, install-composer]
   script:
     - COMPOSER_MEMORY_LIMIT=-1
       composer exec phplint
@@ -120,20 +144,22 @@ lint-php-8.3:
   image: studip/studip:tests-php8.3
   stage: checks
   needs: [build-composer]
+  rules:
+    - !reference [.definitions, php-changed]
   variables:
     CACHE_LOCATION: $CACHE_DIR/phplint-cache
     PHPLINT_JSON_REPORT: $REPORT_DIR/phplint-report-8.3.json
     PHPLINT_CODE_QUALITY_REPORT: $REPORT_DIR/phplint-codequality-8.3.json
   interruptible: true
   cache:
-    - *composer-cache
+    - !reference [.caches, composer]
     - key: "$CI_JOB_NAME_SLUG:$CI_COMMIT_REF_SLUG"
       paths:
         - $CACHE_LOCATION
   before_script:
-    - *mkdir-caches
-    - *mkdir-reports
-    - *install-composer
+    - !reference [.scripts, mkdir-caches]
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, install-composer]
   script:
     - COMPOSER_MEMORY_LIMIT=-1
       composer exec phplint
@@ -149,6 +175,8 @@ lint-php-8.3:
 lint-js:
   stage: checks
   needs: []
+  rules:
+    - !reference [.definitions, js-changed]
   image: $NODE_IMAGE
   variables:
     CACHE_LOCATION: $CACHE_DIR/eslint-cache
@@ -159,8 +187,9 @@ lint-js:
         - $CACHE_LOCATION
   interruptible: true
   before_script:
-    - *mkdir-reports
-    - npm ci --prefer--offline
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, mkdir-caches]
+    - npm ci --prefer-offline
   script:
     - npm run lint-js --
       --cache --cache-location $CACHE_LOCATION
@@ -172,6 +201,8 @@ lint-js:
 lint-css:
   stage: checks
   needs: []
+  rules:
+    - !reference [.definitions, css-changed]
   image: $NODE_IMAGE
   variables:
     CACHE_LOCATION: $CACHE_DIR/stylelint-cache
@@ -184,9 +215,9 @@ lint-css:
       policy: pull-push
       when: always
   before_script:
-    - *mkdir-caches
-    - *mkdir-reports
-    - npm install
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, mkdir-caches]
+    - npm ci --prefer-offline
   script:
     - npm run lint-css --
       --cache --cache-location $CACHE_LOCATION
@@ -204,15 +235,15 @@ phpstan:
     PHPSTAN_CODE_QUALITY_REPORT: $REPORT_DIR/phpstan-codequality.json
   interruptible: true
   cache:
-   - *composer-cache
+   - !reference [.caches, composer]
    - key: "$CO_JOB_NAME_SLUG:$CI_COMMIT_REF_SLUG"
      paths:
        - $CACHE_LOCATION
   before_script:
-    - *mkdir-caches
-    - *mkdir-reports
-    - *install-composer
-    - 'echo -e "includes:\n    - phpstan.neon.dist\n\nparameters:\n   tmpDir: $PHPSTAN_CACHE_PATH" > phpstan.neon'
+    - !reference [.scripts, mkdir-caches]
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, install-composer]
+    - 'echo "includes:\n    - phpstan.neon.dist\n\nparameters:\n   tmpDir: $PHPSTAN_CACHE_PATH" > phpstan.neon'
   script:
     - php
       composer/bin/phpstan analyse
@@ -229,6 +260,8 @@ phpstan:
 test-unit:
   stage: test
   needs: [lint-php]
+  rules:
+    - !reference [.definitions, php-changed]
   variables:
     PHPUNIT_XML_REPORT: $REPORT_DIR/phpunit-report.xml
   cache:
@@ -237,8 +270,8 @@ test-unit:
   allow_failure: false
   interruptible: true
   before_script:
-    - *mkdir-reports
-    - *configure-studip
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, configure-studip]
   script:
     - 'composer/bin/codecept
       run unit
@@ -253,13 +286,16 @@ test-unit:
 test-jest:
   stage: test
   needs: [lint-js]
+  rules:
+    - !reference [.definitions, js-changed]
   image: $NODE_IMAGE
   variables:
     JS_TEST_REPORT: $REPORT_DIR/jest.xml
-  cache: *npm-cache
+  cache:
+    - !reference [.caches, npm]
   interruptible: true
   before_script:
-    - *mkdir-reports
+    - !reference [.scripts, mkdir-reports]
     - npm install
   script:
     - JEST_JUNIT_OUTPUT_FILE="$JS_TEST_REPORT" npx jest tests/jest/ --ci --reporters=default --reporters=jest-junit
@@ -270,6 +306,8 @@ test-jest:
 test-functional:
   stage: test
   needs: [lint-php]
+  rules:
+    - !reference [.definitions, php-changed]
   variables:
     FUNCTIONAL_XML_REPORT: $REPORT_DIR/functional-report.xml
     FUNCTIONAL_CODE_QUALITY_REPORT: $REPORT_DIR/functional-codequality.json
@@ -277,12 +315,12 @@ test-functional:
     <<: *composer-cache
     policy: pull
   services:
-    - *mariadb-service
+    - !reference [.definitions, mariadb-service]
   allow_failure: false
   interruptible: true
   before_script:
-    - *mkdir-reports
-    - *initialize-studip-database
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, initialize-studip-database]
   script:
     - 'composer/bin/codecept
       run functional
@@ -297,17 +335,19 @@ test-functional:
 test-jsonapi:
   stage: test
   needs: [lint-php]
+  rules:
+    - !reference [.definitions, php-changed]
   cache:
     <<: *composer-cache
     policy: pull
   services:
-    - *mariadb-service
+    - !reference [.definitions, mariadb-service]
   variables:
     JSONAPI_XML_REPORT: $REPORT_DIR/jsonapi-report.xml
   interruptible: true
   before_script:
-    - *mkdir-reports
-    - *initialize-studip-database
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, initialize-studip-database]
   script:
     - 'composer/bin/codecept
       run jsonapi
@@ -322,8 +362,13 @@ test-jsonapi:
 test-assets:
   stage: test
   needs: []
+  rules:
+    - !reference [.definitions, js-changed]
+    - !reference [.definitions, css-changed]
+    -  when: manual
   image: $NODE_IMAGE
-  cache: *npm-cache
+  cache:
+    - !reference [.caches, npm]
   interruptible: true
   before_script:
     - npm install
@@ -343,8 +388,8 @@ test-e2e:
   interruptible: true
   when: manual
   cache:
-    - *composer-cache
-    - *npm-cache
+    - !reference [.caches, composer]
+    - !reference [.caches, npm]
   before_script:
     - mkdir ./bin
     - apt-get update
@@ -363,8 +408,8 @@ test-e2e:
     - php composer-setup.php  --install-dir=./bin --filename=composer
     - export PATH="./bin:$PATH"
     - php -r "unlink('composer-setup.php');"
-    - *mkdir-reports
-    - *initialize-studip-database
+    - !reference [.scripts, mkdir-reports]
+    - !reference [.scripts, initialize-studip-database]
     - ./cli/studip config:set SHOW_TERMS_ON_FIRST_LOGIN 0
     - npm install playwright
     - npm ci
