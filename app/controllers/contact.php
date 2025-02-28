@@ -145,7 +145,7 @@ class ContactController extends AuthenticatedController
             $contact = Contact::find([User::findCurrent()->id, User::findByUsername(Request::username('user'))->id]);
             if ($contact) {
                 if ($group) {
-                    $contact->group_assignments->unsetBy('group_id', $group);
+                    $contact->groups->unsetBy('group_id', $group);
                     if ($contact->store()) {
                         PageLayout::postSuccess(_('Der Kontakt wurde aus der Gruppe entfernt.'));
                     }
