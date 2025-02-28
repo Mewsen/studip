@@ -122,7 +122,7 @@ function createMixin(minimal = false) {
                         menu.push({
                             url: this.urlFor('dispatch.php/my_courses/decline_binding'),
                             label: this.$gettext('Aus der Veranstaltung austragen'),
-                            icon: 'decline/door-leave',
+                            icon: 'door-leave',
                             attributes: {
                                 title: this.$gettext('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.'),
                             },
