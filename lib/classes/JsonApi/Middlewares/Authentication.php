@@ -93,9 +93,6 @@ class Authentication
             ];
             $GLOBALS['perm'] = new \Seminar_Perm();
             $GLOBALS['MAIL_VALIDATE_BOX'] = false;
-            if (isset($GLOBALS['sess'])) {
-                $GLOBALS['sess']->delete();
-            }
             setTempLanguage($user->id);
         }
 
