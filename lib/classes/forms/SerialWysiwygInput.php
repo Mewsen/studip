@@ -29,6 +29,8 @@ class SerialWysiwygInput extends WysiwygInput
 
     public function getRequestValue()
     {
-        return \Studip\Markup::purifyHtml(\Request::get($this->name));
+        return \Studip\Markup::markAsHtml(
+            \Studip\Markup::purifyHtml(\Request::get($this->name))
+        );
     }
 }
