@@ -56,8 +56,8 @@
                         v-model="addWizardData.color"
                         :options="colors"
                         :reduce="(color) => color.class"
-                        label="class"
-                        name="color"
+                        label="name"
+                        :clearable="false"
                     >
                         <template #open-indicator="selectAttributes">
                             <span v-bind="{ selectAttributes }"
@@ -67,13 +67,13 @@
                         <template #no-options>
                             {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                         </template>
-                        <template #selected-option="{ name, hex }">
-                            <span class="vs__option-color" :style="{ 'background-color': hex }"></span
-                            ><span>{{ name }}</span>
+                        <template #selected-option="option">
+                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
+                            ><span>{{ option.name }}</span>
                         </template>
-                        <template #option="{ name, hex }">
-                            <span class="vs__option-color" :style="{ 'background-color': hex }"></span
-                            ><span>{{ name }}</span>
+                        <template #option="option">
+                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
+                            ><span>{{ option.name }}</span>
                         </template>
                     </studip-select>
                 </label>

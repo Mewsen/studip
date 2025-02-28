@@ -83,22 +83,22 @@
                                 {{ $gettext('Farbe') }}
                                 <studip-select
                                     :options="colors"
-                                    label="icon"
+                                    label="name"
                                     :clearable="false"
                                     :reduce="option => option.class"
                                     v-model="item.color"
                                 >
                                     <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
+                                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                     </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #selected-option="option">
+                                        <span class="vs__option-color" :style="{'background-color': option.hex}"></span><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{name, hex}">
-                                        <span class="vs__option-color" :style="{'background-color': hex}"></span><span>{{name}}</span>
+                                    <template #option="option">
+                                        <span class="vs__option-color" :style="{'background-color': option.hex}"></span><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>

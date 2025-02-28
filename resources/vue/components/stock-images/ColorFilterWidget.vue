@@ -6,13 +6,13 @@
                     <span><studip-icon shape="arr_1down" :size="10" /></span>
                 </template>
 
-                <template #option="{ name, hex }">
-                    <span class="vs__option-color" :style="{ 'background-color': hex }"></span>
-                    <span>{{ name }}</span>
+                <template #option="option">
+                    <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
+                    <span>{{ option.name }}</span>
                 </template>
 
-                <template #selected-option="{ name, hex }">
-                    <span class="vs__option-color" :style="{ 'background-color': hex }" :title="name"></span>
+                <template #selected-option="option">
+                    <span class="vs__option-color" :style="{ 'background-color': option.hex }" :title="name"></span>
                 </template>
 
                 <template #no-options>{{ $gettext('Keine Auswahlmöglichkeiten') }}</template>

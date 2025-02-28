@@ -115,13 +115,13 @@
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
-                                    <template #selected-option="{ name, rgba }">
-                                        <span class="vs__option-color" :style="{ 'background-color': rgba }"></span
-                                        ><span>{{ name }}</span>
+                                    <template #selected-option="option">
+                                        <span class="vs__option-color" :style="{ 'background-color': option.rgba }"></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
-                                    <template #option="{ name, rgba }">
-                                        <span class="vs__option-color" :style="{ 'background-color': rgba }"></span
-                                        ><span>{{ name }}</span>
+                                    <template #option="option">
+                                        <span class="vs__option-color" :style="{ 'background-color': option.rgba }"></span
+                                        ><span>{{ option.name }}</span>
                                     </template>
                                 </studip-select>
                             </label>
