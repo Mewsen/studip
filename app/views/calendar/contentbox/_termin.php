@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var CourseDate|CourseExDate $termin
+ * @var bool $admin
+ * @var bool $isProfile
+ * @var bool $course_range
+ */
+?>
 <article class="studip toggle <?= ContentBoxHelper::classes($termin->getObjectId()) ?>"
          id="<?= htmlReady($termin->getObjectId()) ?>">
     <header>
@@ -9,7 +17,7 @@
         </h1>
         <nav>
             <span>
-                <?= $termin->getLocation() ? _('Raum') . ': ' . formatLinks($termin->getLocation()) : '' ?>
+                <?= $termin->getRoomName() ? _('Raum') . ': ' . formatLinks($termin->getRoomName()) : '' ?>
             </span>
             <? if ($admin && $isProfile && $termin->getObjectClass() === 'CalendarDateAssignment') : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/calendar/calendar') ?>"

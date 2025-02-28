@@ -320,7 +320,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
 
     public function getLocation(): string
     {
-        return '';
+        return $this->getRoomName();
     }
 
     public function getUniqueId(): string

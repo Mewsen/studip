@@ -226,10 +226,10 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
      */
     public function getRoomName()
     {
-        if (Config::get()->RESOURCES_ENABLE && !empty($this->room_booking->resource)) {
-            return $this->room_booking->resource->name;
+        if (Config::get()->RESOURCES_ENABLE && isset($this->room_booking->resource)) {
+            return $this->getRoom()->name;
         }
-        return $this['raum'];
+        return $this->raum ?? '';
     }
 
     /**
@@ -549,7 +549,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
 
     public function getLocation(): string
     {
-        return $this->raum ?? '';
+        return $this->getRoomName();
     }
 
     public function getUniqueId(): string
