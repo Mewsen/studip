@@ -87,12 +87,12 @@ optimize-icons: npm
 	find public/assets/images/icons/blue -type f | xargs -P0 npx svgo -q --config=config/svgo.config.js
 
 icons: optimize-icons
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#000000/" {} > {}' | sed 's#icons/blue#icons/black#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#00962d/" {} > {}' | sed 's#icons/blue#icons/green#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#6e6e6e/" {} > {}' | sed 's#icons/blue#icons/grey#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#cb1800/" {} > {}' | sed 's#icons/blue#icons/red#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffffff/" {} > {}' | sed 's#icons/blue#icons/white#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffad00/" {} > {}' | sed 's#icons/blue#icons/yellow#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#000000/g" {} > {}' | sed 's#icons/blue#icons/black#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#00962d/g" {} > {}' | sed 's#icons/blue#icons/green#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#6e6e6e/g" {} > {}' | sed 's#icons/blue#icons/grey#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#cb1800/g" {} > {}' | sed 's#icons/blue#icons/red#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffffff/g" {} > {}' | sed 's#icons/blue#icons/white#2' | sh
+	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffad00/g" {} > {}' | sed 's#icons/blue#icons/yellow#2' | sh
 
 # default rules for gettext handling
 js-%.pot: $(VUE_SOURCES)
