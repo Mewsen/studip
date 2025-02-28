@@ -34,7 +34,7 @@
                    data-dialog
                    class="wiki-teaser">
             <? endif ?>
-            <?= _('Mach die Welt ein Stückchen schlauer.') ?>
+            <?= _('Erstelle die erste Wiki-Seite') ?>
             <? if ($edit_perms !== 'all' && !$GLOBALS['perm']->have_studip_perm($edit_perms, $range->id)) : ?>
                 </div>
             <? else : ?>
