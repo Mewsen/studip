@@ -23,7 +23,6 @@ __??.??.2025 V 6.0__
 
 - Courseware: Peer-Review
 - Courseware: Rechte und Sichtbarkeit funktionieren nach unterschiedlichen Kriterien
-- Courseware: Dynamische URL ermöglicht Einsprung an spezifischen Stellen einer Seite
 
 - Design: Neues Layout für die Sidebar (#4200)
 - Design: Neues Layout für Standard-Elemente (#4201)
