@@ -56,9 +56,7 @@ abstract class AdmissionRule
                             'description' => $className::getDescription(),
                             'active' => (bool) $row['active'],
                         ];
-                    } catch (Exception $e) {
-                        throw $e;
-                    }
+                    } catch (Exception $e) {}
                 }
             );
         }
