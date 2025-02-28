@@ -1,3 +1,37 @@
+# 28.02.2025 v 5.3.10
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.3.10&state=all
+- InfoIcon im Dialog wird direkt angezeigt [#773]
+- SimpleORMap liest falsche Default-Werte aus dem Schema [#4462]
+- PHP8 -  Warnungen in den Hilfetouren [#4667]
+- Teilnehmende: "Diese Seite für Studierende verbergen" funktioniert nicht mehr [#5009]
+- Timeout für HTTP Requests in Ilias-Schnittstelle implementieren [#5014]
+- Courseware Aufgaben: Fehlende Funktion im Store [#5019]
+- Fehler beim Speichern von I18N-Datenfeldern [#5031]
+- Im fromSORM fehlt Eingabename des `templates/forms/select_input.php` [#5080]
+- Semesterdarstellung ist bei der Anzeige der Veranstaltungen einer Einrichtung verschoben [#5119]
+- BIESt 831 taucht beim AdvancedBasicDataWizard auf [#5121]
+- User::name not found [#5122]
+- LVGroupsWizardStep läuft auf eine Exception [#5123]
+- Leerzeichen in Footer von Text Mails [#5128]
+- Log-Events schneiden Pluginnamen ab [#5135]
+- Änderung des Inhaltstyps macht Aufgabe unbrauchbar [#5144]
+- Externe Seiten: Konfiguration kann mit PHP 8 nicht mehr gespeichert werden [#5184]
+- Notwendigkeit von »r« (read) und »w« (write) bei den Einstellungen der Zeitgesteuerten Ordner [#5194]
+- Beim Löschen von Konten werden die Einladungen in Studiengruppen nicht gelöscht [#5195]
+- Inkonsistente Bezeichnungen der Ordnertypen [#5197]
+- Fragebögen: Icon in Startzeitpunkt/Endzeitpunkt bewegt sich beim Öffnen des Dialogs [#5202]
+- MVV: Bearbeitungskontext geht nach Bearbeitung einer Fachsemsterzuordnung verloren [#5203]
+- Fragebogen: Einstellung "Pflichtfrage" funktioniert bei Freitextfrage nicht [#5204]
+- Elemente auf "Privatspäre" unter Profil > Einstellungen sind nicht übersetzt [#5205]
+- I18N-Datenfelder auf der MitarbeiterInnen-Seite einer Einrichtung können zur Anzeige von "default_value" führen [#5208]
+- Inkonsistentes Verhalten von Datenfeldern [#5213]
+- Weitere PHP8-Warnungen [#5216]
+- Systemplugins sollten vor allen anderen Plugins geladen werden [#5241]
+- Globale Suche nach Veranstaltungen berücksichtigt SEM_VISIBILITY_PERM nicht [#5250]
+- Methode User::search() liefert ggf. Einträge ohne User-ID zurück [#5279]
+- Funktionen/Gruppen: Multipersonsearch führt zu Speichermangel [#5282]
+
 # 20.12.2024 v 5.3.9
 
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.3.9&state=all
