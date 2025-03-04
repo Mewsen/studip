@@ -262,7 +262,7 @@ export default {
             attributes.payload = {};
             attributes.payload.title = this.currentTitle;
             attributes.payload.url = this.currentUrl;
-            attributes.payload.height = this.currentHeight;
+            attributes.payload.height = this.currentHeight.toString();
             attributes.payload.submit_user_id = this.currentSubmitUserId;
             attributes.payload.submit_param = this.currentSubmitParam;
             attributes.payload.salt = this.currentSalt;

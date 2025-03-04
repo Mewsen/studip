@@ -39,7 +39,7 @@
             <template v-if="canEdit" #edit>
                 <form class="default" @submit.prevent="">
                     <label>
-                        {{ $gettext('Type') }}
+                        {{ $gettext('Typ') }}
                         <select v-model="currentData.type">
                             <option value="certificate">{{ $gettext('Zertifikat') }}</option>
                             <option value="accreditation">{{ $gettext('Akkreditierung') }}</option>
