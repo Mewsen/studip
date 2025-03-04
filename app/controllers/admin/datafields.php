@@ -156,7 +156,13 @@ class Admin_DatafieldsController extends AuthenticatedController
                 } elseif ($type === 'studycourse') {
                     $datafield->object_class = Request::option('object_class');
                 } else {
-                    $datafield->object_class = array_sum(Request::getArray('object_class')) ?: null;
+                    $object_class = Request::getArray('object_class');
+                    if (empty($object_class) || (count($object_class) === 1 && $object_class[0] === 'NULL')) {
+                        $object_class = null;
+                    } else {
+                        $object_class = array_sum($object_class);
+                    }
+                    $datafield->object_class = $object_class;
                 }
                 $datafield->edit_perms    = Request::get('edit_perms');
                 $datafield->view_perms    = Request::get('visibility_perms');
@@ -188,6 +194,7 @@ class Admin_DatafieldsController extends AuthenticatedController
         $this->institutes = Institute::getMyInstitutes();
         if (!$this->object_typ) {
             $this->render_action('type_select');
+            return;
         }
 
         if (Request::isXhr() && $this->type_name) {
