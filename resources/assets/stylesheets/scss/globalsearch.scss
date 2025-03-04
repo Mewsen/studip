@@ -32,6 +32,7 @@
         margin-right: 5px;
         color: var(--color--font-inverted);
         background-color: var(--color--brand-primary);
+        min-width: 0;
 
         &::placeholder {
             color: var(--color--font-inverted);
@@ -128,6 +129,7 @@
             }
         }
 
+        #globalsearch-clear,
         #globalsearch-icon {
             filter: brightness(0) saturate(100%) invert(25%) sepia(7%) saturate(6410%) hue-rotate(181deg) brightness(95%) contrast(88%);
         }
