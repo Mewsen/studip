@@ -1,6 +1,3 @@
-#quicksearch_item {
-    align-self: flex-start;
-}
 #globalsearch-searchbar {
     display: flex;
     align-items: center;
@@ -210,7 +207,8 @@
                 border-top: 1px solid var(--content-color-40);
                 transition: background-color var(--transition-duration);
 
-                &:hover {
+                &:hover,
+                &:focus {
                     background-color: var(--dark-gray-color-20);
                 }
 

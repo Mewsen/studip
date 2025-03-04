@@ -32,7 +32,6 @@ import Folders from './lib/folders.js';
 import Forms from './lib/forms.js';
 import Fullcalendar from './lib/fullcalendar.js';
 import Fullscreen from './lib/fullscreen.js';
-import GlobalSearch from './lib/global_search.js';
 import HeaderMagic from './lib/header_magic.js';
 import i18n from './lib/i18n.js';
 import JSONAPI, { jsonapi } from './lib/jsonapi.ts';
@@ -112,7 +111,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     Fullcalendar,
     Fullscreen,
     Gettext,
-    GlobalSearch,
     HeaderMagic,
     i18n,
     jsonapi,

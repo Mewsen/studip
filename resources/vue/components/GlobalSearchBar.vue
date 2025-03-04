@@ -2,11 +2,12 @@
     <div id="globalsearch-searchbar"
          role="search"
          :aria-label="$gettext('Globale Suche')"
-         :class="{'is-visible': isVisible}">
+         :class="{'is-visible': isVisible}"
+         @keyup="keyHandler"
+    >
         <input class="hidden-small-down"
                type="text"
                v-model.trim="needle"
-               @keyup="keyHandler"
                ref="input"
                name="globalsearchterm"
                id="globalsearch-input"
@@ -15,7 +16,9 @@
                aria-haspopup="listbox"
                aria-expanded="false"
                aria-controls="globalsearch-list"
-               :aria-label="$gettext('Suche nach Objekten und Personen in Stud.IP')">
+               :aria-label="$gettext('Suche nach Objekten und Personen in Stud.IP')"
+               @keyup.enter.prevent="doSearch()"
+        >
         <studip-icon v-if="needle.length > 0"
                      shape="decline"
                      tabindex="0"
@@ -83,6 +86,7 @@
                            :href="result.url"
                            role="listitem"
                            :data-dialog="dataDialogValue(category)"
+                           ref="searchresults"
                         >
                             <div v-if="result.img"
                                  class="globalsearch-result-img"
@@ -105,6 +109,7 @@
                                  class="globalsearch-result-expand">
                                 <a :href="result.expand" :title="result.expandtext"></a>
                             </div>
+                            <slot v-else name="expand" :item="result"></slot>
                         </a>
                     </article>
                 </template>
@@ -145,6 +150,7 @@ export default {
             isVisible: false,
             needle: '',
             results: null,
+            searchResultIndex: null,
             selectedCategory: null,
             showHints: false,
             timeout: null,
@@ -193,27 +199,28 @@ export default {
                     resolve();
                 }
             })).then(() => {
-                    this.isSearching = true;
+                this.isSearching = true;
 
-                    const url = new URL(this.sourceUrl);
-                    url.searchParams.set('limit', (this.maxResultsPerType * 3).toString(10));
-                    url.searchParams.set('search', this.needle);
-                    url.searchParams.set('filters', JSON.stringify({
-                        category: 'show_all_categories',
-                        semester: 'future',
-                    }));
+                const url = new URL(this.sourceUrl);
+                url.searchParams.set('limit', (this.maxResultsPerType * 3).toString(10));
+                url.searchParams.set('search', this.needle);
+                url.searchParams.set('filters', JSON.stringify({
+                    category: 'show_all_categories',
+                    semester: 'future',
+                }));
 
-                    return fetch(url, { signal: this.abortController.signal });
-                })
-                .then((response) => response.json())
-                .then(response => {
-                    this.results = response;
-                    this.isSearching = false;
-                });
+                return fetch(url, { signal: this.abortController.signal });
+            })
+            .then((response) => response.json())
+            .then(response => {
+                this.results = response;
+                this.isSearching = false;
+            });
         },
         resetSearch(focus = true) {
             this.needle = '';
             this.results = null;
+            this.searchResultIndex = null;
 
             if (focus) {
                 this.$refs.input.focus();
@@ -266,18 +273,29 @@ export default {
 
         },
         keyHandler(event) {
-            if (!['ArrowDown', 'ArrowUp', 'Escape', 'Enter'].includes(event.key)) {
-                this.doSearch(true);
+            if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.key)) {
                 return;
             }
 
-            if (event.key === 'Enter') {
-                this.doSearch();
-            } else if (event.key === 'Escape') {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            if (event.key === 'Escape') {
                 this.close();
-            } else {
-                // TODO: Fill with live
-                console.log('key event', event);
+            } else if (this.$refs.searchresults.length > 0) {
+                if (event.key === 'ArrowDown') {
+                    this.searchResultIndex = (this.searchResultIndex ?? - 1) + 1;
+                } else if (event.key === 'ArrowUp') {
+                    this.searchResultIndex = (this.searchResultIndex ?? this.$refs.searchresults.length) - 1;
+                }
+
+                if (this.searchResultIndex < 0) {
+                    this.searchResultIndex = 0;
+                } else if (this.searchResultIndex > this.$refs.searchresults.length - 1) {
+                    this.searchResultIndex = this.$refs.searchresults.length - 1;
+                }
+
+                this.$refs.searchresults[this.searchResultIndex].focus();
             }
         },
     },
@@ -285,18 +303,30 @@ export default {
         isVisible(current, previous) {
             if (current && !previous) {
                 this.$refs.input.focus();
+                this.searchResultIndex = null;
             }
+        },
+        needle(current) {
+            if (current.length < this.minNeedleLength) {
+                return;
+            }
+
+            this.doSearch(true);
         }
     },
     mounted() {
+        document.addEventListener('focus', (event) => {
+            console.log('Focus on', event.target);
+        }, {capture: true});
+
         document.addEventListener('click', this.clickHandler);
         document.addEventListener('focusin', this.focusHandler);
         document.addEventListener('keydown', this.globalKeyHandler)
     },
-    beforeDestroy() {
-        document.removeEventListener('click', this.clickHandler);
-        document.removeEventListener('focusin', this.focusHandler);
+    beforeUnmount() {
         document.removeEventListener('keydown', this.globalKeyHandler)
+        document.removeEventListener('focusin', this.focusHandler);
+        document.removeEventListener('click', this.clickHandler);
     }
 }
 </script>
