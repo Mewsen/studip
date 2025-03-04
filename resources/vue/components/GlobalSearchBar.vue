@@ -315,10 +315,6 @@ export default {
         }
     },
     mounted() {
-        document.addEventListener('focus', (event) => {
-            console.log('Focus on', event.target);
-        }, {capture: true});
-
         document.addEventListener('click', this.clickHandler);
         document.addEventListener('focusin', this.focusHandler);
         document.addEventListener('keydown', this.globalKeyHandler)
