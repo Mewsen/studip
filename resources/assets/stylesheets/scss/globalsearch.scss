@@ -80,7 +80,9 @@
         background-color: var(--color--global-background);
         box-shadow: 1px 1px 1px var(--light-gray-color-80);
         color: var(--text-color);
-        display: none;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity var(--transition-duration) ease; 
         max-height: 90vh;
         overflow: hidden;
         padding: 10px 5px;
@@ -131,7 +133,8 @@
         }
 
         #globalsearch-list {
-            display: block;
+            visibility: visible;
+            opacity: 1;
         }
     }
 
