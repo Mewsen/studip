@@ -4,28 +4,8 @@
             <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId()]) ?>">
                 <?= htmlReady($course->name) ?>
             </a>
-            <div class="icons">
-                <ul class="my-courses-navigation">
-                <? foreach ($icons as $icon) : ?>
-                    <li class="my-courses-navigation-item <? if ($icon->getImage()->signalsAttention()) echo 'my-courses-navigation-important'; ?>">
-                        <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId(), 'redirect_to' => $icon->getURL()]) ?>"<?= $icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : "" ?>>
-                            <?= $icon->getImage() ?>
-                        </a>
-                    </li>
-                <? endforeach ?>
-                </ul>
-            </div>
         </div>
     </div>
-    <? if ($nextdate) : ?>
-        <div>
-            <h4><?= _('Nächster Termin') ?></h4>
-            <a href="<?= URLHelper::getLink("dispatch.php/course/dates/details/".$nextdate->getId(), ['cid' => $course->id]) ?>" data-dialog="size=auto">
-                <?= Icon::create('date')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
-                <?= htmlReady($nextdate->getFullName()) ?>
-            </a>
-        </div>
-    <? endif ?>
     <div>
         <? $sem_class = $course->getSemClass() ?>
         <h4><?= htmlReady($sem_class['title_dozent_plural'] ?: $GLOBALS['DEFAULT_TITLE_FOR_STATUS']['dozent'][1]) ?></h4>
