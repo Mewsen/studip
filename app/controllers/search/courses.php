@@ -19,10 +19,14 @@ class Search_CoursesController extends AuthenticatedController
      */
     private $nav_option = null;
 
-    public function before_filter(&$action, &$args)
+    public function __construct(\Trails\Dispatcher $dispatcher)
     {
         $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
+        parent::__construct($dispatcher);
+    }
 
+    public function before_filter(&$action, &$args)
+    {
         parent::before_filter($action, $args);
 
         PageLayout::setHelpKeyword('Basis.VeranstaltungenAbonnieren');
