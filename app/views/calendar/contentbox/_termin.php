@@ -1,6 +1,6 @@
 <?php
 /**
- * @var CourseDate|CourseExDate $termin
+ * @var CourseDate|CourseExDate|CalendarDateAssignment $termin
  * @var bool $admin
  * @var bool $isProfile
  * @var bool $course_range
@@ -17,7 +17,11 @@
         </h1>
         <nav>
             <span>
+            <? if ($termin instanceof CalendarDateAssignment): ?>
+                <?= $termin->getLocation() ? _('Raum') . ': ' . formatLinks($termin->getLocation()) : '' ?>
+            <? else: ?>
                 <?= $termin->getRoomName() ? _('Raum') . ': ' . formatLinks($termin->getRoomName()) : '' ?>
+            <? endif; ?>
             </span>
             <? if ($admin && $isProfile && $termin->getObjectClass() === 'CalendarDateAssignment') : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/calendar/calendar') ?>"
