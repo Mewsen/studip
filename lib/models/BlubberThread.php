@@ -457,41 +457,14 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     public function getContextTemplate()
     {
         if ($this['context_type'] === 'course') {
-            $course = Course::find($this['context_id']);
-            $icons = [];
-            $schedule_active = false;
-            foreach ($course->tools as $tool) {
-                if ($module = $tool->getStudipModule()) {
-                    $last_visit = object_get_visit($this['context_id'], $module->getPluginId());
-                    $nav = $module->getIconNavigation($this['context_id'], $last_visit, $GLOBALS['user']->id);
-                    if (
-                        isset($nav)
-                        && $nav->isVisible(true)
-                        && $module->getTabNavigation($this['context_id'])
-                        && $GLOBALS['perm']->have_studip_perm($tool->getVisibilityPermission(), $this['context_id'])
-                    ) {
-                        $icons[] = $nav;
-                    }
-                    if ($module instanceof CoreSchedule) {
-                        $schedule_active = true;
-                    }
-                }
-            }
-
-            $nextdate = false;
-            if ($schedule_active) {
-                $nextdate = CourseDate::findOneBySQL("range_id = ? AND `date` >= UNIX_TIMESTAMP() ORDER BY `date` ASC", [$this['context_id']]);
-            }
-
             $teachers       = CourseMember::findBySQL("Seminar_id = ? AND status = 'dozent' ORDER BY position ASC", [$this['context_id']]);
             $tutors         = CourseMember::findBySQL("Seminar_id = ? AND status = 'tutor' ORDER BY position ASC", [$this['context_id']]);
             $students_count = CourseMember::countBySQL("Seminar_id = ? AND status IN ('autor', 'user') ORDER BY position ASC", [$this['context_id']]);
 
             $template = $GLOBALS['template_factory']->open('blubber/course_context');
             $template->thread         = $this;
-            $template->course         = $course;
-            $template->icons          = $icons;
-            $template->nextdate       = $nextdate;
+            $template->course         = Course::find($this['context_id']);
+
             $template->teachers       = $teachers;
             $template->tutors         = $tutors;
             $template->students_count = $students_count;
