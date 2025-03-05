@@ -89,7 +89,7 @@ class Admission_CoursesetController extends AuthenticatedController
             if (!isset($this->myInstitutes['all']['count']) || $this->myInstitutes['all']['count'] < 100) {
                 $this->current_institut_id = 'all';
             } else {
-                list($this->current_institut_id) = reset($this->myInstitutes);
+                $this->current_institut_id = array_key_first($this->myInstitutes) ?? 'all';
             }
         }
         $chunks = explode('_', $this->current_institut_id);
