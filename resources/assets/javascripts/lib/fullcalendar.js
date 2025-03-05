@@ -641,6 +641,11 @@ class Fullcalendar
                 }
             },
             datesRender (info) {
+                if ($(node).hasClass('semester-plan')) {
+                    //Nothing to do in the semester plan, since it already displays
+                    //all the information on loading.
+                    return;
+                }
                 let activeRange = info.view.props.dateProfile.activeRange;
                 let timestamp = activeRange.start.getTime() / 1000;
                 if ($(info.el).hasClass('institute-plan')) {
