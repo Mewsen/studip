@@ -1,7 +1,7 @@
 $select-border: 1px solid var(--light-gray-color-40);
 $select-border-focus: 1px solid var(--brand-color-dark);
 $select-border-radius: var(--border-radius-default);
-$select-height-default: 30px;
+$select-height-default: 32px;
 $select-arrow-size: 10px;
 
 select {
@@ -31,7 +31,6 @@ select {
         background-repeat: no-repeat;
 
         height: $select-height-default;
-        line-height: 1;
         overflow: hidden;
         text-overflow: ellipsis;
     }
