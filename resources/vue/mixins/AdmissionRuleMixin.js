@@ -55,7 +55,7 @@ export const AdmissionRuleMixin = {
             this.submit();
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('getRuleConfiguration');
     }
 }
