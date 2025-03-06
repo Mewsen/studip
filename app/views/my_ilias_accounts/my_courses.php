@@ -9,7 +9,7 @@
             <col>
             <col style="width: 15%">
             <col style="width: 15%">
-            <? if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) : ?>
+            <? if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths'] ?? false) : ?>
                 <col style="width: 30%">
             <? endif ?>
         </colgroup>
@@ -18,7 +18,7 @@
             <th><?= _('Name') ?></th>
             <th><?= _('Stud.IP-Veranstaltung') ?></th>
             <th><?= _('Status') ?></th>
-            <? if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) : ?>
+            <? if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths'] ?? false) : ?>
                 <th><?= _('Pfad') ?></th>
             <? endif ?>
         </thead>
