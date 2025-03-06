@@ -89,8 +89,8 @@ class ConnectedIlias
             $this->ilias_int_version,
             $this->ilias_config['admin'],
             $this->ilias_config['admin_pw'],
-            $this->ilias_config['http_connection_timeout'],
-            $this->ilias_config['http_request_timeout']
+            $this->ilias_config['http_connection_timeout'] ?? 1,
+            $this->ilias_config['http_request_timeout'] ?? 3
         );
         $this->soap_client->setCachingStatus($this->ilias_interface_config['cache']);
 
@@ -130,7 +130,12 @@ class ConnectedIlias
     public static function getIntVersion($version)
     {
         $version_array = explode('.', $version);
-        return ((int)$version_array[0]*10000) + ((int)$version_array[1]*100) + ((int)$version_array[2]);
+
+        $major = (int) ($version_array[0] ?? 0);
+        $minor = (int) ($version_array[1] ?? 0);
+        $patch = (int) ($version_array[2] ?? 0);
+
+        return $major * 10000 + $minor * 100 + $patch;
     }
 
     /**
