@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var Course[] $courses
+ * @var Course_GroupingController $controller
+ * @var array|bool $parentOnly
+ * @var Course $course
+ */
+?>
 <? if (!empty($courses)) : ?>
     <form class="default" action="<?= $controller->url_for('course/grouping/action') ?>" method="post"
           data-dialog="size=auto">
@@ -80,7 +88,7 @@
                         <?= sprintf(_('%s eintragen'), htmlReady(get_title_for_status('autor', 2))) ?>
                     </option>
                 </select>
-                <input type="hidden" name="course" value="<?= $current->id ?>">
+
                 <?= Studip\Button::createAccept(_('Ausführen'), 'courses_action') ?>
             </span>
             </footer>
