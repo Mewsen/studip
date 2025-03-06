@@ -59,7 +59,7 @@ use Studip\Button;
         </label>
 
         <label class="col-2">
-            <span class="label-text"><?= _('inaktiv') ?></span>
+            <?= _('inaktiv') ?>
 
             <div class="hgroup">
                 <select name="inaktiv" class="size-s">
