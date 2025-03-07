@@ -6,6 +6,21 @@ const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-transla
 
 const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
+const postcssOptions = styles.getPostCssConfig({
+    themeImporter: {
+        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+    },
+    minify: true
+});
+
+// TODO: Dieser Workaround sollte entfernt werden, sobald wir den CKE auf v43+ updaten können.
+postcssOptions.plugins[postcssOptions.plugins.findIndex((plugin) => plugin.postcssPlugin === 'postcss-nesting')] = require('postcss-nesting')({
+    // https://github.com/ckeditor/ckeditor5/issues/11730
+    noIsPseudoSelector: true,
+    edition: '2021',
+    silenceAtNestWarning: true
+});
+
 const assetsPath = path.resolve(__dirname, "resources/assets/javascripts");
 
 module.exports = {
@@ -43,14 +58,7 @@ module.exports = {
                     },
                     {
                         loader: "postcss-loader",
-                        options: {
-                            postcssOptions: styles.getPostCssConfig( {
-                                themeImporter: {
-                                    themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-                                },
-                                minify: true
-                            } )
-                        }
+                        options: { postcssOptions }
                     }
                 ]
             },
