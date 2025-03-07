@@ -1349,7 +1349,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                             unset($room_ids[$psr_index]);
                         }
                     }
-                    $resources = Resource::findMany($room_ids);
+                    $resources = Resource::findMany($room_ids, 'ORDER BY name');
                     foreach ($resources as $resource) {
                         //We must filter each room so that only rooms with
                         //permanent autor permissions are included
