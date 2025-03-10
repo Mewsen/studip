@@ -530,45 +530,34 @@ class Institute_MembersController extends AuthenticatedController
             throw new Exception('Wrong format');
         }
 
-        if (Request::get('institute_id')) {
-            $institute_id = Request::get('institute_id');
-        }
-
-        $inst_sql = "SELECT inst.Name AS institute, fak.Name AS faculty FROM Institute as inst
-                        JOIN Institute as fak ON (inst.fakultaets_id = fak.Institut_id)
-                        WHERE inst.Institut_id = :institut_id";
-        $res = DBManager::get()->fetchOne($inst_sql, ['institut_id' => $institute_id]);
-        $faculty = $res['faculty'];
-
         $header = [_('Einrichtung'), _('Fakultät'), _('Gruppe'), _('Titel'), _('Vorname'), _('Nachname'), _('Titel nachgestellt'),
             _('Telefon'), _('Raum'), _('Sprechzeiten'), _('E-Mail')];
-        $members = InstituteMember::findByInstitute($institute_id);
+        $groups = Statusgruppen::findAllByRangeId($this->institute->id);
+        $members = $this->institute->members;
+        $result = [];
 
-        $sg_sql = "SELECT name FROM statusgruppen as sg
-                            JOIN statusgruppe_user USING (statusgruppe_id)
-                            WHERE user_id = :user_id
-                            AND range_id = :range_id";
-        $temp = [];
-        foreach ($members as $member) {
-            $res = DBManager::get()->fetchOne($sg_sql, ['user_id' => $member['user_id'], 'range_id' => $institute_id]);
-            $temp[$member['id']] = [
-                'Einrichtung'        => (string) $this->institute->name,
-                'Fakultät'           => $faculty,
-                'Gruppe'             => $res['name'],
-                'Titel'              => $member->title_front,
-                'Vorname'            => $member->Vorname,
-                'Nachname'           => $member->Nachname,
-                'Titel nachgestellt' => $member->title_rear,
-                'Telefon'            => $member->Telefon,
-                'Raum'               => $member->raum,
-                'Sprechzeiten'       => $member->sprechzeiten,
-                'Email'              => $member->Email,
-            ];
+        foreach ($groups as $group) {
+            foreach ($group->members as $member) {
+                $inst_member = $members->findOneBy('user_id', $member->user_id);
+                $result[] = [
+                    'Einrichtung'        => $this->institute->name,
+                    'Fakultät'           => $this->institute->faculty->name,
+                    'Gruppe'             => $group->getFullName(),
+                    'Titel'              => $member->title_front,
+                    'Vorname'            => $member->Vorname,
+                    'Nachname'           => $member->Nachname,
+                    'Titel nachgestellt' => $member->title_rear,
+                    'Telefon'            => $inst_member->Telefon,
+                    'Raum'               => $inst_member->raum,
+                    'Sprechzeiten'       => $inst_member->sprechzeiten,
+                    'Email'              => $member->Email,
+                ];
+            }
         }
 
-        $filename = FileManager::cleanFileName(_('Mitarbeitendenexport') . ' ' . $this->institute->name . ' ' . $faculty . '.' . $export_format);
+        $filename = FileManager::cleanFileName(_('Mitarbeitendenexport') . ' ' . $this->institute->name . ' ' . $this->institute->faculty->name . '.' . $export_format);
 
-        $this->render_spreadsheet($header, $temp, $export_format, $filename);
+        $this->render_spreadsheet($header, $result, $export_format, $filename);
     }
 
     private function setupSidebar()
