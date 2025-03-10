@@ -568,7 +568,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $endtime = 0;
             }
         }
-        $position = 1;
+        $position = null;
         if (Statusgruppen::exists($group_id)) {
             $position = Statusgruppen::find($group_id)->position;
         }
@@ -1459,29 +1459,15 @@ class Course_StatusgroupsController extends AuthenticatedController
             throw new Exception('Invalid group or group does not belong to course');
         }
 
-        if ($group->position == $index) {
-            return;
+        $groups = $group->course->statusgruppen
+            ->filter(fn(Statusgruppen $grp) => $grp->id !== $group->id)
+            ->getArrayCopy();
+        array_splice($groups, $index, 0, [$group]);
+
+        foreach ($groups as $i => $g) {
+            $g->position = $i;
+            $g->store();
         }
-
-        if ($group->position < $index) {
-            $range = [$group->position, $index];
-            $adjustment = -1;
-        } else {
-            $range = [$index, $group->position];
-            $adjustment = 1;
-        }
-
-        Statusgruppen::findEachBySQL(
-            function ($g) use ($adjustment) {
-                $g->position = $g->position + $adjustment;
-                $g->store();
-            },
-            'range_id = ? AND statusgruppe_id != ? AND position BETWEEN ? AND ?',
-            [$this->course_id, $id, $range[0], $range[1]]
-        );
-
-        $group->position = $index;
-        $group->store();
 
         $this->render_nothing();
     }
