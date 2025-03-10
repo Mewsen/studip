@@ -9,11 +9,6 @@
     border-radius: var(--border-radius-avatar-menu);
     background-color: var(--color--header-inverted);
 
-    &.alert {
-        background-color: var(--color--warning);
-        color: var(--color--font-inverted);
-    }
-
     .count {
         padding: 0 5px;
     }
@@ -21,6 +16,16 @@
     img {
         vertical-align: middle;
         margin-top: -3px;
+        filter: brightness(0) saturate(100%) invert(26%) sepia(19%) saturate(1783%) hue-rotate(177deg) brightness(96%) contrast(93%); // #000 to #28497c
+    }
+
+    &.alert {
+        background-color: var(--color--warning);
+        color: var(--color--font-inverted);
+
+        img {
+            filter: invert(100); // #000 to #fff
+        }
     }
 }
 
@@ -207,9 +212,6 @@
             }
     
             margin: 0;
-    
-            // Create blind effect to hide/display this links smoothly
-            transition: all var(--transition-duration);
         }
         a.enable-desktop-notifications {
             @include background-icon('notification', 'clickable');

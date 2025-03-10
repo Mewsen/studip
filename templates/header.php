@@ -140,8 +140,7 @@ if ($navigation) {
                                     aria-expanded="false"
                             >
                                 <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
-                                <? $icon_role =  PersonalNotifications::hasUnseenNotifications() ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE ?>
-                                <?= Icon::create('notification2', $icon_role) ?>
+                                <?= Icon::create('notification2', Icon::ROLE_INFO) ?>
                             </button>
                             <input type="checkbox" id="notification_checkbox">
                             <div class="list below" id="notification_list">
