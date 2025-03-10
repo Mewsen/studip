@@ -119,7 +119,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
 
     public static function findAllByRangeId($range_id, $as_collection = false)
     {
-        $groups = self::findBySQL('range_id IN (?)', [$range_id]);
+        $groups = self::findBySQL('range_id IN (?) ORDER BY position', [$range_id]);
         if (count($groups) > 0) {
             $ids = array_map(function ($group) { return $group->id; }, $groups);
             $groups = array_merge($groups, self::findAllByRangeId($ids, false));
@@ -325,6 +325,18 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
     public function getName()
     {
         return $this->content['name'];
+    }
+
+    public function getFullName($seperator = ' > ')
+    {
+        $result = [$this->name];
+
+        $item = $this;
+        while ($item = $item->parent) {
+            array_unshift($result, $item->name);
+        }
+
+        return implode($seperator, $result);
     }
 
     /**
