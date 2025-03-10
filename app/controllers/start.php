@@ -79,7 +79,8 @@ class StartController extends AuthenticatedController
         $actions->addLink(
             _('Standard wiederherstellen'),
             $this->url_for('start/reset'),
-            Icon::create('accept')
+            Icon::create('accept'),
+            ['data-confirm' => _('Sollen wirklich alle Widgets auf den Standard zurückgesetzt werden?')]
         );
 
         // Root may set initial positions
