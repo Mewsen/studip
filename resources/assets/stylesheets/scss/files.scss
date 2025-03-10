@@ -387,8 +387,8 @@ form.default {
         padding-bottom: 15px;
     }
 
-    fieldset.select_terms_of_use,
-    fieldset.select_oer_upload {
+    fieldset.select_terms_of_use:not(.undecorated),
+    fieldset.select_oer_upload:not(.undecorated) {
         > legend {
             width: 100%;
             margin: 0;
