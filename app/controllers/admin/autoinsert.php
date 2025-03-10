@@ -44,11 +44,11 @@ class Admin_AutoinsertController extends AuthenticatedController
         if (Request::submitted('suchen')) {
             if (Request::get('sem_search')) {
                 $this->sem_search = Request::get('sem_search');
-                $this->sem_select = Request::option('sem_select');
+                $this->sem_select = Request::option('sem_select') ?: null;
                 $search = new SeminarSearch();
-                $this->seminar_search = $search->getResults
-                    (Request::get('sem_search'),
-                    ['search_sem_sem' => Request::option('sem_select')]
+                $this->seminar_search = $search->getResults(
+                    $this->sem_search,
+                    ['search_sem_sem' => $this->sem_select]
                 );
                 if (count($this->seminar_search) == 0) {
                     PageLayout::postInfo(_('Es wurden keine Veranstaltungen gefunden.'));

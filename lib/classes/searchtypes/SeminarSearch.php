@@ -37,13 +37,14 @@ class SeminarSearch extends SearchType
      * )
      * where $key is an identifier like user_id and $name is a displayed text
      * that should appear to represent that ID.
-     * @param keyword: string
+     * @param string $keyword
      * @param array $contextual_data an associative array with more variables
      * @param int $limit maximum number of results (default: all)
      * @param int $offset return results starting from this row (default: 0)
      * @return array
      */
-     public function getResults($keyword, $contextual_data = [], $limit = PHP_INT_MAX, $offset = 0) {
+     public function getResults($keyword, $contextual_data = [], $limit = PHP_INT_MAX, $offset = 0)
+     {
          $search_helper = new StudipSemSearchHelper();
          $search_helper->setParams(
              [
