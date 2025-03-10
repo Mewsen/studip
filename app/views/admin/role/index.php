@@ -9,26 +9,31 @@
     <caption>
         <?= _('Vorhandene Rollen') ?>
     </caption>
+    <colgroup>
+        <col width="65%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="5%">
+    </colgroup>
     <thead>
         <tr>
-            <th rowspan="2"><?= _('Name') ?></th>
-            <th colspan="2" style="text-align: right;">
-                <?= _('Benutzer') ?>
-            </th>
-            <th style="text-align: right;"  rowspan="2"><?= _('Plugins') ?></th>
-            <th rowspan="2"></th>
-        </tr>
-        <tr>
+            <th ><?= _('Name') ?></th>
             <th style="text-align: right;">
                 <abbr title="<?= _('Direkte Zuweisung') ?>">
-                    <?= _('explizit') ?>
+                    <?= _('Benutzer explizit') ?>
                 </abbr>
             </th>
             <th style="text-align: right;">
                 <abbr title="<?= _('Indirekte Zuweisung durch Berechtigungsstufe') ?>">
-                    <?= _('implizit') ?>
+                    <?= _('Benutzer implizit') ?>
                 </abbr>
             </th>
+            <th style="text-align: right;"><?= _('Plugins') ?></th>
+            <th></th>
+        </tr>
+        <tr>
+            
         </tr>
     </thead>
     <tbody>
