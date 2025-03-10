@@ -1149,7 +1149,10 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         $result = [];
 
         if (!$status) {
-            foreach ($this->members->orderBy('position, nachname') as $member) {
+            foreach ($this->members->findBy('status', ['dozent', 'tutor'])->orderBy('status,position,nachname,vorname') as $member) {
+                $result[$member->user_id] = $member->getExportData();
+            }
+            foreach ($this->members->findBy('status', ['autor', 'user'])->orderBy('status,nachname,vorname') as $member) {
                 $result[$member->user_id] = $member->getExportData();
             }
             foreach ($this->admission_applicants->findBy('status', 'accepted')->orderBy('position') as $member) {
