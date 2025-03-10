@@ -1397,7 +1397,9 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         $groups = $group->course->statusgruppen
-            ->filter(fn(Statusgruppen $grp) => $grp->id !== $group->id)
+            ->filter(function (Statusgruppen $grp) use ($group) {
+                return $grp->id !== $group->id;
+            })
             ->getArrayCopy();
         array_splice($groups, $index, 0, [$group]);
 
