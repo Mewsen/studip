@@ -166,8 +166,8 @@ function poll(forced) {
                 JSUpdater.stop();
 
                 // Present appropriate message in dialog
-                var message = $gettext('Bitte laden Sie die Seite neu, um fortzufahren'),
-                    buttons = {};
+                const message = $gettext('Bitte laden Sie die Seite neu, um fortzufahren.');
+                const buttons = {};
                 buttons[$gettext('Neu laden')] = function() {
                     location.reload();
                 };
@@ -180,12 +180,13 @@ function poll(forced) {
                         .html(message)
                         .css({
                             textAlign: 'center',
-                            padding: '2em 0'
+                            padding: '1.5em 0 0 0'
                         }),
                     {
                         buttons: buttons,
-                        size: 'auto',
-                        title: $gettext('Sie sind nicht mehr im System angemeldet.')
+                        width: 450,
+                        height: 200,
+                        title: $gettext('Sie sind nicht mehr im System angemeldet')
                     });
             } else {
                 registerNextPoll();
