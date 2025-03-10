@@ -160,7 +160,7 @@ export default {
                     break;
                 case 'warning':
                 case 'error':
-                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-not-ok.mp3');
+                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-not-good.mp3');
                     break;
                 case 'exception':
                     audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-bad.mp3');
