@@ -2,6 +2,7 @@
 namespace Assets;
 
 use Assets;
+use ScssPhp\ScssPhp\ValueConverter;
 use Studip\Cache\Factory;
 use Studip;
 
@@ -56,6 +57,11 @@ class SASSCompiler implements Compiler
         $scss = $this->getPrefix() . $input;
 
         $variables['image-path'] = '"' . Assets::url('images') . '"';
+
+        $variables = array_map(
+            [ValueConverter::class, 'fromPhp'],
+            $variables
+        );
 
         $compiler = new ScssCompiler();
         $compiler->addImportPath("{$GLOBALS['STUDIP_BASE_PATH']}/resources/");
