@@ -11,50 +11,43 @@
 <table class="collapsable default">
     <colgroup>
         <col>
-        <col width="20%">
         <col width="10%">
         <col width="10%">
         <col width="10%">
         <col width="10%">
         <col width="10%">
-        <col width="6%">
-        <col width="6%">
-        <col width="2%">
-        <col width="48px">
+        <col width="10%">
+        <col width="5%">
+        <col width="5%">
+        <col width="5%">
+        <col width="5%">
     </colgroup>
     <caption>
         <?= _('Verwaltung von generischen Datenfeldern') ?>
     </caption>
     <thead style="vertical-align: bottom">
         <tr>
-            <th rowspan="2"><?= _('Name') ?></th>
-            <th rowspan="2"><?= _('Feldtyp') ?></th>
-            <th rowspan="2" style="white-space: nowrap">
+            <th><?= _('Name') ?></th>
+            <th><?= _('Feldtyp') ?></th>
+            <th style="white-space: nowrap">
                 <?= _('Typ') ?>
                 <?= tooltipIcon(_('Veranstaltungskategorie, Einrichtungstyp, Sprache bzw. Nutzerstatus')) ?>
             </th>
-            <th rowspan="2">
+            <th>
                 <?= _('Institution') ?>
             </th>
-            <th colspan="2" style="text-align: center">
-                <?= _('benötigter Status') ?>
-            </th>
-            <th colspan="2" rowspan="2"></th>
-            <th rowspan="2"><?= _('Position') ?></th>
-            <th rowspan="2">
-                <abbr title="<?= _('Einträge') ?>">#</abbr>
-            </th>
-            <th rowspan="2" class="actions"></th>
-        </tr>
-        <tr>
             <th style="white-space: nowrap">
-                <?= _('Änderbar') ?>
+                <?= _('benötigter Status änderbar') ?>
                 <?= tooltipIcon(_('Gibt den Status an, ab dem das Datenfeld änderbar ist')) ?>
             </th>
             <th style="white-space: nowrap">
-                <?= _('Öffentlich') ?>
+                <?= _('benötigter Status öffentlich') ?>
                 <?= tooltipIcon(_('Gibt den Status an, ab dem das Datenfeld für andere sichtbar ist')) ?>
             </th>
+            <th colspan="2"></th>
+            <th><?= _('Position') ?></th>
+            <th><?= _('Einträge') ?></th>
+            <th class="actions"></th>
         </tr>
     </thead>
 <? foreach ($datafields_list as $key => $data): ?>
@@ -165,8 +158,8 @@
         <? else: ?>
             <td colspan="2"></td>
         <? endif; ?>
-            <td><?= $val->priority ?></td>
-            <td><?= count($val) ?></td>
+            <td style="text-align: right;"><?= $val->priority ?></td>
+            <td style="text-align: right;"><?= count($val) ?></td>
             <td class="actions">
                 <a href="<?=$controller->url_for('admin/datafields/edit/' . $val->id)?>" data-dialog>
                     <?= Icon::create('edit')->asImg(['title' => 'Datenfeld ändern']) ?>

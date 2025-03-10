@@ -502,7 +502,7 @@ table.default {
 
     > caption {
         background-color: transparent;
-        padding: 0 5px 5px 5px;
+        padding: 0 5px 10px 5px;
         color: var(--headings-color);
         font-size: $font-size-caption;
         line-height: $font-size-caption;
@@ -542,6 +542,7 @@ table.default {
         > tr {
             > th {
                 background-color: var(--color--table-header);
+                border-bottom: 2px solid var(--color--global-background);
                 text-align: left;
             }
 
@@ -636,10 +637,7 @@ table.default {
         font-size: $font-size-base;
         border-left: 1px solid var(--color--table-border);
         margin-bottom: -2px;
-        min-height: 30px;
-        padding-bottom: 3px;
         padding-left: 0.5em;
-        padding-top: 4px;
         input[type=text] {
             width: auto; // otherwise it can be 100%, so there is no space left for other parts of the actions-area
             max-height: 30px;
