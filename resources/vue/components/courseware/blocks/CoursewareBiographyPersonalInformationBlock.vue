@@ -61,6 +61,7 @@
                             <option value="widowed">{{ displayStatusText('widowed') }}</option>
                             <option value="divorced">{{ displayStatusText('divorced') }}</option>
                             <option value="registered-civil-partnership">{{ displayStatusText('registered-civil-partnership') }}</option>
+                            <option value="widowed-civil-partnership">{{ displayStatusText('widowed-civil-partnership') }}</option>
                             <option value="annulled-civil-partnership">{{ displayStatusText('annulled-civil-partnership') }}</option>
                         </select>
                     </label>
@@ -125,7 +126,7 @@ export default {
                 case 'male':
                     return this.$gettext('männlich');
                 case 'female':
-                    return this.$gettext('Weiblich');
+                    return this.$gettext('weiblich');
                 case 'diverse':
                     return this.$gettext('divers');
                 default:
@@ -146,6 +147,8 @@ export default {
                     return this.$gettext('geschieden');
                 case 'registered-civil-partnership':
                     return this.$gettext('eingetragene Lebenspartnerschaft');
+                case 'widowed-civil-partnership':
+                    return this.$gettext('eingetragene Lebenspartnerin/eingetragener Lebenspartner verstorben');
                 case 'annulled-civil-partnership':
                     return this.$gettext('aufgehobene Lebenspartnerschaft');
                 default:
