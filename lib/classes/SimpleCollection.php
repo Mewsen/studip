@@ -14,6 +14,7 @@
  * @category    Stud.IP
  *
  * @template T
+ * @extends StudipArrayObject<T>
  */
 class SimpleCollection extends StudipArrayObject
 {
