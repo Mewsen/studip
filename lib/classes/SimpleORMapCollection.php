@@ -16,6 +16,7 @@
  * @extends SimpleCollection<SimpleORMap>
  *
  * @template T of SimpleORMap
+ * @extends SimpleCollection<T>
  */
 class SimpleORMapCollection extends SimpleCollection
 {
