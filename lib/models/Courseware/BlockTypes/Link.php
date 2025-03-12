@@ -35,6 +35,9 @@ class Link extends BlockType
             'unit-target' => '',
             'url' => '',
             'title' => '',
+            'qr-enabled' => false,
+            'qr-level' => 'L',
+            'qr-size' => 180,
         ];
     }
 
@@ -76,7 +79,8 @@ class Link extends BlockType
             _('Hyperlink'),
             _('Quellenangabe'),
             _('Linkliste'),
-            _('Linksammlung')
+            _('Linksammlung'),
+            _('QR-Code'),
         ];
     }
 }

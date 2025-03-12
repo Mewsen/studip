@@ -11,20 +11,49 @@
         >
             <template #content>
                 <div v-if="currentType === 'external'">
-                    <a :href="currentUrl" target="_blank">
-                        <div class="cw-link external">
-                            <span class="cw-link-title">{{ currentTitle }}</span>
+                    <template v-if="currentUrl">
+                        <div v-if="currentQREnabled" class="cw-link-qr-code">
+                            <qrcode-vue
+                                v-if="currentUrl && currentQREnabled"
+                                :value="currentUrl"
+                                :size="currentQRSize ?? 180"
+                                :level="currentQRLevel"
+                                render-as="svg"
+                            />
+                            <a :href="currentUrl" target="_blank">
+                                {{ currentTitle }}
+                            </a>
                         </div>
-                    </a>
+
+                        <a v-else :href="currentUrl" target="_blank">
+                            <div class="cw-link external">
+                                <span class="cw-link-title">{{ currentTitle }}</span>
+                            </div>
+                        </a>
+                    </template>
+
+                    <courseware-companion-box
+                        v-if="!currentUrl && isTeacher"
+                        mood="pointing"
+                        :msgCompanion="$gettext('Bitte wählen Sie eine URL als Ziel aus.')"
+                    />
                 </div>
                 <div v-if="currentType === 'internal'">
-                    <router-link :to="{ name: 'CoursewareStructuralElement', params: { id: currentTarget } }">
+                    <router-link
+                        v-if="currentTarget"
+                        :to="{ name: 'CoursewareStructuralElement', params: { id: currentTarget } }"
+                    >
                         <div class="cw-link internal">
                             <span class="cw-link-title">
                                 {{ currentTitle }}
                             </span>
                         </div>
                     </router-link>
+                    <courseware-companion-box
+                        v-if="!currentTarget && isTeacher"
+                        mood="pointing"
+                        :msgCompanion="$gettext('Bitte wählen Sie eine Seite als Ziel aus.')"
+                    />
                 </div>
                 <div v-if="currentType === 'unit' && inCourseContext">
                     <a v-if="currentUnitData" :href="currentUnitData.url">
@@ -42,7 +71,7 @@
                         </div>
                     </a>
                     <courseware-companion-box
-                        v-else
+                        v-if="!currentUnitData && isTeacher"
                         mood="pointing"
                         :msgCompanion="$gettext('Bitte wählen Sie ein Lernmaterial als Ziel aus.')"
                     />
@@ -60,29 +89,64 @@
                             </option>
                         </select>
                     </label>
-                    <label v-show="currentType !== 'unit'">
+                    <label v-if="currentType !== 'unit'">
                         {{ $gettext('Titel') }}
                         <input type="text" v-model="currentTitle" />
                     </label>
-                    <label v-show="currentType === 'external'">
-                        {{ $gettext('URL') }}
-                        <input type="text" v-model="currentUrl" @change="fixUrl" />
-                    </label>
-                    <label v-show="currentType === 'internal'">
+                    <template v-if="currentType === 'external'">
+                        <label>
+                            {{ $gettext('URL') }}
+                            <input type="text" v-model="currentUrl" @change="fixUrl" />
+                        </label>
+                        <label>
+                            {{ $gettext('QR-Code') }}
+                            <select v-model="currentQREnabled">
+                                <option value="false">{{ $gettext('Kein QR-Code') }}</option>
+                                <option value="true">{{ $gettext('QR-Code') }}</option>
+                            </select>
+                        </label>
+                        <template v-if="currentQREnabled">
+                            <label>
+                                {{ $gettext('QR-Code Fehlerkorrekturlevel') }}
+                                <select v-model="currentQRLevel">
+                                    <option value="L">{{ $gettext('L – Niedrig (ca. 7% Wiederherstellung)') }}</option>
+                                    <option value="M">{{ $gettext('M – Mittel (ca. 15% Wiederherstellung)') }}</option>
+                                    <option value="Q">{{ $gettext('Q – Quartil (ca. 25% Wiederherstellung)') }}</option>
+                                    <option value="H">{{ $gettext('H – Hoch (ca. 30% Wiederherstellung)') }}</option>
+                                </select>
+                            </label>
+                            <label>
+                                {{ $gettext('QR-Code Größe') }}
+                                <select v-model="currentQRSize">
+                                    <option value="180">{{ $gettext('Klein') }}</option>
+                                    <option value="240">{{ $gettext('Mittel') }}</option>
+                                    <option value="300">{{ $gettext('Groß') }}</option>
+                                    <option value="360">{{ $gettext('Sehr groß') }}</option>
+                                </select>
+                            </label>
+                        </template>
+                    </template>
+                    <label v-if="currentType === 'internal'">
                         {{ $gettext('Seite') }}
-                        <select v-model="currentTarget">
+                        <select v-if="filteredStructuralElements.length > 0" v-model="currentTarget">
                             <option v-for="(el, index) in filteredStructuralElements" :key="index" :value="el.id">
                                 {{ el.attributes.title }}
                             </option>
                         </select>
+                        <span v-else>{{
+                            $gettext('Es wurde keine weitere Seite in diesem Lernmaterial gefunden.')
+                        }}</span>
                     </label>
-                    <label v-show="currentType === 'unit' && inCourseContext">
+                    <label v-if="currentType === 'unit' && inCourseContext">
                         {{ $gettext('Lernmaterial') }}
-                        <select v-model="currentUnitTarget">
+                        <select v-if="units.length > 0" v-model="currentUnitTarget">
                             <option v-for="(unit, index) in units" :key="index" :value="unit.id">
                                 {{ unit.title }}
                             </option>
                         </select>
+                        <span v-else>{{
+                            $gettext('Es wurde kein weiteres Lernmaterial in dieser Veranstaltung gefunden.')
+                        }}</span>
                     </label>
                 </form>
             </template>
@@ -98,12 +162,14 @@ import StudipIdentImage from './../../StudipIdentImage.vue';
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
+import QrcodeVue from 'qrcode.vue';
 import { mapActions, mapGetters } from 'vuex';
+import { $gettext } from '../../../../assets/javascripts/lib/gettext';
 
 export default {
     name: 'courseware-link-block',
     mixins: [blockMixin, colorMixin],
-    components: Object.assign(BlockComponents, { StudipIdentImage }),
+    components: { ...BlockComponents, StudipIdentImage, QrcodeVue },
     props: {
         block: Object,
         canEdit: Boolean,
@@ -116,6 +182,9 @@ export default {
             currentUnitTarget: '',
             currentUrl: '',
             currentTitle: '',
+            currentQREnabled: false,
+            currentQRLevel: '',
+            currentQRSize: '',
             identimage: '',
         };
     },
@@ -142,6 +211,15 @@ export default {
         title() {
             return this.block?.attributes?.payload?.title;
         },
+        qrEnabled() {
+            return this.block?.attributes?.payload?.['qr-enabled'];
+        },
+        qrLevel() {
+            return this.block?.attributes?.payload?.['qr-level'];
+        },
+        qrSize() {
+            return this.block?.attributes?.payload?.['qr-size'];
+        },
         units() {
             const allUnits = this.courseUnits;
             const units = allUnits.filter((unit) => unit.id !== this.context.unit);
@@ -156,9 +234,8 @@ export default {
             return this.currentType === 'unit' ? this.getUnitData(this.unitById({ id: this.currentUnitTarget })) : null;
         },
         headerImageUrl() {
-            const headerUrl = this.rootElement(this.unitById({ id: this.currentUnitTarget }))?.relationships?.image?.meta?.[
-                'download-url'
-            ];
+            const headerUrl = this.rootElement(this.unitById({ id: this.currentUnitTarget }))?.relationships?.image
+                ?.meta?.['download-url'];
             return headerUrl ? headerUrl : null;
         },
         previewImageStyle() {
@@ -194,6 +271,9 @@ export default {
             this.currentUrl = this.url;
             this.fixUrl();
             this.currentTitle = this.title;
+            this.currentQREnabled = this.qrEnabled;
+            this.currentQRLevel = this.qrLevel;
+            this.currentQRSize = this.qrSize;
         },
 
         fixUrl() {
@@ -249,8 +329,11 @@ export default {
                         target: this.currentTarget,
                         'unit-target': this.currentUnitTarget,
                         url: this.currentUrl,
-                        title: this.currentTitle
-                    }
+                        title: this.currentTitle,
+                        'qr-enabled': this.currentQREnabled,
+                        'qr-level': this.currentQRLevel,
+                        'qr-size': this.currentQRSize,
+                    },
                 };
 
                 this.updateBlock({
@@ -284,7 +367,7 @@ export default {
                 });
             }
         },
-    }
+    },
 };
 </script>
 <style scoped lang="scss">

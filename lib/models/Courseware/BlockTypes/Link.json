@@ -16,6 +16,15 @@
         },
         "title": {
             "type": "string"
+        },
+        "qr-enabled": {
+            "type": "boolean"
+        },
+        "qr-level": {
+            "type": "string"
+        },
+        "qr-size": {
+            "type": "string"
         }
     },
     "required": [
