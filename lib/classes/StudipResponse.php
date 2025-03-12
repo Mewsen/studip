@@ -64,7 +64,7 @@ class StudipResponse extends Trails\Response
         if ($body instanceof Psr\Http\Message\StreamInterface) {
             $this->psr_response = $this->psr_response->withBody($body);
         } else {
-            $this->psr_response->getBody()->write($body);
+            $this->psr_response->getBody()->write((string)$body);
         }
         return $this;
     }
