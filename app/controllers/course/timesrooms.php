@@ -504,10 +504,6 @@ class Course_TimesroomsController extends AuthenticatedController
         $old_room_id = $termin->room_booking->resource_id ?? '';
 
         if ((Request::option('room') == 'room') || Request::option('room') == 'nochange') {
-            //Storing the SingleDate above has deleted the room booking
-            //(see SingleDateDB::storeSingleDate). Therefore, the booking
-            //has to be recereated, even if the room option
-            //is set to "nochange".
             $room_id = null;
             $preparation_time = Request::int('preparation_time', 0);
             if (Request::option('room') == 'room') {
@@ -520,10 +516,13 @@ class Course_TimesroomsController extends AuthenticatedController
                         )
                     );
                 }
+            } elseif (Request::option('room') == 'nochange') {
+                //Use the ID of the current room as room-ID:
+                $room_id = $old_room_id;
             }
             if ($room_id) {
                 $room = Resource::find($room_id)?->getDerivedClassInstance();
-                if ($room_id !== $old_room_id) {
+                if ($room_id !== $old_room_id || $time_changed) {
                     $failure = false;
                     if ($room instanceof Room) {
                         try {
