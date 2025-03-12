@@ -266,6 +266,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         //If there is already a room assigned, "change" the booking.
         //Otherwise, create a new one.
         if ($this->room_booking instanceof ResourceBooking) {
+            $this->room_booking->begin            = $this->date;
+            $this->room_booking->end              = $this->end_time;
             $this->room_booking->resource_id      = $room->id;
             $this->room_booking->preparation_time = $preparation_time;
             $this->room_booking->store();
