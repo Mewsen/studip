@@ -1,6 +1,19 @@
 <?php
 namespace Studip\Cli\Commands\SORM;
 
+use Error;
+use Exception;
+use I18NString;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\ConstExprParser;
+use PHPStan\PhpDocParser\Parser\PhpDocParser;
+use PHPStan\PhpDocParser\Parser\TokenIterator;
+use PHPStan\PhpDocParser\Parser\TypeParser;
+use PHPStan\PhpDocParser\ParserConfig;
+use ReflectionClass;
+use SimpleORMap;
 use SimpleORMapCollection;
 use Studip\Cli\Commands\AbstractCommand;
 use Symfony\Component\Console\Command\Command;
@@ -14,8 +27,8 @@ final class DescribeModels extends AbstractCommand
 {
     protected static $defaultName = 'sorm:describe';
 
-    private $progress;
-    private $reflection;
+    private ProgressBar $progress;
+    private ReflectionClass $reflection;
 
     protected function configure(): void
     {
@@ -48,7 +61,7 @@ final class DescribeModels extends AbstractCommand
         $bootstrap = $input->getOption('bootstrap');
         if ($bootstrap) {
             if (!file_exists($bootstrap)) {
-                throw new \Exception("Invalid bootstrap file {$bootstrap} provided");
+                throw new Exception("Invalid bootstrap file {$bootstrap} provided");
             }
             require_once $bootstrap;
         }
@@ -77,7 +90,7 @@ final class DescribeModels extends AbstractCommand
                 $class_name = $this->getClassNameFromFile($file->getPathname()) ?? $class_name;
             }
 
-            if (!class_exists($class_name) || !is_subclass_of($class_name, \SimpleORMap::class)) {
+            if (!class_exists($class_name) || !is_subclass_of($class_name, SimpleORMap::class)) {
                 $this->outputForFile(
                     $output,
                     "Skipping invalid class file {$filename} (class {$class_name})",
@@ -87,8 +100,8 @@ final class DescribeModels extends AbstractCommand
             }
 
             try {
-                $this->reflection = new \ReflectionClass($class_name);
-            } catch (\Error $e) {
+                $this->reflection = new ReflectionClass($class_name);
+            } catch (Error $e) {
                 $this->outputForFile(
                     $output,
                     "<error>Could not get reflection for class {$class_name} ({$e->getMessage()})</error>"
@@ -108,6 +121,10 @@ final class DescribeModels extends AbstractCommand
 
             $model = $this->reflection->newInstance();
 
+            // Get current properties
+            $current_properties = $this->getPropertiesFromDocBlock();
+
+
             // Get configuration for class
             $config_property = $this->reflection->getProperty('config');
             $config_property->setAccessible(true);
@@ -121,23 +138,26 @@ final class DescribeModels extends AbstractCommand
             if (!isset($meta['fields']['id']) && count($meta['pk']) > 0) {
                 $properties['id'] = [
                     'type' => count($meta['pk']) > 1 ? 'array' : $this->getPHPType($meta['pk'][0], $meta['fields'][$meta['pk'][0]]),
-                    'description' => 'alias for pk',
+                    'description' => $current_properties['id']['description'] ?? 'alias for pk',
                 ];
             }
 
             foreach ($meta['fields'] as $field => $info) {
                 $name = mb_strtolower($field);
                 $type = $this->getPHPType($field, $info, $model_config);
+                if ($type === 'int' && isset($current_properties[$field]) && $current_properties[$field]['type'] === 'bool') {
+                    $type = 'bool';
+                }
                 $properties[$name] = [
                     'type'        => $type,
-                    'description' => 'database column',
+                    'description' => $current_properties[$field]['description'] ?? 'database column',
                 ];
 
                 $alias = array_search($name, $meta['alias_fields']);
                 if ($alias) {
                     $properties[$alias] = [
                         'type'        => $type,
-                        'description' => "alias column for {$name}",
+                        'description' => $current_properties[$field]['description'] ?? "alias column for {$name}",
                     ];
                 }
             }
@@ -147,10 +167,11 @@ final class DescribeModels extends AbstractCommand
                 $related_class_name = $options['class_name'];
 
                 if (in_array($options['type'], ['has_many', 'has_and_belongs_to_many'])) {
-                    $related_type = implode('|', [
+                    $related_type = sprintf(
+                        '%s<%s>',
                         $this->adjustNamespaceForClass(SimpleORMapCollection::class),
-                        $this->adjustNameSpaceForClass($related_class_name) . '[]',
-                    ]);
+                        $this->adjustNameSpaceForClass($related_class_name),
+                    );
                 } else {
                     $related_type = $this->adjustNamespaceForClass($related_class_name);
 
@@ -161,12 +182,14 @@ final class DescribeModels extends AbstractCommand
                         && $meta['fields'][$options['foreign_key']]['null'] === 'YES'
                     ) {
                         $related_type .= '|null';
+                    } elseif (preg_match('/^find(One?)By/', $options['assoc_func'])) {
+                        $related_type .= '|null';
                     }
                 }
 
                 $properties[$relation] = [
                     'type'        => $related_type,
-                    'description' => "{$options['type']} " . $this->adjustNamespaceForClass($related_class_name),
+                    'description' => $current_properties[$relation]['description'] ?? ("{$options['type']} " . $this->adjustNamespaceForClass($related_class_name)),
                 ];
             }
 
@@ -184,8 +207,8 @@ final class DescribeModels extends AbstractCommand
 
                 $properties[$field] = [
                     'property_type' => $property_type,
-                    'type' => $this->getAdditionFieldType($definition),
-                    'description' => 'additional field',
+                    'type' => $current_properties[$field]['type'] ?? $this->getAdditionFieldType($definition),
+                    'description' => $current_properties[$field]['description'] ?? 'additional field',
                 ];
             }
 
@@ -226,7 +249,7 @@ final class DescribeModels extends AbstractCommand
         if (isset($config['serialized_fields'][$field])) {
             $type[] = $this->adjustNamespaceForClass($config['serialized_fields'][$field]);
         } elseif (isset($config['i18n_fields'][$field])) {
-            $type[] = $this->adjustNamespaceForClass(\I18NString::class);
+            $type[] = $this->adjustNamespaceForClass(I18NString::class);
         } elseif (preg_match('/^(?:tiny|small|medium|big)?int(?:eger)?/i', $info['type'])) {
             $type[] = 'int';
         } elseif (preg_match('/^(?:decimal|double|float|numeric)/i', $info['type'])) {
@@ -256,7 +279,7 @@ final class DescribeModels extends AbstractCommand
                 return $line === '/';
             }
 
-            $properties_started = strpos($line, '@property ') === 0;
+            $properties_started = str_starts_with($line, '@property ');
             return !$properties_started;
         });
 
@@ -362,5 +385,53 @@ final class DescribeModels extends AbstractCommand
         // $definition may either be an array with definition or a boolean value
 
         return 'mixed';
+    }
+
+    private function getPropertiesFromDocBlock(): array
+    {
+        $docblock = $this->reflection->getDocComment();
+
+        if (!trim($docblock)) {
+            return [];
+        }
+
+        $config = new ParserConfig([]);
+        $lexer = new Lexer($config);
+        $constExprParser = new ConstExprParser($config);
+        $typeParser = new TypeParser($config, $constExprParser);
+        $phpDocParser = new PhpDocParser($config, $typeParser, $constExprParser);
+
+        $tokens = new TokenIterator($lexer->tokenize($docblock));
+        $parsed = $phpDocParser->parse($tokens);
+
+        $properties = [
+            ...$parsed->getPropertyTagValues(),
+            ...$parsed->getPropertyReadTagValues(),
+            ...$parsed->getPropertyWriteTagValues(),
+        ];
+
+        $result = [];
+        foreach ($properties as $property) {
+            $key = substr($property->propertyName, 1);
+            $result[$key] = [
+                'type' => (string) $property->type,
+                'description' => $this->cleanupDescription($property->description),
+            ];
+        }
+
+        return $result;
+    }
+
+    private function cleanupDescription(string $description): ?string
+    {
+        if (
+            in_array($description, ['database column', 'additional field', 'alias for pk'])
+            || preg_match('/^(has_one|has_many|has_and_belongs_to_many|belongs_to) \\S+/', $description)
+            || preg_match('/^alias column for \\S+/', $description)
+        ) {
+            return null;
+        }
+
+        return $description;
     }
 }
