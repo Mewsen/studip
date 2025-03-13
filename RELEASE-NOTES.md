@@ -4,10 +4,73 @@
 
 ## Neue Features
 
+### System
 - Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
 - Das `User`-Model hat die Methode `hasPermissionLevel()` erhalten, um einfach abfragen zu können, ob eine Person einen bestimmten Berechtigungsstatus hat. ([Issue #3453](https://gitlab.studip.de/studip/studip/-/issues/3453))
 - In der Standort-Verwaltung können nun nicht nur Ferien sondern auch Feiertage konfiguriert werden. Dies erlaubt das Markieren von Feiertagen als gesetzliche Feiertage, da diese je nach Bundesland variieren können. ([Issue #2795](https://gitlab.studip.de/studip/studip/-/issues/2795))
 - Die Nutzungsbedingungen sind nun nicht mehr als statische HTML-Dateien hinterlegt, sondern können analog zu Impressum, Datenschutz- und Barrierefreiheitserklärung direkt über die Oberfläche bearbeitet werden. Initial ist diese Seite aber im Entwurfsmodus und daher für Nicht-Roots unsichtbar. Damit andere Personen beim ersten Login diese Nutzungsbedingungen sehen und ihnen zustimmen können, muss der Entwurfsmodus für diese Seite abgeschaltet werden. ([TIC #4433](https://gitlab.studip.de/studip/studip/-/issues/4433))
+
+### Layout
+- Die Login-Seite wurde überarbeitet
+- Das Design von Stud.IP wurde modernisiert
+- Neue Avatarbilder
+
+### Courseware
+
+- Rechte und Sichtbarkeit überarbeitet
+    - Verbesserter Übersichtsdialog 
+    - Rechte und Sichtbarkeit können für ein ganzes Lernmaterial gesetzt werden
+    - [Issue #3442](https://gitlab.studip.de/studip/studip/-/issues/3442)
+- Peer-Review für Aufgaben
+    - Lehrende können Peer-Review-Prozess für Aufgaben einstellen
+    - Lernende sehen Aufgabenlösungen ein, geben Feedback und Bewertung dazu ab
+    - [Issue #2484](https://gitlab.studip.de/studip/studip/-/issues/2484)
+- Blubber-Block
+    - Blubber Diskussionen können jetzt als Block eingebunden werden
+- Lernmaterialübersicht im Inhaltsverzeichnis
+    - Schafft einen Überblick über weitere Lernmaterialien in der Veranstaltungen ohne den Kontext verlassen zu müssen
+- Neues Layout für den Merksatz-Block
+
+
+### Vips Plugin wird als Aufgaben-Werkzeug in Kern integriert
+- Mit Vips lassen sich Selbsttests, Übungen und Klausuren erstellen
+- Lernende können Vips Aufgabenblätter in Stud.IP bearbeiten und erhalten dort auch ihre Ergebnisse
+- Für eine Vielzahl von Aufgabentypen besteht die Möglichkeit einer Autokorrektur
+- [Issue #4258](https://gitlab.studip.de/studip/studip/-/issues/4258)
+- [Plugin](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/81097da5ef66a002998b75d5eeece1f0)
+
+### Neues Benachrichtigungssystem
+- Vereinheitlichung wie Stud.IP mit Nutzenden kommuniziert
+- Messageboxen, Companionmeldungen und Notifications werden vereinheitlicht
+- [Issue #660](https://gitlab.studip.de/studip/studip/-/issues/660)
+
+### Garuda Plugin in Kern integriert
+- Mit Garuda können Zielgruppen definiert werden, um diesen Sammelnachrichten zukommen zu lassen
+- [Issue #3326](https://gitlab.studip.de/studip/studip/-/issues/3326)
+- [Plugin](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/d24cb47ee246033c325496b832e64147)
+
+### Bilderpool
+- Neuer Archiv Upload
+     - Ermöglicht das Einpflegen von einer Vielzahl von Bilder mit nur einem Upload
+     - Metadaten werden in dem Archiv als CSV-Datei mitgegeben und müssen nicht mehr einzeln eingegeben werden
+     - Stud.IP Bildersammlung kann mit nur einem Upload integriert werden
+     - Die Stud.IP Bildersammlung finden Sie [hier](https://gitlab.studip.de/studip/bilderpool)
+
+### Anzeige von ILIAS-Kursen auf "Mein Arbeitsplatz"
+- Bei aktivierter ILIAS-Schnittstelle können Lehrende ihre Stud.IP Veranstaltungen mit ILIAS-Kursen verknüpfen
+- Lernende erhalten eine Übersicht über ihre ILIAS-Kurse im Stud.IP Arbeitsplatz
+
+### Assistent für Roots nach Updates
+- Nach einem Update auf eine neue Stud.IP Version werden Nutzenden mit Root-Rechten die neuen Features der Version präsentiert
+
+### Studiengruppen
+- Um Studiengruppen sichtbarer und interessanter zu machen wurde eine Reihe von Verbesserungen vorgenommen
+- Neues Widget für die Startseite
+- Möglichkeit Studiengruppen für eine Veranstaltungen vorzuschlagen
+- [Issue #3616](https://gitlab.studip.de/studip/studip/-/issues/3616)
+
+
+
 
 ## Breaking changes
 
