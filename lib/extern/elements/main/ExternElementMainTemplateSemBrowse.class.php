@@ -283,7 +283,7 @@ class ExternElementMainTemplateSemBrowse extends ExternElementMain {
 
     function checkValue ($attribute, $value) {
         if ($attribute == 'mode') {
-            if (!sizeof($_POST[$this->getName() . '_mode'])) {
+            if (!isset($_POST[$this->getName() . '_mode'])) {
                 return true;
             }
         }
