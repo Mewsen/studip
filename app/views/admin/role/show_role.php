@@ -98,7 +98,7 @@ use Studip\Button;
                 </td>
                 <td>
                     <a href="<?= $controller->link_for('admin/role/assign_role', $user->id) ?>">
-                        <?= htmlReady(sprintf('%s %s (%s)', $user->vorname, $user->nachname, $user->username)) ?>
+                        <?= htmlReady(sprintf('%s, %s (%s)', $user->nachname, $user->vorname, $user->username)) ?>
                     </a>
                 </td>
                 <td><?= htmlReady($user->perms) ?></td>
