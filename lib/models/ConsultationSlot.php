@@ -9,14 +9,14 @@
  * @property int $id alias column for slot_id
  * @property int $slot_id database column
  * @property int $block_id database column
- * @property int $previous_slot_id database column
+ * @property int|null $previous_slot_id database column
  * @property int $start_time database column
  * @property int $end_time database column
  * @property string $note database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ConsultationBooking[] $bookings has_many ConsultationBooking
- * @property SimpleORMapCollection|ConsultationEvent[] $events has_many ConsultationEvent
+ * @property SimpleORMapCollection<ConsultationBooking> $bookings has_many ConsultationBooking
+ * @property SimpleORMapCollection<ConsultationEvent> $events has_many ConsultationEvent
  * @property ConsultationBlock $block belongs_to ConsultationBlock
  * @property ConsultationSlot|null $previous_slot has_one ConsultationSlot
  * @property ConsultationSlot|null $next_slot has_one ConsultationSlot

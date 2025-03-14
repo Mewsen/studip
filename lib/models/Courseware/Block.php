@@ -26,15 +26,15 @@ use User;
  * @property string $payload database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \SimpleORMapCollection|UserDataField[] $data_fields has_many UserDataField
- * @property \SimpleORMapCollection|BlockComment[] $comments has_many BlockComment
- * @property \SimpleORMapCollection|BlockFeedback[] $block_feedback has_many BlockFeedback
- * @property \SimpleORMapCollection|UserProgress[] $progresses has_many UserProgress
+ * @property \SimpleORMapCollection<UserDataField> $data_fields has_many UserDataField
+ * @property \SimpleORMapCollection<BlockComment> $comments has_many BlockComment
+ * @property \SimpleORMapCollection<BlockFeedback> $block_feedback has_many BlockFeedback
+ * @property \SimpleORMapCollection<UserProgress> $progresses has_many UserProgress
  * @property \User $owner belongs_to \User
  * @property \User $editor belongs_to \User
  * @property \User|null $edit_blocker belongs_to \User
  * @property Container $container belongs_to Container
- * @property mixed $type additional field
+ * @property-read mixed $type additional field
  * @property-read mixed $files additional field
  */
 class Block extends \SimpleORMap implements \PrivacyObject

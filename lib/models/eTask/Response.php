@@ -13,9 +13,12 @@ use User;
  * @property int $task_id database column
  * @property string $user_id database column
  * @property \JSONArrayObject $response database column
+ * @property string|null $student_comment database column
+ * @property string $ip_address database column
  * @property int|null $state database column
  * @property float|null $points database column
  * @property string|null $feedback database column
+ * @property string|null $commented_solution database column
  * @property string|null $grader_id database column
  * @property int $mkdate database column
  * @property int $chdate database column

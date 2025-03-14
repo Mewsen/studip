@@ -12,16 +12,15 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  *
- * @property int    $id               pk
- * @property string $user_id          database column
- * @property int    $page_id          database column
- * @property bool   $editing          database column
- * @property bool   $editing_request  database column
- * @property int    $chdate           database column
- * @property int    $mkdate           database column
- *
- * @property WikiPage $page
- * @property User $user
+ * @property int $id pk
+ * @property string $user_id database column
+ * @property int $page_id database column
+ * @property bool $editing database column
+ * @property bool $editing_request database column
+ * @property int $chdate database column
+ * @property int $mkdate database column
+ * @property WikiPage $page 
+ * @property User $user 
  */
 class WikiOnlineEditingUser extends SimpleORMap
 {

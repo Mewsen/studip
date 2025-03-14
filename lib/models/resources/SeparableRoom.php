@@ -20,7 +20,7 @@
  * @property string $name database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|SeparableRoomPart[] $parts has_many SeparableRoomPart
+ * @property SimpleORMapCollection<SeparableRoomPart> $parts has_many SeparableRoomPart
  * @property Building $building belongs_to Building
  */
 

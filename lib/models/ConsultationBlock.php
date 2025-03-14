@@ -28,8 +28,8 @@
  * @property bool $consecutive database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ConsultationSlot[] $slots has_many ConsultationSlot
- * @property SimpleORMapCollection|ConsultationResponsibility[] $responsibilities has_many ConsultationResponsibility
+ * @property SimpleORMapCollection<ConsultationSlot> $slots has_many ConsultationSlot
+ * @property SimpleORMapCollection<ConsultationResponsibility> $responsibilities has_many ConsultationResponsibility
  * @property mixed $range additional field
  * @property-read mixed $range_display additional field
  * @property-read mixed $has_bookings additional field

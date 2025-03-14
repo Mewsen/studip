@@ -36,14 +36,14 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ModulteilStgteilabschnitt[] $abschnitt_assignments has_many ModulteilStgteilabschnitt
- * @property SimpleORMapCollection|LvgruppeModulteil[] $lvgruppen_assignments has_many LvgruppeModulteil
- * @property SimpleORMapCollection|ModulteilLanguage[] $languages has_many ModulteilLanguage
+ * @property SimpleORMapCollection<ModulteilStgteilabschnitt> $abschnitt_assignments has_many ModulteilStgteilabschnitt
+ * @property SimpleORMapCollection<LvgruppeModulteil> $lvgruppen_assignments has_many LvgruppeModulteil
+ * @property SimpleORMapCollection<ModulteilLanguage> $languages has_many ModulteilLanguage
  * @property Modul $modul belongs_to Modul
  * @property ModulteilDeskriptor $deskriptoren has_one ModulteilDeskriptor
- * @property SimpleORMapCollection|StgteilAbschnitt[] $abschnitte has_and_belongs_to_many StgteilAbschnitt
- * @property SimpleORMapCollection|Lvgruppe[] $lvgruppen has_and_belongs_to_many Lvgruppe
- * @property mixed $count_lvgruppen additional field
+ * @property SimpleORMapCollection<StgteilAbschnitt> $abschnitte has_and_belongs_to_many StgteilAbschnitt
+ * @property SimpleORMapCollection<Lvgruppe> $lvgruppen has_and_belongs_to_many Lvgruppe
+ * @property-read mixed $count_lvgruppen additional field
  */
 
 class Modulteil extends ModuleManagementModelTreeItem

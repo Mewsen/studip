@@ -15,14 +15,14 @@
 /**
  * The Keyring class stores cryptographic keyrings in the database.
  *
- * @property string id database column
- * @property string range_id database column
- * @property string range_type database column
- * @property string public_key database column
- * @property string private_key database column
- * @property string passphrase database column
- * @property string mkdate database column
- * @property string chdate database column
+ * @property int $id database column
+ * @property string $range_id database column
+ * @property string $range_type database column
+ * @property string $public_key database column
+ * @property string $private_key database column
+ * @property string $passphrase database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
  */
 class Keyring extends SimpleORMap
 {

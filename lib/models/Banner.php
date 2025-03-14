@@ -28,7 +28,7 @@
  * @property int $clicks database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|BannerRoles[] $banner_roles has_many BannerRoles
+ * @property SimpleORMapCollection<BannerRoles> $banner_roles has_many BannerRoles
  */
 
 class Banner extends SimpleORMap

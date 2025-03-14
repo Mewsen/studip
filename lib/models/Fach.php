@@ -23,15 +23,15 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|Abschluss[] $abschluesse has_many Abschluss
- * @property SimpleORMapCollection|StudiengangTeil[] $studiengangteile has_many StudiengangTeil
- * @property SimpleORMapCollection|FachFachbereich[] $department_assignments has_many FachFachbereich
- * @property SimpleORMapCollection|Fachbereich[] $departments has_and_belongs_to_many Fachbereich
- * @property SimpleORMapCollection|Abschluss[] $degrees has_and_belongs_to_many Abschluss
- * @property mixed $count_abschluesse additional field
- * @property mixed $count_user additional field
- * @property mixed $count_sem additional field
- * @property mixed $count_stgteile additional field
+ * @property SimpleORMapCollection<Abschluss> $abschluesse has_many Abschluss
+ * @property SimpleORMapCollection<StudiengangTeil> $studiengangteile has_many StudiengangTeil
+ * @property SimpleORMapCollection<FachFachbereich> $department_assignments has_many FachFachbereich
+ * @property SimpleORMapCollection<Fachbereich> $departments has_and_belongs_to_many Fachbereich
+ * @property SimpleORMapCollection<Abschluss> $degrees has_and_belongs_to_many Abschluss
+ * @property-read mixed $count_abschluesse additional field
+ * @property-read mixed $count_user additional field
+ * @property-read mixed $count_sem additional field
+ * @property-read mixed $count_stgteile additional field
  * @property-read mixed $count_module additional field
  */
 

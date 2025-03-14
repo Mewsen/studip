@@ -13,20 +13,21 @@
  * @package     extern
  * @since       5.4
  *
- * @property string $config_id database column
  * @property string $id alias column for config_id
+ * @property string $config_id database column
  * @property string $range_id database column
  * @property string $type database column
  * @property string $name database column
  * @property string $description database column
- * @property string $conf database column
+ * @property JSONArrayObject $conf database column
  * @property string $template database column
  * @property string $author_id database column
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property User $author has_one User
- * @property User $editor has_one User
+ * @property User $author belongs_to User
+ * @property User $editor belongs_to User
+ * @property Institute $range belongs_to Institute
  */
 
 class ExternPageConfig extends SimpleORMap

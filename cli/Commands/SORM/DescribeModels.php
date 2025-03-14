@@ -118,7 +118,6 @@ final class DescribeModels extends AbstractCommand
                 continue;
             }
 
-
             $model = $this->reflection->newInstance();
 
             // Get current properties

@@ -14,11 +14,11 @@ use User;
  * @property string $user_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \JSONArrayObject $options database column
- * @property \SimpleORMapCollection|TestTask[] $testtasks has_many TestTask
- * @property \SimpleORMapCollection|Assignment[] $assignments has_many Assignment
+ * @property \JSONArrayObject|null $options database column
+ * @property \SimpleORMapCollection<TestTask> $testtasks has_many TestTask
+ * @property \SimpleORMapCollection<Assignment> $assignments has_many Assignment
  * @property \User $owner belongs_to \User
- * @property \SimpleORMapCollection|Task[] $tasks has_and_belongs_to_many Task
+ * @property \SimpleORMapCollection<Task> $tasks has_and_belongs_to_many Task
  */
 class Test extends \SimpleORMap implements \PrivacyObject
 {

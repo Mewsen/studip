@@ -13,6 +13,20 @@ use User;
  * @SuppressWarnings(PHPMD.StaticAccess)
  *
  * @since   Stud.IP 6.0
+ *
+ * @property int $id database column
+ * @property int $task_group_id database column
+ * @property string $owner_id database column
+ * @property \JSONArrayObject $configuration database column
+ * @property int $review_start database column
+ * @property int $review_end database column
+ * @property int|null $paired_at database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property \SimpleORMapCollection<PeerReview> $_peer_reviews has_many PeerReview
+ * @property TaskGroup $task_group belongs_to TaskGroup
+ * @property \User $owner belongs_to \User
+ * @property mixed $peer_reviews additional field
  */
 class PeerReviewProcess extends \SimpleORMap
 {

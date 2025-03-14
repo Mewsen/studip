@@ -41,7 +41,7 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property string|null $comment database column
- * @property User $author has_one User
+ * @property User|null $author has_one User
  */
 class HelpContent extends SimpleORMap
 {

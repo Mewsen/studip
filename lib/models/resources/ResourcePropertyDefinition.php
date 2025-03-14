@@ -34,6 +34,7 @@
  * @property int|null $property_group_pos database column
  * @property int $mkdate database column
  * @property int $chdate database column
+ * @property SimpleORMapCollection<ResourceProperty> $properties has_many ResourceProperty
  * @property ResourcePropertyGroup|null $group belongs_to ResourcePropertyGroup
  */
 

@@ -15,9 +15,9 @@
  * @property int $copyable database column
  * @property int $chdate database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection|QuestionnaireQuestion[] $questions has_many QuestionnaireQuestion
- * @property SimpleORMapCollection|QuestionnaireAssignment[] $assignments has_many QuestionnaireAssignment
- * @property SimpleORMapCollection|QuestionnaireAnonymousAnswer[] $anonymousanswers has_many QuestionnaireAnonymousAnswer
+ * @property SimpleORMapCollection<QuestionnaireQuestion> $questions has_many QuestionnaireQuestion
+ * @property SimpleORMapCollection<QuestionnaireAssignment> $assignments has_many QuestionnaireAssignment
+ * @property SimpleORMapCollection<QuestionnaireAnonymousAnswer> $anonymousanswers has_many QuestionnaireAnonymousAnswer
  */
 class Questionnaire extends SimpleORMap implements PrivacyObject
 {

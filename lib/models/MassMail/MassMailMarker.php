@@ -4,6 +4,23 @@ namespace MassMail;
 
 use \User, \DBManager, \StudipPDO, \PDO;
 
+/**
+ * @license GPL2 or any later version
+ *
+ * @property int $id alias column for marker_id
+ * @property int $marker_id database column
+ * @property string $marker database column
+ * @property string $name database column
+ * @property string|null $type database column
+ * @property string|null $description database column
+ * @property int|null $root_only database column
+ * @property string|null $replacement database column
+ * @property string|null $replacement_female database column
+ * @property string|null $replacement_unknown database column
+ * @property int|null $position database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ */
 class MassMailMarker extends \SimpleORMap
 {
 

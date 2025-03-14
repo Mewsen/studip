@@ -43,10 +43,10 @@ require_once 'lib/object.inc.php';
  * @property string $author_email database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|HelpTourStep[] $steps has_many HelpTourStep
- * @property SimpleORMapCollection|HelpTourAudience[] $audiences has_many HelpTourAudience
+ * @property SimpleORMapCollection<HelpTourStep> $steps has_many HelpTourStep
+ * @property SimpleORMapCollection<HelpTourAudience> $audiences has_many HelpTourAudience
  * @property HelpTourSettings $settings has_one HelpTourSettings
- * @property User $author has_one User
+ * @property User|null $author has_one User
  */
 class HelpTour extends SimpleORMap
 {

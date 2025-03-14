@@ -23,8 +23,7 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property Clipboard $clipboard belongs_to Clipboard
- *
- * @property-read string $name
+ * @property-read string $name 
  */
 class ClipboardItem extends SimpleORMap
 {

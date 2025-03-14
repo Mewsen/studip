@@ -26,7 +26,7 @@
  * @property int $visible database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
  * @property User $user belongs_to User
  * @property Institute $institute belongs_to Institute
  * @property mixed $vorname additional field

@@ -13,14 +13,16 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  *
- * @property int $id
- * @property int $visibility_id
- * @property int $parent_id
- * @property string $category
- * @property string $name
- * @property int|null $state
- * @property int|null $plugin
- * @property string $identifier
+ * @property int $id alias column for visibilityid
+ * @property string $user_id database column
+ * @property int $visibilityid database column
+ * @property int $parent_id 
+ * @property string $category 
+ * @property string $name 
+ * @property int|null $state 
+ * @property int|null $plugin 
+ * @property string $identifier 
+ * @property User $user belongs_to User
  */
 class User_Visibility_Settings extends SimpleORMap
 {

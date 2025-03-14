@@ -25,8 +25,8 @@
  * @property JSONArrayObject $options database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|VipsAssignmentAttempt[] $assignment_attempts has_many VipsAssignmentAttempt
- * @property SimpleORMapCollection|VipsSolution[] $solutions has_many VipsSolution
+ * @property SimpleORMapCollection<VipsAssignmentAttempt> $assignment_attempts has_many VipsAssignmentAttempt
+ * @property SimpleORMapCollection<VipsSolution> $solutions has_many VipsSolution
  * @property Course|null $course belongs_to Course
  * @property VipsBlock|null $block belongs_to VipsBlock
  * @property VipsTest $test belongs_to VipsTest

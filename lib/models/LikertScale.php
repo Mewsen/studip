@@ -11,7 +11,7 @@
  * @property int $position database column
  * @property int $chdate database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection|QuestionnaireAnswer[] $answers has_many QuestionnaireAnswer
+ * @property SimpleORMapCollection<QuestionnaireAnswer> $answers has_many QuestionnaireAnswer
  * @property Questionnaire $questionnaire belongs_to Questionnaire
  */
 class LikertScale extends QuestionnaireQuestion implements QuestionType

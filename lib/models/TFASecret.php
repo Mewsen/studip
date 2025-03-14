@@ -15,7 +15,7 @@ use OTPHP\TOTP;
  * @property string $type database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|TFAToken[] $tokens has_many TFAToken
+ * @property SimpleORMapCollection<TFAToken> $tokens has_many TFAToken
  * @property User $user belongs_to User
  */
 class TFASecret extends SimpleORMap

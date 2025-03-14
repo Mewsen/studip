@@ -16,6 +16,7 @@ use \User, \Course, \CoursewarePDFCertificate;
  * @property string $user_id database column
  * @property string $course_id database column
  * @property int $unit_id database column
+ * @property string|null $fileref_id database column
  * @property int $mkdate database column
  * @property \User $user belongs_to \User
  * @property \Course $course belongs_to \Course

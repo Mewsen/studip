@@ -19,23 +19,24 @@ use OAT\Library\Lti1p3Core\Tool\Tool;
  * @property string $consumer_key database column
  * @property string $consumer_secret database column
  * @property string $custom_parameters database column
- * @property string $lti_version database column
- * @property string $oidc_init_url database column
- * @property string $oauth2_client_id database column
- * @property string $jwks_url database column
- * @property string $jwks_key_id database column
- * @property string $deep_linking_url database column
- * @property string $terms_of_use_url database column
- * @property string $privacy_policy_url database column
- * @property string $data_protection_notes database column
- * @property string $range_id database column
  * @property int $allow_custom_url database column
  * @property int $deep_linking database column
  * @property int $send_lis_person database column
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property string $oauth_signature_method database column
- * @property SimpleORMapCollection|LtiDeployment[] $links has_many LtiData
+ * @property string $lti_version database column
+ * @property string $range_id database column
+ * @property string $oidc_init_url database column
+ * @property int|null $oauth2_client_id database column
+ * @property string $jwks_url database column
+ * @property string $jwks_key_id database column
+ * @property string $deep_linking_url database column
+ * @property string $terms_of_use_url database column
+ * @property string $privacy_policy_url database column
+ * @property string|null $data_protection_notes database column
+ * @property SimpleORMapCollection<LtiDeployment> $links has_many LtiDeployment
+ * @property Studip\OAuth2\Models\Client|null $oauth2_client has_one Studip\OAuth2\Models\Client
  */
 
 class LtiTool extends SimpleORMap

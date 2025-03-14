@@ -11,6 +11,7 @@ use JSONArrayObject;
  * @property int $test_id database column
  * @property int $task_id database column
  * @property int $position database column
+ * @property int $part database column
  * @property float|null $points database column
  * @property \JSONArrayObject $options database column
  * @property int|null $mkdate database column

@@ -25,14 +25,11 @@ use User;
  * @property int $end_date database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \SimpleORMapCollection|Task[] $tasks has_many Task
+ * @property \SimpleORMapCollection<Task> $tasks has_many Task
+ * @property \SimpleORMapCollection<PeerReviewProcess> $peer_review_processes has_many PeerReviewProcess
  * @property \User $lecturer belongs_to \User
  * @property \Course $course belongs_to \Course
- * @property \Courseware\StructuralElement $target belongs_to Courseware\StructuralElement
- * @property \SimpleORMapCollection $tasks has_many Courseware\Task
- * @property \SimpleORMapCollection $peer_review_processes has_many Courseware\PeerReviewProcess
- *
- * @SuppressWarnings(PHPMD.StaticAccess)
+ * @property StructuralElement $target belongs_to StructuralElement
  */
 class TaskGroup extends \SimpleORMap implements \PrivacyObject
 {

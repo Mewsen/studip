@@ -20,7 +20,7 @@
  * @property string|null $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|MvvContactRange[] $ranges has_many MvvContactRange
+ * @property SimpleORMapCollection<MvvContactRange> $ranges has_many MvvContactRange
  * @property-read mixed $name additional field
  * @property-read mixed $count_relations additional field
  */

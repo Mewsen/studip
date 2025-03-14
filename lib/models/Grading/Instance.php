@@ -12,6 +12,7 @@ use OAT\Library\Lti1p3Ags\Model\Result\Result;
  * @property string $user_id database column
  * @property float $rawgrade database column
  * @property string|null $feedback database column
+ * @property int $passed database column
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property \User $user belongs_to \User

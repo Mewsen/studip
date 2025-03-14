@@ -17,20 +17,15 @@
  * @category    Stud.IP
  * @since       5.5
  *
- * @property string range_id The range-ID for the assignment.
- * @property string calendar_date_id The ID of the calendar date for the assignment.
- * @property string participation The participation status of the receiver (range_id).
- *     This column is an enum with the following values:
- *     - empty string: Participation status is unknown.
- *     - "ACCEPTED": The calendar owner accepted the date.
- *     - "DECLINED": The calendar owner declined the date.
- *     - "ACKNOWLEDGED": The calendar owner only acknowledged that the date exists
- *           but doesn't necessarily participate in it.
- * @property string mkdate The creation date of the assignment.
- * @property string chdate The modification date of the assignment.
- * @property CalendarDate|null calendar_date The associated calendar date object.
- * @property User|null $user
- * @property Course|null $course
+ * @property array $id alias for pk
+ * @property string $range_id database column
+ * @property string $calendar_date_id database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property string $participation database column
+ * @property CalendarDate $calendar_date belongs_to CalendarDate
+ * @property User $user 
+ * @property Course $course 
  */
 class CalendarDateAssignment extends SimpleORMap implements Event
 {

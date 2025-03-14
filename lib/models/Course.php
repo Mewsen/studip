@@ -47,33 +47,44 @@
  * @property int $admission_disable_waitlist_move database column
  * @property int $completion database column
  * @property string|null $parent_course database column
- * @property string|null $expires database column
- * @property SimpleORMapCollection|CourseTopic[] $topics has_many CourseTopic
- * @property SimpleORMapCollection|CourseDate[] $dates has_many CourseDate
- * @property SimpleORMapCollection|CourseExDate[] $ex_dates has_many CourseExDate
- * @property SimpleORMapCollection|CourseMember[] $members has_many CourseMember
- * @property SimpleORMapCollection|Deputy[] $deputies has_many Deputy
- * @property SimpleORMapCollection|Statusgruppen[] $statusgruppen has_many Statusgruppen
- * @property SimpleORMapCollection|AdmissionApplication[] $admission_applicants has_many AdmissionApplication
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
- * @property SimpleORMapCollection|SeminarCycleDate[] $cycles has_many SeminarCycleDate
- * @property SimpleORMapCollection|BlubberThread[] $blubberthreads has_many BlubberThread
- * @property SimpleORMapCollection|ConsultationBlock[] $consultation_blocks has_many ConsultationBlock
- * @property SimpleORMapCollection|RoomRequest[] $room_requests has_many RoomRequest
- * @property SimpleORMapCollection|Course[] $children has_many Course
- * @property SimpleORMapCollection|ToolActivation[] $tools has_many ToolActivation
- * @property SimpleORMapCollection|CourseMemberNotification[] $member_notifications has_many CourseMemberNotification
- * @property SimpleORMapCollection|Courseware\Unit[] $courseware_units has_many Courseware\Unit
+ * @property int|null $expires database column
+ * @property SimpleORMapCollection<CourseTopic> $topics has_many CourseTopic
+ * @property SimpleORMapCollection<CourseDate> $dates has_many CourseDate
+ * @property SimpleORMapCollection<CourseExDate> $ex_dates has_many CourseExDate
+ * @property SimpleORMapCollection<CourseMember> $members has_many CourseMember
+ * @property SimpleORMapCollection<Deputy> $deputies has_many Deputy
+ * @property SimpleORMapCollection<Statusgruppen> $statusgruppen has_many Statusgruppen
+ * @property SimpleORMapCollection<AdmissionApplication> $admission_applicants has_many AdmissionApplication
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<SeminarCycleDate> $cycles has_many SeminarCycleDate
+ * @property SimpleORMapCollection<StudipScmEntry> $scm_entries has_many StudipScmEntry
+ * @property SimpleORMapCollection<WikiPage> $wiki_pages has_many WikiPage
+ * @property SimpleORMapCollection<StudipNews> $news has_many StudipNews
+ * @property SimpleORMapCollection<BlubberThread> $blubberthreads has_many BlubberThread
+ * @property SimpleORMapCollection<ConsultationBlock> $consultation_blocks has_many ConsultationBlock
+ * @property SimpleORMapCollection<RoomRequest> $room_requests has_many RoomRequest
+ * @property SimpleORMapCollection<ResourceBooking> $resource_bookings has_many ResourceBooking
+ * @property SimpleORMapCollection<Course> $children has_many Course
+ * @property SimpleORMapCollection<ToolActivation> $tools has_many ToolActivation
+ * @property SimpleORMapCollection<CourseMemberNotification> $member_notifications has_many CourseMemberNotification
+ * @property SimpleORMapCollection<ConfigValue> $config_values has_many ConfigValue
+ * @property SimpleORMapCollection<Courseware\Unit> $courseware_units has_many Courseware\Unit
+ * @property SimpleORMapCollection<StudygroupCourseProposal> $studygroup_proposals has_many StudygroupCourseProposal
+ * @property SimpleORMapCollection<StudygroupCourseProposal> $course_proposals has_many StudygroupCourseProposal
+ * @property SimpleORMapCollection<StudygroupInvitation> $studygroup_invitations has_many StudygroupInvitation
  * @property Institute $home_institut belongs_to Institute
  * @property AuxLockRule|null $aux belongs_to AuxLockRule
  * @property Course|null $parent belongs_to Course
- * @property SimpleORMapCollection|Semester[] $semesters has_and_belongs_to_many Semester
- * @property SimpleORMapCollection|StudipStudyArea[] $study_areas has_and_belongs_to_many StudipStudyArea
- * @property SimpleORMapCollection|Institute[] $institutes has_and_belongs_to_many Institute
- * @property SimpleORMapCollection|UserDomain[] $domains has_and_belongs_to_many UserDomain
+ * @property SimpleORMapCollection<Semester> $semesters has_and_belongs_to_many Semester
+ * @property SimpleORMapCollection<StudipStudyArea> $study_areas has_and_belongs_to_many StudipStudyArea
+ * @property SimpleORMapCollection<Institute> $institutes has_and_belongs_to_many Institute
+ * @property SimpleORMapCollection<UserDomain> $domains has_and_belongs_to_many UserDomain
+ * @property SimpleORMapCollection<Course> $studygroups has_and_belongs_to_many Course
+ * @property SimpleORMapCollection<Course> $connectedcourses has_and_belongs_to_many Course
+ * @property SimpleORMapCollection<Tag> $tags has_and_belongs_to_many Tag
  * @property-read mixed $teachers additional field
  * @property Semester $start_semester additional field
- * @property Semester|null $end_semester additional field
+ * @property (Semester | null) $end_semester additional field
  * @property-read mixed $semester_text additional field
  * @property-read mixed $config additional field
  */

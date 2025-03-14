@@ -10,7 +10,7 @@
  * @property string $event_id database column
  * @property int $mkdate database column
  * @property ConsultationSlot $slot belongs_to ConsultationSlot
- * @property CalendarDate $event belongs_to CalendarDate
+ * @property CalendarDate $event has_one CalendarDate
  */
 class ConsultationEvent extends SimpleORMap
 {

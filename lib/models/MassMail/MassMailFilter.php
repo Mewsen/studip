@@ -2,6 +2,15 @@
 
 namespace MassMail;
 
+/**
+ * @license GPL2 or any later version
+ *
+ * @property array $id alias for pk
+ * @property int $message_id database column
+ * @property string $filter_id database column
+ * @property int $mkdate database column
+ * @property-read mixed $userfilter additional field
+ */
 class MassMailFilter extends \SimpleORMap
 {
 

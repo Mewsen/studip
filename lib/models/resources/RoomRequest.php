@@ -26,8 +26,8 @@
  * @property int $end database column
  * @property int $preparation_time database column
  * @property int $marked database column
- * @property SimpleORMapCollection|ResourceRequestProperty[] $properties has_many ResourceRequestProperty
- * @property SimpleORMapCollection|ResourceRequestAppointment[] $appointments has_many ResourceRequestAppointment
+ * @property SimpleORMapCollection<ResourceRequestProperty> $properties has_many ResourceRequestProperty
+ * @property SimpleORMapCollection<ResourceRequestAppointment> $appointments has_many ResourceRequestAppointment
  * @property Room $room belongs_to Room
  * @property Resource $resource belongs_to Resource
  * @property ResourceCategory|null $category belongs_to ResourceCategory

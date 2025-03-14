@@ -15,12 +15,14 @@ use JSONArrayObject;
  * @property int|null $start database column
  * @property int|null $end database column
  * @property int $active database column
+ * @property float $weight database column
+ * @property int|null $block_id database column
  * @property \JSONArrayObject $options database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property \SimpleORMapCollection|Attempt[] $attempts has_many Attempt
- * @property \SimpleORMapCollection|AssignmentRange[] $ranges has_many AssignmentRange
- * @property \SimpleORMapCollection|Response[] $responses has_many Response
+ * @property \SimpleORMapCollection<Attempt> $attempts has_many Attempt
+ * @property \SimpleORMapCollection<AssignmentRange> $ranges has_many AssignmentRange
+ * @property \SimpleORMapCollection<Response> $responses has_many Response
  * @property Test $test belongs_to Test
  */
 class Assignment extends \SimpleORMap

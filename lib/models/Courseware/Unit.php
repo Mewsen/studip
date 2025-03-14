@@ -18,6 +18,7 @@ use User;
  * @property string|null $range_type database column
  * @property int $structural_element_id database column
  * @property string $content_type database column
+ * @property int|null $position database column
  * @property int $public database column
  * @property string|null $creator_id database column
  * @property string $permission_scope database column
@@ -30,8 +31,8 @@ use User;
  * @property bool $writable_all database column
  * @property int|null $writable_start_date database column
  * @property int|null $writable_end_date database column
- * @property \JSONArrayObject $writable_approval database column
  * @property \JSONArrayObject $visible_approval database column
+ * @property \JSONArrayObject $writable_approval database column
  * @property \JSONArrayObject $config database column
  * @property int $mkdate database column
  * @property int $chdate database column

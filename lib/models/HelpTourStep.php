@@ -45,7 +45,7 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property HelpTour $help_tour belongs_to HelpTour
- * @property User $author has_one User
+ * @property User|null $author has_one User
  */
 class HelpTourStep extends SimpleORMap
 {

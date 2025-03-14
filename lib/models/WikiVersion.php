@@ -13,19 +13,18 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  *
- * @property int $id alias column for user_id
+ * @property int $id alias column for version_id
  * @property int $version_id database column
  * @property int $page_id database column
  * @property string $name database column
- * @property string $content database column
+ * @property string|null $content database column
  * @property string $user_id database column
  * @property int $mkdate database column
- *
- * @property WikiPage $page
- * @property User $user
- * @property WikiPage|null $predecessor
- * @property WikiPage|null $successor
- * @property int|null $versionnumber
+ * @property WikiPage $page 
+ * @property User $user 
+ * @property-read (WikiPage | null) $predecessor 
+ * @property-read (WikiPage | null) $successor 
+ * @property-read (int | null) $versionnumber 
  */
 class WikiVersion extends SimpleORMap
 {

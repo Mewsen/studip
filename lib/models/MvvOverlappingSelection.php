@@ -23,8 +23,8 @@
  * @property string $user_id database column
  * @property int $show_excluded database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection|MvvOverlappingConflict[] $conflicts has_many MvvOverlappingConflict
- * @property SimpleORMapCollection|MvvOverlappingExclude[] $excludes has_many MvvOverlappingExclude
+ * @property SimpleORMapCollection<MvvOverlappingConflict> $conflicts has_many MvvOverlappingConflict
+ * @property SimpleORMapCollection<MvvOverlappingExclude> $excludes has_many MvvOverlappingExclude
  * @property Semester $semester belongs_to Semester
  * @property StgteilVersion $base_version belongs_to StgteilVersion
  * @property StgteilVersion $comp_version belongs_to StgteilVersion

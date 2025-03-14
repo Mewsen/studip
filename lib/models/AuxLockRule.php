@@ -22,7 +22,7 @@
  * @property JSONArrayObject $sorting database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|Course[] $courses has_many Course
+ * @property SimpleORMapCollection<Course> $courses has_many Course
  * @property mixed $datafields additional field
  */
 class AuxLockRule extends SimpleORMap

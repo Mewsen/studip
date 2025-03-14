@@ -37,19 +37,19 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|StudiengangStgteil[] $stgteil_assignments has_many StudiengangStgteil
- * @property SimpleORMapCollection|MvvFile[] $documents has_many MvvFile
- * @property SimpleORMapCollection|MvvFileRange[] $document_assignments has_many MvvFileRange
- * @property SimpleORMapCollection|MvvContactRange[] $contact_assignments has_many MvvContactRange
- * @property SimpleORMapCollection|StudycourseType[] $studycourse_types has_many StudycourseType
- * @property SimpleORMapCollection|StudycourseLanguage[] $languages has_many StudycourseLanguage
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
- * @property SimpleORMapCollection|Aufbaustudiengang[] $grundstg_assignments has_many Aufbaustudiengang
- * @property SimpleORMapCollection|Aufbaustudiengang[] $aufbaustg_assignments has_many Aufbaustudiengang
+ * @property SimpleORMapCollection<StudiengangStgteil> $stgteil_assignments has_many StudiengangStgteil
+ * @property SimpleORMapCollection<MvvFile> $documents has_many MvvFile
+ * @property SimpleORMapCollection<MvvFileRange> $document_assignments has_many MvvFileRange
+ * @property SimpleORMapCollection<MvvContactRange> $contact_assignments has_many MvvContactRange
+ * @property SimpleORMapCollection<StudycourseType> $studycourse_types has_many StudycourseType
+ * @property SimpleORMapCollection<StudycourseLanguage> $languages has_many StudycourseLanguage
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<Aufbaustudiengang> $grundstg_assignments has_many Aufbaustudiengang
+ * @property SimpleORMapCollection<Aufbaustudiengang> $aufbaustg_assignments has_many Aufbaustudiengang
  * @property Abschluss|null $abschluss belongs_to Abschluss
  * @property Fachbereich|null $responsible_institute has_one Fachbereich
- * @property SimpleORMapCollection|StudiengangTeil[] $studiengangteile has_and_belongs_to_many StudiengangTeil
- * @property SimpleORMapCollection|StgteilBezeichnung[] $stgteil_bezeichnungen has_and_belongs_to_many StgteilBezeichnung
+ * @property SimpleORMapCollection<StudiengangTeil> $studiengangteile has_and_belongs_to_many StudiengangTeil
+ * @property SimpleORMapCollection<StgteilBezeichnung> $stgteil_bezeichnungen has_and_belongs_to_many StgteilBezeichnung
  * @property-read mixed $count_dokumente additional field
  * @property-read mixed $count_faecher additional field
  * @property-read mixed $count_module additional field

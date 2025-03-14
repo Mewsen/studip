@@ -20,7 +20,7 @@
  * @property int $position database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ResourcePropertyDefinition[] $properties has_many ResourcePropertyDefinition
+ * @property SimpleORMapCollection<ResourcePropertyDefinition> $properties has_many ResourcePropertyDefinition
  */
 class ResourcePropertyGroup extends SimpleORMap
 {

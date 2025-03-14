@@ -21,7 +21,7 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property JSONArrayObject|null $options database column
- * @property SimpleORMapCollection|LtiGrade[] $grades has_many LtiGrade
+ * @property SimpleORMapCollection<LtiGrade> $grades has_many LtiGrade
  * @property Course $course belongs_to Course
  * @property LtiTool $tool belongs_to LtiTool
  */

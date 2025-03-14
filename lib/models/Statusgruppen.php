@@ -32,17 +32,17 @@
  * @property int $calendar_group database column
  * @property I18NString|null $name_w database column
  * @property I18NString|null $name_m database column
- * @property SimpleORMapCollection|StatusgruppeUser[] $members has_many StatusgruppeUser
- * @property SimpleORMapCollection|ConsultationBlock[] $consultation_blocks has_many ConsultationBlock
- * @property SimpleORMapCollection|ConsultationResponsibility[] $consultation_responsibilities has_many ConsultationResponsibility
+ * @property SimpleORMapCollection<StatusgruppeUser> $members has_many StatusgruppeUser
+ * @property SimpleORMapCollection<ConsultationBlock> $consultation_blocks has_many ConsultationBlock
+ * @property SimpleORMapCollection<ConsultationResponsibility> $consultation_responsibilities has_many ConsultationResponsibility
  * @property Statusgruppen $parent belongs_to Statusgruppen
  * @property Course $course belongs_to Course
  * @property Institute $institute belongs_to Institute
  * @property User $user belongs_to User
  * @property BlubberStatusgruppeThread $blubberthread has_one BlubberStatusgruppeThread
- * @property SimpleORMapCollection|CourseDate[] $dates has_and_belongs_to_many CourseDate
+ * @property SimpleORMapCollection<CourseDate> $dates has_and_belongs_to_many CourseDate
  * @property mixed $children additional field
- * @property-read Range|null $range
+ * @property-read (Range | null) $range 
  */
 class Statusgruppen extends SimpleORMap implements PrivacyObject
 {

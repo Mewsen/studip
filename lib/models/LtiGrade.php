@@ -16,7 +16,7 @@
  * @property float $score database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property LtiDeployment $link belongs_to LtiData
+ * @property LtiDeployment $link belongs_to LtiDeployment
  * @property User $user belongs_to User
  */
 

@@ -17,10 +17,10 @@ use User;
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property \JSONArrayObject $options database column
- * @property \SimpleORMapCollection|TestTask[] $test_tasks has_many TestTask
- * @property \SimpleORMapCollection|Response[] $responses has_many Response
+ * @property \SimpleORMapCollection<TestTask> $test_tasks has_many TestTask
+ * @property \SimpleORMapCollection<Response> $responses has_many Response
  * @property \User $owner belongs_to \User
- * @property \SimpleORMapCollection|Test[] $tests has_and_belongs_to_many Test
+ * @property \SimpleORMapCollection<Test> $tests has_and_belongs_to_many Test
  */
 class Task extends \SimpleORMap implements \PrivacyObject
 {

@@ -22,7 +22,7 @@
  * @property string $editor_id database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|StudyCourse[] $professions has_and_belongs_to_many StudyCourse
+ * @property SimpleORMapCollection<StudyCourse> $professions has_and_belongs_to_many StudyCourse
  * @property-read mixed $count_user additional field
  */
 class Degree extends SimpleORMap

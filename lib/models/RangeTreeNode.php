@@ -23,7 +23,7 @@
  * @property string $name database column
  * @property string|null $studip_object database column
  * @property string|null $studip_object_id database column
- * @property SimpleORMapCollection|RangeTreeNode[] $children has_many RangeTreeNode
+ * @property SimpleORMapCollection<RangeTreeNode> $children has_many RangeTreeNode
  * @property Institute|null $institute belongs_to Institute
  * @property RangeTreeNode $parent belongs_to RangeTreeNode
  */
