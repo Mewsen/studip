@@ -579,7 +579,7 @@ class RolePersistence
 
         $user_ids = DBManager::get()->fetchFirst($query, [':role_id' => $role_id]);
 
-        return User::findMany($user_ids);
+        return User::findMany($user_ids, 'ORDER BY Nachname, Vorname, username');
     }
 
     /**
