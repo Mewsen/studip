@@ -36,7 +36,7 @@
  * @property string $allowed_item_class database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ClipboardItem[] $items has_many ClipboardItem
+ * @property SimpleORMapCollection<ClipboardItem> $items has_many ClipboardItem
  * @property User $user belongs_to User
  */
 class Clipboard extends SimpleORMap

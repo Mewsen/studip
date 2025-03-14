@@ -27,8 +27,8 @@
  * @property int $calendar_group database column
  * @property string|null $name_w database column
  * @property string|null $name_m database column
- * @property SimpleORMapCollection|VipsGroupMember[] $members has_many VipsGroupMember
- * @property SimpleORMapCollection|VipsGroupMember[] $current_members has_many VipsGroupMember
+ * @property SimpleORMapCollection<VipsGroupMember> $members has_many VipsGroupMember
+ * @property SimpleORMapCollection<VipsGroupMember> $current_members has_many VipsGroupMember
  * @property Course $course belongs_to Course
  */
 class VipsGroup extends SimpleORMap

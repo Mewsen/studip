@@ -2,6 +2,21 @@
 
 namespace MassMail;
 
+/**
+ * @license GPL2 or any later version
+ *
+ * @property int $id alias column for permission_id
+ * @property int $permission_id database column
+ * @property string $institute_id database column
+ * @property string $min_perm database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property \Institute $institute belongs_to \Institute
+ * @property \SimpleORMapCollection<\Degree> $allowed_degrees has_and_belongs_to_many \Degree
+ * @property \SimpleORMapCollection<\StudyCourse> $allowed_subjects has_and_belongs_to_many \StudyCourse
+ * @property \SimpleORMapCollection<\Institute> $allowed_institutes has_and_belongs_to_many \Institute
+ * @property-read mixed $institute_name additional field
+ */
 class MassMailPermission extends \SimpleORMap
 {
 

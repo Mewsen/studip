@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @property array $id
- * @property string $sem_id
- * @property string $user_id
- * @property int $mkdate
  *
- * @property User $user
- * @property Course $course
+ * @property array $id 
+ * @property string $sem_id 
+ * @property string $user_id 
+ * @property int $mkdate 
+ * @property Course $course 
+ * @property User $user 
  */
 final class StudygroupInvitation extends SimpleORMap
 {

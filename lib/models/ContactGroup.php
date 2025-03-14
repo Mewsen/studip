@@ -1,7 +1,7 @@
 <?php
 /**
  * The ContactGroup class represents a contact group of a user.
- * 
+ *
  * This file is part of Stud.IP
  *
  * This program is free software; you can redistribute it and/or
@@ -16,13 +16,13 @@
  * @package     resources
  * @since       5.5
  *
- * @property string $id The ID of the group.
+ * @property int $id The ID of the group.
  * @property string $name Name of the group.
  * @property string $owner_id The ID of the owner to whom the group belongs to.
- * @property string $mkdate The creation date of the group.
- * @property string $chdate The modification date of the group.
+ * @property int $mkdate The creation date of the group.
+ * @property int $chdate The modification date of the group.
+ * @property SimpleORMapCollection<ContactGroupItem> $items The items (users) that belong to the group.
  * @property User $owner The owner of the group.
- * @property ContactGroupItem[]|SimpleORMapCollection $items The items (users) that belong to the group.
  */
 class ContactGroup extends SimpleORMap
 {

@@ -24,7 +24,7 @@
  * @property int|null $is_accessible database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|FileRef[] $refs has_many FileRef
+ * @property SimpleORMapCollection<FileRef> $refs has_many FileRef
  * @property User $owner belongs_to User
  * @property mixed $extension additional field
  * @property mixed $path additional field

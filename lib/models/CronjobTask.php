@@ -36,7 +36,7 @@
  * @property int $assigned_count database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|CronjobSchedule[] $schedules has_many CronjobSchedule
+ * @property SimpleORMapCollection<CronjobSchedule> $schedules has_many CronjobSchedule
  * @property-read mixed $description additional field
  * @property-read mixed $name additional field
  * @property-read mixed $parameters additional field

@@ -19,10 +19,10 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property string|null $options database column
- * @property SimpleORMapCollection|VipsAssignment[] $assignments has_many VipsAssignment
- * @property SimpleORMapCollection|VipsExerciseRef[] $exercise_refs has_many VipsExerciseRef
+ * @property SimpleORMapCollection<VipsAssignment> $assignments has_many VipsAssignment
+ * @property SimpleORMapCollection<VipsExerciseRef> $exercise_refs has_many VipsExerciseRef
  * @property User $user belongs_to User
- * @property SimpleORMapCollection|Exercise[] $exercises has_and_belongs_to_many Exercise
+ * @property SimpleORMapCollection<Exercise> $exercises has_and_belongs_to_many Exercise
  */
 class VipsTest extends SimpleORMap
 {

@@ -32,8 +32,8 @@
  * @property-read mixed $current additional field
  * @property-read mixed $past additional field
  * @property-read mixed $short_name additional field
- * @property mixed $absolute_seminars_count additional field
- * @property mixed $continuous_seminars_count additional field
+ * @property-read mixed $absolute_seminars_count additional field
+ * @property-read mixed $continuous_seminars_count additional field
  */
 class Semester extends SimpleORMap
 {

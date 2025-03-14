@@ -31,9 +31,9 @@
  * @property int $is_userfilter database column
  * @property string $description database column
  * @property int $system database column
- * @property SimpleORMapCollection|DatafieldEntryModel[] $entries has_many DatafieldEntryModel
- * @property SimpleORMapCollection|User_Visibility_Settings[] $visibility_settings has_many User_Visibility_Settings
- * @property mixed $institution additional field
+ * @property SimpleORMapCollection<DatafieldEntryModel> $entries has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<User_Visibility_Settings> $visibility_settings has_many User_Visibility_Settings
+ * @property-read mixed $institution additional field
  */
 class DataField extends SimpleORMap implements PrivacyObject
 {

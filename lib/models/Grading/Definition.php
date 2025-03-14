@@ -19,7 +19,7 @@ use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemSubmissionReview;
  * @property float $weight database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \SimpleORMapCollection|Instance[] $instances has_many Instance
+ * @property \SimpleORMapCollection<Instance> $instances has_many Instance
  * @property \Course $course belongs_to \Course
  */
 class Definition extends \SimpleORMap

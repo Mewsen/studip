@@ -24,8 +24,8 @@
  * @property string $description database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|FileRef[] $file_refs has_many FileRef
- * @property SimpleORMapCollection|Folder[] $subfolders has_many Folder
+ * @property SimpleORMapCollection<FileRef> $file_refs has_many FileRef
+ * @property SimpleORMapCollection<Folder> $subfolders has_many Folder
  * @property User $owner belongs_to User
  * @property Folder $parentfolder belongs_to Folder
  * @property Course $course belongs_to Course

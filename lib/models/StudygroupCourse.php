@@ -3,11 +3,12 @@
 /**
  * @license GPL2 or any later version
  *
- * @property string $id alias column for tag_hash
+ * @property int $id database column
  * @property string $studygroup_id database column
- * @property string $course_id database column
- * @property int $mkdate database column
- *
+ * @property string|null $course_id database column
+ * @property int|null $mkdate database column
+ * @property Course|null $course belongs_to Course
+ * @property Course $studygroup belongs_to Course
  */
 class StudygroupCourse extends SimpleORMap
 {

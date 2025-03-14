@@ -28,14 +28,15 @@
  * @property I18NString|null $description database column
  * @property int $requestable database column
  * @property int $lockable database column
+ * @property int $booking_plan_request database column
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property int $sort_position database column
- * @property SimpleORMapCollection|ResourceProperty[] $properties has_many ResourceProperty
- * @property SimpleORMapCollection|ResourcePermission[] $permissions has_many ResourcePermission
- * @property SimpleORMapCollection|ResourceRequest[] $requests has_many ResourceRequest
- * @property SimpleORMapCollection|ResourceBooking[] $bookings has_many ResourceBooking
- * @property SimpleORMapCollection|Resource[] $children has_many Resource
+ * @property SimpleORMapCollection<ResourceProperty> $properties has_many ResourceProperty
+ * @property SimpleORMapCollection<ResourcePermission> $permissions has_many ResourcePermission
+ * @property SimpleORMapCollection<ResourceRequest> $requests has_many ResourceRequest
+ * @property SimpleORMapCollection<ResourceBooking> $bookings has_many ResourceBooking
+ * @property SimpleORMapCollection<Resource> $children has_many Resource
  * @property ResourceCategory $category belongs_to ResourceCategory
  * @property Resource $parent belongs_to Resource
  * @property mixed $class_name additional field

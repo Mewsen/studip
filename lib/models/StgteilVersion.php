@@ -29,10 +29,12 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|StgteilAbschnitt[] $abschnitte has_many StgteilAbschnitt
- * @property SimpleORMapCollection|MvvFile[] $documents has_many MvvFile
- * @property SimpleORMapCollection|MvvFile[] $document_assignments has_many MvvFile
+ * @property SimpleORMapCollection<StgteilAbschnitt> $abschnitte has_many StgteilAbschnitt
+ * @property SimpleORMapCollection<MvvFile> $documents has_many MvvFile
+ * @property SimpleORMapCollection<MvvFile> $document_assignments has_many MvvFile
  * @property StudiengangTeil $studiengangteil belongs_to StudiengangTeil
+ * @property Semester|null $start_semester belongs_to Semester
+ * @property Semester|null $end_semester belongs_to Semester
  * @property-read mixed $count_abschnitte additional field
  * @property-read mixed $count_dokumente additional field
  */

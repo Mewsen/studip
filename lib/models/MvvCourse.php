@@ -47,6 +47,7 @@
  * @property int $admission_disable_waitlist_move database column
  * @property int $completion database column
  * @property string|null $parent_course database column
+ * @property int|null $expires database column
  */
 
 class MvvCourse extends ModuleManagementModelTreeItem

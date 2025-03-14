@@ -42,7 +42,7 @@
  * @property string $booking_user_id database column
  * @property string $repetition_interval database column
  * @property string $weekdays database column
- * @property SimpleORMapCollection|ResourceBookingInterval[] $time_intervals has_many ResourceBookingInterval
+ * @property SimpleORMapCollection<ResourceBookingInterval> $time_intervals has_many ResourceBookingInterval
  * @property Resource $resource belongs_to Resource
  * @property User $assigned_user belongs_to User
  * @property CourseDate $assigned_course_date belongs_to CourseDate

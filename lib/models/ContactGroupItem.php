@@ -1,7 +1,7 @@
 <?php
 /**
  * The ContactGroupItem class represents an item in a contact group.
- * 
+ *
  * This file is part of Stud.IP
  *
  * This program is free software; you can redistribute it and/or
@@ -16,10 +16,11 @@
  * @package     resources
  * @since       5.5
  *
- * @property string $group_id The ID of the group.
+ * @property array $id alias for pk
+ * @property int $group_id The ID of the group.
  * @property string $user_id The ID of the user that is inside the group.
- * @property string $mkdate The creation date of the group.
- * @property string $chdate The modification date of the group.
+ * @property int $mkdate The creation date of the group.
+ * @property int $chdate The modification date of the group.
  * @property ContactGroup $contact_group The group instance for the item.
  * @property User $user The user instance for the item.
  */

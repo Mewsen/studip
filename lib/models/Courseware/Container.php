@@ -27,12 +27,12 @@ use User;
  * @property \JSONArrayObject $payload database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \SimpleORMapCollection|Block[] $blocks has_many Block
+ * @property \SimpleORMapCollection<Block> $blocks has_many Block
  * @property \User $owner belongs_to \User
  * @property \User $editor belongs_to \User
  * @property \User|null $edit_blocker belongs_to \User
  * @property StructuralElement $structural_element belongs_to StructuralElement
- * @property mixed $type additional field
+ * @property-read mixed $type additional field
  */
 class Container extends \SimpleORMap implements \PrivacyObject
 {

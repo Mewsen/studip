@@ -22,11 +22,11 @@
  * @property string $editor_id database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|Fach[] $faecher has_many Fach
- * @property SimpleORMapCollection|Studiengang[] $studiengaenge has_many Studiengang
+ * @property SimpleORMapCollection<Fach> $faecher has_many Fach
+ * @property SimpleORMapCollection<Studiengang> $studiengaenge has_many Studiengang
  * @property AbschlussKategorie $category belongs_to AbschlussKategorie
  * @property AbschlussZuord $category_assignment has_one AbschlussZuord
- * @property SimpleORMapCollection|Fach[] $professions has_and_belongs_to_many Fach
+ * @property SimpleORMapCollection<Fach> $professions has_and_belongs_to_many Fach
  * @property-read mixed $count_faecher additional field
  * @property-read mixed $kategorie_name additional field
  * @property-read mixed $kategorie_id additional field

@@ -16,7 +16,7 @@
  * @property int $chdate database column
  * @property ConsultationSlot $slot belongs_to ConsultationSlot
  * @property User $user belongs_to User
- * @property CalendarDate $event has_one CalendarDate
+ * @property CalendarDate|null $event has_one CalendarDate
  */
 class ConsultationBooking extends SimpleORMap implements PrivacyObject
 {

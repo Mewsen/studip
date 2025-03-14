@@ -3,11 +3,10 @@
 /**
  * @license GPL2 or any later version
  *
- * @property string $id alias column for tag_hash
+ * @property int $id database column
  * @property string $studygroup_id database column
- * @property string $stgteil_id database column
- * @property int $mkdate database column
- *
+ * @property string|null $stgteil_id database column
+ * @property int|null $mkdate database column
  */
 class StudygroupStgteil extends SimpleORMap
 {

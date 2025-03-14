@@ -19,7 +19,7 @@
  * @property int $show_adressees database column
  * @property int $mkdate database column
  * @property string $priority database column
- * @property SimpleORMapCollection|MessageUser[] $receivers has_many MessageUser
+ * @property SimpleORMapCollection<MessageUser> $receivers has_many MessageUser
  * @property User $author belongs_to User
  * @property MessageUser $originator has_one MessageUser
  * @property Folder $attachment_folder has_one Folder

@@ -28,8 +28,8 @@
  * @property JSONArrayObject|null $data database column
  * @property int $chdate database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection|OERReview[] $reviews has_many OERReview
- * @property SimpleORMapCollection|OERMaterialUser[] $users has_many OERMaterialUser
+ * @property SimpleORMapCollection<OERReview> $reviews has_many OERReview
+ * @property SimpleORMapCollection<OERMaterialUser> $users has_many OERMaterialUser
  * @property OERHost|null $host belongs_to OERHost
  * @property License $license belongs_to License
  */

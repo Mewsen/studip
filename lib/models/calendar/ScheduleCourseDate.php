@@ -13,12 +13,16 @@
  * @category    Stud.IP
  * @since       6.0
  *
+ * @property array $id alias for pk
  * @property string $user_id database column
  * @property string $course_id database column
  * @property string $metadate_id database_column
- * @property string $visible database column
- * @property string $mkdate database column
- * @property string $chdate database column
+ * @property int $visible database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property User $user belongs_to User
+ * @property Course $course belongs_to Course
+ * @property SeminarCycleDate $regular_date belongs_to SeminarCycleDate
  */
 class ScheduleCourseDate extends SimpleORMap
 {

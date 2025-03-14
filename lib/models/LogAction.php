@@ -26,7 +26,7 @@
  * @property string|null $type database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|LogEvent[] $events has_many LogEvent
+ * @property SimpleORMapCollection<LogEvent> $events has_many LogEvent
  */
 class LogAction extends SimpleORMap
 {

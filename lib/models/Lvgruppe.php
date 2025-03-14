@@ -21,13 +21,13 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|Modulteil[] $modulteile has_and_belongs_to_many Modulteil
- * @property SimpleORMapCollection|Course[] $courses has_and_belongs_to_many Course
- * @property SimpleORMapCollection|ArchivedCourse[] $archived_courses has_and_belongs_to_many ArchivedCourse
- * @property mixed $count_seminare additional field
- * @property mixed $count_archiv additional field
- * @property mixed $count_modulteile additional field
- * @property mixed $count_semester additional field
+ * @property SimpleORMapCollection<Modulteil> $modulteile has_and_belongs_to_many Modulteil
+ * @property SimpleORMapCollection<Course> $courses has_and_belongs_to_many Course
+ * @property SimpleORMapCollection<ArchivedCourse> $archived_courses has_and_belongs_to_many ArchivedCourse
+ * @property-read mixed $count_seminare additional field
+ * @property-read mixed $count_archiv additional field
+ * @property-read mixed $count_modulteile additional field
+ * @property-read mixed $count_semester additional field
  */
 
 class Lvgruppe extends ModuleManagementModelTreeItem

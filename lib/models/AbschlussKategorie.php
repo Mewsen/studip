@@ -23,10 +23,10 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|MvvFile[] $documents has_many MvvFile
- * @property SimpleORMapCollection|MvvFile[] $document_assignments has_many MvvFile
- * @property SimpleORMapCollection|AbschlussZuord[] $abschluss_assignments has_many AbschlussZuord
- * @property SimpleORMapCollection|Abschluss[] $abschluesse has_and_belongs_to_many Abschluss
+ * @property SimpleORMapCollection<MvvFile> $documents has_many MvvFile
+ * @property SimpleORMapCollection<MvvFile> $document_assignments has_many MvvFile
+ * @property SimpleORMapCollection<AbschlussZuord> $abschluss_assignments has_many AbschlussZuord
+ * @property SimpleORMapCollection<Abschluss> $abschluesse has_and_belongs_to_many Abschluss
  * @property-read mixed $count_abschluesse additional field
  * @property-read mixed $count_studiengaenge additional field
  * @property-read mixed $count_dokumente additional field

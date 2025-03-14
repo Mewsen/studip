@@ -19,12 +19,15 @@
  * has been accepted, but also which data may be transferred to the
  * LTI tool.
  *
- * @property string deployment_id database column
- * @property string user_id database column
- * @property string accepted database column
- * @property string allowed_optional_fields database column
- * @property string mkdate database column
- * @property string chdate database column
+ * @property array $id alias for pk
+ * @property int $tool_id database column
+ * @property string $user_id database column
+ * @property int $accepted database column
+ * @property string $allowed_optional_fields database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property User $user belongs_to User
+ * @property LtiTool $tool belongs_to LtiTool
  */
 class LtiToolPrivacySettings extends SimpleORMap
 {

@@ -35,8 +35,8 @@ use User;
  * @property string $permission_type database column
  * @property string $visible database column
  * @property bool $visible_all database column
- * @property int $visible_start_date database column
- * @property int $visible_end_date database column
+ * @property int|null $visible_start_date database column
+ * @property int|null $visible_end_date database column
  * @property string $writable database column
  * @property bool $writable_all database column
  * @property int|null $writable_start_date database column
@@ -48,10 +48,10 @@ use User;
  * @property \JSONArrayObject $external_relations database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property \SimpleORMapCollection|StructuralElement[] $children has_many StructuralElement
- * @property \SimpleORMapCollection|Container[] $containers has_many Container
- * @property \SimpleORMapCollection|StructuralElementComment[] $comments has_many StructuralElementComment
- * @property \SimpleORMapCollection|StructuralElementFeedback[] $feedback has_many StructuralElementFeedback
+ * @property \SimpleORMapCollection<StructuralElement> $children has_many StructuralElement
+ * @property \SimpleORMapCollection<Container> $containers has_many Container
+ * @property \SimpleORMapCollection<StructuralElementComment> $comments has_many StructuralElementComment
+ * @property \SimpleORMapCollection<StructuralElementFeedback> $feedback has_many StructuralElementFeedback
  * @property StructuralElement|null $parent belongs_to StructuralElement
  * @property \User $user belongs_to \User
  * @property \Course $course belongs_to \Course

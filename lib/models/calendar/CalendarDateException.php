@@ -1,7 +1,7 @@
 <?php
 /**
  * The CalendarDateException class represents one exception for a calendar date.
- * 
+ *
  * This file is part of Stud.IP
  *
  * This program is free software; you can redistribute it and/or
@@ -16,12 +16,12 @@
  * @package     resources
  * @since       5.5
  *
- * @property string $id The ID of the exception.
+ * @property int $id The ID of the exception.
  * @property string $calendar_date_id The ID of the calendar date where the exception belongs to.
  * @property string $date The date of the exception in the date format YYYY-MM-DD.
- * @property string $mkdate The creation date of the exception.
- * @property string $chdate The modification date of the exception.
- * @property CalendarDate|null $calendar_date The associated calendar date object.
+ * @property int $mkdate The creation date of the exception.
+ * @property int $chdate The modification date of the exception.
+ * @property CalendarDate $calendar_date The associated calendar date object.
  */
 class CalendarDateException extends SimpleORMap
 {

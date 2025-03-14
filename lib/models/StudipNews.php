@@ -40,11 +40,11 @@ require_once 'lib/object.inc.php';
  * @property int $chdate database column
  * @property string $chdate_uid database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection|NewsRange[] $news_ranges has_many NewsRange
- * @property SimpleORMapCollection|StudipComment[] $comments has_many StudipComment
- * @property SimpleORMapCollection|NewsRoles[] $news_roles has_many NewsRoles
+ * @property SimpleORMapCollection<NewsRange> $news_ranges has_many NewsRange
+ * @property SimpleORMapCollection<StudipComment> $comments has_many StudipComment
+ * @property SimpleORMapCollection<NewsRoles> $news_roles has_many NewsRoles
  * @property User $owner belongs_to User
- * @property int $views additional field
+ * @property-read int $views additional field
  */
 class StudipNews extends SimpleORMap implements PrivacyObject
 {

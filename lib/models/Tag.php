@@ -3,12 +3,12 @@
 /**
  * @license GPL2 or any later version
  *
- * @property string $id alias column for tag_hash
+ * @property int $id database column
  * @property string $name database column
- * @property int $active database column
- * @property int $chdate database column
- * @property int $mkdate database column
- *
+ * @property int|null $active database column
+ * @property int|null $chdate database column
+ * @property int|null $mkdate database column
+ * @property SimpleORMapCollection<TagRelation> $related_objects has_many TagRelation
  */
 class Tag extends SimpleORMap
 {

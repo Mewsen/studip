@@ -15,34 +15,32 @@
  * @category    Stud.IP
  * @since       3.2
  *
- * @property string id database column
- * @property string author_id database column
- * @property string editor_id database column
- * @property string unique_id database column
- * @property string begin database column
- * @property string end database column
- * @property string title database column
- * @property string description database column
- * @property string access database column
- * @property string user_category database column
- * @property string category database column
- * @property string location database column
- * @property string interval database column
- * @property string offset database column
- * @property string days database column
- * @property string month database column
- * @property string day_offset database column
- * @property string repetition_type database column
- * @property string number_of_dates database column
- * @property string repetition_end database column
- * @property string mkdate database column
- * @property string chdate database column
- * @property string import_date database column
- *
- * @property User $author
- * @property User $editor
- * @property CalendarDateAssignment[]|SimpleORMapCollection $calendars
- * @property CalendarDateException[]|SimpleORMapCollection $exceptions
+ * @property string $id database column
+ * @property string $author_id database column
+ * @property string|null $editor_id database column
+ * @property string $unique_id database column
+ * @property int $begin database column
+ * @property int $end database column
+ * @property string $title database column
+ * @property string|null $description database column
+ * @property string $access database column
+ * @property string|null $user_category database column
+ * @property int $category database column
+ * @property string|null $location database column
+ * @property int|null $interval database column
+ * @property int|null $offset database column
+ * @property string|null $days database column
+ * @property int|null $month database column
+ * @property string|null $repetition_type database column
+ * @property int $number_of_dates database column
+ * @property int $repetition_end database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property int $import_date database column
+ * @property SimpleORMapCollection<CalendarDateAssignment> $calendars 
+ * @property SimpleORMapCollection<CalendarDateException> $exceptions 
+ * @property User $author 
+ * @property User|null $editor 
  */
 class CalendarDate extends SimpleORMap implements PrivacyObject
 {

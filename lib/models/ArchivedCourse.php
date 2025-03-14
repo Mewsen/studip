@@ -32,7 +32,7 @@
  * @property string|null $wikidump database column
  * @property string $studienbereiche database column
  * @property string $veranstaltungsnummer database column
- * @property SimpleORMapCollection|ArchivedCourseMember[] $members has_many ArchivedCourseMember
+ * @property SimpleORMapCollection<ArchivedCourseMember> $members has_many ArchivedCourseMember
  * @property Institute $home_institut belongs_to Institute
  */
 

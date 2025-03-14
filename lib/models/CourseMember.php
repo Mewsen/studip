@@ -24,7 +24,7 @@
  * @property string $visible database column
  * @property string $label database column
  * @property int $bind_calendar database column
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
  * @property User $user belongs_to User
  * @property Course $course belongs_to Course
  * @property mixed $vorname additional field

@@ -31,7 +31,7 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
  * @property Modulteil $modulteil belongs_to Modulteil
  */
 

@@ -21,11 +21,11 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property JSONArrayObject $options database column
- * @property SimpleORMapCollection|VipsExerciseRef[] $exercise_refs has_many VipsExerciseRef
- * @property SimpleORMapCollection|VipsSolution[] $solutions has_many VipsSolution
+ * @property SimpleORMapCollection<VipsExerciseRef> $exercise_refs has_many VipsExerciseRef
+ * @property SimpleORMapCollection<VipsSolution> $solutions has_many VipsSolution
  * @property User $user belongs_to User
  * @property Folder $folder has_one Folder
- * @property SimpleORMapCollection|VipsTest[] $tests has_and_belongs_to_many VipsTest
+ * @property SimpleORMapCollection<VipsTest> $tests has_and_belongs_to_many VipsTest
  */
 class TextLineTask extends Exercise
 {

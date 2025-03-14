@@ -25,9 +25,9 @@
  * @property int $type database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
- * @property SimpleORMapCollection|StudipStudyArea[] $_children has_many StudipStudyArea
+ * @property SimpleORMapCollection<StudipStudyArea> $_children has_many StudipStudyArea
  * @property StudipStudyArea $_parent belongs_to StudipStudyArea
- * @property SimpleORMapCollection|Course[] $courses has_and_belongs_to_many Course
+ * @property SimpleORMapCollection<Course> $courses has_and_belongs_to_many Course
  */
 
 class StudipStudyArea extends SimpleORMap implements StudipTreeNode

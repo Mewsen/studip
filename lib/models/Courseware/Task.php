@@ -18,7 +18,6 @@ use User;
  * @property int $structural_element_id database column
  * @property string $solver_id database column
  * @property string|null $solver_type database column
- * @property int $submission_date database column
  * @property int $submitted database column
  * @property string|null $renewal database column
  * @property int $renewal_date database column
@@ -26,6 +25,7 @@ use User;
  * @property int|null $feedback_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
+ * @property \SimpleORMapCollection<PeerReview> $peer_reviews has_many PeerReview
  * @property TaskGroup $task_group belongs_to TaskGroup
  * @property StructuralElement $structural_element belongs_to StructuralElement
  * @property \User $lecturer belongs_to \User
@@ -33,9 +33,8 @@ use User;
  * @property \Statusgruppen $group belongs_to \Statusgruppen
  * @property \Course $course belongs_to \Course
  * @property TaskFeedback|null $task_feedback belongs_to TaskFeedback
- * @property-read \User|\Statusgruppen|null $solver additional field
- *
- * @SuppressWarnings(PHPMD.StaticAccess)
+ * @property-read (\User | \Statusgruppen | null) $solver additional field
+ * @property-read int $submission_date additional field
  */
 class Task extends \SimpleORMap
 {

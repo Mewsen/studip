@@ -23,8 +23,8 @@
  * @property string|null $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|MvvFileFileref[] $file_refs has_many MvvFileFileref
- * @property SimpleORMapCollection|MvvFileRange[] $ranges has_many MvvFileRange
+ * @property SimpleORMapCollection<MvvFileFileref> $file_refs has_many MvvFileFileref
+ * @property SimpleORMapCollection<MvvFileRange> $ranges has_many MvvFileRange
  * @property-read mixed $count_relations additional field
  */
 

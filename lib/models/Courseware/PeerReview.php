@@ -12,6 +12,20 @@ use User;
  * @since   Stud.IP 6.0
  *
  * @SuppressWarnings(PHPMD.StaticAccess)
+ *
+ * @property int $id database column
+ * @property int $process_id database column
+ * @property int $task_id database column
+ * @property string $submitter_id database column
+ * @property string $reviewer_id database column
+ * @property string|null $reviewer_type database column
+ * @property \JSONArrayObject|null $assessment database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property PeerReviewProcess $process belongs_to PeerReviewProcess
+ * @property Task $task belongs_to Task
+ * @property \User $submitter belongs_to \User
+ * @property \User $reviewer belongs_to \User
  */
 class PeerReview extends \SimpleORMap
 {

@@ -13,16 +13,17 @@
  * @category    Stud.IP
  * @since       6.0
  *
- * @property string $id database column
- * @property string $start_time database column
- * @property string $end_time database column
- * @property string $dow database column
- * @property string $colour_id database column
+ * @property int $id database column
+ * @property int $start_time database column
+ * @property int $end_time database column
+ * @property int $dow database column
  * @property string $label database column
- * @property string $content database column
+ * @property string|null $content database column
  * @property string $user_id database column
- * @property string $mkdate database column
- * @property string $chdate database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property int $colour_id database column
+ * @property User $user belongs_to User
  */
 class ScheduleEntry extends SimpleORMap implements Event
 {

@@ -4,6 +4,33 @@ namespace MassMail;
 
 use \Semester, \DBManager, \UserFilter, \Folder, \User, \Config;
 
+/**
+ * @license GPL2 or any later version
+ *
+ * @property int $id alias column for message_id
+ * @property int $message_id database column
+ * @property string|null $sender_id database column
+ * @property string $author_id database column
+ * @property int|null $send_at_date database column
+ * @property string|null $target database column
+ * @property \JSONArrayObject|null $config database column
+ * @property string|null $exclude_users database column
+ * @property string|null $cc database column
+ * @property string $subject database column
+ * @property string $message database column
+ * @property string|null $folder_id database column
+ * @property int $is_template database column
+ * @property int $locked database column
+ * @property int $sent database column
+ * @property int $protected database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
+ * @property \SimpleORMapCollection<MassMailFilter> $filters has_many MassMailFilter
+ * @property \SimpleORMapCollection<MassMailToken> $tokens has_many MassMailToken
+ * @property \User $author has_one \User
+ * @property \User|null $sender has_one \User
+ * @property \Folder|null $folder has_one \Folder
+ */
 class MassMailMessage extends \SimpleORMap implements \UserFilterRange
 {
 

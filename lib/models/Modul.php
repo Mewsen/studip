@@ -41,20 +41,20 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|Modulteil[] $modulteile has_many Modulteil
- * @property SimpleORMapCollection|ModulInst[] $assigned_institutes has_many ModulInst
- * @property SimpleORMapCollection|MvvContactRange[] $contact_assignments has_many MvvContactRange
- * @property SimpleORMapCollection|StgteilabschnittModul[] $abschnitte_modul has_many StgteilabschnittModul
- * @property SimpleORMapCollection|ModulLanguage[] $languages has_many ModulLanguage
+ * @property SimpleORMapCollection<Modulteil> $modulteile has_many Modulteil
+ * @property SimpleORMapCollection<ModulInst> $assigned_institutes has_many ModulInst
+ * @property SimpleORMapCollection<MvvContactRange> $contact_assignments has_many MvvContactRange
+ * @property SimpleORMapCollection<StgteilabschnittModul> $abschnitte_modul has_many StgteilabschnittModul
+ * @property SimpleORMapCollection<ModulLanguage> $languages has_many ModulLanguage
  * @property Semester|null $start_semester belongs_to Semester
- * @property Semester|null $end_semester belongs_to Semester
+ * @property Semester $end_semester belongs_to Semester
  * @property ModulDeskriptor $deskriptoren has_one ModulDeskriptor
  * @property Modul|null $modul_quelle has_one Modul
  * @property Modul|null $modul_variante has_one Modul
  * @property ModulInst $responsible_institute has_one ModulInst
- * @property SimpleORMapCollection|StgteilAbschnitt[] $abschnitte has_and_belongs_to_many StgteilAbschnitt
- * @property mixed $count_modulteile additional field
- * @property mixed $languagesofinstruction additional field
+ * @property SimpleORMapCollection<StgteilAbschnitt> $abschnitte has_and_belongs_to_many StgteilAbschnitt
+ * @property-read mixed $count_modulteile additional field
+ * @property-read mixed $languagesofinstruction additional field
  * @property-read mixed $display_name additional field
  */
 

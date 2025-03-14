@@ -16,9 +16,9 @@
  * @property JSONArrayObject|null $metadata database column
  * @property int|null $chdate database column
  * @property int|null $mkdate database column
- * @property SimpleORMapCollection|BlubberComment[] $comments has_many BlubberComment
- * @property SimpleORMapCollection|BlubberMention[] $mentions has_many BlubberMention
- * @property SimpleORMapCollection|ObjectUserVisit[] $visits has_many ObjectUserVisit
+ * @property SimpleORMapCollection<BlubberComment> $comments has_many BlubberComment
+ * @property SimpleORMapCollection<BlubberMention> $mentions has_many BlubberMention
+ * @property SimpleORMapCollection<ObjectUserVisit> $visits has_many ObjectUserVisit
  * @property Statusgruppen $statusgruppe belongs_to Statusgruppen
  * @property User $user belongs_to User
  */

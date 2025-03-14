@@ -20,10 +20,10 @@
  * @property int $paper_related database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|Folder[] $folders has_many Folder
+ * @property SimpleORMapCollection<Folder> $folders has_many Folder
  * @property Course $course belongs_to Course
  * @property User $author belongs_to User
- * @property SimpleORMapCollection|CourseDate[] $dates has_and_belongs_to_many CourseDate
+ * @property SimpleORMapCollection<CourseDate> $dates has_and_belongs_to_many CourseDate
  * @property-read mixed $forum_thread_url additional field
  */
 class CourseTopic extends SimpleORMap

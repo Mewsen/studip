@@ -45,7 +45,7 @@
  * @property int $execution_count database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|CronjobLog[] $logs has_many CronjobLog
+ * @property SimpleORMapCollection<CronjobLog> $logs has_many CronjobLog
  * @property CronjobTask $task belongs_to CronjobTask
  */
 

@@ -26,8 +26,8 @@
  * @property string $class_name database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|ResourceCategoryProperty[] $property_links has_many ResourceCategoryProperty
- * @property SimpleORMapCollection|ResourcePropertyDefinition[] $property_definitions has_and_belongs_to_many ResourcePropertyDefinition
+ * @property SimpleORMapCollection<ResourceCategoryProperty> $property_links has_many ResourceCategoryProperty
+ * @property SimpleORMapCollection<ResourcePropertyDefinition> $property_definitions has_and_belongs_to_many ResourcePropertyDefinition
  */
 class ResourceCategory extends SimpleORMap
 {

@@ -23,11 +23,12 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|StgteilVersion[] $versionen has_many StgteilVersion
- * @property SimpleORMapCollection|MvvContactRange[] $contact_assignments has_many MvvContactRange
- * @property SimpleORMapCollection|StudiengangStgteil[] $studiengang_assignments has_many StudiengangStgteil
+ * @property SimpleORMapCollection<StgteilVersion> $versionen has_many StgteilVersion
+ * @property SimpleORMapCollection<MvvContactRange> $contact_assignments has_many MvvContactRange
+ * @property SimpleORMapCollection<StudiengangStgteil> $studiengang_assignments has_many StudiengangStgteil
  * @property Fach|null $fach belongs_to Fach
- * @property SimpleORMapCollection|Studiengang[] $studiengang has_and_belongs_to_many Studiengang
+ * @property SimpleORMapCollection<Studiengang> $studiengang has_and_belongs_to_many Studiengang
+ * @property SimpleORMapCollection<Course> $studygroups has_and_belongs_to_many Course
  * @property-read mixed $count_versionen additional field
  * @property-read mixed $fach_name additional field
  * @property-read mixed $count_contacts additional field

@@ -21,7 +21,7 @@
  * @property int $anonymous_entries database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|FeedbackEntry[] $entries has_many FeedbackEntry
+ * @property SimpleORMapCollection<FeedbackEntry> $entries has_many FeedbackEntry
  * @property Course $course belongs_to Course
  * @property User $user belongs_to User
  */

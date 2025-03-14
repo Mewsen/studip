@@ -33,9 +33,9 @@ require_once 'lib/dates.inc.php';
  * @property int $sorter database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|RoomRequest[] $room_requests has_many RoomRequest
- * @property SimpleORMapCollection|CourseDate[] $dates has_many CourseDate
- * @property SimpleORMapCollection|CourseExDate[] $exdates has_many CourseExDate
+ * @property SimpleORMapCollection<RoomRequest> $room_requests has_many RoomRequest
+ * @property SimpleORMapCollection<CourseDate> $dates has_many CourseDate
+ * @property SimpleORMapCollection<CourseExDate> $exdates has_many CourseExDate
  * @property Course $course belongs_to Course
  * @property mixed $start_hour additional field
  * @property mixed $start_minute additional field

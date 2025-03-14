@@ -18,7 +18,7 @@
  * @property string|null $group_id database column
  * @property int $visible database column
  * @property float|null $weight database column
- * @property SimpleORMapCollection|VipsAssignment[] $assignments has_many VipsAssignment
+ * @property SimpleORMapCollection<VipsAssignment> $assignments has_many VipsAssignment
  * @property Course $course belongs_to Course
  * @property Statusgruppen|null $group belongs_to Statusgruppen
  */

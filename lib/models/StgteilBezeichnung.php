@@ -22,8 +22,8 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property mixed $count_stgteile additional field
- * @property mixed $count_studiengaenge additional field
+ * @property-read mixed $count_stgteile additional field
+ * @property-read mixed $count_studiengaenge additional field
  */
 
 class StgteilBezeichnung extends ModuleManagementModel

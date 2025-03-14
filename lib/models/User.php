@@ -30,37 +30,40 @@
  * @property string $vorname database column
  * @property string $nachname database column
  * @property string $email database column
- * @property string $matriculation_number database column
  * @property string $validation_key database column
  * @property string|null $auth_plugin database column
  * @property int $locked database column
  * @property string|null $lock_comment database column
  * @property string|null $locked_by database column
  * @property string $visible database column
- * @property SimpleORMapCollection|CourseMember[] $course_memberships has_many CourseMember
- * @property SimpleORMapCollection|InstituteMember[] $institute_memberships has_many InstituteMember
- * @property SimpleORMapCollection|AdmissionApplication[] $admission_applications has_many AdmissionApplication
- * @property SimpleORMapCollection|ArchivedCourseMember[] $archived_course_memberships has_many ArchivedCourseMember
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
- * @property SimpleORMapCollection|UserStudyCourse[] $studycourses has_many UserStudyCourse
- * @property SimpleORMapCollection|Statusgruppen[] $contactgroups has_many Statusgruppen
- * @property SimpleORMapCollection|ResourcePermission[] $resource_permissions has_many ResourcePermission
- * @property SimpleORMapCollection|ResourceTemporaryPermission[] $resource_temporary_permissions has_many ResourceTemporaryPermission
- * @property SimpleORMapCollection|ConsultationBlock[] $consultation_blocks has_many ConsultationBlock
- * @property SimpleORMapCollection|ConsultationBooking[] $consultation_bookings has_many ConsultationBooking
- * @property SimpleORMapCollection|ConsultationResponsibility[] $consultation_responsibilities has_many ConsultationResponsibility
- * @property SimpleORMapCollection|Kategorie[] $profile_categories has_many Kategorie
- * @property SimpleORMapCollection|MvvContact[] $mvv_assignments has_many MvvContact
- * @property SimpleORMapCollection|CourseMemberNotification[] $course_notifications has_many CourseMemberNotification
- * @property SimpleORMapCollection|BlubberThread[] $blubber_threads has_many BlubberThread
- * @property SimpleORMapCollection|BlubberComment[] $blubber_comments has_many BlubberComment
- * @property SimpleORMapCollection|BlubberMention[] $blubber_mentions has_many BlubberMention
+ * @property string|null $matriculation_number database column
+ * @property SimpleORMapCollection<CourseMember> $course_memberships has_many CourseMember
+ * @property SimpleORMapCollection<InstituteMember> $institute_memberships has_many InstituteMember
+ * @property SimpleORMapCollection<AdmissionApplication> $admission_applications has_many AdmissionApplication
+ * @property SimpleORMapCollection<ArchivedCourseMember> $archived_course_memberships has_many ArchivedCourseMember
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<UserStudyCourse> $studycourses has_many UserStudyCourse
+ * @property SimpleORMapCollection<Statusgruppen> $contactgroups has_many Statusgruppen
+ * @property SimpleORMapCollection<ResourcePermission> $resource_permissions has_many ResourcePermission
+ * @property SimpleORMapCollection<ResourceTemporaryPermission> $resource_temporary_permissions has_many ResourceTemporaryPermission
+ * @property SimpleORMapCollection<ConsultationBlock> $consultation_blocks has_many ConsultationBlock
+ * @property SimpleORMapCollection<ConsultationBooking> $consultation_bookings has_many ConsultationBooking
+ * @property SimpleORMapCollection<ConsultationResponsibility> $consultation_responsibilities has_many ConsultationResponsibility
+ * @property SimpleORMapCollection<Kategorie> $profile_categories has_many Kategorie
+ * @property SimpleORMapCollection<MvvContact> $mvv_assignments has_many MvvContact
+ * @property SimpleORMapCollection<CourseMemberNotification> $course_notifications has_many CourseMemberNotification
+ * @property SimpleORMapCollection<ExternPageConfig> $extern_pages_configs has_many ExternPageConfig
+ * @property SimpleORMapCollection<BlubberThread> $blubber_threads has_many BlubberThread
+ * @property SimpleORMapCollection<BlubberComment> $blubber_comments has_many BlubberComment
+ * @property SimpleORMapCollection<BlubberMention> $blubber_mentions has_many BlubberMention
+ * @property SimpleORMapCollection<StudygroupInvitation> $studygroup_invitations has_many StudygroupInvitation
  * @property UserInfo $info has_one UserInfo
  * @property UserOnline $online has_one UserOnline
- * @property Courseware\Unit $courseware_units has_one Courseware\Unit
- * @property SimpleORMapCollection|User[] $contacts has_and_belongs_to_many User
- * @property SimpleORMapCollection|UserDomain[] $domains has_and_belongs_to_many UserDomain
+ * @property SimpleORMapCollection<User> $contacts has_and_belongs_to_many User
+ * @property SimpleORMapCollection<UserDomain> $domains has_and_belongs_to_many UserDomain
  * @property-read mixed $config additional field
+ * @property-read mixed $gender additional field
+ * @property-read mixed $salutation additional field
  * @property mixed $hobby additional field
  * @property mixed $lebenslauf additional field
  * @property mixed $publi additional field

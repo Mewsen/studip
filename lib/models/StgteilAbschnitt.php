@@ -25,11 +25,11 @@
  * @property string $editor_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property SimpleORMapCollection|StgteilabschnittModul[] $modul_zuordnungen has_many StgteilabschnittModul
- * @property SimpleORMapCollection|ModulteilStgteilabschnitt[] $modulteil_abschnitte has_many ModulteilStgteilabschnitt
+ * @property SimpleORMapCollection<StgteilabschnittModul> $modul_zuordnungen has_many StgteilabschnittModul
+ * @property SimpleORMapCollection<ModulteilStgteilabschnitt> $modulteil_abschnitte has_many ModulteilStgteilabschnitt
  * @property StgteilVersion $version belongs_to StgteilVersion
- * @property SimpleORMapCollection|Modul[] $module has_and_belongs_to_many Modul
- * @property mixed $count_module additional field
+ * @property SimpleORMapCollection<Modul> $module has_and_belongs_to_many Modul
+ * @property-read mixed $count_module additional field
  */
 
 class StgteilAbschnitt extends ModuleManagementModelTreeItem

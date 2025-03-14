@@ -11,7 +11,8 @@ use JSONArrayObject;
  * @property string $user_id database column
  * @property int|null $start database column
  * @property int|null $end database column
- * @property \JSONArrayObject $options database column
+ * @property string $ip_address database column
+ * @property \JSONArrayObject|null $options database column
  * @property int|null $mkdate database column
  * @property int|null $chdate database column
  * @property Assignment $assignment belongs_to Assignment

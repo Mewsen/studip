@@ -22,7 +22,7 @@
  * @property int $visible database column
  * @property int $inherit database column
  * @property int|null $mkdate database column
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
  * @property Statusgruppen $group belongs_to Statusgruppen
  * @property User $user belongs_to User
  * @property mixed $vorname additional field

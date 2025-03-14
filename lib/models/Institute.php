@@ -29,18 +29,19 @@
  * @property string|null $lit_plugin_name database column
  * @property int $srienabled database column
  * @property string $lock_rule database column
- * @property SimpleORMapCollection|InstituteMember[] $members has_many InstituteMember
- * @property SimpleORMapCollection|Course[] $home_courses has_many Course
- * @property SimpleORMapCollection|Institute[] $sub_institutes has_many Institute
- * @property SimpleORMapCollection|DatafieldEntryModel[] $datafields has_many DatafieldEntryModel
- * @property SimpleORMapCollection|StudipScmEntry[] $scm has_many StudipScmEntry
- * @property SimpleORMapCollection|Statusgruppen[] $status_groups has_many Statusgruppen
- * @property SimpleORMapCollection|BlubberThread[] $blubberthreads has_many BlubberThread
- * @property SimpleORMapCollection|ConsultationBlock[] $consultation_blocks has_many ConsultationBlock
- * @property SimpleORMapCollection|ConsultationResponsibility[] $consultation_responsibilities has_many ConsultationResponsibility
- * @property SimpleORMapCollection|ToolActivation[] $tools has_many ToolActivation
+ * @property SimpleORMapCollection<InstituteMember> $members has_many InstituteMember
+ * @property SimpleORMapCollection<Course> $home_courses has_many Course
+ * @property SimpleORMapCollection<Institute> $sub_institutes has_many Institute
+ * @property SimpleORMapCollection<DatafieldEntryModel> $datafields has_many DatafieldEntryModel
+ * @property SimpleORMapCollection<StudipScmEntry> $scm has_many StudipScmEntry
+ * @property SimpleORMapCollection<Statusgruppen> $status_groups has_many Statusgruppen
+ * @property SimpleORMapCollection<BlubberThread> $blubberthreads has_many BlubberThread
+ * @property SimpleORMapCollection<ConsultationBlock> $consultation_blocks has_many ConsultationBlock
+ * @property SimpleORMapCollection<ConsultationResponsibility> $consultation_responsibilities has_many ConsultationResponsibility
+ * @property SimpleORMapCollection<ToolActivation> $tools has_many ToolActivation
+ * @property SimpleORMapCollection<Studiengang> $courses_of_study has_many Studiengang
  * @property Institute $faculty belongs_to Institute
- * @property SimpleORMapCollection|Course[] $courses has_and_belongs_to_many Course
+ * @property SimpleORMapCollection<Course> $courses has_and_belongs_to_many Course
  * @property-read mixed $is_fak additional field
  * @property-read mixed $all_status_groups additional field
  */

@@ -105,7 +105,6 @@ final class DescribeModels extends AbstractCommand
                 continue;
             }
 
-
             $model = $this->reflection->newInstance();
 
             // Get configuration for class
