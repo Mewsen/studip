@@ -6,7 +6,7 @@
                 <textarea rows="4" cols="50" v-model="messageText"></textarea>
             </label>
         </section>
-        <label>
+        <label v-if="fcfsAllowed">
             <input type="checkbox" v-model="fcfsEnabled" :disabled="hasPrios">
             {{ $gettext('Keine automatische Platzverteilung (Windhund-Verfahren)') }}
             <studip-tooltip-icon v-if="hasPrios"
@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             messageText: this.message,
-            fcfsAllowed: true,
+            fcfsAllowed: STUDIP.config.ENABLE_COURSESET_FCFS,
             fcfsEnabled: this.distributionTime === 0,
             distributionTime: this.distribution !== 0 ? this.distribution : Math.floor(Date.now() / 1000 + 7 * 86400)
         }
@@ -72,7 +72,6 @@ export default {
     },
     methods: {
         setRuleData(data) {
-            this.fcfsAllowed = data.attributes.payload['fcfs-allowed'];
             this.distributionTime = data.attributes.payload['distribution-time'] !== 0
                 ? data.attributes.payload['distribution-time']
                 : Math.floor(Date.now() / 1000 + 7 * 86400);
