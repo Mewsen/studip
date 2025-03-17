@@ -377,7 +377,7 @@ class Vips_SheetsController extends AuthenticatedController
         $this->user_end_time         = $assignment->getUserEndTime($solver_id);
         $this->remaining_time        = $this->user_end_time - time();
 
-        $this->contentbar = $this->create_contentbar($assignment, $exercise_id, 'show');
+        $this->contentbar = $this->create_contentbar($assignment, $exercise_id, 'show', $solver_id);
 
         $widget = new ActionsWidget();
 
@@ -528,7 +528,7 @@ class Vips_SheetsController extends AuthenticatedController
         $this->exam_terms = null;
         $this->preview_exam_terms = null;
 
-        $this->contentbar = $this->create_contentbar($assignment, null, 'show');
+        $this->contentbar = $this->create_contentbar($assignment, null, 'show', $solver_id);
 
         if (!$assignment->checkEditPermission()) {
             if (!$assignment->isRunning() || !$assignment->active) {
@@ -2225,13 +2225,13 @@ class Vips_SheetsController extends AuthenticatedController
         $toc->setURL($this->url_for("vips/sheets/{$view}_assignment", ['assignment_id' => $assignment->id]));
         $toc->setActive($exercise_id === null);
 
-        if ($view === 'edit' && !empty($assignment->test->exercise_refs)) {
-            $exercise_refs = $assignment->test->exercise_refs;
-        } else {
-            $exercise_refs = $assignment->getExerciseRefs($solver_id);
-        }
+        if (!empty($assignment->test->exercise_refs)) {
+            if ($view === 'edit') {
+                $exercise_refs = $assignment->test->exercise_refs;
+            } else {
+                $exercise_refs = $assignment->getExerciseRefs($solver_id);
+            }
 
-        if (!empty($exercise_refs)) {
             foreach ($exercise_refs as $i => $item) {
                 $child = new TOCItem(sprintf('%d. %s', $i + 1, $item->exercise->title));
                 $child->setURL($this->url_for(
