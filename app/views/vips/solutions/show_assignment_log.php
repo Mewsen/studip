@@ -37,7 +37,7 @@
                     <?= htmlReady($log['label']) ?>
                 </td>
                 <td>
-                    <?= date('d.m.Y, H:i:s', strtotime($log['time'])) ?>
+                    <?= date('d.m.Y, H:i:s', $log['time']) ?>
                 </td>
                 <td>
                     <?= htmlReady($log['ip_address']) ?>
