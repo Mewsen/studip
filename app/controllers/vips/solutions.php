@@ -732,7 +732,7 @@ class Vips_SolutionsController extends AuthenticatedController
                     $assignment_attempt->user->vorname,
                     $assignment_attempt->user->username,
                     $entry['label'],
-                    $entry['time'],
+                    date('Y-m-d H:i:s', $entry['time']),
                     $entry['ip_address'],
                     $entry['ip_address'] ? $this->gethostbyaddr($entry['ip_address']) : '',
                     $entry['session_id']
