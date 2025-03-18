@@ -17,7 +17,7 @@ trait StudipTreeNodeCourseTrait
             $condition .= " LEFT JOIN `semester_courses` sc ON ({$alias}.`seminar_id` = sc.`course_id`)
                   LEFT JOIN `semester_data` sd USING (`semester_id`)
                   WHERE (sc.`semester_id` = :semester OR sc.`semester_id` IS NULL)";
-            $parameters[':semester'] = $semester_id;
+            $parameters['semester'] = $semester_id;
             $order_by[] = 'sd.`beginn`';
         } else {
             $condition .= " WHERE 1";
@@ -27,19 +27,10 @@ trait StudipTreeNodeCourseTrait
             $condition .= " AND s.`visible` = 1";
         }
 
-        if ($sem_class) {
+        if ($sem_class !== 0) {
             $condition .= "  AND s.`status` IN (:types)";
-            $parameters['types'] = array_map(
-                function ($type) {
-                    return $type['id'];
-                },
-                array_filter(
-                    SemType::getTypes(),
-                    function ($t) use ($sem_class) {
-                        return $t['class'] === $sem_class;
-                    }
-                )
-            );
+            $semclass = new SemClass($sem_class);
+            $parameters['types'] = array_keys($semclass->getSemTypes());
         }
 
         if ($searchterm) {

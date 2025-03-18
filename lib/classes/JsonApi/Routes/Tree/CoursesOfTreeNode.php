@@ -56,7 +56,7 @@ class CoursesOfTreeNode extends JsonApiController
         $courses = \SimpleCollection::createFromArray(
             $node->getCourses(
                 $filters['semester'],
-                $filters['semclass'],
+                (int) $filters['semclass'],
                 $filters['q'],
                 (bool) $filters['recursive'],
                 $filters['ids']
