@@ -195,13 +195,18 @@
                 <div v-if="showRecorder && canGetMediaDevices" class="cw-call-to-action">
                     <button
                         v-if="!userRecorderEnabled"
+                        class="action-button"
                         :title="enableRecorderTitle"
                         @click.prevent="enableRecorder"
                     >
                         <studip-icon shape="microphone" :size="48"/>
                         {{ $gettext('Aufnahme aktivieren') }}
                     </button>
-                    <button v-else  @click.prevent="resetRecorder">
+                    <button
+                        v-else
+                        class="action-button"
+                        @click.prevent="resetRecorder"
+                    >
                         <studip-icon shape="decline" :size="48"/>
                         {{ $gettext('Aufnahme abbrechen') }}
                     </button>
@@ -298,7 +303,7 @@
                         {{ $gettext('Audio-Aufnahmen zulassen') }}
                         <span
                             class="tooltip tooltip-icon"
-                            :data-tooltip="$gettext('Um Aufnahmen zu ermöglichen, muss ein Ordner ausgewählt werden.')"
+                            :data-tooltip="$gettext('Um Aufnahmen zu ermöglichen, muss ein Ordner ausgewählt werden. Der Safari-Browser unterstützt das genutze Audioformat nicht. Bitte verwenden Sie Firefox, Chrome oder einen ähnlichen Browser.')"
                         ></span>
                         <select v-model="currentRecorderEnabled" :disabled="!folderSelected">
                             <option :value="true">{{ $gettext('Ja') }}</option>
@@ -422,7 +427,7 @@ export default {
             if (this.durationSeconds > 0) {
                 return this.seconds2time(this.durationSeconds);
             }
-            return false;
+            return '-:--';
         },
         title() {
             return this.block?.attributes?.payload?.title;
@@ -556,6 +561,10 @@ export default {
         canEditFile() {
             return this.hasMP3Tags && this.activeFileRef.attributes['is-editable'];
         },
+
+        isOpusSupported() {
+            return MediaRecorder.isTypeSupported('audio/webm;codecs=opus');
+},
     },
     async mounted() {
         this.initCurrentData();
@@ -812,7 +821,7 @@ export default {
             navigator.mediaDevices
                 .getUserMedia({ audio: true })
                 .then((stream) => {
-                    this.recorder = new MediaRecorder(stream, { type: 'audio/webm; codecs:vp9' });
+                    this.recorder = new MediaRecorder(stream, { type: 'audio/webm;codecs:opus' });
                     this.userRecorderEnabled = true;
                     this.recorder.ondataavailable = (e) => {
                         this.chunks.push(e.data);
@@ -868,7 +877,7 @@ export default {
         },
         async storeRecording() {
             let user = this.usersById({ id: this.userId });
-            let blob = new Blob(this.chunks, { type: 'audio/webm; codecs:vp9' });
+            let blob = new Blob(this.chunks, { type: 'audio/webm;codecs:opus' });
 
             let file = {
                 attributes: {
@@ -998,6 +1007,11 @@ export default {
             setTimeout(() => {
                 this.loadingCover = false;
             }, 200);
+            if (!this.isOpusSupported) {
+                this.companionWarning({
+                    info: this.$gettext('Ihr Browser unterstützt das Audioformat leider nicht.'),
+                });
+            }
         },
         isRecording(newState) {
             if (newState) {
