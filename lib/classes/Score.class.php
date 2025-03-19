@@ -211,6 +211,7 @@ class Score
             'table'       => 'wiki_pages',
             'date_column' => 'chdate'
         ];
+        $tables[] = ['table' => 'wiki_versions'];
 
         foreach (PluginManager::getInstance()->getPlugins('ScorePlugin') as $plugin) {
             foreach ((array) $plugin->getPluginActivityTables() as $table) {
