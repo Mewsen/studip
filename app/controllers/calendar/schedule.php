@@ -58,7 +58,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         if ($this->semester) {
             PageLayout::setTitle(
                 studip_interpolate(
-                    _('Mein Stundenplan im %{semester}'),
+                    _('Stundenplan %{semester}'),
                     ['semester' => $this->semester->name]
                 )
             );
