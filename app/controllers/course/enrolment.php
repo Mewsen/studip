@@ -117,7 +117,7 @@ class Course_EnrolmentController extends AuthenticatedController
                             } elseif ($user && $course->isWaitlistAvailable()) {
 
                                 try {
-                                    $application = $course->addMemberToWaitlist($user, 'last');
+                                    $application = $course->addMemberToWaitlist($user);
                                     $msg = _('Diese Veranstaltung ist teilnahmebeschränkt.');
                                     $msg_details[] = sprintf(_('Alle Plätze sind belegt, Sie wurden daher auf Platz %s der Warteliste gesetzt.'), $application->position);
                                 } catch (Studip\Exception $e) {
