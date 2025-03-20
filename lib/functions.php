@@ -1836,10 +1836,10 @@ function get_default_http_stream_context($url = '')
     }
     if ($proxy) {
         $opts = ['http' => ['proxy' => 'tcp://' . $proxy]];
+        return stream_context_create($opts);
     } else {
-        $opts = [];
+        return stream_context_get_default();
     }
-    return stream_context_get_default($opts);
 }
 
 /**
