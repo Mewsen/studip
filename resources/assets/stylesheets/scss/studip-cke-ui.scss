@@ -59,7 +59,7 @@
     --ck-color-tooltip-background: var(--dark-gray-color-5);
 
     /* z-index */
-    --ck-z-modal: 1003;
+    --ck-z-panel: 1003;
 
     /* tooltips */
     --ck-color-tooltip-text: var(--color-text);
@@ -416,5 +416,5 @@ $editor-min-height: 8em;
 .ck.ck-block-toolbar-button {
     background-color: var(--dark-gray-color-5);
     border: 1px solid var(--ck-color-base-border);
-    z-index: var(--ck-z-modal);
+    z-index: var(--ck-z-panel);
 }
