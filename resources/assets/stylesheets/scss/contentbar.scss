@@ -16,7 +16,6 @@
     .contentbar-wrapper-left {
         display: flex;
         max-width: calc(100% - 130px);
-        flex: 1;
 
         .contentbar-breadcrumb {
             font-size: 1.25em;
@@ -71,8 +70,8 @@
     .contentbar-wrapper-right {
         align-items: center;
         display: flex;
-        flex: 1;
         justify-content: flex-end;
+        min-width: 0;
         position: relative;
 
         .contentbar-info {
