@@ -17,7 +17,7 @@
       ) ?>"
       <?= (Request::isDialog()
           ? (
-          $single_user_mode
+          !empty($single_user_mode)
               ? 'data-dialog="reload-on-close"'
               : 'data-dialog'
           )
@@ -42,10 +42,10 @@
             'permissions'               => $permissions,
             'custom_empty_list_message' => $custom_empty_list_message ?? '',
             'table_id'                  => $table_id,
-            'single_user'               => $user
+            'single_user'               => $user ?? null,
         ]
     ) ?>
-    <? if (!$single_user_mode): ?>
+    <? if (empty($single_user_mode)): ?>
         <p>
             <label>
                 <?= _('Person hinzufügen') ?>
