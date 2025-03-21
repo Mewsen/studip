@@ -418,8 +418,8 @@ $sidebarOut: -330px;
     }
 
     #toc {
-        margin-right: -14px;
-        margin-top: -3px;
+        right: 5px;
+        top: -11px;
     }
 
     #main-footer {
@@ -455,6 +455,7 @@ $sidebarOut: -330px;
     }
 
     #responsive-contentbar {
+        &.cw-ribbon,
         &.cw-ribbon-sticky {
             position: unset;
             width: unset;
@@ -588,6 +589,12 @@ $sidebarOut: -330px;
 
         #responsive-contentbar {
             padding-left: 15px;
+
+            &.cw-ribbon-sticky {
+                position: unset;
+                top: unset;
+                width: unset;
+            }
 
             .contentbar-nav,
             .cw-ribbon-nav {
