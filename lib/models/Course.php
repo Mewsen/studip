@@ -1124,7 +1124,8 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             //Background: Lecturers may enforce the entry of a student, but the latter must not
             //override the checks.
             if (
-                $permission_level === 'autor'
+                !$GLOBALS['perm']->have_studip_perm('tutor', $this->id)
+                && $permission_level === 'autor'
                 && $regard_contingent
                 && $this->isAdmissionEnabled()
                 && $this->getFreeSeats() < 1
