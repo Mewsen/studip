@@ -112,7 +112,7 @@
                         <div :id="'course-dates-' + course.id" class="course-dates"></div>
                     </td>
                     <td>
-                        <tree-course-details :course="course.id"></tree-course-details>
+                        <tree-course-details :course="course"></tree-course-details>
                     </td>
                 </tr>
             </tbody>
@@ -195,10 +195,6 @@ export default {
             type: Boolean,
             default: true
         },
-        visibleChildrenOnly: {
-            type: Boolean,
-            default: true
-        },
         assignable: {
             type: Boolean,
             default: false
@@ -229,7 +225,7 @@ export default {
             courses: [],
             assistiveLive: '',
             subLevelsCourses: 0,
-            thisLevelCourses: this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass),
+            thisLevelCourses: 0,
             showingAllCourses: false
         }
     },
@@ -239,42 +235,6 @@ export default {
         }
     },
     methods: {
-        openNode(node, pushState = true) {
-            this.currentNode = node;
-            this.$emit('change-current-node', node);
-
-            if (this.withChildren) {
-                this.getNodeChildren(node, this.visibleChildrenOnly).then(response => {
-                    this.children = response.data.data;
-                });
-            }
-
-            this.getNodeCourseInfo(node, this.semester, this.semClass)
-                .then(response => {
-                    this.thisLevelCourses = response?.data.courses;
-                    this.subLevelsCourses = response?.data.allCourses;
-                });
-
-            if (this.withCourses) {
-                this.getNodeCourses(node, this.offset, this.semester, this.semClass, '', false)
-                    .then(courses => {
-                        this.totalCourseCount = courses.data.meta.page.total;
-                        this.offset = Math.ceil(courses.data.meta.page.offset / this.limit);
-                        this.courses = courses.data.data;
-                    });
-            }
-
-            // Update browser history.
-            if (pushState) {
-                const url = new URL(location.href);
-                url.searchParams.set('node_id', node.id);
-                window.history.pushState({nodeId: node.id}, '', url);
-            }
-
-            // Update node_id for semester selector.
-            const semesterSelector = document.querySelector('#semester-selector-node-id');
-            semesterSelector.value = node.id;
-        },
         dropChild() {
             this.updateSorting(this.currentNode.id, this.children);
         },
@@ -330,26 +290,24 @@ export default {
                 });
         }
     },
-    mounted() {
+    async created() {
+        this.thisLevelCourses = await this.fetchNodeCourseInfo(this.currentNode.id);
+
         if (this.withChildren) {
-            this.getNodeChildren(this.currentNode, this.visibleChildrenOnly).then(response => {
-                this.children = response.data.data;
+            this.children = await this.fetchNodeChildren({
+                id: this.currentNode.id,
+                visibleChildrenOnly: this.visibleChildrenOnly
             });
         }
 
-        this.getNodeCourseInfo(this.currentNode, this.semester, this.semClass)
-            .then(response => {
-                this.thisLevelCourses = response?.data.courses;
-                this.subLevelsCourses = response?.data.allCourses;
-            });
-
         if (this.withCourses) {
-            this.getNodeCourses(this.currentNode, 0, this.semester, this.semClass)
-                .then(courses => {
-                    this.totalCourseCount = courses.data.meta.page.total;
-                    this.offset = 0;
-                    this.courses = courses.data.data;
-                });
+             this.courses = await this.fetchNodeCourses(this.currentNode.id);
+//             , 0, this.semester, this.semClass)
+//                 .then(courses => {
+// //                    this.totalCourseCount = courses.data.meta.page.total;
+// //                    this.offset = 0;
+// //                    this.courses = courses.data.data;
+//                 });
         }
 
         this.globalOn('open-tree-node', node => {
@@ -357,8 +315,8 @@ export default {
         });
 
         this.globalOn('load-tree-node', id => {
-            this.getNode(id).then(response => {
-                this.openNode(response.data.data);
+            this.fetchNode(id).then(node => {
+                this.openNode(node);
             });
         });
 
@@ -371,8 +329,8 @@ export default {
         window.addEventListener('popstate', (event) => {
             if (event.state) {
                 if ('nodeId' in event.state) {
-                    this.getNode(event.state.nodeId).then(response => {
-                        this.openNode(response.data.data, false);
+                    this.fetchNode(event.state.nodeId).then(node => {
+                        this.openNode(node, false);
                     });
                 }
             } else {

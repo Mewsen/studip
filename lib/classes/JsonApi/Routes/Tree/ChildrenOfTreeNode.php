@@ -24,7 +24,8 @@ class ChildrenOfTreeNode extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        list($classname, $id) = explode('_', $args['id']);
+        /** @var class-string<\StudipTreeNode> $classname */
+        [$classname, $id] = explode('_', $args['id']);
 
         $node = $classname::getNode($id);
         if (!$node) {

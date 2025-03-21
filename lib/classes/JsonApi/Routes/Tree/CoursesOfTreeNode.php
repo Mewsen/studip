@@ -2,12 +2,15 @@
 
 namespace JsonApi\Routes\Tree;
 
+use Course;
 use JsonApi\Errors\BadRequestException;
+use JsonApi\Routes\Tree\Helpers\TreeNodeCourse;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use StudipTreeNode;
 
 class CoursesOfTreeNode extends JsonApiController
 {
@@ -38,7 +41,8 @@ class CoursesOfTreeNode extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        list($classname, $id) = explode('_', $args['id']);
+        /** @var class-string<StudipTreeNode> $classname */
+        [$classname, $id] = explode('_', $args['id']);
 
         $node = $classname::getNode($id);
         if (!$node) {
@@ -52,7 +56,7 @@ class CoursesOfTreeNode extends JsonApiController
 
         $filters = $this->getContextFilters();
 
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        [$offset, $limit] = $this->getOffsetAndLimit();
         $courses = \SimpleCollection::createFromArray(
             $node->getCourses(
                 $filters['semester'],
@@ -64,7 +68,11 @@ class CoursesOfTreeNode extends JsonApiController
         );
 
         return $this->getPaginatedContentResponse(
-            $courses->limit($offset, $limit),
+            $courses->limit($offset, $limit)->map(
+                function (Course $course): TreeNodeCourse {
+                    return new TreeNodeCourse($course);
+                },
+            ),
             count($courses)
         );
     }

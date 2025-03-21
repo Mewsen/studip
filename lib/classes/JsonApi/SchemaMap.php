@@ -58,6 +58,7 @@ class SchemaMap
             \StudipComment::class => Schemas\StudipComment::class,
             \StudipNews::class => Schemas\StudipNews::class,
             \StudipTreeNode::class => Schemas\TreeNode::class,
+            \JsonApi\Routes\Tree\Helpers\TreeNodeCourse::class => Schemas\TreeNodeCourse::class,
             \WikiPage::class => Schemas\WikiPage::class,
             \Studip\Activity\Activity::class => Schemas\Activity::class,
             \User::class => Schemas\User::class,

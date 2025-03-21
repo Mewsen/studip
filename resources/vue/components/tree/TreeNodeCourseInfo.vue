@@ -1,6 +1,6 @@
 <template>
     <div class="studip-tree-child-description">
-        <studip-loading-skeleton v-if="isLoading" />
+        <studip-loading-skeleton v-if="courseCount === null" />
         <div v-else
              v-html="$ngettext(
                  '<strong>Eine</strong> Veranstaltung',
@@ -14,58 +14,33 @@
 
 <script>
 import { TreeMixin } from '../../mixins/TreeMixin';
-import StudipLoadingSkeleton from '../StudipLoadingSkeleton.vue';
 import {$ngettext} from "../../../assets/javascripts/lib/gettext";
+import StudipLoadingSkeleton from "../StudipLoadingSkeleton.vue";
 
 export default {
     name: 'TreeNodeCourseInfo',
-    components: { StudipLoadingSkeleton },
+    components: {StudipLoadingSkeleton},
     mixins: [ TreeMixin ],
-    emits: ['showAllCourses'],
     props: {
         node: {
             type: Object,
             required: true
         },
-        semester: {
-            type: String,
-            default: 'all'
-        },
-        semClass: {
-            type: Number,
-            default: 0
-        }
     },
     data() {
         return {
-            courseCount: this.getCachedNodeCourseInfo(this.node, this.semester, this.semClass),
-            showingAllCourses: false
-        }
-    },
-    computed: {
-        isLoading() {
-            return this.courseCount === null;
+            courseCount: null,
         }
     },
     methods: {
         $ngettext,
-        showAllCourses(state) {
-            this.showingAllCourses = state;
-            this.$emit('showAllCourses', state);
-        },
-        loadNodeInfo(node) {
-            this.getNodeCourseInfo(node, this.semester, this.semClass)
-                .then(info => {
-                    this.courseCount = info?.data.courses ?? 0;
-                });
-        }
-    },
-    mounted() {
-        this.loadNodeInfo(this.node);
     },
     watch: {
-        node(newNode) {
-            this.loadNodeInfo(newNode);
+        node: {
+            async handler(newNode) {
+                this.courseCount = await this.fetchNodeCourseInfo(newNode.id);
+            },
+            immediate:true
         }
     }
 }

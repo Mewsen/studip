@@ -2,17 +2,21 @@
     <sidebar-widget id="views-widget" class="sidebar-views" :title="$gettext('Ansicht')">
         <template #content>
             <ul class="widget-list widget-links sidebar-views">
-                <li :class="{ active: config.view === 'list' }">
+                <li :class="{ active: viewType === 'list' }">
                     <a :href="getUrl('list')"
                        :title="$gettext('Verzeichnis als Liste anzeigen')"
-                       tabindex="0">
+                       tabindex="0"
+                       @click.prevent="setType('list')"
+                    >
                         {{ $gettext('Als Liste anzeigen') }}
                     </a>
                 </li>
-                <li :class="{ active: config.view === 'table' }">
+                <li :class="{ active: viewType === 'table' }">
                     <a :href="getUrl('table')"
                        :title="$gettext('Verzeichnis als Tabelle anzeigen')"
-                       tabindex="0">
+                       tabindex="0"
+                       @click.prevent="setType('table')"
+                    >
                         {{ $gettext('Als Tabelle anzeigen') }}
                     </a>
                 </li>
@@ -23,6 +27,7 @@
 
 <script>
 import SidebarWidget from '../SidebarWidget.vue';
+import {mapMutations, mapState} from "vuex";
 
 export default {
     name: 'StudipTreeViewWidget',
@@ -35,7 +40,15 @@ export default {
             required: true
         }
     },
+    computed: {
+        ...mapState('treestore', [
+            'viewType',
+        ]),
+    },
     methods: {
+        ...mapMutations('treestore', {
+            setViewType: 'SET_VIEW_TYPE',
+        }),
         getUrl(showAs) {
             const url = new URL(window.location);
             url.searchParams.set('show_as', showAs);
@@ -50,6 +63,9 @@ export default {
             }
 
             return url.toString();
+        },
+        setType(type) {
+            this.setViewType(type);
         }
     }
 }

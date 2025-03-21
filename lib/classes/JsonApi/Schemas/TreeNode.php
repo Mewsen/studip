@@ -2,9 +2,7 @@
 
 namespace JsonApi\Schemas;
 
-use Neomerx\JsonApi\Contracts\Factories\FactoryInterface;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
-use Neomerx\JsonApi\Contracts\Schema\SchemaContainerInterface;
 use Neomerx\JsonApi\Schema\Link;
 
 class TreeNode extends SchemaProvider
@@ -54,6 +52,11 @@ class TreeNode extends SchemaProvider
         return $schema;
     }
 
+    /**
+     * @param                  $resource
+     * @param ContextInterface $context
+     * @return iterable
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];

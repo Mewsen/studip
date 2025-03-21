@@ -186,11 +186,9 @@ export default {
             });
         }
     },
-    mounted() {
+    async created() {
         const root = this.node.attributes.ancestors[0];
-        this.getNode(root.classname + '_' + root.id).then(response => {
-            this.rootNode = response.data.data;
-        });
+        this.rootNode = await this.fetchNode(root.classname + '_' + root.id);
     }
 }
 </script>

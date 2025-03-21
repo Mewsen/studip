@@ -16,9 +16,9 @@ interface StudipTreeNode
      * Fetches a node by the given ID. The implementing class knows what to do.
      *
      * @param mixed $id
-     * @return StudipTreeNode
+     * @return StudipTreeNode|null
      */
-    public static function getNode($id): StudipTreeNode;
+    public static function getNode($id): ?StudipTreeNode;
 
     /**
      * Get all direct children of the given node.

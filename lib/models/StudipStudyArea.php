@@ -425,7 +425,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         return $root;
     }
 
-    public static function getNode($id): StudipTreeNode
+    public static function getNode($id): ?StudipTreeNode
     {
         if ($id === 'root') {
             return static::build([
