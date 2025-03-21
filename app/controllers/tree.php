@@ -16,28 +16,32 @@ class TreeController extends AuthenticatedController
             _('Name'),
             _('Semester'),
             _('Zeiten'),
-            _('Lehrende')
+            _('Lehrende'),
+            _('Bereich')
         ];
 
         $data = [];
         foreach ($courses as $course) {
             $lecturers = SimpleCollection::createFromArray(
                 CourseMember::findByCourseAndStatus($course->id, 'dozent')
-            )->orderBy('position, nachname, vorname');
-
-            $lecturersSorted = array_map(
-                function ($l) {
-                    return implode(', ', $l);
-                },
-                $lecturers->toArray('nachname vorname title_front title_rear')
+            )->orderBy(
+                'position, nachname, vorname'
+            )->map(
+                function($member) { return $member->getUserFullname(); }
             );
+
+            $studyAreaPaths = [];
+            foreach ($course->study_areas as $area) {
+                $studyAreaPaths[] = $area->getPath(' > ');
+            }
 
             $data[] = [
                 $course->veranstaltungsnummer,
                 $course->getFullName('type-number-name'),
                 $course->getTextualSemester(),
-                implode("\n", $course->getAllDatesInSemester()->toStringArray()),
-                implode(', ', $lecturersSorted)
+                strip_tags(implode("\n", $course->getAllDatesInSemester()->toStringArray())),
+                implode(', ', $lecturers),
+                implode("\n", $studyAreaPaths)
             ];
         }
 
