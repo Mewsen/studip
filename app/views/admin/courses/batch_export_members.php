@@ -1,9 +1,39 @@
-<?php
-/**
- * @var Course $course
- */
-?>
-<label>
-    <input name="export_members[]" type="checkbox" value="<?= htmlReady($course->id) ?>"
-           aria-label="<?= htmlReady(_('Teilnehmende exportieren')) ?>">
-</label>
+<form class="default" action="<?= $controller->link_for('admin/courses/do_batch_export') ?>" method="post">
+    <?= CSRFProtection::tokenTag() ?>
+    <fieldset>
+        <legend><?= _('Die Daten der Teilnehmenden folgender Veranstaltungen werden exportiert') ?></legend>
+        <table class="default selected-courses">
+            <thead>
+            <tr>
+                <th><?= _('Name') ?></th>
+                <th><?= _('Anzahl Lehrende') ?></th>
+                <th><?= _('Anzahl Tutor/-innen') ?></th>
+                <th><?= _('Anzahl Studierende') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach ($courses as $course) : ?>
+                <tr>
+                    <td>
+                        <a href="<?= URLHelper::getLink('dispatch.php/course/overview', ['cid' => $course->id])?>"
+                           title="<?= sprintf(_('Zur Veranstaltung %s'), htmlReady($course->getFullName())) ?>"
+                           target="_blank">
+                            <?= htmlReady($course->getFullName('number-name-semester')) ?>
+                        </a>
+                        <input type="hidden" name="courses[]" value="<?= htmlReady($course->id) ?>">
+                    </td>
+                    <td><?= count($course->getMembersWithStatus('dozent')) ?></td>
+                    <td><?= count($course->getMembersWithStatus('tutor')) ?></td>
+                    <td><?= count($course->getMembersWithStatus('autor')) ?></td>
+                </tr>
+            <? endforeach ?>
+            </tbody>
+        </table>
+    </fieldset>
+    <footer data-dialog-button>
+        <?= Studip\Button::createAccept(_('Export als Excel-Datei'), 'xlsx') ?>
+        <?= Studip\Button::createAccept(_('Export als CSV-Datei'), 'csv') ?>
+        <?= Studip\Button::createCancel(_('Abbrechen'), 'cancel', ['data-dialog' => 'close']) ?>
+    </footer>
+</form>
+

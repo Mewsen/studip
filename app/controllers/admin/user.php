@@ -16,10 +16,6 @@
  * @since       2.1
  */
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 require_once 'vendor/email_message/blackhole_message.php';
 require_once 'lib/statusgruppe.inc.php';
 
@@ -1733,7 +1729,6 @@ class Admin_UserController extends AuthenticatedController
         rmdirr($tmp_folder);
         $this->render_temporary_file($archive_file_path, $archive_filename, 'application/zip');
     }
-
 
     /**
      * Init sidebar
