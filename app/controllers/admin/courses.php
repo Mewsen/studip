@@ -481,7 +481,7 @@ class Admin_CoursesController extends AuthenticatedController
                 $data['buttons_bottom'] = (string) \Studip\Button::createAccept(
                     _('Teilnehmendenexport'), 'batch_export_members',
                     [
-                        'formaction' => URLHelper::getURL('dispatch.php/admin/user/batch_export_members'),
+                        'formaction' => URLHelper::getURL('dispatch.php/admin/courses/batch_export_members'),
                         'data-dialog' => 'size=big'
                     ]);
                 break;
@@ -841,7 +841,7 @@ class Admin_CoursesController extends AuthenticatedController
                 $d['action'] = $template->render();
                 break;
             case 22: //Masssenexport Teilnehmendendaten
-                $template = $tf->open('admin/courses/batch_export_members');
+                $template = $tf->open('admin/courses/export_members');
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
@@ -1330,6 +1330,73 @@ class Admin_CoursesController extends AuthenticatedController
         $this->notice = $course->config->COURSE_ADMIN_NOTICE;
     }
 
+    public function batch_export_members_action()
+    {
+        PageLayout::setTitle(_('Teilnehmendendaten exportieren'));
+
+        $courseIds = Request::optionArray('export_members');
+        $order = Config::get()->IMPORTANT_SEMNUMBER
+            ? "ORDER BY `VeranstaltungsNummer`, `Name`"
+            : "ORDER BY `Name`";
+        $this->courses = Course::findMany($courseIds, $order);
+
+        // check if at least one course was selected (this can only happen from admin courses overview):
+        if (count($this->courses) === 0) {
+            PageLayout::postWarning('Es wurde keine Veranstaltung gewählt.');
+            $this->relocate('admin/courses');
+        }
+    }
+
+    /*
+     * Export member data of all selected courses
+     */
+    public function do_batch_export_action()
+    {
+        if (Request::submitted('xlsx')) {
+            $export_format = 'xlsx';
+        } else if (Request::submitted('csv')) {
+            $export_format = 'csv';
+        } else {
+            PageLayout::postError('Nicht unterstütztes Exportformat.');
+            $this->relocate('admin/courses');
+        }
+
+        $tmp_folder = $GLOBALS['TMP_PATH'] . '/temp_folder_' . md5(uniqid());
+        mkdir($tmp_folder);
+
+        $courses = Course::findMany(Request::optionArray('courses'));
+        $header = [
+            _('Status'),
+            _('Anrede'),
+            _('Titel'),
+            _('Vorname'),
+            _('Nachname'),
+            _('Titel nachgestellt'),
+            _('Benutzername'),
+            _('Adresse'),
+            _('Telefonnr.'),
+            _('E-Mail'),
+            _('Anmeldedatum'),
+            _('Matrikelnummer'),
+            _('Studiengänge'),
+            _('Position'),
+        ];
+        foreach ($courses as $course) {
+            if ($GLOBALS['perm']->have_studip_perm('dozent', $course->id)) {
+                $members = $course->getMembersData();
+
+                $filename = FileManager::cleanFileName('Teilnehmendenexport ' . $course->Name . '.' . $export_format);
+                $filepath = $tmp_folder . '/'. $filename;
+
+                $this->render_spreadsheet($header, $members, $export_format, $filename, $filepath);
+            }
+        }
+        $archive_file_path = $GLOBALS['TMP_PATH'] . '/archiv.zip';
+        $archive_filename = 'Export_Teilnehmendendaten.zip';
+        FileArchiveManager::createArchiveFromPhysicalFolder($tmp_folder, $archive_file_path);
+        rmdirr($tmp_folder);
+        $this->render_temporary_file($archive_file_path, $archive_filename, 'application/zip');
+    }
 
     /**
      * Return a specifically action or all available actions
@@ -1440,10 +1507,10 @@ class Admin_CoursesController extends AuthenticatedController
             22 => [
                 'name'       => _('Teilnehmendenexport'),
                 'title'      => _('Teilnehmendenexport'),
-                'url'        => 'dispatch.php/admin/user/batch_export_members',
+                'url'        => 'dispatch.php/admin/courses/batch_export_members',
                 'dialogform' => true,
                 'multimode'  => true,
-                'partial'    => 'batch_export_members.php'
+                'partial'    => 'export_members.php'
 
             ],
             23 => [
