@@ -236,7 +236,10 @@ function createSelect2(element) {
     $(element)
         .next()
         .addBack()
-        .wrapAll(wrapper);
+        .wrapAll(wrapper)
+        // Temporary fix, see https://gitlab.studip.de/studip/studip/-/issues/5381
+        .closest('label')
+        .on('click', (e) => e.preventDefault());
 }
 
 STUDIP.ready(function () {
