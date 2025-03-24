@@ -128,6 +128,14 @@ class CoreAdmin extends CorePlugin implements StudipModuleExtended
                 $navigation->addSubNavigation('parent', $item);
 
             }
+
+            if (Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS) {
+                $item = new Navigation(
+                    _('Freigabe als LTI-Tool'),
+                    URLHelper::getURL('dispatch.php/course/lti/share_as_tool', ['cid' => $course_id])
+                );
+                $navigation->addSubNavigation('lti_tool', $item);
+            }
         }
 
         return ['admin' => $navigation];

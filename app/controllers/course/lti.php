@@ -957,4 +957,45 @@ class Course_LtiController extends StudipController
         $filename = Context::get()->name . ' - ' . _('Ergebnisse') . '.csv';
         $this->render_csv($data, $filename);
     }
+
+    public function share_as_tool_action()
+    {
+        if (!Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS) {
+            throw new AccessDeniedException(
+                _('Veranstaltungen dürfen nicht als LTI-Tool freigegeben werden.')
+            );
+        }
+        if (Navigation::hasItem('/course/admin/lti_tool')) {
+            Navigation::activateItem('/course/admin/lti_tool');
+        }
+
+        $this->share_as_tool = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL;
+    }
+
+    public function save_share_as_tool_settings_action()
+    {
+        if (!Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS) {
+            throw new AccessDeniedException(
+                _('Veranstaltungen dürfen nicht als LTI-Tool freigegeben werden.')
+            );
+        }
+        CSRFProtection::verifyUnsafeRequest();
+
+        //Update SHARE_COURSE_AS_LTI_TOOL, if it has changed:
+        $old_config_value = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL ? true : false;
+        $this->share_as_tool = Request::bool('share_as_tool', false);
+        if ($old_config_value !== $this->share_as_tool) {
+            CourseConfig::get($this->course_id)->store('SHARE_COURSE_AS_LTI_TOOL', $this->share_as_tool ? '1' : '0');
+
+            if (!$old_config_value && $this->share_as_tool) {
+                //Hide the participants page:
+
+
+                //Inform lecturers that the course is now shared as LTI tool:
+
+                //Inform participants that the course is now accessible for external persons:
+
+            }
+        }
+    }
 }
