@@ -121,7 +121,7 @@ class Calendar_ContentboxController extends StudipController
                 ['user_id' => $id]
             );
             foreach ($relevant_courses as $course) {
-                $course_dates = $course->getDatesWithExdates()->findBy('end_time', [$this->start, $this->start + $this->timespan], '><');
+                $course_dates = $course->getDatesWithExdates($this->start, $this->start + $this->timespan);
                 foreach ($course_dates as $course_date) {
                     //Check if the date belongs to a regular course date and if that is
                     //made invisible via the schedule:
