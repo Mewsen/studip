@@ -332,16 +332,14 @@ class Course_StatusgroupsController extends AuthenticatedController
         if ($groups) {
             $assigned_with_group = [];
             foreach ($groups as $group) {
-                foreach ($group->members as $member) {
-                    if (!in_array($member->user_id, $assigned_with_group)) {
-                        $assigned_with_group[] = $member->user_id;
-                    }
-                    $result[$member->user_id] = $member->getExportData();
+                foreach ($group->members->orderBy('nachname,vorname') as $member) {
+                    $assigned_with_group[$member->user_id] = true;
+                    $result[] = $member->getExportData();
                 }
             }
             $members = $course->members->filter(function($group_member) use ($assigned_with_group) {
-                    return !in_array($group_member->user_id, $assigned_with_group);
-                })->orderBy('position');
+                    return !array_key_exists($group_member->user_id, $assigned_with_group);
+                })->orderBy('nachname,vorname');
 
             foreach ($members as $member) {
                 $data = ['gruppe' => _('keiner Funktion oder Gruppe zugeordnet')]  + $member->getExportData();
