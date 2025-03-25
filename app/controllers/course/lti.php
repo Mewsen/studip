@@ -997,5 +997,6 @@ class Course_LtiController extends StudipController
 
             }
         }
+        $this->redirect('course/lti/share_as_tool', ['cid' => $this->course_id]);
     }
 }
