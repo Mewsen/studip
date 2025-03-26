@@ -56,7 +56,7 @@ class SASSCompiler implements Compiler
     {
         $scss = $this->getPrefix() . $input;
 
-        $variables['image-path'] = '"' . Assets::url('images') . '"';
+        $variables['image-path'] = Assets::url('images');
 
         $variables = array_map(
             [ValueConverter::class, 'fromPhp'],
