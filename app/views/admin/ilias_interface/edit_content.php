@@ -11,43 +11,43 @@
     <input type="hidden" name="ilias_content_settings" size="50" maxlength="255" value="1">
     <label>
         <span class="required"><?= _('Wurzelkategorie für Stud.IP-Daten') ?></span>
-        <? if ($ilias_config['root_category']) : ?>
+        <? if (!empty($ilias_config['root_category'])) : ?>
             <div><?=htmlReady($ilias_config['root_category_name']).' (ID '.htmlReady($ilias_config['root_category']).')'?></div>
         <? else : ?>
-            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>" required>
+            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= empty($ilias_config['root_category_name']) ? '' : htmlReady($ilias_config['root_category_name']) ?>" required>
         <? endif ?>
     </label>
-    <? if ($ilias_config['user_data_category']) : ?>
+    <? if (!empty($ilias_config['user_data_category'])) : ?>
     <label>
         <span class="required"><?= _('Kategorie mit User-Daten') ?></span>
         <div><?= _('User_daten').' (ID '.htmlReady($ilias_config['user_data_category']).')'?></div>
     </label>
     <? endif ?>
     <label>
-        <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= $ilias_config['category_create_on_add_module'] ? 'checked' : '' ?>>
+        <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= !empty($ilias_config['category_create_on_add_module']) ? 'checked' : '' ?>>
         <span><?= _('Persönliche ILIAS-Kategorie erst erzeugen, wenn Lernobjekte angelegt werden') ?></span>
     </label>
     <? if (array_key_exists('version', $ilias_config) && (ConnectedIlias::getIntVersion($ilias_config['version']) >= 50400) && (ConnectedIlias::getIntVersion($ilias_config['version']) < 60000)) : ?>
         <label>
-            <input type="checkbox" name="ilias_category_to_desktop" value="1" <?= $ilias_config['category_to_desktop'] ? 'checked' : '' ?>>
+            <input type="checkbox" name="ilias_category_to_desktop" value="1" <?= !empty($ilias_config['category_to_desktop']) ? 'checked' : '' ?>>
             <span><?= _('Persönliche ILIAS-Kategorie auf den Schreibtisch legen') ?></span>
         </label>
     <? endif ?>
     <label>
-        <input type="checkbox" name="ilias_delete_ilias_users" value="1" <?= $ilias_config['delete_ilias_users'] ? 'checked' : '' ?>>
+        <input type="checkbox" name="ilias_delete_ilias_users" value="1" <?= !empty($ilias_config['delete_ilias_users']) ? 'checked' : '' ?>>
         <span><?= _('Beim Löschen von Stud.IP-Accounts ILIAS-Accounts ebenfalls löschen (alle zugehörigen Objekte werden gelöscht!)') ?></span>
     </label>
     <label>
         <span><?= _('Prefix für automatisch angelegte Usernamen') ?></span>
         <? if ($ilias_config['is_active']) : ?>
-            <div><?=$ilias_config['user_prefix'] ? htmlReady($ilias_config['user_prefix']) : _('Kein Präfix')?></div>
+            <div><?=!empty($ilias_config['user_prefix']) ? htmlReady($ilias_config['user_prefix']) : _('Kein Präfix')?></div>
         <? else : ?>
-            <input type="text" name="ilias_user_prefix" size="50" maxlength="255" value="<?= htmlReady($ilias_config['user_prefix']) ?>">
+            <input type="text" name="ilias_user_prefix" size="50" maxlength="255" value="<?= empty($ilias_config['user_prefix']) ? '' : htmlReady($ilias_config['user_prefix']) ?>">
         <? endif ?>
     </label>
     <label>
         <span><?= _('Datenfeld (Name) mit Matrikelnummer (nur ausfüllen, wenn die Matrikelnummer in einem Datenfeld gespeichert wird)') ?></span>
-        <input type="text" name="ilias_matriculation" size="50" maxlength="255" value="<?= htmlReady($ilias_config['matriculation']) ?>">
+        <input type="text" name="ilias_matriculation" size="50" maxlength="255" value="<?= empty($ilias_config['matriculation']) ? '' : htmlReady($ilias_config['matriculation']) ?>">
     </label>
     <label>
     <span class="required"><?= _('Struktur für angelegte Kurse') ?></span>
@@ -97,7 +97,7 @@
     <label>
         <? foreach ($modules_available as $module_index => $module_name) : ?>
         <label>
-            <input type="checkbox" name="ilias_modules_<?=$module_index?>" value="1" <?=$ilias_config['modules'][$module_index] ? ' checked':''?>>
+            <input type="checkbox" name="ilias_modules_<?=$module_index?>" value="1" <?=!empty($ilias_config['modules'][$module_index]) ? ' checked':''?>>
             <?=htmlReady($module_name)?>
         </label>
         <? endforeach ?>

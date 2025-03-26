@@ -217,8 +217,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
 
                     // refer to ILIAS target file
-                    header('Location: '. $this->ilias->getTargetFile() . $parameters);
-                    $this->render_nothing();
+                    $this->redirect($this->ilias->getTargetFile() . $parameters);
                 }
             }
         }

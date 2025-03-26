@@ -9,7 +9,7 @@
  */
 ?>
 <form class="default" action="<?= $controller->url_for('admin/ilias_interface/soap_methods/'.$ilias_index) ?>" method="post">
-    <? if ($result) : ?>
+    <? if (!empty($result)) : ?>
     <article class="studip">
     	<section><?=_('Ergebnis')?></section>
         <? if (is_array($result)) : ?> 
@@ -22,7 +22,7 @@
     </article>
     <? endif ?>
     <?= CSRFProtection::tokenTag() ?>
-    <? if (!$ilias_soap_method) : ?>
+    <? if (empty($ilias_soap_method)) : ?>
     <label>
         <span class="required"><?= _('SOAP-Methode') ?></span>
         <select name="ilias_soap_method">
@@ -36,12 +36,12 @@
         <? foreach ($soap_methods[$ilias_soap_method] as $param) : ?>
         <label>
             <span>  <?= $param ?></span>
-            <input type="text" name="ilias_soap_param_<?=$param?>" size="50" value="<?=$params[$param]?>">
+            <input type="text" name="ilias_soap_param_<?=$param?>" size="50" value="<?=!empty($params[$param]) ? $params[$param] : ''?>">
         </label>
         <? endforeach ?>
     <? endif ?>
     <footer>
-        <? if (!$ilias_soap_method) : ?>
+        <? if (empty($ilias_soap_method)) : ?>
             <?= Studip\Button::createAccept(_('Weiter'), 'submit') ?>
         <? else : ?>
             <?= Studip\Button::createAccept(_('Ausführen'), 'submit') ?>
