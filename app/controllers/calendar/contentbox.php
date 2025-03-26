@@ -78,36 +78,36 @@ class Calendar_ContentboxController extends StudipController
 
     private function parseSeminar($id)
     {
-        $course = Course::find($id);
-        $dates = $course->getDatesWithExdates()->findBy('end_time', [$this->start, $this->start + $this->timespan], '><');
-        $this->termine = [];
-        foreach ($dates as $courseDate) {
-            // Build info
-            $info = [];
-            if (count($courseDate->dozenten) > 0) {
-                $info[_('Durchführende Lehrende')] = implode(', ', $courseDate->dozenten->getFullname());
-            }
-            if (count($courseDate->statusgruppen) > 0) {
-                $info[_('Beteiligte Gruppen')] = implode(', ', $courseDate->statusgruppen->getValue('name'));
-            }
+        $this->termine = Course::find($id)
+            ->getDatesWithExdates($this->start, $this->start + $this->timespan)
+            /** @param CourseDate|CourseExDate $courseDate */
+            ->map(function ($courseDate) {
+                // Build info
+                $info = [];
+                if (count($courseDate->dozenten) > 0) {
+                    $info[_('Durchführende Lehrende')] = implode(', ', $courseDate->dozenten->getFullname());
+                }
+                if (count($courseDate->statusgruppen) > 0) {
+                    $info[_('Beteiligte Gruppen')] = implode(', ', $courseDate->statusgruppen->getValue('name'));
+                }
 
-            // Store for view
-            $description = '';
-            if ($courseDate instanceof CourseExDate) {
-                $description = $courseDate->content;
-            } elseif ($courseDate->cycle instanceof SeminarCycleDate) {
-                $description = $courseDate->cycle->description;
-            }
-            $this->termine[] = [
-                'id'          => $courseDate->id,
-                'chdate'      => $courseDate->chdate,
-                'title'       => $courseDate->getFullname() . (count($courseDate->topics) > 0 ? ', ' . implode(', ', $courseDate->topics->getValue('title')) : ''),
-                'description' => $description,
-                'topics'      => $courseDate->topics->toArray('title description'),
-                'room'        => $courseDate->getRoomName(),
-                'info'        => $info
-            ];
-        }
+                // Store for view
+                $description = '';
+                if ($courseDate instanceof CourseExDate) {
+                    $description = $courseDate->content;
+                } elseif ($courseDate->cycle instanceof SeminarCycleDate) {
+                    $description = $courseDate->cycle->description;
+                }
+                return [
+                    'id'          => $courseDate->id,
+                    'chdate'      => $courseDate->chdate,
+                    'title'       => $courseDate->getFullname() . (count($courseDate->topics) > 0 ? ', ' . implode(', ', $courseDate->topics->getValue('title')) : ''),
+                    'description' => $description,
+                    'topics'      => $courseDate->topics->toArray('title description'),
+                    'room'        => $courseDate->getRoomName(),
+                    'info'        => $info
+                ];
+            });
     }
 
     private function parseUser($id)
