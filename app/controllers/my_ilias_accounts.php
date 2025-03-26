@@ -158,7 +158,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
 
                     // filter by semester
-                    if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) {
+                    if (!empty(Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths'])) {
                         $this->courses_list[$ilias_list_index][$crs_id]['path'] = $ilias->soap_client->getPath($crs_id);
                         if (
                             $this->selected_semester
@@ -404,8 +404,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
 
                     // refer to ILIAS target file
-                    header('Location: '. $this->ilias->getTargetFile() . $parameters);
-                    $this->render_nothing();
+                    $this->redirect($this->ilias->getTargetFile() . $parameters);
                 }
             }
         }
