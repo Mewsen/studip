@@ -95,8 +95,7 @@ class Calendar_ContentboxController extends StudipController
         // otherwise
         $date_format = $this->course_range ? 'include-room' : 'verbose';
 
-        $this->termine = Course::find($id)->getDatesWithExdates()
-            ->findBy('end_time', [$this->start, $this->start + $this->timespan], '><')
+        $this->termine = Course::find($id)->getDatesWithExdates($this->start, $this->start + $this->timespan)
             ->map(function ($course_date) use ($date_format) {
                 $this->titles[$course_date->id] = $course_date->getFullName($date_format);
                 return $course_date;
