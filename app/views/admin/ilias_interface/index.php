@@ -33,7 +33,7 @@
         <? foreach ($ilias_configs as $ilias_index => $ilias_config) : ?>
             <tr id="ilias-<?= htmlReady($ilias_index)?>">
                 <td>
-                    <? if ($ilias_config['is_active']) {
+                    <? if (!empty($ilias_config['is_active'])) {
                         $text = _('Diese ILIAS-Installation ist aktiv. Klicken Sie hier, um sie zu deaktivieren.');
                         $img  = 'checkbox-checked';
                         $cmd  = 'deactivate';

@@ -54,10 +54,14 @@ class IliasModule
         $this->make_date = $module_data['create_date'];
         $this->change_date = $module_data['last_update'];
         $supported_modules = ConnectedIlias::getSupportedModuleTypes();
-        $this->module_type_name = $supported_modules[$this->module_type];
+        if (!empty($supported_modules[$this->module_type])) {
+            $this->module_type_name = $supported_modules[$this->module_type];
+        } else {
+            $this->module_type_name = $this->module_type;
+        }
         $this->owner = $module_data['owner'];
         $this->author_studip = false;
-        if (is_array($module_data['references'][$module_id]['operations'])) {
+        if (!empty($module_data['references'][$module_id]['operations']) && is_array($module_data['references'][$module_id]['operations'])) {
             $this->allowed_operations = $module_data['references'][$module_id]['operations'];
         } else {
             $this->allowed_operations = [];

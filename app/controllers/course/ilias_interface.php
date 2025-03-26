@@ -26,9 +26,8 @@ class Course_IliasInterfaceController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        if (Request::isXhr()) {
-            $this->dialog = true;
-        }
+        $this->dialog = Request::isXhr();
+
         if (!Config::Get()->ILIAS_INTERFACE_ENABLE ) {
             throw new AccessDeniedException(_('ILIAS-Interface ist nicht aktiviert.'));
         } else
@@ -173,7 +172,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                     Icon::create('group2')
                 )->asDialog('size=auto');
             }
-            if ($this->author_permission) {
+            if ($this->author_permission && !empty($this->ilias_interface_config['show_tools_page'])) {
                 $widget->addLink(
                     _('Externe Accounts verwalten'),
                     $this->url_for('my_ilias_accounts'),
@@ -380,7 +379,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
             }
             // exclude all modules that are already assigned to course
             foreach ($this->ilias_modules as $module_id => $module) {
-                if ($course_modules[$this->ilias_index][$module_id]) {
+                if (!empty($course_modules[$this->ilias_index][$module_id])) {
                     unset($this->ilias_modules[$module_id]);
                 }
             }

@@ -42,7 +42,7 @@
                     <? endif ?>
                 </td>
                 <td><?= htmlReady($course['status_text'] ?: _('unbekannt')) ?></td>
-                <? if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) : ?>
+                <? if (!empty(Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths'])) : ?>
                     <td><?= htmlReady($course['path']) ?></td>
                 <? endif ?>
             </tr>
@@ -51,7 +51,7 @@
         <tr>
             <td colspan="5">
                  <?= sprintf(
-                     $selected_semester ? _('Keine Kurse im System %s zum gewählten Filter gefunden.') : _('Sie nehmen im System %s an keinen Kurs teil.'),
+                     $selected_semester ? _('Keine Kurse im System %s zum gewählten Filter gefunden.') : _('Sie nehmen im System %s an keinem Kurs teil.'),
                      htmlReady($ilias->getName())
                  )?>
             </td>

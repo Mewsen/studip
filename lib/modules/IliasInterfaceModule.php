@@ -27,7 +27,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
                     'my_courses',
                     new Navigation(_('Meine Kurse'), 'dispatch.php/my_ilias_accounts/my_courses')
                 );
-                if (!empty($ilias_interface_config['show_tools_page'])) {
+                if (Seminar_Perm::get()->have_perm('root') || !empty($ilias_interface_config['show_tools_page'])) {
                     $ilias->addSubNavigation(
                         'my_accounts',
                         new Navigation(_('Meine Lernobjekte und Accounts'), 'dispatch.php/my_ilias_accounts')

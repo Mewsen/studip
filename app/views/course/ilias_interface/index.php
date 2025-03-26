@@ -1,7 +1,7 @@
 <form method="post">
-<? foreach($ilias_list as $ilias_index => $ilias) : ?>
-    <? if (!count($ilias->getCourseModules()) && !$courses[$ilias_index] && !$edit_permission) continue; ?>
-    <? if ($anker_target == $ilias_index) : ?>
+<? foreach ($ilias_list as $ilias_index => $ilias) : ?>
+    <? if (!count($ilias->getCourseModules()) && empty($courses[$ilias_index]) && empty($edit_permission)) continue; ?>
+    <? if (!empty($anker_target)  && ($anker_target === $ilias_index)) : ?>
         <a name='anker'></a>
     <? endif?>
     <table class="default">
@@ -80,7 +80,7 @@
                 </td>
         </tr>
         <? endforeach ?>
-    <? elseif (!$courses[$ilias_index]) : ?>
+    <? elseif (empty($courses[$ilias_index])) : ?>
         <tr>
             <td colspan="4">
                 <?= _('Es sind keine Lernobjekte mit dieser Veranstaltung verknüpft.')?>
