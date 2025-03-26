@@ -18,6 +18,7 @@ parameters:
         - lib/classes/ZipArchiveLegacyTrait.php
         - lib/elearning/studip_referrer.php
         - lib/soap/StudipSoapClient_PHP5.class.php
+        - lib/ilias_interface/studip_referrer_9x.php
     tmpDir: .caches
     earlyTerminatingMethodCalls:
         RESTAPI\RouteMap:

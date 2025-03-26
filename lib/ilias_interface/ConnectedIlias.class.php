@@ -97,12 +97,9 @@ class ConnectedIlias
         // init current user (only if ILIAS installation is active)
         if ($this->ilias_config['is_active']) {
             $this->user = new IliasUser($this->index, $this->ilias_config['version']);
-            if ($this->user->isConnected()) {
-                $ilias_user_exists = $this->soap_client->lookupUser($this->user->getUsername());
-                if (!$this->soap_client->getError() && !$ilias_user_exists) {
-                    $this->user->unsetConnection(true);
-                }
-            }
+
+            $this->checkIliasUserEntry();
+
             // create account automatically if it doesn't exist
             if (! $this->user->isConnected()) {
                 $this->soap_client->setCachingStatus(false);
@@ -145,7 +142,58 @@ class ConnectedIlias
     {
         $this->ilias_interface_config = Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS;
 
+        $interface_config_options = [
+            'show_course_paths' => true,
+        ];
+
+        foreach ($interface_config_options as $option_key => $option_value) {
+            if (!array_key_exists($option_key, $this->ilias_interface_config)) {
+                $this->ilias_interface_config[$option_key] = $option_value;
+            }
+        }
+
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
+        $config_options = [
+            'is_active' => false,
+            'name' => '',
+            'version' => '',
+            'url' => '',
+            'client' => '',
+            'ldap_enable' => '',
+            'no_account_updates' => false,
+            'admin' => 'ilias_soap_admin',
+            'admin_pw' => '',
+            'http_connection_timeout' => 30,
+            'http_request_timeout' => 30,
+
+            'root_category_name' => '',
+            'root_category' => '',
+            'user_prefix' => 'studip_',
+            'delete_ilias_users' => '',
+            'delete_ilias_courses' => '',
+            'reconnect_accounts' => false,
+            'user_data_category' => '',
+            'matriculation' => '',
+            'discipline_1' => ['id' => ''],
+            'discipline_2' => ['id' => ''],
+            'allow_change_account' => false,
+            'category_create_on_add_module' => false,
+            'category_to_desktop' => false,
+            'cat_semester' => '',
+            'course_semester' => '',
+            'course_veranstaltungsnummer' => false,
+            'modules' => [],
+
+            'author_role_name' => '',
+            'author_role' => '',
+            'author_perm' => ''
+        ];
+        foreach ($config_options as $option_key => $option_value) {
+            if (!array_key_exists($option_key, $ilias_configs[$this->index])) {
+                $ilias_configs[$this->index][$option_key] = $option_value;
+            }
+        }
+
         $this->ilias_config = $ilias_configs[$this->index];
     }
 
@@ -760,17 +808,12 @@ class ConnectedIlias
             foreach ($this->ilias_config['modules'] as $type => $name) {
                 $types[] = $type;
             }
-            $result = $this->soap_client->getTreeChilds($parent_id, $types);
-            $user_result = $this->soap_client->getTreeChilds($parent_id, $types, $this->user->getId());
-
+            $result = $this->soap_client->getTreeChilds($parent_id, $types, $this->user->getId());
             if ($result) {
                 foreach($result as $ref_id => $data) {
                     if ($data['type'] == 'fold') {
                         unset($result[$ref_id]);
                         $result = $result + $this->getChilds($ref_id);
-                    } else {
-                        $result[$ref_id]['accessInfo'] = $user_result[$ref_id]['accessInfo'];
-                        $result[$ref_id]['references'][$ref_id] = $user_result[$ref_id]['references'][$ref_id];
                     }
                 }
             }
@@ -1097,6 +1140,35 @@ class ConnectedIlias
         return null;
     }
 
+
+    /**
+     * check Ilias user entry 
+     *
+     * checks if ILIAS user exists and removes auth_extern entry otherwise
+     * @access public
+     * @return boolean returns user status
+     */
+    public function checkIliasUserEntry()
+    {
+        if ($this->user->isConnected()) {
+            $ilias_user_id = $this->soap_client->lookupUser($this->user->getUsername());
+            $ilias_user_exists = $this->soap_client->getUser($this->user->getId());
+            if (!$this->soap_client->getError() && empty($ilias_user_id) && ! is_array($ilias_user_exists)) {
+                $this->soap_client->setCachingStatus(false);
+                $this->soap_client->clearCache();
+                $user_id = $this->soap_client->lookupUser($this->user->getUsername());
+                $user_exists = $this->soap_client->getUser($this->user->getId());
+                $admin_user_id = $this->soap_client->lookupUser($this->ilias_config['admin']);
+                $admin_user_exists = $this->soap_client->getUser($admin_user_id);
+                if (is_array($admin_user_exists) && empty($user_id) && ! is_array($user_exists)) {
+                    $this->user->unsetConnection(true);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * check user
      *
@@ -1106,20 +1178,13 @@ class ConnectedIlias
      */
     public function checkUser()
     {
-        if ($this->user->getId()) {
-            $user_exists = $this->soap_client->getUser($this->user->getId());
-            if (!is_array($user_exists)) {
-                $admin_user_id = $this->soap_client->lookupUser($this->ilias_config['admin']);
-                $admin_user_exists = $this->soap_client->getUser($admin_user_id);
-                if (is_array($admin_user_exists)) {
-                    $this->user->unsetConnection(true);
-                    if ($this->newUser()) {
-                        PageLayout::postSuccess(_("Neue Verknüpfung zu ILIAS-User angelegt."));
-                    }
-                }
-            } else return true;
+        if (! $this->checkIliasUserEntry()) {
+            if ($this->newUser()) {
+                PageLayout::postSuccess(_("Neue Verknüpfung zu ILIAS-User angelegt."));
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -1184,7 +1249,6 @@ class ConnectedIlias
                     $member_data["role"] = self::CRS_MEMBER_ROLE;
                     $type = "Member";
                     break;
-                default:
             }
             $member_data["passed"] = self::CRS_PASSED_VALUE;
             if ($type != "") {
@@ -1231,7 +1295,7 @@ class ConnectedIlias
         }
 
         $view_permission = false;
-        if ((in_array($this->operations[self::OPERATION_READ], $this->tree_allowed_operations)) && (in_array($this->operations[self::OPERATION_VISIBLE], $this->tree_allowed_operations))) {
+        if ((in_array($this->getOperation(self::OPERATION_READ), $this->tree_allowed_operations)) && (in_array($this->getOperation(self::OPERATION_VISIBLE), $this->tree_allowed_operations))) {
             $view_permission = true;
         }
         return $view_permission;

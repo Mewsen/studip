@@ -1,6 +1,6 @@
 <form class="default" action="<?= $controller->url_for('course/ilias_interface/add_object/'.$mode.'/'.$ilias_index) ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
-<? if (!$ilias_index) : ?>
+<? if (empty($ilias_index)) : ?>
     <label>
         <span class="required"><?= _('ILIAS-Installation auswählen') ?></span>
         <select name="ilias_index" required>
@@ -41,7 +41,7 @@
 <? elseif ($mode === 'assign_own_course') : ?>
     <div>
         <input type="hidden" name="cmd" value="assign_course">
-    <? if ($submit_text) : ?>
+    <? if (!empty($submit_text)) : ?>
         <label>
             <span><?= _('ILIAS-Kurs wählen') ?></span>
             <select name="ilias_course_id" required>
@@ -90,7 +90,7 @@
                     ]) ?>
                 </td>
                 <td>
-                    <a href="<?= $controller->link_for($module->getRoute('view_course'), compact('ilias_search', 'mode')) ?>" <?= $dialog ? 'data-dialog=""' : ''?>>
+                    <a href="<?= $controller->link_for($module->getRoute('view_course'), ['ilias_search' => !empty($ilias_search) ? $ilias_search : '', 'mode' => !empty($mode) ? $mode : '']) ?>" <?= !empty($dialog) ? 'data-dialog=""' : ''?>>
                         <?= htmlReady($module->getTitle()) ?>
                     </a>
                 </td>
@@ -102,7 +102,7 @@
                         Icon::create('info-circle'),
                         [
                             'title'        => _('Info'),
-                            'formaction'   => $controller->url_for($module->getRoute('view_course') .'?ilias_search='.urlencode($ilias_search)),
+                            'formaction'   => $controller->url_for($module->getRoute('view_course') . (!empty($ilias_search) ? '?ilias_search='.urlencode($ilias_search) : '')),
                             'data-dialog'  => ''
                         ]
                     )->condition($edit_permission)->addButton(
@@ -122,8 +122,8 @@
     </table>
     <? endif ?>
     <footer data-dialog-button>
-    <? if ($ilias && $ilias->isActive() && $submit_text) : ?>
-        <?= Studip\Button::create($submit_text, 'submit', ($dialog && $keep_dialog) ? ['data-dialog' => 'size=auto;reload-on-close'] : []) ?>
+    <? if (!empty($ilias) && $ilias->isActive() && !empty($submit_text)) : ?>
+        <?= Studip\Button::create($submit_text, 'submit', ($dialog && !empty($keep_dialog)) ? ['data-dialog' => 'size=auto;reload-on-close'] : []) ?>
     <? endif ?>
         <?= Studip\Button::createCancel(_('Schließen'), 'cancel', $dialog ? ['data-dialog' => 'close'] : []) ?>
     </footer>
