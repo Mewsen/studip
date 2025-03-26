@@ -767,8 +767,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                     _('%1$s konnte nicht als vorläufig teilnehmende Person zur Veranstaltung %2$s hinzugefügt werden.'),
                     $user->getFullName(),
                     $this->name
-                ),
-                'add_preliminary_failed'
+                )
             );
         }
         if ($this->isStudygroup()) {
@@ -803,16 +802,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 'user_id'   => $user->id
             ]
         );
-        if (!$application) {
-            throw new \Studip\Exception(
-                sprintf(
-                    _('%1$s ist nicht als vorläufig teilnehmende Person in der Veranstaltung %2$s eingetragen.'),
-                    $user->getFullName(),
-                    $this->name
-                ),
-                'preliminary_member_not_found'
-            );
-        }
 
         $deleted_from_course_set = false;
         $course_set = $this->getCourseSet();
@@ -823,7 +812,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 $this->id
             );
         }
-        if ($application->delete() || $deleted_from_course_set) {
+        if (($application && $application->delete()) || $deleted_from_course_set) {
             setTempLanguage($user->id);
             $message = '';
             if ($application->status === 'accepted') {
@@ -860,8 +849,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                     _('%1$s konnte nicht als vorläufig teilnehmende Person aus der Veranstaltung %2$s entfernt werden.'),
                     $user->getFullName(),
                     $this->name
-                ),
-                'remove_preliminary_failed'
+                )
             );
         }
     }
