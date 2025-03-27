@@ -253,6 +253,8 @@
 </template>
 
 <script>
+import { ref, markRaw } from 'vue'
+
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
 import CoursewarePDFTableOfContent from './CoursewarePDFTableOfContent.vue';
@@ -288,6 +290,60 @@ export default {
         canEdit: Boolean,
         isTeacher: Boolean,
     },
+    setup() {
+        const pdfDoc = markRaw({});
+        const pdfViewer = markRaw({});
+        const pdfLinkService = markRaw({});
+        const pdfFindController = markRaw({});
+        const pdfBasePage = markRaw({});
+        const pdfPage = markRaw({});
+        const pdfTextContent = markRaw({});
+        const pdfRotate = markRaw(0);
+        const pdfTextLayer = markRaw({});
+        const pdfAnnotationLayer = markRaw({});
+        const pdfEventBus = markRaw({});
+        const pdfSearchMatchesMapping = markRaw([]);
+        const pdfLoadingTask = markRaw({});
+        const pdfSearchHighlightedList = markRaw([]);
+        const pdfTOC = markRaw([]);
+
+        const pdfSearch = ref('');
+        const pdfSearchFoundSelectedIndex = ref(0);
+        const pdfSearchFoundNums = ref(0);
+        const pdfTOCDisplay = ref(false);
+        const showPdfSearchBox = ref(false);
+        const pdfError = ref(false);
+        const pdfHandTool = ref(false);
+        const pdfGrabbing = ref(false);
+        const pdfAnnotation = ref(false);
+
+        return {
+            pdfDoc,
+            pdfViewer,
+            pdfLinkService,
+            pdfFindController,
+            pdfError,
+            pdfBasePage,
+            pdfPage,
+            pdfTextContent,
+            pdfHandTool,
+            pdfGrabbing,
+            pdfAnnotation,
+            pdfRotate,
+            pdfTextLayer,
+            pdfAnnotationLayer,
+            pdfEventBus,
+            pdfLoadingTask,
+            pdfSearch,
+            pdfSearchMatchesMapping,
+            pdfSearchFoundNums,
+            pdfSearchFoundSelectedIndex,
+            pdfSearchHighlightedList,
+            showPdfSearchBox,
+            pdfTOC,
+            pdfTOCDisplay,
+        };
+    },
     data() {
         return {
             currentTitle: '',
@@ -295,31 +351,6 @@ export default {
             currentFile: {},
             currentDownloadable: '',
             currentDocType: '',
-
-            pdfError: false,
-            pdfBasePage: null,
-            pdfPage: null,
-            pdfTextContent: null,
-            pdfHandTool: false,
-            pdfGrabbing: false,
-            pdfTextLayer: null,
-            pdfAnnotationLayer: null,
-            pdfAnnotation: false,
-            pdfRotate: 0,
-            pdfViewer: null,
-            pdfEventBus: null,
-            pdfLinkService: null,
-            pdfFindController: null,
-            pdfDoc: null,
-            pdfLoadingTask: null,
-            pdfSearch: '',
-            pdfSearchMatchesMapping: [],
-            pdfSearchFoundNums: 0,
-            pdfSearchFoundSelectedIndex: 0,
-            pdfSearchHighlightedList: [],
-            showPdfSearchBox: false,
-            pdfTOC: [],
-            pdfTOCDisplay: false,
             pageNum: 1,
             pageCount: 0,
             scale: 1,
