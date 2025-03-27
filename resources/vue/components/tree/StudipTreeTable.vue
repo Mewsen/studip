@@ -74,8 +74,6 @@
                                          :editable="editable"
                                          :children="children"
                                          :index="index"
-                                         :semester="semester"
-                                         :sem-class="semClass"
                                          :node="node"
                                          @open:node="element => openNode(element)"
                     ></StudipTreeTableRows>
@@ -95,8 +93,7 @@
                 <td colspan="4">
                     <studip-pagination :items-per-page="limit"
                                        :total-items="totalCourseCount"
-                                       :current-offset="offset"
-                                       @updateOffset="updateOffset"
+                                       v-model:current-offset="page"
                     />
                 </td>
             </tr>
@@ -138,8 +135,7 @@
                     <td colspan="4">
                         <studip-pagination :items-per-page="limit"
                                            :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
+                                           v-model:current-offset="page"
                         />
                     </td>
                 </tr>
@@ -223,14 +219,6 @@ export default {
         withCourseAssign: {
             type: Boolean,
             default: false
-        },
-        semester: {
-            type: String,
-            default: ''
-        },
-        semClass: {
-            type: Number,
-            default: 0
         },
         showStructureAsNavigation: {
             type: Boolean,

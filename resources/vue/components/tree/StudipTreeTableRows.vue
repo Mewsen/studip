@@ -58,8 +58,6 @@ export default {
         editable: Boolean,
         element: Object,
         index: Number,
-        semester: String,
-        semClass: Number,
         node: Object,
     }
 };

@@ -53,7 +53,7 @@ export default {
 
     state: () => ({
         courses: new Map(),
-        courseLimit: 50,
+        courseLimit: 5, // TODO: 50
         nodes: new Map(),
         nodeChildren: new Map(),
         nodeCourseInfo: new Map(),
@@ -77,13 +77,22 @@ export default {
             return state.nodeChildren.get(id).map(id => state.nodes.get(id));
         },
         getNodeCourseInfo: (state) => (id) => state.nodeCourseInfo.get(id) ?? null,
-        getNodeCourses: (state) => (id, offset = 0) => {
-            if (!state.nodeCourses.has(id)) {
+        getNodeCourses: (state) => (id, page = 0) => {
+            if (
+                !state.nodeCourses.has(id)
+                || state.nodeCourses.get(id).courses[page] === undefined
+            ) {
                 return null;
             }
             return state.nodeCourses.get(id)
-                .slice(offset, state.courseLimit)
+                .courses[page]
                 .map(id => state.courses.get(id));
+        },
+        getNodeCoursesTotal: (state) => (id) => {
+            if (!state.nodeCourses.has(id)) {
+                return null;
+            }
+            return state.nodeCourses.get(id).total;
         }
     },
     mutations: {
@@ -109,13 +118,13 @@ export default {
             state.nodeCourseInfo.set(data.id, data.courses);
         },
         SET_NODE_COURSES(state, data) {
-            if (data.offset === undefined || data.reset === true) {
-                state.nodeCourses.set(data.id, data.courses);
-            } else {
-                const courses = state.nodeCourses.get(data.id) ?? [];
-                courses.splice(data.offset, 0, ...data.courses);
-                state.nodeCourses.set(data.id, courses);
-            }
+            const paginatedCourses = state.nodeCourses.has(data.id) ? state.nodeCourses.get(data.id).courses : {};
+            paginatedCourses[data.page] = data.courses;
+
+            state.nodeCourses.set(data.id, {
+                courses: paginatedCourses,
+                total: data.total
+            });
         },
         SET_SEMESTER(state, semesterId) {
             state.nodeCourseInfo.clear();
@@ -228,7 +237,7 @@ export default {
                         'filter[semclass]': state.semClass,
                     }
                 },
-                () => getters.getNodeCourses(data.id, data.page * state.courseLimit),
+                () => getters.getNodeCourses(data.id, data.page),
                 (response) => {
                     const courseIds = [];
                     response.data.forEach(course => {
@@ -239,7 +248,8 @@ export default {
                     commit('SET_NODE_COURSES', {
                         id: data.id,
                         courses: courseIds,
-                        offset: data.page * state.courseLimit,
+                        page: data.page,
+                        total: response.meta.page.total,
                     });
 
                     return response.data;

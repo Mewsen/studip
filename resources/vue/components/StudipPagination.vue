@@ -39,11 +39,11 @@
 <script>
 export default {
     name: 'studip-pagination',
-    emits: ['updateOffset'],
+    emits: ['updateOffset', 'update:currentOffset'],
     props: {
         currentOffset: {
             type: Number,
-            required: true
+            default: 0
         },
         totalItems: {
             type: Number,
@@ -95,6 +95,7 @@ export default {
         },
         updateOffset(offset) {
             this.$emit('updateOffset', parseInt(offset, 10));
+            this.$emit('update:currentOffset', parseInt(offset, 10));
         }
     }
 }

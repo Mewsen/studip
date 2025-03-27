@@ -84,8 +84,7 @@
                     <td colspan="2">
                         <studip-pagination :items-per-page="limit"
                                            :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
+                                           v-model:current-offset="page"
                         />
                     </td>
                 </tr>
@@ -121,8 +120,7 @@
                     <td colspan="2">
                         <studip-pagination :items-per-page="limit"
                                            :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
+                                           v-model:current-offset="page"
                         />
                     </td>
                 </tr>
@@ -202,14 +200,6 @@ export default {
         withCourseAssign: {
             type: Boolean,
             default: false
-        },
-        semester: {
-            type: String,
-            default: ''
-        },
-        semClass: {
-            type: Number,
-            default: 0
         },
         showStructureAsNavigation: {
             type: Boolean,

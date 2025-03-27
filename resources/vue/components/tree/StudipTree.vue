@@ -10,7 +10,7 @@
                        :with-children="withChildren"
                        :visible-children-only="visibleChildrenOnly"
                        :with-courses="withCourses"
-                       :node="startNode"
+                       :node="currentNode"
                        :breadcrumb-icon="breadcrumbIcon"
                        :editable="editable"
                        :edit-url="editUrl"
@@ -97,14 +97,6 @@ export default {
         withCourses: {
             type: Boolean,
             default: false
-        },
-        semester: {
-            type: String,
-            default: ''
-        },
-        semClass: {
-            type: Number,
-            default: 0
         },
         breadcrumbIcon: {
             type: String,
@@ -221,8 +213,15 @@ export default {
             PageLayout.title = title.slice(0, -1).join('-') + '/ ' + nodeTitle + ' -' + title[title.length - 1];
         }
     },
-    mounted() {
-        window.focus();
+    created() {
+        this.$store.subscribe(mutation => {
+            if (mutation.type === 'treestore/SET_VIEW_TYPE') {
+                this.pushState(
+                    {viewType: mutation.payload},
+                    {show_as: mutation.payload === 'list' ? null : mutation.payload},
+                );
+            }
+        });
 
         const loadingIndicator = axios.interceptors.request.use(config => {
             setTimeout(() => {

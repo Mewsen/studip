@@ -10,19 +10,26 @@ export const TreeMixin = {
     },
     data() {
         return {
+            currentNode: null,
             showProgressIndicatorTimeout: 500,
-            totalCourseCount: 0,
-            offset: 0
+            page: 0
         };
     },
     computed: {
         ...mapState('treestore', {
+            semester: 'semesterId',
+            semClass: 'semClass',
             limit: 'courseLimit',
             viewType: 'viewType',
         }),
         ...mapGetters('treestore', [
             'getNodeCourseInfo',
+            'getNodeCoursesTotal',
         ]),
+
+        totalCourseCount() {
+            return this.getNodeCoursesTotal(this.currentNode.id);
+        }
     },
     methods: {
         ...mapActions('treestore', [
@@ -34,6 +41,18 @@ export const TreeMixin = {
         ...mapMutations('treestore', {
             initializeFromLocalStorage: 'INITIALIZE_FROM_LOCAL_STORAGE',
         }),
+
+        pushState(state, parameters = {}) {
+            const url = new URL(location.href);
+            Object.entries(parameters).forEach(([key, value]) => {
+                if (value === null && url.searchParams.has(key)) {
+                    url.searchParams.delete(key);
+                } else {
+                    url.searchParams.set(key, value);
+                }
+            });
+            window.history.pushState(state, '', url);
+        },
 
         async openNode(node, pushState = true) {
             this.currentNode = node;
@@ -48,18 +67,14 @@ export const TreeMixin = {
 
             if (this.withCourses) {
                 this.courses = await this.fetchNodeCourses(node);
-                    // .then(response => {
-                    //     this.totalCourseCount = response.data.meta.page.total;
-                    //     this.offset = Math.ceil(response.data.meta.page.offset / this.limit);
-                    //     this.courses = response.data.data;
-                    // });
             }
 
             // Update browser history.
             if (pushState) {
-                const url = new URL(location.href);
-                url.searchParams.set('node_id', node.id);
-                window.history.pushState({nodeId: node.id}, '', url);
+                this.pushState(
+                    {nodeId: node.id},
+                    {node_id: node.id},
+                );
             }
 
             // Update node_id for semester selector.
@@ -108,17 +123,16 @@ export const TreeMixin = {
             });
             STUDIP.Vue.emit('sort-tree-children', { parent: parentId, children: children });
         },
-        updateOffset(newOffset) {
-            this.getNodeCourses(this.currentNode, newOffset, this.semester, this.semClass, '', this.showingAllCourses)
-                .then(courses => {
-                    this.courseCount = courses.data.meta.page.total;
-                    this.currentOffset = courses.data.meta.page.offset;
-                    this.offset = newOffset;
-                    this.courses = courses.data.data;
-                });
+        async updateOffset(page) {
+            this.courses = await this.fetchNodeCourses({
+                id: this.currentNode.id,
+                page
+            });
         }
     },
-    created() {
-//        this.initializeFromLocalStorage();
+    watch: {
+        page(current) {
+            this.updateOffset(current);
+        }
     }
 }

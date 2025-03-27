@@ -13,12 +13,6 @@
 
 class Search_CoursesController extends AuthenticatedController
 {
-
-    /**
-     * @var string Holds the URL parameter with selected navigation option
-     */
-    private $nav_option = null;
-
     public function __construct(\Trails\Dispatcher $dispatcher)
     {
         $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
@@ -68,8 +62,6 @@ class Search_CoursesController extends AuthenticatedController
             Studip\VueApp::create('tree/StudipTree')
                 ->withProps([
                     'breadcrumb-icon' => $this->breadcrumbIcon,
-                    'sem-class'       => $this->semClass,
-                    'semester'        => $this->semester,
                     'start-id'        => $this->startId,
                     'title'           => $this->treeTitle,
                     'with-courses'    => true,
