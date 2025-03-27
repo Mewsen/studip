@@ -198,10 +198,10 @@ class StudipLog
         // search for active seminars
         $courses = Course::findBySQL(
             "JOIN semester_courses ON seminare.seminar_id = semester_courses.course_id
-            JOIN semester USING (semester_id)
+            JOIN semester_data USING (semester_id)
             WHERE
             VeranstaltungsNummer LIKE CONCAT('%', :needle, '%')
-                     OR seminare.Name LIKE CONCAT('%', :needle, '%') ORDER BY semester.beginn DESC",
+                     OR seminare.Name LIKE CONCAT('%', :needle, '%') ORDER BY semester_data.beginn DESC",
                 [':needle' => $needle]);
 
         foreach ($courses as $course) {
