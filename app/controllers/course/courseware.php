@@ -117,11 +117,12 @@ class Course_CoursewareController extends CoursewareController
         $this->setActivitiesSidebar();
     }
 
-    public function pdf_export_action($element_id, $with_children): void
+    public function pdf_export_action(Courseware\StructuralElement $element, bool $with_children = false): void
     {
-        $element = \Courseware\StructuralElement::findOneById($element_id);
-        $user = User::find($GLOBALS['user']->id);
-        $this->render_pdf($element->pdfExport($user, $with_children), trim($element->title).'.pdf');
+        $this->render_pdf(
+            $element->pdfExport(User::findCurrent(), $with_children), 
+            trim($element->title).'.pdf'
+        );
     }
 
     public function comments_overview_action(): void
