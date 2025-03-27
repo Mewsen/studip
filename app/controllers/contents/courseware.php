@@ -120,6 +120,14 @@ class Contents_CoursewareController extends CoursewareController
         $this->user_id = $GLOBALS['user']->id;
     }
 
+    public function pdf_export_action(Courseware\StructuralElement $element, bool $with_children = false): void
+    {
+        $this->render_pdf(
+            $element->pdfExport(User::findCurrent(), $with_children),
+            trim($element->title) . '.pdf'
+        );
+    }
+
     private function setBookmarkSidebar(): void
     {
         $sidebar = Sidebar::Get();
