@@ -62,8 +62,10 @@ class BlubberComment extends SchemaProvider
     {
         if (!$resource['external_contact']) {
             $userId = $resource['user_id'];
-            if (\User::exists($userId)) {
-                $data = $includeData ? \User::find($userId) : \User::build(['id' => $userId], false);
+
+            $user = \User::find($userId);
+            if ($user) {
+                $data = $includeData ? $user : \User::build(['id' => $userId], false);
                 $relationships[self::REL_AUTHOR] = [
                     self::RELATIONSHIP_DATA => $data,
                     self::RELATIONSHIP_LINKS => [
