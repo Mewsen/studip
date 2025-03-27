@@ -1847,10 +1847,14 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             }
             $this->initializeContent();
         }
+        if ($data instanceof self) {
+            $data = $data->toRawArray();
+        }
         if (is_iterable($data)) {
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $key = strtolower($key);
-                if (isset($this->db_fields()[$key])
+                if (
+                    isset($this->db_fields()[$key])
                     || isset($this->alias_fields()[$key])
                     || isset($this->additional_fields()[$key]['set'])
                 ) {
