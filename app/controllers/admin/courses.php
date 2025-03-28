@@ -117,9 +117,6 @@ class Admin_CoursesController extends AuthenticatedController
      * Depending on the sidebar elements the user has selected some of those
      * elements are shown or not. To find out what elements
      * the user has selected the user configuration is accessed.
-     *
-     * @param string courseTypeFilterConfig The selected value for the course type filter field, defaults to null.
-     * @return null This method does not return any value.
      */
     private function buildSidebar()
     {
@@ -337,10 +334,25 @@ class Admin_CoursesController extends AuthenticatedController
             ]
         );
 
+        $actions = $this->getActions();
+        $actions = array_filter(
+            $actions,
+            static fn($area) => empty($area['multimode'])
+        );
+
         return [
             'setActivatedFields' => $this->getFilterConfig(),
             'setActionArea' => $configuration->MY_COURSES_ACTION_AREA ?? '1',
             'setFilter' => array_filter($filters),
+            'setActionAreas' => array_map(
+                fn($id, $area) => [
+                    'id'    => $id,
+                    'label' => $area['name'],
+                    'url'   => $area['url'],
+                ],
+                array_keys($actions),
+                $actions
+            )
         ];
     }
 

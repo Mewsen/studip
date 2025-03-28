@@ -1,117 +1,155 @@
 <template>
-    <form method="post">
-        <input type="hidden" :name="csrf.name" :value="csrf.value">
+    <div class="admin-courses-wrapper">
+        <form method="post">
+            <input type="hidden" :name="csrf.name" :value="csrf.value">
 
-        <table class="default course-admin">
-            <caption>
-                {{ $gettext('Veranstaltungen') }}
-                <span class="actions" v-if="isLoading">
-                    <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen...')">
-                </span>
-                <span class="actions" v-else-if="coursesCount > 0">
-                    {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
-                </span>
-            </caption>
-            <colgroup>
-                <col v-if="showComplete">
-                <col v-for="activeField in sortedActivatedFields"
-                     :key="`col-${activeField}`"
-                     :style="{width: activeField === 'contents' && contentWidth !== null ? `${contentWidth}px` : null}"
-                >
-                <col>
-            </colgroup>
-            <thead>
-                <tr class="sortable">
-                    <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
-                        <a
-                            @click.prevent="changeSort('completion')"
-                            class="course-completion"
-                            :title="$gettext('Bearbeitungsstatus')"
+            <table class="default course-admin">
+                <caption ref="caption">
+                    {{ $gettext('Veranstaltungen') }}
+                    <span class="actions" v-if="isLoading">
+                        <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen...')">
+                    </span>
+                    <span class="actions" v-else-if="coursesCount > 0">
+                        {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
+                    </span>
+                </caption>
+                <colgroup>
+                    <col v-if="showComplete">
+                    <col v-for="activeField in sortedActivatedFields"
+                         :key="`col-${activeField}`"
+                         :style="{width: activeField === 'contents' && contentWidth !== null ? `${contentWidth}px` : null}"
+                    >
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr class="sortable">
+                        <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
+                            <a
+                                @click.prevent="changeSort('completion')"
+                                class="course-completion"
+                                :title="$gettext('Bearbeitungsstatus')"
+                            >
+                                {{ $gettext('Bearbeitungsstatus') }}
+                            </a>
+                        </th>
+                        <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
+                            <a href="#"
+                               @click.prevent="changeSort(activeField)"
+                               :title="sort.by === activeField && sort.direction === 'ASC' ? $gettext('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettext('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettext('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
+                               v-if="!unsortableFields.includes(activeField)"
+                            >
+                                {{ fields[activeField] }}
+                            </a>
+                            <template v-else>
+                                {{ fields[activeField] }}
+                            </template>
+                        </th>
+                        <th class="actions">
+                            {{ $gettext('Aktion') }}
+                            <studip-action-menu class="filter" :title="$gettext('Darstellungsfilter')" :items="availableFields" @toggleActiveField="toggleActiveField"></studip-action-menu>
+                        </th>
+                    </tr>
+                    <tr v-if="buttons.top">
+                        <th v-html="buttons.top" style="text-align: right" :colspan="colspan"></th>
+                    </tr>
+                </thead>
+                <tbody :class="{ loading: isLoading }">
+                    <tr v-for="course in sortedCourses"
+                        :key="course.id"
+                        :class="course.id === currentLine ? 'selected' : ''"
+                        @click="currentLine = course.id">
+                        <td v-if="showComplete">
+                            <button class="course-completion undecorated"
+                                    :data-course-completion="course.completion"
+                                    :title="(course.completion > 0 ? (course.completion == 1 ? $gettext('Veranstaltung in Bearbeitung.') : $gettext('Veranstaltung komplett.')) : $gettext('Veranstaltung neu.')) + ' ' +  $gettext('Klicken zum Ändern des Status.')"
+                                    @click.prevent="toggleCompletionState(course.id)">
+                                {{ $gettext('Bearbeitungsstatus ändern') }}
+                            </button>
+                        </td>
+                        <td v-for="active_field in sortedActivatedFields"
+                            :key="active_field"
+                            @click.prevent="actionForCourseAndField(course, active_field)"
                         >
-                            {{ $gettext('Bearbeitungsstatus') }}
-                        </a>
-                    </th>
-                    <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
-                        <a href="#"
-                           @click.prevent="changeSort(activeField)"
-                           :title="sort.by === activeField && sort.direction === 'ASC' ? $gettext('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettext('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettext('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
-                           v-if="!unsortableFields.includes(activeField)"
-                        >
-                            {{ fields[activeField] }}
-                        </a>
-                        <template v-else>
-                            {{ fields[activeField] }}
-                        </template>
-                    </th>
-                    <th class="actions">
-                        {{ $gettext('Aktion') }}
-                        <studip-action-menu class="filter" :title="$gettext('Darstellungsfilter')" :items="availableFields" @toggleActiveField="toggleActiveField"></studip-action-menu>
-                    </th>
-                </tr>
-                <tr v-if="buttons.top">
-                    <th v-html="buttons.top" style="text-align: right" :colspan="colspan"></th>
-                </tr>
-            </thead>
-            <tbody :class="{ loading: isLoading }">
-                <tr v-for="course in sortedCourses"
-                    :key="course.id"
-                    :class="course.id === currentLine ? 'selected' : ''"
-                    @click="currentLine = course.id">
-                    <td v-if="showComplete">
-                        <button :href="getURL('dispatch.php/admin/courses/toggle_complete/' + course.id)"
-                                class="course-completion undecorated"
-                                :data-course-completion="course.completion"
-                                :title="(course.completion > 0 ? (course.completion == 1 ? $gettext('Veranstaltung in Bearbeitung.') : $gettext('Veranstaltung komplett.')) : $gettext('Veranstaltung neu.')) + ' ' +  $gettext('Klicken zum Ändern des Status.')"
-                                @click.prevent="toggleCompletionState(course.id)">
-                            {{ $gettext('Bearbeitungsstatus ändern') }}
+                            <div v-html="course[active_field]"></div>
+                            <button v-if="active_field === 'name' && getChildren(course).length > 0"
+                                    @click.prevent="toggleOpenChildren(course.id)"
+                            >
+                                <studip-icon :shape="open_children.indexOf(course.id) === -1 ? 'add' : 'remove'" class="text-bottom"></studip-icon>
+                                {{ $gettext(
+                                    '%{ n } Unterveranstaltungen',
+                                    { n: getChildren(course).length }
+                                ) }}
+                            </button>
+                        </td>
+                        <td class="actions" v-html="course.action">
+                        </td>
+                    </tr>
+                    <tr v-if="coursesCount === 0 && coursesLoaded">
+                        <td :colspan="colspan">
+                            {{ $gettext('Keine Ergebnisse') }}
+                        </td>
+                    </tr>
+                    <tr v-if="coursesCount > 0 && sortedCourses.length === 0">
+                        <td :colspan="colspan">
+                            {{
+                                $gettext(
+                                    '%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.',
+                                    { n: coursesCount }
+                                )
+                            }}
+                            <a href="" @click.prevent="loadCourses({withoutLimit: true});">
+                                {{ $gettext('Alle anzeigen') }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr v-if="!coursesLoaded">
+                        <td :colspan="colspan">
+                            {{ $gettext('Daten werden geladen...') }}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot v-if="buttons.bottom">
+                    <tr>
+                        <td v-html="buttons.bottom" style="text-align: right" :colspan="colspan"></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <transition name="slide">
+                <div v-if="showSlider" class="slider">
+                    <nav>
+                        <select v-model="showSlider.area">
+                            <option v-for="area in actionAreas"
+                                    :key="area.id"
+                                    :value="area.id"
+                                    :aria-label="$gettext('Aktionsbereich %{label} wählen', area)"
+                            >
+                                {{ area.label }}
+                            </option>
+                        </select>
+
+                        <button @click.prevent="showSlider = false" class="as-link">
+                            <studip-icon shape="decline"></studip-icon>
                         </button>
-                    </td>
-                    <td v-for="active_field in sortedActivatedFields" :key="active_field">
-                        <div v-html="course[active_field]"></div>
-                        <a v-if="active_field === 'name' && getChildren(course).length > 0"
-                           @click.prevent="toggleOpenChildren(course.id)"
-                           href="">
-                            <studip-icon :shape="open_children.indexOf(course.id) === -1 ? 'add' : 'remove'" class="text-bottom"></studip-icon>
-                            {{ $gettext(
-                                '%{ n } Unterveranstaltungen',
-                                { n: getChildren(course).length }
-                            ) }}
-                        </a>
-                    </td>
-                    <td class="actions" v-html="course.action">
-                    </td>
-                </tr>
-                <tr v-if="coursesCount === 0 && coursesLoaded">
-                    <td :colspan="colspan">
-                        {{ $gettext('Keine Ergebnisse') }}
-                    </td>
-                </tr>
-                <tr v-if="coursesCount > 0 && sortedCourses.length === 0">
-                    <td :colspan="colspan">
-                        {{
-                            $gettext(
-                                '%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.',
-                                { n: coursesCount }
-                            )
-                        }}
-                        <a href="" @click.prevent="loadCourses({withoutLimit: true});">
-                            {{ $gettext('Alle anzeigen') }}
-                        </a>
-                    </td>
-                </tr>
-                <tr v-if="!coursesLoaded">
-                    <td :colspan="colspan">
-                        {{ $gettext('Daten werden geladen...') }}
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot v-if="buttons.bottom">
-                <tr>
-                    <td v-html="buttons.bottom" style="text-align: right" :colspan="colspan"></td>
-                </tr>
-            </tfoot>
-        </table>
-    </form>
+
+                        <ul>
+                            <li v-for="area in actionAreas"
+                                :key="area.id"
+                                :class="{active: area.id == showSlider.area}"
+                                :title="area.label"
+                            >
+                                <button @click.prevent="changeSliderArea(area.id)"
+                                        class="as-link"
+                                >
+                                    {{ area.label }}
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div v-html="sliderContent"></div>
+                </div>
+            </transition>
+        </form>
+    </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
@@ -138,6 +176,8 @@ export default {
             currentLine: null,
             open_children: [],
             contentWidth: null,
+            showSlider: false,
+            sliderContent: ''
         };
     },
     created() {
@@ -168,6 +208,7 @@ export default {
     },
     computed: {
         ...mapState('admincourses', [
+            'actionAreas',
             'activatedFields',
             'buttons',
             'courses',
@@ -175,6 +216,9 @@ export default {
             'coursesLoaded',
             'filters',
         ]),
+        ...mapState('admincourses', {
+            currentActionArea: 'actionArea',
+        }),
         ...mapGetters('admincourses', [
             'isLoading',
         ]),
@@ -218,11 +262,16 @@ export default {
                     name: 'activatedFields',
                     emit: 'toggleActiveField',
                     emitArguments: f,
+                    disabled: f === 'name',
                 }
             });
         },
         loadingIndicator() {
             return STUDIP.ASSETS_URL + 'images/loading-indicator.svg';
+        },
+        captionHeight() {
+            console.log('caption height', this.$refs.caption);
+            return `${this.$refs.caption.offsetHeight}px`;
         }
     },
     methods: {
@@ -322,6 +371,105 @@ export default {
         getURL(url, params = {}) {
             return STUDIP.URLHelper.getURL(url, params);
         },
+        actionForCourseAndField(course, field) {
+            if (field !== 'name') {
+                return;
+            }
+
+            if (this.showSlider) {
+                this.showSlider = false;
+            } else {
+                this.showSlider = {course, area: this.currentActionArea};
+            }
+        },
+        changeSliderArea(area) {
+            this.showSlider.area = area;
+        }
+    },
+    watch: {
+        showSlider: {
+            async handler(data) {
+                if (!data) {
+                    this.sliderContent = '';
+                    return;
+                }
+
+                console.log(data);
+
+                const area = this.actionAreas.find(area => area.id == data.area);
+                const url = STUDIP.URLHelper.getURL(area.url.replace('%s', data.course.id), {cid: data.course.id}, true);
+
+                this.sliderContent = await fetch(url, {
+                    redirect: 'follow',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                }).then(response => response.text());
+            },
+            deep: true
+        }
     },
 };
 </script>
+<style lang="scss" scoped>
+.admin-courses-wrapper {
+    overflow-x: hidden;
+    position: relative;
+
+    .slider {
+        box-sizing: border-box;
+        border-left: 1px solid black;
+
+        position: absolute;
+        top: v-bind(captionHeight);
+        width: 66%;
+        bottom: 0;
+        right: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: var(--white);
+
+        z-index: 3;
+
+        nav {
+            background-color: var(--red);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            ul {
+                display: flex;
+                flex-direction: row;
+                justify-content: stretch;
+
+                margin: 0;
+                padding: 0;
+
+                li {
+                    flex: 1;
+                    list-style: none;
+
+                    &.active {
+                        flex: 0 1 auto;
+                        background-color: var(--green);
+                    }
+
+                    button {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: all var(--transition-duration) ease-in-out;
+}
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateX(50%);
+    opacity: 0;
+}
+</style>

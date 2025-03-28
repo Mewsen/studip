@@ -6,6 +6,7 @@ export default {
 
     state: () => ({
         actionArea: 1,
+        actionAreas: {},
         activatedFields: [],
         buttons: {
             top: '',
@@ -30,6 +31,9 @@ export default {
     mutations: {
         setActionArea(state, area) {
             state.actionArea = area;
+        },
+        setActionAreas(state, areas) {
+            state.actionAreas = areas;
         },
         setActivatedFields(state, fields) {
             state.activatedFields = fields;
