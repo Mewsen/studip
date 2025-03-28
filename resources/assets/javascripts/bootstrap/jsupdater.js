@@ -7,4 +7,4 @@ $(window).on('load', function() {
 
 // Try to stop js updater if window is unloaded (might not work in all
 // browsers)
-$(window).on('unload', STUDIP.JSUpdater.stop);
+$(window).on('beforeunload', STUDIP.JSUpdater.stop);
