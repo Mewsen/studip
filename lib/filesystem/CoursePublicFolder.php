@@ -22,17 +22,17 @@ class CoursePublicFolder extends StandardFolder
      *
      * @return string The localised name of this folder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ordner für öffentlich zugängliche Dateien');
     }
 
     /**
-     * @param Object|string $range_id_or_object
-     * @param string $user_id
+     * @param SimpleORMap|string $range_id_or_object
+     * @param string             $user_id
      * @return bool
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -41,7 +41,7 @@ class CoursePublicFolder extends StandardFolder
         return false;
     }
 
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-public-empty'
@@ -73,7 +73,7 @@ class CoursePublicFolder extends StandardFolder
      *
      * @return bool True
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         if ($user_id === null || $user_id === 'nobody') {
             if ($this->hasWorldwideAccess()) {
@@ -93,7 +93,7 @@ class CoursePublicFolder extends StandardFolder
      *
      * @return bool True
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return $this->isVisible($user_id);
     }
@@ -101,9 +101,9 @@ class CoursePublicFolder extends StandardFolder
     /**
      * Returns a description template for CoursePublicFolders.
      *
-     * @return string A string describing this folder type.
+     * @return \Flexi\Template|string|null A string describing this folder type.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return _('Dateien aus diesem Ordner werden auf der Detailseite der Veranstaltung zum Download angeboten.');
     }
@@ -112,9 +112,9 @@ class CoursePublicFolder extends StandardFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi\Template
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/course_public_folder/edit.php');
         $template->worldwide_access = $this->hasWorldwideAccess();
@@ -124,26 +124,26 @@ class CoursePublicFolder extends StandardFolder
     /**
      * Sets the data from a submitted edit template.
      *
-     * @param array $request The data from the edit template.
+     * @param array|ArrayAccess $folderdata The data from the edit template.
      *
-     * @return FolderType
+     * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
-        $this->folderdata['data_content']['worldwide_access'] = $request['course_public_folder_worldwide_access'];
-        return parent::setDataFromEditTemplate($request);
+        $this->folderdata['data_content']['worldwide_access'] = $folderdata['course_public_folder_worldwide_access'];
+        return parent::setDataFromEditTemplate($folderdata);
     }
 
 
     /**
      * Files in CoursePublicFolders are downloadable for all logged in users.
      *
-     * @param string $file_id The ID to a FileRef.
-     * @param string $user_id The user who wishes to downlaod the file.
+     * @param FileRef $file_ref The ID to a FileRef.
+     * @param string  $user_id  The user who wishes to downlaod the file.
      *
      * @return bool
      */
-    public function isFileDownloadable($file_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isVisible($user_id);
     }

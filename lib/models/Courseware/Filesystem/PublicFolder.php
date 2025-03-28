@@ -2,11 +2,18 @@
 
 namespace Courseware\Filesystem;
 
+use ArrayAccess;
 use Courseware\Instance;
+use File;
+use FileRef;
 use FileType;
+use Flexi\Template;
 use Folder;
 use FolderType;
 use Icon;
+use MessageBox;
+use Request;
+use SimpleORMap;
 use StandardFolder;
 
 class PublicFolder extends StandardFolder
@@ -56,7 +63,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ein Ordner für öffentlich zugängliche Dateien einer Courseware');
     }
@@ -64,7 +71,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public static function availableInRange($rangeIdOrObject, $userId)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -72,7 +79,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create('folder-public-full', $role);
     }
@@ -80,7 +87,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->folder->id;
     }
@@ -88,7 +95,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isVisible($userId)
+    public function isVisible(string $user_id): bool
     {
         return true;
     }
@@ -96,7 +103,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isReadable($userId)
+    public function isReadable(string $user_id): bool
     {
         return true;
     }
@@ -104,7 +111,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isWritable($userId)
+    public function isWritable(string $user_id): bool
     {
         // TODO
         return true;
@@ -113,7 +120,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isEditable($userId)
+    public function isEditable(string $user_id): bool
     {
         return false;
     }
@@ -121,7 +128,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isSubfolderAllowed($userId)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return false;
     }
@@ -129,7 +136,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): Template|string|null
     {
         return '';
     }
@@ -137,7 +144,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getSubfolders()
+    public function getSubfolders(): array
     {
         return [];
     }
@@ -145,7 +152,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         return null;
     }
@@ -153,15 +160,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getEditTemplate()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return $this;
     }
@@ -169,13 +168,13 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function deleteFile($fileRefId)
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $fileRefs = $this->folder->file_refs;
 
         if (is_array($fileRefs)) {
             foreach ($fileRefs as $fileRef) {
-                if ($fileRef->id === $fileRefId) {
+                if ($fileRef->id === $file_ref_id) {
                     return $fileRef->delete();
                 }
             }
@@ -187,7 +186,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function store()
+    public function store(): bool
     {
         return $this->folder->store();
     }
@@ -195,7 +194,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function createSubfolder(FolderType $folderdata)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
         return null;
     }
@@ -203,7 +202,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function deleteSubfolder($subfolderId)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         return false;
     }
@@ -211,7 +210,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function delete()
+    public function delete(): bool
     {
         return $this->folder->delete();
     }
@@ -219,7 +218,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileDownloadable($fileRefId, $userId)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return true;
     }
@@ -227,7 +226,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileEditable($fileRefId, $userId)
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }
@@ -235,7 +234,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileWritable($fileRefId, $userId)
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }

@@ -44,12 +44,12 @@ class StandardFolder implements FolderType
     /**
      * @return string
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ordner');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return true;
     }
@@ -58,7 +58,7 @@ class StandardFolder implements FolderType
      * @param string $role
      * @return Icon
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         if ($this->parent_id || !$this->id) {
             $shape = $this->is_empty
@@ -74,9 +74,9 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->folderdata->getId();
     }
@@ -104,7 +104,7 @@ class StandardFolder implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         $visible = $this->isVisibleNonRecursive($user_id);
 
@@ -145,7 +145,7 @@ class StandardFolder implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         $readable = $this->isVisibleNonRecursive($user_id);
         if ($readable && $parent_folder = $this->getParent()) {
@@ -159,7 +159,7 @@ class StandardFolder implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         return ($this->range_type === 'user' && $this->range_id === $user_id)
             || Seminar_Perm::get()->have_studip_perm('autor', $this->range_id, $user_id);
@@ -169,7 +169,7 @@ class StandardFolder implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return ($this->range_type === 'user' && $this->range_id === $user_id)
             || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id);
@@ -179,55 +179,55 @@ class StandardFolder implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return ($this->range_type === 'user' && $this->range_id === $user_id)
             || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id);
     }
 
     /**
-     * @return string|Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return formatReady($this->folderdata['description']);
     }
 
     /**
-     * @return string|Flexi\Template
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): ?\Flexi\Template
     {
-        return '';
+        return null;
     }
 
     /**
-     * @param array $request
+     * @param array|ArrayAccess $folderdata
      * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
-        if (!$request['name']) {
+        if (!$folderdata['name']) {
             return MessageBox::error(_('Die Bezeichnung des Ordners fehlt.'));
         }
-        $this->folderdata['name']        = $request['name'];
-        $this->folderdata['description'] = $request['description'] ?: '';
+        $this->folderdata['name']        = $folderdata['name'];
+        $this->folderdata['description'] = $folderdata['description'] ?: '';
         return $this;
     }
 
     /**
-     * @return bool|number
+     * @return bool
      */
-    public function store()
+    public function store(): bool
     {
         return $this->folderdata->store();
     }
 
     /**
-     * @param string   $user_id
-     * @return string
+     * @param string $user_id
+     * @return string|null
      */
-    public function validateUpload(FileType $file, $user_id)
+    public function validateUpload(FileType $file, string $user_id): ?string
     {
         $upload_type = FileManager::getUploadTypeConfig($this->range_id, $user_id);
         return $this->getValidationMessages($upload_type, $file);
@@ -262,7 +262,7 @@ class StandardFolder implements FolderType
     /**
      * @return FolderType[]
      */
-    public function getSubfolders()
+    public function getSubfolders(): array
     {
         // We must load the subfolders from the database instead
         // of using $this->folderdata->subfolders, because subfolders
@@ -280,7 +280,7 @@ class StandardFolder implements FolderType
     /**
      * @return FileType[]
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         $filerefs = FileRef::findByFolder_id($this->getId(), "ORDER BY name");
         $files = [];
@@ -298,16 +298,17 @@ class StandardFolder implements FolderType
 
     /**
      * Returns the parent-folder as a StandardFolder
-     * @return FolderType
+     *
+     * @return FolderType|null
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         return $this->folderdata->parentfolder
              ? $this->folderdata->parentfolder->getTypedFolder()
              : null;
     }
 
-    public function addFile(FileType $file, $user_id = null)
+    public function addFile(FileType $file, ?string $user_id = null): ?FileType
     {
         $file = $file->convertToStandardFile();
 
@@ -327,7 +328,6 @@ class StandardFolder implements FolderType
             foreach ($files as $folderfile) {
                 if ($folderfile->getFilename() === $filename) {
                     $name_available = false;
-                    $filename;
                     $filename = $name . '[' . ++$c . ']';
                     if ($ext) {
                         $filename .= '.' . $ext;
@@ -341,13 +341,17 @@ class StandardFolder implements FolderType
 
     /**
      * @param string $file_ref_id
-     * @return int
+     * @return bool|array
      */
-    public function deleteFile($file_ref_id)
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $file_ref = $this->folderdata->file_refs->find($file_ref_id);
 
-        if (!$this->isFileWritable($file_ref->id, $GLOBALS['user']->id)) {
+        if (!$file_ref) {
+            return 0;
+        }
+
+        if (!$this->isFileWritable($file_ref, $GLOBALS['user']->id)) {
             return [sprintf(
                 _('Ungenügende Berechtigungen zum Löschen der Datei %s in Ordner %s!'),
                 $file_ref->name,
@@ -355,19 +359,14 @@ class StandardFolder implements FolderType
             )];
         }
 
-        if ($file_ref) {
-            return $file_ref->delete();
-        }
-
-        return 0;
+        return $file_ref->delete();
     }
-
 
     /**
      * @param FolderType $foldertype
      * @return FolderType|null
      */
-    public function createSubfolder(FolderType $foldertype)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
         if (!$foldertype->user_id) {
             $foldertype->user_id = $GLOBALS['user']->id;
@@ -391,7 +390,7 @@ class StandardFolder implements FolderType
      * @param string $subfolder_id
      * @return bool
      */
-    public function deleteSubfolder($subfolder_id)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         $subfolders = $this->folderdata->subfolders;
 
@@ -410,30 +409,29 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         return $this->folderdata->delete();
     }
 
     /**
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
-        $fileref = FileRef::toObject($fileref_or_id);
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
 
         if (in_array($this->range_type, ['course', 'institute'])) {
-            if (is_object($fileref->terms_of_use)) {
+            if (is_object($file_ref->terms_of_use)) {
                 //terms of use are defined for this file!
                 return $this->isReadable($user_id)
-                    && $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type,true, $user_id);
+                    && $file_ref->terms_of_use->isDownloadable($this->range_id, $this->range_type,true, $user_id);
             } else {
                 return $this->isReadable($user_id)
                     && $GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id);
@@ -444,17 +442,17 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileEditable($fileref_or_id, $user_id)
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
-        $fileref = FileRef::toObject($fileref_or_id);
-        return $fileref->user_id === $user_id
+
+        return $file_ref->user_id === $user_id
             || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
 
@@ -466,18 +464,13 @@ class StandardFolder implements FolderType
      * tutor permissions on the Stud.IP object specified by range_id
      * (such objects may be courses or institutes for example).
      *
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileWritable($fileref_or_id, $user_id)
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
-        if ($this->range_type === 'user') {
-            return $user_id === $this->range_id;
-        }
-        $fileref = FileRef::toObject($fileref_or_id);
-        return $fileref->user_id == $user_id
-            || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
+        return $this->isFileEditable($file_ref, $user_id);
     }
 
     /**
@@ -501,9 +494,10 @@ class StandardFolder implements FolderType
     /**
      * Returns an associative array of additional colums with the index the id of the column
      * and their values as the localized names of the columns
+     *
      * @return array('col1' => _("Anfragestatus"))
      */
-    public function getAdditionalColumns()
+    public function getAdditionalColumns(): array
     {
         return [];
     }
@@ -514,9 +508,9 @@ class StandardFolder implements FolderType
      *
      * @param string $column_index
      *
-     * @return null|string|Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getContentForAdditionalColumn($column_index)
+    public function getContentForAdditionalColumn(string $column_index): \Flexi\Template|string|null
     {
         return null;
     }
@@ -524,10 +518,11 @@ class StandardFolder implements FolderType
     /**
      * Returns an integer or text that marks the value the content of the given column should be
      * ordered by.
+     *
      * @param string $column_index
-     * @return mixed : order value
+     * @return int : order value
      */
-    public function getAdditionalColumnOrderWeigh($column_index)
+    public function getAdditionalColumnOrderWeigh(string $column_index): int
     {
         return 1;
     }
@@ -535,9 +530,10 @@ class StandardFolder implements FolderType
     /**
      * Returns an array of Studip\Button or Studip\LinkButton objects that get displayed
      * underneath the files-table.
+     *
      * @return array of Studip\Button or Studip\LinkButton
      */
-    public function getAdditionalActionButtons()
+    public function getAdditionalActionButtons(): array
     {
         return [];
     }
@@ -545,9 +541,18 @@ class StandardFolder implements FolderType
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }
 
+    public function countDownloads(?FileRef $ref = null): bool
+    {
+        if (!$ref) {
+            return true;
+        }
+
+        $user = User::findCurrent();
+        return !$user || $ref->user_id !== $user->id;
+    }
 }

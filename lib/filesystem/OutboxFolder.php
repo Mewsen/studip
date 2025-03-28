@@ -23,7 +23,7 @@ class OutboxFolder extends InboxOutboxFolder
      *
      * @return string The localised name of this folder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Alle Anhänge gesendeter Nachrichten');
     }
@@ -33,7 +33,7 @@ class OutboxFolder extends InboxOutboxFolder
      *
      * @return Icon An icon object with the icon for this folder type.
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create(
             count($this->getFiles())
@@ -50,7 +50,7 @@ class OutboxFolder extends InboxOutboxFolder
      * @return FileRef[] Array of FileRef objects representing the message
      *     attachments.
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         //get all folders of the user that belongs to a received message:
         $message_folders = Folder::findBySql(

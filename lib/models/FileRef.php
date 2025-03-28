@@ -223,10 +223,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
      */
     public function incrementDownloadCounter()
     {
-        if (
-            $this->user_id === User::findCurrent()->id
-            || $this->folder instanceof HomeworkFolder
-        ) {
+        if (!$this->folder->getTypedFolder()->countDownloads($this)) {
             return 0;
         }
 

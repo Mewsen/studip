@@ -21,7 +21,7 @@ class HiddenFolder extends PermissionEnabledFolder
     // nobody can see, write or read in this folder except the lecturer and his tutors
     protected $permission = 0;
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $range_id = is_object($range_id_or_object) ? $range_id_or_object->id : $range_id_or_object;
          return Seminar_Perm::get()->have_studip_perm('tutor', $range_id, $user_id);
@@ -32,7 +32,7 @@ class HiddenFolder extends PermissionEnabledFolder
      *
      * @return string the name of the HiddenFolder type
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _("Unsichtbarer Ordner");
     }
@@ -42,7 +42,7 @@ class HiddenFolder extends PermissionEnabledFolder
      *
      * @return Icon The icon object for this folder type
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-lock-empty'
@@ -62,9 +62,9 @@ class HiddenFolder extends PermissionEnabledFolder
     /**
      * Returns the description template for a instance of a HiddenFolder type
      *
-     * @return mixed A description template for a instance of the type HiddenFolder
+     * @return \Flexi\Template|string|null A description template for a instance of the type HiddenFolder
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/hidden_folder/description.php');
 
@@ -78,9 +78,9 @@ class HiddenFolder extends PermissionEnabledFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi\Template
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/hidden_folder/edit.php');
         $template->download_allowed = $this->download_allowed;
@@ -90,14 +90,14 @@ class HiddenFolder extends PermissionEnabledFolder
     /**
      * Sets the data from a submitted edit template.
      *
-     * @param array $request The data from the edit template.
+     * @param array|ArrayAccess $folderdata The data from the edit template.
      *
-     * @return FolderType
+     * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
-        $this->download_allowed = (int)$request['hidden_folder_download_allowed'];
-        return parent::setDataFromEditTemplate($request);
+        $this->download_allowed = (int) $folderdata['hidden_folder_download_allowed'];
+        return parent::setDataFromEditTemplate($folderdata);
     }
 
     /**
@@ -126,19 +126,16 @@ class HiddenFolder extends PermissionEnabledFolder
     }
 
     /**
-     * @param $fileref_or_id
-     * @param $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
-        $fileref = FileRef::toObject($fileref_or_id);
-
-        if (is_object($fileref)) {
-            if ($this->download_allowed || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id)) {
-                return $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
-            }
+        if ($this->download_allowed || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id)) {
+            return $file_ref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
         }
+
         return false;
     }
 

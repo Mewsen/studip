@@ -10,9 +10,9 @@ trait Helpers
     /**
      * Create an action menu for a file. This method is used by the template.
      *
-     * @param FileRef    $fileRef the file whose action shall be created
-     * @param FolderType $folder  the file's folder
-     * @param User       $user    the user for whom the actions shall be created
+     * @param \FileRef    $fileRef the file whose action shall be created
+     * @param \FolderType $folder  the file's folder
+     * @param \User       $user    the user for whom the actions shall be created
      *
      * @return string the HTML fragment of the action menu
      */
@@ -37,7 +37,7 @@ trait Helpers
             );
         }
 
-        if ($folder->isFileEditable($fileRef->id, $user->id)) {
+        if ($folder->isFileEditable($fileRef, $user->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/edit/'.$fileRef->id),
                 _('Datei bearbeiten'),
@@ -52,7 +52,7 @@ trait Helpers
             );
         }
 
-        if ($folder->isFileWritable($fileRef->id, $user->id)) {
+        if ($folder->isFileWritable($fileRef, $user->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/move/'.$fileRef->id),
                 _('Datei verschieben'),
@@ -70,7 +70,7 @@ trait Helpers
             );
         }
 
-        if ($folder->isFileWritable($fileRef->id, $user->id)) {
+        if ($folder->isFileWritable($fileRef, $user->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/delete/'.$fileRef->id),
                 _('Datei löschen'),

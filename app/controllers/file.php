@@ -387,8 +387,8 @@ class FileController extends AuthenticatedController
             }
 
             $this->file = $plugin->getPreparedFile($file_id);
+            $this->file_ref = $this->file->getFileRef();
             $this->from_plugin = Request::get("from_plugin");
-
         } else {
             $this->file_ref = FileRef::find($file_ref_id);
             $this->file = $this->file_ref->getFileType();
@@ -396,7 +396,10 @@ class FileController extends AuthenticatedController
 
         $this->folder = $this->file->getFoldertype();
 
-        if (!$this->folder || !$this->folder->isFileEditable($this->file->getId(), $GLOBALS['user']->id)) {
+        if (
+            !$this->folder
+            || !$this->folder->isFileEditable($this->file_ref, $GLOBALS['user']->id)
+        ) {
             throw new AccessDeniedException();
         }
 
@@ -538,7 +541,7 @@ class FileController extends AuthenticatedController
 
         if (
             !$this->folder
-            || !$this->folder->isFileEditable($this->file->getId(), $GLOBALS['user']->id)
+            || !$this->folder->isFileEditable($this->file_ref, $GLOBALS['user']->id)
             || !$GLOBALS['perm']->have_perm(Config::get()->OER_PUBLIC_STATUS)
         ) {
             throw new AccessDeniedException();
@@ -626,7 +629,7 @@ class FileController extends AuthenticatedController
         $this->file = $this->file_ref->getFileType();
         $this->folder = $this->file_ref->foldertype;
 
-        if (!$this->folder || !$this->folder->isFileEditable($this->file_ref->id, $GLOBALS['user']->id)) {
+        if (!$this->folder || !$this->folder->isFileEditable($this->file_ref, $GLOBALS['user']->id)) {
             throw new AccessDeniedException();
         }
 

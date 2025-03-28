@@ -180,7 +180,7 @@ class ProfileController extends AuthenticatedController
                 //since we have collected all public folders above already.
                 $folder_file_refs = $one_public_folder->getFiles();
                 foreach ($folder_file_refs as $file_ref) {
-                    if ($one_public_folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
+                    if ($one_public_folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)) {
                         $public_files[$file_ref->id] = $file_ref;
                     }
                 }

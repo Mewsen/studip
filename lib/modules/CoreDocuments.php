@@ -129,7 +129,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         ]);
         foreach ($file_refs as $fileref) {
             $foldertype = $fileref->folder->getTypedFolder();
-            if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
+            if ($foldertype->isFileDownloadable($fileref, $user_id)) {
                 $navigation->setImage(Icon::create('files', Icon::ROLE_ATTENTION), [
                     'title' => _('Es gibt neue Dateien.'),
                 ]);

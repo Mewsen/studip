@@ -15,7 +15,7 @@ abstract class Exercise extends SimpleORMap
      * The unpacked value from the "task" column in the SORM instance.
      * This is an array, but type hinting does not work due to SORM
      * writing the JSON string into this property on restore().
-     */ 
+     */
     public $task = [];
 
     /**

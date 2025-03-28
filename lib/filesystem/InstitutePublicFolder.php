@@ -18,7 +18,7 @@
  */
 class InstitutePublicFolder extends CoursePublicFolder
 {
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ordner für öffentlich zugängliche Dateien');
     }
@@ -29,14 +29,14 @@ class InstitutePublicFolder extends CoursePublicFolder
      * that is either referenced by its ID or whose data is passed to this
      * method.
      *
-     * @param mixed $range_id_or_object The obect to be checked.
+     * @param SimpleORMap|string $range_id_or_object The obect to be checked.
      *
-     * @param string $user_id The user for which the availability of this
+     * @param string             $user_id            The user for which the availability of this
      *     folder type shall be checked.
      *
      * @return bool True, if the folder type is available, false otherwise.
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $institute = Institute::toObject($range_id_or_object);
         if ($institute instanceof Institute && !$institute->isNew()) {
@@ -55,7 +55,7 @@ class InstitutePublicFolder extends CoursePublicFolder
      * @param string $user_id The user who wishes to see the folder.
      * @return bool True, in case the user may see the folder, false otherwise.
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         if ($user_id === null || $user_id === 'nobody') {
             if ($this->folderdata['data_content']['worldwide_access']) {
@@ -71,9 +71,9 @@ class InstitutePublicFolder extends CoursePublicFolder
     /**
      * Returns a description template for InstitutePublicFolder.
      *
-     * @return string A string describing this folder type.
+     * @return \Flexi\Template|string|null A string describing this folder type.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return _('Dateien aus diesem Ordner sind auch für Personen sichtbar, die nicht der Einrichtung zugeordnet sind.');
     }

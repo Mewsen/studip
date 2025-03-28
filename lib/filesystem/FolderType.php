@@ -1,4 +1,7 @@
 <?php
+
+use Flexi\Template;
+
 /**
 * Interface FolderType
 *
@@ -49,7 +52,7 @@ interface FolderType
      *
      * @return string A human-friendly name for the FolderType implementation.
      */
-    public static function getTypeName();
+    public static function getTypeName(): string;
 
     /**
      * This method tells if the FolderType implementation can be created in a specific range type.
@@ -60,11 +63,11 @@ interface FolderType
      * if folders of the FolderType implementation can be placed inside
      * standard folders.
      *
-     * @param string|Object $range_id_or_object id or object of type "course", "user", "institute", "message"
-     * @param string $user_id
+     * @param SimpleORMap|string $range_id_or_object id or object of type "course", "user", "institute", "message"
+     * @param string             $user_id
      * @return boolean True, if creatable, false otherwise.
      */
-     public static function availableInRange($range_id_or_object, $user_id);
+     public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool;
 
     /**
      * Returns the name of the icon shape that shall be used with the FolderType implementation.
@@ -72,121 +75,129 @@ interface FolderType
      * @param string $role role of icon
      * @return Icon icon for the FolderType implementation.
      */
-    public function getIcon($role);
+    public function getIcon(string $role): Icon;
 
     /**
      * Returns the ID of the folder that is managed from this FolderType instance.
-     * @return string ID of the folder.
+     *
+     * @return string|null ID of the folder.
      */
-    public function getId();
+    public function getId(): ?string;
 
     /**
      * Determines if a user may see the folder.
      *
-     * @param $user_id
+     * @param string $user_id
      * @return boolean
      */
-    public function isVisible($user_id);
+    public function isVisible(string $user_id): bool;
 
     /**
      * Determines if a user may read the content of the folder.
+     *
      * @param string $user_id The user who wishes to read the folder's content.
      * @return boolean True, if the user is permitted to read the folder, false otherwise.
      */
-    public function isReadable($user_id);
+    public function isReadable(string $user_id):bool;
 
     /**
      * Determines if a user may have write permissions for the folder.
+     *
      * @param string $user_id The user who wishes to write into the folder.
      * @return boolean True, if the user is permitted to write into the folder, false otherwise.
      */
-    public function isWritable($user_id);
+    public function isWritable(string $user_id):bool;
 
     /**
      * Determines if a user may have edit permissions for the folder.
+     *
      * @param string $user_id The user who wishes to edit the folder.
      * @return boolean True, if the user is permitted to edit the folder, false otherwise.
      */
-    public function isEditable($user_id);
+    public function isEditable(string $user_id):bool;
 
     /**
      * Determines if a user may create a subfolder in this folder.
+     *
      * @param string $user_id The user who wishes to create a subfolder.
      * @return boolean True, if the user is permitted to create a subfolder, false otherwise.
      */
-    public function isSubfolderAllowed($user_id);
+    public function isSubfolderAllowed(string $user_id):bool;
 
     /**
      * returns description of the folder
      *
-     * @return Flexi\Template | string
+     * @return Template|string|null
      */
-    public function getDescriptionTemplate();
+    public function getDescriptionTemplate(): Template|string|null;
 
     /**
      * Returns a list of subfolders of this folder.
+     *
      * @return FolderType[] List of folder objects
      */
-    public function getSubfolders();
+    public function getSubfolders():array;
 
     /**
      * Returns a list of files of this folder.
+     *
      * @return FileRef[] List of FileRef objects
      */
-    public function getFiles();
+    public function getFiles():array;
 
     /**
      * Returns the FolderType of the parent folder or null if this is the top folder.
-     * @return null|FolderType
+     *
+     * @return FolderType|null
      */
-    public function getParent();
+    public function getParent(): ?FolderType;
 
     /**
      * returns template form, must not contain opening and closing <form> tags
-     *
-     * @return Flexi\Template | string
      */
-    public function getEditTemplate();
+    public function getEditTemplate(): ?Template;
 
     /**
      * gets data from edit form
      *
-     * @param ArrayAccess|Request $folderdata
+     * @param array|ArrayAccess $folderdata
      * @return FolderType|MessageBox FolderType instance on success,
      *     a MessageBox object with an error message on failure.
      */
-    public function setDataFromEditTemplate($folderdata);
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox;
 
     /**
      * Validates a file upload.
      *
-     * @param FileType file The file to be validated.
+     * @param FileType $file The file to be validated.
      * @param string $user_id The ID of the user who uploaded the file.
      * @return string|null : error message or null if it was successful
      */
-    public function validateUpload(FileType $file, $user_id);
+    public function validateUpload(FileType $file, string $user_id): ?string;
 
     /**
      * Adds FileType object to this folder and returns the new FileType object.
-     * @param FileType $file
-     * @param $user_id : id of the given user
-     * @return FileType
+     *
+     * @param FileType    $file
+     * @param string|null $user_id : id of the given user
+     * @return FileType|null
      */
-    public function addFile(FileType $file, $user_id = null);
+    public function addFile(FileType $file, ?string $user_id = null): ?FileType;
 
     /**
      * Deletes a file in this folder.
+     *
      * @param string $file_ref_id The ID of the FileRef object of the file that shall be deleted.
-     * @return bool True on success, False on failure.
+     * @return bool|array True on success, array with error message(s) on failure.
      */
-    public function deleteFile($file_ref_id);
+    public function deleteFile(string $file_ref_id): bool|array;
 
     /**
      * @param  $foldertype FolderType
      * @return FolderType|null A FolderType instance representing
      *     the created subfolder or null on failure.
      */
-    public function createSubfolder(FolderType $foldertype);
+    public function createSubfolder(FolderType $foldertype): ?FolderType;
 
     /**
      * Deletes a subfolder in this folder.
@@ -195,52 +206,56 @@ interface FolderType
      *
      * @return bool True on success, False on failure.
      */
-    public function deleteSubfolder($subfolder_id);
+    public function deleteSubfolder(string $subfolder_id): bool;
 
     /**
      * Deletes this folder.
      *
      * @return bool True on success, False on failure.
      */
-    public function delete();
+    public function delete(): bool;
 
     /**
      * @return bool
      */
-    public function store();
+    public function store(): bool;
 
     //TODO: remove useless methods which are now handled by FileType interface
 
     /**
      * Determines if a user may download the file.
-     * @param string $file_ref_id The ID of the FileRef object of a file that shall be downloaded.
-     * @param string $user_id The user who wishes to download the file.
+     *
+     * @param FileRef $file_ref The FileRef object of a file that shall be downloaded.
+     * @param string  $user_id  The user who wishes to download the file.
      * @return boolean True, if the user is permitted to download the file, false otherwise.
      */
-    public function isFileDownloadable($file_ref_id, $user_id);
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool;
 
     /**
      * Determines if a user may edit the file.
-     * @param string $file_ref_id The ID of the FileRef object of a file that shall be edited.
-     * @param string $user_id The user who wishes to edit the file.
+     *
+     * @param FileRef $file_ref The FileRef object of a file that shall be edited.
+     * @param string $user_id   The user who wishes to edit the file.
      * @return boolean True, if the user is permitted to edit the file, false otherwise.
      */
-    public function isFileEditable($file_ref_id, $user_id);
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool;
 
     /**
      * Determines if a user may write to the file.
-     * @param string $file_id The FileRef object of a file that shall be written.
-     * @param string $user_id The user who wishes to write to the file.
+     *
+     * @param FileRef $file_ref The FileRef object of a file that shall be written.
+     * @param string  $user_id     The user who wishes to write to the file.
      * @return boolean True, if the user is permitted to write to the file, false otherwise.
      */
-    public function isFileWritable($file_ref_id, $user_id);
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool;
 
     /**
      * Returns an associative array of additional colums with the index the id of the column
      * and their values as the localized names of the columns
-     * @return array('col1' => _("Anfragestatus"))
+     *
+     * @example return ['col1' => _('Anfragestatus')]
      */
-    public function getAdditionalColumns();
+    public function getAdditionalColumns(): array;
 
     /**
      * Returns the content for that additional column, if it exists. You can
@@ -248,28 +263,37 @@ interface FolderType
      *
      * @param string $column_index
      *
-     * @return null|string|Flexi\Template
+     * @return string|Template|null
      */
-    public function getContentForAdditionalColumn($column_index);
+    public function getContentForAdditionalColumn(string $column_index): Template|string|null;
 
     /**
      * Returns an integer that marks the value the content of the given column should be
      * ordered by.
+     *
      * @param string $column_index
      * @return integer : order value
      */
-    public function getAdditionalColumnOrderWeigh($column_index);
+    public function getAdditionalColumnOrderWeigh(string $column_index): int;
 
     /**
      * Returns an array of Studip\Button or Studip\LinkButton objects that get displayed
      * underneath the files-table.
-     * @return array of Studip\Button or Studip\LinkButton
+     *
+     * @return Studip\Button[]|Studip\LinkButton[]
      */
-    public function getAdditionalActionButtons();
+    public function getAdditionalActionButtons(): array;
 
     /**
      * Returns (perhaps only a subset of) description and data_content of the folder for copying
-     * @return array
      */
-    public function copySettings();
+    public function copySettings(): array;
+
+    /**
+     * Returns whether the downloads in this folder should be counted or not.
+     *
+     * If a specific file ref is passed, you may decide whether to count the
+     * download for this file ref or not.
+     */
+    public function countDownloads(?FileRef $ref = null): bool;
 }

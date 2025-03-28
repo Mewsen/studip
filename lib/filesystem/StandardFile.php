@@ -14,11 +14,8 @@
  */
 class StandardFile implements FileType, ArrayAccess, StandardFileInterface
 {
+    protected ?FileRef $fileref = null;
 
-    /**
-     * @var FileRef
-     */
-    protected $fileref = null;
     /**
      * @var File
      */
@@ -382,7 +379,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileDownloadable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }
@@ -396,7 +393,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileEditable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }
@@ -410,7 +407,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileWritable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }
@@ -453,7 +450,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
         return new static($fileref);
     }
 
-    public function getFileRef()
+    public function getFileRef(): ?FileRef
     {
         return $this->fileref;
     }

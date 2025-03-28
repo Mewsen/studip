@@ -9,12 +9,12 @@
  */
 class ResourceFolder extends StandardFolder
 {
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ressourcen-Dateiordner');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         //A resource folder is not available for course, user, institute
         //or message objects. Only when a range_id of a resource is given
@@ -31,12 +31,12 @@ class ResourceFolder extends StandardFolder
         }
     }
 
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create('resource', $role);
     }
 
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         if ($user_id == 'nobody') {
             return false;
@@ -57,7 +57,7 @@ class ResourceFolder extends StandardFolder
         return false;
     }
 
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         if ($user_id == 'nobody') {
             return false;
@@ -78,7 +78,7 @@ class ResourceFolder extends StandardFolder
         return false;
     }
 
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         $user = User::find($user_id);
 
@@ -90,13 +90,13 @@ class ResourceFolder extends StandardFolder
         );
     }
 
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         //Thou shalt not edit ResourceFolder folder types!
         return false;
     }
 
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         //Furthermore, thou shalt not create subfolders in a Resource folder!
         return false;
@@ -108,41 +108,36 @@ class ResourceFolder extends StandardFolder
         return [];
     }
 
-    public function getEditTemplate()
-    {
-        return '';
-    }
-
-    public function setDataFromEditTemplate($folderdata)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error(
             _('Ressourcenordner dürfen nicht geändert werden!')
         );
     }
 
-    public function createSubfolder(FolderType $foldertype)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
         //No subfolders allowed, resulting in:
         return null;
     }
 
-    public function deleteSubfolder($subfolder_id)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         //No subfolders allowed, resulting in:
         return false;
     }
 
-    public function isFileDownloadable($file_ref_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
 
-    public function isFileEditable($file_ref_id, $user_id)
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isWritable($user_id);
     }
 
-    public function isFileWritable($file_ref_id, $user_id)
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isWritable($user_id);
     }

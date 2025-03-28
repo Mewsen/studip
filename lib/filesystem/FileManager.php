@@ -1302,7 +1302,7 @@ class FileManager
                 //specified by $user_id:
                 if ($folder->isReadable($user_id)) {
                     foreach ($folder_files as $folder_file) {
-                        if ($folder->isFileDownloadable($folder_file->id, $user_id)) {
+                        if ($folder->isFileDownloadable($folder_file, $user_id)) {
                             $num_files++;
                         }
                     }
@@ -1316,7 +1316,7 @@ class FileManager
                     if ($user_id) {
                         //user-ID is set: only if the file is downloadable
                         //it will be counted!
-                        if ($folder->isFileDownloadable($file->id, $user_id)) {
+                        if ($folder->isFileDownloadable($file, $user_id)) {
                             $num_files++;
                         }
                     } else {

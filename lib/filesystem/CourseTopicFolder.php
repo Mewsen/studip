@@ -12,7 +12,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
-class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
+class CourseTopicFolder extends PermissionEnabledFolder
 {
 
     public static $sorter = 1;
@@ -20,12 +20,12 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
     private $topic;
 
 
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Themenordner');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -40,7 +40,7 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
         $this->getTopic();
     }
 
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create(
             count($this->getFiles()) ? 'folder-topic-full' : 'folder-topic-empty',
@@ -80,9 +80,9 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
     /**
      * This method returns the special part for the edit template for the folder type GroupFolder
      *
-     * @return mixed  A edit template for a instance of the type GroupFolder
+     * @return \Flexi\Template|null  A edit template for a instance of the type GroupFolder
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/topic_folder/edit.php');
         $template->set_attribute('topic', $this->getTopic());
@@ -92,26 +92,27 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
 
     /**
      * Stores the data which was edited in the edit template
-     * @return mixed The template with the edited data
+     *
+     * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
-        $topic = CourseTopic::find($request['topic_id']);
+        $topic = CourseTopic::find($folderdata['topic_id']);
         if ($topic === null) {
             return MessageBox::error(_('Es wurde kein Thema ausgewählt.'));
         } else {
             if ($this->getTopic() && $topic->id === $this->getTopic()->id) {
-                if (!$request['name']) {
+                if (!$folderdata['name']) {
                     return MessageBox::error(_('Die Bezeichnung des Ordners fehlt.'));
                 }
-                $topic->title = $request['name'];
-                $topic->description = $request['description'] ?: '';
+                $topic->title = $folderdata['name'];
+                $topic->description = $folderdata['description'] ?: '';
                 $topic->store();
             }
             $this->setTopic($topic);
         }
 
-        if (isset($request['course_topic_folder_perm_write'])) {
+        if (isset($folderdata['course_topic_folder_perm_write'])) {
             $this->folderdata['data_content']['permission'] = 7;
         } else {
             $this->folderdata['data_content']['permission'] = 5;
@@ -122,9 +123,9 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
     /**
      * Returns the description template for a instance of a GroupFolder type
      *
-     * @return mixed A description template for a instance of the type GroupFolder
+     * @return \Flexi\Template|string|null A description template for a instance of the type GroupFolder
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
 
         $template = $GLOBALS['template_factory']->open('filesystem/topic_folder/description.php');
@@ -139,7 +140,7 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }

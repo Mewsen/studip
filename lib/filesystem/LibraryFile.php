@@ -34,7 +34,7 @@ class LibraryFile extends StandardFile
         return $this->file;
     }
 
-    public function getFileRef()
+    public function getFileRef(): ?FileRef
     {
         return $this->fileref;
     }

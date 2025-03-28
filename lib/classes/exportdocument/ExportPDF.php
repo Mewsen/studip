@@ -331,8 +331,8 @@ class ExportPDF extends TCPDF implements ExportDocument
                     $file_ref = FileRef::find($matches[1]);
                     $folder = isset($file_ref->folder) ? $file_ref->folder->getTypedFolder() : null;
                     if (
-                        isset($folder)
-                        && $folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)
+                        isset($folder, $file_ref)
+                        && $folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)
                     ) {
                         $convurl = $file_ref->file->getPath();
                     } else {

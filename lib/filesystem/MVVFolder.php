@@ -15,7 +15,7 @@
 class MVVFolder extends StandardFolder
 {
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -24,7 +24,7 @@ class MVVFolder extends StandardFolder
      * @param string $user_id
      * @return bool
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return false;
     }
@@ -32,7 +32,7 @@ class MVVFolder extends StandardFolder
     /**
      * See method MVVFolder::isReadable
      */
-    public function isFileDownloadable($file_ref_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
@@ -41,7 +41,7 @@ class MVVFolder extends StandardFolder
      * @param string $user_id
      * @return bool
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return true;
     }
@@ -51,7 +51,7 @@ class MVVFolder extends StandardFolder
      *
      * @return string The localised name of this folder type.
      */
-    static public function getTypeName()
+    static public function getTypeName(): string
     {
         return _('Ein Ordner für Studiengänge');
     }
@@ -59,9 +59,9 @@ class MVVFolder extends StandardFolder
     /**
      * Returns a description template for PublicFolders.
      *
-     * @return string A string describing this folder type.
+     * @return \Flexi\Template|string|null A string describing this folder type.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return _('Dateien aus diesem Ordner werden durch den Studiengang zum Download angeboten.');
     }

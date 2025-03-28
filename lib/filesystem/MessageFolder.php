@@ -15,7 +15,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
-class MessageFolder extends StandardFolder implements FolderType
+class MessageFolder extends StandardFolder
 {
     protected $folder;
 
@@ -119,7 +119,7 @@ class MessageFolder extends StandardFolder implements FolderType
      * This method returns always false since MessageFolder types are not
      * creatable in standard folders. They are a standalone folder type.
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -127,7 +127,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Returns a localised name of the MessageFolder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Nachrichtenordner');
     }
@@ -135,7 +135,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Returns the Icon object for the MessageFolder type.
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create('folder-message', $role);
     }
@@ -143,7 +143,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Returns the ID of the folder object of this MessageFolder.
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->folder->id;
     }
@@ -151,7 +151,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * See method MessageFolder::isReadable.
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
@@ -162,10 +162,10 @@ class MessageFolder extends StandardFolder implements FolderType
      * @param string $user_id The ID of the user whose read permission
      *     shall be checked.
      *
-     * @return True, if the user, specified by $user_id, can read the folder,
+     * @return bool, if the user, specified by $user_id, can read the folder,
      *     false otherwise.
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         $condition = 'message_id = :message_id AND user_id = :user_id';
         return MessageUser::countBySql($condition, [
@@ -177,7 +177,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders are only writable for their owners.
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         return $user_id === $this->folder->user_id;
     }
@@ -185,7 +185,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders are never editable.
      */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return false;
     }
@@ -193,7 +193,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders will never allow subfolders.
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return false;
     }
@@ -201,7 +201,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders don't have a description template.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return '';
     }
@@ -209,7 +209,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders don't have subfolders.
      */
-    public function getSubfolders()
+    public function getSubfolders(): array
     {
         return [];
     }
@@ -217,24 +217,16 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders don't have parents.
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         return null;
-    }
-
-    /**
-     * MessageFolders don't have an edit template.
-     */
-    public function getEditTemplate()
-    {
-        return '';
     }
 
     /**
      * MessageFolders don't have an edit template and therefore cannot
      * handle requests from such templates.
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error('Not applicable for message folders');
     }
@@ -242,18 +234,18 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * This method handles file upload validation.
      *
-     * @param array $uploaded_file The uploaded file that shall be validated.
-     * @param string $user_id The user who wishes to upload a file
+     * @param array  $uploaded_file The uploaded file that shall be validated.
+     * @param string $user_id       The user who wishes to upload a file
      *     in this MessageFolder.
      *
      * @return string|null An error message on failure, null on success.
      */
-    public function validateUpload(FileType $newfile, $user_id)
+    public function validateUpload(FileType $file, string $user_id): ?string
     {
         $status = $GLOBALS['perm']->get_perm($user_id);
         return $this->getValidationMessages(
             FileManager::loadUploadTypeConfig('attachments', $status),
-            $newfile
+            $file
         );
     }
 
@@ -264,9 +256,9 @@ class MessageFolder extends StandardFolder implements FolderType
      * @param string $file_ref_id The ID of the FileRef whose file
      *     shall be deleted.
      *
-     * @return True, if the file has been deleted successfully, false otherwise.
+     * @return bool|array, if the file has been deleted successfully, false otherwise.
      */
-    public function deleteFile($file_ref_id)
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $file_refs = $this->folderdata->file_refs;
 
@@ -287,10 +279,10 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Stores the MessageFolder object.
      *
-     * @return True, if the MessageFolder has been stored successfully,
+     * @return bool, if the MessageFolder has been stored successfully,
      *     false otheriwse.
      */
-    public function store()
+    public function store(): bool
     {
         return $this->folder->store();
     }
@@ -298,7 +290,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders cannot have subfolders.
      */
-    public function createSubfolder(FolderType $folderdata)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
         return null;
     }
@@ -306,7 +298,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * MessageFolders cannot have subfolders.
      */
-    public function deleteSubfolder($subfolder_id)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         return false;
     }
@@ -314,10 +306,10 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Deletes the MessageFolder object.
      *
-     * @return True, if the MessageFolder has been deleted successfully,
+     * @return bool, if the MessageFolder has been deleted successfully,
      *     false otheriwse.
      */
-    public function delete()
+    public function delete(): bool
     {
         return $this->folder->delete();
     }
@@ -325,7 +317,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * See method MessageFolder::isReadable
      */
-    public function isFileDownloadable($file_ref_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
@@ -333,7 +325,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Files inside MessageFolders are not editable.
      */
-    public function isFileEditable($file_ref_id, $user_id)
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         //message attachments are never editable!
         return false;
@@ -342,7 +334,7 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * Files inside MessageFolders are not writable.
      */
-    public function isFileWritable($file_ref_id, $user_id)
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         //message attachments are never writable!
         return false;
@@ -351,9 +343,8 @@ class MessageFolder extends StandardFolder implements FolderType
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }
-
 }

@@ -51,20 +51,17 @@ class VirtualFolderType implements FolderType
         $this->plugin_id  = $plugin_id;
     }
 
-    /**
-     * @return string
-     */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Virtueller Ordner');
     }
 
     /**
-     * @param Object|string $range_id_or_object
-     * @param string $user_id
+     * @param SimpleORMap|string $range_id_or_object
+     * @param string             $user_id
      * @return bool
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -73,15 +70,15 @@ class VirtualFolderType implements FolderType
      * @param string $role
      * @return Icon
      */
-    public function getIcon($role = 'info')
+    public function getIcon(string $role = 'info'): Icon
     {
         return Icon::create('folder-empty', $role);
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->folderdata['id'];
     }
@@ -105,10 +102,10 @@ class VirtualFolderType implements FolderType
     }
 
     /**
-     * @param $user_id
+     * @param string $user_id
      * @return bool
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         return true;
     }
@@ -117,7 +114,7 @@ class VirtualFolderType implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return true;
     }
@@ -126,7 +123,7 @@ class VirtualFolderType implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         return false;
     }
@@ -135,7 +132,7 @@ class VirtualFolderType implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return false;
     }
@@ -144,31 +141,31 @@ class VirtualFolderType implements FolderType
      * @param string $user_id
      * @return bool
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return false;
     }
 
     /**
-     * @return null
+     * @return \Flexi\Template|string|null
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return null;
     }
 
     /**
-     * @return null
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): ?\Flexi\Template
     {
         return null;
     }
 
     /**
-     * @param ArrayAccess|Request $request
+     * @param array|ArrayAccess $folderdata
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error('Not applicable for virtual folder type');
     }
@@ -176,9 +173,9 @@ class VirtualFolderType implements FolderType
     /**
      * @param $uploadedfile
      * @param string $user_id
-     * @return bool
+     * @return string|null
      */
-    public function validateUpload(FileType $file, $user_id)
+    public function validateUpload(FileType $file, string $user_id): ?string
     {
         return false;
     }
@@ -186,7 +183,7 @@ class VirtualFolderType implements FolderType
     /**
      * @return array
      */
-    public function getSubfolders()
+    public function getSubfolders(): array
     {
         return $this->subfolders;
     }
@@ -194,15 +191,15 @@ class VirtualFolderType implements FolderType
     /**
      * @return array
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }
 
     /**
-     * @return null
+     * @return FolderType|null
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         if (!$this->folderdata['parent_id']) {
             return null;
@@ -219,9 +216,9 @@ class VirtualFolderType implements FolderType
 
     /**
      * @param array|ArrayAccess $file
-     * @return FileRef
+     * @return FileType|null
      */
-    public function addFile(FileType $file, $user_id = null)
+    public function addFile(FileType $file, ?string $user_id = null): ?FileType
     {
         $this->files[] = $file;
         return end($this->files);
@@ -229,28 +226,28 @@ class VirtualFolderType implements FolderType
 
     /**
      * @param string $file_ref_id
-     * @return bool
+     * @return bool|array
      */
-    public function deleteFile($file_ref_id)
+    public function deleteFile(string $file_ref_id): bool|array
     {
         return true;
     }
 
     /**
-     * @param FolderType $folderdata
-     * @return FolderType
+     * @param FolderType $foldertype
+     * @return FolderType|null
      */
-    public function createSubfolder(FolderType $folderdata)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
-        $this->subfolders[] = $folderdata;
-        return $folderdata;
+        $this->subfolders[] = $foldertype;
+        return $foldertype;
     }
 
     /**
      * @param string $subfolder_id
      * @return bool
      */
-    public function deleteSubfolder($subfolder_id)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         return true;
     }
@@ -258,62 +255,62 @@ class VirtualFolderType implements FolderType
     /**
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         return true;
     }
 
-    public function store()
+    public function store(): bool
     {
         return 0;
     }
 
     /**
-     * @param string $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return true;
     }
 
     /**
-     * @param string $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileEditable($fileref_or_id, $user_id)
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }
 
     /**
-     * @param $fileref_or_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileWritable($fileref_or_id, $user_id)
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }
 
-    public function getAdditionalColumns()
+    public function getAdditionalColumns(): array
     {
         return [];
     }
 
-    public function getContentForAdditionalColumn($column_index)
+    public function getContentForAdditionalColumn(string $column_index): \Flexi\Template|string|null
     {
         return null;
     }
 
-    public function getAdditionalColumnOrderWeigh($column_index)
+    public function getAdditionalColumnOrderWeigh(string $column_index): int
     {
         return 0;
     }
 
-    public function getAdditionalActionButtons()
+    public function getAdditionalActionButtons(): array
     {
         return [];
     }
@@ -321,9 +318,13 @@ class VirtualFolderType implements FolderType
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }
 
+    public function countDownloads(?FileRef $ref = null): bool
+    {
+        return true;
+    }
 }

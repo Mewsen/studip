@@ -208,4 +208,9 @@ interface FileType
      *     displayed in the information dialog.
      */
     public function getInfoTemplate(bool $include_downloadable_infos = false);
+
+    /**
+     * Returns the underlying file ref (or null, if none).
+     */
+    public function getFileRef(): ?FileRef;
 }

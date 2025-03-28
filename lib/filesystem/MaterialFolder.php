@@ -17,7 +17,7 @@ class MaterialFolder extends PermissionEnabledFolder
 
     public static $sorter = 3;
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $range_id = is_object($range_id_or_object) ? $range_id_or_object->id : $range_id_or_object;
         return Seminar_Perm::get()->have_studip_perm('tutor', $range_id, $user_id);
@@ -38,7 +38,7 @@ class MaterialFolder extends PermissionEnabledFolder
      *
      * @return Icon The icon object for this folder type
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create('download', $role);
     }
@@ -48,25 +48,17 @@ class MaterialFolder extends PermissionEnabledFolder
      *
      * @return string the name of the MaterialFolder type
      */
-    static public function getTypeName()
+    static public function getTypeName(): string
     {
         return _('Materialordner zum Anbieten von Inhalten zum Download');
     }
 
     /**
-     * There is nothing special you can edit at this folder
-     */
-    public function getEditTemplate()
-    {
-        return '';
-    }
-
-    /**
      * Returns the description template for a instance of a MaterialFolder type
      *
-     * @return mixed A description template for a instance of the type MaterialFolder
+     * @return \Flexi\Template|string|null A description template for a instance of the type MaterialFolder
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/material_folder/description.php');
 

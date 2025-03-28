@@ -1,7 +1,7 @@
 <tr id="fileref_<?= htmlReady($searchResult['fileRef']->id) ?>">
 
     <td class="files-search-icon">
-        <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef'], $user->id)) : ?>
+        <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef']->id, $user->id)) : ?>
             <a href="<?= htmlReady($searchResult['fileRef']->getDownloadURL('force_download')) ?>" target="_blank" rel="noopener noreferrer">
                 <?= FileManager::getIconForFileRef($searchResult['fileRef'])->asImg(24) ?>
             </a>
@@ -11,7 +11,7 @@
     </td>
 
     <td>
-        <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef'], $user->id)) : ?>
+        <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef']->id, $user->id)) : ?>
             <a href="<?= htmlReady($controller->url_for('file/details/'.$searchResult['fileRef']->id)) ?>" data-dialog="">
                 <? if (mb_strlen(($searchResult['fileRef']->name))) : ?>
                     <?= $controller->markPhrase($searchResult['fileRef']->name, $query->getQuery()) ?>
@@ -44,7 +44,7 @@
 
     <td>
         <? if (mb_strlen($searchResult['fileRef']->description)) : ?>
-            <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef'], $user->id)) : ?>
+            <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef']->id, $user->id)) : ?>
                 <a href="<?= htmlReady($controller->url_for('file/details/'.$searchResult['fileRef']->id)) ?>" data-dialog="">
                     <?= $controller->markPhrase($searchResult['fileRef']->description, $query->getQuery(), 100) ?>
                 </a>
