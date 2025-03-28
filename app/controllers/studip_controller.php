@@ -832,6 +832,7 @@ abstract class StudipController extends Trails_Controller
             $writer = new Xlsx($spreadsheet);
         } elseif ($format === 'csv') {
             $writer = new Csv($spreadsheet);
+            $writer->setDelimiter(';');
         } else {
             throw new Exception("Format {$format} is not supported");
         }
