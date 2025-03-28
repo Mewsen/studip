@@ -106,7 +106,7 @@ Dialog.handlers.header['X-Location'] = function(location, options) {
             .on('hashchange', function() {
                 document.location.reload(true);
             })
-            .on('unload', function() {
+            .on('beforeunload', function() {
                 $(window).off('hashchange');
             });
     }
