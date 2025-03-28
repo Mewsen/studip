@@ -28,6 +28,9 @@ class Admin_TreeController extends AuthenticatedController
                     'visible-children-only'        => false,
                     'with-courses'                 => true,
                 ])
+                ->withVuexStore('TreeStore', 'treestore', [
+                    'SET_SEMESTER' => $this->semester,
+                ])
         );
     }
 
@@ -58,6 +61,9 @@ class Admin_TreeController extends AuthenticatedController
                     'visible-children-only'        => false,
                     'with-course-assign'           => true,
                     'with-courses'                 => true,
+                ])
+                ->withVuexStore('TreeStore', 'treestore', [
+                    'SET_SEMESTER' => $this->semester,
                 ])
         );
     }

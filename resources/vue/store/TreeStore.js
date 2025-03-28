@@ -40,11 +40,11 @@ class DataRequest
             return DataRequest.#promises[index];
         }
 
-        const promise = DataRequest.#apiRequest(request.path, request.parameters);
-        DataRequest.#promises[index] = promise;
-        return promise.then(handler).finally(() => {
-            delete DataRequest.#promises[index];
-        });
+        return DataRequest.#promises[index] = DataRequest.#apiRequest(request.path, request.parameters)
+            .then(handler)
+            .finally(() => {
+                delete DataRequest.#promises[index];
+            });
     }
 }
 
@@ -61,7 +61,7 @@ export default {
         isLoading: false,
         semesterId: 'all',
         semClass: 0,
-        viewType: 'tree'
+        viewType: 'table'
     }),
     getters: {
         getNode: (state) => (id) => {

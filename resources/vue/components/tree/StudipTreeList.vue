@@ -73,86 +73,20 @@
                 </button>
             </span>
         </section>
-        <table v-if="courses.length > 0" class="default">
-            <caption>{{ $gettext('Veranstaltungen') }}</caption>
-            <colgroup>
-                <col>
-                <col>
-            </colgroup>
-            <thead>
-                <tr v-if="totalCourseCount > limit">
-                    <td colspan="2">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           v-model:current-offset="page"
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <th>{{ $gettext('Name') }}</th>
-                    <th>{{ $gettext('Information') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
-                    <td>
-                        <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettext(
-                               'Zur Veranstaltung %{ title }',
-                               { title: course.attributes.title },
-                               true
-                           )">
-                            <studip-icon shape="seminar" :size="26"></studip-icon>
-                            <template v-if="course.attributes['course-number']">
-                                {{ course.attributes['course-number'] }}
-                            </template>
-                            {{ course.attributes.title }}
-                        </a>
-                        <div :id="'course-dates-' + course.id" class="course-dates"></div>
-                    </td>
-                    <td>
-                        <tree-course-details :course="course"></tree-course-details>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot v-if="totalCourseCount > limit">
-                <tr>
-                    <td colspan="2">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           v-model:current-offset="page"
-                        />
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-        <Teleport v-if="showExport" to="#export-widget" name="sidebar-export">
-            <tree-export-widget v-if="courses.length > 0"
-                                :title="$gettext('Veranstaltungen exportieren')" :url="exportUrl()"
-                                :export-data="courses"></tree-export-widget>
-        </Teleport>
-        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
-            <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
-        </Teleport>
     </article>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import { TreeMixin } from '../../mixins/TreeMixin';
-import TreeExportWidget from './TreeExportWidget.vue';
 import TreeBreadcrumb from './TreeBreadcrumb.vue';
 import TreeNodeTile from './TreeNodeTile.vue';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import TreeCourseDetails from './TreeCourseDetails.vue';
-import AssignLinkWidget from './AssignLinkWidget.vue';
-import StudipPagination from '../StudipPagination.vue';
 
 export default {
     name: 'StudipTreeList',
     components: {
-        draggable, StudipProgressIndicator, TreeExportWidget, TreeBreadcrumb, TreeNodeTile, TreeCourseDetails,
-        AssignLinkWidget, StudipPagination
+        draggable, StudipProgressIndicator, TreeBreadcrumb, TreeNodeTile
     },
     mixins: [ TreeMixin ],
     emits: ['change-current-node', 'sort-tree-children'],
@@ -197,14 +131,10 @@ export default {
             type: Boolean,
             default: false
         },
-        withCourseAssign: {
-            type: Boolean,
-            default: false
-        },
         showStructureAsNavigation: {
             type: Boolean,
             default: false
-        }
+        },
     },
     data() {
         return {
@@ -292,12 +222,6 @@ export default {
 
         if (this.withCourses) {
              this.courses = await this.fetchNodeCourses(this.currentNode.id);
-//             , 0, this.semester, this.semClass)
-//                 .then(courses => {
-// //                    this.totalCourseCount = courses.data.meta.page.total;
-// //                    this.offset = 0;
-// //                    this.courses = courses.data.data;
-//                 });
         }
 
         this.globalOn('open-tree-node', node => {

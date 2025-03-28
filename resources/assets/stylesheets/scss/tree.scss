@@ -14,7 +14,7 @@ $tree-outline: 1px solid var(--light-gray-color-40);
         }
 
         .contentbar {
-            display: relative;
+            display: flex;
 
             .contentbar-wrapper-right {
                 display: inherit;
@@ -308,23 +308,6 @@ $tree-outline: 1px solid var(--light-gray-color-40);
                 }
             }
         }
-
-        table {
-            tr {
-                td {
-                    line-height: 24px;
-                    padding: 10px;
-                    vertical-align: top;
-
-                    a {
-                        img {
-                            margin-right: 5px;
-                            vertical-align: bottom;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /* Display as table */
@@ -365,6 +348,23 @@ $tree-outline: 1px solid var(--light-gray-color-40);
                                 text-decoration: underline;
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    .studip-tree-courses-table {
+        tr {
+            td {
+                line-height: 24px;
+                padding: 10px;
+                vertical-align: top;
+
+                a {
+                    img {
+                        margin-right: 5px;
+                        vertical-align: bottom;
                     }
                 }
             }

@@ -19,19 +19,44 @@
                        :with-export="withExport"
                        :show-structure-as-navigation="showStructureAsNavigation"
                        :assignable="assignable"
-                       :with-course-assign="withCourseAssign"
+                       :page="currentPage"
                        @change-current-node="changeCurrentNode"
             ></component>
+
+            <tree-course-table :courses="courses">
+                <template #pagination
+                          v-if="totalCourseCount > limit"
+                >
+                    <studip-pagination :items-per-page="limit"
+                                       :total-items="totalCourseCount"
+                                       v-model:current-offset="currentPage"
+                    />
+                </template>
+            </tree-course-table>
         </div>
         <div v-else class="studip-tree">
             <tree-search-result :search-config="searchConfig"></tree-search-result>
         </div>
-        <Teleport v-if="withSearch" to="#search-widget" name="sidebar-search">
-            <search-widget v-if="currentNode" :min-length="3" ref="searchWidget"></search-widget>
+
+        <Teleport v-if="showExport && courses.length > 0" to="#export-widget" name="sidebar-export">
+            <tree-export-widget :title="$gettext('Veranstaltungen exportieren')"
+                                :url="exportUrl"
+                                :export-data="courses"
+            />
         </Teleport>
+
+        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
+            <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
+        </Teleport>
+
+        <Teleport v-if="withSearch" to="#search-widget" name="sidebar-search">
+            <search-widget v-if="currentNode" :min-length="3" ref="searchWidget" />
+        </Teleport>
+
         <Teleport v-if="!editable && !isSearching && !isLoading && currentNode"
                         to="#views-widget"
-                        name="sidebar-views">
+                        name="sidebar-views"
+        >
             <studip-tree-view-widget :config="viewConfig" />
         </Teleport>
     </div>
@@ -48,17 +73,25 @@ import StudipTreeList from './StudipTreeList.vue';
 import StudipTreeTable from './StudipTreeTable.vue';
 import StudipTreeNode from './StudipTreeNode.vue';
 import TreeSearchResult from './TreeSearchResult.vue';
+import TreeCourseTable from "./TreeCourseTable.vue";
+import StudipPagination from "../StudipPagination.vue";
+import TreeExportWidget from "./TreeExportWidget.vue";
+import AssignLinkWidget from "./AssignLinkWidget.vue";
 
 export default {
     name: 'StudipTree',
     components: {
-        TreeSearchResult,
+        AssignLinkWidget,
         SearchWidget,
-        StudipTreeViewWidget,
+        StudipPagination,
         StudipProgressIndicator,
         StudipTreeList,
+        StudipTreeNode,
         StudipTreeTable,
-        StudipTreeNode
+        StudipTreeViewWidget,
+        TreeCourseTable,
+        TreeExportWidget,
+        TreeSearchResult
     },
     mixins: [ TreeMixin ],
     props: {
@@ -153,8 +186,11 @@ export default {
     },
     data() {
         return {
+            courses: [],
+
             nodeId: this.startId,
             startNode: null,
+            currentPage: 0,
             currentNode: this.startNode,
             loaded: false,
             isLoading: false,
@@ -165,6 +201,12 @@ export default {
         }
     },
     computed: {
+        exportUrl() {
+            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
+        },
+        showExport() {
+            return this.withExport && document.getElementById('export-widget');
+        },
         viewComponent() {
             if (this.startNode && this.viewType === 'list') {
                 return StudipTreeList;
@@ -192,9 +234,6 @@ export default {
             this.$nextTick(() => {
                 document.getElementById('tree-breadcrumb-' + node.attributes.id)?.focus();
             });
-        },
-        exportUrl() {
-            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
         },
         injectSearchterm(targetId, searchterm) {
             const form = document.getElementById(targetId).querySelector('form');
@@ -262,6 +301,17 @@ export default {
             document.getElementById('semclass-selector-searchterm')?.remove();
             this.isSearching = false;
         });
+    },
+    watch: {
+        async currentNode(node) {
+            if (this.withCourses) {
+                this.courses = await this.fetchNodeCourses(node.id);
+            }
+        },
+        currentPage(current) {
+            this.updateOffset(current);
+        }
     }
+
 }
 </script>

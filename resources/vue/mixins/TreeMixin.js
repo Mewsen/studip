@@ -11,8 +11,7 @@ export const TreeMixin = {
     data() {
         return {
             currentNode: null,
-            showProgressIndicatorTimeout: 500,
-            page: 0
+            showProgressIndicatorTimeout: 500
         };
     },
     computed: {
@@ -28,7 +27,7 @@ export const TreeMixin = {
         ]),
 
         totalCourseCount() {
-            return this.getNodeCoursesTotal(this.currentNode.id);
+            return this.getNodeCoursesTotal(this.currentNode?.id);
         }
     },
     methods: {
@@ -84,14 +83,8 @@ export const TreeMixin = {
         nodeUrl(node_id, semester = null ) {
             return STUDIP.URLHelper.getURL('', { node_id, semester })
         },
-        courseUrl(courseId) {
-            return STUDIP.URLHelper.getURL('dispatch.php/course/details/index/' + courseId)
-        },
         profileUrl(username) {
             return STUDIP.URLHelper.getURL('dispatch.php/profile', { username })
-        },
-        exportUrl() {
-            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
         },
         editNode(editUrl, id) {
             STUDIP.Dialog.fromURL(
@@ -128,11 +121,6 @@ export const TreeMixin = {
                 id: this.currentNode.id,
                 page
             });
-        }
-    },
-    watch: {
-        page(current) {
-            this.updateOffset(current);
         }
     }
 }

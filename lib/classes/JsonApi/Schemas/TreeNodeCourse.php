@@ -34,8 +34,29 @@ final class TreeNodeCourse extends SchemaProvider
         );
     }
 
+    /**
+     * @param Model $resource
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [];
+    }
+
+    /**
+     * @param Model $resource
+     */
+    public function hasResourceMeta($resource): bool
+    {
+        $schema = $this->schemaContainer->getSchema($resource->getCourse());
+        return $schema->hasResourceMeta($resource->getCourse());
+    }
+
+    /**
+     * @param Model $resource
+     */
+    public function getResourceMeta($resource)
+    {
+        $schema = $this->schemaContainer->getSchema($resource->getCourse());
+        return $schema->getResourceMeta($resource->getCourse());
     }
 }
