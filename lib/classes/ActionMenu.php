@@ -6,50 +6,52 @@
  * @license GPL2 or any later version
  * @since   Stud.IP 3.5
  */
-class ActionMenu
+class ActionMenu implements Stringable
 {
-    const TEMPLATE_FILE_SINGLE   = 'shared/action-menu-single.php';
-    const TEMPLATE_FILE_MULTIPLE = 'shared/action-menu.php';
+    private const TEMPLATE_FILE_SINGLE   = 'shared/action-menu-single.php';
+    private const TEMPLATE_FILE_MULTIPLE = 'shared/action-menu.php';
 
-    const RENDERING_MODE_ICONS = 'icons';
-    const RENDERING_MODE_MENU = 'menu';
+    public const RENDERING_MODE_ICONS = 'icons';
+    public const RENDERING_MODE_MENU = 'menu';
 
     /**
      * Returns an instance.
-     *
-     * @return ActionMenu
      */
     public static function get()
     {
-        return new self();
+        return new static();
     }
 
-    private $actions = [];
-    private $attributes = [];
-    private $title;
+    protected array $actions = [];
+    protected array $attributes = [];
+    protected string $title;
+    protected string $aria_label;
+    protected string $image = '<span></span><span></span><span></span>';
+    protected array $image_attributes = [];
 
-    private $condition_all = null;
-    private $condition     = true;
+    protected ?bool $condition_all = null;
+    protected bool $condition     = true;
 
     /**
      * @var string $context The context for the action menu.
      */
-    protected $context = '';
+    protected string $context = '';
 
     /**
      * @var string|null $rendering_mode The forced rendering mode
      */
-    protected $rendering_mode = null;
+    protected ?string $rendering_mode = null;
 
     /**
      * Private constructur.
      *
      * @see ActionMenu::get()
      */
-    private function __construct()
+    private final function __construct()
     {
         $this->addCSSClass('action-menu');
         $this->setTitle(_('Aktionen'));
+        $this->setAriaLabel(_('Aktionsmenü'));
     }
 
     /**
@@ -57,7 +59,7 @@ class ActionMenu
      * the item will not be added.
      *
      * @param bool $state State of the condition
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function condition($state)
     {
@@ -71,7 +73,7 @@ class ActionMenu
      * no items will be added.
      *
      * @param bool $state State of the condition
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function conditionAll($state)
     {
@@ -121,7 +123,7 @@ class ActionMenu
      * @param array              $attributes Optional attributes to add to the <a> tag
      * @param mixed              $index      Optional index to access this link (remove for example) afterwards
      * @param mixed              $before     Optional index to insert this link before the link with given index.
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addLink($url, $label = "", Icon $icon = null, array $attributes = [], $index = null, $before = null)
     {
@@ -147,7 +149,6 @@ class ActionMenu
             $index = $index ?: md5($action['link'] . json_encode($action['attributes']));
             $action['index'] = $index;
             //now insert it possibly at the desired position:
-            $before_key = null;
             if ($before) {
                 $before_key = $this->getKeyForIndex($before);
                 if ($before_key !== null) {
@@ -191,7 +192,7 @@ class ActionMenu
      * @param String $label      Textual representation of the name
      * @param mixed  $icon       Optional icon (as Icon object)
      * @param array  $attributes Optional attributes to add to the <a> tag
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addButton($name, $label, Icon $icon = null, array $attributes = [])
     {
@@ -215,7 +216,7 @@ class ActionMenu
      * @param String $label      Label displayed in the menu
      * @param bool   $checked    Checked state of the action
      * @param array  $attributes Optional attributes to add to the button
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addCheckbox($name, $label, bool $checked, array $attributes = [])
     {
@@ -234,7 +235,7 @@ class ActionMenu
      * @param String $label      Label displayed in the menu
      * @param bool   $checked    Checked state of the action
      * @param array  $attributes Optional attributes to add to the button
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addRadioButton($name, $label, bool $checked, array $attributes = [])
     {
@@ -250,7 +251,7 @@ class ActionMenu
      * Adds a MultiPersonSearch object to the list of actions.
      *
      * @param MultiPersonSearch $mp MultiPersonSearch object
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addMultiPersonSearch(MultiPersonSearch $mp)
     {
@@ -267,9 +268,9 @@ class ActionMenu
     /**
      * Adds a separator line to the list of actions.
      *
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
-    public function addSeparator(): ActionMenu
+    public function addSeparator(): static
     {
         if ($this->checkCondition()) {
             $this->actions[] = [
@@ -284,7 +285,7 @@ class ActionMenu
      * Adds a css classs to the root element in html.
      *
      * @param string $class Name of the css class
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
     public function addCSSClass($class)
     {
@@ -325,20 +326,28 @@ class ActionMenu
         $template_file = $this->getRenderingMode() === self::RENDERING_MODE_ICONS
                        ? self::TEMPLATE_FILE_SINGLE
                        : self::TEMPLATE_FILE_MULTIPLE;
-;
+
+        /** @var Flexi\Template $template */
         $template = $GLOBALS['template_factory']->open($template_file);
-        $template->actions = array_map(function ($action): array {
-            $action['disabled'] = isset($action['attributes']['disabled'])
-                     && $action['attributes']['disabled'] !== false;
-            if ($action['disabled'] && $action['icon']) {
-                $action['icon'] = $action['icon']->copyWithRole(Icon::ROLE_INACTIVE);
-            }
-            return $action;
-        }, $this->actions);
-        $template->title = $this->title;
-        $template->action_menu_title = $this->generateTitle();
-        $template->attributes = $this->attributes;
-        return $template->render();
+        $template->set_attribute('actions', array_map(
+            function ($action): array {
+                $action['disabled'] = isset($action['attributes']['disabled'])
+                         && $action['attributes']['disabled'] !== false;
+                if ($action['disabled'] && $action['icon']) {
+                    $action['icon'] = $action['icon']->copyWithRole(Icon::ROLE_INACTIVE);
+                }
+                return $action;
+            },
+            $this->actions
+        ));
+        return $template->render([
+            'title'             => $this->title,
+            'action_menu_title' => $this->generateTitle(),
+            'aria_label'        => $this->aria_label,
+            'attributes'        => $this->attributes,
+            'image'             => $this->image,
+            'image_attributes'  => $this->image_attributes,
+        ]);
     }
 
     /**
@@ -367,7 +376,7 @@ class ActionMenu
      *
      * @param string $context The context to be set.
      *
-     * @return ActionMenu The action menu instance (to allow chaining).
+     * @return static The action menu instance (to allow chaining).
      */
     public function setContext(string $context)
     {
@@ -380,7 +389,7 @@ class ActionMenu
      * Forces an explicit rendering mode.
      *
      * @param string|null $mode The desired rendering mode or null for automatic detection
-     * @return ActionMenu The action menu instance to allow chaining
+     * @return static The action menu instance to allow chaining
      * @throws Exception
      */
     public function setRenderingMode(?string $mode): ActionMenu
@@ -423,9 +432,9 @@ class ActionMenu
      *
      * @param string $title display title
      *
-     * @return ActionMenu instance to allow chaining
+     * @return static instance to allow chaining
      */
-    public function setTitle(string $title): ActionMenu
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -445,8 +454,18 @@ class ActionMenu
                 $this->title,
                 $this->context
             );
-        } else {
-            return $this->title;
         }
+
+        return $this->title;
+    }
+
+    /**
+     * Sets the label of the menu.
+     *
+     * @param string $label label for the menu
+     */
+    public function setAriaLabel($label)
+    {
+        $this->aria_label = $label;
     }
 }

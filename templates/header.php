@@ -170,40 +170,8 @@ if ($navigation) {
                 <? if (Navigation::hasItem('/avatar')): ?>
                     <li id="avatar-wrapper">
                         <form id="avatar-menu" method="post">
-                        <?php
-                            $action_menu = ContentGroupMenu::get();
-                            $action_menu->addCSSClass('avatar-menu');
-                            $action_menu->addAttribute('data-action-menu-reposition', 'false');
-                            $action_menu->setLabel(User::findCurrent()->getFullName());
-                            $action_menu->setAriaLabel(_('Profilmenü'));
-                            $action_menu->setIcon(
-                                Avatar::getAvatar(User::findCurrent()->id)->getImageTag(),
-                                ['id' => 'header_avatar_image_link']
-                            );
-
-                            foreach (Navigation::getItem('/avatar') as $subnav) {
-                                if ($subnav->getRenderAsButton()) {
-                                    $action_menu->addButton(
-                                        'logout',
-                                        $subnav->getTitle(),
-                                        $subnav->getImage(),
-                                        array_merge(
-                                            $subnav->getLinkAttributes(),
-                                            ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
-                                        )
-                                    );
-                                } else {
-                                    $action_menu->addLink(
-                                        URLHelper::getURL($subnav->getURL(), [], true),
-                                        $subnav->getTitle(),
-                                        $subnav->getImage(),
-                                        $subnav->getLinkAttributes()
-                                    );
-                                }
-                            }
-                            SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
-                        ?>
-                        <?= $action_menu->render(); ?>
+                        <?= AvatarMenu::forUser(User::findCurrent())->withNavigation('/avatar') ?>
+                        <?php SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false); ?>
                         </form>
                     </li>
                 <? endif; ?>

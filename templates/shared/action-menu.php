@@ -10,16 +10,22 @@
  *     attributes: array
  * }> $actions
  * @var string $title
+ * @var string $aria_label
  * @var string $action_menu_title
  * @var array $attributes
+ * @var string $image
+ * @var array $image_attributes
  */
 ?>
 <? // class "action-menu" will be set from API ?>
 <div <?= arrayToHtmlAttributes($attributes) ?>>
-    <button class="action-menu-icon" aria-expanded="false" title="<?= htmlReady($action_menu_title) ?>">
-        <span></span>
-        <span></span>
-        <span></span>
+    <button class="action-menu-icon"
+            aria-expanded="false"
+            title="<?= htmlReady($action_menu_title) ?>"
+            aria-label="<?= htmlReady($action_menu_title) ?>"
+            <?= arrayToHtmlAttributes($image_attributes) ?>
+    >
+        <?= $image ?>
     </button>
     <div class="action-menu-content">
         <div class="action-menu-title" aria-hidden="true">
