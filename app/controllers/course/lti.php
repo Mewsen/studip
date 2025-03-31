@@ -988,13 +988,60 @@ class Course_LtiController extends StudipController
             CourseConfig::get($this->course_id)->store('SHARE_COURSE_AS_LTI_TOOL', $this->share_as_tool ? '1' : '0');
 
             if (!$old_config_value && $this->share_as_tool) {
-                //Hide the participants page:
+                //Sharing as LTI tool has been enabled. This calls for additional measures.
 
+                //Hide the participants page:
+                ToolActivation::deleteBySql(
+                    "`range_id` = :course_id
+                     AND `plugin_id` = (
+                         SELECT `pluginid`
+                         FROM `plugins`
+                         WHERE `pluginclassname` = 'CoreParticipants'
+                     )",
+                    ['course_id' => $this->course_id]
+                );
 
                 //Inform lecturers that the course is now shared as LTI tool:
+                $lecturers = CourseMember::findByCourseAndStatus($this->course_id, ['tutor', 'dozent']);
+                foreach ($lecturers as $lecturer) {
+                    setTempLanguage($lecturer->user->preferred_language);
+
+                    $mail_title = studip_interpolate(
+                        _("%{course_name} wird nun als LTI-Tool freigegeben"),
+                        ['course_name' => $this->course->getFullName()]
+                    );
+                    $mail_body = studip_interpolate(
+                        _(
+                            "%{course_name} wird nun als LTI-Tool freigegeben.\n"
+                            . "Dies bedeutet, dass Personen aus externen Anwendungen nun Zugang zu Inhalten der Veranstaltung haben."
+                        ),
+                        ['course_name' => $this->course->getFullName()]
+                    );
+
+                    StudipMail::sendMessage($lecturer->user->username, $mail_title, $mail_body);
+                    restoreLanguage();
+                }
 
                 //Inform participants that the course is now accessible for external persons:
+                $participants = CourseMember::findByCourseAndStatus($this->course_id, ['user', 'autor']);
+                foreach ($participants as $participant) {
+                    setTempLanguage($participant->user->preferred_language);
 
+                    $mail_title = studip_interpolate(
+                        _("%{course_name} wird nun als LTI-Tool freigegeben"),
+                        ['course_name' => $this->course->getFullName()]
+                    );
+                    $mail_body = studip_interpolate(
+                        _(
+                            "%{course_name} wird nun als LTI-Tool freigegeben.\n"
+                            . "Dies bedeutet, dass Personen aus externen Anwendungen nun Zugang zu Inhalten der Veranstaltung haben."
+                        ),
+                        ['course_name' => $this->course->getFullName()]
+                    );
+
+                    StudipMail::sendMessage($participant->user->username, $mail_title, $mail_body);
+                    restoreLanguage();
+                }
             }
         }
         $this->redirect('course/lti/share_as_tool', ['cid' => $this->course_id]);
