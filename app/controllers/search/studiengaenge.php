@@ -547,7 +547,7 @@ class Search_StudiengaengeController extends MVVController
         foreach ($this->semesters as $sem) {
             $options[$sem['semester_id']] = $sem['name'];
         }
-        $widget->setOptions($options, $this->active_sem->id);
+        $widget->setOptions($options, $this->active_sem->id ?? null);
         $widget->setMaxLength(100);
         $sidebar->addWidget($widget, 'sem_filter');
     }

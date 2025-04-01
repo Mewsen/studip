@@ -1772,8 +1772,8 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             if ($this->assigned_course_date instanceof CourseDate) {
                 $course = $this->assigned_course_date->course;
                 if ($course instanceof Course) {
-                    $has_perms = $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id);
-                    $vis_perms = $GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM, $user->id);
+                    $has_perms = $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id ?? null);
+                    $vis_perms = $GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM, $user->id ?? null);
                     if ($has_perms || $vis_perms || $course->visible) {
                         $event_title = $this->getAssignedUserName();
                     }
