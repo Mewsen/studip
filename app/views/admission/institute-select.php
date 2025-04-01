@@ -13,10 +13,12 @@
                 <?= htmlReady(my_substr($institute["name"] . ' (' . $institute["count"] . ')',0,100));?>
             </option>
             <? if ($institute['is_fak'] === 'all') : ?>
-                <? $num_inst = $institute['num_inst']; for ($i = 0; $i < $num_inst; ++$i) : ?>
-                    <?
-                    $institute = next($institutes);
-                    $institut_id = key($institutes);
+                <? $num_inst = $institute['num_inst'];
+                    for ($i = 0; $i < $num_inst; ++$i):
+                        $institute = next($institutes);
+                        $institut_id = key($institutes);
+
+                        if (!$institute) continue;
                     ?>
                     <option value="<?= $institut_id?>" <?=($current_institut_id == $institut_id ? 'selected' : '')?> class="nested-item">
                         <?= htmlReady(my_substr($institute['name'] . ' (' . $institute['count'] . ')',0,100));?>

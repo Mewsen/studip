@@ -43,20 +43,7 @@
     </h3>
     <h5 style="text-align: right"><?= sprintf(_('Datum %s'), strftime('%x', time()))?></h5>
 <? else: ?>
-    <h3>Modules for
-        <? if (!is_null($StgteilVersion->studiengangteil->fach->name)
-            && strlen($StgteilVersion->studiengangteil->fach->name) > 0) : ?>
-                <?= htmlReady($StgteilVersion->studiengangteil->fach->name) ?>
-                <? if (count($StgteilVersion->studiengangteil->studiengang) > 0) : ?>
-                    <? if (!is_null($StgteilVersion->studiengangteil->studiengang->zusatz)
-                        && strlen($StgteilVersion->studiengangteil->studiengang->zusatz) > 0) : ?>
-                            <?= htmlReady($StgteilVersion->studiengangteil->studiengang->zusatz) ?>
-                    <? endif; ?>
-                <? endif; ?>
-        <? else : ?>
-            <?= $StgteilVersion->studiengangteil->getDisplayName() ?>
-        <? endif; ?>
-    </h3>
+    <h3>Modules for <?= $StgteilVersion->studiengangteil->getDisplayName() ?></h3>
     <h6 style="text-align: right">Date <?= strftime('%x', time())?></h6>
 <? endif; ?>
 <? foreach($module as $part_id =>  $values) : ?>

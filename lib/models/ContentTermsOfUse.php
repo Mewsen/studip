@@ -205,10 +205,15 @@ class ContentTermsOfUse extends SimpleORMap
                 $course = Course::find($context_id);
                 $timed_admission = $course->getAdmissionTimeFrame();
 
-                if ($course->admission_prelim
+                if (
+                    $course->admission_prelim
                     || $course->isPasswordProtected()
                     || $course->isAdmissionLocked()
-                    || (is_array($timed_admission) && $timed_admission['end_time'] > 0 && $timed_admission['end_time'] < time())
+                    || (
+                        $timed_admission
+                        && $timed_admission['end_time'] > 0
+                        && $timed_admission['end_time'] < time()
+                    )
                 ) {
                     return true;
                 }
