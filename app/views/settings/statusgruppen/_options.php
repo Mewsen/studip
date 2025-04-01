@@ -1,5 +1,11 @@
-<? if (!$data) return; ?>
-
+<?php
+if (!$data) {
+    return;
+}
+if (!isset($level)) {
+    $level = 0;
+}
+?>
 <? foreach ($data as $id => $row): ?>
     <option value="<?= $id ?>" <? if ($row['user_there']) echo 'disabled'; ?>>
     <? for ($i = 1; $i <= $level; $i++): ?>

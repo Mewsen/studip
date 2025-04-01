@@ -717,7 +717,7 @@ function get_users_online_count($active_time = 10)
         $online_count = $statement->fetchColumn();
         $cache->write("online_count/{$active_time}", $online_count, 180);
     }
-    if ($GLOBALS['user']->id && $GLOBALS['user']->id !== 'nobody') {
+    if (User::findCurrent()) {
         --$online_count;
     }
     return $online_count > 0 ? $online_count : 0;

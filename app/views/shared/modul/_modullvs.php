@@ -39,7 +39,7 @@
             <? if (!empty($show_synopse)) : ?>
             <tr data-mvv-id="<?= $modulTeil->getId(); ?>" data-mvv-type="modulteil">
                 <td data-mvv-field="mvv_modulteil.nummer mvv_modulteil.num_bezeichnung"><strong><?= htmlReady($name_kurz) ?></strong></td>
-                <td data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?></td>
+                <td data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?? '' ?></td>
                 <td data-mvv-field="mvv_modulteil_deskriptor.bezeichnung"><?= htmlReady($modulTeilDeskriptor->bezeichnung) ?></td>
                 <td style="text-align: right;" data-mvv-field="mvv_modulteil.sws"><?= htmlReady($modulTeil->sws) ?: '' ?></td>
                 <td style="text-align: right;" data-mvv-field="mvv_modulteil.wl_praesenz mvv_modulteil_deskriptor.kommentar_wl_praesenz"><?= $modulTeil->wl_praesenz ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_praesenz) ? sprintf(' (%s)', formatReady($modulTeilDeskriptor->kommentar_wl_praesenz)) : '' ?></td>
@@ -51,7 +51,7 @@
             <? else : ?>
             <tr data-mvv-id="<?= $modulTeil->getId(); ?>" data-mvv-type="modulteil">
                 <td data-mvv-field="mvv_modulteil.nummer mvv_modulteil.num_bezeichnung"><strong><?= htmlReady($name_kurz) ?></strong></td>
-                <td data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?></td>
+                <td data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?? '' ?></td>
                 <td data-mvv-field="mvv_modulteil_deskriptor.bezeichnung"><?= htmlReady($modulTeilDeskriptor->bezeichnung) ?></td>
                 <td style="text-align: right;" data-mvv-field="mvv_modulteil.sws"><?= htmlReady($modulTeil->sws) ?: '' ?></td>
                 <td style="text-align: right;" data-mvv-field="mvv_modulteil.wl_praesenz mvv_modulteil_deskriptor.kommentar_wl_praesenz"><?= $modulTeil->wl_praesenz ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_praesenz) ? tooltipIcon(formatReady($modulTeilDeskriptor->kommentar_wl_praesenz)) : '' ?></td>

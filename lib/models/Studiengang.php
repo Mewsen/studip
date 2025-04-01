@@ -514,12 +514,12 @@ class Studiengang extends ModuleManagementModelTreeItem
         $placeholders = [
             'study_course_name',
             'degree_name',
-            'degree_category'
+            'degree_category',
         ];
         $replacements = [
             $this->name,
-            $this->abschluss->name,
-            $this->abschluss->category->name
+            $this->abschluss->name ?? '?',
+            $this->abschluss->category->name ?? '?',
         ];
         return self::formatDisplayName($template, $placeholders, $replacements);
     }

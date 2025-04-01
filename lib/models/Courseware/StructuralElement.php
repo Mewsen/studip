@@ -267,6 +267,10 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
      */
     public function canEdit($user): bool
     {
+        if (!$user) {
+            return false;
+        }
+
         if ($GLOBALS['perm']->have_perm('root', $user->id)) {
             return true;
         }
@@ -322,13 +326,13 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
     public function canRead($user): bool
     {
         // root darf immer
-        if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+        if ($user && $GLOBALS['perm']->have_perm('root', $user->id)) {
             return true;
         }
 
         switch ($this->range_type) {
             case 'user':
-                if ($this->range_id === $user->id) {
+                if ($user && $this->range_id === $user->id) {
                     return true;
                 }
 
@@ -339,7 +343,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
 
                 return $this->hasReadApproval($user);
             case 'course':
-                if (!$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
+                if (!$user || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
                     return false;
                 }
 
@@ -361,20 +365,20 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
     public function canVisit($user): bool
     {
         // root darf immer
-        if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+        if ($user && $GLOBALS['perm']->have_perm('root', $user->id)) {
             return true;
         }
 
         switch ($this->range_type) {
             case 'user':
-                if ($this->range_id === $user->id) {
+                if ($user && $this->range_id === $user->id) {
                     return true;
                 }
 
                 return $this->hasReadApproval($user);
 
             case 'course':
-                if (!$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
+                if (!$user || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
                     return false;
                 }
 
@@ -1219,7 +1223,7 @@ SQL;
         if ($this->range_type === 'user') {
             return 'contents/courseware/courseware/' . $unit->id . '#/structural_element/' . $this->id;
         }
- 
+
         return 'course/courseware/courseware/' . $unit->id . '?cid=' . $this->range_id . '#/structural_element/' . $this->id;
     }
 
