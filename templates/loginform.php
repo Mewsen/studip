@@ -25,7 +25,7 @@ if (!match_route('web_migrate.php')) {
 <main id="content">
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
     <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
-    <? if ($loginerror): ?>
+    <? if (!empty($loginerror)): ?>
         <!-- failed login code -->
         <?= MessageBox::error(_('Bei der Anmeldung trat ein Fehler auf!'), [
             $error_msg,
@@ -48,9 +48,9 @@ if (!match_route('web_migrate.php')) {
             <section>
                 <label>
                     <?= _('Benutzername:') ?>
-                    <input type="text" <?= mb_strlen($uname) ? '' : 'autofocus' ?>
+                    <input type="text" <?= mb_strlen($uname ?? '') ? '' : 'autofocus' ?>
                            id="loginname" name="loginname"
-                           value="<?= htmlReady($uname) ?>"
+                           value="<?= htmlReady($uname ?? '') ?>"
                            size="20"
                            autocorrect="off" autocapitalize="off">
                 </label>
@@ -58,9 +58,9 @@ if (!match_route('web_migrate.php')) {
             <section>
                 <label for="password">
                     <?= _('Passwort:') ?>
-                    <input type="password" <?= mb_strlen($uname) ? 'autofocus' : '' ?>
+                    <input type="password" <?= mb_strlen($uname ?? '') ? 'autofocus' : '' ?>
                            id="password" name="password" size="20"
-                           <?= $loginerror ? 'aria-describedby="messagebox-0"' : '' ?>
+                           <?= !empty($loginerror) ? 'aria-describedby="messagebox-0"' : '' ?>
                     >
                 </label>
             </section>
@@ -80,7 +80,7 @@ if (!match_route('web_migrate.php')) {
             <? endif; ?>
                     <?= _('Passwort vergessen') ?>
                 </a>
-            <? if ($self_registration_activated): ?>
+            <? if (!empty($self_registration_activated)): ?>
                 /
                 <a href="<?= URLHelper::getLink('register1.php?cancel_login=1') ?>">
                     <?= _('Registrieren') ?>
