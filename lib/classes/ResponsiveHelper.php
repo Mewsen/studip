@@ -191,61 +191,99 @@ class ResponsiveHelper
      */
     protected static function getMyCoursesNavigation($activated): array
     {
-        if (!$GLOBALS['perm']->have_perm('admin')) {
-            $sem_data = Semester::getAllAsArray();
+        $cache = \Studip\Cache\Factory::getCache();
+        $cached = $cache->read("my_courses_of_" . User::findCurrent()->id);
 
-            $currentIndex = -1;
+        if (!$cached) {
 
-            foreach ($sem_data as $index => $semester) {
-                if (!empty($semester['current'])) {
-                    $currentIndex = $index;
-                    break;
+            if (!$GLOBALS['perm']->have_perm('admin')) {
+
+                $sem_data = Semester::getAllAsArray();
+
+                $currentIndex = -1;
+
+                foreach ($sem_data as $index => $semester) {
+                    if (!empty($semester['current'])) {
+                        $currentIndex = $index;
+                        break;
+                    }
                 }
+
+                $params = [
+                    'deputies_enabled' => Config::get()->DEPUTIES_ENABLE
+                ];
+
+                $courses = MyRealmModel::getCourses($currentIndex, $currentIndex, $params);
+
+            } else {
+                $courses = [];
             }
 
-            $params = [
-                'deputies_enabled' => Config::get()->DEPUTIES_ENABLE
-            ];
+            $items = [];
+            foreach ($courses as $course) {
+                $avatar = CourseAvatar::getAvatar($course->id);
+                $hasAvatar = $avatar->is_customized();
+                $icon = $hasAvatar
+                    ? $avatar->getURL(Avatar::SMALL)
+                    : Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
 
-            $courses = MyRealmModel::getCourses($currentIndex, $currentIndex, $params);
+                $items['browse/my_courses/' . $course->id] = [
+                    'icon' => $icon,
+                    'avatar' => $hasAvatar,
+                    'title' => $course->getFullName(),
+                    'url' => URLHelper::getURL('dispatch.php/course/details', ['cid' => $course->id]),
+                    'parent' => 'browse/my_courses',
+                    'path' => 'browse/my_courses/' . $course->id,
+                    'visible' => true,
+                    'active' => Context::getId() === $course->id,
+                    'children' => self::getRangeNavigation(
+                        $course,
+                        'browse/my_courses/' . $course->id,
+                        $activated
+                    ),
+                ];
+
+            }
+
+            $cache->write("my_courses_of_" . User::findCurrent()->id, json_encode($items));
+
         } else {
-            $courses = [];
+
+            $items = json_decode($cached, true);
+
         }
 
-        // Add current course to list.
+        // Add current course/institute to list if not already present. This should not be cached.
         if (Context::get()) {
-            $courses[] = Context::get();
-        }
 
+            if (Context::isInstitute()) {
+                $avatarClass = InstituteAvatar::class;
+                $url = 'dispatch.php/institute/overview';
+                $standardIcon = Icon::create('institute', Icon::ROLE_INFO_ALT)->asImagePath();
+            } else {
+                $avatarClass = CourseAvatar::class;
+                $url = 'dispatch.php/course/details';
+                $standardIcon = Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
+            }
 
-        if (Context::isInstitute()) {
-            $avatarClass = InstituteAvatar::class;
-            $url = 'dispatch.php/institute/overview';
-            $standardIcon = Icon::create('institute', Icon::ROLE_INFO_ALT)->asImagePath();
-        } else {
-            $avatarClass = CourseAvatar::class;
-            $url = 'dispatch.php/course/details';
-            $standardIcon = Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
-        }
-
-        $items = [];
-        foreach ($courses as $course) {
             $avatar = $avatarClass::getAvatar($course->id);
             $hasAvatar = $avatar->is_customized();
-            $icon = $hasAvatar ? $avatar->getURL(Avatar::SMALL) : $standardIcon;
+            $icon = $hasAvatar
+                ? $avatar->getURL(Avatar::SMALL)
+                : $standardIcon;
 
-            $items['browse/my_courses/' . $course->id] = [
-                'icon'     => $icon,
-                'avatar'   => $hasAvatar,
-                'title'    => $course->getFullName(),
-                'url'      => URLHelper::getURL($url, ['cid' => $course->id]),
-                'parent'   => 'browse/my_courses',
-                'path'     => 'browse/my_courses/' . $course->id,
-                'visible'  => true,
-                'active'   => Context::getId() === $course->id,
+            $items['browse/my_courses/' . Context::getId()] = [
+                'icon' => $icon,
+                'avatar' => $hasAvatar,
+                'title' => Context::get()->getFullName(),
+                'url' => URLHelper::getURL($url, ['cid' => Context::getId()]),
+                'parent' => 'browse/my_courses',
+                'path' => 'browse/my_courses/' . Context::getId(),
+                'visible' => true,
+                'active' => true,
                 'children' => self::getRangeNavigation(
-                    $course,
-                    'browse/my_courses/' . $course->id,
+                    Context::get(),
+                    'browse/my_courses/' . Context::getId(),
                     $activated
                 ),
             ];
