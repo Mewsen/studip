@@ -1283,7 +1283,7 @@ class SingleCalendar
                 if (empty($term[$row][$col])) {
                     $term[$row][$col] = '';
                 }
-                while ($term[$row][$col] != '' && $term[$row][$col] != '#') {
+                while (!empty($term[$row][$col]) && $term[$row][$col] !== '#') {
                     $col++;
                 }
                 $term[$row][$col] = $em['events'][$w];
