@@ -32,7 +32,7 @@ $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
 
     <div id="login_flex">
         <div>
-            <? if ($loginerror): ?>
+            <? if (!empty($loginerror)): ?>
                 <!-- failed login code -->
                 <?= MessageBox::error(_('Bei der Anmeldung trat ein Fehler auf!'), [
                     $error_msg,

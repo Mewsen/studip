@@ -44,7 +44,7 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
                    autocomplete="current-password"
                    size="20"
                    required
-                   <?= $loginerror ? 'aria-describedby="messagebox-0"' : ''?>
+                   <?= !empty($loginerror) ? 'aria-describedby="messagebox-0"' : ''?>
             >
 
             <i id="password-toggle" tabindex="0" role="button" class="enter-accessible">
@@ -67,7 +67,7 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
     <input type="hidden" name="login_ticket" value="<?= Seminar_Session::get_ticket() ?>">
     <input type="hidden" name="resolution"  value="">
 
-    <div id="<?=$login_footer_id?>">
+    <div id="<?= $login_footer_id ?>">
         <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
 
         <? if (Config::get()->ENABLE_REQUEST_NEW_PASSWORD_BY_USER && in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])): ?>
