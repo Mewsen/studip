@@ -1,41 +1,62 @@
 <template>
     <div>
         <div v-if="!isSearching"
-             class="studip-tree" :class="{'studip-tree-navigatable': showStructureAsNavigation}">
+             class="studip-tree"
+             :class="{'studip-tree-navigatable': showStructureAsNavigation}"
+        >
             <studip-progress-indicator v-if="isLoading" :size="48"></studip-progress-indicator>
-            <studip-tree-list v-if="viewType === 'list' && startNode"  :with-children="withChildren"
-                              :visible-children-only="visibleChildrenOnly"
-                              :with-courses="withCourses" :semester="semester" :sem-class="semClass" :node="startNode"
-                              :breadcrumb-icon="breadcrumbIcon" :editable="editable" :edit-url="editUrl"
-                              :create-url="createUrl" :delete-url="deleteUrl" :with-export="withExport"
-                              :show-structure-as-navigation="showStructureAsNavigation" :assignable="assignable"
-                              :with-course-assign="withCourseAssign"
-                              @change-current-node="changeCurrentNode"></studip-tree-list>
-            <studip-tree-table v-else-if="viewType === 'table' && startNode" :with-children="withChildren"
-                               :visible-children-only="visibleChildrenOnly"
-                               :with-courses="withCourses" :semester="semester" :sem-class="semClass" :node="startNode"
-                               :breadcrumb-icon="breadcrumbIcon" :editable="editable" :edit-url="editUrl"
-                               :create-url="createUrl" :delete-url="deleteUrl" :with-export="withExport"
-                               :show-structure-as-navigation="showStructureAsNavigation" :assignable="assignable"
-                               :with-course-assign="withCourseAssign"
-                               @change-current-node="changeCurrentNode"></studip-tree-table>
-            <studip-tree-node v-else-if="viewType === 'tree' && startNode" :with-info="withInfo"
-                              :visible-children-only="visibleChildrenOnly" :node="startNode"
-                              :open-levels="openLevels" :openNodes="openNodes" :breadcrumb-icon="breadcrumbIcon"
-                              :editable="editable" :edit-url="editUrl" :create-url="createUrl" :delete-url="deleteUrl"
-                              :assignable="assignable" :assign-leaves-only="assignLeavesOnly"
-                              :not-assignable-nodes="notAssignableNodes"></studip-tree-node>
 
+            <component :is="viewComponent"
+                       :with-children="withChildren"
+                       :visible-children-only="visibleChildrenOnly"
+                       :with-courses="withCourses"
+                       :node="currentNode"
+                       :breadcrumb-icon="breadcrumbIcon"
+                       :editable="editable"
+                       :edit-url="editUrl"
+                       :create-url="createUrl"
+                       :delete-url="deleteUrl"
+                       :with-export="withExport"
+                       :show-structure-as-navigation="showStructureAsNavigation"
+                       :assignable="assignable"
+                       :page="currentPage"
+                       @change-current-node="changeCurrentNode"
+            ></component>
+
+            <tree-course-table :courses="courses">
+                <template #pagination
+                          v-if="totalCourseCount > limit"
+                >
+                    <studip-pagination :items-per-page="limit"
+                                       :total-items="totalCourseCount"
+                                       v-model:current-offset="currentPage"
+                    />
+                </template>
+            </tree-course-table>
         </div>
         <div v-else class="studip-tree">
             <tree-search-result :search-config="searchConfig"></tree-search-result>
         </div>
-        <Teleport v-if="withSearch" to="#search-widget" name="sidebar-search">
-            <search-widget v-if="currentNode" :min-length="3" ref="searchWidget"></search-widget>
+
+        <Teleport v-if="showExport && courses.length > 0" to="#export-widget" name="sidebar-export">
+            <tree-export-widget :title="$gettext('Veranstaltungen exportieren')"
+                                :url="exportUrl"
+                                :export-data="courses"
+            />
         </Teleport>
+
+        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
+            <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
+        </Teleport>
+
+        <Teleport v-if="withSearch" to="#search-widget" name="sidebar-search">
+            <search-widget v-if="currentNode" :min-length="3" ref="searchWidget" />
+        </Teleport>
+
         <Teleport v-if="!editable && !isSearching && !isLoading && currentNode"
                         to="#views-widget"
-                        name="sidebar-views">
+                        name="sidebar-views"
+        >
             <studip-tree-view-widget :config="viewConfig" />
         </Teleport>
     </div>
@@ -52,24 +73,28 @@ import StudipTreeList from './StudipTreeList.vue';
 import StudipTreeTable from './StudipTreeTable.vue';
 import StudipTreeNode from './StudipTreeNode.vue';
 import TreeSearchResult from './TreeSearchResult.vue';
+import TreeCourseTable from "./TreeCourseTable.vue";
+import StudipPagination from "../StudipPagination.vue";
+import TreeExportWidget from "./TreeExportWidget.vue";
+import AssignLinkWidget from "./AssignLinkWidget.vue";
 
 export default {
     name: 'StudipTree',
     components: {
-        TreeSearchResult,
+        AssignLinkWidget,
         SearchWidget,
-        StudipTreeViewWidget,
+        StudipPagination,
         StudipProgressIndicator,
         StudipTreeList,
+        StudipTreeNode,
         StudipTreeTable,
-        StudipTreeNode
+        StudipTreeViewWidget,
+        TreeCourseTable,
+        TreeExportWidget,
+        TreeSearchResult
     },
     mixins: [ TreeMixin ],
     props: {
-        viewType: {
-            type: String,
-            default: 'tree'
-        },
         treeId: {
             type: String,
             default: ''
@@ -105,14 +130,6 @@ export default {
         withCourses: {
             type: Boolean,
             default: false
-        },
-        semester: {
-            type: String,
-            default: ''
-        },
-        semClass: {
-            type: Number,
-            default: 0
         },
         breadcrumbIcon: {
             type: String,
@@ -169,34 +186,54 @@ export default {
     },
     data() {
         return {
+            courses: [],
+
             nodeId: this.startId,
             startNode: null,
+            currentPage: 0,
             currentNode: this.startNode,
             loaded: false,
             isLoading: false,
             showStructuralNavigation: false,
             searchConfig: {},
             isSearching: false,
-            viewConfig: null,
             pageTitle: document.title
+        }
+    },
+    computed: {
+        exportUrl() {
+            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
+        },
+        showExport() {
+            return this.withExport && document.getElementById('export-widget');
+        },
+        viewComponent() {
+            if (this.startNode && this.viewType === 'list') {
+                return StudipTreeList;
+            }
+
+            if (this.startNode && this.viewType === 'table') {
+                return StudipTreeTable;
+            }
+
+            return null;
+        },
+        viewConfig() {
+            return {
+                view: this.viewType,
+                node: this.currentNode,
+                semester: this.semester,
+                semClass: this.semClass
+            }
         }
     },
     methods: {
         changeCurrentNode(node) {
             this.currentNode = node;
-            this.viewConfig = {
-                view: this.viewType,
-                node: this.currentNode,
-                semester: this.semester,
-                semClass: this.semClass
-            };
             this.setPageTitle(this.currentNode.attributes.name);
             this.$nextTick(() => {
                 document.getElementById('tree-breadcrumb-' + node.attributes.id)?.focus();
             });
-        },
-        exportUrl() {
-            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
         },
         injectSearchterm(targetId, searchterm) {
             const form = document.getElementById(targetId).querySelector('form');
@@ -215,8 +252,15 @@ export default {
             PageLayout.title = title.slice(0, -1).join('-') + '/ ' + nodeTitle + ' -' + title[title.length - 1];
         }
     },
-    mounted() {
-        window.focus();
+    created() {
+        this.$store.subscribe(mutation => {
+            if (mutation.type === 'treestore/SET_VIEW_TYPE') {
+                this.pushState(
+                    {viewType: mutation.payload},
+                    {show_as: mutation.payload === 'list' ? null : mutation.payload},
+                );
+            }
+        });
 
         const loadingIndicator = axios.interceptors.request.use(config => {
             setTimeout(() => {
@@ -227,17 +271,11 @@ export default {
             return config;
         });
 
-        this.getNode(this.startId).then(response => {
-            this.startNode = response.data.data;
+        this.fetchNode(this.startId).then(node => {
+            this.startNode = node;
             this.currentNode = this.startNode;
             this.loaded = true;
             this.isLoading = false;
-            this.viewConfig = {
-                view: this.viewType,
-                node: this.currentNode,
-                semester: this.semester,
-                semClass: this.semClass
-            };
             this.setPageTitle(this.currentNode.attributes.name);
         });
 
@@ -263,6 +301,17 @@ export default {
             document.getElementById('semclass-selector-searchterm')?.remove();
             this.isSearching = false;
         });
+    },
+    watch: {
+        async currentNode(node) {
+            if (this.withCourses) {
+                this.courses = await this.fetchNodeCourses(node.id);
+            }
+        },
+        currentPage(current) {
+            this.updateOffset(current);
+        }
     }
+
 }
 </script>

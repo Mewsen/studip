@@ -1,103 +1,90 @@
 import axios from 'axios';
-import ChunkedRequester from '@/assets/javascripts/lib/chunked-requester';
-import Cache from '@/assets/javascripts/lib/cache';
-
-const requester = new ChunkedRequester();
-const cache = Cache.getInstance('tree-info/');
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 
 export const TreeMixin = {
+    props: {
+        visibleChildrenOnly: {
+            type: Boolean,
+            default: true
+        },
+    },
     data() {
         return {
-            showProgressIndicatorTimeout: 500,
-            totalCourseCount: 0,
-            offset: 0,
-            limit: 50
+            currentNode: null,
+            showProgressIndicatorTimeout: 500
         };
     },
+    computed: {
+        ...mapState('treestore', {
+            semester: 'semesterId',
+            semClass: 'semClass',
+            limit: 'courseLimit',
+            viewType: 'viewType',
+        }),
+        ...mapGetters('treestore', [
+            'getNodeCourseInfo',
+            'getNodeCoursesTotal',
+        ]),
+
+        totalCourseCount() {
+            return this.getNodeCoursesTotal(this.currentNode?.id);
+        }
+    },
     methods: {
-        async getNode(id) {
-            return axios.get(STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + id));
-        },
-        async getNodeChildren(node, visibleOnly = true) {
-            let parameters = {};
+        ...mapActions('treestore', [
+            'fetchNode',
+            'fetchNodeChildren',
+            'fetchNodeCourseInfo',
+            'fetchNodeCourses',
+        ]),
+        ...mapMutations('treestore', {
+            initializeFromLocalStorage: 'INITIALIZE_FROM_LOCAL_STORAGE',
+        }),
 
-            if (visibleOnly) {
-                parameters['filter[visible]'] = true;
-            }
-
-            return axios.get(
-                STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/children'),
-                { params: parameters }
-            );
-        },
-        async getNodeCourses(node, offset, semesterId = 'all', semClass = 0, searchterm = '', recursive = false, ids = []) {
-            let parameters = {};
-
-            parameters['page[offset]'] = offset * this.limit;
-            parameters['page[limit]'] = this.limit;
-
-            if (semesterId !== 'all' && semesterId !== '0') {
-                parameters['filter[semester]'] = semesterId;
-            }
-
-            if (searchterm !== '') {
-                parameters['filter[q]'] = searchterm;
-            }
-
-            if (semClass !== 0) {
-                parameters['filter[semclass]'] = semClass;
-            }
-
-            if (node.attributes['has-children'] && recursive) {
-                parameters['filter[recursive]'] = true;
-            }
-
-            if (ids.length > 0) {
-                parameters['filter[ids]'] = ids;
-            }
-
-            return axios.get(
-                STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/courses'),
-                {params: parameters}
-            );
-        },
-        getCachedNodeCourseInfo(node, semesterId, semClass) {
-            return cache.get(['course-info', node.id, semesterId, semClass].join('/')) ?? null;
-        },
-        getNodeCourseInfo(node, semesterId, semClass = 0) {
-            let parameters = {};
-
-            if (semesterId !== 'all' && semesterId !== '0') {
-                parameters['filter[semester]'] = semesterId;
-            }
-
-            if (semClass !== 0) {
-                parameters['filter[semclass]'] = semClass;
-            }
-
-            return requester.addRequest(
-                STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/courseinfo'),
-                parameters
-            ).then(courseinfo => {
-                cache.set(
-                    ['course-info', node.id, semesterId, semClass].join('/'),
-                    courseinfo.data.courses ?? 0,
-                    3 * 60 * 60
-                );
-                return courseinfo;
+        pushState(state, parameters = {}) {
+            const url = new URL(location.href);
+            Object.entries(parameters).forEach(([key, value]) => {
+                if (value === null && url.searchParams.has(key)) {
+                    url.searchParams.delete(key);
+                } else {
+                    url.searchParams.set(key, value);
+                }
             });
+            window.history.pushState(state, '', url);
+        },
+
+        async openNode(node, pushState = true) {
+            this.currentNode = node;
+            this.$emit('change-current-node', node);
+
+            if (this.withChildren) {
+                this.children = await this.fetchNodeChildren({
+                    id: node.id,
+                    visibleChildrenOnly: this.visibleChildrenOnly,
+                });
+            }
+
+            if (this.withCourses) {
+                this.courses = await this.fetchNodeCourses(node);
+            }
+
+            // Update browser history.
+            if (pushState) {
+                this.pushState(
+                    {nodeId: node.id},
+                    {node_id: node.id},
+                );
+            }
+
+            // Update node_id for semester selector.
+            const semesterSelector = document.querySelector('#semester-selector-node-id');
+            semesterSelector.value = node.id;
         },
         nodeUrl(node_id, semester = null ) {
             return STUDIP.URLHelper.getURL('', { node_id, semester })
         },
-        courseUrl(courseId) {
-            return STUDIP.URLHelper.getURL('dispatch.php/course/details/index/' + courseId)
-        },
         profileUrl(username) {
             return STUDIP.URLHelper.getURL('dispatch.php/profile', { username })
-        },
-        exportUrl() {
-            return STUDIP.URLHelper.getURL('dispatch.php/tree/export_csv');
         },
         editNode(editUrl, id) {
             STUDIP.Dialog.fromURL(
@@ -129,14 +116,11 @@ export const TreeMixin = {
             });
             STUDIP.Vue.emit('sort-tree-children', { parent: parentId, children: children });
         },
-        updateOffset(newOffset) {
-            this.getNodeCourses(this.currentNode, newOffset, this.semester, this.semClass, '', this.showingAllCourses)
-                .then(courses => {
-                    this.courseCount = courses.data.meta.page.total;
-                    this.currentOffset = courses.data.meta.page.offset;
-                    this.offset = newOffset;
-                    this.courses = courses.data.data;
-                });
+        async updateOffset(page) {
+            this.courses = await this.fetchNodeCourses({
+                id: this.currentNode.id,
+                page
+            });
         }
     }
 }

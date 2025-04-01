@@ -47,7 +47,7 @@ export default class ChunkedRequester
             this.clearTimeout();
         }
 
-        if (this.#timeout !== null) {
+        if (this.#timeout !== undefined) {
             return;
         }
 
@@ -63,8 +63,8 @@ export default class ChunkedRequester
                     this.clearTimeout();
                     this.#startRequests();
                 });
-            }
-            , this.#delay
+            },
+            this.#delay
         );
     }
 

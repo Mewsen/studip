@@ -69,23 +69,7 @@ import Cookie from './cookie.js';
  * @since     Stud.IP 3.2
  */
 
-// Use localstorage or dummy
-var cache;
-try {
-    let test_key = '__storageTest123';
-    window.localStorage.setItem(test_key, 'foo');
-    window.localStorage.removeItem(test_key);
-    cache = window.localStorage;
-} catch {
-    cache = new class {
-        constructor() { this.length = 0; }
-        clear()       {}
-        getItem()     { return undefined; }
-        key()         { return undefined; }
-        removeItem()  {}
-        setItem()     {}
-    }();
-}
+const cache = window.localStorage;
 
 class Cache {
     /**

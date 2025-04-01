@@ -3,7 +3,9 @@
         <template #content>
             <form class="sidebar-export">
                 <studip-icon shape="export"></studip-icon>
-                <a :href="url" :title="title" @click.prevent="createExport()">{{ title }}</a>
+                <a :href="url" :title="title" @click.prevent="createExport()">
+                    {{ title }}
+                </a>
             </form>
         </template>
     </sidebar-widget>

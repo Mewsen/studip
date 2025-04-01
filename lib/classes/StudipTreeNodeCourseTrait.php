@@ -29,7 +29,7 @@ trait StudipTreeNodeCourseTrait
 
         if ($sem_class !== 0) {
             $condition .= "  AND s.`status` IN (:types)";
-            $semclass = new SemClass($sem_class);
+            $semclass = new SemClass(is_array($sem_class) ? $sem_class : (int) $sem_class);
             $parameters['types'] = array_keys($semclass->getSemTypes());
         }
 

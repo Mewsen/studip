@@ -74,108 +74,27 @@
                                          :editable="editable"
                                          :children="children"
                                          :index="index"
-                                         :semester="semester"
-                                         :sem-class="semClass"
                                          :node="node"
                                          @open:node="element => openNode(element)"
                     ></StudipTreeTableRows>
                 </template>
             </draggable>
         </table>
-
-        <table v-if="courses.length > 0" class="default">
-            <colgroup>
-                <col style="width: 20px">
-                <col style="width: 30px">
-                <col>
-                <col style="width: 40%">
-            </colgroup>
-            <thead>
-            <tr v-if="totalCourseCount > limit">
-                <td colspan="4">
-                    <studip-pagination :items-per-page="limit"
-                                       :total-items="totalCourseCount"
-                                       :current-offset="offset"
-                                       @updateOffset="updateOffset"
-                    />
-                </td>
-            </tr>
-            <tr>
-                <th></th>
-                <th>{{ $gettext('Typ') }}</th>
-                <th>{{ $gettext('Name') }}</th>
-                <th>{{ $gettext('Information') }}</th>
-            </tr>
-            </thead>
-            <tbody role="listbox">
-                <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
-                    <td></td>
-                    <td>
-                        <studip-icon shape="seminar" :size="26"></studip-icon>
-                    </td>
-                    <td>
-                        <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettext(
-                               'Zur Veranstaltung %{ title }',
-                               { title: course.attributes.title },
-                               true
-                           )"
-                        >
-                            <template v-if="course.attributes['course-number']">
-                                {{ course.attributes['course-number'] }}
-                            </template>
-                            {{ course.attributes.title }}
-                        </a>
-                        <div :id="'course-dates-' + course.id" class="course-dates"></div>
-                    </td>
-                    <td :colspan="editable ? 2 : null">
-                        <tree-course-details :course="course.id"></tree-course-details>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot v-if="totalCourseCount > limit">
-                <tr>
-                    <td colspan="4">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
-                        />
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <Teleport v-if="showExport" to="#export-widget" name="sidebar-export">
-            <tree-export-widget v-if="courses.length > 0" :title="$gettext('Download des Ergebnisses')" :url="exportUrl()"
-                                :export-data="courses"></tree-export-widget>
-        </Teleport>
-        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
-            <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
-        </Teleport>
     </article>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import { TreeMixin } from '../../mixins/TreeMixin';
-import TreeExportWidget from './TreeExportWidget.vue';
 import TreeBreadcrumb from './TreeBreadcrumb.vue';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import AssignLinkWidget from "./AssignLinkWidget.vue";
-import StudipPagination from "../StudipPagination.vue";
 import StudipTreeTableRows from "./StudipTreeTableRows.vue";
-import TreeCourseDetails from "./TreeCourseDetails.vue";
-import StudipIcon from "../StudipIcon.vue";
 
 export default {
     name: 'StudipTreeTable',
     components: {
-        StudipIcon, TreeCourseDetails,
         StudipTreeTableRows,
-        StudipPagination,
-        draggable, TreeExportWidget, StudipProgressIndicator, TreeBreadcrumb,
-        AssignLinkWidget
+        draggable, StudipProgressIndicator, TreeBreadcrumb
     },
     mixins: [ TreeMixin ],
     emits: ['change-current-node', 'sort-tree-children'],
@@ -208,33 +127,13 @@ export default {
             type: Boolean,
             default: false
         },
-        withExport: {
-            type: Boolean,
-            default: false
-        },
         withChildren: {
-            type: Boolean,
-            default: true
-        },
-        visibleChildrenOnly: {
             type: Boolean,
             default: true
         },
         assignable: {
             type: Boolean,
             default: false
-        },
-        withCourseAssign: {
-            type: Boolean,
-            default: false
-        },
-        semester: {
-            type: String,
-            default: ''
-        },
-        semClass: {
-            type: Number,
-            default: 0
         },
         showStructureAsNavigation: {
             type: Boolean,
@@ -250,53 +149,11 @@ export default {
             courses: [],
             assistiveLive: '',
             subLevelsCourses: 0,
-            thisLevelCourses: this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass),
+            thisLevelCourses: 0,
             showingAllCourses: false
         }
     },
-    computed: {
-        showExport() {
-            return this.withExport && document.getElementById('export-widget');
-        }
-    },
     methods: {
-        openNode(node, pushState = true) {
-            this.currentNode = node;
-            this.$emit('change-current-node', node);
-
-            if (this.withChildren) {
-                this.getNodeChildren(node, this.visibleChildrenOnly).then(response => {
-                    this.children = response.data.data;
-                });
-            }
-
-            this.getNodeCourseInfo(node, this.semester, this.semClass)
-                .then(response => {
-                    this.thisLevelCourses = response?.data.courses;
-                    this.subLevelsCourses = response?.data.allCourses;
-                });
-
-            if (this.withCourses) {
-
-                this.getNodeCourses(node, this.offset, this.semester, this.semClass, '', false)
-                    .then(response => {
-                        this.totalCourseCount = response.data.meta.page.total;
-                        this.offset = Math.ceil(response.data.meta.page.offset / this.limit);
-                        this.courses = response.data.data;
-                    });
-            }
-
-            // Update browser history.
-            if (pushState) {
-                const url = new URL(location.href);
-                url.searchParams.set('node_id', node.id);
-                window.history.pushState({nodeId: node.id}, '', url);
-            }
-
-            // Update node_id for semester selector.
-            const semesterSelector = document.querySelector('#semester-selector-node-id');
-            semesterSelector.value = node.id;
-        },
         dropChild() {
             this.updateSorting(this.currentNode.id, this.children);
         },
@@ -352,26 +209,24 @@ export default {
                 });
         }
     },
-    mounted() {
+    async created() {
+        this.thisLevelCourses = await this.fetchNodeCourseInfo(this.currentNode.id);
+
         if (this.withChildren) {
-            this.getNodeChildren(this.node, this.visibleChildrenOnly).then(response => {
-                this.children = response.data.data;
+            this.children = await this.fetchNodeChildren({
+                id: this.currentNode.id,
+                visibleChildrenOnly: this.visibleChildrenOnly
             });
         }
 
-        this.getNodeCourseInfo(this.currentNode, this.semester, this.semClass)
-            .then(response => {
-                this.thisLevelCourses = response?.data.courses;
-                this.subLevelsCourses = response?.data.allCourses;
-            });
-
         if (this.withCourses) {
-            this.getNodeCourses(this.currentNode, 0, this.semester, this.semClass)
-                .then(courses => {
-                    this.totalCourseCount = courses.data.meta.page.total;
-                    this.offset = 0;
-                    this.courses = courses.data.data;
-                });
+            this.courses = await this.fetchNodeCourses(this.currentNode.id);
+//             , 0, this.semester, this.semClass)
+//                 .then(courses => {
+// //                    this.totalCourseCount = courses.data.meta.page.total;
+// //                    this.offset = 0;
+// //                    this.courses = courses.data.data;
+//                 });
         }
 
         this.globalOn('open-tree-node', node => {
@@ -381,8 +236,8 @@ export default {
 
         this.globalOn('load-tree-node', id => {
             STUDIP.eventBus.emit('cancel-search');
-            this.getNode(id).then(response => {
-                this.openNode(response.data.data);
+            this.fetchNode(id).then(node => {
+                this.openNode(node);
             });
         });
 
@@ -395,8 +250,8 @@ export default {
         window.addEventListener('popstate', (event) => {
             if (event.state) {
                 if ('nodeId' in event.state) {
-                    this.getNode(event.state.nodeId).then(response => {
-                        this.openNode(response.data.data, false);
+                    this.fetchNode(event.state.nodeId).then(node => {
+                        this.openNode(node, false);
                     });
                 }
             } else {

@@ -1,15 +1,15 @@
 <template>
-    <div v-if="details" class="course-details">
+    <div class="course-details">
         <div class="semester">
-            ({{ details.semester }})
+            ({{ course.attributes.semester }})
         </div>
-        <div class="admission-state" v-if="details.admissionstate">
-            <studip-icon :shape="details.admissionstate.icon"
-                         :role="details.admissionstate.role"
-                         :alt="details.admissionstate.info"></studip-icon>
+        <div class="admission-state" v-if="course.attributes.admissionstate">
+            <studip-icon :shape="course.attributes.admissionstate.icon"
+                         :role="course.attributes.admissionstate.role"
+                         :alt="course.attributes.admissionstate.info"></studip-icon>
         </div>
         <div class="course-lecturers">
-            <span v-for="(lecturer, index) in details.lecturers" :key="index">
+            <span v-for="(lecturer, index) in course.attributes.lecturers" :key="index">
                 <a :href="profileUrl(lecturer.username)"
                    :title="$gettext(
                        'Zum Profil von %{ user }',
@@ -18,17 +18,16 @@
                    )"
                    tabindex="0">
                     {{ lecturer.name }}
-                </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
+                </a><template v-if="course.attributes.lecturers.length > 1 && index < course.attributes.lecturers.length - 1">, </template>
             </span>
         </div>
-        <Teleport :to="'#course-dates-' + course" :append="true">
-            <span v-html="details.dates"></span>
+        <Teleport v-if="mounted" :to="'#course-dates-' + course.id" :append="true">
+            <span v-html="course.attributes.dates"></span>
         </Teleport>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
 import { TreeMixin } from '../../mixins/TreeMixin';
 
 export default {
@@ -36,21 +35,17 @@ export default {
     mixins: [ TreeMixin ],
     props: {
         course: {
-            type: String,
+            type: Object,
             required: true
         }
     },
     data() {
         return {
-            details: null
-        }
+            mounted: false
+        };
     },
     mounted() {
-        axios.get(
-            STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/course/details/' + this.course)
-        ).then(response => {
-            this.details = response.data;
-        });
+        this.mounted = true;
     }
 }
 </script>

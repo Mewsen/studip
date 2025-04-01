@@ -56,7 +56,7 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         parent::configure($config);
     }
 
-    public static function getNode($id): StudipTreeNode
+    public static function getNode($id): ?StudipTreeNode
     {
         if ($id === 'root') {
             return static::build([

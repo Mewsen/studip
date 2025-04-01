@@ -10,14 +10,17 @@ use JsonApi\NonJsonApiController;
 
 class CourseInfoOfTreeNode extends NonJsonApiController
 {
-    protected $allowedFilteringParameters = ['q', 'semester', 'semclass', 'recursive'];
+    use HelperTrait;
+
+    protected $allowedFilteringParameters = ['semester', 'semclass'];
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameters)
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        list($classname, $id) = explode('_', $args['id']);
+        /** @var class-string<\StudipTreeNode> $classname */
+        [$classname, $id] = explode('_', $args['id']);
 
         $node = $classname::getNode($id);
         if (!$node) {
@@ -40,43 +43,26 @@ class CourseInfoOfTreeNode extends NonJsonApiController
         return $response->withHeader('Content-type', 'application/json');
     }
 
-    private function validateFilters($request)
+    private function validateFilters(Request $request): ?string
     {
         $filtering = $request->getQueryParams()['filter'] ?? [];
 
-        // keyword aka q
-        if (isset($filtering['q']) && mb_strlen($filtering['q']) < 3) {
-            return 'Search term too short.';
-        }
-
-        // semester
-        if (isset($filtering['semester']) && $filtering['semester'] !== 'all') {
-            $semester = \Semester::find($filtering['semester']);
-            if (!$semester) {
-                return 'Invalid "semester".';
-            }
-        }
-
-        // course category
-        if (!empty($filtering['semclass'])) {
-            $semclass = \SeminarCategories::Get($filtering['semclass']);
-            if (!$semclass) {
-                return 'Invalid "course category".';
-            }
-        }
+        return $this->validateSemesterFilter($filtering)
+            ?? $this->validateSemClassFilter($filtering);
     }
 
-    private function getContextFilters($request)
+    private function getContextFilters(Request $request): array
     {
-        $defaults = [
-            'q' => '',
-            'semester' => 'all',
-            'semclass' => 0,
-            'recursive' => false
-        ];
+        $filters = array_merge(
+            [
+                'semester' => 'all',
+                'semclass' => 0,
+            ],
+            $request->getQueryParams()['filter'] ?? []
+        );
 
-        $filtering = $request->getQueryParams()['filter'] ?? [];
+        $filters['semclass'] = (int) $filters['semclass'];
 
-        return array_merge($defaults, $filtering);
+        return $filters;
     }
 }

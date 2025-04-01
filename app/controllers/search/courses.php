@@ -13,12 +13,6 @@
 
 class Search_CoursesController extends AuthenticatedController
 {
-
-    /**
-     * @var string Holds the URL parameter with selected navigation option
-     */
-    private $nav_option = null;
-
     public function __construct(\Trails\Dispatcher $dispatcher)
     {
         $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
@@ -45,13 +39,13 @@ class Search_CoursesController extends AuthenticatedController
     {
         $nodeClass = '';
         $title = _('Vorlesungsverzeichnis');
-        if (Request::option('type', 'semtree') === 'semtree') {
+        if ($this->type === 'semtree') {
             Navigation::activateItem('/search/courses/semtree');
             $nodeClass = StudipStudyArea::class;
             $this->treeTitle = _('Studienbereiche');
             $this->breadcrumbIcon = 'literature';
             $this->editUrl = $this->url_for('studyarea/edit');
-        } else if (Request::option('type', 'semtree') === 'rangetree') {
+        } else if ($this->type === 'rangetree') {
             Navigation::activateItem('/search/courses/rangetree');
             $nodeClass = RangeTreeNode::class;
             $this->treeTitle = _('Einrichtungen');
@@ -68,14 +62,16 @@ class Search_CoursesController extends AuthenticatedController
             Studip\VueApp::create('tree/StudipTree')
                 ->withProps([
                     'breadcrumb-icon' => $this->breadcrumbIcon,
-                    'sem-class'       => $this->semClass,
-                    'semester'        => $this->semester,
                     'start-id'        => $this->startId,
                     'title'           => $this->treeTitle,
-                    'view-type'       => $this->show_as,
                     'with-courses'    => true,
                     'with-export'     => true,
                     'with-search'     => true,
+                ])
+                ->withVuexStore('TreeStore', 'treestore', [
+                    'SET_SEMESTER' => $this->semester,
+                    'SET_SEMCLASS' => $this->semClass,
+                    'SET_VIEW_TYPE' => $this->show_as,
                 ])
         );
     }

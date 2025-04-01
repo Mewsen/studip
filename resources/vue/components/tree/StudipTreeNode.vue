@@ -130,7 +130,6 @@ export default {
             isLoading: false,
             childrenLoaded: false,
             children: [],
-            semester: 'all',
             openState: this.isOpen,
             theAncestors: this.ancestors,
             assignedCourses: 0,
@@ -155,12 +154,14 @@ export default {
                     }, 500);
                     return config;
                 });
-                this.getNodeChildren(this.node, this.visibleChildrenOnly)
-                    .then(response => {
-                        this.isLoading = false;
-                        this.children = response.data.data;
-                        this.childrenLoaded = true;
-                    });
+                this.fetchNodeChildren({
+                    id: this.node.id,
+                    visibleChildrenOnly: this.visibleChildrenOnly,
+                }).then(children => {
+                    this.isLoading = false;
+                    this.children = children;
+                    this.childrenLoaded = true;
+                });
                 axios.interceptors.request.eject(loadingIndicator);
             }
         },
@@ -242,8 +243,8 @@ export default {
 
         if (this.ancestors.length === 0) {
             for (const open of this.openNodes) {
-                this.getNode(open).then((response) => {
-                    const haystack = response.data.data.attributes.ancestors?.map(element => {
+                this.fetchNode(open).then((node) => {
+                    const haystack = node.attributes.ancestors?.map(element => {
                         return element.classname + '_' + element.id;
                     });
                     if (haystack) {
