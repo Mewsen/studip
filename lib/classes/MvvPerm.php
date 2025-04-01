@@ -39,7 +39,7 @@ class MvvPerm {
     */
     const PERM_ADMIN = 15;
 
-    private static $privileges;
+    private static $privileges = null;
 
     private static $roles;
 
@@ -348,18 +348,18 @@ class MvvPerm {
                 if (count($institutes_assigned_role) === 0
                         || count(array_intersect($institut_ids, $institutes_assigned_role))) {
                     if (!$status) {
-                        $priv = intval(self::$privileges[$mvv_table]['default_table'][$role->rolename]);
+                        $priv = intval(self::$privileges[$mvv_table]['default_table'][$role->rolename] ?? 0);
                     } else {
-                        $priv = intval(self::$privileges[$mvv_table]['table'][$status][$role->rolename]);
+                        $priv = intval(self::$privileges[$mvv_table]['table'][$status][$role->rolename] ?? 0);
                     }
                 } else {
                     $priv = 0;
                 }
             } else {
                 if (!$status) {
-                    $priv = intval(self::$privileges[$mvv_table]['default_table'][$role->rolename]);
+                    $priv = intval(self::$privileges[$mvv_table]['default_table'][$role->rolename] ?? 0);
                 } else {
-                    $priv = intval(self::$privileges[$mvv_table]['table'][$status][$role->rolename]);
+                    $priv = intval(self::$privileges[$mvv_table]['table'][$status][$role->rolename] ?? 0);
                 }
             }
 
@@ -465,33 +465,35 @@ class MvvPerm {
             if (count($institut_ids)) {
                 $institutes_assigned_role = RolePersistence::getAssignedRoleInstitutes($user_id, $role->roleid);
                 // count($institutes_assigned_role) === 0 means global role.
-                if (count($institutes_assigned_role) === 0
-                        || count(array_intersect($institut_ids, $institutes_assigned_role))) {
+                if (
+                    count($institutes_assigned_role) === 0
+                    || count(array_intersect($institut_ids, $institutes_assigned_role))
+                ) {
                     $priv = is_array($field)
-                            ? self::$privileges[$mvv_table]['fields'][$field[0]][$field[1]][$status][$role->rolename]
-                            : self::$privileges[$mvv_table]['fields'][$field][$status][$role->rolename];
+                            ? self::$privileges[$mvv_table]['fields'][$field[0]][$field[1]][$status][$role->rolename] ?? null
+                            : self::$privileges[$mvv_table]['fields'][$field][$status][$role->rolename] ?? null;
                     if (is_null($priv)) {
                         $priv = is_array($field)
-                                ? self::$privileges[$mvv_table]['fields'][$field[0]]['default'][$status][$role->rolename]
-                                : self::$privileges[$mvv_table]['fields'][$field]['default'][$role->rolename];
+                                ? self::$privileges[$mvv_table]['fields'][$field[0]]['default'][$status][$role->rolename] ?? null
+                                : self::$privileges[$mvv_table]['fields'][$field]['default'][$role->rolename] ?? null;
                     }
                     if (is_null($priv)) {
-                        $priv = self::$privileges[$mvv_table]['default_fields'][$role->rolename];
+                        $priv = self::$privileges[$mvv_table]['default_fields'][$role->rolename] ?? null;
                     }
                 } else {
                     $priv = 0;
                 }
             } else {
                 $priv = is_array($field)
-                        ? self::$privileges[$mvv_table]['fields'][$field[0]][$field[1]][$status][$role->rolename]
-                        : self::$privileges[$mvv_table]['fields'][$field][$status][$role->rolename];
+                        ? self::$privileges[$mvv_table]['fields'][$field[0]][$field[1]][$status][$role->rolename] ?? null
+                        : self::$privileges[$mvv_table]['fields'][$field][$status][$role->rolename] ?? null;
                 if (is_null($priv)) {
                     $priv = is_array($field)
-                            ? self::$privileges[$mvv_table]['fields'][$field[0]]['default'][$status][$role->rolename]
-                            : self::$privileges[$mvv_table]['fields'][$field]['default'][$role->rolename];
+                            ? self::$privileges[$mvv_table]['fields'][$field[0]]['default'][$status][$role->rolename] ?? null
+                            : self::$privileges[$mvv_table]['fields'][$field]['default'][$role->rolename] ?? null;
                 }
                 if (is_null($priv)) {
-                    $priv = self::$privileges[$mvv_table]['default_fields'][$role->rolename];
+                    $priv = self::$privileges[$mvv_table]['default_fields'][$role->rolename] ?? null;
                 }
             }
             $priv = intval($priv);
@@ -564,7 +566,7 @@ class MvvPerm {
     {
         if (self::$privileges === null) {
             $cache = StudipCacheFactory::getCache();
-            self::$privileges = unserialize($cache->read(MVV::CACHE_KEY . '/privileges'));
+            self::$privileges = unserialize($cache->read(MVV::CACHE_KEY . '/privileges')) ?: [];
         }
 
         if (self::$privileges[$mvv_table] === null) {

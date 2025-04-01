@@ -472,13 +472,12 @@ class Studiengang extends ModuleManagementModelTreeItem
 
         $ret = $this->name;
         if ($options & self::DISPLAY_ABSCHLUSS) {
-            $ret .= ' (' . $this->abschluss->name . ')';
+            $ret .= ' (' . ($this->abschluss->name ?? '?') . ')';
         }
         if ($options & self::DISPLAY_KATEGORIE) {
-            $ret .= (mb_strlen($this->abschluss->category->name)
+            $ret .= mb_strlen($this->abschluss->category->name ?? '')
                 ? ' (' . $this->abschluss->category->name . ')'
-                : ''
-            );
+                : '';
         }
 
         return $ret;
