@@ -17,10 +17,7 @@
             <?= $this->render_partial(
                 'sidebar/room-search-criteria.php',
                 [
-                    'criteria' => (
-                        $selected_criteria['room_type']
-                        ?: $criteria['room_type']
-                        ),
+                    'criteria' => $selected_criteria['room_type'] ?? $criteria['room_type'],
                     'removable' => false
                 ]
             ) ?>

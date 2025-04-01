@@ -431,8 +431,11 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             self::$schemes = unserialize($cache->read('DB_TABLE_SCHEMES')) ?: [];
         }
         if (!isset(self::$schemes[$db_table])) {
+            $pk = [];
+            $db_fields = [];
+
             $db = DBManager::get()->query("SHOW COLUMNS FROM $db_table");
-            while($rs = $db->fetch(PDO::FETCH_ASSOC)){
+            while ($rs = $db->fetch(PDO::FETCH_ASSOC)){
                 $db_fields[strtolower($rs['Field'])] = [
                     'name' => $rs['Field'],
                     'null' => $rs['Null'],
@@ -440,7 +443,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                     'type' => $rs['Type'],
                     'extra' => $rs['Extra']
                 ];
-                if ($rs['Key'] == 'PRI'){
+                if ($rs['Key'] === 'PRI'){
                     $pk[] = strtolower($rs['Field']);
                 }
             }
