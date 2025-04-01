@@ -55,10 +55,7 @@
                 <?= $course->getAllDatesInSemester()->toHtml(false, true) ?>
             </section>
             <section>
-                <?
-                $enrolment_info = $course->getEnrolmentInformation($GLOBALS['user']->id);
-                ?>
-                <? if ($enrolment_info->isEnrolmentAllowed()) : ?>
+                <? if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/course/overview', ['cid' => $course->id]) ?>">
                         <?= _('Direkt zur Veranstaltung') ?>
                         <?= Icon::create('link-intern')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>

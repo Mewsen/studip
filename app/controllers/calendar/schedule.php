@@ -537,6 +537,15 @@ class Calendar_ScheduleController extends AuthenticatedController
                         '`user_id` = :user_id AND `metadate_id` = :cycle_date_id',
                         ['user_id' => $GLOBALS['user']->id, 'cycle_date_id' => $cycle_date->id]
                     ) > 0;
+                if (!$success) {
+                    //Variant 2: The whole course has been added to the schedule via the "mark course in schedule"
+                    //action on the course details page. In that case, only one schedule course date exists for
+                    //the whole course instead of having one schedule course date for each regular date.
+                    $success = ScheduleCourseDate::deleteBySQL(
+                        '`user_id` = :user_id AND `course_id` = :course_id',
+                        ['user_id' => $GLOBALS['user']->id, 'course_id' => $cycle_date->seminar_id]
+                    ) > 0;
+                }
             }
         }
         if ($success) {
