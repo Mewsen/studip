@@ -1,5 +1,5 @@
 # Setup php, apache and stud.ip
-FROM php:8.1-apache as base
+FROM php:8.1-apache AS base
 
 # Install system requirements
 RUN apt update && apt install -y --no-install-recommends \
@@ -26,14 +26,14 @@ RUN sed -i -e 's/# en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen \
 RUN docker-php-ext-configure gd --with-jpeg --with-webp
 RUN docker-php-ext-install gettext gd zip pdo_mysql mysqli intl
 
-FROM node:18 as nodejs
+FROM node:18 AS nodejs
 
 # Install node modules
 COPY . /studip
 WORKDIR /studip
 RUN make webpack-prod
 
-FROM base as build
+FROM base AS build
 
 # Install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
