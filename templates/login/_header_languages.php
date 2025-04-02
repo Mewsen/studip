@@ -1,9 +1,9 @@
 <form id="language-selector" method="POST" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
-    <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException){}?>
+    <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException) {}?>
     <input type="hidden" name="user_config_submitted" value="1">
     <select id="languages" name="set_language" class="select2" onchange="this.form.submit()">
         <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
-            <option value="<?= htmlReady($temp_language_key) ?>" <?= array_key_exists('forced_language', $_SESSION) && $_SESSION['forced_language'] === $temp_language_key ? 'selected' : '' ?>
+            <option value="<?= htmlReady($temp_language_key) ?>" <?= array_key_exists('_language', $_SESSION) && $_SESSION['_language'] === $temp_language_key ? 'selected' : '' ?>
                 data-flag="<?= URLHelper::getLink('assets/images/languages/' . $temp_language['picture']) ?>">
                 <?= htmlReady($temp_language['name']) ?>
             </option>
