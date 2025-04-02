@@ -1,7 +1,6 @@
-version: "3"
 services:
   db:
-    image: mariadb:10.4
+    image: mariadb:10.5
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/studip/my.cnf:/etc/mysql/conf.d/my.cnf:ro
@@ -32,7 +31,7 @@ services:
       MYSQL_PASSWORD: studip_password
       MYSQL_HOST: db
       STUDIP_MAIL_TRANSPORT: debug
-      STUDIP_NAME: ${STUDIP_NAME}
+      STUDIP_NAME: ${STUDIP_NAME:-Stud.IP Testsystem}
 
       # Use automigrate to migrate your instance on startup
       AUTO_MIGRATE: 1
