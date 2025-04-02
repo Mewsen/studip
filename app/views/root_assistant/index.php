@@ -6,10 +6,8 @@
 ?>
 <form action="<?= $controller->seen() ?>" data-dialog="size=auto" method="post">
     <section class="contentbox">
-        <h2>
-            <?= _('Dieser Dialog dient dazu, die Änderungen seit dem letzten Update durchzusehen. Achtung, hier '
-                . 'geänderte Einstellungen wirken sich auf das gesamte System aus!') ?>
-        </h2>
+        <?= MessageBox::warning(_('Dieser Dialog dient dazu, die Änderungen seit dem letzten Update durchzusehen. Achtung, hier '
+                . 'geänderte Einstellungen wirken sich auf das gesamte System aus!')) ?>
         <? foreach ($release_notes as $release_note) : ?>
             <article class="<?= ContentBoxHelper::classes(md5($release_note['headline'])) ?>">
                 <header>

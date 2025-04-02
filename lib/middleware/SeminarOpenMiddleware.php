@@ -237,7 +237,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
             && \Config::get()->MIGRATION_START_VERSION < \StudipVersion::getStudipVersion(true)
             && !\Config::get()->UPDATE_NEWS_SEEN
         ) {
-            $message = \MessageBox::info(
+            $message = \MessageBox::warning(
                 _('Sie haben ein Stud.IP-Update durchgeführt.'),
                 [
                     sprintf(

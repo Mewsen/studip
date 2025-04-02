@@ -198,12 +198,12 @@
     }
 
     a:not(.system-notification-message) {
-        color: var(--color--white);
+        color: var(--color--black);
         text-decoration-line: underline;
     }
 
     a.system-notification-message {
-        color: var(--color--white);
+        color: var(--color--black);
         text-decoration: unset;
     }
 
