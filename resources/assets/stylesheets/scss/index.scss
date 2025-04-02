@@ -327,15 +327,15 @@ $gap-between-boxes: calc($login-page-margin / 2);
             color: var(--base-color);
 
             .title {
-                font-size: 1.25em;
-                font-weight: 700;
+                font-size: $font-size-h1;
+                font-weight: normal;
                 margin: 0 0 4px;
             }
             .description {
-                font-size: 0.75em;
+                font-size: $font-size-small;
                 max-width: 75%;
                 white-space: collapse;
-                color: var(--black);
+                color: var(--color--font-primary);
             }
 
             &:hover {
