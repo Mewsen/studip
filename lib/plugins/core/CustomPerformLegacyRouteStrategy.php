@@ -22,6 +22,10 @@ class CustomPerformLegacyRouteStrategy implements LegacyRouteStrategy
             $plugin->perform($unconsumedPath);
             $content = ob_get_clean();
             $response->getBody()->write($content);
+            $responseCode = http_response_code();
+            if (!is_bool($responseCode)) {
+                $response = $response->withStatus($responseCode);
+            }
             return $response;
         };
     }
