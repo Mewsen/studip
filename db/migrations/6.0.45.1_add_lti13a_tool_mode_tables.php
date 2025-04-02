@@ -52,6 +52,17 @@ class AddLti13aToolModeTables extends Migration
             'chdate'      => time(),
             'description' => 'Soll die Veranstaltung als LTI-Tool freigegeben werden?'
         ]);
+
+        $add_config_stmt->execute([
+            'field'       => 'LTI_TOOL_ENTRY_POINT',
+            'value'       => '0',
+            'type'        => 'integer',
+            'range'       => 'course',
+            'section'     => 'LTI',
+            'mkdate'      => time(),
+            'chdate'      => time(),
+            'description' => 'Welcher Reiter soll angezeigt werden, wenn eine Veranstaltung als LTI-Tool aufgerufen wird?'
+        ]);
     }
 
     protected function down()
@@ -60,11 +71,21 @@ class AddLti13aToolModeTables extends Migration
 
         $db->exec(
             "DELETE FROM `config_values`
-            WHERE `field` IN ('ENABLE_SHARING_COURSES_AS_LTI_TOOLS', 'SHARE_COURSE_AS_LTI_TOOL')"
+            WHERE `field` IN
+                (
+                'ENABLE_SHARING_COURSES_AS_LTI_TOOLS',
+                'SHARE_COURSE_AS_LTI_TOOL',
+                'LTI_TOOL_ENTRY_POINT'
+                )"
         );
         $db->exec(
             "DELETE FROM `config`
-            WHERE `field` IN ('ENABLE_SHARING_COURSES_AS_LTI_TOOLS', 'SHARE_COURSE_AS_LTI_TOOL')"
+            WHERE `field` IN
+                (
+                'ENABLE_SHARING_COURSES_AS_LTI_TOOLS',
+                'SHARE_COURSE_AS_LTI_TOOL',
+                'LTI_TOOL_ENTRY_POINT'
+                )"
         );
 
         $db->exec("DROP TABLE IF EXISTS lti_platforms");

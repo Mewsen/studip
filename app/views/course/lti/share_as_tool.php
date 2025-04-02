@@ -1,3 +1,12 @@
+<?
+/**
+ * @var AuthenticatedController $controller
+ * @var string $course_id
+ * @var bool $share_as_tool
+ * @var array $plugin_data
+ * @var int $lti_entry_point
+ */
+?>
 <form class="default" method="post"
       action="<?= $controller->link_for('course/lti/save_share_as_tool_settings', ['cid' => $course_id]) ?>">
     <?= CSRFProtection::tokenTag() ?>
@@ -15,7 +24,6 @@
                     <input type="checkbox" name="share_as_tool" value="0">
                     <?= _('Freigabe als LTI-Tool beenden') ?>
                 </label>
-                <?= \Studip\Button::create(_('Übernehmen'), 'apply') ?>
             <? endif ?>
         </section>
     </section>
@@ -29,7 +37,11 @@
                         <option value="" <?= empty($lti_entry_point) ? 'selected' : '' ?>>
                             <?= _('Keine besondere Einstiegsseite') ?>
                         </option>
-                        <!-- TODO: more options -->
+                        <? foreach ($plugin_data as $plugin_id => $plugin_name) : ?>
+                            <option value="<?= htmlReady($plugin_id) ?>" <?= $lti_entry_point === $plugin_id ? 'selected' : '' ?>>
+                                <?= htmlReady($plugin_name) ?>
+                            </option>
+                        <? endforeach ?>
                     </select>
                 </label>
             </section>
@@ -55,8 +67,8 @@
                     <input type="checkbox" name="share_as_tool" value="1">
                     <?= _('Ich habe die Hinweise zur Kenntnis genommen und möchte die Veranstaltung als LTI-Tool freigeben.') ?>
                 </label>
-                <?= \Studip\Button::create(_('Übernehmen'), 'apply') ?>
             </section>
         </section>
     <? endif ?>
+    <?= \Studip\Button::create(_('Speichern'), 'save') ?>
 </form>

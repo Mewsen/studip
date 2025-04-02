@@ -958,6 +958,30 @@ class Course_LtiController extends StudipController
         $this->render_csv($data, $filename);
     }
 
+    protected function getPluginData(string $course_id) : array
+    {
+        $forbidden_plugins = [
+            'CoreAdmin',
+            'CoreParticipants'
+        ];
+        $plugin_aliases = [
+            'CoreDocuments' => _('Dateien'),
+            'CoreOverview'  => _('Übersicht'),
+            'CoreSchedule'  => _('Ablaufplan'),
+            'CoreWiki'      => _('Wiki')
+        ];
+        $plugins = PluginEngine::getPlugins(null, $course_id);
+        $data = [];
+        foreach ($plugins as $plugin) {
+            $name = $plugin->getPluginName();
+            if (!in_array($name, $forbidden_plugins)) {
+                $data[$plugin->getPluginId()] = $plugin_aliases[$name] ?? $name;
+            }
+        }
+        asort($data);
+        return $data;
+    }
+
     public function share_as_tool_action()
     {
         if (!Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS) {
@@ -969,7 +993,9 @@ class Course_LtiController extends StudipController
             Navigation::activateItem('/course/admin/lti_tool');
         }
 
-        $this->share_as_tool = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL;
+        $this->share_as_tool   = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL;
+        $this->lti_entry_point = CourseConfig::get($this->course_id)->LTI_TOOL_ENTRY_POINT;
+        $this->plugin_data     = $this->getPluginData($this->course_id);
     }
 
     public function save_share_as_tool_settings_action()
@@ -981,9 +1007,12 @@ class Course_LtiController extends StudipController
         }
         CSRFProtection::verifyUnsafeRequest();
 
+        $old_config_value      = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL ? true : false;
+        $this->share_as_tool   = Request::bool('share_as_tool', $old_config_value);
+        $this->plugin_data     = $this->getPluginData($this->course_id);
+        CourseConfig::get($this->course_id)->store('LTI_TOOL_ENTRY_POINT', Request::get('lti_entry_point'));
+
         //Update SHARE_COURSE_AS_LTI_TOOL, if it has changed:
-        $old_config_value = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL ? true : false;
-        $this->share_as_tool = Request::bool('share_as_tool', false);
         if ($old_config_value !== $this->share_as_tool) {
             CourseConfig::get($this->course_id)->store('SHARE_COURSE_AS_LTI_TOOL', $this->share_as_tool ? '1' : '0');
 
