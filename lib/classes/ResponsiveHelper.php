@@ -266,7 +266,7 @@ class ResponsiveHelper
                 $standardIcon = Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
             }
 
-            $avatar = $avatarClass::getAvatar($course->id);
+            $avatar = $avatarClass::getAvatar(Context::getId());
             $hasAvatar = $avatar->is_customized();
             $icon = $hasAvatar
                 ? $avatar->getURL(Avatar::SMALL)
