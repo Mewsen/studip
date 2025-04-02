@@ -49,7 +49,42 @@
         <section class="contentbox">
             <header><h1><?= _('Angebundene LTI-Plattformen') ?></h1></header>
             <section>
-                TODO
+                <table class="default">
+                    <thead>
+                        <tr>
+                            <th><?= _('Plattform') ?></th>
+                            <th><?= _('Verantwortliche Person') ?></th>
+                            <th class="actions"><?= _('Aktionen') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? foreach ($platforms as $platform) : ?>
+                            <tr>
+                                <td><?= htmlReady($platform->name) ?></td>
+                                <td><?= htmlReady($platform->responsible_person?->getFullName() ?? _('unbekannt')) ?></td>
+                                <td>
+                                    <?
+                                    $menu = ActionMenu::get();
+                                    $menu->addLink(
+                                        $controller->url_for('course/lti/edit_platform/' . $platform->id),
+                                        Icon::create('edit'),
+                                        ['data-dialog' => 'reload-on-close']
+                                    );
+                                    $menu->addLink(
+                                        $controller->url_for('course/lti/delete_platform/' . $platform->id),
+                                        Icon::create('trash'),
+                                        ['data-confirm' => studip_interpolate(
+                                            _('Soll die Plattform %{name} wirklich gelöscht werden?'),
+                                            ['name' => $platform->name]
+                                        )]
+                                    );
+                                    $menu->render();
+                                    ?>
+                                </td>
+                            </tr>
+                        <? endforeach ?>
+                    </tbody>
+                </table>
             </section>
         </section>
     <? else : ?>
