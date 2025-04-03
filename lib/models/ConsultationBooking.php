@@ -53,6 +53,8 @@ class ConsultationBooking extends SimpleORMap implements PrivacyObject
                                                || !$assignment->user;
                     $assignment->delete();
                 });
+
+                $booking->event->delete();
             },
         ];
 
