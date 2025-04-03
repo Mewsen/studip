@@ -82,7 +82,7 @@
                                         <?= CSRFProtection::tokenTag() ?>
                                         <?
                                         $menu = ActionMenu::get();
-                                        if (true || $platform->creator_id !== $GLOBALS['user']->id) {
+                                        if ($platform->creator_id !== $GLOBALS['user']->id) {
                                             $menu->addLink(
                                                 $controller->url_for('messages/write', ['rec_uname' => $platform->creator->username]),
                                                 _('Nachricht an verantwortliche Person schreiben'),
