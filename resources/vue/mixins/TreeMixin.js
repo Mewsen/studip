@@ -91,7 +91,11 @@ export const TreeMixin = {
             return STUDIP.URLHelper.getURL('', { node_id, semester })
         },
         courseUrl(courseId) {
-            return STUDIP.URLHelper.getURL('dispatch.php/course/details/index/' + courseId)
+            return STUDIP.URLHelper.getURL(
+                'dispatch.php/course/details/index',
+                { sem_id: courseId },
+                true
+            );
         },
         profileUrl(username) {
             return STUDIP.URLHelper.getURL('dispatch.php/profile', { username })
