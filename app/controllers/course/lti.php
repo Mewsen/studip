@@ -1001,6 +1001,16 @@ class Course_LtiController extends StudipController
                 "`range_id` = :course_id ORDER BY `name` ASC",
                 ['course_id' => $this->course_id]
             );
+
+            $sidebar = Sidebar::get();
+            $actions = new ActionsWidget();
+            $actions->addLink(
+                _('Plattform hinzufügen'),
+                $this->url_for('course/lti/add_platform', ['cid' => $this->course_id]),
+                Icon::create('add'),
+                ['data-dialog' => 'size=auto']
+            );
+            $sidebar->addWidget($actions);
         }
     }
 
