@@ -773,7 +773,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 }
             }
             PageLayout::postSuccess(_('Die Zuordnung von Veranstaltungen zum Kalender wurde aktualisiert.'));
-            $this->redirect('calendar/schedule/index');
+            $this->redirect('calendar/calendar/index');
         }
     }
 
