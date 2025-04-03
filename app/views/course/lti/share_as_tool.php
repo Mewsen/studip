@@ -70,13 +70,26 @@
                     <tbody>
                         <? foreach ($platforms as $platform) : ?>
                             <tr>
-                                <td><?= htmlReady($platform->name) ?></td>
+                                <td>
+                                    <a href="<?= htmlReady($platform->url) ?>" target="_blank">
+                                        <?= htmlReady($platform->name) ?>
+                                        <?= Icon::create('link-extern')->asImg(16, ['class' => 'text-bottom', 'aria-hidden' => 'true']) ?>
+                                    </a>
+                                </td>
                                 <td><?= htmlReady($platform->creator?->getFullName() ?? _('unbekannt')) ?></td>
                                 <td class="actions">
                                     <form method="post" action="">
                                         <?= CSRFProtection::tokenTag() ?>
                                         <?
                                         $menu = ActionMenu::get();
+                                        if (true || $platform->creator_id !== $GLOBALS['user']->id) {
+                                            $menu->addLink(
+                                                $controller->url_for('messages/write', ['rec_uname' => $platform->creator->username]),
+                                                _('Nachricht an verantwortliche Person schreiben'),
+                                                Icon::create('mail'),
+                                                ['data-dialog' => 'size=auto']
+                                            );
+                                        }
                                         $menu->addLink(
                                             $controller->url_for('course/lti/edit_platform/' . $platform->id),
                                             _('Bearbeiten'),
