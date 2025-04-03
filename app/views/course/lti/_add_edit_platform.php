@@ -13,22 +13,26 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('LTI-Plattform konfigurieren') ?></legend>
-        <label>
-            <?= _('Name') ?>
-            <input type="text" name="name" value="<?= htmlReady($platform->name ?? '') ?>">
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('Name') ?></span>
+            <span class="asterisk">*</span>
+            <input type="text" name="name" required value="<?= htmlReady($platform->name ?? '') ?>">
         </label>
-        <label>
-            <?= _('LTI Platform-ID') ?>
-            <input type="url" name="url" value="<?= htmlReady($platform->url ?? '') ?>">
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('LTI Platform-ID') ?></span>
+            <span class="asterisk">*</span>
+            <input type="url" name="url" required value="<?= htmlReady($platform->url ?? '') ?>">
         </label>
-        <label>
-            <?= _('OAuth2 Access Token URL') ?>
-            <input type="url" name="oauth2_access_token_url"
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('OAuth2 Access Token URL') ?></span>
+            <span class="asterisk">*</span>
+            <input type="url" name="oauth2_access_token_url" required
                    value="<?= htmlReady($platform->oauth2_access_token_url ?? '') ?>">
         </label>
-        <label>
-            <?= _('OIDC Init URL') ?>
-            <input type="url" name="oidc_init_url"
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('OIDC Init URL') ?></span>
+            <span class="asterisk">*</span>
+            <input type="url" name="oidc_init_url" required
                    value="<?= htmlReady($platform->oidc_init_url ?? '') ?>">
         </label>
         <label>
