@@ -15,13 +15,19 @@ class AddLti13aToolModeTables extends Migration
         $db->exec(
             "CREATE TABLE IF NOT EXISTS lti_platforms (
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            range_id CHAR(32) NOT NULL,
             name VARCHAR(255) NOT NULL,
             platform_id VARCHAR(255) NOT NULL,
             oauth2_access_token_url VARCHAR(255) NOT NULL,
             oidc_init_url VARCHAR(255) NOT NULL,
             jwks_url VARCHAR(255) NOT NULL,
-            jwks_key_id VARCHAR(255) NOT NULL
+            jwks_key_id VARCHAR(255) NOT NULL,
+            mkdate INT(10) UNSIGNED NOT NULL DEFAULT 0,
+            chdate INT(10) UNSIGNED NOT NULL DEFAULT 0
             )"
+        );
+        $db->exec(
+            "ALTER TABLE `lti_platforms` ADD INDEX (`range_id`)"
         );
 
         $add_config_stmt = $db->prepare(

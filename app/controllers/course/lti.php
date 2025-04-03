@@ -996,6 +996,10 @@ class Course_LtiController extends StudipController
         $this->share_as_tool   = CourseConfig::get($this->course_id)->SHARE_COURSE_AS_LTI_TOOL;
         $this->lti_entry_point = CourseConfig::get($this->course_id)->LTI_TOOL_ENTRY_POINT;
         $this->plugin_data     = $this->getPluginData($this->course_id);
+        $this->platforms       = LtiPlatform::findBySQL(
+            "`range_id` = :course_id ORDER BY `name` ASC",
+            ['course_id' => $this->course_id]
+        );
     }
 
     public function save_share_as_tool_settings_action()

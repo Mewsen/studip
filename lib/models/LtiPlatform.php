@@ -19,6 +19,7 @@
  * parts of this Stud.IP as LTI tool.
  *
  * @property int $id database column
+ * @property int $range_id database column
  * @property string $name database column
  * @property string $platform_id database column
  * @property string $oauth2_access_token_url database column
