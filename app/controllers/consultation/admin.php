@@ -929,10 +929,24 @@ class Consultation_AdminController extends ConsultationController
             throw new Exception("Date with index '{$index}' was not submitted properly");
         }
 
-        return strtotime(implode(' ', [
-            Request::get("{$index}-date"),
-            Request::get("{$index_time}-time")
-        ]));
+        $date = Datetime::createFromFormat(
+            DateTimeInterface::RFC3339_EXTENDED,
+            Request::get("{$index}-date")
+        );
+
+        if (!$date) {
+            throw new Exception("Date with index '{$index}' could not be parsed");
+        }
+
+        $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+        $date->setTime(
+            ...array_map(
+                intval(...),
+                explode(':', Request::get("{$index}-time"))
+            )
+        );
+
+        return $date->getTimestamp();
     }
 
     private function getUserConfig(): RangeConfig
