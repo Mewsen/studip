@@ -1094,8 +1094,6 @@ class Course_LtiController extends StudipController
 
     public function add_platform_action()
     {
-        //TODO: safety dance
-
         if (Request::isPost()) {
             $this->savePlatform();
         } else {
@@ -1105,8 +1103,6 @@ class Course_LtiController extends StudipController
 
     public function edit_platform_action($platform_id)
     {
-        //TODO: safety dance
-
         $this->platform = LtiPlatform::find($platform_id);
         if (!$this->platform) {
             PageLayout::postError(_('Die LTI-Plattform wurde nicht gefunden.'));
@@ -1146,8 +1142,6 @@ class Course_LtiController extends StudipController
 
     public function delete_platform_action($platform_id)
     {
-        //TODO: safety dance
-
         CSRFProtection::verifyUnsafeRequest();
 
         $platform = LtiPlatform::find($platform_id);
