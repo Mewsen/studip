@@ -56,6 +56,7 @@
                             :placeholder="$gettext('tt.mm.jjjj')"
                             mindate="today"
                             :emit-date="true"
+                            return-as="iso"
                 ></Datepicker>
             </label>
 
@@ -68,6 +69,7 @@
                             :placeholder="$gettext('tt.mm.jjjj')"
                             :mindate="startDate"
                             :emit-date="true"
+                            return-as="iso"
                 ></Datepicker>
             </label>
 
