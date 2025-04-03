@@ -52,18 +52,8 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         $authToken = randomString(32);
         $this->freezeSessionVars($authRequest, $authToken);
 
-        // show login form if not logged in
-        $authPlugin = Config::get()->getValue('API_OAUTH_AUTH_PLUGIN');
-        if ('nobody' === $GLOBALS['user']->id && 'Standard' !== $authPlugin && !Request::option('sso')) {
-            $queryParams = $psrRequest->getQueryParams();
-            $queryParams['sso'] = strtolower($authPlugin);
-            $this->redirect($this->url_for('api/oauth2/authorize', $queryParams));
-
-            return;
-        } else {
-            if ('nobody' === $GLOBALS['user']->id) {
-                throw new LoginException();
-            }
+        if ('nobody' === $GLOBALS['user']->id) {
+            throw new LoginException();
         }
 
         $this->client = $client;

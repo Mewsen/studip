@@ -8,6 +8,8 @@ abstract class OAuth2Controller extends StudipController
 {
     use NegotiatesWithPsr7;
 
+    protected $with_session = true;
+
     /**
      * @return void
      */
