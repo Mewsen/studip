@@ -1091,4 +1091,70 @@ class Course_LtiController extends StudipController
         }
         $this->redirect('course/lti/share_as_tool', ['cid' => $this->course_id]);
     }
+
+    public function add_platform_action()
+    {
+        //TODO: safety dance
+
+        if (Request::isPost()) {
+            $this->savePlatform();
+        } else {
+            $this->platform = new LtiPlatform();
+        }
+    }
+
+    public function edit_platform_action($platform_id)
+    {
+        //TODO: safety dance
+
+        $this->platform = LtiPlatform::find($platform_id);
+        if (!$this->platform) {
+            PageLayout::postError(_('Die LTI-Plattform wurde nicht gefunden.'));
+            $this->relocate('course/lti/share_as_tool');
+            return;
+        }
+        if (Request::isPost()) {
+            $this->savePlatform($this->platform);
+        }
+    }
+
+    protected function savePlatform(?LtiPlatform $platform)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $platform->name                    = Request::get('name');
+        $platform->url                     = Request::get('url');
+        $platform->oauth2_access_token_url = Request::get('oauth2_access_token_url');
+        $platform->oidc_init_url           = Request::get('oidc_init_url');
+        $platform->jwks_url                = Request::get('jwks_url');
+        $platform->jwks_key_id             = Request::get('jwks_key_id');
+        if ($platform->store()) {
+            PageLayout::postSuccess(_('Die Plattform wurde gespeichert.'));
+            $this->relocate('course/lti/share_as_tool');
+        } else {
+            //Display the platform with the current data:
+            $this->platform = $platform;
+            PageLayout::postError(_('Die Plattform konnte nicht gespeichert werden.'));
+        }
+    }
+
+    public function delete_platform_action($platform_id)
+    {
+        //TODO: safety dance
+
+        CSRFProtection::verifyUnsafeRequest();
+
+        $platform = LtiPlatform::find($platform_id);
+        if (!$platform) {
+            PageLayout::postError(_('Die LTI-Plattform wurde nicht gefunden.'));
+            $this->relocate('course/lti/share_as_tool');
+            return;
+        }
+        if ($platform->delete()) {
+            PageLayout::postSuccess(_('Die LTI-Plattform wurde gelöscht.'));
+        } else {
+            PageLayout::postError(_('Die LTI-Plattform konnte nicht gelöscht werden.'));
+        }
+        $this->relocate('course/lti/share_as_tool');
+    }
 }

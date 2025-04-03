@@ -17,7 +17,7 @@ class AddLti13aToolModeTables extends Migration
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
             range_id CHAR(32) NOT NULL,
             name VARCHAR(255) NOT NULL,
-            platform_id VARCHAR(255) NOT NULL,
+            url VARCHAR(255) NOT NULL,
             oauth2_access_token_url VARCHAR(255) NOT NULL,
             oidc_init_url VARCHAR(255) NOT NULL,
             jwks_url VARCHAR(255) NOT NULL,

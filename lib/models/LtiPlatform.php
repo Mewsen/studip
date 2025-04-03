@@ -21,7 +21,7 @@
  * @property int $id database column
  * @property int $range_id database column
  * @property string $name database column
- * @property string $platform_id database column
+ * @property string $url database column
  * @property string $oauth2_access_token_url database column
  * @property string $oidc_init_url database column
  * @property string $jwks_url database column
