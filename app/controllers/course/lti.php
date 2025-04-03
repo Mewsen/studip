@@ -1118,10 +1118,16 @@ class Course_LtiController extends StudipController
         }
     }
 
-    protected function savePlatform(?LtiPlatform $platform)
+    protected function savePlatform(?LtiPlatform $platform = null)
     {
         CSRFProtection::verifyUnsafeRequest();
 
+        if (!$platform) {
+            $platform = new LtiPlatform();
+            $platform->creator_id = $GLOBALS['user']->id;
+        }
+
+        $platform->range_id                = $this->course_id;
         $platform->name                    = Request::get('name');
         $platform->url                     = Request::get('url');
         $platform->oauth2_access_token_url = Request::get('oauth2_access_token_url');

@@ -20,6 +20,7 @@
  *
  * @property int $id database column
  * @property int $range_id database column
+ * @property string $creator_id database column
  * @property string $name database column
  * @property string $url database column
  * @property string $oauth2_access_token_url database column
@@ -35,6 +36,15 @@ class LtiPlatform extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'lti_platforms';
+
+        $config['belongs_to']['course'] = [
+            'class_name'  => Course::class,
+            'foreign_key' => 'range_id'
+        ];
+        $config['belongs_to']['creator'] = [
+            'class_name'  => User::class,
+            'foreign_key' => 'creator_id'
+        ];
 
         parent::configure($config);
     }

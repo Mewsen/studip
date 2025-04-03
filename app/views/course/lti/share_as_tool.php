@@ -71,25 +71,33 @@
                         <? foreach ($platforms as $platform) : ?>
                             <tr>
                                 <td><?= htmlReady($platform->name) ?></td>
-                                <td><?= htmlReady($platform->responsible_person?->getFullName() ?? _('unbekannt')) ?></td>
-                                <td>
-                                    <?
-                                    $menu = ActionMenu::get();
-                                    $menu->addLink(
-                                        $controller->url_for('course/lti/edit_platform/' . $platform->id),
-                                        Icon::create('edit'),
-                                        ['data-dialog' => 'reload-on-close']
-                                    );
-                                    $menu->addLink(
-                                        $controller->url_for('course/lti/delete_platform/' . $platform->id),
-                                        Icon::create('trash'),
-                                        ['data-confirm' => studip_interpolate(
-                                            _('Soll die Plattform %{name} wirklich gelöscht werden?'),
-                                            ['name' => $platform->name]
-                                        )]
-                                    );
-                                    $menu->render();
-                                    ?>
+                                <td><?= htmlReady($platform->creator?->getFullName() ?? _('unbekannt')) ?></td>
+                                <td class="actions">
+                                    <form method="post" action="">
+                                        <?= CSRFProtection::tokenTag() ?>
+                                        <?
+                                        $menu = ActionMenu::get();
+                                        $menu->addLink(
+                                            $controller->url_for('course/lti/edit_platform/' . $platform->id),
+                                            _('Bearbeiten'),
+                                            Icon::create('edit'),
+                                            ['data-dialog' => 'reload-on-close']
+                                        );
+                                        $menu->addButton(
+                                            'delete',
+                                            _('Löschen'),
+                                            Icon::create('trash'),
+                                            [
+                                                'data-confirm' => studip_interpolate(
+                                                    _('Soll die Plattform %{name} wirklich gelöscht werden?'),
+                                                    ['name' => $platform->name]
+                                                ),
+                                                'formaction' => $controller->url_for('course/lti/delete_platform/' . $platform->id)
+                                            ]
+                                        );
+                                        ?>
+                                        <?= $menu->render() ?>
+                                    </form>
                                 </td>
                             </tr>
                         <? endforeach ?>

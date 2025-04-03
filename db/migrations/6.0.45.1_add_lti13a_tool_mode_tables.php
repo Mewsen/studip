@@ -16,6 +16,7 @@ class AddLti13aToolModeTables extends Migration
             "CREATE TABLE IF NOT EXISTS lti_platforms (
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
             range_id CHAR(32) NOT NULL,
+            creator_id CHAR(32) NOT NULL,
             name VARCHAR(255) NOT NULL,
             url VARCHAR(255) NOT NULL,
             oauth2_access_token_url VARCHAR(255) NOT NULL,
