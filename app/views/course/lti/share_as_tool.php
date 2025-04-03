@@ -5,6 +5,7 @@
  * @var bool $share_as_tool
  * @var array $plugin_data
  * @var int $lti_entry_point
+ * @var ?LtiPlatform[] $platforms
  */
 ?>
 <section class="contentbox">
@@ -53,51 +54,50 @@
         </form>
     </section>
 </section>
-<section class="contentbox">
-    <header><h1><?= _('Angebundene LTI-Plattformen') ?></h1></header>
-    <section>
-        <? if ($platforms) : ?>
-            <table class="default">
-                <thead>
-                <tr>
-                    <th><?= _('Plattform') ?></th>
-                    <th><?= _('Verantwortliche Person') ?></th>
-                    <th class="actions"><?= _('Aktionen') ?></th>
-                </tr>
-                </thead>
-                <tfoot>
-                    <?= \Studip\LinkButton::create(_('Hinzufügen'), $controller->url_for('course/lti/add_platform', ['cid' => $this->course_id])) ?>
-                </tfoot>
-                <tbody>
-                <? foreach ($platforms as $platform) : ?>
-                    <tr>
-                        <td><?= htmlReady($platform->name) ?></td>
-                        <td><?= htmlReady($platform->responsible_person?->getFullName() ?? _('unbekannt')) ?></td>
-                        <td>
-                            <?
-                            $menu = ActionMenu::get();
-                            $menu->addLink(
-                                $controller->url_for('course/lti/edit_platform/' . $platform->id),
-                                Icon::create('edit'),
-                                ['data-dialog' => 'reload-on-close']
-                            );
-                            $menu->addLink(
-                                $controller->url_for('course/lti/delete_platform/' . $platform->id),
-                                Icon::create('trash'),
-                                ['data-confirm' => studip_interpolate(
-                                    _('Soll die Plattform %{name} wirklich gelöscht werden?'),
-                                    ['name' => $platform->name]
-                                )]
-                            );
-                            $menu->render();
-                            ?>
-                        </td>
-                    </tr>
-                <? endforeach ?>
-                </tbody>
-            </table>
-        <? else : ?>
-            <?= MessageBox::info(_('Es sind keine LTI-Plattformen an diese Veranstaltung angebunden.')) ?>
-        <? endif ?>
+<? if ($share_as_tool) : ?>
+    <section class="contentbox">
+        <header><h1><?= _('Angebundene LTI-Plattformen') ?></h1></header>
+        <section>
+            <? if ($platforms) : ?>
+                <table class="default">
+                    <thead>
+                        <tr>
+                            <th><?= _('Plattform') ?></th>
+                            <th><?= _('Verantwortliche Person') ?></th>
+                            <th class="actions"><?= _('Aktionen') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? foreach ($platforms as $platform) : ?>
+                            <tr>
+                                <td><?= htmlReady($platform->name) ?></td>
+                                <td><?= htmlReady($platform->responsible_person?->getFullName() ?? _('unbekannt')) ?></td>
+                                <td>
+                                    <?
+                                    $menu = ActionMenu::get();
+                                    $menu->addLink(
+                                        $controller->url_for('course/lti/edit_platform/' . $platform->id),
+                                        Icon::create('edit'),
+                                        ['data-dialog' => 'reload-on-close']
+                                    );
+                                    $menu->addLink(
+                                        $controller->url_for('course/lti/delete_platform/' . $platform->id),
+                                        Icon::create('trash'),
+                                        ['data-confirm' => studip_interpolate(
+                                            _('Soll die Plattform %{name} wirklich gelöscht werden?'),
+                                            ['name' => $platform->name]
+                                        )]
+                                    );
+                                    $menu->render();
+                                    ?>
+                                </td>
+                            </tr>
+                        <? endforeach ?>
+                    </tbody>
+                </table>
+            <? else : ?>
+                <?= MessageBox::info(_('Es sind keine LTI-Plattformen an diese Veranstaltung angebunden.')) ?>
+            <? endif ?>
+        </section>
     </section>
-</section>
+<? endif ?>
