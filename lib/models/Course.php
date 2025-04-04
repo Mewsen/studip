@@ -2203,19 +2203,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         ][$this->completion] ?? _('undefiniert');
     }
 
-    public function setValue($field, $value)
-    {
-        if (strtolower($field) === 'institut_id') {
-            $this->institutes = $this->institutes->filter(function (Institute $institute) {
-                return $institute->id !== $this->institut_id;
-            });
-        } elseif (strtolower($field) === 'institutes') {
-            $this->initRelation($field);
-        }
-
-        return parent::setValue($field, $value);
-    }
-
     /**
      * Handle all things related to storing the institutes
      */
