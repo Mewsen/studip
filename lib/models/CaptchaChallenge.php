@@ -38,7 +38,7 @@ final class CaptchaChallenge extends SimpleORMap
     public static function createNewChallenge(): array
     {
         do {
-            $salt = time() . '-' . bin2hex(random_bytes(12));
+            $salt = md5(time() . '-' . bin2hex(random_bytes(12)));
             $number = random_int(1e3, 1e5);
         } while (self::countBySql('salt = ? AND number = ?', [$salt, $number]) > 0);
 
