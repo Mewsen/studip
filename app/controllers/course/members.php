@@ -1847,14 +1847,51 @@ class Course_MembersController extends AuthenticatedController
             _('Position'),
         ];
 
+        $header_course_df = [];
+        $header_user_df = [];
+
+        $course = Course::findCurrent();
+        $members = $course->getMembersData($status);
+
+        $db = DBManager::get();
+        $stmt = "SELECT `datafields`.`datafield_id`, `name`, `content`
+                    FROM `datafields_entries`
+                    JOIN `datafields` ON `datafields`.`datafield_id` = `datafields_entries`.`datafield_id`
+                    WHERE `range_id` = :range_id
+                    ";
+
+        // check for datafields for every course member
+        foreach ($members as $user_id => $member_data) {
+            foreach ($course->aux->datafields as $field_id => $value) {
+                $df_name = DataField::find($field_id)->getValue('name');
+                if (!in_array($df_name, $header_course_df)) {
+                    $header_course_df[] = $df_name;
+                }
+
+                // get user data
+                $sql_params = ['range_id' => $user_id, 'datafield_id' => $field_id];
+                $exec_stmt = $stmt . " AND `datafields`.`datafield_id` = :datafield_id";
+                $user_course_df = $db->fetchAll($exec_stmt, $sql_params);
+                $members[$user_id][$field_id] = $user_course_df[0]['content'];
+            }
+
+            $sql_params = ['range_id' => $user_id];
+            $exec_stmt = $stmt . " AND `sec_range_id` = ''";
+            $user_df = $db->fetchAll($exec_stmt, $sql_params);
+            foreach ($user_df as $key => $values) {
+                if (!in_array($values['name'], $header_user_df)) {
+                    $header_user_df[] = $values['name'];
+                }
+                $members[$user_id][$values['datafield_id']] = $values['content'];
+            }
+        }
+        $header = array_merge($header, $header_course_df, $header_user_df);
+
         if (in_array($status, ['awaiting', 'claiming'])) {
             $filename = _('Wartelistenexport');
         } else {
             $filename = _('Teilnehmendenexport');
         }
-
-        $course = Course::findCurrent();
-        $members = $course->getMembersData($status);
 
         $filename = $filename . ' ' . $this->course_title . '.' . $export_format;
 
