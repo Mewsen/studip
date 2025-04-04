@@ -109,7 +109,7 @@
 .ck.ck-button.ck-off.ck-button_with-text:hover {
     background-color: var(--base-color);
 }
-.ck.ck-button.ck-button_with-text.ck-dropdown__button:not(.ck-disabled):hover {
+.ck.ck-button.ck-button_with-text.ck-dropdown__button:not(.ck-disabled, .ck-on):hover {
     background-color: var(--white);
     color: var(--base-color);
 }
@@ -121,8 +121,23 @@
     color: var(--black);
 }
 
+.ck-list__item  .ck.ck-button.ck-on.ck-button_with-text { 
+    background-color: var(--base-color);
+}
+
+
 .ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled) .ck.ck-button__label {
     color: var(--base-color);
+}
+
+.ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled, .ck-dropdown__button):hover .ck.ck-button__label,
+.ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled, .ck-dropdown__button) .ck.ck-button__label {
+    color: var(--white);
+}
+
+.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button:active,
+.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button .ck-button__label {
+    color: var(--white);
 }
 
 .ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled):not(.ck-switchbutton):not(.ck-dropdown__button) .ck.ck-button__label,
