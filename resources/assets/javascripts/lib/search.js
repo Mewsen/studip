@@ -27,7 +27,8 @@ const Search = {
 
         var cache        = STUDIP.Search.getCache();
         var searchterm   = $('#search-input').val().trim() || cache.get('searchterm');
-        var hasValue     = searchterm && searchterm.length >= STUDIP.Search.searchTermLength;
+        searchterm = searchterm.toString();
+        var hasValue     = searchterm.length >= STUDIP.Search.searchTermLength;
         var resultsDiv   = $('#search-results');
         var wrapper      = $('#search');
         const data       = resultsDiv.data();
