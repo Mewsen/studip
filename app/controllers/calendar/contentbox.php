@@ -111,42 +111,26 @@ class Calendar_ContentboxController extends StudipController
 
         $this->termine = [];
 
+
         if ($GLOBALS['user']->id === $id) {
-            //The current user is looking at their dates.
-            //Get course dates, too:
-            $relevant_courses = Course::findBySQL(
-                "JOIN `seminar_user` USING (`seminar_id`)
-                WHERE `user_id` = :user_id",
-                ['user_id' => $id]
-            );
-            foreach ($relevant_courses as $course) {
-                $course_dates = $course->getDatesWithExdates($this->start, $this->start + $this->timespan);
-                foreach ($course_dates as $course_date) {
-                    //Check if the date belongs to a regular course date and if that is
-                    //made invisible via the schedule:
-                    $show_date = true;
-                    if (!empty($course_date->cycle)) {
-                        $show_date = ScheduleCourseDate::countBySql(
-                            "`user_id` = :user_id
-                            AND `course_id` = :course_id
-                            AND `metadate_id` = :metadate_id
-                            AND `visible` = '0'",
-                            [
-                                'user_id'     => $id,
-                                'course_id'   => $course_date->range_id,
-                                'metadate_id' => $course_date->metadate_id
-                            ]
-                        ) === 0;
-                    }
-                    if ($show_date) {
-                        $this->titles[$course_date->id] = sprintf(
-                            '%1$s: %2$s',
-                            $course_date->course->name,
-                            $course_date->getFullName()
-                        );
-                        $this->termine[] = $course_date;
-                    }
-                }
+            $course_dates = CalendarCourseDate::getEvents($begin, $end, $id);
+            foreach ($course_dates as $course_date) {
+                    $this->titles[$course_date->id] = sprintf(
+                        '%1$s: %2$s',
+                        $course_date->course->name,
+                        $course_date->getFullName()
+                    );
+                    $this->termine[] = $course_date;
+
+            }
+            $cancelled_course_dates = CalendarCourseExDate::getEvents($begin, $end, $id);
+            foreach ($cancelled_course_dates as $cancelled_course_date) {
+                $this->titles[$cancelled_course_date->id] = sprintf(
+                    '%1$s: %2$s',
+                    $cancelled_course_date->course->name,
+                    $cancelled_course_date->getFullName()
+                );
+                $this->termine[] = $cancelled_course_date;
             }
         }
 

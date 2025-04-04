@@ -35,7 +35,7 @@
                         <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
                     </a>
                 <? endif ?>
-            <? elseif (!$course_range && in_array($termin->getObjectClass(), ['CourseDate', 'CourseExDate'])) : ?>
+            <? elseif (!$course_range && in_array($termin->getObjectClass(), [CalendarCourseDate::class, CalendarCourseExDate::class])) : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/dates', ['cid' => $termin->getPrimaryObjectId()]) ?>"
                    title="<?= _('Zur Veranstaltung') ?>" aria-label="<?= _('Zur Veranstaltung') ?>">
                     <?= Icon::create('seminar')->asImg(['class'=> 'text-bottom']) ?>
@@ -88,7 +88,7 @@
                 <? endif ?>
             <? endforeach ?>
         </ul>
-        <? if (!$course_range && in_array($termin->getObjectClass(), [CourseDate::class, CourseExDate::class])) : ?>
+        <? if (!$course_range && in_array($termin->getObjectClass(), [CalendarCourseDate::class, CalendarCourseExDate::class])) : ?>
             <div>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/dates', ['cid' => $termin->getPrimaryObjectId()]) ?>">
                     <?= Icon::create('link-intern')->asImg(['class'=> 'text-bottom']) ?>
