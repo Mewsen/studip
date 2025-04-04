@@ -67,8 +67,11 @@ stages:
 
 .definitions:
   mariadb-service: &mariadb-service
-   - name: mariadb:10.2.7
-     command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
+    - name: mariadb:10.2.7
+      command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
+  mysql-service: &mysql-service
+    - name: mysql:8.0
+      command: [ "--sql_mode=","--character-set-server=utf8mb4","--collation-server=utf8mb4_general_ci"]
 
 build-composer:
   stage: build
@@ -273,11 +276,12 @@ test-functional:
   variables:
     FUNCTIONAL_XML_REPORT: $REPORT_DIR/functional-report.xml
     FUNCTIONAL_CODE_QUALITY_REPORT: $REPORT_DIR/functional-codequality.json
+    MYSQL_HOST: mysql
   cache:
     <<: *composer-cache
     policy: pull
   services:
-    - *mariadb-service
+    - *mysql-service
   allow_failure: false
   interruptible: true
   before_script:
