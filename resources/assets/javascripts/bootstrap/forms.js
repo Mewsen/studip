@@ -278,41 +278,30 @@ STUDIP.ready(function () {
                             this.STUDIPFORM_VALIDATIONNOTES = [];
                             this.STUDIPFORM_DISPLAYVALIDATION = true;
 
-                            //validation:
-                            let validation_promise = this.validate();
-                            validation_promise.then(validated => {
-                                if (!validated) {
-                                    this.$el.scrollIntoView({
-                                        behavior: 'smooth'
-                                    });
-                                    return;
-                                }
+                            // validation:
+                            this.validate()
+                                .then(() => {
+                                    if (this.STUDIPFORM_AUTOSAVEURL) {
+                                        let params = this.getFormValues();
+                                        params.STUDIPFORM_AUTOSTORE = 1;
 
-                                if (this.STUDIPFORM_AUTOSAVEURL) {
-                                    let params = this.getFormValues();
-                                    params.STUDIPFORM_AUTOSTORE = 1;
-
-                                    let submit = function (url, params, redirect) {
-                                        $.ajax({
-                                            url: url,
-                                            data: params,
-                                            type: 'post',
-                                            success(output) {
-                                                if (output === 'STUDIPFORM_STORE_SUCCESS' && redirect) {
-                                                    //The form has been stored successfully:
-                                                    window.location.href = redirect;
-                                                } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
-                                                    Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
-                                                }
+                                        $.post(this.STUDIPFORM_AUTOSAVEURL, params).done((output) => {
+                                            if (output === 'STUDIPFORM_STORE_SUCCESS' && this.STUDIPFORM_REDIRECTURL) {
+                                                //The form has been stored successfully:
+                                                window.location.href = this.STUDIPFORM_REDIRECTURL;
+                                            } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
+                                                Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
                                             }
                                         });
-                                    };
-                                    submit(this.STUDIPFORM_AUTOSAVEURL, params, this.STUDIPFORM_REDIRECTURL);
-                                } else {
-                                    this.STUDIPFORM_VALIDATED = true;
-                                    this.$el.submit();
+                                    } else {
+                                        this.STUDIPFORM_VALIDATED = true;
+                                        this.$el.submit();
+                                    }
+                                }).catch(errors => {
+                                    this.STUDIPFORM_VALIDATIONNOTES = errors;
+                                    this.$el.scrollIntoView({behavior: 'smooth'});
                                 }
-                            });
+                            );
                             e.preventDefault();
                         },
                         getFormValues() {
@@ -330,71 +319,72 @@ STUDIP.ready(function () {
                             });
                             return params;
                         },
-                        validate() {
-                            this.STUDIPFORM_VALIDATIONNOTES = [];
+                        async validate() {
+                            this.$el.checkValidity();
 
-                            return new Promise((resolve) => {
-                                let validated = this.$el.checkValidity();
+                            // Check inputs
+                            const inputs = this.$el.querySelectorAll('input,select,textarea');
+                            let notes = Array.from(inputs)
+                                .filter(node => !node.validity.valid)
+                                .map(node => {
+                                    const note = {
+                                        name: node.name,
+                                        label: node.labels[0].querySelector('.textlabel').innerText,
+                                        description: node.dataset.validation_requirement ?? $gettext('Fehler!'),
+                                        describedby: node.id
+                                    };
 
-                                $(this.$el).find('input, select, textarea').each(function () {
-                                    if (!this.validity.valid) {
-                                        let note = {
-                                            name: this.name,
-                                            label: $(this.labels[0]).find('.textlabel').text(),
-                                            description: $gettext('Fehler!'),
-                                            describedby: this.id
-                                        };
-                                        if ($(this).data('validation_requirement')) {
-                                            note.description = $(this).data('validation_requirement');
-                                        }
-                                        if (this.validity.tooShort) {
-                                            note.description = $gettext(
-                                                'Geben Sie mindestens %{min} Zeichen ein.',
-                                                { min: this.minLength }
-                                            );
-                                        }
-                                        if (this.validity.valueMissing) {
-                                            if (this.type === 'checkbox') {
-                                                note.description = $gettext('Dieses Feld muss ausgewählt sein.');
-                                            } else {
-                                                if (this.minLength > 0) {
-                                                    note.description = $gettext(
-                                                        'Hier muss ein Wert mit mindestens %{min} Zeichen eingetragen werden.',
-                                                        { min: this.minLength }
-                                                    );
-                                                } else {
-                                                    note.description = $gettext('Hier muss ein Wert eingetragen werden.');
-                                                }
-
-                                            }
-                                        }
-                                        this.STUDIPFORM_VALIDATIONNOTES.push(note);
+                                    if (node.validity.tooShort) {
+                                        note.description = $gettext(
+                                            'Geben Sie mindestens %{min} Zeichen ein.',
+                                            { min: node.minLength }
+                                        );
                                     }
+                                    if (node.validity.valueMissing) {
+                                        if (node.type === 'checkbox') {
+                                            note.description = $gettext('Dieses Feld muss ausgewählt sein.');
+                                        } else if (node.minLength > 0) {
+                                            note.description = $gettext(
+                                                'Hier muss ein Wert mit mindestens %{min} Zeichen eingetragen werden.',
+                                                { min: node.minLength }
+                                            );
+                                        } else {
+                                            note.description = $gettext('Hier muss ein Wert eingetragen werden.');
+                                        }
+                                    }
+
+                                    return note;
                                 });
 
-                                if (this.STUDIPFORM_SERVERVALIDATION) {
-                                    let params = this.getFormValues();
-                                    if (this.STUDIPFORM_AUTOSAVEURL) {
-                                        params.STUDIPFORM_AUTOSTORE = 1;
-                                    }
-                                    params.STUDIPFORM_SERVERVALIDATION = 1;
-
-                                    $.post(this.STUDIPFORM_VALIDATION_URL, params).done((output) => {
-                                        for (let i in output) {
-                                            this.STUDIPFORM_VALIDATIONNOTES.push({
-                                                name: output[i].name,
-                                                label: output[i].label,
-                                                description: output[i].error,
-                                                describedby: null
-                                            });
-                                        }
-                                        validated = this.STUDIPFORM_VALIDATIONNOTES.length < 1;
-                                        resolve(validated);
-                                    });
-                                } else {
-                                    resolve(validated);
+                            // Optional server validation
+                            if (this.STUDIPFORM_SERVERVALIDATION) {
+                                let params = this.getFormValues();
+                                if (this.STUDIPFORM_AUTOSAVEURL) {
+                                    params.STUDIPFORM_AUTOSTORE = 1;
                                 }
-                            });
+                                params.STUDIPFORM_SERVERVALIDATION = 1;
+
+                                const output = await fetch(this.STUDIPFORM_VALIDATION_URL, {
+                                    method: 'POST',
+                                    body: new URLSearchParams(params),
+                                    headers: {'X-Requested-With': 'XMLHttpRequest'}
+                                }).then(response => response.json());
+                                notes.push(
+                                    ...output.map(item => ({
+                                        name: item.name,
+                                        label: item.label,
+                                        description: item.error,
+                                        describedby: null
+                                    }))
+                                );
+                            }
+
+                            // Resolve or reject based on present error notes
+                            if (notes.length > 0) {
+                                return Promise.reject(notes);
+                            } else {
+                                return Promise.resolve();
+                            }
                         },
                         setInputs(inputs) {
                             for (const [key, value] of Object.entries(inputs)) {
