@@ -14,4 +14,10 @@ class LTIException extends Exception
      * a LTI tool registration is not linked to a tool.
      */
     public const REGISTRATION_NOT_LINKED_TO_TOOL = 1;
+
+    /**
+     * The REGISTRATION_NOT_LINKED_TO_PLATFORM status code represents the case where
+     * a LTI platform registration is not linked to a platform.
+     */
+    public const REGISTRATION_NOT_LINKED_TO_PLATFORM = 2;
 }

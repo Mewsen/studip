@@ -10,10 +10,26 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 
 class Registration implements RegistrationInterface
 {
+    /**
+     * @var \LtiTool|null The LTI tool for the registration instance.
+     */
+    protected ?\LtiTool $tool = null;
+
+    /**
+     * @var \LtiPlatform|null The LTI platform for the registration instance.
+     */
+    protected ?\LtiPlatform $platform = null;
+
     public function __construct(
-        protected ?\LtiTool $tool,
+        \LtiTool|\LtiPlatform|null $item,
         protected ?\LtiResourceLink $link = null
     ) {
+        if ($item instanceof \LtiTool) {
+            $this->tool = $item;
+        }
+        if ($item instanceof \LtiPlatform) {
+            $this->platform = $item;
+        }
     }
 
     public function setLtiTool(\LtiTool $tool)
@@ -24,6 +40,16 @@ class Registration implements RegistrationInterface
     public function getLtiTool() : ?\LtiTool
     {
         return $this->tool;
+    }
+
+    public function setLtiPlatform(\LtiPlatform $platform)
+    {
+        $this->platform = $platform;
+    }
+
+    public function getLtiPlatform() : ?\LtiPlatform
+    {
+        return $this->platform;
     }
 
     public function setLtiResourceLink(\LtiResourceLink $link)
@@ -39,67 +65,89 @@ class Registration implements RegistrationInterface
     #[\Override]
     public function getIdentifier(): string
     {
-        if (!$this->tool) {
-            return '';
-        }
-        if ($this->link) {
-            return $this->tool->id . '_' . $this->link->id;
-        } else {
+        if ($this->tool) {
             return $this->tool->id;
         }
+
+        if ($this->platform) {
+            return $this->platform->id;
+        }
+
+        if ($this->link) {
+            return $this->tool->id . '_' . $this->link->id;
+        }
+
+        return '';
     }
 
     #[\Override]
     public function getClientId(): string
     {
-        return $this->tool->id ?? '';
+        return $this->getIdentifier();
     }
 
     #[\Override]
     public function getPlatform(): PlatformInterface
     {
         return PlatformManager::getPlatformConfiguration();
+
+//        if ($this->platform) {
+//            return $this->platform->getPlatformData();
+//        } elseif ($this->tool) {
+//            //Use the global platform configuration for Stud.IP as LTI platform.
+//            return PlatformManager::getPlatformConfiguration();
+//        }
+//        //If no platform or tool is present, the registration is not linked to a platform.
+//        throw new \Studip\LTIException(
+//            'No LTI platform present.',
+//            \Studip\LTIException::REGISTRATION_NOT_LINKED_TO_PLATFORM
+//        );
     }
 
     #[\Override]
     public function getTool(): ToolInterface
     {
-        if (!$this->tool) {
-            throw new \Studip\LTIException(
-                'No LTI tool link present.',
-                \Studip\LTIException::REGISTRATION_NOT_LINKED_TO_TOOL
-            );
+        if ($this->tool) {
+            return $this->tool->getToolData();
+        } elseif ($this->platform) {
+            //TODO: Use the global tool configuration for Stud.IP as LTI tool.
         }
-        return $this->tool->getToolData();
+        //If no tool or platform is present, the registration is not linked to a tool.
+        throw new \Studip\LTIException(
+            'No LTI tool link present.',
+            \Studip\LTIException::REGISTRATION_NOT_LINKED_TO_TOOL
+        );
     }
 
     #[\Override]
     public function getDeploymentIds(): array
     {
-        if (!$this->tool) {
-            return [];
-        }
-        if ($this->link) {
-            return [$this->link->deployment_id];
-        } else {
+        if ($this->tool) {
             return \DBManager::get()->fetchFirst("SELECT `id` FROM `lti_deployments` WHERE `tool_id` = ?", [$this->tool->id]);
         }
+
+        if ($this->link) {
+            return [$this->link->deployment_id];
+        }
+
+        return [];
     }
 
     #[\Override]
     public function hasDeploymentId(string $deploymentId): bool
     {
-        if (!$this->tool) {
-            return false;
-        }
-        if ($this->link) {
-            return $this->link->deployment_id == $deploymentId;
-        } else {
+        if ($this->tool) {
             return \LtiDeployment::countBySql(
                     "`tool_id` = :tool_id AND `id` = :deployment_id",
                     ['tool_id' => $this->tool->id, 'deployment_id' => $deploymentId]
                 ) > 0;
         }
+
+        if ($this->link) {
+            return $this->link->deployment_id == $deploymentId;
+        }
+
+        return false;
     }
 
     #[\Override]
@@ -112,36 +160,56 @@ class Registration implements RegistrationInterface
     #[\Override]
     public function getPlatformKeyChain(): ?KeyChainInterface
     {
-        $platform_keyring = PlatformManager::getPlatformKeyring();
-        if (!$platform_keyring) {
-            $platform_keyring = PlatformManager::generatePlatformKeyring();
+        if ($this->platform) {
+            //TODO: return the platform keyring.
+        } elseif ($this->tool) {
+            $platform_keyring = PlatformManager::getPlatformKeyring();
+            if (!$platform_keyring) {
+                $platform_keyring = PlatformManager::generatePlatformKeyring();
+            }
+            return $platform_keyring->toKeyChain();
         }
-        return $platform_keyring->toKeyChain();
+
+        return null;
     }
 
     #[\Override]
     public function getToolKeyChain(): ?KeyChainInterface
     {
-        if (!$this->tool || $this->tool->jwks_url) {
-            return null;
+        if ($this->tool) {
+            if ($this->tool->jwks_url) {
+                return null;
+            }
+            $keyring = $this->tool->getKeyring();
+            if (!$keyring) {
+                throw new LtiException('Failed to load public key for tool ' . $this->tool->id);
+            }
+            return $keyring->toKeyChain();
+        } elseif ($this->platform) {
+            //TODO: return the global tool key chain.
         }
-        
-        $keyring = $this->tool->getKeyring();
-        if (!$keyring) {
-            throw new LtiException('Failed to load public key for tool ' . $this->tool->id);
-        }
-        return $keyring->toKeyChain();
+
+        return null;
     }
 
     #[\Override]
     public function getPlatformJwksUrl(): ?string
     {
-        return PlatformManager::getJwksUrl();
+        if ($this->platform) {
+            return $this->platform->jwks_url ?? null;
+        } else {
+            return PlatformManager::getJwksUrl();
+        }
     }
 
     #[\Override]
     public function getToolJwksUrl(): ?string
     {
-        return $this->tool->jwks_url ?? null;
+        if ($this->tool) {
+            return $this->tool->jwks_url ?? null;
+        } else {
+            //TODO: Return the global JWKS URL for Stud.IP as LTI tool.
+            return null;
+        }
     }
 }
