@@ -1673,7 +1673,8 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         if ($course_set = $this->getCourseSet()) {
             $info = new \Studip\EnrolmentInformation('');
             $info->setCodeword('course_set');
-            $info->setEnrolmentAllowed(true);
+            // Nobody can never enroll when there is a course set present.
+            $info->setEnrolmentAllowed('nobody' !== $GLOBALS['user']->id);
             $message = _('Die Anmeldung zu dieser Veranstaltung folgt bestimmten Regeln.');
             $priority = AdmissionPriority::getPrioritiesByUser($course_set->getId(), $user_id);
             if (!empty($priority[$this->id])) {
