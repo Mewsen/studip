@@ -942,7 +942,7 @@ class Consultation_AdminController extends ConsultationController
         $date->setTime(
             ...array_map(
                 intval(...),
-                explode(':', Request::get("{$index}-time"))
+                explode(':', Request::get("{$index_time}-time"))
             )
         );
 
