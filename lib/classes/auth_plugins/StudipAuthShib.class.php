@@ -144,7 +144,6 @@ class StudipAuthShib extends StudipAuthSSO
     {
         if (!empty($this->logout_url)) {
             header('Location: ' . URLHelper::getURL($this->logout_url, ['return' => Request::url()]));
-            exit();
         }
     }
 }
