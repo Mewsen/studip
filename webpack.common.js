@@ -1,79 +1,92 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { VueLoaderPlugin } = require('vue-loader');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
-
+const { CKEditorTranslationsPlugin } = require('@ckeditor/ckeditor5-dev-translations');
 const { styles } = require('@ckeditor/ckeditor5-dev-utils');
+const { RsdoctorWebpackPlugin } = require('@rsdoctor/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
 
-const assetsPath = path.resolve(__dirname, "resources/assets/javascripts");
+const postcssOptions = styles.getPostCssConfig({
+    themeImporter: {
+        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
+    },
+    minify: true,
+});
+
+// TODO: Dieser Workaround sollte entfernt werden, sobald wir den CKE auf v43+ updaten können.
+postcssOptions.plugins[postcssOptions.plugins.findIndex((plugin) => plugin.postcssPlugin === 'postcss-nesting')] =
+    require('postcss-nesting')({
+        // https://github.com/ckeditor/ckeditor5/issues/11730
+        noIsPseudoSelector: true,
+        edition: '2021',
+        silenceAtNestWarning: true,
+    });
+
+const assetsPath = path.resolve(__dirname, 'resources/assets/javascripts');
 
 module.exports = {
     entry: {
-        "studip-base": assetsPath + "/entry-base.js",
-        "studip-statusgroups": assetsPath + "/entry-statusgroups.js",
-        "studip-wysiwyg": assetsPath + "/entry-wysiwyg.js",
-        "studip-installer": assetsPath + "/entry-installer.js",
-        "print": path.resolve(__dirname, "resources/assets/stylesheets") + "/print.scss",
-        "accessibility": path.resolve(__dirname, "resources/assets/stylesheets") + "/highcontrast.scss"
+        'studip-base': assetsPath + '/entry-base.js',
+        'studip-statusgroups': assetsPath + '/entry-statusgroups.js',
+        'studip-wysiwyg': assetsPath + '/entry-wysiwyg.js',
+        'studip-installer': assetsPath + '/entry-installer.js',
+        print: path.resolve(__dirname, 'resources/assets/stylesheets') + '/print.scss',
+        accessibility: path.resolve(__dirname, 'resources/assets/stylesheets') + '/highcontrast.scss',
     },
     output: {
-        path: path.resolve(__dirname, "public/assets"),
-        chunkFilename: "javascripts/[id].chunk.js?h=[chunkhash]",
-        filename: "javascripts/[name].js"
+        path: path.resolve(__dirname, 'public/assets'),
+        chunkFilename: 'javascripts/[id].chunk.js?h=[chunkhash]',
+        filename: 'javascripts/[name].js',
+        clean: {
+            keep: /^(fonts|images|javascripts\/mathjax|sounds)/,
+        },
     },
     module: {
         rules: [
             {
                 test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                use: [ 'raw-loader' ]
+                use: ['raw-loader'],
             },
             {
                 test: /\.css$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             url: false,
-                            importLoaders: 1
-                        }
+                            importLoaders: 1,
+                        },
                     },
                     {
-                        loader: "postcss-loader",
-                        options: {
-                            postcssOptions: styles.getPostCssConfig( {
-                                themeImporter: {
-                                    themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-                                },
-                                minify: true
-                            } )
-                        }
-                    }
-                ]
+                        loader: 'postcss-loader',
+                        options: { postcssOptions },
+                    },
+                ],
             },
             {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             url: false,
-                            importLoaders: 2
-                        }
+                            importLoaders: 2,
+                        },
                     },
                     {
-                        loader: "postcss-loader"
+                        loader: 'postcss-loader',
                     },
                     {
-                        loader: "sass-loader"
-                    }
-                ]
+                        loader: 'sass-loader',
+                    },
+                ],
             },
             {
                 test: /\.ts$/,
@@ -89,9 +102,9 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        cacheDirectory: true
-                    }
-                }
+                        cacheDirectory: true,
+                    },
+                },
             },
             {
                 test: /\.vue$/,
@@ -100,17 +113,30 @@ module.exports = {
                     compilerOptions: {
                         isCustomElement(tag) {
                             return ['altcha-widget'].includes(tag);
-                        }
-                    }
-                }
-            }
-        ]
+                        },
+                    },
+                },
+            },
+        ],
     },
     plugins: [
+        process.env.RSDOCTOR && new RsdoctorWebpackPlugin({}),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './node_modules/vue/dist/vue.global.prod.js',
+                    to: './javascripts/vue.global.prod.js',
+                },
+                {
+                    from: './node_modules/vuex/dist/vuex.global.prod.js',
+                    to: './javascripts/vuex.global.prod.js',
+                },
+            ],
+        }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
-            filename: "stylesheets/[name].css",
-            chunkFilename: "stylesheets/[name].css?h=[chunkhash]",
+            filename: 'stylesheets/[name].css',
+            chunkFilename: 'stylesheets/[name].css?h=[chunkhash]',
             ignoreOrder: true,
         }),
         new ESLintPlugin({
@@ -122,13 +148,13 @@ module.exports = {
                 'resources/assets/javascripts/jquery/autoresize.jquery.min.js',
                 'resources/assets/javascripts/jquery/jstree/jquery.jstree.js',
                 'resources/assets/javascripts/vendor',
-            ]
+            ],
         }),
         new CKEditorTranslationsPlugin({
             language: 'de',
-            addMainLanguageTranslationsToAllAssets: true
+            addMainLanguageTranslationsToAllAssets: true,
         }),
-    ],
+    ].filter(Boolean),
     resolve: {
         alias: {
             'jquery-ui/data': 'jquery-ui/ui/data',
@@ -155,8 +181,13 @@ module.exports = {
         },
         extensions: ['.ts', '.vue', '.js'],
         fallback: {
-            'stream': require.resolve("stream-browserify"),
-            'buffer': require.resolve("buffer/")
-        }
-    }
+            stream: require.resolve('stream-browserify'),
+            buffer: require.resolve('buffer/'),
+        },
+    },
+    externals: {
+        vue: 'Vue',
+        vuex: 'Vuex',
+    },
+    externalsType: 'global',
 };
