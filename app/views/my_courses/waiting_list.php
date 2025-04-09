@@ -31,7 +31,7 @@
             <th class="hidden-small-down"><?= _('Inhalt') ?></th>
             <th style="text-align: center"><?= _('Datum') ?></th>
             <th class="hidden-small-down"
-                style="text-wrap: nowrap; white-space: nowrap"><?= _('Position/Chance') ?></th>
+                style="text-wrap: nowrap; white-space: nowrap"><?= _('Position') ?></th>
             <th class="hidden-small-down"><?= _('Art') ?></th>
             <th></th>
         </tr>
@@ -40,10 +40,9 @@
         <? foreach ($waiting_list as $wait) : ?>
 
             <?php
-            // wir sind in einer Anmeldeliste und brauchen Prozentangaben
+            // wir sind in einer Anmeldeliste, also keine Wahrscheinlichkeit zuverlässig berechenbar
             if ($wait['status'] === 'claiming') {
-                // Grün der Farbe nimmt mit Wahrscheinlichkeit ab
-                $chance_color = dechex(55 + $wait['admission_chance'] * 2);
+                $chance_color = 'ff';
             } // wir sind in einer Warteliste
             else {
                 $chance_color = $wait['position'] < 30 ? dechex(255 - $wait['position'] * 6) : 44;
@@ -55,7 +54,7 @@
             }
             ?>
             <tr>
-                <td title="<?= _('Position oder Wahrscheinlichkeit') ?>" style="background:#44<?= $chance_color ?>44">
+                <td title="<?= _('Position') ?>" style="background:#44<?= $chance_color ?>44">
                 </td>
 
                 <td>
@@ -84,7 +83,7 @@
                 </td>
 
                 <td class="hidden-small-down" style="text-align: center">
-                    <?= $wait['status'] === 'claiming' ? ($wait['admission_chance'] . "%") : $wait['position'] ?>
+                    <?= $wait['status'] === 'claiming' ? '-' : $wait['position'] ?>
                 </td>
 
                 <td class="hidden-small-down" style="text-align: center">

@@ -545,16 +545,6 @@ class MyRealmModel
             $cs = $csets[$claim['set_id']];
             if (!$cs->hasAlgorithmRun()) {
                 $claiming[$k]['admission_endtime'] = $cs->getSeatDistributionTime();
-                $num_claiming                      = count(AdmissionPriority::getPrioritiesByCourse($claim['set_id'], $claim['seminar_id']));
-                $free                              = Course::find($claim['seminar_id'])->getFreeSeats();
-                if ($free <= 0) {
-                    $claiming[$k]['admission_chance'] = 0;
-                } else if ($free >= $num_claiming) {
-                    $claiming[$k]['admission_chance'] = 100;
-                } else {
-                    $claiming[$k]['admission_chance'] = round(($free / $num_claiming) * 100);
-                }
-
             } else {
                 unset($claiming[$k]);
             }
