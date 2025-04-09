@@ -140,10 +140,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'on_store'   => 'store',
         ];
         $config['has_many']['statusgruppen'] = [
-            'class_name' => Statusgruppen::class,
-            'order_by'   => 'ORDER BY position',
-            'on_delete'  => 'delete',
-            'on_store'   => 'store',
+            'class_name'        => Statusgruppen::class,
+            'assoc_foreign_key' => 'range_id',
+            'order_by'          => 'ORDER BY position',
+            'on_delete'         => 'delete',
+            'on_store'          => 'store',
         ];
         $config['has_many']['admission_applicants'] = [
             'class_name' => AdmissionApplication::class,
