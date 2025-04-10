@@ -30,7 +30,7 @@ class AlterScheduleTable extends Migration
         $db->exec(
             "ALTER TABLE `schedule_courses`
             DROP COLUMN color,
-            CHANGE COLUMN seminar_id course_id CHAR(32) NOT NULL,
+            CHANGE COLUMN seminar_id course_id CHAR(32) COLLATE latin1_bin NOT NULL,
             ADD COLUMN mkdate BIGINT(10) NOT NULL DEFAULT 0,
             ADD COLUMN chdate BIGINT(10) NOT NULL DEFAULT 0"
         );
@@ -43,7 +43,7 @@ class AlterScheduleTable extends Migration
         $db->exec(
             "ALTER TABLE `schedule_courses`
             ADD COLUMN color TINYINT(4) NULL DEFAULT NULL,
-            CHANGE COLUMN course_id seminar_id CHAR(32) NOT NULL,
+            CHANGE COLUMN course_id seminar_id CHAR(32) COLLATE latin1_bin NOT NULL,
             DROP COLUMN mkdate,
             DROP COLUMN chdate"
         );
