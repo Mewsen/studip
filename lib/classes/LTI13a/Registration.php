@@ -110,7 +110,8 @@ class Registration implements RegistrationInterface
         if ($this->tool) {
             return $this->tool->getToolData();
         } elseif ($this->platform) {
-            //TODO: Use the global tool configuration for Stud.IP as LTI tool.
+            //Return the global tool:
+            return \LtiTool::getGlobalTool();
         }
         //If no tool or platform is present, the registration is not linked to a tool.
         throw new \Studip\LTIException(
@@ -186,7 +187,11 @@ class Registration implements RegistrationInterface
             }
             return $keyring->toKeyChain();
         } elseif ($this->platform) {
-            //TODO: return the global tool key chain.
+            //Return the global tool keychain.
+            $keyring = \LtiTool::getGlobalToolKeyring(true);
+            if ($keyring) {
+                return $keyring->toKeyChain();
+            }
         }
 
         return null;
@@ -208,8 +213,8 @@ class Registration implements RegistrationInterface
         if ($this->tool) {
             return $this->tool->jwks_url ?? null;
         } else {
-            //TODO: Return the global JWKS URL for Stud.IP as LTI tool.
-            return null;
+            //Return the global JWKS URL for Stud.IP as LTI tool.
+            return \LtiTool::getGlobalJwksUrl();
         }
     }
 }

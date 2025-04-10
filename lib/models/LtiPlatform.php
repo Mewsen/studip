@@ -13,6 +13,8 @@
  * @category    Stud.IP
  */
 
+use OAT\Library\Lti1p3Core\Platform\Platform;
+
 
 /**
  * The LtiPlatform class represents LTI 1.3A platforms that are using
@@ -55,6 +57,17 @@ class LtiPlatform extends SimpleORMap
             "`range_type` = 'lti_platform'
             AND `range_id` = :platform_id",
             ['platform_id' => $this->id]
+        );
+    }
+
+    public function getPlatformData() : Platform
+    {
+        return new Platform(
+            $this->id,
+            $this->name,
+            $this->url,
+            $this->oidc_init_url,
+            $this->oauth2_access_token_url
         );
     }
 }

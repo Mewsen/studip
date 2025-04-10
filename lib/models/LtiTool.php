@@ -193,4 +193,32 @@ class LtiTool extends SimpleORMap
             return _('unbekannt');
         }
     }
+
+    public static function getGlobalTool() : Tool
+    {
+        $c = Config::get();
+
+        return new Tool(
+            $c->STUDIP_INSTALLATION_ID,
+            $c->UNI_NAME_CLEAN,
+            $GLOBALS['ABSOLUTE_URI_STUDIP'],
+            URLHelper::getURL('dispatch.php/lti/auth/odic_init', null, true),
+            URLHelper::getURL('dispatch.php/lti/auth/oauth2_token', null, true)
+        );
+    }
+
+    public static function getGlobalJwksUrl() : string
+    {
+        return \URLHelper::getURL('dispatch.php/lti/auth/jwks');
+    }
+
+    public static function getGlobalToolKeyring(bool $generate = false) : ?\Keyring
+    {
+        $keyring = \Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_tool'");
+        if ($generate && !$keyring) {
+            //Generate the keyring:
+            $keyring = \Keyring::generate('lti13a_tool', 'global');
+        }
+        return $keyring;
+    }
 }
