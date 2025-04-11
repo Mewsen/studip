@@ -67,16 +67,8 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function getFormattedStart() : string
     {
-        if (strlen($this->start_time) === 3) {
-            return '0' . substr($this->start_time, 0, 1) . ':' . substr($this->start_time, 1, 2);
-        }
-
-        if (strlen($this->start_time) === 4) {
-            return substr($this->start_time, 0, 2) . ':' . substr($this->start_time, 2, 2);
-        }
-
-        //Invalid date format:
-        return '';
+        $padded_start_time = str_pad($this->start_time, 4, '0', STR_PAD_LEFT);
+        return substr($padded_start_time, 0, 2) . ':' . substr($padded_start_time, 2, 2);
     }
 
     /**
@@ -87,16 +79,8 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function getFormattedEnd() : string
     {
-        if (strlen($this->end_time) === 3) {
-            return '0' . substr($this->end_time, 0, 1) . ':' . substr($this->end_time, 1, 2);
-        }
-
-        if (strlen($this->end_time) === 4) {
-            return substr($this->end_time, 0, 2) . ':' . substr($this->end_time, 2, 2);
-        }
-
-        //Invalid date format:
-        return '';
+        $padded_end_time = str_pad($this->end_time, 4, '0', STR_PAD_LEFT);
+        return substr($padded_end_time, 0, 2) . ':' . substr($padded_end_time, 2, 2);
     }
 
     /**
@@ -180,7 +164,7 @@ class ScheduleEntry extends SimpleORMap implements Event
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
         }
         $time_parts = explode(':', $this->getFormattedEnd());
-        $date->setTime($time_parts[0],$time_parts[1]);
+        $date->setTime($time_parts[0], $time_parts[1]);
         return $date;
     }
 
