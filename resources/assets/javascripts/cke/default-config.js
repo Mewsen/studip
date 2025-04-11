@@ -1,3 +1,5 @@
+import coreTranslations from 'ckeditor5/translations/de.js';
+
 const customColorPalette = [
     { color: '#000000' },
     { color: '#6c737a' }, //75%
@@ -121,8 +123,8 @@ const defaultConfig = {
     link: {
         defaultProtocol: 'https://',
     },
-    // This value must be kept in sync with the language defined in webpack.config.js.
     language: 'de',
+    translations: [ coreTranslations ],
     htmlSupport: {
         allow: [
             /* HTML features to allow */

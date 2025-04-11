@@ -12,6 +12,11 @@ import axios from 'axios';
 
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
+// fixes a problem with @vojtechlanka/vue-tags-input
+if (window.Vue) {
+    window.Vue.use = () => {};
+}
+
 const getHttpClient = () =>
     axios.create({
         baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
