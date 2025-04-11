@@ -1,27 +1,9 @@
-const { CKEditorTranslationsPlugin } = require('@ckeditor/ckeditor5-dev-translations');
-const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 const { RsdoctorWebpackPlugin } = require('@rsdoctor/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
-
-const postcssOptions = styles.getPostCssConfig({
-    themeImporter: {
-        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
-    },
-    minify: true,
-});
-
-// TODO: Dieser Workaround sollte entfernt werden, sobald wir den CKE auf v43+ updaten können.
-postcssOptions.plugins[postcssOptions.plugins.findIndex((plugin) => plugin.postcssPlugin === 'postcss-nesting')] =
-    require('postcss-nesting')({
-        // https://github.com/ckeditor/ckeditor5/issues/11730
-        noIsPseudoSelector: true,
-        edition: '2021',
-        silenceAtNestWarning: true,
-    });
 
 const assetsPath = path.resolve(__dirname, 'resources/assets/javascripts');
 
@@ -39,7 +21,7 @@ module.exports = {
         chunkFilename: 'javascripts/[id].chunk.js?h=[chunkhash]',
         filename: 'javascripts/[name].js',
         clean: {
-            keep: /^(fonts|images|javascripts\/mathjax|sounds)/,
+            keep: /^(fonts|images|javascripts\/mathjax|sounds|stylesheets\/\.gitkeep)/,
         },
     },
     module: {
@@ -63,7 +45,6 @@ module.exports = {
                     },
                     {
                         loader: 'postcss-loader',
-                        options: { postcssOptions },
                     },
                 ],
             },
@@ -144,15 +125,10 @@ module.exports = {
             eslintPath: 'eslint/use-at-your-own-risk',
             exclude: [
                 'node_modules',
-                'public/assets/javascripts/ckeditor/ckeditor.js',
                 'resources/assets/javascripts/jquery/autoresize.jquery.min.js',
                 'resources/assets/javascripts/jquery/jstree/jquery.jstree.js',
                 'resources/assets/javascripts/vendor',
             ],
-        }),
-        new CKEditorTranslationsPlugin({
-            language: 'de',
-            addMainLanguageTranslationsToAllAssets: true,
         }),
     ].filter(Boolean),
     resolve: {
