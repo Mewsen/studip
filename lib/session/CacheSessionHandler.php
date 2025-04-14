@@ -34,6 +34,7 @@ class CacheSessionHandler implements
         if ($session_lifetime) {
             $this->session_lifetime = $session_lifetime;
         }
+        $this->cache = Factory::getCache();
     }
 
     public function close(): bool
@@ -55,7 +56,6 @@ class CacheSessionHandler implements
 
     public function open(string $path, string $name): bool
     {
-        $this->cache = Factory::getCache();
         return true;
     }
 
