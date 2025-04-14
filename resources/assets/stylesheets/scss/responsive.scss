@@ -516,11 +516,11 @@ $sidebarOut: -330px;
         width: 100vw;
     }
 
-    #system-notifications {
+    #system-notifications:not(.system-notifications-login) {
         top: 0;
         position: fixed;
         left: 0;
-        width: 100%;
+        width: 100vw;
         z-index: 1001;
     }
 
@@ -533,6 +533,11 @@ $sidebarOut: -330px;
         &.system-notification-slide-leave,
         &.system-notification-slide-enter-to {
             transform: translateY(0);
+        }
+
+        // We don't have hover events on mobile devices, so the "close" button should always be shown.
+        .system-notification-close {
+            display: unset;
         }
     }
 }
