@@ -258,8 +258,7 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
                 $query = "SELECT config.field, IFNULL(config_values.value, config.value) AS value, type, section, `range`, description,
                                  config_values.comment, config_values.value = config.value AS is_default
                           FROM config
-                          LEFT JOIN config_values ON config.field = config_values.field AND range_id = 'studip'
-                          ORDER BY section, config.field";
+                          LEFT JOIN config_values ON config.field = config_values.field AND range_id = 'studip'";
                 $rs = $db->query($query);
             } catch (Exception $e) {
                 //if migration is smaller than 226 and Stud.IP needs to be migrated to version 4.1 or greater:
