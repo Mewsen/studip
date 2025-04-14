@@ -580,6 +580,12 @@ class NewsController extends StudipController
                     $this->url_for('news/admin_news/global')
                 )->setActive($this->area_type === 'global');
             }
+            if ($GLOBALS['perm']->have_perm('root')) {
+                $widget->addLink(
+                    _('Loginseite'),
+                    $this->url_for('news/admin_news/login')
+                )->setActive($this->area_type === 'login');
+            }
             if ($GLOBALS['perm']->have_perm('dozent')) {
                 $widget->addLink(
                     _('Einrichtungen'),
