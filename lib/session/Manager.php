@@ -175,16 +175,16 @@ class Manager
         }
         $state = self::STATE_UNKNOWN;
         if (isset($GLOBALS['user']) && is_object($GLOBALS['user'])) {
-            $state = in_array($GLOBALS['user']->id, ['nobody', 'form']) ? self::STATE_NOBODY : self::STATE_AUTHENTICATED;
+            $state = $GLOBALS['user']->id === 'nobody' ? self::STATE_NOBODY : self::STATE_AUTHENTICATED;
         } else {
-            $sid = $_COOKIE[$this->getName()];
+            $sid = $this->getSessionIdFromCookie();
             if ($sid) {
                 $session_vars = $this->getSessionVars($sid);
                 $session_auth = $session_vars['auth'];
-                if ($session_auth['uid'] && !in_array($session_auth['uid'], ['nobody', 'form'])) {
+                if ($session_auth['uid'] && $session_auth['uid'] !== 'nobody') {
                     $state = self::STATE_AUTHENTICATED;
                 } else {
-                    $state = in_array($session_auth['uid'], ['nobody', 'form']) ? self::STATE_NOBODY : self::STATE_UNKNOWN;
+                    $state = $session_auth['uid'] === 'nobody' ? self::STATE_NOBODY : self::STATE_UNKNOWN;
                 }
             }
         }
@@ -199,6 +199,11 @@ class Manager
     {
         $data = $this->handler->read($sid);
         return new \SessionDecoder($data);
+    }
+
+    public function getSessionIdFromCookie(): string
+    {
+        return $_COOKIE[$this->getName()] ?? '';
     }
 
     /**
