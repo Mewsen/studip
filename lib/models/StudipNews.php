@@ -228,7 +228,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             $query_vars[]       = $enddate;
         }
 
-        if(!$GLOBALS['perm']->have_perm('root') || $area !== 'global') {
+        if(!$GLOBALS['perm']->have_perm('root') || ($area !== 'global' && $area !== 'login')) {
             $where_querypart[]  = 'news.user_id = ?';
             $query_vars[]       = $user_id;
         }
@@ -503,9 +503,10 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
         }
 
-        $type = get_object_type($range_id, ['global', 'sem', 'inst', 'fak', 'user']);
+        $type = get_object_type($range_id, ['global', 'login', 'sem', 'inst', 'fak', 'user']);
         switch($type) {
             case 'global':
+            case 'login':
                 if ($operation === 'view')
                     return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
                 break;
