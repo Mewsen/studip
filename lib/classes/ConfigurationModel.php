@@ -23,6 +23,7 @@ class ConfigurationModel
             $metadata['value'] = $config->$field;
             $allconfigs[$metadata['section']][] = $metadata;
         }
+        ksort($allconfigs, SORT_NATURAL | SORT_FLAG_CASE);
         return $allconfigs;
     }
 
