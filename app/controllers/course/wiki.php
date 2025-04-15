@@ -28,7 +28,6 @@ class Course_WikiController extends AuthenticatedController
         if ($page_id === null) {
             $page_id = $this->range->getConfiguration()->WIKI_STARTPAGE_ID;
         }
-        Navigation::activateItem('/course/wiki/start');
 
         $this->page = WikiPage::find($page_id) ?: new WikiPage();
         $this->validateWikiPage($this->page, $this->range);
@@ -36,6 +35,13 @@ class Course_WikiController extends AuthenticatedController
         $sidebar = Sidebar::Get();
         if (!$this->page->isReadable()) {
             throw new AccessDeniedException();
+        }
+
+        if ($page_id !== $this->range->getConfiguration()->WIKI_STARTPAGE_ID) {
+            Navigation::getItem('/course/wiki')->insertSubNavigation($this->page->id, new Navigation($this->page->name, $this->pageURL($this->page)), 'listnew');
+            Navigation::activateItem('/course/wiki/'.$this->page->id);
+        } else {
+            Navigation::activateItem('/course/wiki/start');
         }
 
         if (!$this->page->isNew()) {
