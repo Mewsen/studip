@@ -20,7 +20,9 @@
                         :aria-label="$gettext('Feldname')">
                     <option v-for="(field, fIndex) in availableFields"
                             :key="fIndex"
-                            :value="field.attributes.type">
+                            :value="field.attributes.typeparam !== null
+                                ? field.attributes.type + '_' + field.attributes.typeparam
+                                : field.attributes.type">
                         {{ field.attributes.name }}
                     </option>
                 </select>
@@ -88,8 +90,15 @@ export default {
             if (type !== '') {
                 if (!this.fieldConfig[type]) {
                     for (let i = 0; i < this.availableFields.length; i++) {
-                        if (this.availableFields[i].attributes.type === type) {
+                        let compareType = this.availableFields[i].attributes.type;
+
+                        if (this.availableFields[i].attributes['typeparam'] !== null) {
+                            compareType += '_' + this.availableFields[i].attributes['typeparam'];
+                        }
+
+                        if (compareType === type) {
                             this.fieldConfig[type] = {
+                                type: this.availableFields[i].attributes.type,
                                 typeparam: this.availableFields[i].attributes['typeparam'],
                                 compareOps: this.availableFields[i].attributes['valid-compare-operators'],
                                 values: this.availableFields[i].attributes['valid-values']
@@ -98,6 +107,7 @@ export default {
                     }
                 }
                 this.currentFilter[fieldIndex].attributes.type = type;
+                this.currentFilter[fieldIndex].attributes.realtype = this.fieldConfig[type].type;
                 this.currentFilter[fieldIndex].attributes.typeparam = this.fieldConfig[type].typeparam;
                 this.currentFilter[fieldIndex].attributes['compare-operator'] = Object.keys(this.fieldConfig[type].compareOps)[0];
                 this.currentFilter[fieldIndex].attributes.value = Object.keys(this.fieldConfig[type].values)[0];
@@ -111,7 +121,17 @@ export default {
             this.currentFilter.splice(index, 1);
         },
         submit() {
-            this.$emit('submit', this.currentFilter)
+            // We need to build a new structure here as the "type" attribute looks different for datafield conditions.
+            const data = this.currentFilter.map(item => ({
+                attributes: {
+                        type: item.attributes.realtype,
+                        typeparam: item.attributes.typeparam,
+                        'compare-operator': item.attributes['compare-operator'],
+                        value: item.attributes.value
+                }
+            }));
+
+            this.$emit('submit', data)
         },
         close() {
             this.$emit('close');
