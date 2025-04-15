@@ -54,6 +54,9 @@ class ResourceTemporaryPermission extends SimpleORMap implements PrivacyObject
         $config['registered_callbacks']['before_store'][]  = 'cbLogChanges';
         $config['registered_callbacks']['before_delete'][] = 'cbLogDeletion';
 
+        $config['registered_callbacks']['after_store'][] = 'cbUpdateCache';
+        $config['registered_callbacks']['before_delete'][] = 'cbUpdateCache';
+
         parent::configure($config);
     }
 
@@ -253,5 +256,13 @@ class ResourceTemporaryPermission extends SimpleORMap implements PrivacyObject
                 )
             );
         }
+    }
+
+    /**
+     * This will clear the cache for RoomManager::userHasRooms()
+     */
+    public function cbUpdateCache(): void
+    {
+        RoomManager::clearCacheForUser($this->user);
     }
 }
