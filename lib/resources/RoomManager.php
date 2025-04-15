@@ -164,15 +164,44 @@ class RoomManager
         if ($GLOBALS['perm']->have_perm('root', $user->id)) {
             return true;
         }
+
+        $cache = self::getCacheForUser($user);
+        $index = md5(json_encode([
+            'level' => $level,
+            'permanent_only' => $permanent_only,
+            'time' => $time,
+            'sql_conditions' => $sql_conditions,
+            'sql_condition_parameters' => $sql_condition_parameters,
+        ]));
+
+        if (isset($cache[$index])) {
+            return $cache[$index];
+        }
+
         $sql = self::getUserRoomsSqlData($user, $level, $permanent_only, $time, $sql_conditions, $sql_condition_parameters, 'ORDER BY NULL');
 
         $db = DBManager::get();
         $exists_query = 'SELECT 1 FROM resources WHERE ' . $sql['query'] . ' LIMIT 1';
         $stmt = $db->prepare($exists_query);
         $stmt->execute($sql['data']);
-        return $stmt->fetchColumn();
+        return $cache[$index] = $stmt->fetchColumn();
     }
 
+    /**
+     * Clears the cache for the information for userHasRooms.
+     */
+    public static function clearCacheForUser(User $user): void
+    {
+        self::getCacheForUser($user, 'hasRooms')->expire();
+    }
+
+    /**
+     * Returns the cache object that stores the information for userHasRooms.
+     */
+    protected static function getCacheForUser(User $user): StudipCachedArray
+    {
+        return new StudipCachedArray($user->id . '/RoomManager::userHasRooms');
+    }
 
     /**
      * Counts all rooms for which the specified user has permanent or
