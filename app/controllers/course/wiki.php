@@ -73,8 +73,11 @@ class Course_WikiController extends AuthenticatedController
 
         $this->edit_perms = $this->range->getConfiguration()->WIKI_CREATE_PERMISSION;
         if (
-            $this->edit_perms === 'all'
-            || $GLOBALS['perm']->have_studip_perm($this->edit_perms, $this->range->id)
+            $GLOBALS['perm']->have_studip_perm('autor', $this->range->id)
+            && (
+                $this->edit_perms === 'all'
+                || $GLOBALS['perm']->have_studip_perm($this->edit_perms, $this->range->id)
+            )
         ) {
             $actions = new ActionsWidget();
             $actions->addLink(
@@ -862,8 +865,13 @@ class Course_WikiController extends AuthenticatedController
     public function new_page_action($parent_id = null)
     {
         if (
-            $this->range->getConfiguration()->WIKI_CREATE_PERMISSION !== 'all'
-            && !$GLOBALS['perm']->have_studip_perm($this->range->getConfiguration()->WIKI_CREATE_PERMISSION, $this->range->id)
+            (
+                $this->range->getConfiguration()->WIKI_CREATE_PERMISSION !== 'all'
+                && !$GLOBALS['perm']->have_studip_perm($this->range->getConfiguration()->WIKI_CREATE_PERMISSION, $this->range->id)
+            ) || (
+                $this->range->getConfiguration()->WIKI_CREATE_PERMISSION === 'all'
+                && !$GLOBALS['perm']->have_studip_perm('autor', $this->range->id)
+            )
         ) {
             throw new AccessDeniedException();
         }
