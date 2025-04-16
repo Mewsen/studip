@@ -61,17 +61,14 @@ class Authority
                 Institute::getMyInstitutes($user->id)
             );
 
-            // Check access for admin accounts.
-            $access = $GLOBALS['perm']->have_perm('admin')
-                && array_intersect($courseset->getInstituteIds(), $institutes);
+            $intersection = array_intersect(
+                array_keys($courseset->getInstituteIds()),
+                $institutes
+            );
 
-            if (!$access) {
-
-                // Check access for lecturers if the config option is set.
-                $access = Config::get()->ALLOW_DOZENT_COURSESET_ADMIN
-                    && $GLOBALS['perm']->have_perm('dozent')
-                    && array_intersect($courseset->getInstituteIds(), $institutes);
-            }
+            // Check access for admin (or dozent if permission is set) accounts.
+            $access = $GLOBALS['perm']->have_perm(Config::get()->ALLOW_DOZENT_COURSESET_ADMIN ? 'dozent' : 'admin')
+                && count($intersection) > 0;
 
             return $access;
         }
