@@ -14,7 +14,9 @@
                 <section class="formatted-content ck-content" v-html="currentText" ref="content"></section>
             </template>
             <template v-if="canEdit" #edit>
-                <ckeditor :editor="editor" v-model="currentText" :config="editorConfig" @ready="onReady"></ckeditor>
+                <div ref="ckeditor">
+                    <ckeditor :editor="editor" v-model="currentText" :config="editorConfig" @ready="onReady"></ckeditor>
+                </div>
             </template>
             <template #info>{{ $gettext('Informationen zum Text-Block') }}</template>
         </courseware-default-block>
@@ -74,10 +76,13 @@ export default {
         initCurrent() {
             this.currentText = this.text;
             this.loadMathjax();
+
+            window.addEventListener('resize', this.fixPanelSize);
         },
         onReady(editor) {
             editor.ui.viewportOffset = { top: this.ckeToolbarTop };
             editor.ui.update();
+            this.fixPanelSize();
         },
         async storeText() {
             let attributes = this.block.attributes;
@@ -109,6 +114,13 @@ export default {
                     });
             }
         },
+        fixPanelSize() {
+            const ckeElement = this.$refs.ckeditor.querySelector('.ck-editor');
+            const dropdownPanel = ckeElement?.querySelector('.ck-toolbar__grouped-dropdown .ck-dropdown__panel');
+            if (dropdownPanel) {
+                dropdownPanel.style.maxWidth = `${ckeElement.clientWidth}px`;
+            }
+        }
     },
 };
 </script>
