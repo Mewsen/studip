@@ -118,7 +118,9 @@ class CoreWiki extends CorePlugin implements StudipModule
 
         $navigation->addSubNavigation('start', new Navigation(_('Wiki-Startseite'), 'dispatch.php/course/wiki/page'));
         if (WikiPage::countBySQL('`range_id` = ?', [$range_id]) > 0) {
-            $navigation->addSubNavigation('listnew', new Navigation(_('Neue Seiten'), 'dispatch.php/course/wiki/newpages'));
+            if ($GLOBALS['perm']->have_studip_perm('user', $range_id)) {
+                $navigation->addSubNavigation('listnew', new Navigation(_('Neue Seiten'), 'dispatch.php/course/wiki/newpages'));
+            }
             $navigation->addSubNavigation('allpages', new Navigation(_('Alle Seiten'), 'dispatch.php/course/wiki/allpages'));
         }
         return ['wiki' => $navigation];

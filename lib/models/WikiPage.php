@@ -150,11 +150,15 @@ class WikiPage extends SimpleORMap implements PrivacyObject
             $user_id = User::findCurrent()->id;
         }
 
-        if (
-            $this->read_permission === 'all'
-            && $GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id)
-        ) {
-            return true;
+        if ($this->read_permission === 'all') {
+            if ($GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id)) {
+                return true;
+            }
+            $inst = Institute::find($this->range_id);
+            if ($inst) {
+                //in institutes anyone can read the wiki
+                return true;
+            }
         }
 
         if ($GLOBALS['perm']->have_studip_perm(
