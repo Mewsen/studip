@@ -903,6 +903,9 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 $position = 0;
             }
         }
+        // New entry will be added after current max position.
+        $position++;
+
         $new_admission_member = new AdmissionApplication();
         $new_admission_member->user_id = $user->id;
         $new_admission_member->position = strval($position);
