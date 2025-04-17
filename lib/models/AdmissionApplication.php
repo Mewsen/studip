@@ -246,7 +246,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
         $course = Course::find($seminar_id);
         if ($course->isAdmissionEnabled()) {
             $admission_users = self::findBySQL(
-                "seminar_id = ? AND status = 'awaiting' ORDER BY position",
+                "seminar_id = ? AND status = 'awaiting' ORDER BY position, mkdate",
                 [$course->id]
             );
             $position = 1;
