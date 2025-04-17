@@ -1,7 +1,7 @@
 <template>
     <li class="cw-activity-item">
         <p v-if="item.username" class="cw-activity-item-user">
-            <a :href="userUrl"><studip-icon role="inactive" shape="headache" />{{ item.username }}</a>
+            <a :href="userUrl"><studip-icon role="inactive" shape="person2" />{{ item.username }}</a>
         </p>
         <p v-if="item.readableDate" class="cw-activity-item-date">
             <studip-icon role="inactive" shape="timetable" />{{ item.readableDate }}
