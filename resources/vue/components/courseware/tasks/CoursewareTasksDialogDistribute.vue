@@ -494,7 +494,7 @@ export default {
             relationship: 'memberships',
             options: { include: 'user', 'page[offset]': 0, 'page[limit]': 10000, 'filter[permission]': 'autor' },
         });
-        this.loadCourseStatusGroups({ parent, relationship: 'status-groups' });
+        this.loadCourseStatusGroups({ parent, relationship: 'status-groups', options: { 'page[limit]': 10000 } });
     },
     methods: {
         ...mapActions({
