@@ -89,7 +89,7 @@
         "symfony/yaml": "6.4.7",
         "ezyang/htmlpurifier": "^4.13",
         "jasig/phpcas": "1.5",
-        "algo26-matthias/idna-convert": "4.0.2",
+        "algo26-matthias/idna-convert": "4.2.0",
         "caxy/php-htmldiff": "0.1.16",
         "phpseclib/phpseclib": "3.0.37",
         "ext-gd": "*",
