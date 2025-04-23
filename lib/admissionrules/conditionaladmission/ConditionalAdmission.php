@@ -582,9 +582,11 @@ class ConditionalAdmission extends AdmissionRule
 
             $fields = [];
             foreach ($one->getFields() as $field) {
+                $class = get_class($field);
                 $fields[] = [
                     'attributes' => [
-                        'type' => get_class($field),
+                        'type' => $class,
+                        'typeparam' => $class::$isParameterized ? $field->datafield_id : null,
                         'id' => $field->getId(),
                         'compare-operator' => $field->getCompareOperator(),
                         'value' => $field->getValue()
@@ -611,9 +613,11 @@ class ConditionalAdmission extends AdmissionRule
             foreach ($conditions as $one) {
                 $fields = [];
                 foreach ($one->getFields() as $field) {
+                    $class = get_class($field);
                     $fields[] = [
                         'attributes' => [
-                            'type' => get_class($field),
+                            'type' => $class,
+                            'typeparam' => $class::$isParameterized ? $field->datafield_id : null,
                             'id' => $field->getId(),
                             'compare-operator' => $field->getCompareOperator(),
                             'value' => $field->getValue()

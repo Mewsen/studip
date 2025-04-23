@@ -21,10 +21,12 @@ class UserFilterInput extends Input
                 ]
             ];
             foreach ($filter->getFields() as $field) {
+                $class = get_class($field);
                 $one['attributes']['fields'][] = [
                     'id' => $field->getId(),
                     'attributes' => [
-                        'type' => get_class($field),
+                        'type' => $class,
+                        'typeparam' => $class::$isParamterized ? $field->datafield_id : null,
                         'compare-operator' => $field->getCompareOperator(),
                         'value' => $field->getValue()
                     ]
