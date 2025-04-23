@@ -163,7 +163,7 @@ lint-js:
     - npm install
       --no-save --no-audit --no-fund
       --loglevel=error
-      eslint eslint-formatter-gitlab
+      eslint eslint-formatter-gitlab@5.1.0
   script:
     - npx eslint
       --ext .js,.vue
