@@ -175,23 +175,37 @@ class TFASecret extends SimpleORMap
             $window = null;
         }
 
-        if ($this->getTOTP()->verify($token, $timestamp, $window)) {
-            if (!$this->confirmed) {
-                $this->confirmed = true;
-                $this->store();
-            }
+        if ($this->type === 'email') {
+            // Test for "window" number of "period" (this will ensure that old
+            // tokens are validated correctly)
+            $period = self::TYPES[$this->type]['period'];
 
-            if (!$allow_reuse) {
-                TFAToken::create([
-                    'user_id' => $this->user_id,
-                    'token'   => $token,
-                ]);
-            }
-
-            return true;
+            $i = 0;
+            do {
+                $verified = $this->getTOTP()->verify($token, $timestamp - $i * $period, $window);
+                $i += 1;
+            } while (!$verified && $i < self::TYPES[$this->type]['window']);
+        } else {
+            $verified = $this->getTOTP()->verify($token, $timestamp, $window);
         }
 
-        return false;
+        if (!$verified) {
+            return false;
+        }
+
+        if (!$this->confirmed) {
+            $this->confirmed = true;
+            $this->store();
+        }
+
+        if (!$allow_reuse) {
+            TFAToken::create([
+                'user_id' => $this->user_id,
+                'token'   => $token,
+            ]);
+        }
+
+        return true;
     }
 
     /**
