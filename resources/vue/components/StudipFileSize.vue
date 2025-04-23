@@ -8,8 +8,10 @@
     export default {
         name: 'studip-file-size',
         props: {
-            size: Number,
-            required: true
+            size: {
+                type: Number,
+                required: true
+            },
         },
         computed: {
             formatted_size () {
