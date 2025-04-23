@@ -7,11 +7,6 @@
  * @todo test datafields!
  */
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-
 class Institute_MembersController extends AuthenticatedController
 {
     protected $allow_nobody = true;

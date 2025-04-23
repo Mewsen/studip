@@ -13,10 +13,6 @@
  * @since       3.5
  */
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 require_once 'lib/messaging.inc.php'; //Funktionen des Nachrichtensystems
 
 class Course_StatusgroupsController extends AuthenticatedController

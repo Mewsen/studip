@@ -17,10 +17,6 @@
 
 require_once 'lib/messaging.inc.php'; //Funktionen des Nachrichtensystems
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 class Course_MembersController extends AuthenticatedController
 {
 
