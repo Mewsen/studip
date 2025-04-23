@@ -8,28 +8,32 @@
     export default {
         name: 'studip-file-size',
         props: {
-            size: Number
+            size: Number,
+            required: true
         },
         computed: {
             formatted_size () {
+                if (this.size === 1) {
+                    return '1 Byte';
+                }
                 if (this.size < 1024) {
-                    return this.size + " Byte";
+                    return `${this.size} Bytes`;
                 }
                 if (this.size < 1024 * 1024) {
                     let rel = (this.size / 1024).toFixed(1);
-                    return rel + " KB";
+                    return `${rel} KB`;
                 }
                 if (this.size < 1024 * 1024 * 1024) {
                     let rel = (this.size / 1024 / 1024).toFixed(1);
-                    return rel + " MB";
+                    return `${rel} MB`;
                 }
                 if (this.size < 1024 * 1024 * 1024 * 1024) {
                     let rel = (this.size / 1024 / 1024 / 1024).toFixed(1);
-                    return rel + " GB";
+                    return `${rel} GB`;
                 }
                 if (this.size < 1024 * 1024 * 1024 * 1024 * 1024) {
                     let rel = (this.size / 1024 / 1024 / 1024 / 1024).toFixed(1);
-                    return rel + " TB";
+                    return `${rel} TB`;
                 }
 
                 return this.size;
