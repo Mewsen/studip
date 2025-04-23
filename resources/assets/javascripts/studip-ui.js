@@ -673,7 +673,7 @@ import eventBus from "./lib/event-bus.ts";
                 $gettext('Sa')
             ],
             weekHeader: $gettext('Wo'),
-            dateFormat: 'dd.mm.yy',
+            dateFormat: String.locale === 'en-GB' ? 'mm/dd/yy' : 'dd.mm.yy',
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
