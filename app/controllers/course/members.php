@@ -1854,37 +1854,41 @@ class Course_MembersController extends AuthenticatedController
         $members = $course->getMembersData($status);
 
         $db = DBManager::get();
-        $stmt = "SELECT `datafields`.`datafield_id`, `name`, `content`
-                    FROM `datafields_entries`
-                    JOIN `datafields` ON `datafields`.`datafield_id` = `datafields_entries`.`datafield_id`
-                    WHERE `range_id` = :range_id
-                    ";
+        $df_stmt = "SELECT `datafield_id`, `name`
+                FROM `datafields`
+                WHERE `object_type` = 'user'";
+        $user_course_df = $db->fetchAll($df_stmt);
 
-        // check for datafields for every course member
-        foreach ($members as $user_id => $member_data) {
-            foreach ($course->aux->datafields as $field_id => $value) {
-                $df_name = DataField::find($field_id)->getValue('name');
-                if (!in_array($df_name, $header_course_df)) {
-                    $header_course_df[] = $df_name;
+        $data_stmt = "SELECT `content`
+                FROM `datafields_entries`
+                WHERE `datafield_id` = :df_id
+                AND `range_id` = :user_id";
+
+
+        // table header = data field name
+        foreach ($user_course_df as $value) {
+            $header_course_df[] = $value['name'];
+        }
+
+        foreach ($user_course_df as $value) {
+            foreach ($members as $user_id => $member_data) {
+                $sql_params = ['user_id' => $user_id, 'df_id' => $value['datafield_id']];
+                $df_data = $db->fetchAll($data_stmt, $sql_params);
+
+                if (empty($df_data)) {
+                    $df_data[0]['content'] = '';
                 }
 
-                // get user data
-                $sql_params = ['range_id' => $user_id, 'datafield_id' => $field_id];
-                $exec_stmt = $stmt . " AND `datafields`.`datafield_id` = :datafield_id";
-                $user_course_df = $db->fetchAll($exec_stmt, $sql_params);
-                $members[$user_id][$field_id] = $user_course_df[0]['content'];
-            }
-
-            $sql_params = ['range_id' => $user_id];
-            $exec_stmt = $stmt . " AND `sec_range_id` = ''";
-            $user_df = $db->fetchAll($exec_stmt, $sql_params);
-            foreach ($user_df as $key => $values) {
-                if (!in_array($values['name'], $header_user_df)) {
-                    $header_user_df[] = $values['name'];
+                $df_acc_allowed = DataField::find($value['datafield_id'])->accessAllowed();
+                if ($df_acc_allowed) {
+                    $members[$user_id][$value['datafield_id']] = $df_data[0]['content'];
+                } else {
+                    $members[$user_id][$value['datafield_id']] = '';
                 }
-                $members[$user_id][$values['datafield_id']] = $values['content'];
+
             }
         }
+
         $header = array_merge($header, $header_course_df, $header_user_df);
 
         if (in_array($status, ['awaiting', 'claiming'])) {
