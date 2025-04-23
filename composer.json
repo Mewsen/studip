@@ -126,6 +126,7 @@
         "symfony/polyfill-php82": "1.31.0",
         "symfony/polyfill-php83": "1.31.0",
         "symfony/polyfill-php84": "1.31.0",
+        "symfony/polyfill-php85": "1.x-dev",
         "nyholm/psr7": "1.8.1",
         "nyholm/psr7-server": "1.1.0",
         "erusev/parsedown": "1.7.4",
@@ -138,6 +139,12 @@
         "lcobucci/jwt": "^4.3"
     },
     "replace": {
+        "symfony/polyfill-php54": "*",
+        "symfony/polyfill-php55": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*",
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*",
