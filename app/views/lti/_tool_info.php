@@ -65,10 +65,21 @@
             <? endif ?>
             <dt><?= _('Direktlink zum LTI-Tool') ?></dt>
             <dd>
-                <a href="<?= $controller->link_for('course/lti/iframe', $deployment->id) ?>">
-                    <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
-                    <?= $controller->link_for('course/lti/iframe', $deployment->id) ?>
-                </a>
+                <ul>
+                    <? foreach ($tool->deployments as $deployment) : ?>
+                        <?
+                        $link = LtiResourceLink::findOneByDeployment_id($deployment->id);
+                        ?>
+                        <? if ($link) : ?>
+                            <li>
+                                <a href="<?= $controller->link_for('course/lti/iframe', $link->id) ?>">
+                                    <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                                    <?= $controller->link_for('course/lti/iframe', $link->id) ?>
+                                </a>
+                            </li>
+                        <? endif ?>
+                    <? endforeach ?>
+                </ul>
             </dd>
         </dl>
     </article>

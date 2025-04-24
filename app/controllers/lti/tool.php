@@ -33,10 +33,13 @@ class Lti_ToolController extends AuthenticatedController
 
     public function index_action($range_id, $tool_id): void
     {
-        //$this->tool is created in the before-filter.
+        //$this->range_id and $this->tool are created in the before-filter.
         if ($this->range_id !== 'global') {
             $this->deployment = LtiDeployment::findOneBySQL(
-                '`tool_id` = :tool_id AND `course_id` = :range_id',
+                'JOIN `lti_resource_links`
+                ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
+                WHERE
+                `lti_deployments`.`tool_id` = :tool_id AND `lti_resource_links`.`course_id` = :range_id',
                 ['tool_id' => $this->tool->id, 'range_id' => $this->range_id]
             );
         }
@@ -59,7 +62,6 @@ class Lti_ToolController extends AuthenticatedController
         if (!$this->tool) {
             return;
         }
-        $this->deployment = null;
         if ($this->tool->isNew()) {
             if (!Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE && $this->range_id !== 'global') {
                 throw new AccessDeniedException(
@@ -70,21 +72,14 @@ class Lti_ToolController extends AuthenticatedController
                 throw new AccessDeniedException();
             }
             PageLayout::postWarning(_('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!'));
-            if ($this->tool->range_id !== 'global') {
-                $this->deployment = new LtiDeployment();
-                $this->deployment->course_id = $this->tool->range_id;
-            }
-        } elseif ($this->range_id !== 'global') {
+        } elseif (!$this->tool->isEditableByUser()) {
+            throw new AccessDeniedException();
+        } else {
+            //The tool is old and editable by the user. Check if a deployment exists and load it.
             $this->deployment = LtiDeployment::findOneBySQL(
-                '`tool_id` = :tool_id AND `course_id` = :range_id',
-                ['tool_id' => $this->tool->id, 'range_id' => $this->range_id]
+                "`tool_id` = :tool_id ORDER BY `mkdate` ASC",
+                ['tool_id' => $this->tool->id]
             );
-            if (!$this->deployment) {
-                //Create a new deployment:
-                $this->deployment = new LtiDeployment();
-                $this->deployment->tool_id = $this->tool->id;
-                $this->deployment->course_id = $this->range_id;
-            }
         }
 
         if (Request::isPost()) {
@@ -98,81 +93,95 @@ class Lti_ToolController extends AuthenticatedController
     protected function saveTool(): void
     {
         CSRFProtection::verifyUnsafeRequest();
-        if ($this->range_id === 'global') {
-            //The admin page for editing global tools.
-            $this->tool->name = trim(Request::get('name'));
-            $this->tool->launch_url        = trim(Request::get('launch_url'));
+        //Note: $this->tool is created in the before_filter.
+        $new_tool                          = $this->tool->isNew();
+        $this->tool->name                  = trim(Request::get('name'));
+        $this->tool->launch_url            = trim(Request::get('launch_url'));
+        $this->tool->terms_of_use_url      = trim(Request::get('terms_of_use_url'));
+        $this->tool->privacy_policy_url    = trim(Request::get('privacy_policy_url'));
+        $this->tool->data_protection_notes = trim(Request::get('data_protection_notes'));
+        $this->tool->lti_version           = Request::get('lti_version', '1.3a');
+        if ($this->tool->lti_version === '1.3a') {
+            $this->tool->oauth_signature_method = 'sha256';
+            $this->tool->oidc_init_url          = trim(Request::get('oidc_init_url'));
+            $this->tool->jwks_url               = trim(Request::get('jwks_url'));
+            $this->tool->jwks_key_id            = trim(Request::get('jwks_key_id'));
+            $this->tool->deep_linking_url       = trim(Request::get('deep_linking_url'));
+            $this->tool->deep_linking           = (bool) $this->tool->deep_linking_url;
         } else {
-            //The page for editing tools configured in courses.
-            $this->deployment->title       = trim(Request::get('name'));
-            $this->deployment->description = trim(Request::get('description'));
-            $this->deployment->launch_url  = trim(Request::get('launch_url'));
-            $document_target = trim(Request::get('document_target'));
-            if ($document_target === 'iframe') {
-                if (!is_array($this->deployment->options)) {
-                    $this->deployment->options = [];
-                }
-                $this->deployment->options['document_target'] = $document_target;
-            } elseif (isset($this->deployment->options['document_target'])) {
-                unset($this->deployment->options['document_target']);
+            //LTI 1.0/1.1:
+            $this->tool->oauth_signature_method = 'sha1';
+            $this->tool->consumer_key           = trim(Request::get('consumer_key'));
+            $this->tool->consumer_secret        = trim(Request::get('consumer_secret'));
+        }
+        $this->tool->send_lis_person   = Request::int('send_lis_person', 0);
+        $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
+        $tool_public_key               = trim(Request::get('tool_public_key'));
+
+        //Check if the tool has a deployment. If so, use it. Otherwise, create a new deployment.
+        if (!$new_tool) {
+            $this->deployment = LtiDeployment::findOneBySQL(
+                "`tool_id` = :tool_id ORDER BY `mkdate` ASC",
+                ['tool_id' => $this->tool->id]
+            );
+        }
+        if (!$this->deployment) {
+            $this->deployment = new LtiDeployment();
+            if (!$new_tool) {
+                $this->deployment->tool_id = $this->tool->id;
             }
+        }
+        $this->deployment->description = trim(Request::get('description'));
+        $this->deployment->title       = $this->tool->name;
+        $this->deployment->launch_url  = $this->tool->launch_url;
+        $document_target = trim(Request::get('document_target'));
+        if ($document_target === 'iframe') {
+            if (!is_array($this->deployment->options)) {
+                $this->deployment->options = [];
+            }
+            $this->deployment->options['document_target'] = $document_target;
+        } elseif (isset($this->deployment->options['document_target'])) {
+            unset($this->deployment->options['document_target']);
         }
 
-        //If a deployment is present, the tool is not used in the global context.
-        //If a tool is not used in the global context and the range_id is not set to "global",
-        //it is a tool that is only used for one course.
-        if (
-            !$this->deployment
-            || $this->tool->range_id !== 'global'
-            || $GLOBALS['perm']->have_perm('root')
-        ) {
-            $this->tool->name                  = trim(Request::get('name'));
-            $this->tool->launch_url            = trim(Request::get('launch_url'));
-            $this->tool->terms_of_use_url      = trim(Request::get('terms_of_use_url'));
-            $this->tool->privacy_policy_url    = trim(Request::get('privacy_policy_url'));
-            $this->tool->data_protection_notes = trim(Request::get('data_protection_notes'));
-            $this->tool->lti_version           = Request::get('lti_version', '1.3a');
-            if ($this->tool->lti_version === '1.3a') {
-                $this->tool->oauth_signature_method = 'sha256';
-                $this->tool->oidc_init_url    = trim(Request::get('oidc_init_url'));
-                $this->tool->jwks_url         = trim(Request::get('jwks_url'));
-                $this->tool->jwks_key_id      = trim(Request::get('jwks_key_id'));
-                $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
-                $this->tool->deep_linking = (bool) $this->tool->deep_linking_url;
-            } else {
-                //LTI 1.0/1.1:
-                $this->tool->oauth_signature_method = 'sha1';
-                $this->tool->consumer_key           = trim(Request::get('consumer_key'));
-                $this->tool->consumer_secret        = trim(Request::get('consumer_secret'));
-            }
-            $this->tool->send_lis_person   = Request::int('send_lis_person', 0);
-            $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
-            $tool_public_key = trim(Request::get('tool_public_key'));
-            $errors = $this->tool->validate();
-            if ($errors) {
-                PageLayout::postError(
-                    _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
-                    array_map('htmlReady', $errors)
-                );
-                return;
-            }
-            if ($this->tool->lti_version === '1.3a' && !$tool_public_key && !$this->tool->jwks_url) {
-                PageLayout::postError(
-                    _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
-                );
-                return;
-            }
-            if ($this->tool->store() !== false) {
-                if ($this->deployment) {
-                    $this->deployment->tool_id = $this->tool->id;
-                }
-            } else {
-                PageLayout::postError(_('Das LTI-Tool konnte nicht gespeichert werden.'));
-                return;
-            }
+        $errors = $this->tool->validate();
+        if ($errors) {
+            PageLayout::postError(
+                _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                array_map('htmlReady', $errors)
+            );
+            return;
         }
-        if ($this->deployment) {
+        if ($this->tool->lti_version === '1.3a' && !$tool_public_key && !$this->tool->jwks_url) {
+            PageLayout::postError(
+                _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
+            );
+            return;
+        }
+        if ($this->tool->store() !== false) {
+            $this->deployment->tool_id = $this->tool->id;
             $this->deployment->store();
+        } else {
+            PageLayout::postError(_('Das LTI-Tool konnte nicht gespeichert werden.'));
+            return;
+        }
+        if ($this->range_id !== 'global') {
+            $resource_link_exists = false;
+            if (!$new_tool) {
+                //Create an LTI resource link, if it doesn't exist yet:
+                $resource_link_exists = \LtiResourceLink::countBySQL(
+                        "`deployment_id` = :deployment_id AND `course_id` = :course_id",
+                        ['deployment_id' => $this->deployment->id, 'course_id' => $this->range_id]
+                    ) > 0;
+            }
+            if (!$resource_link_exists) {
+                //Either the tool has just been created or the tool existed and it wasn't yet
+                //linked to the course. In those both cases, we have to create a new LTI resource link.
+                $resource_link = new \LtiResourceLink();
+                $resource_link->deployment_id = $this->deployment->id;
+                $resource_link->course_id     = $this->range_id;
+                $resource_link->store();
+            }
         }
         if ($this->tool->lti_version === '1.3a' && $tool_public_key) {
             if (!$this->tool->updatePublicKey($tool_public_key)) {
@@ -201,23 +210,31 @@ class Lti_ToolController extends AuthenticatedController
         $tool_name = $this->tool->name;
         if ($this->tool->range_id === 'global') {
             if ($range_id === 'global') {
+                //A global tool shall be deleted globally.
+                if (!$this->tool->isEditableByUser()) {
+                    throw new AccessDeniedException();
+                }
                 $deleted = $this->tool->delete();
             } else {
-                //A tool shall be deleted from a course: Delete the deployment instead.
-                $deployment = LtiDeployment::findOneBySQL(
-                    "`tool_id` = :tool_id AND `course_id` = :course_id",
+                //A tool shall be deleted from a course: Delete the resource link instead.
+                $link = \LtiResourceLink::findOneBySQL(
+                    "JOIN `lti_deployments`
+                    ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
+                    WHERE `lti_deployments`.`tool_id` = :tool_id AND `course_id` = :course_id",
                     ['tool_id' => $this->tool->id, 'course_id' => $range_id]
                 );
-                if ($deployment) {
-                    $tool_name = $deployment->title;
-                    $deleted = $deployment->delete();
+                if ($link) {
+                    $deleted = $link->delete();
                 } else {
                     PageLayout::postError(sprintf(_('Das LTI-Tool „%s“ ist in dieser Veranstaltung nicht vorhanden.'), htmlReady($this->tool->name)));
                     return;
                 }
             }
         } else {
-            //Delete the tool directly:
+            //A tool that is used inside a course shall be deleted.
+            if (!$this->tool->isEditableByUser()) {
+                throw new AccessDeniedException();
+            }
             $deleted = $this->tool->delete();
         }
         if ($deleted !== false) {

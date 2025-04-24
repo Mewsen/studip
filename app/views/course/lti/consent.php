@@ -1,13 +1,13 @@
 <?php
 /**
  * @var AuthenticatedController $controller
- * @var LtiDeployment $deployment
- * @var LtiDeploymentPrivacySettings $privacy_settings
+ * @var LtiResourceLink $resource_link
+ * @var LtiToolPrivacySettings $privacy_settings
  */
 ?>
-<? if ($deployment) : ?>
+<? if ($resource_link) : ?>
     <form class="default" method="post" <?= $privacy_settings->isNew() ? 'data-dialog="reload-on-close"' : 'data-dialog' ?>
-          action="<?= $controller->link_for('course/lti/consent/' . $deployment->id) ?>">
+          action="<?= $controller->link_for('course/lti/consent/' . $resource_link->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <?
         $data_protection_warning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;
@@ -19,8 +19,8 @@
             <legend><?= _('Datenschutzhinweise')  ?></legend>
             <section>
                 <p><?= htmlReady($data_protection_warning) ?></p>
-                <? if ($deployment->tool->data_protection_notes) : ?>
-                    <p><?= formatReady($deployment->tool->data_protection_notes) ?></p>
+                <? if ($resource_link->deployment->tool->data_protection_notes) : ?>
+                    <p><?= formatReady($resource_link->deployment->tool->data_protection_notes) ?></p>
                 <? endif ?>
             </section>
         </fieldset>
@@ -53,7 +53,7 @@
                 <?= _('Ihr Profilbild') ?>
             </label>
         </fieldset>
-        <?= $this->render_partial('lti/_deployment_user_info', ['deployment' => $deployment]) ?>
+        <?= $this->render_partial('lti/_deployment_user_info', ['deployment' => $resource_link->deployment]) ?>
         <fieldset>
             <legend><?= _('Bestätigung') ?></legend>
             <label>
