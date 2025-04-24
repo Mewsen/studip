@@ -83,7 +83,7 @@
     "require": {
         "php": "^8.1",
         "spomky-labs/otphp": "11.2.2",
-        "tuupola/cors-middleware": "^1.2.1",
+        "tuupola/cors-middleware": "1.5.0",
         "tecnickcom/tcpdf": "6.7.5",
         "scssphp/scssphp": "2.0.1",
         "symfony/yaml": "6.4.7",
