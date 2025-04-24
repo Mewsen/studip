@@ -491,12 +491,19 @@ class Course_WikiController extends AuthenticatedController
         $online_user->chdate = time();
         $online_user->store();
 
-        $this->me_online = $online_user;
-        $this->online_users = WikiOnlineEditingUser::findBySQL(
-            "JOIN `auth_user_md5` USING (`user_id`)
-             WHERE `page_id` = ?
-             ORDER BY Nachname, Vorname",
-            [$page->id]
+        $this->render_vue_app(
+            Studip\VueApp::create('WikiEditor')
+                ->withProps([
+                    'cancel-url'   => $this->leave_editingURL($page),
+                    'chdate'       => date('c', $page->chdate),
+                    'editing'      => (bool) $online_user->editing,
+                    'enable-autosave' => $user->getConfiguration()->getValue('WIKI_ENABLE_AUTOSAVE'),
+                    'page-content' => $page->content,
+                    'page-id'      => (int) $page->id,
+                    'save-url'     => $this->saveURL($page),
+                    'users'        => $page->getOnlineUsers(),
+                    'toc'          => CoreWiki::getTOC($page),
+                ])
         );
     }
 

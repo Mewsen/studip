@@ -21,7 +21,7 @@
 
             <div></div>
             <label>
-                <input type="checkbox" v-model="autosave">
+                <input type="checkbox" v-model="autosave" :disabled="storingAutosave">
                 {{ $gettext('Automatisches Speichern aktivieren.') }}
             </label>
             <p class="last-save-date">
@@ -101,6 +101,10 @@ export default {
             type: Boolean,
             default: true
         },
+        enableAutosave: {
+            type: Boolean,
+            default: false,
+        },
         offlineThreshold: {
             type: Number,
             default: 60 * 1000
@@ -128,7 +132,7 @@ export default {
     },
     data() {
         return {
-            autosave: false,
+            autosave: this.enableAutosave,
             content: this.pageContent,
             editor: null,
             isChanged: false,
@@ -136,6 +140,7 @@ export default {
             lastFocussedDate: null,
             lastSaveDate: new Date(this.chdate),
             onlineUsers: this.users,
+            storingAutosave: false,
         };
     },
     computed: {
@@ -254,6 +259,24 @@ export default {
     watch: {
         isChanged(current) {
             this.toggleSecurityHandler(current);
+        },
+        autosave(current) {
+            this.storingAutosave = true;
+
+            const id = [STUDIP.USER_ID, 'WIKI_ENABLE_AUTOSAVE'].join('_');
+
+            const data = {
+                id,
+                type: 'config-values',
+                attributes: { value: current }
+            };
+
+            STUDIP.jsonapi.withPromises()
+                .patch(`config-values/${id}`, { data: { data } })
+                .then(response => {
+                    this.autosave = response.data.attributes.value;
+                    this.storingAutosave = false;
+                });
         }
     }
 }
