@@ -176,6 +176,8 @@ class TFASecret extends SimpleORMap
         }
 
         if ($this->type === 'email') {
+            $timestamp ??= time();
+
             // Test for "window" number of "period" (this will ensure that old
             // tokens are validated correctly)
             $period = self::TYPES[$this->type]['period'];
