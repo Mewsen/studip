@@ -13,7 +13,7 @@ final class UserConfigForWikiAutosave extends Migration
                     `mkdate`, `chdate`,
                     `description`
                   ) VALUES (
-                    'WIKI_ENABLE_AUTOSAVE', '0', 'boolean', 'user', 'wiki',
+                    'WIKI_ENABLE_AUTOSAVE', '1', 'boolean', 'user', 'wiki',
                     UNIX_TIMESTAMP(), UNIX_TIMESTAMP(),
                     'Aktiviert das automatische Speichern im Wiki'
                   )";
