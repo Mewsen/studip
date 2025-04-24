@@ -111,7 +111,8 @@ lint-php:
     - COMPOSER_MEMORY_LIMIT=-1
       composer exec phplint
       --
-      --log-json=$PHPLINT_JSON_REPORT
+      --output=$PHPLINT_JSON_REPORT
+      --format=json
       --cache=$CACHE_LOCATION
   after_script:
     - ./.gitlab/scripts/convert-phplint-report $PHPLINT_JSON_REPORT > $PHPLINT_CODE_QUALITY_REPORT
@@ -141,7 +142,8 @@ lint-php-8.3:
     - COMPOSER_MEMORY_LIMIT=-1
       composer exec phplint
       --
-      --log-json=$PHPLINT_JSON_REPORT
+      --output=$PHPLINT_JSON_REPORT
+      --format=json
       --cache=$CACHE_LOCATION
   after_script:
     - ./.gitlab/scripts/convert-phplint-report $PHPLINT_JSON_REPORT > $PHPLINT_CODE_QUALITY_REPORT
