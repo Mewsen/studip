@@ -118,7 +118,7 @@
         "phpoffice/phpspreadsheet": "4.2.0",
         "psy/psysh": "0.12.3",
         "okvpn/clock-lts": "^1.0",
-        "vlucas/phpdotenv": "^5.6",
+        "vlucas/phpdotenv": "5.6.1",
         "edu-sharing/auth-plugin": "8.0.x-dev",
         "psr/cache": "3.0.0",
         "laravel-json-api/neomerx-json-api": "5.0.2",
