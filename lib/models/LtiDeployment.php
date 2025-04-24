@@ -12,8 +12,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  *
  * @property int $id database column
- * @property int $position database column
- * @property string $course_id database column
  * @property string $title database column
  * @property string $description database column
  * @property int $tool_id database column
@@ -37,62 +35,22 @@ class LtiDeployment extends SimpleORMap
 
         $config['serialized_fields']['options'] = JSONArrayObject::class;
 
-        $config['belongs_to']['course'] = [
-            'class_name'  => Course::class,
-            'foreign_key' => 'course_id'
-        ];
         $config['belongs_to']['tool'] = [
             'class_name'  => LtiTool::class,
             'foreign_key' => 'tool_id'
         ];
-
+        $config['has_many']['resource_links'] = [
+            'class_name'        => LtiResourceLink::class,
+            'assoc_foreign_key' => 'deployment_id',
+            'on_delete'         => 'delete'
+        ];
         $config['has_many']['grades'] = [
             'class_name'        => LtiGrade::class,
             'assoc_foreign_key' => 'link_id',
             'on_delete'         => 'delete'
         ];
 
-        $config['registered_callbacks']['before_create'] = ['cbCalculatePosition'];
-
         parent::configure($config);
-    }
-
-    /**
-     * Calculates the position of the new deployment in the course.
-     */
-    public function cbCalculatePosition() : void
-    {
-        $this->position = self::countBySql(
-            'JOIN `lti_tools` ON `tool_id` = `lti_tools`.`id`
-            WHERE `lti_tools`.`range_id` = :range_id',
-            ['range_id' => $this->tool->range_id]
-            ) + 1;
-    }
-
-    /**
-     * Find a single entry by course_id and position.
-     *
-     * @return static|null
-     */
-    public static function findByCourseAndPosition($course_id, $position)
-    {
-        return self::findOneBySQL('course_id = ? AND position = ?', [$course_id, $position]);
-    }
-
-    /**
-     * Delete this entity.
-     */
-    public function delete()
-    {
-        $db = DBManager::get();
-        $course_id = $this->course_id;
-        $position = $this->position;
-
-        if ($result = parent::delete()) {
-            $db->execute('UPDATE `lti_deployments` SET `position` = position - 1 WHERE `course_id` = ? AND `position` > ?', [$course_id, $position]);
-        }
-
-        return $result;
     }
 
     public function getToolLtiVersion() : string

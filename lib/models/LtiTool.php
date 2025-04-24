@@ -48,7 +48,7 @@ class LtiTool extends SimpleORMap
     {
         $config['db_table'] = 'lti_tools';
 
-        $config['has_many']['links'] = [
+        $config['has_many']['deployments'] = [ //formerly: links
             'class_name'        => LtiDeployment::class,
             'assoc_foreign_key' => 'tool_id',
             'on_delete'         => 'delete'

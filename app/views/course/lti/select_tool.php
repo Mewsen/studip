@@ -1,7 +1,7 @@
 <?php
 /**
  * @var StudipController $controller
- * @var LtiTool[] $global_tools
+ * @var LtiDeployment[] $global_tool_deployments
  */
 ?>
 <form class="default" method="post" action="<?= $controller->link_for('course/lti/select_tool_redirect') ?>"
@@ -11,10 +11,14 @@
         <legend><?= _('Auswahl des LTI-Tools') ?></legend>
         <label>
             <?= _('Bitte wählen Sie ein LTI-Tool aus.') ?>
-            <select name="selected_tool_id">
-                <? foreach ($global_tools as $tool) : ?>
-                    <option value="<?= htmlReady($tool->id) ?>">
-                        <?= htmlReady($tool->name) ?>
+            <select name="selected_deployment_id">
+                <? foreach ($global_tool_deployments as $deployment) : ?>
+                    <option value="<?= htmlReady($deployment->id) ?>">
+                        <? if ($deployment->title !== $deployment->tool->name) : ?>
+                            <?= htmlReady(sprintf('%1$s (%2$s)', $deployment->tool->name, $deployment->title)) ?>
+                        <? else : ?>
+                            <?= htmlReady($deployment->title) ?>
+                        <? endif ?>
                     </option>
                 <? endforeach ?>
                 <? if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE) : ?>

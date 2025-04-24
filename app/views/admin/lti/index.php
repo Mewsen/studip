@@ -16,6 +16,7 @@
                 <col style="width: 20%;">
                 <col style="width: 5%;">
                 <col style="width: 5%;">
+                <col style="width: 5%;">
             </colgroup>
 
             <thead>
@@ -24,6 +25,7 @@
                     <th><?= _('URL der Anwendung') ?></th>
                     <th><?= _('Consumer-Key') ?></th>
                     <th><?= _('LTI-Version') ?></th>
+                    <th><?= _('Deployment-ID') ?></th>
                     <th><?= _('Links') ?></th>
                     <th class="actions"><?= _('Aktionen') ?></th>
                 </tr>
@@ -44,7 +46,21 @@
                         </td>
                         <td><?= htmlReady($tool->consumer_key) ?></td>
                         <td><?= htmlReady($tool->getLtiVersionString()) ?></td>
-                        <td><?= count($tool->links) ?></td>
+                        <td>
+                            <?
+                            //Each tool should only have one deployment-ID:
+                            $deployment = LtiDeployment::findOneByTool_id($tool->id);
+                            ?>
+                            <?= htmlReady($deployment->id ?? '') ?>
+                        </td>
+                        <td>
+                            <?= \LtiResourceLink::countBySql(
+                                "JOIN `lti_deployments`
+                                ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
+                                WHERE `lti_deployments`.`tool_id` = :tool_id",
+                                ['tool_id' => $tool->id]
+                            ) ?>
+                        </td>
                         <td class="actions">
                             <a href="<?= $controller->link_for('lti/tool/edit/global/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>"
                                aria-label="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>

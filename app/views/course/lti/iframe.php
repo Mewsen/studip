@@ -1,14 +1,14 @@
 <?php
 /**
  * @var StudipController $controller
- * @var LtiDeployment $deployment
+ * @var ?LtiResourceLink $resource_link
  * @var array $launch_data
  * @var string $signature
  * @var bool $lti13a_mode
  * @var \OAT\Library\Lti1p3Core\Message\LtiMessage $message
  */
 ?>
-<? if ($deployment) : ?>
+<? if ($resource_link) : ?>
    <!DOCTYPE html>
     <html>
     <head>
@@ -27,7 +27,7 @@
                 <?= _('Das LTI-Tool kann nicht aufgerufen werden.') ?>
             <? endif ?>
         <? else : ?>
-            <form name="ltiLaunchForm" method="post" action="<?= htmlReady($deployment->getLaunchUrl()) ?>">
+            <form name="ltiLaunchForm" method="post" action="<?= htmlReady($resource_link->deployment->getLaunchUrl()) ?>">
                 <? foreach ($launch_data as $key => $value): ?>
                     <input type="hidden" name="<?= htmlReady($key) ?>" value="<?= htmlReady($value, false) ?>">
                 <? endforeach ?>

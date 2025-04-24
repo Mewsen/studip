@@ -72,21 +72,20 @@ class Definition extends \SimpleORMap
 
     public function toLineItem() : LineItemInterface
     {
-        //Build the resource link identifier first:
-        $studip_ids = explode('-', $this->tool ?? '');
-        $tool_id       = $studip_ids[1] ?? '';
-        $deployment_id = $studip_ids[2] ?? '';
-        $resource_link_identifier = sprintf('%s_%s_%s', $tool_id, $deployment_id, $this->course_id);
+        $resource_link_identifier = $this->tool ?? '';
+        $deployment_id = '';
+        if ($resource_link_identifier) {
+            $lti_resource_link = \LtiResourceLink::find($resource_link_identifier);
+            if ($lti_resource_link) {
+                $deployment_id = $lti_resource_link->deployment_id;
+            }
+        }
 
-        $identifier = \URLHelper::getURL(
-            'dispatch.php/lti/ags/line_item',
-            [
-                'cid'           => $this->course_id,
-                'definition_id' => $this->id,
-                'deployment_id' => $deployment_id,
-                'tool_id'       => $tool_id
-            ]
-        );
+        $identifier = \URLHelper::getURL(sprintf(
+            'dispatch.php/lti/ags/line_item/%1$s/%2$s',
+            $resource_link_identifier,
+            $this->id
+        ));
 
         return new LineItem(
             PHP_FLOAT_MAX,

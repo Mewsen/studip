@@ -1,28 +1,28 @@
 <?php
 /**
  * @var Course_LtiController $controller
- * @var LtiDeployment[] $lti_data_array
+ * @var \LtiResourceLink[] $links
  * @var bool $edit_perm
  */
 ?>
-<? if (empty($lti_data_array)): ?>
+<? if (empty($links)): ?>
     <?= MessageBox::info(_('Es sind keine LTI-Tools konfiguriert.')) ?>
 <? endif ?>
 
-<? foreach ($lti_data_array as $lti_data): ?>
+<? foreach ($links as $link): ?>
     <?
-    $launch_url = $lti_data->getLaunchURL();
-    $unfinished_deep_linking = !empty($lti_data->options['unfinished_deep_linking']);
+    $launch_url = $link->deployment->getLaunchURL();
+    $unfinished_deep_linking = !empty($link->deployment->options['unfinished_deep_linking']);
     $no_consent = !LtiToolPrivacySettings::countBySql(
         '`tool_id` = :tool_id AND `user_id` = :user_id',
-        ['tool_id' => $lti_data->tool_id, 'user_id' => $GLOBALS['user']->id]
+        ['tool_id' => $link->deployment->tool_id, 'user_id' => $GLOBALS['user']->id]
     );
     ?>
 
     <article class="studip">
         <header>
             <h1>
-                <?= htmlReady($lti_data->title) ?>
+                <?= htmlReady($link->deployment->title) ?>
                 <?= $unfinished_deep_linking ? '(' . _('LTI Deep Linking noch nicht fertig eingerichtet') . ')' : '' ?>
             </h1>
 
@@ -30,16 +30,16 @@
                 <nav>
                     <form action="" method="post">
                         <?= CSRFProtection::tokenTag() ?>
-                        <? if ($lti_data->position > 0): ?>
+                        <? if ($link->position > 0): ?>
                             <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asInput([
-                                'formaction' => $controller->url_for('course/lti/move/' . $lti_data->id . '/up'),
+                                'formaction' => $controller->url_for('course/lti/move/' . $link->id . '/up'),
                                 'title'      => _('Nach oben verschieben'),
                                 'aria-label' => _('Nach oben verschieben')
                             ]) ?>
                         <? endif ?>
-                        <? if ($lti_data->position < count($lti_data_array) - 1): ?>
+                        <? if ($link->position < count($links) - 1): ?>
                             <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asInput([
-                                'formaction' => $controller->url_for('course/lti/move/' . $lti_data->id . '/down'),
+                                'formaction' => $controller->url_for('course/lti/move/' . $link->id . '/down'),
                                 'title'      => _('Nach unten verschieben'),
                                 'aria-label' => _('Nach unten verschieben')
                             ]) ?>
@@ -47,34 +47,36 @@
 
                         <?
                         $menu = ActionMenu::get();
-                        $show_admin_actions = $GLOBALS['perm']->have_studip_perm('tutor', $lti_data->course_id);
+                        $show_admin_actions = $GLOBALS['perm']->have_studip_perm('tutor', $link->course_id);
                         if ($show_admin_actions) {
                             $menu->addLink(
-                                $controller->url_for('lti/tool/index/' . $lti_data->course_id . '/' . $lti_data->tool->id),
+                                $controller->url_for('lti/tool/index/' . $link->course_id . '/' . $link->deployment->tool->id),
                                 _('Konfiguration des LTI-Tools anzeigen'),
                                 Icon::create('info-circle'),
                                 ['data-dialog' => 'size=default']
                             );
                         }
                         $menu->addLink(
-                            $controller->url_for('course/lti/consent/' . $lti_data->id),
+                            $controller->url_for('course/lti/consent/' . $link->id),
                             _('Datenschutzeinstellungen'),
                             Icon::create('privacy'),
                             ['data-dialog' => 'size=default']
                         );
 
-                        if ($show_admin_actions) {
+                        if ($link->deployment->tool->isEditableByUser()) {
                             $menu->addLink(
-                                $controller->url_for('lti/tool/edit/' . $lti_data->course_id . '/' . $lti_data->tool->id),
+                                $controller->url_for('lti/tool/edit/' . $link->course_id . '/' . $link->deployment->tool_id),
                                 _('LTI-Tool konfigurieren'),
                                 Icon::create('edit'),
                                 ['data-dialog' => 'size=default']
                             );
+                        }
+                        if ($show_admin_actions) {
                             $menu->addLink(
                                 sprintf(
                                     'javascript:void(STUDIP.Dialog.confirmAsPost(\'%s\', \'%s\'))',
-                                    sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $lti_data->title),
-                                    $controller->url_for('lti/tool/delete/' . $lti_data->course_id . '/' . $lti_data->tool->id)
+                                    sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $link->deployment->title),
+                                    $controller->url_for('lti/tool/delete/' . $link->course_id . '/' . $link->deployment->tool_id)
                                 ),
                                 _('LTI-Tool entfernen'),
                                 Icon::create('trash')
@@ -90,29 +92,29 @@
             <? if ($unfinished_deep_linking) : ?>
                 <?= Studip\LinkButton::create(
                     _('Einrichtung abschließen'),
-                    $controller->url_for('course/lti/select_link/' . $lti_data->id, ['tool_id' => $lti_data->tool_id]),
+                    $controller->url_for('course/lti/select_link/' . $link->id, ['tool_id' => $link->tool_id]),
                     ['target' => '_blank']
                 ) ?>
             <? elseif ($no_consent) : ?>
-                <?= formatReady($lti_data->description) ?>
+                <?= formatReady($link->deployment->description) ?>
                 <p><?= _('Sie haben der Datenweitergabe an das LTI-Tool noch nicht zugestimmt und können es deswegen noch nicht nutzen.') ?></p>
                 <?= Studip\LinkButton::create(
                     _('Datenschutzeinstellungen öffnen'),
-                    $controller->url_for('course/lti/consent/' . $lti_data->id),
+                    $controller->url_for('course/lti/consent/' . $link->id),
                     ['data-dialog' => 'reload-on-close']
                 ) ?>
             <? elseif ($launch_url) : ?>
                 <?
-                $document_target = $lti_data->options['document_target'] ?? '';
+                $document_target = $link->deployment->options['document_target'] ?? '';
                 ?>
-                <?= formatReady($lti_data->description) ?>
+                <?= formatReady($link->deployment->description) ?>
                 <? if ($document_target === 'iframe') : ?>
                     <iframe style="border: none; height: 640px; width: 100%;"
-                            src="<?= $controller->link_for('course/lti/iframe/' . $lti_data->id) ?>"></iframe>
+                            src="<?= $controller->link_for('course/lti/iframe/' . $link->id) ?>"></iframe>
                 <? else : ?>
                     <?= Studip\LinkButton::create(
                         _('Anwendung starten'),
-                        $controller->url_for('course/lti/iframe/' . $lti_data->id),
+                        $controller->url_for('course/lti/iframe/' . $link->id),
                         ['target' => '_blank']
                     ) ?>
                 <? endif ?>

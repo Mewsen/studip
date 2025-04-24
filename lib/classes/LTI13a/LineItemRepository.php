@@ -110,22 +110,19 @@ class LineItemRepository implements LineItemRepositoryInterface
             return $result;
         }
 
-        //$resourceLinkIdentifier contains the Stud.IP tool-ID, the deployment-ID and the course-ID,
-        //separated by underscores.
-        $id_parts = explode('_', $resourceLinkIdentifier);
-        if (count($id_parts) !== 3) {
+        //Find the LTI resource link by its ID:
+        $resource_link = \LtiResourceLink::find($resourceLinkIdentifier);
+        if (!$resource_link) {
             throw new LTIException('Invalid resource link identifier.');
         }
-        $tool_id       = $id_parts[0];
-        $deployment_id = $id_parts[1];
-        $course_id     = $id_parts[2];
+        $tool_id       = $resource_link->deployment->tool_id ?? null;
 
         $sql = '';
         $sql_params = [];
-        if ($tool_id && $course_id) {
+        if ($tool_id && $resource_link->course_id) {
             $sql .= "`tool` = :tool AND `course_id` = :course_id";
-            $sql_params['tool']      = self::getGradingToolName($tool_id, $deployment_id);
-            $sql_params['course_id'] = $course_id;
+            $sql_params['tool']      = self::getGradingToolName($tool_id, $resource_link->deployment_id);
+            $sql_params['course_id'] = $resource_link->course_id;
         } else {
             //No tool-ID means no line item collection can be found.
             return $result;
@@ -155,18 +152,17 @@ class LineItemRepository implements LineItemRepositoryInterface
      */
     public function save(LineItemInterface $lineItem): LineItemInterface
     {
-        //The resource link identifier contains the Stud.IP tool-ID, deployment-ID and course-ID
-        //separated by underscores.
-        $studip_ids    = explode('_', $lineItem->getResourceLinkIdentifier() ?? '');
-        $tool_id       = $studip_ids[0];
-        $deployment_id = $studip_ids[1];
-        $course_id     = $studip_ids[2];
+        $resource_link_id = $lineItem->getResourceLinkIdentifier() ?? '';
+        $resource_link = \LtiResourceLink::find($resource_link_id);
+        if (!$resource_link) {
+            throw new LTIException('Invalid resource link identifier.');
+        }
 
         $definition            = new Definition();
         $definition->id        = $lineItem->getIdentifier();
         $definition->name      = $lineItem->getLabel();
-        $definition->course_id = $course_id;
-        $definition->tool      = sprintf('lti-%s-%s', $tool_id, $deployment_id);
+        $definition->course_id = $resource_link->course_id;
+        $definition->tool      = $resource_link->id;
         $definition->weight    = '1.0';
         if ($definition->store()) {
             return $definition->toLineItem();
