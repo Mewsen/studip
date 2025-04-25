@@ -79,7 +79,7 @@ final class RepairConsultationEvents extends Migration
         return array_unique(array_merge(
             $block_ids0,
             $block_ids1,
-            $block_ids2,
+            $block_ids2
         ));
     }
 }
