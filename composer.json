@@ -105,7 +105,7 @@
         "ext-dom": "*",
         "ext-iconv": "*",
         "ext-simplexml": "*",
-        "opis/json-schema": "2.3.0",
+        "opis/json-schema": "2.4.1",
         "slim/slim": "4.13.0",
         "php-di/php-di": "7.0.10",
         "symfony/console": "6.4.20",
