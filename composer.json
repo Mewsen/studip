@@ -130,7 +130,7 @@
         "nyholm/psr7": "1.8.2",
         "nyholm/psr7-server": "1.1.0",
         "erusev/parsedown": "1.7.4",
-        "league/oauth2-client": "2.7.0",
+        "league/oauth2-client": "2.8.1",
         "nette/php-generator": "4.1.8",
         "oat-sa/lib-lti1p3-core": "7.2.1",
         "oat-sa/lib-lti1p3-ags": "2.0.2",
