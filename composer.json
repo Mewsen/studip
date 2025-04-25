@@ -86,7 +86,7 @@
         "tuupola/cors-middleware": "1.5.0",
         "tecnickcom/tcpdf": "6.9.3",
         "scssphp/scssphp": "2.0.1",
-        "symfony/yaml": "6.4.7",
+        "symfony/yaml": "6.4.20",
         "ezyang/htmlpurifier": "^4.13",
         "jasig/phpcas": "1.5",
         "algo26-matthias/idna-convert": "4.2.0",
