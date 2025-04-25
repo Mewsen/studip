@@ -22,6 +22,13 @@ class ConsultationResponsibility extends SimpleORMap
             'foreign_key' => 'block_id',
         ];
 
+        $config['registered_callbacks']['after_store'][] = function (ConsultationResponsibility $responsibility): void {
+            $responsibility->block->updateEvents();
+        };
+        $config['registered_callbacks']['after_delete'][] = function (ConsultationResponsibility $responsibility): void {
+            $responsibility->block->updateEvents();
+        };
+
         parent::configure($config);
     }
 
