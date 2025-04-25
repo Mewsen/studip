@@ -448,12 +448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/edu-sharing/php-auth-plugin.git",
-                "reference": "d0384dce4023449220052d1b648bb1b41babd3d0"
+                "reference": "8ea462f46e5b05c6dec3b9c4f2574f4495e1f28e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/edu-sharing/php-auth-plugin/zipball/d0384dce4023449220052d1b648bb1b41babd3d0",
-                "reference": "d0384dce4023449220052d1b648bb1b41babd3d0",
+                "url": "https://api.github.com/repos/edu-sharing/php-auth-plugin/zipball/8ea462f46e5b05c6dec3b9c4f2574f4495e1f28e",
+                "reference": "8ea462f46e5b05c6dec3b9c4f2574f4495e1f28e",
                 "shasum": ""
             },
             "require": {
@@ -487,7 +487,7 @@
                 "issues": "https://github.com/edu-sharing/php-auth-plugin/issues",
                 "source": "https://github.com/edu-sharing/php-auth-plugin/tree/8.0"
             },
-            "time": "2024-06-03T10:59:11+00:00"
+            "time": "2024-07-19T11:24:30+00:00"
         },
         {
             "name": "erusev/parsedown",
