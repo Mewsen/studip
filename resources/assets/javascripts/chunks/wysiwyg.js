@@ -2,9 +2,6 @@ import BalloonEditor, { createBalloonEditorFromTextarea } from '../cke/balloon-e
 import ClassicEditor, { createClassicEditorFromTextarea } from '../cke/classic-editor.js';
 import { updateVoiceLabel } from '../cke/studip-a11y-dialog/a11y-dialog.js';
 
-import 'ckeditor5/ckeditor5.css';
-import '../../stylesheets/scss/studip-cke-ui.scss';
-
 export {
     BalloonEditor,
     ClassicEditor,
