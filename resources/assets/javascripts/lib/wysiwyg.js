@@ -6,6 +6,9 @@ import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandrepl
 import StudipBlockQuote from '../cke/studip-quote/StudipBlockQuote.js';
 import WikiLink from '../cke/wiki-link/wiki-link.js';
 
+import 'ckeditor5/ckeditor5.css';
+import '../../stylesheets/scss/studip-cke-ui.scss';
+
 const wysiwyg = {
     // NOTE keep this function in sync with Markup class
     htmlMarker: '<!--HTML-->',
