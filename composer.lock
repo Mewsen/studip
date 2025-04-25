@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7d5dfdf1ebb5b9093392770376dda94",
+    "content-hash": "58cbd3d119b73577942e946658105cfd",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2890,16 +2890,16 @@
         },
         {
             "name": "oat-sa/lib-lti1p3-core",
-            "version": "7.1.0",
+            "version": "7.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oat-sa/lib-lti1p3-core.git",
-                "reference": "39dbc6880734f99ca41488e5ebcd5b6ad8fc26f4"
+                "reference": "8d8d2156c0acddc7f2f4a91c99f6246286d9b47a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oat-sa/lib-lti1p3-core/zipball/39dbc6880734f99ca41488e5ebcd5b6ad8fc26f4",
-                "reference": "39dbc6880734f99ca41488e5ebcd5b6ad8fc26f4",
+                "url": "https://api.github.com/repos/oat-sa/lib-lti1p3-core/zipball/8d8d2156c0acddc7f2f4a91c99f6246286d9b47a",
+                "reference": "8d8d2156c0acddc7f2f4a91c99f6246286d9b47a",
                 "shasum": ""
             },
             "require": {
@@ -2939,9 +2939,9 @@
             "description": "OAT LTI 1.3 Core Library",
             "support": {
                 "issues": "https://github.com/oat-sa/lib-lti1p3-core/issues",
-                "source": "https://github.com/oat-sa/lib-lti1p3-core/tree/7.1.0"
+                "source": "https://github.com/oat-sa/lib-lti1p3-core/tree/7.2.1"
             },
-            "time": "2024-11-29T11:31:29+00:00"
+            "time": "2025-01-28T08:51:17+00:00"
         },
         {
             "name": "oat-sa/lib-lti1p3-deep-linking",
