@@ -127,7 +127,7 @@
         "symfony/polyfill-php83": "1.31.0",
         "symfony/polyfill-php84": "1.31.0",
         "symfony/polyfill-php85": "1.x-dev",
-        "nyholm/psr7": "1.8.1",
+        "nyholm/psr7": "1.8.2",
         "nyholm/psr7-server": "1.1.0",
         "erusev/parsedown": "1.7.4",
         "league/oauth2-client": "2.7.0",
