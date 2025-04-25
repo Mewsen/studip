@@ -95,18 +95,6 @@ $start_pages = [
         </label>
     </fieldset>
 
-    <fieldset>
-        <legend><?= _('Wiki') ?></legend>
-
-        <label>
-            <input type="checkbox" name="wiki_comments_enable" value="1"
-                <? if ($config->WIKI_COMMENTS_ENABLE) echo 'checked'; ?>>
-            <?= _('Wiki-Kommentare einblenden') ?>
-            <?= tooltipIcon(_('Mit dieser Einstellung werden auf Wiki-Seiten die Kommentare eingeblendet'
-                .' und nicht mehr nur als Icon angezeigt.')) ?>
-        </label>
-    </fieldset>
-
     <? if ($show_room_management_autor_config) : ?>
         <fieldset>
             <legend><?= _('Raumverwaltung') ?></legend>

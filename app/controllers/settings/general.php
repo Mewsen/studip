@@ -65,7 +65,6 @@ class Settings_GeneralController extends Settings_SettingsController
         $this->config->store('PERSONAL_STARTPAGE', Request::int('personal_startpage'));
         $this->config->store('SHOWSEM_ENABLE', Request::int('showsem_enable'));
         $this->config->store('TOUR_AUTOSTART_DISABLE', Request::int('tour_autostart_disable'));
-        $this->config->store('WIKI_COMMENTS_ENABLE', Request::int('wiki_comments_enable'));
         if ($this->show_room_management_autor_config) {
             $this->config->store('RESOURCES_CONFIRM_PLAN_DRAG_AND_DROP', Request::int('resources_confirm_plan_drag_and_drop'));
         }

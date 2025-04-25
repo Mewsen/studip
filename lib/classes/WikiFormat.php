@@ -15,12 +15,6 @@
 class WikiFormat extends StudipFormat
 {
     private static $wiki_rules = [
-        'wiki-comments' => [
-            'start'    => '\[comment(=.*?)\](.*?)\[\/comment\]',
-            'end'      => '',
-            'callback' => 'WikiFormat::markupWikiComments',
-            'before'   => ''
-        ],
         'wiki-links' => [
             'start'    => '\[\[(.*?)(?:\|(.*?))?\]\]',
             'end'      => '',
@@ -126,38 +120,6 @@ class WikiFormat extends StudipFormat
     public function getPageId()
     {
         return $this->page_id;
-    }
-
-    /**
-     * Stud.IP markup for wiki-comments
-     *
-     * @param  StudipFormat $markup  Markup object
-     * @param  array        $matches Found matches
-     * @return string
-     */
-    protected static function markupWikiComments($markup, $matches)
-    {
-        $from = mb_substr($matches[1], 1);
-        $comment = $matches[2];
-
-        if (Request::get('wiki_comments') === 'none') {
-            return '';
-        } else if ($GLOBALS['user']->cfg->WIKI_COMMENTS_ENABLE) {
-            $commenttmpl = "<table style=\"border:thin solid;margin: 5px;\" bgcolor=\"#ffff88\"><tr><td><font size=-1><b>"._("Kommentar von")." %1\$s:</b>&nbsp;</font></td></tr><tr class=steelgrau><td class=steelgrau><font size=-1>%2\$s</font></td></tr></table>";
-            return sprintf(
-                $commenttmpl,
-                $from,
-                $comment
-            );
-        } else {
-            $from = decodeHTML($from);
-            $comment = decodeHTML($comment); //because tooltip already escapes
-            return sprintf(
-                '<a href="javascript:void(0);" %s>%s</a>',
-                tooltip(sprintf("%s %s: %s", _("Kommentar von"), $from, $comment), true, true),
-                Icon::create('chat2', Icon::ROLE_STATUS_YELLOW)
-            );
-        }
     }
 
     /**
