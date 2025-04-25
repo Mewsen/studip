@@ -87,7 +87,7 @@
         "tecnickcom/tcpdf": "6.9.3",
         "scssphp/scssphp": "2.0.1",
         "symfony/yaml": "6.4.20",
-        "ezyang/htmlpurifier": "^4.13",
+        "ezyang/htmlpurifier": "4.18.0",
         "jasig/phpcas": "1.5",
         "algo26-matthias/idna-convert": "4.2.0",
         "caxy/php-htmldiff": "0.1.16",
