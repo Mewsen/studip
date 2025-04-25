@@ -95,24 +95,6 @@ td.tree-indent {
     }
 }
 
-td.tree-elbow-line {
-    background: url("#{$image-path}/datatree_1.gif") repeat-y;
-    vertical-align: bottom;
-    width: 5px;
-}
-
-td.tree-elbow-end {
-    vertical-align: top;
-    white-space: nowrap;
-    width: 5px;
-}
-
-td.tree-elbow-line, td.tree-elbow-end {
-    img, svg {
-        display: block;
-    }
-}
-
 /* --- table.collapsable ---------------------------------------------------- */
 // TODO: This is pretty hard to understand and should be replaced with an easier,
 // better structured solution
