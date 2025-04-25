@@ -116,8 +116,8 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             return array_values($persons);
         };
 
-        $config['registered_callbacks']['after_store'][] = function (ConsultationBlock $block) {
-            $block->slots->updateEvents();
+        $config['registered_callbacks']['after_store'][] = function (ConsultationBlock $block): void {
+            $block->updateEvents();
         };
 
         parent::configure($config);
@@ -457,5 +457,15 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             date('H:i', $this->start),
             date('H:i', $this->end)
         );
+    }
+
+    /**
+     * Convenience method that updates all events for all slots of this block.
+     */
+    public function updateEvents(): void
+    {
+        $this->slots->each(function (ConsultationSlot $slot): void {
+            $slot->updateEvents();
+        });
     }
 }
