@@ -36,16 +36,21 @@ class ConsultationEvent extends SimpleORMap
                         return;
                     }
 
-                    // Suppress all mails from calendar for users that do not
-                    // want to receive emails about consultation bookings
+                    // Suppress all mails from calendar for users that do not want to receive emails about
+                    // consultation bookings or for calendar dates that lie in the past.
                     $event->event->calendars->each(function (CalendarDateAssignment $assignment) {
                         if (
-                            $assignment->user
-                            && !$assignment->user->getConfiguration()->CONSULTATION_SEND_MESSAGES
+                            empty($assignment->calendar_date->end)
+                            || $assignment->calendar_date->end < time()
+                            || (
+                                $assignment->user
+                                && !$assignment->user->getConfiguration()->CONSULTATION_SEND_MESSAGES
+                            )
+
                         ) {
                             $assignment->suppress_mails = true;
-                            $assignment->delete();
                         }
+                        $assignment->delete();
                     });
                 },
             ],
