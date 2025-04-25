@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31680285dbf922700d79bfe2726fca52",
+    "content-hash": "ac08a501e4cdc52f80c7184c24942639",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "laravel-json-api/neomerx-json-api",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-json-api/neomerx-json-api.git",
-                "reference": "00841feae83ab95f4490c6f2086f02f298293381"
+                "reference": "836342be5eb4bcf6c3734c7f8e82c9ceec3be550"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-json-api/neomerx-json-api/zipball/00841feae83ab95f4490c6f2086f02f298293381",
-                "reference": "00841feae83ab95f4490c6f2086f02f298293381",
+                "url": "https://api.github.com/repos/laravel-json-api/neomerx-json-api/zipball/836342be5eb4bcf6c3734c7f8e82c9ceec3be550",
+                "reference": "836342be5eb4bcf6c3734c7f8e82c9ceec3be550",
                 "shasum": ""
             },
             "require": {
@@ -1455,9 +1455,9 @@
             ],
             "support": {
                 "issues": "https://github.com/neomerx/json-api/issues",
-                "source": "https://github.com/laravel-json-api/neomerx-json-api/tree/v5.0.2"
+                "source": "https://github.com/laravel-json-api/neomerx-json-api/tree/v5.0.3"
             },
-            "time": "2023-05-29T14:50:09+00:00"
+            "time": "2024-11-29T17:49:31+00:00"
         },
         {
             "name": "laravel/serializable-closure",
