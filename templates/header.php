@@ -158,11 +158,6 @@ if ($navigation) {
                                 <? endforeach ?>
                                 </ul>
                             </div>
-                        <? if (PersonalNotifications::isAudioActivated()): ?>
-                            <audio id="audio_notification" preload="none">
-                                <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
-                            </audio>
-                        <? endif; ?>
                         </div>
                     </li>
                 <? endif; ?>

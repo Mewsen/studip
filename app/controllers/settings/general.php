@@ -75,11 +75,6 @@ class Settings_GeneralController extends Settings_SettingsController
         } else {
             PersonalNotifications::deactivate($this->user->id);
         }
-        if (Request::int('personal_notifications_audio_activated')) {
-            PersonalNotifications::activateAudioFeedback($this->user->id);
-        } else {
-            PersonalNotifications::deactivateAudioFeedback($this->user->id);
-        }
         $this->config->store('SYSTEM_NOTIFICATIONS_PLACEMENT', Request::get('system_notifications_placement'));
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));

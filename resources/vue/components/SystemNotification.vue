@@ -148,34 +148,6 @@ export default {
 
         this.globalOn('disrupt-system-notifications', this.disruptTimeout);
         this.globalOn('resume-system-notifications', this.initTimeout);
-
-        if (!STUDIP.config?.PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED) {
-            let audio = null;
-            switch (this.notification.type) {
-                case 'info':
-                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-ok.mp3');
-                    break;
-                case 'success':
-                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-good.mp3');
-                    break;
-                case 'warning':
-                case 'error':
-                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-not-good.mp3');
-                    break;
-                case 'exception':
-                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-bad.mp3');
-                    break;
-            }
-
-            let timing = 300;
-            if (this.placement === 'bottomright') {
-                timing = 750;
-            }
-
-            setTimeout(() => {
-                audio.play().catch(() => {});
-            }, timing);
-        }
     },
     unmounted() {
         this.globalOff('disrupt-system-notifications', this.disruptTimeout);

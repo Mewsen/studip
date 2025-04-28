@@ -15,21 +15,6 @@ STUDIP.domReady(() => {
     });
 
     $('#edit_userdata .email-change-confirm').hide();
-
-    const audioActive = $('input[name="personal_notifications_audio_activated"]');
-    audioActive.on('change', function() {
-        if (audioActive.is(':checked')) {
-            navigator.permissions.query({name: 'autoplay'})
-                .then(result => {
-                    if (result.state !== 'granted') {
-                        navigator.mediaDevices.getUserMedia({video: false, audio: true});
-                    }
-                })
-                .catch(() => {
-                    navigator.mediaDevices.getUserMedia({video: false, audio: true});
-                });
-        }
-    });
 });
 
 $(document).on('input', '#new_password', function() {

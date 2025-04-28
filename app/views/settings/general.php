@@ -84,18 +84,6 @@ $start_pages = [
         </label>
 
         <label>
-            <input type="checkbox" name="personal_notifications_audio_activated"
-                   aria-describedby="personal_notifications_audio_activated_description" value="1"
-                <? if (PersonalNotifications::isAudioActivated($user->user_id)) echo 'checked'; ?>>
-            <?= _('Audio-Feedback zu Benachrichtigungen') ?>
-            <?= tooltipIcon(_('Wenn Sie ein neue Benachrichtigung erhalten, kann Sie Stud.IP mittels eines ' .
-                    'Ton-Effekts drauf aufmerksam machen. Dies hilft, falls der aktuelle Browser-Tab gerade nicht ' .
-                    'Stud.IP zeigt oder eine Benachrichtigung aus anderen Gründen visuell nicht wahrgenommen ' .
-                    'werden kann. Ggf. müssen Sie Toneffekte in Ihrem Browser oder Betriebssystem noch aktivieren ' .
-                    'bzw. erlauben.')) ?>
-        </label>
-
-        <label>
             <?= _('Platzierung von Systembenachrichtigungen im Browserfenster') ?>
             <?= tooltipIcon(_('Sie können entscheiden, an welcher Stelle Ihres Browserfensters ' .
                 'Systembenachrichtigungen erscheinen sollen: mittig am oberen Rand oder rechts unten.')) ?>

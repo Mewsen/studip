@@ -325,30 +325,6 @@ class PersonalNotifications extends SimpleORMap
     }
 
     /**
-     * Activates audio plopp for new personal notifications for a given user.
-     * @param string|null $user_id : ID of special user the notification should belong to or (default:) null for current user
-     */
-    public static function activateAudioFeedback($user_id = null)
-    {
-        if (!$user_id) {
-            $user_id = $GLOBALS['user']->id;
-        }
-        UserConfig::get($user_id)->store("PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED", "0");
-    }
-
-    /**
-     * Deactivates audio plopp for new personal notifications for a given user.
-     * @param string|null $user_id : ID of special user the notification should belong to or (default:) null for current user
-     */
-    public static function deactivateAudioFeedback($user_id = null)
-    {
-        if (!$user_id) {
-            $user_id = $GLOBALS['user']->id;
-        }
-        UserConfig::get($user_id)->store("PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED", "1");
-    }
-
-    /**
      * Checks if personal notifications are activated for the whole Stud.IP. This
      * could be false for performance issues.
      * @return boolean : true if activated else false
@@ -376,24 +352,6 @@ class PersonalNotifications extends SimpleORMap
             $user_id = $GLOBALS['user']->id;
         }
         return !UserConfig::get($user_id)->getValue('PERSONAL_NOTIFICATIONS_DEACTIVATED');
-    }
-
-    /**
-     * Checks if a given user should hear audio plopp for new personal notification.
-     * Either the Stud.IP or the user could deactivate personal notification or
-     * audio feedback. If neither is the case, this function returns true.
-     * @param string|null $user_id : ID of special user the notification should belong to or (default:) null for current user
-     * @return boolean : true if activated else false
-     */
-    public static function isAudioActivated($user_id = null)
-    {
-        if (!PersonalNotifications::isGloballyActivated() || !self::isActivated($user_id)) {
-            return false;
-        }
-        if (!$user_id) {
-            $user_id = $GLOBALS['user']->id;
-        }
-        return ! UserConfig::get($user_id)->getValue("PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED");
     }
 
     /**
