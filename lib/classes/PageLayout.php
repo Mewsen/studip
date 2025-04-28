@@ -134,9 +134,6 @@ class PageLayout
             'title' => _('Hilfe zur Textformatierung')
         ]);
 
-        self::addScript('vue.global.prod.js?v=' . $v);
-        self::addScript('vuex.global.prod.js?v=' . $v);
-
         self::addStylesheet('studip-base.css?v=' . $v, ['media' => 'screen']);
         self::addScript('studip-base.js?v=' . $v);
         self::addScript('studip-wysiwyg.js?v=' . $v);
