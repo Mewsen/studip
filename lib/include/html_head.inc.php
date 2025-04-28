@@ -68,8 +68,6 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,
                 'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
                 'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
-                'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
-                    (bool) User::findCurrent()?->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
                 'ENABLE_COURSESET_FCFS' => (bool) Config::get()->ENABLE_COURSESET_FCFS
             ]) ?>,
             jsonapi_schemas: <?= json_encode($getJsonApiSchemas()) ?>,
