@@ -924,7 +924,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
         );
         $replacements = array_map(
             function ($replacement) {
-                return mb_strlen($replacement) ? '$1' . $replacement . '$2' : '';
+                return mb_strlen($replacement) ? '${1}' . $replacement . '${2}' : '';
             },
             $replacements
         );
