@@ -23,14 +23,21 @@ class StudipAuthOIDC extends StudipAuthSSO
      * @var string
      */
     public $provider_url;
+
     /**
      * @var string
      */
     public $client_id;
+
     /**
      * @var string
      */
     public $client_secret;
+
+    /**
+     * @var string[]
+     */
+    public $scopes = ['openid', 'email', 'profile'];
 
     private function getClient(): OpenIDConnectClient
     {
@@ -50,7 +57,7 @@ class StudipAuthOIDC extends StudipAuthSSO
 
             $return_url = URLHelper::getScriptURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'index.php', ['sso' => $this->plugin_name, 'again' => 'yes']);
             $this->oidc->setRedirectURL($return_url);
-            $this->oidc->addScope(['openid', 'email', 'profile']);
+            $this->oidc->addScope($this->scopes);
         }
 
         return $this->oidc;
