@@ -18,6 +18,8 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
     protected string $url_access_token;
     protected string $url_resource_owner_details;
 
+    protected ?array $scopes = null;
+
     protected ?string $logout_url = null;
 
     private ?GenericProvider $client = null;
@@ -37,11 +39,12 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
     {
         if ($this->client === null) {
             $options = [
-                'clientId' => $this->client_id,
-                'clientSecret' => $this->client_secret,
-                'redirectUri' => $this->redirect_uri,
-                'urlAuthorize' => $this->url_authorize,
-                'urlAccessToken' => $this->url_access_token,
+                'clientId'                => $this->client_id,
+                'clientSecret'            => $this->client_secret,
+                'redirectUri'             => $this->redirect_uri,
+                'scopes'                  => $this->scopes,
+                'urlAuthorize'            => $this->url_authorize,
+                'urlAccessToken'          => $this->url_access_token,
                 'urlResourceOwnerDetails' => $this->url_resource_owner_details,
             ];
 
