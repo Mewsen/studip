@@ -123,7 +123,7 @@ class MyRealmModel
 
 
         if ($neue || $count > 0) {
-            $nav = new Navigation('vote', '#vote');
+            $nav = new Navigation('vote', 'dispatch.php/course/overview');
             if ($neue) {
                 $nav->setImage(Icon::create('vote', Icon::ROLE_ATTENTION, [
                     'title' => sprintf(
