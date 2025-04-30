@@ -40,7 +40,7 @@ class CoreOverview extends CorePlugin implements StudipModule
             return null;
         }
 
-        $nav = new Navigation(_('Ankündigungen'), '');
+        $nav = new Navigation(_('Ankündigungen'), 'dispatch.php/course/overview');
         if ($result['neue']) {
             $nav->setURL('?new_news=true');
             $nav->setImage(Icon::create('news', Icon::ROLE_ATTENTION), [
