@@ -2312,7 +2312,7 @@ class Vips_SolutionsController extends AuthenticatedController
                 $members = $assignment->getGroupMembers($group);
 
                 foreach ($members as $member) {
-                    $group_id   = (int) $group->id;
+                    $group_id   = $group->id;
                     $user_id    = $member->user_id;
 
                     if (!isset($solvers[$user_id])) {
