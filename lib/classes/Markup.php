@@ -321,6 +321,7 @@ class Markup
 
         $config->set('Attr.AllowedFrameTargets', ['_blank']);
         $config->set('Attr.AllowedRel', ['nofollow']);
+        $config->set('Attr.DefaultImageAlt', '');
         $config->set('Attr.EnableID', true);
         $config->set('Attr.AllowedClasses', [
             'author',
