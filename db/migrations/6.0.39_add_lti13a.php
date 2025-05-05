@@ -42,6 +42,9 @@ class AddLti13a extends Migration
             ADD COLUMN data_protection_notes TEXT DEFAULT NULL"
         );
 
+        //All configured tools are globally configured LTI 1.1 tools at this point:
+        $db->exec("UPDATE `lti_tools` SET `lti_version` = '1.1', `range_id` = 'global'");
+
         $this->migrateLtiDataTable();
 
         $this->addConfig();
@@ -57,7 +60,7 @@ class AddLti13a extends Migration
         //Create LTI tool instances for the old LTI 1.0/1.1 tools
         //that have been configured directly in a course:
         $stmt = $db->prepare(
-            "SELECT `id`, `tool_id`, `title`, `options`
+            "SELECT `id`, `course_id`, `tool_id`, `title`, `options`
             FROM `lti_deployments`
             WHERE `tool_id` = '0'"
         );
@@ -69,11 +72,11 @@ class AddLti13a extends Migration
         );
         $create_tool_stmt = $db->prepare(
             "INSERT INTO `lti_tools`
-            (`id`, `name`, `launch_url`, `consumer_key`, `consumer_secret`,
+            (`id`, `range_id`, `name`, `launch_url`, `consumer_key`, `consumer_secret`,
             `custom_parameters`, `send_lis_person`, `lti_version`,
             `mkdate`, `chdate`)
             VALUES
-            (:id, :name, :launch_url, :consumer_key, :consumer_secret,
+            (:id, :range_id, :name, :launch_url, :consumer_key, :consumer_secret,
             :custom_parameters, :send_lis_person, '1.1',
             UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
         );
@@ -90,8 +93,9 @@ class AddLti13a extends Migration
             $new_tool_id = $new_tool_id_stmt->fetchColumn();
             $success = $create_tool_stmt->execute([
                 'id'           => $new_tool_id,
+                'range_id'     => $row['course_id'],
                 'name'         => $row['title'],
-                'launch_url'   => $options['launch_url'] ?? '',
+                'launch_url'   => $row['launch_url'] ?? '',
                 'consumer_key' => $options['consumer_key'] ?? '',
                 'consumer_secret' => $options['consumer_secret'] ?? '',
                 'custom_parameters' => $options['custom_parameters'] ?? '',
