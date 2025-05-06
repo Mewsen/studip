@@ -36,7 +36,7 @@ class Authority
      */
     public static function canEditCourse(User $user, Course $course)
     {
-        return $GLOBALS['perm']->have_studip_perm('dozent', $course->id, $user->id);
+        return $GLOBALS['perm']->have_studip_perm('tutor', $course->id, $user->id);
     }
 
     /**
