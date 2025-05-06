@@ -19,4 +19,13 @@ trait DatabaseMigrationTrait
         $query = "SHOW COLUMNS FROM `{$table}` LIKE ?";
         return (bool) DBManager::get()->fetchOne($query, [$column]);
     }
+
+    /**
+     * Returns whether a table with the given name exists.
+     */
+    protected function tableExists(string $table): bool
+    {
+        $query = "SHOW TABLES LIKE ?";
+        return (bool) DBManager::get()->fetchOne($query, [$table]);
+    }
 }
