@@ -5,70 +5,80 @@ namespace Studip\Cli;
 
 use Symfony\Component\Console\Application;
 
-require __DIR__.'/studip_cli_env.inc.php';
-require __DIR__.'/../composer/autoload.php';
+require __DIR__ . '/studip_cli_env.inc.php';
+require __DIR__ . '/../composer/autoload.php';
 
 \StudipAutoloader::addAutoloadPath('cli', 'Studip\\Cli');
 
 $application = new Application();
-$commands = [
-    Commands\Base\Dump::class,
-    Commands\Base\Tinker::class,
-    Commands\Checks\Compatibility::class,
-    Commands\Checks\HelpTours::class,
-    Commands\Checks\HelpTours::class,
-    Commands\CleanupAdmissionRules::class,
-    Commands\Composer\GenerateUpdateList::class,
-    Commands\Config\ConfigList::class,
-    Commands\Config\GetConfigValue::class,
-    Commands\Config\SectionList::class,
-    Commands\Config\SetConfigValue::class,
-    Commands\Course\GetCourse::class,
-    Commands\Cronjobs\CronjobExecute::class,
-    Commands\Cronjobs\CronjobExecute::class,
-    Commands\Cronjobs\CronjobList::class,
-    Commands\Cronjobs\CronjobList::class,
-    Commands\Cronjobs\CronjobWorker::class,
-    Commands\Cronjobs\CronjobWorker::class,
-    Commands\DB\Dump::class,
-    Commands\DB\MoveMatrikelnummer::class,
-    Commands\Make\Migration::class,
-    Commands\Make\Model::class,
-    Commands\Make\Plugin::class,
-    Commands\DI\Reset::class,
-    Commands\Files\Dump::class,
-    Commands\Fix\Biest7789::class,
-    Commands\Fix\Biest7866::class,
-    Commands\Fix\Biest8136::class,
-    Commands\Fix\IconDimensions::class,
-    Commands\HelpContent\Migrate::class,
-    Commands\Migrate\Migrate::class,
-    Commands\Migrate\MigrateList::class,
-    Commands\Migrate\MigrateStatus::class,
-    Commands\OAuth2\Keys::class,
-    Commands\OAuth2\Purge::class,
-    Commands\Plugins\I18N\I18NCompile::class,
-    Commands\Plugins\I18N\I18NDetect::class,
-    Commands\Plugins\I18N\I18NExtract::class,
-    Commands\Plugins\PluginActivate::class,
-    Commands\Plugins\PluginDeactivate::class,
-    Commands\Plugins\PluginInfo::class,
-    Commands\Plugins\PluginInstall::class,
-    Commands\Plugins\PluginListMigrations::class,
-    Commands\Plugins\PluginMigrate::class,
-    Commands\Plugins\PluginRegister::class,
-    Commands\Plugins\PluginScan::class,
-    Commands\Plugins\PluginStatusMigrations::class,
-    Commands\Plugins\PluginUnregister::class,
-    Commands\Resources\UpdateBookingIntervals::class,
-    Commands\SORM\DescribeModels::class,
-    Commands\Twillo\PrivateKeys::class,
-    Commands\User\ChangePassword::class,
-    Commands\User\GetUser::class,
-    Commands\User\UsersDelete::class,
-];
-$creator = function ($command) {
-    return app($command);
-};
-$application->addCommands(array_map($creator, $commands));
+$application->addCommands(loadCoreCommands());
+$application->addCommands(loadPluginCommands($application));
 $application->run();
+
+function loadCoreCommands(): array
+{
+    $commands = require __DIR__ . '/commands.php';
+    return array_map(fn($command) => app($command), $commands);
+}
+
+function loadPluginCommands(Application $application): array
+{
+    $pluginCommands = [];
+    foreach (scanPluginDirectory() as $manifest) {
+        $pluginCommands = array_merge($pluginCommands, getPluginCommands($application, $manifest));
+    }
+    return $pluginCommands;
+}
+
+function scanPluginDirectory(): \Generator
+{
+    $basepath = \Config::get()->PLUGINS_PATH;
+    $pluginManager = \PluginManager::getInstance();
+    $iterator = createPluginManifestIterator($basepath);
+
+    foreach ($iterator as $manifestFile) {
+        $manifest = $pluginManager->getPluginManifest($manifestFile->getPath());
+        if (isValidPluginManifest($manifest, $basepath, $manifestFile)) {
+            $manifest['path'] = $manifestFile->getPath();
+            yield $manifest;
+        }
+    }
+}
+
+function createPluginManifestIterator(string $basepath): \RegexIterator
+{
+    return new \RegexIterator(
+        new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(
+                $basepath,
+                \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::UNIX_PATHS
+            )
+        ),
+        '/\/plugin\.manifest$/',
+        \RegexIterator::MATCH
+    );
+}
+
+function isValidPluginManifest(array $manifest, string $basepath, \SplFileInfo $manifestFile): bool
+{
+    if (!isset($manifest['pluginclassname'], $manifest['cli'])) {
+        return false;
+    }
+
+    $pluginpath = $basepath . '/' . $manifest['origin'] . '/' . $manifest['pluginclassname'];
+    return $pluginpath === $manifestFile->getPath();
+}
+
+function getPluginCommands(Application $application, array $manifest): array
+{
+    $cliFile = $manifest['path'] . '/' . $manifest['cli'];
+    $commandsFn = require_once $cliFile;
+    $commands = [];
+
+    foreach ($commandsFn($application) as $class => $path) {
+        require_once $path;
+        $commands[] = app($class);
+    }
+
+    return $commands;
+}
