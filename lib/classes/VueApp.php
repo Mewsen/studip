@@ -1,6 +1,7 @@
 <?php
 namespace Studip;
 
+use Flexi\Factory;
 use Flexi\Template;
 use Stringable;
 
@@ -8,7 +9,7 @@ use Stringable;
  * PHP abstraction of vue app
  *
  * The VueApp is used to create a Vue app in a general way. Just create it
- * using the name of the case component and pass in any required props or
+ * using the relative path of the app component and pass in any required props or
  * stores including initial data.
  *
  * The store data is passed as an associative array where the key is the name
@@ -17,7 +18,7 @@ use Stringable;
  * All methods are written in fluid manner so that you can create the app like this:
  *
  * <code>
- *     <?= Studip\VueApp::create('ExampleComponent')
+ *     <?= Studip\VueApp::create('ExampleApp')
  *         ->withProps(['foo' => 'bar'])
  *         ->withStore('exampleStore', data: ['setBar' => 'baz']) ?>
  * </code>
@@ -31,11 +32,11 @@ use Stringable;
 final class VueApp implements Stringable
 {
     /**
-     * Creates a vue app with the given base component.
+     * Creates a vue app with the given relative path to the app component.
      */
-    public static function create(string $base_component): VueApp
+    public static function create(string $appPath): VueApp
     {
-        return new self($base_component);
+        return new self($appPath);
     }
 
     private array $plugins = [];
@@ -43,8 +44,6 @@ final class VueApp implements Stringable
     private array $slots = [];
     private array $stores = [];
     private array $storeData = [];
-    private array $components = [];
-
     private array $vuexStores = [];
     private array $vuexStoreData = [];
 
@@ -52,17 +51,16 @@ final class VueApp implements Stringable
      * Private constructor since we want to enforce the use of VueApp::create().
      */
     private function __construct(
-        private readonly string $base_component
+        private readonly string $appPath
     ) {
-        $this->components[] = $base_component;
     }
 
     /**
-     * Returns the base component
+     * Returns the relative path to the app component.
      */
-    public function getBaseComponent(): string
+    public function getAppPath(): string
     {
-        return $this->base_component;
+        return $this->appPath;
     }
 
     /**
@@ -103,6 +101,18 @@ final class VueApp implements Stringable
     {
         $clone = clone $this;
         $clone->slots[$name] = $content instanceof Template ? $content->render() : $content;
+        return $clone;
+    }
+
+    /**
+     * Add slots
+     *
+     * You may choose to overwrite the defined slots
+     */
+    public function withSlots(array $slots, bool $overwrite = false): VueApp
+    {
+        $clone = clone $this;
+        $clone->slots = [...$overwrite ? [] : $clone->slots, ...$slots];
         return $clone;
     }
 
@@ -203,66 +213,13 @@ final class VueApp implements Stringable
     }
 
     /**
-     * Registers a component for use e.g. in slots.
-     */
-    public function withComponent(string $component): VueApp
-    {
-        $clone = clone $this;
-        $clone->components[] = $component;
-        return $clone;
-    }
-
-    /**
-     * Returns all components
-     */
-    public function getComponents(): array
-    {
-        return $this->components;
-    }
-
-    /**
      * Returns the template to render the vue app
      */
     public function getTemplate(): Template
     {
-        $data = [
-            'components' => $this->components,
-        ];
-
-        if (count($this->stores) > 0) {
-            $data['stores'] = $this->stores;
-        }
-
-        if (count($this->vuexStores) > 0) {
-            $data['vuexStores'] = $this->vuexStores;
-        }
-
-        if (count($this->plugins) > 0) {
-            $data['plugins'] = $this->plugins;
-        }
-
-        $template = $GLOBALS['template_factory']->open('vue-app.php');
-        $template->baseComponent = basename($this->base_component);
-        $template->attributes = ['data-vue-app' => json_encode($data)];
-        $template->props = $this->getPreparedProps();
-        $template->storeData = $this->storeData;
-        $template->vuexStoreData = $this->vuexStoreData;
-        $template->slots = $this->getSlots();
+        $template = app(Factory::class)->open('vue-app.php');
+        $template->set_attributes(['app' => $this]);
         return $template;
-    }
-
-    /**
-     * Returns the props as required to include them in the html
-     */
-    private function getPreparedProps(): array
-    {
-        $result = [];
-        foreach ($this->props as $name => $value) {
-            $name = ltrim($name, ':');
-            $name = strtokebabcase($name);
-            $result[":{$name}"] = json_encode($value);
-        }
-        return $result;
     }
 
     /**

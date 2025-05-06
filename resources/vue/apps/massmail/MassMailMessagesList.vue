@@ -74,9 +74,9 @@
 </template>
 
 <script>
-import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import StudipActionMenu from '../StudipActionMenu.vue';
-import SidebarWidget from '../SidebarWidget.vue';
+import StudipProgressIndicator from '@/vue/components/StudipProgressIndicator.vue';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
+import SidebarWidget from '@/vue/components/SidebarWidget.vue';
 
 export default {
     name: 'MassMailMessagesList',

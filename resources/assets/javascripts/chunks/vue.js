@@ -1,4 +1,4 @@
-import { createApp as vueCreateApp } from 'vue';
+import { createApp as vueCreateApp, h } from 'vue';
 import { createStore as vuexCreateStore } from 'vuex';
 import { createPinia } from 'pinia';
 import eventBus from '../lib/event-bus';
@@ -94,4 +94,4 @@ function registerGlobalDirectives(app) {
     }
 }
 
-export { createApp, eventBus, store, httpClient };
+export { createApp, h, eventBus, store, pinia, httpClient };

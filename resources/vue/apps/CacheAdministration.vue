@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import FileCacheConfig from './FileCacheConfig.vue'
-import MemcachedCacheConfig from './MemcachedCacheConfig.vue'
-import RedisCacheConfig from './RedisCacheConfig.vue'
-import StudipMessageBox from './StudipMessageBox.vue';
+import FileCacheConfig from '@/vue/components/FileCacheConfig.vue'
+import MemcachedCacheConfig from '@/vue/components/MemcachedCacheConfig.vue'
+import RedisCacheConfig from '@/vue/components/RedisCacheConfig.vue'
+import StudipMessageBox from '@/vue/components/StudipMessageBox.vue';
 
 export default {
     name: 'CacheAdministration',

@@ -287,12 +287,12 @@
     </form>
 </template>
 <script>
-import StudipTooltipIcon from './StudipTooltipIcon.vue';
-import Datepicker from './Datepicker.vue';
+import StudipTooltipIcon from '@/vue/components/StudipTooltipIcon.vue';
+import Datepicker from '@/vue/components/Datepicker.vue';
 
 import moment from 'moment';
-import StudipSelect from './StudipSelect.vue';
-import Timepicker from './Timepicker.vue';
+import StudipSelect from '@/vue/components/StudipSelect.vue';
+import Timepicker from '@/vue/components/Timepicker.vue';
 
 export default {
     name: 'ConsultationCreator',

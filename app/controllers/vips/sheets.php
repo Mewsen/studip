@@ -2261,13 +2261,7 @@ class Vips_SheetsController extends AuthenticatedController
         return Studip\VueApp::create('ContentBar')->withProps([
             'isContentBar' => true,
             'toc' => $toc
-        ])->withComponent(
-            'ContentBarBreadcrumbs'
-        )->withSlot(
-            'breadcrumb-list', sprintf("<content-bar-breadcrumbs :toc='%s'/>", json_encode($toc))
-        )->withSlot(
-            'buttons-left', $icons ?? ''
-        );
+        ])->withSlot('buttons-left', $icons ?? '');
     }
 
     /**

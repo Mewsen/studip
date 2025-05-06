@@ -2,18 +2,23 @@
     <div role="navigation" ref="container" id="responsive-navigation-container" v-if="menuNeeded">
         <div class="responsive-navigation-header">
             <transition name="slide" appear>
-                <button id="responsive-navigation-button" class="styleless"
-                        :aria-label="showMenu
-                            ? $gettext('Navigation schließen')
-                            : $gettext('Navigation öffnen')"
-                        @click.prevent="toggleMenu"
-                        @keydown.prevent.space="toggleMenu"
-                        @keydown.prevent.enter="toggleMenu"
-                        :aria-expanded="showMenu"
-                        aria-controls="responsive-navigation-items">
-                    <studip-icon shape="hamburger" role="info_alt"
-                                 :alt="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
-                                 :size="iconSize" :class="showMenu ? 'menu-open' : 'menu-closed'">
+                <button
+                    id="responsive-navigation-button"
+                    class="styleless"
+                    :aria-label="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
+                    @click.prevent="toggleMenu"
+                    @keydown.prevent.space="toggleMenu"
+                    @keydown.prevent.enter="toggleMenu"
+                    :aria-expanded="showMenu"
+                    aria-controls="responsive-navigation-items"
+                >
+                    <studip-icon
+                        shape="hamburger"
+                        role="info_alt"
+                        :alt="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
+                        :size="iconSize"
+                        :class="showMenu ? 'menu-open' : 'menu-closed'"
+                    >
                     </studip-icon>
                 </button>
             </transition>
@@ -24,10 +29,12 @@
                     <template v-if="!avatarMenuOpen">
                         <section class="profile-info">
                             <div class="profile-pic">
-                                <img :src="me.avatar"
-                                     @click.prevent="toggleAvatarMenu"
-                                     :title="$gettext('Profilnavigation öffnen')"
-                                     :aria-label="$gettext('Profilnavigation öffnen')">
+                                <img
+                                    :src="me.avatar"
+                                    @click.prevent="toggleAvatarMenu"
+                                    :title="$gettext('Profilnavigation öffnen')"
+                                    :aria-label="$gettext('Profilnavigation öffnen')"
+                                />
                             </div>
                             <div class="profile-data">
                                 <div>{{ me.fullname }}</div>
@@ -35,33 +42,41 @@
                             </div>
                         </section>
                         <section class="open-avatarmenu">
-                            <button class="styleless" ref="openAvatarmenu"
-                                    @keydown.prevent.enter="toggleAvatarMenu"
-                                    @keydown.prevent.space="toggleAvatarMenu"
-                                    @click.prevent="toggleAvatarMenu"
-                                    :title="$gettext('Profilnavigation öffnen')"
-                                    :aria-label="$gettext('Profilnavigation öffnen')">
+                            <button
+                                class="styleless"
+                                ref="openAvatarmenu"
+                                @keydown.prevent.enter="toggleAvatarMenu"
+                                @keydown.prevent.space="toggleAvatarMenu"
+                                @click.prevent="toggleAvatarMenu"
+                                :title="$gettext('Profilnavigation öffnen')"
+                                :aria-label="$gettext('Profilnavigation öffnen')"
+                            >
                                 <studip-icon shape="arr_1right" role="info_alt" :size="iconSize" alt=""></studip-icon>
                             </button>
                         </section>
                     </template>
                     <template v-else>
-                        <focus-trap :active="true" :return-focus-on-deactivate="true"
-                                    :click-outside-deactivates="true">
+                        <focus-trap :active="true" :return-focus-on-deactivate="true" :click-outside-deactivates="true">
                             <div>
                                 <div class="close-avatarmenu">
-                                    <button class="styleless" ref="closeAvatarmenu"
-                                            @keydown.prevent.enter="toggleAvatarMenu"
-                                            @keydown.prevent.space="toggleAvatarMenu"
-                                            @click="toggleAvatarMenu"
-                                            :title="$gettext('Profilnavigation schließen')"
-                                            :aria-label="$gettext('Profilnavigation schließen')">
+                                    <button
+                                        class="styleless"
+                                        ref="closeAvatarmenu"
+                                        @keydown.prevent.enter="toggleAvatarMenu"
+                                        @keydown.prevent.space="toggleAvatarMenu"
+                                        @click="toggleAvatarMenu"
+                                        :title="$gettext('Profilnavigation schließen')"
+                                        :aria-label="$gettext('Profilnavigation schließen')"
+                                    >
                                         <studip-icon shape="arr_1left" role="info_alt" :size="iconSize"></studip-icon>
                                     </button>
                                 </div>
                                 <ul class="avatar-navigation">
-                                    <navigation-item v-for="(item, index) in avatarNavigation.children" :key="index"
-                                                     :item="item"></navigation-item>
+                                    <navigation-item
+                                        v-for="(item, index) in avatarNavigation.children"
+                                        :key="index"
+                                        :item="item"
+                                    ></navigation-item>
                                 </ul>
                             </div>
                         </focus-trap>
@@ -69,10 +84,17 @@
                 </header>
                 <ul class="main-navigation">
                     <li v-if="currentParent != null" class="navigation-item navigation-up">
-                        <div class="navigation-title" :title="$gettext('Zum Start')"
-                             :aria-label="$gettext('Zum Start')">
-                            <button class="styleless" @click="moveTo('/')" @keydown.prevent.enter="moveTo('/')"
-                                    @keydown.prevent.space="moveTo('/')">
+                        <div
+                            class="navigation-title"
+                            :title="$gettext('Zum Start')"
+                            :aria-label="$gettext('Zum Start')"
+                        >
+                            <button
+                                class="styleless"
+                                @click="moveTo('/')"
+                                @keydown.prevent.enter="moveTo('/')"
+                                @keydown.prevent.space="moveTo('/')"
+                            >
                                 <div class="navigation-icon">
                                     <studip-icon shape="arr_2up" role="info_alt" :size="iconSize - 4"></studip-icon>
                                 </div>
@@ -84,12 +106,14 @@
                     </li>
                     <li v-if="currentParent != null" class="navigation-item navigation-current">
                         <div class="navigation-title">
-                            <button class="styleless"
-                                    @click="moveTo(currentParent.path)"
-                                    @keydown.prevent.enter="moveTo(currentParent.path)"
-                                    @keydown.prevent.space="moveTo(currentParent.path)"
-                                    :title="$gettext('Eine Ebene höher')"
-                                    :aria-label="$gettext('Eine Ebene höher')">
+                            <button
+                                class="styleless"
+                                @click="moveTo(currentParent.path)"
+                                @keydown.prevent.enter="moveTo(currentParent.path)"
+                                @keydown.prevent.space="moveTo(currentParent.path)"
+                                :title="$gettext('Eine Ebene höher')"
+                                :aria-label="$gettext('Eine Ebene höher')"
+                            >
                                 <div class="navigation-icon">
                                     <studip-icon shape="arr_1left" role="info_alt" :size="iconSize - 4"></studip-icon>
                                 </div>
@@ -99,23 +123,34 @@
                             </button>
                         </div>
                     </li>
-                    <navigation-item v-for="(item, index) in currentNavigation.children" :key="index"
-                                     :item="item" :active="item.active"></navigation-item>
+                    <navigation-item
+                        v-for="(item, index) in currentNavigation.children"
+                        :key="index"
+                        :item="item"
+                        :active="item.active"
+                    ></navigation-item>
                 </ul>
             </nav>
         </transition>
-        <responsive-content-bar v-if="(isResponsive || isFullscreen) && !isFocusMode"
-                                :has-sidebar="hasSidebar" :title="contentbarTitle" :aria-label="contentbarTitle"
-                                ref="contentbar"></responsive-content-bar>
-        <responsive-skip-links v-if="(isResponsive || isFullscreen) && hasSkiplinks" :links="skipLinks"></responsive-skip-links>
+        <responsive-content-bar
+            v-if="(isResponsive || isFullscreen) && !isFocusMode"
+            :has-sidebar="hasSidebar"
+            :title="contentbarTitle"
+            :aria-label="contentbarTitle"
+            ref="contentbar"
+        ></responsive-content-bar>
+        <responsive-skip-links
+            v-if="(isResponsive || isFullscreen) && hasSkiplinks"
+            :links="skipLinks"
+        ></responsive-skip-links>
     </div>
 </template>
 
 <script>
-import NavigationItem from './NavigationItem.vue';
-import StudipIcon from '../StudipIcon.vue';
-import ResponsiveContentBar from './ResponsiveContentBar.vue';
-import ResponsiveSkipLinks from './ResponsiveSkipLinks.vue';
+import NavigationItem from '@/vue/components/responsive/NavigationItem.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import ResponsiveContentBar from '@/vue/components/responsive/ResponsiveContentBar.vue';
+import ResponsiveSkipLinks from '@/vue/components/responsive/ResponsiveSkipLinks.vue';
 import { FocusTrap } from 'focus-trap-vue';
 
 export default {
@@ -124,16 +159,16 @@ export default {
     props: {
         me: {
             type: Object,
-            required: true
+            required: true,
         },
         context: {
             type: String,
-            default: ''
+            default: '',
         },
         navigation: {
             type: Object,
             required: true,
-        }
+        },
     },
     data() {
         let studipNavigation = this.sanitizeNavigation(this.navigation);
@@ -147,11 +182,11 @@ export default {
             iconSize: 28,
             showMenu: false,
             activeItem: this.navigation.activated.at(-1) ?? 'start',
-            currentNavigation: this.findItem(this.navigation.activated.at(0) ?? 'start', studipNavigation)
-                ?? studipNavigation,
+            currentNavigation:
+                this.findItem(this.navigation.activated.at(0) ?? 'start', studipNavigation) ?? studipNavigation,
             initialNavigation: {},
             initialTitle: '',
-            isAdmin: ['root','admin'].includes(this.me.perm),
+            isAdmin: ['root', 'admin'].includes(this.me.perm),
             courses: [],
             avatarNavigation: studipNavigation.avatar,
             avatarMenuOpen: false,
@@ -160,33 +195,29 @@ export default {
             hasSkiplinks: document.querySelector('#skiplink_list') !== null,
             hasSidebar: false,
             hasContentbar: false,
-            contentbarTitle: ''
-        }
+            contentbarTitle: '',
+        };
     },
     computed: {
         // Current navigation title, supplemented by context title if available
         currentTitle() {
-            return this.context !== '' && this.currentNavigation.path.indexOf('my_courses/') !== -1 ?
-                this.context : '';
+            return this.context !== '' && this.currentNavigation.path.indexOf('my_courses/') !== -1 ? this.context : '';
         },
         // The parent element of the current navigation item
         currentParent() {
             return this.currentNavigation.parent
-                 ? this.findItem(this.currentNavigation.parent, this.studipNavigation)
-                 : null;
+                ? this.findItem(this.currentNavigation.parent, this.studipNavigation)
+                : null;
         },
         /*
          * Is the responsive navigation menu needed (because we are in responsive or fullscreen mode)?
          */
         menuNeeded() {
-            return !this.isFocusMode
-                && (this.isResponsive || this.isFullscreen || this.headerMagic);
+            return !this.isFocusMode && (this.isResponsive || this.isFullscreen || this.headerMagic);
         },
 
         skipLinks() {
-            let links = [
-                { url: '#responsive-navigation-button', label: this.$gettext('Hauptnavigation') }
-            ];
+            let links = [{ url: '#responsive-navigation-button', label: this.$gettext('Hauptnavigation') }];
 
             if (this.isFullscreen) {
                 if (this.hasSidebar) {
@@ -201,7 +232,7 @@ export default {
             }
 
             return links;
-        }
+        },
     },
     methods: {
         /**
@@ -221,7 +252,7 @@ export default {
                     path: '/',
                     title: navigation.start.title,
                     url: navigation.start.url,
-                    visible: true
+                    visible: true,
                 };
             } else {
                 // Found requested item at current level.
@@ -230,7 +261,6 @@ export default {
                 } else {
                     // Special handling for first navigation level, we have no "children" attribute here.
                     if (navigation.start) {
-
                         let found = null;
                         for (const sub in navigation) {
                             found = this.findItem(path, navigation[sub]);
@@ -239,16 +269,13 @@ export default {
                             }
                         }
                         return found;
-
                     } else if (navigation.children) {
-
                         // Found requested item as child of current one.
                         if (navigation.children[path]) {
                             return navigation.children[path];
 
                             // Recurse deeper.
                         } else {
-
                             let found = null;
                             for (const sub in navigation.children) {
                                 found = this.findItem(path, navigation.children[sub]);
@@ -257,13 +284,11 @@ export default {
                                 }
                             }
                             return found;
-
                         }
-                    // No children left to search through, we are doomed.
+                        // No children left to search through, we are doomed.
                     } else {
                         return null;
                     }
-
                 }
             }
         },
@@ -282,13 +307,13 @@ export default {
                     this.currentNavigation = this.initialNavigation;
 
                     if (this.isResponsive) {
-                        this.$refs.navigation.style.height = (document.documentElement.clientHeight - 42) + 'px';
+                        this.$refs.navigation.style.height = document.documentElement.clientHeight - 42 + 'px';
                     }
                     document.getElementById('header-links').style.display = 'none';
                 } else {
                     document.getElementById('header-links').style.display = null;
                 }
-            })
+            });
         },
         /**
          * Turn compact navigation mode on or off
@@ -312,7 +337,6 @@ export default {
                 }
 
                 sidebar.ariaHidden = 'true';
-
             } else {
                 document.documentElement.classList.remove('fullscreen-mode');
                 sidebar?.classList.remove('responsive-show', 'fullscreen-mode');
@@ -344,14 +368,13 @@ export default {
          */
         moveTo(path) {
             this.avatarMenuOpen = false;
-            this.currentNavigation =
-                this.findItem(path ? path : '/', this.studipNavigation) ?? this.studipNavigation;
+            this.currentNavigation = this.findItem(path ? path : '/', this.studipNavigation) ?? this.studipNavigation;
             this.$nextTick(() => {
                 const current = document.querySelector('.navigation-current')
                     ? document.querySelector('.navigation-current .navigation-title button')
                     : document.querySelector('.navigation-item .navigation-title a');
                 current.focus();
-            })
+            });
         },
         /**
          * Relocate the helpbar icon to another DOM location
@@ -374,9 +397,10 @@ export default {
 
             if (helpbarIcon) {
                 const realIcon = helpbarIcon.querySelector('img.icon-shape-question-circle');
-                realIcon.src = (this.isFullscreen || this.isResponsive)
-                             ? realIcon.src.replace('blue', 'white')
-                             : realIcon.src.replace('white', 'blue');
+                realIcon.src =
+                    this.isFullscreen || this.isResponsive
+                        ? realIcon.src.replace('blue', 'white')
+                        : realIcon.src.replace('white', 'blue');
 
                 helpBar.appendChild(helpbarIcon);
                 helpBar.appendChild(document.querySelector('div.helpbar'));
@@ -434,13 +458,16 @@ export default {
                         STUDIP.eventBus.emit('responsive-display-enabled');
                         this.$nextTick(() => {
                             this.moveHelpbar();
-                        })
-                    } else if (!classList.includes('responsive-display') && oldClassList.includes('responsive-display')) {
+                        });
+                    } else if (
+                        !classList.includes('responsive-display') &&
+                        oldClassList.includes('responsive-display')
+                    ) {
                         this.isResponsive = false;
                         STUDIP.eventBus.emit('responsive-display-disabled');
                         this.$nextTick(() => {
                             this.moveHelpbar();
-                        })
+                        });
                     }
 
                     if (classList.includes('fullscreen-mode') && !oldClassList.includes('fullscreen-mode')) {
@@ -476,19 +503,23 @@ export default {
                     this.toggleMenu();
                 }
             }
-        }
+        },
     },
     watch: {
         showMenu(newState) {
             if (newState) {
                 // Click outside navigation menu should close it.
-                document.addEventListener('click', event => {
-                    this.captureOutsideClick(event.target);
-                }, true);
+                document.addEventListener(
+                    'click',
+                    (event) => {
+                        this.captureOutsideClick(event.target);
+                    },
+                    true,
+                );
             } else {
-                document.removeEventListener('click', this.captureOutsideClick(null), true)
+                document.removeEventListener('click', this.captureOutsideClick(null), true);
             }
-        }
+        },
     },
     mounted() {
         this.hasSidebar = document.querySelectorAll('#sidebar .sidebar-widget:not(#sidebar-navigation)').length > 0;
@@ -520,7 +551,7 @@ export default {
         });
 
         // Pressing escape should close an open navigation.
-        window.addEventListener('keydown', event => {
+        window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && this.showMenu) {
                 this.toggleMenu();
             }
@@ -529,12 +560,12 @@ export default {
         this.initialNavigation = this.currentNavigation;
         this.initialTitle = this.initialNavigation.title;
 
-        this.globalOn('responsive-navigation-move-to', path => {
+        this.globalOn('responsive-navigation-move-to', (path) => {
             this.moveTo(path);
         });
 
         // Listen to changes in fullscreen setting
-        this.globalOn('toggle-compact-navigation', value => {
+        this.globalOn('toggle-compact-navigation', (value) => {
             this.setCompactNavigation(value);
         });
 
@@ -542,7 +573,7 @@ export default {
          * Use an observer for html and body in order to check
          * whether we move into consuming mode or leave responsive mode.
          */
-        this.classObserver = new MutationObserver(mutations => {
+        this.classObserver = new MutationObserver((mutations) => {
             for (const m of mutations) {
                 const newValue = m.target.getAttribute(m.attributeName);
                 this.onChangeViewMode(m.target.tagName, newValue, m.oldValue);
@@ -552,18 +583,18 @@ export default {
         // Observe <html> for class changes.
         this.classObserver.observe(document.documentElement, {
             attributes: true,
-            attributeOldValue : true,
-            attributeFilter: ['class']
+            attributeOldValue: true,
+            attributeFilter: ['class'],
         });
 
         // Observe <body> for class changes.
         this.classObserver.observe(document.body, {
             attributes: true,
-            attributeOldValue : true,
-            attributeFilter: ['class']
+            attributeOldValue: true,
+            attributeFilter: ['class'],
         });
 
-        this.globalOn('has-contentbar', value => {
+        this.globalOn('has-contentbar', (value) => {
             this.hasContentbar = value;
             if (value && this.isFullscreen) {
                 document.getElementById('responsive-toggle-focusmode').style.display = 'block';
@@ -571,15 +602,15 @@ export default {
         });
 
         // Observe courseware contentbar for consuming mode.
-        this.globalOn('courseware-contentbar-mounted', element => {
+        this.globalOn('courseware-contentbar-mounted', (element) => {
             if (this.isFullscreen) {
                 document.getElementById('responsive-toggle-focusmode').style.display = 'block';
             }
             this.classObserver.observe(element.$el.querySelector('header.cw-ribbon'), {
                 attributes: true,
-                attributeOldValue : false,
-                attributeFilter: ['class']
-            })
+                attributeOldValue: false,
+                attributeFilter: ['class'],
+            });
         });
 
         // Check initial state after load
@@ -593,8 +624,8 @@ export default {
         STUDIP.eventBus.off('toggle-compact-navigation');
         STUDIP.eventBus.off('has-contentbar');
         STUDIP.eventBus.off('courseware-contentbar-mounted');
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss">

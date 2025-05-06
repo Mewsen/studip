@@ -21,16 +21,18 @@
         </studip-message-box>
         <component v-else :is="displayComponent" :icon-size="iconSize"></component>
 
-        <Teleport v-if="hasSidebarElements"
-                  to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list"
-                  name="sidebar-switch"
+        <Teleport
+            v-if="hasSidebarElements"
+            to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list"
+            name="sidebar-switch"
         >
             <SidebarSwitch />
         </Teleport>
 
-        <Teleport v-if="hasSidebarElements"
-                  to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list"
-                  name="sidebar-content-toggle"
+        <Teleport
+            v-if="hasSidebarElements"
+            to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list"
+            name="sidebar-content-toggle"
         >
             <NewContentToggle />
         </Teleport>
@@ -38,11 +40,11 @@
 </template>
 
 <script>
-import TableView from './TableView.vue';
-import TileView from './TileView.vue';
-import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
-import SidebarSwitch from './SidebarSwitch.vue';
-import NewContentToggle from './NewContentToggle.vue';
+import TableView from '@/vue/components/my-courses/TableView.vue';
+import TileView from '@/vue/components/my-courses/TileView.vue';
+import MyCoursesMixin from '@/vue/mixins/MyCoursesMixin.js';
+import SidebarSwitch from '@/vue/components/my-courses/SidebarSwitch.vue';
+import NewContentToggle from '@/vue/components/my-courses/NewContentToggle.vue';
 
 export default {
     name: 'MyCourses',
@@ -59,41 +61,38 @@ export default {
         };
     },
     computed: {
-        displayComponent () {
-            return this.displayedType === 'tiles'
-                 ? TileView
-                 : TableView;
+        displayComponent() {
+            return this.displayedType === 'tiles' ? TileView : TableView;
         },
-        displayedType () {
+        displayedType() {
             return this.getViewConfig('tiled') ? 'tiles' : 'table';
         },
-        iconSize () {
+        iconSize() {
             if (this.displayedType !== 'tiles' && !this.responsiveDisplay) {
                 return 20;
             }
             return 24;
         },
-        searchCoursesUrl () {
+        searchCoursesUrl() {
             return STUDIP.URLHelper.getURL('dispatch.php/search/courses');
         },
-        isEmpty () {
+        isEmpty() {
             return this.groups.length === 0;
-        }
+        },
     },
     beforeMount() {
-        [
-            '#tiled-courses-sidebar-switch .widget-list',
-            '#tiled-courses-new-contents-toggle .widget-list'
-        ].forEach(selector => {
-            const element = document.querySelector(selector);
-            if (element) {
-                element.innerHTML = '';
-            } else {
-                this.hasSidebarElements = false;
-            }
-        })
-    }
-}
+        ['#tiled-courses-sidebar-switch .widget-list', '#tiled-courses-new-contents-toggle .widget-list'].forEach(
+            (selector) => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.innerHTML = '';
+                } else {
+                    this.hasSidebarElements = false;
+                }
+            },
+        );
+    },
+};
 </script>
 
 <style lang="scss">

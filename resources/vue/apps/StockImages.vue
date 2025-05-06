@@ -54,18 +54,18 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ActionsWidget from './ActionsWidget.vue';
-import ColorFilterWidget from './ColorFilterWidget.vue';
-import EditDialog from './EditDialog.vue';
-import ImagesList from './ImagesList.vue';
-import ImagesPagination from './ImagesPagination.vue';
-import OrientationFilterWidget from './OrientationFilterWidget.vue';
-import SearchWidget from './SearchWidget.vue';
-import UploadDialog from './UploadDialog.vue';
-import ZipUploadDialog from './ZipUploadDialog.vue';
-import StudipMessageBox from '../StudipMessageBox.vue';
-import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import { searchFilterAndSortImages } from './filters.js';
+import ActionsWidget from '@/vue/components/stock-images/ActionsWidget.vue';
+import ColorFilterWidget from '@/vue/components/stock-images/ColorFilterWidget.vue';
+import EditDialog from '@/vue/components/stock-images/EditDialog.vue';
+import ImagesList from '@/vue/components/stock-images/ImagesList.vue';
+import ImagesPagination from '@/vue/components/stock-images/ImagesPagination.vue';
+import OrientationFilterWidget from '@/vue/components/stock-images/OrientationFilterWidget.vue';
+import SearchWidget from '@/vue/components/stock-images/SearchWidget.vue';
+import UploadDialog from '@/vue/components/stock-images/UploadDialog.vue';
+import ZipUploadDialog from '@/vue/components/stock-images/ZipUploadDialog.vue';
+import StudipMessageBox from '@/vue/components/StudipMessageBox.vue';
+import StudipProgressIndicator from '@/vue/components/StudipProgressIndicator.vue';
+import { searchFilterAndSortImages } from '@/vue/components/stock-images/filters.js';
 
 export default {
     components: {

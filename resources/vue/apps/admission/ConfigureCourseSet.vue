@@ -350,10 +350,10 @@
 </template>
 
 <script>
-import quicksearch from '../Quicksearch.vue';
-import AdmissionRuleTypeSelector from './AdmissionRuleTypeSelector.vue';
-import AdmissionRuleConfig from './AdmissionRuleConfig.vue';
-import StudipProgressIndicator from "../StudipProgressIndicator.vue";
+import quicksearch from '@/vue/components/Quicksearch.vue';
+import AdmissionRuleTypeSelector from '@/vue/components/admission/AdmissionRuleTypeSelector.vue';
+import AdmissionRuleConfig from '@/vue/components/admission/AdmissionRuleConfig.vue';
+import StudipProgressIndicator from "@/vue/components/StudipProgressIndicator.vue";
 
 export default {
     name: 'ConfigureCourseSet',

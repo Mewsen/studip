@@ -1,23 +1,18 @@
 <?php
 /**
- * @var array $attributes
- * @var string $baseComponent
- * @var array $props
- * @var array $storeData
- * @var array $vuexStoreData
- * @var array $slots
+ * @var \Studip\VueApp $app
  */
+$data = [
+    'appPath' => $app->getAppPath(),
+    'plugins' => $app->getPlugins(),
+    'props' => $app->getProps(),
+    'slots' => $app->getSlots(),
+    'stores' => $app->getStores(),
+    'storeData' => $app->getStoreData(),
+    'vuexStores' => $app->getVuexStores(),
+    'vuexStoreData' => $app->getVuexStoreData(),
+];
 ?>
-<? foreach ($storeData as $store => $data): ?>
-<script type="application/json" id="vue-store-data-<?= htmlReady($store) ?>"><?= json_encode($data) ?></script>
-<? endforeach; ?>
-<? foreach ($vuexStoreData as $store => $data): ?>
-<script type="application/json" id="vue-vuex-store-data-<?= htmlReady($store) ?>"><?= json_encode($data) ?></script>
-<? endforeach; ?>
-<div <?= arrayToHtmlAttributes($attributes) ?>>
-    <<?= strtokebabcase($baseComponent) ?> <?= arrayToHtmlAttributes($props) ?>>
-    <? foreach ($slots as $slotname => $slot): ?>
-        <template #<?= htmlReady($slotname) ?>><?= $slot ?></template>
-    <? endforeach; ?>
-    </<?= strtokebabcase($baseComponent) ?>>
+<div data-vue-app>
+     <script type="application/json"><?= json_encode($data) ?></script>
 </div>

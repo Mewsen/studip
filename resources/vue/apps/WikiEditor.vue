@@ -3,20 +3,19 @@
         <ContentBar isContentBar icon="wiki" :toc="toc">
             <template #info-text>
                 {{ $gettext('Zuletzt gespeichert') }}:
-                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
-                                  :relative="true"
-                />
+                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)" :relative="true" />
             </template>
-            <template #breadcrumb-list><content-bar-breadcrumbs :toc="toc"/></template>
+            <template #breadcrumb-list><content-bar-breadcrumbs :toc="toc" /></template>
         </ContentBar>
         <form :action="saveUrl" method="post" class="default" v-show="isEditing">
-            <input type="hidden" :name="csrf.name" :value="csrf.value">
+            <input type="hidden" :name="csrf.name" :value="csrf.value" />
 
-            <textarea class="wiki-editor size-l"
-                      ref="wiki_editor"
-                      data-editor="extraPlugins=WikiLink"
-                      name="content"
-                      v-model="content"
+            <textarea
+                class="wiki-editor size-l"
+                ref="wiki_editor"
+                data-editor="extraPlugins=WikiLink"
+                name="content"
+                v-model="content"
             ></textarea>
 
             <div></div>
@@ -26,25 +25,29 @@
             </label>
             <p class="last-save-date">
                 {{ $gettext('Zuletzt gespeichert') }}:
-                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
-                                  :relative="true"
-                ></studip-date-time>
+                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)" :relative="true"></studip-date-time>
             </p>
 
             <footer data-dialog-button="">
-                <button class="button"
-                        :title="isChanged ? $gettext('Den aktuellen Stand speichern.') : $gettext('Der aktuelle Stand wurde bereits gespeichert.')"
-                        @click="toggleSecurityHandler(false)"
+                <button
+                    class="button"
+                    :title="
+                        isChanged
+                            ? $gettext('Den aktuellen Stand speichern.')
+                            : $gettext('Der aktuelle Stand wurde bereits gespeichert.')
+                    "
+                    @click="toggleSecurityHandler(false)"
                 >
                     {{ $gettext('Speichern') }}
                 </button>
                 <a :href="cancelUrl" class="button">
                     {{ $gettext('Verlassen') }}
                 </a>
-                <button v-for="user in requestingUsers"
-                        :key="user.user_id"
-                        @click.prevent="delegateEditMode(user.user_id)"
-                        class="button"
+                <button
+                    v-for="user in requestingUsers"
+                    :key="user.user_id"
+                    @click.prevent="delegateEditMode(user.user_id)"
+                    class="button"
                 >
                     {{ $gettext('Schreibmodus an %{name} übergeben', { name: user.fullname }, true) }}
                 </button>
@@ -54,17 +57,19 @@
         <div v-if="!isEditing">
             <div v-html="content"></div>
             <div data-dialog-button>
-                <button class="button"
-                        v-if="!editingWasRequested"
-                        :title="$gettext('Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen.')"
-                        @click.prevent="applyEditing()"
+                <button
+                    class="button"
+                    v-if="!editingWasRequested"
+                    :title="$gettext('Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen.')"
+                    @click.prevent="applyEditing()"
                 >
                     {{ $gettext('Bearbeiten beantragen') }}
                 </button>
-                <button class="cancel button"
-                        v-else
-                        :title="$gettext('Klicken Sie, um die Anfrage zum Bearbeiten abzubrechen')"
-                        @click.prevent="cancelApplyEditing()"
+                <button
+                    class="cancel button"
+                    v-else
+                    :title="$gettext('Klicken Sie, um die Anfrage zum Bearbeiten abzubrechen')"
+                    @click.prevent="cancelApplyEditing()"
                 >
                     {{ $gettext('Bearbeiten beantragt') }}
                 </button>
@@ -78,12 +83,12 @@
     </div>
 </template>
 <script>
-import WikiEditorOnlineUsers from "./WikiEditorOnlineUsers.vue";
-import StudipDateTime from "./StudipDateTime.vue";
-import JSUpdater from "@/assets/javascripts/lib/jsupdater";
-import ContentBar from "./ContentBar.vue";
-import ContentBarBreadcrumbs from "./ContentBarBreadcrumbs.vue";
-import {markRaw} from "vue";
+import WikiEditorOnlineUsers from '@/vue/components/WikiEditorOnlineUsers.vue';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import JSUpdater from '@/assets/javascripts/lib/jsupdater';
+import ContentBar from '@/vue/components/ContentBar.vue';
+import ContentBarBreadcrumbs from '@/vue/components/ContentBarBreadcrumbs.vue';
+import { markRaw } from 'vue';
 
 export default {
     name: 'wiki-editor',
@@ -99,7 +104,7 @@ export default {
         },
         editing: {
             type: Boolean,
-            default: true
+            default: true,
         },
         enableAutosave: {
             type: Boolean,
@@ -107,28 +112,28 @@ export default {
         },
         offlineThreshold: {
             type: Number,
-            default: 60 * 1000
+            default: 60 * 1000,
         },
         pageContent: {
             type: String,
-            default: ''
+            default: '',
         },
         pageId: {
             type: Number,
-            required: true
+            required: true,
         },
         saveUrl: {
             type: String,
-            required: true
+            required: true,
         },
         users: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
         toc: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
     data() {
         return {
@@ -148,24 +153,21 @@ export default {
             return STUDIP.CSRF_TOKEN;
         },
         editingWasRequested() {
-            return this.onlineUsers
-                .filter(u => u.user_id === STUDIP.USER_ID)
-                .some(u => u.editing_request);
+            return this.onlineUsers.filter((u) => u.user_id === STUDIP.USER_ID).some((u) => u.editing_request);
         },
         isOnlineAndEditing() {
-            return this.isEditing
-                && new Date() - this.lastFocussedDate < this.offlineThreshold;
+            return this.isEditing && new Date() - this.lastFocussedDate < this.offlineThreshold;
         },
         requestingUsers() {
             return this.onlineUsers
-                .filter(u => u.editing_request)
+                .filter((u) => u.editing_request)
                 .sort((a, b) => a.fullname.localeCompare(b.fullname));
-        }
+        },
     },
     methods: {
         applyEditing() {
-            const url = STUDIP.URLHelper.getURL(`dispatch.php/course/wiki/apply_editing/${this.pageId}`)
-            $.post(url).done(output => {
+            const url = STUDIP.URLHelper.getURL(`dispatch.php/course/wiki/apply_editing/${this.pageId}`);
+            $.post(url).done((output) => {
                 if (output.me_online.editing > 0) {
                     this.isEditing = true;
                     this.focusEditor();
@@ -174,13 +176,15 @@ export default {
             });
         },
         cancelApplyEditing() {
-            const url = STUDIP.URLHelper.getURL(`dispatch.php/course/wiki/cancel_apply_editing/${this.pageId}`)
-            $.post(url).done(output => {
+            const url = STUDIP.URLHelper.getURL(`dispatch.php/course/wiki/cancel_apply_editing/${this.pageId}`);
+            $.post(url).done((output) => {
                 this.onlineUsers = output.users;
             });
         },
         delegateEditMode(user_id) {
-            const url = STUDIP.URLHelper.getURL(`dispatch.php/course/wiki/delegate_edit_mode/${this.pageId}/${user_id}`);
+            const url = STUDIP.URLHelper.getURL(
+                `dispatch.php/course/wiki/delegate_edit_mode/${this.pageId}/${user_id}`,
+            );
             $.post(url).done(() => {
                 this.isEditing = false;
             });
@@ -197,7 +201,7 @@ export default {
 
             const data = {
                 id: this.pageId,
-                online: this.isOnlineAndEditing
+                online: this.isOnlineAndEditing,
             };
 
             if (this.autosave && this.isChanged) {
@@ -218,7 +222,7 @@ export default {
             event.preventDefault();
 
             event.returnValue = true;
-        }
+        },
     },
     mounted() {
         const textarea = this.$refs['wiki_editor'];
@@ -253,8 +257,8 @@ export default {
                     this.editor.setData(content.wysiwyg);
                 }
             },
-            () => this.getUpdaterData()
-        )
+            () => this.getUpdaterData(),
+        );
     },
     watch: {
         isChanged(current) {
@@ -278,6 +282,6 @@ export default {
                     this.storingAutosave = false;
                 });
         }
-    }
-}
+    },
+};
 </script>

@@ -167,9 +167,9 @@
 <script>
 import draggable from 'vuedraggable';
 import md5 from 'md5';
-import StudipIcon from '../StudipIcon.vue';
-import StudipActionMenu from '../StudipActionMenu.vue';
-import Datetimepicker from '../Datetimepicker.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
+import Datetimepicker from '@/vue/components/Datetimepicker.vue';
 import {defineAsyncComponent} from 'vue';
 
 const loadedComponents = {};

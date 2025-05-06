@@ -21,7 +21,7 @@
     </div>
 </template>
 <script>
-import ContentModulesMixin from '../mixins/ContentModulesMixin.js';
+import ContentModulesMixin from '@/vue/mixins/ContentModulesMixin.js';
 
 export default {
     name: 'ContentModulesControl',

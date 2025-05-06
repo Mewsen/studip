@@ -43,15 +43,15 @@
 
 <script>
 import axios from 'axios';
-import { TreeMixin } from '../../mixins/TreeMixin';
-import PageLayout from '../../../assets/javascripts/lib/page_layout';
-import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import SearchWidget from '../SearchWidget.vue';
-import StudipTreeViewWidget from './StudipTreeViewWidget.vue';
-import StudipTreeList from './StudipTreeList.vue';
-import StudipTreeTable from './StudipTreeTable.vue';
-import StudipTreeNode from './StudipTreeNode.vue';
-import TreeSearchResult from './TreeSearchResult.vue';
+import { TreeMixin } from '@/vue/mixins/TreeMixin';
+import PageLayout from '@/assets/javascripts/lib/page_layout';
+import StudipProgressIndicator from '@/vue/components/StudipProgressIndicator.vue';
+import SearchWidget from '@/vue/components/SearchWidget.vue';
+import StudipTreeViewWidget from '@/vue/components/tree/StudipTreeViewWidget.vue';
+import StudipTreeList from '@/vue/components/tree/StudipTreeList.vue';
+import StudipTreeTable from '@/vue/components/tree/StudipTreeTable.vue';
+import StudipTreeNode from '@/vue/components/tree/StudipTreeNode.vue';
+import TreeSearchResult from '@/vue/components/tree/TreeSearchResult.vue';
 
 export default {
     name: 'StudipTree',

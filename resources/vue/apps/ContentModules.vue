@@ -87,9 +87,9 @@
     </form>
 </template>
 <script>
-import ContentModulesEditTable from './ContentmodulesEditTable.vue';
-import ContentModulesEditTiles from './ContentModulesEditTiles.vue';
-import ContentModulesMixin from '../mixins/ContentModulesMixin.js';
+import ContentModulesEditTable from '@/vue/components/ContentmodulesEditTable.vue';
+import ContentModulesEditTiles from '@/vue/components/ContentModulesEditTiles.vue';
+import ContentModulesMixin from '@/vue/mixins/ContentModulesMixin.js';
 import { mapMutations, mapState } from 'vuex';
 
 export default {

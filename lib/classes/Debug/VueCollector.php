@@ -50,19 +50,12 @@ final class VueCollector extends DataCollector implements Renderable
             }
         }
 
-        $components = $this->app->getComponents();
-        ksort($components);
-        $data['== COMPONENTS =='] = count($components) . ' items';
-        foreach ($components as $value) {
-            $data[$value] = '';
-        }
-
         return $data;
     }
 
     public function getName()
     {
-        return '[Vue]' . basename($this->app->getBaseComponent());
+        return '[Vue]' . basename($this->app->getAppPath());
     }
 
     /**

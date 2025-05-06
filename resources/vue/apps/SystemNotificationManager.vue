@@ -1,21 +1,23 @@
 <template>
-    <transition-group name="system-notification-slide"
-                      :class="'system-notifications ' + (placement === 'topcenter' ? 'top-center' : 'bottom-right')"
-                      tag="div"
-                      role="alert"
-                      appear
+    <transition-group
+        name="system-notification-slide"
+        :class="'system-notifications ' + (placement === 'topcenter' ? 'top-center' : 'bottom-right')"
+        tag="div"
+        role="alert"
+        appear
     >
-        <system-notification v-for="notification in allNotifications"
-                             :key="`message-${notification.key}`"
-                             :notification="notification"
-                             :placement="placement"
-                             @destroyMe="destroyNotification(notification)"
+        <system-notification
+            v-for="notification in allNotifications"
+            :key="`message-${notification.key}`"
+            :notification="notification"
+            :placement="placement"
+            @destroyMe="destroyNotification(notification)"
         ></system-notification>
     </transition-group>
 </template>
 
 <script>
-import SystemNotification from './SystemNotification.vue';
+import SystemNotification from '@/vue/components/SystemNotification.vue';
 
 export default {
     name: 'SystemNotificationManager',
@@ -24,33 +26,33 @@ export default {
         appendAllTo: String,
         notifications: {
             type: [Array, Object],
-            default: () => []
+            default: () => [],
         },
         placement: {
             type: String,
             default: 'topcenter',
-            validator: value => {
+            validator: (value) => {
                 return ['topcenter', 'bottomright'].includes(value);
-            }
-        }
+            },
+        },
     },
     data() {
         return {
             allNotifications: [],
             counter: 0,
-            stoppedNotifications: false
-        }
+            stoppedNotifications: false,
+        };
     },
     methods: {
         addNotification(notification) {
             this.allNotifications.push({
                 key: this.counter++,
-                ...notification
+                ...notification,
             });
         },
         destroyNotification(notification) {
-            this.allNotifications = this.allNotifications.filter(n => n !== notification);
-        }
+            this.allNotifications = this.allNotifications.filter((n) => n !== notification);
+        },
     },
     created() {
         if (Array.isArray(this.notifications)) {
@@ -62,14 +64,16 @@ export default {
     mounted() {
         this.globalOn('push-system-notification', this.addNotification);
 
-        window.addEventListener('keydown', evt => {
+        window.addEventListener('keydown', (evt) => {
             if (evt.altKey && evt.ctrlKey && evt.code === 'KeyT') {
                 this.stoppedNotifications = !this.stoppedNotifications;
 
-                const event = this.stoppedNotifications ? 'disrupt-system-notifications' : 'resume-system-notifications';
+                const event = this.stoppedNotifications
+                    ? 'disrupt-system-notifications'
+                    : 'resume-system-notifications';
                 this.globalEmit(event);
             }
         });
-    }
-}
+    },
+};
 </script>

@@ -23,7 +23,7 @@ class StockImagesController extends AuthenticatedController
     public function index_action(): void
     {
         $this->render_vue_app(
-            Studip\VueApp::create('stock-images/Page')
+            Studip\VueApp::create('StockImages')
                 ->withPlugin('StockImagesPlugin', 'stock-images')
         );
     }

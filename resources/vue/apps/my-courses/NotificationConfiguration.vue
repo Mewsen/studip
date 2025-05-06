@@ -87,7 +87,7 @@
 </template>
 <script>
 import {mapState} from "vuex";
-import { createMixin } from "../../mixins/MyCoursesMixin";
+import { createMixin } from "@/vue/mixins/MyCoursesMixin";
 
 export default {
     name: 'MyCoursesNotificationConfiguration',

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AdmissionRuleConfig from './AdmissionRuleConfig';
+import AdmissionRuleConfig from '@/vue/components/admission/AdmissionRuleConfig';
 
 export default {
     name: 'InstantCourseSet',

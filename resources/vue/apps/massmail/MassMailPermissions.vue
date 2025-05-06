@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import StudipProgressIndicator from "../StudipProgressIndicator.vue";
-import StudipActionMenu from "../StudipActionMenu.vue";
+import StudipProgressIndicator from "@/vue/components/StudipProgressIndicator.vue";
+import StudipActionMenu from "@/vue/components/StudipActionMenu.vue";
 
 export default {
     name: 'MassMailPermissions',

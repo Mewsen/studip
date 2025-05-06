@@ -110,6 +110,7 @@ class Course_WikiController extends AuthenticatedController
             'icon' => 'wiki',
             'isContentBar' => true
         ];
+        $contentbarSlots = [];
 
         $toc = CoreWiki::getTOC($this->page);
 
@@ -136,14 +137,6 @@ class Course_WikiController extends AuthenticatedController
             $contentbarProps['toc'] = $toc;
         }
 
-        // Content bar
-        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')
-            ->withProps($contentbarProps)
-            ->withComponent('ContentBarBreadcrumbs')
-            ->withSlot('breadcrumb-list',
-                sprintf("<content-bar-breadcrumbs :toc='%s'/>", json_encode($toc))
-            );
-
         if (!$this->page->isNew()) {
             $author = _('unbekannt');
             if ($this->page->user) {
@@ -153,13 +146,12 @@ class Course_WikiController extends AuthenticatedController
                     htmlReady($this->page->user->getFullName())
                 );
             }
-
-            $this->contentBarVueApp = $this->contentBarVueApp->withSlot('info-text', sprintf(
+            $contentbarSlots['info-text'] = sprintf(
                 _('Version %1$s, geändert von %2$s am %3$s'),
                 $this->page->versionnumber,
                 $author,
                 date('d.m.Y H:i:s', $this->page['chdate'])
-            ));
+            );
             $action_menu = ActionMenu::get();
             if ($this->page->isEditable()) {
                 $action_menu->addLink(
@@ -191,9 +183,10 @@ class Course_WikiController extends AuthenticatedController
                     }
                 }
             }
-            $this->contentBarVueApp = $this->contentBarVueApp->withSlot('menu', $action_menu->render());
+            $contentbarSlots['menu'] = $action_menu->render();
         }
 
+        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')->withProps($contentbarProps)->withSlots($contentbarSlots);
     }
 
     public function pagesettings_action(WikiPage $page)
@@ -750,12 +743,7 @@ class Course_WikiController extends AuthenticatedController
                 _('Version %1$s vom %2$s'),
                 $version->versionnumber,
                 date('d.m.Y H:i:s', $version['mkdate'])
-            ))
-            ->withComponent('ContentBarBreadcrumbs')
-            ->withSlot('breadcrumb-list', sprintf(
-                "<content-bar-breadcrumbs :toc='%s'/>",
-                json_encode($toc))
-            );
+            ));
     }
 
     public function blame_action(WikiPage $page)
