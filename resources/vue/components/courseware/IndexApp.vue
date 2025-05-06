@@ -25,7 +25,15 @@
             v-if="structureLoadingState === 'error'"
             mood="sad"
             :msgCompanion="loadingErrorMessage"
-        />
+        >
+         <template #companionActions>
+                <a :href="rootElementUrl">
+                    <button class="button">
+                        {{ $gettext('Erste Seite aufrufen') }}
+                    </button>
+                </a>
+            </template>
+        </courseware-companion-box>
         <courseware-companion-overlay />
     </div>
 </template>
@@ -69,7 +77,8 @@ export default {
             structuralElements: 'courseware-structural-elements/all',
             structuralElementById: 'courseware-structural-elements/byId',
             userId: 'userId',
-            userIsTeacher: 'userIsTeacher'
+            userIsTeacher: 'userIsTeacher',
+            instanceById: 'courseware-instances/byId',
         }),
         loadingErrorMessage() {
             switch (this.loadingErrorStatus) {
@@ -87,6 +96,26 @@ export default {
             }
 
             return false;
+        },
+        currentInstance() {
+            return this.instanceById({ id: `course_${this.context.id}_${this.context.unit}`});
+        },
+        rootElementId() {
+           return this.currentInstance.relationships.root.data.id;
+        },
+        rootElementUrl() {
+            if (this.context.type === 'users') {
+                return STUDIP.URLHelper.getURL(
+                    `dispatch.php/contents/courseware/courseware/${this.context.unit }/${this.context.id}#/structural_element/${this.rootElementId}`
+                );
+            }
+            if (this.context.type === 'courses') {
+                return STUDIP.URLHelper.getURL(
+                    `dispatch.php/course/courseware/courseware/${this.context.unit }/${this.context.id}#/structural_element/${this.rootElementId}`
+                );
+            }
+
+            return '';
         }
     },
     methods: {
