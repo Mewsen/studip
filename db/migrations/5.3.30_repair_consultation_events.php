@@ -4,6 +4,8 @@
  */
 final class RepairConsultationEvents extends Migration
 {
+    use DatabaseMigrationTrait;
+
     protected function up()
     {
         $block_ids = $this->getBlockIds();
@@ -12,9 +14,17 @@ final class RepairConsultationEvents extends Migration
             return;
         }
 
-        $query = "DELETE `consultation_events`, `event_data`
+        $event_table = 'calendar_dates';
+        $event_id_column = 'id';
+
+        if (!$this->tableExists($event_table)) {
+            $event_table = 'event_data';
+            $event_id_column = 'event_id';
+        }
+
+        $query = "DELETE `consultation_events`, `{$event_table}`
                   FROM `consultation_events`
-                  LEFT JOIN `event_data` USING (`event_id`)
+                  LEFT JOIN `{$event_table}` ON `{$event_table}`.`{$event_id_column}` = `consultation_events`.`event_id`
                   JOIN `consultation_slots` AS s USING (`slot_id`)
                   WHERE `block_id` IN (?)
                     AND NOT EXISTS (
