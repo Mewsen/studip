@@ -1,6 +1,6 @@
-<form method="post">
+<form method="post" class="clipboard-form">
     <?= CSRFProtection::tokenTag() ?>
-    <div>
+    <div class="input-group">
         <select name="selected_clipboard_id" class="clipboard-selector"
                 <?= $clipboards ? '' : 'disabled="disabled"' ?>>
             <? if ($clipboards): ?>
