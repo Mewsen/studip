@@ -74,6 +74,14 @@ table.clipboard-area tr.empty-clipboard-message > td {
 
 }
 
+.clipboard-form {
+    .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
 
 .animated-drop {
     animation: drop-animation 0.5s;
