@@ -1087,11 +1087,13 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      */
     public function countUnseenComments(string $user_id = null): int
     {
+        $user_id = $user_id ?? User::findCurrent();
         return \BlubberComment::countBySQL(
-            'thread_id = ? AND mkdate >= ?',
+            'thread_id = ? AND mkdate >= ? AND user_id != ?',
             [
                 $this->getId(),
-                $this->getLastVisit($user_id ?? $GLOBALS['user']->id) ?: object_get_visit_threshold(),
+                $this->getLastVisit($user_id) ?: object_get_visit_threshold(),
+                $user_id
             ]
         );
     }
