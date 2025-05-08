@@ -860,7 +860,7 @@ class Resource extends SimpleORMap implements StudipItem
         $booking->internal_comment = $internal_comment;
         $booking->booking_type     = (int)$booking_type;
 
-        if ($booking_type === ResourceBooking::TYPE_LOCK) {
+        if ($booking_type === ResourceBooking::TYPE_LOCK && $GLOBALS['perm']->have_perm('admin')) {
             $force_booking = true;
         }
 
