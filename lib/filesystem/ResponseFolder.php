@@ -54,6 +54,10 @@ class ResponseFolder extends StandardFolder
         $solution = VipsSolution::find($this->range_id);
         $assignment = $solution->assignment;
 
+        if ($this->isReadable($user_id) && $assignment->checkAccess($user_id)) {
+            return true;
+        }
+
         return $assignment->checkEditPermission();
     }
 

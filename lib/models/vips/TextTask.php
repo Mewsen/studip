@@ -180,6 +180,7 @@ class TextTask extends Exercise
                 $solution->options['upload'] = $files['upload'];
             }
 
+            $solution->assignment_id = $request['assignment_id'];
             $solution->store();
             $folder = Folder::findTopFolder($solution->id, 'ResponseFolder', 'response');
 
