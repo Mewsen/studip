@@ -25,27 +25,11 @@
             <label>
                 <?= _('Wochentag') ?>
                 <select name="dow" class="size-s">
-                    <option value="1" <?= $entry->dow === 1 ? 'selected' : '' ?>>
-                        <?= _('Montag') ?>
-                    </option>
-                    <option value="2" <?= $entry->dow === 2 ? 'selected' : '' ?>>
-                        <?= _('Dienstag') ?>
-                    </option>
-                    <option value="3" <?= $entry->dow === 3 ? 'selected' : '' ?>>
-                        <?= _('Mittwoch') ?>
-                    </option>
-                    <option value="4" <?= $entry->dow === 4 ? 'selected' : '' ?>>
-                        <?= _('Donnerstag') ?>
-                    </option>
-                    <option value="5" <?= $entry->dow === 5 ? 'selected' : '' ?>>
-                        <?= _('Freitag') ?>
-                    </option>
-                    <option value="6" <?= $entry->dow === 6 ? 'selected' : '' ?>>
-                        <?= _('Samstag') ?>
-                    </option>
-                    <option value="7" <?= $entry->dow === 7 ? 'selected' : '' ?>>
-                        <?= _('Sonntag') ?>
-                    </option>
+                    <? foreach (range(1, 7) as $dow): ?>
+                        <option value="<?= $dow ?>" <?= $entry->dow == $dow ? 'selected' : '' ?>>
+                            <?= getWeekday($dow, false) ?>
+                        </option>
+                    <? endforeach ?>
                 </select>
             </label>
             <label>
