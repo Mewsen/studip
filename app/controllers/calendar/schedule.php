@@ -14,6 +14,9 @@
  * @package     calender
  * @since       6.0
  */
+
+require_once 'lib/dates.inc.php';
+
 class Calendar_ScheduleController extends AuthenticatedController
 {
     public function before_filter(&$action, &$args)
