@@ -57,7 +57,7 @@
                     <?= Icon::create('admin', 'clickable')->asImg() ?>
                 </a>
                 <?= Icon::create('trash')->asInput([
-                    'formaction'   => $controller->url_for('admin/api/delete/', $consumer->id),
+                    'formaction'   => $controller->url_for('admin/api/delete', $consumer->id),
                     'title'        => sprintf(_('Applikation "%s" entfernen'), $consumer->title),
                     'data-confirm' => '',
                     'style'        => 'vertical-align: middle'
