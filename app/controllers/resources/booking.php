@@ -1533,7 +1533,7 @@ class Resources_BookingController extends AuthenticatedController
             }
         }
 
-        $this->booking_type = $booking_type;
+        $this->booking_type = $booking_type ?: Request::int('booking_type');
 
         $this->addEditHandler('add');
     }
