@@ -76,8 +76,10 @@ class StudipAuthOIDC extends StudipAuthSSO
     {
         $this->getClient()->authenticate();
         $this->userdata = (array) $this->getClient()->requestUserInfo();
-        if (isset($this->userdata['sub'])) {
+        if (isset($this->userdata['sub'], $this->domain)) {
             return $this->userdata['username'] = $this->userdata['sub'] . '@' . $this->domain;
+        } else if (isset($this->userdata['sub'])) {
+            return $this->userdata['username'] = $this->userdata['sub'];
         } else {
             return null;
         }
