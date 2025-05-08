@@ -1533,6 +1533,8 @@ class Resources_BookingController extends AuthenticatedController
             }
         }
 
+        $this->is_resource_admin = $this->resources[0]->userHasPermission(User::findCurrent(), 'admin');
+
         $this->booking_type = $booking_type ?: Request::int('booking_type');
 
         $this->addEditHandler('add');
