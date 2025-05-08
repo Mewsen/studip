@@ -150,11 +150,6 @@ if (isset($GLOBALS['DB_STUDIP_SLAVE_HOST'])) {
     DBManager::getInstance()->aliasConnection('studip', 'studip-slave');
 }
 
-if (Studip\ENV === 'production') {
-    DBManager::get()->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
-    DBManager::get('studip-slave')->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
-}
-
 // Check if we need to enable the fix for column default values for mariadb >= 10.2.7
 if (DBManager::get()->isMariaDB('10.2.7')) {
     SimpleORMap::setMariadbDefaultColumnFix();
