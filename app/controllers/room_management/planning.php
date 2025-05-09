@@ -115,7 +115,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
                     $clipboard->name . ': ' . _('Raumgruppen-Belegungsplan')
                 );
                 $room_ids = $clipboard->getAllRangeIds('Room');
-                $rooms = Room::findMany($room_ids);
+                $rooms = Room::findMany($room_ids, 'ORDER BY name');
             } else {
                 $this->no_clipboard = true;
                 return;
@@ -130,8 +130,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
         //Generate the resources array for the fullcalendar scheduler plugin:
         $this->scheduler_resources = [];
-        foreach ($room_ids as $room_id) {
-            $room = Room::find($room_id);
+        foreach ($rooms as $room) {
             $this->scheduler_resources[] = [
                 'id'          => $room->id,
                 'parent_name' => $room->building->name,
