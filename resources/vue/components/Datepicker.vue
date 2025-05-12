@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import RestrictedDatesHelper from '../../assets/javascripts/lib/RestrictedDatesHelper';
+import RestrictedDatesHelper from '@/assets/javascripts/lib/RestrictedDatesHelper';
+import { $gettext } from "@/assets/javascripts/lib/gettext";
 
 export default {
     name: 'Datepicker',
@@ -24,7 +25,12 @@ export default {
         },
         mindate: [Date, Number, String],
         maxdate: [Date, Number, String],
-        placeholder: String,
+        placeholder: {
+            type: String,
+            default() {
+                return $gettext('tt.mm.jjjj');
+            }
+        },
         disableHolidays: {
             type: Boolean,
             default: false,
@@ -52,6 +58,7 @@ export default {
                 },
                 maxDate: this.convertInputToNativeDate(this.maxdate),
                 minDate: this.convertInputToNativeDate(this.mindate),
+                dateFormat: 'dd.mm.yy',
             };
             if (this.disableHolidays) {
                 params.beforeShowDay = (date) => {
@@ -79,7 +86,7 @@ export default {
                 return this.convertInputToNativeDate(this.modelValue).toISOString();
             }
 
-            return this.convertInputToNativeDate(this.modelValue).toLocaleDateString(String.locale);
+            return this.convertInputToNativeDate(this.modelValue).toLocaleDateString('de-DE');
         }
     },
     methods: {
@@ -115,7 +122,7 @@ export default {
 
         if (Number.isInteger(value)) {
             let date = new Date(value * 1000);
-            this.input.val(date.toLocaleDateString());
+            this.input.val(date.toLocaleDateString('de-DE'));
         } else {
             this.input.val(value);
         }
