@@ -23,20 +23,6 @@
             </header>
 
             <table class="default">
-                <colgroup>
-                    <col style="width: 30%">
-                    <col>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <?= _('Name') ?>
-                        </th>
-                        <th>
-                            <?= _('Wert') ?>
-                        </th>
-                    </tr>
-                </thead>
                 <tbody>
                     <? foreach ($properties as $property): ?>
                         <tr>
