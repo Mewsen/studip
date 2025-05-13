@@ -1,11 +1,13 @@
 <? if (!$unitsNotFound): ?>
-    <div
-        id="courseware-index-app"
-        entry-element-id="<?= htmlReady($entry_element_id) ?>"
-        entry-type="users"
-        entry-id="<?= htmlReady($user_id) ?>"
-        unit-id="<?= htmlReady($unit_id) ?>"
-        licenses='<?= htmlReady($licenses) ?>'
-        >
-    </div>
+    <?= Studip\VueApp::create('courseware/IndexApp')
+                     ->withPlugin('CoursewareIndexApp', 'courseware-index')
+                     ->withPlugin('StockImagesPlugin', 'stock-images')
+                     ->withVuexStore('courseware/courseware.module', 'courseware', [
+                         'coursewareContextSet' => ['id' => "$user_id", 'type' => 'users', 'unit' => "$unit_id"],
+                         'coursewareCurrentElementSet' => "$entry_element_id",
+                         'licensesSet' => json_decode($licenses),
+                     ])
+                     ->withVuexStore('courseware/structure.module', 'courseware-structure')
+                     ->withVuexStore('file-chooser', 'file-chooser')
+                     ->withVuexStore('courseware/courseware-tasks.module', 'tasks') ?>
 <? endif; ?>

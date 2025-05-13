@@ -4,10 +4,10 @@ import { createPinia } from 'pinia';
 import eventBus from '../lib/event-bus';
 import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
-import BaseComponents from '../../../vue/base-components.js';
-import BaseDirectives from "../../../vue/base-directives.js";
-import StudipStore from "../../../vue/store/StudipStore.js";
-import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
+import BaseComponents from '@/vue/base-components.js';
+import BaseDirectives from '@/vue/base-directives.js';
+import StudipStore from '@/vue/store/StudipStore.js';
+import { resourceModule } from '../lib/reststate-vuex.js';
 import axios from 'axios';
 
 import CKEditor from '@ckeditor/ckeditor5-vue';
@@ -37,7 +37,7 @@ const createVuexStore = () => {
     });
 
     return store;
-}
+};
 
 // Setup stores
 const store = createVuexStore();
@@ -61,7 +61,7 @@ function createApp(options = {}, ...args) {
             globalOff(...args) {
                 eventBus.off(...args);
             },
-            getStudipConfig: store.getters['studip/getConfig']
+            getStudipConfig: store.getters['studip/getConfig'],
         },
     });
 

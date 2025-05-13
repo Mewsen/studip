@@ -1,1 +1,2 @@
-<div id="courseware-admin-app"></div>
+<?= Studip\VueApp::create('courseware/AdminApp')
+                 ->withVuexStore('courseware/courseware-admin.module', 'courseware') ?>
