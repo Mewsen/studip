@@ -87,7 +87,7 @@ export default {
      },
         methods: {
         ...mapActions({
-            loadElements: 'courseware-structural-elements/loadAll',
+            loadStructure: 'courseware-structure/load',
             buildStructure: 'courseware-structure/build',
             loadStructuralElement: 'loadStructuralElement',
             validatePassword: 'validatePassword',
@@ -120,7 +120,7 @@ export default {
         }
     },
     async mounted() {
-        await this.loadElements();
+        await this.loadStructure();
         await this.buildStructure();
         const selectedId = this.$route.params?.id;
         await this.selectStructuralElement(selectedId);

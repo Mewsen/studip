@@ -11,6 +11,7 @@ class Courseware_PublicController extends StudipController
         parent::before_filter($action, $args);
         PageLayout::setTitle(_('Courseware'));
         PageLayout::setHelpKeyword('Basis.Courseware');
+        PageLayout::disableSidebar();
     }
 
     public function index_action()

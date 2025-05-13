@@ -3,7 +3,7 @@ import CoursewarePublicModule from './store/courseware/courseware-public.module'
 import PublicCoursewareStructuralElement from './components/courseware/structural-element/PublicCoursewareStructuralElement.vue';
 import CoursewarePublicStructureModule from './store/courseware/public-structure.module';
 import PluginManager from './components/courseware/plugin-manager.js';
-import { createRouter } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import { h } from "vue";
 
 const mountApp = (STUDIP, createApp, store, element) => {
@@ -76,13 +76,14 @@ const mountApp = (STUDIP, createApp, store, element) => {
 
     const router = createRouter({
         base: `${base.pathname}${base.search}`,
+        history: createWebHashHistory(),
         routes,
     });
 
     const app = createApp({
         render: () => h(PublicApp),
-        router,
     });
+    app.use(router);
     app.mount(element);
 
     return app;

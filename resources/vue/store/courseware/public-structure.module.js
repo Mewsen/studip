@@ -52,7 +52,34 @@ const actions = {
         commit('setChildren', children);
 
         const ordered = [...visitTree(children, context.rootId)];
+
         commit('setOrdered', ordered);
+    },
+    async load({ dispatch, rootGetters }) {
+        const context = rootGetters['context'];
+
+        await dispatch('courseware-structural-elements/loadById', {
+            id: context.rootId,
+            options: {
+                include: 'containers,containers.blocks',
+            },
+        }, { root: true });
+        const root = rootGetters['courseware-structural-elements/byId']({id: context.rootId});
+        await dispatch('loadDescendants', { root });
+    },
+    loadDescendants({ dispatch }, { root }) {
+        const parent = { id: root.id, type: root.type };
+        const relationship = 'descendants';
+        const options = {
+            'page[offset]': 0,
+            'page[limit]': 10000,
+        };
+
+        return dispatch(
+            'courseware-structural-elements/loadRelated',
+            { parent, relationship, options },
+            { root: true }
+        );
     },
 };
 

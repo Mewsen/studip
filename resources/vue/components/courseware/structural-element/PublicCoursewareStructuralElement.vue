@@ -1,22 +1,27 @@
 <template>
-    <focus-trap v-model="consumModeTrap">
-        <div
-            :class="{ 'cw-structural-element-consumemode': consumeMode }"
-            class="cw-structural-element"
-        >
-            <div v-if="structuralElement" class="cw-structural-element-content">
-                <ContentBar isContentBar>
-                    <template #buttons-left>
-                        <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
-                            <div class="cw-ribbon-button cw-ribbon-button-prev" :title="textRibbon.perv" />
-                        </router-link>
-                        <div v-else class="cw-ribbon-button cw-ribbon-button-prev-disabled" :title="$gettext('keine vorherige Seite')"/>
-                        <router-link v-if="nextElement" :to="'/structural_element/' + nextElement.id">
-                            <div class="cw-ribbon-button cw-ribbon-button-next" :title="textRibbon.next" />
-                        </router-link>
-                        <div v-else class="cw-ribbon-button cw-ribbon-button-next-disabled" :title="$gettext('keine nächste Seite')"/>
-                    </template>
-                    <template #breadcrumb-list>
+    <div :class="{ 'cw-structural-element-consumemode': consumeMode }" class="cw-structural-element">
+        <div v-if="structuralElement" class="cw-structural-element-content">
+            <ContentBar isContentBar>
+                <template #buttons-left>
+                    <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
+                        <div class="cw-ribbon-button cw-ribbon-button-prev" :title="textRibbon.perv" />
+                    </router-link>
+                    <div
+                        v-else
+                        class="cw-ribbon-button cw-ribbon-button-prev-disabled"
+                        :title="$gettext('keine vorherige Seite')"
+                    />
+                    <router-link v-if="nextElement" :to="'/structural_element/' + nextElement.id">
+                        <div class="cw-ribbon-button cw-ribbon-button-next" :title="textRibbon.next" />
+                    </router-link>
+                    <div
+                        v-else
+                        class="cw-ribbon-button cw-ribbon-button-next-disabled"
+                        :title="$gettext('keine nächste Seite')"
+                    />
+                </template>
+                <template #breadcrumb-list>
+                    <ul>
                         <li
                             v-for="ancestor in ancestors"
                             :key="ancestor.id"
@@ -24,52 +29,52 @@
                             class="cw-ribbon-breadcrumb-item"
                         >
                             <span>
-                                <router-link :to="'/structural_element/' + ancestor.id">{{ ancestor.attributes.title || "–" }}</router-link>
+                                <router-link :to="'/structural_element/' + ancestor.id">{{
+                                    ancestor.attributes.title || '–'
+                                }}</router-link>
                             </span>
                         </li>
                         <li
                             class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
                             :title="structuralElement.attributes.title"
                         >
-                            <span>{{ structuralElement.attributes.title || "–" }}</span>
+                            <span>{{ structuralElement.attributes.title || '–' }}</span>
                         </li>
-                    </template>
-                    <template #breadcrumb-fallback>
+                    </ul>
+                </template>
+                <template #breadcrumb-fallback>
+                    <ul>
                         <li
                             class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
                             :title="structuralElement.attributes.title"
                         >
                             <span>{{ structuralElement.attributes.title }}</span>
                         </li>
-                    </template>
-                </ContentBar>
-
-                <div
-                    class="cw-container-wrapper"
-                    :class="{
-                        'cw-container-wrapper-consume': consumeMode,
-                    }"
-                >
-                    <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
-                        <courseware-empty-element-box
-                            v-if="noContainers"
-                            :noContainers="noContainers"
-                        />
-                    </div>
-                    <component
-                        v-for="container in containers"
-                        :key="container.id"
-                        :is="containerComponent(container)"
-                        :container="container"
-                        :canEdit="false"
-                        :canAddElements="false"
-                        :isTeacher="false"
-                        class="cw-container-item"
-                    />
+                    </ul>
+                </template>
+            </ContentBar>
+            <div
+                class="cw-container-wrapper"
+                :class="{
+                    'cw-container-wrapper-consume': consumeMode,
+                }"
+            >
+                <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
+                    <courseware-empty-element-box v-if="noContainers" :noContainers="noContainers" />
                 </div>
+                <component
+                    v-for="container in containers"
+                    :key="container.id"
+                    :is="containerComponent(container)"
+                    :container="container"
+                    :canEdit="false"
+                    :canAddElements="false"
+                    :isTeacher="false"
+                    class="cw-container-item"
+                />
             </div>
         </div>
-    </focus-trap>
+    </div>
 </template>
 
 <script>
@@ -79,8 +84,8 @@ import CoursewarePluginComponents from '../plugin-components.js';
 import CoursewareCompanionOverlay from '../layouts/CoursewareCompanionOverlay.vue';
 
 import { mapActions, mapGetters } from 'vuex';
-import ContentBar from "../../ContentBar.vue";
-import { store } from "../../../../assets/javascripts/chunks/vue";
+import ContentBar from '../../ContentBar.vue';
+import { store } from '../../../../assets/javascripts/chunks/vue';
 
 export default {
     name: 'public-courseware-structural-element',
@@ -99,12 +104,12 @@ export default {
                 perv: this.$gettext('zurück'),
                 next: this.$gettext('weiter'),
             },
-        }
+        };
     },
 
     computed: {
         consumeMode() {
-          return store.state.studip.consumeMode;
+            return store.state.studip.consumeMode;
         },
         ...mapGetters({
             courseware: 'courseware',
@@ -125,11 +130,10 @@ export default {
         },
 
         structuralElementLoaded() {
-            return this.structuralElement !== null
-                && !(
-                    this.structuralElement.constructor === Object
-                    && Object.keys(this.structuralElement).length === 0
-                );
+            return (
+                this.structuralElement !== null &&
+                !(this.structuralElement.constructor === Object && Object.keys(this.structuralElement).length === 0)
+            );
         },
 
         ancestors() {
@@ -195,7 +199,7 @@ export default {
 
             if (relatedContainers) {
                 for (const container of relatedContainers) {
-                    containers.push(this.containerById({ id: container.id}));
+                    containers.push(this.containerById({ id: container.id }));
                 }
             }
 
