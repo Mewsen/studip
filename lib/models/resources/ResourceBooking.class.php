@@ -511,24 +511,24 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
 
         $time_intervals = $this->calculateTimeIntervals(true);
         $time_interval_overlaps = [];
-        $existing_deleted_intervals = [];
+        $exceptions = [];
         if (!$this->isNew()) {
-            $existing_deleted_intervals = array_filter(
-                $this->getTimeIntervals(),
-                function ($i): bool {
-                    return !$i->takes_place;
-                }
+            // Calculate the shift in time of this booking:
+            $exceptions = ResourceBookingInterval::findAndMapBySQL(
+                function (ResourceBookingInterval $interval): string {
+                    // Store the date of the exception:
+                    return date('Ymd', $interval->begin);
+                },
+                "`booking_id` = :booking_id AND `takes_place` = 0",
+                ['booking_id' => $this->id]
             );
         }
         foreach ($time_intervals as $time_interval) {
-            foreach ($existing_deleted_intervals as $deleted_interval) {
-                if (
-                    $time_interval['begin']->getTimestamp() == $deleted_interval['begin']
-                    && $time_interval['end']->getTimestamp() == $deleted_interval['end']
-                ) {
-                    continue 2;
-                }
+            if (in_array($time_interval['begin']->format('Ymd'), $exceptions)) {
+                //Skip this time interval, since it is an exception.
+                continue;
             }
+
             $is_locked = $derived_resource->isLocked(
                 $time_interval['begin'],
                 $time_interval['end'],
