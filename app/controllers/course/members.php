@@ -1757,14 +1757,42 @@ class Course_MembersController extends AuthenticatedController
             _('Position'),
         ];
 
+        $course = Course::findCurrent();
+        $members = $course->getMembersData($status);
+
+        $datafields = DataField::getDataFields('user');
+        $datafields = array_filter(
+            $datafields,
+            fn(DataField $datafield) => $datafield->accessAllowed()
+        );
+
+        if (count($datafields) > 0) {
+            foreach ($datafields as $datafield) {
+                $header[] = (string) $datafield->name;
+            }
+
+            foreach ($members as $user_id => $data) {
+                $user_datafields = DataFieldEntry::getDataFieldEntries(
+                    $user_id,
+                    'user'
+                );
+
+                foreach ($datafields as $datafield) {
+                    $user_datafield = $user_datafields[$datafield->id] ?? null;
+                    if ($user_datafield) {
+                        $members[$user_id][] = $user_datafield->getDisplayValue(false);
+                    } else {
+                        $members[$user_id][] = '';
+                    }
+                }
+            }
+        }
+
         if (in_array($status, ['awaiting', 'claiming'])) {
             $filename = _('Wartelistenexport');
         } else {
             $filename = _('Teilnehmendenexport');
         }
-
-        $course = Course::findCurrent();
-        $members = $course->getMembersData($status);
 
         $filename = $filename . ' ' . $this->course_title . '.' . $export_format;
 

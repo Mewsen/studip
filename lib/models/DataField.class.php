@@ -86,7 +86,7 @@ class DataField extends SimpleORMap implements PrivacyObject
      * @param String $objectClass      Object class
      * @param bool   $includeNullClass Should the object class "null" be
      *                                 included
-     * @return array of DataField instances
+     * @return static[] of DataField instances
      */
     public static function getDataFields($objectType = null, $objectClass = '', $includeNullClass = false)
     {
