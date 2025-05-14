@@ -183,12 +183,22 @@ class Course_WizardController extends AuthenticatedController
                         }
                         // A studygroup has been created.
                         if (in_array($this->course->status, studygroup_sem_types())) {
-                            $message = MessageBox::success(sprintf(
-                                _('Die Studien-/Arbeitsgruppe "%s" wurde angelegt. '
-                                . 'Sie können sie direkt hier weiter verwalten.'),
-                                htmlReady($this->course->name)
-                            ));
-                            $target = $this->url_for('course/studygroup/edit', ['cid' => $this->course->id]);
+                            if ($this->course->isToolActive(CoreStudygroupAdmin::class)) {
+                                $message = MessageBox::success(sprintf(
+                                    _('Die Studien-/Arbeitsgruppe „%s“ wurde angelegt. '
+                                        . 'Sie können sie direkt hier weiter verwalten.'),
+                                    htmlReady($this->course->name)
+                                ));
+
+                                $target = $this->url_for('course/studygroup/edit', ['cid' => $this->course->id]);
+                            } else {
+                                $message = MessageBox::success(sprintf(
+                                    _('Die Studien-/Arbeitsgruppe „%s“ wurde angelegt.'),
+                                    htmlReady($this->course->name)
+                                ));
+
+                                $target = URLHelper::getURL('seminar_main.php', ['auswahl' => $this->course->id]);
+                            }
 
                             // "Normal" course.
                         } elseif (Request::int('dialog') && $GLOBALS['perm']->have_perm('admin')) {
