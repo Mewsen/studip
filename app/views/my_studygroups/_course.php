@@ -51,10 +51,10 @@
             <td style="text-align: right">
                 <? if (in_array($group["user_status"], ["dozent", "tutor"])) : ?>
                     <? $adminmodule = $group["sem_class"]->getAdminModuleObject(); ?>
-                    <? if ($adminmodule) : ?>
+                    <? if ($adminmodule && $group['tools']->findOneby('plugin_id', $adminmodule->getPluginId())) : ?>
                         <? $adminnavigation = $adminmodule->getIconNavigation($group['seminar_id'], 0, $GLOBALS['user']->id); ?>
                     <? endif ?>
-                    <? if ($adminnavigation) : ?>
+                    <? if (!empty($adminnavigation)) : ?>
                         <a href="<?= URLHelper::getLink($adminnavigation->getURL(), ['cid' => $group['seminar_id']]) ?>">
                             <?= $adminnavigation->getImage()->asImg($adminnavigation->getLinkAttributes())?>
                         </a>
