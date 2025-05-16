@@ -51,7 +51,7 @@
         font-size: $font-size-small;
         margin: 0 10px;
 
-       @include icon('before', 'arr_1right', 'clickable', $font-size-small, 2px);
+       @include icon(before, arr_1right, $size: $font-size-small, $padding: 2px);
 
         // This is only neccessary to remove the whitespace in front of the text
         // Otherwise, the text would jump when getting replaced

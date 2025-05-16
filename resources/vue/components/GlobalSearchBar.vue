@@ -109,7 +109,7 @@
                                  class="globalsearch-result-expand">
                                 <a :href="result.expand" :title="result.expandtext"></a>
                             </div>
-                            <slot v-else name="expand" :item="result"></slot>
+                            <slot v-else name="expand" :item="{...result, category}"></slot>
                         </a>
                     </article>
                 </template>
