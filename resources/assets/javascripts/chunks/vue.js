@@ -94,4 +94,4 @@ function registerGlobalDirectives(app) {
     }
 }
 
-export { createApp, eventBus, store, httpClient };
+export { createApp, eventBus, store, pinia, httpClient };
