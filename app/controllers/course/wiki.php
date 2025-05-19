@@ -492,6 +492,7 @@ class Course_WikiController extends AuthenticatedController
                     'editing'      => (bool) $online_user->editing,
                     'enable-autosave' => $user->getConfiguration()->getValue('WIKI_ENABLE_AUTOSAVE'),
                     'page-content' => $page->content,
+                    'page-html'    => wikiReady($page->content, true, $page->range_id, $page->id),
                     'page-id'      => (int) $page->id,
                     'save-url'     => $this->saveURL($page),
                     'users'        => $page->getOnlineUsers(),

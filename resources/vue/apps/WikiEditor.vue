@@ -15,7 +15,7 @@
                 ref="wiki_editor"
                 data-editor="extraPlugins=WikiLink"
                 name="content"
-                v-model="content"
+                :value="content"
             ></textarea>
 
             <div></div>
@@ -55,7 +55,7 @@
         </form>
 
         <div v-if="!isEditing">
-            <div v-html="content"></div>
+            <div v-html="html"></div>
             <div data-dialog-button>
                 <button
                     class="button"
@@ -118,6 +118,10 @@ export default {
             type: String,
             default: '',
         },
+        pageHtml: {
+            type: String,
+            default: '',
+        },
         pageId: {
             type: Number,
             required: true,
@@ -140,6 +144,7 @@ export default {
             autosave: this.enableAutosave,
             content: this.pageContent,
             editor: null,
+            html: this.pageHtml,
             isChanged: false,
             isEditing: this.editing,
             lastFocussedDate: null,
@@ -205,7 +210,7 @@ export default {
             };
 
             if (this.autosave && this.isChanged) {
-                data.content = this.editor.getData();
+                data.content = this.content;
                 this.isChanged = false;
             }
 
@@ -229,7 +234,10 @@ export default {
 
         STUDIP.wysiwyg.replace(textarea).then((editor) => {
             editor.model.document.on('change:data', () => {
-                this.isChanged = editor.getData() !== this.content;
+                const currentData = editor.getData();
+
+                this.isChanged = currentData !== this.content;
+                this.content = currentData;
             });
 
             if (this.isEditing) {
@@ -250,7 +258,7 @@ export default {
                 }
 
                 if ('content' in content) {
-                    this.content = content.content;
+                    this.html = content.content;
                 }
 
                 if (!this.isEditing && 'wysiwyg' in content) {
