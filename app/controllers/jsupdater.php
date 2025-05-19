@@ -327,8 +327,8 @@ class JsupdaterController extends AuthenticatedController
                     $page->isReadable()
                     && $page->chdate >= Request::int('server_timestamp')
                 ) {
-                    $data['content'] = wikiReady($page->content, true, $page->range_id, $page->id);
-                    $data['wysiwyg'] = $page->content;
+                    $data['html'] = wikiReady($page->content, true, $page->range_id, $page->id);
+                    $data['content'] = $page->content;
                     $data['chdate'] = date('c', $page->chdate);
                 }
 
