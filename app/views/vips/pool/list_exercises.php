@@ -69,6 +69,7 @@
 
         <tbody>
             <? foreach ($exercises as $exercise): ?>
+                <? $exercise_obj = Exercise::buildExisting($exercise) ?>
                 <? $course_id = $exercise['range_type'] === 'course' ? $exercise['range_id'] : null ?>
                 <tr>
                     <td>
@@ -82,9 +83,7 @@
                     </td>
 
                     <td>
-                        <? if (isset($exercise_types[$exercise['type']])): ?>
-                            <?= htmlReady($exercise_types[$exercise['type']]['name']) ?>
-                        <? endif ?>
+                        <?= htmlReady($exercise_obj->getTypeName()) ?>
                     </td>
 
                     <td>
