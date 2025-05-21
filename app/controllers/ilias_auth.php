@@ -32,14 +32,16 @@ class IliasAuthController extends StudipController
     public function authenticate_action()
     {
         $authenticated = false;
-        $auth_status = StudipAuthAbstract::checkAuthentication(Request::get('login'), Request::get('password'));
-        if ($auth_status['uid']) {
-            $authenticated = true;
-        }
         $query = "SELECT external_user_token_valid_until FROM auth_extern WHERE external_user_name = ? AND external_user_token = ?";
         $result = DBManager::get()->fetchOne($query, [Request::get('login'), Request::get('password')]);
         if (count($result)) {
             if ($result['external_user_token_valid_until'] > time()) {
+                $authenticated = true;
+            }
+        }
+        if (!$authenticated) {
+            $auth_status = StudipAuthAbstract::checkAuthentication(Request::get('login'), Request::get('password'));
+            if (!empty($auth_status['uid'])) {
                 $authenticated = true;
             }
         }
