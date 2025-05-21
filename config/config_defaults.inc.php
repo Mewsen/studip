@@ -349,8 +349,12 @@ $STUDIP_AUTH_CONFIG_GOOGLE = [
              'auth_user_md5.Nachname' => ['callback' => 'getUserData', 'map_args' => 'family_name'],
              'auth_user_md5.Vorname'  => ['callback' => 'getUserData', 'map_args' => 'given_name']
         ],
+
         // Enable the next line to allow setting your own scopes
-        // 'scopes' => []
+        // 'scopes' => [],
+
+        // Enable the next line to set a custom redirect uri
+        // 'redirect_uri' => '',
     ];
 
 $STUDIP_AUTH_CONFIG_LTI = [
