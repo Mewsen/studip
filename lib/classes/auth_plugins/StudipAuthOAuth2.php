@@ -8,11 +8,11 @@ use League\OAuth2\Client\Provider\GenericProvider;
  * @license GPL2 or any later version
  * @since Stud.IP 6.0
  */
-final class StudipAuthOAuth2 extends StudipAuthSSO
+class StudipAuthOAuth2 extends StudipAuthSSO
 {
     protected string $client_id;
     protected string $client_secret;
-    protected string $redirect_uri;
+    protected ?string $redirect_uri = null;
 
     protected string $url_authorize;
     protected string $url_access_token;
@@ -33,9 +33,16 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
         if (!isset($this->plugin_fullname)) {
             $this->plugin_fullname = _('OAuth2');
         }
+
+        if (!isset($this->redirect_uri)) {
+            $this->redirect_uri = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'index.php', ['sso' => $this->plugin_name, 'again' => 'yes'], true);
+        }
     }
 
-    private function getProvider(): GenericProvider
+    /**
+     * Returns the configured OAuth2 client.
+     */
+    protected function getProvider(): GenericProvider
     {
         if ($this->client === null) {
             $options = [
@@ -64,6 +71,12 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
         return $this->getUserData($this->getUsernameKey());
     }
 
+    /**
+     * Validate the username passed to the auth plugin.
+     *
+     * @param string $username
+     * @return  string  username
+     */
     public function verifyUsername($username)
     {
         if (isset($this->user_data)) {
