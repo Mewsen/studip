@@ -118,7 +118,7 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
      */
     private function getUsernameKey(): string
     {
-        return $this->user_data_mapping['map_args']['auth_user_md5.username'] ?? 'nickname';
+        return $this->user_data_mapping['auth_user_md5.username']['map_args'] ?? 'nickname';
     }
 
     /**
