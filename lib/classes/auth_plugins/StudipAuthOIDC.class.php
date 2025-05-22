@@ -34,7 +34,7 @@ class StudipAuthOIDC extends StudipAuthSSO
      */
     public $client_secret;
 
-    public ?string $redirect_uri = null;
+    public $redirect_uri = null;
 
     /**
      * @var string[]
