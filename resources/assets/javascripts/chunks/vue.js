@@ -47,7 +47,7 @@ const pinia = createPinia();
 function createApp(options = {}, ...args) {
     const app = vueCreateApp({ store, ...options }, ...args);
 
-    app.config.compilerOptions.whitespace = 'condense';
+    app.config.compilerOptions.whitespace = 'preserve';
 
     // Define our own global mixin for Vue
     app.mixin({
