@@ -87,6 +87,7 @@ module.exports = {
                 loader: 'vue-loader',
                 options: {
                     compilerOptions: {
+                        whitespace: 'preserve',
                         isCustomElement(tag) {
                             return ['altcha-widget'].includes(tag);
                         }
