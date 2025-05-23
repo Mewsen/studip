@@ -67,6 +67,8 @@ class CronjobSchedule extends SimpleORMap
 
         $config['registered_callbacks']['before_store'][]     = 'cbJsonifyParameters';
         $config['registered_callbacks']['after_store'][]      = 'cbJsonifyParameters';
+        $config['registered_callbacks']['before_store'][]     = 'cbLogActivation';
+        $config['registered_callbacks']['before_delete'][]    = 'cbLogDeleting';
         $config['registered_callbacks']['after_initialize'][] = 'cbJsonifyParameters';
 
         parent::configure($config);
@@ -99,6 +101,21 @@ class CronjobSchedule extends SimpleORMap
             }
             $this->parameters = $parameters;
         }
+    }
+
+    protected function cbLogActivation($type)
+    {
+        if ($this->active && !$this->content_db['active']) {
+            StudipLog::log('CRONJOB_SCHEDULE_ACTIVATED', null, null, $this->getTitle());
+        }
+        if (!$this->active && $this->content_db['active']) {
+            StudipLog::log('CRONJOB_SCHEDULE_DEACTIVATED', null, null, $this->getTitle());
+        }
+    }
+
+    protected function cbLogDeleting($type)
+    {
+        StudipLog::log('CRONJOB_SCHEDULE_DELETED', null, null, $this->getTitle());
     }
 
     /**
