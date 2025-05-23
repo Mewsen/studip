@@ -145,6 +145,7 @@ class GlobalSearchCourseware extends GlobalSearchModule implements GlobalSearchF
                 'additional' => htmlReady($pageData['originName']),
                 'date' => $date->format('d.m.Y H:i'),
                 'structural-element-id' => $structural_element->id,
+                'unit-id' => $unit->id,
                 'expand' => null
             ];
         }
