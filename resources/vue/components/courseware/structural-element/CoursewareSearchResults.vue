@@ -14,8 +14,13 @@
             </template>
         </ContentBar>
         <div id="search-results">
-            <article v-if="searchResults.length > 0">
-                <section v-for="result in searchResults" :key="result['structural-element-id']">
+            <article v-if="currentUnitSearchResults.length > 0" class="studip padding-less">
+                <header>
+                    <h1 class="search-results-header">
+                        {{ $gettext('Suchergebnisse in diesem Lernmaterial') }}
+                    </h1>
+                </header>
+                <section v-for="result in currentUnitSearchResults" :key="result['structural-element-id']">
                     <router-link
                         :to="'/structural_element/' + result['structural-element-id']"
                         @click="closeResults"
@@ -35,8 +40,31 @@
                     </router-link>
                 </section>
             </article>
+            <article v-if="otherUnitsSearchResults.length > 0" class="studip padding-less">
+                <header>
+                    <h1 class="search-results-header">
+                        {{ $gettext('Suchergebnisse in anderen Lernmaterialien') }}
+                    </h1>
+                </header>
+                <section v-for="result in otherUnitsSearchResults" :key="result['unit-id'] + '-' + result['structural-element-id']">
+                    <a :href="result['url']">
+                        <div v-show="result.img !== null" class="search-result-img hidden-tiny-down">
+                                <img :src="result.img" />
+                        </div>
+                        <div class="search-result-data">
+                            <div class="search-result-title" v-html="result.name"></div>
+                            <div class="search-result-details">
+                                <div class="search-result-description" v-html="result.description"></div>
+                            </div>
+                        </div>
+                        <div class="search-result-information">
+                            <div class="search-result-time" v-html="result.date"></div>
+                        </div>
+                    </a>
+                </section>
+            </article>
             <courseware-companion-box
-                v-else
+                v-if="noResults"
                 :msgCompanion="$gettext('Es wurden keine Suchergebnisse gefunden.')"
                 mood="sad"
             />
@@ -59,8 +87,25 @@ export default {
     },
     computed: {
         ...mapGetters({
-            searchResults: 'searchResults'
+            searchResults: 'searchResults',
+            context: 'context'
         }),
+        currentUnitId() {
+            return +this.context.unit;
+        },
+        currentUnitSearchResults() {
+            return this.searchResults.filter(result => {
+                return result['unit-id'] === this.currentUnitId;
+            });
+        },
+        otherUnitsSearchResults() {
+            return this.searchResults.filter(result => {
+                return result['unit-id'] !== this.currentUnitId;
+            });
+        },
+        noResults() {
+            return this.currentUnitSearchResults.length === 0 && this.otherUnitsSearchResults.length === 0;
+        }
     },
     methods: {
         ...mapActions({
