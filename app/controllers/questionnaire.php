@@ -343,10 +343,16 @@ class QuestionnaireController extends AuthenticatedController
         if (!$this->questionnaire->isEditable()) {
             throw new AccessDeniedException(_('Der Fragebogen ist nicht exportierbar.'));
         }
-        $csv = [[_("Nummer"), _("Benutzername"), _("Nachname"), _("Vorname"), _("E-Mail")]];
+        if (!$this->questionnaire->anonymous) {
+            $csv = [[_("Nummer"), _("Benutzername"), _("Nachname"), _("Vorname"), _("E-Mail"), _("Zeitpunkt")]];
+        } else {
+            $csv = [[_("Nummer"), _("Benutzername"), _("Nachname"), _("Vorname"), _("E-Mail")]];
+        }
 
         $results = [];
         $user_ids = [];
+        $timestamps = [];
+
 
         foreach ($this->questionnaire->questions as $question) {
             $result = (array) $question->getResultArray();
@@ -356,12 +362,17 @@ class QuestionnaireController extends AuthenticatedController
                 $user_ids = array_unique($user_ids);
             }
             $results[] = $result;
+            if (!$this->questionnaire->anonymous) {
+                foreach ($question->answers as $answer) {
+                    $timestamps[$answer['user_id']] = $answer['chdate'];
+                }
+            }
         }
 
         foreach ($user_ids as $key => $user_id) {
             $user = User::find($user_id);
             if ($user) {
-                $csv_line = [$key + 1, $user['username'], $user['Nachname'], $user['Vorname'], $user['Email']];
+                $csv_line = [$key + 1, $user['username'], $user['Nachname'], $user['Vorname'], $user['Email'], date("d.m.Y H:i:s", $timestamps[$user_id])];
             } else {
                 $csv_line = [$key + 1, $user_id, '', '', ''];
             }
