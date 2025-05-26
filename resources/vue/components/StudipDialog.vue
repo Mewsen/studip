@@ -10,7 +10,7 @@
                             ref="resizableComponent"
                             :dragSelector="dragSelector"
                             :active="handlers"
-                            :fit-parent="fit"
+                            :fit-parent="true"
                             :left="left"
                             :top="top"
                             :width="currentWidth"
