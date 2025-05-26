@@ -5,7 +5,8 @@
     border-radius: 5px;
     padding: 5px;
 
-    &:hover {
+    &:hover,
+    &:has(.drag-and-drop.hovered) {
         background-color: var(--color--tile-background-hover);
         border-color: var(--color--tile-border-hover);
     }
@@ -36,7 +37,8 @@
         top: 0;
     }
 
-    &:hover {
+    &:hover,
+    &.hovered {
         border: dashed thin var(--color--tile-border-hover);
         border-radius: 5px;
     }
