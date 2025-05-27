@@ -142,6 +142,7 @@ class RouteMap
         $this->addAuthenticatedThemesRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
+        $this->addAuthenticatedShortUrlRoutes($group);
     }
 
     /**
@@ -801,6 +802,14 @@ class RouteMap
         // not a JSON:API route
         $group->get('/component-version-deep/{id}', Routes\Mvv\ComponentVersionsDeep::class);
 
+    }
+
+    private function addAuthenticatedShortUrlRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/short-urls', Routes\ShortUrls\ShortUrlShow::class);
+        $group->post('/short-urls', Routes\ShortUrls\ShortUrlCreate::class);
+        $group->patch('/short-urls/{id}', Routes\ShortUrls\ShortUrlUpdate::class);
+        $group->delete('/short-urls/{id}', Routes\ShortUrls\ShortUrlDelete::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

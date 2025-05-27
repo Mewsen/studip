@@ -157,6 +157,7 @@
     },
     "dependencies": {
         "@vojtechlanka/vue-tags-input": "^3.1.1",
-        "jsonapi-serializer": "^3.6.9"
+        "jsonapi-serializer": "^3.6.9",
+        "sqids": "^0.3.0"
     }
 }
