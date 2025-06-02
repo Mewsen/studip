@@ -179,7 +179,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
         $entry->setData([
             'title' => Request::i18n('title'),
-            'description' => Request::i18n('description'),
+            'description' => Studip\Markup::purifyHtml(Request::i18n('description')),
         ]);
 
         if ($entry->store()) {
