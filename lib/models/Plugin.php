@@ -23,6 +23,35 @@ class Plugin extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'plugins';
+
+        $config['additional_fields']['full_plugin_path'] = [
+            'get' => function (Plugin $plugin) {
+                return Config::get()->PLUGINS_PATH . '/' . $plugin->pluginpath;
+            }
+        ];
+
+        $config['additional_fields']['manifest'] = [
+            'get' => function (Plugin $plugin) {
+                return PluginManager::getInstance()->getPluginManifest($plugin->full_plugin_path);
+            }
+        ];
+
+        $config['additional_fields']['migration_info'] = [
+            'get' => function (Plugin $plugin) {
+                $plugindir = $plugin->full_plugin_path;
+                if (!is_dir($plugindir . '/migrations')) {
+                    return null;
+                }
+
+                $schema_version = new DBSchemaVersion($plugin->pluginname);
+                $migrator = new Migrator($plugindir . '/migrations', $schema_version);
+                return [
+                    'pending_migrations' => $migrator->pendingMigrations(),
+                    'schema_version'     => $schema_version->get(),
+                ];
+            }
+        ];
+
         $config['i18n_fields'] = ['description', 'highlight_text'];
         parent::configure($config);
     }

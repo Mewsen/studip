@@ -120,6 +120,10 @@ button,
         padding: 0;
     }
 
+    &.as-link {
+        text-align: left;
+    }
+
     &.as-link,
     &.undecorated[formaction] {
         @include button-base;

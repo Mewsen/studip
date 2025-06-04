@@ -150,11 +150,34 @@ class Admin_PluginController extends AuthenticatedController
         }
     }
 
+    public function vue_action(): void
+    {
+        // Check if an activation error has been flashed from the last request
+        if (isset($this->flash['activation-error'])) {
+            PageLayout::postError(
+                $this->get_template_factory()->render(
+                    'admin/plugin/activation-error-form.php',
+                    $this->flash['activation-error'] + ['controller' => $this]
+                )
+            );
+        }
+
+        $this->render_vue_app(
+            Studip\VueApp::create('PluginAdministration')
+                ->withStore('Plugin')
+                ->withProps([
+                    'configuration' => User::findCurrent()->getConfiguration()->getValue('PLUGINADMIN_DISPLAY_SETTINGS'),
+                ])
+        );
+    }
+
     /**
      * Save the modified plugin configuration (status and position).
      */
     public function save_action()
     {
+        CSRFProtection::verifyUnsafeRequest();
+
         $plugin_manager = PluginManager::getInstance();
         $plugin_filter = Request::option('plugin_filter', '');
         $type = $plugin_filter != '' ? $plugin_filter : NULL;
@@ -162,7 +185,7 @@ class Admin_PluginController extends AuthenticatedController
 
         $force = (bool) Request::int('force');
 
-        $this->check_ticket();
+//        $this->check_ticket();
 
         // update enabled/disabled status and position if set
         $messages = [];
@@ -414,7 +437,7 @@ class Admin_PluginController extends AuthenticatedController
      */
     public function install_updates_action()
     {
-        $this->check_ticket();
+        CSRFProtection::verifyUnsafeRequest();
 
         $plugin_manager = PluginManager::getInstance();
         $this->flash['plugins_disabled'] = $plugin_manager->isPluginsDisabled();

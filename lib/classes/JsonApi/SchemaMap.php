@@ -102,6 +102,8 @@ class SchemaMap
             \Courseware\Unit::class => Schemas\Courseware\Unit::class,
             \Courseware\UserDataField::class => Schemas\Courseware\UserDataField::class,
             \Courseware\UserProgress::class => Schemas\Courseware\UserProgress::class,
+
+            \Plugin::class => Schemas\Plugin::class,
         ];
     }
 }

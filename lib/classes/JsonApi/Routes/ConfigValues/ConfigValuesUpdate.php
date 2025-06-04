@@ -36,6 +36,7 @@ class ConfigValuesUpdate extends JsonApiController
             && $resource->entry['field'] !== 'CONTENTMODULES_TILED_DISPLAY'
             && $resource->entry['field'] !== 'MY_COURSES_OPEN_GROUPS'
             && $resource->entry['field'] !== 'MY_COURSES_VIEW_SETTINGS'
+            && $resource->entry['field'] !== 'PLUGINADMIN_DISPLAY_SETTINGS'
         ) {
             throw new NotImplementedException();
         }

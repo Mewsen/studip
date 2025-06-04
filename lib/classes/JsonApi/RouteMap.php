@@ -116,6 +116,10 @@ class RouteMap
 
         $group->get('/status-groups/{id}', Routes\StatusgroupShow::class);
 
+        $group->get('/plugins', Routes\Plugins\PluginsIndex::class);
+        $group->get('/plugins/updates', Routes\Plugins\PluginUpdateInfos::class);
+        $group->get('/plugins/{id}', Routes\Plugins\PluginShow::class);
+
         $this->addAuthenticatedAdmissionRoutes($group);
         $this->addAuthenticatedBlubberRoutes($group);
         $this->addAuthenticatedClipboardRoutes($group);

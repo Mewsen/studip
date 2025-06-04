@@ -1,5 +1,7 @@
 <template>
-    <div class="studip-loading-skeleton"></div>
+    <div class="studip-loading-skeleton">
+        <slot/>
+    </div>
 </template>
 
 <script>
