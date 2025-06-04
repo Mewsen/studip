@@ -38,6 +38,8 @@ class StatusGroup extends SchemaProvider
 
             'mkdate' => date('c', $resource['mkdate']),
             'chdate' => date('c', $resource['chdate']),
+
+            'members' => $resource->members->toGroupedArray(),
         ];
     }
 
