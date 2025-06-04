@@ -8,7 +8,7 @@
             <input type="hidden" :name="csrf.name" :value="csrf.value">
 
             <div style="margin: 1ex;">
-                <div v-for="(info, id) in updateInfos">
+                <div v-for="(info, id) in updateInfos" :key="id">
                     <label>
                         <input type="checkbox" name="update[]" :value="id" :checked="getPluginById(id).enabled">
                         {{ $gettext('%{plugin}: Version %{version} installieren', {
