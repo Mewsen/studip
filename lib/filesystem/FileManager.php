@@ -1949,10 +1949,7 @@ class FileManager
 
     public static function getFileIcon($filename, $role = Icon::ROLE_CLICKABLE) {
         $filename = mb_strtolower($filename);
-        $extension = (mb_strrpos($filename, ".") === false)
-            ? $filename
-            : substr($filename, mb_strrpos($filename, ".") + 1);
-        $extension = strtolower($extension);
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
         switch ($extension){
             case 'rtf':
             case 'doc':
