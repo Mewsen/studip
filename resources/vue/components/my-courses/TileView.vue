@@ -187,6 +187,12 @@ $tile-padding: 10px;
         overflow: hidden;
     }
 
+    .tiled-grid-element-header-title {
+        hyphens: auto;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+
     .tiles-grid-element-header-image {
         float: left;
         display: block;
