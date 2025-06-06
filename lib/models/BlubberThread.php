@@ -178,47 +178,69 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                         AND UNIX_TIMESTAMP() - blubber_threads.mkdate > 60 * 60";
         self::deleteBySQL($condition);
 
+        $union = new SQLUnionQuery();
+        $union->setUnionAll(true);
 
-
-        $query = SQLQuery::table('blubber_threads');
-        $query->join('my_comments', 'blubber_comments', 'blubber_threads.thread_id = my_comments.thread_id AND my_comments.user_id = :user_id', 'LEFT JOIN');
-        $query->join('blubber_mentions', 'blubber_mentions', 'blubber_mentions.thread_id = blubber_threads.thread_id', 'LEFT JOIN');
-
-        if (!$GLOBALS['perm']->have_perm('admin', $user_id)) {
-            //user, autor, tutor, dozent
-            $query->where('mycourses', implode(' OR ', [
-                "(blubber_threads.context_type = 'public' AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
-                "(blubber_threads.context_type = 'course' AND blubber_threads.context_id IN (:seminar_ids))",
-                "(blubber_threads.context_type = 'institute' AND blubber_threads.context_id IN (:institut_ids))",
-                "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = 0)",
-            ]), [
-                'seminar_ids'  => self::getMyBlubberCourses($user_id),
-                'institut_ids' => self::getMyBlubberInstitutes($user_id),
-            ]);
-        } elseif (!$GLOBALS['perm']->have_perm('root', $user_id)) {
-            //admin
-            $query->where('mycourses', implode(' OR ', [
-                "(blubber_threads.context_type = 'public' AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
-                "(blubber_threads.context_type = 'institute' AND blubber_threads.context_id IN (:institut_ids))",
-                "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = 0)",
-            ]), ['institut_ids' => self::getMyBlubberInstitutes($user_id)]);
+        // Public, global and mentions
+        $query = new SQLQuery('blubber_threads');
+        $query->where('visible_in_stream = 1');
+        if ($GLOBALS['perm']->have_perm('root')) {
+            $query->where('context_type', "context_type = :context_type", [':context_type' => 'public']);
         } else {
-            //root
-            $query->where(implode(' OR ', [
-                "(blubber_threads.context_type IN ('public', 'course', 'institute') AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
-                "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = '0')",
-            ]));
-        }
-        $query->where("blubber_threads.visible_in_stream = 1");
-        $query->parameter('user_id', $user_id);
-        $query->groupBy('blubber_threads.thread_id');
+            $query->where(
+                'context_type',
+                "context_type IN (:context_type)",
+                [':context_type' => ['public', 'course', 'institute']]
+            );
 
-        $thread_ids = $query->fetchAll("thread_id");
+        }
+        $query->where(
+            'public/global/mentions',
+            implode(' OR ', [
+                "blubber_threads.thread_id = 'global'",
+                "user_id = :user_id",
+                "thread_id IN (SELECT thread_id FROM blubber_comments WHERE user_id = :user_id)"
+            ]),
+            [':user_id' => $user_id]
+        );
+        $union->add($query);
+
+        // Courses
+        $course_ids = self::getMyBlubberCourses($user_id);
+        if (count($course_ids) > 0) {
+            $query = new SQLQuery('blubber_threads');
+            $query->where('visible_in_stream = 1');
+            $query->where('inst_type', "context_type = 'course'");
+            $query->where('inst_ids', 'context_id IN (:course_ids)', [':course_ids' => $course_ids]);
+            $union->add($query);
+        }
+
+        // Institutes
+        $institute_ids = self::getMyBlubberInstitutes($user_id);
+        if (count($institute_ids) > 0) {
+            $query = new SQLQuery('blubber_threads');
+            $query->where('visible_in_stream = 1');
+            $query->where('inst_type', "context_type = 'institute'");
+            $query->where('inst_ids', 'context_id IN (:institute_ids)', [':institute_ids' => $institute_ids]);
+            $union->add($query);
+        }
+
+        // Private mentions
+        $query = new SQLQuery('blubber_threads');
+        $query->join('blubber_mentions', 'blubber_mentions', 'blubber_mentions.thread_id = blubber_threads.thread_id', 'JOIN');
+        $query->where("context_type = 'private'");
+        $query->where('visible_in_stream = 1');
+        $query->where('user', 'blubber_mentions.user_id = :user_id', [':user_id' => $user_id]);
+        $query->where('blubber_mentions.external_contact = 0');
+
+        $union->add($query);
+
+        $thread_ids = $union->fetchFirst();
 
         $threads = [];
 
         do {
-            list($newthreads, $filtered, $new_since, $new_olderthan) = self::getOrderedThreads(
+            [$newthreads, $filtered, $new_since, $new_olderthan] = self::getOrderedThreads(
                 $thread_ids,
                 $limit - count($threads),
                 $since,
