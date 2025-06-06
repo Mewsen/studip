@@ -8,8 +8,8 @@ class SQLUnionQuery
     /**
      * @var SQLQuery[]
      */
-    protected array $queries;
-    protected bool $unionAll = false;
+    protected $queries;
+    protected $unionAll = false;
 
     public function __construct(SQLQuery ...$queries)
     {
