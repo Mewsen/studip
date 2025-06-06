@@ -1245,7 +1245,7 @@ msgstr "Error occurred during the request."
 msgid "Beim Hochladen der Bilddatei ist ein Fehler aufgetretten."
 msgstr "An error occurred while uploading the image file."
 
-#: resources/vue/components/courseware/IndexApp.vue:48
+#: resources/vue/components/courseware/IndexApp.vue:49
 #: resources/vue/components/courseware/PublicApp.vue:43
 msgid "Beim Laden der Seite ist ein Fehler aufgetreten."
 msgstr "An error occurred while loading the page."
@@ -2235,7 +2235,7 @@ msgstr ""
 "The page could not be created. You do not have the necessary write "
 "permissions."
 
-#: resources/vue/components/courseware/IndexApp.vue:44
+#: resources/vue/components/courseware/IndexApp.vue:45
 #: resources/vue/components/courseware/PublicApp.vue:39
 msgid "Die Seite konnte nicht gefunden werden."
 msgstr "The page could not be found."
@@ -2351,7 +2351,7 @@ msgstr "This page can be edited by participants"
 msgid "Diese Seite kann von Teilnehmenden nicht gesehen werden"
 msgstr "This page cannot be seen by participants"
 
-#: resources/vue/components/courseware/IndexApp.vue:46
+#: resources/vue/components/courseware/IndexApp.vue:47
 #: resources/vue/components/courseware/PublicApp.vue:41
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:291
 msgid "Diese Seite steht Ihnen leider nicht zur Verfügung."
@@ -2733,6 +2733,11 @@ msgstr ""
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogAdd.vue:48
 msgid "Erscheinung"
 msgstr "Appearance"
+
+#: resources/vue/components/courseware/IndexApp.vue:73
+#, fuzzy
+msgid "Erste Seite aufrufen"
+msgstr "Invalid page call"
 
 #: resources/vue/mixins/courseware/export.js:42
 msgid "Erstelle Zip-Archiv"
@@ -4427,7 +4432,7 @@ msgstr "Loading settings…"
 msgid "Lade Kommentare..."
 msgstr "Load comments..."
 
-#: resources/vue/components/courseware/IndexApp.vue:60
+#: resources/vue/components/courseware/IndexApp.vue:62
 #: resources/vue/components/courseware/PublicApp.vue:26
 msgid "Lade Lernmaterial..."
 msgstr "Loading learning material..."
