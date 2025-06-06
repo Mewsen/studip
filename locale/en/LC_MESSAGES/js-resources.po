@@ -441,7 +441,7 @@ msgstr "14-day"
 msgid "2. Untertitel"
 msgstr "2nd subtitle"
 
-#: resources/vue/components/ConsultationCreator.vue:549
+#: resources/vue/components/ConsultationCreator.vue:547
 #: resources/vue/components/StudipUserFilter.vue:22
 #: resources/vue/components/admission/AdmissionRuleConfig.vue:14
 #: resources/vue/components/admission/AdmissionRuleTypeSelector.vue:22
@@ -1375,7 +1375,7 @@ msgstr "Automatically"
 msgid "Automatisch mit Inhaltsverzeichnis"
 msgstr "Automatically with table of contents"
 
-#: resources/vue/components/WikiEditor.vue:70
+#: resources/vue/components/WikiEditor.vue:69
 #, fuzzy
 msgid "Automatisches Speichern aktivieren."
 msgstr "Manage automatic updates"
@@ -1407,7 +1407,7 @@ msgstr "Bar diagram"
 msgid "Band"
 msgstr "Ribbon"
 
-#: resources/vue/components/WikiEditor.vue:108
+#: resources/vue/components/WikiEditor.vue:107
 msgid "Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen."
 msgstr "Request that you want to edit the text now."
 
@@ -1440,12 +1440,12 @@ msgstr ""
 msgid "Bearbeiten"
 msgstr "Edit"
 
-#: resources/vue/components/WikiEditor.vue:110
+#: resources/vue/components/WikiEditor.vue:109
 #, fuzzy
 msgid "Bearbeiten beantragen"
 msgstr "Abort modification"
 
-#: resources/vue/components/WikiEditor.vue:116
+#: resources/vue/components/WikiEditor.vue:115
 #, fuzzy
 msgid "Bearbeiten beantragt"
 msgstr "Edit parameters"
@@ -1539,7 +1539,7 @@ msgstr "created"
 msgid "Bei der Anfrage ist ein Fehler aufgetreten."
 msgstr "Error occurred during the request."
 
-#: resources/vue/components/ConsultationCreator.vue:348
+#: resources/vue/components/ConsultationCreator.vue:346
 msgid ""
 "Bei Einrichtungen muss mindestens eine durchführende Person, Gruppe oder "
 "Einrichtung zugewiesen werden."
@@ -1692,12 +1692,12 @@ msgstr "Label"
 msgid "Bestätigung"
 msgstr "Confirmation"
 
-#: resources/vue/components/ConsultationCreator.vue:524
+#: resources/vue/components/ConsultationCreator.vue:522
 #, fuzzy
 msgid "Bestätigung der Erstellung vieler Termine"
 msgstr "Confirmation of e-mail address"
 
-#: resources/vue/components/ConsultationCreator.vue:509
+#: resources/vue/components/ConsultationCreator.vue:507
 msgid "Bestätigung für folgenden Text einholen"
 msgstr "Seek confirmation for the following text"
 
@@ -1882,7 +1882,7 @@ msgstr "Biography"
 msgid "bis"
 msgstr "until"
 
-#: resources/vue/components/ConsultationCreator.vue:224
+#: resources/vue/components/ConsultationCreator.vue:222
 msgid "Bis"
 msgstr "Until"
 
@@ -1904,7 +1904,7 @@ msgstr "Please enter %u more characters"
 msgid "Bitte %u Zeichen weniger eingeben"
 msgstr "Please enter %u characters less"
 
-#: resources/vue/components/ConsultationCreator.vue:349
+#: resources/vue/components/ConsultationCreator.vue:347
 msgid ""
 "Bitte beachten Sie, dass bei Zuweisungen von Statusgruppen alle Personen der "
 "Gruppe mit dem Status \"tutor\" und \"dozent\" als durchführende Personen "
@@ -1920,7 +1920,7 @@ msgstr ""
 msgid "Bitte bestätigen Sie die Aktion"
 msgstr "Please confirm action"
 
-#: resources/vue/components/ConsultationCreator.vue:525
+#: resources/vue/components/ConsultationCreator.vue:523
 msgid "Bitte bestätigen Sie diese Aktion."
 msgstr "Please confirm this action."
 
@@ -2549,12 +2549,12 @@ msgstr "Added date %{date}"
 msgid "Datum und Zeit"
 msgstr "Date and time"
 
-#: resources/vue/components/ConsultationCreator.vue:293
+#: resources/vue/components/ConsultationCreator.vue:291
 #, fuzzy
 msgid "Dauer der Pause in Minuten"
 msgstr "Pause duration in minutes"
 
-#: resources/vue/components/ConsultationCreator.vue:234
+#: resources/vue/components/ConsultationCreator.vue:232
 msgid "Dauer eines Termins in Minuten"
 msgstr "Date duration in minutes"
 
@@ -2562,12 +2562,12 @@ msgstr "Date duration in minutes"
 msgid "deaktiviert"
 msgstr "deactivated"
 
-#: resources/vue/components/WikiEditor.vue:82
+#: resources/vue/components/WikiEditor.vue:81
 #, fuzzy
 msgid "Den aktuellen Stand speichern."
 msgstr "The current state has already been saved."
 
-#: resources/vue/components/ConsultationCreator.vue:446
+#: resources/vue/components/ConsultationCreator.vue:444
 #, fuzzy
 msgid "Den freien Termin auch im Kalender markieren"
 msgstr "Also mark the free dates in the calendar"
@@ -2577,7 +2577,7 @@ msgstr "Also mark the free dates in the calendar"
 msgid "Der Abschnitt wurde erfolgreich eingefügt."
 msgstr "The section has been successfully inserted."
 
-#: resources/vue/components/WikiEditor.vue:82
+#: resources/vue/components/WikiEditor.vue:81
 #, fuzzy
 msgid "Der aktuelle Stand wurde bereits gespeichert."
 msgstr "The current state has already been saved."
@@ -2805,7 +2805,7 @@ msgstr ""
 "The progress meter relates to the share of participants that have accessed a "
 "page."
 
-#: resources/vue/components/ConsultationCreator.vue:446
+#: resources/vue/components/ConsultationCreator.vue:444
 msgid "Die freien Termine auch im Kalender markieren"
 msgstr "Also mark the free dates in the calendar"
 
@@ -3261,19 +3261,19 @@ msgstr "Dark gray"
 msgid "Duplizieren"
 msgstr "Duplicate"
 
-#: resources/vue/components/ConsultationCreator.vue:403
+#: resources/vue/components/ConsultationCreator.vue:401
 msgid "Durchführende Einrichtungen"
 msgstr "Realising institutes"
 
-#: resources/vue/components/ConsultationCreator.vue:380
+#: resources/vue/components/ConsultationCreator.vue:378
 msgid "Durchführende Gruppen"
 msgstr "Realising groups"
 
-#: resources/vue/components/ConsultationCreator.vue:357
+#: resources/vue/components/ConsultationCreator.vue:355
 msgid "Durchführende Personen"
 msgstr "Realising persons"
 
-#: resources/vue/components/ConsultationCreator.vue:345
+#: resources/vue/components/ConsultationCreator.vue:343
 msgid "Durchführende Personen, Gruppen oder Einrichtungen"
 msgstr "Realising persons, groups or institutes"
 
@@ -3352,7 +3352,7 @@ msgid_plural "%{count} Gruppen"
 msgstr[0] "No grouping"
 msgstr[1] "No grouping"
 
-#: resources/vue/components/ConsultationCreator.vue:280
+#: resources/vue/components/ConsultationCreator.vue:278
 msgid "Eine Pause nach wie vielen Minuten einfügen?"
 msgstr "Add a pause after how many minutes?"
 
@@ -3488,7 +3488,7 @@ msgstr "Add element"
 msgid "Enddatum"
 msgstr "Final date"
 
-#: resources/vue/components/ConsultationCreator.vue:195
+#: resources/vue/components/ConsultationCreator.vue:194
 msgid "Ende"
 msgstr "End"
 
@@ -3921,7 +3921,7 @@ msgstr "No matching blocks have been found."
 msgid "Es wurden keine Studierenden in dieser Veranstaltung gefunden."
 msgstr "No students could be found in this course."
 
-#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:95
+#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:160
 msgid "Es wurden keine Suchergebnisse gefunden."
 msgstr "No search results have been found."
 
@@ -4026,7 +4026,7 @@ msgstr "Select semester of study (optional)"
 msgid "Faded Sun"
 msgstr "Faded Sun"
 
-#: resources/vue/components/ConsultationCreator.vue:251
+#: resources/vue/components/ConsultationCreator.vue:249
 msgid ""
 "Falls Sie mehrere Personen zulassen wollen (wie z.B. zu einer "
 "Klausureinsicht), so geben Sie hier die maximale Anzahl an Personen an, die "
@@ -4560,7 +4560,7 @@ msgstr "Grid"
 msgid "Gitter-Spalten"
 msgstr "Grid columns"
 
-#: resources/vue/components/ConsultationCreator.vue:351
+#: resources/vue/components/ConsultationCreator.vue:349
 msgid ""
 "Gleiches gilt für eine zugewiesene Einrichtung. Bitte achten Sie darauf, "
 "dass Sie Ihre hier  getroffene Auswahl in Absprache tätigen."
@@ -4616,7 +4616,7 @@ msgstr "green"
 msgid "Grün"
 msgstr "Green"
 
-#: resources/vue/components/ConsultationCreator.vue:472
+#: resources/vue/components/ConsultationCreator.vue:470
 msgid "Grund der Buchung abfragen"
 msgstr "Query the reason for the booking"
 
@@ -5123,11 +5123,11 @@ msgstr "Info box before download"
 msgid "Information"
 msgstr "Information"
 
-#: resources/vue/components/ConsultationCreator.vue:429
+#: resources/vue/components/ConsultationCreator.vue:427
 msgid "Information zu den Terminen in diesem Block"
 msgstr "Information about the dates in this block"
 
-#: resources/vue/components/ConsultationCreator.vue:429
+#: resources/vue/components/ConsultationCreator.vue:427
 #, fuzzy
 msgid "Information zu diesem Termin"
 msgstr "Edit information for this date"
@@ -5371,16 +5371,16 @@ msgstr "yes"
 msgid "Ja"
 msgstr "Yes"
 
-#: resources/vue/components/ConsultationCreator.vue:533
+#: resources/vue/components/ConsultationCreator.vue:531
 #, fuzzy
 msgid "Ja, ich möchte wirklich %{ n } Termine erstellen."
 msgstr "Yes, I want to create %s dates."
 
-#: resources/vue/components/ConsultationCreator.vue:494
+#: resources/vue/components/ConsultationCreator.vue:492
 msgid "Ja, optional"
 msgstr "Yes, optional"
 
-#: resources/vue/components/ConsultationCreator.vue:483
+#: resources/vue/components/ConsultationCreator.vue:481
 msgid "Ja, zwingend erforderlich"
 msgstr "Yes, mandatory"
 
@@ -5562,7 +5562,7 @@ msgstr "No export options available."
 msgid "keine nächste Karte"
 msgstr "no next card"
 
-#: resources/vue/components/courseware/structural-element/PublicCoursewareStructuralElement.vue:71
+#: resources/vue/components/courseware/structural-element/PublicCoursewareStructuralElement.vue:65
 msgid "keine nächste Seite"
 msgstr "no next page"
 
@@ -5586,7 +5586,7 @@ msgstr "No match found"
 msgid "keine vorherige Karte"
 msgstr "no previous card"
 
-#: resources/vue/components/courseware/structural-element/PublicCoursewareStructuralElement.vue:53
+#: resources/vue/components/courseware/structural-element/PublicCoursewareStructuralElement.vue:47
 msgid "keine vorherige Seite"
 msgstr "no previous page"
 
@@ -5606,7 +5606,7 @@ msgstr "No repetition"
 msgid "klein"
 msgstr "small"
 
-#: resources/vue/components/WikiEditor.vue:114
+#: resources/vue/components/WikiEditor.vue:113
 msgid "Klicken Sie, um die Anfrage zum Bearbeiten abzubrechen"
 msgstr ""
 
@@ -6242,7 +6242,7 @@ msgstr "Mulberry"
 msgid "Maximale Anzahl erlaubter Anmeldungen"
 msgstr "Maximum amount of allowed enrolments"
 
-#: resources/vue/components/ConsultationCreator.vue:249
+#: resources/vue/components/ConsultationCreator.vue:247
 #, fuzzy
 msgid "Maximale Teilnehmendenzahl"
 msgstr "maximum number of participants"
@@ -6685,7 +6685,7 @@ msgstr "Name of admission setting"
 msgid "Name oder Autor/in"
 msgstr "Name or author"
 
-#: resources/vue/components/ConsultationCreator.vue:470
+#: resources/vue/components/ConsultationCreator.vue:468
 msgid "Namen der buchenden Personen sind öffentlich sichtbar"
 msgstr "Names of the booking persons are visible publicly"
 
@@ -6749,7 +6749,7 @@ msgid "nein"
 msgstr "no"
 
 #: resources/assets/javascripts/lib/dialog.js:666
-#: resources/vue/components/ConsultationCreator.vue:505
+#: resources/vue/components/ConsultationCreator.vue:503
 #: resources/vue/components/StudipDialog.vue:94
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:549
 #: resources/vue/components/courseware/blocks/CoursewareCanvasBlock.vue:199
@@ -7017,7 +7017,7 @@ msgid "Option"
 msgstr "Option"
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:20
-#: resources/vue/components/ConsultationCreator.vue:509
+#: resources/vue/components/ConsultationCreator.vue:507
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:483
 msgid "optional"
 msgstr "optional"
@@ -7156,7 +7156,7 @@ msgstr "Password/token for authentification"
 msgid "Pause"
 msgstr "Break"
 
-#: resources/vue/components/ConsultationCreator.vue:275
+#: resources/vue/components/ConsultationCreator.vue:273
 msgid "Pausen zwischen den Terminen einfügen?"
 msgstr "Insert pauses between dates?"
 
@@ -7528,7 +7528,7 @@ msgstr "Write an annotation..."
 msgid "Schreiben Sie eine Nachricht…"
 msgstr "Write your forum post here."
 
-#: resources/vue/components/WikiEditor.vue:94
+#: resources/vue/components/WikiEditor.vue:93
 msgid "Schreibmodus an %{name} übergeben"
 msgstr ""
 
@@ -7811,7 +7811,7 @@ msgstr "Close sidebar"
 msgid "Sie beurteilen diese Aufgabe im Rahmen eines Peer-Reviews."
 msgstr ""
 
-#: resources/vue/components/ConsultationCreator.vue:525
+#: resources/vue/components/ConsultationCreator.vue:523
 msgid "Sie erstellen eine sehr große Anzahl an Terminen."
 msgstr "You are creating a very big amount of dates."
 
@@ -8130,7 +8130,7 @@ msgid "Sortiert aufsteigend nach %{field}"
 msgstr ""
 
 #: resources/vue/components/CacheAdministration.vue:65
-#: resources/vue/components/WikiEditor.vue:84
+#: resources/vue/components/WikiEditor.vue:83
 #: resources/vue/components/admission/ConfigureCourseSet.vue:494
 #: resources/vue/components/admission/InstantCourseSet.vue:45
 #: resources/vue/components/avatar/AvatarApp.vue:193
@@ -8350,11 +8350,21 @@ msgstr "Search"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:25
 #: resources/vue/components/StudipMultiPersonSearch.vue:66
-#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:35
+#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:53
 msgid "Suchergebnisse"
 msgstr "Search results"
 
-#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:39
+#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:118
+#, fuzzy
+msgid "Suchergebnisse in anderen Lernmaterialien"
+msgstr "Courseware learning materials"
+
+#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:72
+#, fuzzy
+msgid "Suchergebnisse in diesem Lernmaterial"
+msgstr "Rate the learning material"
+
+#: resources/vue/components/courseware/structural-element/CoursewareSearchResults.vue:57
 msgid "Suchergebnisse schließen"
 msgstr "Close search results"
 
@@ -8443,17 +8453,17 @@ msgstr "Participants/Groups"
 msgid "teils-teils"
 msgstr "fair"
 
-#: resources/vue/components/ConsultationCreator.vue:313
+#: resources/vue/components/ConsultationCreator.vue:311
 #, fuzzy
 msgid "Termin für Buchungen sperren?"
 msgstr "Block dates for bookings?"
 
-#: resources/vue/components/ConsultationCreator.vue:544
+#: resources/vue/components/ConsultationCreator.vue:542
 #, fuzzy
 msgid "Termin speichern"
 msgstr "Save date"
 
-#: resources/vue/components/ConsultationCreator.vue:338
+#: resources/vue/components/ConsultationCreator.vue:336
 msgid "Termine innerhalb der Blöcke nur fortlaufend vergeben"
 msgstr ""
 
@@ -8583,8 +8593,7 @@ msgstr "rarely true"
 msgid "trifft zu"
 msgstr "almost always true"
 
-#: resources/vue/components/ConsultationCreator.vue:187
-#: resources/vue/components/ConsultationCreator.vue:201
+#: resources/vue/components/Datepicker.vue:19
 msgid "tt.mm.jjjj"
 msgstr "dd.mm.yyyy"
 
@@ -8592,7 +8601,7 @@ msgstr "dd.mm.yyyy"
 msgid "Türkis"
 msgstr "Turquoise"
 
-#: resources/vue/components/ConsultationCreator.vue:458
+#: resources/vue/components/ConsultationCreator.vue:456
 msgid ""
 "Tutor/innen beim Versand von Buchungsbenachrichtigungen berücksichtigen?"
 msgstr "Regard tutors when sending booking notifications?"
@@ -8951,8 +8960,8 @@ msgstr "Request for prolongation"
 msgid "Verlängerungsanfrage bearbeiten"
 msgstr "Edit prolongation request"
 
-#: resources/vue/components/WikiEditor.vue:88
-#: resources/vue/components/WikiEditor.vue:120
+#: resources/vue/components/WikiEditor.vue:87
+#: resources/vue/components/WikiEditor.vue:119
 msgid "Verlassen"
 msgstr "Leave"
 
@@ -9065,7 +9074,7 @@ msgstr "Full width"
 msgid "von"
 msgstr "from"
 
-#: resources/vue/components/ConsultationCreator.vue:212
+#: resources/vue/components/ConsultationCreator.vue:210
 msgid "Von"
 msgstr "From"
 
@@ -9373,7 +9382,7 @@ msgstr "Continue"
 msgid "Weitere Daten"
 msgstr "More details"
 
-#: resources/vue/components/ConsultationCreator.vue:427
+#: resources/vue/components/ConsultationCreator.vue:425
 msgid "Weitere Einstellungen"
 msgstr "Further settings"
 
@@ -9460,7 +9469,7 @@ msgstr "Repetition on a certain day of week"
 msgid "Wiederholung an jedem Werktag"
 msgstr "Repetition on every working day"
 
-#: resources/vue/components/ConsultationCreator.vue:317
+#: resources/vue/components/ConsultationCreator.vue:315
 #, fuzzy
 msgid ""
 "Wieviele Stunden vor Beginn des Blocks soll der Termin für Buchungen "
@@ -9469,7 +9478,7 @@ msgstr ""
 "How many hours before the start of the block should the dates be blocked for "
 "bookings?"
 
-#: resources/vue/components/ConsultationCreator.vue:317
+#: resources/vue/components/ConsultationCreator.vue:315
 msgid ""
 "Wieviele Stunden vor Beginn des Blocks sollen die Termine für Buchungen "
 "gesperrt werden?"
@@ -9489,7 +9498,7 @@ msgstr "Welcome to Courseware"
 msgid "Wird geladen"
 msgstr "Loading"
 
-#: resources/vue/components/ConsultationCreator.vue:511
+#: resources/vue/components/ConsultationCreator.vue:509
 msgid ""
 "Wird hier ein Text eingegeben, so müssen Buchende bestätigen, dass sie "
 "diesen Text gelesen haben."
@@ -9713,8 +9722,8 @@ msgstr "Last changed on"
 msgid "Zuletzt bearbeitet von"
 msgstr "Last modified by"
 
-#: resources/vue/components/WikiEditor.vue:31
-#: resources/vue/components/WikiEditor.vue:73
+#: resources/vue/components/WikiEditor.vue:32
+#: resources/vue/components/WikiEditor.vue:72
 msgid "Zuletzt gespeichert"
 msgstr "Last saved"
 
