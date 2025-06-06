@@ -310,6 +310,7 @@ class Course_RoomRequestsController extends AuthenticatedController
                 $this->available_properties = $this->category->getRequestableProperties();
             }
             $this->preparation_time = $this->fromSession('preparation_time');
+            $this->subsequent_time  = $this->fromSession('subsequent_time');
             $this->comment = $this->fromSession('comment');
             $this->request->category_id = $this->fromSession('room_category_id');
 
@@ -531,7 +532,8 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->toSession('selected_properties', $this->selected_properties);
         }
 
-        $this->preparation_time = intval($this->request->preparation_time / 60);
+        $this->preparation_time = $this->request->preparation_time / 60;
+        $this->subsequent_time  = $this->request->subsequent_time / 60;
         $this->reply_lecturers = $this->request->reply_recipients === ResourceRequest::REPLY_LECTURER;
         $this->comment = $this->request->comment;
 
@@ -557,7 +559,9 @@ class Course_RoomRequestsController extends AuthenticatedController
             CSRFProtection::verifyUnsafeRequest();
 
             $this->preparation_time = Request::int('preparation_time', 0);
+            $this->subsequent_time  = Request::int('subsequent_time', 0);
             $this->request->preparation_time = $this->preparation_time * 60;
+            $this->request->subsequent_time  = $this->subsequent_time * 60;
             $this->request->comment = Request::get('comment');
 
             if (Request::get('reply_lecturers')) {

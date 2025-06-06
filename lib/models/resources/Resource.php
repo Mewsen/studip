@@ -444,6 +444,8 @@ class Resource extends SimpleORMap implements StudipItem
      * @param string $description
      * @param string $internal_comment
      * @param int $booking_type
+     * @param int $subsequent_time
+     *
      * @return ResourceBooking
      * @see Resource::createBooking
      */
@@ -454,7 +456,8 @@ class Resource extends SimpleORMap implements StudipItem
         $preparation_time = 0,
         $description = '',
         $internal_comment = '',
-        $booking_type = ResourceBooking::TYPE_NORMAL
+        $booking_type = ResourceBooking::TYPE_NORMAL,
+        $subsequent_time = 0
     )
     {
         return $this->createBooking(
@@ -472,7 +475,10 @@ class Resource extends SimpleORMap implements StudipItem
             $preparation_time,
             $description,
             $internal_comment,
-            $booking_type
+            $booking_type,
+            false,
+            '',
+            $subsequent_time
         );
     }
 
@@ -491,6 +497,10 @@ class Resource extends SimpleORMap implements StudipItem
      *     (the default) the preparation time starts with the start of the
      *     requested time.
      * @param bool $notify_lecturers
+     * @param int $subsequent_time The time after the booking (in seconds)
+     *     that is reserved for cleaning up or similar activities after the
+     *     booking.
+     *
      * @return ResourceBooking[] A list of resource bookings
      *     matching the request.
      * @throws ResourceRequestException if the request could not be marked
@@ -507,7 +517,8 @@ class Resource extends SimpleORMap implements StudipItem
         $internal_comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
         $prepend_preparation_time = false,
-        $notify_lecturers = false
+        $notify_lecturers = false,
+        $subsequent_time = 0
     )
     {
         $course_dates = $request->getAffectedDates();
@@ -534,7 +545,10 @@ class Resource extends SimpleORMap implements StudipItem
                     $preparation_time,
                     $description,
                     $internal_comment,
-                    $booking_type
+                    $booking_type,
+                    false,
+                    '',
+                    $subsequent_time
                 );
 
                 if ($booking instanceof ResourceBooking) {
@@ -567,7 +581,10 @@ class Resource extends SimpleORMap implements StudipItem
                     $preparation_time,
                     $description,
                     $internal_comment,
-                    $booking_type
+                    $booking_type,
+                    false,
+                    '',
+                    $subsequent_time
                 );
 
                 if ($booking instanceof ResourceBooking) {
@@ -596,7 +613,10 @@ class Resource extends SimpleORMap implements StudipItem
                 $preparation_time,
                 $description,
                 $internal_comment,
-                $booking_type
+                $booking_type,
+                false,
+                '',
+                $subsequent_time
             );
 
             if ($booking instanceof ResourceBooking) {
@@ -666,6 +686,10 @@ class Resource extends SimpleORMap implements StudipItem
      *     shall take place. This is only used when a booking with repetitions
      *     shall only take place on some weekdays.
      *
+     * @param int $subsequent_time The time after the booking (in seconds)
+     *      that is reserved for cleaning up or similar activities after the
+     *      booking.
+     *
      * @return ResourceBooking object.
      * @throws InvalidArgumentException If no time ranges are specified
      *     or if there is an error regarding the time ranges.
@@ -680,17 +704,18 @@ class Resource extends SimpleORMap implements StudipItem
      */
     public function createBooking(
         User $user,
-        $range_id = null,
-        $time_ranges = [],
-        $repetition_interval = null,
-        $repetition_amount = 0,
-        $repetition_end_date = null,
-        $preparation_time = 0,
-        $description = '',
-        $internal_comment = '',
-        $booking_type = ResourceBooking::TYPE_NORMAL,
-        $force_booking = false,
-        string $weekdays = ''
+        string $range_id = null,
+        array $time_ranges = [],
+        ?DateInterval $repetition_interval = null,
+        int $repetition_amount = 0,
+        DateTime|string|null $repetition_end_date = null,
+        int $preparation_time = 0,
+        string $description = '',
+        string $internal_comment = '',
+        int $booking_type = ResourceBooking::TYPE_NORMAL,
+        bool $force_booking = false,
+        string $weekdays = '',
+        int $subsequent_time = 0
     )
     {
         if (!is_array($time_ranges)) {
@@ -855,10 +880,15 @@ class Resource extends SimpleORMap implements StudipItem
         if ($preparation_time) {
             $booking->preparation_time = $preparation_time;
         } else {
-            $booking->preparation_time = '0';
+            $booking->preparation_time = 0;
+        }
+        if ($subsequent_time) {
+            $booking->subsequent_time = $subsequent_time;
+        } else {
+            $booking->subsequent_time = 0;
         }
         $booking->internal_comment = $internal_comment;
-        $booking->booking_type     = (int)$booking_type;
+        $booking->booking_type     = $booking_type;
 
         //We can finally store the new booking.
 
@@ -932,6 +962,10 @@ class Resource extends SimpleORMap implements StudipItem
      *     the begin of the requested time range. This parameter must be
      *     specified in seconds. Only positive values are accepted.
      *
+     * @param int $subsequent_time The time after the booking (in seconds)
+     *       that is reserved for cleaning up or similar activities after the
+     *       booking.
+     *
      * @return ResourceRequest A resource request object.
      * @throws AccessDeniedException If the user is not permitted
      *     to request this resource.
@@ -949,7 +983,8 @@ class Resource extends SimpleORMap implements StudipItem
         DateTime $begin,
         DateTime $end,
         $comment = '',
-        $preparation_time = 0
+        $preparation_time = 0,
+        $subsequent_time = 0
     )
     {
         //All users are permitted to create a request,
@@ -989,11 +1024,12 @@ class Resource extends SimpleORMap implements StudipItem
 
         $request->begin            = $begin->getTimestamp();
         $request->end              = $end->getTimestamp();
-        $request->preparation_time = (
-        $preparation_time > 0
+        $request->preparation_time = $preparation_time > 0
             ? $preparation_time
-            : 0
-        );
+            : 0;
+        $request->subsequent_time  = $subsequent_time > 0
+            ? $subsequent_time
+            : 0;
 
         $request->closed  = '0';
         $request->comment = $comment;
@@ -1033,6 +1069,10 @@ class Resource extends SimpleORMap implements StudipItem
      *     the begin of the requested time range. This parameter must be
      *     specified in seconds. Only positive values are accepted.
      *
+     * @param int $subsequent_time The time after the booking (in seconds)
+     *       that is reserved for cleaning up or similar activities after the
+     *       booking.
+     *
      * @return ResourceRequest A resource request object.
      * @throws InvalidArgumentException If $date_range_id is not set.
      *     or no object which can provide at least one time range
@@ -1050,7 +1090,8 @@ class Resource extends SimpleORMap implements StudipItem
         $date_range_ids = null,
         $comment = '',
         $properties = [],
-        $preparation_time = 0
+        $preparation_time = 0,
+        $subsequent_time = 0
     )
     {
         if (!$date_range_ids) {
@@ -1144,11 +1185,12 @@ class Resource extends SimpleORMap implements StudipItem
         $request->category_id      = $this->category_id;
         $request->user_id          = $user->id;
         $request->comment          = $comment;
-        $request->preparation_time = (
-        $preparation_time > 0
+        $request->preparation_time = $preparation_time > 0
             ? $preparation_time
-            : 0
-        );
+            : 0;
+        $request->subsequent_time  = $subsequent_time > 0
+            ? $subsequent_time
+            : 0;
         $request->closed           = '0';
 
         //Resolve the date range ID and set the

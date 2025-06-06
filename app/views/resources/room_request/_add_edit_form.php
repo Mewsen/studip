@@ -33,8 +33,13 @@
             </label>
         </section>
         <label>
-            <?= _('Rüstzeit') ?>
+            <?= _('Rüstzeit vor der Buchung (in Minuten)') ?>
             <input type="number" name="preparation_time" value="<?= htmlReady($preparation_time) ?>" min="0"
+                   max="<?= htmlReady($max_preparation_time) ?>" class="size-s">
+        </label>
+        <label>
+            <?= _('Rüstzeit nach der Buchung (in Minuten)') ?>
+            <input type="number" name="subsequent_time" value="<?= htmlReady($subsequent_time) ?>" min="0"
                    max="<?= htmlReady($max_preparation_time) ?>" class="size-s">
         </label>
         <label>

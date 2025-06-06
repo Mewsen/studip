@@ -6,7 +6,7 @@
 <dl>
     <dt><?= _('Termine') ?>:</dt>
     <dd><?= $request->getDateString() ?></dd>
-    <dt><?= _('Rüstzeit')?>:</dt>
+    <dt><?= !empty($timesrooms_page) ? _('Rüstzeit vor dem Termin') : _('Rüstzeit vor der Buchung') ?>:</dt>
     <dd>
         <? $preparation_time_minutes = intval($request->preparation_time / 60) ?>
         <?= sprintf(
@@ -16,6 +16,18 @@
                 $preparation_time_minutes
             ),
             $preparation_time_minutes
+        ) ?>
+    </dd>
+    <dt><?= !empty($timesrooms_page) ? _('Rüstzeit nach dem Termin') : _('Rüstzeit nach der Buchung') ?>:</dt>
+    <dd>
+        <? $subsequent_time_minutes = intval($request->subsequent_time / 60) ?>
+        <?= sprintf(
+            ngettext(
+                '%d Minute',
+                '%d Minuten',
+                $subsequent_time_minutes
+            ),
+            $subsequent_time_minutes
         ) ?>
     </dd>
     <? if ($request instanceof RoomRequest): ?>

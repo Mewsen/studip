@@ -58,9 +58,15 @@
                     <?= _('Sonstiges') ?>
                 </legend>
                 <label>
-                    <?= _('Rüstzeit (in Minuten)') ?>
+                    <?= _('Rüstzeit vor dem Termin (in Minuten)') ?>
                     <input type="number" name="preparation_time"
                            value="<?= htmlReady($preparation_time) ?>"
+                           min="0" max="<?= htmlReady($max_preparation_time) ?>">
+                </label>
+                <label>
+                    <?= _('Rüstzeit nach dem Termin (in Minuten)') ?>
+                    <input type="number" name="subsequent_time"
+                           value="<?= htmlReady($subsequent_time) ?>"
                            min="0" max="<?= htmlReady($max_preparation_time) ?>">
                 </label>
 

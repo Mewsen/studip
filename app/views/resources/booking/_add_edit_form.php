@@ -161,9 +161,16 @@
 
                 <? if ($booking_type != ResourceBooking::TYPE_LOCK): ?>
                     <label>
-                        <?= _('Rüstzeit (Minuten)') ?>
+                        <?= _('Rüstzeit vor der Buchung (in Minuten)') ?>
                         <input type="number" name="preparation_time"
                                value="<?= htmlReady($preparation_time) ?>"
+                               min="0"
+                               max="<?= htmlReady($max_preparation_time) ?>">
+                    </label>
+                    <label>
+                        <?= _('Rüstzeit nach der Buchung (in Minuten)') ?>
+                        <input type="number" name="subsequent_time"
+                               value="<?= htmlReady($subsequent_time) ?>"
                                min="0"
                                max="<?= htmlReady($max_preparation_time) ?>">
                     </label>

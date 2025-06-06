@@ -553,18 +553,20 @@ class Room extends Resource
      */
     public function createRequest(
         User $user,
-        $date_range_id = null,
+        $date_range_ids = null,
         $comment = '',
         $properties = [],
-        $preparation_time = 0
+        $preparation_time = 0,
+        $subsequent_time = 0
     )
     {
         $request = parent::createRequest(
             $user,
-            $date_range_id,
+            $date_range_ids,
             $comment,
             $properties,
-            $preparation_time
+            $preparation_time,
+            $subsequent_time
         );
 
         return RoomRequest::build($request, false);

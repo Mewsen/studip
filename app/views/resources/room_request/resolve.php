@@ -131,29 +131,21 @@
                         <? endif ?>
                     </dd>
                     <? if ($request->preparation_time) : ?>
-                        <dt><?= _('Rüstzeit') ?></dt>
+                        <dt><?= _('Rüstzeit vor der Buchung') ?></dt>
                         <dd>
                             <?= htmlReady(sprintf(
-                                ngettext('%d Minute', '%d Minuten', (int)$request->preparation_time / 60),
-                                $request->preparation_time / 60
+                                ngettext('%d Minute','%d Minuten', (int)$request->preparation_time / 60),
+                                (int)$request->preparation_time / 60
                             )) ?>
                         </dd>
                     <? endif ?>
-
-                    <? if (isset($room_request) && $room_request->preparation_time): ?>
-                        <? $preparation_time_minutes = (int)$room_request->preparation_time / 60 ?>
-                        <dt><?= _('Rüstzeit') ?></dt>
+                    <? if ($request->subsequent_time) : ?>
+                        <dt><?= _('Rüstzeit nach der Buchung') ?></dt>
                         <dd>
-                            <?= htmlReady(
-                                sprintf(
-                                    ngettext(
-                                        '%d Minute',
-                                        '%d Minuten',
-                                        $preparation_time_minutes
-                                    ),
-                                    $preparation_time_minutes
-                                )
-                            ) ?>
+                            <?= htmlReady(sprintf(
+                                ngettext('%d Minute','%d Minuten',$request->subsequent_time / 60),
+                                (int)$request->subsequent_time / 60
+                            )) ?>
                         </dd>
                     <? endif ?>
                     <? if ($request->properties) : ?>

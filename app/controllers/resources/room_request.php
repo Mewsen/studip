@@ -248,8 +248,8 @@ class Resources_RoomRequestController extends AuthenticatedController
 
                 if (empty($this->filter['request_periods'])) {
                     $sql .= ' OR (
-                        CAST(resource_requests.begin AS SIGNED) - resource_requests.preparation_time < :semester_end
-                        AND resource_requests.end > :begin
+                        CAST(resource_requests.begin AS SIGNED) - CAST(resource_requests.preparation_time AS SIGNED) < :semester_end
+                        AND CAST(resource_requests.end AS SIGNED) + CAST(resource_requests.subsequent_time AS SIGNED) > :begin
                         )';
                 }
                 $sql .= ') ';
@@ -661,6 +661,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         $this->end_date_str = $end->format('d.m.Y');
         $this->end_time_str = $end->format('H:i');
         $this->preparation_time = 0;
+        $this->subsequent_time  = 0;
         $this->max_preparation_time = $config->RESOURCES_MAX_PREPARATION_TIME;
         $this->comment = '';
 
@@ -677,6 +678,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $this->end_date_str = Request::get('end_date');
             $this->end_time_str = Request::get('end_time');
             $this->preparation_time = Request::int('preparation_time', 0);
+            $this->subsequent_time  = Request::int('subsequent_time', 0);
 
             if (!$this->begin_date_str) {
                 PageLayout::postError(
@@ -702,7 +704,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
                 return;
             }
-            if ($this->preparation_time > $this->max_preparation_time) {
+            if ($this->preparation_time > $this->max_preparation_time || $this->subsequent_time > $this->max_preparation_time) {
                 PageLayout::postError(
                     sprintf(
                         _('Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d Minuten!'),
@@ -751,7 +753,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                     $new_begin,
                     $new_end,
                     $this->comment,
-                    $this->preparation_time * 60
+                    $this->preparation_time * 60,
+                    $this->subsequent_time * 60
                 );
 
                 if ($request) {
@@ -870,15 +873,14 @@ class Resources_RoomRequestController extends AuthenticatedController
         $end->setTimestamp($this->request->end);
 
         $config = Config::get();
-        $this->begin_date_str = $begin->format('d.m.Y');
-        $this->begin_time_str = $begin->format('H:i');
-        $this->end_date_str = $end->format('d.m.Y');
-        $this->end_time_str = $end->format('H:i');
-        $this->preparation_time = 0;
+        $this->begin_date_str       = $begin->format('d.m.Y');
+        $this->begin_time_str       = $begin->format('H:i');
+        $this->end_date_str         = $end->format('d.m.Y');
+        $this->end_time_str         = $end->format('H:i');
+        $this->preparation_time     = $this->request->preparation_time / 60;
+        $this->subsequent_time      = $this->request->subsequent_time / 60;
         $this->max_preparation_time = $config->RESOURCES_MAX_PREPARATION_TIME;
-        $this->comment = '';
-        $this->comment = $this->request->comment;
-        $this->preparation_time = intval($this->request->preparation_time / 60);
+        $this->comment              = $this->request->comment;
 
         $this->show_form = true;
 
@@ -888,11 +890,12 @@ class Resources_RoomRequestController extends AuthenticatedController
             //resource request (or a room request if the resource
             //is a room).
 
-            $this->begin_date_str = Request::get('begin_date');
-            $this->begin_time_str = Request::get('begin_time');
-            $this->end_date_str = Request::get('end_date');
-            $this->end_time_str = Request::get('end_time');
-            $this->preparation_time = Request::get('preparation_time');
+            $this->begin_date_str   = Request::get('begin_date');
+            $this->begin_time_str   = Request::get('begin_time');
+            $this->end_date_str     = Request::get('end_date');
+            $this->end_time_str     = Request::get('end_time');
+            $this->preparation_time = Request::int('preparation_time', 0);
+            $this->subsequent_time  = Request::int('subsequent_time', 0);
 
             if (!$this->begin_date_str) {
                 PageLayout::postError(
@@ -918,7 +921,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
                 return;
             }
-            if ($this->preparation_time > $this->max_preparation_time) {
+            if ($this->preparation_time > $this->max_preparation_time || $this->subsequent_time > $this->max_preparation_time) {
                 PageLayout::postError(
                     sprintf(
                         _('Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d Minuten!'),
@@ -960,10 +963,11 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $end_time_arr[2] ?? 0
             );
 
-            $this->request->begin = $new_begin->getTimestamp();
-            $this->request->end = $new_end->getTimestamp();
-            $this->request->comment = $this->comment;
+            $this->request->begin            = $new_begin->getTimestamp();
+            $this->request->end              = $new_end->getTimestamp();
+            $this->request->comment          = $this->comment;
             $this->request->preparation_time = $this->preparation_time * 60;
+            $this->request->subsequent_time  = $this->subsequent_time * 60;
 
             if ($this->request->isDirty()) {
                 $successfully_stored = $this->request->store();
@@ -1541,7 +1545,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                                 null,
                                 0,
                                 $course_date->end_time,
-                                $this->request->preparation_time
+                                $this->request->preparation_time,
+                                '',
+                                '',
+                                ResourceBooking::TYPE_NORMAL,
+                                false,
+                                '',
+                                $this->request->subsequent_time
                             );
                             if ($booking instanceof ResourceBooking) {
                                 $bookings[] = $booking;
@@ -1591,7 +1601,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                                         null,
                                         0,
                                         $date->end_time,
-                                        $this->request->preparation_time
+                                        $this->request->preparation_time,
+                                        '',
+                                        '',
+                                        ResourceBooking::TYPE_NORMAL,
+                                        false,
+                                        '',
+                                        $this->request->subsequent_time
                                     );
                                     if ($booking instanceof ResourceBooking) {
                                         $bookings[] = $booking;
@@ -1635,7 +1651,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                             null,
                             0,
                             null,
-                            $this->request->preparation_time
+                            $this->request->preparation_time,
+                            '',
+                            '',
+                            ResourceBooking::TYPE_NORMAL,
+                            false,
+                            '',
+                            $this->request->subsequent_time
                         );
                         if ($booking instanceof ResourceBooking) {
                             $bookings[] = $booking;
@@ -1875,7 +1897,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                 _('Sitzplätze'),
                 _('Wochentag'),
                 _('Uhrzeit'),
-                _('Rüstzeit'),
+                _('Rüstzeit vor der Buchung'),
+                _('Rüstzeit nach der Buchung'),
                 _('Anzahl der Termine'),
                 _('Art der Anfrage'),
                 _('Datum des ersten Termins'),
@@ -2001,7 +2024,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                     $room_seats,                       //Sitzplätze
                     $date_row['day_of_week'],          //Wochentag
                     $date_row['time_string'],          //Uhrzeit
-                    ($request->preparation_time / 60), //Rüstzeit
+                    ($request->preparation_time / 60), //Rüstzeit vor der Buchung
+                    ($request->subsequent_time / 60),  //Rüstzeit nach der Buchung
                     $date_row['date_amount'],          //Anzahl Termine
                     $request->getTypeString(true),     //Art der Anfrage
                     $date_row['first_date_str'],       //Datum des ersten Termins
@@ -2177,7 +2201,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                     null,
                     0,
                     $course_date->end_time,
-                    $this->request->preparation_time
+                    $this->request->preparation_time,
+                    '',
+                    '',
+                    ResourceBooking::TYPE_NORMAL,
+                    false,
+                    '',
+                    $this->request->subsequent_time
                 );
                 if ($booking instanceof ResourceBooking) {
                     $bookings[] = $booking;
@@ -2214,7 +2244,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                             null,
                             0,
                             $date->end_time,
-                            $this->request->preparation_time
+                            $this->request->preparation_time,
+                            '',
+                            '',
+                            ResourceBooking::TYPE_NORMAL,
+                            false,
+                            '',
+                            $this->request->subsequent_time
                         );
                         if ($booking instanceof ResourceBooking) {
                             $bookings[] = $booking;
@@ -2250,7 +2286,13 @@ class Resources_RoomRequestController extends AuthenticatedController
                     null,
                     0,
                     null,
-                    $this->request->preparation_time
+                    $this->request->preparation_time,
+                    '',
+                    '',
+                    ResourceBooking::TYPE_NORMAL,
+                    false,
+                    '',
+                    $this->request->subsequent_time
                 );
                 if ($booking instanceof ResourceBooking) {
                     $bookings[] = $booking;

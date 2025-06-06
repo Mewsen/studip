@@ -74,7 +74,8 @@ class BrokenResource extends Resource
         $preparation_time = 0,
         $description = '',
         $internal_comment = '',
-        $booking_type = ResourceBooking::TYPE_NORMAL
+        $booking_type = ResourceBooking::TYPE_NORMAL,
+        $subsequent_time = 0
     )
     {
         return null;
@@ -88,7 +89,8 @@ class BrokenResource extends Resource
         $internal_comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
         $prepend_preparation_time = false,
-        $notify_lecturers = false
+        $notify_lecturers = false,
+        $subsequent_time = 0
     )
     {
         return null;
@@ -106,8 +108,10 @@ class BrokenResource extends Resource
         $internal_comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
         $force_booking = false,
-        string $weekdays = ''
-    ) {
+        string $weekdays = '',
+        int $subsequent_time = 0
+    )
+    {
         return null;
     }
 
@@ -116,7 +120,8 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $comment = '',
-        $preparation_time = 0
+        $preparation_time = 0,
+        $subsequent_time = 0
     )
     {
         return null;
@@ -128,7 +133,8 @@ class BrokenResource extends Resource
         $date_range_ids = null,
         $comment = '',
         $properties = [],
-        $preparation_time = 0
+        $preparation_time = 0,
+        $subsequent_time = 0
     )
     {
         return null;

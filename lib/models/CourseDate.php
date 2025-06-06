@@ -249,11 +249,18 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     /**
      * Books a room for the course date.
      *
-     * @param Room $room Room The room to be booked.
-     * @param int $preparation_time int The preparation time for the booking.
+     * @param Room $room The room to be booked.
+     * @param int $preparation_time The preparation time for the booking.
+     * @param int $subsequent_time The time after the booking for cleaning up
+     *     or similar tasks.
+     *
      * @return bool True, if the booking succeeded, false otherwise.
      */
-    public function bookRoom(Room $room, int $preparation_time = 0) : bool
+    public function bookRoom(
+        Room $room,
+        int $preparation_time = 0,
+        int $subsequent_time  = 0
+    ) : bool
     {
         //Check the permissions: Is the current user allowed to book the room?
         if (!$room->userHasBookingRights(User::findCurrent(), $this->date, $this->end_time)) {
@@ -270,7 +277,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             $this->room_booking->begin            = $this->date;
             $this->room_booking->end              = $this->end_time;
             $this->room_booking->resource_id      = $room->id;
-            $this->room_booking->preparation_time = $preparation_time;
+            $this->room_booking->preparation_time = $preparation_time * 60;
+            $this->room_booking->subsequent_time  = $subsequent_time * 60;
             $this->room_booking->store();
         } else {
             $room->createBooking(
@@ -280,7 +288,13 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
                 null,
                 0,
                 null,
-                $preparation_time
+                $preparation_time * 60,
+                '',
+                '',
+                ResourceBooking::TYPE_NORMAL,
+                false,
+                '',
+                $subsequent_time * 60
             );
         }
 

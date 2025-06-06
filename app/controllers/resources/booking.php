@@ -152,6 +152,7 @@ class Resources_BookingController extends AuthenticatedController
         $this->resource = $this->resource->getDerivedClassInstance();
         $this->max_preparation_time = Config::get()->RESOURCES_MAX_PREPARATION_TIME;
         $this->preparation_time = intval($this->request->preparation_time / 60);
+        $this->subsequent_time  = intval($this->request->subsequent_time / 60);
         $this->notify_lecturers = '1';
         $this->description = '';
         $this->internal_comment = '';
@@ -183,7 +184,8 @@ class Resources_BookingController extends AuthenticatedController
                     $this->internal_comment,
                     0,
                     true,
-                    $this->notify_lecturers
+                    $this->notify_lecturers,
+                    $this->subsequent_time
                 );
 
                 if ($bookings && is_array($bookings)) {
@@ -301,7 +303,7 @@ class Resources_BookingController extends AuthenticatedController
         DateTime $begin,
         DateTime $end,
         DateTime $repetition_end,
-        $preparation_time = 0,
+        int $preparation_time = 0,
         $description = '',
         $comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
@@ -310,7 +312,8 @@ class Resources_BookingController extends AuthenticatedController
         $notification_enabled = false,
         $included_room_parts = [],
         $overwrite_bookings = false,
-        $weekdays = ''
+        $weekdays = '',
+        int $subsequent_time = 0
     )
     {
         $result = [
@@ -354,7 +357,8 @@ class Resources_BookingController extends AuthenticatedController
                                 ? $overwrite_bookings
                                 : false
                             ),
-                            $weekdays
+                            $weekdays,
+                            $subsequent_time
                         );
                     } else {
                         $matching_bookings = ResourceBooking::findByResourceAndTimeRanges(
@@ -400,7 +404,8 @@ class Resources_BookingController extends AuthenticatedController
                                     ? $overwrite_bookings
                                     : false
                                 ),
-                                $weekdays
+                                $weekdays,
+                                $subsequent_time
                             );
                         }
                     }
@@ -410,6 +415,7 @@ class Resources_BookingController extends AuthenticatedController
                 $a->begin = $begin->getTimestamp();
                 $a->end = $end->getTimestamp();
                 $a->preparation_time = $preparation_time;
+                $a->subsequent_time  = $subsequent_time;
                 $a->description = $description;
                 $a->internal_comment = $comment;
                 $a->booking_type = $booking_type;
@@ -471,7 +477,8 @@ class Resources_BookingController extends AuthenticatedController
                         ? $overwrite_bookings
                         : false
                     ),
-                    $weekdays
+                    $weekdays,
+                    $subsequent_time
                 );
                 $result['bookings'] = [$booking];
             } catch (Exception $e) {
@@ -519,7 +526,9 @@ class Resources_BookingController extends AuthenticatedController
                                     $booking_type == ResourceBooking::TYPE_LOCK
                                     ? $overwrite_bookings
                                     : false
-                                )
+                                ),
+                                '',
+                                $subsequent_time
                             );
                         } catch (ResourceBookingOverlapException $e) {
                             $room_part_errors[] = sprintf(
@@ -1020,12 +1029,14 @@ class Resources_BookingController extends AuthenticatedController
         if ($mode == 'add') {
             $this->booking_style = $this->booking_style ?: "single";
             $this->preparation_time = '0';
+            $this->subsequent_time  = '0';
             $this->block_booking = [];
             $this->repetition_style = 'weekly';
             $this->repetition_interval = '1';
             $this->internal_comment = '';
         } elseif (($mode == 'edit') || ($mode == 'duplicate')) {
             $this->preparation_time = $this->booking->preparation_time / 60;
+            $this->subsequent_time  = $this->booking->subsequent_time / 60;
             $this->block_booking = [];
             $interval = $this->booking->getRepetitionInterval();
             if (!$interval) {
@@ -1082,7 +1093,8 @@ class Resources_BookingController extends AuthenticatedController
             $this->semester_id = Request::get('semester_id');
             $this->selected_end = Request::get('selected_end');
 
-            $this->preparation_time = Request::get('preparation_time');
+            $this->preparation_time = Request::int('preparation_time', 0);
+            $this->subsequent_time  = Request::int('subsequent_time', 0);
             $this->notification_enabled = Request::get('notification_enabled');
             $this->booking_style = Request::get('booking_style');
             $this->block_booking = Request::getArray('block_booking');
@@ -1186,7 +1198,8 @@ class Resources_BookingController extends AuthenticatedController
             }
 
             //Validate the preparation time:
-            if ($this->preparation_time > $this->max_preparation_time) {
+            if ($this->preparation_time > $this->max_preparation_time
+                || $this->subsequent_time > $this->max_preparation_time) {
                 PageLayout::postError(
                     sprintf(
                         _('Es sind maximal %d Minuten für die Rüstzeit erlaubt!'),
@@ -1254,7 +1267,7 @@ class Resources_BookingController extends AuthenticatedController
                 return;
             }
 
-            if ($this->preparation_time < 0) {
+            if ($this->preparation_time < 0 || $this->subsequent_time < 0) {
                 PageLayout::postError(
                     _('Die Rüstzeit darf keinen negativen Wert enthalten!')
                 );
@@ -1414,7 +1427,7 @@ class Resources_BookingController extends AuthenticatedController
                         $interval['begin'],
                         $interval['end'],
                         $this->repetition_end,
-                        intval($this->preparation_time) * 60,
+                        $this->preparation_time * 60,
                         $this->description,
                         $this->internal_comment,
                         $this->booking_type,
@@ -1427,7 +1440,8 @@ class Resources_BookingController extends AuthenticatedController
                             : []
                         ),
                         $this->overwrite_bookings,
-                        $this->repetition_interval === 'workdays' ? '12345' : ''
+                        $this->repetition_interval === 'workdays' ? '12345' : '',
+                        $this->subsequent_time * 60
                     );
                     $errors = array_merge($errors, $results['errors']);
                     $room_part_errors = array_merge(

@@ -38,6 +38,7 @@
  * @property int $chdate database column
  * @property string|null $internal_comment database column
  * @property int $preparation_time database column
+ * @property int $subsequent_time database column
  * @property int $booking_type database column
  * @property string $booking_user_id database column
  * @property string $repetition_interval database column
@@ -51,6 +52,8 @@
  * @property mixed $room_name additional field
  * @property-read mixed $real_begin additional field
  * @property-read mixed $real_begin_dt additional field
+ * @property-read mixed $real_end additional field
+ * @property-read mixed $real_end_dt additional field
  */
 class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calendar\EventSource
 {
@@ -97,11 +100,23 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 return $booking->begin - $booking->preparation_time;
             }
         ];
+        $config['additional_fields']['real_end'] = [
+            'get' => function (ResourceBooking $booking) {
+                return $booking->end + $booking->subsequent_time;
+            }
+        ];
         $config['additional_fields']['real_begin_dt'] = [
             'get' => function (ResourceBooking $booking) {
                 $real_begin = new DateTime();
                 $real_begin->setTimestamp($booking->real_begin);
                 return $real_begin;
+            }
+        ];
+        $config['additional_fields']['real_end_dt'] = [
+            'get' => function (ResourceBooking $booking) {
+                $real_end = new DateTime();
+                $real_end->setTimestamp($booking->real_end);
+                return $real_end;
             }
         ];
 
@@ -491,6 +506,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             || $this->begin < $this->getPristineValue('begin')
             || $this->end > $this->getPristineValue('end')
             || $this->preparation_time > $this->getPristineValue('preparation_time')
+            || $this->subsequent_time > $this->getPristineValue('subsequent_time')
             || $this->repeat_end > $this->getPristineValue('repeat_end')
         ) {
 
@@ -661,7 +677,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $repetition_begin = new DateTime();
                 $repetition_begin->setTimestamp($this->begin - $this->preparation_time);
                 $date_end = new DateTime();
-                $date_end->setTimestamp($this->end);
+                $date_end->setTimestamp($this->end + $this->subsequent_time);
                 $repetition_end = new DateTime();
                 $repetition_end->setTimestamp($this->repeat_end);
                 $repetition_interval = $this->getRepetitionInterval();
@@ -780,7 +796,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function deleteOverlappingBookings()
     {
         $end = new DateTime();
-        $end->setTimestamp($this->end);
+        $end->setTimestamp($this->real_end);
         $repetition_end = new DateTime();
         $repetition_end->setTimestamp($this->repeat_end);
 
@@ -844,11 +860,11 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             }
         } else {
             $derived_resource = $this->resource->getDerivedClassInstance();
-            if ($derived_resource->userHasPermission($this->booking_user, 'autor', [$this->real_begin_dt, $end])) {
+            if ($derived_resource->userHasPermission($this->booking_user, 'autor', [$this->real_begin_dt, $this->real_end_dt])) {
                 $delete_sql = 'begin < :end AND end > :begin AND resource_id = :resource_id ';
                 $sql_params = [
-                    'begin' => $this->real_begin,
-                    'end' => $end->getTimestamp(),
+                    'begin'       => $this->real_begin,
+                    'end'         => $this->real_end,
                     'resource_id' => $this->resource->id
                 ];
                 if (!$this->isNew()) {
@@ -901,7 +917,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             [
                 [
                     'begin' => $this->real_begin,
-                    'end' => $this->end,
+                    'end'   => $this->real_end,
                 ]
             ],
             [self::TYPE_RESERVATION, self::TYPE_PLANNED],
@@ -1264,6 +1280,11 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
         $booking_end = new DateTime();
         $booking_end->setTimestamp($this->end);
+        if ($this->subsequent_time) {
+            $booking_end->setTimestamp(
+                $this->end + $this->subsequent_time
+            );
+        }
 
         //use begin and end to create the first interval:
         $interval_data[] = [
@@ -1727,12 +1748,36 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
 
         foreach ($time_intervals as $interval) {
             $real_begin = $interval['begin'];
+            $real_end   = $interval['end'];
             if ($this->preparation_time) {
                 $real_begin += $this->preparation_time;
                 $begin = new DateTime();
                 $begin->setTimestamp($interval['begin']);
                 $end = new DateTime();
                 $end->setTimestamp($real_begin);
+                $events[] = new Studip\Calendar\EventData(
+                    $begin,
+                    $end,
+                    _('Rüstzeit'),
+                    ['preparation-time'],
+                    $booking_plan_preparation_fg->__toString(),
+                    $booking_plan_preparation_bg->__toString(),
+                    $booking_is_editable,
+                    'ResourceBookingInterval',
+                    $interval->id,
+                    'ResourceBooking',
+                    $this->id,
+                    'Resource',
+                    $this->resource_id,
+                    $booking_view_urls
+                );
+            }
+            if ($this->subsequent_time) {
+                $real_end += $this->subsequent_time;
+                $begin = new DateTime();
+                $begin->setTimestamp($interval['end']);
+                $end   = new DateTime();
+                $end->setTimestamp($real_end);
                 $events[] = new Studip\Calendar\EventData(
                     $begin,
                     $end,

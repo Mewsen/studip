@@ -36,6 +36,7 @@
  * @property int $begin database column
  * @property int $end database column
  * @property int $preparation_time database column
+ * @property int $subsequent_time database column
  * @property int $marked database column
  * @property SimpleORMapCollection<ResourceRequestProperty> $properties has_many ResourceRequestProperty
  * @property SimpleORMapCollection<ResourceRequestAppointment> $appointments has_many ResourceRequestAppointment
@@ -283,71 +284,74 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
 
         // FIXME this subselect looks unnecessarily complex
         $whole_sql = '
-                SELECT id FROM resource_requests
+                SELECT `id` FROM `resource_requests`
                 WHERE
-                resource_id = :resource_id
+                `resource_id` = :resource_id
         '
             . str_replace(
                 ['BEGIN', 'END'],
-                ['(CAST(begin AS SIGNED) - preparation_time)', 'end'],
-                $time_sql
-            )
-            . $closed_status_sql
-            . '
-                UNION
-                SELECT id FROM resource_requests
-                INNER JOIN termine USING (termin_id)
-                WHERE
-                resource_id = :resource_id
-                   '
-            . str_replace(
-                ['BEGIN', 'END'],
                 [
-                    '(CAST(termine.date AS SIGNED) - resource_requests.preparation_time)',
-                    'termine.end_time'
+                    '(CAST(`begin` AS SIGNED) - CAST(`preparation_time` AS SIGNED))',
+                    '(CAST(`end` AS SIGNED) + CAST(`subsequent_time` AS SIGNED))'
                 ],
                 $time_sql
             )
             . $closed_status_sql
             . '
                 UNION
-                SELECT id FROM resource_requests
-                INNER JOIN termine USING (metadate_id)
+                SELECT `id` FROM `resource_requests`
+                INNER JOIN `termine` USING (`termin_id`)
                 WHERE
-                resource_id = :resource_id
+                `resource_id` = :resource_id
                    '
             . str_replace(
                 ['BEGIN', 'END'],
                 [
-                    '(CAST(termine.date AS SIGNED) - resource_requests.preparation_time)',
-                    'termine.end_time'
+                    '(CAST(`termine`.`date` AS SIGNED) - CAST(`resource_requests`.`preparation_time` AS SIGNED))',
+                    '(CAST(`termine`.`end_time` AS SIGNED) + CAST(`resource_requests`.`subsequent_time` AS SIGNED))'
+                ],
+                $time_sql
+            )
+            . $closed_status_sql
+            . '
+                UNION
+                SELECT `id` FROM `resource_requests`
+                INNER JOIN `termine` USING (`metadate_id`)
+                WHERE
+                `resource_id` = :resource_id
+                   '
+            . str_replace(
+                ['BEGIN', 'END'],
+                [
+                    '(CAST(`termine`.`date` AS SIGNED) - CAST(`resource_requests`.`preparation_time` AS SIGNED))',
+                    '(CAST(`termine`.`end_time` AS SIGNED) + CAST(`resource_requests`.`subsequent_time` AS SIGNED))',
                 ],
                 $time_sql
             )
             . $closed_status_sql
             . '
             UNION
-            SELECT id FROM resource_requests
-            INNER JOIN termine
-            ON resource_requests.course_id = termine.range_id
+            SELECT `id` FROM `resource_requests`
+            INNER JOIN `termine`
+            ON `resource_requests`.`course_id` = `termine`.`range_id`
             WHERE
-            resource_id = :resource_id
+            `resource_id` = :resource_id
                    '
             . str_replace(
                 ['BEGIN', 'END'],
                 [
-                    '(CAST(termine.date AS SIGNED) - resource_requests.preparation_time)',
-                    'termine.end_time'
+                    '(`termine`.`date` - `resource_requests`.`preparation_time`)',
+                    '(`termine`.`end_time` + `resource_requests`.`subsequent_time`)',
                 ],
                 $time_sql
             )
             . $closed_status_sql
             . '
-            GROUP BY id
+            GROUP BY `id`
          '
             . $excluded_request_ids_sql;
         $request_ids = DBManager::get()->fetchFirst($whole_sql, $sql_params);
-        $whole_sql = "resource_requests.id IN(:request_ids)";
+        $whole_sql = "`resource_requests`.`id` IN(:request_ids)";
         $sql_params = ['request_ids' => $request_ids];
         if ($additional_conditions) {
             $whole_sql .= ' AND ' . $additional_conditions;
@@ -355,7 +359,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $sql_params = array_merge($sql_params, $additional_parameters);
             }
         }
-        $whole_sql .= ' ORDER BY mkdate ASC';
+        $whole_sql .= ' ORDER BY `mkdate` ASC';
 
         return [
             'sql'    => $whole_sql,
@@ -929,7 +933,11 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     /**
      * Retrieves the time intervals by looking at metadate objects
      * and other time interval sources and returns them grouped by metadate.
-     * @param bool $with_preparation_time @TODO
+     *
+     * @param bool $with_preparation_and_subsequent_time Whether to include the preparation
+     *     and subsequent time into the time intervals (true) or not (false).
+     *     Defaults to false.
+     *
      * @return mixed[][][] A three-dimensional array with
      *     the following structure:
      *     - The first dimension has the metadate-id as index. For single dates
@@ -948,7 +956,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
      *           'range_id' => The ID of the single date or ResourceRequestAppointment.
      *       ]
      */
-    public function getGroupedTimeIntervals($with_preparation_time = false, $with_past_intervals = true)
+    public function getGroupedTimeIntervals($with_preparation_and_subsequent_time = false, $with_past_intervals = true)
     {
         $now = time();
         if (count($this->appointments)) {
@@ -962,10 +970,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 if (!$with_past_intervals && $appointment->appointment->end_time < $now) {
                     continue;
                 }
-                if ($with_preparation_time) {
+                if ($with_preparation_and_subsequent_time) {
                     $interval = [
                         'begin' => $appointment->appointment->date - $this->preparation_time,
-                        'end'   => $appointment->appointment->end_time
+                        'end'   => $appointment->appointment->end_time + $this->subsequent_time
                     ];
                 } else {
                     $interval = [
@@ -991,10 +999,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             if (!$with_past_intervals && $this->date->end_time < $now) {
                 return [];
             }
-            if ($with_preparation_time) {
+            if ($with_preparation_and_subsequent_time) {
                 $interval = [
                     'begin' => $this->date->date - $this->preparation_time,
-                    'end'   => $this->date->end_time
+                    'end'   => $this->date->end_time + $this->subsequent_time
                 ];
             } else {
                 $interval = [
@@ -1030,10 +1038,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 if (!$with_past_intervals && $date->end_time < $now) {
                     continue;
                 }
-                if ($with_preparation_time) {
+                if ($with_preparation_and_subsequent_time) {
                     $interval = [
                         'begin' => $date->date - $this->preparation_time,
-                        'end'   => $date->end_time
+                        'end'   => $date->end_time + $this->subsequent_time
                     ];
                 } else {
                     $interval = [
@@ -1061,10 +1069,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                             if (!$with_past_intervals && $date->end_time < $now) {
                                 continue;
                             }
-                            if ($with_preparation_time) {
+                            if ($with_preparation_and_subsequent_time) {
                                 $interval = [
                                     'begin' => $date->date - $this->preparation_time,
-                                    'end'   => $date->end_time
+                                    'end'   => $date->end_time + $this->subsequent_time
                                 ];
                             } else {
                                 $interval = [
@@ -1094,10 +1102,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                         //Metadates are already handled above.
                         continue;
                     }
-                    if ($with_preparation_time) {
+                    if ($with_preparation_and_subsequent_time) {
                         $interval = [
                             'begin' => $date->date - $this->preparation_time,
-                            'end'   => $date->end_time
+                            'end'   => $date->end_time + $this->subsequent_time
                         ];
                     } else {
                         $interval = [
@@ -1121,10 +1129,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             if (!$with_past_intervals && $this->end < $now) {
                 return [];
             }
-            if ($with_preparation_time) {
+            if ($with_preparation_and_subsequent_time) {
                 $interval = [
                     'begin' => $this->begin - $this->preparation_time,
-                    'end'   => $this->end
+                    'end'   => $this->end + $this->subsequent_time
                 ];
             } else {
                 $interval = [
@@ -1149,8 +1157,9 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     /**
      * Retrieves the time intervals for this request.
      *
-     * @param bool $with_preparation_time Whether the preparation time
-     *     of the request shall be prepended to the begin timestamp (true)
+     * @param bool $with_preparation_and_subsequent_time Whether the preparation time
+     *     of the request shall be prepended to the begin timestamp and the subsequent
+     *     time shall be appended to the end timestamp of the request (true)
      *     or whether it should not be included at all (false).
      *     Defaults to false.
      *
@@ -1177,7 +1186,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
      *     that are not bound to a course. The range "CourseDate"
      *     can only occur on course-bound requests.
      */
-    public function getTimeIntervals($with_preparation_time = false, $with_range = false, $with_past_intervals = true)
+    public function getTimeIntervals($with_preparation_and_subsequent_time = false, $with_range = false, $with_past_intervals = true)
     {
         $now = time();
         if (count($this->appointments)) {
@@ -1186,10 +1195,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 if (!$with_past_intervals && $appointment->appointment->end_time < $now) {
                     continue;
                 }
-                if ($with_preparation_time) {
+                if ($with_preparation_and_subsequent_time) {
                     $interval = [
                         'begin' => $appointment->appointment->date - $this->preparation_time,
-                        'end'   => $appointment->appointment->end_time
+                        'end'   => $appointment->appointment->end_time + $this->subsequent_time
                     ];
                 } else {
                     $interval = [
@@ -1213,10 +1222,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             if (!$with_past_intervals && $this->date->end_time < $now) {
                 return [];
             }
-            if ($with_preparation_time) {
+            if ($with_preparation_and_subsequent_time) {
                 $interval = [
                     'begin' => $this->date->date - $this->preparation_time,
-                    'end'   => $this->date->end_time
+                    'end'   => $this->date->end_time + $this->subsequent_time
                 ];
             } else {
                 $interval = [
@@ -1237,10 +1246,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 if (!$with_past_intervals && $date->end_time < $now) {
                     continue;
                 }
-                if ($with_preparation_time) {
+                if ($with_preparation_and_subsequent_time) {
                     $interval = [
                         'begin' => $date->date - $this->preparation_time,
-                        'end'   => $date->end_time
+                        'end'   => $date->end_time + $this->subsequent_time
                     ];
                 } else {
                     $interval = [
@@ -1264,10 +1273,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     if (!$with_past_intervals && $date->end_time < $now) {
                         continue;
                     }
-                    if ($with_preparation_time) {
+                    if ($with_preparation_and_subsequent_time) {
                         $interval = [
                             'begin' => $date->date - $this->preparation_time,
-                            'end'   => $date->end_time
+                            'end'   => $date->end_time + $this->subsequent_time
                         ];
                     } else {
                         $interval = [
@@ -1289,10 +1298,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             if (!$with_past_intervals && $this->end < $now) {
                 return [];
             }
-            if ($with_preparation_time) {
+            if ($with_preparation_and_subsequent_time) {
                 $interval = [
                     'begin' => $this->begin - $this->preparation_time,
-                    'end'   => $this->end
+                    'end'   => $this->end + $this->subsequent_time
                 ];
             } else {
                 $interval = [
@@ -2328,12 +2337,37 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
 
         foreach ($time_intervals as $interval) {
             $real_begin = $interval['begin'];
+            $real_end   = $interval['end'];
             if ($this->preparation_time) {
-                $real_begin += (int)$this->preparation_time;
+                $real_begin += $this->preparation_time;
                 $begin = new DateTime();
                 $begin->setTimestamp($interval['begin']);
-                $end = new DateTime();
+                $end   = new DateTime();
                 $end->setTimestamp($real_begin);
+                $events[] = new Studip\Calendar\EventData(
+                    $begin,
+                    $end,
+                    _('Rüstzeit'),
+                    ['preparation-time'],
+                    $booking_plan_preparation_fg->__toString(),
+                    $booking_plan_preparation_bg->__toString(),
+                    $request_is_editable,
+                    '',
+                    '',
+                    ResourceRequest::class,
+                    $this->id,
+                    Resource::class,
+                    $this->resource_id,
+                    $request_view_urls,
+                    $request_api_urls
+                );
+            }
+            if ($this->subsequent_time) {
+                $real_end -= $this->subsequent_time;
+                $begin = new DateTime();
+                $begin->setTimestamp($real_end);
+                $end   = new DateTime();
+                $end->setTimestamp($interval['end']);
                 $events[] = new Studip\Calendar\EventData(
                     $begin,
                     $end,
@@ -2356,7 +2390,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $begin = new DateTime();
             $begin->setTimestamp($real_begin);
             $end = new DateTime();
-            $end->setTimestamp($interval['end']);
+            $end->setTimestamp($real_end);
 
             $events[] = new Studip\Calendar\EventData(
                 $begin,

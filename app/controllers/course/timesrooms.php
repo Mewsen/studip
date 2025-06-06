@@ -374,9 +374,13 @@ class Course_TimesroomsController extends AuthenticatedController
         $this->groups          = $this->course->statusgruppen;
         $this->assigned_groups = $this->date->statusgruppen;
 
-        $this->preparation_time = $this->date->room_booking instanceof ResourceBooking
-                                ? $this->date->room_booking->preparation_time / 60
-                                : '0';
+        if ($this->date->room_booking instanceof ResourceBooking) {
+            $this->preparation_time = $this->date->room_booking->preparation_time / 60;
+            $this->subsequent_time  = $this->date->room_booking->subsequent_time / 60;
+        } else {
+            $this->preparation_time = 0;
+            $this->subsequent_time  = 0;
+        }
         $this->max_preparation_time = Config::get()->RESOURCES_MAX_PREPARATION_TIME;
     }
 
@@ -506,9 +510,10 @@ class Course_TimesroomsController extends AuthenticatedController
         if ((Request::option('room') == 'room') || Request::option('room') == 'nochange') {
             $room_id = null;
             $preparation_time = Request::int('preparation_time', 0);
+            $subsequent_time  = Request::int('subsequent_time', 0);
             if (Request::option('room') == 'room') {
                 $room_id = Request::get('room_id');
-                if ($preparation_time > $max_preparation_time) {
+                if ($preparation_time > $max_preparation_time || $subsequent_time > $max_preparation_time) {
                     PageLayout::postError(
                         sprintf(
                             _('Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d Minuten!'),
@@ -526,7 +531,7 @@ class Course_TimesroomsController extends AuthenticatedController
                     $failure = false;
                     if ($room instanceof Room) {
                         try {
-                            $failure = !$termin->bookRoom($room, $preparation_time ?: 0);
+                            $failure = !$termin->bookRoom($room, $preparation_time, $subsequent_time);
                         } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
                             $course = $e->getRange();
                             $message_links = [];
@@ -601,8 +606,11 @@ class Course_TimesroomsController extends AuthenticatedController
                             '<strong>' . htmlReady($termin->getFullName()) . '</strong>'
                         ));
                     }
-                } elseif ($room instanceof Room && $termin->room_booking->preparation_time != ($preparation_time * 60)) {
-                    $termin->bookRoom($room, $preparation_time ?: 0);
+                } elseif ($room instanceof Room
+                    && (
+                        $termin->room_booking->preparation_time != ($preparation_time * 60)
+                        || $termin->room_booking->subsequent_time != ($subsequent_time * 60))) {
+                    $termin->bookRoom($room, $preparation_time, $subsequent_time);
                 }
             } else if ($old_room_id && empty($termin->room_booking->resource_id)) {
                 PageLayout::postInfo(
