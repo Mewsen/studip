@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-23 11:15+0200\n"
+"POT-Creation-Date: 2025-06-06 09:04+0200\n"
 "PO-Revision-Date: 2024-05-23 13:59+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
@@ -1852,7 +1852,7 @@ msgstr "Groups"
 
 #: app/controllers/course/dates.php:451
 #: app/controllers/institute/members.php:119
-#: app/controllers/room_management/planning.php:979
+#: app/controllers/room_management/planning.php:978
 #: app/views/settings/statusgruppen/modify_institute.php:27
 #: app/views/course/dates/index.php:44 app/views/course/dates/index.php:85
 #: app/views/course/timesrooms/createSingleDate.php:36
@@ -2367,7 +2367,7 @@ msgstr "Details"
 #: app/controllers/resources/room_planning.php:694
 #: app/controllers/resources/print.php:225
 #: app/controllers/room_management/planning.php:51
-#: app/controllers/room_management/planning.php:300
+#: app/controllers/room_management/planning.php:299
 #: app/views/messages/read.php:104
 #: app/views/resources/room_planning/semester_plan.php:159
 #: app/views/resources/print/clipboard_rooms.php:48
@@ -2616,16 +2616,21 @@ msgstr "%u courses have been created."
 msgid "%u Veranstaltungen konnten nicht angelegt werden."
 msgstr "%u courses could not be created."
 
-#: app/controllers/course/wizard.php:187
-#, php-format
+#: app/controllers/course/wizard.php:188
+#, fuzzy, php-format
 msgid ""
-"Die Studien-/Arbeitsgruppe \"%s\" wurde angelegt. Sie können sie direkt hier "
+"Die Studien-/Arbeitsgruppe „%s“ wurde angelegt. Sie können sie direkt hier "
 "weiter verwalten."
 msgstr ""
 "The study/working group \"%s\" has been created. Here you can directly "
 "continue managing it."
 
-#: app/controllers/course/wizard.php:197
+#: app/controllers/course/wizard.php:196
+#, fuzzy, php-format
+msgid "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt."
+msgstr "The studygroup \"%s\" has been created."
+
+#: app/controllers/course/wizard.php:207
 #, php-format
 msgid ""
 "Die Veranstaltung <a class=\"link-intern\" href=\"%s\">\"%s\"</a> wurde "
@@ -2633,7 +2638,7 @@ msgid ""
 msgstr ""
 "The course <a class=\"link-intern\" href=\"%s\">\"%s\"</a> has been created."
 
-#: app/controllers/course/wizard.php:204
+#: app/controllers/course/wizard.php:214
 #, php-format
 msgid ""
 "Die Veranstaltung \"%s\" wurde angelegt. Sie können sie direkt hier weiter "
@@ -2642,19 +2647,19 @@ msgstr ""
 "The course \"%s\" has been created. Here you can directly continue managing "
 "it."
 
-#: app/controllers/course/wizard.php:213
+#: app/controllers/course/wizard.php:223
 msgid "Die Veranstaltung konnte nicht angelegt werden."
 msgstr "The course cannot be created."
 
-#: app/controllers/course/wizard.php:218
+#: app/controllers/course/wizard.php:228
 msgid "Die angegebene Veranstaltung wurde bereits angelegt."
 msgstr "The specified course has already been created."
 
-#: app/controllers/course/wizard.php:254
+#: app/controllers/course/wizard.php:264
 msgid "Ihre Session ist abgelaufen, bitte erneut anfangen."
 msgstr "Your session has expired, please restart from the beginning."
 
-#: app/controllers/course/wizard.php:298
+#: app/controllers/course/wizard.php:308
 msgid "Sie dürfen diese Veranstaltung nicht kopieren"
 msgstr "You must not copy this course"
 
@@ -6029,7 +6034,7 @@ msgstr "Include subordinate institutes"
 
 #: app/controllers/calendar/instschedule.php:171
 #: app/controllers/calendar/schedule.php:315
-#: app/controllers/room_management/planning.php:1394
+#: app/controllers/room_management/planning.php:1393
 #: app/views/calendar/single/edit.php:226
 #: app/views/resources/booking/_add_edit_form.php:70
 #: app/views/resources/booking/_add_edit_form.php:91
@@ -6044,7 +6049,7 @@ msgstr "Monday"
 
 #: app/controllers/calendar/instschedule.php:171
 #: app/controllers/calendar/schedule.php:316
-#: app/controllers/room_management/planning.php:1402
+#: app/controllers/room_management/planning.php:1401
 #: app/views/calendar/single/edit.php:227
 #: app/views/resources/booking/_add_edit_form.php:72
 #: app/views/resources/booking/_add_edit_form.php:93
@@ -6059,7 +6064,7 @@ msgstr "Tuesday"
 
 #: app/controllers/calendar/instschedule.php:171
 #: app/controllers/calendar/schedule.php:317
-#: app/controllers/room_management/planning.php:1410
+#: app/controllers/room_management/planning.php:1409
 #: app/views/calendar/single/edit.php:228
 #: app/views/resources/booking/_add_edit_form.php:74
 #: app/views/resources/booking/_add_edit_form.php:95
@@ -6074,7 +6079,7 @@ msgstr "Wednesday"
 
 #: app/controllers/calendar/instschedule.php:172
 #: app/controllers/calendar/schedule.php:318
-#: app/controllers/room_management/planning.php:1418
+#: app/controllers/room_management/planning.php:1417
 #: app/views/calendar/single/edit.php:229
 #: app/views/resources/booking/_add_edit_form.php:76
 #: app/views/resources/booking/_add_edit_form.php:97
@@ -6089,7 +6094,7 @@ msgstr "Thursday"
 
 #: app/controllers/calendar/instschedule.php:172
 #: app/controllers/calendar/schedule.php:319
-#: app/controllers/room_management/planning.php:1426
+#: app/controllers/room_management/planning.php:1425
 #: app/views/calendar/single/edit.php:230
 #: app/views/resources/booking/_add_edit_form.php:78
 #: app/views/resources/booking/_add_edit_form.php:99
@@ -6104,7 +6109,7 @@ msgstr "Friday"
 
 #: app/controllers/calendar/instschedule.php:172
 #: app/controllers/calendar/schedule.php:320
-#: app/controllers/room_management/planning.php:1434
+#: app/controllers/room_management/planning.php:1433
 #: app/views/calendar/single/edit.php:231
 #: app/views/resources/booking/_add_edit_form.php:80
 #: app/views/resources/booking/_add_edit_form.php:101
@@ -6119,7 +6124,7 @@ msgstr "Saturday"
 
 #: app/controllers/calendar/instschedule.php:172
 #: app/controllers/calendar/schedule.php:321
-#: app/controllers/room_management/planning.php:1442
+#: app/controllers/room_management/planning.php:1441
 #: app/views/calendar/single/edit.php:232
 #: app/views/resources/booking/_add_edit_form.php:82
 #: app/views/resources/booking/_add_edit_form.php:103
@@ -7172,7 +7177,6 @@ msgstr "%s has been removed from the staff list."
 #: app/views/resources/admin/categories.php:13
 #: app/views/resources/search/rooms.php:10
 #: app/views/resources/resource/_add_edit_form.php:16
-#: app/views/resources/resource/_standard_properties_display_part.php:33
 #: app/views/resources/resource/temporary_permissions.php:28
 #: app/views/admission/courseset/configure_courses.php:15
 #: app/views/admission/courseset/factored_users.php:9
@@ -8381,7 +8385,7 @@ msgstr ""
 #: app/controllers/resources/room_request.php:87
 #: app/controllers/resources/print.php:169
 #: app/controllers/resources/room_group.php:137
-#: app/controllers/room_management/planning.php:578
+#: app/controllers/room_management/planning.php:577
 msgid "Die gewählte Raumgruppe wurde nicht gefunden!"
 msgstr "The selected room group could not be found!"
 
@@ -8677,8 +8681,8 @@ msgstr "Time"
 #: app/controllers/resources/room_planning.php:407
 #: app/controllers/resources/room_planning.php:733
 #: app/controllers/resources/export.php:332
-#: app/controllers/room_management/planning.php:238
-#: app/controllers/room_management/planning.php:526
+#: app/controllers/room_management/planning.php:237
+#: app/controllers/room_management/planning.php:525
 #: app/views/resources/_common/_request_info.php:9
 #: app/views/resources/room_request/_add_edit_form.php:36
 #: app/views/resources/room_request/resolve.php:134
@@ -8770,16 +8774,16 @@ msgstr "List of requests"
 #: app/controllers/resources/room_request.php:2353
 #: app/controllers/resources/room_planning.php:395
 #: app/controllers/resources/room_planning.php:721
-#: app/controllers/room_management/planning.php:226
-#: app/controllers/room_management/planning.php:514
+#: app/controllers/room_management/planning.php:225
+#: app/controllers/room_management/planning.php:513
 msgid "Manuelle Buchung"
 msgstr "Manual bookings"
 
 #: app/controllers/resources/room_request.php:2357
 #: app/controllers/resources/room_planning.php:399
 #: app/controllers/resources/room_planning.php:725
-#: app/controllers/room_management/planning.php:230
-#: app/controllers/room_management/planning.php:518
+#: app/controllers/room_management/planning.php:229
+#: app/controllers/room_management/planning.php:517
 msgid "Veranstaltungsbezogene Buchung"
 msgstr "Course-related booking"
 
@@ -8792,8 +8796,8 @@ msgstr "Course-related booking"
 #: app/controllers/resources/export.php:522
 #: app/controllers/resources/print.php:145
 #: app/controllers/resources/admin.php:1057
-#: app/controllers/room_management/planning.php:234
-#: app/controllers/room_management/planning.php:522
+#: app/controllers/room_management/planning.php:233
+#: app/controllers/room_management/planning.php:521
 #: app/views/resources/booking/_add_edit_form.php:40
 msgid "Sperrbuchung"
 msgstr "Lock booking"
@@ -8807,8 +8811,8 @@ msgstr "Lock booking"
 #: app/controllers/resources/export.php:520
 #: app/controllers/resources/print.php:144
 #: app/controllers/resources/admin.php:1056
-#: app/controllers/room_management/planning.php:242
-#: app/controllers/room_management/planning.php:530
+#: app/controllers/room_management/planning.php:241
+#: app/controllers/room_management/planning.php:529
 #: app/views/resources/booking/_add_edit_form.php:34
 msgid "Reservierung"
 msgstr "Reservation"
@@ -9033,8 +9037,8 @@ msgstr "The booking plan is not accessible for you!"
 
 #: app/controllers/resources/room_planning.php:185
 #: app/controllers/resources/room_planning.php:565
-#: app/controllers/room_management/planning.php:187
-#: app/controllers/room_management/planning.php:476
+#: app/controllers/room_management/planning.php:186
+#: app/controllers/room_management/planning.php:475
 msgid ""
 "Sie sind nicht dazu berechtigt, alle Anfragen im Belegungsplan zu sehen!"
 msgstr "You are not allowed to see all requests in the booking plan!"
@@ -9051,7 +9055,7 @@ msgstr "Select other room"
 #: app/controllers/resources/print.php:66
 #: app/controllers/resources/resource.php:487
 #: app/controllers/room_management/planning.php:60
-#: app/controllers/room_management/planning.php:317
+#: app/controllers/room_management/planning.php:316
 msgid "Standard Zeitfenster"
 msgstr "Standard timeframe"
 
@@ -9060,13 +9064,13 @@ msgstr "Standard timeframe"
 #: app/controllers/resources/print.php:78
 #: app/controllers/resources/resource.php:499
 #: app/controllers/room_management/planning.php:72
-#: app/controllers/room_management/planning.php:331
+#: app/controllers/room_management/planning.php:330
 msgid "Ganztägiges Zeitfenster"
 msgstr "All-day timeframe"
 
 #: app/controllers/resources/room_planning.php:255
-#: app/controllers/room_management/planning.php:194
-#: app/controllers/room_management/planning.php:483
+#: app/controllers/room_management/planning.php:193
+#: app/controllers/room_management/planning.php:482
 msgid "Alle Anfragen anzeigen"
 msgstr "Display all request"
 
@@ -9074,8 +9078,8 @@ msgstr "Display all request"
 #: app/controllers/consultation/export.php:26
 #: app/controllers/consultation/export.php:59
 #: app/controllers/room_management/planning.php:87
-#: app/controllers/room_management/planning.php:1088
-#: app/controllers/room_management/planning.php:1091
+#: app/controllers/room_management/planning.php:1087
+#: app/controllers/room_management/planning.php:1090
 #: app/controllers/messages.php:416 app/controllers/messages.php:470
 #: app/views/materialien/files/index.php:15
 #: app/views/materialien/files/range.php:30 app/views/messages/print.php:6
@@ -9140,14 +9144,14 @@ msgstr "Current booking plan"
 
 #: app/controllers/resources/room_planning.php:420
 #: app/controllers/resources/room_planning.php:744
-#: app/controllers/room_management/planning.php:249
-#: app/controllers/room_management/planning.php:537
+#: app/controllers/room_management/planning.php:248
+#: app/controllers/room_management/planning.php:536
 msgid "Geplante Buchung"
 msgstr "Planned booking"
 
 #: app/controllers/resources/room_planning.php:428
-#: app/controllers/room_management/planning.php:255
-#: app/controllers/room_management/planning.php:543
+#: app/controllers/room_management/planning.php:254
+#: app/controllers/room_management/planning.php:542
 #: app/views/course/room_requests/_new_request_header.php:3
 msgid "Anfrage"
 msgstr "Request"
@@ -9158,7 +9162,7 @@ msgstr "Own request"
 
 #: app/controllers/resources/room_planning.php:464
 #: app/controllers/resources/booking.php:1187
-#: app/controllers/room_management/planning.php:292
+#: app/controllers/room_management/planning.php:291
 msgid "Das ausgewählte Semester wurde nicht in der Datenbank gefunden!"
 msgstr "The selected semester could not be found in the database!"
 
@@ -9168,23 +9172,23 @@ msgid "Semester-Belegungsplan: %s"
 msgstr "Semester booking plan: %s"
 
 #: app/controllers/resources/room_planning.php:597
-#: app/controllers/room_management/planning.php:315
+#: app/controllers/room_management/planning.php:314
 msgid "Zeitfenster"
 msgstr "Timeframe"
 
 #: app/controllers/resources/room_planning.php:626
-#: app/controllers/room_management/planning.php:347
+#: app/controllers/room_management/planning.php:346
 #: app/views/admin/semester/edit.php:42
 msgid "Semesterzeitraum"
 msgstr "Semester period"
 
 #: app/controllers/resources/room_planning.php:628
-#: app/controllers/room_management/planning.php:349
+#: app/controllers/room_management/planning.php:348
 msgid "Vorlesungszeit"
 msgstr "Teaching period"
 
 #: app/controllers/resources/room_planning.php:642
-#: app/controllers/room_management/planning.php:363
+#: app/controllers/room_management/planning.php:362
 msgid "gesamtes Semester"
 msgstr "whole semester"
 
@@ -9518,7 +9522,7 @@ msgid "%1$d. KW, vom %2$s bis zum %3$s"
 msgstr "%1$d. week, from %2$s to %3$s"
 
 #: app/controllers/resources/booking.php:1774
-#: app/controllers/room_management/planning.php:641
+#: app/controllers/room_management/planning.php:640
 msgid "Das gewählte Semester wurde nicht gefunden!"
 msgstr "The selected semester could not be found!"
 
@@ -10882,10 +10886,10 @@ msgstr "binding enrolment"
 #: app/controllers/admission/courseset.php:443
 #: app/controllers/admission/courseset.php:444
 #: app/controllers/admission/courseset.php:445
-#: app/controllers/room_management/planning.php:995
+#: app/controllers/room_management/planning.php:994
 #: app/views/settings/deputies.php:41 app/views/file/_file_aside.php:42
 #: app/views/resources/admin/properties.php:28
-#: app/views/resources/resource/_standard_properties_display_part.php:54
+#: app/views/resources/resource/_standard_properties_display_part.php:40
 #: app/views/admin/user/index.php:180
 #: lib/models/resources/ResourceRequestProperty.class.php:67
 #: lib/models/resources/ResourceProperty.class.php:97
@@ -10901,10 +10905,10 @@ msgstr "no"
 #: app/controllers/admission/courseset.php:443
 #: app/controllers/admission/courseset.php:444
 #: app/controllers/admission/courseset.php:445
-#: app/controllers/room_management/planning.php:995
+#: app/controllers/room_management/planning.php:994
 #: app/views/settings/deputies.php:35 app/views/file/_file_aside.php:42
 #: app/views/resources/admin/properties.php:28
-#: app/views/resources/resource/_standard_properties_display_part.php:52
+#: app/views/resources/resource/_standard_properties_display_part.php:38
 #: app/views/admin/user/index.php:176
 #: lib/models/resources/ResourceRequestProperty.class.php:67
 #: lib/models/resources/ResourceProperty.class.php:97
@@ -16881,52 +16885,52 @@ msgid "Raumgruppen-Belegungsplan"
 msgstr "Room group booking plan"
 
 #: app/controllers/room_management/planning.php:94
-#: app/controllers/room_management/planning.php:391
-#: app/controllers/room_management/planning.php:1109
+#: app/controllers/room_management/planning.php:390
+#: app/controllers/room_management/planning.php:1108
 #: lib/classes/sidebar/RoomClipboardWidget.class.php:18
 msgid "Individuelle Raumgruppen"
 msgstr "Individual room groups"
 
-#: app/controllers/room_management/planning.php:172
+#: app/controllers/room_management/planning.php:171
 #, php-format
 msgid "Der Belegungsplan des Raumes %s ist für Sie nicht zugänglich!"
 msgstr "The booking plan of the room %s is inaccessible for you!"
 
-#: app/controllers/room_management/planning.php:263
-#: app/controllers/room_management/planning.php:414
+#: app/controllers/room_management/planning.php:262
+#: app/controllers/room_management/planning.php:413
 #: lib/navigation/ResourceNavigation.php:188
 msgid "Raumgruppen-Semester-Belegungsplan"
 msgstr "Room group semester booking plan"
 
-#: app/controllers/room_management/planning.php:305
-#: app/controllers/room_management/planning.php:552
-#: app/controllers/room_management/planning.php:587
+#: app/controllers/room_management/planning.php:304
+#: app/controllers/room_management/planning.php:551
+#: app/controllers/room_management/planning.php:586
 msgid "Buchungen kopieren"
 msgstr "Copy bookings"
 
-#: app/controllers/room_management/planning.php:571
+#: app/controllers/room_management/planning.php:570
 #: app/views/room_management/planning/index.php:3
 #: app/views/room_management/planning/semester_plan.php:3
 msgid "Es wurde keine Raumgruppe ausgewählt!"
 msgstr "No room group has been selected!"
 
-#: app/controllers/room_management/planning.php:633
+#: app/controllers/room_management/planning.php:632
 msgid "Es wurde kein Semester ausgewählt!"
 msgstr "No semester has been selected!"
 
-#: app/controllers/room_management/planning.php:652
+#: app/controllers/room_management/planning.php:651
 msgid "Die gewählte Semesterwoche liegt außerhalb des gewählten Semesters!"
 msgstr "The selected semester week is outside of the selected semester!"
 
-#: app/controllers/room_management/planning.php:660
+#: app/controllers/room_management/planning.php:659
 msgid "Es wurden keine Räume ausgewählt!"
 msgstr "No rooms have been selected!"
 
-#: app/controllers/room_management/planning.php:669
+#: app/controllers/room_management/planning.php:668
 msgid "Es wurde ein Raum ausgewählt, der nicht Teil der Raumgruppe ist!"
 msgstr "A room has been selected which is not a part of the room group!"
 
-#: app/controllers/room_management/planning.php:676
+#: app/controllers/room_management/planning.php:675
 msgid ""
 "Es wurde ein Raum ausgewählt, an dem die Berechtigungen zum Kopieren von "
 "Buchungen nicht ausreichend sind!"
@@ -16934,13 +16938,13 @@ msgstr ""
 "A room has been selected where the permissions to copy a booking are "
 "insufficient!"
 
-#: app/controllers/room_management/planning.php:696
+#: app/controllers/room_management/planning.php:695
 msgid ""
 "Es sind keine Semester vorhanden, die nach dem ausgewählten Semester starten!"
 msgstr ""
 "There are no semesters available that start after the selected semester!"
 
-#: app/controllers/room_management/planning.php:757
+#: app/controllers/room_management/planning.php:756
 #, php-format
 msgid ""
 "Die gewählten Räume haben im Semester %s keine einfachen Buchungen mit "
@@ -16949,99 +16953,99 @@ msgstr ""
 "The selected rooms don't have simple bookings with repetitions in the "
 "semester %s!"
 
-#: app/controllers/room_management/planning.php:772
+#: app/controllers/room_management/planning.php:771
 msgid "Es wurde kein Zielsemester ausgewählt!"
 msgstr "No target semester has been selected!"
 
-#: app/controllers/room_management/planning.php:780
+#: app/controllers/room_management/planning.php:779
 msgid "Das gewählte Zielsemester wurde nicht gefunden!"
 msgstr "The selected target semester could not be found!"
 
-#: app/controllers/room_management/planning.php:788
+#: app/controllers/room_management/planning.php:787
 msgid "Es wurden keine Buchungen ausgewählt!"
 msgstr "No bookings have been selected!"
 
-#: app/controllers/room_management/planning.php:797
+#: app/controllers/room_management/planning.php:796
 msgid "Es wurde eine Buchung ausgewählt, die nicht Teil der Raumgruppe ist!"
 msgstr "A booking has been selected which is not part of the room group!"
 
-#: app/controllers/room_management/planning.php:814
+#: app/controllers/room_management/planning.php:813
 msgid "Die gewählten Buchungen wurden nicht in der Datenbank gefunden!"
 msgstr "The selected booking could not be found in the database!"
 
-#: app/controllers/room_management/planning.php:858
+#: app/controllers/room_management/planning.php:857
 #, php-format
 msgid "Eine Buchung (%1$s) liegt außerhalb des Semesters %2$s!"
 msgstr "A booking (%1$s) is outside of the semester %2$s!"
 
-#: app/controllers/room_management/planning.php:977
+#: app/controllers/room_management/planning.php:976
 msgid "Buchungsnummer"
 msgstr "Booking number"
 
-#: app/controllers/room_management/planning.php:978
+#: app/controllers/room_management/planning.php:977
 #: app/views/room_management/planning/copy_bookings.php:184
 msgid "Buchungszeitraum"
 msgstr "Booking time range"
 
-#: app/controllers/room_management/planning.php:980
+#: app/controllers/room_management/planning.php:979
 #: app/views/room_management/planning/copy_bookings.php:186
 msgid "Verfügbar"
 msgstr "Available"
 
-#: app/controllers/room_management/planning.php:1001
+#: app/controllers/room_management/planning.php:1000
 #, php-format
 msgid "Zu kopierende Buchungen am %s"
 msgstr "Bookings to be copied on %s"
 
-#: app/controllers/room_management/planning.php:1011
+#: app/controllers/room_management/planning.php:1010
 msgid ""
 "Weniger als die Hälfte der Buchungen können in das Zielsemester kopiert "
 "werden!"
 msgstr "Less than half of the bookings can be copied into the target semester!"
 
-#: app/controllers/room_management/planning.php:1035
+#: app/controllers/room_management/planning.php:1034
 msgid "Alle Buchungen wurden kopiert!"
 msgstr "All bookings copied!"
 
-#: app/controllers/room_management/planning.php:1040
+#: app/controllers/room_management/planning.php:1039
 msgid "Es konnten nicht alle Buchungen kopiert werden!"
 msgstr "Not all bookings could be copied!"
 
-#: app/controllers/room_management/planning.php:1045
+#: app/controllers/room_management/planning.php:1044
 msgid "Keine der ausgewählten Buchungen konnte kopiert werden!"
 msgstr "None of the selected bookings could be copied!"
 
-#: app/controllers/room_management/planning.php:1055
-#: app/controllers/room_management/planning.php:1131
+#: app/controllers/room_management/planning.php:1054
+#: app/controllers/room_management/planning.php:1130
 #: lib/navigation/ResourceNavigation.php:159
 #: lib/navigation/ResourceNavigation.php:199
 msgid "Buchungsübersicht mit Kommentaren"
 msgstr "Booking overview with comments"
 
-#: app/controllers/room_management/planning.php:1150
+#: app/controllers/room_management/planning.php:1149
 msgid "Export für Word"
 msgstr "Export for Word"
 
-#: app/controllers/room_management/planning.php:1161
+#: app/controllers/room_management/planning.php:1160
 #: app/views/questionnaire/_overview_questionnaire.php:145
 msgid "Export als CSV"
 msgstr "Export as .csv"
 
-#: app/controllers/room_management/planning.php:1264
-#: app/controllers/room_management/planning.php:1276
-#: app/controllers/room_management/planning.php:1302
-#: app/controllers/room_management/planning.php:1319
-#: app/controllers/room_management/planning.php:1339
+#: app/controllers/room_management/planning.php:1263
+#: app/controllers/room_management/planning.php:1275
+#: app/controllers/room_management/planning.php:1301
+#: app/controllers/room_management/planning.php:1318
+#: app/controllers/room_management/planning.php:1338
 #, php-format
 msgid "%1$s - %2$s Uhr"
 msgstr "%1$s - %2$s"
 
-#: app/controllers/room_management/planning.php:1378
+#: app/controllers/room_management/planning.php:1377
 #, php-format
 msgid "Buchungen, KW %d.doc"
 msgstr "Bookings, week %d.doc"
 
-#: app/controllers/room_management/planning.php:1389
+#: app/controllers/room_management/planning.php:1388
 #: app/views/room_management/planning/booking_comments.php:8
 #, php-format
 msgid "%d. Kalenderwoche"
@@ -27443,11 +27447,6 @@ msgstr "Do you really want to delete the following resource?"
 msgid "Weitere Eigenschaften"
 msgstr "Additional properties"
 
-#: app/views/resources/resource/_standard_properties_display_part.php:36
-#: app/views/admin/configuration/table-header.php:10
-msgid "Wert"
-msgstr "Value"
-
 #: app/views/resources/resource/temporary_permissions.php:30
 msgid "Gültig von"
 msgstr "Valid from"
@@ -28007,6 +28006,10 @@ msgid ""
 "Name (kann hier nicht bearbeitet werden, da es sich um ein Stud.IP-Objekt "
 "handelt)"
 msgstr "Name (cannot be edited here as this is a Stud.IP object)"
+
+#: app/views/admin/configuration/table-header.php:10
+msgid "Wert"
+msgstr "Value"
 
 #: app/views/admin/configuration/configuration.php:12
 msgid "Globale Systemkonfigurationen"
@@ -40489,11 +40492,11 @@ msgstr "Forum posts"
 msgid "Tel."
 msgstr "Phone"
 
-#: lib/classes/Markup.class.php:545
+#: lib/classes/Markup.class.php:546
 msgid "Ungültige interne Medienverknüpfung entfernt: "
 msgstr "Invalid medialink deleted."
 
-#: lib/classes/Markup.class.php:549
+#: lib/classes/Markup.class.php:550
 msgid "Verbotene externe Medienverknüpfung entfernt: "
 msgstr "Forbidden medialink deleted."
 
