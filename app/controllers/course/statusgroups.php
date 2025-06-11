@@ -310,7 +310,7 @@ class Course_StatusgroupsController extends AuthenticatedController
 
         $header = [
             _('Gruppe'),
-            _('geschlecht'),
+            _('Geschlecht'),
             _('Titel'),
             _('Vorname'),
             _('Nachname'),
@@ -327,6 +327,19 @@ class Course_StatusgroupsController extends AuthenticatedController
 
         $groups = Statusgruppen::findBySeminar_id($this->course_id);
         $result = [];
+
+        $datafields = DataField::getDataFields('user');
+        $datafields = array_filter(
+            $datafields,
+            fn(DataField $datafield) => $datafield->accessAllowed()
+        );
+
+        if (count($datafields) > 0) {
+            foreach ($datafields as $datafield) {
+                $header[] = (string)$datafield->name;
+            }
+        }
+
         if ($groups) {
             $assigned_with_group = [];
             foreach ($groups as $group) {
@@ -346,6 +359,23 @@ class Course_StatusgroupsController extends AuthenticatedController
                 unset($data['position']);
 
                 $result[$member->user_id] = $data;
+            }
+
+            // data fields
+            foreach ($members as $member) {
+                $user_datafields = DataFieldEntry::getDataFieldEntries(
+                    $member->user_id,
+                    'user'
+                );
+                foreach ($datafields as $datafield) {
+                    $user_datafield = $user_datafields[$datafield->id] ?? null;
+
+                    if ($user_datafield) {
+                        $result[$member->user_id][] = $user_datafield->getDisplayValue(false);
+                    } else {
+                        $result[$member->user_id][] = '';
+                    }
+                }
             }
         }
 
