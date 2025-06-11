@@ -20,16 +20,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2024-07-18 14:29+0000\n"
-"Last-Translator: Oliver Oster <oster@zmml.uni-bremen.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-main/en/>\n"
+"PO-Revision-Date: 2025-06-12 11:59+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-main/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -1272,12 +1273,16 @@ msgid ""
 "Anzahl Tage, nach denen bereits verschickte Nachrichten gelöscht werden (0 "
 "bedeutet nie)"
 msgstr ""
+"Number of days after which messages that have already been sent are deleted ("
+"0 means never)"
 
 #: app/controllers/massmail/settings.php:47
 msgid ""
 "Veranstaltungskategorien, die für die Ermittlung aktiver Lehrender "
 "berücksichtigt werden"
 msgstr ""
+"Event categories that are taken into account when determining active "
+"lecturers"
 
 #: app/controllers/massmail/settings.php:56
 #: app/views/admin/cronjobs/schedules/index.php:79
@@ -1289,7 +1294,7 @@ msgstr "Cronjob"
 
 #: app/controllers/massmail/settings.php:62
 msgid "Achtung: Kein Versand"
-msgstr ""
+msgstr "Note that documents are not sent by post!"
 
 #: app/controllers/massmail/settings.php:63
 #, fuzzy
