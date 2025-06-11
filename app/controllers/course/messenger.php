@@ -63,6 +63,8 @@ class Course_MessengerController extends AuthenticatedController
         }
         $this->buildSidebar();
 
+        $this->search = Request::get('search');
+
         if (Request::isDialog()) {
             PageLayout::setTitle($this->thread->getName());
             $this->render_template('blubber/dialog');
