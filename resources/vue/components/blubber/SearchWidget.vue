@@ -2,6 +2,7 @@
     <SidebarWidget :title="$gettext('Suche')">
         <template #content>
             <form action="?#" method="get" class="sidebar-search">
+                <input v-for="(val, key) in urlParams" :key="key" type="hidden" :name="key" :value="val">
                 <ul class="needles">
                     <li>
                         <div class="input-group files-search">
@@ -58,6 +59,9 @@ export default {
         urlReset() {
             return STUDIP.URLHelper.getURL('dispatch.php/blubber');
         },
+        urlParams() {
+            return STUDIP.URLHelper.parameters;
+        }
     },
 };
 </script>
