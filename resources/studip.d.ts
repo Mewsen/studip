@@ -5,7 +5,6 @@ export {};
 declare global {
     interface Window {
         STUDIP: {
-            wysiwyg_enabled: boolean;
             INSTALLED_LANGUAGES: { [name: string]: InstalledLanguage };
             ABSOLUTE_URI_STUDIP: string;
             ASSETS_URL: string;
