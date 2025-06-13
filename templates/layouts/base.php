@@ -57,7 +57,6 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                              is_object($GLOBALS['perm']) &&
                              $GLOBALS['perm']->have_perm('autor') &&
                              PersonalNotifications::isActivated()) ?>,
-            wysiwyg_enabled: true,
             editor_enabled: true,
             server_timestamp: <?= time() ?>,
             config: <?= json_encode([
