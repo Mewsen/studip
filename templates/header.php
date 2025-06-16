@@ -293,15 +293,6 @@ if ($navigation) {
 
     <div id="current-page-structure" <? if (!($contextable)) echo 'class="contextless"'; ?>>
 
-        <? if (
-            PageLayout::isHeaderEnabled()
-            && Navigation::hasItem('/course')
-            && Navigation::getItem('/course')->isActive()
-            && !empty($_SESSION['seminar_change_view_'.Context::getId()])
-        ) : ?>
-            <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
-        <? endif ?>
-
         <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
             <? if ($contextable) : ?>
                 <div id="context-title">
@@ -328,6 +319,15 @@ if ($navigation) {
                         <?= htmlReady(Context::get()->name) ?>
                     <? endif ?>
                 </div>
+            <? endif ?>
+
+            <? if (
+                PageLayout::isHeaderEnabled()
+                && Navigation::hasItem('/course')
+                && Navigation::getItem('/course')->isActive()
+                && !empty($_SESSION['seminar_change_view_'.Context::getId()])
+            ) : ?>
+                <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
             <? endif ?>
 
             <nav id="navigation-level-2" aria-label="<?= _('Zweite Navigationsebene') ?>">
@@ -363,6 +363,7 @@ if ($navigation) {
             }
         }
         ?>
+
         <div id="page-title-container" class="hidden-medium-up">
             <div id="page-title">
                 <? if (Context::get() && strpos(PageLayout::getTitle(), Context::getHeaderLine() . ' - ') !== FALSE) : ?>
