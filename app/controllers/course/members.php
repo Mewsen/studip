@@ -1368,15 +1368,6 @@ class Course_MembersController extends AuthenticatedController
         // fetch course and aux data
         $course    = Course::findCurrent();
         $this->aux = $course->aux->getCourseData($course);
-
-        $export_widget = new ExportWidget();
-        $export_widget->addLink(
-            _('Zusatzangaben exportieren'),
-            $this->export_additionalURL(),
-            Icon::create('file-excel')
-        );
-
-        Sidebar::Get()->addWidget($export_widget);
     }
 
     /**
@@ -1393,25 +1384,6 @@ class Course_MembersController extends AuthenticatedController
         }
 
         $this->redirect($this->additionalURL());
-    }
-
-    /**
-     * Export all members of the course and their aux data to CSV
-     */
-    public function export_additional_action()
-    {
-        $course  = Course::findCurrent();
-        $aux     = $course->aux->getCourseData($course, true);
-        $tmpname = md5(uniqid('Zusatzangaben'));
-
-        if(array_to_csv($aux['rows'], $GLOBALS['TMP_PATH'] . '/' . $tmpname, $aux['head'])) {
-            $this->redirect(
-                FileManager::getDownloadURLForTemporaryFile(
-                    $tmpname,
-                    _('Zusatzangaben') . '.csv'
-                )
-            );
-        }
     }
 
     /**
@@ -1852,6 +1824,8 @@ class Course_MembersController extends AuthenticatedController
         ];
 
         $course = Course::findCurrent();
+        $aux     = $course->aux->getCourseData($course, true);
+
         $members = $course->getMembersData($status);
 
         $datafields = DataField::getDataFields('user');
@@ -1878,6 +1852,20 @@ class Course_MembersController extends AuthenticatedController
                     } else {
                         $members[$user_id][] = '';
                     }
+                }
+            }
+        }
+
+        // Zusatzangaben
+        if ($aux) {
+            foreach ($aux['head'] as $head) {
+                $header[] = $head;
+            }
+
+            foreach ($aux['rows'] as $id => $row) {
+                $user_id = explode('_', $id)[1];
+                foreach ($row as $value) {
+                    $members[$user_id][] = $value;
                 }
             }
         }
