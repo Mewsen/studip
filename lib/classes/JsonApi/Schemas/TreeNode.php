@@ -31,7 +31,7 @@ class TreeNode extends SchemaProvider
             'description' => (string) $resource->getDescription(),
             'description-formatted' => (string) formatReady($resource->getDescription()),
             'has-children' => (bool) $resource->hasChildNodes(),
-            'ancestors' => (array) $resource->getAncestors(),
+            'ancestors' => (array) $resource->getAncestorNodes(),
             'classname' => get_class($resource),
             'visible' => true,
             'editable' => true,

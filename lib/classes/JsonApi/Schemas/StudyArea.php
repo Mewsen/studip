@@ -25,7 +25,7 @@ class StudyArea extends SchemaProvider
             'priority' => (int) $resource['priority'],
             'type-name' => (string) $resource->getTypeName(),
             'has-children' => (bool) $resource->hasChildNodes(),
-            'ancestors' => (array) $resource->getAncestors(),
+            'ancestors' => (array) $resource->getAncestorNodes(),
             'classname' => get_class($resource)
         ];
     }

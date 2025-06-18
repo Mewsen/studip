@@ -560,7 +560,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         return DBManager::get()->fetchAll($query, $parameters, 'Course::buildExisting');
     }
 
-    public function getAncestors(): array
+    public function getAncestorNodes(): array
     {
         $path = [
             [
@@ -571,7 +571,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         ];
 
         if ($this->parent_id) {
-            $path = array_merge($this->getNode($this->parent_id)->getAncestors(), $path);
+            $path = array_merge($this->getNode($this->parent_id)->getAncestorNodes(), $path);
         }
 
         return $path;

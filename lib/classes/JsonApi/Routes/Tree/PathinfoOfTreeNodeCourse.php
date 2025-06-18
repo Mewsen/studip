@@ -24,7 +24,7 @@ class PathinfoOfTreeNodeCourse extends NonJsonApiController
 
         $path = [];
         foreach ($classname::getCourseNodes($args['id']) as $node) {
-            $path[] = $node->getAncestors();
+            $path[] = $node->getAncestorNodes();
         }
 
         $response->getBody()->write(json_encode($path));

@@ -109,6 +109,6 @@ interface StudipTreeNode
      *
      * @return array
      */
-    public function getAncestors(): array;
+    public function getAncestorNodes(): array;
 
 }
