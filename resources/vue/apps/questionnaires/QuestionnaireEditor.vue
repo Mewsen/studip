@@ -209,7 +209,7 @@ export default {
             const componentInfo = this.questionTypes[this.data.questions[index].questiontype].component;
             if (loadedComponents[componentInfo[0]] === undefined) {
                 loadedComponents[componentInfo[0]] = componentInfo[1] === ''
-                    ? defineAsyncComponent(() => import(`./${componentInfo[0]}.vue`))
+                    ? defineAsyncComponent(() => import(`../../components/questionnaires/${componentInfo[0]}.vue`))
                     : defineAsyncComponent(() => import(/* webpackIgnore: true */componentInfo[1]));
             }
 
