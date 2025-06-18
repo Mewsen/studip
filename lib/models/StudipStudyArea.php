@@ -38,7 +38,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
     /**
      * This constant represents the key of the root area.
      */
-    const ROOT = 'root';
+    const ROOT = 0;
 
     protected static function configure($config = [])
     {
