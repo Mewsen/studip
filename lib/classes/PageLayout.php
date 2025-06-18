@@ -134,6 +134,13 @@ class PageLayout
             'title' => _('Hilfe zur Textformatierung')
         ]);
 
+        self::addScript('vue.global.prod.js?v=' . $v);
+        self::addScript('vuex.global.prod.js?v=' . $v);
+
+        // This line fixes the vue-router v3, which is used in several Stud.IP plugins and incorrectly assumes to
+        // interact with Vue2, although Stud.IP v6 uses Vue3.
+        self::addHeadElement('script', [], 'window.Vue.use = () => {};');
+
         self::addStylesheet('studip-base.css?v=' . $v, ['media' => 'screen']);
         self::addScript('studip-base.js?v=' . $v);
         self::addScript('studip-wysiwyg.js?v=' . $v);
