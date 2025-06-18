@@ -26,6 +26,7 @@ public/.htaccess
 public/.rnd
 public/assets/javascripts/*.js
 public/assets/javascripts/*.js.map
+public/assets/javascripts/pdfjs
 public/assets/stylesheets/*.css
 public/assets/stylesheets/*.css.map
 public/pictures/banner/*.gif

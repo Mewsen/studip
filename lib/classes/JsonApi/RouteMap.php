@@ -636,6 +636,8 @@ class RouteMap
         $group->get('/file-refs/{id}/content', Routes\Files\FileRefsContentShow::class);
         $group->post('/file-refs/{id}/content', Routes\Files\FileRefsContentUpdate::class);
 
+        $group->post('/file-refs/{id}/annotations', Routes\Files\FileRefsAnnotationCreate::class);
+
         $group->get('/folders/{id}', Routes\Files\FoldersShow::class);
         $group->patch('/folders/{id}', Routes\Files\FoldersUpdate::class);
         $group->delete('/folders/{id}', Routes\Files\FoldersDelete::class);
@@ -651,6 +653,7 @@ class RouteMap
 
         $group->get('/files/{id}', Routes\Files\FilesShow::class);
         $group->get('/files/{id}/file-refs', Routes\Files\FileRefsOfFilesShow::class);
+        $group->get('/files/{id}/annotations', Routes\Files\FilesAnnotationsIndex::class);
         $this->addRelationship($group, '/files/{id}/relationships/file-refs', Routes\Files\Rel\FileRefsOfFile::class);
     }
 

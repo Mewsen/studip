@@ -2,9 +2,16 @@ import { Emitter } from 'mitt';
 import { URLHelper } from './assets/javascripts/lib/url_helper.d.ts';
 export {};
 
+type SupportedMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'OPTIONS' | 'DELETE';
+
 declare global {
     interface Window {
         STUDIP: {
+            jsonapi: {
+                withPromises(): {
+                    [key in SupportedMethod]: (url: string, options?: object) => Promise<unknown>;
+                }
+            }
             INSTALLED_LANGUAGES: { [name: string]: InstalledLanguage };
             ABSOLUTE_URI_STUDIP: string;
             ASSETS_URL: string;

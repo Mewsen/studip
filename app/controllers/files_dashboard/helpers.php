@@ -44,6 +44,14 @@ trait Helpers
                 Icon::create('edit'),
                 ['data-dialog' => '']
             );
+            if ('application/pdf' === $fileRef->file->mime_type) {
+                $actionMenu->addLink(
+                    URLHelper::getURL('dispatch.php/file/annotate_pdf/' . $fileRef->id),
+                    _('PDF-Werkzeuge'),
+                    Icon::create('comment'),
+                    ['data-dialog' => 'size=big']
+                );
+            }
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/update/'.$fileRef->id),
                 _('Datei aktualisieren'),

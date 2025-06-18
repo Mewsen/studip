@@ -41,6 +41,7 @@
         "@playwright/test": "^1.33.0",
         "@popperjs/core": "^2.11.2",
         "@rsdoctor/webpack-plugin": "^1.0.1",
+        "@studip/pdfjs-studip": "^5.3.54",
         "@types/jquery": "^3.5.16",
         "@types/jqueryui": "^1.12.16",
         "@types/lodash": "^4.14.191",

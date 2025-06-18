@@ -1578,6 +1578,13 @@ class FileController extends AuthenticatedController
         }
     }
 
+    /**
+     * Display the data-dialog UI to annotate the given fileref in PDF.js (for grading homework).
+     */
+    public function annotate_pdf_action($file_ref_id) {
+        $this->file_ref = FileRef::find($file_ref_id)->toRawArray();
+        $this->userFullname = User::findCurrent()->getFullName();
+    }
 
     protected function loadFiles($param = 'files', $plugin = null, $with_blob = false)
     {

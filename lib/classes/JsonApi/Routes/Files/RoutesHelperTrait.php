@@ -185,6 +185,7 @@ trait RoutesHelperTrait
 
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
+     * @return \FileRef|null
      */
     protected function handleUpload(Request $request, \FolderType $folder)
     {

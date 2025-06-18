@@ -139,4 +139,12 @@ class Authority
     {
         return self::canCreateFileRefsInFolder($user, $destinationFolder) && self::canShowFolder($user, $sourceFolder);
     }
+
+    public static function canAnnotateFileRef(User $user, \FileRef $fileRef)
+    {
+        $range = $fileRef->getRangeCourseId();
+        return static::canCreateFileRefsInFolder($user, $fileRef->folder->getTypedFolder())
+            && $GLOBALS['perm']->have_studip_perm('tutor', $fileRef->getRangeCourseId(), $user->id);
+    }
+
 }

@@ -248,6 +248,13 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 ['data-dialog' => ''],
                 'file-edit'
             );
+            if ('application/pdf' === $this->fileref->file->mime_type) {
+                $actionMenu->addLink(
+                    URLHelper::getURL('dispatch.php/file/annotate_pdf/' . $this->fileref->id),
+                    _('PDF-Werkzeuge'),
+                    Icon::create('comment'),
+                    ['data-dialog' => 'size=big']                );
+            }
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/update/' . $this->fileref->id),
                 _('Datei aktualisieren'),
@@ -344,6 +351,14 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 URLHelper::getURL("dispatch.php/file/edit/{$this->getId()}", $extra_link_params),
                 ['data-dialog' => '']
             );
+
+            if ('application/pdf' === $this->getMimeType()) {
+                $buttons[] = Studip\LinkButton::createComment(
+                    _('PDF-Werkzeuge'),
+                    URLHelper::getURL("dispatch.php/file/annotate_pdf/{$this->getId()}", $extra_link_params),
+                    ['data-dialog' => 'size=big']
+                );
+            }
         }
         if ($this->isDownloadable($GLOBALS['user']->id)) {
             $buttons[] = Studip\LinkButton::createDownload(

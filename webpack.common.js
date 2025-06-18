@@ -113,6 +113,10 @@ module.exports = {
                     from: './node_modules/vuex/dist/vuex.global.prod.js',
                     to: './javascripts/vuex.global.prod.js',
                 },
+                {
+                    from: './node_modules/@studip/pdfjs-studip',
+                    to: './javascripts/pdfjs'
+                },
             ],
         }),
         new VueLoaderPlugin(),

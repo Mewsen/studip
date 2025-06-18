@@ -683,4 +683,105 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
         $sql_data = self::getUploadedFilesSql($user_id, $begin, $end, $course_id, $unknown_license_only);
         return self::countBySql($sql_data['sql'], $sql_data['params']);
     }
+
+    /**
+     * Creates appropriate metadata for an annotated (PDF) file.
+     *
+     * @param File $originalFile the original file that was annotated
+     * @param User $annotatorId the annotating person
+     * @param User $owner
+     * @return FileRef
+     * @throws Exception
+     */
+    public function setAnnotatedFileVersion(FileRef $originalFileRef, User $annotator)
+    {
+        $metadata = $originalFileRef->file->metadata;
+
+        $owner = User::find($metadata['homework:visible_for_user_id']
+            ?? $originalFileRef->user_id);
+
+        // Set metadata indicating who has annotated this file.
+        $annotators = $metadata['annotations:annotated_by']?->getArrayCopy() ?? [];
+        if (!in_array($annotator->id, $annotators)) {
+            $annotators[] = $annotator->id;
+        }
+
+        // Increment the version number by one each time.
+        $version = ($metadata['annotations:version'] ?? 0) + 1;
+
+        // Generate new file name with version number and the names of the users who annotated it
+        $originalFilename = $metadata['annotations:original_filename']
+            ?? $originalFileRef->file->name;
+        $annotators_names = \User::findAndMapMany(function ($user) {
+            return $user->getFullName();
+        }, $annotators);
+
+        $pathinfo = pathinfo($originalFilename);
+
+        $annotatedFilename = $pathinfo['filename']
+            . ' Version ' . $version . ' mit Anmerkungen von ' . join(', ', $annotators_names)
+            . '.' . $pathinfo['extension'];
+
+        $this->file->metadata = [
+            'homework:visible_for_user_id' => $owner->id,
+            'annotations:annotated_by' => $annotators,
+            'annotations:original_filename' => $originalFilename,
+            'annotations:original_file_id' => $originalFileRef->file->id,
+            'annotations:version' => $version,
+        ];
+        // Set the filename on the file and store it.
+        $this->file->name = $annotatedFilename;
+        $this->file->store();
+
+        $this->name = $this->file->name;
+
+        // TODO Is this the correct behavior? Maybe everyone who annotated the file should be notified?
+        $this->notifyFileOwner($owner, $annotator, $originalFileRef->folder->getTypedFolder());
+        return $this;
+    }
+
+    /**
+     * Notify file owner that their file was edited/annotated by another user.
+     * @param User $owner
+     * @param User $editor
+     * @param FolderType $folder
+     * @return void
+     */
+    public function notifyFileOwner(User $owner, User $editor, FolderType $folder)
+    {
+        $tutorName = $editor->getFullName();
+        $profileLink = \URLHelper::getLink('dispatch.php/profile?username=' . $editor->username);
+        $folderName = $folder->name;
+        $folderLink = \URLHelper::getLink(
+            'dispatch.php/course/files/index/' . $folder->getId(),
+            ['cid' => $folder->range_id]
+        );
+        $rangeName = $folder->getRangeObject()->getFullName();
+        $rangeUrl = URLHelper::getLink('dispatch.php/' . $folder->getRangeObject()->getRangeUrl(), ['cid' => $folder->range_id]);
+        $fileLink = \URLHelper::getLink('dispatch.php/file/details/' . $this->id, ['cid' => $folder->range_id]);
+
+        setTempLanguage($owner->id);
+        $subject = _('Benachrichtigung über PDF-Annotationen');
+        $message = '<!--HTML--><p>';
+        $message .= sprintf(_('%1$s hat im Verzeichnis "%2$s" in "%3$s" eine kommentierte Version Ihrer PDF-Datei hochgeladen: %4$s'),
+            static::formatLink($tutorName, $profileLink),
+            static::formatLink($folderName, $folderLink),
+            static::formatLink($rangeName, $rangeUrl),
+            static::formatLink($this->name, $fileLink),
+        );
+        $message .= '</p>';
+        restoreLanguage();
+
+        messaging::sendSystemMessage($owner->id, $subject, $message);
+    }
+
+    /**
+     * Helper function for formatting a link.
+     * @param string $text
+     * @param string $url
+     * @return string
+     */
+    private static function formatLink(string $text, string $url): string {
+        return sprintf('<a href="%s">%s</a>', htmlReady($url), htmlReady($text));
+    }
 }

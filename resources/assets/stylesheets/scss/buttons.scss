@@ -95,6 +95,10 @@ button.button {
     }
 }
 
+.ui-button.comment {
+    @include button-with-icon(comment, clickable, info_alt);
+}
+
 /* Grouped Buttons */
 .button-group {
     display: inline-flex;
