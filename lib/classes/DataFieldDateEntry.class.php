@@ -17,16 +17,16 @@ class DataFieldDateEntry extends DataFieldEntry
      *
      * @param mixed $submitted_value The value from request
      */
-    public function setValueFromSubmit($value)
+    public function setValueFromSubmit($submitted_value)
     {
-        if ($value) {
-            $value = trim($value);
-            $items = explode(".", $value);
-            $value = array_reverse($items);
-            $value = array_filter($value);
-            $date  = implode('-', $value);
-            parent::setValueFromSubmit($date);
+        if ($submitted_value) {
+            $submitted_value = trim($submitted_value);
+            $items = explode('.', $submitted_value);
+            $submitted_value = array_reverse($items);
+            $submitted_value = array_filter($submitted_value);
+            $submitted_value = implode('-', $submitted_value);
         }
+        parent::setValueFromSubmit($submitted_value);
     }
 
     /**
@@ -35,7 +35,7 @@ class DataFieldDateEntry extends DataFieldEntry
      * @param bool $entities Should html entities be encoded (defaults to true)
      * @return String containg the rendered value
      */
-    public function getDisplayValue($entries = true)
+    public function getDisplayValue($entities = true)
     {
         if ($this->isValid()) {
             $value = trim($this->value);
@@ -75,6 +75,7 @@ class DataFieldDateEntry extends DataFieldEntry
             return parent::isValid();
         }
 
-        return parent::isValid() && strtotime($value) !== false;
+        return parent::isValid()
+            && strtotime($value) !== false;
     }
 }
