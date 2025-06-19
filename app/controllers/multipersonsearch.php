@@ -65,6 +65,7 @@ class MultipersonsearchController extends AuthenticatedController
         $mp = MultiPersonSearch::load($this->name);
         $mp->verifySearch();
         $mp->saveAddedUsersToSession();
+        $mp->saveRemovedUsersToSession();
 
         $this->redirect($mp->getExecuteURL());
     }
