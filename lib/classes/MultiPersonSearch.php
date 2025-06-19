@@ -35,6 +35,7 @@ class MultiPersonSearch {
     private $navigationItem = "";
     private $dataDialogStatus = false;
     private $verified = null;
+    private bool $allowRemoval = false;
 
     /**
      * restores a MultiPersonSearch object.
@@ -103,6 +104,17 @@ class MultiPersonSearch {
     }
 
     /**
+     * Defines whether the removal of pre-selected users should be allowed or
+     * not
+     */
+    public function allowRemovalOfDefaultSeselectedUsers(bool $allowRemoval): self
+    {
+        $this->allowRemoval = $allowRemoval;
+
+        return $this;
+    }
+
+    /**
      * returns the removed persons. The array will contain all
      * persons which were selected by default (on the right side of the
      * dialog) and then removed by the user.
@@ -110,7 +122,7 @@ class MultiPersonSearch {
      * @return array containing all removed persons
      */
     public function getRemovedUsers() {
-        return $_SESSION['multipersonsearch'][$this->name]['removed'];
+        return $_SESSION['multipersonsearch'][$this->name]['removed'] ?? [];
     }
 
     /**
@@ -141,6 +153,7 @@ class MultiPersonSearch {
         $template->set_attribute('description', $this->description);
         $template->set_attribute('executeURL', $this->executeURL);
         $template->set_attribute('jsFunction', $this->jsFunction);
+        $template->set_attribute('allowRemoval', $this->allowRemoval);
         $this->storeToSession();
         return $template->render();
     }
