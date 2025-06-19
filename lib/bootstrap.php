@@ -282,12 +282,12 @@ StudipMail::setDefaultTransporter($mail_transporter);
 unset($mail_transporter);
 
 NotificationCenter::on('VueAppWillRender', function (string $event, Studip\VueApp $app): void {
-    if ($app->getBaseComponent() === 'GlobalSearchBar') {
+    if ($app->getAppPath() === 'GlobalSearchBar') {
         $urlPrefix = URLHelper::getURL('dispatch.php', [], true);
         $ownUsername = User::findCurrent()->username;
         $template = <<<EOF
-<template v-if="slotProps.item.category === 'GlobalSearchUsers' && slotProps.item.additional !== '{$ownUsername}'">
-    <a :href="`{$urlPrefix}/start?username=\${slotProps.item.additional}`">klick</a>
+<template v-if="item.category === 'GlobalSearchUsers' && item.additional !== '{$ownUsername}'">
+    <a :href="`{$urlPrefix}/start?username=\${item.additional}`">klick</a>
 </template>
 EOF;
         $app->setSlot('expand', $template);

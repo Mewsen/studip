@@ -120,7 +120,7 @@
 <script>
 // TODO: Responsive mode
 
-import GlobalSearchBarHints from './GlobalSearchBarHints.vue';
+import GlobalSearchBarHints from '../components/GlobalSearchBarHints.vue';
 
 export default {
     name: 'global-search-bar',
