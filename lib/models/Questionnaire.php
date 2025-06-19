@@ -50,13 +50,10 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
     public function countAnswers()
     {
         $statement = DBManager::get()->prepare("
-            SELECT COUNT(*) as `count_answers`
+            SELECT COUNT(DISTINCT user_id)
             FROM questionnaire_answers
-                INNER JOIN questionnaire_questions ON (questionnaire_answers.question_id = questionnaire_questions.question_id)
+                JOIN questionnaire_questions USING (question_id)
             WHERE questionnaire_id = :questionnaire_id
-            GROUP BY questionnaire_answers.question_id
-            ORDER BY `count_answers` DESC
-            LIMIT 1
         ");
         $statement->execute([
             'questionnaire_id' => $this->getId()
