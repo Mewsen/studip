@@ -43,7 +43,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
 
     public function createAnswer()
     {
-        return new QuestionnaireAnswer(); // Unused but necessary
+        return $this->getMyAnswer();
     }
 
     public function getUserIdsOfFilteredAnswer($answer_option)
