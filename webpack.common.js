@@ -1,5 +1,4 @@
 const { RsdoctorWebpackPlugin } = require('@rsdoctor/webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -103,18 +102,6 @@ module.exports = {
     },
     plugins: [
         process.env.RSDOCTOR && new RsdoctorWebpackPlugin({}),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: './node_modules/vue/dist/vue.global.prod.js',
-                    to: './javascripts/vue.global.prod.js',
-                },
-                {
-                    from: './node_modules/vuex/dist/vuex.global.prod.js',
-                    to: './javascripts/vuex.global.prod.js',
-                },
-            ],
-        }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: 'stylesheets/[name].css',
