@@ -1,9 +1,18 @@
+import {defineComponent} from "vue";
+
 STUDIP.ready(async () => {
     const vueAppNodes = document.querySelectorAll('[data-vue-app]:not([data-vue-app-created])');
     for (const node of vueAppNodes) {
         await mountVueApp(node);
     }
 });
+
+function sanitizeSlotProps(props) {
+    const reserved = new Set(['key', 'ref', 'is', 'slot', 'style', 'class']);
+    return Object.fromEntries(
+        Object.entries(props).filter(([k]) => !reserved.has(k))
+    );
+}
 
 async function mountVueApp(node) {
     node.dataset.vueAppCreated = 'true';
@@ -23,7 +32,23 @@ async function mountVueApp(node) {
                 config.props,
                 Object.fromEntries(
                     Object.entries(config.slots).map(([slot, template]) => {
-                        return [slot, () => h({ template })];
+                        return [
+                            slot,
+                            (slotProps) => {
+                                try {
+                                    return h(
+                                        defineComponent({
+                                            template,
+                                            props: Object.keys(sanitizeSlotProps(slotProps)),
+                                        }),
+                                        {...slotProps}
+                                    );
+                                } catch (e) {
+                                    console.error(`Fehler im Slot "${slot}":`, e);
+                                    return h('div', {}, `Fehler im Slot "${slot}"`);
+                                }
+                            }
+                        ];
                     }),
                 ),
             ),
