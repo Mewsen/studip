@@ -106,14 +106,6 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: './node_modules/vue/dist/vue.global.prod.js',
-                    to: './javascripts/vue.global.prod.js',
-                },
-                {
-                    from: './node_modules/vuex/dist/vuex.global.prod.js',
-                    to: './javascripts/vuex.global.prod.js',
-                },
-                {
                     from: './node_modules/@studip/pdfjs-studip',
                     to: './javascripts/pdfjs'
                 },

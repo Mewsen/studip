@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
+const CopyPlugin = require('copy-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const path = require('path');
 
@@ -13,6 +14,18 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: false,
     plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './node_modules/vue/dist/vue.global.js',
+                    to: './javascripts/vue.global.prod.js',
+                },
+                {
+                    from: './node_modules/vuex/dist/vuex.global.js',
+                    to: './javascripts/vuex.global.prod.js',
+                },
+            ],
+        }),
         new webpack.WatchIgnorePlugin({
             paths:[
                 /\.d\.[cm]ts$/
