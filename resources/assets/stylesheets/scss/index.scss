@@ -420,6 +420,13 @@ $gap-between-boxes: calc($login-page-margin / 2);
         img {
             vertical-align: middle;
         }
+        .tooltip {
+            vertical-align: middle;
+
+            &::before {
+                --icon-size-default: 24px;
+            }
+        }
     }
 }
 
