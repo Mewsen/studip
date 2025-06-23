@@ -4,6 +4,7 @@
         <input type="text"
                ref="visibleInput"
                class="visible_input"
+               @change="setUnixTimestamp()"
                v-bind="$attrs"
                :placeholder="placeholder">
     </span>
