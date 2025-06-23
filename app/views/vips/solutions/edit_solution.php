@@ -180,15 +180,6 @@
                 </tfoot>
             </table>
 
-            <? if ($solution->feedback != '' && !Studip\Markup::editorEnabled()): ?>
-                <div class="label-text">
-                    <?= _('Textvorschau') ?>
-                </div>
-                <div class="vips_output">
-                    <?= formatReady($solution->feedback) ?>
-                </div>
-            <? endif ?>
-
             <label>
                 <span class="required"><?= sprintf(_('Vergebene Punkte (von %g)'), $max_points) ?></span>
                 <input name="reached_points" type="text" class="size-s" pattern="-?[0-9,.]+" data-message="<?= _('Bitte geben Sie eine Zahl ein') ?>"

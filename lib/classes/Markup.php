@@ -52,17 +52,6 @@ class Markup
     const HTML_MARKER_REGEXP = '/^\s*<!--\s*HTML.*?-->/i';
 
     /**
-     * Return `true` if the WYSIWYG editor is enabled for this user.
-     * @deprecated since Stud.IP 5.5
-     *
-     * @return boolean  always returns `true`.
-     */
-    public static function editorEnabled()
-    {
-        return true;
-    }
-
-    /**
      * Return `true` for HTML code and `false` for plain text.
      *
      * HTML code must either match `HTML_MARKER_REGEXP` or begin
@@ -446,9 +435,7 @@ class Markup
     public static function wysiwygReady(
         $text, $trim = true, $br = false, $double_encode = true
     ) {
-        if (self::editorEnabled()) {
-            $text = self::markupToHtml($text, $trim);
-        }
+        $text = self::markupToHtml($text, $trim);
         return self::htmlReady($text, $trim, $br, $double_encode);
     }
 

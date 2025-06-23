@@ -36,27 +36,13 @@
                     <? $answer = $response[0] ?>
                 <? elseif ($exercise->getLayout() === 'code'): ?>
                     <? $answer = "[pre][nop]\n{$response[0]}\n[/nop][/pre]" ?>
-                <? elseif (Studip\Markup::editorEnabled()): ?>
-                    <? $answer = Studip\Markup::markAsHtml(htmlReady($response[0], true, true)) ?>
                 <? else: ?>
-                    <? $answer = $response[0] ?>
+                    <? $answer = Studip\Markup::markAsHtml(htmlReady($response[0], true, true)) ?>
                 <? endif ?>
                 <textarea <?= $solution->commented_solution ? 'name="commented_solution"' : '' ?> class="character_input size-l wysiwyg" rows="20"
                 ><?= wysiwygReady($solution->commented_solution ?: $answer) ?></textarea>
 
                 <?= Studip\Button::create(_('Kommentierte Lösung löschen'), 'delete_commented_solution', ['data-confirm' => _('Wollen Sie die kommentierte Lösung löschen?')]) ?>
-
-                <? if ($solution->commented_solution): ?>
-                    <? if (!Studip\Markup::editorEnabled()): ?>
-                        <div class="label-text">
-                            <?= _('Textvorschau') ?>
-                        </div>
-
-                        <div class="vips_output">
-                            <?= formatReady($solution->commented_solution) ?>
-                        </div>
-                    <? endif ?>
-                <? endif ?>
             <? else: ?>
                 <div class="vips_output">
                     <?= formatReady($solution->commented_solution) ?>
