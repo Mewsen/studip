@@ -163,7 +163,7 @@
                                     'formaction' => $controller->url_for("course/forum/index/delete_entry/{$entry['topic_id']}"),
                                     'data-confirm' => sprintf(
                                         _('Sind sie sicher dass Sie den Eintrag %s löschen möchten?'),
-                                        $entry['name']
+                                        kill_format($entry['name'])
                                     )
                                 ]
                             )
