@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:04+0200\n"
+"POT-Creation-Date: 2025-06-11 10:39+0200\n"
 "PO-Revision-Date: 2024-07-18 14:29+0000\n"
 "Last-Translator: Oliver Oster <oster@zmml.uni-bremen.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
@@ -1598,8 +1598,8 @@ msgstr "Migration %s of %s has already been started and is still running."
 #: lib/models/BlubberComment.php:100 lib/models/Freetext.php:139
 #: lib/models/OERMaterial.php:697 lib/models/resources/ResourceProperty.php:109
 #: lib/models/User.php:1699 lib/models/LtiTool.php:193
-#: lib/models/BlubberThread.php:401 lib/models/BlubberThread.php:423
-#: lib/models/BlubberThread.php:438 lib/models/BlubberThread.php:887
+#: lib/models/BlubberThread.php:423 lib/models/BlubberThread.php:445
+#: lib/models/BlubberThread.php:460 lib/models/BlubberThread.php:909
 #: lib/models/QuestionnaireAutomatedData.php:159
 #: lib/models/QuestionnaireAutomatedData.php:176 lib/models/LikertScale.php:122
 #: lib/models/ConsultationSlot.php:326 lib/models/ConsultationSlot.php:335
@@ -3347,7 +3347,7 @@ msgid "Link zu dieser Studiengruppe kopieren"
 msgstr "Copy link to this study group"
 
 #: app/controllers/course/statusgroups.php:167
-#: app/controllers/course/statusgroups.php:391
+#: app/controllers/course/statusgroups.php:421
 msgid "keiner Gruppe zugeordnet"
 msgstr "not assigned to a group"
 
@@ -3391,8 +3391,13 @@ msgid "Gruppe"
 msgstr "Group"
 
 #: app/controllers/course/statusgroups.php:313
-#, fuzzy
-msgid "geschlecht"
+#: app/controllers/registration.php:94 app/views/settings/account/index.php:143
+#: app/views/admin/user/new.php:81 app/views/admin/user/edit.php:174
+#: app/views/questionnaire/question_types/automated_data/evaluation.php:25
+#: config/config_develop.inc.php:182 lib/classes/LockRules.php:229
+#: lib/classes/UserFilterFields/MassMail/MassMailGenderFilter.php:38
+#: lib/models/QuestionnaireAutomatedData.php:140
+msgid "Geschlecht"
 msgstr "Gender"
 
 #: app/controllers/course/statusgroups.php:315
@@ -3522,31 +3527,31 @@ msgstr "Matriculation number"
 msgid "Studiengänge"
 msgstr "Courses of study"
 
-#: app/controllers/course/statusgroups.php:343
+#: app/controllers/course/statusgroups.php:356
 msgid "keiner Funktion oder Gruppe zugeordnet"
 msgstr "not assigned to any function or group"
 
-#: app/controllers/course/statusgroups.php:352
+#: app/controllers/course/statusgroups.php:382
 msgid "Gruppenliste"
 msgstr "List of groups"
 
-#: app/controllers/course/statusgroups.php:492
-#: app/controllers/course/statusgroups.php:498
+#: app/controllers/course/statusgroups.php:522
+#: app/controllers/course/statusgroups.php:528
 #, php-format
 msgid "%u Person wurde zu %s hinzugefügt."
 msgid_plural "%u Personen wurden zu %s hinzugefügt."
 msgstr[0] "%u person has been added to %s."
 msgstr[1] "%u persons have been added to %s."
 
-#: app/controllers/course/statusgroups.php:503
-#: app/controllers/course/statusgroups.php:510
+#: app/controllers/course/statusgroups.php:533
+#: app/controllers/course/statusgroups.php:540
 #, php-format
 msgid "%u Person konnte nicht zu %s hinzugefügt werden."
 msgid_plural "%u Personen konnten nicht zu %s hinzugefügt werden."
 msgstr[0] "%u person could not be added to %s."
 msgstr[1] "%u persons could not be added to %s."
 
-#: app/controllers/course/statusgroups.php:584
+#: app/controllers/course/statusgroups.php:614
 msgid ""
 "Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können "
 "nur gespeichert werden, wenn der Selbsteintrag aktiviert ist."
@@ -3554,177 +3559,177 @@ msgstr ""
 "Settings for inscription into a group or the period for inscription can only "
 "be saved if self-inscription is activated."
 
-#: app/controllers/course/statusgroups.php:607
+#: app/controllers/course/statusgroups.php:637
 #, php-format
 msgid "Die Gruppe \"%s\" wurde angelegt."
 msgstr "Group \"%s\" has been created."
 
-#: app/controllers/course/statusgroups.php:612
+#: app/controllers/course/statusgroups.php:642
 #, php-format
 msgid "Die Daten der Gruppe \"%s\" wurden gespeichert."
 msgstr "Data of group \"%s\" has been saved."
 
-#: app/controllers/course/statusgroups.php:636
+#: app/controllers/course/statusgroups.php:666
 #, php-format
 msgid "Die Gruppe \"%s\" wurde gelöscht."
 msgstr "Group %s deleted."
 
-#: app/controllers/course/statusgroups.php:660
-#: app/controllers/course/statusgroups.php:793
+#: app/controllers/course/statusgroups.php:690
+#: app/controllers/course/statusgroups.php:823
 #, php-format
 msgid "Sie wurden aus der Gruppe %s ausgetragen."
 msgstr "You have been signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:665
+#: app/controllers/course/statusgroups.php:695
 #: app/controllers/institute/members.php:444
 #, php-format
 msgid "%s wurde aus der Gruppe %s ausgetragen."
 msgstr "%s has been signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:673
-#: app/controllers/course/statusgroups.php:798
+#: app/controllers/course/statusgroups.php:703
+#: app/controllers/course/statusgroups.php:828
 #, php-format
 msgid "Sie konnten nicht aus der Gruppe %s ausgetragen werden."
 msgstr "You could not be signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:678
+#: app/controllers/course/statusgroups.php:708
 #, php-format
 msgid "%s konnte nicht aus der Gruppe %s ausgetragen werden."
 msgstr "%s could not be signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:764
+#: app/controllers/course/statusgroups.php:794
 #, php-format
 msgid "Sie wurden als Mitglied der Gruppe %s eingetragen."
 msgstr "You have been signed into group %s as member."
 
-#: app/controllers/course/statusgroups.php:769
+#: app/controllers/course/statusgroups.php:799
 #, php-format
 msgid "Sie konnten nicht als Mitglied der Gruppe %s eingetragen werden."
 msgstr "You could not be signed into group %s as member."
 
-#: app/controllers/course/statusgroups.php:861
+#: app/controllers/course/statusgroups.php:891
 msgid "Thema:"
 msgstr "Topic:"
 
-#: app/controllers/course/statusgroups.php:988
+#: app/controllers/course/statusgroups.php:1018
 #, php-format
 msgid "Eine Gruppe wurde angelegt."
 msgid_plural "%u Gruppen wurden angelegt."
 msgstr[0] "A group was created."
 msgstr[1] "%u groups were created."
 
-#: app/controllers/course/statusgroups.php:1017
+#: app/controllers/course/statusgroups.php:1047
 #: app/views/course/statusgroups/index.php:45
 msgid "Gruppengröße bearbeiten"
 msgstr "Edit group size"
 
-#: app/controllers/course/statusgroups.php:1032
+#: app/controllers/course/statusgroups.php:1062
 #: app/views/course/statusgroups/index.php:46
 msgid "Selbsteintrag bearbeiten"
 msgstr "Edit self-entry"
 
-#: app/controllers/course/statusgroups.php:1102
+#: app/controllers/course/statusgroups.php:1132
 msgid "Gruppe(n) löschen?"
 msgstr "Delete group(s)?"
 
-#: app/controllers/course/statusgroups.php:1109
+#: app/controllers/course/statusgroups.php:1139
 msgid "Sie haben keine Gruppe ausgewählt."
 msgstr "You have not selected a group."
 
-#: app/controllers/course/statusgroups.php:1128
+#: app/controllers/course/statusgroups.php:1158
 msgid "Gruppenmitglieder verschieben"
 msgstr "Move group members"
 
-#: app/controllers/course/statusgroups.php:1131
+#: app/controllers/course/statusgroups.php:1161
 msgid "Gruppenmitglieder kopieren"
 msgstr "Copy group members"
 
-#: app/controllers/course/statusgroups.php:1142
+#: app/controllers/course/statusgroups.php:1172
 msgid "Gruppenmitglieder entfernen"
 msgstr "Remove group members"
 
-#: app/controllers/course/statusgroups.php:1147
+#: app/controllers/course/statusgroups.php:1177
 msgid "Personen aus Veranstaltung austragen"
 msgstr "Sign out person from course"
 
-#: app/controllers/course/statusgroups.php:1177
+#: app/controllers/course/statusgroups.php:1207
 msgid "Die ausgewählten Gruppen wurden gelöscht."
 msgstr "The selected groups have been deleted."
 
-#: app/controllers/course/statusgroups.php:1210
-#: app/controllers/course/statusgroups.php:1252
+#: app/controllers/course/statusgroups.php:1240
+#: app/controllers/course/statusgroups.php:1282
 msgid "Die Einstellungen der ausgewählten Gruppen wurden gespeichert."
 msgstr "The settings of the selected groups have been saved."
 
-#: app/controllers/course/statusgroups.php:1304
-#: app/controllers/course/statusgroups.php:1311
+#: app/controllers/course/statusgroups.php:1334
+#: app/controllers/course/statusgroups.php:1341
 #, php-format
 msgid "%u Person wurde in die Gruppe %s verschoben."
 msgid_plural "%u Personen wurden in die Gruppe %s verschoben."
 msgstr[0] "%u person has been moved in the group %s."
 msgstr[1] "%u persons have been moved in the group %s."
 
-#: app/controllers/course/statusgroups.php:1314
-#: app/controllers/course/statusgroups.php:1321
+#: app/controllers/course/statusgroups.php:1344
+#: app/controllers/course/statusgroups.php:1351
 #, php-format
 msgid "%u Person konnte nicht in die Gruppe %s verschoben werden."
 msgid_plural "%u Personen konnten nicht in die Gruppe %s verschoben werden."
 msgstr[0] "%u person could not be moved inside the group %s."
 msgstr[1] "%u persons could not be moved inside the group %s."
 
-#: app/controllers/course/statusgroups.php:1359
+#: app/controllers/course/statusgroups.php:1389
 #, php-format
 msgid "%u Person wurde in die Gruppe %s kopiert."
 msgid_plural "%u Personen wurden in die Gruppe %s kopiert."
 msgstr[0] "%u person has been copied in the group %s."
 msgstr[1] "%u persons have been copied in the group %s."
 
-#: app/controllers/course/statusgroups.php:1398
-#: app/controllers/course/statusgroups.php:1405
+#: app/controllers/course/statusgroups.php:1428
+#: app/controllers/course/statusgroups.php:1435
 #, php-format
 msgid "%u Person wurde aus der Gruppe %s entfernt."
 msgid_plural "%u Personen wurden aus der Gruppe %s entfernt."
 msgstr[0] "%u person has been removed from the group %s."
 msgstr[1] "%u persons have been removed from the group %s."
 
-#: app/controllers/course/statusgroups.php:1408
-#: app/controllers/course/statusgroups.php:1415
+#: app/controllers/course/statusgroups.php:1438
+#: app/controllers/course/statusgroups.php:1445
 #, php-format
 msgid "%u Person konnte nicht aus der Gruppe %s entfernt werden."
 msgid_plural "%u Personen konnten nicht aus der Gruppe %s entfernt werden."
 msgstr[0] "%u person could not be removed from the group %s."
 msgstr[1] "%u persons could not be removed from the group %s."
 
-#: app/controllers/course/statusgroups.php:1455
+#: app/controllers/course/statusgroups.php:1485
 #: app/controllers/course/members.php:1145
 #, fuzzy
 msgid "Die folgenden Fehler traten beim Austragen von Personen auf:"
 msgstr "The following errors occurred during import:"
 
-#: app/controllers/course/statusgroups.php:1462
+#: app/controllers/course/statusgroups.php:1492
 #: app/controllers/course/members.php:1156
 #, fuzzy
 msgid "Die folgenden Personen wurden ausgetragen:"
 msgstr "The following persons have been signed out of the course"
 
-#: app/controllers/course/statusgroups.php:1467
+#: app/controllers/course/statusgroups.php:1497
 #: app/controllers/course/members.php:1151
 #, fuzzy, php-format
 msgid "%u Personen wurden ausgetragen."
 msgstr "%u persons have been removed."
 
-#: app/controllers/course/statusgroups.php:1526
+#: app/controllers/course/statusgroups.php:1556
 #, fuzzy, php-format
 msgid "Personen der Gruppe %s"
 msgstr "Calendar of group \"%s\""
 
-#: app/controllers/course/statusgroups.php:1535
+#: app/controllers/course/statusgroups.php:1565
 #: app/views/course/statusgroups/copy.php:12
 #, fuzzy
 msgid "Gruppen in andere Veranstaltung kopieren"
 msgstr "Course's groups"
 
-#: app/controllers/course/statusgroups.php:1566
+#: app/controllers/course/statusgroups.php:1596
 #, fuzzy, php-format
 msgid "Die Gruppen wurden in die Veranstaltung %s kopiert."
 msgstr "You have been enroled in the course **%s**."
@@ -15127,102 +15132,87 @@ msgstr "Copy link to date overview"
 
 #: app/controllers/vips/sheets.php:53 app/controllers/vips/pool.php:133
 msgid "Meine Aufgabenblätter"
-msgstr ""
+msgstr "My worksheets"
 
 #: app/controllers/vips/sheets.php:88
-#, fuzzy
 msgid "Die vorherige Lösung wurde wiederhergestellt."
-msgstr "The date %s has been restored!"
+msgstr "The previous solution has been restored."
 
 #: app/controllers/vips/sheets.php:122
-#, fuzzy
 msgid "Diese Aktion zurücknehmen."
-msgstr "Revert migrations"
+msgstr "Undo this action."
 
 #: app/controllers/vips/sheets.php:125
-#, fuzzy
 msgid "Die Lösung wurde gelöscht."
-msgstr "The achivement has been deleted."
+msgstr "The solution has been deleted."
 
 #: app/controllers/vips/sheets.php:153
-#, fuzzy
 msgid "Die Lösungen wurden gelöscht."
-msgstr "The achivement has been deleted."
+msgstr "The solutions have been deleted."
 
 #: app/controllers/vips/sheets.php:181 app/controllers/vips/sheets.php:323
 #: app/controllers/vips/sheets.php:535 app/controllers/vips/api.php:61
 #: app/controllers/vips/api.php:118 app/controllers/vips/api.php:216
-#, fuzzy
 msgid "Das Aufgabenblatt kann zur Zeit nicht bearbeitet werden."
-msgstr "The start time could not be processed!"
+msgstr "The worksheet cannot be edited right now."
 
 #: app/controllers/vips/sheets.php:183 app/controllers/vips/sheets.php:541
 #, php-format
 msgid "Sie haben mit Ihrer IP-Adresse &bdquo;%s&ldquo; keinen Zugriff!"
-msgstr ""
+msgstr "Your IP address &bdquo;%s&ldquo; is not allowed to access!"
 
 #: app/controllers/vips/sheets.php:185
-#, fuzzy
 msgid ""
 "Ein Start der Klausur ist nur mit Bestätigung der Teilnahmebedingungen "
 "möglich."
-msgstr "Registration is only possible after accepting the terms of use:"
+msgstr "You are required to accept the terms in order to start the exam."
 
 #: app/controllers/vips/sheets.php:187
-#, fuzzy
 msgid "Der eingegebene Zugangscode ist nicht korrekt."
-msgstr "The login details entered are not correct."
+msgstr "The exam password is not correct."
 
 #: app/controllers/vips/sheets.php:210
 msgid ""
 "Das Aufgabenblatt wurde abgeschlossen, eine weitere Bearbeitung ist nicht "
 "mehr möglich."
-msgstr ""
+msgstr "The worksheet has been submitted, no futher changes can be made."
 
 #: app/controllers/vips/sheets.php:212
-#, fuzzy
 msgid "Eine Abgabe ist erst nach Start des Aufgabenblatts möglich."
-msgstr "Registration is only possible after accepting the terms of use:"
+msgstr "You can submit the worksheet only after you started working on it."
 
 #: app/controllers/vips/sheets.php:257
-#, fuzzy
 msgid "Das Aufgabenblatt wurde noch nicht gestartet."
-msgstr "This request has not been processed yet."
+msgstr "The worksheet has not been started yet."
 
 #: app/controllers/vips/sheets.php:264
-#, fuzzy
 msgid "Das Aufgabenblatt wurde bereits beendet."
-msgstr "The evaluation has not been terminated."
+msgstr "This worksheet already ended."
 
 #: app/controllers/vips/sheets.php:270 app/controllers/vips/sheets.php:1832
-#, fuzzy
 msgid "Kein Zugriff möglich!"
-msgstr "Changes not applicable"
+msgstr "Access denied!"
 
 #: app/controllers/vips/sheets.php:286
-#, fuzzy
 msgid "Ihre Lösung ist leer und wurde nicht gespeichert."
-msgstr "Your changes have been saved."
+msgstr "Your solution is empty and has not been saved."
 
 #: app/controllers/vips/sheets.php:290
-#, fuzzy, php-format
+#, php-format
 msgid "Ihre Lösung zur Aufgabe &bdquo;%s&ldquo; wurde gespeichert."
-msgstr "Your application has been saved."
+msgstr "Your solution to the task &bdquo;%s&ldquo; was submitted."
 
 #: app/controllers/vips/sheets.php:329
-#, fuzzy
 msgid "Die Zeit ist leider abgelaufen!"
-msgstr "The link to this page has expired."
+msgstr "Time has expired!"
 
 #: app/controllers/vips/sheets.php:386
-#, fuzzy
 msgid "Lösung dieser Aufgabe löschen"
-msgstr "Delete this request"
+msgstr "Delete solution to this task"
 
 #: app/controllers/vips/sheets.php:389
-#, fuzzy
 msgid "Wollen Sie die Lösung dieser Aufgabe wirklich löschen?"
-msgstr "Do you really want to delete this task?"
+msgstr "Do you really want to delete the solution to this task?"
 
 #: app/controllers/vips/sheets.php:397
 msgid ""
@@ -15232,20 +15222,17 @@ msgstr ""
 
 #: app/controllers/vips/sheets.php:401 app/controllers/vips/sheets.php:1089
 #: app/controllers/vips/solutions.php:949
-#, fuzzy
 msgid "Aufgabe bearbeiten"
-msgstr "Edit data"
+msgstr "Work on this task"
 
 #: app/controllers/vips/sheets.php:405 app/controllers/vips/sheets.php:631
 #: app/controllers/vips/sheets.php:1093 app/controllers/vips/sheets.php:1671
-#, fuzzy
 msgid "Studierendensicht (Vorschau)"
-msgstr "Simulate student's view"
+msgstr "Student's view (preview)"
 
 #: app/controllers/vips/sheets.php:411 app/controllers/vips/sheets.php:637
-#, fuzzy
 msgid "Anzeigen für"
-msgstr "Display"
+msgstr "Show for"
 
 #: app/controllers/vips/sheets.php:426
 msgid ""
@@ -15262,17 +15249,15 @@ msgstr ""
 #: lib/models/vips/VipsAssignment.php:137
 #: lib/models/vips/VipsAssignment.php:195
 #: lib/models/Courseware/BlockTypes/TestBlock.php:32
-#, fuzzy
 msgid "Aufgabenblatt"
-msgstr "Tasks"
+msgstr "Worksheet"
 
 #: app/controllers/vips/sheets.php:461
 #: app/views/vips/solutions/assignments_list.php:17
 #: app/views/vips/pool/list_assignments.php:22 lib/modules/VipsModule.php:59
 #: lib/modules/VipsModule.php:252 lib/modules/VipsModule.php:333
-#, fuzzy
 msgid "Aufgabenblätter"
-msgstr "Tasks"
+msgstr "Worksheets"
 
 #: app/controllers/vips/sheets.php:566 app/controllers/vips/sheets.php:609
 #: app/controllers/vips/sheets.php:1658 app/controllers/vips/solutions.php:379
@@ -15284,73 +15269,68 @@ msgstr "Tasks"
 #: app/views/vips/solutions/assignments_list.php:155
 #: app/views/vips/solutions/assignment_solutions.php:205
 #: app/views/vips/pool/list_assignments.php:120
-#, fuzzy
 msgid "Aufgabenblatt drucken"
-msgstr "Manage tasks"
+msgstr "Print this worksheet"
 
 #: app/controllers/vips/sheets.php:574 app/controllers/vips/sheets.php:617
-#, fuzzy
 msgid "Lösungen dieses Blatts löschen"
-msgstr "You can also delete the address."
+msgstr "Delete all solutions to this worksheet"
 
 #: app/controllers/vips/sheets.php:577 app/controllers/vips/sheets.php:620
-#, fuzzy
 msgid "Wollen Sie die Lösungen dieses Aufgabenblatts wirklich löschen?"
-msgstr "Do you really want to delete this task?"
+msgstr "Do you really want to delete the solutions to this test?"
 
 #: app/controllers/vips/sheets.php:582
 msgid "Klausur vorzeitig abgeben"
-msgstr ""
+msgstr "Submit exam early"
 
 #: app/controllers/vips/sheets.php:585
 msgid ""
 "Achtung: Wenn Sie die Klausur abgeben, sind keine weiteren Eingaben mehr "
 "möglich!"
-msgstr ""
+msgstr "Note: If you submit the exam now, you cannot make any further changes."
 
 #: app/controllers/vips/sheets.php:590
 msgid "Aufgabenblatt jetzt abgeben"
-msgstr ""
+msgstr "Submit this worksheet"
 
 #: app/controllers/vips/sheets.php:593
 msgid ""
 "Achtung: Wenn Sie das Aufgabenblatt abgeben, sind keine weiteren Eingaben "
 "mehr möglich!"
 msgstr ""
+"Note: If you submit the worksheet now, you cannot make any further changes."
 
 #: app/controllers/vips/sheets.php:603
 msgid "Dies ist die Studierendensicht (Vorschau) des Aufgabenblatts."
-msgstr ""
+msgstr "This is the student's view (preview) of the worksheet."
 
 #: app/controllers/vips/sheets.php:627 app/controllers/vips/sheets.php:1667
 #: app/controllers/vips/solutions.php:374
 #: app/views/vips/solutions/assignments_list.php:150
-#, fuzzy
 msgid "Aufgabenblatt bearbeiten"
-msgstr "Edit data"
+msgstr "Edit this worksheet"
 
 #: app/controllers/vips/sheets.php:700 app/controllers/vips/sheets.php:1352
-#, fuzzy
 msgid "Ungültiger Endzeitpunkt, der Wert wurde nicht übernommen."
-msgstr "The entered values have been accepted."
+msgstr "Invalid ending time, reset to current time."
 
 #: app/controllers/vips/sheets.php:772
 #, fuzzy, php-format
 msgid "Das Aufgabenblatt „%s“ wurde gelöscht."
 msgstr "%u task has been deleted."
 
+# php-format
 #: app/controllers/vips/sheets.php:799
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurden %s Aufgabenblätter gelöscht."
-msgstr "%s questions deleted."
+msgstr "%s worksheets have been deleted."
 
 #: app/controllers/vips/sheets.php:803
-#, fuzzy
 msgid ""
 "Einige Aufgabenblätter konnten nicht gelöscht werden, da bereits Lösungen "
 "abgegeben wurden."
-msgstr ""
-"Cannot delete partial course of study, it is allocated to a course of study."
+msgstr "Some worksheets cannot be deleted due to existing submissions."
 
 #: app/controllers/vips/sheets.php:804 app/controllers/vips/pool.php:345
 msgid ""
@@ -15359,38 +15339,33 @@ msgid ""
 msgstr ""
 
 #: app/controllers/vips/sheets.php:847
-#, fuzzy
 msgid "Die Blockzuordnung wurde gespeichert."
-msgstr "Allocation saved."
+msgstr "The block assignment has been saved."
 
 #: app/controllers/vips/sheets.php:857
-#, fuzzy
 msgid "Aufgabenblätter kopieren"
-msgstr "Activate task"
+msgstr "Copy an existing worksheet"
 
 #: app/controllers/vips/sheets.php:889 app/controllers/vips/sheets.php:1741
-#, fuzzy
 msgid "Das Aufgabenblatt wurde kopiert."
 msgid_plural "Die Aufgabenblätter wurden kopiert."
-msgstr[0] "The learning material has been copied."
-msgstr[1] "The learning material has been copied."
+msgstr[0] "The worksheet has been copied."
+msgstr[1] "The worksheets have been copied."
 
 #: app/controllers/vips/sheets.php:899
-#, fuzzy
 msgid "Aufgabenblätter verschieben"
-msgstr "Move answer"
+msgstr "Move an existing worksheet"
 
 #: app/controllers/vips/sheets.php:931
-#, fuzzy
 msgid "Das Aufgabenblatt wurde verschoben."
 msgid_plural "Die Aufgabenblätter wurden verschoben."
-msgstr[0] "Element moved."
-msgstr[1] "Element moved."
+msgstr[0] "The worksheet has been moved."
+msgstr[1] "The worksheets have been moved."
 
 #: app/controllers/vips/sheets.php:950 app/controllers/vips/solutions.php:1349
 msgid ""
 "Die Klausur wurde zurückgesetzt und alle abgegebenen Lösungen archiviert."
-msgstr ""
+msgstr "The exam has been reset and all existing solutions have been archived."
 
 #: app/controllers/vips/sheets.php:975
 #, fuzzy, php-format
@@ -15398,95 +15373,84 @@ msgid "Die Aufgabe „%s“ wurde gelöscht."
 msgstr "%u task has been deleted."
 
 #: app/controllers/vips/sheets.php:998
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurden %s Aufgaben gelöscht."
-msgstr "%s questions deleted."
+msgstr "%d tasks have been deleted."
 
 #: app/controllers/vips/sheets.php:1072
-#, fuzzy
 msgid ""
 "Sie können hier den Aufgabentext und die Antwortoptionen dieser Aufgabe "
 "bearbeiten."
-msgstr "Use this page to edit the settings and assignments of the course set."
+msgstr "You can edit the description and answer options on this page."
 
 #: app/controllers/vips/sheets.php:1078 app/controllers/vips/sheets.php:1637
 #: app/views/vips/sheets/edit_assignment.php:291
-#, fuzzy
 msgid "Neue Aufgabe erstellen"
-msgstr "Create new rule"
+msgstr "Create a new task"
 
 #: app/controllers/vips/sheets.php:1104 app/controllers/vips/solutions.php:992
 #: app/controllers/vips/solutions.php:1073
 #: app/views/vips/sheets/show_exercise_link.php:13
-#, fuzzy, php-format
+#, php-format
 msgid "Aufgabe %d"
-msgstr "Task"
+msgstr "Task %d"
 
 #: app/controllers/vips/sheets.php:1168
-#, fuzzy
 msgid "Die Aufgabe wurde eingetragen."
-msgstr "The selected person has been enroled."
+msgstr "The task has been saved."
 
 #: app/controllers/vips/sheets.php:1196 app/controllers/vips/sheets.php:1235
 #: app/controllers/vips/pool.php:385
-#, fuzzy
 msgid "Die Aufgabe wurde kopiert."
 msgid_plural "Die Aufgaben wurden kopiert."
-msgstr[0] "The file has been copied!"
-msgstr[1] "The file has been copied!"
+msgstr[0] "The task was copied."
+msgstr[1] "The tasks were copied."
 
 #: app/controllers/vips/sheets.php:1274 app/controllers/vips/pool.php:430
-#, fuzzy, php-format
+#, php-format
 msgid "Die Aufgabe wurde verschoben."
 msgid_plural "Die Aufgaben wurden verschoben."
-msgstr[0] "The file has been moved!"
-msgstr[1] "The file has been moved!"
+msgstr[0] "The task has been moved."
+msgstr[1] "The tasks have been moved."
 
 #: app/controllers/vips/sheets.php:1342
-#, fuzzy
 msgid "Ungültiger Startzeitpunkt, der Wert wurde nicht übernommen."
-msgstr "The entered values have been accepted."
+msgstr "Invalid starting time, reset to current time."
 
 #: app/controllers/vips/sheets.php:1357
-#, fuzzy
 msgid "Bitte überprüfen Sie den Start- und den Endzeitpunkt!"
-msgstr "Please specify a start and/or end time."
+msgstr "Please check the starting and ending points!"
 
 #: app/controllers/vips/sheets.php:1475
-#, fuzzy
 msgid "Das Aufgabenblatt wurde gespeichert."
-msgstr "The document has been saved."
+msgstr "The worksheet has been saved."
 
 #: app/controllers/vips/sheets.php:1630
 msgid ""
 "Sie können hier die Grunddaten des Aufgabenblatts verwalten und Aufgaben "
 "hinzufügen, bearbeiten oder löschen."
 msgstr ""
+"You can edit the data of this worksheet and add, edit or remove exercises."
 
 #: app/controllers/vips/sheets.php:1631
-#, fuzzy
 msgid "Alle Daten können später geändert oder ergänzt werden."
-msgstr "The data could not be exported."
+msgstr "(All data can be changed or supplemented later.)"
 
 #: app/controllers/vips/sheets.php:1642
-#, fuzzy
 msgid "Vorhandene Aufgabe kopieren"
-msgstr "Register existing plugins"
+msgstr "Copy an existing task"
 
 #: app/controllers/vips/sheets.php:1651
-#, fuzzy
 msgid "Aufgabenblatt korrigieren"
-msgstr "Activate task"
+msgstr "Correct this worksheet"
 
 #: app/controllers/vips/sheets.php:1678
-#, fuzzy
 msgid "Aufgabenblatt exportieren"
-msgstr "Export selection"
+msgstr "Export this worksheet"
 
 #: app/controllers/vips/sheets.php:1763
-#, fuzzy
 msgid "Sie müssen eine Datei zum Importieren auswählen."
-msgstr "Select file for import"
+msgstr "You have to select a file to import."
 
 #: app/controllers/vips/sheets.php:1773
 #, fuzzy, php-format
@@ -15506,32 +15470,29 @@ msgid "%1$d Aufgabenblätter mit insgesamt %2$d Aufgaben wurden hinzugefügt."
 msgstr ""
 
 #: app/controllers/vips/sheets.php:1862 app/controllers/vips/sheets.php:1868
-#, fuzzy
 msgid "(keine Matrikelnummer)"
-msgstr "Matriculation number"
+msgstr "(no student registration number)"
 
 #: app/controllers/vips/sheets.php:1926 app/controllers/vips/solutions.php:64
 msgid "Aufgabenblätter ohne Blockzuordnung"
-msgstr ""
+msgstr "Worksheets without block assignment"
 
 #: app/controllers/vips/sheets.php:1965
 msgid "Aufgabenblätter ohne Courseware-Einbindung"
-msgstr ""
+msgstr "Worksheets not used in Courseware"
 
 #: app/controllers/vips/sheets.php:1986
-#, fuzzy
 msgid "Noch nicht gestartete Aufgabenblätter"
-msgstr "Evaluations not started yet:"
+msgstr "Future worksheets"
 
 #: app/controllers/vips/sheets.php:1989
 #: app/views/vips/sheets/list_assignments_stud.php:21
-#, fuzzy
 msgid "Laufende Aufgabenblätter"
-msgstr "Serial number"
+msgstr "Currently active worksheets"
 
 #: app/controllers/vips/sheets.php:1992
 msgid "Beendete Aufgabenblätter"
-msgstr ""
+msgstr "Finished worksheets"
 
 #: app/controllers/vips/sheets.php:2022
 msgid ""
@@ -15541,54 +15502,45 @@ msgid ""
 msgstr ""
 
 #: app/controllers/vips/sheets.php:2024
-#, fuzzy
 msgid ""
 "Auf dieser Seite können Sie Aufgabenblätter in Ihrem Kurs anlegen und "
 "verwalten."
-msgstr "Manage versions of partial courses of study here."
+msgstr "On this page you can create and edit tests for your course."
 
 #: app/controllers/vips/sheets.php:2028 app/controllers/vips/pool.php:144
 #: app/views/vips/sheets/list_assignments.php:19
 #: app/views/vips/pool/assignments.php:19
-#, fuzzy
 msgid "Aufgabenblatt erstellen"
-msgstr "Manage tasks"
+msgstr "Create a new worksheet"
 
 #: app/controllers/vips/sheets.php:2033 app/controllers/vips/pool.php:149
 #: app/views/vips/pool/list_assignments.php:127
-#, fuzzy
 msgid "Aufgabenblatt kopieren"
-msgstr "Activate task"
+msgstr "Copy an existing worksheet"
 
 #: app/controllers/vips/sheets.php:2038 app/controllers/vips/pool.php:154
-#, fuzzy
 msgid "Aufgabenblatt importieren"
-msgstr "Activate task"
+msgstr "Import a new worksheet"
 
 #: app/controllers/vips/sheets.php:2043
-#, fuzzy
 msgid "Neuen Block erstellen"
-msgstr "Create new rule"
+msgstr "Create new block"
 
 #: app/controllers/vips/sheets.php:2051
-#, fuzzy
 msgid "Gruppiert nach Status"
-msgstr "Grouped by field of study"
+msgstr "Group worksheets by status"
 
 #: app/controllers/vips/sheets.php:2055
-#, fuzzy
 msgid "Gruppiert nach Blöcken"
-msgstr "Grouped by field of study"
+msgstr "Group worksheets by block"
 
 #: app/controllers/vips/sheets.php:2061
-#, fuzzy
 msgid "Verwendung in Courseware"
-msgstr "Use in categories"
+msgstr "Worksheets used in courseware"
 
 #: app/controllers/vips/pool.php:44
-#, fuzzy
 msgid "Meine Aufgaben"
-msgstr "no entry"
+msgstr "My tasks"
 
 #: app/controllers/vips/pool.php:47 app/views/vips/pool/exercises.php:9
 #, fuzzy
@@ -15606,22 +15558,19 @@ msgstr "Here you find an overview on all available pages."
 #: app/views/vips/sheets/copy_assignments_dialog.php:20
 #: app/views/vips/pool/copy_exercises_dialog.php:21
 #: app/views/vips/pool/move_exercises_dialog.php:21
-#, fuzzy
 msgid "Persönliche Aufgabensammlung"
-msgstr "Personal details"
+msgstr "Personal worksheets"
 
 #: app/controllers/vips/pool.php:59 app/controllers/vips/pool.php:166
 #: app/views/vips/sheets/copy_exercise_dialog.php:41
 #: app/views/vips/sheets/copy_assignment_dialog.php:25
-#, fuzzy
 msgid "Aufgaben in Veranstaltungen"
-msgstr "My courses"
+msgstr "Course worksheets"
 
 #: app/controllers/vips/pool.php:98
 #: app/views/vips/sheets/copy_exercise_dialog.php:58
-#, fuzzy
 msgid "Titel der Aufgabe"
-msgstr "Category title"
+msgstr "Exercise title"
 
 #: app/controllers/vips/pool.php:101 app/controllers/vips/pool.php:198
 #: app/controllers/room_management/overview.php:85
@@ -15638,15 +15587,13 @@ msgstr "Search"
 #: app/controllers/vips/pool.php:104
 #: app/views/vips/sheets/edit_assignment.php:270
 #: app/views/vips/pool/list_exercises.php:42
-#, fuzzy
 msgid "Aufgabentyp"
-msgstr "Tasks"
+msgstr "Type of task"
 
 #: app/controllers/vips/pool.php:105
 #: app/views/vips/sheets/copy_exercise_dialog.php:27
-#, fuzzy
 msgid "Alle Aufgabentypen"
-msgstr "Show all tasks"
+msgstr "Any type of task"
 
 #: app/controllers/vips/pool.php:136
 #, fuzzy
@@ -15656,9 +15603,8 @@ msgid ""
 msgstr "Here you find an overview on all available pages."
 
 #: app/controllers/vips/pool.php:195
-#, fuzzy
 msgid "Titel des Aufgabenblatts"
-msgstr "Title of question block"
+msgstr "Search title"
 
 #: app/controllers/vips/pool.php:201 app/views/course/feedback/index.php:41
 #: app/views/vips/sheets/list_assignments_stud.php:44
@@ -15669,7 +15615,7 @@ msgstr "Mode"
 #: app/controllers/vips/pool.php:202
 #: app/views/vips/sheets/copy_assignment_dialog.php:11
 msgid "Beliebiger Modus"
-msgstr ""
+msgstr "Any mode"
 
 #: app/controllers/vips/pool.php:340
 #, fuzzy, php-format
@@ -15679,26 +15625,26 @@ msgstr[0] "%u task has been deleted."
 msgstr[1] "%u tasks have been deleted."
 
 #: app/controllers/vips/pool.php:344
-#, fuzzy
 msgid ""
 "Einige Aufgaben konnten nicht gelöscht werden, da die Aufgabenblätter "
 "gesperrt sind."
-msgstr "The rule cannot be deleted since it is still in use."
+msgstr ""
+"Some exercises cannot be deleted due to existing submissions for the test."
 
 #: app/controllers/vips/pool.php:357
 msgid "Aufgaben in vorhandenes Aufgabenblatt kopieren"
-msgstr ""
+msgstr "Copy tasks into another worksheet"
 
 #: app/controllers/vips/pool.php:396
-#, fuzzy
 msgid "Aufgaben in vorhandenes Aufgabenblatt verschieben"
-msgstr "Move into another group"
+msgstr "Move tasks into another worksheet"
 
 #: app/controllers/vips/pool.php:434
 msgid ""
 "Einige Aufgaben konnten nicht verschoben werden, da die Aufgabenblätter "
 "gesperrt sind."
 msgstr ""
+"Some exercises cannot be moved due to existing submissions for the test."
 
 #: app/controllers/vips/config.php:36
 #, fuzzy
@@ -15706,32 +15652,28 @@ msgid "Einstellungen für Aufgaben"
 msgstr "Accept settings"
 
 #: app/controllers/vips/config.php:46
-#, fuzzy
 msgid "Anstehende Klausuren anzeigen"
-msgstr "Show hidden courses"
+msgstr "Display upcoming exams"
 
 #: app/controllers/vips/exam_mode.php:22
-#, fuzzy
 msgid "Klausurübersicht"
-msgstr "Module overview"
+msgstr "List of active exams"
 
 #: app/controllers/vips/exam_mode.php:25
 msgid ""
 "Der normale Betrieb von Stud.IP ist für Sie zur Zeit gesperrt, da Klausuren "
 "geschrieben werden."
-msgstr ""
+msgstr "Other pages are currently not accessible due to a running exam."
 
 #: app/controllers/vips/api.php:54 app/controllers/vips/api.php:111
 #: app/controllers/vips/api.php:212 lib/modules/VipsModule.php:144
 #: lib/modules/VipsModule.php:162
-#, fuzzy
 msgid "Sie haben keinen Zugriff auf dieses Aufgabenblatt!"
-msgstr "You do not have access to this area."
+msgstr "You don't have access to this task!"
 
 #: app/controllers/vips/api.php:207
-#, fuzzy
 msgid "Sie haben keinen Zugriff auf diesen Block!"
-msgstr "You do not have access to this area."
+msgstr "You don't have access to this block!"
 
 #: app/controllers/vips/admin.php:77
 #, fuzzy, php-format
@@ -15745,45 +15687,41 @@ msgstr "The column %s has been deleted."
 
 #: app/controllers/vips/admin.php:188
 msgid "Die Notenwerte müssen zwischen 0 und 100 liegen!"
-msgstr ""
+msgstr "Grade intervals must be in a range from 0 to 100!"
 
 #: app/controllers/vips/admin.php:191
 #, php-format
 msgid "Die Notenwerte müssen monoton absteigen (%s > %s)!"
-msgstr ""
+msgstr "The specified grade interval is invalid (%s > %s)!"
 
 #: app/controllers/vips/admin.php:203
-#, fuzzy
 msgid "Die Notenwerte wurden eingetragen."
-msgstr "The selected person has been enroled."
+msgstr "The grade intervals have been saved."
 
 #: app/controllers/vips/solutions.php:113
 msgid ""
 "Hier finden Sie eine Übersicht über den Korrekturstatus Ihrer "
 "Aufgabenblätter und können Aufgaben korrigieren. Außerdem können Sie hier "
 "die Einstellungen für die Notenberechnung in Ihrem Kurs vornehmen."
-msgstr ""
+msgstr "This page lists the correction status of all your worksheets."
 
 #: app/controllers/vips/solutions.php:118
-#, fuzzy
 msgid "Notenverteilung festlegen"
-msgstr "Add new substitute"
+msgstr "Grade distribution"
 
 #: app/controllers/vips/solutions.php:130
 #: app/controllers/vips/solutions.php:1533
 #: app/controllers/vips/solutions.php:1703
 #: app/views/vips/solutions/participants_overview.php:18
-#, fuzzy
 msgid "Punkteübersicht"
-msgstr "File overview"
+msgstr "Point overview"
 
 #: app/controllers/vips/solutions.php:134
 #: app/controllers/vips/solutions.php:1537
 #: app/controllers/vips/solutions.php:1707
 #: app/views/vips/solutions/participants_overview.php:40
-#, fuzzy
 msgid "Notenübersicht"
-msgstr "File overview"
+msgstr "Grade overview"
 
 #: app/controllers/vips/solutions.php:138
 #: app/controllers/vips/solutions.php:1541
@@ -15794,26 +15732,22 @@ msgstr "Statistic"
 
 #: app/controllers/vips/solutions.php:151
 #: app/controllers/vips/solutions.php:449
-#, fuzzy
 msgid "Freigabe für Studierende"
-msgstr "%s for students"
+msgstr "Visibility for students"
 
 #: app/controllers/vips/solutions.php:190
-#, fuzzy
 msgid "Die Freigabeeinstellungen wurden geändert."
-msgstr "The permission settings have been saved."
+msgstr "The visibility settings have been saved."
 
 #: app/controllers/vips/solutions.php:337
 #: app/controllers/vips/solutions.php:1436
 #: app/views/vips/solutions/participants_overview.php:119
-#, fuzzy
 msgid "Summe"
-msgstr "Number"
+msgstr "Total"
 
 #: app/controllers/vips/solutions.php:341
-#, fuzzy
 msgid "Maximalpunktzahl:"
-msgstr "Maximum amount of participants"
+msgstr "Maximum number of points:"
 
 #: app/controllers/vips/solutions.php:370
 msgid ""
@@ -15823,16 +15757,14 @@ msgstr ""
 
 #: app/controllers/vips/solutions.php:385
 #: app/views/vips/solutions/autocorrect_dialog.php:27
-#, fuzzy
 msgid "Autokorrektur starten"
-msgstr "Start wizard"
+msgstr "Start correction"
 
 #: app/controllers/vips/solutions.php:392
 #: app/views/vips/sheets/list_assignments_list.php:160
 #: app/views/vips/pool/list_assignments.php:133
-#, fuzzy
 msgid "Alle Lösungen zurücksetzen"
-msgstr "reset all entries"
+msgstr "Reset exam for all users"
 
 #: app/controllers/vips/solutions.php:395
 #: app/views/vips/sheets/list_assignments_list.php:162
@@ -15843,29 +15775,24 @@ msgid ""
 msgstr ""
 
 #: app/controllers/vips/solutions.php:405
-#, fuzzy
 msgid "Gradebook-Eintrag entfernen"
-msgstr "Remove this course"
+msgstr "Remove gradebook entry"
 
 #: app/controllers/vips/solutions.php:408
-#, fuzzy
 msgid "Eintrag aus dem Gradebook löschen?"
-msgstr "Delete entry"
+msgstr "Are you sure that you want to delete the gradebook entry?"
 
 #: app/controllers/vips/solutions.php:412
-#, fuzzy
 msgid "Eintrag im Gradebook anlegen"
-msgstr "Create a new entry"
+msgstr "Publish into gradebook"
 
 #: app/controllers/vips/solutions.php:423
-#, fuzzy
 msgid "Punktetabelle exportieren"
-msgstr "Export as table"
+msgstr "Export score table"
 
 #: app/controllers/vips/solutions.php:430
-#, fuzzy
 msgid "Abgabeprotokolle exportieren"
-msgstr "Export as table"
+msgstr "Export submission logs"
 
 #: app/controllers/vips/solutions.php:437
 #, fuzzy
@@ -15874,9 +15801,8 @@ msgstr "Export participants"
 
 #: app/controllers/vips/solutions.php:442
 #: app/views/vips/solutions/assignment_solutions.php:201
-#, fuzzy
 msgid "Abgegebene Dateien herunterladen"
-msgstr "Download new files"
+msgstr "Download attached files"
 
 #: app/controllers/vips/solutions.php:451
 #: app/views/vips/solutions/update_released_dialog.php:16
@@ -15892,51 +15818,46 @@ msgstr "Your score:"
 
 #: app/controllers/vips/solutions.php:467
 #: app/views/vips/solutions/update_released_dialog.php:26
-#, fuzzy
 msgid "Punkte und Kommentare"
-msgstr "Internal comment"
+msgstr "Points and corrections"
 
 #: app/controllers/vips/solutions.php:475
 #: app/views/vips/solutions/update_released_dialog.php:31
 msgid "… zusätzlich Aufgaben und Korrektur"
-msgstr ""
+msgstr "… plus exercises and corrections"
 
 #: app/controllers/vips/solutions.php:483
 #: app/views/vips/solutions/update_released_dialog.php:36
 msgid "… zusätzlich Musterlösungen"
-msgstr ""
+msgstr "… plus sample solutions"
 
 #: app/controllers/vips/solutions.php:575
 #: app/controllers/vips/solutions.php:631
-#, fuzzy
 msgid "ZIP-Archiv konnte nicht erzeugt werden."
-msgstr "Cannot create account."
+msgstr "Cannot create ZIP archive."
 
 #: app/controllers/vips/solutions.php:591
-#, fuzzy, php-format
+#, php-format
 msgid "%s/Aufgabe %d/"
-msgstr "Task"
+msgstr "%s/Task %d/"
 
 #: app/controllers/vips/solutions.php:639
-#, fuzzy, php-format
+#, php-format
 msgid "Aufgabe %d/"
-msgstr "Task"
+msgstr "Task %d/"
 
 #: app/controllers/vips/solutions.php:690
-#, fuzzy
 msgid "Das Aufgabenblatt wurde in das Gradebook eingetragen."
-msgstr "The person has been added to the selected group!"
+msgstr "The worksheet has been published in the gradebook."
 
 #: app/controllers/vips/solutions.php:710
-#, fuzzy
 msgid "Das Aufgabenblatt wurde aus dem Gradebook gelöscht."
-msgstr "%u task has been deleted."
+msgstr "The worksheet has been removed from the gradebook."
 
 #: app/controllers/vips/solutions.php:724
 #: app/controllers/vips/solutions.php:1428
-#, fuzzy
 msgid "Kennung"
-msgstr "Aficionada"
+msgstr "Account"
 
 #: app/controllers/vips/solutions.php:724
 #: app/views/vips/solutions/show_assignment_log.php:15
@@ -15961,28 +15882,25 @@ msgstr "Time"
 #: app/controllers/vips/solutions.php:725
 #: app/views/vips/solutions/show_assignment_log.php:21
 #: app/views/vips/solutions/assignment_solutions.php:123
-#, fuzzy
 msgid "IP-Adresse"
-msgstr "IP Address"
+msgstr "IP address"
 
 #: app/controllers/vips/solutions.php:725
 #: app/views/vips/solutions/show_assignment_log.php:24
-#, fuzzy
 msgid "Rechnername"
-msgstr "Username"
+msgstr "Client hostname"
 
 #: app/controllers/vips/solutions.php:725
 #: app/views/vips/solutions/show_assignment_log.php:27
-#, fuzzy
 msgid "Sitzungs-ID"
-msgstr "Meeting"
+msgstr "Session ID"
 
 #: app/controllers/vips/solutions.php:799
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurde %d Lösung korrigiert."
 msgid_plural "Es wurden %d Lösungen korrigiert."
-msgstr[0] "%u folders have been copied."
-msgstr[1] "%u folders have been copied."
+msgstr[0] "%d solution was graded."
+msgstr[1] "%d solutions were graded."
 
 #: app/controllers/vips/solutions.php:904
 #: app/views/vips/solutions/view_solution.php:46
@@ -15995,16 +15913,15 @@ msgstr "unspecified"
 msgid ""
 "Sie können hier die Ergebnisse der Autokorrektur ansehen und Aufgaben "
 "manuell korrigieren."
-msgstr ""
+msgstr "This view is used to manually correct exercises."
 
 #: app/controllers/vips/solutions.php:965
-#, fuzzy
 msgid "Vorige unkorrigierte Aufgabe"
-msgstr "Unformatted output"
+msgstr "Previous uncorrected task"
 
 #: app/controllers/vips/solutions.php:977
 msgid "Nächste unkorrigierte Aufgabe"
-msgstr ""
+msgstr "Next uncorrected task"
 
 #: app/controllers/vips/solutions.php:997
 #: app/views/settings/studies/studiengang.php:22
@@ -16016,23 +15933,22 @@ msgid "Versionen"
 msgstr "Versions"
 
 #: app/controllers/vips/solutions.php:998
-#, fuzzy, php-format
+#, php-format
 msgid "Aktuelle Version: %s"
-msgstr "Current version"
+msgstr "Current version: %s"
 
 #: app/controllers/vips/solutions.php:1007
-#, fuzzy, php-format
+#, php-format
 msgid "Version %s vom %s"
-msgstr "Version %1$s from %2$s"
+msgstr "Version %s from %s"
 
 #: app/controllers/vips/solutions.php:1030
 msgid "Die Korrekturen des Aufgabenblatts sind nicht freigegeben."
-msgstr ""
+msgstr "No task was graded or the grades have not been published."
 
 #: app/controllers/vips/solutions.php:1099
-#, fuzzy
 msgid "Die ausgewählte Lösung wurde als aktuelle Version gespeichert."
-msgstr "Page %s including all versions deleted."
+msgstr "The selected solution was saved as the current version."
 
 #: app/controllers/vips/solutions.php:1169
 #, fuzzy
@@ -16042,58 +15958,55 @@ msgstr "%u person has been removed from the group %s."
 #: app/controllers/vips/solutions.php:1246
 #, php-format
 msgid "Sie haben Bonuspunkte vergeben: %g von %g."
-msgstr ""
+msgstr "You assigned bonus points: %g of %g."
 
 #: app/controllers/vips/solutions.php:1248
-#, fuzzy, php-format
+#, php-format
 msgid "Sie haben eine negative Punktzahl eingegeben: %g von %g."
-msgstr "You have not entered a name."
+msgstr "You entered a negative amount of points: %g of %g."
 
 #: app/controllers/vips/solutions.php:1250
-#, fuzzy, php-format
+#, php-format
 msgid "Die eingegebene Punktzahl wurde auf halbe Punkte gerundet: %g."
-msgstr "The specified person could not be found!"
+msgstr "The assigned points have been rounded to half points: %g."
 
 #: app/controllers/vips/solutions.php:1259
-#, fuzzy
 msgid "Ihre Korrektur wurde gespeichert."
-msgstr "Your priorities have been saved."
+msgstr "Your grade was saved."
 
 #: app/controllers/vips/solutions.php:1321
 msgid "Der Abgabezeitpunkt liegt nach dem Ende der Klausur."
-msgstr ""
+msgstr "The specified due date is after the end time of the exam."
 
 #: app/controllers/vips/solutions.php:1324
-#, fuzzy
 msgid "Der Abgabezeitpunkt ist keine gültige Uhrzeit."
-msgstr "The start time is in an invalid format!"
+msgstr "The specified due date is not a valid time."
 
 #: app/controllers/vips/solutions.php:1352
 msgid ""
 "Die Teilnahme wurde zurückgesetzt und ggf. abgegebene Lösungen archiviert."
 msgstr ""
+"The exam has been reset for this user and any solutions have been archived."
 
 #: app/controllers/vips/solutions.php:1379
-#, fuzzy
 msgid "Die Korrekturen wurden noch nicht freigegeben."
-msgstr "This person has not been referenced yet."
+msgstr "No task was graded or the grades have not been published."
 
 #: app/controllers/vips/solutions.php:1385
 msgid ""
 "Sie können hier die Ergebnisse bzw. die Korrekturen ihrer Aufgaben ansehen."
-msgstr ""
+msgstr "This page lists all the results of the test."
 
 #: app/controllers/vips/solutions.php:1428
-#, fuzzy
 msgid "Matrikelnr."
-msgstr "Matriculation number"
+msgstr "Student registration number"
 
 #: app/controllers/vips/solutions.php:1439
 #: app/views/vips/admin/edit_grades.php:19
 #: app/views/vips/solutions/participants_overview.php:126
 #: app/views/vips/solutions/student_grade.php:11
 msgid "Note"
-msgstr ""
+msgstr "Grade"
 
 #: app/controllers/vips/solutions.php:1446
 #: app/views/vips/solutions/participants_overview.php:136
@@ -16111,9 +16024,8 @@ msgid "Gewichtung"
 msgstr "Weighting"
 
 #: app/controllers/vips/solutions.php:1522
-#, fuzzy
 msgid "Notenliste.csv"
-msgstr "Sidebar"
+msgstr "grades.csv"
 
 #: app/controllers/vips/solutions.php:1525
 msgid ""
@@ -16123,9 +16035,8 @@ msgstr ""
 
 #: app/controllers/vips/solutions.php:1548
 #: app/controllers/vips/solutions.php:1718
-#, fuzzy
 msgid "Liste im CSV-Format exportieren"
-msgstr "Export achievements as CSV"
+msgstr "Export this list in CSV format"
 
 #: app/controllers/vips/solutions.php:1645
 #: app/views/admin/cronjobs/tasks/index.php:29
@@ -16141,7 +16052,7 @@ msgstr "Task"
 
 #: app/controllers/vips/solutions.php:1646
 msgid "Item"
-msgstr ""
+msgstr "Item"
 
 #: app/controllers/vips/solutions.php:1647
 #: app/views/vips/solutions/statistics.php:19
@@ -16165,12 +16076,11 @@ msgstr "Accomplished achievements"
 #: app/views/vips/solutions/statistics.php:72
 #, php-format
 msgid "Item %d"
-msgstr ""
+msgstr "Item %d"
 
 #: app/controllers/vips/solutions.php:1691
-#, fuzzy
 msgid "Statistik.csv"
-msgstr "Statistic"
+msgstr "statistics.csv"
 
 #: app/controllers/vips/solutions.php:1694
 msgid ""
@@ -18493,15 +18403,6 @@ msgstr "Confirm password"
 #: app/controllers/registration.php:66
 msgid "Passwörter stimmen nicht überein."
 msgstr "The passwords do not match."
-
-#: app/controllers/registration.php:94 app/views/settings/account/index.php:143
-#: app/views/admin/user/new.php:81 app/views/admin/user/edit.php:174
-#: app/views/questionnaire/question_types/automated_data/evaluation.php:25
-#: config/config_develop.inc.php:182 lib/classes/LockRules.php:229
-#: lib/classes/UserFilterFields/MassMail/MassMailGenderFilter.php:38
-#: lib/models/QuestionnaireAutomatedData.php:140
-msgid "Geschlecht"
-msgstr "Gender"
 
 #: app/controllers/registration.php:98 app/views/module/module/modul.php:52
 #: app/views/module/module/modul.php:426 app/views/module/module/modul.php:463
@@ -33635,13 +33536,12 @@ msgstr ""
 "available anymore"
 
 #: app/views/vips/exam_mode/index.php:9
-#, fuzzy
 msgid "Bitte wählen Sie den Kurs, in dem Sie die Klausur schreiben möchten:"
-msgstr "Please select the user(s) you want to add."
+msgstr "Choose the course for your exam:"
 
 #: app/views/vips/exam_mode/index.php:45
 msgid "Zur Zeit laufen keine Klausuren."
-msgstr ""
+msgstr "There are no currently active exams."
 
 #: app/views/vips/sheets/start_assignment_dialog.php:13
 #, fuzzy
@@ -33650,27 +33550,24 @@ msgstr "Please confirm action"
 
 #: app/views/vips/sheets/list_assignments_stud.php:12
 msgid "Es gibt aktuell keine laufenden Aufgabenblätter."
-msgstr ""
+msgstr "There are currently no active worksheets."
 
 #: app/views/vips/sheets/list_assignments_stud.php:66
 #: app/views/vips/sheets/list_assignments_list.php:104
 #: app/views/vips/config/pending_assignments.php:51
-#, fuzzy
 msgid "unterbrochen"
-msgstr "User search"
+msgstr "interrupted"
 
 #: app/views/vips/sheets/list_assignments_stud.php:87
 #: app/views/vips/sheets/list_assignments_stud.php:92
 #: app/views/vips/sheets/list_assignments_list.php:121
-#, fuzzy
 msgid "beendet"
-msgstr "Sent"
+msgstr "finished"
 
 #: app/views/vips/sheets/list_assignments_stud.php:89
 #: app/views/vips/sheets/list_assignments_stud.php:100
-#, fuzzy
 msgid "angefangen"
-msgstr "Beginning"
+msgstr "started"
 
 #: app/views/vips/sheets/assignment_type_tooltip.php:2
 #: config/mvv_config.php:138 lib/classes/SemType.php:243
@@ -33684,6 +33581,8 @@ msgid ""
 "Hausaufgabe, freie Bearbeitung im festgelegten Zeitraum, auch Gruppenarbeit "
 "möglich"
 msgstr ""
+"Homework assignment to be completed in a fixed time frame, supports group "
+"work"
 
 #: app/views/vips/sheets/assignment_type_tooltip.php:6
 #: lib/models/vips/VipsAssignment.php:401
@@ -33696,6 +33595,7 @@ msgid ""
 "Kontrolle des Lernfortschritts, Feedback nach der Abgabe einer Lösung, "
 "automatische Korrektur"
 msgstr ""
+"Self-assessment activity, enables automatic feedback after submitting a task"
 
 #: app/views/vips/sheets/assignment_type_tooltip.php:10
 #: config/config_develop.inc.php:236 config/config_develop.inc.php:264
@@ -33707,31 +33607,27 @@ msgstr "Written examination"
 msgid ""
 "Online-Klausur mit individueller Bearbeitungszeit, konfigurierbare "
 "Zugangsbeschränkungen"
-msgstr ""
+msgstr "Online exam with individual time limits, configurable access control"
 
 #: app/views/vips/sheets/assignment_type_tooltip.php:17
-#, fuzzy
 msgid "Weitere Informationen in der Hilfe"
-msgstr "Display further information"
+msgstr "Also refer to the online help"
 
 #: app/views/vips/sheets/copy_exercises_dialog.php:17
 #: app/views/vips/sheets/move_exercises_dialog.php:17
 #: app/views/vips/pool/copy_exercises_dialog.php:15
 #: app/views/vips/pool/move_exercises_dialog.php:15
-#, fuzzy
 msgid "Aufgabenblatt auswählen"
-msgstr "Execute task"
+msgstr "Select worksheet"
 
 #: app/views/vips/sheets/print_assignment.php:30
-#, fuzzy
 msgid "Kurs"
 msgstr "Course"
 
 #: app/views/vips/sheets/print_assignment.php:84
 #: app/views/vips/solutions/student_assignment_solutions.php:99
-#, fuzzy
 msgid "Gesamtpunktzahl"
-msgstr "Final exam of module"
+msgstr "Total points"
 
 #: app/views/vips/sheets/print_assignment.php:87
 #: app/views/vips/sheets/edit_exercise.php:34
@@ -33740,15 +33636,15 @@ msgstr "Final exam of module"
 #: app/views/vips/exercises/correct_exercise.php:17
 #: app/views/vips/exercises/print_exercise.php:21
 #: app/views/vips/exercises/courseware_block.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "%g Punkte"
-msgstr "Score"
+msgstr "%g points"
 
 #: app/views/vips/sheets/print_assignment.php:92
 #: app/views/vips/exercises/print_exercise.php:57
 #, php-format
 msgid "Erreichte Punkte: %g / %g"
-msgstr ""
+msgstr "Achieved points: %g / %g"
 
 #: app/views/vips/sheets/print_assignment.php:97
 #: app/views/vips/sheets/edit_assignment.php:208
@@ -33759,42 +33655,38 @@ msgstr "Comments and annotations"
 
 #: app/views/vips/sheets/move_assignments_dialog.php:16
 #: app/views/vips/sheets/copy_assignments_dialog.php:16
-#, fuzzy
 msgid "Ziel auswählen"
-msgstr "Select title"
+msgstr "Select target"
 
 #: app/views/vips/sheets/edit_exercise.php:32
 #: app/views/vips/sheets/show_exercise.php:71
 #: app/views/vips/exercises/correct_exercise.php:15
 #: app/views/vips/exercises/print_exercise.php:19
 #: app/views/vips/exercises/courseware_block.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "%d Punkt"
 msgid_plural "%d Punkte"
-msgstr[0] "Score"
-msgstr[1] "Score"
+msgstr[0] "%d point"
+msgstr[1] "%d points"
 
 #: app/views/vips/sheets/edit_exercise.php:46
-#, fuzzy
 msgid "Aufgabentext"
-msgstr "Tasks"
+msgstr "Description"
 
 #: app/views/vips/sheets/edit_exercise.php:55
-#, fuzzy
 msgid "Dateien zur Aufgabe"
-msgstr "Add files"
+msgstr "Attached files"
 
 #: app/views/vips/sheets/edit_exercise.php:105
-#, fuzzy
 msgid "Dateien zur Aufgabe hochladen"
-msgstr "Upload files"
+msgstr "Upload file attachments"
 
 #: app/views/vips/sheets/edit_exercise.php:105
 #: app/views/vips/solutions/edit_solution.php:174
 #: app/views/vips/exercises/TextTask/solve.php:124
-#, fuzzy, php-format
+#, php-format
 msgid "%d Dateien ausgewählt"
-msgstr "no file selected"
+msgstr "%d files selected"
 
 #: app/views/vips/sheets/edit_exercise.php:106
 #: app/views/vips/solutions/edit_solution.php:175
@@ -33807,30 +33699,27 @@ msgstr ""
 #: app/views/vips/exercises/TextTask/solve.php:69
 #, php-format
 msgid "max. %g MB pro Datei"
-msgstr ""
+msgstr "max. %g MB per file"
 
 #: app/views/vips/sheets/edit_exercise.php:117
 msgid "Liste der Dateien unter dem Aufgabentext anzeigen"
-msgstr ""
+msgstr "Display list of files below the description"
 
 #: app/views/vips/sheets/edit_exercise.php:132
-#, fuzzy
 msgid "Hinweise zur Bearbeitung der Aufgabe"
-msgstr "Hint concerning usage and distribution:"
+msgstr "Additional instructions for this task"
 
 #: app/views/vips/sheets/edit_exercise.php:138
-#, fuzzy
 msgid "Automatisches Feedback bei falscher Antwort"
-msgstr "Manage automatic updates"
+msgstr "Automatic feedback on wrong answers"
 
 #: app/views/vips/sheets/edit_exercise.php:140
 msgid "Vorlage für den Bewertungskommentar (manuelle Korrektur)"
-msgstr ""
+msgstr "Template for manual feedback text"
 
 #: app/views/vips/sheets/edit_exercise.php:148
-#, fuzzy
 msgid "Eingabe eines Kommentars durch Studierende erlauben"
-msgstr "Allow circular mails from students"
+msgstr "Allow students to enter comments"
 
 #: app/views/vips/sheets/content_bar_icons.php:3
 #: app/views/vips/solutions/view_solution.php:15
@@ -33847,47 +33736,42 @@ msgid "Nächste Aufgabe"
 msgstr "Next request"
 
 #: app/views/vips/sheets/edit_assignment.php:27
-#, fuzzy
 msgid ""
 "Die Klausur kann nur eingeschränkt bearbeitet werden, da bereits Lösungen "
 "abgegeben wurden."
 msgstr ""
-"The library entry could not be created because no folder has been selected!"
+"Exercises cannot be added or deleted due to existing submissions for the "
+"exam."
 
 #: app/views/vips/sheets/edit_assignment.php:42
-#, fuzzy
 msgid "Bearbeitungsmodus"
-msgstr "Rating mode"
+msgstr "Presentation mode"
 
 #: app/views/vips/sheets/edit_assignment.php:77
-#, fuzzy
 msgid "Dauer in Minuten"
-msgstr "Pause duration in minutes"
+msgstr "Duration in minutes"
 
 #: app/views/vips/sheets/edit_assignment.php:93
 #: app/views/vips/sheets/list_assignments_list.php:81
-#, fuzzy
 msgid "Block"
-msgstr "Block data"
+msgstr "Block"
 
 #: app/views/vips/sheets/edit_assignment.php:98
 #: app/views/vips/sheets/assign_block_dialog.php:19
 msgid "Keinem Block zuweisen"
-msgstr ""
+msgstr "No block assignment"
 
 #: app/views/vips/sheets/edit_assignment.php:107
-#, fuzzy
 msgid "Neuen Block anlegen"
-msgstr "Create new block date"
+msgstr "Create new block"
 
 #: app/views/vips/sheets/edit_assignment.php:113
-#, fuzzy
 msgid "Aufgaben können in Übungsgruppen bearbeitet werden"
-msgstr "InboxOutbox folders cannot be edited!"
+msgstr "Exercises can be solved in groups"
 
 #: app/views/vips/sheets/edit_assignment.php:114
 msgid "Hat keine Auswirkungen, wenn keine Übungsgruppen angelegt wurden."
-msgstr ""
+msgstr "Has no effect unless groups have been set up."
 
 #: app/views/vips/sheets/edit_assignment.php:119
 msgid "Testklausur zur Selbsteinschätzung der Teilnehmenden"
@@ -33901,12 +33785,12 @@ msgstr ""
 
 #: app/views/vips/sheets/edit_assignment.php:125
 msgid "Zufällige Reihenfolge der Aufgaben bei Anzeige der Klausur"
-msgstr ""
+msgstr "Display list of exercises in random order during the exam"
 
 #: app/views/vips/sheets/edit_assignment.php:130
 msgid ""
 "Zufällige Reihenfolge der Antworten in Multiple- und Single-Choice-Aufgaben"
-msgstr ""
+msgstr "Display items in random order for multiple and single choice tasks"
 
 #: app/views/vips/sheets/edit_assignment.php:135
 #, fuzzy
@@ -33915,19 +33799,19 @@ msgstr "Participants may revise their answers"
 
 #: app/views/vips/sheets/edit_assignment.php:140
 msgid "Anzeige der Musterlösung nach eingesteller Anzahl von Fehlversuchen"
-msgstr ""
+msgstr "Limit the number of solution attempts and display the correct solution"
 
 #: app/views/vips/sheets/edit_assignment.php:144
 msgid "Anzahl der Lösungsversuche pro Aufgabe"
-msgstr ""
+msgstr "Number of solution attempts per exercise"
 
 #: app/views/vips/sheets/edit_assignment.php:149
 msgid "Falsche Antworten in Multiple- und Single-Choice-Aufgaben"
-msgstr ""
+msgstr "Wrong answers in multiple choice tasks"
 
 #: app/views/vips/sheets/edit_assignment.php:153
 msgid "&hellip; geben keinen Punktabzug"
-msgstr ""
+msgstr "&hellip; are not penalized"
 
 #: app/views/vips/sheets/edit_assignment.php:156
 msgid "… geben Punktabzug (Gesamtpunktzahl Aufgabe mind. 0)"
@@ -33944,16 +33828,15 @@ msgstr "Wiki page readable for all participants"
 
 #: app/views/vips/sheets/edit_assignment.php:170
 msgid "Zugangscode zur Klausur (optional)"
-msgstr ""
+msgstr "Password for the exam (optional)"
 
 #: app/views/vips/sheets/edit_assignment.php:175
 msgid "Zugriff auf Prüfungsräume oder IP-Bereiche beschränken (optional)"
-msgstr ""
+msgstr "Restrict access to exam rooms or IP ranges (optional)"
 
 #: app/views/vips/sheets/edit_assignment.php:182
-#, fuzzy
 msgid "Raum hinzufügen:"
-msgstr "Add room"
+msgstr "Add room:"
 
 #: app/views/vips/sheets/edit_assignment.php:197
 #, fuzzy
@@ -33968,9 +33851,8 @@ msgstr ""
 #: app/views/vips/sheets/copy_exercise_dialog.php:55
 #: app/views/vips/sheets/copy_assignment_dialog.php:39
 #: app/views/vips/pool/list_exercises.php:31
-#, fuzzy
 msgid "Alle Aufgaben auswählen"
-msgstr "Select all groups"
+msgstr "Select all exercises"
 
 #: app/views/vips/sheets/edit_assignment.php:273
 #: app/views/vips/solutions/assignments_list_student.php:34
@@ -33984,9 +33866,8 @@ msgstr "Score"
 
 #: app/views/vips/sheets/edit_assignment.php:310
 #: app/views/vips/pool/list_exercises.php:141
-#, fuzzy
 msgid "Wollen Sie wirklich die ausgewählten Aufgaben löschen?"
-msgstr "Do you really want to delete this task?"
+msgstr "Do you really want to delete the selected tasks?"
 
 #: app/views/vips/sheets/list_exercises.php:15
 #: app/views/vips/sheets/copy_exercise_dialog.php:88
@@ -33996,28 +33877,24 @@ msgstr "Do you really want to delete this task?"
 #: app/views/vips/solutions/assignment_solutions.php:104
 #: app/views/vips/pool/list_exercises.php:76
 #: app/views/vips/pool/list_assignments.php:76
-#, fuzzy
 msgid "Zeile auswählen"
-msgstr "Select source"
+msgstr "Select row"
 
 #: app/views/vips/sheets/list_exercises.php:40
 #: app/views/vips/sheets/list_assignments_list.php:148
 #: app/views/vips/pool/list_exercises.php:108
 #: app/views/vips/pool/list_assignments.php:114
-#, fuzzy
 msgid "Studierendensicht anzeigen"
-msgstr "Simulate student's view"
+msgstr "Show student's view"
 
 #: app/views/vips/sheets/list_exercises.php:48
-#, fuzzy
 msgid "Aufgabe duplizieren"
-msgstr "Deactivate task"
+msgstr "Duplicate task"
 
 #: app/views/vips/sheets/list_exercises.php:56
 #: app/views/vips/pool/list_exercises.php:115
-#, fuzzy
 msgid "Aufgabe löschen"
-msgstr "Delete request"
+msgstr "Delete task"
 
 #: app/views/vips/sheets/list_exercises.php:60
 #: app/views/vips/pool/list_exercises.php:117
@@ -34027,101 +33904,84 @@ msgstr "Are you sure to delete role \"%s\"?"
 
 #: app/views/vips/sheets/copy_exercise_dialog.php:22
 #: app/views/vips/sheets/copy_assignment_dialog.php:6
-#, fuzzy
 msgid "Suchbegriff eingeben"
-msgstr "Please enter a search string."
+msgstr "Enter search term"
 
 #: app/views/vips/sheets/copy_exercise_dialog.php:23
-#, fuzzy
 msgid "Titel der Aufgabe oder Veranstaltung"
-msgstr "Create course"
+msgstr "Enter exercise or course title"
 
 #: app/views/vips/sheets/copy_exercise_dialog.php:25
 #: app/views/vips/sheets/add_exercise_dialog.php:13
-#, fuzzy
 msgid "Aufgabentyp auswählen"
-msgstr "Select type of room"
+msgstr "Select type of task"
 
 #: app/views/vips/sheets/copy_exercise_dialog.php:126
-#, fuzzy
 msgid "Es wurden keine Aufgaben gefunden."
-msgstr "No plug-ins have been found."
+msgstr "No tasks have been found."
 
 #: app/views/vips/sheets/copy_assignment_dialog.php:7
-#, fuzzy
 msgid "Aufgabenblatt oder Veranstaltung"
-msgstr "Create course"
+msgstr "Enter worksheet or course title"
 
 #: app/views/vips/sheets/copy_assignment_dialog.php:9
-#, fuzzy
 msgid "Modus auswählen"
-msgstr "Select %s"
+msgstr "Select a mode"
 
 #: app/views/vips/sheets/copy_assignment_dialog.php:98
-#, fuzzy
 msgid "Es wurden keine Aufgabenblätter gefunden."
-msgstr "No user found."
+msgstr "No worksheets have been found."
 
 #: app/views/vips/sheets/assign_block_dialog.php:15
-#, fuzzy
 msgid "Block auswählen"
-msgstr "Select all"
+msgstr "Select a block"
 
 #: app/views/vips/sheets/print_assignments.php:20
-#, fuzzy
 msgid "Einstellungen:"
-msgstr "Settings"
+msgstr "Print settings:"
 
 #: app/views/vips/sheets/print_assignments.php:25
-#, fuzzy
 msgid "Dateiabgaben drucken"
-msgstr "Edit file"
+msgstr "Include image submissions"
 
 #: app/views/vips/sheets/print_assignments.php:30
-#, fuzzy
 msgid "Korrekturen drucken"
-msgstr "Print personal data"
+msgstr "Include corrections"
 
 #: app/views/vips/sheets/print_assignments.php:36
-#, fuzzy
 msgid "Musterlösung drucken"
-msgstr "Print booking plan"
+msgstr "Include sample solution"
 
 #: app/views/vips/sheets/show_assignment.php:16
 #: app/views/vips/sheets/show_exercise.php:21
-#, fuzzy
 msgid "Restzeit"
-msgstr "Preparation time"
+msgstr "Remaining Time"
 
 #: app/views/vips/sheets/show_assignment.php:31
-#, fuzzy
 msgid "Start:"
-msgstr "Start"
+msgstr "Start:"
 
 #: app/views/vips/sheets/show_assignment.php:34
-#, fuzzy
 msgid "Zeitraum:"
-msgstr "Period"
+msgstr "Period:"
 
 #: app/views/vips/sheets/show_assignment.php:42
-#, fuzzy, php-format
+#, php-format
 msgid "Bearbeitungszeit: %d Minuten."
-msgstr "Processing time"
+msgstr "Time: %d minutes."
 
 #: app/views/vips/sheets/show_assignment.php:44
-#, fuzzy, php-format
+#, php-format
 msgid "Sie haben noch %d Minuten Zeit."
-msgstr "You did not yet define conditions."
+msgstr "You have %d minutes left."
 
 #: app/views/vips/sheets/show_assignment.php:46
-#, fuzzy
 msgid "Ihre Bearbeitungszeit ist abgelaufen."
-msgstr "The link to this page has expired."
+msgstr "Your time has run out."
 
 #: app/views/vips/sheets/show_assignment.php:51
-#, fuzzy
 msgid "Die Bearbeitung ist bereits abgeschlossen."
-msgstr "This date is already occupied."
+msgstr "The assignment is finished."
 
 #: app/views/vips/sheets/show_assignment.php:61
 msgid "Teilnahmebedingungen"
@@ -34130,21 +33990,19 @@ msgstr "Terms of use"
 #: app/views/vips/sheets/show_assignment.php:70
 #: app/views/vips/sheets/show_assignment.php:88
 msgid "Ich bestätige die vorstehenden Bedingungen zur Teilnahme an der Klausur"
-msgstr ""
+msgstr "I accept these terms for participating in the exam"
 
 #: app/views/vips/sheets/show_assignment.php:94
 msgid "Es ist ein Zugangscode für den Zugriff auf die Klausur erforderlich:"
-msgstr ""
+msgstr "Access to this exam requires a password:"
 
 #: app/views/vips/sheets/show_assignment.php:99
-#, fuzzy
 msgid "Klausur starten"
-msgstr "Start test"
+msgstr "Start the exam"
 
 #: app/views/vips/sheets/show_assignment.php:113
-#, fuzzy
 msgid "Abgabedatum"
-msgstr "End date"
+msgstr "Submission date"
 
 #: app/views/vips/sheets/show_assignment.php:119
 #: app/views/vips/solutions/student_assignment_solutions.php:33
@@ -34159,9 +34017,8 @@ msgid "Max. Punkte"
 msgstr "Score"
 
 #: app/views/vips/sheets/show_assignment.php:173
-#, fuzzy
 msgid "Keine Aufgaben gefunden."
-msgstr "No results found."
+msgstr "No tasks found."
 
 #: app/views/vips/sheets/list_assignments_list.php:23
 #: app/views/vips/solutions/assignments_list.php:67
@@ -34177,14 +34034,12 @@ msgstr "visible to all"
 
 #: app/views/vips/sheets/list_assignments_list.php:27
 #: app/views/vips/solutions/assignments_list.php:71
-#, fuzzy
 msgid "(für alle sichtbar)"
-msgstr "End of visible announcements"
+msgstr "(visible to every student)"
 
 #: app/views/vips/sheets/list_assignments_list.php:40
-#, fuzzy
 msgid "Block löschen"
-msgstr "Delete picture"
+msgstr "Delete block"
 
 #: app/views/vips/sheets/list_assignments_list.php:44
 #, fuzzy, php-format
@@ -34194,45 +34049,37 @@ msgstr "Are you sure to delete role \"%s\"?"
 #: app/views/vips/sheets/list_assignments_list.php:55
 #: app/views/vips/solutions/assignments_list.php:23
 #: app/views/vips/pool/list_assignments.php:31
-#, fuzzy
 msgid "Alle Aufgabenblätter auswählen"
-msgstr "Select all users account"
+msgstr "Select all worksheets"
 
 #: app/views/vips/sheets/list_assignments_list.php:123
-#, fuzzy
 msgid "aktiv"
-msgstr "active?"
+msgstr "active"
 
 #: app/views/vips/sheets/list_assignments_list.php:133
-#, fuzzy
 msgid "Bearbeitung fortsetzen"
-msgstr "Processing time"
+msgstr "Continue this worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:137
-#, fuzzy
 msgid "Bearbeitung anhalten"
-msgstr "Request editing"
+msgstr "Stop this worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:143
-#, fuzzy
 msgid "Aufgabenblatt starten"
-msgstr "Manage tasks"
+msgstr "Start this worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:151
-#, fuzzy
 msgid "Aufgaben korrigieren"
-msgstr "Activate task"
+msgstr "Correct exercises"
 
 #: app/views/vips/sheets/list_assignments_list.php:156
-#, fuzzy
 msgid "Aufgabenblatt duplizieren"
-msgstr "Activate task"
+msgstr "Duplicate worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:165
 #: app/views/vips/pool/list_assignments.php:138
-#, fuzzy
 msgid "Aufgabenblatt löschen"
-msgstr "Delete section"
+msgstr "Delete worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:167
 #: app/views/vips/pool/list_assignments.php:140
@@ -34241,15 +34088,13 @@ msgid "Wollen Sie wirklich das Aufgabenblatt „%s“ löschen?"
 msgstr "Really delete module \"%s\"?"
 
 #: app/views/vips/sheets/list_assignments_list.php:181
-#, fuzzy
 msgid "Block zuweisen"
-msgstr "Assign room"
+msgstr "Assign block"
 
 #: app/views/vips/sheets/list_assignments_list.php:200
 #: app/views/vips/pool/list_assignments.php:165
-#, fuzzy
 msgid "Wollen Sie wirklich die ausgewählten Aufgabenblätter löschen?"
-msgstr "Do you really want to delete this task?"
+msgstr "Do you really want to delete the selected worksheets?"
 
 #: app/views/vips/sheets/list_assignments.php:9
 #: app/views/vips/pool/assignments.php:9 lib/modules/VipsModule.php:345
@@ -34273,16 +34118,15 @@ msgid ""
 msgstr ""
 
 #: app/views/vips/sheets/show_exercise.php:25
-#, fuzzy
 msgid "Abgabezeitpunkt:"
-msgstr "Submission date"
+msgstr "Time of submission:"
 
 #: app/views/vips/sheets/show_exercise.php:26
 #: app/views/vips/solutions/assignment_solutions.php:124
 #: lib/models/CourseDate.php:331
-#, fuzzy, php-format
+#, php-format
 msgid "%s Uhr"
-msgstr "%R"
+msgstr "%s o'clock"
 
 #: app/views/vips/sheets/show_exercise.php:39
 #, php-format
@@ -34294,14 +34138,14 @@ msgstr ""
 #: app/views/vips/solutions/edit_solution.php:118
 #: app/views/vips/exercises/courseware_block.php:56
 msgid "Anmerkungen zur Lösung"
-msgstr ""
+msgstr "Remarks on the solution"
 
 #: app/views/vips/sheets/show_exercise.php:52
 #: app/views/vips/solutions/view_solution.php:70
 #: app/views/vips/exercises/courseware_block.php:64
 #, php-format
 msgid "Erreichte Punkte: %g von %g"
-msgstr ""
+msgstr "Achieved points: %g of %g"
 
 #: app/views/vips/sheets/show_exercise.php:80
 #: app/views/vips/exercises/courseware_block.php:15
@@ -34310,19 +34154,17 @@ msgid ""
 "Ihr Lösungsversuch war nicht korrekt. Sie haben noch %d weiteren Versuch."
 msgid_plural ""
 "Ihr Lösungsversuch war nicht korrekt. Sie haben noch %d weitere Versuche."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Your solution was not correct. You have %d more attempt."
+msgstr[1] "Your solution was not correct. You have %d more attempts."
 
 #: app/views/vips/sheets/show_exercise.php:95
 #: app/views/vips/exercises/courseware_block.php:71
-#, fuzzy
 msgid "Bemerkungen zur Lösung (optional)"
-msgstr "Application URL (optional)"
+msgstr "Remarks on the solution (optional)"
 
 #: app/views/vips/sheets/ip_range_tooltip.php:1
-#, fuzzy
 msgid "Beispiele:"
-msgstr "Examplename.pdf"
+msgstr "Examples:"
 
 #: app/views/vips/sheets/ip_range_tooltip.php:6
 msgid "Gibt nur diese IP-Adresse frei."
@@ -34345,20 +34187,20 @@ msgid ""
 "Außerdem können Listen aller genannten Fälle eingetragen werden (durch Komma "
 "oder Leerzeichen getrennt)."
 msgstr ""
+"All forms of allowed IP address schemes can be mixed (delimited by comma or "
+"space)."
 
 #: app/views/vips/sheets/import_assignment_dialog.php:10
 msgid "Aufgabenblätter aus Datei(en) importieren"
-msgstr ""
+msgstr "Import worksheets from text files"
 
 #: app/views/vips/sheets/import_assignment_dialog.php:14
-#, fuzzy
 msgid "Datei(en):"
-msgstr "Files"
+msgstr "File(s):"
 
 #: app/views/vips/sheets/show_exercise_link.php:20
-#, fuzzy
 msgid "Aufgabe bearbeitet"
-msgstr "Edit data"
+msgstr "Task submitted"
 
 #: app/views/vips/config/pending_assignments.php:8
 #, fuzzy
@@ -34368,16 +34210,15 @@ msgstr "At present no category exists."
 #: app/views/vips/config/pending_assignments.php:12
 #: app/views/vips/solutions/participants_overview.php:92
 #: lib/modules/VipsModule.php:49
-#, fuzzy
 msgid "Klausuren"
-msgstr "Written examination"
+msgstr "Exams"
 
 #: app/views/vips/config/pending_assignments.php:14
-#, fuzzy, php-format
+#, php-format
 msgid "%d Klausur"
 msgid_plural "%d Klausuren"
-msgstr[0] "Written examination"
-msgstr[1] "Written examination"
+msgstr[0] "%d Exam"
+msgstr[1] "%d Exams"
 
 #: app/views/vips/config/index.php:13
 #, fuzzy
@@ -34385,59 +34226,57 @@ msgid "Einstellungen für Klausuren"
 msgstr "Settings for courses"
 
 #: app/views/vips/config/index.php:17
-#, fuzzy
 msgid "Klausurmodus aktivieren"
-msgstr "Activate waiting list"
+msgstr "Activate the exam mode"
 
 #: app/views/vips/config/index.php:22
 msgid ""
 "Während einer Klausur den Zugriff auf andere Bereiche von Stud.IP sperren"
-msgstr ""
+msgstr "Lock access to all parts of Stud.IP except Vips during an exam"
 
 #: app/views/vips/config/index.php:23
 msgid "Gilt nur für Klausuren mit beschränktem IP-Zugriffsbereich."
-msgstr ""
+msgstr "Only applies to exams with a limited IP access space."
 
 #: app/views/vips/config/index.php:27
 msgid "Vordefinierte IP-Bereiche für PC-Räume"
-msgstr ""
+msgstr "Predefined IP ranges for rooms"
 
 #: app/views/vips/config/index.php:37
-#, fuzzy
 msgid "IP-Bereiche"
-msgstr "IP area"
+msgstr "IP ranges"
 
 #: app/views/vips/config/index.php:82
-#, fuzzy
 msgid "Teilnahmebedingungen vor Beginn einer Klausur"
-msgstr "Terms of use"
+msgstr "Terms to be accepted when starting an exam"
 
 #: app/views/vips/admin/edit_grades.php:15
-#, fuzzy
 msgid "Notenverteilung"
-msgstr "Admission"
+msgstr "Grade distribution"
 
 #: app/views/vips/admin/edit_grades.php:20
-#, fuzzy
 msgid "Schwellwert"
-msgstr "Difficult"
+msgstr "Threshold"
 
 #: app/views/vips/admin/edit_grades.php:43
 msgid ""
 "Wenn Sie eine bestimmte Notenstufe nicht verwenden wollen, lassen Sie das "
 "Feld für den Schwellwert leer."
 msgstr ""
+"If you do not want to use a grade level, please leave the threshold field "
+"empty."
 
 #: app/views/vips/admin/edit_block.php:16
-#, fuzzy
 msgid "Blockname"
-msgstr "Block data"
+msgstr "Block name"
 
 #: app/views/vips/admin/edit_block.php:22
 msgid ""
 "Blöcke und zugeordnete Aufgabenblätter können nur für bestimmte Gruppen "
 "sichtbar oder auch komplett unsichtbar gemacht werden."
 msgstr ""
+"Blocks and related worksheets can be limited to a specific group or set to "
+"be completely hidden."
 
 #: app/views/vips/admin/edit_block.php:25
 #, fuzzy
@@ -34456,27 +34295,28 @@ msgstr "Number: \"%s\""
 
 #: app/views/vips/admin/edit_block.php:40
 msgid "Aufgabenblätter in der Bewertung gruppieren"
-msgstr ""
+msgstr "Group assigned worksheets in the gradebook"
 
 #: app/views/vips/admin/edit_block.php:41
 msgid ""
 "In der Ergebnisübersicht wird nur der Block anstelle der enthaltenen "
 "Aufgabenblätter aufgeführt."
 msgstr ""
+"The gradebook will list only the block instead of the contained worksheets."
 
 #: app/views/vips/solutions/feedback_files.php:8
 msgid "Dateien zur Korrektur:"
-msgstr ""
+msgstr "Attached files:"
 
 #: app/views/vips/solutions/view_solution.php:39
 #, php-format
 msgid "Bewertung der Aufgabe &bdquo;%s&ldquo;"
-msgstr ""
+msgstr "Your grade for task &bdquo;%s&ldquo;"
 
 #: app/views/vips/solutions/view_solution.php:42
 #: app/views/vips/solutions/assignments_list.php:41
 msgid "Korrigiert"
-msgstr ""
+msgstr "Graded"
 
 #: app/views/vips/solutions/view_solution.php:44
 #: app/views/vips/solutions/edit_solution.php:94
@@ -34484,9 +34324,8 @@ msgid "Unkorrigiert"
 msgstr ""
 
 #: app/views/vips/solutions/view_solution.php:53
-#, fuzzy
 msgid "Anmerkung des Korrektors"
-msgstr "Comments"
+msgstr "Remark from corrector"
 
 #: app/views/vips/solutions/view_solution.php:58
 #: app/views/vips/solutions/assignment_solutions.php:209
@@ -34503,12 +34342,12 @@ msgstr ""
 #: app/views/vips/solutions/solution_color_tooltip.php:2
 #, php-format
 msgid "%sGrün dargestellte Aufgaben%s wurden von Hand korrigiert."
-msgstr ""
+msgstr "%sTasks shown in green%s have been graded manually."
 
 #: app/views/vips/solutions/solution_color_tooltip.php:3
 #, php-format
 msgid "%sRot dargestellte Aufgaben%s wurden noch nicht fertig korrigiert."
-msgstr ""
+msgstr "%sTasks shown in red%s have not been graded yet."
 
 #: app/views/vips/solutions/solution_color_tooltip.php:4
 #, fuzzy, php-format
@@ -34516,41 +34355,34 @@ msgid "%sAusgegraute Aufgaben%s wurden nicht bearbeitet."
 msgstr "This request has not been processed yet."
 
 #: app/views/vips/solutions/assignments.php:17
-#, fuzzy
 msgid "Es ist kein beendetes Aufgabenblatt vorhanden."
-msgstr "No special permissions available."
+msgstr "There is no finished task collection."
 
 #: app/views/vips/solutions/assignments_list_student.php:13
-#, fuzzy
 msgid "Freigegebene Ergebnisse"
-msgstr "Released files"
+msgstr "Published results"
 
 #: app/views/vips/solutions/participants_overview.php:26
 #: app/views/vips/solutions/assignment_solutions.php:31
-#, fuzzy
 msgid "Anzeigefilter:"
-msgstr "Display filter"
+msgstr "View filter:"
 
 #: app/views/vips/solutions/participants_overview.php:30
-#, fuzzy
 msgid "Übungen und Klausuren"
-msgstr "Create and abort"
+msgstr "Worksheets and exams"
 
 #: app/views/vips/solutions/participants_overview.php:33
 #: app/views/vips/solutions/participants_overview.php:80
-#, fuzzy
 msgid "Selbsttests"
-msgstr "Self test"
+msgstr "Self tests"
 
 #: app/views/vips/solutions/participants_overview.php:80
-#, fuzzy
 msgid "Übungen"
-msgstr "Exercises"
+msgstr "Worksheets"
 
 #: app/views/vips/solutions/participants_overview.php:86
-#, fuzzy
 msgid "Blöcke"
-msgstr "Date blocks"
+msgstr "Blocks"
 
 #: app/views/vips/solutions/edit_assignment_attempt.php:17
 #, fuzzy
@@ -34568,9 +34400,8 @@ msgid "Wählen Sie aus, wen Sie aus der Gruppe entfernen möchten:"
 msgstr "Please select the user(s) you want to add."
 
 #: app/views/vips/solutions/gradebook_dialog.php:19
-#, fuzzy
 msgid "Name im Gradebook"
-msgstr "Gradebook"
+msgstr "Name of gradebook entry"
 
 #: app/views/vips/solutions/edit_solution.php:28
 #, fuzzy
@@ -34617,57 +34448,50 @@ msgstr "Detect automatically"
 #: app/views/vips/solutions/edit_solution.php:114
 #, php-format
 msgid "Vergebene Punkte: %g von %g"
-msgstr ""
+msgstr "Points awarded: %g of %g"
 
 #: app/views/vips/solutions/edit_solution.php:127
 #: app/views/vips/solutions/feedback_files_table.php:8
 msgid "Dateien zur Korrektur"
-msgstr ""
+msgstr "Attached files"
 
 #: app/views/vips/solutions/edit_solution.php:174
-#, fuzzy
 msgid "Dateien zur Korrektur hochladen"
-msgstr "Upload files"
+msgstr "Upload file attachments"
 
 #: app/views/vips/solutions/edit_solution.php:185
 #: app/views/vips/exercises/TextTask/correct.php:52
-#, fuzzy
 msgid "Textvorschau"
 msgstr "Preview"
 
 #: app/views/vips/solutions/edit_solution.php:193
 #, php-format
 msgid "Vergebene Punkte (von %g)"
-msgstr ""
+msgstr "Points awarded (of %g)"
 
 #: app/views/vips/solutions/edit_solution.php:194
-#, fuzzy
 msgid "Bitte geben Sie eine Zahl ein"
-msgstr "Please enter a title."
+msgstr "Please enter a number"
 
 #: app/views/vips/solutions/edit_solution.php:202
-#, fuzzy
 msgid "Als aktuelle Lösung speichern"
-msgstr "Save settings"
+msgstr "Save as current solution"
 
 #: app/views/vips/solutions/edit_solution.php:209
-#, fuzzy
 msgid "Lösung als korrigiert markieren"
-msgstr "Mark as favourite"
+msgstr "Mark submission as graded"
 
 #: app/views/vips/solutions/statistics.php:10
 msgid "Statistik der Aufgabenblätter"
-msgstr ""
+msgstr "Worksheet statistics"
 
 #: app/views/vips/solutions/statistics.php:16
-#, fuzzy
 msgid "Titel / Aufgabe"
-msgstr "Task"
+msgstr "Worksheet / Title"
 
 #: app/views/vips/solutions/assignments_list.php:44
-#, fuzzy
 msgid "Freigabe"
-msgstr "Releases"
+msgstr "Published"
 
 #: app/views/vips/solutions/assignments_list.php:122
 #: app/views/news/_comments.php:6 lib/classes/exportdocument/ExportPDF.php:87
@@ -34675,45 +34499,40 @@ msgid "Kommentare"
 msgstr "Comments"
 
 #: app/views/vips/solutions/assignments_list.php:124
-#, fuzzy
 msgid "Korrektur"
-msgstr "Correlation"
+msgstr "Correction"
 
 #: app/views/vips/solutions/assignments_list.php:126
-#, fuzzy
 msgid "Lösungen"
-msgstr "Achievements"
+msgstr "Solutions"
 
 #: app/views/vips/solutions/assignments_list.php:144
 #: app/views/vips/solutions/assignments_list.php:171
-#, fuzzy
 msgid "Freigabe ändern"
-msgstr "Releases"
+msgstr "Edit visibility"
 
 #: app/views/vips/solutions/show_assignment_log.php:9
 #, php-format
 msgid "Abgabeprotokoll für %s, %s (%s)"
-msgstr ""
+msgstr "Submission log for %s, %s (%s)"
 
 #: app/views/vips/solutions/show_assignment_log.php:28
 msgid ""
 "Die Sitzungs-ID wird beim Login in Stud.IP vergeben und bleibt bis zum "
 "Abmelden gültig."
-msgstr ""
+msgstr "The session ID is issued on login and stays valid until logout."
 
 #: app/views/vips/solutions/student_grade.php:83
-#, fuzzy
 msgid "Prozent, gesamt"
-msgstr "Percentage"
+msgstr "percent, total"
 
 #: app/views/vips/solutions/student_grade.php:95
 msgid "Note:"
-msgstr ""
+msgstr "Grade:"
 
 #: app/views/vips/solutions/student_assignment_solutions.php:20
-#, fuzzy
 msgid "Ergebnisse des Aufgabenblatts"
-msgstr "Results viewable"
+msgstr "Grades of this worksheet"
 
 #: app/views/vips/solutions/student_assignment_solutions.php:37
 #, fuzzy
@@ -34724,17 +34543,18 @@ msgstr "Credit points"
 msgid ""
 "Manuell durchgeführte Korrekturen werden durch diese Aktion nicht "
 "überschrieben."
-msgstr ""
+msgstr "This action will not override existing manual gradings."
 
 #: app/views/vips/solutions/autocorrect_dialog.php:22
 msgid "Unbekannte Eingaben als sicher falsch bewerten"
-msgstr ""
+msgstr "Grade all unknown answers as wrong answers"
 
 #: app/views/vips/solutions/autocorrect_dialog.php:23
 msgid ""
 "Wird diese Option nicht ausgewält, bleiben die betroffenen Aufgaben als "
 "unkorrigiert markiert."
 msgstr ""
+"Affected tasks will remain flagged as uncorrected if this option is not set."
 
 #: app/views/vips/solutions/assignment_solutions.php:26
 #, fuzzy, php-format
@@ -34742,14 +34562,12 @@ msgid "Aufgabenblatt „%s“"
 msgstr "Signature: \"%s\""
 
 #: app/views/vips/solutions/assignment_solutions.php:36
-#, fuzzy
 msgid "Studierende mit abgegebenen Lösungen"
-msgstr "Interacting students"
+msgstr "students that submitted solutions"
 
 #: app/views/vips/solutions/assignment_solutions.php:39
-#, fuzzy
 msgid "Studierende mit unkorrigierten Lösungen"
-msgstr "Interacting students"
+msgstr "students that have ungraded solutions"
 
 #: app/views/vips/solutions/assignment_solutions.php:42
 #, fuzzy
@@ -34795,31 +34613,27 @@ msgid "Unbearbeitete Aufgaben"
 msgstr "modified %s"
 
 #: app/views/vips/solutions/assignment_solutions.php:111
-#, fuzzy
 msgid "Aufgaben anzeigen"
-msgstr "Show all tasks"
+msgstr "Show tasks"
 
 #: app/views/vips/solutions/assignment_solutions.php:112
-#, fuzzy
 msgid "Aufgaben verstecken"
-msgstr "Manage tasks"
+msgstr "Hide tasks"
 
 #: app/views/vips/solutions/assignment_solutions.php:126
-#, fuzzy, php-format
+#, php-format
 msgid "noch %d Minute"
 msgid_plural "noch %d Minuten"
-msgstr[0] "%d minute"
-msgstr[1] "%d minutes"
+msgstr[0] "%d minute left"
+msgstr[1] "%d minutes left"
 
 #: app/views/vips/solutions/assignment_solutions.php:187
-#, fuzzy
 msgid "Abgabezeitpunkt bearbeiten"
-msgstr "Edit data"
+msgstr "Edit submission deadline"
 
 #: app/views/vips/solutions/assignment_solutions.php:189
-#, fuzzy
 msgid "Teilnahme und Lösungen zurücksetzen"
-msgstr "Reset settings"
+msgstr "Reset exam for this user"
 
 #: app/views/vips/solutions/assignment_solutions.php:192
 msgid ""
@@ -34828,14 +34642,12 @@ msgid ""
 msgstr ""
 
 #: app/views/vips/solutions/assignment_solutions.php:196
-#, fuzzy
 msgid "Abgabeprotokoll anzeigen"
-msgstr "display all"
+msgstr "Show submission log"
 
 #: app/views/vips/solutions/assignment_solutions.php:214
-#, fuzzy
 msgid "Nachricht an die Gruppe schreiben"
-msgstr "Write message to students"
+msgstr "Write a message to the group"
 
 #: app/views/vips/solutions/assignment_solutions.php:218
 #, fuzzy
@@ -34843,144 +34655,125 @@ msgid "Personen aus der Gruppe entfernen"
 msgstr "Remove from group"
 
 #: app/views/vips/exercises/TextTask/correct.php:16
-#, fuzzy
 msgid "Kommentierte Lösung"
-msgstr "Comment"
+msgstr "Commented solution"
 
 #: app/views/vips/exercises/TextTask/correct.php:21
 msgid "Lösung"
-msgstr ""
+msgstr "Solution"
 
 #: app/views/vips/exercises/TextTask/correct.php:27
 #: app/views/vips/exercises/TextTask/solve.php:19
-#, fuzzy
 msgid "Vorbelegung"
-msgstr "Week booking plan"
+msgstr "Default"
 
 #: app/views/vips/exercises/TextTask/correct.php:47
-#, fuzzy
 msgid "Kommentierte Lösung löschen"
-msgstr "Delete document assignment"
+msgstr "Delete commented solution"
 
 #: app/views/vips/exercises/TextTask/correct.php:47
-#, fuzzy
 msgid "Wollen Sie die kommentierte Lösung löschen?"
-msgstr "Delete this comment?"
+msgstr "Do you want to delete the commented solution?"
 
 #: app/views/vips/exercises/TextTask/correct.php:80
-#, fuzzy
 msgid "Lösung bearbeiten"
-msgstr "Edit reason"
+msgstr "Edit this solution"
 
 #: app/views/vips/exercises/TextTask/correct.php:84
-#, fuzzy
 msgid "Lösung herunterladen"
-msgstr "download"
+msgstr "Download this solution"
 
 #: app/views/vips/exercises/TextTask/correct.php:105
 #: app/views/vips/exercises/TextTask/print.php:35
-#, fuzzy
 msgid "Es wurde kein Text als Lösung abgegeben."
-msgstr "No name has been provided!"
+msgstr "No text has been submitted for this exercise."
 
 #: app/views/vips/exercises/TextTask/correct.php:122
 #: app/views/vips/exercises/TextTask/solve.php:65
-#, fuzzy
 msgid "Hochgeladene Dateien"
-msgstr "%d uploaded files"
+msgstr "Uploaded files"
 
 #: app/views/vips/exercises/TextTask/correct.php:169
-#, fuzzy
 msgid "Alle Dateien herunterladen"
-msgstr "Download new files"
+msgstr "Download all files"
 
 #: app/views/vips/exercises/TextTask/correct.php:179
 #: app/views/vips/exercises/TextTask/edit.php:32
-#, fuzzy
 msgid "Musterlösung"
-msgstr "Sample institute"
+msgstr "Sample solution"
 
 #: app/views/vips/exercises/TextTask/solve.php:37
-#, fuzzy
 msgid "Antwort herunterladen"
-msgstr "Download folder"
+msgstr "Download answer text"
 
 #: app/views/vips/exercises/TextTask/solve.php:39
 msgid "Text in das Eingabefeld hochladen"
-msgstr ""
+msgstr "Upload file as answer text"
 
 #: app/views/vips/exercises/TextTask/solve.php:67
-#, fuzzy
 msgid "Keine Dateien hochgeladen"
-msgstr "No files available"
+msgstr "No upload files"
 
 #: app/views/vips/exercises/TextTask/solve.php:124
-#, fuzzy
 msgid "Datei als Lösung hochladen"
-msgstr "Upload files"
+msgstr "Upload file as solution"
 
 #: app/views/vips/exercises/TextTask/print.php:15
-#, fuzzy
 msgid "Kommentierte Lösung:"
-msgstr "Comment"
+msgstr "Commented solution"
 
 #: app/views/vips/exercises/TextTask/print.php:21
-#, fuzzy
 msgid "Lösung des Teilnehmers:"
-msgstr "Description of the participants"
+msgstr "The student's solution:"
 
 #: app/views/vips/exercises/TextTask/print.php:63
-#, fuzzy
 msgid "Hochgeladene Dateien:"
-msgstr "%d uploaded files"
+msgstr "Uploaded files:"
 
 #: app/views/vips/exercises/TextTask/print.php:79
 msgid "Musterlösung:"
-msgstr ""
+msgstr "Sample solution:"
 
 #: app/views/vips/exercises/TextTask/edit.php:7
-#, fuzzy
 msgid "Art der Abgabe"
-msgstr "Type of request"
+msgstr "Submission type"
 
 #: app/views/vips/exercises/TextTask/edit.php:11
 msgid "Texteingabe - einfacher Text ohne Formatierungen"
-msgstr ""
+msgstr "Text input - plain text without formatting"
 
 #: app/views/vips/exercises/TextTask/edit.php:14
 msgid "Texteingabe - Textformatierungen bei Eingabe der Lösung anbieten"
-msgstr ""
+msgstr "Text input - allow formatted text in the submitted solutions"
 
 #: app/views/vips/exercises/TextTask/edit.php:17
 msgid "Texteingabe - Programmcode (nichtproportionale Schriftart)"
-msgstr ""
+msgstr "Text input - source code (monospace font)"
 
 #: app/views/vips/exercises/TextTask/edit.php:20
 msgid "keine Texteingabe - nur Hochladen von Dateien erlauben"
-msgstr ""
+msgstr "No text input - only allow file uploads as solutions"
 
 #: app/views/vips/exercises/TextTask/edit.php:26
 msgid "Vorgegebener Text im Antwortfeld"
-msgstr ""
+msgstr "Default (prefilled) answer text"
 
 #: app/views/vips/exercises/TextTask/edit.php:39
 msgid "Hochladen von Dateien als Lösung erlauben"
-msgstr ""
+msgstr "Allow file uploads as solutions"
 
 #: app/views/vips/exercises/TextTask/edit.php:40
-#, fuzzy
 msgid "Hochgeladene Dateien können nicht automatisch bewertet werden."
-msgstr "Unable to process results."
+msgstr "Uploades files cannot be graded automatically."
 
 #: app/views/vips/exercises/TextTask/edit.php:45
 msgid "Punktevorschlag basierend auf Textähnlichkeit (Levenshtein-Distanz)"
-msgstr ""
+msgstr "Suggest a score based on text similarity (Levenshtein distance)"
 
 #: app/views/vips/exercises/correct_exercise.php:33
 #: app/views/vips/exercises/courseware_block.php:43
-#, fuzzy
 msgid "Bemerkungen zur Lösung"
-msgstr "Comment for %s"
+msgstr "Remarks on the solution"
 
 #: app/views/vips/exercises/MatrixChoiceTask/correct.php:21
 #: app/views/vips/exercises/MatrixChoiceTask/print.php:20
@@ -35007,9 +34800,8 @@ msgstr "Comment for %s"
 #: app/views/vips/exercises/TextLineTask/print.php:16
 #: app/views/vips/exercises/TextLineTask/edit.php:18
 #: app/views/vips/exercises/TextLineTask/edit.php:39
-#, fuzzy
 msgid "richtig"
-msgstr "Institute"
+msgstr "correct"
 
 #: app/views/vips/exercises/MatrixChoiceTask/correct.php:23
 #: app/views/vips/exercises/MatrixChoiceTask/print.php:22
@@ -35032,32 +34824,28 @@ msgstr "Institute"
 #: app/views/vips/exercises/TextLineTask/edit.php:26
 #: app/views/vips/exercises/TextLineTask/edit.php:47
 msgid "falsch"
-msgstr ""
+msgstr "wrong"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:7
-#, fuzzy
 msgid "Auswahlmöglichkeiten"
-msgstr "Clear selection"
+msgstr "Choices"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:14
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:21
-#, fuzzy
 msgid "Auswahlmöglichkeit löschen"
-msgstr "Delete exception"
+msgstr "Delete choice"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:25
-#, fuzzy
 msgid "Auswahlmöglichkeit hinzufügen"
-msgstr "Add exception"
+msgstr "Add choice"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:30
 msgid "Auswahlmöglichkeit „keine Antwort“ hinzufügen (ohne Bewertung)"
 msgstr ""
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:34
-#, fuzzy
 msgid "Fragen/Aussagen"
-msgstr "Question/questions"
+msgstr "Questions"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:60
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:83
@@ -35065,16 +34853,14 @@ msgid "Frage löschen"
 msgstr "Delete question"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:86
-#, fuzzy
 msgid "Frage hinzufügen"
-msgstr "Add questions"
+msgstr "Add question"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:90
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:85
 #: app/views/vips/exercises/MultipleChoiceTask/edit.php:45
-#, fuzzy
 msgid "Leere Antwortalternativen werden automatisch gelöscht."
-msgstr "The evaluation has not been deleted."
+msgstr "Empy answer alternatives are deleted automatically."
 
 #: app/views/vips/exercises/flexible_input.php:24
 #, fuzzy
@@ -35097,15 +34883,13 @@ msgstr ""
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:12
 #: app/views/vips/exercises/MultipleChoiceTask/edit.php:7
-#, fuzzy
 msgid "Antwortalternativen"
-msgstr "Alternative text"
+msgstr "Answer options"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:19
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:60
-#, fuzzy
 msgid "Zwischentext"
-msgstr "Subheading"
+msgstr "Additional instructions"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:36
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:50
@@ -35134,63 +34918,55 @@ msgstr "Add answer"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:54
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:78
-#, fuzzy
 msgid "Antwortblock löschen"
-msgstr "Delete answer"
+msgstr "Delete answer group"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:81
-#, fuzzy
 msgid "Antwortblock hinzufügen"
-msgstr "Add answer"
+msgstr "Add answer group"
 
 #: app/views/vips/exercises/MatchingTask/correct.php:16
 #: app/views/vips/exercises/MatchingTask/print.php:15
 #: app/views/vips/exercises/MatchingTask/edit.php:15
 msgid "Vorgegebener Text"
-msgstr ""
+msgstr "Default text"
 
 #: app/views/vips/exercises/MatchingTask/correct.php:20
 #: app/views/vips/exercises/MatchingTask/print.php:19
-#, fuzzy
 msgid "Zugeordnete Antworten"
-msgstr "no answers"
+msgstr "Matched answers"
 
 #: app/views/vips/exercises/MatchingTask/correct.php:25
 #: app/views/vips/exercises/MatchingTask/print.php:24
 #: app/views/vips/exercises/SequenceTask/correct.php:18
 #: app/views/vips/exercises/SequenceTask/print.php:19
-#, fuzzy
 msgid "Richtige Antworten"
-msgstr "Right answer!"
+msgstr "Correct answers"
 
 #: app/views/vips/exercises/MatchingTask/correct.php:71
 #: app/views/vips/exercises/MatchingTask/print.php:73
 #: app/views/vips/exercises/ClozeTask/print.php:47
-#, fuzzy
 msgid "Nicht zugeordnete Antworten:"
-msgstr "Not allocated"
+msgstr "unassigned answers:"
 
 #: app/views/vips/exercises/MatchingTask/solve.php:14
 #: app/views/vips/exercises/SequenceTask/solve.php:7
 #: app/views/vips/exercises/ClozeTask/solve.php:14
-#, fuzzy
 msgid "Elemente hier ablegen"
-msgstr "Edit element"
+msgstr "Drag elements here"
 
 #: app/views/vips/exercises/MatchingTask/print.php:75
 #: app/views/vips/exercises/ClozeTask/print.php:49
-#, fuzzy
 msgid "Antwortmöglichkeiten:"
-msgstr "Delete answer"
+msgstr "Choices:"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:8
 msgid "Mehrfachzuordnungen zu einem vorgegebenen Text erlauben"
-msgstr ""
+msgstr "Allow assignment of multiple matching answers to a text"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:18
-#, fuzzy
 msgid "Zuzuordnende Antworten"
-msgstr "no answers"
+msgstr "Answers to match"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:31
 #: app/views/vips/exercises/MatchingTask/edit.php:64
@@ -35199,167 +34975,149 @@ msgid "Zuordnung löschen"
 msgstr "Delete all assignments"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:80
-#, fuzzy
 msgid "Zuordnung hinzufügen"
-msgstr "Add condition"
+msgstr "Add assignment"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:87
-#, fuzzy
 msgid "Distraktoren (optional)"
-msgstr "First name (optional)"
+msgstr "Distractors (optional)"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:88
 msgid "Weitere Antworten, die keinem Text zugeordnet werden dürfen."
-msgstr ""
+msgstr "Additional answers that must remain unassigned."
 
 #: app/views/vips/exercises/MatchingTask/edit.php:102
 #: app/views/vips/exercises/MatchingTask/edit.php:113
-#, fuzzy
 msgid "Distraktor löschen"
-msgstr "Delete descriptor"
+msgstr "Delete distractor"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:116
-#, fuzzy
 msgid "Distraktor hinzufügen"
-msgstr "Add entry"
+msgstr "Add distractor"
 
 #: app/views/vips/exercises/print_exercise.php:37
-#, fuzzy
 msgid "Bemerkungen zur Lösung:"
-msgstr "Comment for %s"
+msgstr "Remarks on the solution:"
 
 #: app/views/vips/exercises/print_exercise.php:47
-#, fuzzy
 msgid "Anmerkung des Korrektors:"
-msgstr "Comments"
+msgstr "Remark from corrector:"
 
 #: app/views/vips/exercises/SequenceTask/correct.php:13
 #: app/views/vips/exercises/SequenceTask/print.php:14
 #: app/views/vips/exercises/SequenceTask/edit.php:7
-#, fuzzy
 msgid "Anzuordnende Antworten"
-msgstr "Amount of answers"
+msgstr "Answers to arrange"
 
 #: app/views/vips/exercises/SequenceTask/edit.php:37
 msgid "Verfahren zur Punktevergabe"
-msgstr ""
+msgstr "Grading strategy"
 
 #: app/views/vips/exercises/SequenceTask/edit.php:41
 msgid "Punkte nur bei vollständig korrekter Lösung"
-msgstr ""
+msgstr "Award points only for correct solutions"
 
 #: app/views/vips/exercises/SequenceTask/edit.php:44
 msgid "Punkte für Antworten an den korrekten Positionen"
-msgstr ""
+msgstr "Award points for items at the correct positions"
 
 #: app/views/vips/exercises/SequenceTask/edit.php:47
 msgid "Punkte für Paare von Antworten in korrekter Reihenfolge"
-msgstr ""
+msgstr "Award points for pairs of items in correct order"
 
 #: app/views/vips/exercises/evaluation_mode_info.php:11
 msgid "Vorsicht: Falsche Antworten geben Punktabzug!"
-msgstr ""
+msgstr "Attention: Wrong answers are penalized by deduction of points."
 
 #: app/views/vips/exercises/evaluation_mode_info.php:13
 msgid ""
 "Vorsicht: Falsche Antworten führen zur Bewertung der Aufgabe mit 0 Punkten."
-msgstr ""
+msgstr "Attention: Wrong answers are penalized by grading with 0 points."
 
 #: app/views/vips/exercises/evaluation_mode_info.php:20
-#, fuzzy, php-format
+#, php-format
 msgid "Richtige Antworten %shervorgehoben%s."
-msgstr "Topic marked."
+msgstr "correct answers %shighlighted%s."
 
 #: app/views/vips/exercises/ClozeTask/correct.php:22
 #: app/views/vips/exercises/ClozeTask/print.php:22
 #: app/views/vips/exercises/TextLineTask/correct.php:21
 #: app/views/vips/exercises/TextLineTask/print.php:18
-#, fuzzy
 msgid "fast richtig"
-msgstr "is not"
+msgstr "nearly correct"
 
 #: app/views/vips/exercises/ClozeTask/correct.php:30
 #: app/views/vips/exercises/TextLineTask/correct.php:25
-#, fuzzy
 msgid "unbekannte Antwort"
-msgstr "Unknown section"
+msgstr "unknown answer"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:7
-#, fuzzy
 msgid "Lücke hinzufügen"
-msgstr "Add link"
+msgstr "Add gap"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:7
 msgid "Mehrere Lösungen mit | trennen"
-msgstr ""
+msgstr "Alternative answers separated by |"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:7
-#, fuzzy
 msgid "Falsche Antworten mit * markieren"
-msgstr "Mark as favourite"
+msgstr "Mark wrong answers with *"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:7
 msgid "Auswahl aus Liste statt Eingabe"
-msgstr ""
+msgstr "Choose answer from list for this gap"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:10 lib/modules/VipsModule.php:44
-#, fuzzy
 msgid "Lückentext"
-msgstr "Link text"
+msgstr "Cloze exercise"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:16
-#, fuzzy
 msgid "Antwortmodus"
-msgstr "Reply"
+msgstr "Interaction type"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:20
-#, fuzzy
 msgid "Texteingabe"
-msgstr "Input"
+msgstr "Text input"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:23
-#, fuzzy
 msgid "Antwort aus Liste auswählen"
-msgstr "select a different semester"
+msgstr "Choose answer from list"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:26
 msgid "Antwort in das Feld ziehen"
-msgstr ""
+msgstr "Drag answer into gap"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:33
 #: app/views/vips/exercises/TextLineTask/edit.php:57
-#, fuzzy
 msgid "Art des Textvergleichs"
-msgstr "Date type"
+msgstr "Text comparison mode"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:37
-#, fuzzy
 msgid "Groß-/Kleinschreibung unterscheiden"
-msgstr "No description available"
+msgstr "Case sensitive"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:40
 #: app/views/vips/exercises/TextLineTask/edit.php:61
-#, fuzzy
 msgid "Groß-/Kleinschreibung ignorieren"
-msgstr "No description available"
+msgstr "Ignore case"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:43
 #: app/views/vips/exercises/TextLineTask/edit.php:70
 msgid "Numerischer Wertevergleich (ggf. mit Einheit)"
-msgstr ""
+msgstr "Numerical values (may include units)"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:49
 #: app/views/vips/exercises/TextLineTask/edit.php:76
 msgid "Erlaubte relative Abweichung vom korrekten Wert"
-msgstr ""
+msgstr "Accepted relative tolerance"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:57
 msgid "Feste Breite der Eingabefelder:"
-msgstr ""
+msgstr "Fixed width of input fields:"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:60
 msgid "kurz"
-msgstr ""
+msgstr "short"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:60
 msgid "mittel"
@@ -35367,78 +35125,71 @@ msgstr "middle"
 
 #: app/views/vips/exercises/ClozeTask/edit.php:60
 msgid "lang"
-msgstr ""
+msgstr "long"
 
 #: app/views/vips/exercises/show_exercise_files.php:8
-#, fuzzy
 msgid "Dateien zur Aufgabe:"
-msgstr "Add files"
+msgstr "Attached files:"
 
 #: app/views/vips/exercises/TextLineTask/correct.php:13
-#, fuzzy
 msgid "Antwort:"
-msgstr "Reply"
+msgstr "Answer:"
 
 #: app/views/vips/exercises/TextLineTask/correct.php:31
 #: app/views/vips/exercises/TextLineTask/print.php:29
-#, fuzzy
 msgid "Richtige Antworten:"
-msgstr "Right answer!"
+msgstr "Correct answers:"
 
 #: app/views/vips/exercises/TextLineTask/edit.php:7
-#, fuzzy
 msgid "Automatisch bewertete Antworten"
-msgstr "Detect automatically"
+msgstr "Automatically graded answers"
 
 #: app/views/vips/exercises/TextLineTask/edit.php:22
 #: app/views/vips/exercises/TextLineTask/edit.php:43
-#, fuzzy
 msgid "teils richtig"
-msgstr "is not"
+msgstr "partly correct"
 
 #: app/views/vips/exercises/TextLineTask/edit.php:64
 msgid "Textähnlichkeit (Levenshtein-Distanz)"
-msgstr ""
+msgstr "Text similarity (Levenshtein distance)"
 
 #: app/views/vips/exercises/TextLineTask/edit.php:67
 msgid "Ähnlichkeit der Aussprache (Soundex)"
-msgstr ""
+msgstr "Similarity of pronounciation (Soundex)"
 
 #: app/views/vips/pool/assignments.php:24
 msgid ""
 "Mit den aktuellen Sucheinstellungen sind keine Aufgabenblätter mit "
 "Zugriffsberechtigung vorhanden."
-msgstr ""
+msgstr "No worksheets have been found."
 
 #: app/views/vips/pool/list_exercises.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "%d Aufgabe"
 msgid_plural "%d Aufgaben"
-msgstr[0] "Task"
-msgstr[1] "Task"
+msgstr[0] "%s task"
+msgstr[1] "%s tasks"
 
 #: app/views/vips/pool/list_exercises.php:112
-#, fuzzy
 msgid "Aufgabe kopieren"
-msgstr "Activate task"
+msgstr "Copy task"
 
 #: app/views/vips/pool/list_assignments.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "%d Aufgabenblatt"
 msgid_plural "%d Aufgabenblätter"
-msgstr[0] "Tasks"
-msgstr[1] "Tasks"
+msgstr[0] "%d worksheet"
+msgstr[1] "%d worksheets"
 
 #: app/views/vips/pool/exercises.php:8
-#, fuzzy
 msgid "Es wurden noch keine Aufgabenblätter eingerichtet."
-msgstr "No postgraduate courses of studies have been created yet."
+msgstr "No worksheets have been created."
 
 #: app/views/vips/pool/exercises.php:14
 msgid ""
 "Mit den aktuellen Sucheinstellungen sind keine Aufgaben mit "
 "Zugriffsberechtigung vorhanden."
-msgstr ""
+msgstr "No tasks have been found."
 
 #: app/views/start/add.php:13
 msgid "Neues Widget zur Startseite hinzufügen"
@@ -44873,7 +44624,7 @@ msgid "%s in %s"
 msgstr "%s in %s"
 
 #: lib/models/BlubberStatusgruppeThread.php:113
-#: lib/models/BlubberThread.php:665
+#: lib/models/BlubberThread.php:687
 #, php-format
 msgid "%s hat eine Nachricht geschrieben."
 msgstr "%s wrote a message."
@@ -45748,86 +45499,76 @@ msgid "Objekt Aufrufe"
 msgstr "Object lookups"
 
 #: lib/models/vips/DummyExercise.php:37
-#, fuzzy
 msgid "Unbekannter Aufgabentyp"
-msgstr "Unknown file type"
+msgstr "Unknown task type"
 
 #: lib/models/vips/MultipleChoiceTask.php:45
 msgid "Mehrfachauswahl aus einer Liste"
-msgstr ""
+msgstr "Multiple selection from a list of items"
 
 #: lib/models/vips/SingleChoiceTask.php:45
 msgid "Einfachauswahl aus einer Liste"
-msgstr ""
+msgstr "Single selection from a list of items"
 
 #: lib/models/vips/SingleChoiceTask.php:264
 #: lib/models/vips/MatrixChoiceTask.php:250
-#, fuzzy
 msgid "keine Antwort"
-msgstr "no answers"
+msgstr "don't answer"
 
 #: lib/models/vips/VipsAssignment.php:174
 #: lib/models/vips/VipsAssignment.php:364
-#, fuzzy
 msgid "Während des Imports sind folgende Fehler aufgetreten:"
-msgstr "The following errors occurred:"
+msgstr "The following errors were reported during import:"
 
 #: lib/models/vips/VipsAssignment.php:1183
-#, fuzzy, php-format
+#, php-format
 msgid "Kopie von %s"
-msgstr "Copy of:"
+msgstr "Copy of %s"
 
 #: lib/models/vips/VipsAssignmentAttempt.php:66
-#, fuzzy
 msgid "Beginn der Klausur"
-msgstr "Beginner"
+msgstr "Start of the exam"
 
 #: lib/models/vips/VipsAssignmentAttempt.php:76
 #, php-format
 msgid "Abgabe Aufgabe %d"
-msgstr ""
+msgstr "Task %d submitted"
 
 #: lib/models/vips/VipsAssignmentAttempt.php:87
-#, fuzzy
 msgid "Ende der Klausur"
-msgstr "Written examination"
+msgstr "End of the exam"
 
 #: lib/models/vips/TextLineTask.php:45
 msgid "Kurze einzeilige Textantwort"
-msgstr ""
+msgstr "Short one-line text response"
 
 #: lib/models/vips/Exercise.php:563 lib/models/vips/Exercise.php:586
-#, fuzzy
 msgid "Unbekannter Aufgabentyp: "
-msgstr "Unknown file type"
+msgstr "Unknown task type: "
 
 #: lib/models/vips/TextTask.php:45
 msgid "Mehrzeilige Textantwort oder Dateiabgabe"
-msgstr ""
+msgstr "Multi-line text response or file uploads"
 
 #: lib/models/vips/TextTask.php:93
-#, fuzzy
 msgid "Die kommentierte Lösung wurde gelöscht."
-msgstr "The document assignment has been deleted."
+msgstr "The commented solution has been deleted."
 
 #: lib/models/vips/SequenceTask.php:45
-#, fuzzy
 msgid "Anordnung von Elementen in einer Reihe"
-msgstr "Date assignment"
+msgstr "Arrange items into the correct order"
 
 #: lib/models/vips/MatrixChoiceTask.php:45
 msgid "Einfachauswahl pro Zeile in einer Tabelle"
-msgstr ""
+msgstr "Single selection per line (tabular form)"
 
 #: lib/models/vips/MatchingTask.php:45
-#, fuzzy
 msgid "Zuordnung von Elementen zu Kategorien"
-msgstr "Date assignment"
+msgstr "Assign a list of items to categories"
 
 #: lib/models/vips/ClozeTask.php:45
-#, fuzzy
 msgid "Lückentext mit Eingabe oder Auswahl"
-msgstr "Text at the end of the output"
+msgstr "Cloze exercise, text input or drop down"
 
 #: lib/models/vips/ClozeTask.php:194
 #, php-format
@@ -45835,6 +45576,8 @@ msgid ""
 "Achtung: Sie haben bei der %d. Lücke die Antwort &bdquo;%s&ldquo; mehrfach "
 "eingetragen."
 msgstr ""
+"Attention: In gap #%d, you have entered the same answer &bdquo;%s&ldquo; "
+"more than once."
 
 #: lib/models/StudipComment.php:111
 msgid "Ankündigungen Kommentare"
@@ -48014,20 +47757,20 @@ msgstr "External person"
 msgid "%s hat Sie in einem Blubber erwähnt."
 msgstr "%s mentioned you in a Blubber."
 
-#: lib/models/BlubberThread.php:393
+#: lib/models/BlubberThread.php:415
 msgid "Blubber-Threads"
 msgstr "Blubber threads"
 
-#: lib/models/BlubberThread.php:401
+#: lib/models/BlubberThread.php:423
 #, php-format
 msgid "Blubber von %s"
 msgstr "Blubber from %s"
 
-#: lib/models/BlubberThread.php:426
+#: lib/models/BlubberThread.php:448
 msgid "ich"
 msgstr "me"
 
-#: lib/models/BlubberThread.php:451
+#: lib/models/BlubberThread.php:473
 msgid "Ein mysteröser Blubber"
 msgstr "A mysterious Blubber"
 
@@ -49819,33 +49562,28 @@ msgid "Ansicht für Studierenden"
 msgstr "%s for students"
 
 #: lib/modules/VipsModule.php:39
-#, fuzzy
 msgid "Single Choice"
-msgstr "Multiple choice"
+msgstr "Single choice"
 
 #: lib/modules/VipsModule.php:40
 msgid "Multiple Choice"
 msgstr "Multiple choice"
 
 #: lib/modules/VipsModule.php:41
-#, fuzzy
 msgid "Multiple Choice Matrix"
-msgstr "Multiple choice"
+msgstr "Multiple choice matrix"
 
 #: lib/modules/VipsModule.php:42
-#, fuzzy
 msgid "Freie Antwort"
-msgstr "Question answer"
+msgstr "Text (single line)"
 
 #: lib/modules/VipsModule.php:43
-#, fuzzy
 msgid "Textaufgabe"
-msgstr "Task"
+msgstr "Text (multiple lines)"
 
 #: lib/modules/VipsModule.php:45
-#, fuzzy
 msgid "Zuordnung"
-msgstr "Assignments"
+msgstr "Assignment"
 
 #: lib/modules/VipsModule.php:46
 msgid "Reihenfolge"
@@ -49857,28 +49595,26 @@ msgid "Erstellen und Verwalten von Aufgabenblättern"
 msgstr "Create and edit questionnaires."
 
 #: lib/modules/VipsModule.php:130
-#, fuzzy
 msgid "Sie verfügen nicht über die notwendigen Rechte für diese Aktion."
-msgstr "You do not have sufficient permissions for this action."
+msgstr "You do not have the required permissions for this action."
 
 #: lib/modules/VipsModule.php:148 lib/modules/VipsModule.php:166
-#, fuzzy
 msgid "Sie haben keinen Zugriff auf diese Aufgabe!"
-msgstr "You do not have access to this area."
+msgstr "You don't have access to this task!"
 
 #: lib/modules/VipsModule.php:283
 #, php-format
 msgid "%d unkorrigierte Lösung"
 msgid_plural "%d unkorrigierte Lösungen"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d uncorrected solution"
+msgstr[1] "%d uncorrected solutions"
 
 #: lib/modules/VipsModule.php:306
-#, fuzzy, php-format
+#, php-format
 msgid "%d neues Aufgabenblatt"
 msgid_plural "%d neue Aufgabenblätter"
-msgstr[0] "eTask tasks"
-msgstr[1] "eTask tasks"
+msgstr[0] "%d new worksheet"
+msgstr[1] "%d new worksheets"
 
 #: lib/modules/VipsModule.php:347
 msgid "Erstellung und Durchführung von Übungen, Tests und Klausuren"
@@ -49891,6 +49627,9 @@ msgid ""
 "Single-, Multiple-Choice- und Textaufgaben, Lückentexte und Zuordnungen; "
 "Notwendige Korrekturen und erzielte Punktzahlen auf einen Blick"
 msgstr ""
+"Classroom and online tests; Reduced workload for corrections; Easy overview "
+"of submitted results; Single-, multiple-choice, text, cloze and matching "
+"exercises; List of unfinished corrections and graded exercises"
 
 #: lib/modules/VipsModule.php:365
 #, fuzzy
@@ -51477,6 +51216,687 @@ msgstr ""
 "placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
 "file\") or it can be limited to its capital letters or its abbreviation "
 "(e.g. \"MC/file\" or \"C/file\")."
+
+#, fuzzy
+#~ msgid "geschlecht"
+#~ msgstr "Gender"
+
+#~ msgid "Vips-Einstellungen"
+#~ msgstr "Vips settings"
+
+#~ msgid "Erstellen und Verwalten von Aufgaben in Vips"
+#~ msgstr "Create and edit tasks and worksheets in Vips"
+
+#~ msgid "Sie haben keinen Zugriff auf diese Datei!"
+#~ msgstr "You don't have access to this file!"
+
+#~ msgid "Übungsgruppen"
+#~ msgstr "Groups"
+
+#~ msgid "Vips - Aufgaben und Prüfungen"
+#~ msgstr "Vips - Tasks and tests"
+
+#~ msgid ""
+#~ "Virtuelles Prüfungssystem: Online-Erstellung und Durchführung von "
+#~ "Übungen, Tests und Klausuren"
+#~ msgstr "Virtual exam system: create and manage online tests and exams"
+
+#~ msgid ""
+#~ "In Vips können Übungen, Tests und Klausuren online vorbereitet und "
+#~ "durchgeführt werden. Die Lehrenden erhalten eine Übersicht darüber, "
+#~ "welche Teilnehmer eine Übung oder einen Test mit welchem Ergebnis "
+#~ "abgeschlossen haben. Im Gegensatz zu herkömmlichen Übungszetteln oder "
+#~ "Klausurbögen sind mit Vips alle Texte gut lesbar und sortiert abgelegt. "
+#~ "Lehrende erhalten sofort einen Überblick darüber, was noch zu korrigieren "
+#~ "ist. Neben allgemein üblichen Fragetypen wie Multiple Choice und "
+#~ "Freitextantwort verfügt Vips auch über ungewöhnlichere, aber didaktisch "
+#~ "durchaus sinnvolle Fragetypen wie Lückentext und Zuordnung."
+#~ msgstr ""
+#~ "The Vips module can be used to conduct online tests and exams. It offers "
+#~ "an overview of student's test or exam results and still to be graded "
+#~ "tasks. In addition to common question formats like multiple choice and "
+#~ "text/essay, Vips also offers advanced question types such as cloze and "
+#~ "matching exercises."
+
+#~ msgid "Vips-Aufgaben"
+#~ msgstr "Vips Tasks"
+
+#~ msgid "Vips-Aufgabenblätter"
+#~ msgstr "Vips Worksheets"
+
+#~ msgid "Vips-Dateien"
+#~ msgstr "Vips Uploads"
+
+#~ msgid "Vips-Gruppenzuordnung"
+#~ msgstr "Vips Group Assignments"
+
+#~ msgid "Vips-Lösungen"
+#~ msgstr "Vips Solutions"
+
+#~ msgid "Vips-Lösungsarchiv"
+#~ msgstr "Vips Solutions Archive"
+
+#~ msgid "Vips-Startzeitpunkte"
+#~ msgstr "Vips Starting Times"
+
+#, php-format
+#~ msgid "Der Block \"%s\" wurde gespeichert."
+#~ msgstr "This block \"%s\" has been saved."
+
+#, php-format
+#~ msgid "Der Block \"%s\" wurde gelöscht."
+#~ msgstr "The block \"%s\" has been deleted."
+
+#~ msgid "Einstellungen für Vips"
+#~ msgstr "Vips Settings"
+
+#~ msgid ""
+#~ "Hier können Sie Studierende in Gruppen einteilen, die gemeinsam Übungen "
+#~ "bearbeiten können."
+#~ msgstr ""
+#~ "Students can be organized into groups with shared access to exercises."
+
+#~ msgid "Übungsgruppe erstellen"
+#~ msgstr "Create group"
+
+#~ msgid "Mehrere Übungsgruppen erstellen"
+#~ msgstr "Create multiple groups"
+
+#~ msgid "Studierende dürfen sich selbst in Gruppen eintragen"
+#~ msgstr "Students are allowed to assign themselves to groups."
+
+#~ msgid "Gruppenzuordnungen exportieren"
+#~ msgstr "Export group assignments"
+
+#~ msgid ""
+#~ "Eine Gruppe dieses Namens gibt es schon. Bitte wählen Sie einen anderen "
+#~ "Namen."
+#~ msgstr "A group with this name already exists, choose a different name."
+
+#, php-format
+#~ msgid "Die Gruppe \"%s\" wurde gespeichert."
+#~ msgstr "The group \"%s\" has been saved."
+
+#~ msgid "Selbsteintrag ist nicht aktiviert."
+#~ msgstr "Self-assignment is not enabled."
+
+#~ msgid "Sie befinden sich schon in dieser Gruppe."
+#~ msgstr "You are already member of this group."
+
+#~ msgid "Sie befinden sich schon in einer anderen Gruppe."
+#~ msgstr "You are already are a member of another group."
+
+#~ msgid "Diese Gruppe ist bereits voll."
+#~ msgstr "The group is already full."
+
+#~ msgid "Sie haben sich in die Gruppe eingetragen."
+#~ msgstr "You have been added to the group."
+
+#~ msgid "Der Teilnehmer befindet sich schon in dieser Gruppe."
+#~ msgstr "Participant is already a member of this group."
+
+#~ msgid "Der Teilnehmer befindet sich schon in einer anderen Gruppe."
+#~ msgstr "Participant is already a member of another group."
+
+#~ msgid "Der Teilnehmer wurde in die Gruppe eingetragen."
+#~ msgstr "Participant has been added to the group."
+
+#~ msgid "Der Teilnehmer wurde aus der Gruppe ausgetragen."
+#~ msgstr "Participant has been removed from the group."
+
+#~ msgid "Sie haben sich aus der Gruppe ausgetragen."
+#~ msgstr "You have been removed from the group"
+
+#~ msgid "Die Teilnehmer wurden aus der Gruppe entfernt."
+#~ msgstr "The participants have been removed from the group."
+
+#~ msgid "Die Teilnehmer wurden in die Gruppe eintragen."
+#~ msgstr "The participants have been added to the group."
+
+#~ msgid "Die Teilnehmer passen nicht mehr in diese Gruppe."
+#~ msgstr "Adding the participants would exceed the group's size limit."
+
+#~ msgid "Übungsgruppen erstellen"
+#~ msgstr "Create groups"
+
+#, php-format
+#~ msgid "Eine Gruppe mit dem Namen \"%s\" gibt es schon."
+#~ msgstr "A group with the name \"%s\" already exists."
+
+#, php-format
+#~ msgid "Es wurde eine Gruppe angelegt."
+#~ msgid_plural "Es wurden %d Gruppen angelegt."
+#~ msgstr[0] "One group has been created."
+#~ msgstr[1] "%d groups have been created."
+
+#~ msgid "Teilnehmer.csv"
+#~ msgstr "participants.csv"
+
+#~ msgid ""
+#~ "Auf dieser Seite finden Sie eine Übersicht über alle Aufgaben in Vips, "
+#~ "auf die Sie Zugriff haben."
+#~ msgstr "This page lists all the tasks that you can access."
+
+#~ msgid ""
+#~ "Auf dieser Seite finden Sie eine Übersicht über alle Aufgabenblätter in "
+#~ "Vips, auf die Sie Zugriff haben."
+#~ msgstr "This page lists all the worksheets that you can access."
+
+#~ msgid ""
+#~ "Falls Sie diese wirklich löschen möchten, müssen Sie zuerst die Lösungen "
+#~ "aller Teilnehmer zurücksetzen."
+#~ msgstr "To delete these items, you need to reset the exams first."
+
+#, php-format
+#~ msgid "Es wurden %s Aufgaben verschoben."
+#~ msgstr "%d tasks have been moved."
+
+#~ msgid "Zeichenwähler öffnen"
+#~ msgstr "Show character picker"
+
+#~ msgid ""
+#~ "Dies ist die Studierendenansicht (Vorschau) der Aufgabe. Sie können hier "
+#~ "auch Lösungen von Teilnehmern ansehen oder für sie abgeben."
+#~ msgstr ""
+#~ "This is the student's view (preview) of the exercise. You may also view "
+#~ "and submit student solutions here."
+
+#~ msgid ""
+#~ "Bitte denken Sie daran, vor dem Verlassen der Seite Ihre Lösung zu "
+#~ "speichern. Für die Eingabe von Sonderzeichen steht ggf. der Zeichenwähler "
+#~ "zur Verfügung."
+#~ msgstr "Don't forget to save your input before leaving the page."
+
+#, php-format
+#~ msgid "Das Aufgabenblatt &bdquo;%s&ldquo; wurde gelöscht."
+#~ msgstr "This worksheet &bdquo;%s&ldquo; has been deleted."
+
+#, php-format
+#~ msgid "Die Aufgabe &bdquo;%s&ldquo; wurde gelöscht."
+#~ msgstr "The task &bdquo;%s&ldquo; has been deleted."
+
+#, php-format
+#~ msgid "Fehler beim Hochladen der Datei \"%s\"."
+#~ msgstr "Upload error for file \"%s\"."
+
+#, php-format
+#~ msgid "Die hochgeladene Datei \"%s\" ist zu groß."
+#~ msgstr "The uploaded file \"%s\" is too big."
+
+#, php-format
+#~ msgid "Es trat ein Fehler beim Hochladen der Datei \"%s\" auf."
+#~ msgstr "There was an error while uploading the file \"%s\"."
+
+#, php-format
+#~ msgid "Das Aufgabenblatt &bdquo;%s&ldquo; mit %d Aufgabe wurde hinzugefügt."
+#~ msgid_plural ""
+#~ "Das Aufgabenblatt &bdquo;%s&ldquo; mit %d Aufgaben wurde hinzugefügt."
+#~ msgstr[0] "Worksheet %s was added with %d task."
+#~ msgstr[1] "Worksheet %s was added with %d tasks."
+
+#~ msgid ""
+#~ "In Vips können Übungen, Tests und Klausuren online vorbereitet und "
+#~ "durchgeführt werden. Sie erhalten dabei auch eine Übersicht über die "
+#~ "Lösungen bzw. Antworten der Studierenden."
+#~ msgstr "The Vips module can be used to conduct online tests and exams."
+
+#~ msgid ""
+#~ "Wenn Sie Vips unsichtbar machen, werden alle laufenden Aufgabenblätter "
+#~ "für die Studierenden nicht mehr zugänglich sein!"
+#~ msgstr ""
+#~ "If you make Vips invisible, all active worksheets will no longer be "
+#~ "accessible to students!"
+
+#~ msgid "Vips für Studierende sichtbar"
+#~ msgstr "Vips is visible to students"
+
+#~ msgid "Teilnehmer"
+#~ msgstr "Participants"
+
+#~ msgid ""
+#~ "In dieser Übersicht können Sie sich anzeigen lassen, welche Teilnehmer "
+#~ "Lösungen abgegeben haben, und diese Lösungen korrigieren und freigeben."
+#~ msgstr "This is a list of all participants of the test and their solutions."
+
+#~ msgid ""
+#~ "Achtung: Wenn Sie die Lösungen zurücksetzen, werden die Lösungen aller "
+#~ "Teilnehmer archiviert!"
+#~ msgstr ""
+#~ "Caution: If you reset the exam, all previous submissions in the exam will "
+#~ "be archived!"
+
+#~ msgid "Lösungen der Teilnehmer exportieren"
+#~ msgstr "Export all solutions"
+
+#~ msgid "nichts"
+#~ msgstr "Nothing"
+
+#~ msgid "vergebene Punkte"
+#~ msgstr "Points"
+
+#~ msgid "Legende"
+#~ msgstr "Legend"
+
+#, php-format
+#~ msgid ""
+#~ "%sBlau dargestellte Aufgaben%s wurden automatisch und sicher korrigiert."
+#~ msgstr ""
+#~ "%sTasks shown in blue%s have been graded automatically and reliably."
+
+#, php-format
+#~ msgid "%sAusgegraute Aufgaben%s wurden vom Teilnehmer nicht bearbeitet."
+#~ msgstr "%sTasks shown in grey%s have not been submitted by the student."
+
+#~ msgid "nicht abgegeben"
+#~ msgstr "not submitted"
+
+#~ msgid "Gewichtung:"
+#~ msgstr "Weight:"
+
+#~ msgid ""
+#~ "Diese Seite gibt einen Überblick über die von allen Teilnehmern "
+#~ "erreichten Punkte und ggf. Noten."
+#~ msgstr "This page displays a summary of all test results for this course."
+
+#~ msgid "erreichbare Punkte"
+#~ msgstr "achievable points"
+
+#~ msgid "durchschn. Punkte"
+#~ msgstr "average points"
+
+#~ msgid "korrekte Lösungen"
+#~ msgstr "correct solutions"
+
+#~ msgid ""
+#~ "Diese Seite gibt einen Überblick über die im Durchschnitt von allen "
+#~ "Teilnehmern erreichten Punkte sowie den Prozentsatz der vollständig "
+#~ "korrekten Lösungen."
+#~ msgstr ""
+#~ "This page gives a summary of the average number of points and the "
+#~ "proportion of correct solutions for each exercise."
+
+#~ msgid "Externe Aufgabe (LTI-Tool)"
+#~ msgstr "External task (LTI tool)"
+
+#~ msgid "Aufgabe aus einem externen Tool einbinden"
+#~ msgstr "Embed a task from an external tool"
+
+#~ msgid "Aufgabe im LTI-Tool bearbeiten"
+#~ msgstr "Edit task in the LTI tool"
+
+#~ msgid ""
+#~ "Diese Aufgabe wird aus einem externen System eingebunden und kann hier "
+#~ "nicht angezeigt werden."
+#~ msgstr ""
+#~ "This task is linked to an external system and cannot be displayed here."
+
+#~ msgid "Algebraischer Term"
+#~ msgstr "Algebraic term"
+
+#~ msgid "Einzeilige Antwort mit Termauswertung"
+#~ msgstr "Short answer using term evaluation"
+
+#~ msgid "Die Musterlösung ist kein gültiger mathematischer Ausdruck."
+#~ msgstr "The sample solution is not a valid algebra term."
+
+#, php-format
+#~ msgid "Die hochgeladene Datei \"%s\" ist leer."
+#~ msgstr "The uploaded file \"%s\" is empty."
+
+#~ msgid "IPA-Zeichen"
+#~ msgstr "IPA characters"
+
+#~ msgid "Chinesisch (Pinyin-Transkription)"
+#~ msgstr "Chinese (Pinyin transcription)"
+
+#~ msgid "Deutsche Sonderzeichen"
+#~ msgstr "German characters"
+
+#~ msgid "Französische Sonderzeichen"
+#~ msgstr "French characters"
+
+#~ msgid "Griechische Zeichen"
+#~ msgstr "Greek characters"
+
+#~ msgid "Spanische Sonderzeichen"
+#~ msgstr "Spanish characters"
+
+#~ msgid "Polnische Sonderzeichen"
+#~ msgstr "Polish characters"
+
+#~ msgid "Portugiesische Sonderzeichen"
+#~ msgstr "Portuguese characters"
+
+#~ msgid "Rumänische Sonderzeichen"
+#~ msgstr "Romanian characters"
+
+#~ msgid "Tschechische Sonderzeichen"
+#~ msgstr "Czech characters"
+
+#~ msgid "Türkische Sonderzeichen"
+#~ msgstr "Turkish characters"
+
+#~ msgid "Vips-Test"
+#~ msgstr "Vips test"
+
+#~ msgid "Stellt ein Aufgabenblatt aus Vips bereit."
+#~ msgstr "Presents a Vips assignment or test."
+
+#~ msgid "Alle Teilnehmer (keine Beschränkung)"
+#~ msgstr "All students (no limitation)"
+
+#~ msgid "Für Teilnehmer unsichtbar"
+#~ msgstr "Not visible to students"
+
+#, php-format
+#~ msgid "Gruppe \"%s\""
+#~ msgstr "Group \"%s\""
+
+#~ msgid "Datenfeld für die Matrikelnummer"
+#~ msgstr "Data field containing the student ID"
+
+#~ msgid "Eintrag Löschen"
+#~ msgstr "Delete entry"
+
+#~ msgid "Eingabefeld vergrößern"
+#~ msgstr "Make input field larger"
+
+#~ msgid "Eingabefeld verkleinern"
+#~ msgstr "Make input field smaller"
+
+#~ msgid "Präfix des Gruppennamens"
+#~ msgstr "Group name prefix"
+
+#~ msgid "Gruppengröße (mind. 1)"
+#~ msgstr "Group size (min. 1)"
+
+#~ msgid "Es wurden noch keine Gruppen angelegt."
+#~ msgstr "No groups have been created yet."
+
+#~ msgid "Nachricht an die Gruppe"
+#~ msgstr "Write a message"
+
+#, php-format
+#~ msgid ""
+#~ "Es befinden sich noch Teilnehmer in der Gruppe \"%s\". Wollen Sie die "
+#~ "Gruppe trotzdem löschen?"
+#~ msgstr ""
+#~ "There are still participants in the group \"%s\". Do you nevertheless "
+#~ "want to delete the group?"
+
+#~ msgid "In diese Gruppe eintragen"
+#~ msgstr "Assign yourself to this group"
+
+#~ msgid "Alle Personen auswählen"
+#~ msgstr "Select all participants"
+
+#, php-format
+#~ msgid "Nachricht an \"%s\""
+#~ msgstr "Write a message to \"%s\""
+
+#~ msgid "Teilnehmer aus der Gruppe austragen"
+#~ msgstr "Unassign participant from this group"
+
+#~ msgid "Aus dieser Gruppe austragen"
+#~ msgstr "Unassign yourself from this group"
+
+#~ msgid "Personen ohne Gruppenzuordnung"
+#~ msgstr "Participants without group assignment"
+
+#, php-format
+#~ msgid "Wollen Sie wirklich das Aufgabenblatt \"%s\" löschen?"
+#~ msgstr "Do you really want to delete the worksheet \"%s\"?"
+
+#, php-format
+#~ msgid "Wollen Sie wirklich die Aufgabe \"%s\" löschen?"
+#~ msgstr "Do you really want to delete task \"%s\"?"
+
+#~ msgid "weniger"
+#~ msgstr "less"
+
+#~ msgid "Testklausur zur Selbsteinschätzung der Teilnehmer"
+#~ msgstr "Test exam for self assessment purposes"
+
+#~ msgid ""
+#~ "Teilnehmer können beliebig oft neu starten, Ergebnisse können direkt nach "
+#~ "Ablauf der Bearbeitungszeit zugänglich gemacht werden."
+#~ msgstr ""
+#~ "Participants may reset and restart the exam, results can be viewed "
+#~ "immediately after finishing the exam"
+
+#~ msgid ""
+#~ "Teilnehmer dürfen ihre Lösungen zurücksetzen und den Test neu starten"
+#~ msgstr "Participants may reset and restart the test"
+
+#~ msgid "&hellip; geben Punktabzug (Gesamtpunktzahl Aufgabe mind. 0)"
+#~ msgstr ""
+#~ "&hellip; are penalized by point deduction (minimum of 0 points for a task)"
+
+#~ msgid "&hellip; führen zur Bewertung der Aufgabe mit 0 Punkten"
+#~ msgstr "&hellip; result in a score of 0 points for the task"
+
+#~ msgid "Notizen (für Teilnehmer unsichtbar)"
+#~ msgstr "Notes (not visible to students)"
+
+#~ msgid "vorige Aufgabe"
+#~ msgstr "previous task"
+
+#~ msgid "nächste Aufgabe"
+#~ msgstr "next task"
+
+#~ msgid "Klicken Sie auf \"Speichern\", um die gewählten Dateien hochzuladen."
+#~ msgstr "Click \"Save\" to upload the selected files."
+
+#~ msgid "gibt nur diese IP frei."
+#~ msgstr "only allow this IP address."
+
+#~ msgid "gibt alle IPs frei, die so beginnen."
+#~ msgstr "allow all IP adresses with this prefix."
+
+#~ msgid "gibt alle IPs aus dem Bereich 131.173.73 bis 131.173.75 frei."
+#~ msgstr "allow all IP addresses from the range 131.173.73 to 131.173.75."
+
+#~ msgid "gibt alle IPs in diesem Raum frei."
+#~ msgstr "allow all IP adresses in this room."
+
+#~ msgid "(für Teilnehmer unsichtbar)"
+#~ msgstr "(not visible to students)"
+
+#, php-format
+#~ msgid "(sichtbar für Gruppe \"%s\")"
+#~ msgstr "(only visible to group \"%s\")"
+
+#, php-format
+#~ msgid "Wollen Sie wirklich den Block \"%s\" löschen?"
+#~ msgstr "Do you really want to delete block \"%s\"?"
+
+#~ msgid "max. Punkte"
+#~ msgstr "max. points"
+
+#~ msgid "Bitte bestätigen Sie den Endzeitpunkt."
+#~ msgstr "Please confirm the ending time."
+
+#, php-format
+#~ msgid "Aufgabenblatt &bdquo;%s&ldquo;"
+#~ msgstr "Worksheet &bdquo;%s&ldquo;"
+
+#, php-format
+#~ msgid "Es muss noch %d Lösung korrigiert werden."
+#~ msgid_plural "Es müssen noch %d Lösungen korrigiert werden."
+#~ msgstr[0] "%d solution is left for grading."
+#~ msgstr[1] "%d solutions are left for grading."
+
+#~ msgid ""
+#~ "Klicken Sie auf die Schaltfläche &bdquo;Autokorrektur starten&ldquo;, um "
+#~ "alle Aufgaben automatisch korrigieren zu lassen."
+#~ msgstr ""
+#~ "Click on the \"Start correction\" button to grade all solutions "
+#~ "automatically."
+
+#~ msgid "Lösungen der Teilnehmer"
+#~ msgstr "Solutions of all participants"
+
+#~ msgid "alle Studierende"
+#~ msgstr "all students"
+
+#~ msgid "beendete Klausuren"
+#~ msgstr "finished exams"
+
+#~ msgid "laufende Klausuren"
+#~ msgstr "currently active exams"
+
+#~ msgid "noch nicht begonnene Klausuren"
+#~ msgstr "pending exams"
+
+#~ msgid "Alle Teilnehmer auswählen"
+#~ msgstr "Select all participants"
+
+#~ msgid "Aufgaben aller Teilnehmer anzeigen"
+#~ msgstr "Show tasks for all participants"
+
+#~ msgid "Aufgaben aller Teilnehmer verstecken"
+#~ msgstr "Hide tasks for all participants"
+
+#~ msgid "unkorrigierte Lösungen"
+#~ msgstr "ungraded solutions"
+
+#~ msgid "unbearbeitete Aufgaben"
+#~ msgstr "unsubmitted tasks"
+
+#~ msgid ""
+#~ "Achtung: Wenn Sie die Teilnahme zurücksetzen, werden alle Lösungen des "
+#~ "Teilnehmers archiviert!"
+#~ msgstr ""
+#~ "Caution: All previous submissions of this user in the exam will be "
+#~ "archived!"
+
+#, php-format
+#~ msgid "Nachricht an \"%s\" schreiben"
+#~ msgstr "Write a message to \"%s\""
+
+#~ msgid "Komment."
+#~ msgstr "Comment"
+
+#~ msgid "voriger Teilnehmer"
+#~ msgstr "previous participant"
+
+#~ msgid "keiner der vorhergehenden Teilnehmer hat diese Aufgabe bearbeitet"
+#~ msgstr "none of the previous participants has worked on this task"
+
+#~ msgid "nächster Teilnehmer"
+#~ msgstr "next participant"
+
+#~ msgid "keiner der nachfolgenden Teilnehmer hat diese Aufgabe bearbeitet"
+#~ msgstr "none of the subsequent participants has worked on this task"
+
+#~ msgid "der Teilnehmer hat keine der vorhergehenden Aufgaben bearbeitet"
+#~ msgstr "the participant has not worked on any of the previous tasks"
+
+#~ msgid "der Teilnehmer hat keine der nachfolgenden Aufgaben bearbeitet"
+#~ msgstr "the participant has not worked on any of the subsequent tasks"
+
+#, php-format
+#~ msgid "Bewertung der Lösung von &bdquo;%s&ldquo;"
+#~ msgstr "Your grade for submission of &bdquo;%s&ldquo;"
+
+#~ msgid "manuell korrigiert"
+#~ msgstr "graded manually"
+
+#~ msgid "automatisch korrigiert"
+#~ msgstr "graded automatically"
+
+#~ msgid "unkorrigiert"
+#~ msgstr "not graded"
+
+#, php-format
+#~ msgid "absolut: %.1f %%"
+#~ msgstr "absolute: %.1f %%"
+
+#~ msgid "erreichte Punkte"
+#~ msgstr "achieved points"
+
+#~ msgid "gewichtete Prozent"
+#~ msgstr "weighted percent"
+
+#~ msgid "korrigiert"
+#~ msgstr "graded"
+
+#~ msgid "Zeichenwähler"
+#~ msgstr "Character picker"
+
+#~ msgid "keiner"
+#~ msgstr "none"
+
+#~ msgid "URL zum Starten der LTI-Aufgabe"
+#~ msgstr "URL for launching the LTI tool"
+
+#~ msgid ""
+#~ "Hier können Sie ein externes Tool einbinden, sofern es den LTI-Standard "
+#~ "(Version 1.1) unterstützt. Die Betreiber dieses Tools müssen Ihnen eine "
+#~ "URL und Zugangsdaten (Consumer-Key und Consumer-Secret) mitteilen."
+#~ msgstr ""
+#~ "You can add tasks from external tools that support LTI version 1.1.The "
+#~ "tool provider will supply a launch URL and a pair of credentials "
+#~ "(consumer key and consumer secret) to you."
+
+#~ msgid "Consumer-Key der LTI-Aufgabe"
+#~ msgstr "Consumer key of the LTI task"
+
+#~ msgid "Consumer-Secret der LTI-Aufgabe"
+#~ msgstr "Consumer secret of the LTI task"
+
+#~ msgid "Signatur-Methode der LTI-Aufgabe"
+#~ msgstr "Signature method of the LTI task"
+
+#~ msgid "Nutzerdaten an LTI-Tool senden"
+#~ msgstr "Send user data to the LTI tool"
+
+#~ msgid ""
+#~ "Nutzerdaten dürfen nur das externe Tool gesendet werden, wenn es keine "
+#~ "Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die "
+#~ "Übermittlung der Daten zulässig ist."
+#~ msgstr ""
+#~ "You may only transmit user data to external tools when there are no "
+#~ "privacy concerns. By selecting this option you declare that transmission "
+#~ "of user data is permitted."
+
+#~ msgid "Aufgabe anzeigen"
+#~ msgstr "Show task"
+
+#~ msgid ""
+#~ "Auswahlmöglichkeit &bdquo;keine Antwort&ldquo; hinzufügen (ohne Bewertung)"
+#~ msgstr "Add a choice &quot;don't answer&quot; (not graded)"
+
+#~ msgid "Folgende Rechenarten, Konstanten und Funktionen werden unterstützt:"
+#~ msgstr "The following operators, constants and functions are recognized:"
+
+#~ msgid "Eigene Variablen deklarieren (optional)"
+#~ msgstr "Declare variables to test (optional)"
+
+#~ msgid "Variable"
+#~ msgstr "Variable"
+
+#~ msgid "Minimum"
+#~ msgstr "Minimum"
+
+#~ msgid "Maximum"
+#~ msgstr "Maximum"
+
+#~ msgid "Variable löschen"
+#~ msgstr "Delete variable"
+
+#~ msgid "Variable hinzufügen"
+#~ msgstr "Add variable"
+
+#~ msgid "Zuordnung Löschen"
+#~ msgstr "Delete assignment"
+
+#~ msgid "Antwort Löschen"
+#~ msgstr "Delete answer"
+
+#~ msgid ""
+#~ "Antwortalternative &bdquo;keine Antwort&ldquo; hinzufügen (ohne Bewertung)"
+#~ msgstr "Add a choice &quot;don't answer&quot; (not graded)"
 
 #~ msgid "Audio-Feedback zu Benachrichtigungen"
 #~ msgstr "Audio feedback for notifications"
