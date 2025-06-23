@@ -21,7 +21,7 @@
             <div></div>
             <label>
                 <input type="checkbox" v-model="autosave" :disabled="storingAutosave">
-                {{ $gettext('Automatisches Speichern aktivieren.') }}
+                {{ $gettext('Änderungen automatisch speichern') }}
             </label>
             <p class="last-save-date">
                 {{ $gettext('Zuletzt gespeichert') }}:
