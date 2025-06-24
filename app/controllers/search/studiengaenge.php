@@ -165,7 +165,19 @@ class Search_StudiengaengeController extends MVVController
     private function einfach($studiengang_id)
     {
         $studiengangTeile = StudiengangTeil::findByStudiengang($studiengang_id);
-        if (count($studiengangTeile) == 1) {
+        // Count visible versions. If only one is visible redirect to course plan.
+        $count_versions = 0;
+        foreach ($studiengangTeile as $studiengangTeil) {
+            $visible_versions = $studiengangTeil->versionen->filter(
+                function ($version) {
+                    return $version->hasPublicStatus();
+                }
+            );
+            if (count($visible_versions)) {
+                $count_versions++;
+            }
+        }
+        if ($count_versions === 1) {
             $teil = $studiengangTeile;
             $id = $teil[0]->getId();
             $this->verlauf_action($id);
