@@ -6,7 +6,11 @@
     <? endif?>
     <table class="default">
         <caption>
-            <?= sprintf(_('Lernobjekte in %s'), htmlReady($ilias->getName()))?>
+            <? if ($ilias_interface_config['create_objects']) : ?>
+                <?= sprintf(_('Lernobjekte in %s'), htmlReady($ilias->getName()))?>
+            <? else : ?>
+                <?= sprintf(_('Kurs in %s'), htmlReady($ilias->getName()))?>
+            <? endif ?>
         </caption>
         <colgroup>
             <col style="width: 5%">
@@ -83,7 +87,11 @@
     <? elseif (empty($courses[$ilias_index])) : ?>
         <tr>
             <td colspan="4">
-                <?= _('Es sind keine Lernobjekte mit dieser Veranstaltung verknüpft.')?>
+                <? if ($ilias_interface_config['create_objects']) : ?>
+                    <?= _('Es sind keine Lernobjekte mit dieser Veranstaltung verknüpft.')?>
+                <? else : ?>
+                    <?= _('Es ist kein ILIAS-Kurs mit dieser Veranstaltung verknüpft.')?>
+                <? endif ?>
             </td>
         </tr>
     <? else : ?>

@@ -104,6 +104,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
             $this->ilias_interface_config['cache'] = Request::bool('ilias_interface_cache', false);
             $this->ilias_interface_config['allow_change_course'] = Request::get('ilias_interface_allow_change_course');
             $this->ilias_interface_config['allow_add_own_course'] = Request::get('ilias_interface_allow_add_own_course');
+            $this->ilias_interface_config['create_category'] = (boolean)Request::get('ilias_interface_create_category');
+            $this->ilias_interface_config['create_objects'] = (boolean)Request::get('ilias_interface_create_objects');
 
             //store config entry
             Config::get()->store('ILIAS_INTERFACE_BASIC_SETTINGS', $this->ilias_interface_config);
@@ -433,14 +435,14 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             }
                             if (array_key_exists($ilias_role, $this->global_roles)) {
                                 $this->ilias_configs[$index]['additional_roles'][$studip_role][$ilias_role] = [
-                                    'id' => $this->global_roles[$ilias_role]['id'], 
+                                    'id' => $this->global_roles[$ilias_role]['id'],
                                     'name' => $this->global_roles[$ilias_role]['name']];
                                 PageLayout::postSuccess(sprintf(_('ILIAS-Rolle %s wird Stud.IP-Rechtestufe %s zugewiesen.'), $this->global_roles[$ilias_role]['name'], $studip_role));
                             } else {
                                 PageLayout::postError(_('ILIAS-Rolle nicht gefunden.'));
                             }
                         }
-                    } 
+                    }
 
                     //store config entry
                     Config::get()->store('ILIAS_INTERFACE_SETTINGS', $this->ilias_configs);

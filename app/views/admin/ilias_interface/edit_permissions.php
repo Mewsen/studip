@@ -12,17 +12,17 @@
             <?= _('Anlegen von Inhalten') ?>
         </legend>
         <label>
-            <span class="required"><?= _('Rollentemplate zum Erstellen von Lernobjekten') ?></span>
+            <span class="required"><?= _('Name oder ID des Rollen-Templates zum Erstellen von Lernobjekten') ?></span>
             <input type="text" name="ilias_author_role_name" size="50" maxlength="255" value="<?= $ilias_config['author_role_name'] ? htmlReady($ilias_config['author_role_name']) : 'Author' ?>" required>
         </label>
         <label>
             <span class="required"><?= _('Erforderliche Rechtestufe zum Erstellen von Lernobjekten') ?></span>
             <select name="ilias_author_perm">
-            	<option value="autor" <?=$ilias_config['author_perm'] == 'autor' ? 'selected' : ''?>><?=_('autor')?></option>
-            	<option value="tutor" <?=$ilias_config['author_perm'] == 'tutor' ? 'selected' : ''?>><?=_('tutor')?></option>
-            	<option value="dozent" <?=(($ilias_config['author_perm'] == 'dozent') OR ! $ilias_config['author_perm']) ? 'selected' : ''?>><?=_('dozent')?></option>
-            	<option value="admin" <?=$ilias_config['author_perm'] == 'admin' ? 'selected' : ''?>><?=_('admin')?></option>
-            	<option value="root" <?=$ilias_config['author_perm'] == 'root' ? 'selected' : ''?>><?=_('root')?></option>
+                <option value="autor" <?= $ilias_config['author_perm'] == 'autor' ? 'selected' : '' ?>><?= _('autor') ?></option>
+                <option value="tutor" <?= $ilias_config['author_perm'] == 'tutor' ? 'selected' : '' ?>><?= _('tutor') ?></option>
+                <option value="dozent" <?= (($ilias_config['author_perm'] == 'dozent') OR ! $ilias_config['author_perm']) ? 'selected' : '' ?>><?= _('dozent') ?></option>
+                <option value="admin" <?= $ilias_config['author_perm'] == 'admin' ? 'selected' : '' ?>><?= _('admin') ?></option>
+                <option value="root" <?= $ilias_config['author_perm'] == 'root' ? 'selected' : '' ?>><?= _('root') ?></option>
             </select>
         </label>
         <label>
@@ -32,7 +32,7 @@
     </fieldset>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'submit') ?>
-        <?= Studip\Button::createCancel(_('Schließen'), 'cancel', ['data-dialog' => 'close']) ?>
+        <?= Studip\Button::createCancel(_('Abbrechen'), 'cancel', ['data-dialog' => 'close']) ?>
     </footer>
     <fieldset>
         <legend>
@@ -50,7 +50,7 @@
                                 'title' => _('Diese Rollenzuweisung entfernen'),
                                 'data-confirm' => _('Sind Sie sicher, dass Sie diese ILIAS-Rollenzuweisung entfernen wollen?'),
                                 'formaction' => $controller->url_for(
-                                    'admin/ilias_interface/save/'.$ilias_index, 
+                                    'admin/ilias_interface/save/'.$ilias_index,
                                     [
                                         'remove_additional_role' => $role_data['id'],
                                         'studip_role' => $studip_role,

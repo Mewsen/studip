@@ -346,17 +346,29 @@ class ConnectedIlias
         if (!$this->ilias_config['root_category']) {
             // check category
             if (!$this->ilias_config['root_category_name']) {
-                $this->error[] = _("Die ILIAS-Kategorie für Stud.IP-Inhalte wurde noch nicht festgelegt.");
+                $this->error[] = _('Die ILIAS-Kategorie für Stud.IP-Inhalte wurde noch nicht festgelegt.');
                 return false;
             }
-            $category = $this->soap_client->getReferenceByTitle($this->ilias_config['root_category_name'], 'cat');
+
+            // if an ID was entered, simply use it; else get the ID by title/name
+            if ($this->ilias_config['root_category_name'] !== null) {
+                if (is_numeric($this->ilias_config['root_category_name'])) {
+                    $category = $this->ilias_config['root_category_name'];
+                } else {
+                    $category = $this->soap_client->getReferenceByTitle($this->ilias_config['root_category_name'], 'cat');
+                }
+            }
             if (!$category) {
-                $this->error[] = sprintf(_("Die Kategorie \"%s\" wurde nicht gefunden."), $this->ilias_config['root_category_name']);
+                $this->error[] = sprintf(_('Die Kategorie „%s“ wurde nicht gefunden.'), $this->ilias_config['root_category_name']);
                 return false;
             }
             if ($category) {
-                $this->ilias_config['root_category'] = $category;
-
+                // no ID entered manually
+                if ($this->ilias_config['root_category'] == null) {
+                    $this->ilias_config['root_category'] = $category;
+                } else {
+                    $this->ilias_config['root_category_name'] = $category['title'];
+                }
                 // check user data category
                 if (! $this->ilias_config['user_data_category']) {
                     $object_data["title"] = sprintf(_("User-Daten"));
@@ -392,18 +404,27 @@ class ConnectedIlias
             $this->error[] = _("Das Rollen-Template für die persönliche Kategorie wurde noch nicht festgelegt.");
             return false;
         }
-        $role_template = $this->soap_client->getObjectByTitle( $this->ilias_config['author_role_name'], "rolt" );
-        if ($role_template == false) {
-            $this->error[] = sprintf(_("Das Rollen-Template mit dem Namen \"%s\" wurde im System %s nicht gefunden."), htmlReady($this->ilias_config['author_role_name']), htmlReady($this->getName()));
-            return false;
-        }
-        if (is_array($role_template))
-        {
-            $this->ilias_config['author_role'] = $role_template["obj_id"];
-            $this->ilias_config['author_role_name'] = $role_template["title"];
+        // if an ID was entered, simply use it; else check for title
+        if (!is_numeric($this->ilias_config['author_role_name'])) {
+
+            $role_template = $this->soap_client->getObjectByTitle($this->ilias_config['author_role_name'], 'rolt');
+
+            if ($role_template == false) {
+                $this->error[] = sprintf(_('Das Rollen-Template mit dem Namen „%1$s“ wurde im System %2$s nicht gefunden.'), htmlReady($this->ilias_config['author_role_name']), htmlReady($this->getName()));
+                return false;
+            }
+            if (is_array($role_template))
+            {
+                $this->ilias_config['author_role'] = $role_template["obj_id"];
+                $this->storeSettings();
+            }
+            return true;
+        } else {
+            $this->ilias_config['author_role'] = 'object_id_' . $this->ilias_config['author_role_name'];
             $this->storeSettings();
+            return true;
         }
-        return true;
+
     }
 
     /**
@@ -1195,7 +1216,7 @@ class ConnectedIlias
 
 
     /**
-     * check Ilias user entry 
+     * check Ilias user entry
      *
      * checks if ILIAS user exists and removes auth_extern entry otherwise
      * @access public
@@ -1233,7 +1254,8 @@ class ConnectedIlias
     {
         if (! $this->checkIliasUserEntry()) {
             if ($this->newUser()) {
-                PageLayout::postSuccess(_("Neue Verknüpfung zu ILIAS-User angelegt."));
+                PageLayout::postSuccess(sprintf(_('Neues Konto in %s angelegt und mit Stud.IP-Konto verknüpft.'),
+                            htmlReady($this->ilias_config['name'])));
             }
             return false;
         }

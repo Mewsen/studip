@@ -8,8 +8,16 @@
 <form class="default" action="<?= $controller->url_for('admin/ilias_interface/save_interface_settings/') ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
     <label>
-        <span class="required"><?= _('Name des Moduls "ILIAS-Schnittstelle" in Veranstaltungen') ?></span>
+        <span class="required"><?= _('Name des Moduls „ILIAS-Schnittstelle“ in Veranstaltungen') ?></span>
         <input type="text" name="ilias_interface_moduletitle" size="50" maxlength="255" value="<?= htmlReady($ilias_interface_moduletitle) ?>" required>
+    </label>
+    <label>
+        <input type="checkbox" name="ilias_interface_create_category" value="1" <?= !empty($ilias_interface_config['create_category']) ? 'checked' : '' ?>>
+        <span><?= _('Persönliche Kategorie automatisch anlegen') ?></span>
+    </label>
+    <label>
+        <input type="checkbox" name="ilias_interface_create_objects" value="1" <?= !empty($ilias_interface_config['create_objects']) ? 'checked' : '' ?>>
+        <span><?= _('Lernobjekte anlegbar') ?></span>
     </label>
     <label>
         <input type="checkbox" name="ilias_interface_edit_moduletitle" value="1" <?= !empty($ilias_interface_config['edit_moduletitle']) ? 'checked' : '' ?>>
