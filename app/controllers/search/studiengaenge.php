@@ -179,7 +179,7 @@ class Search_StudiengaengeController extends MVVController
                     return $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['public'];
                 };
                 if (count($teil->versionen->filter($filter)) > 0) {
-                    $this->data[$teil->getId()] = $teil->fach->getDisplayName();
+                    $this->data[$teil->getId()] = $teil->getDisplayName();
                 }
             }
             if (!$this->verlauf_url) {
