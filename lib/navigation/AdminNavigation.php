@@ -206,6 +206,8 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation('admissionrules', new Navigation(_('Anmelderegeln'), 'dispatch.php/admission/ruleadministration'));
 
             $navigation->addSubNavigation('oauth2', new Navigation(_('OAuth2'), 'dispatch.php/admin/oauth2/index'));
+            $navigation->addSubNavigation('saml', new Navigation(_('SAML'), 'dispatch.php/admin/saml/index'));
+
 
             $navigation->addSubNavigation('globalsearch', new Navigation(_('Globale Suche'), 'dispatch.php/globalsearch/settings'));
             $navigation->addSubNavigation('cache', new Navigation(_('Cache'), 'dispatch.php/admin/cache/settings'));

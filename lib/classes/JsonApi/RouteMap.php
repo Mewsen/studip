@@ -141,6 +141,7 @@ class RouteMap
         $this->addAuthenticatedStudyAreasRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
+        $this->addAuthenticatedSAMLRoutes($group);
     }
 
     /**
@@ -741,6 +742,12 @@ class RouteMap
         // not a JSON:API route
         $group->get('/component-version-deep/{id}', Routes\Mvv\ComponentVersionsDeep::class);
 
+    }
+
+    private function addAuthenticatedSAMLRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/saml/configuration', Routes\SAML\ConfigurationShow::class);
+        $group->patch('/saml/configuration', Routes\SAML\ConfigurationUpdate::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void
