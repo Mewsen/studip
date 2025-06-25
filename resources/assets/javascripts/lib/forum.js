@@ -122,6 +122,9 @@ const Forum = {
     editCategoryName: function (category_id) {
         var template = STUDIP.Forum.getTemplate('edit_category');
 
+        // remove any other open edit fields before adding a new one
+        jQuery('table[data-category-id=' + category_id + '] span.edit_category').remove();
+
         jQuery('table[data-category-id=' + category_id + '] span.category_name').hide()
             .parent().append(template({
                 category_id : category_id,
