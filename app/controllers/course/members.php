@@ -1824,7 +1824,7 @@ class Course_MembersController extends AuthenticatedController
         ];
 
         $course = Course::findCurrent();
-        $aux     = $course->aux->getCourseData($course, true);
+        $aux = $course->aux ? $course->aux->getCourseData($course, true) : false;
 
         $members = $course->getMembersData($status);
 
