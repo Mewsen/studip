@@ -281,7 +281,6 @@
                                         :userId="userId"
                                         :isImage="true"
                                         :excludedCourseFolderTypes="excludedCourseFolderTypes"
-                                        @select="onSelectFile"
                                     />
                                     <div style="margin-block-start: 1em">{{ $gettext('oder') }}</div>
                                     <button class="button" type="button" @click="showStockImageSelector = true">
@@ -657,8 +656,18 @@ export default {
         onClickRemoveBackgroundImage() {
             this.currentBackgroundImageId = '';
             this.currentBackgroundImageType = '';
+            this.currentBackgroundURL = '';
+            this.currentBackgroundImage = {};
             this.selectedStockImage = null;
         },
+    },
+    watch: {
+        currentBackgroundImageId(newValue) {
+            if (newValue) {
+                this.onSelectFile(newValue);
+            }
+        },
+
     },
 };
 </script>
