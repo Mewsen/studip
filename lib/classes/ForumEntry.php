@@ -685,7 +685,7 @@ class ForumEntry  implements PrivacyObject
                 return ['list' => $postings, 'count' => $stmt_count->fetchColumn()];
 
             case 'latest':
-                return ForumEntry::getEntries($parent_id, ForumEntry::WITH_CHILDS, '', 'DESC', $start);
+                return ForumEntry::getEntries($parent_id, ForumEntry::WITH_CHILDS, 'AND depth > 1', 'DESC', $start);
 
             case 'favorites':
                 $add = "AND ou.topic_id IS NOT NULL";
