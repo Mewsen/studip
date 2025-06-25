@@ -12,7 +12,10 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
     $.widget( "ui.dialog", $.ui.dialog, {
         _allowInteraction: function( event ) {
             return hasParentWhich(isCKBodyWrapper)(event.target)
-                || event.target.closest('.studip-dialog') !== null
+                || (
+                    event.target instanceof Element
+                    && event.target.closest('.studip-dialog') !== null
+                )
                 || this._super( event );
         },
     });
