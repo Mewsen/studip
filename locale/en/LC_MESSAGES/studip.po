@@ -20,16 +20,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-11 10:39+0200\n"
-"PO-Revision-Date: 2024-07-18 14:29+0000\n"
-"Last-Translator: Oliver Oster <oster@zmml.uni-bremen.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-main/en/>\n"
+"PO-Revision-Date: 2025-06-25 19:09+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-6-0/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -3149,9 +3150,9 @@ msgstr ""
 "continue managing it."
 
 #: app/controllers/course/wizard.php:210
-#, fuzzy, php-format
+#, php-format
 msgid "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt."
-msgstr "The studygroup '%s' has been created."
+msgstr "The study/working group %s has been created."
 
 #: app/controllers/course/wizard.php:221
 #, php-format
@@ -4177,14 +4178,13 @@ msgid "Zugang"
 msgstr "Access"
 
 #: app/controllers/course/studygroup.php:232
-#, fuzzy
 msgid ""
 "Die Moderator:innen der Studiengruppe können Ihren Aufnahmewunsch bestätigen "
 "oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die "
 "Gruppe."
 msgstr ""
-"The moderator of the study group may accept or reject your request for "
-"admission. After receiving confirmation of admission you will obtain full "
+"Moderators of the study group may accept or reject your request for "
+"admission. After receiving confirmation of admission you will be given full "
 "access to the group."
 
 #: app/controllers/course/studygroup.php:246 app/views/settings/privacy.php:67
@@ -4196,9 +4196,8 @@ msgstr "Extended settings"
 #: app/controllers/course/studygroup.php:249
 #: app/views/course/wizard/steps/studygroups/index.php:82
 #: app/views/course/wizard/steps/studygroups/index.php:83
-#, fuzzy
 msgid "Ablaufdatum / Löschdatum"
-msgstr "End date"
+msgstr "Expiry date/deletion date"
 
 #: app/controllers/course/studygroup.php:257
 #: app/views/materialien/files/add_dokument.php:126
@@ -4214,13 +4213,12 @@ msgstr "Keywords"
 #: app/controllers/course/studygroup.php:259 app/views/messages/read.php:57
 #: app/views/course/wizard/steps/studygroups/index.php:98
 msgid "Schlagwort hinzufügen"
-msgstr "Add label"
+msgstr "Add keyword"
 
 #: app/controllers/course/studygroup.php:265
 #: app/views/course/wizard/steps/studygroups/index.php:96
-#, fuzzy
 msgid "Schlagwort suchen"
-msgstr "Labels"
+msgstr "Find keyword"
 
 #: app/controllers/course/studygroup.php:327
 msgid "Diese Studiengruppe löschen"
@@ -4231,14 +4229,13 @@ msgid "Bitte Gruppennamen angeben"
 msgstr "Please enter group name"
 
 #: app/controllers/course/studygroup.php:398
-#, fuzzy
 msgid ""
 "Die für die Moderation zuständigen Personen der Studiengruppe können Ihren "
 "Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie "
 "vollen Zugriff auf die Gruppe."
 msgstr ""
-"The moderator of the study group may accept or reject your request for "
-"admission. After receiving confirmation of admission you will obtain full "
+"The moderators of the study group may accept or reject your request for "
+"admission. After receiving confirmation of admission you will be given full "
 "access to the group."
 
 #: app/controllers/course/studygroup.php:409
@@ -4344,15 +4341,15 @@ msgid "Jede Studiengruppe muss mindestens einen Gruppengründer haben!"
 msgstr "Each study group must have at least one group founder!"
 
 #: app/controllers/course/studygroup.php:723
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf "
 "den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " %s"
 msgstr ""
-"%s wants to draw your attention to the study group %s. The link below takes "
-"you directly to the study group.\n"
+"%s wants to draw your attention to the study group %s. Click the link below "
+"to go directly to the study group.\n"
 "%s"
 
 #: app/controllers/course/studygroup.php:725
@@ -4370,20 +4367,17 @@ msgid "%s wurden in die Studiengruppe eingeladen."
 msgstr "%s have been invited to the study group."
 
 #: app/controllers/course/studygroup.php:764
-#, fuzzy
 msgid ""
 "Studiengruppe nicht vorhanden oder Veranstaltung ist keine Studiengruppe"
-msgstr "You are not enroled into the course \"%s\"."
+msgstr "Study group not available or course is not a study group"
 
 #: app/controllers/course/studygroup.php:768
-#, fuzzy
 msgid "Die Studiengruppe konnte nicht gelöscht werden."
-msgstr "Cannot delete partial course of study."
+msgstr "Cannot delete study group."
 
 #: app/controllers/course/studygroup.php:770
-#, fuzzy
 msgid "Die Studiengruppe wurde gelöscht."
-msgstr "Rule deleted."
+msgstr "Study group deleted."
 
 #: app/controllers/course/studygroup.php:794
 msgid "Verwaltung studentischer Arbeitsgruppen"
@@ -4486,10 +4480,10 @@ msgid "Bemerkung konnte nicht erfolgreich gespeichert werden."
 msgstr "Comment not saved."
 
 #: app/controllers/course/members.php:317
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurde eine neue Person hinzugefügt."
 msgid_plural "Es wurden %u neue Personen hinzugefügt."
-msgstr[0] "One new person added."
+msgstr[0] "New person added."
 msgstr[1] "One new person added."
 
 #: app/controllers/course/members.php:327
@@ -14355,14 +14349,13 @@ msgid "Mobile App"
 msgstr "Mobile app"
 
 #: app/controllers/admin/tags.php:14 lib/navigation/AdminNavigation.php:175
-#, fuzzy
 msgid "Schlagwortverwaltung"
-msgstr "Labels"
+msgstr "Keyword management"
 
 #: app/controllers/admin/tags.php:30
-#, fuzzy, php-format
+#, php-format
 msgid "Schlagwort „%s“ bearbeiten"
-msgstr "Edit step"
+msgstr "Edit keyword %s"
 
 #: app/controllers/admin/tags.php:41
 msgid "Schlagwörter sollen keine Großbuchstaben entahlten"
@@ -14375,9 +14368,8 @@ msgid ""
 msgstr ""
 
 #: app/controllers/admin/tags.php:50
-#, fuzzy
 msgid "Dieses Schlagwort ist schon vergeben."
-msgstr "The user name is already in use."
+msgstr "This keyword is already in use."
 
 #: app/controllers/admin/tags.php:55 app/views/event_log/edit.php:24
 #: app/views/admin/cronjobs/tasks/index.php:32
