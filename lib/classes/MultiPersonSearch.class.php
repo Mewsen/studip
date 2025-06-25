@@ -35,7 +35,7 @@ class MultiPersonSearch {
     private $navigationItem = "";
     private $dataDialogStatus = false;
     private $verified = null;
-    private bool $allowRemoval = false;
+    private $allowRemoval = false;
 
     /**
      * restores a MultiPersonSearch object.
