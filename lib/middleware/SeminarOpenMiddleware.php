@@ -125,6 +125,8 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
                     \User::findCurrent()->preferred_language = $_SESSION['forced_language'];
                     \User::findCurrent()->store();
                     $_SESSION['_language'] = $_SESSION['forced_language'];
+                } else {
+                    $_SESSION['_language'] = getUserLanguage($user->id);
                 }
                 $_SESSION['forced_language'] = null;
                 $user_did_login = true;
