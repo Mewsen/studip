@@ -67,7 +67,13 @@ class CronjobSchedule extends SimpleORMap
         ];
         $config['has_many']['logs'] = [
             'class_name' => CronjobLog::class,
-            'on_delete'  => 'delete',
+            'on_delete'  => function (CronjobSchedule $schedule) {
+                // Direct db query to avoid memory issues
+                return DBManager::get()->execute(
+                    'DELETE FROM cronjobs_logs WHERE schedule_id = ?',
+                    [$schedule->id]
+                );
+            },
             'on_store'   => 'store',
         ];
 
