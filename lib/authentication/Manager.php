@@ -27,6 +27,14 @@ use User;
 
 class Manager
 {
+    public const DEFAULT_KEPT_SESSION_VARIABLES = [
+        'auth',
+        '_language',
+        'phpCAS',
+        'contrast',
+        'redirect_after_login',
+    ];
+
     private ?array $auth = [];
 
     public function __construct(
@@ -74,7 +82,7 @@ class Manager
                         Metrics::increment('core.sso_login.succeeded');
 
                         $this->setAuthenticatedUser($user);
-                        sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
+                        sess()->regenerateId(self::DEFAULT_KEPT_SESSION_VARIABLES);
                     } else {
                         PageLayout::postMessage(
                             MessageBox::error($authplugin->plugin_name . ': ' . _('Login fehlgeschlagen'),
