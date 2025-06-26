@@ -184,15 +184,8 @@ class Score
         $tables[] = ['table' => 'user_info'];
         $tables[] = ['table' => 'comments'];
         $tables[] = ['table' => 'file_refs'];
-        $tables[] = ['table' => 'forum_entries'];
         $tables[] = ['table' => 'news'];
         $tables[] = ['table' => 'seminar_user'];
-        $tables[] = [
-            'table' => 'blubber_threads'
-        ];
-        $tables[] = [
-            'table' => 'blubber_comments'
-        ];
         $tables[] = [
             'table'          => 'kategorien',
             'user_id_column' => 'range_id',
@@ -201,21 +194,34 @@ class Score
             'table'          => 'message',
             'user_id_column' => 'autor_id'
         ];
+
         $tables[] = ['table' => 'questionnaires'];
         $tables[] = [
             'table'       => 'questionnaire_answers',
             'date_column' => 'chdate',
         ];
         $tables[] = ['table' => 'questionnaire_anonymous_answers'];
-        $tables[] = [
-            'table'       => 'wiki_pages',
-            'date_column' => 'chdate'
-        ];
-        $tables[] = ['table' => 'wiki_versions'];
+
+        if (PluginEngine::getPlugin(CoreForum::class)->isEnabled()) {
+            $tables[] = ['table' => 'forum_entries'];
+        }
+
+        if (PluginEngine::getPlugin(Blubber::class)->isEnabled()) {
+            $tables[] = ['table' => 'blubber_threads'];
+            $tables[] = ['table' => 'blubber_comments'];
+        }
+
+        if (PluginEngine::getPlugin(CoreWiki::class)->isEnabled()) {
+            $tables[] = [
+                'table'       => 'wiki_pages',
+                'date_column' => 'chdate'
+            ];
+            $tables[] = ['table' => 'wiki_versions'];
+        }
 
         foreach (PluginManager::getInstance()->getPlugins('ScorePlugin') as $plugin) {
             foreach ((array) $plugin->getPluginActivityTables() as $table) {
-                if ($table['table']) {
+                if (!empty($table['table'])) {
                     $tables[] = $table;
                 }
             }
