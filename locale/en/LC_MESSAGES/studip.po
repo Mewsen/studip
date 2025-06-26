@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-11 10:39+0200\n"
-"PO-Revision-Date: 2025-06-26 12:04+0000\n"
+"PO-Revision-Date: 2025-06-27 13:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -5238,15 +5238,13 @@ msgid "Antrag wurde gestellt."
 msgstr "The application has been made."
 
 #: app/controllers/course/connectedstudygroups.php:252
-#, fuzzy
 msgid "Verknüpfung zu der Studiengruppe wurde aufgehoben."
-msgstr "Allocation to institute %s removed."
+msgstr "The link to the study group has been removed."
 
 #: app/controllers/course/connectedstudygroups.php:263
 #: app/controllers/course/connectedcourses.php:183
-#, fuzzy
 msgid "Vorschlag wurde abgewiesen."
-msgstr "Suggestion submitted."
+msgstr "The suggestion has been rejected."
 
 #: app/controllers/course/connectedstudygroups.php:277
 #: app/controllers/course/connectedcourses.php:197
@@ -5255,42 +5253,38 @@ msgid ""
 "Ihr Vorschlag, die Studiengruppe „%1$s“ mit der Veranstaltung „%2$s“ zu "
 "verknüpfen, wurde leider abgewiesen."
 msgstr ""
+"Your suggestion to link the study group %1$s with the course %2$s has been "
+"rejected."
 
 #: app/controllers/course/connectedstudygroups.php:287
 #: app/controllers/course/connectedcourses.php:207
-#, fuzzy
 msgid "Verknüpfungsvorschlag abgewiesen"
-msgstr "Exam prerequisites"
+msgstr "Link suggestion rejected"
 
 #: app/controllers/course/connectedstudygroups.php:296
 #: app/controllers/course/connectedcourses.php:215
-#, fuzzy
 msgid "Vorschlag wurde zurückgezogen."
-msgstr "Suggestion submitted."
+msgstr "Suggestion withdrawn."
 
 #: app/controllers/course/connectedstudygroups.php:308
-#, fuzzy
 msgid "Studiengruppe verknüpfen"
-msgstr "Join study group"
+msgstr "Link study group"
 
 #: app/controllers/course/connectedcourses.php:38
-#, fuzzy
 msgid "Veranstaltung suchen und zur Verknüpfung vorschlagen"
-msgstr "Link course"
+msgstr "Find course and suggest link"
 
 #: app/controllers/course/connectedcourses.php:48 app/controllers/file.php:617
 msgid "Vorschlag wurde eingereicht."
 msgstr "Suggestion submitted."
 
 #: app/controllers/course/connectedcourses.php:172
-#, fuzzy
 msgid "Verknüpfung zu der Veranstaltung wurde aufgehoben."
-msgstr "Your enrollment to the course **%s** has been revoked."
+msgstr "Link to course removed."
 
 #: app/controllers/course/connectedcourses.php:227
-#, fuzzy
 msgid "Verknüpfung vorschlagen"
-msgstr "Suggest sharing"
+msgstr "Suggest link"
 
 #: app/controllers/course/gradebook/students.php:87
 #: app/controllers/calendar/date.php:432
@@ -5611,14 +5605,12 @@ msgid "Bei den folgenden Nutzer/-innen ist ein Fehler aufgetreten"
 msgstr "There has been an error with the following users"
 
 #: app/controllers/course/basicdata.php:707
-#, fuzzy
 msgid "Ein Fehler ist aufgetreten."
-msgstr "Errors occurred."
+msgstr "An error has occurred."
 
 #: app/controllers/course/basicdata.php:712
-#, fuzzy
 msgid "%{name} wurde aus der Veranstaltung ausgetragen."
-msgstr "%s %s were removed from the course."
+msgstr "%{name} has been removed from the course."
 
 #: app/controllers/course/basicdata.php:732
 #: app/controllers/course/basicdata.php:758
@@ -5636,14 +5628,12 @@ msgid "%s konnte nicht entfernt werden."
 msgstr "%s could not be removed."
 
 #: app/controllers/course/basicdata.php:829
-#, fuzzy
 msgid "Die Person konnte nicht nach oben verschoben werden."
-msgstr "%u persons could not be moved."
+msgstr "The person could not be moved upwards."
 
 #: app/controllers/course/basicdata.php:859
-#, fuzzy
 msgid "Die Person konnte nicht nach unten verschoben werden."
-msgstr "%u persons could not be moved."
+msgstr "The person could not be moved downwards."
 
 #: app/controllers/course/basicdata.php:885
 #, php-format
@@ -5734,17 +5724,17 @@ msgstr "You have already been registered for assignment."
 
 #: app/controllers/course/enrolment.php:206
 #: app/controllers/course/enrolment.php:233
-#, fuzzy, php-format
+#, php-format
 msgid "Sie wurden in die Veranstaltung %1$s als %2$s eingetragen."
-msgstr "You have been assigned to course %s as %s."
+msgstr "You have been registered for the course %1$s as %2$s."
 
 #: app/controllers/course/enrolment.php:213
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden auf die Anmeldeliste der Studiengruppe %s eingetragen. Die "
 "Personen, die die Studiengruppe moderieren, können Sie jetzt freischalten."
 msgstr ""
-"You have been entered to the registration list of the study group %s. The "
+"You have been added to the registration list of the study group %s. The "
 "moderators of this study group can now approve your registration."
 
 #: app/controllers/course/enrolment.php:220
@@ -5839,9 +5829,9 @@ msgstr ""
 "because you don't have booking rights for the room!"
 
 #: app/controllers/course/timesrooms.php:402
-#, fuzzy, php-format
+#, php-format
 msgid "Der Termin \"%s\" wurde dupliziert."
-msgstr "The date has been saved."
+msgstr "The date \"%s\" has been duplicated."
 
 #: app/controllers/course/timesrooms.php:430
 #: app/controllers/course/timesrooms.php:676
@@ -5851,15 +5841,15 @@ msgid "Die Zeitangaben sind nicht korrekt. Bitte überprüfen Sie diese!"
 msgstr "Please check dates!"
 
 #: app/controllers/course/timesrooms.php:456
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde aus der Liste der regelmäßigen Termine gelöscht und als "
 "unregelmäßiger Termin eingetragen, da Sie die Zeiten des Termins verändert "
 "haben, sodass dieser Termin nun nicht mehr regelmäßig ist."
 msgstr ""
 "The date %s has been removed from the list of periodic dates and has instead "
-"been inserted as aperiodic date. This is because you have modified the times "
-"of the date so that it is no longer periodic."
+"been added as a non-periodic date. This is because you have modified the "
+"times of the date so that it is no longer periodic."
 
 #: app/controllers/course/timesrooms.php:514
 #: app/controllers/resources/room_request.php:708
@@ -5878,10 +5868,10 @@ msgstr "Go to booking plan"
 
 #: app/controllers/course/timesrooms.php:563
 #: app/controllers/course/timesrooms.php:1153
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s"
-msgstr "The specified room could not be allocated for the date %s!"
+msgstr "The specified room could not be booked for the date %1$s: %2$s"
 
 #: app/controllers/course/timesrooms.php:574
 #: app/controllers/course/timesrooms.php:1161
@@ -5889,12 +5879,14 @@ msgid ""
 "Der Raum %{room_name} wird an dem Termin %{date} bereits durch die "
 "Veranstaltung %{course_name} belegt."
 msgstr ""
+"The room %{room_name} is already occupied by the course %{course_name} on "
+"the date %{date}."
 
 #: app/controllers/course/timesrooms.php:586
 #: app/controllers/course/timesrooms.php:1170
 msgid ""
 "Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt."
-msgstr ""
+msgstr "The room %{room_name} is already occupied on the date %{date}."
 
 #: app/controllers/course/timesrooms.php:600
 #: app/controllers/course/timesrooms.php:1180
@@ -5919,16 +5911,16 @@ msgid ""
 msgstr "To book a room you must first select a room from the search results!"
 
 #: app/controllers/course/timesrooms.php:625
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde geändert, Raumbuchungen zu diesem Termin wurden entfernt "
 "und stattdessen der angegebene Freitext eingetragen!"
 msgstr ""
-"The date %s has been changed and all room bookings were removed and the free "
-"location information has been entered!"
+"The date %s has been changed, all room bookings were removed and the "
+"specified free text has been entered!"
 
 #: app/controllers/course/timesrooms.php:635
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde geändert, freie Ortsangaben und Raumbuchungen an diesem "
 "Termin wurden entfernt."
@@ -5973,22 +5965,20 @@ msgid "Es wurden keine gültigen Termin-IDs übergeben!"
 msgstr "No valid date-IDs have been specified!"
 
 #: app/controllers/course/timesrooms.php:1087
-#, fuzzy
 msgid "Die zuständigen Personen für die Termine wurden geändert."
-msgstr "Person in charge for the dates has been changed."
+msgstr "The persons in charge for the dates have been changed."
 
 #: app/controllers/course/timesrooms.php:1121
 msgid "Zugewiesene Gruppen für die Termine wurden geändert."
 msgstr "Assigned groups for the dates have been changed."
 
 #: app/controllers/course/timesrooms.php:1138
-#, fuzzy
 msgid ""
 "%{date}: Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d "
 "Minuten!"
 msgstr ""
-"The specified preparation time is longer than the allowed maximum of %d "
-"minutes!"
+"%{date}:The specified preparation time is longer than the allowed maximum of "
+"%d minutes!"
 
 #: app/controllers/course/timesrooms.php:1199
 #, php-format
@@ -6021,14 +6011,12 @@ msgid "Die Änderungen wurden gespeichert."
 msgstr "Your changes have been saved."
 
 #: app/controllers/course/timesrooms.php:1229
-#, fuzzy
 msgid "Es konnten nicht alle Termine geändert werden."
-msgstr "Not all permissions could be saved!"
+msgstr "Not all dates could be changed!"
 
 #: app/controllers/course/timesrooms.php:1274
-#, fuzzy
 msgid "Es wurden keine gültigen Termine übergeben!"
-msgstr "No valid date-IDs have been specified!"
+msgstr "No valid dates have been transmitted!"
 
 #: app/controllers/course/timesrooms.php:1284
 msgid "Fehler beim Speichern der Anfrage!"
@@ -6113,9 +6101,9 @@ msgid "Kommentar hinzufügen"
 msgstr "Add comment"
 
 #: app/controllers/course/timesrooms.php:1595
-#, fuzzy, php-format
+#, php-format
 msgid "Der Kommentar des gelöschten Termins %s wurde geändert."
-msgstr "The commentary of the deleted date %s has been changed."
+msgstr "The comment for the deleted date %s has been changed."
 
 #: app/controllers/course/timesrooms.php:1600
 #: app/controllers/course/timesrooms.php:1606
@@ -6149,12 +6137,12 @@ msgid "Zum Ablaufplan"
 msgstr "To Schedule"
 
 #: app/controllers/course/timesrooms.php:1745
-#, fuzzy
 msgid ""
 "Der Termin %{date} wurde gelöscht! Die Buchung für den Raum %{room} wurde "
 "gelöscht."
 msgstr ""
-"The date %s has been deleted! The booking of the room %s has been deleted."
+"The date %{date} has been deleted! The booking of the room %s{room} has been "
+"deleted."
 
 #: app/controllers/course/timesrooms.php:1753
 #, php-format
@@ -6353,9 +6341,8 @@ msgid "Die Mindestanzahl der Sitzplätze beträgt 1!"
 msgstr "The minimum amount of seats is 1!"
 
 #: app/controllers/course/room_requests.php:574
-#, fuzzy
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
-msgstr "The request has been processed and rejected."
+msgstr "The room request has been reopened and is active again."
 
 #: app/controllers/course/room_requests.php:590
 msgid "Die Anfrage wurde gespeichert!"
@@ -6375,14 +6362,12 @@ msgid "Möchten Sie die Raumanfrage \"%s\" löschen?"
 msgstr "Are you sure you want to delete the room request \"%s\"?"
 
 #: app/controllers/course/lti.php:105 lib/modules/LtiToolModule.php:112
-#, fuzzy
 msgid "LTI-Tool hinzufügen"
-msgstr "Add module"
+msgstr "Add LTI tool"
 
 #: app/controllers/course/lti.php:114
-#, fuzzy
 msgid "Tool mittels LTI Deep Linking hinzufügen"
-msgstr "Add test as achievement"
+msgstr "Add tool using LTI Deep Linking"
 
 #: app/controllers/course/lti.php:121
 msgid ""
@@ -6397,74 +6382,69 @@ msgid ""
 "Es sind keine globalen LTI-Tools konfiguriert, die in dieser Veranstaltung "
 "eingebunden werden können."
 msgstr ""
+"There are no global LTI tools configured that can be embedded for this "
+"course."
 
 #: app/controllers/course/lti.php:172
-#, fuzzy
 msgid "Das ausgewählte LTI-Tool kann nicht genutzt werden."
-msgstr "The shared content cannot be found."
+msgstr "The shared LTI tool cannot be used."
 
 #: app/controllers/course/lti.php:181
-#, fuzzy
 msgid "Das LTI-Tool wurde eingebunden."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool has been embedded."
 
 #: app/controllers/course/lti.php:183
-#, fuzzy
 msgid "Das LTI-Tool konnte nicht eingebunden werden."
-msgstr "Plug-in not found."
+msgstr "The LTI tool could not be embedded."
 
 #: app/controllers/course/lti.php:196
-#, fuzzy
 msgid "Die Einbindung eines LTI-Tools ist ungültig."
-msgstr "The specified URL is invalid."
+msgstr "The integration of an LTI tool is invalid."
 
 #: app/controllers/course/lti.php:215
 msgid ""
 "Ohne die aktive Zustimmung zur Weitergabe Ihrer personenbezogenen Daten "
 "können Sie das LTI-Tool nicht nutzen!"
 msgstr ""
+"You cannot use the LTI tool without actively agreeing to the transfer of "
+"your personal data!"
 
 #: app/controllers/course/lti.php:418
 msgid "Der Abschnitt wurde gelöscht."
 msgstr "The section has been deleted."
 
 #: app/controllers/course/lti.php:431 app/views/admin/lti/index.php:82
-#, fuzzy
 msgid "Es sind keine globalen LTI-Tools konfiguriert."
-msgstr "You are not allowed to configure LTI tools."
+msgstr "No global LTI tools have been configured."
 
 #: app/controllers/course/lti.php:445 app/controllers/course/lti.php:479
-#, fuzzy
 msgid "Die Einbindung des LTI-Tools wurde nicht gefunden!"
-msgstr "The property could not be found!"
+msgstr "The LTI tool integration could not be found!"
 
 #: app/controllers/course/lti.php:449 app/controllers/course/lti.php:483
-#, fuzzy
 msgid ""
 "Die Einbindung des LTI-Tools ist nicht für diese Veranstaltung bestimmt."
-msgstr "You have been added to the wait list of this course."
+msgstr "The integration of the LTI tool is not intended for this course."
 
 #: app/controllers/course/lti.php:453 app/controllers/course/lti.php:487
-#, fuzzy
 msgid "Die Einbindung des LTI-Tools ist bereits abgeschlossen."
-msgstr "LTI tool inclusion (version 1.x)"
+msgstr "The integration of the LTI tool is already complete."
 
 #: app/controllers/course/lti.php:460 app/controllers/course/lti.php:499
 #: app/controllers/course/lti.php:582
-#, fuzzy
 msgid "Das ausgewählte LTI-Tool wurde nicht gefunden."
-msgstr "The selected semester could not be found!"
+msgstr "The selected LTI tool could not be found!"
 
 #: app/controllers/course/lti.php:465 app/controllers/course/lti.php:504
 #: app/controllers/course/lti.php:587
 msgid "Das ausgewählte LTI-Tool unterstützt kein Deep Linking."
-msgstr ""
+msgstr "The selected LTI tool does not support deep linking."
 
 #: app/controllers/course/lti.php:534
 msgid ""
 "Bitte tragen Sie die Daten zur Einbindung im LTI-Tool ein bevor sie "
 "fortfahren."
-msgstr ""
+msgstr "Please enter the integration data in the LTI tool before proceeding."
 
 #: app/controllers/course/lti.php:681
 msgid "Der Link wurde als neuer Abschnitt hinzugefügt."
@@ -6886,9 +6866,8 @@ msgid "Termin löschen"
 msgstr "Delete date"
 
 #: app/controllers/calendar/date.php:793
-#, fuzzy
 msgid "Sie sind nicht berechtigt, diesen Termin zu löschen."
-msgstr "You are not allowed to modify this date."
+msgstr "You are not allowed to delete this date."
 
 #: app/controllers/calendar/date.php:820
 #, php-format
@@ -6917,14 +6896,12 @@ msgid "Der Termin konnte nicht gelöscht werden!"
 msgstr "The date could not be deleted!"
 
 #: app/controllers/calendar/date.php:867
-#, fuzzy
 msgid "Der Termin wurde aus Ihrem Kalender gelöscht."
-msgstr "The date has been deleted"
+msgstr "The date has been deleted from your calendar."
 
 #: app/controllers/calendar/date.php:871
-#, fuzzy
 msgid "Der Termin konnte nicht aus Ihrem Kalender gelöscht werden!"
-msgstr "The date could not be deleted!"
+msgstr "The date could not be deleted from your calendar!"
 
 #: app/controllers/calendar/date.php:896
 msgid "Ihre Teilnahmestatus wurde geändert."
@@ -6938,9 +6915,8 @@ msgstr "Timetable"
 
 #: app/controllers/calendar/schedule.php:64
 #: app/views/calendar/schedule/index.php:10
-#, fuzzy
 msgid "Stundenplan %{semester}"
-msgstr "Study semester"
+msgstr "Timetable %{semester}"
 
 #: app/controllers/calendar/schedule.php:84
 #: app/controllers/calendar/schedule.php:360
@@ -15417,7 +15393,7 @@ msgstr "Worksheets without block assignment"
 
 #: app/controllers/vips/sheets.php:1965
 msgid "Aufgabenblätter ohne Courseware-Einbindung"
-msgstr "Worksheets not used in Courseware"
+msgstr "Worksheets without courseware integration"
 
 #: app/controllers/vips/sheets.php:1986
 msgid "Noch nicht gestartete Aufgabenblätter"
@@ -49059,13 +49035,12 @@ msgid "Anbindung von LTI-Tools"
 msgstr "LTI tool inclusion (version 1.x)"
 
 #: lib/modules/LtiToolModule.php:103
-#, fuzzy
 msgid ""
 "Mit diesem Werkzeug können LTI-Tools eingebunden werden, sofern diese LTI in "
 "Version 1.0, 1.1 oder 1.3A unterstützen."
 msgstr ""
-"On this page you can include external applications, if they support the LTI "
-"standard (version 1.x)."
+"You can use this tool to embed external applications, provided they support "
+"LTI version 1.0, 1.1, or 1.3A."
 
 #: lib/modules/LtiToolModule.php:106
 msgid "E-Learning"
@@ -49434,9 +49409,11 @@ msgid ""
 "                            Zugang zu ILIAS;\n"
 "                            Aufgaben- und Test-Erstellung"
 msgstr ""
-"Inclusion of ILIAS learning objects;\n"
-"                            Access to ILIAS;\n"
-"                            Creation of tasks and tests"
+"Integration of ILIAS learning objects;\n"
+"                                                                 Access to "
+"ILIAS;\n"
+"                                                                Creation of "
+"tasks and tests"
 
 #: lib/modules/IliasInterfaceModule.php:171
 msgid ""
