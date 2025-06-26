@@ -206,6 +206,9 @@
                         <option value="to_course">
                             <?= _('In andere Veranstaltung verschieben/kopieren') ?>
                         </option>
+                        <option value="to_accepted_list">
+                            <?= _('Auf die vorläufige Liste verschieben') ?>
+                        </option>
                     <? endif ?>
                         <option value="message"><?=_('Nachricht senden')?></option>
                     </select>

@@ -426,6 +426,18 @@ class Course_MembersController extends AuthenticatedController
         $this->redirect('course/members/index');
     }
 
+    public function execute_multipersonsearch_accepted_action(): void
+    {
+        if (!$this->is_tutor) {
+            throw new AccessDeniedException();
+        }
+
+        $mp = MultiPersonSearch::load('add_accepted' . $this->course_id);
+        $this->addAccepted($mp->getAddedUsers(), Course::find($this->course_id));
+
+        $this->redirect('course/members/index');
+    }
+
     /**
      * Add tutors to a seminar.
      * @throws AccessDeniedException
@@ -880,6 +892,9 @@ class Course_MembersController extends AuthenticatedController
             case 'remove':
                 $target = 'course/members/cancel_subscription/collection/autor';
                 break;
+            case 'to_accepted_list':
+                $target = 'course/members/to_accepted_list';
+            break;
             case 'to_course':
                 $this->redirect('course/members/select_course');
                 return;
@@ -1285,6 +1300,20 @@ class Course_MembersController extends AuthenticatedController
         $this->redirect('course/members/index');
     }
 
+    public function to_accepted_list_action(): void
+    {
+        if (!$this->is_tutor) {
+            throw new AccessDeniedException();
+        }
+
+        if (!empty($this->flash['users'])) {
+            $user_ids = array_keys(array_filter($this->flash['users']));
+
+            $this->addAccepted($user_ids, Course::find($this->course_id));
+        }
+
+        $this->redirect('course/members/index');
+    }
     /**
      * Moves selected users to waitlist, either at the top or at the end.
      * @param $which_end 'first' or 'last': append to top or to end of waitlist?
@@ -1679,6 +1708,14 @@ class Course_MembersController extends AuthenticatedController
                     Icon::create('add')
                 ));
 
+                $ignore = array_merge(
+                    $filtered_members['dozent']->pluck('user_id'),
+                    $filtered_members['tutor']->pluck('user_id'),
+                    $filtered_members['autor']->pluck('user_id'),
+                    $filtered_members['user']->pluck('user_id'),
+                    $filtered_members['awaiting']->pluck('user_id')
+                );
+
                 // add "add person to waitlist" to sidebar
                 if (
                     $course->isAdmissionEnabled()
@@ -1686,19 +1723,28 @@ class Course_MembersController extends AuthenticatedController
                     && !$course->admission_disable_waitlist
                     && (!$course->getFreeSeats() || $course->admission_disable_waitlist_move)
                 ) {
-                    $ignore = array_merge(
-                        $filtered_members['dozent']->pluck('user_id'),
-                        $filtered_members['tutor']->pluck('user_id'),
-                        $filtered_members['autor']->pluck('user_id'),
-                        $filtered_members['user']->pluck('user_id'),
-                        $filtered_members['awaiting']->pluck('user_id')
-                    );
+
                     $mp = MultiPersonSearch::get("add_waitlist{$this->course_id}")
                         ->setLinkText(_('Person(en) auf Warteliste eintragen'))
                         ->setDefaultSelectedUser($ignore)
                         ->setLinkIconPath('')
                         ->setTitle(_('Person(en) auf Warteliste eintragen'))
                         ->setExecuteURL($this->url_for('course/members/execute_multipersonsearch_waitlist'))
+                        ->setSearchObject($searchType)
+                        ->addQuickfilter(_('Mitglieder der Einrichtung'), $membersOfInstitute)
+                        ->setNavigationItem('/course/members/view')
+                        ->render();
+                    $element = LinkElement::fromHTML($mp, Icon::create('add'));
+                    $widget->addElement($element);
+                }
+
+                if ($course->admission_prelim) {
+                    $mp = MultiPersonSearch::get("add_accepted{$course->id}")
+                        ->setLinkText(_('Vorläufig akzeptierte Teilnehmende eintragen'))
+                        ->setDefaultSelectedUser($ignore)
+                        ->setLinkIconPath('')
+                        ->setTitle(_('Vorläufig akzeptierte Teilnehmende eintragen'))
+                        ->setExecuteURL($this->execute_multipersonsearch_acceptedURL())
                         ->setSearchObject($searchType)
                         ->addQuickfilter(_('Mitglieder der Einrichtung'), $membersOfInstitute)
                         ->setNavigationItem('/course/members/view')
@@ -2085,6 +2131,53 @@ class Course_MembersController extends AuthenticatedController
         }
 
         return $msgs;
+    }
+
+    /**
+     * Adds the given users to the accepted list of the current course
+     */
+    private function addAccepted(array $user_ids, Course $course): void
+    {
+        $added = [];
+        $failed = [];
+
+        User::findEachMany(
+            function (User $user) use ($course, &$added, &$failed): void {
+                if (AdmissionApplication::addAcceptedMember($user, $course)) {
+                    $added[] = $user->getFullName();
+                } else {
+                    $failed[] = $user->getFullName();
+                }
+            },
+            $user_ids
+        );
+
+        if (count($added) > 0) {
+            PageLayout::postSuccess(
+                sprintf(
+                    ngettext(
+                        'Es wurde %u neue Person auf die vorläufig akzeptierten Liste hinzugefügt.',
+                        'Es wurden %u neue Personen auf die vorläufig akzeptierten Liste eingetragen.',
+                        count($added)
+                    ),
+                    count($added)
+                ),
+                $added
+            );
+        }
+        if (count($failed) > 0) {
+            PageLayout::postError(
+                sprintf(
+                    ngettext(
+                        '%u Person konnte nicht auf die vorläufig akzeptierten Liste eingetragen werden.',
+                        '%u neue Personen konnten nicht auf die vorläufig akzeptierten Liste eingetragen werden.',
+                        count($failed)
+                    ),
+                    count($failed),
+                ),
+                $failed
+            );
+        }
     }
 
     /**

@@ -176,17 +176,75 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
     }
 
     /**
+     * Adds the given user to the accepted list of the current course and sends a
+     * corresponding message.
+     */
+    public static function addAcceptedMember(User $user, Course $course): bool
+    {
+        $position = (int) DBManager::get()->fetchColumn(
+            "SELECT MAX(`position`) AS maxpos FROM `admission_seminar_user` WHERE `seminar_id`=?",
+            [$course->id]
+        );
+
+        $data = [
+            'seminar_id' => $course->id,
+            'user_id'    => $user->id,
+            'position'   => $position + 1,
+            'status'     => 'accepted'
+        ];
+
+        $member_ship = AdmissionApplication::findOneBySQL(
+            "`user_id` = ? AND `status` = 'awaiting'",
+            [$user->id]
+        );
+
+        if (!$member_ship) {
+            $member_ship = AdmissionApplication::build($data);
+            $updated     = false;
+        } else {
+            $member_ship->setData($data);
+            $updated = true;
+        }
+
+        if ($member_ship->store()) {
+            $course_member = CourseMember::find([$course->id, $user->id]);
+
+            if ($course_member) {
+                $course_member->delete();
+            }
+            $message_title = sprintf(_('Teilnahme an der Veranstaltung %s'), $course->getFullName());
+
+            if ($updated) {
+                $message_body = sprintf(
+                    _('Sie wurden in die Veranstaltung **%s** auf einen vorläufigen Platz hochgestuft. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen.'),
+                    $course->getFullName()
+                );
+            } else {
+                $message_body = sprintf(
+                    _('Sie wurden in die Veranstaltung **%s** auf einen vorläufigen Platz eingetragen. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen.'),
+                    $course->getFullName()
+                );
+            }
+            StudipLog::log('SEM_USER_ADD', $course->id, $user->id, 'accepted', 'Vorläufig akzeptiert');
+
+            messaging::sendSystemMessage($user->id, $message_title, $message_body);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $seminar_id
-     * @param string $send_message
+     * @param bool $send_message
      * @return void
-     * @throws NotificationVetoException
+     * @throws \Studip\Exception
      */
     public static function addMembers(string $seminar_id, bool $send_message = true): void
     {
         $messaging = new messaging;
-
-        //Daten holen / Abfrage ob ueberhaupt begrenzt
-        $course = Course::find($seminar_id, true);
+        $course    = Course::find($seminar_id, true);
 
         if ($course->isAdmissionEnabled()) {
             $sem_preliminary = $course->admission_prelim == 1;
