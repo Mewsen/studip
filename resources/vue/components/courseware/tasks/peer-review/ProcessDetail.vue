@@ -19,7 +19,7 @@
                     <span>{{ processStatus.description }}</span>
                 </div>
                 <div class="cw-peer-review-processes-duration">
-                    <span>{{ $gettext('Bearbeitungszeit:') }}</span>
+                    <span>{{ $gettext('Bearbeitungszeit') }}:</span>
                     <StudipDate :date="startDate" />–<StudipDate :date="endDate" />
                     <div v-if="canChangeDurationOnly">
                         <button class="button" @click="$emit('change-peer-review-process-duration')">

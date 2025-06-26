@@ -351,7 +351,7 @@ class Course_WikiController extends AuthenticatedController
                     $this->render_form($setting_form);
                 } elseif (Request::isPost()) {
                     CSRFProtection::verifyUnsafeRequest();
-                    
+
                     $read_permission = Request::get('read_permission');
                     $write_permission = Request::get('write_permission');
 
@@ -1152,7 +1152,7 @@ class Course_WikiController extends AuthenticatedController
         $document = new ExportPDF();
         $document->SetTitle(_('Wiki: ') . $page->name);
         $document->setHeaderTitle(sprintf(_('Wiki von "%s"'), $this->range->name));
-        $document->setHeaderSubtitle(sprintf(_('Seite: %s'), $page->name));
+        $document->setHeaderSubtitle(sprintf(_('Seite %s'), $page->name));
         $document->addPage();
         $content = $page->content;
         //remove wiki-links:
@@ -1182,7 +1182,7 @@ class Course_WikiController extends AuthenticatedController
                 continue;
             }
 
-            $document->setHeaderSubtitle(sprintf(_('Seite: %s'), $page->name));
+            $document->setHeaderSubtitle(sprintf(_('Seite %s'), $page->name));
             $document->addPage();
 
             // We need the @ in front since TCPDF might throw warning that can lead

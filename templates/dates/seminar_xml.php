@@ -1,8 +1,8 @@
 <?
 $turnus_list = [
-    0 => _("wöchentlich"),
-    1 => _("zweiwöchentlich"),
-    2 => _("dreiwöchentlich")
+    0 => _("Wöchentlich"),
+    1 => _("Zweiwöchentlich"),
+    2 => _("Dreiwöchentlich")
 ];
 
 $output = [];

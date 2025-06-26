@@ -1005,7 +1005,7 @@ class Module_ModuleController extends MVVController
                 $this->lvgruppe = new Lvgruppe();
                 PageLayout::setTitle(_('Neue Lehrveranstaltungsgruppe anlegen'));
                 $success_message = _('Die Lehrveranstaltungsgruppe "%s" wurde angelegt.');
-                $this->headline = _('Neue Lehrveranstaltungsgruppe anlegen.');
+                $this->headline = _('Neue Lehrveranstaltungsgruppe anlegen');
             } else {
                 PageLayout::setTitle(_('Lehrveranstaltungsgruppe bearbeiten'));
                 $success_message = _('Die Lehrveranstaltungsgruppe "%s" wurde geändert.');

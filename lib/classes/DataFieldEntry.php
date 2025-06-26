@@ -546,7 +546,7 @@ abstract class DataFieldEntry
     public function getPermsDescription()
     {
         if ($this->model->view_perms === 'all') {
-            return _('sichtbar für alle');
+            return _('Sichtbar für alle');
         }
         return sprintf(_('sichtbar nur für Sie und alle %s'),
                        $this->prettyPrintViewPerms());

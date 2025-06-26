@@ -18,7 +18,7 @@
                 <div class="formpart">
                     <LabelRequired
                         :id="`peer-review-process-${uid}`"
-                        :label="$gettext('Bearbeitungszeit verlängern bis zum:')"
+                        :label="$gettext('Bearbeitungszeit verlängern bis zum')"
                     />
                     <input
                         :id="`peer-review-process-${uid}`"
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import LabelRequired from '../../../forms/LabelRequired.vue';
 import StudipDate from '../../../StudipDate.vue';
 import StudipDialog from '../../../StudipDialog.vue';
@@ -97,7 +96,7 @@ export default {
         onClose() {
             this.$emit('update:show', false);
         },
-        onConfirm(...args) {
+        onConfirm() {
             this.$emit('update', this.newDuration);
         },
         resetLocalVars() {

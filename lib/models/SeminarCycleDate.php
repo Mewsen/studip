@@ -234,7 +234,7 @@ class SeminarCycleDate extends SimpleORMap
             );
         } else {
             $parameters['weekday']  = getWeekday($this->weekday, false);
-            $cycles = [_('wöchentlich'), _('zweiwöchentlich'), _('dreiwöchentlich')];
+            $cycles = [_('Wöchentlich'), _('Zweiwöchentlich'), _('Dreiwöchentlich')];
             $parameters['interval'] = $cycles[(int)$this->cycle];
             if ($format === 'long') {
                 return studip_interpolate(

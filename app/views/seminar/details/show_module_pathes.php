@@ -7,7 +7,7 @@
 if (count($mvv_pathes)) {
 ?>
 <font size="-1">
-    <b><?= _('Modulzuordnung:') ?></b><br>
+    <b><?= _('Modulzuordnung') ?></b><br>
     <ul style="margin:0; padding-left:2em;">
     <?
     foreach ($mvv_pathes as $mvv_path) {

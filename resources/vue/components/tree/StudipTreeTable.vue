@@ -116,7 +116,7 @@
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
                            :title="$gettext(
-                               'Zur Veranstaltung %{ title }',
+                               'Zur Veranstaltung %{title}',
                                { title: course.attributes.title },
                                true
                            )"
@@ -166,12 +166,11 @@ import AssignLinkWidget from "./AssignLinkWidget.vue";
 import StudipPagination from "../StudipPagination.vue";
 import StudipTreeTableRows from "./StudipTreeTableRows.vue";
 import TreeCourseDetails from "./TreeCourseDetails.vue";
-import StudipIcon from "../StudipIcon.vue";
 
 export default {
     name: 'StudipTreeTable',
     components: {
-        StudipIcon, TreeCourseDetails,
+        TreeCourseDetails,
         StudipTreeTableRows,
         StudipPagination,
         draggable, TreeExportWidget, StudipProgressIndicator, TreeBreadcrumb,

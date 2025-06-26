@@ -57,7 +57,7 @@
                 <? if ($migration->description()): ?>
                     <?= htmlReady($migration->description()) ?>
                 <? else: ?>
-                    <em><?= _('keine Beschreibung vorhanden') ?></em>
+                    <em><?= _('Keine Beschreibung vorhanden') ?></em>
                 <? endif ?>
                 </td>
             </tr>

@@ -134,7 +134,7 @@
                     <p>
                         {{
                             $gettext(
-                                'Entscheiden Sie sich zunächst ob „alle Studierende“ die gleichen Rechte erhalten sollen, oder ob „einzelne Studierende“ oder zuvor erstellte „Gruppen“ unterschiedliche Rechte benötigen.  Die Einstellung „einzelne Studierende“ oder „Gruppen“ bietet sich beispielsweise dann an, wenn Sie eine Courseware von einer Kleingruppe bearbeiten lassen wollen. Anschließend können Sie einstellen, in welchem Zeitraum diese Rechte gelten.'
+                                'Entscheiden Sie sich zunächst ob „alle Studierende“ die gleichen Rechte erhalten sollen, oder ob „einzelne Studierende“ oder zuvor erstellte „Gruppen“ unterschiedliche Rechte benötigen. Die Einstellung „einzelne Studierende“ oder „Gruppen“ bietet sich beispielsweise dann an, wenn Sie eine Courseware von einer Kleingruppe bearbeiten lassen wollen. Anschließend können Sie einstellen, in welchem Zeitraum diese Rechte gelten.'
                             )
                         }}
                     </p>

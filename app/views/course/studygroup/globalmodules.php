@@ -46,7 +46,7 @@ use Studip\Button, Studip\LinkButton;
             <select name="institute" class="nested-select">
             <? if (!Config::getInstance()->STUDYGROUPS_ENABLE):?>
                 <option value="" class="is-placeholder">
-                    <?= _('-- Bitte auswählen --') ?>
+                    -- <?= _('Bitte auswählen') ?> --
                 </option>
             <? endif ?>
             <? foreach ($institutes as $fak_id => $faculty) : ?>

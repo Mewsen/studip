@@ -42,6 +42,6 @@
                 <?= Button::createAccept(_('Übernehmen'), 'store', ['title' => _('Änderungen übernehmen')]) ?>
             <? endif; ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $controller->action_url('index'), ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $controller->action_url('index'), ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>

@@ -39,7 +39,7 @@ $def_lang = reset($def_lang);
             <? if ($stgteilbezeichnung->isI18nField('name_kurz')) : ?>
                 <? if ($stgteilbezeichnung->name_kurz->original() || count($stgteilbezeichnung->name_kurz->toArray())) : ?>
                     <tr>
-                        <th><strong><?= _('Kurzname:') ?></strong></th>
+                        <th><strong><?= _('Kurzname') ?></strong></th>
                     </tr>
                     <? if ($stgteilbezeichnung->name_kurz->original()) : ?>
                         <tr>
@@ -63,7 +63,7 @@ $def_lang = reset($def_lang);
                 <? endif; ?>
             <? else : ?>
                 <tr>
-                    <th><strong><?= _('Kurzname:') ?></strong></th>
+                    <th><strong><?= _('Kurzname') ?></strong></th>
                 </tr>
                 <tr>
                     <td>

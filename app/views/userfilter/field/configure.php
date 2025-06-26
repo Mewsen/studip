@@ -33,7 +33,7 @@
     <div class="conditionfield">
         <select name="field[]" class="conditionfield_class" size="1"
                 onchange="STUDIP.UserFilter.getConditionFieldConfiguration(this, '<?= $controller->configure() ?>')">
-            <option value="">-- <?= _('bitte auswählen') ?> --</option>
+            <option value="">-- <?= _('Bitte auswählen') ?> --</option>
             <?php foreach ($conditionFields as $className => $displayName) : ?>
                 <option value="<?= $className ?>"><?= htmlReady($displayName) ?></option>
             <?php endforeach ?>

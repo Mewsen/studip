@@ -133,7 +133,7 @@ class Institute_BasicdataController extends AuthenticatedController
                              || ($GLOBALS['perm']->is_fak_admin() && Config::get()->INST_FAK_ADMIN_PERMS == 'all'));
         if (!$this->may_delete) {
             //Set infotext for disabled delete-button
-            $reason_txt = _('Löschen nicht möglich.');
+            $reason_txt = _('Löschen nicht möglich');
             if (count($institute->home_courses) > 0) {
                 $reason_txt .= ' ';
                 $reason_txt .= sprintf(ngettext('Es ist eine Veranstaltung zugeordnet.',

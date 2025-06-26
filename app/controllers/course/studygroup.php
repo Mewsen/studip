@@ -141,7 +141,7 @@ class Course_StudygroupController extends AuthenticatedController
             $awidget->addLink($infotext, $infolink ?? '#', $icon, $infolink_options ?? []);
             if ($send_from_search_page) {
                 $awidget->addLink(
-                    _('zurück zur Suche'),
+                    _('Zurück zur Suche'),
                     URLHelper::getURL($send_from_search_page),
                     Icon::create('link-intern')
                 );
@@ -842,7 +842,7 @@ class Course_StudygroupController extends AuthenticatedController
             if (Request::get('institute')) {
                 $cfg->store('STUDYGROUP_DEFAULT_INST', Request::get('institute'));
                 $cfg->store('STUDYGROUP_TERMS', Request::i18n('terms'));
-                PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert!'));
+                PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
             } else {
                 PageLayout::postError(_('Fehler beim Speichern der Einstellung!'));
             }

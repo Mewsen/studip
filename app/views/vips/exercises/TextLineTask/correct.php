@@ -10,7 +10,7 @@
 ?>
 <? if ($solution->id): ?>
     <div class="label-text">
-        <?= _('Antwort:') ?>
+        <?= _('Antwort') ?>
     </div>
 
     <?= htmlReady($response[0]) ?>
@@ -28,7 +28,7 @@
 
 <? if ($show_solution && $exercise->correctAnswers()): ?>
     <div class="label-text">
-        <?= _('Richtige Antworten:') ?>
+        <?= _('Richtige Antworten') ?>:
 
         <span class="correct_item">
             <?= htmlReady(implode(' | ', $exercise->correctAnswers())) ?>

@@ -148,7 +148,7 @@ class Settings_StudiesController extends Settings_SettingsController
             PageLayout::postSuccess(_('Die Zuordnung zu Studiengängen wurde geändert.'));
 
             setTempLanguage($this->user->user_id);
-            $this->postPrivateMessage(_("Die Zuordnung zu Studiengängen wurde geändert!\n"));
+            $this->postPrivateMessage(_('Die Zuordnung zu Studiengängen wurde geändert!') . "\n");
             restoreLanguage();
         }
 
@@ -204,7 +204,7 @@ class Settings_StudiesController extends Settings_SettingsController
             PageLayout::postSuccess(_('Die Zuordnung zu Einrichtungen wurde geändert.'));
 
             setTempLanguage($this->user->user_id);
-            $this->postPrivateMessage(_("Die Zuordnung zu Einrichtungen wurde geändert!\n"));
+            $this->postPrivateMessage(_('Die Zuordnung zu Einrichtungen wurde geändert.') . "\n");
             restoreLanguage();
         }
 

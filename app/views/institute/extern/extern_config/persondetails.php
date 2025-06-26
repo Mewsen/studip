@@ -38,13 +38,13 @@
                 . 'und werden automatisch angepasst.')) ?>
             <select name="startsem">
                 <option value="previous"<?= $page->startsem === 'previous' ? ' selected' : '' ?>>
-                    <?= _('vorheriges') ?>
+                    <?= _('Vorheriges') ?>
                 </option>
                 <option value="current"<?= $page->startsem === 'current' ? ' selected' : '' ?>>
-                    <?= _('aktuelles') ?>
+                    <?= _('Aktuelles') ?>
                 </option>
                 <option value="last"<?= $page->startsem === 'last' ? ' selected' : '' ?>>
-                    <?= _('letztes') ?>
+                    <?= _('Letztes') ?>
                 </option>
                 <? foreach (array_reverse(Semester::getAll()) as $semester) : ?>
                     <option value="<?= $semester->id ?>"<?= $page->startsem === $semester->id ? ' selected' : '' ?>>

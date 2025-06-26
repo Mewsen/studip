@@ -53,7 +53,7 @@
         <?= LinkButton::createCancel(
             _('Abbrechen'),
             $controller->url_for('fachabschluss/kategorien'),
-            ['title' => _('zurück zur Übersicht')]
+            ['title' => _('Zurück zur Übersicht')]
         ) ?>
     </footer>
 </form>

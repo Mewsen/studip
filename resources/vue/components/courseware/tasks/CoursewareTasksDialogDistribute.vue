@@ -609,10 +609,10 @@ export default {
             }
             this.validateTaskSettings();
             if (this.selectedTargetUnit === null) {
-                this.requirements.push({ slot: this.wizardSlots[3], text: this.$gettext(' Ziel-Lernmaterial') });
+                this.requirements.push({ slot: this.wizardSlots[3], text: ' ' + this.$gettext('Ziel-Lernmaterial') });
             }
             if (this.selectedTargetElement === null) {
-                this.requirements.push({ slot: this.wizardSlots[4], text: this.$gettext(' Zielseite') });
+                this.requirements.push({ slot: this.wizardSlots[4], text: ' ' + this.$gettext('Zielseite') });
             }
             if (!this.validateSolvers()) {
                 this.requirements.push({ slot: this.wizardSlots[5], text: this.$gettext('Aufgabe zuweisen') });

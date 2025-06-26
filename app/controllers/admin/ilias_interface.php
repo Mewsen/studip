@@ -110,7 +110,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
             //store config entry
             Config::get()->store('ILIAS_INTERFACE_BASIC_SETTINGS', $this->ilias_interface_config);
             Config::get()->store('ILIAS_INTERFACE_MODULETITLE', Request::get('ilias_interface_moduletitle'));
-            PageLayout::postSuccess(_('Einstellungen wurden gespeichert.'));
+            PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         }
         $this->redirect($this->url_for('admin/ilias_interface'));
     }

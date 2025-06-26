@@ -338,7 +338,7 @@ class Vips_SolutionsController extends AuthenticatedController
 
             $data = [$columns];
 
-            $row = [_('Maximalpunktzahl:')];
+            $row = [_('Maximalpunktzahl')];
 
             foreach ($exercises as $exercise) {
                 $row[] = sprintf('%g', $exercise['points']);

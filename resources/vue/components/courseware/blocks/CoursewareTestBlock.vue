@@ -80,7 +80,7 @@
                                 <span v-bind="attributes"><studip-icon shape="arr_1down" :size="10"/></span>
                             </template>
                             <template #no-options="{}">
-                                {{ $gettext('Es steht keine Auswahl zur Verfügung') }}
+                                {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                             </template>
                             <template #selected-option="{title, icon, start, end}">
                                 <studip-icon :shape="icon" role="info"/>

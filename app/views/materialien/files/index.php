@@ -44,7 +44,7 @@
                         Icon::ROLE_INFO
                     )->asImg([
                         'class' => 'text-bottom',
-                        'title' => $mvv_file->extern_visible?_('sichtbar'):_('unsichtbar')
+                        'title' => $mvv_file->extern_visible ? _('Sichtbar') : _('Unsichtbar')
                     ]) ?>
                 </td>
                 <td class="dont-hide">

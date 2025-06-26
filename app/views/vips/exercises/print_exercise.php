@@ -34,7 +34,7 @@
 
     <? if ($solution && $solution->student_comment != '') : ?>
         <div class="label-text">
-            <?= _('Bemerkungen zur Lösung:') ?>
+            <?= _('Bemerkungen zur Lösung') ?>
         </div>
 
         <?= htmlReady($solution->student_comment, true, true) ?>
@@ -44,7 +44,7 @@
         <? if ($solution): ?>
             <? if ($solution->feedback != ''): ?>
                 <div class="label-text">
-                    <?= _('Anmerkung des Korrektors:') ?>
+                    <?= _('Anmerkung des Korrektors') ?>
                 </div>
 
                 <?= formatReady($solution->feedback) ?>

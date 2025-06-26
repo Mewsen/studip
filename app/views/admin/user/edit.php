@@ -684,7 +684,7 @@ use Studip\Button, Studip\LinkButton;
                 <? else : ?>
                     <section class="col-3">
                         <?= htmlReady($entry->getName()) ?> <?= $text ? tooltipIcon($text) : '' ?><br>
-                        <?= $entry->getDisplayValue() ?: '<span class="empty">'. _('keine Angabe') .'</span>' ?>
+                        <?= $entry->getDisplayValue() ?: '<span class="empty">'. _('Keine Angabe') .'</span>' ?>
                     </section>
                 <? endif ?>
             <? endif ?>

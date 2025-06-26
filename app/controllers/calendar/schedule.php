@@ -451,7 +451,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
         }
         if ($this->entry->delete()) {
-            PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
+            PageLayout::postSuccess(_('Der Termin wurde gelöscht'));
         } else {
             PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
         }

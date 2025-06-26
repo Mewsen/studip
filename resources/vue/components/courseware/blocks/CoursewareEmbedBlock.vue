@@ -29,7 +29,7 @@
                     <div class="cw-block-embed-info">
                         <span class="cw-block-embed-title">{{ oembedData.title }}</span>
                         <span class="cw-block-embed-author-name">
-                            {{ $gettext('erstellt von') }}
+                            {{ $gettext('Erstellt von') }}
                             <a :href="oembedData.author_url" target="_blank">{{ oembedData.author_name }}</a>
                         </span>
                         <span class="cw-block-embed-source">

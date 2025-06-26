@@ -15,7 +15,7 @@
                 <input type="checkbox" data-proxyfor="[name^=courses]">
             </th>
             <th colspan="2">
-                <?= _('Veranstaltungszuordnung:') ?>
+                <?= _('Veranstaltungszuordnung') ?>
             </th>
         </tr>
     </thead>

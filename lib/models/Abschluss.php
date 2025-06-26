@@ -445,19 +445,19 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
             if (!$this->category_assignment) {
                 $ret['category_assignment'] = true;
-                $messages[] = _('Es muss eine Abschluss-Kategorie ausgewählt werden.');
+                $messages[] = _('Es muss eine Abschluss-Kategorie ausgewählt werden');
                 $rejected = true;
             } else {
                 if (!AbschlussKategorie::find($this->category_assignment->kategorie_id)) {
                     $ret['category_assignment'] = true;
-                    $messages[] = _('Unbekannte Abschluss-Kategorie.');
+                    $messages[] = _('Unbekannte Abschluss-Kategorie');
                     $rejected = true;
                 }
             }
             // The name of the Abschluss must be longer than 4 characters
             if (mb_strlen($this->name) < 4) {
                 $ret['name'] = true;
-                $messages[] = _('Der Name des Abschlusses ist zu kurz (mindestens 4 Zeichen).');
+                $messages[] = _('Der Name des Abschlusses ist zu kurz (mindestens 4 Zeichen)');
                 $rejected = true;
             } else {
                 if ($this->isNew()) {

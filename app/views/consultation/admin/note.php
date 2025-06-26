@@ -17,7 +17,7 @@
         </legend>
 
         <label>
-            <?=_('Information') ?> (<?= _('öffentlich einsehbar') ?>)
+            <?=_('Information') ?> (<?= _('Öffentlich einsehbar') ?>)
             <textarea name="note"><?= htmlReady($slot_id ? $block->slots->find($slot_id)->note : $block->note ) ?></textarea>
         </label>
     </fieldset>

@@ -7,13 +7,13 @@
 <table class="mvv-modul-details default nohover">
     <thead>
         <tr>
-            <th><?= _('Modulveran&shy;staltung') ?></th>
-            <th><?= _('Lehrveranstaltungs&shy;form') ?></th>
-            <th><?= _('Veranstaltungs&shy;titel') ?></th>
+            <th><?= _('Modulveranstaltung') ?></th>
+            <th><?= _('Lehrveranstaltungsform') ?></th>
+            <th><?= _('Veranstaltungstitel') ?></th>
             <th><?= _('SWS') ?></th>
             <th><?= _('Workload Präsenz') ?></th>
-            <th><?= _('Workload Vor- / Nach&shy;bereitung') ?></th>
-            <th><?= _('Workload selbstge&shy;staltete Arbeit') ?></th>
+            <th><?= _('Workload Vor- / Nachbereitung') ?></th>
+            <th><?= _('Workload selbstgestaltete Arbeit') ?></th>
             <th><?= _('Workload Prüfung incl. Vorbereitung') ?></th>
             <th><?= _('Workload Summe') ?></th>
         </tr>

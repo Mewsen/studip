@@ -22,7 +22,7 @@
     </div>
 
     <div class="width-1200" style="font-weight: bold; text-align: center;">
-        <?= _('Abgabezeitpunkt:') ?>
+        <?= _('Abgabezeitpunkt') ?>:
         <?= sprintf(_('%s Uhr'), date('H:i', $user_end_time)) ?>
     </div>
 <? endif ?>

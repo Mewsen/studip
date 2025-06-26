@@ -67,7 +67,7 @@ class Course_ArchiveController extends AuthenticatedController
                . '<tr><th>' . _('Untertitel') . ':</th><td>' . $course->untertitel . '</td></tr>'
                //. '<tr><th>' . _("Zeit") . ':</th><td>' . INSERT_ZEIT_HERE . '</td></tr>'
                . '<tr><th>' . _('Semester') . ':</th><td>' . $course->start_semester . '</td></tr>' //TODO: check if start_semester is right
-               . '<tr><th>' . _('Erster Temin') . ':</th><td>' . $course->untertitel . '</td></tr>'
+               . '<tr><th>' . _('Erster Termin') . ':</th><td>' . $course->untertitel . '</td></tr>'
                //. '<tr><th>' . _("Vorbesprechung") . ':</th><td>' . INSERT_VORBESPRECHUNG_HERE . '</td></tr>'
                . '<tr><th>' . _('Ort') . ':</th><td>' . $course->ort . '</td></tr>'
                . '<tr><th>' . _('Typ der Veranstaltung') . ':</th><td>'

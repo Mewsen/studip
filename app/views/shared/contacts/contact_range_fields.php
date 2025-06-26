@@ -6,7 +6,7 @@
         <label>
             <?= _('Ansprechpartnertyp') ?>
             <select style="display: inline-block; max-width: 40em;" name="contact_type"<?= MvvPerm::get('MvvContactRange')->disable('contact_type') ?>>
-                <option value=""<?= empty($contact_range->type) ? ' selected' : '' ?>><?= _('keine Auswahl') ?></option>
+                <option value=""<?= empty($contact_range->type) ? ' selected' : '' ?>><?= _('Keine Auswahl') ?></option>
             <? foreach ($GLOBALS['MVV_CONTACTS']['TYPE']['values'] as $key => $entry) : ?>
                 <option value="<?= $key ?>"<?= $key == $contact_range->type ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
             <? endforeach ?>

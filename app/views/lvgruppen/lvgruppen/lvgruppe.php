@@ -22,6 +22,6 @@
         <? elseif ($perm->havePermWrite()) : ?>
             <?= Button::createAccept(_('Übernehmen'), 'store', ['title' => _('Änderungen übernehmen')]) ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>

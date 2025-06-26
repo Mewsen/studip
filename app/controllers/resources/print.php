@@ -143,7 +143,7 @@ class Resources_PrintController extends AuthenticatedController
             ResourceBooking::TYPE_NORMAL      => _('Buchung'),
             ResourceBooking::TYPE_RESERVATION => _('Reservierung'),
             ResourceBooking::TYPE_LOCK        => _('Sperrbuchung'),
-            ResourceBooking::TYPE_PLANNED     => _('geplante Buchung'),
+            ResourceBooking::TYPE_PLANNED     => _('Geplante Buchung'),
         ];
 
         // Get additional text to print

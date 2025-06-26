@@ -205,7 +205,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                 <input <?= $perm->disable('sws') ?>
                         type="text" name="sws" id="sws" value="<?= htmlReady($modulteil->sws) ?>">
             <? else : ?>
-                <?= $modulteil->sws ? htmlReady($modulteil->sws) : _('keine Angabe') ?>
+                <?= $modulteil->sws ? htmlReady($modulteil->sws) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
 
@@ -265,7 +265,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                         value="<?= htmlReady($modulteil->wl_praesenz) ?>" size="4"
                         maxlength="4">
             <? else : ?>
-                <?= $modulteil->wl_praesenz ? htmlReady($modulteil->wl_praesenz) : _('keine Angabe') ?>
+                <?= $modulteil->wl_praesenz ? htmlReady($modulteil->wl_praesenz) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label for="kommentar_wl_praesenz" style="vertical-align: top;"><?= _('Kommentar') ?>
@@ -285,7 +285,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                         value="<?= htmlReady($modulteil->wl_bereitung) ?>" size="4"
                         maxlength="4">
             <? else : ?>
-                <?= $modulteil->wl_bereitung ? htmlReady($modulteil->wl_bereitung) : _('keine Angabe') ?>
+                <?= $modulteil->wl_bereitung ? htmlReady($modulteil->wl_bereitung) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label><?= _('Kommentar') ?>
@@ -305,7 +305,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                         value="<?= htmlReady($modulteil->wl_selbst) ?>" size="4"
                         maxlength="4">
             <? else : ?>
-                <?= $modulteil->wl_selbst ? htmlReady($modulteil->wl_selbst) : _('keine Angabe') ?>
+                <?= $modulteil->wl_selbst ? htmlReady($modulteil->wl_selbst) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label><?= _('Kommentar') ?>
@@ -323,7 +323,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                 <input <?= $perm->disable('wl_pruef') ?> type="text" name="wl_pruef" id="wl_pruef"
                                                          value="<?= htmlReady($modulteil->wl_pruef) ?>" maxlength="4">
             <? else : ?>
-                <?= $modulteil->wl_pruef ? htmlReady($modulteil->wl_pruef) : _('keine Angabe') ?>
+                <?= $modulteil->wl_pruef ? htmlReady($modulteil->wl_pruef) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label><?= _('Kommentar') ?>
@@ -477,7 +477,7 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
                 ); ?>s
             <? endif; ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>
 <? if (!$def_lang) : ?>

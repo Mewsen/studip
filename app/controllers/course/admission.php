@@ -102,7 +102,7 @@ class Course_AdmissionController extends AuthenticatedController
         } else {
             if ($this->current_courseset->isSeatDistributionEnabled() && !$this->course->admission_turnout) {
                 PageLayout::postInfo(
-                    _('Diese Veranstaltung ist teilnahmebeschränkt, aber die maximale Teilnehmendenanzahl ist nicht gesetzt.')
+                    _('Diese Veranstaltung ist teilnahmebeschränkt, aber die maximale Teilnehmendenzahl ist nicht gesetzt.')
                 );
             }
         }
@@ -254,7 +254,7 @@ class Course_AdmissionController extends AuthenticatedController
     function change_admission_turnout_action()
     {
         CSRFProtection::verifyUnsafeRequest();
-        PageLayout::setTitle(_('Teilnehmendenanzahl ändern'));
+        PageLayout::setTitle(_('Teilnehmendenzahl ändern'));
         $request = null;
         if (Request::submitted('change_admission_turnout')) {
             $request = Request::extract('admission_turnout int, admission_disable_waitlist submitted, admission_disable_waitlist_move submitted, admission_waitlist_max int');
@@ -306,7 +306,7 @@ class Course_AdmissionController extends AuthenticatedController
                 }
 
                 if ($this->course->store()) {
-                    PageLayout::postSuccess(_('Die Teilnehmendenanzahl wurde geändert.'));
+                    PageLayout::postSuccess(_('Die Teilnehmendenzahl wurde geändert.'));
                 }
                 unset($question);
             }

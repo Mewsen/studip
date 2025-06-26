@@ -118,7 +118,7 @@ export default {
                 })
                 .catch(error => {
                     this.messages = [];
-                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten'), error);
+                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten.'), error);
                     this.loading = false;
                 });
         },

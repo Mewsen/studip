@@ -1541,7 +1541,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 PageLayout::postSuccess(_('Änderungen gespeichert!'));
             }
         } else {
-            PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen'));
+            PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen.'));
         }
 
         $this->relocate('course/timesrooms/index');

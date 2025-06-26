@@ -5,7 +5,7 @@
 ?>
 <? if ($solution->feedback_folder && count($solution->feedback_folder->file_refs) > 0): ?>
     <div class="label-text">
-        <?= _('Dateien zur Korrektur:') ?>
+        <?= _('Dateien zur Korrektur') ?>
     </div>
 
     <ul>

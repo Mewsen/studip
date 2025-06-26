@@ -66,7 +66,7 @@ class Link extends BlockType
             _('Verlinkung'),
             _('Webseite'),
             _('extern'),
-            _('weiterleiten'),
+            _('Weiterleiten'),
             _('Material'),
             _('Zusatz'),
             _('Weiterleitung'),

@@ -26,7 +26,7 @@
 
 <? if ($show_solution && $exercise->correctAnswers()) : ?>
     <div>
-        <?= _('Richtige Antworten:') ?>
+        <?= _('Richtige Antworten') ?>:
 
         <span class="correct_item">
             <?= htmlReady(implode(' | ', $exercise->correctAnswers())) ?>

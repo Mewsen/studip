@@ -11,28 +11,28 @@ if ($question['questiondata']['geschlecht']) {
         2 => _('weiblich'),
         3 => _('divers')
     ];
-    $data[] = _('Geschlecht:') . ' ' . $map[$user['geschlecht']];
+    $data[] = _('Geschlecht') . ': ' . $map[$user['geschlecht']];
 }
 if ($question['questiondata']['studienfach']) {
     $studienfach = [];
     foreach ($user->studycourses as $studycourse) {
         $studienfach[] = $studycourse->studycourse_name;
     }
-    $data[] = _('Studienfach:') . ' ' . (implode(', ', $studienfach) ?: _('Kein Eintrag'));
+    $data[] = _('Studienfach') . ': ' . (implode(', ', $studienfach) ?: _('Kein Eintrag'));
 }
 if ($question['questiondata']['studiengang']) {
     $studiengang = [];
     foreach ($user->studycourses as $studycourse) {
         $studiengang[] = $studycourse->studycourse_name . ' ' . $studycourse->degree_name;
     }
-    $data[] = _('Studiengang:') . ' ' . (implode(', ', $studiengang) ?: _('Kein Eintrag'));
+    $data[] = _('Studiengang') . ': ' . (implode(', ', $studiengang) ?: _('Kein Eintrag'));
 }
 if ($question['questiondata']['studiengangfachsemester']) {
     $studiengang = [];
     foreach ($user->studycourses as $studycourse) {
         $studiengang[] = $studycourse->studycourse_name . ' ' . $studycourse->degree_name . ' ' . $studycourse->semester;
     }
-    $data[] = _('Studiengang und Fachsemester:') . ' ' . (implode(', ', $studiengang) ?: _('Kein Eintrag'));
+    $data[] = _('Studiengang und Fachsemester') . ': ' . (implode(', ', $studiengang) ?: _('Kein Eintrag'));
 }
 if (isset($question['questiondata']['datafields'])) {
     foreach ($question['questiondata']['datafields'] as $datafield_id) {

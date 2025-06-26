@@ -21,7 +21,7 @@
             <header>
                 <h1>
                     <a href="<?= URLHelper::getURL("?#{$id}")?>">
-                        <?= $section ?: '- ' . _(' Ohne Kategorie ') . ' -' ?>
+                        <?= $section ?: '- ' . _('Ohne Kategorie') . ' -' ?>
                         (<?= count($configs) ?>)
                     </a>
                 </h1>

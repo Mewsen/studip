@@ -404,7 +404,7 @@ export default {
                 { name: '300%', scale: 3.0 },
             ];
 
-            return defaultValues.concat([{ name: this.$gettext('volle Breite'), scale: this.baseScale }]);
+            return defaultValues.concat([{ name: this.$gettext('Volle Breite'), scale: this.baseScale }]);
         },
     },
     watch: {

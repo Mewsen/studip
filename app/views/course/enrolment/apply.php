@@ -29,7 +29,7 @@
     <? else : ?>
         <input type="hidden" name="courseset_claimed" value="<?= $already_claimed ? 0 : 1 ?>" >
         <div>
-            (<?= sprintf(_("max. Teilnehmendenanzahl: %s / Anzahl der Anmeldungen: %s"), $priocourses->admission_turnout, $num_claiming) ?>)
+            (<?= sprintf(_("max. Teilnehmendenzahl: %s / Anzahl der Anmeldungen: %s"), $priocourses->admission_turnout, $num_claiming) ?>)
         </div>
 
         <div data-dialog-button>

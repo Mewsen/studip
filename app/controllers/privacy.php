@@ -365,7 +365,7 @@ class PrivacyController extends AuthenticatedController
         $zip->close();
 
         if (!file_exists($zipname)) {
-            PageLayout::postError(_('Keine Dateien vorhanden.'));
+            PageLayout::postError(_('Keine Dateien vorhanden'));
             $this->redirect("privacy/index/" . $user_id);
             return;
         }

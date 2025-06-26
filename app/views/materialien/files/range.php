@@ -56,7 +56,7 @@
                         Icon::ROLE_INFO,
                         [
                             'class' => 'text-bottom',
-                            'title' => $mvv_file->extern_visible?_('sichtbar'):_('unsichtbar')
+                            'title' => $mvv_file->extern_visible ? _('Sichtbar') : _('Unsichtbar')
                         ]
                     );
                 ?>

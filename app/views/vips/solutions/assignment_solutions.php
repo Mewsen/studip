@@ -28,7 +28,7 @@
 
             <span class="actions">
                 <label>
-                    <?= _('Anzeigefilter:') ?>
+                    <?= _('Anzeigefilter') ?>
 
                     <select name="view" class="submit-upon-select">
                         <? if ($assignment->type !== 'exam') : ?>

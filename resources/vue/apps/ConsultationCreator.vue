@@ -372,11 +372,11 @@ export default {
         intervals() {
             return [
                 {key: -1, label: this.$gettext('Einzeltermin')},
-                {key: 0,  label: this.$gettext('einmalig (ohne Wiederholung)')},
-                {key: 1, label: this.$gettext('wöchentlich')},
-                {key: 2, label: this.$gettext('zweiwöchentlich')},
-                {key: 3, label: this.$gettext('dreiwöchentlich')},
-                {key: 4, label: this.$gettext('monatlich')},
+                {key: 0,  label: this.$gettext('Einmalig (ohne Wiederholung)')},
+                {key: 1, label: this.$gettext('Wöchentlich')},
+                {key: 2, label: this.$gettext('Zweiwöchentlich')},
+                {key: 3, label: this.$gettext('Dreiwöchentlich')},
+                {key: 4, label: this.$gettext('Monatlich')},
             ];
         },
         isCourse() {

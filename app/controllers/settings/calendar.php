@@ -83,7 +83,7 @@ class Settings_CalendarController extends Settings_SettingsController
             'step_day_group'  => Request::option('cal_step_day_group')
         ]);
 
-        PageLayout::postSuccess(_('Ihre Einstellungen wurden gespeichert'));
+        PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert'));
         if (Request::isDialog()) {
             $this->response->add_header('X-Dialog-Close', '1');
             $this->render_nothing();

@@ -56,7 +56,7 @@ use Studip\Button, Studip\LinkButton;
         <?= LinkButton::createCancel(
             _('Abbrechen'),
             $controller->action_url(''),
-            ['title' => _('zurück zur Übersicht')]
+            ['title' => _('Zurück zur Übersicht')]
         ) ?>
     </footer>
 </form>

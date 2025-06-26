@@ -17,7 +17,7 @@
     ), [
         sprintf(
             '<label><input type="checkbox" name="confirmed" value="1">%s</label>',
-            sprintf(_('Ja, ich möchte wirklich %u Termine anlegen.'), $confirm_many)
+            studip_interpolate(_('Ja, ich möchte wirklich %{ n } Termine erstellen.'), ['n' => $confirm_many])
         ),
     ]) ?>
 <? endif; ?>

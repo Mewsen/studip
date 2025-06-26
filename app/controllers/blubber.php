@@ -463,7 +463,7 @@ class BlubberController extends AuthenticatedController
                 $this->thread->delete();
                 PageLayout::postSuccess(_('Private Konversation gelöscht.'));
             } else {
-                PageLayout::postSuccess(_('Private Konversation verlassen.'));
+                PageLayout::postSuccess(_('Private Konversation verlassen'));
             }
             $this->redirect('blubber/index');
         }

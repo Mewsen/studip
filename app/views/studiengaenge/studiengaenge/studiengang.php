@@ -27,19 +27,19 @@ use Studip\Button, Studip\LinkButton;
 
         <? if ($perm->haveFieldPerm('name', MvvPerm::PERM_WRITE)) : ?>
             <label>
-                <?= _('Fachsuche:') ?>
+                <?= _('Fachsuche') ?>
                 <?= tooltipHtmlIcon(_('Soll der Name des Studiengangs mit dem eines Fachs übereinstimmen, geben Sie den Namen des Fachs ein, und wählen Sie das Fach aus der Liste. Es werden dann automatisch die weiteren Bezeichnungen aus den Daten des Fachs übernommen.')) ?>
                 <?= $search ?>
             </label>
         <? endif ?>
         <label>
-            <?= _('Name:') ?>
+            <?= _('Name') ?>
             <?= MvvI18N::input('name', $studiengang->name, ['maxlength' => '255'])->checkPermission($studiengang) ?>
         </label>
-        <label><?= _('Kurzbezeichnung:') ?>
+        <label><?= _('Kurzbezeichnung') ?>
             <?= MvvI18N::input('name_kurz', $studiengang->name_kurz, ['maxlength' => '50'])->checkPermission($studiengang) ?>
         </label>
-        <label><?= _('Abschlusszuordnung:') ?>
+        <label><?= _('Abschlusszuordnung') ?>
         <? if ($perm->haveFieldPerm('abschluss_id')) : ?>
         <select id="abschluss_id" name="abschluss_id" size="1">
             <option value=""><?= _('-- bitte wählen --') ?></option>
@@ -71,7 +71,7 @@ use Studip\Button, Studip\LinkButton;
         </legend>
 
         <label>
-            <?= _('von Semester:') ?>
+            <?= _('von Semester') ?>
             <? if ($perm->haveFieldPerm('start')) : ?>
                 <select name="start" size="1">
                     <option value=""><?= _('-- Semester wählen --') ?></option>
@@ -88,7 +88,7 @@ use Studip\Button, Studip\LinkButton;
             <? endif ?>
         </label>
         <label>
-            <?= _('bis Semester:') ?>
+            <?= _('bis Semester') ?>
             <? if ($perm->haveFieldPerm('end')) : ?>
                 <select name="end" size="1">
                     <option value=""><?= _('unbegrenzt gültig') ?></option>
@@ -110,7 +110,7 @@ use Studip\Button, Studip\LinkButton;
         </label>
         <div><?= _('Das Endsemester wird nur angegeben, wenn der Studiengang abgeschlossen ist.') ?></div>
         <label>
-            <?= _('Beschlussdatum:') ?>
+            <?= _('Beschlussdatum') ?>
             <? if ($perm->haveFieldPerm('beschlussdatum')) : ?>
                 <input type="text" name="beschlussdatum"
                        value="<?= ($studiengang->beschlussdatum ? strftime('%d.%m.%Y', $studiengang->beschlussdatum) : '') ?>"
@@ -122,7 +122,7 @@ use Studip\Button, Studip\LinkButton;
             <? endif ?>
         </label>
         <label>
-            <?= _('Fassung:') ?>
+            <?= _('Fassung') ?>
             <select <?= $perm->disable('fassung_nr') ?> name="fassung_nr" style="display: inline-block; width: 5em;">
                 <option value="">--</option>
                 <? foreach (range(1, 30) as $nr) : ?>
@@ -373,7 +373,7 @@ use Studip\Button, Studip\LinkButton;
                     ]) ?>
             <? endif ?>
         <? endif ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>
 

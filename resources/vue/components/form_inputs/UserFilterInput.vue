@@ -94,7 +94,7 @@ export default {
                     this.changed();
                 })
                 .catch(error => {
-                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten'), error);
+                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten.'), error);
                 });
         },
         closeFilter() {

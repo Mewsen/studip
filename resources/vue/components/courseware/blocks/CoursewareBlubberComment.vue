@@ -55,7 +55,7 @@
         <studip-dialog
             v-if="showDeleteDialog"
             :title="$gettext('Beitrag löschen')"
-            :question="$gettext('Möchten Sie diesen Beitrag wirklich löschen')"
+            :question="$gettext('Möchten Sie diesen Beitrag wirklich löschen?')"
             height="180"
             width="360"
             @confirm="deleteComment"
@@ -197,7 +197,7 @@ export default {
         this.initCurrent();
     },
     watch: {
-        editActive(edit) {
+        editActive() {
             this.$emit('editing', this.editActive ? this.commentId : null);
         },
         editing(edit) {

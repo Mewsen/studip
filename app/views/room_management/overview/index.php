@@ -107,7 +107,7 @@
                     <th data-sort="text"><?= _('Anfragende Person') ?></th>
                     <th data-sort="htmldata"><?= _('Art') ?></th>
                     <th data-sort="htmldata"><?= _('Dringlichkeit') ?></th>
-                    <th data-sort="num"><?= _('letzte Änderung') ?></th>
+                    <th data-sort="num"><?= _('Letzte Änderung') ?></th>
                     <th><?= _('Aktionen') ?></th>
                 </tr>
             </thead>

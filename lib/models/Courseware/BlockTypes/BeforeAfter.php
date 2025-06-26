@@ -106,7 +106,7 @@ class BeforeAfter extends BlockType
     {
         return [
             _('Bild'), _('Interaktion'), 'jpg', 'png', 'gif', _('Studierende aktivieren'),
-            _('Schieberegler'), _('hochladen'), _('Illustration'), _('Vergleich'), _('vergleichen'),
+            _('Schieberegler'), _('hochladen'), _('Illustration'), _('Vergleich'), _('Vergleichen'),
             _('schieben'), _('bewegen'), _('anfassen'), _('Webbild'), _('Veränderung'), _('Vorher Nachher')
         ];
     }

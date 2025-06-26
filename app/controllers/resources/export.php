@@ -131,7 +131,7 @@ class Resources_ExportController extends AuthenticatedController
             ResourceBooking::TYPE_NORMAL          => _('Buchung'),
             ResourceBooking::TYPE_RESERVATION     => _('Reservierung'),
             ResourceBooking::TYPE_LOCK            => _('Sperrbuchung'),
-            ResourceBooking::TYPE_PLANNED => _('geplante Buchung')
+            ResourceBooking::TYPE_PLANNED => _('Geplante Buchung')
         ];
         $this->selected_booking_types = Request::intArray('bookingtypes') ?:
             Config::get()->RESOURCES_EXPORT_BOOKINGTYPES_DEFAULT;
@@ -239,7 +239,7 @@ class Resources_ExportController extends AuthenticatedController
             ResourceBooking::TYPE_NORMAL          => _('Buchung'),
             ResourceBooking::TYPE_RESERVATION     => _('Reservierung'),
             ResourceBooking::TYPE_LOCK            => _('Sperrbuchung'),
-            ResourceBooking::TYPE_PLANNED => _('geplante Buchung')
+            ResourceBooking::TYPE_PLANNED => _('Geplante Buchung')
         ];
         $this->selected_booking_types = Config::get()->RESOURCES_EXPORT_BOOKINGTYPES_DEFAULT;
     }

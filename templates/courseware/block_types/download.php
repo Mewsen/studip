@@ -6,7 +6,7 @@
         </p>
     <? else: ?>
         <p>
-        <span style="font-style:italic"><?= _('keine Datei ausgewählt'); ?></span>
+        <span style="font-style:italic"><?= _('Keine Datei ausgewählt'); ?></span>
         </p>
     <? endif; ?>
 </div>

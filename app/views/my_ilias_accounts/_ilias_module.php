@@ -45,7 +45,7 @@
 
         <h3><?= _('Beschreibung') ?></h3>
         <article>
-            <?= htmlReady($module->getDescription()?: _('Keine Beschreibung vorhanden.'), true, true) ?>
+            <?= htmlReady($module->getDescription()?: _('Keine Beschreibung vorhanden'), true, true) ?>
         </article>
 
         <? if (!$module->isConnected()) : ?>

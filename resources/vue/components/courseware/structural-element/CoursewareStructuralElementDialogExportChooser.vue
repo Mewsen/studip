@@ -31,7 +31,7 @@
             <courseware-companion-box
                 v-if="!showExportArchiv && !showExportPdf && !showOer"
                 mood="pointing"
-                :msgCompanion="$gettext('Keine Exportoptionen verfügbar.')"
+                :msgCompanion="$gettext('Keine Exportoptionen verfügbar')"
             />
         </template>
     </studip-dialog>

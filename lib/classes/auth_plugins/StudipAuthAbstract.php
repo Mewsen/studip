@@ -190,7 +190,7 @@ class StudipAuthAbstract
                         || ($GLOBALS['ENABLE_ROOT_IP_CHECK'] && $user['perms'] === 'root');
 
                     if ($user->isExpired()) {
-                        $error .= _('Dieses Benutzerkonto ist abgelaufen.<br> Wenden Sie sich bitte an die Administration.') . '<BR>';
+                        $error .= _('Dieses Benutzerkonto ist abgelaufen. Wenden Sie sich bitte an die Administration.') . '<BR>';
                         return ['uid' => false, 'error' => $error];
                     } else if ($locked) {
                         $error .= _('Dieser Benutzer ist gesperrt! Wenden Sie sich bitte an die Administration.') . '<BR>';

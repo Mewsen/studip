@@ -288,7 +288,7 @@ class Admin_DatafieldsController extends AuthenticatedController
         $sidebar->addWidget($actions);
 
         $filter = new SelectWidget(_('Filter'), $this->url_for('admin/datafields'), 'class_filter');
-        $filter->addElement(new SelectElement('', _('alle anzeigen')));
+        $filter->addElement(new SelectElement('', _('Alle anzeigen')));
         $filter->setOptions($this->allclasses, $this->class_filter);
         $sidebar->addWidget($filter);
     }

@@ -6,7 +6,7 @@
             <caption>
                 {{ $gettext('Veranstaltungen') }}
                 <span class="actions" v-if="isLoading">
-                    <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen')">
+                    <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen...')">
                 </span>
                 <span class="actions" v-else-if="coursesCount > 0">
                     {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
@@ -101,7 +101,7 @@
                 </tr>
                 <tr v-if="!coursesLoaded">
                     <td :colspan="colspan">
-                        {{ $gettext('Daten werden geladen ...') }}
+                        {{ $gettext('Daten werden geladen...') }}
                     </td>
                 </tr>
             </tbody>

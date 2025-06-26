@@ -128,7 +128,7 @@ class Admission_CoursesetController extends AuthenticatedController
         }, $this->coursesets));
         if (count($not_distributed_coursesets)) {
             PageLayout::postInfo(
-                _('"Es existieren Anmeldesets, die zum Zeitpunkt der Platzverteilung nicht gelost wurden. Stellen Sie sicher, dass der Cronjob "Losverfahren überprüfen" ausgeführt wird."'),
+                _('Es existieren Anmeldesets, die zum Zeitpunkt der Platzverteilung nicht gelost wurden. Stellen Sie sicher, dass der Cronjob "Losverfahren überprüfen" ausgeführt wird.'),
                 array_unique($not_distributed_coursesets));
         }
     }

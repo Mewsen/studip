@@ -95,7 +95,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         if ($course->store() === false) {
             PageLayout::postError(sprintf(_('Es ist ein Fehler beim Speichern der erweiterten Einstellungen für %s aufgetreten. Kontrollieren Sie bitte:')
                     , htmlReady($course->name)),
-                    [_('Untertitel der Veranstalung'),
+                    [_('Untertitel der Veranstaltung'),
                         _('Art der Veranstaltung'),
                         _('ECTS-Punkte der Veranstaltung'),
                         _('Max. Teilnehmendenzahl der Veranstaltung')]);

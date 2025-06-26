@@ -473,7 +473,7 @@ export default {
                     this.noCoursesFound = this.availableCourses.length === 0;
                 }).catch(error => {
                     this.isSearching = false;
-                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten'), error);
+                    STUDIP.Report.error(this.$gettext('Es ist ein Fehler aufgetreten.'), error);
                 });
             }
         },

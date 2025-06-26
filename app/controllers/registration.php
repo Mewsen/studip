@@ -63,7 +63,7 @@ class RegistrationController extends AuthenticatedController
                         'minlength' =>  '8',
                         'attributes' => ['autocomplete' => 'new-password'],
                         ':pattern'    => "password.replace(/[.*+?^\${}()|[\\]\\\\]/g, '\\\\$&')", //mask special chars
-                        'data-validation_requirement' => _('Passwörter stimmen nicht überein.'),
+                        'data-validation_requirement' => _('Die Passwörter stimmen nicht überein.'),
                         'store' => function() {}
                     ],
                     'title_front' => [
@@ -95,7 +95,7 @@ class RegistrationController extends AuthenticatedController
                         'type' => 'radio',
                         'orientation' => 'horizontal',
                         'options' => [
-                            '0' => _('keine Angabe'),
+                            '0' => _('Keine Angabe'),
                             '1' => _('männlich'),
                             '2' => _('weiblich'),
                             '3' => _('divers'),

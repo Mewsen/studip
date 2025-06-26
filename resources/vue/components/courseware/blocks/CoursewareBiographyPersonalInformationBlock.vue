@@ -122,7 +122,7 @@ export default {
         displayGenderText(gender) {
             switch (gender) {
                 case 'none':
-                    return this.$gettext('keine Angabe');
+                    return this.$gettext('Keine Angabe');
                 case 'male':
                     return this.$gettext('männlich');
                 case 'female':
@@ -136,21 +136,21 @@ export default {
         displayStatusText(status) {
             switch (status) {
                 case 'none':
-                    return this.$gettext('keine Angabe');
+                    return this.$gettext('Keine Angabe');
                 case 'single':
-                    return this.$gettext('ledig');
+                    return this.$gettext('Ledig');
                 case 'married':
-                    return this.$gettext('verheiratet');
+                    return this.$gettext('Verheiratet');
                 case 'widowed':
-                    return this.$gettext('verwitwet');
+                    return this.$gettext('Verwitwet');
                 case 'divorced':
-                    return this.$gettext('geschieden');
+                    return this.$gettext('Geschieden');
                 case 'registered-civil-partnership':
-                    return this.$gettext('eingetragene Lebenspartnerschaft');
+                    return this.$gettext('Eingetragene Lebenspartnerschaft');
                 case 'widowed-civil-partnership':
-                    return this.$gettext('eingetragene Lebenspartnerin/eingetragener Lebenspartner verstorben');
+                    return this.$gettext('Eingetragene Lebenspartnerin/eingetragener Lebenspartner verstorben');
                 case 'annulled-civil-partnership':
-                    return this.$gettext('aufgehobene Lebenspartnerschaft');
+                    return this.$gettext('Aufgehobene Lebenspartnerschaft');
                 default:
                     return '';
             }

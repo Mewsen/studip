@@ -427,7 +427,7 @@ class Admin_ConfigurationController extends AuthenticatedController
                 'section',
                 'get'
             );
-            $widget->addElement(new SelectElement(-1, _('alle anzeigen')));
+            $widget->addElement(new SelectElement(-1, _('Alle anzeigen')));
             $widget->setOptions($options);
             $sidebar->addWidget($widget);
         }

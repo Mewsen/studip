@@ -25,7 +25,7 @@
     <? if (!empty($manifest['description'])): ?>
         <?= htmlReady($manifest['description']) ?>
     <? else: ?>
-        (<?= _('keine Beschreibung vorhanden') ?>)
+        (<?= _('Keine Beschreibung vorhanden') ?>)
     <? endif; ?>
     </dd>
 </dl>

@@ -45,7 +45,7 @@
     <div class="date">
         <span title="<?= strftime('%x %X', $entry->chdate) ?>">
                 <? if ($entry->chdate != $entry->mkdate) : ?>
-                <?= _('Bearbeitet:') ?>
+                <?= _('Bearbeitet') ?>:
                 <? endif; ?>
                 <?= $entry->chdate ? reltime($entry->chdate) : "" ?>
         </span>

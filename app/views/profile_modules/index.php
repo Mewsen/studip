@@ -79,7 +79,7 @@
                 <? endif; ?>
 
                     <p class="longdesc">
-                        <?= htmlReady($item['description']) ?: _('Keine Beschreibung vorhanden.') ?>
+                        <?= htmlReady($item['description']) ?: _('Keine Beschreibung vorhanden') ?>
                     </p>
 
                 <? if ($item['homepage']): ?>

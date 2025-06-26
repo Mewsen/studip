@@ -17,7 +17,10 @@ const MultiPersonSearch = {
     },
 
     dialog: function(name) {
-        var count_template = _.template($gettext('Sie haben <%= count %> Personen ausgewählt'));
+        var count_template = _.template(
+            $gettext('Sie haben %{ count } Personen ausgewählt'),
+            {interpolate: /%\{\s*(.+?)\s*}/g}
+        );
 
         this.name = name;
 
@@ -86,7 +89,8 @@ const MultiPersonSearch = {
         $('#' + this.name + '_resetsearch').addClass('visible');
         const searchterm = $('#' + this.name + '_searchinput').val();
         const not_found_template = _.template(
-            $gettext('Es wurden keine neuen Ergebnisse für "<%= needle %>" gefunden.')
+            $gettext('Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.'),
+            {interpolate: /%\{\s*(.+?)\s*}/g}
         );
         $.getJSON(
             STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search/' + this.name, { s: searchterm }),

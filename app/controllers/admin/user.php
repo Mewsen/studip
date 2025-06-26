@@ -318,10 +318,10 @@ class Admin_UserController extends AuthenticatedController
                     )
                 ) {
                     $details = explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)));
-                    PageLayout::postSuccess(htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht.'), $user->getFullName(), $user->username)), $details);
+                    PageLayout::postSuccess(htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht'), $user->getFullName(), $user->username)), $details);
                 } else {
                     $details = explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)));
-                    PageLayout::postError(htmlReady(sprintf(_('Fehler! "%s (%s)" konnte nicht gelöscht werden.'), $user->getFullName(), $user->username)), $details);
+                    PageLayout::postError(htmlReady(sprintf(_('Fehler! "%s (%s)" konnte nicht gelöscht werden'), $user->getFullName(), $user->username)), $details);
                 }
 
                 //sicherheitsabfrage
@@ -411,7 +411,7 @@ class Admin_UserController extends AuthenticatedController
 
         $this->user_roles = $this->user->getRoles();
 
-        // get ilias account data 
+        // get ilias account data
         if ($GLOBALS['perm']->have_perm('root') && Config::get()->ILIAS_INTERFACE_ENABLE) {
             $this->ilias_list = [];
             foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
@@ -650,7 +650,7 @@ class Admin_UserController extends AuthenticatedController
             $umdetails = explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($um->msg, 0, -1)));
             if (!empty($details)) {
                 $details   = array_reverse(array_merge((array)$details, (array)$umdetails));
-                PageLayout::postInfo(_('Hinweise:'), $details);
+                PageLayout::postInfo(_('Hinweise'), $details);
             }
 
             $this->redirect('admin/user/edit/' . $user_id);

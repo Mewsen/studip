@@ -943,6 +943,6 @@ class Admin_CourseplanningController extends AuthenticatedController
             $this->redirect('admin/courseplanning/weekday/' . $weekday);
         }
 
-        PageLayout::postSuccess(_('Ihre Einstellungen wurden gespeichert.'));
+        PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
     }
 }

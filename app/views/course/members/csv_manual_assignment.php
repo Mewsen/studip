@@ -19,7 +19,7 @@
             <td style="width: 40%"><?=htmlReady(mila($name, 50));?></td>
             <td>
                 <select name="selected_users[]">
-                    <option value="---">--<?=_('bitte auswählen')?> --</option>
+                    <option value="---">-- <?=_('Bitte auswählen')?> --</option>
                     <? foreach ($csv_mult_found as $csv_found) : ?>
                         <? if ($csv_found['is_present']) : ?>
                             <? continue ?>

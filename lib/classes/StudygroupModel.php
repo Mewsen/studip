@@ -620,7 +620,7 @@ class StudygroupModel
                         setTempLanguage($user_data['user_id']);
                         $messaging->insert_message(
                             sprintf(
-                                _('Ihr Vorschlag, die Studiengruppe "%s" mit der Veranstaltung "%s" zu verknüpfen, wurde angenommen.'),
+                                _('Ihr Vorschlag, die Studiengruppe „%1$s“ mit der Veranstaltung „%2$s“ zu verknüpfen, wurde angenommen.'),
                                 $studygroup->getFullname(),
                                 Course::find($course_id)->getFullname()
                             ),

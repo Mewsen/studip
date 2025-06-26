@@ -606,14 +606,14 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                     } else {
                         if ($course) {
                             $time_interval_overlaps[] = sprintf(
-                                    _('Gebucht im Bereich vom %1$s bis zum %2$s durch die Veranstaltung %3$s.'),
+                                    _('Gebucht im Bereich vom %1$s bis %2$s durch die Veranstaltung %3$s.'),
                                     $time_interval['begin']->format('d.m.Y H:i'),
                                     $time_interval['end']->format('d.m.Y H:i'),
                                     $course->getFullName()
                                 );
                         } else {
                             $time_interval_overlaps[] = sprintf(
-                                _('Gebucht im Bereich vom %1$s bis zum %2$s'),
+                                _('Gebucht im Bereich vom %1$s bis %2$s'),
                                 $time_interval['begin']->format('d.m.Y H:i'),
                                 $time_interval['end']->format('d.m.Y H:i')
                             );

@@ -448,7 +448,7 @@ class Course_DatesController extends AuthenticatedController
             } elseif ($singledate instanceof CourseExDate && $singledate->content) {
                 $dates[] = [
                     'date'            => (string) $singledate,
-                    'title'           => _('fällt aus') . ' (' . _('Kommentar:') . ' ' . $singledate->content . ')',
+                    'title'           => _('fällt aus') . ' (' . _('Kommentar') . ': ' . $singledate->content . ')',
                     'description'     => '',
                     'start'           => $singledate->date,
                     'related_persons' => [],

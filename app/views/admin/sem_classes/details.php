@@ -119,8 +119,8 @@
         <label>
             <?= _("Anmeldemodus") ?>
             <select id="admission_prelim_default">
-                <option value="0"<?= $sem_class['admission_prelim_default'] == 0 ? " selected" : "" ?>><?= _("direkter Eintrag") ?></option>
-                <option value="1"<?= $sem_class['admission_prelim_default'] == 1 ? " selected" : "" ?>><?= _("vorläufiger Eintrag") ?></option>
+                <option value="0"<?= $sem_class['admission_prelim_default'] == 0 ? " selected" : "" ?>><?= _("Direkter Eintrag") ?></option>
+                <option value="1"<?= $sem_class['admission_prelim_default'] == 1 ? " selected" : "" ?>><?= _("Vorläufiger Eintrag") ?></option>
             </select>
         </label>
 

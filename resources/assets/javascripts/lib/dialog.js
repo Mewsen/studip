@@ -318,7 +318,7 @@ Dialog.fromURL = function(url, options) {
             }
         })
         .fail((jqXHR, textStatus, errorThrown) => {
-            Report.error($gettext('Es ist ein Fehler aufgetreten'), jqXHR.responseJSON?.message ?? errorThrown);
+            Report.error($gettext('Es ist ein Fehler aufgetreten.'), jqXHR.responseJSON?.message ?? errorThrown);
             Overlay.hide();
 
         });

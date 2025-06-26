@@ -252,7 +252,7 @@ export default {
             if (this.userIsTeacher && this.inCourseContext) {
                 menu.push({
                     id: 5,
-                    label: this.$gettext('Rechte & Sichtbarkeit'),
+                    label: this.$gettext('Rechte und Sichtbarkeit'),
                     icon: 'lock-unlocked',
                     emit: 'showPermissions',
                 });

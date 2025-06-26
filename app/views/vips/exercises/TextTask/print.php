@@ -12,7 +12,7 @@
 <? if ($exercise->getLayout() !== 'none'): ?>
     <? if ($print_correction && $solution->commented_solution != '') : ?>
         <div class="label-text">
-            <?= _('Kommentierte Lösung:') ?>
+            <?= _('Kommentierte Lösung') ?>
         </div>
 
         <?= formatReady($solution->commented_solution) ?>
@@ -60,7 +60,7 @@
     <? endforeach ?>
 
     <div class="label-text">
-        <?= _('Hochgeladene Dateien:') ?>
+        <?= _('Hochgeladene Dateien') ?>
     </div>
 
     <ul>
@@ -76,7 +76,7 @@
 
 <? if ($show_solution && $exercise->task['answers'][0]['text'] != '') : ?>
     <div class="label-text">
-        <?= _('Musterlösung:') ?>
+        <?= _('Musterlösung') ?>
     </div>
 
     <?= formatReady($exercise->task['answers'][0]['text']) ?>

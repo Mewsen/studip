@@ -23,7 +23,7 @@
                     <input type="hidden" name="display" value="points">
 
                     <label>
-                        <?= _('Anzeigefilter:') ?>
+                        <?= _('Anzeigefilter') ?>
 
                         <select name="view" class="submit-upon-select">
                             <option value="">

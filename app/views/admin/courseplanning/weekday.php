@@ -16,7 +16,7 @@ $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
 <div class="calendar-caption">
     <?= $days[$cal_date->format('w')] ?>
     <a href="<?= $controller->link_for('admin/courseplanning/index') ?>">
-        (<?= _('zurück zur Übersicht'); ?>)
+        (<?= _('Zurück zur Übersicht'); ?>)
     </a>
 </div>
 

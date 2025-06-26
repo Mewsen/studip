@@ -97,7 +97,7 @@
                         ) ?>
                         <?= htmlReady($fullname) ?>
                     <? if ($user_id === $autor['user_id'] && $autor['visible'] === 'no') : ?>
-                       (<?= _('unsichtbar') ?>)
+                       (<?= _('Unsichtbar') ?>)
                    <? endif ?>
                     </a>
                 <? if ($is_tutor && $autor['comment']) : ?>

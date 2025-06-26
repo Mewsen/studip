@@ -130,7 +130,7 @@ class OnlineController extends AuthenticatedController
             }
             $GLOBALS['user']->cfg->store('MESSAGING_SETTINGS', $this->settings);
 
-            $message = MessageBox::success(_('Ihre Einstellungen wurden gespeichert.'));
+            $message = MessageBox::success(_('Die Einstellungen wurden gespeichert.'));
         }
 
         PageLayout::postMessage($message);

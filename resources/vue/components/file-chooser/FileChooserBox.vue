@@ -18,7 +18,7 @@
             {{ successMessage }}
         </div>
         <div v-if="contentForbidden" class="messagebox messagebox_error">
-            {{ $gettext('Sie sind nicht berechtigt, den Inhalt dieses Ordners anzuzeigen.') }}
+            {{ $gettext('Sie sind nicht berechtigt, den Inhalt dieses Ordners zu sehen.') }}
         </div>
         <div v-else class="file-chooser-box-content">
             <div v-if="showGrid" class="file-chooser-items">

@@ -164,7 +164,7 @@
         </section>
         <section v-if="repetition_type_value === 'MONTHLY' && repetition_month_type_value === 'dom'">
             <label>
-                {{ $gettext('Wiederholung am einem bestimmten Tag des Monats') }}
+                {{ $gettext('Wiederholung an einem bestimmten Tag des Monats') }}
                 <input type="number" min="1" :name="name + '_dom'"
                        v-model="repetition_dom_value">
             </label>

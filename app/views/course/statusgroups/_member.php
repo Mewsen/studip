@@ -18,7 +18,7 @@
             ]) ?>
             <?= htmlReady($user_fullname) ?>
             <?php if ($GLOBALS['user']->id !== $m->user_id && $m->visible == 'no') : ?>
-                (<?= _('unsichtbar') ?>)
+                (<?= _('Unsichtbar') ?>)
             <?php endif ?>
         </a>
     </td>

@@ -46,7 +46,7 @@ $perm = MvvPerm::get($stgteilbezeichnung)
         <?= LinkButton::createCancel(
             _('Abbrechen'),
             $controller->url_for('studiengaenge/stgteilbezeichnungen/index'),
-            ['title' => _('zurück zur Übersicht')]
+            ['title' => _('Zurück zur Übersicht')]
         ) ?>
     </footer>
 </form>

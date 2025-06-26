@@ -16,7 +16,7 @@
                     <?= _('Raumkategorie') ?>
                     <span class="flex-row">
                         <select name="category_id" <?= !empty($category) ? 'disabled' : '' ?>>
-                        <option value=""><?= _('bitte auswählen') ?></option>
+                        <option value="">-- <?= _('Bitte auswählen') ?> --</option>
                         <? foreach ($available_room_categories as $rc): ?>
                             <option value="<?= htmlReady($rc->id) ?>"
                                 <? if (isset($_SESSION[$request_id]['room_category']) && $_SESSION[$request_id]['room_category'] === $rc->id) echo 'selected'; ?>

@@ -32,18 +32,18 @@
         </label>
 
         <label>
-            <?= _('Beschreibung:') ?>
+            <?= _('Beschreibung') ?>
             <input type="text" id="description" name="description" value="<?= htmlReady($banner['description']) ?>" size="40" maxlength="254">
         </label>
 
         <label>
-            <?= _('Alternativtext:') ?>
+            <?= _('Alternativtext') ?>
 
             <input type="text" id="alttext" name="alttext" value="<?= htmlReady($banner['alttext']) ?>" size="40" maxlength="254">
         </label>
 
         <label>
-            <?= _("Verweis-Typ:") ?>
+            <?= _('Verweis-Typ') ?>
 
             <? if (!$banner->isNew()) : ?>
                 <input name="target_type" type="hidden" size="8" value="<?= $banner['target_type'] ?>">
@@ -58,7 +58,7 @@
         </label>
 
         <label>
-            <?= _("Verweis-Ziel:") ?>
+            <?= _('Verweisziel') ?>
 
             <? if ($banner->isNew()) : ?>
                 <input type="url" class="target-url" name="target" placeholder="<?= _('URL eingeben') ?>" value="<?= htmlReady($this->flash['request']['target']) ?>" style="width: 240px;" maxlen="254">
@@ -93,21 +93,21 @@
         </label>
 
         <label>
-            <?= _('Anzeigen ab:') ?>
+            <?= _('Anzeigen ab') ?>
 
             <input type="text" size="20" name="start_date" id="start_date" value="<?= $banner['startdate'] ?
                 date('d.m.Y H:i', $banner['startdate']) : '' ?>" data-datetime-picker>
         </label>
 
         <label>
-            <?= _('Anzeigen bis:') ?>
+            <?= _('Anzeigen bis') ?>
 
             <input type="text" size="20" name="end_date" id="end_date" value="<?= $banner['enddate'] ?
                 date('d.m.Y H:i', $banner['enddate']) : '' ?>" data-datetime-picker>
         </label>
 
         <label>
-            <?= _('Priorität:') ?>
+            <?= _('Priorität') ?>
 
             <select id="priority" name="priority">
                 <? foreach ($priorities as $key => $label) : ?>
@@ -119,7 +119,7 @@
         </label>
 
         <label>
-            <?= _('Sichtbarkeit:') ?>
+            <?= _('Sichtbarkeit') ?>
 
             <select id="assignedroles" class="nested-select" name="assignedroles[]" multiple>
                 <? if ($assigned) : ?>

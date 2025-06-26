@@ -86,7 +86,7 @@
                     <th <? if ($sort_var === 10) printf('class="sort%s"', $sort_order) ?>>
                         <? $sortorder = $sort_var !== 10 ? 'desc' : ($sort_order === 'asc' ? 'desc' : 'asc') ?>
                         <a href="<?= URLHelper::getLink(sprintf('?sorting=10&sort_order=%s', $sortorder)) ?>">
-                        <?= _('letzte Änderung') ?></a>
+                        <?= _('Letzte Änderung') ?></a>
                     <th class="actions"><?= _('Aktionen') ?></th>
                 </tr>
             </thead>

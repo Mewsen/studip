@@ -9,7 +9,7 @@
                     <div
                         v-else
                         class="cw-ribbon-button cw-ribbon-button-prev-disabled"
-                        :title="$gettext('keine vorherige Seite')"
+                        :title="$gettext('Keine vorherige Seite')"
                     />
                     <router-link v-if="nextElement" :to="'/structural_element/' + nextElement.id">
                         <div class="cw-ribbon-button cw-ribbon-button-next" :title="textRibbon.next" />
@@ -17,7 +17,7 @@
                     <div
                         v-else
                         class="cw-ribbon-button cw-ribbon-button-next-disabled"
-                        :title="$gettext('keine nächste Seite')"
+                        :title="$gettext('Keine nächste Seite')"
                     />
                 </template>
                 <template #breadcrumb-list>

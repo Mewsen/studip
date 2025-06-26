@@ -31,7 +31,7 @@
                         </courseware-tab>
                     </courseware-tabs>
                     <button
-                        :title="$gettext('schließen')"
+                        :title="$gettext('Schließen')"
                         class="cw-tools-hide-button"
                         ref="closeTools"
                         @click="$emit('deactivate')">

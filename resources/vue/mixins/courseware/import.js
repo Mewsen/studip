@@ -107,7 +107,7 @@ export default {
             }
             //compare payload
             let changedData = false;
-            if (root.attributes.title === 'neue Seite') {
+            if (root.attributes.title === 'Neue Seite') {
                 root.attributes.title = element.attributes.title;
                 changedData = true;
             }

@@ -17,7 +17,7 @@
             <input type="hidden" name="user_ids[]" value="<?= htmlReady($user_id) ?>">
         <? endforeach ?>
 
-        <?= _('Einstellungen:') ?>
+        <?= _('Einstellungen') ?>
 
         <? if ($user_ids): ?>
             <label>

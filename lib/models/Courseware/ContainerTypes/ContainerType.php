@@ -231,9 +231,9 @@ abstract class ContainerType
     public function getContainerWidth(): string
     {
         $width = [
-            'full' => _('volle Breite'),
-            'half' => _('halbe Breite'),
-            'half-center' => _('halbe Breite (zentriert)'),
+            'full' => _('Volle Breite'),
+            'half' => _('Halbe Breite'),
+            'half-center' => _('Halbe Breite (zentriert)'),
         ];
         $payload = $this->getPayload();
         if (array_key_exists($payload['colspan'], $width)) {

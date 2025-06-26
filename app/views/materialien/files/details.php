@@ -6,7 +6,7 @@
         </tr>
 
         <tr>
-            <td><?= _('Art der Datei '); ?></td>
+            <td><?= _('Art der Datei'); ?></td>
             <td><?= htmlReady($GLOBALS['MVV_DOCUMENTS']['TYPE']['values'][$doc_type]['name']); ?></td>
         </tr>
 
@@ -49,7 +49,7 @@
 
         <tr>
             <td><?= _('Sichtbarkeit nach außen'); ?></td>
-            <td><?= $doc_extvisible?_('sichtbar'):_('unsichtbar'); ?></td>
+            <td><?= $doc_extvisible ? _('Sichtbar') : _('Unsichtbar'); ?></td>
         </tr>
 
         <tr>

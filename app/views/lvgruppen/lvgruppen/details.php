@@ -134,7 +134,7 @@
             </tr>
             <? endif; ?>
             <tr>
-                <td><strong><?= _('Erstellt am:') ?></strong></td>
+                <td><strong><?= _('Erstellt am') ?></strong></td>
                 <td>
                     <?= strftime('%x, %X', $lvgruppe->mkdate) . ', ' ?>
                     <?= htmlReady(get_fullname($lvgruppe->author_id)) ?>
@@ -143,7 +143,7 @@
             </tr>
             <? if ($lvgruppe->mkdate !== $lvgruppe->chdate) : ?>
             <tr>
-                <td><strong><?= _('Letzte Änderung am:') ?></strong></td>
+                <td><strong><?= _('Letzte Änderung am') ?></strong></td>
                 <td>
                     <?= strftime('%x, %X', $lvgruppe->chdate) . ', ' ?>
                     <?= htmlReady(get_fullname($lvgruppe->editor_id)) ?>

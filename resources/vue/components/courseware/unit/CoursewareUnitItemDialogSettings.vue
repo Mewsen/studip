@@ -110,13 +110,13 @@
                             </span>
                             <select v-model="reminderInterval">
                                 <option value="7">
-                                    {{ $gettext('wöchentlich') }}
+                                    {{ $gettext('Wöchentlich') }}
                                 </option>
                                 <option value="14">
-                                    {{ $gettext('14-tägig') }}
+                                    {{ $gettext('Zweiwöchentlich') }}
                                 </option>
                                 <option value="30">
-                                    {{ $gettext('monatlich') }}
+                                    {{ $gettext('Monatlich') }}
                                 </option>
                                 <option value="90">
                                     {{ $gettext('vierteljährlich') }}
@@ -168,7 +168,7 @@
                             </span>
                             <select v-model="resetProgressInterval">
                                 <option value="14">
-                                    {{ $gettext('14-tägig') }}
+                                    {{ $gettext('Zweiwöchentlich') }}
                                 </option>
                                 <option value="30">
                                     {{ $gettext('monatlich') }}
@@ -205,7 +205,7 @@
                     </template>
                 </fieldset>
             </form>
-            <studip-progress-indicator v-else :description="$gettext('Lade Einstellungen…')"/>
+            <studip-progress-indicator v-else :description="$gettext('Lade Einstellungen')"/>
 
         </template>
     </studip-dialog>

@@ -1055,7 +1055,7 @@ class Resources_AdminController extends AuthenticatedController
             0 => _('Buchung'),
             1 => _('Reservierung'),
             2 => _('Sperrbuchung'),
-            3 => _('geplante Buchung')
+            3 => _('Geplante Buchung')
         ];
 
         if (Request::submitted('save')) {

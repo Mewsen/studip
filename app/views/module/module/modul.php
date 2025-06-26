@@ -49,7 +49,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <input <?= $perm->disable('code') ?> type="text" name="code" id="code"
                                                      value="<?= htmlReady($modul->code) ?>" maxlength="250">
             <? else : ?>
-                <?= $modul->code ? htmlReady($modul->code) : _('keine Angabe') ?>
+                <?= $modul->code ? htmlReady($modul->code) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label id="mvv-field-modul-quelle"><?= _('Quelle') ?>
@@ -93,7 +93,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                             <? if ($perm->haveFieldPerm('modul_variante', MvvPerm::PERM_WRITE)) : ?>
                                 <div class="mvv-item-list-buttons">
                                     <a href="#"
-                                       class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _(' entfernen')])->asImg(); ?></a>
+                                       class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asImg(); ?></a>
                                 </div>
                             <? endif; ?>
                             <input type="hidden" name="modul_item" value="<?= $modul->modul_variante->id ?>">
@@ -122,7 +122,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
         </legend>
         <? if ($def_lang) : ?>
             <label id="mvv-field-modul-modul_start">
-                <?= _('von Semester:') ?>
+                <?= _('von Semester') ?>
                 <? if ($perm->haveFieldPerm('start')) : ?>
                     <select name="start" size="1">
                         <option value=""><?= _('-- Semester wählen --') ?></option>
@@ -139,7 +139,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <? endif; ?>
             </label>
             <label id="mvv-field-modul-modul_end">
-                <?= _('bis Semester:') ?>
+                <?= _('bis Semester') ?>
                 <? if ($perm->haveFieldPerm('end')) : ?>
                     <select name="end" size="1">
                         <option value=""><?= _('unbegrenzt gültig') ?></option>
@@ -161,7 +161,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
             </label>
             <div><?= _('Das Endsemester wird nur angegeben, wenn das Modul abgeschlossen ist.') ?></div>
             <label id="mvv-field-modul-beschlussdatum">
-                <?= _('Beschlussdatum:') ?>
+                <?= _('Beschlussdatum') ?>
                 <? if ($perm->haveFieldPerm('beschlussdatum')) : ?>
                     <input type="text" name="beschlussdatum"
                            value="<?= $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : '' ?>"
@@ -172,7 +172,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                            value="<?= $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : '' ?>">
                 <? endif; ?>
             </label>
-            <label for="mvv-field-modul-fassung_nr"><?= _('Fassung:') ?>
+            <label for="mvv-field-modul-fassung_nr"><?= _('Fassung') ?>
                 <section class="hgroup size-m">
                     <select<?= $perm->haveFieldPerm('fassung_nr') ? '' : ' disabled' ?> name="fassung_nr"
                                                                                         id="mvv-field-modul-fassung_nr">
@@ -199,7 +199,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 </section>
             </label>
             <label id="mvv-field-modul-version">
-                <?= _('Version:') ?>
+                <?= _('Version') ?>
                 <input <?= $perm->disable("version") ?>
                         type="text" name="version" id="version" value="<?= htmlReady($modul->version) ?>"
                         maxlength="120">
@@ -298,7 +298,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                         </div>
                         <div class="mvv-item-list-buttons">
                             <a href="#"
-                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _(' entfernen')])->asImg(); ?></a>
+                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asImg(); ?></a>
                         </div>
                         <input type="hidden" name="responsible_item"
                                value="<?= $modul->responsible_institute->institut_id ?>">
@@ -423,7 +423,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
         <? if ($def_lang) : ?>
             <input <?= $perm->disable('dauer') ?> type="text" name="dauer" id="dauer" value="<?= htmlReady($modul->dauer) ?>" maxlength="50">
         <? else : ?>
-            <?= $modul->dauer ? htmlReady($modul->dauer) : _('keine Angabe') ?>
+            <?= $modul->dauer ? htmlReady($modul->dauer) : _('Keine Angabe') ?>
         <? endif; ?>
         </label>
         <label id="mvv-field-modul-turnus"><?= _('Turnus/Angebotsrhythmus') ?>
@@ -460,7 +460,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
         <? if ($def_lang) : ?>
             <input <?= $perm->disable('kp') ?> type="text" name="kp" id="kp" value="<?= htmlReady($modul->kp) ?>" maxlength="10">
         <? else : ?>
-            <?= $modul->kp ? htmlReady($modul->kp) : _('keine Angabe') ?>
+            <?= $modul->kp ? htmlReady($modul->kp) : _('Keine Angabe') ?>
         <? endif; ?>
         </label>
     </fieldset>
@@ -557,7 +557,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <input <?= $perm->disable('wl_selbst') ?> type="text" name="wl_selbst" id="wl_selbst"
                                                           value="<?= htmlReady($modul->wl_selbst) ?>" maxlength="4">
             <? else : ?>
-                <?= $modul->wl_selbst ? htmlReady($modul->wl_selbst) : _('keine Angabe') ?>
+                <?= $modul->wl_selbst ? htmlReady($modul->wl_selbst) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label id="mvv-field-modul-kommentar_wl_selbst"><?= _('Kommentar') ?>
@@ -575,7 +575,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <input <?= $perm->disable('wl_pruef') ?> type="text" name="wl_pruef" id="wl_pruef"
                                                          value="<?= htmlReady($modul->wl_pruef) ?>" maxlength="4">
             <? else : ?>
-                <?= $modul->wl_pruef ? htmlReady($modul->wl_pruef) : _('keine Angabe') ?>
+                <?= $modul->wl_pruef ? htmlReady($modul->wl_pruef) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label id="mvv-field-modul-kommentar_wl_pruef"><?= _('Kommentar') ?>
@@ -656,7 +656,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <input <?= $perm->disable('faktor_note') ?> type="text" name="faktor_note" id="faktor_note"
                                                             value="<?= htmlReady($modul->faktor_note) ?>" maxlength="4">
             <? else : ?>
-                <?= $modul->faktor_note ? htmlReady($modul->faktor_note) : _('keine Angabe') ?>
+                <?= $modul->faktor_note ? htmlReady($modul->faktor_note) : _('Keine Angabe') ?>
             <? endif; ?>
         </label>
         <label id="mvv-field-modul-ersatztext"><?= _('Ersatztext') ?>
@@ -714,7 +714,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                         'formaction' => $controller->action_url('delete_modul_deskriptor', $deskriptor->id, $display_language)]); ?>
             <? endif; ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>
 <? if (!$def_lang) : ?>

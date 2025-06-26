@@ -57,7 +57,7 @@
                                         <span
                                             v-else
                                             :title="$gettext(
-                                                'Fortschritt: %{progress} %',
+                                                'Fortschritt: %{progress}%',
                                                 {progress: elementProgress}
                                             )"
                                         >
@@ -888,7 +888,7 @@ export default {
                         if (!this.isTask && !this.inContent && !this.isRoot) {
                             menu.push({
                                 id: 6,
-                                label: this.$gettext('Rechte & Sichtbarkeit'),
+                                label: this.$gettext('Rechte und Sichtbarkeit'),
                                 icon: 'lock-unlocked',
                                 emit: 'showPermissions'
                             });
@@ -1444,7 +1444,7 @@ export default {
                     include: 'user',
                 },
             }).catch((error) => {
-                console.error("Could not load feedback");
+                console.error("Could not load feedback", error);
             });
         },
         keyHandler(e, containerId) {

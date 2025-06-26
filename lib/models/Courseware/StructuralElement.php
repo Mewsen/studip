@@ -766,7 +766,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
             'range_type' => $rangeType,
             'owner_id' => $user->id,
             'editor_id' => $user->id,
-            'title' => _('neue Seite'),
+            'title' => _('Neue Seite'),
             'commentable' => 0
         ]);
 
@@ -998,7 +998,7 @@ SQL;
             $target->image_type = $this->image_type;
         }
 
-        if ($target->title === 'neue Seite' || $target->title === 'New page') {
+        if ($target->title === 'Neue Seite' || $target->title === 'New page') {
             $target->title = $this->title;
         }
 

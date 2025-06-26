@@ -71,7 +71,7 @@ function delete_news($delete_news_array)
                             FALSE,
                             '1',
                             FALSE,
-                            _('Systemnachricht:') . ' ' . _('Ankündigung geändert')
+                            _('Systemnachricht') . ': ' . _('Ankündigung geändert')
                         );
                         restoreLanguage();
                     }

@@ -16,21 +16,21 @@
                 <? if (mb_strlen(($searchResult['fileRef']->name))) : ?>
                     <?= $controller->markPhrase($searchResult['fileRef']->name, $query->getQuery()) ?>
                 <? else : ?>
-                    <i><?= _('kein Titel') ?></i>
+                    <i><?= _('Kein Titel') ?></i>
                 <? endif ?>
 
                 <? if ($searchResult['fileRef']->terms_of_use &&
                        $searchResult['fileRef']->terms_of_use->download_condition > 0) : ?>
-                    <?= Icon::create('lock-locked', ICON::ROLE_INACTIVE)->asImg([
+                    <?= Icon::create('lock-locked', Icon::ROLE_INACTIVE)->asImg([
                         'class' => 'text-top',
                         'title' => _('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')]) ?>
                 <? endif; ?>
             </a>
         <? else : ?>
-            <? if (mb_strlen(($searchResult['fileRef']->name))) : ?>
+            <? if (mb_strlen($searchResult['fileRef']->name)) : ?>
                 <?= $controller->markPhrase($searchResult['fileRef']->name, $query->getQuery()) ?>
             <? else : ?>
-                <i><?= _('kein Titel') ?></i>
+                <i><?= _('Kein Titel') ?></i>
             <? endif ?>
 
             <? if ($searchResult['fileRef']->terms_of_use &&

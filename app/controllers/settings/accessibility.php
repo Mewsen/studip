@@ -37,7 +37,7 @@ class Settings_AccessibilityController extends Settings_SettingsController
 
         $this->config->store('USER_HIGH_CONTRAST', Request::bool('enable_high_contrast'));
 
-        PageLayout::postSuccess(_('Ihre Einstellungen wurden gespeichert.'));
+        PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         $this->redirect('settings/accessibility');
     }
 

@@ -20,7 +20,7 @@ return new class extends Migration {
               'global',
               UNIX_TIMESTAMP(),
               UNIX_TIMESTAMP(),
-              'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenanzahl pro Termin ein.'
+              'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenzahl pro Termin ein.'
              )"
         );
         $db->exec("ALTER TABLE `termine` ADD `number_of_participants` SMALLINT NULL DEFAULT NULL");

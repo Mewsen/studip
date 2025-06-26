@@ -23,7 +23,7 @@
             <input type="checkbox" id="personaldocuments" name="personaldocuments"
                    value="1" checked>
             <?= _('Dokumente löschen?') ?>
-            <?= tooltipHtmlIcon(_('persönlicher Dateibereich')) ?>
+            <?= tooltipHtmlIcon(_('Persönlicher Dateibereich')) ?>
         </label>
 
         <label>

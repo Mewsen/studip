@@ -68,7 +68,7 @@
                 <span><?= _('Stud.IP-Rechtestufe') ?></span>
                 <label>
                 <select name="add_studip_role" aria-label="<?= _('Stud.IP-Rechtestufe')?>">
-                    <option><?=_('-- Bitte auswählen --')?></option>
+                    <option>-- <?= _('Bitte auswählen')?> --</option>
                     <? foreach ($studip_roles as $studip_role) : ?>
                         <option><?= htmlReady($studip_role) ?></option>
                     <? endforeach ?>
@@ -77,7 +77,7 @@
                 <span><?= _('ILIAS-Rolle') ?></span>
                 <label>
                     <select name="add_ilias_role" aria-label="<?= _('ILIAS-Rolle')?>">
-                    <option><?=_('-- Bitte auswählen --')?></option>
+                    <option>-- <?=_('Bitte auswählen') ?> --</option>
                     <? foreach ($global_roles as $role_data) : ?>
                         <option value="<?= htmlReady($role_data['id']) ?>">
                             <?= htmlReady(sprintf(_('%s (ID %s)'), $role_data['name'], $role_data['id'])) ?>

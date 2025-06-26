@@ -73,9 +73,9 @@
                 <td>
                     <strong>
                     <? if ($course->isAdmissionEnabled()) : ?>
-                        <?= _('maximale Teilnehmendenanzahl') ?>
+                        <?= _('maximale Teilnehmendenzahl') ?>
                     <? else : ?>
-                        <?= _('erwartete Teilnehmendenanzahl') ?>
+                        <?= _('erwartete Teilnehmendenzahl') ?>
                     <? endif ?>
                     </strong>
                 </td>
@@ -91,7 +91,7 @@
             </tr>
         <? endif ?>
             <tr>
-                <td><strong><?= _("Heimat-Einrichtung") ?></strong></td>
+                <td><strong><?= _("Heimateinrichtung") ?></strong></td>
                 <td>
                     <a href="<?= URLHelper::getScriptLink("dispatch.php/institute/overview", ['auswahl' => $course->institut_id]) ?>">
                         <?= htmlReady($course->home_institut->name) ?>
@@ -101,7 +101,7 @@
         <? if ($course->institutes->count() > 1): ?>
             <tr>
                 <td>
-                    <strong><?= _('beteiligte Einrichtungen') ?></strong>
+                    <strong><?= _('Beteiligte Einrichtungen') ?></strong>
                 </td>
                 <td>
                     <?= join(', ', $course->institutes
@@ -499,7 +499,7 @@ if (!empty($mvv_tree)) : ?>
 <? if (!empty($course_domains)): ?>
     <article class="studip">
         <header>
-            <h1><?= _("Zugelassenene Nutzerdomänen:") ?></h1>
+            <h1><?= _("Zugelassenene Nutzerdomänen") ?></h1>
         </header>
         <ul>
             <? foreach ($course_domains as $domain): ?>

@@ -591,7 +591,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             // once stored, we can delete the session data for this request
             $this->clearSession();
 
-            PageLayout::postSuccess(_('Die Anfrage wurde gespeichert!'));
+            PageLayout::postSuccess(_('Die Anfrage wurde gespeichert.'));
             $this->relocate('course/timesrooms/');
         }
     }

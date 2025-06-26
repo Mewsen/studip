@@ -48,7 +48,7 @@ foreach ($abschnitte as $abschnitt) {
         </dt>
         <dd>
             <? if (trim($abschnitt['kommentar'])) : ?>
-            <b><?= _('Kommentar:') ?></b>
+            <b><?= _('Kommentar') ?>:</b>
             <span data-mvv-field="mvv_stgteilabschnitt.kommentar"><?= formatReady($abschnitt['kommentar']) ?></span>
             <? endif; ?>
         <? if (!empty($abschnitt['module'])) : ?>
@@ -105,7 +105,7 @@ foreach ($abschnitte as $abschnitt) {
         <dt><?= htmlReady($abschnitt['zwischenUeberschrift']) ?></dt>
         <? if (trim($abschnitt['kommentar'])) : ?>
         <dd data-mvv-field="mvv_stgteilabschnitt.kommentar">
-            <b><?= _('Kommentar:') ?></b>
+            <b><?= _('Kommentar') ?></b>
             <div><?= formatReady($abschnitt['kommentar']) ?></div>
         </dd>
         <? endif; ?>

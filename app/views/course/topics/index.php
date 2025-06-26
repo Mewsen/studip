@@ -111,12 +111,12 @@
                             <span class="button-group">
                             <? if ($topic_links[$topic->id]['previous']) : ?>
                                 <form action="<?= $controller->swap($topic, $topic_links[$topic->id]['previous']) ?>" method="post" style="display: inline;">
-                                    <?= Studip\Button::createMoveUp(_('nach oben verschieben')) ?>
+                                    <?= Studip\Button::createMoveUp(_('Nach oben verschieben')) ?>
                                 </form>
                             <? endif ?>
                             <? if ($topic_links[$topic->id]['next']) : ?>
                                 <form action="<?= $controller->swap($topic, $topic_links[$topic->id]['next']) ?>" method="post" style="display: inline;">
-                                    <?= Studip\Button::createMoveDown(_('nach unten verschieben')) ?>
+                                    <?= Studip\Button::createMoveDown(_('Nach unten verschieben')) ?>
                                 </form>
                             <? endif ?>
                             </span>

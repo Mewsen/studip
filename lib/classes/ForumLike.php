@@ -35,7 +35,7 @@ class ForumLike {
 
         // notify owner of posting about the like
         setTempLanguage($data['user_id']);
-        $notification = $GLOBALS['user']->getFullName() . _(' gefällt einer deiner Forenbeiträge!');
+        $notification = sprintf(_('%s gefällt einer deiner Forenbeiträge!'), $GLOBALS['user']->getFullName());
         restoreLanguage();
 
         PersonalNotifications::add(

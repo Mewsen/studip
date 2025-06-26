@@ -175,7 +175,7 @@ class Admin_ExternController extends AuthenticatedController
                     ));
                 }
             } else {
-                PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen'));
+                PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen.'));
             }
             if (Request::submitted('store_cancel')) {
                 $this->redirect($this->indexURL(['open_type' => $type_id]));

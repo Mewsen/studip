@@ -113,14 +113,16 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         $nav->setLinkAttributes(['title' => _('Courseware')]);
 
         if ($new > 0) {
-            if ($new === 1) {
-                $text = _('neue Seite');
-
-            } else {
-                $text = _('neue Seiten');
-            }
+            $text = sprintf(
+                ngettext(
+                    '%u neue Seite',
+                    '%u neue Seiten',
+                    $new
+                ),
+                $new
+            );
             $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
-            $nav->setLinkAttributes(['title' => $new . ' ' . $text]);
+            $nav->setLinkAttributes(['title' => $text]);
             $nav->setBadgeNumber($new);
         }
 

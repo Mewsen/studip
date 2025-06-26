@@ -47,16 +47,16 @@
     <select name="access" id="wizard-access">
         <option value="all"
                 <? if (isset($values['access']) && $values['access'] === 'all') echo 'selected'; ?>>
-            <?= _('offen für alle') ?>
+            <?= _('Offen für alle') ?>
         </option>
         <option value="invite"
                 <? if (isset($values['access']) && $values['access'] === 'invite') echo 'selected'; ?>>
-            <?= _('auf Anfrage') ?>
+            <?= _('Auf Anfrage') ?>
         </option>
         <?php if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED) : ?>
             <option value="invisible"
                     <? if (isset($values['access']) && $values['access'] === 'invisible') echo 'selected'; ?>>
-                <?= _('unsichtbar') ?>
+                <?= _('Unsichtbar') ?>
             </option>
         <?php endif ?>
     </select>

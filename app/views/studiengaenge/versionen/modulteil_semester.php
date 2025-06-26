@@ -32,7 +32,7 @@ $perm_abschnitt = MvvPerm::getFieldPermModulteil_abschnitte($abschnitt_modul->ab
                 <? endif; ?>
             </label>
             <label style="<?= (($fachsemester || !Request::isXhr()) ? 'display: inline;' : 'display: none;') ?>">
-                <?= _('Status:') ?>
+                <?= _('Status') ?>
                 <? if ($fachsemester && !$perm->haveFieldPerm('differenzierung')): ?>
                     <?= $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$fachsemester->differenzierung]['name'] ?>
                     <input type="hidden" name="status[<?= $i ?>]" value="<?= $fachsemester->differenzierung ?>">
@@ -66,7 +66,7 @@ $perm_abschnitt = MvvPerm::getFieldPermModulteil_abschnitte($abschnitt_modul->ab
         <? if ($perm_abschnitt >= MvvPerm::PERM_WRITE) : ?>
             <?= Button::createAccept(_('Übernehmen'), 'store', ['title' => _('Änderungen übernehmen')]) ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $controller->action_url('modulteile', $abschnitt_modul->abschnitt->id), ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $controller->action_url('modulteile', $abschnitt_modul->abschnitt->id), ['title' => _('Zurück zur Übersicht')]) ?>
     </div>
 </form>
 <script>

@@ -101,7 +101,7 @@ use Studip\Button, Studip\LinkButton;
         </legend>
         <?= $this->render_partial('shared/contacts/range', ['perm_contacts' => $perm->getFieldPerm('contact_assignments'), 'range_type' => 'StudiengangTeil', 'range_id' => $stgteil->id, 'contacts' => $contacts->getArrayCopy()]) ?>
     </fieldset>
-    
+
     <footer data-dialog-button>
         <? if ($stgteil->isNew()) : ?>
             <? if ($perm->havePermCreate()) : ?>
@@ -112,6 +112,6 @@ use Studip\Button, Studip\LinkButton;
                 <?= Button::createAccept(_('Übernehmen'), 'store', ['title' => _('Änderungen übernehmen')]) ?>
             <? endif; ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>

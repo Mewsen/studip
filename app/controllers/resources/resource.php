@@ -423,7 +423,7 @@ class Resources_ResourceController extends AuthenticatedController
 
         PageLayout::setTitle(
             sprintf(
-                _('%s: bearbeiten'),
+                _('%s: Bearbeiten'),
                 $this->resource->getFullName()
             )
         );
@@ -436,7 +436,7 @@ class Resources_ResourceController extends AuthenticatedController
 
         PageLayout::setTitle(
             sprintf(
-                _('%s: löschen'),
+                _('%s: Löschen'),
                 $this->resource->getFullName()
             )
         );
@@ -1438,7 +1438,7 @@ class Resources_ResourceController extends AuthenticatedController
 
         if (!$this->folder->isReadable($this->current_user->id)) {
             throw new AccessDeniedException(
-                _('Sie sind nicht berechtigt, den Inhalt dieses Ordners zu sehen!')
+                _('Sie sind nicht berechtigt, den Inhalt dieses Ordners zu sehen.')
             );
         }
 

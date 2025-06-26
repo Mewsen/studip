@@ -14,7 +14,7 @@
                     'default_subject'  => $subject,
                 ]) ?>" data-dialog title="<?= sprintf(
                     _('Nachricht mit Mailweiterleitung an alle %s versenden'),
-                    _('vorläufig akzeptierten Nutzer/-innen')
+                    _('vorläufig akzeptierten NutzerInnen')
                 ) ?>">
                     <?= Icon::create('inbox') ?>
                 </a>

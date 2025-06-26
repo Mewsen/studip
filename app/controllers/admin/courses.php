@@ -77,7 +77,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $selectWidget->addElement(
                         new SelectElement(
                             '',
-                            '(' . _('keine Auswahl') . ')'
+                            '(' . _('Keine Auswahl') . ')'
                         )
                     );
                     foreach ($options as $option) {

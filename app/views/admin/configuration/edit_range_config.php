@@ -17,7 +17,7 @@
         </legend>
         <?= $this->render_partial('admin/configuration/type-edit.php', $config) ?>
         <label>
-            <?= _('Beschreibung:') ?> (<em>description</em>)
+            <?= _('Beschreibung') ?> (<em>description</em>)
             <textarea name="description" readonly><?= htmlReady($config['description']) ?></textarea>
         </label>
     </fieldset>

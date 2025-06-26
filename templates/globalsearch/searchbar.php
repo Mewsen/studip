@@ -29,7 +29,7 @@
         <div id="globalsearch-searching" aria-live="polite">
             <?= _('Suche...') ?>
         </div>
-        <div id="globalsearch-results" data-more-results="<?= _('alle anzeigen') ?>"
+        <div id="globalsearch-results" data-more-results="<?= _('Alle anzeigen') ?>"
              data-no-result="<?= _('Keine Ergebnisse gefunden.') ?>"
              aria-live="polite"
              data-results-per-type="<?= Config::get()->GLOBALSEARCH_MAX_RESULT_OF_TYPE ?>"

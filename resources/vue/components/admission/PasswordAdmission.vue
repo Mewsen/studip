@@ -60,7 +60,7 @@ export default {
                 this.invalidData.push(this.$gettext('Das Passwort darf nicht leer sein.'));
             }
             if (this.password1 !== this.password2) {
-                this.invalidData.push(this.$gettext('Die eingegebenen Passwörter stimmen nicht überein.'));
+                this.invalidData.push(this.$gettext('Die Passwörter stimmen nicht überein.'));
             }
 
             return this.invalidData.length === 0;

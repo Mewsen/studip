@@ -35,7 +35,7 @@ class NewsWidget extends CorePlugin implements PortalPlugin
             $navigation->setImage(Icon::create('refresh'));
             $navigation->setLinkAttributes([
                 'class' => 'visit-all',
-                'title' => _('Alle als gelesen markieren'),
+                'title' => _('Alles als gelesen markieren'),
             ]);
             $icons[] = $navigation;
         }

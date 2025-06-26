@@ -290,7 +290,7 @@ STUDIP.ready(function () {
                                                 //The form has been stored successfully:
                                                 window.location.href = this.STUDIPFORM_REDIRECTURL;
                                             } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
-                                                Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
+                                                Report.error($gettext('Es ist ein Fehler aufgetreten.'), output);
                                             }
                                         });
                                     } else {
@@ -330,7 +330,7 @@ STUDIP.ready(function () {
                                     const note = {
                                         name: node.name,
                                         label: node.labels[0].querySelector('.textlabel').innerText,
-                                        description: node.dataset.validation_requirement ?? $gettext('Fehler!'),
+                                        description: node.dataset.validation_requirement ?? $gettext('Fehler'),
                                         describedby: node.id
                                     };
 

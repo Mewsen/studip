@@ -131,7 +131,7 @@ $perm = MvvPerm::get($version)
         <? endif; ?>
         </label>
         <? endforeach; ?>
-        <label for="kommentar_status" style="vertical-align: top;"><?= _('Kommentar:') ?></label>
+        <label for="kommentar_status" style="vertical-align: top;"><?= _('Kommentar') ?></label>
         <? if($perm->haveFieldPerm('kommentar_status', MvvPerm::PERM_WRITE)) : ?>
         <textarea cols="60" rows="5" name="kommentar_status" id="kommentar_status" class="wysiwyg"><?= htmlReady($version->kommentar_status) ?></textarea>
         <? else : ?>
@@ -149,6 +149,6 @@ $perm = MvvPerm::get($version)
             <?= Button::createAccept(_('Übernehmen'), 'store', ['title' => _('Änderungen übernehmen')]) ?>
             <? endif; ?>
         <? endif; ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('zurück zur Übersicht')]) ?>
+        <?= LinkButton::createCancel(_('Abbrechen'), $cancel_url, ['title' => _('Zurück zur Übersicht')]) ?>
     </footer>
 </form>

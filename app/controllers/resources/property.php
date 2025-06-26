@@ -67,7 +67,7 @@ class Resources_PropertyController extends AuthenticatedController
 
             if (!$this->name) {
                 PageLayout::postError(
-                    _('Es wurde kein Name angegeben!')
+                    _('Es wurde kein Name angegeben.')
                 );
                 return;
             }
@@ -147,7 +147,7 @@ class Resources_PropertyController extends AuthenticatedController
                 //since they are editable for non-system properties.
                 if (!$this->name) {
                     PageLayout::postError(
-                        _('Es wurde kein Name angegeben!')
+                        _('Es wurde kein Name angegeben.')
                     );
                     return;
                 }

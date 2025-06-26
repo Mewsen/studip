@@ -14,7 +14,7 @@ use Studip\Button, Studip\LinkButton;
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
-            <?= $user->getFullName() ?> - 
+            <?= $user->getFullName() ?> -
             <?= _('Bearbeiten der Einrichtungsdaten') ?>
         </legend>
 
@@ -60,7 +60,7 @@ use Studip\Button, Studip\LinkButton;
                 <? else : ?>
                     <section>
                         <?= htmlReady($entry->getName()) ?>
-                        <?= $entry->getDisplayValue() ?: '<span class="empty">'. _('keine Angabe') .'</span>' ?>
+                        <?= $entry->getDisplayValue() ?: '<span class="empty">'. _('Keine Angabe') .'</span>' ?>
                     </section>
                 <? endif ?>
             <? endforeach ?>

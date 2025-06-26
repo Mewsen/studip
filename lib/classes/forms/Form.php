@@ -70,7 +70,7 @@ class Form extends Part
     {
         parent::__construct(...$parts);
         //Set a default for the success message:
-        $this->success_message = _('Daten wurden gespeichert.');
+        $this->success_message = _('Die Daten wurden gespeichert.');
         \NotificationCenter::addObserver($this, 'validationStep', 'ActionDidPerform');
     }
 

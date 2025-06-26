@@ -26,7 +26,7 @@
         <div>
             <table class="default">
                 <tr>
-                    <td><?= _('Stud.IP Version') ?></td>
+                    <td><?= _('Stud.IP-Version') ?></td>
                     <td><?= htmlReady($metadata['version']) ?></td>
                 </tr>
                 <tr>

@@ -96,8 +96,8 @@ class Download extends BlockType
     {
         return [
             _('Dateiliste'), _('Dateiablage'), _('Datei'), _('Teilen'), _('Ablegen'),
-            _('Upload'), _('Skript'), ('herunterladen'), _('Medien'), _('Material'),
-            _('Filesharing'), _('hochladen'), _('Dokument'), _('Dateibereich'), 'pdf',
+            _('Upload'), _('Skript'), ('Herunterladen'), _('Medien'), _('Material'),
+            _('Filesharing'), _('Hochladen'), _('Dokument'), _('Dateibereich'), 'pdf',
             'ppt', 'doc', 'xls', 'odt', 'ods', 'odp', 'PowerPoint',
             'Word', 'Excel', 'LibreOffice', 'OpenOffice', _('Präsentation'),
             _('Sicherung'), _('Literatur'), _('Zusatzmaterial'), _('Semesterapparat'),

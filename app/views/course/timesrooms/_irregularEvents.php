@@ -10,7 +10,7 @@ $room_request_filter = function ($date) {
 <section class="contentbox timesrooms">
     <header>
         <h1>
-            <?= _('Unregelmäßige Termine / Blocktermine') ?>
+            <?= _('Unregelmäßige Termine/Blocktermine') ?>
         </h1>
     <? if(!$locked) : ?>
         <nav>

@@ -35,7 +35,7 @@
         </header>
         <p>
             <?= _('Erweitert die ausgewählte Suchkategorie, um mehr Suchergebnisse aus dieser Kategorie anzuzeigen. ' .
-                ' Ein weiterer Klick zeigt wieder Ergebnisse aus allen Kategorien an.') ?>
+                'Ein weiterer Klick zeigt wieder Ergebnisse aus allen Kategorien an.') ?>
         </p>
     </section>
     <section>

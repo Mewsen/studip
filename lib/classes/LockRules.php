@@ -162,7 +162,7 @@ class LockRules {
     {
         $groups['basic'] = _("Grunddaten");
         $groups['personnel'] = _("Personen und Einordnung");
-        $groups['misc'] = _("weitere Daten");
+        $groups['misc'] = _("Weitere Daten");
         $groups['room_time'] = _("Zeiten/Räume");
         $groups['access'] = _("Zugangsberechtigungen");
         $groups['actions'] = _("spezielle Aktionen");

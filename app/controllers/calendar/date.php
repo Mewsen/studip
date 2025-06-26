@@ -265,7 +265,7 @@ class Calendar_DateController extends AuthenticatedController
 
         $this->date = CalendarDate::find($date_id);
         if (!$this->date) {
-            throw new Exception(_('Der Termin wurde nicht gefunden!'));
+            throw new Exception(_('Der Termin wurde nicht gefunden.'));
         }
         //Set the repetition end date to the end of the date in case it isn't set:
         if (!$this->date->repetition_end) {
@@ -785,7 +785,7 @@ class Calendar_DateController extends AuthenticatedController
         $this->date = CalendarDate::find($date_id);
         if (!$this->date) {
             PageLayout::postError(
-                _('Der Termin wurde nicht gefunden!')
+                _('Der Termin wurde nicht gefunden.')
             );
             $this->render_nothing();
         }
@@ -844,15 +844,15 @@ class Calendar_DateController extends AuthenticatedController
                     if ($this->date_has_repetitions) {
                         PageLayout::postSuccess(_('Die Terminserie wurde gelöscht!'));
                     } else {
-                        PageLayout::postSuccess(_('Der Termin wurde gelöscht!'));
+                        PageLayout::postSuccess(_('Der Termin wurde gelöscht'));
                     }
                     $this->response->add_header('X-Dialog-Close', '1');
                     $this->render_nothing();
                 } else {
                     if ($this->date_has_repetitions) {
-                        PageLayout::postError(_('Die Terminserie konnte nicht gelöscht werden!'));
+                        PageLayout::postError(_('Die Terminserie konnte nicht gelöscht werden.'));
                     } else {
-                        PageLayout::postError(_('Der Termin konnte nicht gelöscht werden!'));
+                        PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
                     }
                 }
             } elseif ($this->multiple_calendar_handling === 'delete_from_mine') {

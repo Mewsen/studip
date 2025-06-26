@@ -205,6 +205,6 @@ class Search_GlobalsearchController extends AuthenticatedController
     {
         Helpbar::get()->addPlainText(_('Platzhalter'), _('_ ist Platzhalter für ein beliebiges Zeichen. % ist Platzhalter für beliebig viele Zeichen. Me_er findet Treffer für Meyer und Meier. M__er findet zusätzlich auch Mayer und Maier. M%er findet alle vorherigen Treffer aber auch Münchner.'));
         Helpbar::get()->addPlainText(_('Klick auf Überschrift'), _('Erweitert die ausgewählte Suchkategorie, um mehr Suchergebnisse aus dieser Kategorie anzuzeigen. Ein weiterer Klick zeigt wieder Ergebnisse aus allen Kategorien an.'));
-        Helpbar::get()->addPlainText(_('Dateisuche'), _('Die Dateisuche kann über einen Schrägstrich (/) verfeinert werden. Beispiel: "Meine Veranstaltung/Datei" zeigt alle Dateien, die das Wort "Datei" enthalten und in "Meine Veranstaltung" sind, an. Die Veranstaltung kann auch auf einen Teil (z.B. Veran/Datei) oder auf die Großbuchstaben bzw. auch deren Abkürzung (z.B. MV/Datei oder V/Datei) beschränkt werden.'));
+        Helpbar::get()->addPlainText(_('Dateisuche'), _('Die Dateisuche kann über einen Schrägstrich (/) verfeinert werden. Beispiel: "Meine Veranstaltung/Datei" zeigt alle Dateien, die das Wort "Datei" enthalten und in "Meine Veranstaltung" sind, an. Die Veranstaltung kann auch auf einen Teil (z.B. "Veran/Datei") oder auf die Großbuchstaben bzw. auch deren Abkürzung (z.B. "MV/Datei" oder "V/Datei") beschränkt werden.'));
     }
 }

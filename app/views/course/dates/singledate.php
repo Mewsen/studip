@@ -47,7 +47,7 @@
 	<footer data-dialog-button>
         <div class="button-group">
             <? if (!$dates_locked) : ?>
-        	    <?= \Studip\Button::create(_('Termin Speichern'), "editSingleDate_button" ); ?>
+        	    <?= \Studip\Button::create(_('Termin speichern'), "editSingleDate_button" ); ?>
             <? endif ?>
             <? if (!$cancelled_dates_locked && !$date->isNew()) : ?>
                 <?= \Studip\LinkButton::create(_("Ausfallen lassen"), $controller->url_for("course/cancel_dates", ['termin_id' => $date->getId()]), ['data-dialog' => '']) ?>

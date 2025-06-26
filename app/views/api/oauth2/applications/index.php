@@ -30,7 +30,7 @@
 
             <div>
                 <span class="oauth2-application--owned-by">
-                    <?= _('Entwickelt durch:') ?>
+                    <?= _('Entwickelt durch') ?>:
                     <a rel="noreferrer noopener" target="_blank"
                         href="<?= htmlReady($application['homepage']) ?>">
                         <?= htmlReady($application['owner']) ?>

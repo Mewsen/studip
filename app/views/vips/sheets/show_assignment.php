@@ -28,10 +28,10 @@
 </div>
 
 <? if ($assignment->isUnlimited()) : ?>
-    <?= _('Start:') ?>
+    <?= _('Start') ?>:
     <?= date('d.m.Y, H:i', $assignment->start) ?>
 <? else: ?>
-    <?= _('Zeitraum:') ?>
+    <?= _('Zeitraum') ?>:
     <?= date('d.m.Y, H:i', $assignment->start) ?> &ndash;
     <?= date('d.m.Y, H:i', $assignment->end) ?>
 <? endif ?>

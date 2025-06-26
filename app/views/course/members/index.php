@@ -23,7 +23,7 @@
     <p style="float: right">
         <? //TODO?>
         <strong><?= _('Teilnahmebeschränkte Veranstaltung') ?></strong> -
-        <?= _('max. Teilnehmendenanzahl') ?> <?= $course->admission_turnout ?>,
+        <?= _('max. Teilnehmendenzahl') ?> <?= $course->admission_turnout ?>,
         <?= _('davon belegt') ?>: <?= (count($autoren) + count($users) + count($accepted)) ?>
     </p>
     <div class="clear"></div>

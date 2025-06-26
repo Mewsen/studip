@@ -64,7 +64,7 @@ use Studip\Button, Studip\LinkButton;
             <?= _('Zugang zur Tour') ?>:
             <select name="tour_access">
                 <option value="link" <? if (isset($tour->settings) && $tour->settings->access === 'link') echo 'selected'; ?>>
-                    <?= _('unsichtbar') ?>
+                    <?= _('Unsichtbar') ?>
                 </option>
                 <option value="standard" <? if (isset($tour->settings) && $tour->settings->access === 'standard') echo 'selected'; ?>>
                     <?= _('Anzeige im Hilfecenter') ?>

@@ -68,7 +68,7 @@ class StructuralElementsShowTest extends \Codeception\Test\Unit
                 'range_type' => $root['range_type'],
                 'owner_id' => $root['owner_id'],
                 'editor_id' => $root['editor_id'],
-                'title' => _('neue Seite'),
+                'title' => _('Neue Seite'),
             ]);
 
             $root->children[] = $child;

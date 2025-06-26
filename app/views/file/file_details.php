@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Flexi\Template      $this
+ * @var Flexi\PHPTemplate   $this
  * @var FileController      $controller
  * @var Flexi\Template|null $file_info_template
  * @var array               $fullpath
@@ -31,7 +31,7 @@
         <? if ($file->getDescription()) : ?>
             <h3><?= _('Beschreibung') ?></h3>
             <article>
-                <?= htmlReady($file->getDescription() ?: _('Keine Beschreibung vorhanden.'), true, true) ?>
+                <?= htmlReady($file->getDescription() ?: _('Keine Beschreibung vorhanden'), true, true) ?>
             </article>
         <? endif ?>
         <?= Feedback::getHTML($file->getId(), 'FileRef') ?>

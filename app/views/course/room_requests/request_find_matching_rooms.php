@@ -20,7 +20,7 @@
                         <?= _('Raumkategorie') ?>
                         <span class="flex-row">
                         <select name="category_id" >
-                            <option value="0"><?= _('bitte auswählen') ?></option>
+                            <option value="0">-- <?= _('Bitte auswählen') ?> --</option>
                         <? foreach ($available_room_categories as $rc): ?>
                             <option value="<?= htmlReady($rc->id) ?>"
                                 <?= $_SESSION[$request_id]['room_category_id'] === $rc->id

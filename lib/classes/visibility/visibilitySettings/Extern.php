@@ -23,7 +23,7 @@ class Visibility_Extern extends VisibilityAbstract{
 
     public function __construct()
     {
-        $this->display_name = _('externe Seiten');
+        $this->display_name = _('Externe Seiten');
         $this->description = _('auf externen Seiten sichtbar');
     }
 

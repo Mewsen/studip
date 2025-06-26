@@ -29,7 +29,7 @@
         </span>
         <div v-if="isLoading" class="studip-spinner">
             <studip-asset-img file="ajax-indicator-black.svg" width="20"/>
-            {{ $gettext('Daten werden geladen...' )}}
+            {{ $gettext('Daten werden geladen...') }}
         </div>
         <ul v-if="node.attributes['has-children'] && openState" class="studip-tree-children">
             <li v-for="(child) in children" :key="child.id" >

@@ -77,7 +77,7 @@
                         <button class="cropper-actions-button" @click="flip()" :title="$gettext('horizontal spiegeln')">
                             <StudipIcon shape="mirror-vertical" :size="24" />
                         </button>
-                        <button class="cropper-actions-button" @click="resetCropper" :title="$gettext('zurücksetzen')">
+                        <button class="cropper-actions-button" @click="resetCropper" :title="$gettext('Zurücksetzen')">
                             <StudipIcon shape="refresh" :size="24" />
                         </button>
                         <button class="cropper-actions-button" @click="changeImage" :title="$gettext('Bild auswählen')">

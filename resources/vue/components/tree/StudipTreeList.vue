@@ -99,7 +99,7 @@
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
                            :title="$gettext(
-                               'Zur Veranstaltung %{ title }',
+                               'Zur Veranstaltung %{title}',
                                { title: course.attributes.title },
                                true
                            )">

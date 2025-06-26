@@ -121,7 +121,7 @@ class Course_BasicdataController extends AuthenticatedController
             }
         }
         $this->institutional[] = [
-            'title'   => _('Heimat-Einrichtung'),
+            'title'   => _('Heimateinrichtung'),
             'name'    => 'course_institut_id',
             'must'    => true,
             'type'    => 'nested-select',
@@ -131,7 +131,7 @@ class Course_BasicdataController extends AuthenticatedController
         ];
 
         $this->institutional[] = [
-            'title'    => _('beteiligte Einrichtungen'),
+            'title'    => _('Beteiligte Einrichtungen'),
             'name'     => 'related_institutes[]',
             'type'     => 'nested-select',
             'value'    => array_diff($course->institutes->pluck('id'), [$course->institut_id]),

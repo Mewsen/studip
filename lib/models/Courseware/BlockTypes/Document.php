@@ -95,9 +95,9 @@ class Document extends BlockType
         return [
             'pdf', _('Dokument'), _('Datei'), _('Artikel'), _('Seite'), ('Blatt'),
             _('Buch'), _('Adobe Acrobat'), _('Dateibereich'), _('Ordner'), _('Upload'),
-            _('Download'), _('hochladen'), _('einstellen'), _('herunterladen'), _('Material'),
+            _('Download'), _('Hochladen'), _('Einstellen'), _('Herunterladen'), _('Material'),
             _('Skript'), _('Medien'), _('Präsentation'), _('Wiederholung'), _('Veranschaulichung'),
-            _('Reader'), _('online lesen'), _('Infomaterial')
+            _('Reader'), _('Online lesen'), _('Infomaterial')
         ];
     }
 }
