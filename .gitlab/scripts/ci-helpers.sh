@@ -2,7 +2,7 @@
 
 # Fetch origin/main safely (no tags, no full history)
 fetch_main() {
-    git fetch --no-tags --depth=1024 origin main >/dev/null 2>&1
+    git fetch --no-tags --unshallow origin main >/dev/null 2>&1
 }
 
 # Get list of changed files matching a glob (e.g. '*.php' or 'src/**/*.vue')
