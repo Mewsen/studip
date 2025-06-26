@@ -37,7 +37,7 @@ Die folgenden Zeiträume wurden gebucht:
 <? if ($request->comment) : ?>
 
 
-Kommentar zur Anfrage:
+Interner Kommentar:
 
 <?= $request->comment ?>
 <? endif ?>
