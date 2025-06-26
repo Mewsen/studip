@@ -16,6 +16,8 @@
  * @since      2.0
  */
 
+require_once 'lib/dates.inc.php';
+
 // Needs to be required due to the use of constants
 require_once 'lib/classes/calendar/CalendarScheduleModel.php';
 
