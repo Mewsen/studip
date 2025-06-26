@@ -23,13 +23,23 @@ use Studip\Authentication\Manager;
 
 final class AuthenticationMiddleware implements MiddlewareInterface
 {
-    public function __construct(private Manager $auth_manager, private ResponseFactoryInterface $response_factory)
-    {
+    public function __construct(
+        private readonly Manager $auth_manager,
+        private readonly ResponseFactoryInterface $response_factory
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->auth_manager->start()) {
+            if (isset($_SESSION['redirect_after_login'] )) {
+                $redirect = $_SESSION['redirect_after_login'];
+                unset($_SESSION['redirect_after_login']);
+
+                return $this->response_factory->createResponse(302)
+                    ->withHeader('Location', $redirect);
+            }
+
             return $handler->handle($request);
         } else {
             if (!match_route('dispatch.php/start')) {

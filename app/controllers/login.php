@@ -83,7 +83,7 @@ class LoginController extends AuthenticatedController
                 } else {
                     auth()->setAuthenticatedUser($check_auth['user']);
                     Metrics::increment('core.login.succeeded');
-                    sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast', 'redirect_after_login']);
+                    sess()->regenerateId(\Studip\Authentication\Manager::DEFAULT_KEPT_SESSION_VARIABLES);
                     if (isset($_SESSION['redirect_after_login'] )) {
                         $this->redirect($_SESSION['redirect_after_login']);
                         return;
