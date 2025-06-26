@@ -140,7 +140,7 @@ class Resources_RoomPlanningController extends AuthenticatedController
         );
 
         if ($this->resource->requestable) {
-            $this->display_all_requests = Request::get('display_all_requests');
+            $this->display_all_requests = Request::bool('display_all_requests', true);
         } else {
             $this->display_all_requests = false;
         }
@@ -263,14 +263,15 @@ class Resources_RoomPlanningController extends AuthenticatedController
                     $this->url_for(
                         'resources/room_planning/booking_plan/' . $this->resource->id,
                         [
-                            'display_all_requests' => '1',
+                            'display_all_requests' => true,
                             'allday'               => Request::bool('allday', false)
                         ]
                     ),
                     $this->url_for(
                         'resources/room_planning/booking_plan/' . $this->resource->id,
                         [
-                            'allday' => Request::bool('allday', false)
+                            'allday' => Request::bool('allday', false),
+                            'display_all_requests' => false,
                         ]
                     ),
                     []
