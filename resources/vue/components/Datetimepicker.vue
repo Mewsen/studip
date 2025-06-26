@@ -73,7 +73,7 @@ export default {
         $(this.$refs.visibleInput).datetimepicker(params);
     },
     watch: {
-        mindat (new_data) {
+        mindate (new_data) {
             $(this.$refs.visibleInput).datetimepicker('option', 'minDate', new Date(new_data * 1000));
         },
         maxdate (new_data) {
