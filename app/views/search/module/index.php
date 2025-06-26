@@ -25,13 +25,12 @@
         <col>
         <col>
         <col>
+        <col>
     </colgroup>
     <thead>
         <tr>
             <th>
-                <abbr title="<?= _('Moduldeskriptor') ?>">
-                    <?= Icon::create('log', Icon::ROLE_INFO) ?>
-                </abbr>
+                <?= Icon::create('log', Icon::ROLE_INFO, ['title' => _('Modulbeschreibung')]) ?>
             </th>
             <th class="mvv-search-modules-row"><?= _('Modultitel') ?></th>
             <th><?= _('Gültigkeit') ?></th>

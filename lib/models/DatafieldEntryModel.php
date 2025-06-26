@@ -117,6 +117,17 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
             $object_class = $model->getVariant();
             $object_type = 'studycourse';
             $range_id = $model->studiengang_id;
+        } elseif ($model instanceof StgteilabschnittModul) {
+            $params[':institution_ids'] = [];
+            $object_class = '';
+            $object_type = 'stgteilabschnittmodul';
+            $range_id = $model->abschnitt_modul_id;
+        } elseif ($model instanceof ModulteilStgteilabschnitt) {
+            $params[':institution_ids'] = [];
+            $object_class = '';
+            $object_type = 'modulteilstgteilabschnitt';
+            $range_id = $model->modulteil_id;
+            $sec_range_id = $model->abschnitt_id;
         } else {
             throw new InvalidArgumentException('Wrong type of model: ' . get_class($model));
         }
@@ -155,11 +166,20 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
                 || $object_type === 'modulteildeskriptor') {
             // find datafields by language (string)
             $query .= " AND (LOCATE(:object_class, object_class) OR object_class IS NULL) ORDER BY priority";
-            $params = array_merge($params,[
-                ':range_id'     => (string) $range_id,
-                ':sec_range_id' => (string) $sec_range_id,
-                ':object_type'  => $object_type,
-                ':object_class' => (string) $object_class,
+            $params = array_merge($params, [
+                ':range_id' => (string)$range_id,
+                ':sec_range_id' => (string)$sec_range_id,
+                ':object_type' => $object_type,
+                ':object_class' => (string)$object_class,
+            ]);
+        } elseif ($object_type === 'stgteilabschnittmodul'
+            || $object_type === 'modulteilstgteilabschnitt') {
+            // field object_class holds the name of the overwritten field or is null
+            $query .= " ORDER BY priority";
+            $params = array_merge($params, [
+                ':range_id' => (string)$range_id,
+                ':sec_range_id' => (string)$sec_range_id,
+                ':object_type' => $object_type,
             ]);
         } else {
             // find datafields by perms or status (int)

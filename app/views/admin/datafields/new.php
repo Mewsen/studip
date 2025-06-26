@@ -7,6 +7,7 @@
  * @var array $institutes
  * @var Institute $item
  * @var DataField $datafield
+ * @var array $replace_fields
  */
 
 use Studip\Button, Studip\LinkButton;
@@ -45,8 +46,22 @@ use Studip\Button, Studip\LinkButton;
             <?= _('Veranstaltungskategorie') ?>
         <? elseif ($object_typ === 'inst'): ?>
             <?= _('Einrichtungstyp') ?>
-        <? elseif ($object_typ === 'moduldeskriptor' || $object_typ === 'modulteildeskriptor') : ?>
+        <? elseif (in_array(
+            $object_typ,
+            [
+                'moduldeskriptor',
+                'modulteildeskriptor',
+            ]
+        )) : ?>
             <?= _('Sprache') ?>
+        <? elseif (in_array(
+            $object_typ,
+            [
+                'stgteilabschnittmodul',
+                'modulteilstgteilabschnitt',
+            ]
+        )): ?>
+            <?= _('Ersetzt Feld') ?>
         <? elseif ($object_typ === 'studycourse'): ?>
             <?= _('Typ/Abschnitt') ?>
         <? else: ?>
@@ -69,17 +84,29 @@ use Studip\Button, Studip\LinkButton;
                     <?= htmlReady($val['name']) ?>
                 </option>
             <? endforeach; ?>
-        <? elseif ($object_typ === 'moduldeskriptor') : ?>
+        <? elseif (in_array(
+            $object_typ,
+            [
+                'moduldeskriptor',
+                'modulteildeskriptor',
+            ])
+        ): ?>
             <select multiple name="object_class[]" required>
                 <option value="NULL" selected><?= _('alle (mehrsprachige Eingabe bei Feldtyp textline, textarea, textmarkup)') ?></option>
             <? foreach ($GLOBALS['CONTENT_LANGUAGES'] as $key => $value) : ?>
                 <option value="<?= htmlReady($key) ?>"><?= htmlReady($value['name']) ?></option>
             <? endforeach; ?>
-        <? elseif ($object_typ === 'modulteildeskriptor') : ?>
-            <select multiple name="object_class[]" required>
-                <option value="NULL" selected><?= _('alle (mehrsprachige Eingabe bei Feldtyp textline, textarea, textmarkup)') ?></option>
-            <? foreach ($GLOBALS['CONTENT_LANGUAGES'] as $key => $value) : ?>
-                <option value="<?= htmlReady($key) ?>"><?= htmlReady($value['name']) ?></option>
+        <? elseif (in_array(
+            $object_typ,
+            [
+                'stgteilabschnittmodul',
+                'modulteilstgteilabschnitt',
+            ])
+        ): ?>
+            <select name="object_class" required>
+                <option value="NULL" selected><?= _('Zusätzliches Datenfeld (keine Ersetzung)') ?></option>
+            <? foreach (Admin_DatafieldsController::getReplaceFields($object_typ) as $key => $value) : ?>
+                <option value="<?= htmlReady($key) ?>"><? printf('%s (%s)', $key, htmlReady($value)) ?></option>
             <? endforeach; ?>
         <? elseif ($object_typ === 'studycourse') : ?>
             <select name="object_class" required>
@@ -119,6 +146,13 @@ use Studip\Button, Studip\LinkButton;
             </select>
         </label>
 
+        <? if (!in_array(
+            $object_typ,
+            [
+                'stgteilabschnittmodul',
+                'modulteilstgteilabschnitt',
+            ])
+        ): ?>
         <label>
             <?= _('Einrichtung') ?>
             <select name="institut_id" class="nested-select">
@@ -132,6 +166,7 @@ use Studip\Button, Studip\LinkButton;
                 <? endforeach; ?>
             </select>
         </label>
+        <? endif; ?>
 
     <? if ($object_typ === 'user') :?>
         <label>
@@ -164,8 +199,20 @@ use Studip\Button, Studip\LinkButton;
 
             <textarea name="description"></textarea>
         </label>
-
     <? endif; ?>
+
+    <? if ($object_typ === 'stgteilabschnittmodul' || $object_typ === 'modulteilstgteilabschnitt'): ?>
+        <label>
+            <?= _('Überschreibt') ?>
+            <select name="replace_field">
+                <option value=""><?= _('Zusätzliches Datenfeld (keine Ersetzung)') ?></option>
+                <? foreach ($replace_fields as $key => $name): ?>
+                    <option value="<?= $key ?>"><?= htmlReady($name) ?></option>
+                <? endforeach; ?>
+            </select>
+        </label>
+    <? endif; ?>
+
     <? if ($object_typ === 'user'): ?>
         <label>
             <input type="checkbox" name="is_userfilter" value="1">

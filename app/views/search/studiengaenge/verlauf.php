@@ -85,11 +85,25 @@
                             <tr>
                                 <td<?= count($modul['modulTeile']) > 1 ? ' style="border: none;"' : '' ?>>
                                     <? $abschnitt_modul = StgteilabschnittModul::findOneBySQL('`abschnitt_id` = ? AND `modul_id` = ?', [$abschnitt_id, $modul_id]) ?>
-                                    <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
+                                    <a data-dialog="size=auto"
+                                       title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>"
+                                       href="<?= $controller->link_for('shared/modul/description/' . $modul_id,
+                                           [
+                                               'display_language' => ModuleManagementModel::getLanguage(),
+                                               'abschnitt_id' => $abschnitt_id,
+                                           ]) ?>">
                                         <?= Icon::create('log', Icon::ROLE_CLICKABLE, ['title' => _('Vollständige Modulbeschreibung')]) ?>
                                     </a>
                                     <? if ($modul['courses']) : ?>
-                                    <a data-dialog href="<?= $controller->link_for('shared/modul/overview', $modul_id, $active_sem->getId(), ['display_language' => ModuleManagementModel::getLanguage()])  ?>">
+                                    <a data-dialog
+                                       href="<?= $controller->link_for(
+                                           'shared/modul/overview',
+                                           $modul_id,
+                                           $active_sem->id,
+                                           [
+                                               'display_language' => ModuleManagementModel::getLanguage(),
+                                               'abschnitt_id' => $abschnitt_id,
+                                           ]); ?>">
                                         <?= htmlReady($abschnitt_modul->getDisplayName()) ?>
                                     </a>
                                     <? else: ?>

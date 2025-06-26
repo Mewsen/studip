@@ -355,26 +355,39 @@ class StgteilVersion extends ModuleManagementModelTreeItem
         // TODO set default value
         $new_version->stat = 'planung';
         $new_mvv_objects[] = $new_version;
-        foreach (StgteilAbschnitt::findByStgteilVersion($this->getId()) as $abschnitt) {
+        foreach ($this->abschnitte as $abschnitt) {
             $new_abschnitt = clone $abschnitt;
             $new_abschnitt->setNew(true);
             $new_abschnitt->setNewId();
             $new_abschnitt->version_id = $new_version->version_id;
             $new_mvv_objects[] = $new_abschnitt;
-            $modul_assignments = $abschnitt->getModulAssignments();
-            foreach ($modul_assignments as $assignment) {
+            foreach ($abschnitt->modul_zuordnungen as $assignment) {
                 $new_modul_assignment = clone $assignment;
                 $new_modul_assignment->setNew(true);
                 $new_modul_assignment->setNewId();
                 $new_modul_assignment->abschnitt_id = $new_abschnitt->abschnitt_id;
+                // copy data fields
+                foreach ($assignment->datafields as $datafield) {
+                    $new_data_field = clone $datafield;
+                    $new_data_field->setNew(true);
+                    $new_data_field->range_id = $new_modul_assignment->abschnitt_modul_id;
+                    $new_mvv_objects[] = $new_data_field;
+                }
                 $new_mvv_objects[] = $new_modul_assignment;
             }
-            $modulteil_assignments = ModulteilStgteilabschnitt::findBySql(
-                    'abschnitt_id = ' . DBManager::get()->quote($abschnitt->getId()));
-            foreach ($modulteil_assignments as $assignment) {
+            foreach ($abschnitt->modulteil_abschnitte as $assignment) {
                 $new_modulteil_assignment = clone $assignment;
                 $new_modulteil_assignment->setNew(true);
                 $new_modulteil_assignment->abschnitt_id = $new_abschnitt->abschnitt_id;
+                // copy data fields
+                if (empty($assignment->fachsemester)) {
+                    foreach ($assignment->datafields as $datafield) {
+                        $new_data_field = clone $datafield;
+                        $new_data_field->setNew(true);
+                        $new_data_field->sec_range_id = $new_abschnitt->abschnitt_id;
+                        $new_mvv_objects[] = $new_data_field;
+                    }
+                }
                 $new_mvv_objects[] = $new_modulteil_assignment;
             }
         }

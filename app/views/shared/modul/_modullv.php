@@ -1,102 +1,175 @@
-<? $modulTeil = $modul->modulteile->first(); ?>
-<? $modulTeilDeskriptor = $modulTeil->getDeskriptor($display_language ?? null); ?>
-<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulTeil->id; ?>" data-mvv-type="modulteil">
+<?php
+/**
+ * @var Modul $modul
+ * @var StgteilabschnittModul|null $abschnitt_modul
+ */
+?>
+<? $modulteil = $modul->modulteile->first(); ?>
+<? $modulteil_deskriptor = $modulteil->getDeskriptor(); ?>
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulteil->id; ?>" data-mvv-type="modulteil">
     <tbody>
-        <? $modulTeilSumme = $modulTeil->wl_praesenz + $modulTeil->wl_bereitung + $modulTeil->wl_selbst + $modulTeil->wl_pruef ?>
+        <? $modulteil_summe = $modulteil->wl_praesenz + $modulteil->wl_bereitung + $modulteil->wl_selbst + $modulteil->wl_pruef ?>
         <tr>
             <td style="width: 30%;"><strong><?= _('Lehrveranstaltungsform') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?? '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulteil->lernlehrform]['name'] ?? '' ?></td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Veranstaltungstitel') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.bezeichnung"><?= htmlReady($modulTeilDeskriptor->bezeichnung) ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.bezeichnung">
+                <?= htmlReady($modulteil_deskriptor->getReplacedValue('bezeichnung')) ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('SWS') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.sws mvv_modulteil_deskriptor.sws_alternative"><?= $modulTeil->sws ?: '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.sws mvv_modulteil_deskriptor.sws_alternative">
+                <?= $modulteil->sws ?: '' ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload Präsenz') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_praesenz mvv_modulteil_deskriptor.kommentar_wl_praesenz"><?= $modulTeil->wl_praesenz ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_praesenz) ? sprintf(" (%s)", formatReady($modulTeilDeskriptor->kommentar_wl_praesenz)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_praesenz mvv_modulteil_deskriptor.kommentar_wl_praesenz">
+                <?= $modulteil->getReplacedValue('wl_praesenz') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_wl_praesenz'))
+                    ? sprintf(" (%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_wl_praesenz')))
+                    : '' ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload Vor- / Nachbereitung') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_bereitung mvv_modulteil_deskriptor.kommentar_wl_bereitung"><?= $modulTeil->wl_bereitung ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_bereitung) ? sprintf(" (%s)", formatReady($modulTeilDeskriptor->kommentar_wl_bereitung)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_bereitung mvv_modulteil_deskriptor.kommentar_wl_bereitung">
+                <?= $modulteil->getReplacedValue('wl_bereitung') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_wl_bereitung'))
+                    ? sprintf(" (%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_wl_bereitung')))
+                    : '' ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload selbstgestaltete Arbeit') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_selbst mvv_modulteil_deskriptor.kommentar_wl_selbst"><?= $modulTeil->wl_selbst ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_selbst) ? sprintf(" (%s)", formatReady($modulTeilDeskriptor->kommentar_wl_selbst)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_selbst mvv_modulteil_deskriptor.kommentar_wl_selbst">
+                <?= $modulteil->getReplacedValue('wl_selbst') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_wl_selbst'))
+                    ? sprintf(" (%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_wl_selbst')))
+                    : '' ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload Prüfung incl. Vorbereitung') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_pruef mvv_modulteil_deskriptor.kommentar_wl_pruef"><?= $modulTeil->wl_pruef ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_pruef) ? sprintf(" (%s)", formatReady($modulTeilDeskriptor->kommentar_wl_pruef)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_pruef mvv_modulteil_deskriptor.kommentar_wl_pruef">
+                <?= $modulteil->getReplacedValue('wl_pruef') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_wl_pruef'))
+                    ? sprintf(" (%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_wl_pruef')))
+                    : '' ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload insgesamt') ?></strong></td>
-            <td style="width: 70%;"><?= $modulTeilSumme ?></td>
+            <td style="width: 70%;"><?= $modulteil_summe ?></td>
         </tr>
-        <? if ((int) $modul->wl_selbst) : ?>
+        <? if ((int) $modul->getReplacedValue('wl_selbst')) : ?>
             <tr>
                 <td style="width: 30%;"><strong><?= _('Workload selbstgestaltete Arbeit (modulbezogen') ?></strong></td>
-                <td style="width: 70%;" data-mvv-field="mvv_modul.wl_selbst mvv_modul_deskriptor.kommentar_wl_selbst"><?= $modul->wl_selbst ?> <?= MVVController::trim($modulDeskriptor->kommentar_wl_selbst) ? sprintf(" (%s)", formatReady($modulDeskriptor->kommentar_wl_selbst)) : '' ?></td>
+                <td style="width: 70%;" data-mvv-field="mvv_modul.wl_selbst mvv_modul_deskriptor.kommentar_wl_selbst">
+                    <?= $modul->getReplacedValue('wl_selbst') ?>
+                    <?= MVVController::trim($modul->deskriptoren->getReplacedValue('kommentar_wl_selbst'))
+                        ? sprintf(" (%s)", formatReady($modul->deskriptoren->getReplacedValue('kommentar_wl_selbst')))
+                        : '' ?>
+                </td>
             </tr>
         <? endif; ?>
-        <? if ((int) $modul->wl_pruef) : ?>
+        <? if ((int) $modul->getReplacedValue('wl_pruef')) : ?>
             <tr>
                 <td style="width: 30%;"><strong><?= _('Workload Prüfung incl. Vorbereitung (modulbezogen)') ?></strong></td>
-                <td style="width: 70%;" data-mvv-field="mvv_modul.wl_pruef mvv_modul_deskriptor.kommentar_wl_pruef"><?= $modul->wl_pruef ?> <?= MVVController::trim($modulDeskriptor->kommentar_wl_pruef) ? sprintf(" (%s)", formatReady($modulDeskriptor->kommentar_wl_pruef)) : '' ?></td>
+                <td style="width: 70%;" data-mvv-field="mvv_modul.wl_pruef mvv_modul_deskriptor.kommentar_wl_pruef">
+                    <?= $modul->getReplacedValue('wl_pruef') ?>
+                    <?= MVVController::trim($modul->deskriptoren->getReplacedValue('kommentar_wl_pruef'))
+                        ? sprintf(" (%s)", formatReady($modul->deskriptoren->getReplacedValue('kommentar_wl_pruef')))
+                        : '' ?>
+                </td>
             </tr>
         <? endif; ?>
-        <? if ($modul->wl_selbst + $modul->wl_pruef) : ?>
+        <? if (intval($modul->getReplacedValue('wl_selbst')) + intval($modul->getReplacedValue('wl_pruef'))) : ?>
             <tr>
                 <td style="width: 30%;"><strong><?= _('Workload Modul insgesamt') ?></strong></td>
-                <td style="width: 70%;"><?= $modulTeilSumme + $modul->wl_selbst + $modul->wl_pruef ?></td>
+                <td style="width: 70%;"><?=
+                    $modulteil_summe
+                    + intval($modul->getReplacedValue('wl_selbst'))
+                    + intval($modul->getReplacedValue('wl_pruef')) ?></td>
             </tr>
         <? endif; ?>
     </tbody>
 </table>
-<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulTeilDeskriptor->id; ?>" data-mvv-type="modulteil_deskriptor">
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulteil_deskriptor->id; ?>" data-mvv-type="modulteil_deskriptor">
     <tbody>
-        <? if (trim($modulTeilDeskriptor->pruef_vorleistung)) : ?>
+        <? if (trim($modulteil_deskriptor->pruef_vorleistung)) : ?>
         <tr>
             <td style="width: 30%;"><strong><?= _('Prüfungsvorleistung') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.pruef_vorleistung"><?= formatReady($modulTeilDeskriptor->pruef_vorleistung) ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.pruef_vorleistung">
+                <?= formatReady($modulteil_deskriptor->getReplacedValue('pruef_vorleistung')) ?>
+            </td>
         </tr>
         <? endif; ?>
         <tr>
             <td style="width: 30%;"><strong><?= _('Prüfungsform') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.pruef_leistung"><?= formatReady($modulTeilDeskriptor->pruef_leistung) ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil_deskriptor.pruef_leistung">
+                <?= formatReady($modulteil_deskriptor->getReplacedValue('pruef_leistung')) ?>
+            </td>
         </tr>
     </tbody>
 </table>
-<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulTeil->id; ?>" data-mvv-type="modulteil">
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulteil->id; ?>" data-mvv-type="modulteil">
     <tbody>
         <tr>
             <td style="width: 30%;"><strong><?= _('Angebotsrhythmus') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.semester"><?= $GLOBALS['MVV_NAME_SEMESTER']['values'][$modulTeil->semester]['name'] ?? '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.semester"><?= $GLOBALS['MVV_NAME_SEMESTER']['values'][$modulteil->semester]['name'] ?? '' ?></td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Aufnahmekapazität') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.kapazitaet mvv_modulteil_deskriptor.kommentar_kapazitaet"><?= trim($modulTeil->kapazitaet) ?: _('unbegrenzt') ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_kapazitaet) ? sprintf("(%s)", formatReady($modulTeilDeskriptor->kommentar_kapazitaet)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.kapazitaet mvv_modulteil_deskriptor.kommentar_kapazitaet">
+                <?= trim($modulteil->kapazitaet) ?: _('unbegrenzt') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_kapazitaet'))
+                    ? sprintf("(%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_kapazitaet')))
+                    : '' ?>
+            </td>
         </tr>
-        <? if ($modulTeil->pflicht) : ?>
+        <? if ($modulteil->pflicht) : ?>
         <tr>
             <td style="width: 30%;"><strong><?= _('Anwesenheitspflicht') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.pflicht mvv_modulteil_deskriptor.kommentar_pflicht"><?= $modulTeil->pflicht ? _('Ja') : _('Nein') ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_pflicht) ? sprintf("(%s)", formatReady($modulTeilDeskriptor->kommentar_pflicht)) : '' ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.pflicht mvv_modulteil_deskriptor.kommentar_pflicht">
+                <?= $modulteil->pflicht ? _('Ja') : _('Nein') ?>
+                <?= MVVController::trim($modulteil_deskriptor->getReplacedValue('kommentar_pflicht'))
+                    ? sprintf("(%s)", formatReady($modulteil_deskriptor->getReplacedValue('kommentar_pflicht')))
+                    : '' ?>
+            </td>
         </tr>
         <? endif; ?>
     </tbody>
 </table>
-<? if (count($modulTeilDeskriptor->datafields)) : ?>
-<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulTeilDeskriptor->id; ?>" data-mvv-type="modulteil_deskriptor">
-    <tbody>
-        <? foreach ($modulTeilDeskriptor->datafields as $entry) : ?>
-        <? $df = $entry->getTypedDatafield(); ?>
-        <tr>
-            <td style="width: 30%;"><strong><?= htmlReady($df->getName()) ?></strong></td>
-            <td style="width: 70%;"><?= $df->getDisplayValue(); ?></td>
-        </tr>
-        <? endforeach; ?>
-    </tbody>
-</table>
+<? $data_fields = []; ?>
+<? if ($abschnitt_modul) : ?>
+    <? $data_fields = $abschnitt_modul->datafields->filter(
+        fn(DatafieldEntryModel $d): bool => ($d->datafield->object_class ?? '') === '') ?>
+<? endif; ?>
+<? if (count($modulteil_deskriptor->datafields)) : ?>
+    <table class="mvv-modul-details default nohover" data-mvv-id="<?= $modulteil_deskriptor->id; ?>" data-mvv-type="modulteil_deskriptor">
+        <tbody>
+            <? foreach ($modulteil_deskriptor->datafields as $entry) : ?>
+                <? if (trim($entry->content)) : ?>
+                    <? $df = $entry->getTypedDatafield(); ?>
+                    <tr>
+                        <td style="width: 30%;"><strong><?= htmlReady($df->getName()) ?></strong></td>
+                        <td style="width: 70%;"><?= $df->getDisplayValue(); ?></td>
+                    </tr>
+                <? endif; ?>
+            <? endforeach; ?>
+            <? foreach ($data_fields as $entry) : ?>
+                <? if (trim($entry->content)) : ?>
+                    <? $df = $entry->getTypedDatafield(); ?>
+                    <tr>
+                        <td style="width: 30%;"><strong><?= htmlReady($df->getName()) ?></strong></td>
+                        <td style="width: 70%;"><?= $df->getDisplayValue(); ?></td>
+                    </tr>
+                <? endif; ?>
+            <? endforeach; ?>
+        </tbody>
+    </table>
 <? endif; ?>

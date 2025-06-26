@@ -449,43 +449,70 @@ abstract class SharedVersionController extends MVVController
     public function modul_zuordnung_action($abschnitt_modul_id)
     {
         $this->zuordnung = StgteilabschnittModul::find($abschnitt_modul_id);
-        if ($this->zuordnung->isNew()) {
+        if (!$this->zuordnung) {
             PageLayout::postError(_('Unbekannte Zuordnung'));
             $this->redirect($this->action_url('index'));
             return;
         } else {
             PageLayout::setTitle(_('Modulzuordnung bearbeiten'));
-            $success_message = _('Die Modulzuordnung "%s" wurde geändert.');
         }
-        $success = false;
+        $this->render_template('studiengaenge/versionen/modul_zuordnung', $this->layout);
+    }
+
+    public function modul_zuordnung_store_action($abschnitt_modul_id)
+    {
+        $this->zuordnung = StgteilabschnittModul::find($abschnitt_modul_id);
+        if (!$this->zuordnung) {
+            PageLayout::postError(_('Unbekannte Zuordnung'));
+            $this->redirect($this->action_url('index'));
+            return;
+        }
         if (Request::submitted('store')) {
             CSRFProtection::verifyUnsafeRequest();
             $this->zuordnung->bezeichnung = Request::i18n('bezeichnung')->trim();
             $this->zuordnung->flexnow_modul = trim(Request::get('flexnow_modul'));
             $this->zuordnung->modulcode = trim(Request::get('modulcode'));
-            $stored = $this->zuordnung->store();
-            if ($stored !== false) {
-                $success = true;
-                if (!Request::isXhr()) {
-                    if ($stored) {
-                        PageLayout::postSuccess(sprintf(
-                            $success_message,
-                            htmlReady($this->zuordnung->getDisplayName())
-                        ));
-                    } else {
-                        PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen.'));
-                    }
-                    $this->redirect($this->action_url('details_abschnitt/' . $this->zuordnung->abschnitt_id));
+            // update data fields
+            $data_field_values = Request::getArray('datafields');
+            $invalid_data_fields = [];
+            $data_fields_updated = false;
+            foreach ($this->zuordnung->datafields as $data_field) {
+                $tdf = $data_field->getTypedDatafield();
+                $tdf->setValueFromSubmit($data_field_values[$data_field->datafield_id]);
+                if ($tdf->isValid() && $tdf->store()) {
+                    $data_fields_updated = true;
+                } else {
+                    $invalid_data_fields[] = $tdf->getName();
                 }
             }
-        }
-        if (Request::isXhr()) {
-            if ($success) {
-                $this->details_abschnitt_action($this->zuordnung->abschnitt_id);
+            $stored = $this->zuordnung->store();
+            if ($stored !== false) {
+                if ($stored || $data_fields_updated) {
+                    PageLayout::postSuccess(sprintf(
+                        _('Die Modulzuordnung "%s" wurde geändert.'),
+                        htmlReady($this->zuordnung->getDisplayName())
+                    ));
+                } else {
+                    PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen.'));
+                }
+                $this->relocate($this->action_url('details_abschnitt/' . $this->zuordnung->abschnitt_id));
+                return;
             } else {
-                $this->render_template('studiengaenge/versionen/modul_zuordnung');
+                PageLayout::postError(_('Die Änderungen an der Modulzuordnung konnten nicht gespeichert werden.'));
+            }
+            if (count($invalid_data_fields)) {
+                $message = ngettext(
+                    'Das folgende Datenfeld wurde falsch angegeben:',
+                    'Die folgenden Datenfelder wurden falsch angegeben:',
+                    count($invalid_data_fields)
+                );
+                PageLayout::postError(
+                    $message,
+                    array_map('htmlReady', $invalid_data_fields)
+                );
             }
         }
+        $this->redirect($this->action_url('modul_zuordnung/' . $this->zuordnung->id));
     }
 
     public function delete_modul_action($abschnitt_id, $modul_id)
@@ -548,11 +575,34 @@ abstract class SharedVersionController extends MVVController
         if ($this->modulteil) {
             $this->abschnitt_modul = StgteilabschnittModul::find($abschnitt_modul_id);
             if ($this->abschnitt_modul) {
+                // Store an additional ModulteilStgteilAbschnitt-Object for the relations to the data fields.
+                // Use 0 as value for the field fachsemester.
+                $this->assignment = new ModulteilStgteilabschnitt(
+                    [
+                        $this->modulteil->id,
+                        $this->abschnitt_modul->abschnitt_id,
+                        0
+                    ]
+                );
                 if (Request::submitted('store')) {
                     CSRFProtection::verifyUnsafeRequest();
                     $fachsem = $this->abschnitt_modul->getAllFachsemester($this->modulteil->id);
                     $status = Request::optionArray('status');
                     $is_modified = false;
+                    $this->assignment->store();
+                    // update datafields
+                    $data_field_values = Request::getArray('datafields');
+                    $invalid_data_fields = [];
+                    $data_fields_updated = false;
+                    foreach ($this->assignment->datafields as $data_field) {
+                        $tdf = $data_field->getTypedDatafield();
+                        $tdf->setValueFromSubmit($data_field_values[$data_field->datafield_id]);
+                        if ($tdf->isValid() && $tdf->store()) {
+                            $data_fields_updated = true;
+                        } else {
+                            $invalid_data_fields[] = $tdf->getName();
+                        }
+                    }
                     foreach (array_keys(Request::intArray('fachsemester')) as $i) {
                         if (isset($fachsem[$i])) {
                             $fachsem[$i]->differenzierung = $status[$i];
@@ -574,7 +624,7 @@ abstract class SharedVersionController extends MVVController
                             $is_modified = true;
                         }
                     }
-                    if ($is_modified) {
+                    if ($is_modified || $data_fields_updated) {
                         PageLayout::postSuccess(sprintf(
                             _('Die Zuordnung der Fachsemester zum Modulteil "%s" des Moduls "%s" im Abschnitt "%s" wurde geändert.'),
                             htmlReady($this->modulteil->getDisplayName()),
@@ -586,9 +636,21 @@ abstract class SharedVersionController extends MVVController
                             _('Es wurden keine Änderungen an der Zuordnung der Fachsemester vorgenommen.')
                         );
                     }
+                    if (count($invalid_data_fields)) {
+                        $message = ngettext(
+                            'Das folgende Datenfeld wurde falsch angegeben:',
+                            'Die folgenden Datenfelder wurden falsch angegeben:',
+                            count($invalid_data_fields)
+                        );
+                        PageLayout::postError(
+                            $message,
+                            array_map('htmlReady', $invalid_data_fields)
+                        );
+                    }
                     $this->relocate($this->action_url('details_abschnitt/' . $this->abschnitt_modul->abschnitt_id . '/' . $this->abschnitt_modul->modul_id));
                     return;
                 }
+                PageLayout::setTitle(_('Angaben zum verknüpften Modulteil'));
                 $this->render_template('studiengaenge/versionen/modulteil_semester', $this->layout);
             } else {
                 $this->render_nothing();

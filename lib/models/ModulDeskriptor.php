@@ -44,6 +44,8 @@
 
 class ModulDeskriptor extends ModuleManagementModel
 {
+    use MvvReplaceDataFieldsTrait;
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'mvv_modul_deskriptor';
@@ -68,6 +70,9 @@ class ModulDeskriptor extends ModuleManagementModel
                     return [$m];
                 }
         ];
+
+        $config['additional_fields']['abschnitt_assignments']['get'] =
+            fn(ModulDeskriptor $m): SimpleORMapCollection => $m->modul->abschnitte_modul;
 
         $config['i18n_fields']['verantwortlich'] = true;
         $config['i18n_fields']['bezeichnung'] = true;

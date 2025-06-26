@@ -54,7 +54,7 @@
                                         'name'           => 'search_stgteil', 'data-qs_name' => $search_stgteil->getId(),
                                         'data-qs_id'     => $qs_search_stgteil_id,
                                         'data-qs_submit' => 'no',
-                                        'class'          => 'mvv-qs-button'
+                                        'class'          => 'middle mvv-qs-button'
                                     ])->asInput(); ?>
                             </div>
                             <label><?= _('als') ?>
@@ -66,7 +66,7 @@
                                 </select>
                             </label>
                             <input type="hidden" name="level" value="stg">
-                            <input name="add_stgteil" class="text-top mvv-submit" type="image"
+                            <input name="add_stgteil" class="middle mvv-submit" type="image"
                                    title="<?= _('Studiengangteil hinzufügen') ?>"
                                    src="<?= Icon::create('accept')->asImagePath(); ?>">
                         </form>

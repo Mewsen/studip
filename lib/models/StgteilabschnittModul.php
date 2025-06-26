@@ -28,6 +28,7 @@
  * @property int $chdate database column
  * @property Modul $modul belongs_to Modul
  * @property StgteilAbschnitt $abschnitt belongs_to StgteilAbschnitt
+ * @property DataField $datafield has_many DataField
  */
 
 class StgteilabschnittModul extends ModuleManagementModelTreeItem
@@ -45,6 +46,20 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
             'class_name' => StgteilAbschnitt::class,
             'foreign_key' => 'abschnitt_id',
             'assoc_func' => 'findCached',
+        ];
+        $config['has_many']['datafields'] = [
+            'class_name' => DatafieldEntryModel::class,
+            'assoc_foreign_key' =>
+                function($model, $params) {
+                    $model->setValue('range_id', $params[0]->id);
+                },
+            'assoc_func' => 'findByModel',
+            'on_delete' => 'delete',
+            'on_store' => 'store',
+            'foreign_key' =>
+                function($m) {
+                    return [$m];
+                }
         ];
 
         $config['i18n_fields']['bezeichnung'] = true;
@@ -135,9 +150,15 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
     {
         $ret = [];
         $modulteil_abschnitte = ModulteilStgteilabschnitt::findBySql(
-                'modulteil_id = ' . DBManager::get()->quote($modulteil_id)
-                . ' AND abschnitt_id = '
-                . DBManager::get()->quote($this->abschnitt_id));
+            '`modulteil_id` = ?
+            AND `abschnitt_id` = ?
+            AND `fachsemester` > 0
+            ORDER BY `fachsemester` ASC',
+            [
+                $modulteil_id,
+                $this->abschnitt_id,
+            ]
+        );
         foreach ($modulteil_abschnitte as $modulteil_abschnitt) {
             $ret[$modulteil_abschnitt->fachsemester] = $modulteil_abschnitt;
         }

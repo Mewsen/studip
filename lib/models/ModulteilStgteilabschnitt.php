@@ -43,6 +43,20 @@ class ModulteilStgteilabschnitt extends ModuleManagementModel
             'foreign_key' => 'abschnitt_id',
             'assoc_func' => 'findCached',
         ];
+        $config['has_many']['datafields'] = [
+            'class_name' => DatafieldEntryModel::class,
+            'assoc_foreign_key' =>
+                function($model, $params) {
+                    $model->setValue('range_id', $params[0]->id);
+                },
+            'assoc_func' => 'findByModel',
+            'on_delete' => 'delete',
+            'on_store' => 'store',
+            'foreign_key' =>
+                function($m) {
+                    return [$m];
+                }
+        ];
 
         parent::configure($config);
     }

@@ -227,14 +227,16 @@ STUDIP.MVV.Search = {
             qs_real = qs_input.prev('input'),
             qs_name = qs_input.attr('id'),
             qs_select = jQuery('<select/>').attr('id', 'select_' + qs_name)
-                .addClass('mvv-search-select-list'),
+                .addClass('mvv-search-select-list')
+                .css({display: 'inline'}),
             qs_id = qs_item.data('qs_id'),
             do_submit = qs_item.data('qs_submit');
         var reset_button = jQuery('<input type="image" />');
             reset_button.attr({
                 src: STUDIP.ASSETS_URL+'images/icons/blue/decline.svg',
                 title: $gettext("Suche zurücksetzen")
-            }).addClass('mvv-search-reset');
+            }).addClass('mvv-search-reset middle')
+                .css({display: 'inline'});
         if (!_.isUndefined(do_submit)) {
             qs_select.change(function() {
                 var selected = qs_select.children('option:selected');

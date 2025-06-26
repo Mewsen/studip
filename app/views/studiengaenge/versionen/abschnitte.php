@@ -76,7 +76,7 @@
                                 'data-qs_name'   => $search_modul_version->getId(),
                                 'data-qs_id'     => $qs_search_modul_version_id,
                                 'data-qs_submit' => 'no',
-                                'class'          => 'mvv-qs-button'
+                                'class'          => 'middle mvv-qs-button'
                             ]) ?>
                             <label>
                                 <?= _('zu Abschnitt') ?>
@@ -86,7 +86,7 @@
                                     <? endforeach; ?>
                                 </select>
                             </label>
-                            <input name="add_modul" class="text-top mvv-submit" type="image"
+                            <input name="add_modul" class="middle mvv-submit" type="image"
                                    title="<?= _('Studiengangteil-Abschnitt hinzufügen') ?>"
                                    src="<?= Icon::create('accept')->asImagePath(); ?>">
                         </form>

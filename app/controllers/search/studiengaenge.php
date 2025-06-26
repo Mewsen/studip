@@ -335,8 +335,6 @@ class Search_StudiengaengeController extends MVVController
 
             ksort($fach_sem_data);
             $this->fach_sem_data = $fach_sem_data;
-            // Ausgabe des Namens ohne Fach (dieses ist im Zusatz bereits enthalten)
-            $this->studiengangTeilName = $this->stg_teil->getDisplayName();
 
             // add option widget to show only modules with courses in the
             // selected semester

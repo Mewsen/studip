@@ -59,15 +59,17 @@ class Admin_DatafieldsController extends AuthenticatedController
             ];
         } else {
             $this->datafields_list = [
-                'sem'                 => DataField::getDataFields('sem'),
-                'inst'                => DataField::getDataFields('inst'),
-                'user'                => DataField::getDataFields('user'),
-                'userinstrole'        => DataField::getDataFields('userinstrole'),
-                'usersemdata'         => DataField::getDataFields('usersemdata'),
-                'roleinstdata'        => DataField::getDataFields('roleinstdata'),
-                'moduldeskriptor'     => DataField::getDataFields('moduldeskriptor'),
-                'modulteildeskriptor' => DataField::getDataFields('modulteildeskriptor'),
-                'studycourse'         => DataField::getDataFields('studycourse'),
+                'sem'                       => DataField::getDataFields('sem'),
+                'inst'                      => DataField::getDataFields('inst'),
+                'user'                      => DataField::getDataFields('user'),
+                'userinstrole'              => DataField::getDataFields('userinstrole'),
+                'usersemdata'               => DataField::getDataFields('usersemdata'),
+                'roleinstdata'              => DataField::getDataFields('roleinstdata'),
+                'moduldeskriptor'           => DataField::getDataFields('moduldeskriptor'),
+                'modulteildeskriptor'       => DataField::getDataFields('modulteildeskriptor'),
+                'studycourse'               => DataField::getDataFields('studycourse'),
+                'stgteilabschnittmodul'     => DataField::getDataFields('stgteilabschnittmodul'),
+                'modulteilstgteilabschnitt' => DataField::getDataFields('modulteilstgteilabschnitt'),
             ];
         }
 
@@ -102,7 +104,10 @@ class Admin_DatafieldsController extends AuthenticatedController
                     $object_class = implode(',', Request::getArray('object_class'));
                     $datafield->object_class  = (trim($object_class) && $object_class != 'NULL') ? $object_class : null;
                 } elseif ($datafield->object_type === 'studycourse') {
-                    $datafield->object_class  = trim(Request::option('object_class', 'all_settings'));
+                    $datafield->object_class = trim(Request::option('object_class', 'all_settings'));
+                } elseif ($datafield->object_type === 'stgteilabschnittmodul'
+                    || $datafield->object_type === 'modulteilstgteilabschnitt') {
+                    $datafield->object_class = Request::option('object_class');
                 } else {
                     $datafield->object_class  = array_sum(Request::intArray('object_class')) ?: null;
                 }
@@ -153,7 +158,12 @@ class Admin_DatafieldsController extends AuthenticatedController
                 if ($type === 'moduldeskriptor' || $type === 'modulteildeskriptor') {
                     $object_class = implode(',', Request::getArray('object_class'));
                     $datafield->object_class = (trim($object_class) && $object_class != 'NULL') ? $object_class : null;
-                } elseif ($type === 'studycourse') {
+                } elseif (in_array($type,
+                    [
+                        'studycourse',
+                        'stgteilabschnittmodul',
+                        'modulteilstgteilabschnitt',
+                    ])) {
                     $datafield->object_class = Request::option('object_class');
                 } else {
                     $object_class = Request::getArray('object_class');
@@ -196,7 +206,6 @@ class Admin_DatafieldsController extends AuthenticatedController
             $this->render_action('type_select');
             return;
         }
-
         if (Request::isXhr() && $this->type_name) {
             PageLayout::setTitle(sprintf(_('Einen neuen Datentyp für die Kategorie "%s" erstellen'), $this->type_name));
         }
@@ -282,5 +291,59 @@ class Admin_DatafieldsController extends AuthenticatedController
         $filter->addElement(new SelectElement('', _('alle anzeigen')));
         $filter->setOptions($this->allclasses, $this->class_filter);
         $sidebar->addWidget($filter);
+    }
+
+    /**
+     * Returns an array of replaceable fields, depending on object type.
+     * Array keys are the field names of the related table.
+     * Array values are a short name and description of the field.
+     *
+     * @param string $type The type of the object.
+     * @return array An array of replace
+     */
+    public static function getReplaceFields(string $type): array
+    {
+        if ($type === 'stgteilabschnittmodul') {
+            return [
+                'dauer'                => _('Dauer'),
+                'kapazitaet'           => _('Kapazität'),
+                'kp'                   => _('Kreditpunkte'),
+                'pruef_ebene'          => _('Prüfungsebene'),
+                'faktor_note'          => _('Faktor Note'),
+                'verantwortlich'       => _('Verantwortlich (Freitext)'),
+                'voraussetzung'        => _('Teilnahmevoraussetzung'),
+                'kompetenzziele'       => _('Kompetenzziele'),
+                'inhalte'              => _('Inhalte'),
+                'literatur'            => _('Literatur'),
+                'links'                => _('Links'),
+                'kommentar'            => _('Kommentar'),
+                'kommentar_kapazitaet' => _('Kommentar Kapazität'),
+                'kommentar_sws'        => _('Kommentar Semesterwochenstunden'),
+                'kommentar_wl_selbst'  => _('Kommentar Workload (selbstgestaltete Arbeitszeit)'),
+                'kommentar_wl_pruef'   => _('Kommentar Workload (Prüfung)'),
+                'kommentar_note'       => _('Kommentar Note'),
+                'pruef_vorleistung'    => _('Prüfungsvorleistung'),
+                'pruef_leistung'       => _('Leistung/Prüfungsform'),
+                'pruef_wiederholung'   => _('Wiederholungsprüfung'),
+                'ersatztext'           => _('Ersatztext'),
+            ];
+        } elseif ($type === 'modulteilstgteilabschnitt') {
+            return [
+                'kp' => _('Kreditpunkte'),
+                'bezeichnung'            => _('Zusätliche Bezeichnung'),
+                'voraussetzungen'        => _('Teilnahmevoraussetzungen'),
+                'kommentar'              => _('Kommentar Modulteil'),
+                'kommentar_kapazitaet'   => _('Kommentar Kapazität'),
+                'kommentar_wl_praesenz'  => _('Kommentar Workload (Präsenzzeit)'),
+                'kommentar_wl_bereitung' => _('Kommentar Workload (Vor-/Nachbereitung)'),
+                'kommentar_wl_selbst'    => _('Kommentar Workload (Modulteil selbstgestaltete Arbeitszeit)'),
+                'kommentar_wl_pruef'     => _('Kommentar Workload (Modulteil Prüfung)'),
+                'pruef_vorleistung'      => _('Prüfungsvorleistung'),
+                'pruef_leistung'         => _('Prüfungsleistung Modulteil'),
+                'kommentar_pflicht'      => _('Kommentar Anwesenheitspflicht'),
+            ];
+        } else {
+            return [];
+        }
     }
 }

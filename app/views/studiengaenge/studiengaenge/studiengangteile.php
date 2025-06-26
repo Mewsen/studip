@@ -76,13 +76,14 @@
                                     'data-qs_name'   => $search->getId(),
                                     'data-qs_id'     => $qs_search_id,
                                     'data-qs_submit' => '1',
-                                    'class'          => 'mvv-qs-button'
+                                    'class'          => 'middle mvv-qs-button'
                                 ])->asInput(); ?>
                             <?= Icon::create(
                                 'accept',
                                 Icon::ROLE_CLICKABLE ,
                                 [
-                                    'title' => _('Studiengangteil zuordnen')
+                                    'title' => _('Studiengangteil zuordnen'),
+                                    'class' => 'middle'
                                 ])->asInput(['class' => 'mvv-submit', 'name' => 'add_stgteil']); ?>
                             <? if ($stg_bez) : ?>
                                 <input type="hidden" name="stgteil_bez_id" value="<?= $stg_bez->id ?>">

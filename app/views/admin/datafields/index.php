@@ -31,7 +31,7 @@
             <th><?= _('Feldtyp') ?></th>
             <th style="white-space: nowrap">
                 <?= _('Typ') ?>
-                <?= tooltipIcon(_('Veranstaltungskategorie, Einrichtungstyp, Sprache bzw. Nutzerstatus')) ?>
+                <?= tooltipIcon(_('Veranstaltungskategorie, Einrichtungstyp, Sprache, ersetztes Feld bzw. Nutzerstatus')) ?>
             </th>
             <th>
                 <?= _('Institution') ?>
@@ -58,7 +58,7 @@
         <? else: ?>
             <th class="toggle-indicator" colspan="11">
         <? endif; ?>
-            <? if (empty($datafields_list[$key])): ?>
+            <? if (empty($data)): ?>
                 <?= sprintf(_('Datenfelder für %s'), $allclasses[$key]) ?>
             <? else: ?>
                 <a name="<?= $key ?>" class="toggler" href="<?= $controller->url_for('admin/datafields/index/' . $key) ?>">
@@ -114,6 +114,9 @@
                             'mehrfach_info'     => _('Mehrfach-Studiengänge (Abschnitt "Inhalte und Informationen")')
                         ];?>
                 <?= $object_classes[$val->object_class] ?>
+            <? elseif ($key === 'stgteilabschnittmodul' || $key === 'modulteilstgteilabschnitt'): ?>
+                <? $replace_fields = Admin_DatafieldsController::getReplaceFields($key); ?>
+                <? printf('%s (%s)', $val->object_class, $replace_fields[$val->object_class]) ?>
             <? else: ?>
                 <?= $val->object_class !== null ? DataField::getReadableUserClass($val->object_class) : _('alle')?>
             <? endif; ?>

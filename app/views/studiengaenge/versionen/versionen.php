@@ -9,7 +9,7 @@
                     <? $ampel_icon = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['icon'] ?>
                     <? $ampelstatus = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['name'] ?>
                     <? if ($ampel_icon) : ?>
-                        <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                        <?= $ampel_icon->asImg(['title' => $ampelstatus]) ?>
                     <? endif; ?>
                     <?= htmlReady($version->getDisplayName()) ?>
                     <? if ($version->count_abschnitte) : ?>

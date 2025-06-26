@@ -60,6 +60,8 @@
 
 class Modul extends ModuleManagementModelTreeItem
 {
+    use MvvReplaceDataFieldsTrait;
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'mvv_modul';
@@ -141,15 +143,14 @@ class Modul extends ModuleManagementModelTreeItem
             'on_store' => 'store'
         ];
 
-        $config['additional_fields']['count_modulteile']['get'] = function ($modul) {
-            return $modul->count_modulteile;
-        };
-        $config['additional_fields']['languagesofinstruction']['get'] = function ($modul) {
-            return $modul->languages;
-        };
-        $config['additional_fields']['display_name']['get'] = function ($modul) {
-            return $modul->getDisplayName();
-        };
+        $config['additional_fields']['count_modulteile']['get'] =
+            fn(Modul $modul): int => $modul->count_modulteile;
+        $config['additional_fields']['languagesofinstruction']['get'] =
+            fn(Modul $modul): SimpleORMapCollection => $modul->languages;
+        $config['additional_fields']['display_name']['get'] =
+            fn(Modul $modul): string => $modul->getDisplayName();
+        $config['additional_fields']['abschnitt_assignments']['get'] =
+            fn(Modul $modul): SimpleORMapCollection => $modul->abschnitte_modul;
 
         $config['alias_fields']['flexnow_id'] = 'flexnow_modul';
 
@@ -1034,4 +1035,21 @@ class Modul extends ModuleManagementModelTreeItem
         }
         return $courses;
     }
+
+    /**
+     * Set the section (Studiengangteil-Abschnitt) with replaced or
+     * added fields (defined as data fields) for all related objects.
+     *
+     * @param Stgteilabschnitt $abschnitt The section.
+     * @return int The number of objects related to the given section.
+     * @see MvvReplaceDataFieldsTrait::setReplaceDfAbschnitt()
+     */
+    public function setReplaceDfAbschnitt(Stgteilabschnitt $abschnitt): int
+    {
+        $this->replace_df_abschnitt_id = $abschnitt->id;
+        $ret = $this->modulteile->each(fn(Modulteil $mt): int => $mt->setReplaceDfAbschnitt($abschnitt));
+        $ret += $this->deskriptoren->setReplaceDfAbschnitt($abschnitt);
+        return $ret + 1;
+    }
+
 }

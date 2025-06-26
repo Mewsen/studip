@@ -39,6 +39,9 @@
                             <?= Icon::create('edit', Icon::ROLE_CLICKABLE , tooltip2(_('Modulzuordnung bearbeiten')))->asImg(); ?>
                         </a>
                     <? endif; ?>
+                        <a data-dialog="size=auto" href="<?= $controller->link_for('module/module/description', $assignment->modul_id, ['abschnitt_id' => $assignment->abschnitt_id]) ?>">
+                            <?= Icon::create('log', Icon::ROLE_CLICKABLE, tooltip2(_('Lokale Modulbeschreibung')))->asImg(); ?>
+                        </a>
                     <? if (MvvPerm::havePermCreate($assignment)) : ?>
                         <?= Icon::create('trash', Icon::ROLE_CLICKABLE , tooltip2(_('Modulzuordnung löschen')))
                             ->asInput([
@@ -55,7 +58,11 @@
                 </tr>
                 <? if (!empty($modul_id) && ($modul_id == $assignment->modul->id)) : ?>
                 <tr class="loaded-details nohover">
-                    <?= $this->render_partial('studiengaenge/versionen/modulteile', ['modul' => $assignment->modul, 'abschnitt_id' => $assignment->abschnitt_id, 'assignment' => $assignment]) ?>
+                    <?= $this->render_partial('studiengaenge/versionen/modulteile',
+                        [
+                            'modul' => $assignment->modul,
+                            'abschnitt_id' => $assignment->abschnitt_id,
+                            'assignment' => $assignment]) ?>
                 </tr>
                 <? endif; ?>
             </tbody>
@@ -67,14 +74,23 @@
                         <?= _('Modul hinzufügen') ?>
                         <?= CSRFProtection::tokenTag() ?>
                         <?= $search_modul_abschnitt->render(); ?>
-                        <?= Icon::create('search', Icon::ROLE_CLICKABLE, ['title' => _('Modul suchen'), 'name' => 'search_stgteil', 'data-qs_name' => $search_modul_abschnitt->getId(), 'data-qs_id' => $qs_search_modul_abschnitt_id, 'data-qs_submit' => 'no',  'class' => 'mvv-qs-button'])->asInput(); ?>
+                        <?= Icon::create('search', Icon::ROLE_CLICKABLE,
+                            [
+                                'title' => _('Modul suchen'),
+                                'name' => 'search_stgteil',
+                                'data-qs_name' => $search_modul_abschnitt->getId(),
+                                'data-qs_id' => $qs_search_modul_abschnitt_id,
+                                'data-qs_submit' => 'no',
+                                'class' => 'middle mvv-qs-button'
+                            ]
+                        )->asInput(); ?>
                         <input type="hidden" name="abschnitt_id" value="<?= $abschnitt->id ?>">
                         <?= Icon::create('accept',  Icon::ROLE_CLICKABLE , tooltip2(_('Modul hinzufügen')))
                             ->asInput(
                                 [
                                     'formaction'   => $controller->action_url('add_modul', $version->id),
                                     'name'         => 'add_modul',
-                                    'class'        => 'text-top mvv-submit'
+                                    'class'        => 'middle mvv-submit'
                                 ]
                             ); ?>
                     </td>

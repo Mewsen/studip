@@ -2,21 +2,19 @@
 /**
  * @var Studiengaenge_VersionenController $controller
  * @var StgteilabschnittModul $abschnitt_modul
+ * @var Modulteil $modulteil
+ * @var ModulteilStgteilabschnitt $assignment
  */
 use Studip\Button, Studip\LinkButton;
 $perm_abschnitt = MvvPerm::getFieldPermModulteil_abschnitte($abschnitt_modul->abschnitt);
 ?>
-
-<h3>
-    <?= _('Zuordnung der Modulteile zu Fachsemestern') ?>
-</h3>
 <form class="default" data-dialog="" action="<?= $controller->action_link('modulteil_semester', $abschnitt_modul->id, $modulteil->id) ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
-    <fieldset>
+    <? $perm = MvvPerm::get($assignment) ?>
+    <fieldset class="collapsable">
         <legend><?= _('Belegung in folgenden Fachsemestern') ?></legend>
         <? for ($i = 1; $i <= $GLOBALS['MVV_MODULTEIL_FACHSEMESTER']; $i++) : ?>
         <? $fachsemester = $abschnitt_modul->getFachsemester($modulteil->id, $i) ?>
-        <? $perm = $fachsemester ? MvvPerm::get($fachsemester) : null ?>
         <div class="mvv-fachsemester" style="flex:1;">
             <label>
                 <? if ($fachsemester) : ?>
@@ -39,20 +37,30 @@ $perm_abschnitt = MvvPerm::getFieldPermModulteil_abschnitte($abschnitt_modul->ab
                     <?= $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$fachsemester->differenzierung]['name'] ?>
                     <input type="hidden" name="status[<?= $i ?>]" value="<?= $fachsemester->differenzierung ?>">
                 <? else: ?>
-                        <select name="status[<?= $i ?>]">
-                            <option value="">-- <?= _('Bitte wählen') ?> --</option>
-                            <? foreach ($GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'] as $status_key => $status) : ?>
-                            <? if ($status['visible']) : ?>
-                            <option value="<?= $status_key ?>"<?= ($fachsemester && $fachsemester->differenzierung == $status_key ? ' selected' : '') ?>><?= $status['name'] ?></option>
-                            <? endif; ?>
-                            <? endforeach; ?>
-                        </select>
-
-
+                    <select name="status[<?= $i ?>]">
+                        <option value="">-- <?= _('Bitte wählen') ?> --</option>
+                        <? foreach ($GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'] as $status_key => $status) : ?>
+                        <? if ($status['visible']) : ?>
+                        <option value="<?= $status_key ?>"<?= ($fachsemester && $fachsemester->differenzierung == $status_key ? ' selected' : '') ?>><?= $status['name'] ?></option>
+                        <? endif; ?>
+                        <? endforeach; ?>
+                    </select>
                 <? endif; ?>
             </label>
         </div>
         <? endfor; ?>
+    </fieldset>
+    <fieldset class="collapsable">
+        <legend><?= _('Angaben zum Modulteil am Studiengangteilabschnitt') ?></legend>
+        <? foreach ($assignment->datafields as $entry) : ?>
+            <? $tdf = $entry->getTypedDatafield(); ?>
+            <? if ($perm->haveDfEntryPerm($entry->datafield_id, MvvPerm::PERM_WRITE)) : ?>
+                <?= $tdf->getHTML('datafields') ?>
+            <? else : ?>
+                <em><?= htmlReady($tdf->getName()) ?>:</em><br>
+                <?= $tdf->getDisplayValue() ?>
+            <? endif; ?>
+        <? endforeach; ?>
     </fieldset>
     <div data-dialog-button >
         <? if ($perm_abschnitt >= MvvPerm::PERM_WRITE) : ?>

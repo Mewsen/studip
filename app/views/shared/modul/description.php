@@ -3,6 +3,7 @@
  * @var Modul $modul
  * @var int $type
  * @var Shared_ModulController $controller
+ * @var StgteilabschnittModul|null $abschnitt_modul
  */
 ?>
 
@@ -10,7 +11,12 @@
 <div style="width: 100%; text-align: right;">
     <? foreach ($modul->deskriptoren->getAvailableTranslations($modul->original_language) as $language) : ?>
         <? $lang = $GLOBALS['CONTENT_LANGUAGES'][$language]; ?>
-        <a data-dialog="size=auto;title='<?= htmlReady($modul->getDisplayName()) ?>'" href="<?= $controller->action_link('description/' . $modul->id . '/', ['display_language' => $language]) ?>">
+        <a data-dialog="size=auto;title='<?= htmlReady($modul->getDisplayName()) ?>'"
+            href="<?= $controller->action_link('description/' . $modul->id . '/',
+                [
+                    'display_language' => $language,
+                    'abschnitt_id' => $abschnitt_modul->abschnitt_id,
+                ]) ?>">
             <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
         </a>
     <? endforeach; ?>

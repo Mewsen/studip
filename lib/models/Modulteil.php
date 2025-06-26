@@ -48,6 +48,8 @@
 
 class Modulteil extends ModuleManagementModelTreeItem
 {
+    use MvvReplaceDataFieldsTrait;
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'mvv_modulteil';
@@ -321,7 +323,7 @@ class Modulteil extends ModuleManagementModelTreeItem
     /**
      * Assignes languages of instruction to this part-module.
      *
-     * @param type $languages An array of language keys defined in mvv_config.php.
+     * @param string[] $languages An array of language keys defined in mvv_config.php.
      */
     public function assignLanguagesOfInstruction($languages)
     {
@@ -396,4 +398,17 @@ class Modulteil extends ModuleManagementModelTreeItem
         return $courses;
     }
 
+    /**
+     * Set the section (Studiengangteil-Abschnitt) with replaced or
+     * added fields (defined as data fields) for all related objects.
+     *
+     * @param Stgteilabschnitt $abschnitt The section.
+     * @return int The number of objects related to the given section.
+     * @see MvvReplaceDataFieldsTrait::setReplaceDfAbschnitt()
+     */
+    public function setReplaceDfAbschnitt(StgteilAbschnitt $abschnitt): int
+    {
+        $this->replace_df_abschnitt_id = $abschnitt->id;
+        return $this->deskriptoren->setReplaceDfAbschnitt($abschnitt) + 1;
+    }
 }

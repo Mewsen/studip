@@ -1,25 +1,23 @@
 <?php
 /**
  * @var Modul $modul
- * @var ModulDeskriptor $modulDeskriptor
  * @var string $affect_id
- * @var array $modulVerantwortung
  * @var int $type
- * @var int $nummer_modulteil
- * @var array $note
- * @var string $num_bezeichnung
+ * @var StgteilabschnittModul|null $abschnitt_modul
+ * @var string $code
+ * @var string $title
  */
-$modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
+$deskriptor = $modul->getDeskriptor($display_language ?? null);
 ?>
-<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modul->getId(); ?>" data-mvv-type="modul">
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= $modul->id ?>" data-mvv-type="modul">
     <colgroup>
         <col width="30%">
         <col width="70%">
     </colgroup>
     <thead>
         <tr>
-            <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.code"><?= htmlReady($modul->code) ?></th>
-            <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.kp" style="text-align: right;"><?= sprintf("%d CP", $modul->kp) ?></th>
+            <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.code"><?= htmlReady($code ?: $modul->code) ?></th>
+            <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.kp" style="text-align: right;"><?= sprintf("%d CP", $modul->getReplacedValue('kp')) ?></th>
         </tr>
     <? if ($modul->fassung_nr): ?>
         <tr>
@@ -37,20 +35,20 @@ $modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
     <tbody>
         <tr>
             <td><strong><?= _('Modulbezeichnung') ?></strong></td>
-            <td data-mvv-field="mvv_modul.bezeichnung"><?= htmlReady($modulDeskriptor->bezeichnung) ?></td>
+            <td data-mvv-field="mvv_modul.bezeichnung"><?= htmlReady($title ?: $deskriptor->bezeichnung) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Modulcode') ?></strong></td>
-            <td data-mvv-field="mvv_modul.code"><?= htmlReady($modul->code) ?></td>
+            <td data-mvv-field="mvv_modul.code"><?= htmlReady($code ?: $modul->code) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Semester der erstmaligen Durchführung') ?></strong></td>
-            <td data-mvv-field="mvv_modul.start"><?= htmlReady($startSemester['name'] ?? '') ?></td>
+            <td data-mvv-field="mvv_modul.start"><?= htmlReady($start_semester['name'] ?? '') ?></td>
         </tr>
-        <? if (!empty($instituteName)) : ?>
+        <? if (!empty($institute_name)) : ?>
         <tr>
             <td><strong><?= _('Fachbereich/Institut') ?></strong></td>
-            <td data-mvv-field="mvv_modul_inst"><?= htmlReady($instituteName) ?></td>
+            <td data-mvv-field="mvv_modul_inst"><?= htmlReady($institute_name) ?></td>
         </tr>
         <? endif; ?>
         <tr>
@@ -116,25 +114,25 @@ $modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
                 <? endforeach; ?>
             </td>
         </tr>
-    <? if (trim($modulDeskriptor->verantwortlich)): ?>
+    <? if (trim($deskriptor->getReplacedValue('verantwortlich'))): ?>
         <tr>
             <td><strong><?= _('Weitere verantwortliche Personen') ?></strong></td>
             <td>
-                <?= formatReady($modulDeskriptor->verantwortlich) ?>
+                <?= formatReady($deskriptor->getReplacedValue('verantwortlich')) ?>
             </td>
         </tr>
     <? endif; ?>
         <tr>
             <td><strong><?= _('Teilnahmevoraussetzungen') ?></strong></td>
-            <td data-mvv-field="mvv_modul_deskriptor.voraussetzung"><?= formatReady($modulDeskriptor->voraussetzung) ?></td>
+            <td data-mvv-field="mvv_modul_deskriptor.voraussetzung"><?= formatReady($deskriptor->getReplacedValue('voraussetzung')) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Kompetenzziele') ?></strong></td>
-            <td data-mvv-field="mvv_modul_deskriptor.kompetenzziele"><?= formatReady($modulDeskriptor->kompetenzziele) ?></td>
+            <td data-mvv-field="mvv_modul_deskriptor.kompetenzziele"><?= formatReady($deskriptor->getReplacedValue('kompetenzziele')) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Modulinhalte') ?></strong></td>
-            <td data-mvv-field="mvv_modul_deskriptor.inhalte"><?= formatReady($modulDeskriptor->inhalte) ?></td>
+            <td data-mvv-field="mvv_modul_deskriptor.inhalte"><?= formatReady($deskriptor->getReplacedValue('inhalte')) ?></td>
         </tr>
         <? if (!isset($type) || $type !== 3) : ?>
         <tr>
@@ -164,19 +162,26 @@ $modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
         </tr>
         <tr>
             <td><strong><?= _('Angebotsrhythmus Modul') ?></strong></td>
-            <td data-mvv-field="mvv_modul_deskriptor.turnus"><?= htmlReady($modulDeskriptor->turnus) ?></td>
+            <td data-mvv-field="mvv_modul_deskriptor.turnus"><?= htmlReady($deskriptor->turnus) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Aufnahmekapazität Modul') ?></strong></td>
-            <td data-mvv-field="mvv_modul.kapazitaet"><?= htmlReady(trim($modul->kapazitaet)) ?: _('unbegrenzt') ?> <?= MVVController::trim($modulDeskriptor->kommentar_kapazitaet) ? sprintf("(%s)", formatReady($modulDeskriptor->kommentar_kapazitaet)) : '' ?></td>
+            <td data-mvv-field="mvv_modul.kapazitaet">
+                <?= htmlReady(trim($modul->getReplacedValue('kapazitaet')) ?: _('unbegrenzt')) ?>
+                <?= MVVController::trim($deskriptor->getReplacedValue('kommentar_kapazitaet'))
+                    ? sprintf("(%s)", formatReady($deskriptor->getReplacedValue('kommentar_kapazitaet')))
+                    : '' ?>
+            </td>
         </tr>
         <tr>
             <td><strong><?= _('Prüfungsebene') ?></strong></td>
-            <td data-mvv-field="mvv_modul.pruef_ebene"><?= htmlReady($pruefungsEbene ?? '') ?></td>
+            <td data-mvv-field="mvv_modul.pruef_ebene">
+                <?= htmlReady($GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->getReplacedValue('pruef_ebene')] ?? '') ?>
+            </td>
         </tr>
         <tr>
             <td><strong><?= _('Credit-Points') ?></strong></td>
-            <td data-mvv-field="mvv_modul.kp"><?= sprintf("%d CP", htmlReady($modul->kp)) ?></td>
+            <td data-mvv-field="mvv_modul.kp"><?= sprintf("%d CP", htmlReady($modul->getReplacedValue('kp'))) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Modulabschlussnote') ?></strong></td>
@@ -212,25 +217,38 @@ $modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
                         <?= implode('; ', $note) . '. ' ?>
                     <? endif; ?>
                 <? endif; ?>
-                <?= formatReady(trim($modulDeskriptor->kommentar_note)) ?>
+                <?= formatReady(trim($deskriptor->getReplacedValue('kommentar_note'))) ?>
             </td>
         </tr>
         <tr>
             <td><strong><?= _('Faktor der Modulnote für die Endnote des Studiengangs') ?></strong></td>
-            <td data-mvv-field="mvv_modul.faktor_note"><?= htmlReady($modul->faktor_note) ?></td>
+            <td data-mvv-field="mvv_modul.faktor_note"><?= htmlReady($modul->getReplacedValue('faktor_note')) ?></td>
         </tr>
-        <? if (trim($modulDeskriptor->kommentar)) : ?>
+        <? if (trim($deskriptor->getReplacedValue('kommentar'))) : ?>
         <tr>
             <td><strong><?= _('Hinweise') ?></strong></td>
-            <td data-mvv-field="mvv_modul_deskriptor.kommentar"><?= formatReady($modulDeskriptor->kommentar) ?></td>
+            <td data-mvv-field="mvv_modul_deskriptor.kommentar"><?= formatReady($deskriptor->getReplacedValue('kommentar')) ?></td>
         </tr>
         <? endif; ?>
-        <? foreach ($modulDeskriptor->datafields as $entry) : ?>
-        <? $df = $entry->getTypedDatafield(); ?>
-        <tr>
-            <td><strong><?= htmlReady($df->getName()) ?></strong></td>
-            <td><?= $df->getDisplayValue(); ?></td>
-        </tr>
+        <? foreach ($deskriptor->datafields as $entry) : ?>
+            <? $df = $entry->getTypedDatafield(); ?>
+            <tr>
+                <td><strong><?= htmlReady($df->getName()) ?></strong></td>
+                <td><?= $df->getDisplayValue(); ?></td>
+            </tr>
         <? endforeach; ?>
+        <? if ($abschnitt_modul) : ?>
+            <? $data_fields = $abschnitt_modul->datafields->filter(
+                fn(DatafieldEntryModel $d): bool => ($d->datafield->object_class ?? '') === '') ?>
+            <? foreach ($data_fields as $entry) : ?>
+                <? if (trim($entry->content)) : ?>
+                    <? $df = $entry->getTypedDatafield(); ?>
+                    <tr>
+                        <td><strong><?= htmlReady($df->getName()) ?></strong></td>
+                        <td><?= $df->getDisplayValue(); ?></td>
+                    </tr>
+                <? endif; ?>
+            <? endforeach; ?>
+        <? endif; ?>
     </tbody>
 </table>

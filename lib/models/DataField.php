@@ -126,15 +126,17 @@ class DataField extends SimpleORMap implements PrivacyObject
     public static function getDataClass()
     {
         return [
-            'sem'                 => _('Veranstaltungen'),
-            'inst'                => _('Einrichtungen'),
-            'user'                => _('Benutzer'),
-            'userinstrole'        => _('Benutzerrollen in Einrichtungen'),
-            'usersemdata'         => _('Benutzer-Zusatzangaben in VA'),
-            'roleinstdata'        => _('Rollen in Einrichtungen'),
-            'moduldeskriptor'     => _('Moduldeskriptoren'),
-            'modulteildeskriptor' => _('Modulteildeskriptoren'),
-            'studycourse'         => _('Studiengänge')
+            'sem'                       => _('Veranstaltungen'),
+            'inst'                      => _('Einrichtungen'),
+            'user'                      => _('Benutzer'),
+            'userinstrole'              => _('Benutzerrollen in Einrichtungen'),
+            'usersemdata'               => _('Benutzer-Zusatzangaben in VA'),
+            'roleinstdata'              => _('Rollen in Einrichtungen'),
+            'moduldeskriptor'           => _('Moduldeskriptoren'),
+            'modulteildeskriptor'       => _('Modulteildeskriptoren'),
+            'studycourse'               => _('Studiengänge'),
+            'stgteilabschnittmodul'     => _('Module an Studiengangteilabschnitten'),
+            'modulteilstgteilabschnitt' => _('Modulteile an Studiengangteilabschnitten'),
         ];
     }
 
@@ -285,4 +287,6 @@ class DataField extends SimpleORMap implements PrivacyObject
             }
         }
     }
+
+
 }

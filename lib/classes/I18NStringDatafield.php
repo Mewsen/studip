@@ -77,7 +77,7 @@ class I18NStringDatafield extends I18NString
     /**
      * Returns an I18NString object by given object_id, table and field.
      *
-     * @param string $object_id The id of the object with i18n fields.
+     * @param string|array $object_id The id of the object with i18n fields.
      * @param string $table The name of the table with the original values.
      * @param string $field The name of the i18n field.
      * @param string $base Sets the original value or retrieve it from database

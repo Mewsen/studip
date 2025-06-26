@@ -6,7 +6,7 @@
 use Studip\Button, Studip\LinkButton;
 ?>
 <? $perm = new MvvPerm($zuordnung) ?>
-<form class="default" action="<?= $controller->action_link('modul_zuordnung/' . $zuordnung->id) ?>" method="post">
+<form data-dialog="" class="default" action="<?= $controller->action_link('modul_zuordnung_store/' . $zuordnung->id) ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Grunddaten') ?></legend>
@@ -32,6 +32,21 @@ use Studip\Button, Studip\LinkButton;
                     maxlength="250" value="<?= htmlReady($zuordnung->modulcode) ?>">
         </label>
     </fieldset>
+    <? if (count($zuordnung->datafields)) : ?>
+        <fieldset>
+            <legend><?= _('Angaben zum Modul am Studiengangteilabschnitt') ?></legend>
+            <? $default_language = array_keys($GLOBALS['CONTENT_LANGUAGES'])[0] ?>
+            <? foreach ($zuordnung->datafields as $entry) : ?>
+                <? $tdf = $entry->getTypedDatafield(); ?>
+                <? if ($perm->haveDfEntryPerm($entry->datafield_id, MvvPerm::PERM_WRITE)) : ?>
+                    <?= $tdf->getHTML('datafields') ?>
+                <? else : ?>
+                    <em><?= htmlReady($tdf->getName()) ?>:</em><br>
+                    <?= $tdf->getDisplayValue() ?>
+                <? endif; ?>
+            <? endforeach; ?>
+        </fieldset>
+    <? endif; ?>
     <footer data-dialog-button>
         <?= Button::createAccept(
             _('Übernehmen'),

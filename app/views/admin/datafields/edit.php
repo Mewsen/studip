@@ -6,6 +6,7 @@
  * @var string $datafield_id
  * @var DataFieldEntry $datafield_entry
  * @var array $institutes
+ * @var array $replace_fields
  */
 
 use Studip\Button, Studip\LinkButton;
@@ -98,6 +99,15 @@ use Studip\Button, Studip\LinkButton;
                 <option value="einfach_info"<?= mb_strpos($item->object_class, 'einfach_info') !== false ? ' selected' : '' ?>><?= _('Einfach-Studiengänge (Abschnitt "Inhalte und Informationen")') ?></option>
                 <option value="mehrfach_settings"<?= mb_strpos($item->object_class, 'mehrfach_settings') !== false ? ' selected' : '' ?>><?= _('Mehrfach-Studiengänge (Abschnitt "Einstellungen")') ?></option>
                 <option value="mehrfach_info"<?= mb_strpos($item->object_class, 'mehrfach_info') !== false ? ' selected' : '' ?>><?= _('Mehrfach-Studiengänge (Abschnitt "Inhalte und Informationen")') ?></option>
+            </select>
+        <? elseif ($item->object_type === 'stgteilabschnittmodul' || $item->object_type === 'modulteilstgteilabschnitt'): ?>
+            <?= _('Überschreibt') ?>
+
+            <select name="object_class">
+                <option value=""><?= _('Zusätzliches Datenfeld (keine Ersetzung)') ?></option>
+                <? foreach (Admin_DatafieldsController::getReplaceFields($item->object_type) as $key => $name): ?>
+                    <option value="<?= $key ?>"<?= $key === $item->object_class ? ' selected' : '' ?>><? printf('%s (%s)', $key, htmlReady($name)) ?></option>
+                <? endforeach; ?>
             </select>
         <? else : ?>
             <?= _('Nutzerstatus') ?>:
