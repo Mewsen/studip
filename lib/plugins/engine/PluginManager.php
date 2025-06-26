@@ -594,9 +594,14 @@ class PluginManager
         $plugin_class = '';
         $plugin = null;
 
-        if (isset($this->plugin_cache[$class])) {
-            return $this->plugin_cache[$class];
+        if (array_key_exists($class, $this->plugin_cache)) {
+            if ($this->plugin_cache[$class] !== null) {
+                return $this->plugin_cache[$class];
+            }
+            throw new PluginAlreadyLoadingException($class);
         }
+
+        $this->plugin_cache[$class] = null;
 
         if ($plugin_info['core'] || !$this->isPluginsDisabled()) {
             $plugin_class = $this->loadPlugin($class, $path);
@@ -604,6 +609,7 @@ class PluginManager
 
         if ($plugin_class) {
             $plugin = app()->get($class);
+            NotificationCenter::postNotification('PluginDidLoad', $this, compact('class', 'plugin'));
         }
 
         return $this->plugin_cache[$class] = $plugin;

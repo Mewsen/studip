@@ -60,6 +60,7 @@ class PluginEngine
         if (is_object($user) && $perm->have_perm('admin')) {
             self::getPlugins(AdministrationPlugin::class);
         }
+        NotificationCenter::postNotification('PluginsDidLoad', PluginManager::getInstance());
     }
 
     /**
