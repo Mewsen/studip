@@ -17,7 +17,7 @@
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023.
 # Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
 # Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
-# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025.
 # Oliver Oster <oster@zmml.uni-bremen.de>, 2024.
 #
 # Translators:
@@ -27,8 +27,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2024-07-18 14:29+0000\n"
-"Last-Translator: Oliver Oster <oster@zmml.uni-bremen.de>\n"
+"PO-Revision-Date: 2025-06-26 14:01+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
 "Language: en\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -11401,7 +11402,7 @@ msgstr ""
 "As said: We hope that this way is a very intuitive way for everyone to "
 "distribute and use learning materials. Most people do not want to think "
 "about rights and liabilities in this context. We hope that we can make those "
-"people rejoice with the marketplace."
+"people happy with the marketplace."
 
 #: app/views/oer/market/add_to_course.php:13
 msgid "Veranstaltungsliste"
@@ -15870,7 +15871,7 @@ msgstr "Export course overview"
 
 #: app/views/my_courses/waiting_list.php:3
 msgid "Anmelde- und Wartelisteneinträge"
-msgstr "Entries on registration and waiting list"
+msgstr "Entries in registration list/waiting list"
 
 #: app/views/my_courses/waiting_list.php:24
 msgid "Position/Chance"
@@ -16518,7 +16519,7 @@ msgstr "Remove label"
 
 #: app/views/messages/read.php:57
 msgid "Schlagwort hinzufügen"
-msgstr "Add label"
+msgstr "Add keyword"
 
 #: app/views/messages/read.php:91
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:2681
@@ -18976,11 +18977,11 @@ msgstr "Amount of courses to be created"
 
 #: app/views/course/grouping/create_children.php:16
 msgid "Nummerierung/Kennzeichnung anhängen an"
-msgstr "Append marker to"
+msgstr "Append number/marker to"
 
 #: app/views/course/grouping/create_children.php:30
 msgid "Nummerierung/Kennzeichnung durch"
-msgstr "Marking by"
+msgstr "Numbering/marking by"
 
 #: app/views/course/grouping/create_children.php:34
 msgid "Zahlen (1, 2, 3, ...)"
@@ -25073,7 +25074,7 @@ msgstr "Show contact groups"
 
 #: app/controllers/online.php:104
 msgid "Der Benutzer wurde zu Ihren Kontakten hinzugefügt."
-msgstr "The user was added to your contacts."
+msgstr "The user has been added to your contacts."
 
 #: app/controllers/online.php:109
 msgid "Der Benutzer gehört nicht mehr zu Ihren Kontakten."
@@ -25430,9 +25431,9 @@ msgid ""
 "wurde aufgehoben. Wenn Sie an der Veranstaltung teilnehmen wollen, müssen "
 "Sie sich erneut bewerben."
 msgstr ""
-"The inscription into the admission list or waitlist resp. of the course <b>"
-"%s</b> has been revoked. If you would like to participate in the course, you "
-"have to apply again."
+"Your name has been removed from the registration list or waiting list of the "
+"course <b>%s</b>. If you would like to participate in the course, you have "
+"to apply again."
 
 #: app/controllers/my_courses.php:637
 msgid "Meine archivierten Veranstaltungen"
@@ -25788,8 +25789,8 @@ msgid ""
 "%s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen "
 "anzumdelden."
 msgstr ""
-"You are not enroled into any course. Please use %s<b>Search / add courses</b>"
-"%s to enrol yourself into courses."
+"You are not enrolled in any course. Please use %s<b>Search / add courses</"
+"b>%s to enrol yourself into courses."
 
 #: app/controllers/settings/statusgruppen.php:34
 #: app/controllers/my_institutes.php:125
@@ -26070,8 +26071,9 @@ msgid "BENUTZER IST GESPERRT!"
 msgstr "USER IS LOCKED!"
 
 #: app/controllers/profile.php:420
+#, fuzzy
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
-msgstr "The user was added to your contacts."
+msgstr "The user has been added to your contacts."
 
 #: app/controllers/profile.php:438 app/controllers/contact.php:152
 msgid "Der Kontakt wurde entfernt."
@@ -31904,7 +31906,7 @@ msgstr "No amount of seats has been specified!"
 
 #: app/controllers/course/room_requests.php:937
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
-msgstr "The room request has been reopened and is thereby again put."
+msgstr "The room request has been reopened and is active again."
 
 #: app/controllers/course/room_requests.php:1012
 #, php-format
@@ -32024,7 +32026,7 @@ msgid ""
 "Teilnehmende umgewandelt werden?"
 msgstr ""
 "You are about to change the admission mode to preliminary admission. Do you "
-"want to convert the participants already enroled in the course to "
+"want to convert the participants already enrolled in the course to "
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:137
@@ -32387,7 +32389,7 @@ msgstr "The sub-course could not be added."
 msgid ""
 "Bitte geben Sie eine Veranstaltung an, die als Unterveranstaltung "
 "hinzugefügt werden soll."
-msgstr "Please specify a course which shall be added as sub-course."
+msgstr "Please specify a course you want to add as a sub-course."
 
 #: app/controllers/course/grouping.php:511
 msgid "Die Unterveranstaltung wurde entfernt."
@@ -33251,7 +33253,7 @@ msgstr "not assigned to a group"
 
 #: app/controllers/course/statusgroups.php:222
 msgid "Personen suchen"
-msgstr "Search user"
+msgstr "Find users"
 
 #: app/controllers/course/statusgroups.php:244
 msgid "Mehrere Gruppen anlegen"
@@ -33381,7 +33383,7 @@ msgstr "Remove group members"
 
 #: app/controllers/course/statusgroups.php:1078
 msgid "Personen aus Veranstaltung austragen"
-msgstr "Sign out person from course"
+msgstr "Remove person from course"
 
 #: app/controllers/course/statusgroups.php:1108
 msgid "Die ausgewählten Gruppen wurden gelöscht."
@@ -44867,8 +44869,7 @@ msgstr "Prefer higher semesters"
 
 #: lib/admissionrules/preferentialadmission/templates/info.php:1
 msgid "Folgende Personenkreise werden bei der Platzverteilung bevorzugt:"
-msgstr ""
-"The following categories of people are preferred during seat allocation:"
+msgstr "The following categories of people are preferred when allocating seats:"
 
 #: lib/admissionrules/preferentialadmission/templates/info.php:15
 msgid "Höhere Fachsemester werden bevorzugt behandelt."
@@ -44901,9 +44902,8 @@ msgid ""
 "zugeordneten Veranstaltungen vergeben. Die Anmeldung ist dann nur für "
 "Personen möglich, die dieses Passwort kennen."
 msgstr ""
-"With this admission rule you can set a password for the access to the "
-"assigned courses. Enrolment is then only possible for people who know the "
-"password."
+"With this admission rule you can set a password for access to the assigned "
+"courses. Only people who know the password will then be able to register."
 
 #: lib/admissionrules/passwordadmission/PasswordAdmission.class.php:151
 msgid "Die Eingabe eines Passwortes ist erforderlich."
