@@ -223,4 +223,9 @@ class CoreWiki extends CorePlugin implements StudipModule
         return $toc;
     }
 
+    public function isActivatableForContext(Range $context)
+    {
+        return (bool) Config::get()->getValue('WIKI_ENABLE');
+    }
+
 }
