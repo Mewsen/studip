@@ -170,7 +170,7 @@
                         </dd>
                     <? endif ?>
                     <? if ($request->comment) : ?>
-                        <dt><?= _('Kommentar des Anfragenden') ?></dt>
+                        <dt><?= _('Interner Kommentar') ?></dt>
                         <dd><?= htmlReady($request->comment) ?></dd>
                     <? endif ?>
                     <dt><?= _('Antwort') ?></dt>

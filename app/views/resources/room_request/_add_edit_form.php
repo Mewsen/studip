@@ -43,7 +43,7 @@
                    max="<?= htmlReady($max_preparation_time) ?>" class="size-s">
         </label>
         <label>
-            <?= _('Anfragetext') ?>
+            <?= _('Interner Kommentar') ?>
             <textarea name="comment"><?= htmlReady($comment) ?></textarea>
         </label>
         <footer data-dialog-button>

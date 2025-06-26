@@ -40,7 +40,7 @@ Die folgenden Zeiträume wurden gebucht<?= $request->course->isToolActive('CoreS
 <? if ($request->comment) : ?>
 
 
-Kommentar zur Anfrage:
+Interner Kommentar:
 
 <?= $request->comment ?>
 <? endif ?>
