@@ -567,19 +567,11 @@ class ExternModuleTemplatePersondetails extends ExternModule {
     }
 
     private function getContentOwnCategories () {
-        $stm = DBManager::get()->prepare(
-            "SELECT kategorie_id, name, content "
-            . "FROM kategorien "
-            . "WHERE range_id = ? "
-            . "ORDER BY priority");
-        $stm->execute([$this->user_id]);
-        $i = 0;
-        while ($row = $stm->fetch(PDO::FETCH_ASSOC)) {
-            if (Visibility::verify('kat_'.$row['kategorie_id'], $this->user_id)) {
-                $content['OWNCATEGORIES']['OWNCATEGORY'][$i]['OWNCATEGORY_TITLE'] = ExternModule::ExtHtmlReady($row['name']);
-                $content['OWNCATEGORIES']['OWNCATEGORY'][$i]['OWNCATEGORY_CONTENT'] = ExternModule::ExtFormatReady($row['content']);
+        foreach (Kategorie::findByUserId($this->user_id) as $i => $row) {
+            if (Visibility::verify('kat_' . $row->id, $this->user_id)) {
+                $content['OWNCATEGORIES']['OWNCATEGORY'][$i]['OWNCATEGORY_TITLE'] = ExternModule::ExtHtmlReady($row->name);
+                $content['OWNCATEGORIES']['OWNCATEGORY'][$i]['OWNCATEGORY_CONTENT'] = ExternModule::ExtFormatReady($row->content);
                 $content['OWNCATEGORIES']['OWNCATEGORY'][$i]['OWNCATEGORY_NO'] = $i + 1;
-                $i++;
             }
         }
         return $content;
