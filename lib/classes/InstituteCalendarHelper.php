@@ -436,10 +436,22 @@ class InstituteCalendarHelper
                     }
                 }
 
+                $next_single_date = CourseDate::getNextDateByMetadate($cycle_date->metadate_id);
+                if ($next_single_date) {
+                    $room_name = $next_single_date->getRoomName() ?: _('ohne Raumangabe');
+                }
+
+                $fields = [
+                    'course_number' => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_COURSE_NUMBER_VISIBLE ? ($course->veranstaltungsnummer ?: _('(keine VA-Nummer)')) : null,
+                    'course_name'   => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_COURSE_NAME_VISIBLE ? $course->getFullName('name') : null,
+                    'lecturers'     => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_LECTURERS_VISIBLE ? self::getLecturers($course) : null,
+                    'room'          => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_ROOMS_VISIBLE  ? $room_name : null
+                ];
+
                 $events[] = [
                     'resourceId'       => $resource_column,
                     'id'               => $cycle_date->id,
-                    'title'            => $name,
+                    'title'            => empty($fields) ? $name : '',
                     'start'            => $start,
                     'end'              => $end,
                     'textColor'        => $textcolor,
@@ -456,6 +468,8 @@ class InstituteCalendarHelper
                     'tooltip'          => self::getCycleInfos($course, $cycle_date),
                     'icon'             => $is_start_editable ? '' : 'lock-locked',
                     'conform'          => $conform,
+                    // custom props (event.extendedProps)
+                    'content_fields'   => $fields,
                 ];
             }
         }, array_keys($courses));
@@ -700,6 +714,20 @@ class InstituteCalendarHelper
         }
 
         return $info_string;
+    }
+
+    private static function getLecturers(Course $course): array
+    {
+        $dozenten = [];
+        $lecturers = '';
+        foreach (CourseMember::findByCourseAndStatus($course->id, 'dozent') as $cmember) {
+            $dozenten[$cmember->user->user_id] = $cmember->user->getFullName();
+        }
+        if ($dozenten) {
+            $lecturers .= implode(', ', $dozenten) . "\n";
+        }
+
+        return $lecturers;
     }
 
     public static function getBackgroundEvents($start = null)

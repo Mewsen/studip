@@ -579,14 +579,19 @@ class Fullcalendar
 
                 if ($(info.view.context.calendar.el).hasClass('institute-plan')) {
                     $(eventElement).attr('title', event.extendedProps.tooltip);
-                    $(eventElement).find('.fc-title').html(
-                        $('<div>').css({
-                            width: 'calc(100% - 21px)',
-                            height: '100%',
-                            wordBreak: 'break-word'
-                        }).text(eventElement.text)
-                    );
-                    $(eventElement).find('.fc-title').append(
+                    if (event.extendedProps.content_fields) {
+                        for (const [css_class, field] of Object.entries(event.extendedProps.content_fields)) {
+                            $(eventElement).find('.fc-content').append(
+                                $('<div>').css({
+                                    width: 'calc(100% - 21px)',
+                                    height: '100%',
+                                    wordBreak: 'break-word'
+                                }).text(field)
+                                    .addClass(css_class + ' fc-title')
+                            );
+                        }
+                    }
+                    $(eventElement).find('.fc-content').append(
                         $('<button class="event-colorpicker">').addClass(iconColor)
                     );
                 } else {

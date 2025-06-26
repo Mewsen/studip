@@ -72,6 +72,12 @@ class Admin_CourseplanningController extends AuthenticatedController
             Icon::create('file-pdf')
         );
 
+        Sidebar::get()->getWidget('actions')->addLink(
+            _('Ansichtsoptionen'),
+            $this->tilefilterURL('overview'),
+            Icon::create('admin')
+        )->asDialog('size=400x350');
+
         $this->courses = $this->getFilteredCourses();
         $this->events = InstituteCalendarHelper::getEvents(
             $this->courses,
@@ -127,6 +133,12 @@ class Admin_CourseplanningController extends AuthenticatedController
             $this->viewcolumnsURL($cal_date->format('w')),
             Icon::create('admin')
         )->asDialog('size=auto');
+
+        Sidebar::get()->getWidget('actions')->addLink(
+            _('Ansichtsoptionen'),
+            $this->tilefilterURL('weekday', $day_of_week),
+            Icon::create('admin')
+        )->asDialog('size=400x350');
 
         $this->cal_date = $cal_date;
         $this->courses = $this->getFilteredCourses();
@@ -886,5 +898,51 @@ class Admin_CourseplanningController extends AuthenticatedController
             PageLayout::postSuccess(_('Der gewünschte Veranstaltungstyp wurde übernommen!'));
         }
         $this->redirect('admin/courseplanning/index');
+    }
+
+    /**
+     * Sets filters for the title on the date tile
+     */
+    public function tilefilter_action($view = null, $weekday = null)
+    {
+        PageLayout::setTitle(_('Angezeigte Veranstaltungsdaten'));
+
+        $config = User::findCurrent()->getConfiguration();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('CoursePlanningTileFilter')
+                ->withProps([
+                    'view' => $view,
+                    'weekday' => $weekday,
+                    'config' => [
+                        'course_number' => (bool) $config->getValue('TIMETABLE_COURSE_NUMBER_VISIBLE'),
+                        'course_name'   => (bool) $config->getValue('TIMETABLE_COURSE_NAME_VISIBLE'),
+                        'lecturers'     => (bool) $config->getValue('TIMETABLE_LECTURERS_VISIBLE'),
+                        'rooms'         => (bool) $config->getValue('TIMETABLE_ROOMS_VISIBLE'),
+                    ]
+                ])
+        );
+
+        $this->view = $view;
+        $this->weekday = $weekday;
+        $this->config = UserConfig::get($GLOBALS['user']->id);
+    }
+
+    public function store_tilefilter_action($view = null, $weekday = null)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $GLOBALS['user']->cfg->store('TIMETABLE_COURSE_NUMBER_VISIBLE', Request::bool('course_number'));
+        $GLOBALS['user']->cfg->store('TIMETABLE_COURSE_NAME_VISIBLE', Request::bool('course_name'));
+        $GLOBALS['user']->cfg->store('TIMETABLE_LECTURERS_VISIBLE', Request::bool('lecturers'));
+        $GLOBALS['user']->cfg->store('TIMETABLE_ROOMS_VISIBLE', Request::bool('rooms'));
+
+        if ($view === 'overview') {
+            $this->redirect('admin/courseplanning/index');
+        } elseif ($view === 'weekday') {
+            $this->redirect('admin/courseplanning/weekday/' . $weekday);
+        }
+
+        PageLayout::postSuccess(_('Ihre Einstellungen wurden gespeichert.'));
     }
 }

@@ -740,5 +740,18 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         );
     }
 
+    /**
+     * returns the next single date within a given cycle
+     */
+    public static function getNextDateByMetadate($metadate_id): ?self
+    {
+        return self::findOneBySQL(
+            "`metadate_id` = :metadate_id
+             AND `date` >= UNIX_TIMESTAMP()
+             ORDER BY `date`",
+            ['metadate_id' => $metadate_id]
+        );
+    }
+
     //End of Event interface implementation.
 }
