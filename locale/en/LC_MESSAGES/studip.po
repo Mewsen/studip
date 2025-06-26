@@ -1133,7 +1133,7 @@ msgid ""
 "anzumdelden."
 msgstr ""
 "You are not enrolled in any course. Please use %s<b>Search / add courses</"
-"b>%s to enrol yourself into courses."
+"b>%s to enroll yourself in courses."
 
 #: app/controllers/settings/statusgruppen.php:34
 #: app/controllers/my_institutes.php:117
@@ -2235,8 +2235,8 @@ msgid ""
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
-"You are about to change the admission mode to direct enrolment. Do you want "
-"to enrol the preliminary participants into the course (otherwise the "
+"You are about to change the admission mode to direct enrollment. Do you want "
+"to enroll the preliminary participants into the course (otherwise the "
 "preliminary participants will be removed from the course) ?"
 
 #: app/controllers/course/admission.php:149
@@ -2260,7 +2260,7 @@ msgstr "Status change %s"
 #: app/controllers/course/admission.php:156
 #, php-format
 msgid "%s Teilnehmende wurden auf vorläufigen Eintrag gesetzt."
-msgstr "%s participants have been set to preliminary enroled."
+msgstr "%s participants have been set to preliminary enrolled."
 
 #: app/controllers/course/admission.php:172
 #, php-format
@@ -2274,7 +2274,7 @@ msgstr ""
 #: app/controllers/course/admission.php:179
 #, php-format
 msgid "%s Teilnehmende wurden in die Veranstaltung übernommen."
-msgstr "%s participants have been enroled into the course."
+msgstr "%s participants have been enrolled in the course."
 
 #: app/controllers/course/admission.php:188
 #, php-format
@@ -2328,7 +2328,7 @@ msgid ""
 "__nicht__ zugelassen worden."
 msgstr ""
 "The waiting list of course **%s** was deactivated. You have __NOT__ been "
-"enroled."
+"enrolled."
 
 #: app/controllers/course/admission.php:302
 #: app/controllers/course/admission.php:397
@@ -2644,7 +2644,7 @@ msgstr "Go to course"
 msgid ""
 "Die Anmeldung ist verbindlich, Teilnehmende können sich nicht selbst "
 "austragen."
-msgstr "The enrolment is binding, participants cannot unsubscribe themselves."
+msgstr "The enrollment is binding, participants cannot unsubscribe themselves."
 
 #: app/controllers/course/details.php:255
 #: app/controllers/course/details.php:261
@@ -3460,7 +3460,7 @@ msgstr "E-mail"
 #: app/views/course/members/user_list.php:64
 #: app/views/course/statusgroups/getgroup.php:58
 msgid "Anmeldedatum"
-msgstr "Date of enrolment"
+msgstr "Date of enrollment"
 
 #: app/controllers/course/statusgroups.php:323
 #: app/controllers/course/members.php:1849
@@ -3820,8 +3820,8 @@ msgstr ""
 #: app/controllers/course/grouping.php:562
 msgid "Die gewählte Person wurde eingetragen."
 msgid_plural "Die gewählten Personen wurden eingetragen."
-msgstr[0] "The selected person has been enroled."
-msgstr[1] "The selected persons have been enroled."
+msgstr[0] "The selected person has been enrolled."
+msgstr[1] "The selected persons have been enrolled."
 
 #: app/controllers/course/block_appointments.php:39
 msgid "Blockveranstaltungstermine anlegen"
@@ -4538,17 +4538,17 @@ msgstr "Person is already assigned to course."
 msgid ""
 "%s Person(en) sind bereits in die Zielveranstaltung eingetragen und konnten "
 "daher nicht verschoben/kopiert werden."
-msgstr "%s persons have already been enroled to the course."
+msgstr "%s persons have already been enrolled to the course."
 
 #: app/controllers/course/members.php:571
 msgid "Eine Person kann nicht in die Zielveranstaltung eingetragen werden."
-msgstr "Unable to enrol one person to the course."
+msgstr "Unable to enroll one person to the course."
 
 #: app/controllers/course/members.php:573
 #, php-format
 msgid ""
 "%s Person(en) konnten nicht in die Zielveranstaltung eingetragen werden."
-msgstr "%s persons not enroled to the course."
+msgstr "%s persons not enrolled to the course."
 
 #: app/controllers/course/members.php:579
 msgid "Bitte wählen Sie eine Zielveranstaltung."
@@ -4566,7 +4566,7 @@ msgstr "%s persons added to the course!"
 #: app/controllers/course/members.php:749
 #, php-format
 msgid "%s Personen waren bereits in der Veranstaltung eingetragen!"
-msgstr "%s persons have already been enroled in the course!"
+msgstr "%s persons have already been enrolled in the course!"
 
 #: app/controllers/course/members.php:754
 #, php-format
@@ -4720,7 +4720,7 @@ msgid ""
 "Um die Anmeldung zur Veranstaltung abzuschließen, müssen Sie zusätzliche "
 "Angaben auf dieser Seite machen."
 msgstr ""
-"To finish the enrolment into the course, you have to enter additional "
+"To finish the enrollment into the course, you have to enter additional "
 "information on this page."
 
 #: app/controllers/course/members.php:1503
@@ -5186,7 +5186,7 @@ msgstr "You will be informed about new postings."
 
 #: app/controllers/course/forum/index.php:804
 msgid "Abonnement aufgehoben."
-msgstr "Enrolment terminated."
+msgstr "Enrollment terminated."
 
 #: app/controllers/course/forum/forum_controller.php:30
 #: app/controllers/archive.php:20 app/controllers/activityfeed.php:42
@@ -5285,7 +5285,7 @@ msgstr "Suggestion submitted."
 #: app/controllers/course/connectedcourses.php:172
 #, fuzzy
 msgid "Verknüpfung zu der Veranstaltung wurde aufgehoben."
-msgstr "Your enrolment to the course **%s** has been revoked."
+msgstr "Your enrollment to the course **%s** has been revoked."
 
 #: app/controllers/course/connectedcourses.php:227
 #, fuzzy
@@ -5665,11 +5665,11 @@ msgstr "You have not been added as substitute."
 
 #: app/controllers/course/enrolment.php:65
 msgid "Veranstaltungsanmeldung"
-msgstr "Enrolment"
+msgstr "Enrollment"
 
 #: app/controllers/course/enrolment.php:99
 msgid "Die Anmeldung war nicht erfolgreich."
-msgstr "The enrolment has not been successful."
+msgstr "The enrollment has not been successful."
 
 #: app/controllers/course/enrolment.php:111
 msgid "Die Plätze in dieser Veranstaltung wurden automatisch verteilt."
@@ -5692,14 +5692,14 @@ msgstr ""
 msgid ""
 "Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es steht "
 "keine Warteliste zur Verfügung."
-msgstr "Enrolment not successful. No seats available."
+msgstr "Enrolmlent not successful. No seats available."
 
 #: app/controllers/course/enrolment.php:130
 msgid ""
 "Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es stehen "
 "keine Wartelistenplätze zur Verfügung, da die Warteliste voll ist."
 msgstr ""
-"The enrolment has not been successful. All seats have been occupied and "
+"The enrollment has not been successful. All seats have been occupied and "
 "there are no seats left on the wait list since the wait list is full."
 
 #: app/controllers/course/enrolment.php:133
@@ -5707,7 +5707,7 @@ msgid ""
 "Die Anmeldung war wegen technischer Probleme nicht erfolgreich. Bitte "
 "versuchen Sie es später noch einmal."
 msgstr ""
-"The enrolment has not been possible due to technical problems. Please try "
+"The enrollment has not been possible due to technical problems. Please try "
 "again later."
 
 #: app/controllers/course/enrolment.php:136
@@ -6987,7 +6987,7 @@ msgstr ""
 #: app/controllers/calendar/schedule.php:266
 #, fuzzy
 msgid "%{course_name} (vorgemerkt)"
-msgstr "(not enroled)"
+msgstr "%{course_name} (not enrolled)"
 
 #: app/controllers/calendar/schedule.php:365
 #: app/controllers/calendar/schedule.php:397
@@ -13839,12 +13839,12 @@ msgstr "File overview for %s"
 
 #: app/controllers/admin/user.php:1437
 msgid "Eingetragen in Veranstaltungen (dozent / tutor / autor / user)"
-msgstr "Enroled in courses (lecturer / tutor / author / user)"
+msgstr "Enrolled in courses (lecturer / tutor / author / user)"
 
 #: app/controllers/admin/user.php:1446
 msgid ""
 "Eingetragen in geschlossenen Veranstaltungen (dozent / tutor / autor / user)"
-msgstr "Enroled in closed courses (lecturer / tutor / author / user)"
+msgstr "Enrolled in closed courses (lecturer / tutor / author / user)"
 
 #: app/controllers/admin/user.php:1457
 msgid "Eingetragen in Wartelisten (wartend / vorläufig akzeptiert)"
@@ -14716,7 +14716,7 @@ msgstr "No filter criteria selected"
 #, php-format
 msgid ""
 "Es wurden %u von %u möglichen Personen in die Veranstaltung %s eingetragen."
-msgstr "%u out of %u potential users have been enroled in course %s."
+msgstr "%u out of %u potential users have been enrolled in course %s."
 
 #: app/controllers/admin/autoinsert.php:192
 msgid ""
@@ -16080,7 +16080,7 @@ msgid ""
 "müssen sich ggf. neu anmelden!"
 msgstr ""
 "Are you sure you want to unsubscribe from the restricted course \"%s\"? You "
-"will loose the permissions for the course and may need to enrol yourself "
+"will loose the permissions for the course and may need to enroll yourself "
 "again!"
 
 #: app/controllers/my_courses.php:350
@@ -16091,7 +16091,7 @@ msgid ""
 "wieder anmelden!"
 msgstr ""
 "Do you really want to sign out of the course \"%s\" that has limited "
-"participation? The enrolment time range has expired and you cannot enrol "
+"participation? The enrolment time range has expired and you cannot enroll "
 "again!"
 
 #: app/controllers/my_courses.php:354
@@ -18586,7 +18586,7 @@ msgid ""
 "schreiben, für die Sie sich anmelden."
 msgstr ""
 "Your status has successfully been changed to <em>author</em>.<br>\n"
-"Now you have write access to most of the courses you enrol in."
+"Now you have write access to most of the courses you enroll in."
 
 #: app/controllers/registration.php:189
 msgid ""
@@ -23580,7 +23580,7 @@ msgstr "Add users"
 
 #: app/views/course/studygroup/members.php:105
 msgid "Wollen Sie die markierten Personen wirklich eintragen?"
-msgstr "Do you really want to enrol the marked persons?"
+msgstr "Do you really want to enroll the marked persons?"
 
 #: app/views/course/studygroup/members.php:107
 msgid "Mitgliedschaften ablehnen"
@@ -24445,7 +24445,7 @@ msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
 msgid "Alle vorläufig akzeptierten Teilnehmende der Veranstaltung"
-msgstr "All preliminary enroled participants of the course"
+msgstr "All preliminary enrolled participants of the course"
 
 #: app/views/course/members/circular_mail.php:89
 msgid "Alle Personen auf der Warteliste der Veranstaltung"
@@ -24461,7 +24461,7 @@ msgstr "preliminary accepted users"
 
 #: app/views/course/members/accepted_list.php:22
 msgid "Vorläufig akzeptierte Teilnehmende"
-msgstr "Preliminary enroled participants"
+msgstr "Preliminary enrolled participants"
 
 #: app/views/course/members/accepted_list.php:38
 msgid "vorläufig akzeptierten NutzerInnen"
@@ -24540,7 +24540,7 @@ msgid ""
 "Zeile die Email Adresse ein."
 msgstr ""
 "In the text area <strong>Apply participant list</strong>, you can enter a "
-"list of names of students that shall be enroled in the course.\n"
+"list of names of students that shall be enrolled in the course.\n"
 "                Use the select box to select the appropriate format in which "
 "you want to enter the names.<br />\n"
 "                <strong>Input format</strong><br/>\n"
@@ -24562,7 +24562,7 @@ msgstr "E-mail"
 #: app/views/course/members/import_autorlist.php:36
 #, php-format
 msgid "<strong>%s</strong> in die Veranstaltung eintragen"
-msgstr "enrol <strong>%s</strong> in the course"
+msgstr "enroll <strong>%s</strong> in the course"
 
 #: app/views/course/members/additional_input.php:33
 #: app/views/course/members/additional_input.php:36
@@ -24948,7 +24948,7 @@ msgid ""
 "Die Teilnehmenden dieser Veranstaltung können sich selbst in beliebig viele "
 "der Gruppen eintragen, bei denen kein Exklusiveintrag aktiviert ist."
 msgstr ""
-"The participants of this course can enrol themselves into any group where "
+"The participants of this course can enroll themselves into any group where "
 "exclusive enrolment isn't activated."
 
 #: app/views/course/statusgroups/groupinfo.php:26
@@ -24956,7 +24956,7 @@ msgid ""
 "Die Teilnehmenden dieser Veranstaltung können sich in genau einer der "
 "Gruppen eintragen, bei denen der Exklusiveintrag aktiviert ist."
 msgstr ""
-"The participants of this course can enrol themselves in exactly one of those "
+"The participants of this course can enroll themselves in exactly one of those "
 "groups where exclusive enrolment is activated."
 
 #: app/views/course/statusgroups/groupinfo.php:33
@@ -25232,7 +25232,7 @@ msgid ""
 "Um endgültig in die Veranstaltung aufgenommen zu werden, müssen Sie noch "
 "weitere Voraussetzungen erfüllen."
 msgstr ""
-"To be finally enroled in the course, you must fulfil further pre-requisites."
+"To be finally enrolled in the course, you must fulfil further pre-requisites."
 
 #: app/views/course/enrolment/prelim.php:5
 msgid "Lesen Sie bitte folgenden Hinweistext:"
@@ -29251,7 +29251,7 @@ msgstr "Select institute"
 msgid ""
 "Anmeldesets legen fest, wer sich zu den zugeordneten Veranstaltungen "
 "anmelden darf."
-msgstr "Admissions determine who is allowed to enrol to the assigned courses."
+msgstr "Admissions determine who is allowed to enroll to the assigned courses."
 
 #: app/views/admission/courseset/index.php:8
 msgid "Hier sehen Sie alle Anmeldesets, auf die Sie Zugriff haben."
@@ -29339,7 +29339,7 @@ msgstr "Multiplier"
 
 #: app/views/admission/courseset/factored_users.php:11
 msgid "Angemeldet"
-msgstr "Enroled"
+msgstr "Enrolled"
 
 #: app/views/admission/courseset/factored_users.php:18
 #: app/views/vips/exercises/ClozeTask/edit.php:60
@@ -35172,7 +35172,7 @@ msgid ""
 "Die folgenden Veranstaltungen können Sie betreten, ohne sich im System "
 "registriert zu haben."
 msgstr ""
-"You can enrol in the following courses without being registered to the "
+"You can enroll in the following courses without being registered to the "
 "system."
 
 #: app/views/public_courses/index.php:12
@@ -38975,7 +38975,7 @@ msgid ""
 "Erstellen Sie eine Veranstaltung oder tragen Sie sich in eine ein."
 msgstr ""
 "Learning materials can only be copied inside own courses. Create a course or "
-"enrol into one."
+"enroll into one."
 
 #: app/views/oer/market/_searchform.php:5
 msgid "Aktiver Filter der Kategorie"
@@ -39145,7 +39145,7 @@ msgstr "Readers"
 
 #: config/config_develop.inc.php:90
 msgid "Vorläufig akzeptierte Person"
-msgstr "Provisionally enroled participants"
+msgstr "Provisionally enrolled participants"
 
 #: config/config_develop.inc.php:91
 msgid "Vorläufig akzeptierte Personen"
@@ -41362,7 +41362,7 @@ msgstr "In admission persons have %s times the chance of getting a seat."
 msgid ""
 "Legt eine Regel fest, die erfüllt sein muss, um sich erfolgreich zu einer "
 "Menge von Veranstaltungen anmelden zu können."
-msgstr "Define conditions to enrol to courses."
+msgstr "Define conditions to enroll to courses."
 
 #: lib/classes/admission/AdmissionRule.php:427
 #: lib/admissionrules/timedadmission/TimedAdmission.php:215
@@ -47144,7 +47144,7 @@ msgid ""
 "sind damit __nicht__ zugelassen worden."
 msgstr ""
 "The waiting list of course **%s** was deactivated. You have __NOT__ been "
-"enroled."
+"enrolled."
 
 #: lib/models/Course.php:826
 #, fuzzy
@@ -47153,7 +47153,7 @@ msgid ""
 "damit __nicht__ zugelassen worden."
 msgstr ""
 "You have been removed from the waiting list of the course **%s** and "
-"therefore you are __not__ enroled."
+"therefore you are __not__ enrolled."
 
 #: lib/models/Course.php:840
 #, fuzzy
@@ -47221,7 +47221,7 @@ msgstr ""
 #: lib/models/Course.php:1211
 #, fuzzy, php-format
 msgid "Sie wurden für die Veranstaltung %s endgültig zugelassen."
-msgstr "You have been enroled in the course **%s**."
+msgstr "You have been enrolled in the course **%s**."
 
 #: lib/models/Course.php:1216
 msgid "Eintragung in Veranstaltung"
@@ -47230,7 +47230,7 @@ msgstr "Enrolment in course"
 #: lib/models/Course.php:1218
 #, fuzzy, php-format
 msgid "Sie wurden in die Veranstaltung %s eingetragen."
-msgstr "You have been enroled in the course **%s**."
+msgstr "You have been enrolled in the course **%s**."
 
 #: lib/models/Course.php:1249
 #, fuzzy
@@ -47301,7 +47301,7 @@ msgid ""
 "Diese Veranstaltung ist die Hauptveranstaltung einer Veranstaltungsgruppe. "
 "Sie können sich nur in die zugehörigen Unterveranstaltungen eintragen."
 msgstr ""
-"This is a course group. You may only enrol yourself in one of its sub-"
+"This is a course group. You may only enroll yourself in one of its sub-"
 "courses."
 
 #: lib/models/Course.php:1640
@@ -47318,12 +47318,12 @@ msgstr "Learning modules for this course"
 msgid ""
 "Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung "
 "eintragen."
-msgstr "As an administrator you cannot enrol yourself into a course."
+msgstr "As an administrator you cannot enroll yourself into a course."
 
 #: lib/models/Course.php:1668
 #, fuzzy
 msgid "Sie sind bereits in der Veranstaltung eingetragen."
-msgstr "You are not enroled into the course \"%s\"."
+msgstr "You are not enrolled into the course \"%s\"."
 
 #: lib/models/Course.php:1682
 #, fuzzy
@@ -47359,7 +47359,7 @@ msgstr "You must not copy this course"
 #: lib/models/Course.php:1724
 #, fuzzy
 msgid "Sie dürfen sich in diese Veranstaltung nicht selbst eintragen."
-msgstr "You are not allowed to be enroled into the course \"%s\"."
+msgstr "You are not allowed to be enrolled in the course \"%s\"."
 
 #: lib/models/Course.php:1735
 #, fuzzy
@@ -47390,7 +47390,7 @@ msgid ""
 "Sie sind nicht in der gleichen Domäne wie die Veranstaltung und können sich "
 "daher nicht für die Veranstaltung eintragen."
 msgstr ""
-"This is a course group. You may only enrol yourself in one of its sub-"
+"This is a course group. You may only enroll yourself in one of its sub-"
 "courses."
 
 #: lib/models/Course.php:1791
@@ -47726,7 +47726,7 @@ msgid ""
 "Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der "
 "Übersicht Ihrer Veranstaltungen."
 msgstr ""
-"You have been enroled in the course **%s (%s)**, because a seat has become "
+"You have been enrolled in the course **%s (%s)**, because a seat has become "
 "available for you. You are thereby approved for the participation in the "
 "course. You will find the course in the overview of your courses from now on."
 
@@ -47995,7 +47995,7 @@ msgid ""
 "Bedingungen erfüllt sein, innerhalb einer Bedingung müssen aber alle "
 "Datenfelder zutreffen."
 msgstr ""
-"Using a set of conditions one can define here who is allowed to enrol into "
+"Using a set of conditions one can define here who is allowed to enroll into "
 "the courses. Only one condition must be fulfilled but inside a condition all "
 "data fields must match."
 
@@ -48101,8 +48101,8 @@ msgid ""
 "bereits eingetragen sein müssen, oder in der sie nicht eingetragen sein "
 "dürfen, um sich zu Veranstaltungen des Anmeldesets anmelden zu können."
 msgstr ""
-"This admission configures a course to which a user has to be enroled OR does "
-"not has to be enroled to subscribe to courses bundled in this admission."
+"This admission configures a course to which a user has to be enrolled OR does "
+"not has to be enrolled to subscribe to courses bundled in this admission."
 
 #: lib/admissionrules/coursememberadmission/CourseMemberAdmission.php:77
 msgid "Veranstaltungsbezogene Anmeldung"
@@ -48143,13 +48143,13 @@ msgstr "Enrolment is allowed for up to %s courses of the admission set."
 msgid ""
 "Sie haben sich bereits zur maximalen Anzahl von %s Veranstaltungen "
 "angemeldet."
-msgstr "You enroled to the maximal possible number of %s courses."
+msgstr "You enrolled to the maximal possible number of %s courses."
 
 #: lib/admissionrules/limitedadmission/LimitedAdmission.php:92
 msgid ""
 "Diese Art von Anmelderegel legt eine Maximalzahl von Veranstaltungen fest, "
 "an denen Nutzer im aktuellen Anmeldeset teilnehmen können."
-msgstr "Limit of courses students can enrol to."
+msgstr "Limit of courses students can enroll to."
 
 #: lib/admissionrules/limitedadmission/LimitedAdmission.php:117
 msgid "Anmeldung zu maximal n Veranstaltungen"
@@ -50325,7 +50325,7 @@ msgid ""
 "Neuigkeiten und Änderungen in belegten Veranstaltungen."
 msgstr ""
 "From now on you will periodically receive information about announcements "
-"and changes in the courses you have enroled in."
+"and changes in the courses you have enrolled in."
 
 #: templates/mail/notification_html.php:132
 msgid ""
@@ -50354,7 +50354,7 @@ msgid ""
 "Neuigkeiten und Änderungen in Ihren belegten Veranstaltungen."
 msgstr ""
 "From now on you will periodically receive information about announcements "
-"and changes in the courses you have enroled in."
+"and changes in the courses you have enrolled in."
 
 #: templates/mail/notification_text.php:9
 msgid ""
@@ -51956,7 +51956,7 @@ msgstr ""
 #~ "Sie wurden manu\n"
 #~ "\n"
 #~ "                        ell in die Veranstaltung **%s** eingetragen."
-#~ msgstr "You have been manually enroled into the course **%s**."
+#~ msgstr "You have been manually enrolled in the course **%s**."
 
 #, php-format
 #~ msgid ""
@@ -51968,21 +51968,21 @@ msgstr ""
 
 #, php-format
 #~ msgid "%s wurde in die Veranstaltung mit dem Status <b>%s</b> eingetragen."
-#~ msgstr "%s has been enroled in the course with status <b>%s</b>."
+#~ msgstr "%s has been enrolled in the course with status <b>%s</b>."
 
 #, php-format
 #~ msgid ""
 #~ "%s wurde aus der Anmelde bzw. Warteliste mit dem Status\n"
 #~ "                            <b>%s</b> in die Veranstaltung eingetragen."
 #~ msgstr ""
-#~ "%s has been removed from the registration resp. waiting list and enroled "
+#~ "%s has been removed from the registration resp. waiting list and enrolled "
 #~ "in this course with status <b>%s</b>."
 
 #, php-format
 #~ msgid ""
 #~ "%s wurde mit dem Status <b>%s</b> endgültig akzeptiert\n"
 #~ "                            und damit in die Veranstaltung aufgenommen."
-#~ msgstr "%s has finally been enroled in the course with status <b>%s</b>."
+#~ msgstr "%s has finally been enrolled in the course with status <b>%s</b>."
 
 #~ msgid ""
 #~ "Es stehen keine weiteren Plätze mehr im Teilnehmendenkontingent zur "
@@ -52031,7 +52031,7 @@ msgstr ""
 #~ "Sie wurden aus der Warteliste in die Veranstaltung **%s** aufgenommen und "
 #~ "sind damit zugelassen."
 #~ msgstr ""
-#~ "You have been enroled from the waiting list into the course **%s** and "
+#~ "You have been enrolled from the waiting list into the course **%s** and "
 #~ "you are therefore approved."
 
 #, php-format
@@ -52343,7 +52343,7 @@ msgstr ""
 #~ msgstr "List of applications (%s applicants)"
 
 #~ msgid "Nachricht an alle Angemeldeten"
-#~ msgstr "Message to all enroled members"
+#~ msgstr "Message to all enrolled members"
 
 #, php-format
 #~ msgid "%s zugewiesene Veranstaltungen"
@@ -53332,7 +53332,7 @@ msgstr ""
 #~ "**%2$s** gestrichen und sind damit __nicht__ zugelassen worden."
 #~ msgstr ""
 #~ "You have been removed from the waiting list of the course **%2$s** by "
-#~ "%1$s or an administrator and therefore you are __not__ enroled."
+#~ "%1$s or an administrator and therefore you are __not__ enrolled."
 
 #, php-format
 #~ msgid ""
@@ -53340,7 +53340,7 @@ msgstr ""
 #~ "und sind damit __nicht__ zugelassen worden."
 #~ msgstr ""
 #~ "You have been signed out of the course **%2$s** by %1$s or an "
-#~ "administrator and therefore you are __not__ enroled."
+#~ "administrator and therefore you are __not__ enrolled."
 
 #~ msgid "nicht zugelassen in Veranstaltung"
 #~ msgstr "not admitted to course"
@@ -53359,7 +53359,7 @@ msgstr ""
 #~ "                                    aus der Warteliste in die "
 #~ "Veranstaltung **%2$s** aufgenommen und sind damit zugelassen."
 #~ msgstr ""
-#~ "You have been enroled from the waiting list in the course **%2$s**\n"
+#~ "You have been enrolled from the waiting list in the course **%2$s**\n"
 #~ "                                by %1$s or an admin and you are therefore "
 #~ "approved."
 
@@ -53411,7 +53411,7 @@ msgstr ""
 #~ "%1$s wurde in die Veranstaltung mit dem Status\n"
 #~ "                    <b>%2$s</b> eingetragen."
 #~ msgstr ""
-#~ "%1$s has been enroled in the course with the state\n"
+#~ "%1$s has been enrolled in the course with the state\n"
 #~ "                    <b>%2$s</b>."
 
 #~ msgid ""
@@ -53589,7 +53589,7 @@ msgstr ""
 #~ "__nicht__ zugelassen worden."
 #~ msgstr ""
 #~ "You have been signed out of the course **%s** and therefore you are "
-#~ "__not__ enroled."
+#~ "__not__ enrolled."
 
 #, php-format
 #~ msgid "Nutzer %s wurde aus der Veranstaltung entfernt."
@@ -53615,13 +53615,13 @@ msgstr ""
 #~ msgstr "You are admin."
 
 #~ msgid "Sie sind für die Veranstaltung angemeldet."
-#~ msgstr "You have been enroled in the course."
+#~ msgstr "You have been enrolled in the course."
 
 #~ msgid ""
 #~ "Sie haben nicht die erforderliche Berechtigung sich für eine "
 #~ "Veranstaltung anzumelden."
 #~ msgstr ""
-#~ "You don't have the required permissions to enrol yourself into a course."
+#~ "You don't have the required permissions to enroll yourself into a course."
 
 #~ msgid ""
 #~ "Sie sind nicht in einer zugelassenenen Nutzerdomäne, Sie können sich "
@@ -53631,10 +53631,10 @@ msgstr ""
 #~ "suitable for this course!"
 
 #~ msgid "In diese Veranstaltung können Sie sich nicht eintragen!"
-#~ msgstr "You cannot enrol to this course!"
+#~ msgstr "You cannot enroll to this course!"
 
 #~ msgid "Die Veranstaltung ist gesperrt, Sie können sich nicht eintragen!"
-#~ msgstr "The course is locked, you cannot enrol yourself!"
+#~ msgstr "The course is locked, you cannot enroll yourself!"
 
 #~ msgid "Die Einträge im Bereich wurden alphabetisch sortiert."
 #~ msgstr "The entries in this area have been sorted alphabetically."
@@ -56787,13 +56787,13 @@ msgstr ""
 #~ "können.<br>Bitte nutzen Sie %s<b>Veranstaltung suchen / hinzufügen</b>%s "
 #~ "um sich für Veranstaltungen anzumelden."
 #~ msgstr ""
-#~ "At present, you are not enroled at any courses you are allowed to "
+#~ "At present, you are not enrolled at any courses you are allowed to "
 #~ "participate in.<br>To choose a course, please click on %s<b>search / add "
 #~ "course</b>%s."
 
 #~ msgid ""
 #~ "In dem ausgewählten <b>Semester</b> wurden keine Veranstaltungen belegt."
-#~ msgstr "Not enroled at any course in selected <b>semester</b>."
+#~ msgstr "Not enrolled in any course in selected <b>semester</b>."
 
 #~ msgid "Wählen Sie links im <b>Semesterfilter</b> ein anderes Semester aus"
 #~ msgstr "Select another semester in the <b>semester filter</b> on the left"
@@ -60918,7 +60918,7 @@ msgstr ""
 #~ msgstr "Member of institute"
 
 #~ msgid "Eingeschrieben in Studiengang"
-#~ msgstr "Enroled in course of study"
+#~ msgstr "Enrolled in course of study"
 
 #~ msgid "Angestrebter Abschluss"
 #~ msgstr "Desired degree"
@@ -61273,7 +61273,7 @@ msgstr ""
 #~ msgstr "max. amount of persons"
 
 #~ msgid "Anzahl der angemeldeten Personen"
-#~ msgstr "Amount of enroled people"
+#~ msgstr "Amount of enrolled people"
 
 #~ msgid ""
 #~ "Hinweis: Diese Datei wurde nicht archiviert, da sie lediglich verlinkt "
@@ -61450,7 +61450,7 @@ msgstr ""
 
 #, php-format
 #~ msgid "Sie wurden manuell in die Veranstaltung **%s** eingetragen."
-#~ msgstr "You have been enroled in the course **%s**."
+#~ msgstr "You have been enrolled in the course **%s**."
 
 #~ msgid "Nachricht an alle eingetragenen Teilnehmenden (Rundmail)"
 #~ msgstr "Message to all participants (Circular mail)"
@@ -61697,7 +61697,7 @@ msgstr ""
 
 #, php-format
 #~ msgid "%s in die Veranstaltung hinzufügen"
-#~ msgstr "enrol %s in this course"
+#~ msgstr "enroll %s in this course"
 
 #~ msgid "Vorläufig akzeptierte/n NutzerIn"
 #~ msgstr "Preliminary accepted user"
@@ -62037,7 +62037,7 @@ msgstr ""
 #~ msgstr ""
 #~ "In the text area <strong>Apply participants list</strong> you can put a "
 #~ "list with names from %s\n"
-#~ "                    which shall be enroled into the course. Use the "
+#~ "                    which shall be enrolled in the course. Use the "
 #~ "select box to select the desired format in which you want to put the "
 #~ "names.<br />\n"
 #~ "                    <strong>Input format</strong><br/>\n"
