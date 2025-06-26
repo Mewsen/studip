@@ -109,9 +109,8 @@
                 <? endif ?>
 
                 <label class="exam-hidden selftest-hidden">
-                    <input type="checkbox" name="use_groups" value="1" <?= $assignment->options['use_groups'] !== 0 ? 'checked' : '' ?> data-secure>
-                    <?= _('Aufgaben können in Übungsgruppen bearbeitet werden') ?>
-                    <?= tooltipIcon(_('Hat keine Auswirkungen, wenn keine Übungsgruppen angelegt wurden.')) ?>
+                    <input type="checkbox" name="use_groups" value="1" <?= $assignment->options['use_groups'] ? 'checked' : '' ?> data-secure>
+                    <?= _('Aufgaben können in Gruppen bearbeitet werden') ?>
                 </label>
 
                 <label class="practice-hidden selftest-hidden">
