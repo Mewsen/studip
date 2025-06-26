@@ -322,7 +322,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'assoc_foreign_key' => 'sem_id',
             'on_delete'  => 'delete',
         ];
-
+        $config['has_and_belongs_to_many']['lvgruppen'] = [
+            'class_name' => Lvgruppe::class,
+            'thru_table' => 'mvv_lvgruppe_seminar',
+            'on_delete'  => 'delete',
+        ];
 
         $config['default_values']['lesezugriff'] = 1;
         $config['default_values']['schreibzugriff'] = 1;
