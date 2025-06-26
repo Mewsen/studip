@@ -1004,4 +1004,86 @@ class QuestionnaireController extends AuthenticatedController
         $this->response->add_header('Content-Length', strlen($file_data));
         $this->render_json($rawdata);
     }
+
+    public function import_dialog_action()
+    {
+        $this->range_id = Request::option('range_id', '');
+        $this->range_type = Request::get('range_type', '');
+    }
+    public function import_file_action()
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $this->range_id = Request::option('range_id', '');
+        $this->range_type = Request::get('range_type', '');
+
+        $num_questionnaires = 0;
+
+        if (empty($_FILES['upload']['name'])) {
+            PageLayout::postWarning(_('Es wurde keine Datei zum Importieren ausgewählt.'));
+            $this->redirect("questionnaire/overview");
+            return;
+        }
+
+        for ($i = 0; $i < count($_FILES['upload']['name']); ++$i) {
+            $file_content = file_get_contents($_FILES['upload']['tmp_name'][$i]);
+            $questionnaire_data = json_decode($file_content);
+
+            $new_questionnaire = new Questionnaire();
+            $new_questionnaire = Questionnaire::create([
+                'title'               => $questionnaire_data->questionnaire->title ?? '',
+                'user_id'             => User::findCurrent()->id,
+                'anonymous'           => $questionnaire_data->questionnaire->anonymous ?? false,
+                'resultvisibility'    => $questionnaire_data->questionnaire->resultvisibility,
+                'editanswers'         => $questionnaire_data->questionnaire->editanswers,
+                'copyable'            => $questionnaire_data->questionnaire->copyable ?? true,
+            ]);
+
+            if (!$new_questionnaire) {
+                continue;
+            }
+
+            $num_questionnaires +=1;
+
+            foreach ($questionnaire_data->questions_data as $index => $value) {
+                QuestionnaireQuestion::create([
+                    'questionnaire_id' => $new_questionnaire->id,
+                    'questiontype'     => $value->questiontype,
+                    'questiondata'     => $value->questiondata,
+                    'position'         => $index,
+                ]);
+            }
+        }
+
+        if ($this->range_id && $this->range_type) {
+            if (
+                ($this->range_id === 'start' && !$GLOBALS['perm']->have_perm('root'))
+                || ($this->range_type === 'course' && !$GLOBALS['perm']->have_studip_perm('tutor', $this->range_id))
+                || ($this->range_type === 'user' && $this->range_id !== User::findCurrent()->id)
+            ) {
+                throw new AccessDeniedException();
+            }
+
+            QuestionnaireAssignment::create([
+                'questionnaire_id' => $new_questionnaire->id,
+                'range_id'         => $this->range_id,
+                'range_type'       => $this->range_type,
+                'user_id'          => User::findCurrent()->id,
+            ]);
+        }
+
+        if ($num_questionnaires === 1) {
+            PageLayout::postSuccess(sprintf(_('1 Fragebogen wurde importiert.')));
+        } else {
+            PageLayout::postSuccess(sprintf(_('%d Fragebögen wurden importiert.'), $num_questionnaires));
+        }
+
+        if ($this->range_type === '') {
+            $this->redirect("questionnaire/overview");
+        } elseif ($this->range_type === 'course') {
+            $this->redirect("questionnaire/courseoverview");
+        }
+
+
+    }
 }
