@@ -305,6 +305,79 @@ class Course_WikiController extends AuthenticatedController
         $this->render_form($this->form);
     }
 
+    public function page_bulk_action()
+    {
+        switch (Request::get('action')) {
+            case 'page_setting':
+                PageLayout::setTitle(_('Seiteneinstellungen'));
+
+                if (Request::submitted('render_form')) {
+                    $groups = [
+                        'all' => _('Alle'),
+                        'tutor' => _('Lehrende und Tutoren/Tutorinnen'),
+                        'dozent' => _('Nur Lehrende')
+                    ];
+
+                    $setting_form = \Studip\Forms\Form::fromSORM(
+                        new WikiPage(),
+                        [
+                            'legend' => _('Seiteneinstellung'),
+                            'fields' => [
+                                'read_permission' => [
+                                    'label' => _('Lesezugriff für'),
+                                    'type' => 'select',
+                                    'required' => true,
+                                    'options' => $groups
+                                ],
+                                'write_permission' => [
+                                    'label' => _('Schreibzugriff für'),
+                                    'type' => 'select',
+                                    'required' => true,
+                                    'options' => $groups
+                                ],
+                                'pages_id' => [
+                                    'type' => 'hidden',
+                                    'value' => implode(',', Request::getArray('pages_id'))
+                                ],
+                                'action' => [
+                                    'type' => 'hidden',
+                                    'value' => 'page_setting'
+                                ],
+                            ]
+                        ],
+                        $this->url_for('course/wiki/page_bulk')
+                    );
+
+                    $this->render_form($setting_form);
+                } elseif (Request::isPost()) {
+                    CSRFProtection::verifyUnsafeRequest();
+                    
+                    $read_permission = Request::get('read_permission');
+                    $write_permission = Request::get('write_permission');
+
+                    WikiPage::findEachMany(
+                        function (WikiPage $page) use ($read_permission, $write_permission): void {
+                            try {
+                                $this->validateWikiPage($page, $this->range, true);
+                                $page->read_permission = $read_permission;
+                                $page->write_permission = $write_permission;
+                                $page->store();
+                            } catch (Exception) {
+                            }
+                        },
+                        explode(',', Request::get('pages_id'))
+                    );
+
+                    PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
+                    $this->relocate('course/wiki/allpages');
+                }
+
+                break;
+            default:
+                $this->relocate('course/wiki/allpages');
+        }
+    }
+
     public function ask_deleting_action(WikiPage $page)
     {
         $this->validateWikiPage($page, $this->range, true);
