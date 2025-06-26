@@ -241,6 +241,16 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $config['registered_callbacks']['before_store'][] = 'cbClearCaches';
         $config['registered_callbacks']['before_store'][] = 'cbStudipLog';
 
+        // Ensure matriculation number is always set to null if empty
+        $config['registered_callbacks']['before_store'][] = function (User $user) {
+            if (
+                isset($user->matriculation_number)
+                && trim($user->matriculation_number) === ''
+            ) {
+                $user->matriculation_number = null;
+            }
+        };
+
         $info = new UserInfo();
         $info_meta = $info->getTableMetadata();
         foreach ($info_meta ['fields'] as $field => $meta) {
