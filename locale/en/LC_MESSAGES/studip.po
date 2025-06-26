@@ -21,7 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-11 10:39+0200\n"
 "PO-Revision-Date: 2025-06-26 12:04+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-6-0/en/>\n"
 "Language: en\n"
@@ -1131,7 +1132,7 @@ msgid ""
 "%s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen "
 "anzumdelden."
 msgstr ""
-"You are not enroled into any course. Please use %s<b>Search / add courses</"
+"You are not enrolled in any course. Please use %s<b>Search / add courses</"
 "b>%s to enrol yourself into courses."
 
 #: app/controllers/settings/statusgruppen.php:34
@@ -2224,7 +2225,7 @@ msgid ""
 "Teilnehmende umgewandelt werden?"
 msgstr ""
 "You are about to change the admission mode to preliminary admission. Do you "
-"want to convert the participants already enroled in the course to "
+"want to convert the participants already enrolled in the course to "
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:134
@@ -3314,7 +3315,7 @@ msgstr "not assigned to a group"
 
 #: app/controllers/course/statusgroups.php:222
 msgid "Personen suchen"
-msgstr "Search user"
+msgstr "Find users"
 
 #: app/controllers/course/statusgroups.php:239
 #: app/views/contact/editGroup.php:6
@@ -3611,7 +3612,7 @@ msgstr "Remove group members"
 
 #: app/controllers/course/statusgroups.php:1177
 msgid "Personen aus Veranstaltung austragen"
-msgstr "Sign out person from course"
+msgstr "Remove person from course"
 
 #: app/controllers/course/statusgroups.php:1207
 msgid "Die ausgewählten Gruppen wurden gelöscht."
@@ -3669,18 +3670,18 @@ msgstr "The following errors occurred when removing people:"
 #: app/controllers/course/statusgroups.php:1462
 #: app/controllers/course/members.php:1156
 msgid "Die folgenden Personen wurden ausgetragen:"
-msgstr "The following people have been removed from the course:"
+msgstr "The following persons have been removed from the course:"
 
 #: app/controllers/course/statusgroups.php:1467
 #: app/controllers/course/members.php:1151
 #, php-format
 msgid "%u Personen wurden ausgetragen."
-msgstr "%u people have been removed."
+msgstr "%u persons have been removed."
 
 #: app/controllers/course/statusgroups.php:1526
 #, php-format
 msgid "Personen der Gruppe %s"
-msgstr "people in group %s"
+msgstr "persons in group %s"
 
 #: app/controllers/course/statusgroups.php:1535
 #: app/views/course/statusgroups/copy.php:12
@@ -3798,7 +3799,7 @@ msgstr "The sub-course could not be added."
 msgid ""
 "Bitte geben Sie eine Veranstaltung an, die als Unterveranstaltung "
 "hinzugefügt werden soll."
-msgstr "Please specify a course which shall be added as sub-course."
+msgstr "Please specify a course you want to add as a sub-course."
 
 #: app/controllers/course/grouping.php:494
 msgid "Die Unterveranstaltung wurde entfernt."
@@ -4486,32 +4487,30 @@ msgstr[0] "New person added."
 msgstr[1] "%u new persons added."
 
 #: app/controllers/course/members.php:327
-#, fuzzy
 msgid "Die folgenden Fehler traten beim Eintragen von Personen auf:"
-msgstr "The following errors occurred while editing the date:"
+msgstr "The following errors occurred when adding persons:"
 
 #: app/controllers/course/members.php:365
 #: app/controllers/course/members.php:464
-#, fuzzy, php-format
+#, php-format
 msgid "%1$u %2$s wurde hinzugefügt."
 msgid_plural "%1$u %2$s wurden hinzugefügt."
-msgstr[0] "%u %s were added."
-msgstr[1] "%u %s were added."
+msgstr[0] "%u %s has been added."
+msgstr[1] "%u %s have been added."
 
 #: app/controllers/course/members.php:409
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Person wurde zur Warteliste hinzugefügt."
 msgid_plural "%u Personen wurden zur Warteliste hinzugefügt."
-msgstr[0] "One person has been added to the list."
-msgstr[1] ""
-"%u persons have been added to the list but the list isn't saved yet."
+msgstr[0] "One person has been added to the waiting list."
+msgstr[1] "%u persons have been added to the waiting list."
 
 #: app/controllers/course/members.php:421
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Person konnte nicht zur Warteliste hinzugefügt werden:"
 msgid_plural "%u Personen konnten nicht zur Warteliste hinzugefügt werden:"
-msgstr[0] "%u person could not be added to %s."
-msgstr[1] "%u persons could not be added to %s."
+msgstr[0] "One person could not be added to the waiting list."
+msgstr[1] "%u persons could not be added to the waiting list."
 
 #: app/controllers/course/members.php:526
 #: app/views/course/members/select_course.php:5
@@ -4580,9 +4579,8 @@ msgstr ""
 "assignment."
 
 #: app/controllers/course/members.php:762
-#, fuzzy
 msgid "Folgende Einträge konnten <b>nicht</b> zugeordnet werden:"
-msgstr "%s could <b>not</b> be assigned!"
+msgstr "The following entries could <b>not</b> be assigned:"
 
 #: app/controllers/course/members.php:820
 msgid "Ihre Sichtbarkeit wurde erfolgreich geändert."
@@ -4596,39 +4594,37 @@ msgstr ""
 "An error occurred while changing the visibility. The setting was not altered."
 
 #: app/controllers/course/members.php:1019
-#, fuzzy
 msgid ""
 "Sie dürfen keine lehrenden Personen oder Hilfspersonen in diese "
 "Veranstaltung eintragen."
-msgstr "You are not allowed to add lecturers or tutors to this course."
+msgstr "You are not allowed to add lecturers or assistants to this course."
 
 #: app/controllers/course/members.php:1065
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s wurde in die Veranstaltung mit dem Status „%2$s“ eingetragen."
-msgstr "%1$s has been enroled into the course with the status <b>%2$s</b>."
+msgstr "%1$s has been enrolled in this course with a status of <b>%2$s</b>."
 
 #: app/controllers/course/members.php:1072
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s wurde aus der Anmelde- bzw. Warteliste mit dem Status \"%2$s\" in die "
 "Veranstaltung eingetragen."
 msgstr ""
-"%1$s has been enroled with the state <b>%2$s</b> in the course\n"
-"                         from the enrolment/waiting list."
+"%1$s has been enrolled in the course with a status of <b>%2$s</b>\n"
+"                         from the registration/waiting list."
 
 #: app/controllers/course/members.php:1077
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s wurde mit dem Status \"%2$s\" endgültig akzeptiert und damit in die "
 "Veranstaltung eingetragen."
 msgstr ""
-"%1$s has been finally accepted with the state <b>%2$s</b>\n"
-"                        and thereby enroled in the course."
+"%1$s has been finally accepted with a status of <b>%2$s</b> and thus "
+"enrolled in the course."
 
 #: app/controllers/course/members.php:1086
-#, fuzzy
 msgid "Es traten Fehler beim Hochstufen von Personen auf:"
-msgstr "Error occurred during request resolving!"
+msgstr "Errors occurred when upgrading persons:"
 
 #: app/controllers/course/members.php:1091
 msgid "Sie haben niemanden zum Hochstufen ausgewählt."
@@ -4679,19 +4675,17 @@ msgid "Sie haben keine %s zum Herunterstufen ausgewählt"
 msgstr "You didn't select any %s to demote"
 
 #: app/controllers/course/members.php:1327
-#, fuzzy
 msgid "Eine Person wurden auf die Warteliste verschoben."
 msgid_plural "%{number} Personen wurden auf die Warteliste verschoben."
-msgstr[0] "%s persons added to waiting list."
-msgstr[1] "%s persons added to waiting list."
+msgstr[0] "One person was moved to the waiting list."
+msgstr[1] "%{number} persons were moved to the waiting list."
 
 #: app/controllers/course/members.php:1339
-#, fuzzy
 msgid "Eine Person konnten nicht auf die Warteliste verschoben werden:"
 msgid_plural ""
 "%{number} Personen konnten nicht auf die Warteliste verschoben werden:"
-msgstr[0] "%s person(s) could not be moved to the wait list."
-msgstr[1] "%s person(s) could not be moved to the wait list."
+msgstr[0] "One person could not be moved to the waiting list."
+msgstr[1] "%{number} persons could not be moved to the waiting list."
 
 #: app/controllers/course/members.php:1349
 msgid "Sie haben keine Personen zum Verschieben auf die Warteliste ausgewählt"
@@ -4778,14 +4772,12 @@ msgid "Teilnehmendenliste importieren"
 msgstr "Import participant list"
 
 #: app/controllers/course/members.php:1773
-#, fuzzy
 msgid "Warteliste als Excel-Datei exportieren"
-msgstr "Export waiting list as csv document"
+msgstr "Export waiting list as Excel file"
 
 #: app/controllers/course/members.php:1782
-#, fuzzy
 msgid "Warteliste als CSV-Datei exportieren"
-msgstr "Export waiting list as rtf document"
+msgstr "Export waiting list as CSV file"
 
 #: app/controllers/course/members.php:1797
 msgid "Rundmails von Studierenden erlauben"
@@ -4893,9 +4885,8 @@ msgid "Position"
 msgstr "Position"
 
 #: app/controllers/course/members.php:1886
-#, fuzzy
 msgid "Wartelistenexport"
-msgstr "Waiting lists"
+msgstr "Export waiting list"
 
 #: app/controllers/course/members.php:1888
 #: app/controllers/admin/courses.php:482 app/controllers/admin/courses.php:1508
@@ -5092,7 +5083,7 @@ msgstr "The lock rule has been successfully reset!"
 
 #: app/controllers/course/courseware.php:104
 msgid "Courseware: Peer-Review-Prozesse"
-msgstr ""
+msgstr "Courseware: Peer review processes"
 
 #: app/controllers/course/courseware.php:108
 msgid "Courseware: Aufgaben"
@@ -5205,9 +5196,8 @@ msgid "Forum"
 msgstr "Forum"
 
 #: app/controllers/course/connectedstudygroups.php:37
-#, fuzzy
 msgid "Studiengruppe suchen und verknüpfen"
-msgstr "Search for study groups"
+msgstr "Find and link study group"
 
 #: app/controllers/course/connectedstudygroups.php:71
 #, php-format
@@ -5215,19 +5205,19 @@ msgid ""
 "Ihr Vorschlag, die Studiengruppe „%1$s“ mit der Veranstaltung „%2$s“ zu "
 "verknüpfen, wurde angenommen."
 msgstr ""
+"Your suggestion to link the study group %1$s with the course %2$s has been "
+"accepted."
 
 #: app/controllers/course/connectedstudygroups.php:81
 #: lib/classes/StudygroupModel.php:633
-#, fuzzy
 msgid "Verknüpfungsvorschlag angenommen"
-msgstr "Remove link to %s"
+msgstr "Link suggestion accepted"
 
 #: app/controllers/course/connectedstudygroups.php:91
 #: app/controllers/course/connectedcourses.php:45
 #: lib/classes/StudygroupModel.php:643
-#, fuzzy
 msgid "Veranstaltung wurde verknüpft."
-msgstr "Link course"
+msgstr "The course has been linked."
 
 #: app/controllers/course/connectedstudygroups.php:116
 #, php-format
@@ -5236,16 +5226,16 @@ msgid ""
 "„%2$s“ zu verknüpfen. Sie können den Vorschlag unter folgendem Link annehmen "
 "oder ablehnen:"
 msgstr ""
+"It has been suggested that you link the course %1$s with your study group %2$"
+"s, You can accept or reject the proposal under the following link:"
 
 #: app/controllers/course/connectedstudygroups.php:126
-#, fuzzy
 msgid "Verknüpfung Ihrer Studiengruppe zu einer Veranstaltung"
-msgstr "Announcements in the course"
+msgstr "Linking your study group to a course"
 
 #: app/controllers/course/connectedstudygroups.php:136
-#, fuzzy
 msgid "Antrag wurde gestellt."
-msgstr "The request has been saved."
+msgstr "The application has been made."
 
 #: app/controllers/course/connectedstudygroups.php:252
 #, fuzzy
@@ -16144,9 +16134,9 @@ msgid ""
 "wurde aufgehoben. Wenn Sie an der Veranstaltung teilnehmen wollen, müssen "
 "Sie sich erneut bewerben."
 msgstr ""
-"The inscription into the admission list or waitlist resp. of the course "
-"<b>%s</b> has been revoked. If you would like to participate in the course, "
-"you have to apply again."
+"Your name has been removed from the registration list or waiting list of the "
+"course <b>%s</b>. If you would like to participate in the course, you have "
+"to apply again."
 
 #: app/controllers/my_courses.php:466
 msgid "Meine archivierten Veranstaltungen"
@@ -17665,8 +17655,9 @@ msgid "vorläufiger Benutzer"
 msgstr "preliminary user"
 
 #: app/controllers/profile.php:429
+#, fuzzy
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
-msgstr "The user was added to your contacts."
+msgstr "The user has been added to your contacts."
 
 #: app/controllers/profile.php:509
 #, php-format
@@ -17979,7 +17970,7 @@ msgstr "Show contact groups"
 
 #: app/controllers/online.php:104
 msgid "Der Benutzer wurde zu Ihren Kontakten hinzugefügt."
-msgstr "The user was added to your contacts."
+msgstr "The user has been added to your contacts."
 
 #: app/controllers/online.php:109
 msgid "Der Benutzer gehört nicht mehr zu Ihren Kontakten."
@@ -35985,7 +35976,7 @@ msgstr "Show all results without filters."
 #: app/views/questionnaire/question_types/likert/likert_evaluation.php:114
 #: app/views/questionnaire/question_types/automated_data/_evaluation_part.php:45
 msgid "Zeige nur Ergebnisse von Personen an, die diese Option gewählt haben."
-msgstr "Only show results from people who have selected this option."
+msgstr "Only show results from persons who have selected this option."
 
 #: app/views/questionnaire/question_types/vote/vote_answer.php:19
 #: app/views/questionnaire/question_types/rangescale/rangescale_answer.php:20
@@ -37356,7 +37347,7 @@ msgstr "Export course overview"
 
 #: app/views/my_courses/waiting_list.php:12
 msgid "Anmelde- und Wartelisteneinträge"
-msgstr "Entries on registration and waiting list"
+msgstr "Entries in registration list/waiting list"
 
 #: app/views/my_courses/waiting_list.php:34
 msgid "Position/Chance"
@@ -38857,7 +38848,6 @@ msgid "Lizenzen auf dem Marktplatz"
 msgstr "Licenses on the market place"
 
 #: app/views/oer/market/licenseinfo.php:21
-#, fuzzy
 msgid ""
 "Zum Glück gibt es kluge Menschen, die sich zum Thema <em>Lizenzen</em> kluge "
 "Gedanken gemacht haben. Daher gibt es die sogenannten CreativeCommons-"
@@ -38871,15 +38861,14 @@ msgid ""
 "alle Autorinnen und Autoren in irgendeiner Form transparent genannt werden "
 "müssen!"
 msgstr ""
-"Fortunately there are smart people that have made clever thoughts regarding "
-"<em>licenses</em>. Therefore the so-called CreativeCommons licenses exist. "
-"These are valid internationally and mean that which is required above. "
-"Thereby, everyone that is using the marketplace has legal certainty. These "
-"licenses are used very often outside of the marketplace. Musicians license "
-"their raw music files with them, writers their poems and lecturers naturally "
-"their slides. The only real requirement is that the authors of the learning "
-"materials must be named transparently in one form or another in case of "
-"distribution or modification!"
+"Fortunately there are smart people who thought about <em>licenses</em>. That "
+"is why CreativeCommons licenses exist. These are valid internationally and "
+"have the required effect, giving all users of the marketplace legal "
+"certainty. These licenses are frequently used outside the marketplace. "
+"Musicians license their raw music files with them, writers their poems and "
+"lecturers their slides. The only real requirement is that the authors of the "
+"learning materials must be named transparently in one form or another in "
+"case of distribution or modification!"
 
 #: app/views/oer/market/licenseinfo.php:24
 msgid ""
@@ -38970,7 +38959,7 @@ msgstr ""
 "As said: We hope that this way is a very intuitive way for everyone to "
 "distribute and use learning materials. Most people do not want to think "
 "about rights and liabilities in this context. We hope that we can make those "
-"people rejoice with the marketplace."
+"people happy with the marketplace."
 
 #: app/views/oer/market/add_to_course.php:13
 msgid "Veranstaltungsliste"
@@ -48091,9 +48080,8 @@ msgid ""
 "zugeordneten Veranstaltungen vergeben. Die Anmeldung ist dann nur für "
 "Personen möglich, die dieses Passwort kennen."
 msgstr ""
-"With this admission rule you can set a password for the access to the "
-"assigned courses. Enrolment is then only possible for people who know the "
-"password."
+"With this admission rule you can set a password for access to the assigned "
+"courses. Only people who know the password will then be able to register."
 
 #: lib/admissionrules/passwordadmission/PasswordAdmission.php:154
 msgid "Die Eingabe eines Passwortes ist erforderlich."
@@ -48173,8 +48161,7 @@ msgstr "Please specify the maximum amount of allowed enrolments."
 
 #: lib/admissionrules/preferentialadmission/templates/info.php:1
 msgid "Folgende Personenkreise werden bei der Platzverteilung bevorzugt:"
-msgstr ""
-"The following categories of people are preferred during seat allocation:"
+msgstr "The following categories of people are preferred when allocating seats:"
 
 #: lib/admissionrules/preferentialadmission/templates/info.php:15
 msgid "Höhere Fachsemester werden bevorzugt behandelt."
@@ -48846,12 +48833,12 @@ msgid ""
 "verlinkt werden. Auch Textformatierungen sind möglich."
 msgstr ""
 "Blubber is a form of communication similar to a forum which allows people to "
-"communicate with each other in real time and which, due to its somewhat more "
-"informal character, looks more like a chat. Unlike the forum, it is not "
-"necessary to reload the pages to see the latest entries (e.g. replies to "
-"your own postings): The page refreshes itself when new entries are made. "
-"Files (e.g. photos, audio files, links) can be dragged and dropped into the "
-"field and thus linked. Text formatting is also possible."
+"communicate in real time and which, due to its somewhat more informal "
+"character, looks more like a chat. Unlike the forum, it is not necessary to "
+"reload the pages to see the latest entries (e.g. replies to your own "
+"postings): The page refreshes itself when new entries are made. Files (e.g. "
+"photos, audio files, links) can be dragged and dropped into the field and "
+"thus linked. Text formatting is also possible."
 
 #: lib/modules/Blubber.php:124
 msgid ""
