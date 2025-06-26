@@ -12,5 +12,5 @@ get_changed_files() {
 
   fetch_main
 
-  git diff --name-only "$base_branch"...HEAD -- "$@" | grep -v '^$' || true
+  git diff --name-only --diff-filter=AM "$base_branch"...HEAD -- "$@" | grep -v '^$' || true
 }
