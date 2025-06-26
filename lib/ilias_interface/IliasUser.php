@@ -177,6 +177,22 @@ class IliasUser
     }
 
     /**
+    * check member request for workgroup
+    *
+    * checks if member request for current user exists
+    */
+    public function hasWorkgroupRequest(int $workgroup_id): bool
+    {
+        $query = "SELECT id, valid_until
+                  FROM ilias_workgroup_request
+                  WHERE user_id = ? AND ilias_index = ? AND workgroup_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$this->studip_id, $this->index, $workgroup_id]);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        return (!empty($data) && (int)$data['valid_until'] > time());
+    }
+
+    /**
     * get array of user account data
     *
     * returns array of user account data

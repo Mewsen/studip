@@ -72,6 +72,99 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
+     * Sends workgroup requests to given user(s)
+     */
+    public function request_workgroup_member_action($ilias_index, $workgroup_id) 
+    {
+        $this->ilias = new ConnectedIlias($ilias_index);
+        if ($this->ilias->isActive()) {
+            $this->ilias_index = $ilias_index;
+            // Get selected persons.
+            $mp = MultiPersonSearch::load('add_ilias_workgroup_member' . $workgroup_id);
+
+            $requests_sent = 0;
+            $workgroup = $this->ilias->getWorkgroup($workgroup_id);
+
+            if (!empty($workgroup)) {
+                $messaging = new messaging();
+                foreach ($mp->getAddedUsers() as $user_id) {
+                    $user = new IliasUser($this->ilias_index, $this->ilias_int_version, $user_id);
+                    if (!$user->isConnected()) {
+                        PageLayout::postInfo(sprintf(
+                            _('%s wurde übersprungen, da kein ILIAS-Account verknüpft ist.'), 
+                            htmlReady($user->getName())
+                        ));
+                    } elseif (!empty($workgroup['members'][$user_id])) {
+                        PageLayout::postInfo(sprintf(
+                            _('%s wurde übersprungen, da bereits Mitglied des Arbeitsbereichs.'), 
+                            htmlReady($user->getName())
+                        ));
+                    } else {
+                        $message_title = sprintf(_('Mitgliedschaftsanfrage für ILIAS-Arbeitsbereich "%s"'), $workgroup['title']);
+                        $message_body = sprintf(_('Sie haben eine Mitgliedschafts-Anfrage für den ILIAS-Arbeitsbereich "%s" erhalten.'), $workgroup['title'])."\n\n";
+                        $message_body .= _('Um dem Arbeitsbereich beizutreten, klicken Sie bitte auf den folgenden Link:')."\n\n"; 
+                        $message_body .= '['. _('ILIAS-Arbeitsbereich hinzufügen') . ']' . $this->url_for('my_ilias_accounts/accept_workgroup_request', $this->ilias_index, $workgroup_id)."\n\n"; 
+                        $message_body .= _('Diese Anfrage ist für eine Woche ab Erhalt der Nachricht gültig.');
+
+                        $recipients = [$user->studip_login];
+                        $messaging->insert_message(
+                            $message_body,
+                            $recipients,
+                            '____%system%____',
+                            '',
+                            '',
+                            '',
+                            null,
+                            $message_title
+                        );
+                        $requests_sent++;
+                        $this->ilias->addWorkgroupRequest($user_id, $workgroup_id);
+                    }
+                }
+                if ($requests_sent === 1) {
+                    PageLayout::postInfo(sprintf(_('Es wurde eine Anfrage für den Arbeitsbereich "%s" verschickt.'), $workgroup['title']));
+                } elseif ($requests_sent >= 0) {
+                    PageLayout::postInfo(sprintf(_('Es wurden %s Anfragen für den Arbeitsbereich "%s" verschickt.'), $requests_sent, $workgroup['title']));
+                }
+        } else {
+                PageLayout::postError(sprintf(_('Arbeitsbereich %s wurde nicht gefunden oder hat keine lokale Rolle.'), htmlReady($workgroup_id)));
+            }
+        } else {
+            PageLayout::postError(_('Diese ILIAS-Installation ist nicht aktiv.'));
+        }
+        $this->redirect($this->url_for('my_ilias_accounts/my_courses'));
+    }
+
+    /**
+     * Accepts workgroup request for current user
+     */
+    public function accept_workgroup_request_action($ilias_index, $workgroup_id) 
+    {
+        $this->ilias = new ConnectedIlias($ilias_index);
+        if ($this->ilias->isActive()) {
+            $this->ilias_index = $ilias_index;
+
+            if ($this->ilias->user->isConnected() && $this->ilias->user->hasWorkgroupRequest($workgroup_id)) {
+                $this->ilias->resolveWorkgroupRequest($this->ilias->user->studip_id, $workgroup_id, true);
+                $workgroup = $this->ilias->getWorkgroup($workgroup_id);
+
+                if (!empty($this->ilias->getError())) {
+                    foreach ($this->ilias->getError() as $error) {
+                        PageLayout::postError(htmlReady($error));
+                    }
+                } else {
+                    PageLayout::postSuccess(sprintf(_('Sie wurden in den Arbeitsbereich "%s" eingetragen.'), htmlReady($workgroup['title'])));
+                }
+            } else {
+                PageLayout::postError(_('Der Arbeitsbereich wurde nicht gefunden oder die Anfrage ist nicht mehr gültig.'));
+            }
+        } else {
+            PageLayout::postError(_('Diese ILIAS-Installation ist nicht aktiv.'));
+        }
+        $this->redirect($this->url_for('my_ilias_accounts/my_courses'));
+    }
+
+    /**
      * Shows ilias courses for active user
      */
     public function my_courses_action()
@@ -85,7 +178,10 @@ class MyIliasAccountsController extends AuthenticatedController
         } else {
             $this->selected_semester = '';
         }
-
+        $this->add_member_search = null;
+        $this->courses_list = [];
+        $this->workgroups_list = [];
+    
         // set up connected ilias classes
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
@@ -171,6 +267,23 @@ class MyIliasAccountsController extends AuthenticatedController
                         }
                     }
                 }
+
+                if ($ilias->ilias_config['workgroup_category']) {
+                    // Prepare search object for MultiPersonSearch.
+                    if (empty($this->add_member_search)) {
+                        $this->add_member_search = new PermissionSearch(
+                            'user',
+                            _('Personen suchen'),
+                            'user_id',
+                            [
+                                'permission' => ['tutor', 'dozent'],
+                                'exclude_user' => []
+                            ]
+                        );
+                    }
+
+                    $this->workgroups_list[$ilias_index] = $ilias->getUserWorkgroups($GLOBALS['perm']->have_perm('root'));
+                }
             }
         }
         $this->sidebar->addWidget($widget);
@@ -205,6 +318,26 @@ class MyIliasAccountsController extends AuthenticatedController
         if ($this->ilias->isActive()) {
             $this->module = $this->ilias->getModule($crs_id);
             $this->module->module_type_name = _('ILIAS-Kurs');
+            PageLayout::setTitle($this->module->getTitle());
+            $this->ilias_index = $index;
+        } else {
+            PageLayout::postError(_('Diese ILIAS-Installation ist nicht aktiv.'));
+        }
+    }
+
+    /**
+     * View ILIAS course details
+     * @param $index Index of ILIAS installation
+     * @param $crs_id course ID
+     */
+    public function view_workgroup_action($index, $workgroup_id)
+    {
+        $this->ilias = new ConnectedIlias($index);
+        if ($this->ilias->isActive()) {
+            $this->workgroup_data = $this->ilias->getWorkgroup($workgroup_id);
+            $this->module = new IliasModule($workgroup_id, $this->workgroup_data, $index, $this->ilias->ilias_int_version);
+            $this->module->module_type_name = _('ILIAS-Arbeitsbereich');
+            $this->module->icon_file = 'community';
             PageLayout::setTitle($this->module->getTitle());
             $this->ilias_index = $index;
         } else {

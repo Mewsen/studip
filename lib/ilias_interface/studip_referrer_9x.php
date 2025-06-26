@@ -67,6 +67,8 @@ if (file_exists("./ilias.ini.php")) {
             $base_url = "ilias.php?baseClass=ilGlossaryPresentationGUI";
             break;
         case 'cat':
+            $base_url = "ilias.php?cmd=view&baseClass=ilRepositoryGUI&cmdClass=ilObjCategoryGUI";
+            break;
         case 'crs':
             $base_url = "ilias.php?cmd=view&cmdClass=ilobjcoursegui&baseClass=ilRepositoryGUI";
             break;
@@ -101,6 +103,9 @@ if (file_exists("./ilias.ini.php")) {
             break;
         case 'exc':
             $base_url = "ilias.php?baseClass=ilExerciseHandlerGUI";
+            break;
+        case 'cat':
+            $base_url = "ilias.php?baseClass=ilrepositorygui&cmd=edit";
             break;
         case 'crs':
             $base_url = "ilias.php?baseClass=ilrepositorygui&cmd=edit";

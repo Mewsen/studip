@@ -154,6 +154,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             'cat_semester' => '',
                             'course_semester' => '',
                             'course_veranstaltungsnummer' => false,
+                            'workgroup_category_name' => '',
+                            'workgroup_category' => '',
                             'modules' => [],
 
                             'author_role_name' => 'Author',
@@ -374,6 +376,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     $this->ilias_configs[$index]['delete_ilias_courses'] = Request::get('ilias_delete_ilias_courses');
                     $this->ilias_configs[$index]['category_create_on_add_module'] = Request::get('ilias_category_create_on_add_module');
                     $this->ilias_configs[$index]['category_to_desktop'] = Request::get('ilias_category_to_desktop');
+                    $this->ilias_configs[$index]['workgroup_category_name'] = Request::get('ilias_workgroup_category_name');
+
                     foreach ($this->modules_available as $module_index => $module_name) {
                         if (Request::get('ilias_modules_'.$module_index)) {
                             $this->ilias_configs[$index]['modules'][$module_index] = $module_name;

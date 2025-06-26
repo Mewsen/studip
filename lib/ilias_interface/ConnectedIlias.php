@@ -46,6 +46,8 @@ class ConnectedIlias
     public $course_modules;
     public $user;
     public $user_modules;
+    public $user_workgroups;
+    public $user_roles;
 
     public $operations;
     public $user_operations;
@@ -182,6 +184,8 @@ class ConnectedIlias
             'cat_semester' => '',
             'course_semester' => '',
             'course_veranstaltungsnummer' => false,
+            'workgroup_category_name' => '',
+            'workgroup_category' => '',
             'modules' => [],
 
             'author_role_name' => '',
@@ -343,6 +347,7 @@ class ConnectedIlias
      */
     public function getContentSettingsStatus()
     {
+        $changed_settings = false;
         if (!$this->ilias_config['root_category']) {
             // check category
             if (!$this->ilias_config['root_category_name']) {
@@ -361,14 +366,15 @@ class ConnectedIlias
             if (!$category) {
                 $this->error[] = sprintf(_('Die Kategorie „%s“ wurde nicht gefunden.'), $this->ilias_config['root_category_name']);
                 return false;
-            }
-            if ($category) {
+            } else {
                 // no ID entered manually
                 if ($this->ilias_config['root_category'] == null) {
                     $this->ilias_config['root_category'] = $category;
                 } else {
                     $this->ilias_config['root_category_name'] = $category['title'];
                 }
+
+                $this->ilias_config['root_category'] = $category;
                 // check user data category
                 if (! $this->ilias_config['user_data_category']) {
                     $object_data["title"] = sprintf(_("User-Daten"));
@@ -383,8 +389,25 @@ class ConnectedIlias
                         return false;
                     }
                 }
-                $this->storeSettings();
             }
+            $changed_settings = true;
+        }
+        if (mb_strlen($this->ilias_config['workgroup_category_name']) > 2) {
+            $workgroup_category = $this->soap_client->getReferenceByTitle($this->ilias_config['workgroup_category_name'], 'cat');
+            if (!$workgroup_category) {
+                $this->error[] = sprintf(_('Die Kategorie "%s" wurde nicht gefunden.'), $this->ilias_config['workgroup_category_name']);
+                return false;
+            } else {
+                $this->ilias_config['workgroup_category'] = $workgroup_category;
+                $changed_settings = true;
+            }
+        } elseif ($this->ilias_config['workgroup_category']) {
+            $this->ilias_config['workgroup_category'] = '';
+            $this->ilias_config['workgroup_category_name'] = '';
+            $changed_settings = true;
+        }
+        if ($changed_settings) {
+            $this->storeSettings();
         }
 
         return true;
@@ -826,6 +849,158 @@ class ConnectedIlias
     }
 
     /**
+     * get workgroup data
+     *
+     * returns workgroup data for given id
+     */
+    public function getWorkgroup(int $workgroup_id): array
+    {
+        if (empty($this->ilias_config['workgroup_category']) || !$this->user->isConnected()) {
+            return [];
+        }
+
+        $local_roles = $this->soap_client->getLocalRoles($workgroup_id);
+        if (!empty($local_roles)) {
+            $workgroup_data = $this->soap_client->getObjectByReference($workgroup_id, $this->user->id);
+            $workgroup_data['members'] = $this->soap_client->getUsersForRole(reset($local_roles)['obj_id']);
+            $workgroup_data['member_requests'] = $this->getWorkgroupRequests($workgroup_id);
+
+            return $workgroup_data;
+        }
+
+        return [];
+    }
+
+     /**
+     * get user workgroups
+     *
+     * returns list of active workgroup categories for current user
+     */
+    public function getUserWorkgroups(bool $ignore_local_roles = false): array
+    {
+        if (empty($this->ilias_config['workgroup_category'])) {
+            return [];
+        }
+
+        if (!empty($this->user_workgroups)) {
+            return $this->user_workgroups;
+        }
+
+        $user_roles = [];
+        if (!$ignore_local_roles) {
+            $user_roles = $this->getUserRoles();
+        }
+
+        $result = $this->soap_client->getTreeChilds($this->ilias_config['workgroup_category'], ['cat'], $this->user->getId());
+        if (is_array($result)) {
+            foreach ($result as $key => $object_data) {
+                if (empty($object_data['references'])) {
+                    continue;
+                }
+
+                foreach ($object_data['references'] as $ref_id => $ref_data) {
+                    if ($ref_data['parent_id'] !== $this->ilias_config['workgroup_category']) {
+                        continue;
+                    }
+
+                    if ($ignore_local_roles) {
+                        $this->user_workgroups[$ref_id] = $object_data;
+                    } else {
+                        $local_roles = $this->soap_client->getLocalRoles($ref_id);
+                        if (
+                            !empty($local_roles)
+                            && !empty($user_roles)
+                            && in_array(reset($local_roles)['obj_id'], $user_roles)
+                        ) {
+                            $this->user_workgroups[$ref_id] = $object_data;
+                        }
+                    }
+                }
+            }
+        }
+        return $this->user_workgroups;
+    }
+
+    /**
+    * get users for active member requests for workgroup
+    *
+    * gets all member requests from table ilias_workgroup_request for given workgroup id
+    */
+    public function getWorkgroupRequests(int $workgroup_id): array
+    {
+        $query = "SELECT user_id, Vorname, Nachname, title_front, title_rear
+                  FROM ilias_workgroup_request
+                  JOIN auth_user_md5 USING (user_id)
+                  JOIN user_info USING (user_id)
+                  WHERE ilias_index = ? AND workgroup_id = ? AND valid_until > ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$this->index, $workgroup_id, time()]);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $user_list = [];
+
+        foreach ($data as $user_data) {
+            $user_list[$data['user_id']] = trim($data['title_front'] . ' ' . $data['Vorname'] . ' ' . $data['Nachname'] . ' ' . $data['title_rear']);
+        }
+
+        return $user_list;
+    }
+
+    /**
+    * add member request for workgroup
+    *
+    * adds member request to table ilias_workgroup_request
+    */
+    public function addWorkgroupRequest(string $user_id, int $workgroup_id): void
+    {
+        $query = "SELECT id
+                  FROM ilias_workgroup_request
+                  WHERE user_id = ? AND ilias_index = ? AND workgroup_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$user_id, $this->index, $workgroup_id]);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        if (empty($data)) {
+            $query = "INSERT INTO ilias_workgroup_request (`workgroup_id`, `ilias_index`, `user_id`, `valid_until`, `mkdate`, `chdate`) VALUES (?, ?, ?, ?, ?, ?);";
+            DBManager::get()->execute($query, [$workgroup_id, $this->index, $user_id, strtotime('+7 days'), time(), time()]);
+        } else {
+            $query = "UPDATE ilias_workgroup_request
+                      SET `valid_until` = ?, `chdate` = ?
+                      WHERE user_id = ? AND ilias_index = ? AND workgroup_id = ?;";
+            DBManager::get()->execute($query, [strtotime('+7 days'), time(), $user_id, $this->index, $workgroup_id]);
+        }
+    }
+
+    /**
+    * revoke member request for workgroup
+    *
+    * returns array of user account data
+    */
+    public function resolveWorkgroupRequest(string $user_id, int $workgroup_id, bool $accept_request): bool
+    {
+        //if request accepted add user to local workgroup role, otherwise just remove entry
+        if ($accept_request) {
+            $local_roles = $this->soap_client->getLocalRoles($workgroup_id);
+            if (empty($local_roles)) {
+                $this->error[] = sprintf(_('Zuordnung nicht möglich, im gewählten ILIAS-Arbeitsbereich wurde keine lokale Rolle gefunden.'), $workgroup_id);
+                return false;
+            } else {
+                $user = new IliasUser($this->index, $this->ilias_int_version, $user_id);
+                if ($user->isConnected()) {
+                    $this->soap_client->addUserRoleEntry($user->getId(), reset($local_roles)['obj_id']);
+                } else {
+                    $this->error[] = sprintf(_('Zuordnung nicht möglich, ILIAS-Account wurde nicht gefunden.'), $workgroup_id);
+                    return false;
+                }
+            }
+        }
+
+        // remove entry from database
+        $query = "DELETE FROM ilias_workgroup_request
+                  WHERE `workgroup_id` = ? AND `ilias_index` = ? AND `user_id` = ?;";
+        DBManager::get()->execute($query, [$workgroup_id, $this->index, $user_id]);
+        return true;
+    }
+
+    /**
      * get user modules
      *
      * returns content modules from current users private category
@@ -1263,6 +1438,19 @@ class ConnectedIlias
     }
 
     /**
+     * get user roles
+     *
+     * returns all user roles
+     */
+    public function getUserRoles(): array
+    {
+        if (empty($this->user_roles)) {
+            $this->user_roles = $this->soap_client->getUserRoles($this->user->getId());
+        }
+        return $this->user_roles;
+    }
+
+    /**
      * check user permissions
      *
      * checks user permissions for connected course and changes setting if necessary
@@ -1284,7 +1472,7 @@ class ConnectedIlias
         $this->checkUser();
 
         // get course role folder and local roles
-        $user_roles = $this->soap_client->getUserRoles($this->user->getId());
+        $user_roles = $this->getUserRoles();
         $local_roles = $this->soap_client->getLocalRoles($ilias_course_id);
         $active_role = "";
         $proper_role = "";

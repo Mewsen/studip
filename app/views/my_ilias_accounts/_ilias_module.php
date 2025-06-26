@@ -55,6 +55,24 @@
         </article>
         <? endif ?>
 
+        <? if (!empty($module->members)) : ?>
+        <h3><?=_('Mitglieder in ILIAS')?></h3>
+        <article>
+            <? foreach ($module->members as $member_name) : ?>
+            <div><?=htmlReady($member_name)?></div>
+            <? endforeach ?>
+        </article>
+        <? endif ?>
+
+        <? if (!empty($module->member_requests)) : ?>
+        <h3><?=_('Angefragte Mitglieder in ILIAS')?></h3>
+        <article>
+            <? foreach ($module->member_requests as $member_name) : ?>
+            <div><?=htmlReady($member_name)?></div>
+            <? endforeach ?>
+        </article>
+        <? endif ?>
+
         <? if ((($module->getModuleType() == 'htlm') || ($module->getModuleType() == 'sahs') || ($module->getModuleType() == 'lm')) && ($ilias->getStructure($module->getId()))) : ?>
         <h3><?=_('Struktur')?></h3>
         <article>

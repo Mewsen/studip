@@ -118,19 +118,20 @@
         <input type="checkbox" name="ilias_delete_ilias_courses" value="1" <?= !empty($ilias_config['delete_ilias_courses']) ? 'checked' : '' ?>>
         <span><?= _('Beim Löschen von Stud.IP-Veranstaltungen ILIAS-Kurse ebenfalls löschen (alle untergeordneten Objekte werden gelöscht!)') ?></span>
     </label>
-
+    <label>
+        <span><?= _('Kategorie mit Arbeitsbereichen') ?> <?=!empty($ilias_config['workgroup_category']) ? htmlReady(sprintf(_('(ID %s)'), $ilias_config['workgroup_category'])) : ''?></span>
+        <input type="text" name="ilias_workgroup_category_name" size="50" maxlength="255" value="<?= empty($ilias_config['workgroup_category_name']) ? '' : htmlReady($ilias_config['workgroup_category_name']) ?>">
+    </label>
     <? if ($ilias_interface_config['create_objects']) : ?>
-        <label>
-        <span>  <?= _('Module') ?></span>
-        </label>
-        <label>
-            <? foreach ($modules_available as $module_index => $module_name) : ?>
-                <label>
-                    <input type="checkbox" name="ilias_modules_<?= $module_index ?>" value="1" <?= !empty($ilias_config['modules'][$module_index]) ? ' checked' : '' ?>>
-                    <?=htmlReady($module_name)?>
-                </label>
-            <? endforeach ?>
-        </label>
+    <label>
+    <span>  <?= _('Module') ?></span>
+    </label>
+        <? foreach ($modules_available as $module_index => $module_name) : ?>
+            <label>
+                <input type="checkbox" name="ilias_modules_<?= $module_index ?>" value="1" <?= !empty($ilias_config['modules'][$module_index]) ? ' checked' : '' ?>>
+                <?=htmlReady($module_name)?>
+            </label>
+        <? endforeach ?>
     <? endif ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'submit') ?>

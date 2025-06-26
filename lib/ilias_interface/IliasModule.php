@@ -31,6 +31,8 @@ class IliasModule
     public $is_offline;
     public $is_connected;
     public $owner;
+    public $members;
+    public $member_requests;
     public $author_studip;
     public $siblings_count;
     public $icon_file;
@@ -60,6 +62,8 @@ class IliasModule
             $this->module_type_name = $this->module_type;
         }
         $this->owner = $module_data['owner'];
+        $this->members = !empty($module_data['members']) ? $module_data['members'] : [];
+        $this->member_requests = !empty($module_data['member_requests']) ? $module_data['member_requests'] : [];
         $this->author_studip = false;
         if (!empty($module_data['references'][$module_id]['operations']) && is_array($module_data['references'][$module_id]['operations'])) {
             $this->allowed_operations = $module_data['references'][$module_id]['operations'];

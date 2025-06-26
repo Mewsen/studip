@@ -873,6 +873,35 @@ class IliasSoap extends StudipSoapClient
     }
 
     /**
+    * get users for role entry
+    *
+    * returns all users associated with given role id
+    * @access public
+    * @param string role_id role-id
+    * @return array result
+    */
+    function getUsersForRole($role_id)
+    {
+        $param = [
+            'sid' => $this->getSID(),
+            'role_id' => $role_id,
+            'attach_roles' => 0,
+            'active' => 1,
+           ];
+        $result = $this->call('getUsersForRole', $param);
+        $user_array = [];
+
+        if ($result) {
+            $s = simplexml_load_string($result);
+            foreach ($s->User as $user) {
+                $id_parts = explode('usr_', $user->attributes()->Id);
+                $user_array[$id_parts[1]] = trim((string)$user->Title . ' ' . (string)$user->Firstname . ' ' .(string)$user->Lastname);
+            }
+        }
+        return $user_array;
+    }
+
+    /**
     * grant permissions
     *
     * grants permissions for given operations at role-id and ref-id

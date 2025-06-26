@@ -72,6 +72,8 @@ if(file_exists("./ilias.ini.php")){
             $base_url = "ilias.php?baseClass=ilGlossaryPresentationGUI";
             break;
         case 'cat':
+            $base_url = "ilias.php?cmd=view&baseClass=ilRepositoryGUI&cmdClass=ilObjCategoryGUI";
+            break;
         case 'crs':
             $base_url= "ilias.php?cmd=render&cmdClass=ilrepositorygui&baseClass=ilRepositoryGUI";
             break;
