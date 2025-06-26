@@ -206,7 +206,7 @@ class CoursewareCronjob extends CronJob
                                 $unit->range_id, $unit->id);
                         }
 
-                        if ($this->resetProgress($unit, $blocks, $unit->config['reset_progress']['mailText'])) {
+                        if ($this->resetProgress($unit, $blocks)) {
                             $unit->config['last_progress_reset'] = time();
                         }
                     }
@@ -318,24 +318,30 @@ class CoursewareCronjob extends CronJob
 
         $recipients = $course->getMembersWithStatus('autor', true);
 
-        $mail = new StudipMail();
+        foreach (array_chunk($recipients, 100) as $chunkedRecipients) {
+            $mail = new StudipMail();
 
-        foreach ($recipients as $rec) {
-            $mail->addRecipient(
-                $rec->email,
-                $rec->getUserFullname(),
-                'bcc'
-            );
+            foreach ($chunkedRecipients as $rec) {
+                $mail->addRecipient(
+                    $rec->email,
+                    $rec->getUserFullname(),
+                    'bcc'
+                );
+            }
+
+            $message = $unit->config['reset_progress']['mailText'] . "\n\n" .
+                sprintf(_('Sie können das Lernmaterial [direkt hier aufrufen]%s .'),
+                    URLHelper::getURL('dispatch.php/course/courseware/courseware/' . $unit->id, ['cid' => $course->id]));
+
+            $mail->setSubject(_('Courseware: Fortschritt zurückgesetzt') . ' - ' . $course->getFullName())
+                ->setBodyText($message);
+
+            if (!$mail->send()) {
+                return false;
+            }
         }
 
-        $message = $unit->config['reset_progress']['mailText'] . "\n\n" .
-            sprintf(_('Sie können das Lernmaterial [direkt hier aufrufen]%s .'),
-            URLHelper::getURL('dispatch.php/course/courseware/courseware/' . $unit->id, ['cid' => $course->id]));
-
-        $mail->setSubject(_('Courseware: Fortschritt zurückgesetzt') . ' - ' . $course->getFullName())
-            ->setBodyText($message);
-
-        return $mail->send();
+        return true;
     }
 
     /**
