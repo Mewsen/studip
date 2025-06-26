@@ -27,7 +27,7 @@
             <tbody>
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
                     <td>
-                        <studip-icon shape="seminar" :size="26"></studip-icon>
+                        <img :src="course.meta.avatar.small" :title="course.attributes.title" class="avatar-small" alt="">
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)"
