@@ -237,7 +237,7 @@ class Resources_AdminController extends AuthenticatedController
         $this->bookings = null;
         if ($this->resource) {
             $this->bookings = ResourceBooking::findBySql(
-                'range_id = :user_id AND resource_id = :resource_id '
+                ':user_id IN (range_id, booking_user_id) AND resource_id = :resource_id '
                 . (!$this->show_all_records
                     ? 'AND begin > (UNIX_TIMESTAMP() - 86400) '
                     : ''
@@ -249,7 +249,7 @@ class Resources_AdminController extends AuthenticatedController
             );
         } else {
             $this->bookings = ResourceBooking::findBySql(
-                'range_id = :user_id '
+                ':user_id IN (range_id, booking_user_id) '
                 . (!$this->show_all_records
                     ? 'AND begin > (UNIX_TIMESTAMP() - 86400) '
                     : ''
