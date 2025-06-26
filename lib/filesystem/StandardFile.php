@@ -240,7 +240,16 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             ['data-dialog' => ''],
             'file-display-info'
         );
-        if ($this->isEditable($GLOBALS['user']->id)) {
+        if ($this->isDownloadable() && User::findCurrent()) {
+            $actionMenu->addLink(
+                $this->fileref->getDownloadURL('force_download'),
+                _('Link kopieren'),
+                Icon::create('clipboard'),
+                ['class' => 'copyable-link'],
+                'link-to-clipboard'
+            );
+        }
+        if ($this->isEditable()) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/edit/' . $this->fileref->id),
                 _('Datei bearbeiten'),
@@ -263,7 +272,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 'file-update'
             );
         }
-        if ($this->isWritable($GLOBALS['user']->id)) {
+        if ($this->isWritable()) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/move/' . $this->fileref->id),
                 _('Datei verschieben'),
@@ -272,7 +281,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 'file-move'
             );
         }
-        if ($this->isDownloadable($GLOBALS['user']->id) && $GLOBALS['user']->id !== 'nobody') {
+        if ($this->isDownloadable() && User::findCurrent()) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/copy/' . $this->fileref->id),
                 _('Datei kopieren'),
@@ -280,16 +289,9 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 ['data-dialog' => 'size=auto'],
                 'file-copy'
             );
-            $actionMenu->addLink(
-                $this->fileref->getDownloadURL('force_download'),
-                _('Link kopieren'),
-                Icon::create('clipboard'),
-                ['class' => 'copyable-link'],
-                'link-to-clipboard'
-            );
         }
         if (
-            $this->isEditable($GLOBALS['user']->id)
+            $this->isEditable()
             && Config::get()->OERCAMPUS_ENABLED
             && $GLOBALS['perm']->have_perm(Config::get()->OER_PUBLIC_STATUS)
             && in_array($this->fileref->folder->range_type, ['course', 'user'])
