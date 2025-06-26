@@ -11,6 +11,11 @@ final class IndexAndCorrectTypeForMatriculationNumber extends Migration
 
     public function up()
     {
+        $query = "UPDATE `auth_user_md5`
+                  SET `matriculation_number` = NULL
+                  WHERE `matriculation_number` = ''";
+        DBManager::get()->exec($query);
+
         $query = "ALTER TABLE `auth_user_md5`
                   MODIFY COLUMN `matriculation_number` VARCHAR(255) COLLATE latin1_bin NULL DEFAULT NULL,
                   ADD UNIQUE INDEX `matriculation_number` (`matriculation_number`)";
