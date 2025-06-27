@@ -154,7 +154,7 @@
                             )
                             ->conditionAll(null)
                             // Delete thread
-                            ->condition(ForumPerm::has('remove_thread', $seminar_id))
+                            ->condition(ForumPerm::has('remove_entry', $seminar_id))
                             ->addButton(
                                 'delete',
                                 _('Dieses Thema löschen'),
