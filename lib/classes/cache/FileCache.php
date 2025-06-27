@@ -46,7 +46,7 @@ class FileCache extends Cache
         $this->dir = $path
                   ?: (
                       Config::get()->SYSTEMCACHE['type'] === self::class
-                          ? Config::get()->SYSTEMCACHE['config']['path']
+                          ? Config::get()->SYSTEMCACHE['config']['path'] ?? ''
                           : ''
                   )
                   ?: $GLOBALS['CACHING_FILECACHE_PATH']
