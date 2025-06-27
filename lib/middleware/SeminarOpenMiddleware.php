@@ -25,8 +25,9 @@ use Psr\Http\Message\ResponseFactoryInterface;
 final class SeminarOpenMiddleware implements MiddlewareInterface
 {
 
-    public function __construct(private ResponseFactoryInterface $response_factory)
-    {
+    public function __construct(
+        private readonly ResponseFactoryInterface $response_factory
+    ) {
     }
 
     /**
@@ -159,9 +160,9 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
             try {
                 \Context::set($course_id);
             } catch (\LoginException $e) {
-                $response = $this->response_factory->createResponse(302);
-                $_SESSION['redirect_after_login'] = \Request::url();
-                return $response->withHeader('Location', \URLHelper::getScriptURL('dispatch.php/login'));
+                $_SESSION['redirect_after_login'] ??= \Request::url();
+                return $this->response_factory->createResponse(302)
+                    ->withHeader('Location', \URLHelper::getScriptURL('dispatch.php/login'));
             }
             unset($course_id);
         }
