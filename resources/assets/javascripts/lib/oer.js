@@ -139,7 +139,7 @@ const OER = {
                                     tags: tags
                                 },
                                 dataType: "json",
-                                success(output) {
+                                success: (output) => {
                                     this.results = output.results.materials;
                                     this.tags = output.tags;
                                     if (tag_hash) {
