@@ -12,8 +12,9 @@ use URLHelper;
 
 final class HandleAccessDeniedMiddleware implements MiddlewareInterface
 {
-    public function __construct(private ResponseFactoryInterface $responseFactory)
-    {
+    public function __construct(
+        private readonly ResponseFactoryInterface $responseFactory
+    ) {
     }
 
     /**
@@ -25,9 +26,9 @@ final class HandleAccessDeniedMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (AccessDeniedException $ade) {
-            $_SESSION['redirect_after_login'] = Request::url();
-            $response = $this->responseFactory->createResponse(302);
-            return $response->withHeader('Location', URLHelper::getURL('dispatch.php/login'));
+            $_SESSION['redirect_after_login'] ??= Request::url();
+            return $this->responseFactory->createResponse(302)
+                ->withHeader('Location', URLHelper::getURL('dispatch.php/login'));
         }
     }
 }

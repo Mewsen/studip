@@ -22,8 +22,9 @@ use Studip\Session\Manager;
 
 final class SessionMiddleware implements MiddlewareInterface
 {
-    public function __construct(private Manager $session_manager)
-    {
+    public function __construct(
+        private readonly Manager $session_manager
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
