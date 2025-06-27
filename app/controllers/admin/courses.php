@@ -1381,11 +1381,13 @@ class Admin_CoursesController extends AuthenticatedController
             _('Studiengänge'),
             _('Position'),
         ];
-        foreach ($courses as $course) {
+        foreach ($courses as $index => $course) {
             if ($GLOBALS['perm']->have_studip_perm('dozent', $course->id)) {
                 $members = $course->getMembersData();
 
-                $filename = FileManager::cleanFileName('Teilnehmendenexport ' . $course->Name . '.' . $export_format);
+                $course_name = $course->name . '-' . $course->start_semester->name . '-' . ($index + 1);
+                $filename = FileManager::cleanFileName('Teilnehmendenexport ' . $course_name . '.' . $export_format);
+
                 $filepath = $tmp_folder . '/'. $filename;
 
                 $this->render_spreadsheet($header, $members, $export_format, $filename, $filepath);
