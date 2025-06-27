@@ -24,6 +24,7 @@
  * @property int|null $chdate database column
  * @property ResourcePropertyDefinition $definition belongs_to ResourcePropertyDefinition
  * @property ResourceRequest $request belongs_to ResourceRequest
+ * @property ResourceProperty $property
  * @property mixed $name additional field
  * @property mixed $display_name additional field
  * @property mixed $type additional field
@@ -46,6 +47,11 @@ class ResourceRequestProperty extends SimpleORMap
             'assoc_func' => 'find'
         ];
 
+        $config['belongs_to']['property'] = [
+            'class_name' => ResourceProperty::class,
+            'foreign_key' => 'property_id',
+        ];
+
         $config['additional_fields']['name'] = ['definition', 'name'];
         $config['additional_fields']['display_name'] = ['definition', 'display_name'];
         $config['additional_fields']['type'] = ['definition', 'type'];
@@ -64,7 +70,7 @@ class ResourceRequestProperty extends SimpleORMap
         $string = '';
 
         if ($this->type == 'position') {
-            $string .= ResourceManager::getPositionString($this);
+            $string .= ResourceManager::getPositionString($this->property);
         } elseif ($this->type == 'bool') {
             $string .= $this->state ? _('ja') : _('nein');
         } elseif ($this->type == 'num') {
