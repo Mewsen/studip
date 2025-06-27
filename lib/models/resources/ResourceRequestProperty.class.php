@@ -25,6 +25,7 @@
  * @property ResourceRequest request belongs_to ResourceRequest
  * @property ResourcePropertyDefinition definition belongs_to
  *     ResourcePropertyDefinition
+ * @property ResourceProperty $property
  */
 class ResourceRequestProperty extends SimpleORMap
 {
@@ -42,6 +43,11 @@ class ResourceRequestProperty extends SimpleORMap
             'class_name' => ResourceRequest::class,
             'foreign_key' => 'request_id',
             'assoc_func' => 'find'
+        ];
+
+        $config['belongs_to']['property'] = [
+            'class_name' => ResourceProperty::class,
+            'foreign_key' => 'property_id',
         ];
 
         $config['additional_fields']['name'] = ['definition', 'name'];
@@ -62,7 +68,7 @@ class ResourceRequestProperty extends SimpleORMap
         $string = '';
 
         if ($this->type == 'position') {
-            $string .= ResourceManager::getPositionString($this);
+            $string .= ResourceManager::getPositionString($this->property);
         } elseif ($this->type == 'bool') {
             $string .= $this->state ? _('ja') : _('nein');
         } elseif ($this->type == 'num') {
