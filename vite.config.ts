@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, 'resources'),
-                'jquery-ui': 'jquery-ui/ui',
+                'jquery-ui': 'jquery-ui',
             }
         },
         build: {
