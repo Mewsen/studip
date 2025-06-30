@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-11 10:39+0200\n"
-"PO-Revision-Date: 2025-06-27 13:00+0000\n"
+"PO-Revision-Date: 2025-07-01 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -6948,9 +6948,8 @@ msgid "Größe"
 msgstr "Size"
 
 #: app/controllers/calendar/schedule.php:135
-#, fuzzy
 msgid "Klein"
-msgstr "small"
+msgstr "lowercase"
 
 #: app/controllers/calendar/schedule.php:139
 msgid "Mittel"
@@ -6958,105 +6957,87 @@ msgstr "Medium"
 
 #: app/controllers/calendar/schedule.php:143
 msgid "Groß"
-msgstr ""
+msgstr "uppercase"
 
 #: app/controllers/calendar/schedule.php:266
-#, fuzzy
 msgid "%{course_name} (vorgemerkt)"
-msgstr "%{course_name} (not enrolled)"
+msgstr "%{course_name} (earmarked)"
 
 #: app/controllers/calendar/schedule.php:365
 #: app/controllers/calendar/schedule.php:397
 #: app/controllers/calendar/schedule.php:448
-#, fuzzy
 msgid "Der Termin wurde nicht gefunden."
-msgstr "The date could not be found!"
+msgstr "The date could not be found."
 
 #: app/controllers/calendar/schedule.php:368
 #: app/controllers/calendar/schedule.php:400
 #: app/controllers/calendar/schedule.php:451
-#, fuzzy
 msgid "Sie dürfen diesen Termin nicht bearbeiten!"
-msgstr "You must not edit this profile"
+msgstr "You may not edit this profile!"
 
 #: app/controllers/calendar/schedule.php:420
-#, fuzzy
 msgid "Der Termin wurde hinzugefügt."
-msgstr "The date %s has been added!"
+msgstr "The date has been added."
 
 #: app/controllers/calendar/schedule.php:422
-#, fuzzy
 msgid "Der Termin wurde bearbeitet."
-msgstr "Folder has been updated."
+msgstr "The date has been edited."
 
 #: app/controllers/calendar/schedule.php:431
-#, fuzzy
 msgid "Der Termin konnte nicht hinzugefügt werden."
-msgstr "The date could not be deleted!"
+msgstr "The date could not be added."
 
 #: app/controllers/calendar/schedule.php:433
-#, fuzzy
 msgid "Der Termin konnte nicht bearbeitet werden."
-msgstr "The date could not be saved."
+msgstr "The date could not be edited."
 
 #: app/controllers/calendar/schedule.php:454
-#, fuzzy
 msgid "Der Termin wurde gelöscht."
-msgstr "The date has been deleted"
+msgstr "The date has been deleted."
 
 #: app/controllers/calendar/schedule.php:456
-#, fuzzy
 msgid "Der Termin konnte nicht gelöscht werden."
-msgstr "The date could not be deleted!"
+msgstr "The date could not be deleted."
 
 #: app/controllers/calendar/schedule.php:475
-#, fuzzy
 msgid "Der Veranstaltungstermin wurde nicht gefunden."
-msgstr "The course date with the ID %s could not be found!"
+msgstr "The course date could not be found."
 
 #: app/controllers/calendar/schedule.php:480
-#, fuzzy
 msgid "Die Veranstaltung wurde nicht gefunden."
-msgstr "The selected course could not be found!"
+msgstr "The course could not be found."
 
 #: app/controllers/calendar/schedule.php:631
-#, fuzzy
 msgid "Die Farbe der Veranstaltung wurde geändert."
-msgstr "The basic course details have been changed."
+msgstr "The colour of the course has been changed."
 
 #: app/controllers/calendar/schedule.php:633
-#, fuzzy
 msgid "Die Farbe der Veranstaltung konnte nicht geändert werden."
-msgstr "The course cannot be created."
+msgstr "The colour of the course could not be changed."
 
 #: app/controllers/calendar/schedule.php:659
-#, fuzzy
 msgid "Die Veranstaltung wurde bereits zum Stundenplan hinzugefügt."
-msgstr "The sub-course has been added."
+msgstr "The course has already been added to the timetable."
 
 #: app/controllers/calendar/schedule.php:667
-#, fuzzy
 msgid "Die Veranstaltung wurde zum Stundenplan hinzugefügt."
-msgstr "The sub-course has been added."
+msgstr "The course has been added to the timetable."
 
 #: app/controllers/calendar/schedule.php:669
-#, fuzzy
 msgid "Die Veranstaltung konnte nicht zum Stundenplan hinzugefügt werden."
-msgstr "The sub-course could not be added."
+msgstr "The course could not be added to the timetable."
 
 #: app/controllers/calendar/schedule.php:715
-#, fuzzy
 msgid "Es wurde kein Wochentag ausgewählt."
-msgstr "No topic has been selected."
+msgstr "No day of the week has been selected."
 
 #: app/controllers/calendar/calendar.php:47
 msgid "Neuer Eintrag"
 msgstr "New entry"
 
 #: app/controllers/calendar/calendar.php:71
-#, fuzzy
 msgid "Veranstaltungen auswählen"
-msgstr "Choose course"
+msgstr "Select course"
 
 #: app/controllers/calendar/calendar.php:79
 #: app/controllers/calendar/calendar.php:782
@@ -8466,27 +8447,26 @@ msgid "Es wurden noch keine Module angelegt."
 msgstr "No modules."
 
 #: app/controllers/module/module.php:115
-#, fuzzy
 msgid "Ausgabeprache wählen"
-msgstr "Output languages"
+msgstr "Select output language"
 
 #: app/controllers/module/module.php:145 app/controllers/module/module.php:1502
 msgid "Neues Modul anlegen"
 msgstr "Create new module"
 
 #: app/controllers/module/module.php:159
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie legen ein neues Modul an. Das Modul wird zunächst in der Ausgabesprache "
 "<em>%s</em> angelegt (Originalsprache)."
 msgstr ""
-"You are about to create a new module. Please enter all information in "
-"<em>%s</em> first."
+"You are about to create a new module. The module will initially be created "
+"in the output language <em>%s</em> (original language)."
 
 #: app/controllers/module/module.php:181
-#, fuzzy, php-format
+#, php-format
 msgid "Modul: <em>%1$s</em> in der Ausgabesprache <em>%2$s</em> neu anlegen."
-msgstr "Module: Recreate <em>%s</em> in the output language <em>%s</em>."
+msgstr "Module: Recreate <em>%1$s</em> in the output language <em>%2$s</em>."
 
 #: app/controllers/module/module.php:188
 #, php-format
@@ -8514,7 +8494,7 @@ msgstr "edit"
 #: app/controllers/module/module.php:196 app/controllers/module/module.php:715
 #, fuzzy
 msgid "neu anlegen"
-msgstr "Create new"
+msgstr "create new"
 
 #: app/controllers/module/module.php:206
 msgid "Download der Modulbeschreibung"
@@ -8623,19 +8603,20 @@ msgid "Neuen Modulteil anlegen"
 msgstr "Create new component"
 
 #: app/controllers/module/module.php:683
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie legen einen neuen Modulteil für das Modul <em>%1$s</em> an. Der "
 "Modulteil muss zunächst in der Ausgabesprache <em>%2$s</em> angelegt werden."
 msgstr ""
-"You want to add a part for module <em>%s</em>. It needs to be set up in the "
-"standard language <em>%s</em> first."
+"You are about to create a new part for module <em>%s1$s</em>. It needs to be "
+"set up in the standard language <em>%2$s</em> first."
 
 #: app/controllers/module/module.php:699
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Modulteil: <em>%1$s</em> in der Ausgabesprache <em>%2$s</em> neu anlegen."
-msgstr "Module: Recreate <em>%s</em> in the output language <em>%s</em>."
+msgstr ""
+"Recreate module part <em>%1$s</em> in the output language <em>%2$s</em>."
 
 #: app/controllers/module/module.php:704
 #, php-format
@@ -8643,9 +8624,9 @@ msgid "Modulteil: %s"
 msgstr "Module component: %s"
 
 #: app/controllers/module/module.php:706
-#, fuzzy, php-format
+#, php-format
 msgid "Der Modulteil <em>%s</em> wurde geändert."
-msgstr "Changes to \"%s\" saved."
+msgstr "The module part <em>%s</em> has been changed."
 
 #: app/controllers/module/module.php:824 app/controllers/module/module.php:1044
 #: app/controllers/studiengaenge/shared_version.php:83
@@ -8775,7 +8756,7 @@ msgstr "Comparison view"
 #: app/views/module/module/module.php:110
 #: app/views/module/module/module.php:111
 msgid "Originalsprache ändern"
-msgstr ""
+msgstr "Change original language"
 
 #: app/controllers/module/module.php:1517
 msgid ""
@@ -9601,11 +9582,11 @@ msgstr "Current booking plan"
 
 #: app/controllers/resources/room_planning.php:380
 msgid "QR-Code zur Eingabe der Anzahl"
-msgstr ""
+msgstr "QR code for entering the number"
 
 #: app/controllers/resources/room_planning.php:388
 msgid "Zur Eingabe der Anzahl"
-msgstr ""
+msgstr "for entering the number"
 
 #: app/controllers/resources/room_planning.php:445
 #: app/controllers/resources/room_planning.php:773
@@ -10168,9 +10149,8 @@ msgid "Buchungstyp"
 msgstr "Booking type"
 
 #: app/controllers/resources/export.php:338
-#, fuzzy
 msgid "geplante Teilnehmendenzahl"
-msgstr "expected number of participants"
+msgstr "planned number of participants"
 
 #: app/controllers/resources/export.php:339
 #: app/controllers/resources/export.php:509
@@ -11359,9 +11339,8 @@ msgid "Das Anmeldeset: %s wurde gespeichert"
 msgstr "The admission set %s has been saved"
 
 #: app/controllers/admission/courseset.php:393
-#, fuzzy
 msgid "Sie dürfen diese Anmelderegel nicht löschen."
-msgstr "You are not allowed to view this calendar!"
+msgstr "You are not allowed to delete this admission rule."
 
 #: app/controllers/admission/courseset.php:451
 msgid "Ausgewählte Veranstaltungen konfigurieren"
@@ -12261,17 +12240,16 @@ msgstr "ILIAS content settings have been saved."
 #: app/controllers/admin/ilias_interface.php:411
 #, php-format
 msgid "ILIAS-Rollenzuweisung der Stud.IP-Rechtestufe %s wurde entfernt."
-msgstr ""
+msgstr "ILIAS role assignment of the Stud.IP rights level %s has been removed."
 
 #: app/controllers/admin/ilias_interface.php:438
 #, php-format
 msgid "ILIAS-Rolle %s wird Stud.IP-Rechtestufe %s zugewiesen."
-msgstr ""
+msgstr "ILIAS role %s is assigned Stud.IP rights level %s."
 
 #: app/controllers/admin/ilias_interface.php:440
-#, fuzzy
 msgid "ILIAS-Rolle nicht gefunden."
-msgstr "Basic ILIAS settings not found."
+msgstr "ILIAS role not found."
 
 #: app/controllers/admin/ilias_interface.php:447
 msgid "ILIAS-Berechtigungseinstellungen wurden gespeichert."
@@ -12478,9 +12456,9 @@ msgid "Vergleichs-Studiengangteile"
 msgstr "Comparison component"
 
 #: app/controllers/admin/overlapping.php:117
-#, fuzzy, php-format
+#, php-format
 msgid "%s Fachsemester"
-msgstr "%s. semester"
+msgstr "semester %s"
 
 #: app/controllers/admin/overlapping.php:123
 #: app/views/settings/studies/studiengang.php:23
@@ -12542,23 +12520,20 @@ msgid "Unbekannte Veranstaltung."
 msgstr "Unknown course."
 
 #: app/controllers/admin/overlapping.php:291
-#, fuzzy
 msgid "Unbekannte Veranstaltung oder Version."
-msgstr "Unknown course."
+msgstr "Unknown course or version."
 
 #: app/controllers/admin/overlapping.php:346
 msgid "Unbekannte Studiengangteil-Version."
 msgstr "Unknown component version."
 
 #: app/controllers/admin/overlapping.php:574
-#, fuzzy
 msgid "Listenansicht"
-msgstr "Reading view"
+msgstr "List view"
 
 #: app/controllers/admin/overlapping.php:578
-#, fuzzy
 msgid "Planeransicht"
-msgstr "Calendar view"
+msgstr "Planner view"
 
 #: app/controllers/admin/overlapping.php:584
 #: app/controllers/search/studiengaenge.php:544
@@ -12726,9 +12701,8 @@ msgid "Mehrfachzuordnung von Studienbereichen"
 msgstr "Multiple assignment of study areas"
 
 #: app/controllers/admin/courses.php:492
-#, fuzzy
 msgid "Nachricht an ausgewählte Veranstaltungen"
-msgstr "Selected courses"
+msgstr "Message to selected courses"
 
 #: app/controllers/admin/courses.php:511
 #: app/views/settings/accessibility.php:18 app/views/settings/general.php:118
@@ -13196,14 +13170,12 @@ msgstr "Vacation period"
 
 #: app/controllers/admin/holidays.php:181
 #: app/views/admin/holidays/holidays.php:12
-#, fuzzy
 msgid "Feiertage"
-msgstr "Labour Day"
+msgstr "holidays"
 
 #: app/controllers/admin/holidays.php:190
-#, fuzzy
 msgid "Ansichtseinstellungen"
-msgstr "Visibility settings"
+msgstr "View settings"
 
 #: app/controllers/admin/holidays.php:206 app/views/admin/holidays/index.php:39
 msgid "Neue Ferien anlegen"
@@ -14324,13 +14296,15 @@ msgstr "Edit keyword %s"
 
 #: app/controllers/admin/tags.php:41
 msgid "Schlagwörter sollen keine Großbuchstaben entahlten"
-msgstr ""
+msgstr "Keywords should not contain uppercase letters"
 
 #: app/controllers/admin/tags.php:45
 msgid ""
 "Schlagwörter dürfen keine Zeilenumbrüche, Leerzeichen, Doppelkreuze (#) oder "
 "Pipe-Zeichen (|) enthalten."
 msgstr ""
+"Keywords must not contain line breaks, spaces, double crosses (#) or pipe "
+"characters (|)."
 
 #: app/controllers/admin/tags.php:50
 msgid "Dieses Schlagwort ist schon vergeben."
@@ -14352,7 +14326,7 @@ msgstr "Active"
 #: app/controllers/admin/tags.php:65
 #, php-format
 msgid "Verknüpfte Objekte mit Schlagwort „%s“"
-msgstr ""
+msgstr "Linked objects with keyword \"%s\""
 
 #: app/controllers/admin/specification.php:38
 #: app/views/admin/specification/index.php:11
@@ -14748,18 +14722,16 @@ msgid "Neues LTI-Tool registrieren"
 msgstr "Register new LTI tool"
 
 #: app/controllers/admin/lti.php:35
-#, fuzzy
 msgid "Daten zur LTI-Plattform anzeigen"
-msgstr "Display date/author"
+msgstr "Display LTI platform information"
 
 #: app/controllers/admin/lti.php:40
-#, fuzzy
 msgid ""
 "Hier können Sie LTI-Tools konfigurieren. Diese müssen den LTI-Standard in "
 "Version 1.0/1.1 oder 1.3A unterstützen."
 msgstr ""
-"You can configure the link with external tools here, if the tools support "
-"the LTI standard (version 1.x)."
+"You can configure LTI tools here. The tools must support the LTI standard ("
+"version 1.0, 1.1 or 1.3A)."
 
 #: app/controllers/consultation/overview.php:73
 #: app/controllers/consultation/admin.php:416
@@ -15133,6 +15105,8 @@ msgid ""
 "Dies ist die Studierendenansicht (Vorschau) der Aufgabe. Sie können hier "
 "auch Lösungen von Teilnehmenden ansehen oder für sie abgeben."
 msgstr ""
+"This is the student view (preview) of the task. You can also view solutions "
+"from participants or submit solutions for them here."
 
 #: app/controllers/vips/sheets.php:401 app/controllers/vips/sheets.php:1089
 #: app/controllers/vips/solutions.php:949
@@ -15151,7 +15125,7 @@ msgstr "Show for"
 #: app/controllers/vips/sheets.php:426
 msgid ""
 "Bitte denken Sie daran, vor dem Verlassen der Seite Ihre Lösung zu speichern."
-msgstr ""
+msgstr "Please remember to save your solution before leaving the page."
 
 #: app/controllers/vips/sheets.php:430 app/controllers/vips/sheets.php:1100
 #: app/controllers/vips/sheets.php:1335 app/controllers/vips/sheets.php:1600
@@ -15230,9 +15204,9 @@ msgid "Ungültiger Endzeitpunkt, der Wert wurde nicht übernommen."
 msgstr "Invalid ending time, reset to current time."
 
 #: app/controllers/vips/sheets.php:772
-#, fuzzy, php-format
+#, php-format
 msgid "Das Aufgabenblatt „%s“ wurde gelöscht."
-msgstr "%u task has been deleted."
+msgstr "The worksheet %s has been deleted."
 
 # php-format
 #: app/controllers/vips/sheets.php:799
@@ -15251,6 +15225,8 @@ msgid ""
 "Falls Sie diese wirklich löschen möchten, müssen Sie zuerst die Lösungen "
 "aller Teilnehmenden zurücksetzen."
 msgstr ""
+"If you really want to delete them, you must first reset the solutions of all "
+"participants."
 
 #: app/controllers/vips/sheets.php:847
 msgid "Die Blockzuordnung wurde gespeichert."
@@ -15282,9 +15258,9 @@ msgid ""
 msgstr "The exam has been reset and all existing solutions have been archived."
 
 #: app/controllers/vips/sheets.php:975
-#, fuzzy, php-format
+#, php-format
 msgid "Die Aufgabe „%s“ wurde gelöscht."
-msgstr "%u task has been deleted."
+msgstr "The task %s has been deleted."
 
 #: app/controllers/vips/sheets.php:998
 #, php-format
@@ -15367,21 +15343,21 @@ msgid "Sie müssen eine Datei zum Importieren auswählen."
 msgstr "You have to select a file to import."
 
 #: app/controllers/vips/sheets.php:1773
-#, fuzzy, php-format
+#, php-format
 msgid "Es trat ein Fehler beim Hochladen der Datei „%s“ auf."
-msgstr "An error occurred while uploading the file!"
+msgstr "An error occurred while uploading the file %s."
 
 #: app/controllers/vips/sheets.php:1794
 #, php-format
 msgid "Das Aufgabenblatt „%s“ mit %d Aufgabe wurde hinzugefügt."
 msgid_plural "Das Aufgabenblatt „%s“ mit %d Aufgaben wurde hinzugefügt."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The worksheet %s with %d task has been added."
+msgstr[1] "The worksheet %s with  %d tasks has been added."
 
 #: app/controllers/vips/sheets.php:1799
 #, php-format
 msgid "%1$d Aufgabenblätter mit insgesamt %2$d Aufgaben wurden hinzugefügt."
-msgstr ""
+msgstr "%1$d worksheets with a total of %2$d tasks have been added."
 
 #: app/controllers/vips/sheets.php:1862 app/controllers/vips/sheets.php:1868
 msgid "(keine Matrikelnummer)"
@@ -15414,6 +15390,8 @@ msgid ""
 "werden. Sie erhalten dabei auch eine Übersicht über die Lösungen bzw. "
 "Antworten der Studierenden."
 msgstr ""
+"Exercises, tests and exams can be prepared and completed online. You will "
+"also receive an overview of the students' solutions and answers."
 
 #: app/controllers/vips/sheets.php:2024
 msgid ""
@@ -15457,11 +15435,10 @@ msgid "Meine Aufgaben"
 msgstr "My tasks"
 
 #: app/controllers/vips/pool.php:47 app/views/vips/pool/exercises.php:9
-#, fuzzy
 msgid ""
 "Auf dieser Seite finden Sie eine Übersicht über alle Aufgaben, auf die Sie "
 "Zugriff haben."
-msgstr "Here you find an overview on all available pages."
+msgstr "On this page you will find an overview of all tasks you have access to."
 
 #: app/controllers/vips/pool.php:55 app/controllers/vips/pool.php:162
 #: app/views/vips/sheets/copy_exercises_dialog.php:23
@@ -15510,11 +15487,11 @@ msgid "Alle Aufgabentypen"
 msgstr "Any type of task"
 
 #: app/controllers/vips/pool.php:136
-#, fuzzy
 msgid ""
 "Auf dieser Seite finden Sie eine Übersicht über alle Aufgabenblätter, auf "
 "die Sie Zugriff haben."
-msgstr "Here you find an overview on all available pages."
+msgstr ""
+"On this page you will find an overview of all worksheets you have access to."
 
 #: app/controllers/vips/pool.php:195
 msgid "Titel des Aufgabenblatts"
@@ -15532,11 +15509,11 @@ msgid "Beliebiger Modus"
 msgstr "Any mode"
 
 #: app/controllers/vips/pool.php:340
-#, fuzzy, php-format
+#, php-format
 msgid "Die Aufgabe wurde gelöscht."
 msgid_plural "Es wurden %s Aufgaben gelöscht."
-msgstr[0] "%u task has been deleted."
-msgstr[1] "%u tasks have been deleted."
+msgstr[0] "The task has been deleted."
+msgstr[1] "%s tasks have been deleted."
 
 #: app/controllers/vips/pool.php:344
 msgid ""
@@ -15547,11 +15524,11 @@ msgstr ""
 
 #: app/controllers/vips/pool.php:357
 msgid "Aufgaben in vorhandenes Aufgabenblatt kopieren"
-msgstr "Copy tasks into another worksheet"
+msgstr "Copy tasks into an existing worksheet"
 
 #: app/controllers/vips/pool.php:396
 msgid "Aufgaben in vorhandenes Aufgabenblatt verschieben"
-msgstr "Move tasks into another worksheet"
+msgstr "Move tasks to an existing worksheet"
 
 #: app/controllers/vips/pool.php:434
 msgid ""
@@ -15561,9 +15538,8 @@ msgstr ""
 "Some exercises cannot be moved due to existing submissions for the test."
 
 #: app/controllers/vips/config.php:36
-#, fuzzy
 msgid "Einstellungen für Aufgaben"
-msgstr "Accept settings"
+msgstr "Task settings"
 
 #: app/controllers/vips/config.php:46
 msgid "Anstehende Klausuren anzeigen"
@@ -15590,14 +15566,14 @@ msgid "Sie haben keinen Zugriff auf diesen Block!"
 msgstr "You don't have access to this block!"
 
 #: app/controllers/vips/admin.php:77
-#, fuzzy, php-format
+#, php-format
 msgid "Der Block „%s“ wurde gespeichert."
-msgstr "The block has been saved."
+msgstr "The block %s has been saved."
 
 #: app/controllers/vips/admin.php:96
-#, fuzzy, php-format
+#, php-format
 msgid "Der Block „%s“ wurde gelöscht."
-msgstr "The column %s has been deleted."
+msgstr "The block %s has been deleted."
 
 #: app/controllers/vips/admin.php:188
 msgid "Die Notenwerte müssen zwischen 0 und 100 liegen!"
@@ -15668,6 +15644,8 @@ msgid ""
 "In dieser Übersicht können Sie sich anzeigen lassen, welche Teilnehmenden "
 "Lösungen abgegeben haben, und diese Lösungen korrigieren und freigeben."
 msgstr ""
+"In this overview, you can see which participants have submitted solutions "
+"and correct and release these solutions."
 
 #: app/controllers/vips/solutions.php:385
 #: app/views/vips/solutions/autocorrect_dialog.php:27
@@ -15687,6 +15665,8 @@ msgid ""
 "Achtung: Wenn Sie die Lösungen zurücksetzen, werden die Lösungen aller "
 "Teilnehmenden archiviert!"
 msgstr ""
+"Attention: If you reset the solutions, the solutions of all participants "
+"will be archived!"
 
 #: app/controllers/vips/solutions.php:405
 msgid "Gradebook-Eintrag entfernen"
@@ -15709,9 +15689,8 @@ msgid "Abgabeprotokolle exportieren"
 msgstr "Export submission logs"
 
 #: app/controllers/vips/solutions.php:437
-#, fuzzy
 msgid "Lösungen der Teilnehmenden exportieren"
-msgstr "Export participants"
+msgstr "Export participants' solutions"
 
 #: app/controllers/vips/solutions.php:442
 #: app/views/vips/solutions/assignment_solutions.php:201
@@ -15720,15 +15699,13 @@ msgstr "Download attached files"
 
 #: app/controllers/vips/solutions.php:451
 #: app/views/vips/solutions/update_released_dialog.php:16
-#, fuzzy
 msgid "Nichts"
-msgstr "Easy"
+msgstr "Nothing"
 
 #: app/controllers/vips/solutions.php:459
 #: app/views/vips/solutions/update_released_dialog.php:21
-#, fuzzy
 msgid "Vergebene Punkte"
-msgstr "Your score:"
+msgstr "Points awarded"
 
 #: app/controllers/vips/solutions.php:467
 #: app/views/vips/solutions/update_released_dialog.php:26
@@ -15819,9 +15796,8 @@ msgstr[1] "%d solutions were graded."
 #: app/controllers/vips/solutions.php:904
 #: app/views/vips/solutions/view_solution.php:46
 #: app/views/vips/solutions/edit_solution.php:96
-#, fuzzy
 msgid "Nicht abgegeben"
-msgstr "unspecified"
+msgstr "Not specified"
 
 #: app/controllers/vips/solutions.php:945
 msgid ""
@@ -15865,9 +15841,8 @@ msgid "Die ausgewählte Lösung wurde als aktuelle Version gespeichert."
 msgstr "The selected solution was saved as the current version."
 
 #: app/controllers/vips/solutions.php:1169
-#, fuzzy
 msgid "Die ausgewählten Personen wurden aus der Gruppe entfernt."
-msgstr "%u person has been removed from the group %s."
+msgstr "The selected persons have been removed from the group."
 
 #: app/controllers/vips/solutions.php:1246
 #, php-format
@@ -15924,9 +15899,8 @@ msgstr "Grade"
 
 #: app/controllers/vips/solutions.php:1446
 #: app/views/vips/solutions/participants_overview.php:136
-#, fuzzy
 msgid "Maximalpunktzahl"
-msgstr "Maximum amount of participants"
+msgstr "Maximum number of points"
 
 #: app/controllers/vips/solutions.php:1448
 #: app/views/course/gradebook/students/index.php:44
@@ -15946,6 +15920,8 @@ msgid ""
 "Diese Seite gibt einen Überblick über die von allen Teilnehmenden erreichten "
 "Punkte und ggf. Noten."
 msgstr ""
+"This page provides an overview of the points and grades (if applicable) "
+"achieved by all participants."
 
 #: app/controllers/vips/solutions.php:1548
 #: app/controllers/vips/solutions.php:1718
@@ -15970,21 +15946,18 @@ msgstr "Item"
 
 #: app/controllers/vips/solutions.php:1647
 #: app/views/vips/solutions/statistics.php:19
-#, fuzzy
 msgid "Erreichbare Punkte"
-msgstr "Your score:"
+msgstr "Achievable points"
 
 #: app/controllers/vips/solutions.php:1648
 #: app/views/vips/solutions/statistics.php:22
-#, fuzzy
 msgid "Durchschn. Punkte"
-msgstr "Average:"
+msgstr "Average points"
 
 #: app/controllers/vips/solutions.php:1649
 #: app/views/vips/solutions/statistics.php:25
-#, fuzzy
 msgid "Korrekte Lösungen"
-msgstr "Accomplished achievements"
+msgstr "Correct solutions"
 
 #: app/controllers/vips/solutions.php:1680
 #: app/views/vips/solutions/statistics.php:72
@@ -16002,6 +15975,8 @@ msgid ""
 "Teilnehmenden erreichten Punkte sowie den Prozentsatz der vollständig "
 "korrekten Lösungen."
 msgstr ""
+"This page provides an overview of the average points achieved by all "
+"participants and the percentage of completely correct solutions."
 
 #: app/controllers/my_courses.php:84 app/controllers/my_courses.php:160
 #: app/views/settings/general.php:4 app/views/file/add_files_window.php:51
@@ -16211,9 +16186,8 @@ msgid "Letztes, aktuelles, nächstes Semester"
 msgstr "Last, current and next semester"
 
 #: app/controllers/my_courses.php:861
-#, fuzzy
 msgid "Aktuelles und vorletztes Semester"
-msgstr "Current and last semester"
+msgstr "Current and last semester but one"
 
 #: app/controllers/shared/download.php:87
 msgid "Modulhandbuch"
@@ -16534,9 +16508,8 @@ msgid "Unbekannte Abschluss-Kategorie"
 msgstr "Unknown category"
 
 #: app/controllers/search/angebot.php:190
-#, fuzzy
 msgid "Zuordnung wurde aufgehoben."
-msgstr "Allocation saved."
+msgstr "The assignment has been cancelled."
 
 #: app/controllers/search/studiengaenge.php:42
 msgid "Modulverzeichnis - Studiengänge"
@@ -16560,18 +16533,16 @@ msgid "Kein Verlaufsplan im gewählten Bereich verfügbar."
 msgstr "No recommendation in selected area."
 
 #: app/controllers/search/studiengaenge.php:306
-#, fuzzy
 msgid "Keine Module mit Veranstaltungen im gewählten Semester verfügbar."
-msgstr "My courses in the next semester"
+msgstr "No modules available with courses in the selected semester."
 
 #: app/controllers/search/studiengaenge.php:333
 msgid "Nur Module mit Veranstaltungen anzeigen"
 msgstr "Display only modules with assigned courses"
 
 #: app/controllers/search/studiengaenge.php:338
-#, fuzzy
 msgid "Alle Abschnitte zuklappen"
-msgstr "Collapse all"
+msgstr "Collapse all sections"
 
 #: app/controllers/search/studiengaenge.php:346
 msgid "Aktuelle Modulhandbücher"
@@ -16582,12 +16553,11 @@ msgid "Originalfassung als PDF"
 msgstr "Original version as PDF"
 
 #: app/controllers/search/studiengaenge.php:356
-#, fuzzy, php-format
+#, php-format
 msgid "Ausgabesprache (%s) als PDF"
-msgstr "Standard language"
+msgstr "Output language (%s) as PDF"
 
 #: app/controllers/search/studiengaenge.php:383
-#, fuzzy
 msgid "Neue Studiengruppe erstellen"
 msgstr "Create new study group"
 
@@ -16828,9 +16798,8 @@ msgid ""
 msgstr "Password request not possible while logged in."
 
 #: app/controllers/new_password.php:51 lib/classes/UserManagement.php:721
-#, fuzzy
 msgid "Passwortänderung angefordert"
-msgstr "[Stud.IP - %s] Requested password change"
+msgstr "Password change requested"
 
 #: app/controllers/new_password.php:54
 #, php-format
@@ -16906,65 +16875,58 @@ msgid "Ihr Wert wurde von der Rangliste gelöscht."
 msgstr "Your score is no longer published on the ranking list."
 
 #: app/controllers/lti/tool.php:23
-#, fuzzy
 msgid "Es wurde kein LTI-Tool angegeben."
-msgstr "No name has been provided!"
+msgstr "No LTI tool has been provided."
 
 #: app/controllers/lti/tool.php:28
-#, fuzzy
 msgid "Das angegebene LTI-Tool wurde nicht gefunden."
-msgstr "The specified date could not be found."
+msgstr "The specified LTI tool could not be found."
 
 #: app/controllers/lti/tool.php:68
-#, fuzzy
 msgid "Die Einrichtung von LTI-Tools in Veranstaltungen ist ausgeschaltet."
-msgstr "The reference management is disabled!"
+msgstr "Setting up LTI tools for courses is disabled."
 
 #: app/controllers/lti/tool.php:74
 msgid "Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!"
-msgstr ""
+msgstr "Please observe the applicable European data protection law (GDPR)!"
 
 #: app/controllers/lti/tool.php:150
-#, fuzzy
 msgid "Die folgenden Daten zum LTI-Tool sind fehlerhaft:"
-msgstr "The following errors occurred:"
+msgstr "The following data on the LTI tool is incorrect:"
 
 #: app/controllers/lti/tool.php:157
 msgid ""
 "Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool "
 "angegeben."
-msgstr ""
+msgstr "Neither a public key nor a JWKS URL has been specified for the tool."
 
 #: app/controllers/lti/tool.php:165
-#, fuzzy
 msgid "Das LTI-Tool konnte nicht gespeichert werden."
-msgstr "File could not be saved."
+msgstr "The LTI tool could not be saved."
 
 #: app/controllers/lti/tool.php:189
-#, fuzzy
 msgid ""
 "Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden."
-msgstr "Cannot save list."
+msgstr "The public key of the LTI tool could not be saved."
 
 #: app/controllers/lti/tool.php:194
-#, fuzzy
 msgid "Das LTI-Tool wurde gespeichert."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool has been saved."
 
 #: app/controllers/lti/tool.php:229
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ ist in dieser Veranstaltung nicht vorhanden."
-msgstr "You must not copy this course"
+msgstr "The LTI tool %s is not available for this course."
 
 #: app/controllers/lti/tool.php:241
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ wurde gelöscht."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool %s has been deleted."
 
 #: app/controllers/lti/tool.php:243
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ konnte nicht gelöscht werden."
-msgstr "The image could not be deleted."
+msgstr "The LTI tool %s could not be deleted."
 
 #: app/controllers/lti/auth.php:92 lib/navigation/BrowseNavigation.php:78
 msgid "Veranstaltung verknüpfen"
@@ -17631,7 +17593,6 @@ msgid "vorläufiger Benutzer"
 msgstr "preliminary user"
 
 #: app/controllers/profile.php:429
-#, fuzzy
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
 msgstr "The user has been added to your contacts."
 
@@ -17970,9 +17931,8 @@ msgstr "Conditions"
 
 #: app/controllers/my_ilias_accounts.php:49
 #: lib/modules/IliasInterfaceModule.php:33
-#, fuzzy
 msgid "Meine Lernobjekte und Accounts"
-msgstr "My learning objects and ILIAS accounts"
+msgstr "My learning objects and accounts"
 
 #: app/controllers/my_ilias_accounts.php:64
 #: app/controllers/my_ilias_accounts.php:126
@@ -17981,9 +17941,8 @@ msgid "Zur %s-Startseite"
 msgstr "Go to the %s start page"
 
 #: app/controllers/my_ilias_accounts.php:81
-#, fuzzy
 msgid "Meine ILIAS-Kurse"
-msgstr "ILIAS courses"
+msgstr "My ILIAS courses"
 
 #: app/controllers/my_ilias_accounts.php:257
 msgid "ILIAS-Account aktualisiert."
@@ -18003,24 +17962,22 @@ msgid "Account-Zuordnung entfernt."
 msgstr "Remove accound assignment."
 
 #: app/controllers/my_ilias_accounts.php:314
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurde kein Account mit dem Loginnamen \"%s\" gefunden."
-msgstr "An account with username \"%s\" already exists."
+msgstr "No account with the username %s has been found."
 
 #: app/controllers/my_ilias_accounts.php:316
-#, fuzzy, php-format
+#, php-format
 msgid "Account \"%s\" wurde gefunden."
-msgstr "Module \"%s\" changed."
+msgstr "Account %s has been found."
 
 #: app/controllers/my_ilias_accounts.php:324
-#, fuzzy
 msgid "Account zugeordnet."
-msgstr "ILIAS account assigned."
+msgstr "Account assigned."
 
 #: app/controllers/my_ilias_accounts.php:335
-#, fuzzy
 msgid "Account angelegt."
-msgstr "lastly created"
+msgstr "Account created."
 
 #: app/controllers/my_ilias_accounts.php:369
 #: app/views/my_ilias_accounts/index.php:151
@@ -19197,9 +19154,8 @@ msgid "Standard wiederherstellen"
 msgstr "Restore default"
 
 #: app/controllers/start.php:85
-#, fuzzy
 msgid "Sollen wirklich alle Widgets auf den Standard zurückgesetzt werden?"
-msgstr "The widgets have been reset to their default state."
+msgstr "This will reset all widgets to their default state. Are you sure?"
 
 #: app/controllers/start.php:92
 msgid "Standard-Startseite bearbeiten:"
@@ -20488,7 +20444,7 @@ msgstr "This displays notifications in the header without reloading the page."
 
 #: app/views/settings/general.php:87
 msgid "Platzierung von Systembenachrichtigungen im Browserfenster"
-msgstr ""
+msgstr "Placement of system notifications in the browser window"
 
 #: app/views/settings/general.php:88
 msgid ""
@@ -20496,14 +20452,16 @@ msgid ""
 "Systembenachrichtigungen erscheinen sollen: mittig am oberen Rand oder "
 "rechts unten."
 msgstr ""
+"You can decide where you want system notifications to appear in your browser "
+"window: in the centre at the top or at the bottom right."
 
 #: app/views/settings/general.php:93
 msgid "zentriert am oberen Rand"
-msgstr ""
+msgstr "in the centre at the top"
 
 #: app/views/settings/general.php:96
 msgid "am rechten unteren Rand"
-msgstr ""
+msgstr "on the bottom right"
 
 #: app/views/settings/general.php:104 lib/navigation/ResourceNavigation.php:27
 #: lib/navigation/ResourceNavigation.php:42
@@ -21032,11 +20990,11 @@ msgid "Dateianhänge:"
 msgstr "File attachments:"
 
 #: app/views/messages/read.php:25 templates/userfilter/display.php:17
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Person"
 msgid_plural "%s Personen"
 msgstr[0] "One user"
-msgstr[1] "One user"
+msgstr[1] "%s users"
 
 #: app/views/messages/read.php:52
 msgid "Schlagwort entfernen"
@@ -21109,14 +21067,12 @@ msgid "Mehrere Adressaten hinzufügen"
 msgstr "Add more recipients"
 
 #: app/views/messages/write.php:93
-#, fuzzy
 msgid "Anhänge verwalten"
-msgstr "Manage tasks"
+msgstr "Manage attachments"
 
 #: app/views/messages/write.php:103
-#, fuzzy
 msgid "Schlagworte verwalten"
-msgstr "Manage categories"
+msgstr "Manage keywords"
 
 #: app/views/messages/write.php:111 app/views/messages/write.php:114
 #: app/views/messages/write.php:170 app/views/admin/cronjobs/tasks/index.php:33
@@ -21165,9 +21121,8 @@ msgid "Wollen Sie diesen Termin wirklich ausfallen lassen?"
 msgstr "Do you really want to cancel this date?"
 
 #: app/views/course/dates/current_day_dates.php:37
-#, fuzzy
 msgid "Es sind noch keine laufenden Termine vorhanden."
-msgstr "No person lists are available yet."
+msgstr "No ongoing dates are available yet."
 
 #: app/views/course/dates/details.php:20
 #: app/views/course/dates/singledate.php:31
@@ -21860,9 +21815,8 @@ msgid "Vertretungen"
 msgstr "Substitutes"
 
 #: app/views/course/wizard/steps/basicdata/index_studygroup.php:38
-#, fuzzy
 msgid "Bezieht sich auf Lehrveranstaltung (optional)"
-msgstr "Personal courses"
+msgstr "Refers to course (optional)"
 
 #: app/views/course/wizard/steps/studyareas/index.php:28
 msgid "Alle Studienbereiche"
@@ -21892,14 +21846,13 @@ msgstr ""
 "you can add further data."
 
 #: app/views/course/wizard/summary.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "Folgende Daten der Ursprungsveranstaltung (%s) kopieren"
-msgstr "Copy basic information from (%s)"
+msgstr "Copy the following information from the original course (%s)"
 
 #: app/views/course/wizard/summary.php:47
-#, fuzzy
 msgid "Reguläre Teilnehmende"
-msgstr "Core participants"
+msgstr "Regular participants"
 
 #: app/views/course/wizard/summary.php:52
 #: app/views/course/timesrooms/editStack.php:158
@@ -21908,9 +21861,8 @@ msgid "Statusgruppen"
 msgstr "Status groups"
 
 #: app/views/course/wizard/summary.php:57
-#, fuzzy
 msgid "Zugeordnete Teilnehmende der Statusgruppen"
-msgstr "List of participants and groups"
+msgstr "Assigned participants of the status groups"
 
 #: app/views/course/wizard/summary.php:79
 msgid "Veranstaltung anlegen"
@@ -22187,9 +22139,9 @@ msgid "Änderungen anzeigen"
 msgstr "Show changes"
 
 #: app/views/course/wiki/search.php:13
-#, fuzzy, php-format
+#, php-format
 msgid "Treffer für Suche nach <em>%s</em>"
-msgstr "Search results for <em>%s</em> in all versions"
+msgstr "Search results for <em>%s</em>"
 
 #: app/views/course/wiki/search.php:18 app/views/course/wiki/searchpage.php:8
 msgid "Treffer"
@@ -22215,14 +22167,12 @@ msgstr "Current version"
 
 #: app/views/course/wiki/search.php:107
 msgid "Weiterer Treffer in einer älteren Version."
-msgstr ""
+msgstr "Additional match in an older version."
 
 #: app/views/course/wiki/search.php:109
-#, fuzzy, php-format
+#, php-format
 msgid "Weitere Treffer in %d älteren Versionen."
-msgstr ""
-"Further research results in %s older version. Click %shere%s for displaying "
-"them."
+msgstr "Additional search results in %d older versions."
 
 #: app/views/course/wiki/search.php:119
 #, php-format
@@ -22250,9 +22200,8 @@ msgid "Gelöscht"
 msgstr "Deleted"
 
 #: app/views/course/wiki/newpages.php:106
-#, fuzzy
 msgid "Einzelne Änderung anzeigen"
-msgstr "Show changes"
+msgstr "Show individual change"
 
 #: app/views/course/wiki/history.php:10
 #, php-format
@@ -22282,9 +22231,8 @@ msgid "Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite."
 msgstr "This wiki is still empty. Create the first wiki page."
 
 #: app/views/course/wiki/page.php:37
-#, fuzzy
 msgid "Erstelle die erste Wiki-Seite"
-msgstr "This wiki is still empty. Create the first wiki page."
+msgstr "Create the first wiki page"
 
 #: app/views/course/wiki/admin.php:13
 msgid "Startseite des Wikis"
@@ -34495,9 +34443,8 @@ msgid "Beendete Klausuren"
 msgstr "Finished evaluations:"
 
 #: app/views/vips/solutions/assignment_solutions.php:49
-#, fuzzy
 msgid "Laufende Klausuren"
-msgstr "Serial number"
+msgstr "Ongoing exams"
 
 #: app/views/vips/solutions/assignment_solutions.php:52
 msgid "Noch nicht begonnene Klausuren"
