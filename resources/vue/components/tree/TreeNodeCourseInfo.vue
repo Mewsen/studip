@@ -60,12 +60,12 @@ export default {
                 });
         }
     },
-    mounted() {
-        this.loadNodeInfo(this.node);
-    },
     watch: {
-        node(newNode) {
-            this.loadNodeInfo(newNode);
+        node: {
+            handler(newNode) {
+                this.loadNodeInfo(newNode);
+            },
+            immediate: true
         }
     }
 }
