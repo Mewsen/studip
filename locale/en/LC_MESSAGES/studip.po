@@ -26,8 +26,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2025-06-26 15:00+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"PO-Revision-Date: 2025-07-01 11:00+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2/en/>\n"
 "Language: en\n"
@@ -10795,7 +10796,7 @@ msgstr "The admission set %s has been saved"
 
 #: app/controllers/admission/courseset.php:331
 msgid "Sie dürfen diese Anmelderegel nicht löschen."
-msgstr "You must not delete this admission rule."
+msgstr "You are not allowed to delete this admission rule."
 
 #: app/controllers/admission/courseset.php:388
 #: app/views/admission/courseset/configure.php:120
@@ -15871,7 +15872,6 @@ msgid "vorläufiger Benutzer"
 msgstr "preliminary user"
 
 #: app/controllers/profile.php:422
-#, fuzzy
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
 msgstr "The user has been added to your contacts."
 
