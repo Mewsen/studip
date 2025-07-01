@@ -333,29 +333,32 @@ $STUDIP_AUTH_CONFIG_CAS = array("host" => "cas.studip.de",
 
 //example of OpenID Connect
 $STUDIP_AUTH_CONFIG_GOOGLE = [
-        'provider_url' => 'https://accounts.google.com',
-        'client_id'    => '',
-        'client_secret'     => '',
-        'plugin_class'      => 'StudipAuthOIDC',
-        'plugin_name'       => 'google',
-        'domain'            => 'google',
-        'plugin_fullname'   => 'Google',
-        'login_description' => 'Login with Google',
-        'ssl_options'       => ['certPath' => null, 'verifyPeer' => true, 'verifyHost' => true],
-        'user_data_mapping' => [
-             'auth_user_md5.username' => ['callback' => 'dummy', 'map_args' => ''],
-             'auth_user_md5.password' => ['callback' => 'dummy', 'map_args' => ''],
-             'auth_user_md5.Email'    => ['callback' => 'getUserData', 'map_args' => 'email'],
-             'auth_user_md5.Nachname' => ['callback' => 'getUserData', 'map_args' => 'family_name'],
-             'auth_user_md5.Vorname'  => ['callback' => 'getUserData', 'map_args' => 'given_name']
-        ],
+    'provider_url' => 'https://accounts.google.com',
+    'client_id'    => '',
+    'client_secret'     => '',
+    'plugin_class'      => 'StudipAuthOIDC',
+    'plugin_name'       => 'google',
+    'domain'            => 'google',
+    'plugin_fullname'   => 'Google',
+    'login_description' => 'Login with Google',
+    'ssl_options'       => ['certPath' => null, 'verifyPeer' => true, 'verifyHost' => true],
+    'user_data_mapping' => [
+         'auth_user_md5.username' => ['callback' => 'dummy', 'map_args' => ''],
+         'auth_user_md5.password' => ['callback' => 'dummy', 'map_args' => ''],
+         'auth_user_md5.Email'    => ['callback' => 'getUserData', 'map_args' => 'email'],
+         'auth_user_md5.Nachname' => ['callback' => 'getUserData', 'map_args' => 'family_name'],
+         'auth_user_md5.Vorname'  => ['callback' => 'getUserData', 'map_args' => 'given_name']
+    ],
 
-        // Enable the next line to allow setting your own scopes
-        // 'scopes' => [],
+    // Enable the next line to allow setting your own scopes
+    // 'scopes' => [],
 
-        // Enable the next line to set a custom redirect uri
-        // 'redirect_uri' => '',
-    ];
+    // Enable the next line to set a custom redirect uri
+    // 'redirect_uri' => '',
+
+    // Enable the next line to set a custom post logout redirect uri
+    // 'logout_redirect_uri' => '',
+];
 
 $STUDIP_AUTH_CONFIG_LTI = [
     'consumer_keys' => [

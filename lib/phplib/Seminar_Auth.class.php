@@ -272,7 +272,10 @@ class Seminar_Auth
                     $this->auth["jscript"] = true;
                     $this->auth["perm"] = $user->perms;
                     $this->auth["uname"] = $user->username;
-                    $this->auth["auth_plugin"] = $user->auth_plugin;
+                    $this->auth["auth_plugin"] = $authplugin->plugin_name;
+                    foreach ($authplugin->getKeptVariables() as $key => $value) {
+                        $this->auth[$key] = $value;
+                    }
                     $this->auth_set_user_settings($user);
 
                     Metrics::increment('core.sso_login.succeeded');
