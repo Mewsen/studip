@@ -123,7 +123,8 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                 GROUP BY courses.Seminar_id";
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
-            $sql .= " ORDER BY CASE WHEN courses.`VeranstaltungsNummer` THEN courses.`VeranstaltungsNummer` ELSE MAX(`semester_data`.`beginn`) END";
+            $sql .= " ORDER BY courses.`VeranstaltungsNummer` = '', courses.`VeranstaltungsNummer`, MAX(`semester_data`.`beginn`) DESC";
+
         } else {
             $sql .= " ORDER BY MAX(`semester_data`.`beginn`) DESC";
         }
