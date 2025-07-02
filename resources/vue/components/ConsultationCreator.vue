@@ -498,7 +498,13 @@ export default {
                 const start = this.combineDateAndTime(this.startDate, this.startTime).toISOString();
                 const end = this.combineDateAndTime(this.endDate, this.endTime).toISOString();
 
-                if (start < end) {
+                if (start >= end) {
+                    this.slotCount = 0;
+                    this.confirmed = false;
+                } else if (this.interval === -1) {
+                    this.slotCount = 1;
+                    this.confirmed = true;
+                } else {
                     STUDIP.jsonapi.withPromises().GET('consultation-slots/count', {
                         data: {
                             start,
@@ -516,15 +522,16 @@ export default {
                         },
                         () => null
                     );
-                } else {
-                    this.slotCount = 0;
-                    this.confirmed = false;
                 }
             },
             immediate: true
         },
         startDate(current) {
             this.dayOfWeek = current.getDay();
+
+            if (this.interval === 0 || this.interval === -1) {
+                this.endDate = new Date(current);
+            }
         },
     },
     beforeCreate() {
