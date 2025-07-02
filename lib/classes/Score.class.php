@@ -201,16 +201,19 @@ class Score
         ];
         $tables[] = ['table' => 'questionnaire_anonymous_answers'];
 
-        if (PluginEngine::getPlugin(CoreForum::class)->isEnabled()) {
+        $forum = PluginEngine::getPlugin(CoreForum::class);
+        if ($forum && $forum->isEnabled()) {
             $tables[] = ['table' => 'forum_entries'];
         }
 
-        if (PluginEngine::getPlugin(Blubber::class)->isEnabled()) {
+        $blubber = PluginEngine::getPlugin(Blubber::class);
+        if ($blubber && $blubber->isEnabled()) {
             $tables[] = ['table' => 'blubber_threads'];
             $tables[] = ['table' => 'blubber_comments'];
         }
 
-        if (PluginEngine::getPlugin(CoreWiki::class)->isEnabled()) {
+        $wiki = PluginEngine::getPlugin(CoreWiki::class);
+        if ($wiki && $wiki->isEnabled()) {
             $tables[] = [
                 'table'       => 'wiki',
                 'date_column' => 'chdate'
