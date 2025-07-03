@@ -388,7 +388,7 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
     public function courseDidDelete($event, $course)
     {
         // delete all assignments in course
-        VipsAssignment::deleteBySQL('range_id = ?', [$course->id]);
+        VipsAssignment::deleteBySQL('range_id = ? AND type IN (?)', [$course->id, ['exam', 'practice', 'selftest']]);
 
         // delete other course related info
         VipsBlock::deleteBySQL('range_id = ?', [$course->id]);
