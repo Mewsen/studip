@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2025-06-12 11:59+0000\n"
+"PO-Revision-Date: 2025-07-04 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -93,11 +93,11 @@ msgstr "very high"
 
 #: app/controllers/news.php:133
 msgid "Ankündigung wirklich aus diesem Bereich entfernen?"
-msgstr "Do you really want to remove the announcement from this area?"
+msgstr "Are you sure you want to remove the announcement from this area?"
 
 #: app/controllers/news.php:148
 msgid "Ankündigung wirklich löschen?"
-msgstr "Do you really want to delete the announcement?"
+msgstr "Are you sure you want to delete the announcement?"
 
 #: app/controllers/news.php:231 app/controllers/news.php:608
 msgid "Ankündigung erstellen"
@@ -699,7 +699,7 @@ msgstr ""
 
 #: app/controllers/settings/messaging.php:111
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
-msgstr "Are you sure to delete the forwarding settings?"
+msgstr "Are you sure you want to delete the forwarding settings?"
 
 #: app/controllers/settings/messaging.php:131
 msgid "Ihre Einstellungen wurden erfolgreich zurückgesetzt."
@@ -1192,7 +1192,7 @@ msgstr "Error while saving your data. Please check your input."
 
 #: app/controllers/settings/statusgruppen.php:423
 msgid "Wollen Sie die Zuordnung zu der Funktion wirklich löschen?"
-msgstr "Are you sure to delete the function allocation?"
+msgstr "Are you sure you want to delete the assignment to this function?"
 
 #: app/controllers/files_dashboard.php:68
 msgid "Dokumentensuche"
@@ -7018,9 +7018,8 @@ msgid "Neuer Termin"
 msgstr "New date"
 
 #: app/controllers/calendar/schedule.php:91
-#, fuzzy
 msgid "Ausgeblendete Veranstaltungen verstecken"
-msgstr "Mask hidden courses"
+msgstr "Conceal hidden courses"
 
 #: app/controllers/calendar/schedule.php:97
 #: app/controllers/admin/overlapping.php:150
@@ -8612,9 +8611,8 @@ msgid "bearbeiten"
 msgstr "edit"
 
 #: app/controllers/module/module.php:196 app/controllers/module/module.php:715
-#, fuzzy
 msgid "neu anlegen"
-msgstr "Create new"
+msgstr "create new"
 
 #: app/controllers/module/module.php:206
 msgid "Download der Modulbeschreibung"
@@ -23523,22 +23521,19 @@ msgstr "This is your Stud.IP"
 
 #: app/views/course/lti/consent.php:39
 msgid "Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel"
-msgstr ""
+msgstr "Your first and last name and any titles"
 
 #: app/views/course/lti/consent.php:43
-#, fuzzy
 msgid "Ihre E-Mail Adresse"
-msgstr "Your mail address"
+msgstr "Your email address"
 
 #: app/views/course/lti/consent.php:48
-#, fuzzy
 msgid "Ihre in Stud.IP eingestellte Sprache"
-msgstr "created by Stud.IP"
+msgstr "Your language for Stud.IP"
 
 #: app/views/course/lti/consent.php:53
-#, fuzzy
 msgid "Ihr Profilbild"
-msgstr "Change profile picture"
+msgstr "Your profile picture"
 
 #: app/views/course/lti/consent.php:58
 #: lib/models/Courseware/BlockTypes/Confirm.php:22
@@ -23551,26 +23546,25 @@ msgid ""
 "genommen und stimme der Weitergabe meiner personenbezogenen Daten zu. Mir "
 "ist bewusst, dass ich ohne die Zustimmung das LTI-Tool nicht nutzen kann."
 msgstr ""
+"I have read and understood the data protection information on the use of the "
+"LTI tool and agree to the transfer of my personal data. I am aware that I "
+"cannot use the LTI tool without this consent."
 
 #: app/views/course/lti/select_tool.php:11
-#, fuzzy
 msgid "Auswahl des LTI-Tools"
-msgstr "External tool selection"
+msgstr "Select LTI tool"
 
 #: app/views/course/lti/select_tool.php:13
-#, fuzzy
 msgid "Bitte wählen Sie ein LTI-Tool aus."
-msgstr "Please select a test"
+msgstr "Please select LTI tool."
 
 #: app/views/course/lti/select_tool.php:26
-#, fuzzy
 msgid "Neues LTI-Tool für die Veranstaltung einrichten."
-msgstr "Add new room request for this course"
+msgstr "Set up new LTI tool for this course."
 
 #: app/views/course/lti/iframe.php:27
-#, fuzzy
 msgid "Das LTI-Tool kann nicht aufgerufen werden."
-msgstr "Plug-in not found."
+msgstr "The LTI tool cannot be opened."
 
 #: app/views/course/lvgselector/locked_form.php:6
 msgid "Sie dürfen die Modulzuordnung dieser Veranstaltung nicht verändern."
@@ -23755,24 +23749,20 @@ msgid "Als GruppengründerIn eintragen"
 msgstr "Enter as founder of the group"
 
 #: app/views/course/studygroup/widget.php:7
-#, fuzzy
 msgid "Zugehörige Veranstaltung"
-msgstr "To course"
+msgstr "Associated course"
 
 #: app/views/course/studygroup/widget.php:10
 #: app/views/course/connectedstudygroups/index.php:6
 #: lib/modules/CoreAdmin.php:96
-#, fuzzy
 msgid "Verknüpfte Studiengruppen"
-msgstr "My study groups"
+msgstr "Linked study groups"
 
 #: app/views/course/studygroup/widget.php:38
-#, fuzzy
 msgid "Name / Beschreibung"
 msgstr "Name and description"
 
 #: app/views/course/studygroup/widget.php:40 app/views/studygroup/browse.php:25
-#, fuzzy
 msgid "Gründer:in"
 msgstr "Founder"
 
@@ -24219,37 +24209,31 @@ msgstr "Tool"
 #: app/views/course/connectedstudygroups/index.php:25
 #: app/views/course/connectedcourses/index.php:25
 #: app/views/my_ilias_accounts/administrate_account.php:45
-#, fuzzy
 msgid "Verknüpfung aufheben"
-msgstr "Remove link to %s"
+msgstr "Remove link"
 
 #: app/views/course/connectedstudygroups/index.php:26
-#, fuzzy
 msgid "Wirklich die Zuweisung zu der Studiengruppe aufheben?"
-msgstr "Cancel assignment to course."
+msgstr "Really remove assignment to the study group?"
 
 #: app/views/course/connectedstudygroups/index.php:43
 #: app/views/course/connectedcourses/index.php:43
-#, fuzzy
 msgid "Eingereichte Vorschläge"
-msgstr "Search institutes"
+msgstr "Submitted suggestions"
 
 #: app/views/course/connectedstudygroups/index.php:48
 #: app/views/course/connectedcourses/index.php:48
-#, fuzzy
 msgid "Vorgeschlagen von"
-msgstr "Templates"
+msgstr "Suggested by"
 
 #: app/views/course/connectedstudygroups/index.php:67
 #: app/views/course/connectedcourses/index.php:67
-#, fuzzy
 msgid "Vorschlag annehmen"
-msgstr "Display preview"
+msgstr "Accept suggestion"
 
 #: app/views/course/connectedstudygroups/index.php:68
-#, fuzzy
 msgid "Wirklich die Studiengruppe mit dieser Veranstaltung verknüpfen?"
-msgstr "No learning objects are associated with this course."
+msgstr "Really link the study group to this course?"
 
 #: app/views/course/connectedstudygroups/index.php:74
 #: app/views/course/connectedcourses/index.php:74
@@ -24276,20 +24260,18 @@ msgid "Wirklich den Vorschlag zurückziehen?"
 msgstr "Are you sure you want to delete this course type?"
 
 #: app/views/course/connectedstudygroups/index.php:98
-#, fuzzy
 msgid "Verknüpfung zu Studiengruppen"
-msgstr "Remove link to %s"
+msgstr "Links to study groups"
 
 #: app/views/course/connectedstudygroups/index.php:99
 msgid ""
 "Verknüpfen Sie Studiengruppen, die sich mit den Inhalten dieser "
 "Veranstaltung beschäftigen."
-msgstr ""
+msgstr "Link study groups that deal with the content of this course."
 
 #: app/views/course/connectedstudygroups/index.php:103
-#, fuzzy
 msgid "Verknüpfung zu Studiengruppe vorschlagen"
-msgstr "Remove link to %s"
+msgstr "Suggest link to study group"
 
 #: app/views/course/connectedstudygroups/connect.php:5
 #: lib/classes/globalsearch/GlobalSearchStudygroups.php:19
@@ -24302,53 +24284,45 @@ msgstr "Study groups"
 #: app/views/course/connectedstudygroups/connect.php:8
 #: app/views/course/connectedcourses/connect.php:9
 msgid "Filtern Sie optional nach einem Semester"
-msgstr ""
+msgstr "Optionally filter by semester"
 
 #: app/views/course/connectedstudygroups/connect.php:9
 #: app/views/course/connectedcourses/connect.php:10
-#, fuzzy
 msgid "In Semester"
-msgstr "One semester"
+msgstr "In semester"
 
 #: app/views/course/connectedstudygroups/connect.php:19
 #: app/views/course/connectedcourses/connect.php:22
-#, fuzzy
 msgid "Veranstaltung suchen ..."
-msgstr "Search for courses"
+msgstr "Search for course ..."
 
 #: app/views/course/connectedstudygroups/connect.php:22
 #: app/views/course/connectedcourses/connect.php:25
 #: app/views/course/connectedcourses/connect.php:33
-#, fuzzy
 msgid "Suchen Sie nach beliebigen Veranstaltungen"
-msgstr "Search for courses"
+msgstr "Search for any course"
 
 #: app/views/course/connectedstudygroups/connect.php:25
 #: app/views/course/connectedcourses/connect.php:28
-#, fuzzy
 msgid "Suche schließen"
-msgstr "Close topic"
+msgstr "Close search"
 
 #: app/views/course/connectedstudygroups/connect.php:34
-#, fuzzy
 msgid "Suchen Sie nach beliebiger Studiengruppe"
-msgstr "This seminar is not a study group!"
+msgstr "Search for any study group"
 
 #: app/views/course/connectedstudygroups/connect.php:60
-#, fuzzy
 msgid "Suchen Sie nach Studiengruppen."
-msgstr "My study groups"
+msgstr "Search for study groups"
 
 #: app/views/course/connectedstudygroups/connect.php:72
 #: app/views/course/connectedcourses/connect.php:71
-#, fuzzy
 msgid "Keine passenden Ergebnisse gefunden."
-msgstr "No results found."
+msgstr "No matching results found."
 
 #: app/views/course/connectedstudygroups/_studygroup_to_connect.php:16
-#, fuzzy
 msgid "Verknüpfung mit dieser Studiengruppe vorschlagen."
-msgstr "Copy link to this study group"
+msgstr "Suggest link to this study group."
 
 #: app/views/course/members/awaiting_list.php:14
 msgid "Nachricht mit Mailweiterleitung an alle Wartenden versenden"
@@ -24763,9 +24737,9 @@ msgid "Weitere Wünsche oder Bemerkungen zur angefragten Raumbelegung"
 msgstr "Additional requests or comments for the requested room booking"
 
 #: app/views/course/statusgroups/details.php:8
-#, fuzzy, php-format
+#, php-format
 msgid "Gruppe %s"
-msgstr "Group A"
+msgstr "Group %s"
 
 #: app/views/course/statusgroups/index.php:16
 msgid "Teilnehmende nach Gruppen"
@@ -24778,9 +24752,8 @@ msgid "Alle Gruppen auswählen"
 msgstr "Select all groups"
 
 #: app/views/course/statusgroups/index.php:48
-#, fuzzy
 msgid "In andere Veranstaltung kopieren"
-msgstr "Copy into courses"
+msgstr "Copy to other course"
 
 #: app/views/course/statusgroups/_askcancel_members.php:3
 #, php-format
@@ -25159,9 +25132,8 @@ msgid "Nachricht an alle nicht zugeordneten Personen schicken"
 msgstr "Send a message to all persons not assigned to a group"
 
 #: app/views/course/statusgroups/copy.php:25
-#, fuzzy
 msgid "Inklusive aller zugeordneten Personen"
-msgstr "Number of assigned courses"
+msgstr "including all assigned users"
 
 #: app/views/course/scm/index.php:9 app/views/course/scm/edit.php:48
 #, php-format
@@ -25212,30 +25184,25 @@ msgid "Vorlagen"
 msgstr "Templates"
 
 #: app/views/course/connectedcourses/_course_to_connect.php:16
-#, fuzzy
 msgid "Verknüpfung mit dieser Veranstaltung vorschlagen."
-msgstr "Search inside the forum of this course"
+msgstr "Suggest link to this course."
 
 #: app/views/course/connectedcourses/index.php:7
 #: lib/modules/CoreStudygroupAdmin.php:42
-#, fuzzy
 msgid "Verknüpfte Veranstaltungen"
-msgstr "Available courses"
+msgstr "Linked courses"
 
 #: app/views/course/connectedcourses/index.php:26
-#, fuzzy
 msgid "Wirklich die Zuweisung zu der Veranstaltung aufheben?"
-msgstr "Cancel assignment to course."
+msgstr "Are you sure you want to cancel the assignment to this course?"
 
 #: app/views/course/connectedcourses/index.php:68
-#, fuzzy
 msgid "Wirklich die Veranstaltung mit dieser Studiengruppe verknüpfen?"
-msgstr "No course type for study groups available"
+msgstr "Are you sure you want to link the course with this study group?"
 
 #: app/views/course/connectedcourses/index.php:99
-#, fuzzy
 msgid "Verknüpfung zu Lehrveranstaltungen"
-msgstr "Course group management"
+msgstr "Link to courses"
 
 #: app/views/course/connectedcourses/index.php:100
 msgid ""
@@ -25243,11 +25210,13 @@ msgid ""
 "Inhalten sich diese Studiengruppe beschäftigt. Dadurch machen Sie diese "
 "Studiengruppe sichtbarer für andere Teilnehmende der Veranstaltung."
 msgstr ""
+"Link these study groups with courses whose content this study group deals "
+"with. This will make the study group more visible to other participants in "
+"the course."
 
 #: app/views/course/connectedcourses/index.php:104
-#, fuzzy
 msgid "Verknüpfung zu Lehrveranstaltung vorschlagen"
-msgstr "Course group management"
+msgstr "Suggest link to course"
 
 #: app/views/course/connectedcourses/connect.php:6
 #: app/views/shared/modul/overview.php:23 app/views/search/module/show.php:15
@@ -25255,16 +25224,14 @@ msgid "Lehrveranstaltungen"
 msgstr "Courses"
 
 #: app/views/course/connectedcourses/connect.php:59
-#, fuzzy
 msgid "Suchen Sie nach Veranstaltungen."
-msgstr "Search for courses"
+msgstr "Search for courses."
 
 #: app/views/course/enrolment/_priocourses.php:27
 msgid "Ich möchte folgende Anzahl an Veranstaltungen belegen:"
 msgstr "I apply for the following number of courses:"
 
 #: app/views/course/enrolment/_priocourses.php:39
-#, fuzzy
 msgid ""
 "Ziehen Sie die in Frage kommenden Veranstaltungen in den Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
@@ -25272,7 +25239,7 @@ msgid ""
 "als Sie tatsächlich belegen wollen."
 msgstr ""
 "Drag and drop your choice to the right side and sort them by priority (most "
-"desired at the top). You can drag more courses than you really want to "
+"desired at the top). You can select more courses than you actually want to "
 "participate in."
 
 #: app/views/course/enrolment/_priocourses.php:45
@@ -25297,11 +25264,10 @@ msgid "Ausgewählte Veranstaltungen"
 msgstr "Selected courses"
 
 #: app/views/course/enrolment/_priocourses.php:82
-#, fuzzy
 msgid ""
 "Die gewünschten Veranstaltungen aus der Liste der verfügbaren "
 "Veranstaltungen auswählen"
-msgstr "Choose courses on the left side"
+msgstr "Select desired courses from the list of available courses"
 
 #: app/views/course/enrolment/_priocourses.php:85
 msgid "Gewünschte Veranstaltungen hierhin ziehen"
@@ -25440,19 +25406,16 @@ msgid "Anfang"
 msgstr "Beginning"
 
 #: app/views/calendar/schedule/settings.php:14
-#, fuzzy
 msgid "Anfang des Stundenplans"
-msgstr "Name of course of study"
+msgstr "Beginning of timetable"
 
 #: app/views/calendar/schedule/settings.php:26
-#, fuzzy
 msgid "Ende des Stundenplans"
-msgstr "Name of course of study"
+msgstr "End of timetable"
 
 #: app/views/calendar/schedule/settings.php:38
-#, fuzzy
 msgid "Wochentage"
-msgstr "Day of week"
+msgstr "Days of the week"
 
 #: app/views/calendar/schedule/course_info.php:24
 #, php-format
@@ -25465,14 +25428,12 @@ msgid "Veranstaltungszeiten"
 msgstr "Course dates"
 
 #: app/views/calendar/schedule/course_info.php:79
-#, fuzzy
 msgid "Termin einblenden"
-msgstr "Show hints"
+msgstr "Show date"
 
 #: app/views/calendar/schedule/course_info.php:85
-#, fuzzy
 msgid "Termin ausblenden"
-msgstr "Hide names"
+msgstr "Hide date"
 
 #: app/views/calendar/calendar/import.php:19
 msgid "Öffentliche Termine als \"privat\" importieren"
@@ -25633,9 +25594,8 @@ msgid "Der Termin soll aus der Terminserie herausgelöst werden."
 msgstr "The date shall be removed from the date series."
 
 #: app/views/calendar/date/move.php:13
-#, fuzzy
 msgid "Die gesamte Terminserie soll verschoben werden."
-msgstr "The whole date series shall be deleted."
+msgstr "The whole date series is to be moved."
 
 #: app/views/calendar/date/_add_edit_form.php:50 templates/forms/form.php:71
 msgid ""
@@ -25648,15 +25608,14 @@ msgid "Ganztägiger Termin"
 msgstr "All-day date"
 
 #: app/views/calendar/date/_add_edit_form.php:89
-#, fuzzy
 msgid ""
 "Öffentliche Termine sind systemweit sichtbar. Private Termine sind für "
 "Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche "
 "Termine sind hingegen nur für Sie selbst sichtbar."
 msgstr ""
 "Public dates are visible system-wide. Private dates are visible for persons "
-"with which the calendar is shared. Confidential dates on the other hand are "
-"only visible for oneself."
+"with whom the calendar is shared. Confidential dates on the other hand are "
+"only visible for yourself."
 
 #: app/views/calendar/date/_add_edit_form.php:94
 msgid "Öffentlich zugänglich"
@@ -33568,7 +33527,7 @@ msgstr "Please note that your booking will be visible publicly"
 
 #: app/views/consultation/overview/book.php:36
 msgid "Ich habe den obigen Hinweis zur Kenntnis genommen"
-msgstr "I acknowledge the hint from above"
+msgstr "I have taken note of the above notice"
 
 #: app/views/consultation/overview/index.php:14
 #: app/views/consultation/overview/ungrouped.php:14
