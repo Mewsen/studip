@@ -309,7 +309,7 @@ class IliasModule
     function setConnection($seminar_id)
     {
         $this->is_connected = true;
-        return IliasObjectConnections::setConnection($seminar_id, $this->id, $this->module_type, $this->ilias_index);
+        return IliasObjectConnections::setConnection($seminar_id, $this->id, $this->module_type, $this->ilias_index, 'course', '', 'unknown');
     }
 
     /**

@@ -182,6 +182,7 @@ class ConnectedIlias
             'category_create_on_add_module' => false,
             'category_to_desktop' => false,
             'cat_semester' => '',
+            'cat_faculty' => '',
             'course_semester' => '',
             'course_veranstaltungsnummer' => false,
             'workgroup_category_name' => '',
@@ -1102,7 +1103,7 @@ class ConnectedIlias
                 }
                 $check->execute([Context::getId(), $ref_id, $this->index, $data["type"]]);
                 if (!$check->fetch()) {
-                    IliasObjectConnections::setConnection(Context::getId(), $ref_id, $data["type"], $this->index);
+                    IliasObjectConnections::setConnection(Context::getId(), $ref_id, $data["type"], $this->index, 'ilias_object', Context::getId(), 'course');
                     $added++;
                 }
                 $found[] = $ref_id . '_' . $data["type"];
@@ -1212,7 +1213,7 @@ class ConnectedIlias
         }
         // store object connection
         if ($ref_id) {
-            IliasObjectConnections::setConnection($studip_course_id, $ref_id, $module_type, $this->index);
+            IliasObjectConnections::setConnection($studip_course_id, $ref_id, $module_type, $this->index, 'ilias_object', $studip_course_id, 'course');
             return true;
         }
         return false;
@@ -1272,14 +1273,21 @@ class ConnectedIlias
         $crs_id = IliasObjectConnections::getConnectionModuleId($studip_course_id, "crs", $this->index);
         $this->soap_client->setCachingStatus(false);
         $this->soap_client->clearCache();
+        $institute_ref_id = null;
+        $faculty_ref_id = null;
+        $parent_id = null;
+        $parent_type = '';
 
         if (!$crs_id) {
             $course = Course::find($studip_course_id);
             // on error use root category
             $ref_id = $this->ilias_config['root_category'];
+            $parent_type = 'root_category';
+            $parent_id = 'root_category';
             if ($this->ilias_config['cat_semester'] == 'outer') {
                 // category for semester above institute
-                $semester_ref_id = IliasObjectConnections::getConnectionModuleId($course->start_semester->id, 'cat', $this->index);
+                $semester_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->start_semester->id, 'root_category', 'cat', $this->index)
+                                ?: IliasObjectConnections::getExactConnectionModuleId($course->start_semester->id, '', 'cat', $this->index);
                 if (!$semester_ref_id) {
                     $object_data['title'] = $course->start_semester->name;
                     $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zum Semester "%s".'), $course->start_semester->name);
@@ -1288,16 +1296,50 @@ class ConnectedIlias
                     $semester_ref_id = $this->soap_client->addObject($object_data, $ref_id);
                     if ($semester_ref_id) {
                         // store institute category
-                        IliasObjectConnections::setConnection($course->start_semester->id, $semester_ref_id, 'cat', $this->index);
+                        IliasObjectConnections::setConnection($course->start_semester->id, $semester_ref_id, 'cat', $this->index, 'semester', $parent_id, $parent_type);
                     } else {
                         $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data['title']);
                     }
                 }
                 if ($semester_ref_id) {
+                    $parent_type = 'semester';
+                    $parent_id = $course->start_semester->id;
                     $ref_id = $semester_ref_id;
-                    // category for home institute below semester
-                    if ($course->home_institut) {
-                        $institute_ref_id = IliasObjectConnections::getConnectionModuleId(md5($course->start_semester->getId() . $course->home_institut->id), 'cat', $this->index);
+                    // category for faculty below semester
+                    if (!empty($this->ilias_config['cat_faculty'])) {
+                        $faculty_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->fakultaets_id, $parent_id, 'cat', $this->index)
+                                       ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->fakultaets_id, '', 'cat', $this->index);
+                        if ($faculty_ref_id) {
+                            $parent_type = 'faculty';
+                            $parent_id = $course->home_institut->fakultaets_id;
+                            $ref_id = $faculty_ref_id;
+                        }
+                    }
+                    if (
+                        !empty($this->ilias_config['cat_faculty'])
+                        && empty($faculty_ref_id)
+                        && $course->home_institut->id !== $course->home_institut->fakultaets_id
+                    ) {
+                        $object_data['title'] = $course->home_institut->faculty->name;
+                        $object_data['description'] = sprintf(_('Hier befinden sich die Einrichtungen der Stud.IP-Fakultät "%s".'), $course->home_institut->faculty->name);
+                        $object_data['type'] = 'cat';
+                        $object_data['owner'] =  $this->soap_client->LookupUser($this->ilias_config['admin']);
+                        $faculty_ref_id = $this->soap_client->addObject($object_data, $ref_id);
+                        if ($faculty_ref_id) {
+                            // store faculty category
+                            IliasObjectConnections::setConnection($course->home_institut->fakultaets_id, $faculty_ref_id, 'cat', $this->index, 'faculty', $parent_id, $parent_type);
+                            $parent_type = 'faculty';
+                            $parent_id = $course->home_institut->fakultaets_id;
+                            $ref_id = $faculty_ref_id;
+                            $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
+                                             ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
+                        } else {
+                            $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
+                        }
+                    }
+                    $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index);
+                    if (!$institute_ref_id) {
+                        $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
                     }
                     if (!$institute_ref_id) {
                         $object_data['title'] = $course->home_institut->name;
@@ -1307,19 +1349,48 @@ class ConnectedIlias
                         $institute_ref_id = $this->soap_client->addObject($object_data, $ref_id);
                         if ($institute_ref_id) {
                             // store institute category
-                            IliasObjectConnections::setConnection(md5($course->start_semester->getId() . $course->home_institut->id), $institute_ref_id, 'cat', $this->index);
+                            IliasObjectConnections::setConnection($course->home_institut->id, $institute_ref_id, 'cat', $this->index, 'institute', $parent_id, $parent_type);
                         }
                     }
                     if ($institute_ref_id) {
+                        $parent_type = 'institute';
+                        $parent_id = $course->home_institut->id;
                         $ref_id = $institute_ref_id;
                     } else {
                         $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data['title']);
                     }
                 }
             } elseif ($this->ilias_config['cat_semester'] === 'inner' || $this->ilias_config['cat_semester'] === 'none') {
-                // category for home institute
-                if ($course->home_institut) {
-                    $institute_ref_id = IliasObjectConnections::getConnectionModuleId($course->home_institut->id, 'cat', $this->index);
+                // category for faculty and home institute
+                if (!empty($this->ilias_config['cat_faculty'])) {
+                    $faculty_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->fakultaets_id, 'root_category', 'cat', $this->index)
+                                   ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->fakultaets_id, '', 'cat', $this->index);
+                    if ($faculty_ref_id) {
+                        $parent_type = 'faculty';
+                        $parent_id = $course->home_institut->fakultaets_id;
+                        $ref_id = $faculty_ref_id;
+                    }
+                } else {
+                    $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, 'root_category', 'cat', $this->index)
+                                     ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
+                }
+                if (!empty($this->ilias_config['cat_faculty']) && empty($faculty_ref_id) && ($course->home_institut->id != $course->home_institut->fakultaets_id)) {
+                    $object_data['title'] = $course->home_institut->faculty->name;
+                    $object_data['description'] = sprintf(_('Hier befinden sich die Einrichtungen der Stud.IP-Fakultät "%s".'), $course->home_institut->faculty->name);
+                    $object_data['type'] = 'cat';
+                    $object_data['owner'] =  $this->soap_client->LookupUser($this->ilias_config['admin']);
+                    $faculty_ref_id = $this->soap_client->addObject($object_data, $ref_id);
+                    if ($faculty_ref_id) {
+                        // store faculty category
+                        IliasObjectConnections::setConnection($course->home_institut->fakultaets_id, $faculty_ref_id, 'cat', $this->index, 'faculty', $parent_id, $parent_type);
+                        $parent_type = 'faculty';
+                        $parent_id = $course->home_institut->fakultaets_id;
+                        $ref_id = $faculty_ref_id;
+                        $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
+                                         ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
+                    } else {
+                        $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
+                    }
                 }
                 if (!$institute_ref_id) {
                     $object_data['title'] = $course->home_institut->name;
@@ -1329,28 +1400,33 @@ class ConnectedIlias
                     $institute_ref_id = $this->soap_client->addObject($object_data, $ref_id);
                     if ($institute_ref_id) {
                         // store institute category
-                        IliasObjectConnections::setConnection($course->home_institut->id, $institute_ref_id, 'cat', $this->index);
+                        IliasObjectConnections::setConnection($course->home_institut->id, $institute_ref_id, 'cat', $this->index, 'institute', $parent_id, $parent_type);
                     } else {
                         $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
                     }
                 }
                 if ($institute_ref_id) {
+                    $parent_type = 'institute';
+                    $parent_id = $course->home_institut->id;
                     $ref_id = $institute_ref_id;
                     if ($this->ilias_config['cat_semester'] === 'inner') {
                         // category for semester below institute
-                        $institute_semester_ref_id = IliasObjectConnections::getConnectionModuleId(md5($course->home_institut->id . $course->start_semester->id), 'cat', $this->index);
+                        $institute_semester_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->start_semester->id, $course->home_institut->id, 'cat', $this->index)
+                                                  ?: IliasObjectConnections::getExactConnectionModuleId(md5($course->home_institut->id . $course->start_semester->id), '', 'cat', $this->index);
                         if (!$institute_semester_ref_id) {
                             $object_data['title'] = $course->start_semester->name;
-                            $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zum Semester "%s".'), $course->start_semester->name);
+                            $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zum Semester "%s" in der Einrichtung "%s".'), $course->start_semester->name, $course->home_institut->name);
                             $object_data['type'] = 'cat';
                             $object_data['owner'] =  $this->soap_client->LookupUser($this->ilias_config['admin']);
-                            $institute_semester_ref_id= $this->soap_client->addObject($object_data, $ref_id);
+                            $institute_semester_ref_id = $this->soap_client->addObject($object_data, $ref_id);
                             if ($institute_semester_ref_id) {
                                 // store institute category
-                                IliasObjectConnections::setConnection(md5($course->home_institut->id . $course->start_semester->id), $institute_semester_ref_id, 'cat', $this->index);
+                                IliasObjectConnections::setConnection($course->start_semester->id, $institute_semester_ref_id, 'cat', $this->index, 'semester', $parent_id, $parent_type);
                             }
                         }
                         if ($institute_semester_ref_id) {
+                            $parent_type = 'semester';
+                            $parent_id = $course->start_semester->id;
                             $ref_id = $institute_semester_ref_id;
                         } else {
                             $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
@@ -1379,7 +1455,7 @@ class ConnectedIlias
                 $this->error[] = _('ILIAS-Kurs konnte nicht angelegt werden.');
                 return false;
             }
-            IliasObjectConnections::setConnection($studip_course_id, $crs_id, 'crs', $this->index);
+            IliasObjectConnections::setConnection($studip_course_id, $crs_id, 'crs', $this->index, 'course', $parent_id, $parent_type);
 
             // Rollen zuordnen
             $this->CheckUserCoursePermissions($crs_id);

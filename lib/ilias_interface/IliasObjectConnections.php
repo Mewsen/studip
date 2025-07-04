@@ -161,18 +161,41 @@ class IliasObjectConnections
     }
 
     /**
+    * get module-id
+    *
+    * returns module-id of given connection
+    */
+    public static function getExactConnectionModuleId(
+        string $connection_object_id,
+        string $connection_object_parent_id,
+        string $connection_module_type,
+        string $connection_cms
+    ): string|false {
+        $query = "SELECT module_id
+                  FROM object_contentmodules
+                  WHERE object_id = ? AND object_parent_id = ? AND system_type = ? AND module_type = ?";
+        return DBManager::get()->fetchColumn($query, [
+            $connection_object_id,
+            $connection_object_parent_id,
+            $connection_cms,
+            $connection_module_type
+        ]);
+    }
+
+    /**
     * set connection
     *
     * sets connection with object
-    * @access public
-    * @param string $connection_object_id object-id
-    * @param string $connection_module_id module-id
-    * @param string $connection_module_type module-type
-    * @param string $connection_cms system-type
-    * @return boolean successful
     */
-    public static function setConnection($connection_object_id, $connection_module_id, $connection_module_type, $connection_cms)
-    {
+    public static function setConnection(
+        string $connection_object_id,
+        string $connection_module_id,
+        string $connection_module_type,
+        string $connection_cms,
+        string $connection_object_type,
+        string $connection_object_parent_id,
+        string $connection_object_parent_type
+    ): bool {
         $query = "SELECT 1
                   FROM object_contentmodules
                   WHERE object_id = ? AND module_id = ? AND system_type = ?
@@ -188,25 +211,31 @@ class IliasObjectConnections
 
         if ($check) {
             $query = "UPDATE object_contentmodules
-                      SET module_type = ?, chdate = UNIX_TIMESTAMP()
+                      SET module_type = ?, object_type = ?, object_parent_id = ?, object_parent_type = ?, chdate = UNIX_TIMESTAMP()
                       WHERE object_id = ? AND module_id = ? AND system_type = ?";
             $statement = DBManager::get()->prepare($query);
             $statement->execute([
                 $connection_module_type,
+                $connection_object_type,
+                $connection_object_parent_id,
+                $connection_object_parent_type,
                 $connection_object_id,
                 $connection_module_id,
                 $connection_cms
             ]);
         } else {
             $query = "INSERT INTO object_contentmodules
-                        (object_id, module_id, system_type, module_type, mkdate, chdate)
-                      VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())";
+                        (object_id, module_id, system_type, module_type, object_type, object_parent_id, object_parent_type, mkdate, chdate)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())";
             $statement = DBManager::get()->prepare($query);
             $statement->execute([
                 $connection_object_id,
                 $connection_module_id,
                 $connection_cms,
-                $connection_module_type
+                $connection_module_type,
+                $connection_object_type,
+                $connection_object_parent_id,
+                $connection_object_parent_type
             ]);
         }
         return true;

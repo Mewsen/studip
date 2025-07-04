@@ -92,6 +92,10 @@
         <span><?= _('Semester als Kategorie innerhalb der Einrichtung') ?></span>
     </label>
     <label>
+        <input type="checkbox" name="ilias_cat_faculty" value="1" <?= $ilias_config['cat_faculty'] ? 'checked' : '' ?>>
+        <span><?= _('Kategorien für Fakultäten anlegen') ?></span>
+    </label>
+    <label>
     <span class="required"><?= _('Kurstitel') ?></span>
     </label>
     <label>

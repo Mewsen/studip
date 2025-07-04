@@ -364,7 +364,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                 if (Request::get('cmd') === 'assign_course') {
                     $crs_id = IliasObjectConnections::getConnectionModuleId($this->seminar_id, 'crs', $this->ilias_index);
                     if (Request::get('ilias_course_id') && !$crs_id) {
-                        IliasObjectConnections::setConnection($this->seminar_id, Request::get('ilias_course_id'), 'crs', $this->ilias_index);
+                        IliasObjectConnections::setConnection($this->seminar_id, Request::get('ilias_course_id'), 'crs', $this->ilias_index, 'course_twin', '', 'course');
                         PageLayout::postInfo(_('Kurs wurde zugeordnet.'));
                     }
                     $this->redirect('course/ilias_interface');
@@ -383,7 +383,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                 if (Request::get('cmd') === 'assign_course') {
                     $crs_id = IliasObjectConnections::getConnectionModuleId($this->seminar_id, 'crs', $this->ilias_index);
                     if (Request::get('ilias_course_id') && !$crs_id) {
-                        IliasObjectConnections::setConnection($this->seminar_id, Request::get('ilias_course_id'), 'crs', $this->ilias_index);
+                        IliasObjectConnections::setConnection($this->seminar_id, Request::get('ilias_course_id'), 'crs', $this->ilias_index, 'course_twin', '', 'course');
                         PageLayout::postInfo(_('Kurs wurde zugeordnet.'));
                     }
                     $this->redirect('course/ilias_interface');
@@ -483,7 +483,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                         ));
                     } elseif ($group_id = $this->ilias->soap_client->addGroup($group_data, $course_id)) {
                         // create new group
-                        IliasObjectConnections::setConnection($group->getId(), $group_id, 'group', $this->ilias_index);
+                        IliasObjectConnections::setConnection($group->getId(), $group_id, 'group', $this->ilias_index, 'statusgroup', $this->seminar_id, 'course');
                         // add members
                         $member_count = 0;
                         foreach ($group->members as $member) {

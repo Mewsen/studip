@@ -152,6 +152,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             'category_create_on_add_module' => false,
                             'category_to_desktop' => false,
                             'cat_semester' => '',
+                            'cat_faculty' => '',
                             'course_semester' => '',
                             'course_veranstaltungsnummer' => false,
                             'workgroup_category_name' => '',
@@ -365,6 +366,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     if (Request::getInstance()->offsetExists('ilias_cat_semester')) {
                         $this->ilias_configs[$index]['cat_semester'] = Request::get('ilias_cat_semester');
                     }
+                    $this->ilias_configs[$index]['cat_faculty'] = Request::get('ilias_cat_faculty');
                     if (Request::getInstance()->offsetExists('ilias_course_semester')) {
                         $this->ilias_configs[$index]['course_semester'] = Request::get('ilias_course_semester');
                     }
