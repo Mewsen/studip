@@ -17,6 +17,7 @@
                 <col style="width: 5%;">
                 <col style="width: 5%;">
                 <col style="width: 5%;">
+                <col style="width: 5%;">
             </colgroup>
 
             <thead>
@@ -26,6 +27,7 @@
                     <th><?= _('Consumer-Key') ?></th>
                     <th><?= _('LTI-Version') ?></th>
                     <th><?= _('Deployment-ID') ?></th>
+                    <th><?= _('Deep Links') ?></th>
                     <th><?= _('Links') ?></th>
                     <th class="actions"><?= _('Aktionen') ?></th>
                 </tr>
@@ -49,9 +51,25 @@
                         <td>
                             <?
                             //Each tool should only have one deployment-ID:
-                            $deployment = LtiDeployment::findOneByTool_id($tool->id);
+                            $deployments = LtiDeployment::findBySQL(
+                                "`tool_id` = :tool_id AND `purpose` = 'general'",
+                                ['tool_id' => $tool->id]
+                            );
+                            $deployment_ids = [];
+                            foreach ($deployments as $deployment)  {
+                                $deployment_ids[] = $deployment->id;
+                            }
                             ?>
-                            <?= htmlReady($deployment->id ?? '') ?>
+                            <?= htmlReady(implode(', ', $deployment_ids)) ?>
+                            <? if (count($deployment_ids) > 1) : ?>
+                                <?= tooltipIcon(_('Dieses Tool hat mehrere Deployment-IDs zur generellen Nutzung!')) ?>
+                            <? endif ?>
+                        </td>
+                        <td>
+                            <?= htmlReady(LtiDeployment::countBySQL(
+                                "`tool_id` = :tool_id AND `purpose` = 'deep_linking'",
+                                ['tool_id' => $tool->id]
+                            )) ?>
                         </td>
                         <td>
                             <?= \LtiResourceLink::countBySql(

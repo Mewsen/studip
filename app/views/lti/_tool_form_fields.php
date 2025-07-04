@@ -1,7 +1,7 @@
 <?php
 /**
  * @var LtiTool $tool
- * @var ?LtiDeployment $deployment
+ * @var ?\LtiResourceLink $link
  */
 ?>
 <fieldset>
@@ -10,11 +10,11 @@
         <span class="textlabel"><?= _('Titel') ?></span>
         <span class="asterisk">*</span>
         <input type="text" name="name" required
-               value="<?= htmlReady($tool->name ?? '') ?>">
+               value="<?= htmlReady($link->title ?? $tool->name ?? '') ?>">
     </label>
     <label>
         <?= _('Beschreibung') ?>
-        <textarea name="description" class="wysiwyg"><?= wysiwygReady($deployment->description ?? '') ?></textarea>
+        <textarea name="description" class="wysiwyg"><?= wysiwygReady($link->description ?? '') ?></textarea>
     </label>
     <label>
         <?= _('Datenschutzhinweise') ?>
@@ -114,8 +114,8 @@
         <?= _('Zusätzliche LTI-Parameter') ?>
         <?= tooltipIcon(_('Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56')) ?>
         <textarea name="custom_parameters"><?= htmlReady(
-                !empty($deployment->options['custom_parameters'])
-                    ? $deployment->options['custom_parameters']
+                !empty($link->options['custom_parameters'])
+                    ? $link->options['custom_parameters']
                     : $tool->custom_parameters ?? ''
             ) ?></textarea>
     </label>
@@ -123,7 +123,7 @@
 <fieldset>
     <legend><?= _('Anzeigeeinstellungen') ?></legend>
     <label>
-        <input type="checkbox" name="document_target" value="iframe" <?= isset($deployment->options['document_target']) && $deployment->options['document_target'] === 'iframe' ? ' checked' : '' ?>>
+        <input type="checkbox" name="document_target" value="iframe" <?= isset($link->options['document_target']) && $link->options['document_target'] === 'iframe' ? ' checked' : '' ?>>
         <?= _('Anzeige im IFRAME auf der Seite') ?>
         <?= tooltipIcon(_('Normalerweise wird das externe Tool in einem neuen Fenster angezeigt. Aktivieren Sie diese Option, wenn die Anzeige stattdessen in einem IFRAME erfolgen soll.')) ?>
     </label>
