@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2025-07-01 14:00+0000\n"
+"PO-Revision-Date: 2025-07-04 11:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -15850,7 +15850,7 @@ msgstr "Please read the following hint:"
 
 #: app/views/consultation/overview/book.php:36
 msgid "Ich habe den obigen Hinweis zur Kenntnis genommen"
-msgstr "I acknowledge the hint from above"
+msgstr "I have taken note of the above notice"
 
 #: app/views/consultation/slot-bookings.php:31
 #, php-format
@@ -25846,7 +25846,7 @@ msgstr "During processing the following errors occurred"
 
 #: app/controllers/settings/statusgruppen.php:421
 msgid "Wollen Sie die Zuordnung zu der Funktion wirklich löschen?"
-msgstr "Are you sure to delete the function allocation?"
+msgstr "Are you sure you want to delete the assignment to this function?"
 
 #: app/controllers/settings/userdomains.php:32
 msgid "Nutzerdomänen bearbeiten"
@@ -25923,7 +25923,7 @@ msgstr ""
 
 #: app/controllers/settings/messaging.php:100
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
-msgstr "Are you sure to delete the forwarding settings?"
+msgstr "Are you sure you want to delete the forwarding settings?"
 
 #: app/controllers/settings/messaging.php:120
 msgid "Ihre Einstellungen wurden erfolgreich zurückgesetzt."
@@ -26962,11 +26962,11 @@ msgstr "Stud.IP (system)"
 
 #: app/controllers/news.php:110
 msgid "Ankündigung wirklich aus diesem Bereich entfernen?"
-msgstr "Do you really want to remove the announcement from this area?"
+msgstr "Are you sure you want to remove the announcement from this area?"
 
 #: app/controllers/news.php:125
 msgid "Ankündigung wirklich löschen?"
-msgstr "Do you really want to delete the announcement?"
+msgstr "Are you sure you want to delete the announcement?"
 
 #: app/controllers/news.php:236 app/controllers/news.php:244
 msgid "Die Ankündigung existiert nicht!"
