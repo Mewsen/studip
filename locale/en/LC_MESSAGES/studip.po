@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2025-07-01 11:00+0000\n"
+"PO-Revision-Date: 2025-07-04 11:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -109,11 +109,11 @@ msgstr "very high"
 
 #: app/controllers/news.php:127
 msgid "Ankündigung wirklich aus diesem Bereich entfernen?"
-msgstr "Do you really want to remove the announcement from this area?"
+msgstr "Are you sure you want to remove the announcement from this area?"
 
 #: app/controllers/news.php:142
 msgid "Ankündigung wirklich löschen?"
-msgstr "Do you really want to delete the announcement?"
+msgstr "Are you sure you want to delete the announcement?"
 
 #: app/controllers/news.php:213 app/controllers/news.php:678
 #: app/views/news/edit_news.php:306
@@ -531,7 +531,7 @@ msgstr ""
 
 #: app/controllers/settings/messaging.php:100
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
-msgstr "Are you sure to delete the forwarding settings?"
+msgstr "Are you sure you want to delete the forwarding settings?"
 
 #: app/controllers/settings/messaging.php:120
 msgid "Ihre Einstellungen wurden erfolgreich zurückgesetzt."
@@ -999,7 +999,7 @@ msgstr "Error while saving your data. Please check your input."
 
 #: app/controllers/settings/statusgruppen.php:421
 msgid "Wollen Sie die Zuordnung zu der Funktion wirklich löschen?"
-msgstr "Are you sure to delete the function allocation?"
+msgstr "Are you sure you want to delete the assignment to this function?"
 
 #: app/controllers/files_dashboard.php:68
 msgid "Dokumentensuche"
@@ -22383,20 +22383,21 @@ msgid ""
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen ziehen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Drag the favorable courses in the area for selected courses and order them "
-"by your priority. You can drag more courses than you really want to enrol "
-"into."
+"Drag and drop your choice to the right side and sort them by priority (most "
+"desired at the top). You can select more courses than you actually want to "
+"participate in."
 
 #: app/views/course/enrolment/_priocourses.php:45
+#, fuzzy
 msgid ""
 "Sortieren Sie die in Frage kommenden Veranstaltungen im Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen zuweisen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Sort the favorable courses in the area for selected courses and order them "
-"by your priority. You can assign more courses than you really want to enrol "
-"into."
+"Drag and drop your choice to the right side and sort them by priority (most "
+"desired at the top). You can drag more courses than you really want to "
+"participate in."
 
 #: app/views/course/enrolment/_priocourses.php:54
 msgid "Verfügbare Veranstaltungen"
@@ -22411,7 +22412,7 @@ msgstr "Selected courses"
 msgid ""
 "Die gewünschten Veranstaltungen aus der Liste der verfügbaren "
 "Veranstaltungen auswählen"
-msgstr "Select the favoured courses from the list of available courses"
+msgstr "Select desired courses from the list of available courses"
 
 #: app/views/course/enrolment/_priocourses.php:85
 msgid "Gewünschte Veranstaltungen hierhin ziehen"
@@ -30898,7 +30899,7 @@ msgstr "Please read the following hint:"
 
 #: app/views/consultation/overview/book.php:36
 msgid "Ich habe den obigen Hinweis zur Kenntnis genommen"
-msgstr "I acknowledge the hint from above"
+msgstr "I have taken note of the above notice"
 
 #: app/views/consultation/overview/index.php:3
 #: app/views/consultation/overview/ungrouped.php:3
