@@ -16,7 +16,7 @@
                 <tr>
                     <td><?= htmlReady($lti_data->title) ?></td>
                     <td style="text-align: right;">
-                        <? if ($grade = LtiGrade::find([$lti_data->id, $GLOBALS['user']->id])): ?>
+                        <? if ($grade = LtiGrade::find([$lti_data->deployment_id, $GLOBALS['user']->id])): ?>
                             <?= sprintf('%.0f%%', $grade->score * 100) ?>
                         <? else: ?>
                             &ndash;

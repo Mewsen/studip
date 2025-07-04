@@ -1,15 +1,15 @@
 <?php
 /**
  * @var LtiTool $tool
- * @var LtiDeployment $deployment
- * @var StudipControlle $controller
+ * @var \LtiResourceLink $link
+ * @var StudipController $controller
  */
 ?>
 <? if (!empty($tool)) : ?>
     <article class="studip">
         <header>
-            <? if ($deployment) : ?>
-                <h1><?= htmlReady($deployment->title) ?></h1>
+            <? if ($link) : ?>
+                <h1><?= htmlReady($link->title) ?></h1>
             <? else : ?>
                 <h1><?= htmlReady($tool->name) ?></h1>
             <? endif ?>
@@ -17,10 +17,10 @@
         <dl>
             <dt><?= _('Launch-URL') ?></dt>
             <dd>
-                <? if ($deployment && $deployment->launch_url) : ?>
-                    <a href="<?= htmlReady($deployment->launch_url) ?>">
+                <? if ($link && $link->launch_url) : ?>
+                    <a href="<?= htmlReady($link->launch_url) ?>">
                         <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
-                        <?= htmlReady($deployment->launch_url) ?>
+                        <?= htmlReady($link->launch_url) ?>
                     </a>
                 <? else : ?>
                     <a href="<?= htmlReady($tool->launch_url) ?>">
@@ -54,37 +54,32 @@
                 <dd><?= htmlReady($tool->id) ?></dd>
             <? endif ?>
 
-            <? if ($deployment) : ?>
+            <? if (!empty($link->deployment->id)) : ?>
                 <dt><?= _('Deployment-ID') ?></dt>
-                <dd><?= htmlReady($deployment->id) ?></dd>
+                <dd><?= htmlReady($link->deployment->id) ?></dd>
 
-                <? if ($parameters = $deployment->getCustomParameters()) : ?>
+                <? if ($parameters = $link->getCustomParameters()) : ?>
                     <dt><?= _('LTI custom parameters') ?></dt>
                     <dd><?= htmlReady($parameters) ?></dd>
                 <? endif ?>
             <? endif ?>
-            <dt><?= _('Direktlink zum LTI-Tool') ?></dt>
-            <dd>
-                <ul>
-                    <? foreach ($tool->deployments as $deployment) : ?>
-                        <?
-                        $link = LtiResourceLink::findOneByDeployment_id($deployment->id);
-                        ?>
-                        <? if ($link) : ?>
-                            <li>
-                                <a href="<?= $controller->link_for('course/lti/iframe', $link->id) ?>">
-                                    <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
-                                    <?= $controller->link_for('course/lti/iframe', $link->id) ?>
-                                </a>
-                            </li>
-                        <? endif ?>
-                    <? endforeach ?>
-                </ul>
-            </dd>
+            <? if ($link) : ?>
+                <dt><?= _('Direktlink zum LTI-Tool') ?></dt>
+                <dd>
+                    <ul>
+                        <li>
+                            <a href="<?= $controller->link_for('course/lti/iframe', $link->id) ?>">
+                                <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                                <?= $controller->link_for('course/lti/iframe', $link->id) ?>
+                            </a>
+                        </li>
+                    </ul>
+                </dd>
+            <? endif ?>
         </dl>
     </article>
     <article class="studip">
         <header><h1><?= _('Plattform-Konfiguration') ?></h1></header>
-        <?= $this->render_partial('lti/_platform_data', ['platform' => \Studip\LTI13a\PlatformManager::getPlatformConfiguration()]) ?>
+        <?= $this->render_partial('lti/_platform_data', ['platform' => \Studip\LTI13a\PlatformManager::getPlatformConfiguration($tool->id)]) ?>
     </article>
 <? endif ?>

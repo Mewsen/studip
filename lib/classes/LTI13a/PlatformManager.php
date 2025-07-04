@@ -31,17 +31,20 @@ class PlatformManager
      * Generates an object containing the settings for using this Stud.IP
      * as a platform that connects to an LTI tool via Deep Linking.
      *
-     * @param string $tool_id An optional LTI tool ID that is used to construct
+     * @param string $link_id The Stud.IP LTI Resource Link ID that is used to construct
      *     the platform return URL.
+     *
+     * @param string $course_id An optional Stud.IP course for which to get
+     *     the deep linking configuration.
      *
      * @return DeepLinkingSettings The settings for deep linking.
      */
-    public static function getDeepLinkingConfiguration(string $tool_id = '') : DeepLinkingSettings
+    public static function getDeepLinkingConfiguration(string $link_id, string $course_id = '') : DeepLinkingSettings
     {
         $c = \Config::get();
 
         return new DeepLinkingSettings(
-            self::getDeepLinkingReturnUrl($tool_id),
+            self::getDeepLinkingReturnUrl($link_id, $course_id),
             [LtiResourceLinkInterface::TYPE],
             ['window', 'iframe'],
             'text/html',
@@ -85,13 +88,20 @@ class PlatformManager
     /**
      * Generates the URL for returning from the tool in an LTI deep linking process.
      *
-     * @param string $tool_id The optional LTI Tool-ID to append to the URL.
+     * @param string $link_id The Stud.IP LTI Resource Link ID to append to the URL.
+     *
+     * @param string $course_id An optional Stud.IP course for which to generate
+     *      the deep linking return URL.
      *
      * @return string The URL for returning from an LTI deep linking process.
      */
-    public static function getDeepLinkingReturnUrl(string $tool_id = '') : string
+    public static function getDeepLinkingReturnUrl(string $link_id, string $course_id = '') : string
     {
-        return \URLHelper::getURL('dispatch.php/course/lti/save_link/' . $tool_id, null, true);
+        $params = ['link_id' => $link_id];
+        if ($course_id) {
+            $params['cid'] = $course_id;
+        }
+        return \URLHelper::getURL('dispatch.php/course/lti/save_link/' . $link_id, $params, true);
     }
 
     /**

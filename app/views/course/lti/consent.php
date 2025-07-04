@@ -53,7 +53,7 @@
                 <?= _('Ihr Profilbild') ?>
             </label>
         </fieldset>
-        <?= $this->render_partial('lti/_deployment_user_info', ['deployment' => $resource_link->deployment]) ?>
+        <?= $this->render_partial('lti/_link_user_info', ['link' => $resource_link]) ?>
         <fieldset>
             <legend><?= _('Bestätigung') ?></legend>
             <label>

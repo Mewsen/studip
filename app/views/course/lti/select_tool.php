@@ -14,10 +14,10 @@
             <select name="selected_deployment_id">
                 <? foreach ($global_tool_deployments as $deployment) : ?>
                     <option value="<?= htmlReady($deployment->id) ?>">
-                        <? if ($deployment->title !== $deployment->tool->name) : ?>
-                            <?= htmlReady(sprintf('%1$s (%2$s)', $deployment->tool->name, $deployment->title)) ?>
+                        <? if ($deployment->name) : ?>
+                            <?= htmlReady(sprintf('%1$s (%2$s)', $deployment->tool->name, $deployment->name)) ?>
                         <? else : ?>
-                            <?= htmlReady($deployment->title) ?>
+                            <?= htmlReady($deployment->tool->name) ?>
                         <? endif ?>
                     </option>
                 <? endforeach ?>

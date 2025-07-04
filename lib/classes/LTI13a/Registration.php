@@ -2,6 +2,7 @@
 
 namespace Studip\LTI13a;
 
+use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Tool\ToolInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
@@ -10,7 +11,8 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 class Registration implements RegistrationInterface
 {
     public function __construct(
-        protected ?\LtiTool $tool
+        protected ?\LtiTool $tool,
+        protected ?\LtiResourceLink $link = null
     ) {
     }
 
@@ -24,13 +26,27 @@ class Registration implements RegistrationInterface
         return $this->tool;
     }
 
+    public function setLtiResourceLink(\LtiResourceLink $link)
+    {
+        $this->link = $link;
+    }
+
+    public function getLtiResourceLink() : ?\LtiResourceLink
+    {
+        return $this->link;
+    }
+
     #[\Override]
     public function getIdentifier(): string
     {
         if (!$this->tool) {
             return '';
         }
-        return $this->tool->id;
+        if ($this->link) {
+            return $this->tool->id . '_' . $this->link->id;
+        } else {
+            return $this->tool->id;
+        }
     }
 
     #[\Override]
@@ -63,7 +79,11 @@ class Registration implements RegistrationInterface
         if (!$this->tool) {
             return [];
         }
-        return \DBManager::get()->fetchFirst("SELECT `id` FROM `lti_deployments` WHERE `tool_id` = ?", [$this->tool->id]);
+        if ($this->link) {
+            return [$this->link->deployment_id];
+        } else {
+            return \DBManager::get()->fetchFirst("SELECT `id` FROM `lti_deployments` WHERE `tool_id` = ?", [$this->tool->id]);
+        }
     }
 
     #[\Override]
@@ -72,10 +92,14 @@ class Registration implements RegistrationInterface
         if (!$this->tool) {
             return false;
         }
-        return \LtiDeployment::countBySql(
-            "`tool_id` = :tool_id AND `id` = :deployment_id",
-            ['tool_id' => $this->tool->id, 'deployment_id' => $deploymentId]
-        ) > 0;
+        if ($this->link) {
+            return $this->link->deployment_id == $deploymentId;
+        } else {
+            return \LtiDeployment::countBySql(
+                    "`tool_id` = :tool_id AND `id` = :deployment_id",
+                    ['tool_id' => $this->tool->id, 'deployment_id' => $deploymentId]
+                ) > 0;
+        }
     }
 
     #[\Override]
@@ -98,12 +122,13 @@ class Registration implements RegistrationInterface
     #[\Override]
     public function getToolKeyChain(): ?KeyChainInterface
     {
-        if (!$this->tool) {
+        if (!$this->tool || $this->tool->jwks_url) {
             return null;
         }
+        
         $keyring = $this->tool->getKeyring();
         if (!$keyring) {
-            $keyring = $this->tool->getKeyring(true);
+            throw new LtiException('Failed to load public key for tool ' . $this->tool->id);
         }
         return $keyring->toKeyChain();
     }

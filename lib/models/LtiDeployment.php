@@ -12,15 +12,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  *
  * @property int $id database column
- * @property string $title database column
- * @property string $description database column
  * @property int $tool_id database column
- * @property string $launch_url database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property JSONArrayObject|null $options database column
  * @property SimpleORMapCollection<LtiGrade> $grades has_many LtiGrade
- * @property Course $course belongs_to Course
  * @property LtiTool $tool belongs_to LtiTool
  */
 
@@ -32,8 +27,6 @@ class LtiDeployment extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'lti_deployments';
-
-        $config['serialized_fields']['options'] = JSONArrayObject::class;
 
         $config['belongs_to']['tool'] = [
             'class_name'  => LtiTool::class,
@@ -61,6 +54,8 @@ class LtiDeployment extends SimpleORMap
 
     /**
      * Get the launch_url of this entry.
+     *
+     * @deprecated
      */
     public function getLaunchURL()
     {
@@ -72,6 +67,8 @@ class LtiDeployment extends SimpleORMap
 
     /**
      * Get the consumer_key of this entry.
+     *
+     * @deprecated
      */
     public function getConsumerKey()
     {
@@ -80,6 +77,8 @@ class LtiDeployment extends SimpleORMap
 
     /**
      * Get the consumer_secret of this entry.
+     *
+     * @deprecated
      */
     public function getConsumerSecret()
     {
@@ -88,6 +87,8 @@ class LtiDeployment extends SimpleORMap
 
     /**
      * Get the oauth_signature_method of this entry.
+     *
+     * @deprecated
      */
     public function getOauthSignatureMethod()
     {
@@ -96,6 +97,8 @@ class LtiDeployment extends SimpleORMap
 
     /**
      * Get the custom_parameters of this entry.
+     *
+     * @deprecated
      */
     public function getCustomParameters()
     {
@@ -105,23 +108,6 @@ class LtiDeployment extends SimpleORMap
         }
         $parameters .= $this->options['custom_parameters'] ?? '';
         return $parameters;
-    }
-
-    public function getCustomLtiParameterArray() : array
-    {
-        $parameter_str = $this->getCustomParameters();
-        if (empty($parameter_str)) {
-            return [];
-        }
-        $parameters = explode("\n", $parameter_str);
-        $array = [];
-        foreach ($parameters as $parameter) {
-            $key_value_parts = explode('=', $parameter, 2);
-            if (count($key_value_parts) === 2) {
-                $array[trim($key_value_parts[0])] = trim($key_value_parts[1]);
-            }
-        }
-        return ['https://purl.imsglobal.org/spec/lti/claim/custom' => $array];
     }
 
     /**
