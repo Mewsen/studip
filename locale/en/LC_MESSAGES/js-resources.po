@@ -2,9 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-06-26 14:01+0000\n"
-"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
-"oldenburg.de>\n"
+"PO-Revision-Date: 2025-07-05 09:00+0000\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main-js/en/>\n"
 "Language: en\n"
@@ -33,7 +32,7 @@ msgstr "_ctx"
 #: resources/vue/components/courseware/tasks/peer-review/PairingEditor.vue:50
 #: resources/vue/components/courseware/tasks/peer-review/PairingEditor.vue:79
 msgid "--leer--"
-msgstr ""
+msgstr "--empty--"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:208
 #, fuzzy
@@ -45,9 +44,8 @@ msgid "\"Name\""
 msgstr "\"Name\""
 
 #: resources/vue/components/ContentBar.vue:67
-#, fuzzy
 msgid "(Kein Titel)"
-msgstr "No title "
+msgstr "(No title)"
 
 #: resources/vue/components/my-courses/ColorGroupSelector.vue:93
 msgid "(versteckt)"
@@ -112,9 +110,8 @@ msgid "%{ node } öffnen"
 msgstr "Open %{ node }"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitProgress.vue:60
-#, fuzzy
 msgid "%{ pageTitle } öffnen"
-msgstr "Open %{ node }"
+msgstr "Open %{ pageTitle }"
 
 #: resources/vue/components/courseware/containers/CoursewareAccordionContainer.vue:190
 #: resources/vue/components/courseware/containers/CoursewareListContainer.vue:126
@@ -204,9 +201,8 @@ msgid "%{course} auswählen"
 msgstr "Select %{course}"
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:42
-#, fuzzy
 msgid "%{degrees} Abschlüsse"
-msgstr "Degrees"
+msgstr "%{degrees} degrees"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:391
 msgid ""
@@ -267,19 +263,16 @@ msgid "%{groupName} auswählen"
 msgstr "Select %{groupName}"
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:48
-#, fuzzy
 msgid "%{institutes} Einrichtungen"
-msgstr "My institutes"
+msgstr "%{institutes} institutes"
 
 #: resources/vue/components/questionnaires/InputArray.vue:93
-#, fuzzy
 msgid "%{label} hinzufügen"
-msgstr "Add tab"
+msgstr "Add %{label}"
 
 #: resources/vue/components/questionnaires/InputArray.vue:79
-#, fuzzy
 msgid "%{label} löschen"
-msgstr "Delete %{ name }"
+msgstr "Delete %{label}"
 
 #: resources/vue/components/courseware/CoursewareBlockCommentsOverview.vue:109
 #: resources/vue/components/courseware/CoursewareStructuralElementCommentsOverview.vue:105
