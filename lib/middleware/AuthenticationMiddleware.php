@@ -32,14 +32,6 @@ final class AuthenticationMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->auth_manager->start()) {
-            if (isset($_SESSION['redirect_after_login'] ) && \User::findCurrent()) {
-                $redirect = $_SESSION['redirect_after_login'];
-                unset($_SESSION['redirect_after_login']);
-
-                return $this->response_factory->createResponse(302)
-                    ->withHeader('Location', $redirect);
-            }
-
             return $handler->handle($request);
         } else {
             if (!match_route('dispatch.php/start')) {
