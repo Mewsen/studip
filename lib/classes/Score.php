@@ -204,7 +204,7 @@ class Score
 
         $forum = PluginEngine::getPlugin(CoreForum::class);
         if ($forum && $forum->isEnabled()) {
-            $tables[] = ['table' => 'forum_entries'];
+            $tables[] = ['table' => 'forum_postings'];
         }
 
         $blubber = PluginEngine::getPlugin(Blubber::class);

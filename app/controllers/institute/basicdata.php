@@ -432,14 +432,6 @@ class Institute_BasicdataController extends AuthenticatedController
                 }
             }
 
-            // delete all contents in forum-modules
-            foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-                $plugin->deleteContents($i_id);  // delete content irrespective of plugin-activation in the seminar
-                if ($plugin->isActivated($i_id)) {   // only show a message, if the plugin is activated, to not confuse the user
-                    $details[] = sprintf(_('Einträge in %s gelöscht.'), $plugin->getPluginName());
-                }
-            }
-
             // Alle Pluginzuordnungen entfernen
             PluginManager::getInstance()->deactivateAllPluginsForRange('inst', $i_id);
 

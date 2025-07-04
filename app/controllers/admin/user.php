@@ -1517,15 +1517,11 @@ class Admin_UserController extends AuthenticatedController
             'details' => "files",
         ];
 
-        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-            $table     = $plugin->getEntryTableInfo();
-            $queries[] = [
-                'desc'  => $plugin->getPluginName() . ' - ' . _("Anzahl der Postings"),
-                'query' => 'SELECT COUNT(*) FROM `' . $table['table'] . '`
-            WHERE `' . $table['user_id'] . '` = ?
-            GROUP BY `' . $table['user_id'] . '`',
-            ];
-        }
+        // Forum
+        $queries[] = [
+            'desc'    => _('Forum - Anzahl der Postings'),
+            'query'   => "SELECT COUNT(*) FROM `forum_postings` WHERE `user_id` = ? GROUP BY `user_id`"
+        ];
 
         // Evaluate queries
         foreach ($queries as $index => $query) {

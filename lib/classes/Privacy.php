@@ -42,7 +42,7 @@ class Privacy
         ],
         'content' => [
             FileRef::class,
-            ForumEntry::class,
+            \Forum\ForumPosting::class,
             WikiPage::class,
             Courseware\Unit::class,
             Courseware\StructuralElement::class,

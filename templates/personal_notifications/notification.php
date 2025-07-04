@@ -2,8 +2,15 @@
     <div class="main">
         <a class="content" href="<?= URLHelper::getLink('dispatch.php/jsupdater/mark_notification_read/' . $notification['personal_notification_id']) ?>"<?= $notification['dialog'] ? ' data-dialog' : '' ?>>
             <? if ($notification['avatar']): ?>
-                <div class="avatar" style="background-image: url(<?= $notification['avatar'] ?>);"></div>
+                <? if (filter_var($notification['avatar'], FILTER_VALIDATE_URL)): ?>
+                    <div class="avatar" style="background-image: url(<?= $notification['avatar'] ?>);"></div>
+                <? else: ?>
+                    <div class="html-emoji">
+                        <?= $notification['avatar'] ?>
+                    </div>
+                <? endif ?>
             <? endif ?>
+
             <?= htmlReady($notification['text']) ?>
         </a>
         <button class="options mark_as_read">

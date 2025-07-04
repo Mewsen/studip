@@ -115,23 +115,7 @@ class StudipKing {
 
     private static function forum_kings()
     {
-        $kings = [];
-
-        // sum up postings for all users from all ForumModules available
-        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-            $table = $plugin->getEntryTableInfo();
-            $query = "SELECT user_id AS id, COUNT(*) AS num FROM ". $table['table'] ." GROUP BY user_id";
-            $new_kings = self::select_kings($query);
-            foreach ($new_kings as $user_id => $num) {
-                if (!isset($kings[$user_id])) {
-                    $kings[$user_id] = $num;
-                } else {
-                    $kings[$user_id] += $num;
-                }
-            }
-        }
-
-        return $kings;
+        return self::select_kings("SELECT user_id AS id, COUNT(*) AS num FROM (SELECT user_id FROM forum_postings) as `postings` GROUP BY user_id");
     }
 
     private static function files_kings()

@@ -1,0 +1,34 @@
+import {defineStore} from "pinia";
+import {ref} from "vue";
+
+export const useForumConfig = defineStore(
+    'forum_config',
+    () => {
+        const isAdmin  = ref(false);
+        const isModerator  = ref(false);
+        const anonymousPost  = ref(false);
+        const tileLayout  = ref(true);
+
+         function toggleForumLayout() {
+            tileLayout.value = !tileLayout.value;
+
+            const configId = `${STUDIP.USER_ID}_FORUM_TILE_LAYOUT`;
+
+            const data = {
+                id: configId,
+                type: 'config-values',
+                attributes: { value: tileLayout.value }
+            };
+
+            STUDIP.jsonapi.PATCH(`config-values/${configId}`, { data: { data } });
+        }
+
+        return {
+            isAdmin,
+            isModerator,
+            anonymousPost,
+            tileLayout,
+            toggleForumLayout
+        }
+    }
+)

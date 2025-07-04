@@ -46,3 +46,40 @@ form.default .studip-v-select .vs__selected {
     padding: 0;
     margin: 2px 2px 0;
 }
+
+
+
+.vs {
+    &__open-indicator,
+    &__clear,
+    &__deselect {
+        fill: $base-color !important;
+    }
+
+    &__dropdown-toggle,
+    &__dropdown-menu {
+        border: 1px solid $light-gray-color-40 !important;
+    }
+
+    &__dropdown-menu {
+        margin-top: 5px !important;
+        box-shadow: none !important;
+    }
+
+    &__deselect,
+    &__clear {
+        height: 15px;
+        width: 15px;
+        $icon: icon-path(decline, clickable);
+        background-image: url("#{$icon}") !important;
+        background-size: 15px 15px !important;
+
+        svg {
+            display: none;
+        }
+    }
+}
+
+.multiselect__tags {
+    background-color: red !important;
+}

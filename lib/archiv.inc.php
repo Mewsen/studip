@@ -64,10 +64,8 @@ function lastActivity ($sem_id)
                           WHERE `range_id` = :id";
         }
 
-        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-            $table = $plugin->getEntryTableInfo();
-            $queries[] = 'SELECT MAX(`'. $table['chdate'] .'`) AS chdate FROM `'. $table['table'] .'` WHERE `'. $table['seminar_id'] .'` = :id';
-        }
+        // Forum
+        $queries[] = 'SELECT MAX(`chdate`) AS chdate FROM `forum_postings` WHERE `range_id` = :id';
 
         $query = "SELECT MAX(chdate) FROM (" . implode(' UNION ', $queries) . ") AS tmp";
     }

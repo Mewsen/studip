@@ -49,7 +49,7 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
         if (!$GLOBALS['perm']->have_perm('admin')) {
             $seminaruser = " AND EXISTS (
                 SELECT 1 FROM `seminar_user`
-                WHERE `forum_entries`.`seminar_id` = `seminar_user`.`seminar_id`
+                WHERE `forum_postings`.`range_id` = `seminar_user`.`seminar_id`
                   AND `seminar_user`.`user_id` = " . DBManager::get()->quote($GLOBALS['user']->id) . "
               ) ";
         }
@@ -81,11 +81,10 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
             $anonymous = "";
         }
 
-        $sql = "SELECT SQL_CALC_FOUND_ROWS `forum_entries`.*
-                FROM `forum_entries`
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `forum_postings`.*
+                FROM `forum_postings`
                 WHERE {$anonymous} (
-                    `name` LIKE {$query}
-                    OR `content` LIKE {$query}
+                    `content` LIKE {$query}
                 )
                 {$semester_condition}
                 {$seminaruser}

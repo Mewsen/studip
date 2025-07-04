@@ -97,9 +97,6 @@ class Course_TopicsController extends AuthenticatedController
         if (Request::bool('folder')) {
             $topic->connectWithDocumentFolder();
         }
-
-        // create a connection to the module forum (can be anything)
-        // will update title and description automagically
         if (Request::bool('forumthread')) {
             $topic->connectWithForumThread();
         }

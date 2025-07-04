@@ -33,7 +33,6 @@ class CourseContext extends Context
             $course = $this->course;
 
             $module_provider = [
-                'CoreForum' => 'ForumProvider',
                 'CoreParticipants' => 'ParticipantsProvider',
                 'CoreDocuments' => 'DocumentsProvider',
                 'CoreWiki' => 'WikiProvider',

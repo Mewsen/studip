@@ -359,6 +359,7 @@ function object_type_to_id($type)
         'schedule' => 'CoreSchedule',
         'scm' =>  'CoreScm',
         'wiki' => 'CoreWiki',
+        'forum' => 'CoreForum',
         'elearning_interface' => 'CoreElearningInterface',
         'ilias_interface' => 'IliasInterfaceModule',
         'participants' => 'CoreParticipants'
@@ -397,6 +398,7 @@ function object_id_to_type($id)
         'schedule' => 'CoreSchedule',
         'scm' =>  'CoreScm',
         'wiki' => 'CoreWiki',
+        'forum' => 'CoreForum',
         'elearning_interface' => 'CoreElearningInterface',
         'ilias_interface' => 'IliasInterfaceModule',
         'participants' => 'CoreParticipants'

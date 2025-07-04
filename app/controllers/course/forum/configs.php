@@ -1,0 +1,34 @@
+<?php
+require_once 'ForumBaseController.php';
+
+class Course_Forum_ConfigsController extends Forum\ForumBaseController
+{
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if (! $this->is_admin) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    public function edit_action()
+    {
+        $this->config = Context::get()->getConfiguration();
+    }
+
+    public function save_action()
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $this->config = Context::get()->getConfiguration();
+
+        $this->config->store('FORUM_MODERATION_PERMISSION', trim(Request::option('forum_moderation_permission')));
+
+        $this->config->store('FORUM_HIDE_CATEGORIES_NAVIGATION', Request::bool('forum_hide_categories_navigation'));
+
+        PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
+
+        $this->relocate('course/forum/topics');
+    }
+}

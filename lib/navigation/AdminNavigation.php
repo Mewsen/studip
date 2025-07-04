@@ -176,6 +176,14 @@ class AdminNavigation extends Navigation
                     'dispatch.php/admin/tags/index'
                 )
             );
+
+            $navigation->addSubNavigation(
+                'forum_discussion_types',
+                new Navigation(
+                    _('Forum (Diskussionstypen)'),
+                    'dispatch.php/course/forum/discussion_types'
+                )
+            );
         }
 
         $this->addSubNavigation('locations', $navigation);

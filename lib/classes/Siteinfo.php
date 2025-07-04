@@ -473,37 +473,6 @@ class SiteinfoMarkupEngine {
                         LIMIT 10";
                 $template->type = "seminar";
                 break;
-            case "mostpostings":
-                $template->heading = _("die aktivsten Veranstaltungen (Postings der letzten zwei Wochen)");
-                $seminars = [];
-
-                // get TopTen of seminars from all ForumModules and add up the
-                // count for seminars with more than one active ForumModule
-                // to get a combined toplist
-                foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-                    $new_seminars = $plugin->getTopTenSeminars();
-                    foreach ($new_seminars as $sem) {
-                        if (!isset($seminars[$sem['seminar_id']])) {
-                            $seminars[$sem['seminar_id']] = $sem;
-                        } else {
-                            $seminars[$sem['seminar_id']]['count'] += $sem['count'];
-                        }
-                    }
-                }
-
-                // sort the seminars by the number of combined postings
-                usort($seminars, function($a, $b) {
-                    if ($a['count'] === $b['count']) {
-                        return 0;
-                    }
-                    return ($a['count'] > $b['count']) ? -1 : 1;
-                });
-
-                // fill the template and returned the rendered code
-                $template->lines = $seminars;
-                $template->type = "seminar";
-
-                break;
             case "mostvisitedhomepages":
                 $template->heading = _("die beliebtesten Profile (Besucher)");
                 $sql = "SELECT auth_user_md5.user_id,
@@ -586,16 +555,9 @@ class SiteinfoMarkupEngine {
                                        "constraint" => Config::get()->RESOURCES_ENABLE];
 
         if ($key === 'posting') {
-            $count = 0;
-
-            // sum up number of postings for all availabe ForumModules
-            foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
-                $count += $plugin->getNumberOfPostings();
-            }
-
             $template->title  = _('Forenbeiträge');
             $template->detail = _('Anzahl Beiträge aller verwendeten Foren');
-            $template->count = $count;
+            $template->count = \Forum\ForumPosting::countBySql();
         } else {
             // iterate over the other indicators
             if (in_array($key,array_keys($indicator))) {

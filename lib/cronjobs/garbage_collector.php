@@ -154,13 +154,6 @@ class GarbageCollectorJob extends CronJob
             $statement->execute();
         }
 
-        // Remove outdated entries from forum_visits
-        $query = "DELETE FROM `forum_visits`
-                  WHERE GREATEST(`visitdate`, `last_visitdate`) < UNIX_TIMESTAMP() - :threshold";
-        DBManager::get()->execute($query, [
-            ':threshold' => ForumVisit::LAST_VISIT_MAX,
-        ]);
-
         // clean db cache
         $cache = new Studip\Cache\DbCache();
         $cache->purge();

@@ -1,0 +1,207 @@
+<script setup>
+import {computed, ref} from "vue";
+import {$gettext} from "../../../assets/javascripts/lib/gettext";
+import Dropdown from "../Dropdown.vue";
+import StudipIcon from "@/vue/components/StudipIcon.vue";
+import {SubscriptionNotificationType} from "@/vue/components/forum/enums/SubscriptionNotificationType";
+import {deserializeJSONAPIResponse} from "../../../assets/javascripts/lib/jsonapiUtils";
+
+const emit = defineEmits(['updated', 'deleted']);
+const props = defineProps({
+    user_subscription: {
+        type: Object,
+        required: true
+    },
+    subject: {
+        type: Object,
+        required: true
+    },
+    title: {
+        type: String,
+        default: $gettext('Diskussion abonnieren')
+    }
+});
+
+const isOpen = ref(false);
+const subscription = ref(props.user_subscription);
+const isLoading = ref(false);
+
+const subscriptionButtonLabel = computed(() =>  {
+    if (subscription.value) {
+        switch (subscription.value.notification_type) {
+            case SubscriptionNotificationType.All:
+                return $gettext('Alle');
+            case SubscriptionNotificationType.RepliesOnly:
+                return $gettext('Nur Zitate');
+            case SubscriptionNotificationType.None:
+                return $gettext('Keine');
+        }
+    }
+
+    return '';
+})
+
+const subscriptionButtonIcon = computed(() =>  {
+    if (subscription.value) {
+        switch (subscription.value.notification_type) {
+            case SubscriptionNotificationType.All:
+                return 'subscription-all';
+            case SubscriptionNotificationType.RepliesOnly:
+                return 'subscription-quotes';
+            case SubscriptionNotificationType.None:
+                return 'subscription-none';
+        }
+    }
+
+    return 'subscription-all';
+});
+
+const getSubscriptionJSONAPIObject = (notification_type = 'all') => ({
+    data: {
+        id: subscription.value?.id,
+        type: 'forum-subscriptions',
+        attributes: {
+            'notification-type': notification_type
+        },
+        relationships: {
+            subject: {
+                data: {
+                    type: props.subject.type,
+                    id: props.subject.id
+                }
+            },
+            range: {
+                data: {
+                    type: 'courses',
+                    id: STUDIP.URLHelper.parameters.cid
+                }
+            }
+        }
+    }
+})
+
+const unSubscribe = async () => {
+    if (!subscription.value?.notification_type) {
+        return;
+    }
+
+    try {
+        isLoading.value = true;
+
+        await STUDIP.jsonapi.withPromises().DELETE(`forum-subscriptions/${subscription.value.id}`);
+
+        emit('deleted', subscription);
+        subscription.value = null;
+
+        STUDIP.Report.success($gettext('Sie haben das Abonnement erfolgreich beendet.'));
+    } catch (error) {
+        STUDIP.Report.error(error.statusText);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+const subscribe = async (notification_type = 'all') => {
+    try {
+        isLoading.value = false;
+
+        const response = await STUDIP.jsonapi.withPromises().POST(
+            'forum-subscriptions',
+            {
+                data: getSubscriptionJSONAPIObject(notification_type)
+            }
+        );
+
+        const data = await deserializeJSONAPIResponse(response);
+        subscription.value = data;
+        emit('updated', data);
+
+        STUDIP.Report.success($gettext('Erfolgreich abonniert!'), subscriptionButtonLabel);
+    } catch (error) {
+        STUDIP.Report.error(error.statusText);
+    } finally {
+        isLoading.value = false;
+    }
+}
+</script>
+
+<template>
+    <Dropdown class="forum-subscriptions-dropdown" v-model="isOpen" :title="title">
+        <template #trigger>
+            <button class="icon-button subscription-button" type="button" @click="isOpen = !isOpen" :title="title">
+                <span v-if="subscriptionButtonLabel">
+                    {{ subscriptionButtonLabel }}
+                </span>
+                <StudipIcon :shape="subscriptionButtonIcon" :size="20" />
+            </button>
+        </template>
+
+        <template #items>
+            <li
+                tabindex="0"
+                :class="{
+                    '--active': subscription?.notification_type === SubscriptionNotificationType.All
+                }"
+                @keydown.enter="subscribe(SubscriptionNotificationType.All)"
+                @click="subscribe(SubscriptionNotificationType.All)"
+            >
+                <StudipIcon shape="subscription-all" :size="25" />
+                <div class="subscription-option">
+                    <p class="option-title">{{ $gettext('Alle Benachrichtigungen') }}</p>
+                    <StudipIcon
+                        v-if="subscription?.notification_type === SubscriptionNotificationType.All"
+                        shape="accept"
+                        :size="20"
+                        role="accept" />
+                </div>
+            </li>
+            <li
+                tabindex="0"
+                :class="{
+                    '--active': subscription?.notification_type === SubscriptionNotificationType.RepliesOnly
+                }"
+                @keydown.enter="subscribe(SubscriptionNotificationType.RepliesOnly)"
+                @click="subscribe(SubscriptionNotificationType.RepliesOnly)"
+            >
+                <StudipIcon shape="subscription-quotes" :size="25" />
+                <div class="subscription-option">
+                    <p class="option-title">{{ $gettext('Nur Zitat') }}</p>
+                    <StudipIcon
+                        v-if="subscription?.notification_type === SubscriptionNotificationType.RepliesOnly"
+                        shape="accept"
+                        :size="20"
+                        role="accept" />
+                </div>
+            </li>
+            <li
+                tabindex="0"
+                :class="{
+                    '--active': subscription?.notification_type === SubscriptionNotificationType.None
+                }"
+                @keydown.enter="subscribe(SubscriptionNotificationType.None)"
+                @click="subscribe(SubscriptionNotificationType.None)"
+            >
+                <StudipIcon shape="subscription-none" :size="25" />
+                <div class="subscription-option">
+                    <p class="option-title">{{ $gettext('Keine') }}</p>
+                    <StudipIcon
+                        v-if="subscription?.notification_type === SubscriptionNotificationType.None"
+                        shape="accept"
+                        :size="20"
+                        role="accept" />
+                </div>
+            </li>
+            <li
+                :tabindex="subscription ? 0 : -1"
+                :class="{
+                    '--disabled': !subscription?.notification_type
+                }"
+                @keydown.enter="unSubscribe"
+                @click="unSubscribe"
+            >
+                <StudipIcon shape="subscription-end" :size="25" />
+                <p class="option-title">{{ $gettext('Abonnieren beenden') }}</p>
+            </li>
+        </template>
+    </Dropdown>
+</template>

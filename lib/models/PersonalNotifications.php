@@ -98,7 +98,7 @@ class PersonalNotifications extends SimpleORMap
      *   this html-element the notification will be marked as read, so the user
      *   does not need to handle the information twice. Optional. Default: null
      * @param null|Icon|string $avatar : either an Icon or a URL of an
-     *   image for the notification. Best size: 40px x 40px
+     *   image for the notification. Best size: 40px x 40px or an HTML emoji code.
      * @return boolean : true on success
      */
     public static function add($user_ids, $url, $text, $html_id = null, $avatar = null, $dialog = false)

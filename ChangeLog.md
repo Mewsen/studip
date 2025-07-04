@@ -2954,7 +2954,7 @@ https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+4.5.8&st
 - Löschen von Einzelterminen führt zu kaputten Raumanfragen [#707]
 - "Anfrage auf ausgewählte Termine stellen" funktioniert nicht mehr [#711]
 - Personenliste anlegen ohne Platzverteilung wirft Fehler [#927]
-- PHP message: InvalidArgumentException: navigation item 'course/forum2/newest' not found [#944]
+- PHP message: InvalidArgumentException: navigation item 'course/forum/newest' not found [#944]
 - Unklares Verhalten bei `url_for` mit URL-Fragmenten [#985]
 - Anzeigen/Drucken des QR-Codes verhält sich komisch bzw. ist kaputt [#995]
 - Dialog/Seite zu Fragebögen verlinkt nicht auf die vorhandene Hilfe [#1011]

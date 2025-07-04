@@ -437,7 +437,7 @@ class PrivacyController extends AuthenticatedController
                 'description' => _('Nachrichten, Kommentare, Blubber, News'),
             ],
             'content' => [
-                'icon'        => Icon::create('forum2'),
+                'icon'        => Icon::create('forum'),
                 'title'       => _('Inhalte'),
                 'description' => _('Courseware, Dateien, Forum, Wiki, Literaturlisten'),
             ],

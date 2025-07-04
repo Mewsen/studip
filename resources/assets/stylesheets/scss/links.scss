@@ -43,3 +43,14 @@ a.link-edit {
 a img {
     border: 0;
 }
+
+a.styleless {
+    color: unset;
+    text-decoration: unset;
+
+    &:hover,
+    &:active,
+    &:active {
+        color: unset;
+    }
+}

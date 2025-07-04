@@ -26,7 +26,6 @@ final class Plugin extends Command
         \ExternPagePlugin::class,
         \FilesystemPlugin::class,
         \FileUploadHook::class,
-        \ForumModule::class,
         \HomepagePlugin::class,
         \LibraryPlugin::class,
         \MetricsPlugin::class,

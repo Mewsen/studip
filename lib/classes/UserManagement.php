@@ -1221,8 +1221,9 @@ class UserManagement
             "DELETE FROM priorities WHERE user_id = ?",
             "DELETE FROM help_tour_user WHERE user_id = ?",
             "DELETE FROM personal_notifications_user WHERE user_id = ?",
-            "DELETE FROM forum_abo_users WHERE user_id = ?",
-            "DELETE FROM forum_favorites WHERE user_id = ?",
+            "DELETE FROM forum_subscriptions WHERE user_id = ?",
+            "DELETE FROM forum_posting_reads WHERE user_id = ?",
+            "DELETE FROM forum_posting_reactions WHERE user_id = ?",
 
             "DELETE FROM comments WHERE user_id = ?",
             "DELETE questionnaires FROM questionnaires LEFT JOIN questionnaire_assignments qa USING (`questionnaire_id`) WHERE qa.range_id = ?",
@@ -1235,7 +1236,7 @@ class UserManagement
             "DELETE etask_tests, ea FROM etask_tests LEFT JOIN etask_assignments ea ON (`test_id` = ea.test_id) WHERE ea.range_type = 'user' AND user_id = ?",
             "DELETE FROM etask_assignments WHERE range_type = 'user' AND range_id = ?",
 
-            "UPDATE forum_entries SET author = '' WHERE user_id = ?",
+            "UPDATE forum_postings SET anonymous = 1 WHERE user_id = ?",
             "UPDATE auth_user_md5 SET visible = 'never' WHERE user_id = ?",
 
             "REPLACE INTO `user_info` (`user_id`, `hobby`, `lebenslauf`, `publi`, `schwerp`, `Home`, `privatnr`, `privatcell`, `privadr`, `score`, `geschlecht`, `mkdate`, `chdate`, `title_front`, `title_rear`, `preferred_language`, `smsforward_copy`, `smsforward_rec`, `email_forward`, `motto`, `lock_rule`) VALUES(?, '', '', '', '', '', '', '', '', 0, 0, 0, 0, '', '', NULL, 1, '', 0, '', '');"

@@ -378,10 +378,8 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 ['course' => $course->id]
             );
 
-            //Delete forum entries:
-            foreach (PluginEngine::getPlugins(ForumModule::class) as $forum_tool) {
-                $forum_tool->deleteContents($course->id);
-            }
+            //Delete forum contents:
+            CoreForum::deleteCourseContents($course->id);
 
             //Delete all files:
             $folder = Folder::findTopFolder($course->id);

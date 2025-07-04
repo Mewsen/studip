@@ -121,7 +121,7 @@ form.default {
         vertical-align: top;
 
         input[type=date], input[type=email], input[type=number],
-        input[type=password], input[type=text], input[type=time], input[type=tel], input[type=url],
+        input[type=password], input[type=text], input[type=time], input[type=tel], input[type=url], input[type=color],
         textarea, select, .ck.ck-editor {
             display: block;
             margin-top: 0.5ex;
@@ -450,7 +450,7 @@ form.default {
             width: auto;
         }
         input, textarea, select, button {
-            display: inline-block;;
+            display: inline-block;
         }
     }
 

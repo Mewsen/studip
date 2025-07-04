@@ -1,55 +1,64 @@
+<script setup>
+import { ref, computed, onMounted } from "vue"
+
+const props = defineProps({
+    timestamp: {
+        type: Number,
+        default: 0
+    },
+    iso: {
+        type: String,
+        default: null
+    },
+    relative: {
+        type: Boolean,
+        default: false
+    },
+    date_only: {
+        type: Boolean,
+        default: false
+    }
+})
+
+const now = ref(Date.now())
+
+const date = computed(() => {
+    if (Number.isInteger(props.timestamp) && props.timestamp !== 0) {
+        return new Date(props.timestamp * 1000)
+    } else if (props.iso) {
+        const parsed = new Date(props.iso)
+        return isNaN(parsed.getTime()) ? null : parsed
+    }
+    return null
+})
+
+const datetime = computed(() => (date.value ? date.value.toISOString() : ''))
+
+const displayRelative = () => {
+    if (!date.value || !props.relative) {
+        return false
+    }
+    return now.value - date.value.getTime() < 12 * 60 * 60 * 1000
+}
+
+const title = computed(() => (displayRelative() ? formattedDate(true) : null))
+const formattedDate = (forceAbsolute = false) => {
+    if (!date.value) {
+        return 'Invalid date'
+    }
+    const relativeValue = !forceAbsolute && props.relative && displayRelative()
+    return STUDIP.DateTime.getStudipDate(date.value, relativeValue, props.date_only)
+}
+
+onMounted(() => {
+    window.setInterval(() => {
+        now.value = Date.now()
+    }, 1000)
+})
+</script>
+
 <template>
-    <time :datetime="datetime" v-if="timestamp !== 0" :title="title">
-        {{ formatted_date() }}
+    <time :datetime="datetime" v-if="date" :title="title">
+        {{ formattedDate() }}
     </time>
 </template>
-
-<script>
-
-    export default {
-        name: 'studip-date-time',
-        props: {
-            timestamp: Number,
-            relative: {
-                type: Boolean,
-                required: false,
-                default: false
-            },
-            date_only: {
-                type: Boolean,
-                required: false,
-                default: false
-            }
-        },
-        computed: {
-            datetime () {
-                if (!Number.isInteger(this.timestamp)) {
-                    return '';
-                }
-                let date = new Date(this.timestamp * 1000);
-                return date.toISOString();
-            },
-            title () {
-                return this.display_relative() ? this.formatted_date(true) : null;
-            }
-        },
-        methods: {
-            display_relative: function () {
-                return Date.now() - this.timestamp * 1000 < 12 * 60 * 60 * 1000;
-            },
-            formatted_date: function (force_absolute = false) {
-                if (!Number.isInteger(this.timestamp)) {
-                    return `Should be integer: ${this.timestamp}`;
-                }
-                let date = new Date(this.timestamp * 1000);
-                let relative_value = !force_absolute && this.relative && this.display_relative();
-                return STUDIP.DateTime.getStudipDate(date, relative_value, this.date_only);
-            }
-        },
-        mounted: function () {
-            window.setInterval(() => {
-                this.$forceUpdate();
-            }, 1000);
-        }
-    }
-</script>

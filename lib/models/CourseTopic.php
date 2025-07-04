@@ -50,13 +50,17 @@ class CourseTopic extends SimpleORMap
             'class_name'  => User::class,
             'foreign_key' => 'author_id'
         ];
-
-        $config['additional_fields']['forum_thread_url']['get'] = 'getForumThreadURL';
+        $config['has_and_belongs_to_many']['forum_topics'] = [
+            'class_name' => \Forum\ForumTopic::class,
+            'thru_table' => 'forum_topics_issues',
+            'on_delete'  => 'delete',
+            'on_store'   => 'store'
+        ];
 
         $config['registered_callbacks']['before_create'][] = 'cbDefaultValues';
         $config['registered_callbacks']['after_store'][] = 'cbUpdateConnectedContentModules';
-        $config['registered_callbacks']['before_delete'][] = 'cbUnlinkConnectedContentModules';
 
+        $config['additional_fields']['forum_thread_url']['get'] = 'getForumThreadURL';
         $config['i18n_fields']['title'] = true;
         $config['i18n_fields']['description'] = true;
 
@@ -113,37 +117,27 @@ class CourseTopic extends SimpleORMap
     }
 
     /**
-    * set or update connection with forum thread
-    */
+     * set or update connection with forum thread
+     */
     public function connectWithForumThread()
     {
-        if ($this->seminar_id) {
-            $course = Course::find($this->seminar_id);
-            try {
-                $forum_module = $course->getTool(CoreForum::class);
-                if ($forum_module instanceof ForumModule) {
-                    $forum_module->setThreadForIssue($this->id, $this->title, $this->description);
-                    return true;
-                }
-            } catch (\Studip\Exception $e) {
-                return false;
-            }
+        if ($this->seminar_id && !$this->forum_thread_url) {
+            $forum_topic = new \Forum\ForumTopic();
+            $forum_topic['range_id'] = $this->seminar_id;
+            $forum_topic['name'] = $this['title'];
+            $forum_topic['description'] = $this['description'];
+            $forum_topic->store();
+
+            $this->forum_topics[] = $forum_topic;
+            $this->store();
         }
         return false;
     }
 
     public function getForumThreadURL()
     {
-        if ($this->seminar_id) {
-            $course = Course::find($this->seminar_id);
-            try {
-                $forum_module = $course->getTool(CoreForum::class);
-                if ($forum_module instanceof ForumModule) {
-                    return html_entity_decode($forum_module->getLinkToThread($this->id));
-                }
-            } catch (\Studip\Exception $e) {
-                return '';
-            }
+        if (count($this->forum_topics) > 0) {
+            return URLHelper::getURL('dispatch.php/course/forum/topics/show/'. $this->forum_topics[0]['topic_id'], ['cid' => $this->forum_topics[0]['range_id']]);
         }
         return '';
     }
@@ -152,23 +146,13 @@ class CourseTopic extends SimpleORMap
     {
         if ($this->isFieldDirty('title') || $this->isFieldDirty('description')) {
             if ($this->forum_thread_url) {
-                $this->connectWithForumThread();
+                foreach ($this->forum_topics as $forum_topic) {
+                    $forum_topic['name'] = $this['title'];
+                    $forum_topic['description'] = $this['description'];
+                    $forum_topic->store();
+                }
             }
         }
-    }
-
-    /**
-     * Removes link information for forum topic and remove forum topic as well
-     * if it is empty.
-     */
-    protected function cbUnlinkConnectedContentModules()
-    {
-        $query = "DELETE fei, fe
-                  FROM `forum_entries_issues` AS fei
-                  LEFT JOIN `forum_entries` AS fe
-                    ON fei.`topic_id` = fe.`topic_id` AND fe.`rgt` = fe.`lft` + 1
-                  WHERE `issue_id` = ?";
-        DBManager::get()->execute($query, [$this->id]);
     }
 
     protected function cbDefaultValues()

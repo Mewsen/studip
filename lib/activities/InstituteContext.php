@@ -32,7 +32,6 @@ class InstituteContext extends Context
             $institute = $this->institute;
 
             $module_provider = [
-                'CoreForum' => 'ForumProvider',
                 'CoreDocuments' => 'DocumentsProvider',
                 'CoreWiki' => 'WikiProvider',
             ];

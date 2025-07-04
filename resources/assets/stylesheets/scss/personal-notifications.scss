@@ -206,18 +206,18 @@
             @include background-icon('accept', 'clickable');
             background-repeat: no-repeat;
             background-position: right 8px center;
-    
+
             &:hover {
                 @include background-icon('accept', 'attention');
             }
-    
+
             margin: 0;
         }
         a.enable-desktop-notifications {
             @include background-icon('notification', 'clickable');
             background-repeat: no-repeat;
             background-position: right 8px center;
-    
+
             &:hover {
                 @include background-icon('notification', 'attention');
             }
@@ -235,5 +235,11 @@
             &.hidden { visibility: hidden; }
         }
         .item:hover .options.hidden { visibility: visible; }
+    }
+
+    .html-emoji {
+        font-family: apple color emoji, segoe ui emoji, notocoloremoji, segoe ui symbol, android emoji, emojisymbols, emojione mozilla;
+        font-size: 20px;
+        margin-right: 10px;
     }
 }
