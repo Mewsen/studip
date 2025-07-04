@@ -98,7 +98,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
         }
 
         // user init starts here
-        if (is_object($user) && $user->id != "nobody") {
+        if (is_object($user) && $user->id !== 'nobody') {
             if ($_SESSION['SessionStart'] > \UserConfig::get($user->id)->CURRENT_LOGIN_TIMESTAMP) {      // just logged in
                 // store old CURRENT_LOGIN in LAST_LOGIN and set CURRENT_LOGIN to start of session
                 \UserConfig::get($user->id)->store(
@@ -116,7 +116,6 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
                 ) {
                     $seminar_open_redirected = true;
                 }
-                unset($_SESSION['redirect_after_login']);
                 if (isset($_SESSION['contrast'])) {
                     \UserConfig::get($GLOBALS['user']->id)->store('USER_HIGH_CONTRAST', $_SESSION['contrast']);
                     unset($_SESSION['contrast']);
@@ -183,13 +182,19 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
         }
 
         if ($user_did_login) {
-            if (isset($_SESSION[\StudipAuthOAuth2::class]['redirect'])) {
+            \NotificationCenter::postNotification('UserDidLogin', $user->id);
+
+            if (isset($_SESSION['redirect_after_login'])) {
+                $redirect = $_SESSION['redirect_after_login'];
+                unset($_SESSION['redirect_after_login']);
+                return $this->response_factory->createResponse(302)
+                    ->withHeader('Location', \URLHelper::getURL($redirect));
+            } elseif (isset($_SESSION[\StudipAuthOAuth2::class]['redirect'])) {
                 $redirect = $_SESSION[\StudipAuthOAuth2::class]['redirect'];
                 unset($_SESSION[\StudipAuthOAuth2::class]);
-                $response = $this->response_factory->createResponse(302);
-                return $response->withHeader('Location', \URLHelper::getURL($redirect));
+                return $this->response_factory->createResponse(302)
+                    ->withHeader('Location', \URLHelper::getURL($redirect));
             }
-            \NotificationCenter::postNotification('UserDidLogin', $user->id);
         }
 
         if (!\Request::isXhr() && $perm->have_perm('root')) {
