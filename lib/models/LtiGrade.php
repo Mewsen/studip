@@ -18,6 +18,9 @@
  * @property int $chdate database column
  * @property LtiDeployment $link belongs_to LtiDeployment
  * @property User $user belongs_to User
+ *
+ * NOTE: LtiGrade is only for the LTI 1.0/1.1 interface.
+ * The LTI 1.3A interface uses the grade book tables for storing grades.
  */
 
 class LtiGrade extends SimpleORMap

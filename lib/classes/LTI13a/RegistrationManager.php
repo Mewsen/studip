@@ -7,15 +7,29 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 class RegistrationManager implements RegistrationRepositoryInterface
 {
+    protected ?\LtiResourceLink $link = null;
+
+    public function setResourceLink(\LtiResourceLink $link)
+    {
+        $this->link = $link;
+    }
+
     #[\Override]
     public function find(string $identifier): ?RegistrationInterface
     {
         //The identifier is the ID of a tool.
         $tool = \LtiTool::find($identifier);
+        $link = null;
+        if (!$tool) {
+            //Attempt to find the tool and a resource link.
+            $id_parts = explode('_', $identifier);
+            $tool = \LtiTool::find($id_parts[0]);
+            $link = \LtiResourceLink::find($id_parts[1]);
+        }
         if (!$tool) {
             return null;
         }
-        return new Registration($tool);
+        return new Registration($tool, $link);
     }
 
     /**
@@ -42,7 +56,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
         }
         $tool = \LtiTool::find($clientId);
         if ($tool) {
-            return new Registration($tool);
+            return new Registration($tool, $this->link);
         }
         return null;
     }
@@ -51,7 +65,8 @@ class RegistrationManager implements RegistrationRepositoryInterface
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         //Only handle requests for registrations of this Stud.IP:
-        if ($issuer !== \Config::get()->STUDIP_INSTALLATION_ID) {
+        $platform_config = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
+        if ($issuer !== $platform_config->getAudience()) {
             //Invalid issuer.
             return null;
         }

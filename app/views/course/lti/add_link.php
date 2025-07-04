@@ -3,7 +3,7 @@
         <?= _('Auswahl des externen Tools') ?>
         <select name="tool_id">
             <? foreach ($tools as $tool): ?>
-                <option value="<?= $tool->id ?>"><?= htmlReady($tool->name) ?></option>
+                <option value="<?= htmlReady($tool->id) ?>"><?= htmlReady($tool->name) ?></option>
             <? endforeach ?>
         </select>
     </label>

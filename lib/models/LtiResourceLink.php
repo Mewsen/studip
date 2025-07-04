@@ -23,7 +23,11 @@ use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
  * @property int $id database column
  * @property int $deployment_id database column
  * @property string $course_id database column
+ * @property string $title database column
+ * @property string $description database column
  * @property int $position database column
+ * @property string $launch_url database column
+ * @property JSONArrayObject|null $options database column
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property ?LtiDeployment $deployment related object
@@ -34,6 +38,8 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
     protected static function configure($config = [])
     {
         $config['db_table'] = 'lti_resource_links';
+
+        $config['serialized_fields']['options'] = JSONArrayObject::class;
 
         $config['belongs_to']['course'] = [
             'class_name'  => Course::class,
@@ -89,14 +95,19 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
         return self::findOneBySQL('course_id = ? AND position = ?', [$course_id, $position]);
     }
 
+    public function getLaunchURL()
+    {
+        if (!empty($this->deployment->tool) && empty($this->deployment->tool->allow_custom_url) && empty($this->deployment->tool->deep_linking) || empty($this->launch_url)) {
+            return $this->deployment->tool->launch_url;
+        }
+        return $this->launch_url;
+    }
+
     //OAT library LtiResourceLinkInterface and ResourceInterface implementation:
 
     public function getUrl(): ?string
     {
-        if ($this->deployment) {
-            return $this->deployment->getLaunchURL();
-        }
-        return null;
+        return $this->getLaunchURL();
     }
 
     public function getIcon(): ?array
@@ -154,10 +165,7 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
 
     public function getTitle(): ?string
     {
-        if ($this->deployment) {
-            return $this->deployment->title;
-        }
-        return null;
+        return $this->title ?? $this->deployment->tool->name ?? null;
     }
 
     public function getText(): ?string
@@ -183,5 +191,32 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
                 ['type' => $this->getType()]
             )
         );
+    }
+
+    public function getCustomParameters()
+    {
+        $parameters = '';
+        if (!empty($this->deployment->tool)) {
+            $parameters = $this->deployment->tool->custom_parameters;
+        }
+        $parameters .= $this->options['custom_parameters'] ?? '';
+        return $parameters;
+    }
+
+    public function getCustomLtiParameterArray() : array
+    {
+        $parameter_str = $this->getCustomParameters();
+        if (empty($parameter_str)) {
+            return [];
+        }
+        $parameters = explode("\n", $parameter_str);
+        $array = [];
+        foreach ($parameters as $parameter) {
+            $key_value_parts = explode('=', $parameter, 2);
+            if (count($key_value_parts) === 2) {
+                $array[trim($key_value_parts[0])] = trim($key_value_parts[1]);
+            }
+        }
+        return ['https://purl.imsglobal.org/spec/lti/claim/custom' => $array];
     }
 }
