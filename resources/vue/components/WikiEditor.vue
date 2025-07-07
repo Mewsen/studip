@@ -202,7 +202,7 @@ export default {
 
             const data = {
                 id: this.pageId,
-                online: this.isOnlineAndEditing
+                online: this.isOnlineAndEditing ? 1 : 0,
             };
 
             if (this.autosave && this.isChanged) {
