@@ -1349,7 +1349,7 @@ class Course_MembersController extends AuthenticatedController
                 PageLayout::postSuccess(
                     studip_interpolate(
                         ngettext(
-                            'Eine Person wurden auf die Warteliste verschoben.',
+                            'Eine Person wurde auf die Warteliste verschoben.',
                             '%{number} Personen wurden auf die Warteliste verschoben.',
                             $success_c
                         ),
@@ -1361,7 +1361,7 @@ class Course_MembersController extends AuthenticatedController
                 PageLayout::postError(
                     studip_interpolate(
                         ngettext(
-                            'Eine Person konnten nicht auf die Warteliste verschoben werden:',
+                            'Eine Person konnte nicht auf die Warteliste verschoben werden:',
                             '%{number} Personen konnten nicht auf die Warteliste verschoben werden:',
                             count($errors)
                         ),

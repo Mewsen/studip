@@ -28,7 +28,7 @@
             <?
             $optional_field_list = explode(',', $privacy_settings->allowed_optional_fields ?? '');
             ?>
-            <legend><?= _('Folgenden Daten werden übertragen') ?></legend>
+            <legend><?= _('Die folgenden Daten werden übertragen') ?></legend>
             <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
             <label>
                 <input type="checkbox" checked disabled>
