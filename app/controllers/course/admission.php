@@ -129,10 +129,10 @@ class Course_AdmissionController extends AuthenticatedController
             $this->course->setData($request);
             if ($this->course->isFieldDirty('admission_prelim')) {
                 if ($this->course->admission_prelim == 1 && $this->course->getNumParticipants()) {
-                    $question = _("Sie beabsichtigen den Anmeldemodus auf vorläufiger Eintrag zu ändern. Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in vorläufige Teilnehmende umgewandelt werden?");
+                    $question = _('Sie beabsichtigen, den Anmeldemodus auf "Vorläufiger Eintrag" zu ändern. Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in vorläufige Teilnehmende umgewandelt werden?');
                 }
                 if ($this->course->admission_prelim == 0 && $this->course->getNumPrelimParticipants()) {
-                    $question = _("Sie beabsichtigen den Anmeldemodus auf direkten Eintrag zu ändern. Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden (ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung entfernt) ?");
+                    $question = _('Sie beabsichtigen, den Anmeldemodus auf "Direkter Eintrag" zu ändern. Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden (ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung entfernt) ?');
                 }
             }
             if (Request::submittedSome('change_admission_prelim_no', 'change_admission_prelim_yes') || !$question) {
