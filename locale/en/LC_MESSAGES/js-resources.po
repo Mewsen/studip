@@ -218,7 +218,7 @@ msgid "%{userName} auswählen"
 msgstr "Select %{userName}"
 
 #: resources/assets/javascripts/cke/studip-quote/StudipBlockQuote.js:87
-#: resources/assets/javascripts/lib/forum.js:468
+#: resources/assets/javascripts/lib/forum.js:471
 msgid "%s hat geschrieben:"
 msgstr "%s wrote:"
 
@@ -516,7 +516,7 @@ msgstr "Creation of the import folder failed."
 msgid "Anmelderegel konfigurieren"
 msgstr "Configure admission setting"
 
-#: resources/assets/javascripts/lib/forum.js:432
+#: resources/assets/javascripts/lib/forum.js:435
 msgid "Anonym"
 msgstr "Anonymous"
 
@@ -851,7 +851,7 @@ msgstr ""
 msgid "Beim Veröffentlichen der Seite ist ein Fehler aufgetreten."
 msgstr "An error occurred while publishing the page."
 
-#: resources/assets/javascripts/lib/forum.js:533
+#: resources/assets/javascripts/lib/forum.js:536
 msgid "Beitrag verschieben"
 msgstr "Move post"
 
@@ -1641,7 +1641,7 @@ msgstr "The page has been sent to the OER Campus."
 msgid "Die Seite wurde gelöscht."
 msgstr "The page has been deleted."
 
-#: resources/assets/javascripts/lib/forum.js:493
+#: resources/assets/javascripts/lib/forum.js:496
 msgid ""
 "Die Senderin/der Sender dieser Nachricht möchte Sie auf den folgenden "
 "Beitrag aufmerksam machen. "
@@ -2143,7 +2143,7 @@ msgstr "No selection available"
 msgid "Es steht keine Auswahl zur Verfügung."
 msgstr "No selection is available."
 
-#: resources/assets/javascripts/lib/forum.js:188
+#: resources/assets/javascripts/lib/forum.js:191
 msgid "Es werden auch alle Beiträge in diesem Bereich gelöscht!"
 msgstr "All postings in this area will be deleted as well!"
 
@@ -2704,7 +2704,7 @@ msgstr "Verdigris"
 msgid "Hellgrau"
 msgstr "Light gray"
 
-#: resources/assets/javascripts/lib/forum.js:811
+#: resources/assets/javascripts/lib/forum.js:814
 msgid "Hervorhebung aufheben"
 msgstr "Delete mark"
 
@@ -3674,7 +3674,7 @@ msgstr "The link has been copied into the clipboard."
 msgid "Link wurde kopiert"
 msgstr "Link has been copied"
 
-#: resources/assets/javascripts/lib/forum.js:495
+#: resources/assets/javascripts/lib/forum.js:498
 msgid "Link zum Beitrag: "
 msgstr "Link to posting:"
 
@@ -4869,11 +4869,11 @@ msgstr "You are no longer logged in."
 msgid "Sind sie sicher, dass Sie diese Kategorie entfernen möchten? "
 msgstr "Are you sure to delete this category?"
 
-#: resources/assets/javascripts/lib/forum.js:187
+#: resources/assets/javascripts/lib/forum.js:190
 msgid "Sind sie sicher, dass Sie diesen Bereich löschen möchten? "
 msgstr "Are you sure to delete this area?"
 
-#: resources/assets/javascripts/lib/forum.js:382
+#: resources/assets/javascripts/lib/forum.js:385
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
 msgstr "Do really want to discard your posting?"
 
@@ -5150,17 +5150,17 @@ msgstr "Text colour"
 msgid "Textwerkzeug"
 msgstr "Text tool"
 
-#: resources/assets/javascripts/lib/forum.js:826
+#: resources/assets/javascripts/lib/forum.js:829
 msgid "Thema hervorheben"
 msgstr "Mark topic"
 
-#: resources/assets/javascripts/lib/forum.js:762
-#: resources/assets/javascripts/lib/forum.js:779
+#: resources/assets/javascripts/lib/forum.js:765
+#: resources/assets/javascripts/lib/forum.js:782
 msgid "Thema öffnen"
 msgstr "Open topic"
 
-#: resources/assets/javascripts/lib/forum.js:722
-#: resources/assets/javascripts/lib/forum.js:738
+#: resources/assets/javascripts/lib/forum.js:725
+#: resources/assets/javascripts/lib/forum.js:741
 msgid "Thema schließen"
 msgstr "Close topic"
 
