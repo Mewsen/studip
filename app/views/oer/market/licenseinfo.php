@@ -33,5 +33,5 @@
         <li><?= _('Sie können die Materialien auch verändern und verbessern.') ?></li>
         <li><?= _('Auch dabei müssen Sie den Originalautor bzw. alle vorherigen Autoren des Materials nennen und das neue Werk gegebenenfalls unter dieselbe Lizenz stellen.') ?></li>
     </ul>
-    <?= _('Wie gesagt: wir hoffen, dass dieser Weg für alle ein sehr intuitiver Weg ist, Materialien zu verbreiten und zu nutzen. Die meisten Menschen wollen sich keine Gedanken um Rechten und Pflichten in diesem Zusammenhang machen. Wir hoffen, dass wir diesen Menschen eine Freude mit dem Marktplatz machen können.') ?>
+    <?= _('Wie gesagt: wir hoffen, dass dieser Weg für alle ein sehr intuitiver Weg ist, Materialien zu verbreiten und zu nutzen. Die meisten Menschen wollen sich keine Gedanken um Rechte und Pflichten in diesem Zusammenhang machen. Wir hoffen, dass wir diesen Menschen eine Freude mit dem Marktplatz machen können.') ?>
 </p>

@@ -38,7 +38,7 @@ class Admin_TagsController extends AuthenticatedController
                         'validate' => function ($value) use ($tag) {
                             $output = '';
                             if ($value !== mb_strtolower($value)) {
-                                $output .= _('Schlagwörter sollen keine Großbuchstaben entahlten').' ';
+                                $output .= _('Schlagwörter sollen keine Großbuchstaben enthalten').' ';
                             }
                             foreach (['\n', '#', '|', ' '] as $forbidden) {
                                 if (str_contains($value, $forbidden)) {
