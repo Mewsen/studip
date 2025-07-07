@@ -62,7 +62,7 @@ msgstr[1] "%{ count } notifications"
 msgid "%{ count } Tage"
 msgstr "%{count} days"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:135
+#: resources/vue/components/tree/StudipTreeTable.vue:136
 msgid "%{ count } Unterebenen"
 msgstr "%{ count } sub-layers"
 
@@ -308,7 +308,7 @@ msgid_plural "%{n} Bewertungen"
 msgstr[0] "%{n} rating"
 msgstr[1] "%{n} ratings"
 
-#: resources/vue/components/tree/StudipTreeList.vue:87
+#: resources/vue/components/tree/StudipTreeList.vue:88
 msgid "%{name} bearbeiten"
 msgstr "Edit %{name}"
 
@@ -332,7 +332,7 @@ msgid "%{userName} auswählen"
 msgstr "Select %{userName}"
 
 #: resources/assets/javascripts/cke/studip-quote/StudipBlockQuote.js:87
-#: resources/assets/javascripts/lib/forum.js:456
+#: resources/assets/javascripts/lib/forum.js:459
 msgid "%s hat geschrieben:"
 msgstr "%s wrote:"
 
@@ -816,7 +816,7 @@ msgstr "Hide annotations"
 msgid "Anmerkungen zur Seite"
 msgstr "Annotations for the page"
 
-#: resources/assets/javascripts/lib/forum.js:422
+#: resources/assets/javascripts/lib/forum.js:425
 msgid "Anonym"
 msgstr "Anonymous"
 
@@ -918,13 +918,13 @@ msgstr "Allow audio recordings"
 msgid "Audiodatei:"
 msgstr "Audio file:"
 
-#: resources/vue/components/tree/StudipTreeList.vue:147
-#: resources/vue/components/tree/StudipTreeTable.vue:92
+#: resources/vue/components/tree/StudipTreeList.vue:148
+#: resources/vue/components/tree/StudipTreeTable.vue:93
 msgid "Auf dieser Ebene existieren keine weiteren Unterebenen."
 msgstr "No further sub-levels exist below this level."
 
-#: resources/vue/components/tree/StudipTreeList.vue:150
-#: resources/vue/components/tree/StudipTreeTable.vue:102
+#: resources/vue/components/tree/StudipTreeList.vue:151
+#: resources/vue/components/tree/StudipTreeTable.vue:103
 msgid "Auf dieser Ebene sind keine Veranstaltungen zugeordnet."
 msgstr "No courses are assigned on this layer."
 
@@ -1261,7 +1261,7 @@ msgstr ""
 msgid "Beim Veröffentlichen der Seite ist ein Fehler aufgetreten."
 msgstr "An error occurred while publishing the page."
 
-#: resources/assets/javascripts/lib/forum.js:509
+#: resources/assets/javascripts/lib/forum.js:512
 msgid "Beitrag verschieben"
 msgstr "Move post"
 
@@ -2252,7 +2252,7 @@ msgstr "The page has been sent to the OER Campus."
 msgid "Die Seite wurde gelöscht."
 msgstr "The page has been deleted."
 
-#: resources/assets/javascripts/lib/forum.js:469
+#: resources/assets/javascripts/lib/forum.js:472
 msgid ""
 "Die Senderin/der Sender dieser Nachricht möchte Sie auf den folgenden "
 "Beitrag aufmerksam machen. "
@@ -2481,7 +2481,7 @@ msgstr "Search document"
 msgid "Donnerstag"
 msgstr "Thursday"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:298
+#: resources/vue/components/tree/StudipTreeTable.vue:301
 msgid "Download des Ergebnisses"
 msgstr "Download result"
 
@@ -2530,7 +2530,7 @@ msgstr "Duplicate"
 msgid "Editierberechtigung für Tutor/-innen"
 msgstr "Editing permission for tutors"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:45
+#: resources/vue/components/tree/TreeSearchResult.vue:46
 msgid "Ein Eintrag für den Begriff \"%{searchterm}\" gefunden"
 msgid_plural "%{count} Einträge für den Begriff \"%{searchterm}\" gefunden"
 msgstr[0] "One entry found for the term \"%{searchterm}\""
@@ -2901,7 +2901,7 @@ msgstr "No selection available"
 msgid "Es steht keine Auswahl zur Verfügung."
 msgstr "No selection is available."
 
-#: resources/assets/javascripts/lib/forum.js:184
+#: resources/assets/javascripts/lib/forum.js:187
 msgid "Es werden auch alle Beiträge in diesem Bereich gelöscht!"
 msgstr "All postings in this area will be deleted as well!"
 
@@ -2936,7 +2936,7 @@ msgstr "No content has been added yet."
 msgid "Es wurden keine Aktivitäten gefunden."
 msgstr "No activities have been found."
 
-#: resources/vue/components/tree/TreeSearchResult.vue:105
+#: resources/vue/components/tree/TreeSearchResult.vue:108
 msgid "Es wurden keine Ergebnisse zu Ihrem Suchbegriff \"%{term}\" gefunden."
 msgstr "No results could be found for your search term \"%{term}\"."
 
@@ -3602,7 +3602,7 @@ msgstr "Verdigris"
 msgid "Hellgrau"
 msgstr "Light gray"
 
-#: resources/assets/javascripts/lib/forum.js:768
+#: resources/assets/javascripts/lib/forum.js:771
 msgid "Hervorhebung aufheben"
 msgstr "Delete mark"
 
@@ -3896,9 +3896,9 @@ msgid "Infobox vor Download"
 msgstr "Info box before download"
 
 #: resources/vue/components/StudipDialog.vue:114
-#: resources/vue/components/tree/StudipTreeList.vue:193
-#: resources/vue/components/tree/StudipTreeTable.vue:159
-#: resources/vue/components/tree/TreeSearchResult.vue:54
+#: resources/vue/components/tree/StudipTreeList.vue:194
+#: resources/vue/components/tree/StudipTreeTable.vue:160
+#: resources/vue/components/tree/TreeSearchResult.vue:55
 msgid "Information"
 msgstr "Information"
 
@@ -4708,7 +4708,7 @@ msgstr "The link has been copied into the clipboard."
 msgid "Link wurde kopiert"
 msgstr "Link has been copied"
 
-#: resources/assets/javascripts/lib/forum.js:471
+#: resources/assets/javascripts/lib/forum.js:474
 msgid "Link zum Beitrag: "
 msgstr "Link to posting:"
 
@@ -5139,9 +5139,9 @@ msgstr "Next content element"
 #: resources/vue/components/form_inputs/CalendarPermissionsTable.vue:31
 #: resources/vue/components/form_inputs/MyCoursesColouredTable.vue:55
 #: resources/vue/components/stock-images/ImagesList.vue:48
-#: resources/vue/components/tree/StudipTreeList.vue:192
-#: resources/vue/components/tree/StudipTreeTable.vue:158
-#: resources/vue/components/tree/TreeSearchResult.vue:53
+#: resources/vue/components/tree/StudipTreeList.vue:193
+#: resources/vue/components/tree/StudipTreeTable.vue:159
+#: resources/vue/components/tree/TreeSearchResult.vue:54
 msgid "Name"
 msgstr "Name"
 
@@ -6163,11 +6163,11 @@ msgstr ""
 msgid "Sind sie sicher, dass Sie diese Kategorie entfernen möchten? "
 msgstr "Are you sure to delete this category?"
 
-#: resources/assets/javascripts/lib/forum.js:183
+#: resources/assets/javascripts/lib/forum.js:186
 msgid "Sind sie sicher, dass Sie diesen Bereich löschen möchten? "
 msgstr "Are you sure to delete this area?"
 
-#: resources/assets/javascripts/lib/forum.js:372
+#: resources/assets/javascripts/lib/forum.js:375
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
 msgstr "Do really want to discard your posting?"
 
@@ -6217,8 +6217,8 @@ msgstr ""
 "Sorting element for %{label} %{option}. Press the up or down arrow key to "
 "move this element inside the list."
 
-#: resources/vue/components/tree/StudipTreeList.vue:128
-#: resources/vue/components/tree/StudipTreeTable.vue:184
+#: resources/vue/components/tree/StudipTreeList.vue:129
+#: resources/vue/components/tree/StudipTreeTable.vue:185
 msgid ""
 "Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben "
 "oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
@@ -6356,14 +6356,14 @@ msgid "Stunden"
 msgstr "Hours"
 
 #: resources/vue/components/SearchWidget.vue:16
-#: resources/vue/components/blubber/SearchWidget.vue:20
+#: resources/vue/components/blubber/SearchWidget.vue:21
 #: resources/vue/components/courseware/blocks/CoursewareDocumentBlock.vue:126
 #: resources/vue/components/courseware/widgets/CoursewareSearchWidget.vue:13
 #: resources/vue/components/stock-images/SearchWidget.vue:14
 msgid "Suche"
 msgstr "Search"
 
-#: resources/vue/components/blubber/SearchWidget.vue:57
+#: resources/vue/components/blubber/SearchWidget.vue:66
 msgid "Suche ausführen"
 msgstr "Perform search"
 
@@ -6371,8 +6371,8 @@ msgstr "Perform search"
 msgid "Suche läuft."
 msgstr "Search in progress."
 
-#: resources/vue/components/blubber/SearchWidget.vue:30
-#: resources/vue/components/blubber/SearchWidget.vue:36
+#: resources/vue/components/blubber/SearchWidget.vue:39
+#: resources/vue/components/blubber/SearchWidget.vue:45
 msgid "Suche nach …"
 msgstr "Search for …"
 
@@ -6389,7 +6389,7 @@ msgstr "Start search"
 
 #: resources/assets/javascripts/mvv.js:230
 #: resources/vue/components/StudipMultiPersonSearch.vue:45
-#: resources/vue/components/blubber/SearchWidget.vue:45
+#: resources/vue/components/blubber/SearchWidget.vue:54
 #: resources/vue/components/courseware/toolbar/CoursewareToolbarBlocks.vue:54
 msgid "Suche zurücksetzen"
 msgstr "Reset search"
@@ -6537,17 +6537,17 @@ msgstr "Text background color"
 msgid "Textwerkzeug"
 msgstr "Text tool"
 
-#: resources/assets/javascripts/lib/forum.js:783
+#: resources/assets/javascripts/lib/forum.js:786
 msgid "Thema hervorheben"
 msgstr "Mark topic"
 
-#: resources/assets/javascripts/lib/forum.js:719
-#: resources/assets/javascripts/lib/forum.js:736
+#: resources/assets/javascripts/lib/forum.js:722
+#: resources/assets/javascripts/lib/forum.js:739
 msgid "Thema öffnen"
 msgstr "Open topic"
 
-#: resources/assets/javascripts/lib/forum.js:679
-#: resources/assets/javascripts/lib/forum.js:695
+#: resources/assets/javascripts/lib/forum.js:682
+#: resources/assets/javascripts/lib/forum.js:698
 msgid "Thema schließen"
 msgstr "Close topic"
 
@@ -6626,7 +6626,7 @@ msgstr "Turquoise"
 #: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:134
 #: resources/vue/components/courseware/containers/CoursewareDefaultContainer.vue:124
 #: resources/vue/components/file-chooser/FileChooserTable.vue:33
-#: resources/vue/components/tree/StudipTreeTable.vue:157
+#: resources/vue/components/tree/StudipTreeTable.vue:158
 msgid "Typ"
 msgstr "Type"
 
@@ -6706,13 +6706,13 @@ msgstr "Invisible for users without write permissions"
 msgid "unsichtbar setzen"
 msgstr "set invisible"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:196
-#: resources/vue/components/tree/StudipTreeTable.vue:210
+#: resources/vue/components/tree/StudipTreeTable.vue:197
+#: resources/vue/components/tree/StudipTreeTable.vue:211
 #: resources/vue/components/tree/TreeNodeTile.vue:12
 msgid "Unterebene %{ node } öffnen"
 msgstr "Open sub-layer %{ node }"
 
-#: resources/vue/components/tree/StudipTreeList.vue:107
+#: resources/vue/components/tree/StudipTreeList.vue:108
 msgid "Unterebenen"
 msgstr "Sub-layers"
 
@@ -6794,25 +6794,25 @@ msgstr "Search for courses"
 
 #: resources/vue/components/AdminCourses.vue:42
 #: resources/vue/components/AdminCourses.vue:53
-#: resources/vue/components/tree/StudipTreeList.vue:176
+#: resources/vue/components/tree/StudipTreeList.vue:177
 msgid "Veranstaltungen"
 msgstr "Courses"
 
-#: resources/vue/components/tree/StudipTreeList.vue:159
 #: resources/vue/components/tree/StudipTreeList.vue:160
-#: resources/vue/components/tree/StudipTreeTable.vue:111
+#: resources/vue/components/tree/StudipTreeList.vue:161
 #: resources/vue/components/tree/StudipTreeTable.vue:112
+#: resources/vue/components/tree/StudipTreeTable.vue:113
 msgid "Veranstaltungen auf dieser Ebene anzeigen"
 msgstr "Display all courses on this level"
 
-#: resources/vue/components/tree/StudipTreeList.vue:168
 #: resources/vue/components/tree/StudipTreeList.vue:169
-#: resources/vue/components/tree/StudipTreeTable.vue:125
+#: resources/vue/components/tree/StudipTreeList.vue:170
 #: resources/vue/components/tree/StudipTreeTable.vue:126
+#: resources/vue/components/tree/StudipTreeTable.vue:127
 msgid "Veranstaltungen auf Unterebenen anzeigen"
 msgstr "Show courses on sub-layers"
 
-#: resources/vue/components/tree/StudipTreeList.vue:262
+#: resources/vue/components/tree/StudipTreeList.vue:265
 msgid "Veranstaltungen exportieren"
 msgstr "Export courses"
 
@@ -7556,12 +7556,12 @@ msgstr "Change assignment"
 msgid "zur nächsten Karte"
 msgstr "to the next card"
 
-#: resources/vue/components/tree/StudipTreeList.vue:207
-#: resources/vue/components/tree/StudipTreeTable.vue:243
+#: resources/vue/components/tree/StudipTreeList.vue:208
+#: resources/vue/components/tree/StudipTreeTable.vue:246
 msgid "Zur Veranstaltung %{ title }"
 msgstr "To the course %{ title }"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:72
+#: resources/vue/components/tree/TreeSearchResult.vue:75
 msgid "Zur Veranstaltung %{title}"
 msgstr "To the course %{title}"
 

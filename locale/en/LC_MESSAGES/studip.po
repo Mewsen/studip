@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:04+0200\n"
+"POT-Creation-Date: 2025-07-07 11:06+0200\n"
 "PO-Revision-Date: 2024-05-24 14:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
@@ -79,7 +79,7 @@ msgstr "Courses"
 msgid "Profil"
 msgstr "Profile"
 
-#: app/controllers/news.php:58 lib/models/CronjobSchedule.class.php:91
+#: app/controllers/news.php:58 lib/models/CronjobSchedule.class.php:97
 msgid "normal"
 msgstr "normal"
 
@@ -129,8 +129,8 @@ msgstr ""
 "this area."
 
 #: app/controllers/news.php:322 app/controllers/admin/courses.php:732
-#: app/controllers/admin/courses.php:1403
-#: app/controllers/admin/courses.php:1404
+#: app/controllers/admin/courses.php:1405
+#: app/controllers/admin/courses.php:1406 app/controllers/admin/tags.php:34
 #: app/views/course/wizard/steps/basicdata/index.php:2
 #: app/views/course/wizard/steps/basicdata/index_studygroup.php:2
 #: app/views/course/studygroup/details.php:3
@@ -159,7 +159,7 @@ msgid "Grunddaten"
 msgstr "Basic details"
 
 #: app/controllers/news.php:325 app/controllers/course/statusgroups.php:316
-#: app/controllers/course/members.php:1746 app/controllers/tour.php:579
+#: app/controllers/course/members.php:1718 app/controllers/tour.php:579
 #: app/controllers/calendar/date.php:420
 #: app/controllers/institute/members.php:533
 #: app/controllers/admin/courses.php:1362 app/controllers/admin/user.php:1703
@@ -262,8 +262,8 @@ msgid "Priorität (1: niedrigste, 10: höchste)"
 msgstr "Priority (1: lowest, 10: highest)"
 
 #: app/controllers/news.php:407 app/controllers/admin/courses.php:449
-#: app/controllers/admin/courses.php:1432
-#: app/controllers/admin/courses.php:1433
+#: app/controllers/admin/courses.php:1434
+#: app/controllers/admin/courses.php:1435
 #: app/views/materialien/files/index.php:12
 #: app/views/materialien/files/range.php:27
 #: app/views/admission/courseset/configure.php:19
@@ -707,38 +707,38 @@ msgstr "Edit CV"
 
 #: app/controllers/settings/details.php:71 app/views/settings/details.php:32
 #: lib/classes/visibility/User_Visibility_Settings.php:128
-#: lib/models/User.class.php:855
+#: lib/models/User.class.php:865
 msgid "Skype Name"
 msgstr "Skype name"
 
 #: app/controllers/settings/details.php:104
 #: lib/classes/visibility/User_Visibility_Settings.php:129
-#: lib/models/User.class.php:863
+#: lib/models/User.class.php:873
 msgid "Private Telefonnummer"
 msgstr "Home telephone"
 
 #: app/controllers/settings/details.php:105
 #: lib/classes/visibility/User_Visibility_Settings.php:130
-#: lib/models/User.class.php:870
+#: lib/models/User.class.php:880
 msgid "Private Handynummer"
 msgstr "Private mobile telephone"
 
 #: app/controllers/settings/details.php:106
 #: lib/classes/visibility/User_Visibility_Settings.php:131
-#: lib/models/User.class.php:877
+#: lib/models/User.class.php:887
 msgid "Private Adresse"
 msgstr "Home address"
 
 #: app/controllers/settings/details.php:107
 #: lib/classes/visibility/User_Visibility_Settings.php:132
-#: lib/models/User.class.php:884
+#: lib/models/User.class.php:894
 msgid "Homepage-Adresse"
 msgstr "Homepage address"
 
 #: app/controllers/settings/details.php:108 app/controllers/profile.php:413
 #: app/views/settings/details.php:38
 #: lib/classes/visibility/User_Visibility_Settings.php:127
-#: lib/models/User.class.php:847
+#: lib/models/User.class.php:857
 #: lib/models/Courseware/BlockTypes/KeyPoint.php:67
 msgid "Motto"
 msgstr "Motto"
@@ -746,14 +746,14 @@ msgstr "Motto"
 #: app/controllers/settings/details.php:109 app/controllers/profile.php:171
 #: app/views/settings/details.php:50
 #: lib/classes/visibility/User_Visibility_Settings.php:138
-#: lib/classes/LockRules.class.php:233 lib/models/User.class.php:937
+#: lib/classes/LockRules.class.php:233 lib/models/User.class.php:947
 msgid "Hobbys"
 msgstr "Hobbies"
 
 #: app/controllers/settings/details.php:110 app/controllers/profile.php:170
 #: app/views/settings/details.php:55
 #: lib/classes/visibility/User_Visibility_Settings.php:137
-#: lib/classes/LockRules.class.php:234 lib/models/User.class.php:929
+#: lib/classes/LockRules.class.php:234 lib/models/User.class.php:939
 #: lib/models/Courseware/BlockTypes/BiographyPersonalInformation.php:69
 #: lib/models/Courseware/BlockTypes/BiographyGoals.php:81
 #: lib/models/Courseware/BlockTypes/BiographyAchievements.php:85
@@ -764,14 +764,14 @@ msgstr "Curriculum vitae"
 #: app/controllers/settings/details.php:111 app/controllers/profile.php:173
 #: app/views/settings/details.php:61
 #: lib/classes/visibility/User_Visibility_Settings.php:140
-#: lib/classes/LockRules.class.php:236 lib/models/User.class.php:952
+#: lib/classes/LockRules.class.php:236 lib/models/User.class.php:962
 msgid "Schwerpunkte"
 msgstr "Focus"
 
 #: app/controllers/settings/details.php:112 app/controllers/profile.php:172
 #: app/views/settings/details.php:65
 #: lib/classes/visibility/User_Visibility_Settings.php:139
-#: lib/classes/LockRules.class.php:237 lib/models/User.class.php:944
+#: lib/classes/LockRules.class.php:237 lib/models/User.class.php:954
 msgid "Publikationen"
 msgstr "Publications"
 
@@ -841,7 +841,7 @@ msgstr "Edit course of study"
 
 #: app/controllers/settings/studies.php:103 app/views/profile/index.php:47
 #: lib/classes/visibility/User_Visibility_Settings.php:136
-#: lib/models/User.class.php:922
+#: lib/models/User.class.php:932
 msgid "Wo ich studiere"
 msgstr "Where I study"
 
@@ -1120,10 +1120,10 @@ msgid "Benachrichtigung über neue Inhalte anpassen"
 msgstr "Customise new content notification"
 
 #: app/controllers/settings/notification.php:76
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie "
-"%s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen "
+"%s<b>Veranstaltung suchen / hinzufügen</b>%s um sich für Veranstaltungen "
 "anzumdelden."
 msgstr ""
 "You are not enroled into any course. Please use %s<b>Search / add courses</"
@@ -1322,12 +1322,12 @@ msgstr "Migration %s of %s has already been started and is still running."
 #: lib/classes/globalsearch/GlobalSearchFiles.php:230
 #: lib/filesystem/LibraryFile.class.php:132 lib/models/OERHost.php:300
 #: lib/models/Vote.php:130 lib/models/Vote.php:152
-#: lib/models/User.class.php:1722 lib/models/RangeScale.php:127
+#: lib/models/User.class.php:1732 lib/models/RangeScale.php:127
 #: lib/models/BlubberComment.php:95 lib/models/BlubberComment.php:100
 #: lib/models/Freetext.php:136 lib/models/OERMaterial.php:700
 #: lib/models/resources/ResourceProperty.class.php:109
-#: lib/models/BlubberThread.php:401 lib/models/BlubberThread.php:423
-#: lib/models/BlubberThread.php:438 lib/models/BlubberThread.php:887
+#: lib/models/BlubberThread.php:423 lib/models/BlubberThread.php:445
+#: lib/models/BlubberThread.php:460 lib/models/BlubberThread.php:909
 #: lib/models/LikertScale.php:124 lib/models/ConsultationSlot.php:288
 #: lib/models/ConsultationSlot.php:297
 #: lib/activities/CoursewareProvider.php:204
@@ -1543,7 +1543,7 @@ msgstr "Select MVV object"
 #: lib/classes/visibility/User_Visibility_Settings.php:134
 #: lib/classes/Siteinfo.php:570
 #: lib/classes/globalsearch/GlobalSearchCalendar.php:19
-#: lib/models/CourseDate.class.php:460 lib/models/User.class.php:900
+#: lib/models/CourseDate.class.php:460 lib/models/User.class.php:910
 #: lib/modules/CoreSchedule.class.php:77
 msgid "Termine"
 msgstr "Dates"
@@ -1571,7 +1571,7 @@ msgstr "Download as .doc file"
 #: app/controllers/course/dates.php:100
 #: app/controllers/course/statusgroups.php:264
 #: app/controllers/course/grouping.php:199
-#: app/controllers/course/members.php:1669
+#: app/controllers/course/members.php:1641
 #: app/controllers/institute/members.php:649
 #: app/controllers/admin/courses.php:234
 msgid "Als CSV-Datei exportieren"
@@ -1779,7 +1779,7 @@ msgstr "Description"
 #: app/controllers/institute/members.php:194
 #: app/controllers/institute/members.php:348
 #: app/controllers/admission/courseset.php:423
-#: app/controllers/admin/courses.php:1555 app/controllers/my_courses.php:823
+#: app/controllers/admin/courses.php:1557 app/controllers/my_courses.php:823
 #: app/controllers/tree.php:19 app/views/course/archive/confirm.php:36
 #: app/views/course/wizard/steps/basicdata/index.php:103
 #: app/views/course/timesrooms/editStack.php:133
@@ -1900,19 +1900,21 @@ msgid "Anmeldemodus ändern"
 msgstr "Change admission"
 
 #: app/controllers/course/admission.php:132
+#, fuzzy
 msgid ""
-"Sie beabsichtigen den Anmeldemodus auf vorläufiger Eintrag zu ändern. Sollen "
-"die bereits in der Veranstaltung eingetragenen Teilnehmenden in vorläufige "
-"Teilnehmende umgewandelt werden?"
+"Sie beabsichtigen, den Anmeldemodus auf \"Vorläufiger Eintrag\" zu ändern. "
+"Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in "
+"vorläufige Teilnehmende umgewandelt werden?"
 msgstr ""
 "You are about to change the admission mode to preliminary admission. Do you "
 "want to convert the participants already enroled in the course to "
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:135
+#, fuzzy
 msgid ""
-"Sie beabsichtigen den Anmeldemodus auf direkten Eintrag zu ändern. Sollen "
-"die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
+"Sie beabsichtigen, den Anmeldemodus auf \"Direkter Eintrag\" zu ändern. "
+"Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
@@ -2407,7 +2409,7 @@ msgstr "Create"
 #: lib/classes/StudipSemTreeViewAdmin.class.php:518
 #: lib/classes/Interactable.class.php:173
 #: lib/elearning/Ilias3ConnectedLink.class.php:70 lib/filesystem/URLFile.php:98
-#: lib/filesystem/StandardFile.php:356 lib/filesystem/LibraryFile.class.php:239
+#: lib/filesystem/StandardFile.php:358 lib/filesystem/LibraryFile.class.php:239
 #: lib/filesystem/LibraryFile.class.php:271
 #: lib/evaluation/evaluation_show.lib.php:367
 #: lib/evaluation/evaluation_show.lib.php:373
@@ -2479,11 +2481,11 @@ msgstr "None"
 #: app/controllers/resources/room_request.php:2497
 #: app/controllers/resources/room_request.php:2541
 #: app/controllers/resources/room_request.php:2642
-#: app/controllers/admin/courses.php:1601
-#: app/controllers/admin/courses.php:1640
-#: app/controllers/admin/courses.php:1668
-#: app/controllers/admin/courses.php:1715
-#: app/controllers/admin/courses.php:1791
+#: app/controllers/admin/courses.php:1603
+#: app/controllers/admin/courses.php:1642
+#: app/controllers/admin/courses.php:1670
+#: app/controllers/admin/courses.php:1717
+#: app/controllers/admin/courses.php:1793
 #: app/controllers/admin/courseplanning.php:634
 #: app/controllers/admin/courseplanning.php:664
 #: app/controllers/search/courses.php:104 app/controllers/search/module.php:172
@@ -2696,8 +2698,8 @@ msgstr "You must not edit this profile"
 msgid "Untertitel"
 msgstr "Subtitle"
 
-#: app/controllers/course/archive.php:69 app/controllers/admin/courses.php:1552
-#: app/controllers/admin/courses.php:1649
+#: app/controllers/course/archive.php:69 app/controllers/admin/courses.php:1554
+#: app/controllers/admin/courses.php:1651
 #: app/controllers/admin/specification.php:146
 #: app/controllers/admin/courseplanning.php:611
 #: app/controllers/search/globalsearch.php:80 app/controllers/tree.php:17
@@ -2946,7 +2948,7 @@ msgstr "Add document"
 #: app/controllers/course/files.php:80 app/controllers/course/feedback.php:50
 #: app/controllers/course/feedback.php:188
 #: app/views/course/feedback/index_for.php:11
-#: app/views/files/_folder_tr.php:108 lib/filesystem/StandardFile.php:329
+#: app/views/files/_folder_tr.php:108 lib/filesystem/StandardFile.php:331
 msgid "Neues Feedback-Element"
 msgstr "New feedback element"
 
@@ -3028,7 +3030,7 @@ msgid "Link zu dieser Studiengruppe kopieren"
 msgstr "Copy link to this study group"
 
 #: app/controllers/course/statusgroups.php:169
-#: app/controllers/course/statusgroups.php:393
+#: app/controllers/course/statusgroups.php:423
 msgid "keiner Gruppe zugeordnet"
 msgstr "not assigned to a group"
 
@@ -3046,7 +3048,7 @@ msgid "Mehrere Gruppen anlegen"
 msgstr "Create several groups"
 
 #: app/controllers/course/statusgroups.php:255
-#: app/controllers/course/members.php:1660
+#: app/controllers/course/members.php:1632
 #: app/controllers/institute/members.php:641
 msgid "Als Excel-Datei exportieren"
 msgstr "Export as Excel file"
@@ -3072,11 +3074,14 @@ msgid "Gruppe"
 msgstr "Group"
 
 #: app/controllers/course/statusgroups.php:315
-msgid "geschlecht"
+#: app/controllers/registration.php:94 app/views/settings/account/index.php:143
+#: app/views/admin/user/new.php:81 app/views/admin/user/edit.php:174
+#: lib/classes/LockRules.class.php:229
+msgid "Geschlecht"
 msgstr "Gender"
 
 #: app/controllers/course/statusgroups.php:317
-#: app/controllers/course/members.php:1747 app/controllers/course/lti.php:552
+#: app/controllers/course/members.php:1719 app/controllers/course/lti.php:552
 #: app/controllers/questionnaire.php:347
 #: app/controllers/institute/members.php:533
 #: app/controllers/admission/courseset.php:475
@@ -3095,7 +3100,7 @@ msgid "Vorname"
 msgstr "First name"
 
 #: app/controllers/course/statusgroups.php:318
-#: app/controllers/course/members.php:1748 app/controllers/course/lti.php:552
+#: app/controllers/course/members.php:1720 app/controllers/course/lti.php:552
 #: app/controllers/questionnaire.php:347
 #: app/controllers/institute/members.php:533
 #: app/controllers/admission/courseset.php:475
@@ -3114,7 +3119,7 @@ msgid "Nachname"
 msgstr "Last name"
 
 #: app/controllers/course/statusgroups.php:319
-#: app/controllers/course/members.php:1749
+#: app/controllers/course/members.php:1721
 #: app/controllers/institute/members.php:533
 #: app/controllers/admin/courses.php:1365 app/controllers/admin/user.php:1706
 #: app/controllers/registration.php:76 app/views/admin/user/new.php:122
@@ -3141,7 +3146,7 @@ msgid "Privatnr."
 msgstr "Home number"
 
 #: app/controllers/course/statusgroups.php:323
-#: app/controllers/course/members.php:1753
+#: app/controllers/course/members.php:1725
 #: app/controllers/questionnaire.php:347
 #: app/controllers/institute/members.php:124
 #: app/controllers/institute/members.php:534
@@ -3165,7 +3170,7 @@ msgid "E-Mail"
 msgstr "E-mail"
 
 #: app/controllers/course/statusgroups.php:324
-#: app/controllers/course/members.php:1754
+#: app/controllers/course/members.php:1726
 #: app/controllers/admin/courses.php:1370 app/controllers/admin/user.php:1711
 #: app/views/course/members/autor_list.php:69
 #: app/views/course/members/tutor_list.php:64
@@ -3176,7 +3181,7 @@ msgid "Anmeldedatum"
 msgstr "Date of enrolment"
 
 #: app/controllers/course/statusgroups.php:325
-#: app/controllers/course/members.php:1755
+#: app/controllers/course/members.php:1727
 #: app/controllers/admin/courses.php:1371 app/controllers/admin/user.php:1712
 #: app/views/admin/user/_results.php:27 app/views/admin/user/index.php:35
 #: app/views/admin/user/edit.php:212 app/views/profile/index.php:68
@@ -3185,7 +3190,7 @@ msgid "Matrikelnummer"
 msgstr "Matriculation number"
 
 #: app/controllers/course/statusgroups.php:326
-#: app/controllers/course/members.php:1756
+#: app/controllers/course/members.php:1728
 #: app/controllers/admin/courses.php:1372 app/controllers/admin/user.php:1713
 #: app/controllers/search/stgtable.php:36 app/controllers/search/angebot.php:36
 #: app/controllers/search/studiengaenge.php:33
@@ -3201,31 +3206,31 @@ msgstr "Matriculation number"
 msgid "Studiengänge"
 msgstr "Courses of study"
 
-#: app/controllers/course/statusgroups.php:345
+#: app/controllers/course/statusgroups.php:358
 msgid "keiner Funktion oder Gruppe zugeordnet"
 msgstr "not assigned to any function or group"
 
-#: app/controllers/course/statusgroups.php:354
+#: app/controllers/course/statusgroups.php:384
 msgid "Gruppenliste"
 msgstr "List of groups"
 
-#: app/controllers/course/statusgroups.php:494
-#: app/controllers/course/statusgroups.php:500
+#: app/controllers/course/statusgroups.php:524
+#: app/controllers/course/statusgroups.php:530
 #, php-format
 msgid "%u Person wurde zu %s hinzugefügt."
 msgid_plural "%u Personen wurden zu %s hinzugefügt."
 msgstr[0] "%u person has been added to %s."
 msgstr[1] "%u persons have been added to %s."
 
-#: app/controllers/course/statusgroups.php:505
-#: app/controllers/course/statusgroups.php:512
+#: app/controllers/course/statusgroups.php:535
+#: app/controllers/course/statusgroups.php:542
 #, php-format
 msgid "%u Person konnte nicht zu %s hinzugefügt werden."
 msgid_plural "%u Personen konnten nicht zu %s hinzugefügt werden."
 msgstr[0] "%u person could not be added to %s."
 msgstr[1] "%u persons could not be added to %s."
 
-#: app/controllers/course/statusgroups.php:583
+#: app/controllers/course/statusgroups.php:613
 msgid ""
 "Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können "
 "nur gespeichert werden, wenn der Selbsteintrag aktiviert ist."
@@ -3233,148 +3238,148 @@ msgstr ""
 "Settings for inscription into a group or the period for inscription can only "
 "be saved if self-inscription is activated."
 
-#: app/controllers/course/statusgroups.php:607
+#: app/controllers/course/statusgroups.php:637
 #, php-format
 msgid "Die Gruppe \"%s\" wurde angelegt."
 msgstr "Group \"%s\" has been created."
 
-#: app/controllers/course/statusgroups.php:612
+#: app/controllers/course/statusgroups.php:642
 #, php-format
 msgid "Die Daten der Gruppe \"%s\" wurden gespeichert."
 msgstr "Data of group \"%s\" has been saved."
 
-#: app/controllers/course/statusgroups.php:652
+#: app/controllers/course/statusgroups.php:682
 #, php-format
 msgid "Die Gruppe \"%s\" wurde gelöscht."
 msgstr "Group %s deleted."
 
-#: app/controllers/course/statusgroups.php:676
-#: app/controllers/course/statusgroups.php:809
+#: app/controllers/course/statusgroups.php:706
+#: app/controllers/course/statusgroups.php:839
 #, php-format
 msgid "Sie wurden aus der Gruppe %s ausgetragen."
 msgstr "You have been signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:681
+#: app/controllers/course/statusgroups.php:711
 #: app/controllers/institute/members.php:444
 #, php-format
 msgid "%s wurde aus der Gruppe %s ausgetragen."
 msgstr "%s has been signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:689
-#: app/controllers/course/statusgroups.php:814
+#: app/controllers/course/statusgroups.php:719
+#: app/controllers/course/statusgroups.php:844
 #, php-format
 msgid "Sie konnten nicht aus der Gruppe %s ausgetragen werden."
 msgstr "You could not be signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:694
+#: app/controllers/course/statusgroups.php:724
 #, php-format
 msgid "%s konnte nicht aus der Gruppe %s ausgetragen werden."
 msgstr "%s could not be signed out from group %s."
 
-#: app/controllers/course/statusgroups.php:780
+#: app/controllers/course/statusgroups.php:810
 #, php-format
 msgid "Sie wurden als Mitglied der Gruppe %s eingetragen."
 msgstr "You have been signed into group %s as member."
 
-#: app/controllers/course/statusgroups.php:785
+#: app/controllers/course/statusgroups.php:815
 #, php-format
 msgid "Sie konnten nicht als Mitglied der Gruppe %s eingetragen werden."
 msgstr "You could not be signed into group %s as member."
 
-#: app/controllers/course/statusgroups.php:871
+#: app/controllers/course/statusgroups.php:901
 msgid "Thema:"
 msgstr "Topic:"
 
-#: app/controllers/course/statusgroups.php:988
+#: app/controllers/course/statusgroups.php:1018
 #, php-format
 msgid "Eine Gruppe wurde angelegt."
 msgid_plural "%u Gruppen wurden angelegt."
 msgstr[0] "A group was created."
 msgstr[1] "%u groups were created."
 
-#: app/controllers/course/statusgroups.php:1015
+#: app/controllers/course/statusgroups.php:1045
 #: app/views/course/statusgroups/index.php:33
 msgid "Gruppengröße bearbeiten"
 msgstr "Edit group size"
 
-#: app/controllers/course/statusgroups.php:1030
+#: app/controllers/course/statusgroups.php:1060
 #: app/views/course/statusgroups/index.php:34
 msgid "Selbsteintrag bearbeiten"
 msgstr "Edit self-entry"
 
-#: app/controllers/course/statusgroups.php:1096
+#: app/controllers/course/statusgroups.php:1126
 msgid "Gruppe(n) löschen?"
 msgstr "Delete group(s)?"
 
-#: app/controllers/course/statusgroups.php:1103
+#: app/controllers/course/statusgroups.php:1133
 msgid "Sie haben keine Gruppe ausgewählt."
 msgstr "You have not selected a group."
 
-#: app/controllers/course/statusgroups.php:1122
+#: app/controllers/course/statusgroups.php:1152
 msgid "Gruppenmitglieder verschieben"
 msgstr "Move group members"
 
-#: app/controllers/course/statusgroups.php:1125
+#: app/controllers/course/statusgroups.php:1155
 msgid "Gruppenmitglieder kopieren"
 msgstr "Copy group members"
 
-#: app/controllers/course/statusgroups.php:1136
+#: app/controllers/course/statusgroups.php:1166
 msgid "Gruppenmitglieder entfernen"
 msgstr "Remove group members"
 
-#: app/controllers/course/statusgroups.php:1141
+#: app/controllers/course/statusgroups.php:1171
 msgid "Personen aus Veranstaltung austragen"
 msgstr "Sign out person from course"
 
-#: app/controllers/course/statusgroups.php:1171
+#: app/controllers/course/statusgroups.php:1201
 msgid "Die ausgewählten Gruppen wurden gelöscht."
 msgstr "The selected groups have been deleted."
 
-#: app/controllers/course/statusgroups.php:1204
-#: app/controllers/course/statusgroups.php:1246
+#: app/controllers/course/statusgroups.php:1234
+#: app/controllers/course/statusgroups.php:1276
 msgid "Die Einstellungen der ausgewählten Gruppen wurden gespeichert."
 msgstr "The settings of the selected groups have been saved."
 
-#: app/controllers/course/statusgroups.php:1298
-#: app/controllers/course/statusgroups.php:1305
+#: app/controllers/course/statusgroups.php:1328
+#: app/controllers/course/statusgroups.php:1335
 #, php-format
 msgid "%u Person wurde in die Gruppe %s verschoben."
 msgid_plural "%u Personen wurden in die Gruppe %s verschoben."
 msgstr[0] "%u person has been moved in the group %s."
 msgstr[1] "%u persons have been moved in the group %s."
 
-#: app/controllers/course/statusgroups.php:1308
-#: app/controllers/course/statusgroups.php:1315
+#: app/controllers/course/statusgroups.php:1338
+#: app/controllers/course/statusgroups.php:1345
 #, php-format
 msgid "%u Person konnte nicht in die Gruppe %s verschoben werden."
 msgid_plural "%u Personen konnten nicht in die Gruppe %s verschoben werden."
 msgstr[0] "%u person could not be moved inside the group %s."
 msgstr[1] "%u persons could not be moved inside the group %s."
 
-#: app/controllers/course/statusgroups.php:1353
+#: app/controllers/course/statusgroups.php:1383
 #, php-format
 msgid "%u Person wurde in die Gruppe %s kopiert."
 msgid_plural "%u Personen wurden in die Gruppe %s kopiert."
 msgstr[0] "%u person has been copied in the group %s."
 msgstr[1] "%u persons have been copied in the group %s."
 
-#: app/controllers/course/statusgroups.php:1392
-#: app/controllers/course/statusgroups.php:1399
+#: app/controllers/course/statusgroups.php:1422
+#: app/controllers/course/statusgroups.php:1429
 #, php-format
 msgid "%u Person wurde aus der Gruppe %s entfernt."
 msgid_plural "%u Personen wurden aus der Gruppe %s entfernt."
 msgstr[0] "%u person has been removed from the group %s."
 msgstr[1] "%u persons have been removed from the group %s."
 
-#: app/controllers/course/statusgroups.php:1402
-#: app/controllers/course/statusgroups.php:1409
+#: app/controllers/course/statusgroups.php:1432
+#: app/controllers/course/statusgroups.php:1439
 #, php-format
 msgid "%u Person konnte nicht aus der Gruppe %s entfernt werden."
 msgid_plural "%u Personen konnten nicht aus der Gruppe %s entfernt werden."
 msgstr[0] "%u person could not be removed from the group %s."
 msgstr[1] "%u persons could not be removed from the group %s."
 
-#: app/controllers/course/statusgroups.php:1435
+#: app/controllers/course/statusgroups.php:1465
 msgid "Die folgenden Personen wurden aus der Veranstaltung ausgetragen"
 msgstr "The following persons have been signed out of the course"
 
@@ -3441,9 +3446,9 @@ msgid "%s hinzufügen"
 msgstr "add %s"
 
 #: app/controllers/course/grouping.php:399
-#: app/controllers/course/members.php:1456
-#: app/controllers/course/members.php:1513
-#: app/controllers/course/members.php:1573
+#: app/controllers/course/members.php:1428
+#: app/controllers/course/members.php:1485
+#: app/controllers/course/members.php:1545
 #: app/controllers/course/basicdata.php:317
 #: app/controllers/course/basicdata.php:333
 #: app/controllers/course/basicdata.php:344
@@ -3593,7 +3598,7 @@ msgstr "%s topics copied."
 #: lib/classes/searchtypes/NewsRangesSearch.php:33
 #: lib/classes/globalsearch/GlobalSearchModules.php:123
 #: lib/classes/globalsearch/GlobalSearchModules.php:124
-#: lib/models/Course.class.php:458 lib/models/Course.class.php:848
+#: lib/models/Course.class.php:464 lib/models/Course.class.php:854
 #: lib/models/StudipNews.class.php:247 lib/meine_seminare_func.inc.php:180
 #: lib/meine_seminare_func.inc.php:202 public/eval_summary_export.php:589
 #: public/eval_summary.php:530 templates/filesystem/timed_folder/edit.php:6
@@ -3732,7 +3737,7 @@ msgstr "Changes successfully saved."
 #: app/controllers/course/studygroup.php:314
 #: app/controllers/course/members.php:58
 #: app/controllers/course/basicdata.php:149
-#: app/controllers/admin/courses.php:1556 app/controllers/activityfeed.php:43
+#: app/controllers/admin/courses.php:1558 app/controllers/activityfeed.php:43
 #: app/views/course/details/index.php:200 app/views/course/lti/grades.php:10
 #: app/views/questionnaire/overview.php:12
 #: app/views/evaluation/_evaluation.php:48
@@ -4058,18 +4063,18 @@ msgid "Bitte wählen Sie eine Zielveranstaltung."
 msgstr "Please select a course."
 
 #: app/controllers/course/members.php:675
-#: app/controllers/course/members.php:2025
-#: app/controllers/course/members.php:2140
+#: app/controllers/course/members.php:2013
+#: app/controllers/course/members.php:2128
 #, php-format
 msgid "Sie wurden in die Veranstaltung **%s** eingetragen."
 msgstr "You have been enroled in the course **%s**."
 
 #: app/controllers/course/members.php:678
 #: app/controllers/course/members.php:704
-#: app/controllers/course/members.php:2037
-#: app/controllers/course/members.php:2076
-#: app/controllers/course/members.php:2165
-#: app/controllers/course/members.php:2204 lib/showNews.inc.php:74
+#: app/controllers/course/members.php:2025
+#: app/controllers/course/members.php:2064
+#: app/controllers/course/members.php:2153
+#: app/controllers/course/members.php:2192 lib/showNews.inc.php:74
 #: lib/classes/MembersModel.php:106 lib/classes/MembersModel.php:136
 #: lib/classes/MembersModel.php:178 lib/classes/MembersModel.php:223
 #: lib/classes/MembersModel.php:270 lib/classes/MembersModel.php:501
@@ -4079,8 +4084,8 @@ msgstr "System message:"
 
 #: app/controllers/course/members.php:678
 #: app/controllers/course/members.php:704
-#: app/controllers/course/members.php:2037
-#: app/controllers/course/members.php:2165 lib/classes/MembersModel.php:179
+#: app/controllers/course/members.php:2025
+#: app/controllers/course/members.php:2153 lib/classes/MembersModel.php:179
 #: lib/classes/MembersModel.php:224
 msgid "Eintragung in Veranstaltung"
 msgstr "Enrolment in course"
@@ -4170,7 +4175,7 @@ msgid ""
 msgstr "%s has finally been enroled in the course with status <b>%s</b>."
 
 #: app/controllers/course/members.php:1038
-#: app/controllers/course/members.php:2046 lib/classes/MembersModel.php:244
+#: app/controllers/course/members.php:2034 lib/classes/MembersModel.php:244
 msgid ""
 "Es stehen keine weiteren Plätze mehr im Teilnehmendenkontingent zur "
 "Verfügung."
@@ -4248,35 +4253,21 @@ msgstr "%s person(s) could not be moved to the wait list."
 msgid "Sie haben keine Personen zum Verschieben auf die Warteliste ausgewählt"
 msgstr "You did not select a person for moving them onto the wait list"
 
-#: app/controllers/course/members.php:1279
-msgid "Zusatzangaben exportieren"
-msgstr "Export additional information"
-
-#: app/controllers/course/members.php:1316
-#: app/controllers/admin/courses.php:455 app/controllers/admin/courses.php:1439
-#: app/controllers/admin/courses.php:1440 app/views/file/edit_license.php:12
-#: app/views/file/edit.php:10 app/views/admin/additional/index.php:12
-#: lib/navigation/AdminNavigation.php:222
-#: lib/modules/CoreParticipants.class.php:133
-#: lib/modules/CoreAdmin.class.php:91
-msgid "Zusatzangaben"
-msgstr "Additional information"
-
-#: app/controllers/course/members.php:1359
+#: app/controllers/course/members.php:1331
 #: app/controllers/admin/coursewizardsteps.php:95
 #: app/controllers/admin/coursewizardsteps.php:116
 #: app/controllers/admin/tree.php:157
 msgid "Die Daten wurden gespeichert."
 msgstr "The data have been saved."
 
-#: app/controllers/course/members.php:1361
+#: app/controllers/course/members.php:1333
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:286
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:469
 #: lib/classes/StudipSemTreeViewAdmin.class.php:222
 msgid "Keine Veränderungen vorgenommen."
 msgstr "No changes made."
 
-#: app/controllers/course/members.php:1365
+#: app/controllers/course/members.php:1337
 msgid ""
 "Um die Anmeldung zur Veranstaltung abzuschließen, müssen Sie zusätzliche "
 "Angaben auf dieser Seite machen."
@@ -4284,22 +4275,22 @@ msgstr ""
 "To finish the enrolment into the course, you have to enter additional "
 "information on this page."
 
-#: app/controllers/course/members.php:1408
+#: app/controllers/course/members.php:1380
 #, php-format
 msgid "[%s: %s]"
 msgstr "[%s: %s]"
 
-#: app/controllers/course/members.php:1421
+#: app/controllers/course/members.php:1393
 #: app/views/course/members/circular_mail.php:115
 msgid "Rundmail schreiben"
 msgstr "Send circular mail"
 
-#: app/controllers/course/members.php:1479
-#: app/controllers/course/members.php:1482
-#: app/controllers/course/members.php:1536
-#: app/controllers/course/members.php:1539
-#: app/controllers/course/members.php:1596
-#: app/controllers/course/members.php:1599
+#: app/controllers/course/members.php:1451
+#: app/controllers/course/members.php:1454
+#: app/controllers/course/members.php:1508
+#: app/controllers/course/members.php:1511
+#: app/controllers/course/members.php:1568
+#: app/controllers/course/members.php:1571
 #: app/views/course/grouping/members.php:77
 #: app/views/course/grouping/members.php:85
 #: app/views/course/grouping/members.php:88
@@ -4307,9 +4298,9 @@ msgstr "Send circular mail"
 msgid "%s eintragen"
 msgstr "insert %s"
 
-#: app/controllers/course/members.php:1488
-#: app/controllers/course/members.php:1545
-#: app/controllers/course/members.php:1605
+#: app/controllers/course/members.php:1460
+#: app/controllers/course/members.php:1517
+#: app/controllers/course/members.php:1577
 #: app/views/course/basicdata/view.php:100
 #: app/views/course/basicdata/view.php:236
 #: app/views/course/basicdata/view.php:237
@@ -4319,32 +4310,32 @@ msgid_plural "%s der Einrichtungen"
 msgstr[0] "%s of the institute"
 msgstr[1] "%s of the institutes"
 
-#: app/controllers/course/members.php:1635
-#: app/controllers/course/members.php:1638
+#: app/controllers/course/members.php:1607
+#: app/controllers/course/members.php:1610
 msgid "Person(en) auf Warteliste eintragen"
 msgstr "Add person(s) to waiting list"
 
-#: app/controllers/course/members.php:1641
+#: app/controllers/course/members.php:1613
 msgid "Mitglieder der Einrichtung"
 msgstr "Members of the institution"
 
-#: app/controllers/course/members.php:1648
+#: app/controllers/course/members.php:1620
 msgid "Teilnehmendenliste importieren"
 msgstr "Import participant list"
 
-#: app/controllers/course/members.php:1679
+#: app/controllers/course/members.php:1651
 msgid "Warteliste als Excel-Datei exportieren"
 msgstr "Export wait list as Excel file"
 
-#: app/controllers/course/members.php:1688
+#: app/controllers/course/members.php:1660
 msgid "Warteliste als CSV-Datei exportieren"
 msgstr "Export wait list as CSV file"
 
-#: app/controllers/course/members.php:1703
+#: app/controllers/course/members.php:1675
 msgid "Rundmails von Studierenden erlauben"
 msgstr "Allow circular mails from students"
 
-#: app/controllers/course/members.php:1707
+#: app/controllers/course/members.php:1679
 msgid ""
 "Über diese Option können Sie Studierenden das Schreiben von Nachrichten an "
 "alle anderen Teilnehmenden der Veranstaltung erlauben"
@@ -4352,24 +4343,24 @@ msgstr ""
 "Via this option you may allow students to write messages to all other "
 "participants of the course"
 
-#: app/controllers/course/members.php:1714
+#: app/controllers/course/members.php:1686
 msgid "Sie sind für andere Teilnehmenden auf der Teilnehmendenliste sichtbar."
 msgstr "You are visible to other participants on the participants list."
 
-#: app/controllers/course/members.php:1717
+#: app/controllers/course/members.php:1689
 msgid "Klicken Sie hier, um unsichtbar zu werden."
 msgstr "Click here for becoming invisible."
 
-#: app/controllers/course/members.php:1719
+#: app/controllers/course/members.php:1691
 msgid ""
 "Sie sind für andere Teilnehmenden auf der Teilnehmendenliste nicht sichtbar."
 msgstr "You are not visible to other participants on the participants list."
 
-#: app/controllers/course/members.php:1722
+#: app/controllers/course/members.php:1694
 msgid "Klicken Sie hier, um sichtbar zu werden."
 msgstr "Click here for becoming visible."
 
-#: app/controllers/course/members.php:1744
+#: app/controllers/course/members.php:1716
 #: app/controllers/institute/members.php:492
 #: app/controllers/institute/members.php:615
 #: app/controllers/admission/courseset.php:475
@@ -4400,13 +4391,13 @@ msgstr "Click here for becoming visible."
 msgid "Status"
 msgstr "Status"
 
-#: app/controllers/course/members.php:1745
+#: app/controllers/course/members.php:1717
 #: app/controllers/admin/courses.php:1361 app/controllers/admin/user.php:1702
 #: app/controllers/accessibility/forms.php:75
 msgid "Anrede"
 msgstr "Title"
 
-#: app/controllers/course/members.php:1750
+#: app/controllers/course/members.php:1722
 #: app/controllers/questionnaire.php:347 app/controllers/admin/courses.php:1366
 #: app/controllers/admin/user.php:1707 app/controllers/registration.php:28
 #: app/views/admin/user/_results.php:21 app/views/admin/user/index.php:25
@@ -4417,7 +4408,7 @@ msgstr "Title"
 msgid "Benutzername"
 msgstr "Username"
 
-#: app/controllers/course/members.php:1751
+#: app/controllers/course/members.php:1723
 #: app/controllers/resources/building.php:43
 #: app/controllers/admin/courses.php:1367 app/controllers/admin/user.php:1708
 #: app/views/resources/_common/building.php:14
@@ -4429,12 +4420,12 @@ msgstr "Username"
 msgid "Adresse"
 msgstr "Address"
 
-#: app/controllers/course/members.php:1752
+#: app/controllers/course/members.php:1724
 #: app/controllers/admin/courses.php:1368 app/controllers/admin/user.php:1709
 msgid "Telefonnr."
 msgstr "Phone"
 
-#: app/controllers/course/members.php:1757
+#: app/controllers/course/members.php:1729
 #: app/controllers/admin/courses.php:1373 app/controllers/admin/user.php:1714
 #: app/views/course/members/awaiting_list.php:58
 #: app/views/resources/admin/property_groups.php:31
@@ -4449,26 +4440,26 @@ msgstr "Phone"
 msgid "Position"
 msgstr "Position"
 
-#: app/controllers/course/members.php:1792
+#: app/controllers/course/members.php:1780
 msgid "Wartelistenexport"
 msgstr "Export of wait lists"
 
-#: app/controllers/course/members.php:1794
-#: app/controllers/admin/courses.php:489 app/controllers/admin/courses.php:1499
-#: app/controllers/admin/courses.php:1500
+#: app/controllers/course/members.php:1782
+#: app/controllers/admin/courses.php:489 app/controllers/admin/courses.php:1501
+#: app/controllers/admin/courses.php:1502
 msgid "Teilnehmendenexport"
 msgstr "Participant export"
 
-#: app/controllers/course/members.php:1906
+#: app/controllers/course/members.php:1894
 msgid "Es wurde keine Gruppe ausgewählt!"
 msgstr "No room group has been selected!"
 
-#: app/controllers/course/members.php:2041
+#: app/controllers/course/members.php:2029
 #, php-format
 msgid "%1$s wurde in die Veranstaltung mit dem Status <b>%2$s</b> eingetragen."
 msgstr "%1$s has been enroled into the course with the status <b>%2$s</b>."
 
-#: app/controllers/course/members.php:2050
+#: app/controllers/course/members.php:2038
 msgid ""
 "Beim Eintragen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut "
 "oder wenden Sie sich an die Administrierenden"
@@ -4476,7 +4467,7 @@ msgstr ""
 "An error occurred during entry. Please try again or contact a system "
 "administrator"
 
-#: app/controllers/course/members.php:2072 lib/classes/MembersModel.php:266
+#: app/controllers/course/members.php:2060 lib/classes/MembersModel.php:266
 #, php-format
 msgid ""
 "Sie wurden von einem/einer Veranstaltungsleiter/-in (%1$s) oder einem/einer "
@@ -4485,11 +4476,11 @@ msgstr ""
 "You have been set to the wait list for the course **%2$s** by a lecturer "
 "(%1$s) or an administrator."
 
-#: app/controllers/course/members.php:2077 lib/classes/MembersModel.php:271
+#: app/controllers/course/members.php:2065 lib/classes/MembersModel.php:271
 msgid "Auf Warteliste gesetzt"
 msgstr "Added to wait list"
 
-#: app/controllers/course/members.php:2146
+#: app/controllers/course/members.php:2134
 #, php-format
 msgid ""
 "Sie wurden aus der Warteliste in die Veranstaltung **%s** aufgenommen und "
@@ -4498,7 +4489,7 @@ msgstr ""
 "You have been enroled from the waiting list into the course **%s** and you "
 "are therefore approved."
 
-#: app/controllers/course/members.php:2151
+#: app/controllers/course/members.php:2139
 #, php-format
 msgid ""
 "Sie wurden vom Status **vorläufig akzeptiert** auf **teilnehmend** in der "
@@ -4507,7 +4498,7 @@ msgstr ""
 "You have been promoted into the course **%s** from the state **preliminary "
 "accepted** to **participating** and therefore you are admitted."
 
-#: app/controllers/course/members.php:2200
+#: app/controllers/course/members.php:2188
 #, php-format
 msgid ""
 "Sie wurden aus der Veranstaltung **%s** abgemeldet. Sie wurden auf die "
@@ -4516,11 +4507,11 @@ msgstr ""
 "You have been removed from the course **%s**. You are now on the waiting "
 "list for that course."
 
-#: app/controllers/course/members.php:2205 lib/classes/MembersModel.php:502
+#: app/controllers/course/members.php:2193 lib/classes/MembersModel.php:502
 msgid "Anmeldung aufgehoben, auf Warteliste gesetzt"
 msgstr "Enrolment cancelled, added to wait list"
 
-#: app/controllers/course/members.php:2263
+#: app/controllers/course/members.php:2251
 msgid ""
 "Sie dürfen keine Lehrenden oder Tutor/-innen aus dieser Veranstaltungen "
 "austragen."
@@ -4634,8 +4625,8 @@ msgid "Folgende Termine wurden abgesagt"
 msgstr "The following dates have been cancelled"
 
 #: app/controllers/course/study_areas.php:50
-#: app/controllers/admin/courses.php:739 app/controllers/admin/courses.php:1409
-#: app/controllers/admin/courses.php:1410 app/controllers/search/courses.php:47
+#: app/controllers/admin/courses.php:739 app/controllers/admin/courses.php:1411
+#: app/controllers/admin/courses.php:1412 app/controllers/search/courses.php:47
 #: app/views/course/wizard/steps/studyareas/index.php:4
 #: app/views/course/details/index.php:360
 #: app/views/course/details/index.php:380
@@ -5120,7 +5111,7 @@ msgid "Verwaltung der Grunddaten"
 msgstr "Basic data management"
 
 #: app/controllers/course/basicdata.php:373
-#: app/controllers/admin/courses.php:1446 lib/classes/LockRules.class.php:208
+#: app/controllers/admin/courses.php:1448 lib/classes/LockRules.class.php:208
 msgid "Veranstaltung kopieren"
 msgstr "Copy the course"
 
@@ -5777,8 +5768,8 @@ msgid "Feedback: %s"
 msgstr "Feedback: %s"
 
 #: app/controllers/course/feedback.php:216
-#: app/controllers/admin/courses.php:463 app/controllers/admin/courses.php:1458
-#: app/controllers/admin/courses.php:1459
+#: app/controllers/admin/courses.php:463 app/controllers/admin/courses.php:1460
+#: app/controllers/admin/courses.php:1461
 #: app/views/settings/statusgruppen/index.php:81
 #: app/views/messages/read.php:111 app/views/course/archive/confirm.php:68
 #: app/views/course/feedback/index.php:111
@@ -5893,7 +5884,7 @@ msgstr "Room request management"
 #: app/controllers/course/room_requests.php:339
 #: app/controllers/course/room_requests.php:397
 #: app/controllers/course/room_requests.php:501
-#: app/controllers/course/room_requests.php:549
+#: app/controllers/course/room_requests.php:555
 #: app/controllers/resources/room_request.php:555
 msgid "Das Erstellen von Raumanfragen ist nicht erlaubt!"
 msgstr "Creating room request is not allowed!"
@@ -5911,24 +5902,29 @@ msgstr "Here, you can provide information about wished room properties."
 msgid "Die Mindestanzahl der Sitzplätze beträgt 1!"
 msgstr "The minimum amount of seats is 1!"
 
-#: app/controllers/course/room_requests.php:574
+#: app/controllers/course/room_requests.php:507
+#, fuzzy
+msgid "Die Mindestanzahl der Sitzplätze muss größer als 0 sein!"
+msgstr "The minimum amount of seats is 1!"
+
+#: app/controllers/course/room_requests.php:580
 #, fuzzy
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
 msgstr "The request has been processed and rejected."
 
-#: app/controllers/course/room_requests.php:590
+#: app/controllers/course/room_requests.php:596
 msgid "Die Anfrage wurde gespeichert!"
 msgstr "The request has been saved!"
 
-#: app/controllers/course/room_requests.php:621
+#: app/controllers/course/room_requests.php:627
 msgid "freier Raum"
 msgstr "free room"
 
-#: app/controllers/course/room_requests.php:628
+#: app/controllers/course/room_requests.php:634
 msgid "teilweise belegter Raum"
 msgstr "partially booked room"
 
-#: app/controllers/course/room_requests.php:644
+#: app/controllers/course/room_requests.php:650
 #, php-format
 msgid "Möchten Sie die Raumanfrage \"%s\" löschen?"
 msgstr "Are you sure you want to delete the room request \"%s\"?"
@@ -6151,7 +6147,7 @@ msgstr "Type of tour"
 msgid "Geltungsbereich"
 msgstr "Scope"
 
-#: app/controllers/tour.php:580 app/controllers/admin/courses.php:1559
+#: app/controllers/tour.php:580 app/controllers/admin/courses.php:1561
 #: app/controllers/messages.php:1009 app/views/settings/categories.php:54
 #: app/views/contents/courseware/create_project.php:24
 #: app/views/course/forum/index/index.php:22 app/views/course/scm/edit.php:38
@@ -6420,18 +6416,18 @@ msgstr "The date could not be deleted from your calendar!"
 msgid "Ihre Teilnahmestatus wurde geändert."
 msgstr "Your participation status has been changed."
 
-#: app/controllers/calendar/schedule.php:52 app/views/settings/general.php:5
+#: app/controllers/calendar/schedule.php:54 app/views/settings/general.php:5
 #: lib/modules/ScheduleWidget.php:25
 msgid "Mein Stundenplan"
 msgstr "My timetable"
 
-#: app/controllers/calendar/schedule.php:205
+#: app/controllers/calendar/schedule.php:207
 msgid ""
 "Eintrag konnte nicht gespeichert werden, da die Start- und/oder Endzeit "
 "ungültig ist!"
 msgstr "The entry could not be saved since the start or end time is invalid!"
 
-#: app/controllers/calendar/schedule.php:315
+#: app/controllers/calendar/schedule.php:317
 #: app/controllers/room_management/planning.php:1401
 #: app/views/resources/booking/_add_edit_form.php:70
 #: app/views/resources/booking/_add_edit_form.php:91
@@ -6443,7 +6439,7 @@ msgstr "The entry could not be saved since the start or end time is invalid!"
 msgid "Montag"
 msgstr "Monday"
 
-#: app/controllers/calendar/schedule.php:316
+#: app/controllers/calendar/schedule.php:318
 #: app/controllers/room_management/planning.php:1409
 #: app/views/resources/booking/_add_edit_form.php:72
 #: app/views/resources/booking/_add_edit_form.php:93
@@ -6455,7 +6451,7 @@ msgstr "Monday"
 msgid "Dienstag"
 msgstr "Tuesday"
 
-#: app/controllers/calendar/schedule.php:317
+#: app/controllers/calendar/schedule.php:319
 #: app/controllers/room_management/planning.php:1417
 #: app/views/resources/booking/_add_edit_form.php:74
 #: app/views/resources/booking/_add_edit_form.php:95
@@ -6467,7 +6463,7 @@ msgstr "Tuesday"
 msgid "Mittwoch"
 msgstr "Wednesday"
 
-#: app/controllers/calendar/schedule.php:318
+#: app/controllers/calendar/schedule.php:320
 #: app/controllers/room_management/planning.php:1425
 #: app/views/resources/booking/_add_edit_form.php:76
 #: app/views/resources/booking/_add_edit_form.php:97
@@ -6479,7 +6475,7 @@ msgstr "Wednesday"
 msgid "Donnerstag"
 msgstr "Thursday"
 
-#: app/controllers/calendar/schedule.php:319
+#: app/controllers/calendar/schedule.php:321
 #: app/controllers/room_management/planning.php:1433
 #: app/views/resources/booking/_add_edit_form.php:78
 #: app/views/resources/booking/_add_edit_form.php:99
@@ -6491,7 +6487,7 @@ msgstr "Thursday"
 msgid "Freitag"
 msgstr "Friday"
 
-#: app/controllers/calendar/schedule.php:320
+#: app/controllers/calendar/schedule.php:322
 #: app/controllers/room_management/planning.php:1441
 #: app/views/resources/booking/_add_edit_form.php:80
 #: app/views/resources/booking/_add_edit_form.php:101
@@ -6503,7 +6499,7 @@ msgstr "Friday"
 msgid "Samstag"
 msgstr "Saturday"
 
-#: app/controllers/calendar/schedule.php:321
+#: app/controllers/calendar/schedule.php:323
 #: app/controllers/room_management/planning.php:1449
 #: app/views/resources/booking/_add_edit_form.php:82
 #: app/views/resources/booking/_add_edit_form.php:103
@@ -6515,7 +6511,7 @@ msgstr "Saturday"
 msgid "Sonntag"
 msgstr "Sunday"
 
-#: app/controllers/calendar/schedule.php:474
+#: app/controllers/calendar/schedule.php:476
 msgid "Die Endzeit darf nicht vor der Startzeit liegen!"
 msgstr "The end time may not be earlier than the start time!"
 
@@ -6755,7 +6751,7 @@ msgstr ""
 #: app/controllers/questionnaire.php:15 app/views/questionnaire/widget.php:6
 #: lib/classes/visibility/User_Visibility_Settings.php:135
 #: lib/classes/Siteinfo.php:576 lib/navigation/ContentsNavigation.php:107
-#: lib/models/User.class.php:908 lib/models/Questionnaire.php:259
+#: lib/models/User.class.php:918 lib/models/Questionnaire.php:256
 #: lib/modules/CoreStudygroupAdmin.class.php:43
 #: lib/modules/CoreAdmin.class.php:172 lib/modules/EvaluationsWidget.php:16
 msgid "Fragebögen"
@@ -7183,7 +7179,7 @@ msgstr "%s has been removed from the staff list."
 #: app/controllers/institute/members.php:487
 #: app/controllers/admission/restricted_courses.php:78
 #: app/controllers/admission/courseset.php:423
-#: app/controllers/admin/courses.php:1549
+#: app/controllers/admin/courses.php:1551 app/controllers/admin/tags.php:37
 #: app/controllers/shared/contacts.php:951 app/controllers/studyarea.php:38
 #: app/controllers/tree.php:16 app/views/settings/categories.php:44
 #: app/views/contact/index.php:28 app/views/materialien/files/index.php:10
@@ -7312,8 +7308,8 @@ msgid "Funktion"
 msgstr "Function"
 
 #: app/controllers/institute/members.php:533
-#: app/controllers/admin/banner.php:42 app/controllers/admin/courses.php:1553
-#: app/controllers/admin/courses.php:1630
+#: app/controllers/admin/banner.php:42 app/controllers/admin/courses.php:1555
+#: app/controllers/admin/courses.php:1632
 #: app/controllers/admin/lockrules.php:50
 #: app/controllers/admin/lockrules.php:75
 #: app/controllers/admin/courseplanning.php:564
@@ -8883,7 +8879,7 @@ msgid "abgelehnt"
 msgstr "denied"
 
 #: app/controllers/resources/room_request.php:2490
-#: app/controllers/admin/courses.php:1739
+#: app/controllers/admin/courses.php:1741
 #: app/controllers/admin/courseplanning.php:659
 #: app/views/admin/courses/sidebar.php:47
 msgid "Veranstaltungstypfilter"
@@ -9726,6 +9722,8 @@ msgstr "Booking person(s)"
 
 #: app/controllers/resources/export.php:338
 #: app/controllers/resources/export.php:489
+#: app/views/resources/room_request/_add_edit_form.php:41
+#: app/views/resources/room_request/resolve.php:181
 #: app/views/resources/admin/booking_log.php:35
 msgid "Interner Kommentar"
 msgstr "Internal comment"
@@ -10902,7 +10900,7 @@ msgstr "binding enrolment"
 #: app/views/resources/admin/properties.php:28
 #: app/views/resources/resource/_standard_properties_display_part.php:40
 #: app/views/admin/user/index.php:185
-#: lib/models/resources/ResourceRequestProperty.class.php:69
+#: lib/models/resources/ResourceRequestProperty.class.php:75
 #: lib/models/resources/ResourceProperty.class.php:101
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:2490
 #: lib/evaluation/evaluation_admin_template.lib.php:466
@@ -10921,7 +10919,7 @@ msgstr "no"
 #: app/views/resources/admin/properties.php:28
 #: app/views/resources/resource/_standard_properties_display_part.php:38
 #: app/views/admin/user/index.php:181
-#: lib/models/resources/ResourceRequestProperty.class.php:69
+#: lib/models/resources/ResourceRequestProperty.class.php:75
 #: lib/models/resources/ResourceProperty.class.php:101
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:2500
 #: lib/evaluation/evaluation_admin_template.lib.php:457
@@ -10954,7 +10952,7 @@ msgstr "Username"
 #: app/views/blubber/compose.php:30 lib/functions.php:80 lib/functions.php:83
 #: lib/functions.php:85 lib/cronjobs/check_admission.class.php:94
 #: lib/classes/EventLog.php:25 lib/classes/Context.php:174
-#: lib/models/Course.class.php:743
+#: lib/models/Course.class.php:749
 #: lib/evaluation/evaluation_admin_overview.lib.php:1732
 #: lib/evaluation/evaluation_admin_overview.lib.php:1736
 #: lib/evaluation/evaluation_admin_overview.lib.php:1741
@@ -11974,7 +11972,7 @@ msgid "Unbekannte Studiengangteil-Version."
 msgstr "Unknown component version."
 
 #: app/controllers/admin/overlapping.php:246
-#: app/controllers/search/studiengaenge.php:521
+#: app/controllers/search/studiengaenge.php:533
 #: app/controllers/search/module.php:139
 #: app/views/search/studiengaenge/_studiengang.php:12
 msgid "Semesterauswahl"
@@ -12158,7 +12156,7 @@ msgstr "You have not been assigned to an institution"
 msgid "Verwaltung von Veranstaltungen und Einrichtungen"
 msgstr "Course and institute management"
 
-#: app/controllers/admin/courses.php:445 app/controllers/admin/courses.php:1426
+#: app/controllers/admin/courses.php:445 app/controllers/admin/courses.php:1428
 #: lib/navigation/AdminNavigation.php:99
 msgid "Sperrebenen"
 msgstr "Locking levels"
@@ -12173,15 +12171,24 @@ msgstr "Locking levels"
 msgid "Alle auswählen"
 msgstr "Select all"
 
-#: app/controllers/admin/courses.php:467 app/controllers/admin/courses.php:1466
+#: app/controllers/admin/courses.php:455 app/controllers/admin/courses.php:1441
+#: app/controllers/admin/courses.php:1442 app/views/file/edit_license.php:12
+#: app/views/file/edit.php:10 app/views/admin/additional/index.php:12
+#: lib/navigation/AdminNavigation.php:222
+#: lib/modules/CoreParticipants.class.php:133
+#: lib/modules/CoreAdmin.class.php:91
+msgid "Zusatzangaben"
+msgstr "Additional information"
+
+#: app/controllers/admin/courses.php:467 app/controllers/admin/courses.php:1468
 #: app/views/admin/plugin/index.php:149
 #: lib/evaluation/evaluation_admin_overview.lib.php:509
 #: lib/evaluation/evaluation_admin_overview.lib.php:517
 msgid "Einstellungen speichern"
 msgstr "Save settings"
 
-#: app/controllers/admin/courses.php:479 app/controllers/admin/courses.php:1491
-#: app/controllers/admin/courses.php:1492
+#: app/controllers/admin/courses.php:479 app/controllers/admin/courses.php:1493
+#: app/controllers/admin/courses.php:1494
 msgid "Mehrfachzuordnung von Studienbereichen"
 msgstr "Multiple assignment of study areas"
 
@@ -12205,8 +12212,8 @@ msgstr "Multiple assignment of study areas"
 #: app/views/course/feedback/edit_form.php:5
 #: app/views/course/forum/area/_edit_area_form.php:5
 #: app/views/course/forum/area/_js_templates.php:20
-#: app/views/course/lti/config.php:17 app/views/course/lti/edit.php:95
-#: app/views/course/lvgselector/index.php:94
+#: app/views/course/lti/config.php:17 app/views/course/lti/consent.php:67
+#: app/views/course/lti/edit.php:95 app/views/course/lvgselector/index.php:94
 #: app/views/course/studygroup/globalmodules.php:78
 #: app/views/course/block_appointments/index.php:150
 #: app/views/course/ilias_interface/edit_moduletitle.php:8
@@ -12318,8 +12325,8 @@ msgstr "Multiple assignment of study areas"
 #: app/views/tour/edit_step.php:182 app/views/tour/admin_details.php:105
 #: app/views/tour/admin_overview.php:112
 #: app/views/multipersonsearch/no_js_form.php:113
-#: app/views/multipersonsearch/js_form.php:44
-#: app/views/multipersonsearch/js_form.php:46
+#: app/views/multipersonsearch/js_form.php:47
+#: app/views/multipersonsearch/js_form.php:49
 #: app/views/userfilter/filter/configure.php:17
 #: app/views/blubber/compose.php:127
 #: app/views/help_content/admin_overview.php:66
@@ -12345,19 +12352,19 @@ msgstr "Display course details"
 msgid "(versteckt)"
 msgstr "(hidden)"
 
-#: app/controllers/admin/courses.php:746 app/controllers/admin/courses.php:1415
-#: app/controllers/admin/courses.php:1416 lib/classes/LockRules.class.php:166
+#: app/controllers/admin/courses.php:746 app/controllers/admin/courses.php:1417
+#: app/controllers/admin/courses.php:1418 lib/classes/LockRules.class.php:166
 #: lib/classes/LockRules.class.php:192 lib/modules/CoreAdmin.class.php:81
 msgid "Zeiten/Räume"
 msgstr "Times/rooms"
 
-#: app/controllers/admin/courses.php:753 app/controllers/admin/courses.php:1554
+#: app/controllers/admin/courses.php:753 app/controllers/admin/courses.php:1556
 #: app/views/course/timesrooms/_regularEvents.php:58
 #: app/views/resources/admin/configuration.php:51
 msgid "Raumanfragen"
 msgstr "Room request"
 
-#: app/controllers/admin/courses.php:782 app/controllers/admin/courses.php:1447
+#: app/controllers/admin/courses.php:782 app/controllers/admin/courses.php:1449
 #: app/views/course/dates/details.php:97
 #: app/views/course/members/select_course.php:18
 #: app/views/course/statusgroups/_copy_members.php:21
@@ -12378,7 +12385,7 @@ msgstr "Room request"
 msgid "Kopieren"
 msgstr "Copy"
 
-#: app/controllers/admin/courses.php:789 app/controllers/admin/courses.php:1453
+#: app/controllers/admin/courses.php:789 app/controllers/admin/courses.php:1455
 #: lib/classes/LockRules.class.php:167 lib/modules/CoreAdmin.class.php:86
 msgid "Zugangsberechtigungen"
 msgstr "Access permissions"
@@ -12393,22 +12400,22 @@ msgstr "Delete course %s"
 msgid "Veranstaltung %s sperren"
 msgstr "Lock course %s"
 
-#: app/controllers/admin/courses.php:810 app/controllers/admin/courses.php:1472
-#: app/controllers/admin/courses.php:1473
+#: app/controllers/admin/courses.php:810 app/controllers/admin/courses.php:1474
+#: app/controllers/admin/courses.php:1475
 #: app/views/course/timesrooms/editSemester.php:15
 #: app/views/institute/extern/extern_config/persondetails.php:35
 #: app/views/institute/extern/extern_config/courses.php:28
 msgid "Startsemester"
 msgstr "Start semester"
 
-#: app/controllers/admin/courses.php:817 app/controllers/admin/courses.php:1478
-#: app/controllers/admin/courses.php:1479 lib/navigation/MVVNavigation.php:64
+#: app/controllers/admin/courses.php:817 app/controllers/admin/courses.php:1480
+#: app/controllers/admin/courses.php:1481 lib/navigation/MVVNavigation.php:64
 #: lib/modules/CoreAdmin.class.php:75
 msgid "LV-Gruppen"
 msgstr "Course group"
 
-#: app/controllers/admin/courses.php:825 app/controllers/admin/courses.php:1484
-#: app/controllers/admin/courses.php:1485
+#: app/controllers/admin/courses.php:825 app/controllers/admin/courses.php:1486
+#: app/controllers/admin/courses.php:1487
 #: app/controllers/consultation/export.php:31
 #: app/controllers/consultation/export.php:64
 #: app/views/admin/courses/notice-action.php:14
@@ -12454,22 +12461,22 @@ msgstr "The visibility of the selected courses was changed!"
 msgid "Teilnehmendendaten exportieren"
 msgstr "Export participant data"
 
-#: app/controllers/admin/courses.php:1425
+#: app/controllers/admin/courses.php:1427
 #: app/views/course/management/lock.php:12
 #: app/views/institute/basicdata/index.php:110
 #: app/views/admin/user/edit.php:606 app/views/admin/user/edit.php:610
 msgid "Sperrebene"
 msgstr "Locking level"
 
-#: app/controllers/admin/courses.php:1465
+#: app/controllers/admin/courses.php:1467
 msgid "Gesperrte Veranstaltungen"
 msgstr "Locked courses"
 
-#: app/controllers/admin/courses.php:1547
+#: app/controllers/admin/courses.php:1549
 msgid "Avatar"
 msgstr "Avatar"
 
-#: app/controllers/admin/courses.php:1548
+#: app/controllers/admin/courses.php:1550
 #: app/views/resources/room_request/overview.php:49
 #: app/views/admin/courseplanning/nonconform.php:13
 #: app/views/web_migrate/index.php:36 app/views/my_courses/_exportcourse.php:40
@@ -12478,48 +12485,48 @@ msgstr "Avatar"
 msgid "Nr."
 msgstr "No."
 
-#: app/controllers/admin/courses.php:1550
+#: app/controllers/admin/courses.php:1552
 #: app/views/course/details/index.php:119 app/views/public_courses/index.php:42
 #: app/views/questionnaire/assign.php:42 lib/classes/LockRules.class.php:177
 msgid "Veranstaltungstyp"
 msgstr "Courses type"
 
-#: app/controllers/admin/courses.php:1551
+#: app/controllers/admin/courses.php:1553
 msgid "Raum/Zeit"
 msgstr "Room/Time"
 
-#: app/controllers/admin/courses.php:1557
+#: app/controllers/admin/courses.php:1559
 msgid "Personen auf Warteliste"
 msgstr "Participants on waiting list"
 
-#: app/controllers/admin/courses.php:1558
+#: app/controllers/admin/courses.php:1560
 msgid "Vorläufige Anmeldungen"
 msgstr "Provisional registrations"
 
-#: app/controllers/admin/courses.php:1560
+#: app/controllers/admin/courses.php:1562
 #: app/views/course/archive/confirm.php:13
 msgid "Letzte Aktivität"
 msgstr "Last activity"
 
-#: app/controllers/admin/courses.php:1601
+#: app/controllers/admin/courses.php:1603
 msgid "Alle meine Einrichtungen"
 msgstr "My institutions"
 
-#: app/controllers/admin/courses.php:1623
+#: app/controllers/admin/courses.php:1625
 #: app/controllers/admin/courseplanning.php:593
 msgid "Institute"
 msgstr "Institute"
 
-#: app/controllers/admin/courses.php:1664
-#: app/controllers/admin/courses.php:1787
+#: app/controllers/admin/courses.php:1666
+#: app/controllers/admin/courses.php:1789
 msgid "Wählen Sie eine Einrichtung"
 msgstr "Please select an institute"
 
-#: app/controllers/admin/courses.php:1666
+#: app/controllers/admin/courses.php:1668
 msgid "Keine Studiengangteile zu der gewählten Einrichtung"
 msgstr "No component for the selected institute"
 
-#: app/controllers/admin/courses.php:1679
+#: app/controllers/admin/courses.php:1681
 #: app/controllers/admin/courseplanning.php:633
 #: app/controllers/studiengaenge/versionen.php:125
 #: app/controllers/studiengaenge/versionen.php:151
@@ -12530,20 +12537,20 @@ msgstr "No component for the selected institute"
 msgid "Studiengangteil"
 msgstr "Partial course of study"
 
-#: app/controllers/admin/courses.php:1691
+#: app/controllers/admin/courses.php:1693
 msgid "Aktionsbereichauswahl"
 msgstr "Range selection"
 
-#: app/controllers/admin/courses.php:1789
+#: app/controllers/admin/courses.php:1791
 msgid "Keine Lehrenden in der gewählten Einrichtung"
 msgstr "No lecturers in the selected institute"
 
-#: app/controllers/admin/courses.php:1802
+#: app/controllers/admin/courses.php:1804
 #: app/controllers/admin/courseplanning.php:727
 msgid "Lehrendenfilter"
 msgstr "Lecturer filter"
 
-#: app/controllers/admin/courses.php:1813
+#: app/controllers/admin/courses.php:1815
 #: app/views/admin/courses/sidebar.php:16
 msgid "Freie Suche"
 msgstr "Free search"
@@ -13744,6 +13751,49 @@ msgstr "Conventional desktop software"
 #: app/controllers/api/authorizations.php:38
 msgid "Mobile App"
 msgstr "Mobile app"
+
+#: app/controllers/admin/tags.php:14
+#, fuzzy
+msgid "Schlagwortverwaltung"
+msgstr "Manage keywords"
+
+#: app/controllers/admin/tags.php:30
+#, fuzzy, php-format
+msgid "Schlagwort „%s“ bearbeiten"
+msgstr "Edit step"
+
+#: app/controllers/admin/tags.php:41
+msgid "Schlagwörter sollen keine Großbuchstaben enthalten"
+msgstr ""
+
+#: app/controllers/admin/tags.php:45
+msgid ""
+"Schlagwörter dürfen keine Zeilenumbrüche, Leerzeichen, Doppelkreuze (#) oder "
+"Pipe-Zeichen (|) enthalten."
+msgstr ""
+
+#: app/controllers/admin/tags.php:50
+#, fuzzy
+msgid "Dieses Schlagwort ist schon vergeben."
+msgstr "The user name is already in use."
+
+#: app/controllers/admin/tags.php:55 app/views/event_log/edit.php:24
+#: app/views/admin/cronjobs/tasks/index.php:32
+#: app/views/admin/cronjobs/schedules/index.php:93
+#: app/views/admin/cronjobs/schedules/display.php:16
+#: app/views/admin/cronjobs/schedules/edit.php:41
+#: app/views/admin/plugin/index.php:47
+#: app/views/admin/ilias_interface/index.php:26
+#: app/views/tour/admin_overview.php:37
+#: app/views/help_content/admin_overview.php:12
+#: app/views/oer/admin/hosts.php:11
+msgid "Aktiv"
+msgstr "Active"
+
+#: app/controllers/admin/tags.php:65
+#, php-format
+msgid "Verknüpfte Objekte mit Schlagwort „%s“"
+msgstr ""
 
 #: app/controllers/admin/specification.php:38
 #: app/views/admin/specification/index.php:11
@@ -15037,34 +15087,34 @@ msgstr "Module directory - courses of study"
 msgid "Unbekannter Studiengang"
 msgstr "Unknown course of study"
 
-#: app/controllers/search/studiengaenge.php:209
+#: app/controllers/search/studiengaenge.php:221
 msgid "Kein Verlaufsplan im gewählten Bereich verfügbar."
 msgstr "No recommendation in selected area."
 
-#: app/controllers/search/studiengaenge.php:335
+#: app/controllers/search/studiengaenge.php:347
 msgid "Nur Module mit Veranstaltungen anzeigen"
 msgstr "Display only modules with assigned courses"
 
-#: app/controllers/search/studiengaenge.php:343
+#: app/controllers/search/studiengaenge.php:355
 msgid "Aktuelle Modulhandbücher"
 msgstr "Current module handbooks"
 
-#: app/controllers/search/studiengaenge.php:348
+#: app/controllers/search/studiengaenge.php:360
 msgid "Originalfassung als PDF"
 msgstr "Original version as PDF"
 
-#: app/controllers/search/studiengaenge.php:351
+#: app/controllers/search/studiengaenge.php:363
 #, php-format
 msgid "Zweitfassung (%s) als PDF"
 msgstr "Secondary version (%s) as PDF"
 
-#: app/controllers/search/studiengaenge.php:418
+#: app/controllers/search/studiengaenge.php:430
 #: app/views/search/angebot/info.php:1
 #, php-format
 msgid "Informationen zum Studiengang: %s"
 msgstr "Information on course of study: %s"
 
-#: app/controllers/search/studiengaenge.php:505
+#: app/controllers/search/studiengaenge.php:517
 msgid "Versionenauswahl"
 msgstr "Versions"
 
@@ -15230,7 +15280,7 @@ msgstr "All data"
 msgid "Übersicht aller Personendaten"
 msgstr "Overview over all personal data"
 
-#: app/controllers/privacy.php:421 lib/models/User.class.php:1578
+#: app/controllers/privacy.php:421 lib/models/User.class.php:1588
 msgid "Kerndaten"
 msgstr "Basic data"
 
@@ -15397,7 +15447,7 @@ msgstr "A new image file has been uploaded.\n"
 
 #: app/controllers/avatar.php:158
 #: lib/classes/visibility/User_Visibility_Settings.php:126
-#: lib/models/User.class.php:838
+#: lib/models/User.class.php:848
 msgid "Eigenes Bild"
 msgstr "Personal picture"
 
@@ -16583,12 +16633,12 @@ msgid "Barriere melden"
 msgstr "Report accessibility barrier"
 
 #: app/controllers/accessibility/forms.php:31
-#: app/controllers/accessibility/forms.php:81 lib/models/User.class.php:1734
+#: app/controllers/accessibility/forms.php:81 lib/models/User.class.php:1744
 msgid "Herr"
 msgstr "Mr"
 
 #: app/controllers/accessibility/forms.php:33
-#: app/controllers/accessibility/forms.php:80 lib/models/User.class.php:1736
+#: app/controllers/accessibility/forms.php:80 lib/models/User.class.php:1746
 msgid "Frau"
 msgstr "Ms"
 
@@ -16597,7 +16647,7 @@ msgstr "Ms"
 #: app/controllers/accessibility/forms.php:179
 #: app/controllers/registration.php:101 app/views/settings/account/index.php:6
 #: app/views/admin/user/new.php:104 app/views/admin/user/edit.php:205
-#: lib/models/User.class.php:1720
+#: lib/models/User.class.php:1730
 msgid "divers"
 msgstr "diverse"
 
@@ -16718,7 +16768,7 @@ msgstr "Back"
 #: lib/classes/Siteinfo.php:573 lib/classes/ModulesNotification.class.php:58
 #: lib/navigation/ContentsNavigation.php:100
 #: lib/navigation/StartNavigation.php:232 lib/models/StudipNews.class.php:685
-#: lib/models/User.class.php:892 lib/modules/CoreOverview.class.php:43
+#: lib/models/User.class.php:902 lib/modules/CoreOverview.class.php:43
 #: lib/modules/NewsWidget.php:16
 msgid "Ankündigungen"
 msgstr "Announcements"
@@ -16771,12 +16821,6 @@ msgstr "Confirm password"
 msgid "Passwörter stimmen nicht überein."
 msgstr "The passwords do not match."
 
-#: app/controllers/registration.php:94 app/views/settings/account/index.php:143
-#: app/views/admin/user/new.php:81 app/views/admin/user/edit.php:174
-#: lib/classes/LockRules.class.php:229
-msgid "Geschlecht"
-msgstr "Gender"
-
 #: app/controllers/registration.php:98 app/views/module/module/modul.php:32
 #: app/views/module/module/modul.php:406 app/views/module/module/modul.php:443
 #: app/views/module/module/modul.php:541 app/views/module/module/modul.php:559
@@ -16793,13 +16837,13 @@ msgstr "no entry"
 
 #: app/controllers/registration.php:99 app/views/settings/account/index.php:4
 #: app/views/admin/user/new.php:92 app/views/admin/user/edit.php:193
-#: lib/models/User.class.php:1716
+#: lib/models/User.class.php:1726
 msgid "männlich"
 msgstr "male"
 
 #: app/controllers/registration.php:100 app/views/settings/account/index.php:5
 #: app/views/admin/user/new.php:98 app/views/admin/user/edit.php:199
-#: lib/models/User.class.php:1718
+#: lib/models/User.class.php:1728
 msgid "weiblich"
 msgstr "female"
 
@@ -16832,7 +16876,8 @@ msgstr "Finish registration"
 #: app/views/course/forum/index/_post.php:107
 #: app/views/course/forum/index/_new_entry.php:52
 #: app/views/course/lti/add_link.php:13 app/views/course/lti/config.php:18
-#: app/views/course/lti/edit.php:96 app/views/course/studygroup/edit.php:52
+#: app/views/course/lti/consent.php:68 app/views/course/lti/edit.php:96
+#: app/views/course/studygroup/edit.php:52
 #: app/views/course/gradebook/lecturers/weights.php:23
 #: app/views/course/gradebook/lecturers/new_ilias_definition.php:30
 #: app/views/course/gradebook/lecturers/custom_definitions.php:76
@@ -16958,7 +17003,7 @@ msgstr "Finish registration"
 #: app/views/fachabschluss/kategorien/kategorie.php:54
 #: app/views/fachabschluss/faecher/fach.php:108
 #: app/views/multipersonsearch/no_js_form.php:114
-#: app/views/multipersonsearch/js_form.php:47
+#: app/views/multipersonsearch/js_form.php:50
 #: app/views/userfilter/filter/configure.php:18
 #: app/views/help_content/edit.php:45
 #: app/views/lvgruppen/lvgruppen/lvgruppe.php:25 lib/classes/forms/Form.php:229
@@ -17493,32 +17538,32 @@ msgstr "Open folder"
 
 #: app/controllers/files_dashboard/helpers.php:43
 #: app/views/file/edit_urlfile.php:10 lib/filesystem/URLFile.php:83
-#: lib/filesystem/StandardFile.php:259
+#: lib/filesystem/StandardFile.php:268
 msgid "Datei bearbeiten"
 msgstr "Edit file"
 
 #: app/controllers/files_dashboard/helpers.php:49
-#: lib/filesystem/StandardFile.php:266
+#: lib/filesystem/StandardFile.php:275
 msgid "Datei aktualisieren"
 msgstr "Update file"
 
 #: app/controllers/files_dashboard/helpers.php:58
-#: lib/filesystem/StandardFile.php:275
+#: lib/filesystem/StandardFile.php:284
 msgid "Datei verschieben"
 msgstr "Move file"
 
 #: app/controllers/files_dashboard/helpers.php:67
-#: lib/filesystem/StandardFile.php:284
+#: lib/filesystem/StandardFile.php:293
 msgid "Datei kopieren"
 msgstr "Copy file"
 
 #: app/controllers/files_dashboard/helpers.php:76
-#: lib/filesystem/StandardFile.php:338 lib/filesystem/LibraryFile.class.php:246
+#: lib/filesystem/StandardFile.php:340 lib/filesystem/LibraryFile.class.php:246
 msgid "Datei löschen"
 msgstr "Delete file"
 
 #: app/controllers/files_dashboard/helpers.php:78
-#: lib/filesystem/StandardFile.php:342 lib/filesystem/LibraryFile.class.php:250
+#: lib/filesystem/StandardFile.php:344 lib/filesystem/LibraryFile.class.php:250
 #, php-format
 msgid "Soll die Datei \"%s\" wirklich gelöscht werden?"
 msgstr "Do you really want to delete the file \"%s\"?"
@@ -19666,7 +19711,7 @@ msgstr "Participating groups"
 #: app/views/profile/public_files.php:31 app/views/files/_flat_tfoot.php:15
 #: app/views/files/flat.php:20 app/views/files/index.php:44
 #: app/views/oer/market/details.php:51 app/views/oer/market/details.php:53
-#: app/views/oer/market/details.php:304 lib/filesystem/StandardFile.php:363
+#: app/views/oer/market/details.php:304 lib/filesystem/StandardFile.php:365
 #: lib/filesystem/LibraryFile.class.php:280
 msgid "Herunterladen"
 msgstr "Download"
@@ -21959,6 +22004,58 @@ msgstr "Tab title"
 #: app/views/course/lti/grades_user.php:9 lib/models/StgteilAbschnitt.php:87
 msgid "Abschnitt"
 msgstr "Section"
+
+#: app/views/course/lti/consent.php:19
+#, fuzzy
+msgid "Datenschutzhinweise"
+msgstr "Data protection"
+
+#: app/views/course/lti/consent.php:31
+#, fuzzy
+msgid "Die folgenden Daten werden übertragen"
+msgstr "Cancellate the following persons"
+
+#: app/views/course/lti/consent.php:32
+msgid ""
+"Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten "
+"übertragen:"
+msgstr ""
+
+#: app/views/course/lti/consent.php:35
+#, fuzzy
+msgid "Die ID ihres Stud.IP-Kontos"
+msgstr "This is your Stud.IP"
+
+#: app/views/course/lti/consent.php:39
+msgid "Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel"
+msgstr ""
+
+#: app/views/course/lti/consent.php:43
+#, fuzzy
+msgid "Ihre E-Mail Adresse"
+msgstr "Your mail address"
+
+#: app/views/course/lti/consent.php:48
+#, fuzzy
+msgid "Ihre in Stud.IP eingestellte Sprache"
+msgstr "created by Stud.IP"
+
+#: app/views/course/lti/consent.php:53
+#, fuzzy
+msgid "Ihr Profilbild"
+msgstr "Change profile picture"
+
+#: app/views/course/lti/consent.php:58
+#: lib/models/Courseware/BlockTypes/Confirm.php:24
+msgid "Bestätigung"
+msgstr "Confirmation"
+
+#: app/views/course/lti/consent.php:62
+msgid ""
+"Ich habe die Datenschutzhinweise zur Benutzung des LTI-Tools zur Kenntnis "
+"genommen und stimme der Weitergabe meiner personenbezogenen Daten zu. Mir "
+"ist bewusst, dass ich ohne die Zustimmung das LTI-Tool nicht nutzen kann."
+msgstr ""
 
 #: app/views/course/lti/edit.php:37
 msgid "Zugangsdaten selbst eingeben..."
@@ -24287,18 +24384,6 @@ msgstr "Debug:"
 #: app/views/institute/extern/extern_config/_template.php:9
 msgid "Template"
 msgstr "Template"
-
-#: app/views/event_log/edit.php:24 app/views/admin/cronjobs/tasks/index.php:32
-#: app/views/admin/cronjobs/schedules/index.php:93
-#: app/views/admin/cronjobs/schedules/display.php:16
-#: app/views/admin/cronjobs/schedules/edit.php:41
-#: app/views/admin/plugin/index.php:47
-#: app/views/admin/ilias_interface/index.php:26
-#: app/views/tour/admin_overview.php:37
-#: app/views/help_content/admin_overview.php:12
-#: app/views/oer/admin/hosts.php:11
-msgid "Aktiv"
-msgstr "Active"
 
 #: app/views/event_log/edit.php:28
 msgid "Ablaufzeit in Tagen"
@@ -26914,10 +26999,6 @@ msgstr "last change"
 msgid "Es sind keine Anfragen vorhanden!"
 msgstr "No requests available!"
 
-#: app/views/resources/room_request/_add_edit_form.php:41
-msgid "Anfragetext"
-msgstr "Request text"
-
 #: app/views/resources/room_request/resolve_room_tr.php:34
 msgid "Zum Belegungsplan"
 msgstr "Go to booking plan"
@@ -26962,10 +27043,6 @@ msgstr "Requested booking periods"
 #: app/views/resources/room_request/resolve.php:160
 msgid "Gewünschte Raumeigenschaften"
 msgstr "Requested room properties"
-
-#: app/views/resources/room_request/resolve.php:181
-msgid "Kommentar des Anfragenden"
-msgstr "Comment by the requesting person"
 
 #: app/views/resources/room_request/resolve.php:184
 #: public/eval_summary_export.php:294 public/eval_summary.php:310
@@ -35804,10 +35881,11 @@ msgstr ""
 "license, if necessary."
 
 #: app/views/oer/market/licenseinfo.php:36
+#, fuzzy
 msgid ""
 "Wie gesagt: wir hoffen, dass dieser Weg für alle ein sehr intuitiver Weg "
 "ist, Materialien zu verbreiten und zu nutzen. Die meisten Menschen wollen "
-"sich keine Gedanken um Rechten und Pflichten in diesem Zusammenhang machen. "
+"sich keine Gedanken um Rechte und Pflichten in diesem Zusammenhang machen. "
 "Wir hoffen, dass wir diesen Menschen eine Freude mit dem Marktplatz machen "
 "können."
 msgstr ""
@@ -37032,7 +37110,7 @@ msgstr ""
 "can therefore [download your certificate]%3$s ."
 
 #: lib/cronjobs/courseware.php:259 lib/cronjobs/courseware.php:293
-#: lib/cronjobs/courseware.php:332
+#: lib/cronjobs/courseware.php:333
 #, php-format
 msgid "Sie können das Lernmaterial [direkt hier aufrufen]%s ."
 msgstr "You can access the learning material [directly here]%s ."
@@ -37041,22 +37119,22 @@ msgstr "You can access the learning material [directly here]%s ."
 msgid "Courseware: Erinnerung"
 msgstr "Courseware: Reminder"
 
-#: lib/cronjobs/courseware.php:335
+#: lib/cronjobs/courseware.php:336
 msgid "Courseware: Fortschritt zurückgesetzt"
 msgstr "Courseware: Progress reset"
 
-#: lib/cronjobs/courseware.php:371
+#: lib/cronjobs/courseware.php:377
 msgid "Courseware-Zertifikate"
 msgstr "Courseware certificates"
 
-#: lib/cronjobs/courseware.php:372
+#: lib/cronjobs/courseware.php:378
 msgid ""
 "Erteilte Zertifikate für den Fortschritt in Courseware-Inhalten dieser "
 "Veranstaltung "
 msgstr ""
 "Granted certificates for the progress in Courseware contents in this course "
 
-#: lib/cronjobs/courseware.php:384
+#: lib/cronjobs/courseware.php:390
 #, php-format
 msgid "Zertifikate für Lernmaterial %u"
 msgstr "Certificates for learning material %u"
@@ -37234,7 +37312,7 @@ msgstr ""
 "The password is too short, too long or it does contain forbidden characters!"
 
 #: lib/phplib/Seminar_Register_Auth.class.php:133
-#: lib/models/User.class.php:1031
+#: lib/models/User.class.php:1041
 msgid "Die E-Mail-Adresse fehlt oder ist falsch geschrieben!"
 msgstr "Missing or incorrectly written e-mail address!"
 
@@ -40252,7 +40330,7 @@ msgstr "The file format of the image file is not supported."
 msgid "Das Verzeichnis zum Speichern der Datei konnte nicht angelegt werden."
 msgstr "The directory for saving the file could not be created."
 
-#: lib/classes/MultiPersonSearch.class.php:555
+#: lib/classes/MultiPersonSearch.class.php:568
 msgid "Bitte wählen Sie aus, wen Sie hinzufügen möchten."
 msgstr "Please select the user(s) you want to add."
 
@@ -42001,15 +42079,15 @@ msgstr "The maximum file size of %s has been exceeded!"
 msgid "Ein Systemfehler ist beim Upload aufgetreten. Fehlercode: %s."
 msgstr "A system error occurred during upload. Error code: %s."
 
-#: lib/filesystem/StandardFile.php:291
+#: lib/filesystem/StandardFile.php:259
 msgid "Link kopieren"
 msgstr "Copy link"
 
-#: lib/filesystem/StandardFile.php:305
+#: lib/filesystem/StandardFile.php:307
 msgid "Im OER Campus veröffentlichen"
 msgstr "Publish in the OER campus"
 
-#: lib/filesystem/StandardFile.php:319
+#: lib/filesystem/StandardFile.php:321
 msgid "Material für OER Campus vorschlagen"
 msgstr "Suggest learning material for the OER Campus"
 
@@ -42552,82 +42630,82 @@ msgstr ""
 "You have been promoted within the wait list for the course **%s(%s)**. At "
 "present you are at position %s."
 
-#: lib/models/Course.class.php:833
+#: lib/models/Course.class.php:839
 msgid "unvollständig"
 msgstr "incomplete"
 
-#: lib/models/Course.class.php:834
+#: lib/models/Course.class.php:840
 msgid "in Bearbeitung"
 msgstr "in Editing"
 
-#: lib/models/Course.class.php:835
+#: lib/models/Course.class.php:841
 msgid "fertig"
 msgstr "ready"
 
-#: lib/models/Course.class.php:836
+#: lib/models/Course.class.php:842
 msgid "undefiniert"
 msgstr "undefined"
 
-#: lib/models/Course.class.php:858
+#: lib/models/Course.class.php:864
 msgid "Neuer Anmeldemodus: Vorläufiger Eintrag"
 msgstr "New enrolment mode: Preliminary enrolment"
 
-#: lib/models/Course.class.php:858
+#: lib/models/Course.class.php:864
 msgid "Neuer Anmeldemodus: Direkter Eintrag"
 msgstr "New enrolment mode: Direct enrolment"
 
-#: lib/models/Course.class.php:862
+#: lib/models/Course.class.php:868
 msgid "Anmeldung verbindlich"
 msgstr "Binding admission"
 
-#: lib/models/Course.class.php:862
+#: lib/models/Course.class.php:868
 msgid "Anmeldung unverbindlich"
 msgstr "Non-binding admission"
 
-#: lib/models/Course.class.php:866
+#: lib/models/Course.class.php:872
 #, php-format
 msgid "Neue Teilnehmerzahl: %s"
 msgstr "New amount of participants: %s"
 
-#: lib/models/Course.class.php:870
+#: lib/models/Course.class.php:876
 msgid "Warteliste aktiviert"
 msgstr "Wait list activated"
 
-#: lib/models/Course.class.php:870
+#: lib/models/Course.class.php:876
 msgid "Warteliste deaktiviert"
 msgstr "Wait list deactivated"
 
-#: lib/models/Course.class.php:874
+#: lib/models/Course.class.php:880
 #, php-format
 msgid "Plätze auf der Warteliste geändert: %u"
 msgstr "Seats changed on the wait list: %u"
 
-#: lib/models/Course.class.php:878
+#: lib/models/Course.class.php:884
 msgid "Nachrücken aktiviert"
 msgstr "Moving up activated"
 
-#: lib/models/Course.class.php:878
+#: lib/models/Course.class.php:884
 msgid "Nachrücken deaktiviert"
 msgstr "Moving up deactivated"
 
-#: lib/models/Course.class.php:883
+#: lib/models/Course.class.php:889
 #, php-format
 msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
 msgstr "New note for the case of preliminary enrolment: %s"
 
-#: lib/models/Course.class.php:885
+#: lib/models/Course.class.php:891
 msgid "Hinweistext bei vorläufigen Eintragungen wurde entfert"
 msgstr "The note for the case of preliminary enrolment has been removed"
 
-#: lib/models/Course.class.php:977
+#: lib/models/Course.class.php:983
 msgid "Seminare"
 msgstr "Courses"
 
-#: lib/models/CronjobSchedule.class.php:90
+#: lib/models/CronjobSchedule.class.php:96
 msgid "niedrig"
 msgstr "low"
 
-#: lib/models/CronjobSchedule.class.php:92
+#: lib/models/CronjobSchedule.class.php:98
 msgid "hoch"
 msgstr "high"
 
@@ -42885,7 +42963,7 @@ msgid "%s in %s"
 msgstr "%s in %s"
 
 #: lib/models/BlubberStatusgruppeThread.php:113
-#: lib/models/BlubberThread.php:665
+#: lib/models/BlubberThread.php:687
 #, php-format
 msgid "%s hat eine Nachricht geschrieben."
 msgstr "%s wrote a message."
@@ -42932,7 +43010,7 @@ msgstr "Invalid insertion date."
 msgid "Ungültiges Ablaufdatum."
 msgstr "Invalid expiration date."
 
-#: lib/models/User.class.php:1028
+#: lib/models/User.class.php:1038
 #, php-format
 msgid ""
 "Die E-Mail-Adresse fehlt, ist falsch geschrieben oder gehört nicht zu "
@@ -42941,7 +43019,7 @@ msgstr ""
 "E-mail address is missing or is incorrectly written or does not belong to "
 "any of the following domains:%s "
 
-#: lib/models/User.class.php:1037
+#: lib/models/User.class.php:1047
 msgid ""
 "Der Mailserver ist nicht erreichbar. Bitte überprüfen Sie, ob Sie E-Mails "
 "mit der angegebenen Adresse verschicken können!"
@@ -42949,13 +43027,13 @@ msgstr ""
 "The mail server is not accessible. Please check whether e-mails with the "
 "given address can be sent!"
 
-#: lib/models/User.class.php:1042
+#: lib/models/User.class.php:1052
 msgid ""
 "Die angegebene E-Mail-Adresse ist nicht erreichbar. Bitte überprüfen Sie "
 "Ihre Angaben!"
 msgstr "The given e-mail address is not accessible. Please check your entries!"
 
-#: lib/models/User.class.php:1048
+#: lib/models/User.class.php:1058
 #, php-format
 msgid ""
 "Die angegebene E-Mail-Adresse wird bereits von einem anderen Benutzer (%s) "
@@ -42964,11 +43042,11 @@ msgstr ""
 "The specified e-mail address is already in use by another user (%s). Please "
 "specify another e-mail address."
 
-#: lib/models/User.class.php:1054
+#: lib/models/User.class.php:1064
 msgid "Ihre E-Mail-Adresse wurde geändert!"
 msgstr "Your e-mail address has been changed!"
 
-#: lib/models/User.class.php:1089
+#: lib/models/User.class.php:1099
 #, php-format
 msgid ""
 "An Ihre neue E-Mail-Adresse <b>%s</b> wurde ein Aktivierungslink geschickt, "
@@ -42977,26 +43055,26 @@ msgstr ""
 "An activation link has been sent to your new e-mail address <b>%s</b>. "
 "Please follow this link prior to your next login."
 
-#: lib/models/User.class.php:1200
+#: lib/models/User.class.php:1210
 msgid "Identitätsrelevante Daten wurden migriert."
 msgstr "All details relevant for identification were migrated."
 
-#: lib/models/User.class.php:1447
+#: lib/models/User.class.php:1457
 msgid ""
 "Dateien, Termine, Adressbuch, Nachrichten und weitere Daten wurden migriert."
 msgstr ""
 "Files, dates, address book, announcements and further data have been "
 "migrated."
 
-#: lib/models/User.class.php:1494
+#: lib/models/User.class.php:1504
 msgid "NutzerIn"
 msgstr "User"
 
-#: lib/models/User.class.php:1587
+#: lib/models/User.class.php:1597
 msgid "Benutzer Informationen"
 msgstr "User information"
 
-#: lib/models/User.class.php:1592
+#: lib/models/User.class.php:1602
 msgid "Objekt Aufrufe"
 msgstr "Object lookups"
 
@@ -44476,10 +44554,6 @@ msgstr "Folder"
 msgid "Sammlung"
 msgstr "Collection"
 
-#: lib/models/Courseware/BlockTypes/Confirm.php:24
-msgid "Bestätigung"
-msgstr "Confirmation"
-
 #: lib/models/Courseware/BlockTypes/Confirm.php:29
 msgid "Vom Lernenden bestätigen lassen, dass der Inhalt betrachtet wurde."
 msgstr "Have the student confirm that the content has been looked at."
@@ -45581,20 +45655,20 @@ msgstr "External person"
 msgid "%s hat Sie in einem Blubber erwähnt."
 msgstr "%s mentioned you in a Blubber."
 
-#: lib/models/BlubberThread.php:393
+#: lib/models/BlubberThread.php:415
 msgid "Blubber-Threads"
 msgstr "Blubber threads"
 
-#: lib/models/BlubberThread.php:401
+#: lib/models/BlubberThread.php:423
 #, php-format
 msgid "Blubber von %s"
 msgstr "Blubber from %s"
 
-#: lib/models/BlubberThread.php:426
+#: lib/models/BlubberThread.php:448
 msgid "ich"
 msgstr "me"
 
-#: lib/models/BlubberThread.php:451
+#: lib/models/BlubberThread.php:473
 msgid "Ein mysteröser Blubber"
 msgstr "A mysterious Blubber"
 
@@ -45913,7 +45987,7 @@ msgstr "Terms of use"
 msgid "Formulieren Sie hier die Teilnahmebedingungen."
 msgstr "Enter your terms of use here."
 
-#: lib/admissionrules/termsadmission/templates/input.php:9
+#: lib/admissionrules/termsadmission/templates/input.php:5
 msgid "Hiermit akzeptiere ich die Teilnahmebedingungen"
 msgstr "I hereby accept the terms of use"
 
@@ -49181,10 +49255,11 @@ msgid "Schneller Austausch von Informationen in Gesprächsform"
 msgstr "Quick exchange of information while talking"
 
 #: lib/modules/Blubber.class.php:122
+#, fuzzy
 msgid ""
 "Blubber ist eine Kommunikationsform mit Ähnlichkeiten zu einem Forum, in dem "
 "aber in Echtzeit miteinander kommuniziert werden kann und das durch den "
-"etwas informelleren Charakter eher einem Chat anmutet. Anders als im Forum "
+"etwas informelleren Charakter eher wie ein Chat anmutet. Anders als im Forum "
 "ist es nicht notwendig, die Seiten neu zu laden, um die neuesten Einträge "
 "(z. B. Antworten auf eigene Postings) sehen zu können: Die Seite "
 "aktualisiert sich selbst bei neuen Einträgen. Dateien (z.B. Fotos, "
@@ -51726,6 +51801,18 @@ msgstr ""
 "placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
 "file\") or it can be limited to its capital letters or its abbreviation "
 "(e.g. \"MC/file\" or \"C/file\")."
+
+#~ msgid "geschlecht"
+#~ msgstr "Gender"
+
+#~ msgid "Zusatzangaben exportieren"
+#~ msgstr "Export additional information"
+
+#~ msgid "Anfragetext"
+#~ msgstr "Request text"
+
+#~ msgid "Kommentar des Anfragenden"
+#~ msgstr "Comment by the requesting person"
 
 #~ msgid "Wiki-Kommentare einblenden"
 #~ msgstr "Show wiki comments"
