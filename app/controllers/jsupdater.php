@@ -313,7 +313,9 @@ class JsupdaterController extends AuthenticatedController
                                 $user->id,
                             ]);
                             // if I'm the only user I don't need to lose the edit mode
-                            $online->editing = $other_users === 0;
+                            if ($other_users === 0) {
+                                $online->editing = true;
+                            }
                         }
                     }
 
