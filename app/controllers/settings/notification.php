@@ -59,7 +59,7 @@ class Settings_NotificationController extends Settings_SettingsController
         );
 
         if (count($seminars) === 0) {
-            $message = sprintf(_('Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie %s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen anzumdelden.'),
+            $message = sprintf(_('Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie %s<b>Veranstaltung suchen / hinzufügen</b>%s um sich für Veranstaltungen anzumdelden.'),
                 '<a href="' . URLHelper::getLink('dispatch.php/search/courses') . '">', '</a>');
             PageLayout::postInfo($message);
             $this->render_nothing();
