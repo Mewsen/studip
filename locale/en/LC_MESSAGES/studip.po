@@ -25069,16 +25069,15 @@ msgstr ""
 "participate in."
 
 #: app/views/course/enrolment/_priocourses.php:45
-#, fuzzy
 msgid ""
 "Sortieren Sie die in Frage kommenden Veranstaltungen im Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen zuweisen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Drag and drop your choice to the right side and sort them by priority (most "
-"desired at the top). You can drag more courses than you really want to "
-"participate in."
+"Drag and drop relevant courses to the right side and sort them by priority ("
+"most desired at the top). You can select more courses than you actually want "
+"to attend."
 
 #: app/views/course/enrolment/_priocourses.php:54
 msgid "Verfügbare Veranstaltungen"
@@ -25413,7 +25412,7 @@ msgstr "Participations"
 #: app/views/calendar/date/move.php:1 app/views/calendar/date/delete.php:7
 msgid ""
 "Es handelt sich um einen Termin in einer Terminserie. Was möchten Sie tun?"
-msgstr "This is a date in a date series. What do you want to do?"
+msgstr "This is a date in a series. What would you like to do?"
 
 #: app/views/calendar/date/move.php:9
 msgid "Der Termin soll aus der Terminserie herausgelöst werden."
@@ -25479,19 +25478,16 @@ msgid "Die gesamte Terminserie soll gelöscht werden."
 msgstr "The whole date series shall be deleted."
 
 #: app/views/calendar/date/delete.php:27
-#, fuzzy
 msgid "Der Termin ist in mehreren Kalendern eingetragen. Was möchten Sie tun?"
-msgstr "This is a date in a date series. What do you want to do?"
+msgstr "This date is in several calendars. What would you like to do?"
 
 #: app/views/calendar/date/delete.php:31
-#, fuzzy
 msgid "Den Termin nur aus meinem Kalender löschen."
-msgstr "The date is not assigned to a calendar!"
+msgstr "Only delete the date from my calendar."
 
 #: app/views/calendar/date/delete.php:36
-#, fuzzy
 msgid "Den Termin aus allen Kalendern löschen."
-msgstr "Cancel dates and delete"
+msgstr "Delete the date from all calendars."
 
 #: app/views/calendar/date/delete.php:41
 msgid "Soll der folgende Termin wirklich gelöscht werden?"
@@ -26729,14 +26725,12 @@ msgid "Ausgabesprachen"
 msgstr "Output languages"
 
 #: app/views/module/module/select_module_language.php:12
-#, fuzzy
 msgid "Wählen Sie die Sprache der Originalfassung"
-msgstr "Select a language to used for date information."
+msgstr "Select the language of the original version."
 
 #: app/views/module/module/select_module_language.php:18
-#, fuzzy
 msgid "Standardsprache"
-msgstr "Default details"
+msgstr "Default language"
 
 #: app/views/module/module/select_module_language.php:28
 #: app/views/module/module/modul.php:700
@@ -26870,23 +26864,20 @@ msgid "zurück zur Übersicht"
 msgstr "back to overview"
 
 #: app/views/module/module/change_language.php:14
-#, fuzzy
 msgid "Wählen Sie die neue Sprache der Originalfassung"
-msgstr "Select a language to used for date information."
+msgstr "Select the new language for the original version."
 
 #: app/views/module/module/change_language.php:17
 msgid "Neue Originalsprache"
-msgstr ""
+msgstr "New original language"
 
 #: app/views/module/module/change_language.php:29
-#, fuzzy
 msgid "Inhalte tauschen"
-msgstr "Plugin contents"
+msgstr "Exchange content"
 
 #: app/views/module/module/change_language.php:34
-#, fuzzy
 msgid "Sprache ändern"
-msgstr "Remove language"
+msgstr "Change language"
 
 #: app/views/module/module/diff_select.php:3
 msgid "Vergleich mit folgendem Modul:"
@@ -27547,9 +27538,8 @@ msgid "Globale Buchungssperren gelten für diesen Raum"
 msgstr "Global booking locks are in place for this room"
 
 #: app/views/resources/room/_add_edit_form.php:43
-#, fuzzy
 msgid "Raumanfragen über den Belegungsplan möglich"
-msgstr "Room requests for the entire course"
+msgstr "Room requests possible via the booking plan"
 
 #: app/views/resources/room/_add_edit_form.php:46
 #: lib/classes/sidebar/RoomSearchWidget.php:91
@@ -27618,14 +27608,12 @@ msgid "Es liegen keine überbuchten Räume vor."
 msgstr "There are no overbooked rooms available."
 
 #: app/views/resources/room_planning/courses.php:4
-#, fuzzy
 msgid "Veranstaltungen in diesem Raum"
-msgstr "Courses in this semester:"
+msgstr "Courses in this room:"
 
 #: app/views/resources/room_planning/courses.php:23
-#, fuzzy
 msgid "Es sind noch keine Veranstaltungen vorhanden."
-msgstr "No person lists are available yet."
+msgstr "No courses are available yet."
 
 #: app/views/resources/room_planning/semester_plan.php:85
 #: app/views/resources/room_request/planning.php:50
@@ -27634,7 +27622,6 @@ msgid "Semesterplan"
 msgstr "Semester plan"
 
 #: app/views/resources/room_group/permissions.php:31
-#, fuzzy
 msgid ""
 "Es sind keine gemeinsamen Rechte für die zuvor aufgelisteten Räume vorhanden."
 msgstr "There are no common permissions for the rooms shown above."
@@ -28098,9 +28085,8 @@ msgid "jeden sechsten Tag"
 msgstr "every sixth day"
 
 #: app/views/resources/booking/_add_edit_form.php:379
-#, fuzzy
 msgid "jeden Werktag"
-msgstr "Every work day"
+msgstr "every working day"
 
 #: app/views/resources/booking/_add_edit_form.php:389
 msgid "Wöchentliche Wiederholung"
@@ -29094,19 +29080,16 @@ msgid "markieren"
 msgstr "mark"
 
 #: app/views/admission/courseset/_institute_choose.php:31
-#, fuzzy
 msgid "Alle Regeltypen auswählen"
-msgstr "Select all groups"
+msgstr "Select all rule types"
 
 #: app/views/admission/courseset/_institute_choose.php:36
-#, fuzzy
 msgid "Keinen Regeltyp auswählen"
-msgstr "Select booking types"
+msgstr "Select no rule type"
 
 #: app/views/admission/courseset/_institute_choose.php:41
-#, fuzzy
 msgid "Aktuelle Auswahl der Regeltypen umkehren"
-msgstr "Current number of participants"
+msgstr "Invert current rule type selection"
 
 #: app/views/admission/courseset/_institute_choose.php:42
 msgid "Auswahl umkehren"
@@ -29365,38 +29348,35 @@ msgid "Art des Lernobjekts"
 msgstr "Learning object type"
 
 #: app/views/my_ilias_accounts/my_courses.php:5
-#, fuzzy, php-format
+#, php-format
 msgid "Meine Kurse in %s"
-msgstr "Course in %s"
+msgstr "My courses in %s"
 
 #: app/views/my_ilias_accounts/my_courses.php:19
-#, fuzzy
 msgid "Stud.IP-Veranstaltung"
-msgstr "Stud.IP courses"
+msgstr "Stud.IP course"
 
 #: app/views/my_ilias_accounts/my_courses.php:35
-#, fuzzy
 msgid "offline"
-msgstr "(offline)"
+msgstr "offline"
 
 #: app/views/my_ilias_accounts/my_courses.php:54
-#, fuzzy, php-format
+#, php-format
 msgid "Keine Kurse im System %s zum gewählten Filter gefunden."
-msgstr "No student found for the specified search terms"
+msgstr "No courses found in the system for the specified filter"
 
 #: app/views/my_ilias_accounts/my_courses.php:54
-#, fuzzy, php-format
+#, php-format
 msgid "Sie nehmen im System %s an keinem Kurs teil."
-msgstr "You don't have own learning modules in the system %s yet."
+msgstr "You are not participating in any courses in the system %s yet."
 
 #: app/views/my_ilias_accounts/view_course.php:6
 msgid "Zum Kurs in ILIAS"
-msgstr ""
+msgstr "To the course in ILIAS"
 
 #: app/views/my_ilias_accounts/view_course.php:7
-#, fuzzy
 msgid "Kurs bearbeiten"
-msgstr "Edit tour"
+msgstr "Edit course"
 
 #: app/views/my_ilias_accounts/_ilias_module.php:29
 msgid "ILIAS-Nutzer/-in"
@@ -29414,85 +29394,73 @@ msgid "Bestehenden Account zuordnen"
 msgstr "Associate existing account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:9
-#, fuzzy
 msgid "Loginname"
-msgstr "Username: "
+msgstr "Login name"
 
 #: app/views/my_ilias_accounts/administrate_account.php:11
-#, fuzzy
 msgid "Account Suchen"
-msgstr "Search document"
+msgstr "Find account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:15
 #, php-format
 msgid "ILIAS Account %s (ID %s)"
-msgstr ""
+msgstr "ILIAS account %s (ID %s)"
 
 #: app/views/my_ilias_accounts/administrate_account.php:18
-#, fuzzy
 msgid "Account zuordnen"
-msgstr "Reassign account"
+msgstr "Assign account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:24
-#, fuzzy
 msgid "Verknüpfter Account"
-msgstr "Link"
+msgstr "Linked account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:28
 #: app/views/admin/user/edit.php:387
 msgid "Loginname des verknüpften Accounts:"
-msgstr ""
+msgstr "Login name of the linked account:"
 
 #: app/views/my_ilias_accounts/administrate_account.php:32
-#, fuzzy
 msgid ""
 "Der verknüpfte Account wurde im angebundenen ILIAS-System nicht gefunden!"
-msgstr "The folder could not be found in the server's file system!"
+msgstr "The linked account could not be found in the attached ILIAS system!"
 
 #: app/views/my_ilias_accounts/administrate_account.php:37
-#, fuzzy
 msgid "Eigene Kategorie:"
-msgstr "Personal category"
+msgstr "Own category:"
 
 #: app/views/my_ilias_accounts/administrate_account.php:38
-#, fuzzy
 msgid "nicht vorhanden"
-msgstr "File not found"
+msgstr "not found"
 
 #: app/views/my_ilias_accounts/administrate_account.php:41
 msgid "Account-Typ:"
-msgstr ""
+msgstr "Account type:"
 
 #: app/views/my_ilias_accounts/administrate_account.php:42
-#, fuzzy
 msgid "Lokaler ILIAS-Account"
-msgstr "My learning objects and ILIAS accounts"
+msgstr "Local ILIAS account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:42
-#, fuzzy
 msgid "Automatisch erstellter Account"
-msgstr "Detect automatically"
+msgstr "Automatically created account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:50
 #: app/views/admin/user/edit.php:399
-#, fuzzy
 msgid "Kein Account verknüpft"
-msgstr "My account"
+msgstr "No linked account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:54
-#, fuzzy, php-format
+#, php-format
 msgid "Es existiert bereits ein ILIAS-Account mit dem Loginnamen %s."
-msgstr "An account with username \"%s\" already exists."
+msgstr "An ILIAS account with the username \"%s\" already exists."
 
 #: app/views/my_ilias_accounts/administrate_account.php:56
-#, fuzzy
 msgid "Mit externem Account verknüpfen"
-msgstr "Manage external accounts"
+msgstr "Link with external account"
 
 #: app/views/my_ilias_accounts/administrate_account.php:60
-#, fuzzy
 msgid "Neuen Account anlegen"
-msgstr "Create account"
+msgstr "Create new account"
 
 #: app/views/admin/tree/batch_assign_semtree.php:4
 msgid "Studienbereichszuordnungen der ausgewählten Veranstaltungen bearbeiten"
@@ -29587,13 +29555,11 @@ msgid "Konfigurationsparameter bearbeiten"
 msgstr "Edit configuration parameter values"
 
 #: app/views/admin/configuration/table-row.php:44
-#, fuzzy
 msgid ""
 "Wert wurde über eine Umgebungsvariable gesetzt und kann an dieser Stelle "
 "nicht verändert werden."
 msgstr ""
-"(This field is locked for editing and can only be changed by an "
-"administrator.)"
+"Value has been set using an environment variable and cannot be changed here."
 
 #: app/views/admin/configuration/edit_range_config.php:20
 #: app/views/admin/banner/info.php:22 app/views/admin/banner/edit.php:35
@@ -29712,9 +29678,8 @@ msgid "Parameter"
 msgstr "Parameter(s)"
 
 #: app/views/admin/cronjobs/schedules/display.php:33
-#, fuzzy
 msgid "Ausführungsrhytmus"
-msgstr "Execution"
+msgstr "Execution rhythm"
 
 #: app/views/admin/cronjobs/schedules/display.php:38
 msgid "Ausführungen"
@@ -29919,9 +29884,8 @@ msgid "Direkte Zuweisung"
 msgstr "Direct assignment"
 
 #: app/views/admin/role/index.php:24
-#, fuzzy
 msgid "Benutzer explizit"
-msgstr "User profile"
+msgstr "User explicit"
 
 #: app/views/admin/role/index.php:28
 msgid "Indirekte Zuweisung durch Berechtigungsstufe"
@@ -29930,7 +29894,7 @@ msgstr "Indirect assignment by permission level"
 #: app/views/admin/role/index.php:29
 #, fuzzy
 msgid "Benutzer implizit"
-msgstr "User account migration"
+msgstr "Users implicit"
 
 #: app/views/admin/role/index.php:32 lib/navigation/AdminNavigation.php:188
 msgid "Plugins"
@@ -30616,9 +30580,9 @@ msgid "Schritt ist aktiv"
 msgstr "Step is active"
 
 #: app/views/admin/overlapping/index.php:14
-#, fuzzy, php-format
+#, php-format
 msgid "%s Konflikte"
-msgstr "Conflicts"
+msgstr "%s conflicts"
 
 #: app/views/admin/overlapping/courses.php:26
 #: app/views/admin/overlapping/buttons.php:26
@@ -30639,9 +30603,8 @@ msgid "Zuständige Administratoren"
 msgstr "Responsible administrators"
 
 #: app/views/admin/overlapping/buttons.php:13
-#, fuzzy
 msgid "Studienverlaufsplan"
-msgstr "Show study plan"
+msgstr "Study plan"
 
 #: app/views/admin/overlapping/buttons.php:20
 msgid "Ausblenden"
@@ -30652,9 +30615,8 @@ msgid "Kontakt"
 msgstr "Contact"
 
 #: app/views/admin/overlapping/buttons.php:40
-#, fuzzy
 msgid "Konflikt"
-msgstr "Conflicts"
+msgstr "Conflict"
 
 #: app/views/admin/overlapping/conflicts.php:95
 msgid "Veranstaltung nicht berücksichtigen"
@@ -30750,13 +30712,12 @@ msgid "Markierte Einträge"
 msgstr "Selected entries"
 
 #: app/views/admin/holidays/holidays.php:19
-#, fuzzy
 msgid "Feiertag"
-msgstr "Labour Day"
+msgstr "Holiday"
 
 #: app/views/admin/holidays/holidays.php:21
 msgid "Als \"gesetzlich\" festlegen"
-msgstr ""
+msgstr "Define as \"statutory\""
 
 #: app/views/admin/holidays/edit.php:13
 msgid "Name der Ferien"
@@ -30984,12 +30945,11 @@ msgid "Daten für das bereitstellende System"
 msgstr "Information for distributing system. "
 
 #: app/views/admin/plugin/edit_automaticupdate.php:49
-#, fuzzy
 msgid ""
 "Tragen Sie bei gitlab, github.com oder dem Pluginmarktplatz die folgende URL "
 "ein, die der Webhook aufrufen soll."
 msgstr ""
-"Add the URL below for the web hook call to GitLab, GitHub or the Stud.IP "
+"Add the URL below for the web hook call to GitLab, GitHub.com or the Stud.IP "
 "marketplace."
 
 #: app/views/admin/plugin/edit_automaticupdate.php:51
@@ -31191,9 +31151,8 @@ msgid "Unbegrenzte Laufzeit verbieten"
 msgstr "Forbid unlimited duration"
 
 #: app/views/admin/sem_classes/details.php:215
-#, fuzzy
 msgid "Geplante Teilnehmendenzahl muss angegeben werden"
-msgstr "The capacity / number of participants of the module must be specified."
+msgstr "The planned number of participants must be specified."
 
 #: app/views/admin/sem_classes/details.php:219
 msgid "Kurzer Beschreibungstext zum Anlegen einer Veranstaltung"
@@ -31658,19 +31617,17 @@ msgid "Registriert seit"
 msgstr "Registered since"
 
 #: app/views/admin/user/edit.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "Account in %s"
-msgstr "Course in %s"
+msgstr "Account in %s"
 
 #: app/views/admin/user/edit.php:392
-#, fuzzy
 msgid "Verknüpfung bearbeiten"
-msgstr "Edit lock"
+msgstr "Edit link"
 
 #: app/views/admin/user/edit.php:403
-#, fuzzy
 msgid "Verknüpfung erstellen"
-msgstr "Create new announcement"
+msgstr "Create link"
 
 #: app/views/admin/user/edit.php:416 lib/navigation/ProfileNavigation.php:84
 msgid "Studiendaten"
@@ -31878,24 +31835,21 @@ msgid "Neue Regel erstellen"
 msgstr "Create new rule"
 
 #: app/views/admin/tags/index.php:13
-#, fuzzy, php-format
+#, php-format
 msgid "%s Schlagwörter"
-msgstr "Keywords"
+msgstr "%s keywords"
 
 #: app/views/admin/tags/index.php:19
-#, fuzzy
 msgid "Verknüpfte Objekte"
-msgstr "Link"
+msgstr "Linked objects"
 
 #: app/views/admin/tags/index.php:52
-#, fuzzy
 msgid "Noch keine Schlagwörter vorhanden."
-msgstr "No favourites available."
+msgstr "No keywords available."
 
 #: app/views/admin/tags/view_objects.php:10
-#, fuzzy
 msgid "Objekt"
-msgstr "Object type"
+msgstr "Object"
 
 #: app/views/admin/courses/batch_assign_semtree.php:8
 #, php-format
@@ -31960,9 +31914,9 @@ msgid "Erzwungen"
 msgstr "Forced"
 
 #: app/views/admin/courses/massmail.php:8
-#, fuzzy, php-format
+#, php-format
 msgid "Nachricht an Teilnehmende der Veranstaltung %s senden"
-msgstr "Amount of participants of the course"
+msgstr "Send message to participants of the course %s"
 
 #: app/views/admin/courses/notice.php:11
 #, php-format
@@ -31993,14 +31947,13 @@ msgstr "Application URL"
 msgid "Consumer-Key"
 msgstr "Consumer key"
 
-#: app/views/admin/lti/index.php:28 app/views/lti/_tool_form_fields.php:36
-#, fuzzy
+#: app/views/admin/lti/index.php:27 app/views/lti/_tool_form_fields.php:36
 msgid "LTI-Version"
-msgstr "Version"
+msgstr "LTI version"
 
 #: app/views/admin/lti/index.php:29 app/views/lti/_tool_info.php:58
 msgid "Deployment-ID"
-msgstr ""
+msgstr "Deployment ID"
 
 #: app/views/admin/lti/index.php:30
 #, fuzzy
@@ -32015,10 +31968,10 @@ msgstr ""
 msgid "LTI-Tool löschen"
 msgstr "Delete LTI tool"
 
-#: app/views/admin/lti/index.php:90
-#, fuzzy, php-format
+#: app/views/admin/lti/index.php:72
+#, php-format
 msgid "Wollen Sie das LTI-Tool „%s“ wirklich löschen?"
-msgstr "Are you sure to delete tour \"%s\"?"
+msgstr "Are you sure you want to delete LTI tool %s?"
 
 #: app/views/admin/lti/edit.php:13 app/views/lti/_tool_form_fields.php:34
 msgid "Konfiguration des LTI-Tools"
@@ -32026,7 +31979,7 @@ msgstr "LTI tool configuration"
 
 #: app/views/admin/lti/edit.php:25
 msgid "Daten zur LTI-Plattform"
-msgstr ""
+msgstr "Data on the LTI platform"
 
 #: app/views/admin/ilias_interface/edit_server.php:22
 #: app/views/admin/ilias_interface/add_ilias.php:13
@@ -32059,11 +32012,11 @@ msgstr "Installation name"
 
 #: app/views/admin/ilias_interface/edit_server.php:46
 msgid "HTTP Connection Timeout (in Sekunden)"
-msgstr ""
+msgstr "HTTP connection timeout (in seconds)"
 
 #: app/views/admin/ilias_interface/edit_server.php:50
 msgid "HTTP Request Timeout (in Sekunden)"
-msgstr ""
+msgstr "HTTP request timeout (in seconds)"
 
 #: app/views/admin/ilias_interface/edit_server.php:55
 msgid "ILIAS Version"
@@ -32166,12 +32119,10 @@ msgid "Es ist keine ILIAS-Installation eingerichtet."
 msgstr "No ILIAS installation is configured."
 
 #: app/views/admin/ilias_interface/edit_permissions.php:12
-#, fuzzy
 msgid "Anlegen von Inhalten"
-msgstr "Information about the content"
+msgstr "Creating content"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:15
-#, fuzzy
 msgid "Rollentemplate zum Erstellen von Lernobjekten"
 msgstr "Role template for creating learning objects"
 
@@ -32211,7 +32162,7 @@ msgstr "Without role assignment"
 #: app/views/admin/ilias_interface/edit_permissions.php:44
 #, php-format
 msgid "Rechtestufe %s erhält zusätzliche globale Rolle(n):"
-msgstr ""
+msgstr "Rights level %s receives additional global role(s):"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:47
 #: app/views/admin/ilias_interface/edit_permissions.php:83
@@ -32281,6 +32232,8 @@ msgid ""
 "Externe User-Accounts automatisch verbinden, wenn sie den passenden "
 "Loginnamen haben"
 msgstr ""
+"Connect external user accounts automatically if they have an appropriate "
+"login name"
 
 #: app/views/admin/ilias_interface/edit_content.php:46
 msgid "Prefix für automatisch angelegte Usernamen"
@@ -32304,12 +32257,16 @@ msgid ""
 "ILIAS-Datenfeld für Studiengang 1 (wenn leer, wird der Studiengang nicht "
 "übertragen)"
 msgstr ""
+"ILIAS data field for degree programme 1 (if empty, the programme will not be "
+"transferred)"
 
 #: app/views/admin/ilias_interface/edit_content.php:68
 msgid ""
 "ILIAS-Datenfeld für Studiengang 2 (wenn leer, wird der Studiengang nicht "
 "übertragen)"
 msgstr ""
+"ILIAS data field for degree programme 2 (if empty, the programme will not be "
+"transferred)"
 
 #: app/views/admin/ilias_interface/edit_content.php:78
 msgid "Struktur für angelegte Kurse"
@@ -32394,6 +32351,8 @@ msgid ""
 "Die Kursübersicht auf dem Arbeitsplatz zeigt die Magazinpfade der Kurse in "
 "ILIAS und erlaubt das Filtern nach Semesternamen"
 msgstr ""
+"The course overview on the workstation shows the magazine paths of the "
+"courses in ILIAS and allows filtering by semester name"
 
 #: app/views/admin/ilias_interface/edit_interface_settings.php:40
 #, fuzzy
@@ -33216,7 +33175,7 @@ msgstr "Names of the booking persons are visible publicly"
 
 #: app/views/consultation/admin/edit.php:77
 msgid "Termine innerhalb dieses Blocks nur fortlaufend vergeben"
-msgstr ""
+msgstr "Dates within this block are only allocated consecutively"
 
 #: app/views/consultation/admin/edit.php:81
 msgid "Grund der Buchung abfragen"
@@ -33515,7 +33474,7 @@ msgstr "%d files selected"
 #: app/views/vips/solutions/edit_solution.php:175
 #: app/views/vips/exercises/TextTask/solve.php:125
 msgid "Klicken Sie auf „Speichern“, um die gewählten Dateien hochzuladen."
-msgstr ""
+msgstr "Click \"Save\" to upload the selected files."
 
 #: app/views/vips/sheets/edit_exercise.php:107
 #: app/views/vips/solutions/edit_solution.php:176
@@ -33595,13 +33554,15 @@ msgstr "Exercises can be solved in groups"
 
 #: app/views/vips/sheets/edit_assignment.php:118
 msgid "Testklausur zur Selbsteinschätzung der Teilnehmenden"
-msgstr ""
+msgstr "Text exam for self-assessment of the participants"
 
 #: app/views/vips/sheets/edit_assignment.php:119
 msgid ""
 "Teilnehmende können beliebig oft neu starten, Ergebnisse können direkt nach "
 "Ablauf der Bearbeitungszeit zugänglich gemacht werden."
 msgstr ""
+"Participants can restart as often as they like, and results can be made "
+"available immediately after the processing time has expired."
 
 #: app/views/vips/sheets/edit_assignment.php:124
 msgid "Zufällige Reihenfolge der Aufgaben bei Anzeige der Klausur"
@@ -33636,10 +33597,11 @@ msgstr "&hellip; are not penalized"
 #: app/views/vips/sheets/edit_assignment.php:155
 msgid "… geben Punktabzug (Gesamtpunktzahl Aufgabe mind. 0)"
 msgstr ""
+"... are penalized by deduction of points (total points at least 0 for task 1)"
 
 #: app/views/vips/sheets/edit_assignment.php:158
 msgid "… führen zur Bewertung der Aufgabe mit 0 Punkten"
-msgstr ""
+msgstr "... will cause the task to be assessed 0 points"
 
 #: app/views/vips/sheets/edit_assignment.php:164
 #, fuzzy
@@ -33665,7 +33627,7 @@ msgstr "Detect automatically"
 
 #: app/views/vips/sheets/edit_assignment.php:204
 msgid "Erforderliche Punkte"
-msgstr ""
+msgstr "Required points"
 
 #: app/views/vips/sheets/edit_assignment.php:262
 #: app/views/vips/sheets/copy_exercise_dialog.php:55
@@ -33936,6 +33898,14 @@ msgid ""
 "Freitextantwort verfügt das Werkzeug auch über ungewöhnlichere, aber "
 "didaktisch durchaus sinnvolle Fragetypen wie Lückentext und Zuordnung."
 msgstr ""
+"This tool can be used to prepare and conduct exercises, tests and exams "
+"online. Teachers receive an overview of which participants have completed an "
+"exercise or test and what the result was. In contrast to conventional "
+"exercise slips or exam sheets, all texts are clearly legible and organised "
+"in Stud.IP. Teachers are given an immediate overview of what still needs to "
+"be corrected. In addition to common question types such as multiple choice "
+"and free text answers, the tool also has more unusual but didactically "
+"useful question types such as cloze text and assignment."
 
 #: app/views/vips/sheets/show_exercise.php:25
 msgid "Abgabezeitpunkt:"
@@ -33951,7 +33921,7 @@ msgstr "%s o'clock"
 #: app/views/vips/sheets/show_exercise.php:39
 #, php-format
 msgid "Bewertung der Aufgabe „%s“"
-msgstr ""
+msgstr "Assessment of task %s"
 
 #: app/views/vips/sheets/show_exercise.php:44
 #: app/views/vips/solutions/edit_solution.php:104
@@ -33988,19 +33958,19 @@ msgstr "Examples:"
 
 #: app/views/vips/sheets/ip_range_tooltip.php:6
 msgid "Gibt nur diese IP-Adresse frei."
-msgstr ""
+msgstr "Only releases this IP address."
 
 #: app/views/vips/sheets/ip_range_tooltip.php:10
 msgid "Gibt alle IP-Adressen frei, die so beginnen."
-msgstr ""
+msgstr "Releases all IP addresses that start like this."
 
 #: app/views/vips/sheets/ip_range_tooltip.php:14
 msgid "Gibt alle IP-Adressen aus dem Bereich 131.173.73 bis 131.173.75 frei."
-msgstr ""
+msgstr "Releases all IP addresses in the range 131.173.73 to 131.173.75."
 
 #: app/views/vips/sheets/ip_range_tooltip.php:19
 msgid "Gibt alle IP-Adressen in diesem Raum frei."
-msgstr ""
+msgstr "Releases all IP addresses in this room."
 
 #: app/views/vips/sheets/ip_range_tooltip.php:25
 msgid ""
@@ -34141,7 +34111,7 @@ msgstr "Graded"
 #: app/views/vips/solutions/view_solution.php:44
 #: app/views/vips/solutions/edit_solution.php:94
 msgid "Unkorrigiert"
-msgstr ""
+msgstr "Uncorrected"
 
 #: app/views/vips/solutions/view_solution.php:53
 msgid "Anmerkung des Korrektors"
@@ -34158,6 +34128,8 @@ msgstr "Send message to %s"
 msgid ""
 "%sTürkis dargestellte Aufgaben%s wurden automatisch und sicher korrigiert."
 msgstr ""
+"%sTasks displayed in turquoise%s have been automatically and securely "
+"corrected."
 
 #: app/views/vips/solutions/solution_color_tooltip.php:2
 #, php-format
@@ -34846,7 +34818,7 @@ msgstr "Award points for pairs of items in correct order"
 
 #: app/views/vips/exercises/evaluation_mode_info.php:11
 msgid "Vorsicht: Falsche Antworten geben Punktabzug!"
-msgstr "Attention: Wrong answers are penalized by deduction of points."
+msgstr "Please note: incorrect answers are penalized by deduction of points."
 
 #: app/views/vips/exercises/evaluation_mode_info.php:13
 msgid ""
