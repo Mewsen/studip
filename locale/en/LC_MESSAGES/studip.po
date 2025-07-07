@@ -6953,7 +6953,7 @@ msgstr "Size"
 
 #: app/controllers/calendar/schedule.php:135
 msgid "Klein"
-msgstr "lowercase"
+msgstr "small"
 
 #: app/controllers/calendar/schedule.php:139
 msgid "Mittel"
@@ -6961,7 +6961,7 @@ msgstr "Medium"
 
 #: app/controllers/calendar/schedule.php:143
 msgid "Groß"
-msgstr "uppercase"
+msgstr "large"
 
 #: app/controllers/calendar/schedule.php:266
 msgid "%{course_name} (vorgemerkt)"
