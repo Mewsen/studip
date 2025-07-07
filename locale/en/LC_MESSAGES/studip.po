@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:04+0200\n"
+"POT-Creation-Date: 2025-07-07 11:07+0200\n"
 "PO-Revision-Date: 2024-05-23 13:59+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
@@ -83,7 +83,7 @@ msgstr "Courses"
 msgid "Profil"
 msgstr "Profile"
 
-#: app/controllers/news.php:58 lib/models/CronjobSchedule.class.php:91
+#: app/controllers/news.php:58 lib/models/CronjobSchedule.class.php:97
 msgid "normal"
 msgstr "normal"
 
@@ -1122,10 +1122,10 @@ msgid "Benachrichtigung über neue Inhalte anpassen"
 msgstr "Customise new content notification"
 
 #: app/controllers/settings/notification.php:76
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie "
-"%s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen "
+"%s<b>Veranstaltung suchen / hinzufügen</b>%s um sich für Veranstaltungen "
 "anzumdelden."
 msgstr ""
 "You are not enroled into any course. Please use %s<b>Search / add courses</"
@@ -1314,8 +1314,8 @@ msgstr "Migration %s of %s has already been started and is still running."
 #: lib/models/BlubberComment.php:89 lib/models/Freetext.php:121
 #: lib/models/OERMaterial.php:700
 #: lib/models/resources/ResourceProperty.class.php:105
-#: lib/models/BlubberThread.php:383 lib/models/BlubberThread.php:405
-#: lib/models/BlubberThread.php:420 lib/models/BlubberThread.php:869
+#: lib/models/BlubberThread.php:405 lib/models/BlubberThread.php:427
+#: lib/models/BlubberThread.php:442 lib/models/BlubberThread.php:891
 #: lib/models/LikertScale.php:109 lib/models/ConsultationSlot.php:272
 #: lib/models/ConsultationSlot.php:281 lib/wiki.inc.php:412
 #: lib/wiki.inc.php:988 lib/wiki.inc.php:1548
@@ -1948,19 +1948,21 @@ msgid "Anmeldemodus ändern"
 msgstr "Change admission"
 
 #: app/controllers/course/admission.php:132
+#, fuzzy
 msgid ""
-"Sie beabsichtigen den Anmeldemodus auf vorläufiger Eintrag zu ändern. Sollen "
-"die bereits in der Veranstaltung eingetragenen Teilnehmenden in vorläufige "
-"Teilnehmende umgewandelt werden?"
+"Sie beabsichtigen, den Anmeldemodus auf \"Vorläufiger Eintrag\" zu ändern. "
+"Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in "
+"vorläufige Teilnehmende umgewandelt werden?"
 msgstr ""
 "You are about to change the admission mode to preliminary admission. Do you "
 "want to convert the participants already enroled in the course to "
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:135
+#, fuzzy
 msgid ""
-"Sie beabsichtigen den Anmeldemodus auf direkten Eintrag zu ändern. Sollen "
-"die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
+"Sie beabsichtigen, den Anmeldemodus auf \"Direkter Eintrag\" zu ändern. "
+"Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
@@ -2703,7 +2705,7 @@ msgstr "Add document"
 #: app/controllers/course/files.php:80 app/controllers/course/feedback.php:50
 #: app/controllers/course/feedback.php:185
 #: app/views/course/feedback/index_for.php:11
-#: app/views/files/_folder_tr.php:108 lib/filesystem/StandardFile.php:329
+#: app/views/files/_folder_tr.php:108 lib/filesystem/StandardFile.php:331
 msgid "Neues Feedback-Element"
 msgstr "New feedback element"
 
@@ -3219,7 +3221,7 @@ msgstr "%s topics copied."
 #: lib/classes/searchtypes/NewsRangesSearch.php:33
 #: lib/classes/globalsearch/GlobalSearchModules.php:123
 #: lib/classes/globalsearch/GlobalSearchModules.php:124
-#: lib/models/Course.class.php:451 lib/models/Course.class.php:841
+#: lib/models/Course.class.php:457 lib/models/Course.class.php:847
 #: lib/models/StudipNews.class.php:243 lib/meine_seminare_func.inc.php:180
 #: lib/meine_seminare_func.inc.php:202
 #: lib/extern/modules/ExternModuleTemplateLectures.class.php:457
@@ -5461,7 +5463,7 @@ msgstr "Feedback: %s"
 #: lib/classes/StudipSemTreeViewAdmin.class.php:518
 #: lib/classes/Interactable.class.php:173
 #: lib/elearning/Ilias3ConnectedLink.class.php:70 lib/filesystem/URLFile.php:98
-#: lib/filesystem/StandardFile.php:356 lib/filesystem/LibraryFile.class.php:239
+#: lib/filesystem/StandardFile.php:358 lib/filesystem/LibraryFile.class.php:239
 #: lib/filesystem/LibraryFile.class.php:271 lib/wiki.inc.php:1579
 #: lib/evaluation/evaluation_show.lib.php:367
 #: lib/evaluation/evaluation_show.lib.php:373
@@ -5589,7 +5591,7 @@ msgstr "Room request management"
 #: app/controllers/course/room_requests.php:339
 #: app/controllers/course/room_requests.php:397
 #: app/controllers/course/room_requests.php:501
-#: app/controllers/course/room_requests.php:549
+#: app/controllers/course/room_requests.php:555
 #: app/controllers/resources/room_request.php:555
 msgid "Das Erstellen von Raumanfragen ist nicht erlaubt!"
 msgstr "Creating room request is not allowed!"
@@ -5607,24 +5609,29 @@ msgstr "Here, you can provide information about wished room properties."
 msgid "Die Mindestanzahl der Sitzplätze beträgt 1!"
 msgstr "The minimum amount of seats is 1!"
 
-#: app/controllers/course/room_requests.php:574
+#: app/controllers/course/room_requests.php:507
+#, fuzzy
+msgid "Die Mindestanzahl der Sitzplätze muss größer als 0 sein!"
+msgstr "The minimum amount of seats is 1!"
+
+#: app/controllers/course/room_requests.php:580
 #, fuzzy
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
 msgstr "The request has been processed and rejected."
 
-#: app/controllers/course/room_requests.php:590
+#: app/controllers/course/room_requests.php:596
 msgid "Die Anfrage wurde gespeichert!"
 msgstr "The request has been saved!"
 
-#: app/controllers/course/room_requests.php:621
+#: app/controllers/course/room_requests.php:627
 msgid "freier Raum"
 msgstr "free room"
 
-#: app/controllers/course/room_requests.php:628
+#: app/controllers/course/room_requests.php:634
 msgid "teilweise belegter Raum"
 msgstr "partially booked room"
 
-#: app/controllers/course/room_requests.php:644
+#: app/controllers/course/room_requests.php:650
 #, php-format
 msgid "Möchten Sie die Raumanfrage \"%s\" löschen?"
 msgstr "Are you sure you want to delete the room request \"%s\"?"
@@ -6033,7 +6040,7 @@ msgid "Untergeordnete Institute einbeziehen"
 msgstr "Include subordinate institutes"
 
 #: app/controllers/calendar/instschedule.php:171
-#: app/controllers/calendar/schedule.php:315
+#: app/controllers/calendar/schedule.php:317
 #: app/controllers/room_management/planning.php:1393
 #: app/views/calendar/single/edit.php:226
 #: app/views/resources/booking/_add_edit_form.php:70
@@ -6048,7 +6055,7 @@ msgid "Montag"
 msgstr "Monday"
 
 #: app/controllers/calendar/instschedule.php:171
-#: app/controllers/calendar/schedule.php:316
+#: app/controllers/calendar/schedule.php:318
 #: app/controllers/room_management/planning.php:1401
 #: app/views/calendar/single/edit.php:227
 #: app/views/resources/booking/_add_edit_form.php:72
@@ -6063,7 +6070,7 @@ msgid "Dienstag"
 msgstr "Tuesday"
 
 #: app/controllers/calendar/instschedule.php:171
-#: app/controllers/calendar/schedule.php:317
+#: app/controllers/calendar/schedule.php:319
 #: app/controllers/room_management/planning.php:1409
 #: app/views/calendar/single/edit.php:228
 #: app/views/resources/booking/_add_edit_form.php:74
@@ -6078,7 +6085,7 @@ msgid "Mittwoch"
 msgstr "Wednesday"
 
 #: app/controllers/calendar/instschedule.php:172
-#: app/controllers/calendar/schedule.php:318
+#: app/controllers/calendar/schedule.php:320
 #: app/controllers/room_management/planning.php:1417
 #: app/views/calendar/single/edit.php:229
 #: app/views/resources/booking/_add_edit_form.php:76
@@ -6093,7 +6100,7 @@ msgid "Donnerstag"
 msgstr "Thursday"
 
 #: app/controllers/calendar/instschedule.php:172
-#: app/controllers/calendar/schedule.php:319
+#: app/controllers/calendar/schedule.php:321
 #: app/controllers/room_management/planning.php:1425
 #: app/views/calendar/single/edit.php:230
 #: app/views/resources/booking/_add_edit_form.php:78
@@ -6108,7 +6115,7 @@ msgid "Freitag"
 msgstr "Friday"
 
 #: app/controllers/calendar/instschedule.php:172
-#: app/controllers/calendar/schedule.php:320
+#: app/controllers/calendar/schedule.php:322
 #: app/controllers/room_management/planning.php:1433
 #: app/views/calendar/single/edit.php:231
 #: app/views/resources/booking/_add_edit_form.php:80
@@ -6123,7 +6130,7 @@ msgid "Samstag"
 msgstr "Saturday"
 
 #: app/controllers/calendar/instschedule.php:172
-#: app/controllers/calendar/schedule.php:321
+#: app/controllers/calendar/schedule.php:323
 #: app/controllers/room_management/planning.php:1441
 #: app/views/calendar/single/edit.php:232
 #: app/views/resources/booking/_add_edit_form.php:82
@@ -6137,18 +6144,18 @@ msgstr "Saturday"
 msgid "Sonntag"
 msgstr "Sunday"
 
-#: app/controllers/calendar/schedule.php:52 app/views/settings/general.php:5
+#: app/controllers/calendar/schedule.php:54 app/views/settings/general.php:5
 #: lib/modules/ScheduleWidget.php:25
 msgid "Mein Stundenplan"
 msgstr "My timetable"
 
-#: app/controllers/calendar/schedule.php:205
+#: app/controllers/calendar/schedule.php:207
 msgid ""
 "Eintrag konnte nicht gespeichert werden, da die Start- und/oder Endzeit "
 "ungültig ist!"
 msgstr "The entry could not be saved since the start or end time is invalid!"
 
-#: app/controllers/calendar/schedule.php:474
+#: app/controllers/calendar/schedule.php:476
 msgid "Die Endzeit darf nicht vor der Startzeit liegen!"
 msgstr "The end time may not be earlier than the start time!"
 
@@ -6228,7 +6235,7 @@ msgstr "Date suggestion on %s from %s %s"
 #: app/views/calendar/group/_tooltip.php:15 lib/dates.inc.php:241
 #: lib/models/CourseDate.class.php:273 lib/models/CourseExDate.class.php:142
 #: lib/raumzeit/SingleDate.class.php:419
-#: lib/extern/modules/ExternModuleTemplatePersondetails.class.php:616
+#: lib/extern/modules/ExternModuleTemplatePersondetails.class.php:608
 msgid "ganztägig"
 msgstr "all-day"
 
@@ -6694,7 +6701,7 @@ msgstr ""
 #: app/controllers/questionnaire.php:15 app/views/questionnaire/widget.php:6
 #: lib/classes/visibility/User_Visibility_Settings.php:135
 #: lib/classes/Siteinfo.php:509 lib/navigation/ContentsNavigation.php:107
-#: lib/models/User.class.php:886 lib/models/Questionnaire.php:259
+#: lib/models/User.class.php:886 lib/models/Questionnaire.php:256
 #: lib/modules/CoreStudygroupAdmin.class.php:43
 #: lib/modules/CoreAdmin.class.php:172 lib/modules/EvaluationsWidget.php:16
 msgid "Fragebögen"
@@ -9707,6 +9714,8 @@ msgstr "Booking person(s)"
 
 #: app/controllers/resources/export.php:338
 #: app/controllers/resources/export.php:489
+#: app/views/resources/room_request/_add_edit_form.php:41
+#: app/views/resources/room_request/resolve.php:181
 #: app/views/resources/admin/booking_log.php:35
 msgid "Interner Kommentar"
 msgstr "Internal comment"
@@ -10891,7 +10900,7 @@ msgstr "binding enrolment"
 #: app/views/resources/admin/properties.php:28
 #: app/views/resources/resource/_standard_properties_display_part.php:40
 #: app/views/admin/user/index.php:180
-#: lib/models/resources/ResourceRequestProperty.class.php:67
+#: lib/models/resources/ResourceRequestProperty.class.php:73
 #: lib/models/resources/ResourceProperty.class.php:97
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:2490
 #: lib/evaluation/evaluation_admin_template.lib.php:466
@@ -10910,7 +10919,7 @@ msgstr "no"
 #: app/views/resources/admin/properties.php:28
 #: app/views/resources/resource/_standard_properties_display_part.php:38
 #: app/views/admin/user/index.php:176
-#: lib/models/resources/ResourceRequestProperty.class.php:67
+#: lib/models/resources/ResourceRequestProperty.class.php:73
 #: lib/models/resources/ResourceProperty.class.php:97
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:2500
 #: lib/evaluation/evaluation_admin_template.lib.php:457
@@ -10945,7 +10954,7 @@ msgstr "Username"
 #: app/views/blubber/compose.php:30 lib/functions.php:80 lib/functions.php:83
 #: lib/functions.php:85 lib/cronjobs/check_admission.class.php:94
 #: lib/classes/EventLog.php:25 lib/classes/Context.php:174
-#: lib/models/Course.class.php:736
+#: lib/models/Course.class.php:742
 #: lib/evaluation/evaluation_admin_overview.lib.php:1732
 #: lib/evaluation/evaluation_admin_overview.lib.php:1736
 #: lib/evaluation/evaluation_admin_overview.lib.php:1741
@@ -11865,7 +11874,7 @@ msgid "Unbekannte Studiengangteil-Version."
 msgstr "Unknown component version."
 
 #: app/controllers/admin/overlapping.php:246
-#: app/controllers/search/studiengaenge.php:521
+#: app/controllers/search/studiengaenge.php:533
 #: app/controllers/search/module.php:139
 #: app/views/search/studiengaenge/_studiengang.php:12
 msgid "Semesterauswahl"
@@ -12370,8 +12379,8 @@ msgstr "Multiple assignment of study areas"
 #: app/views/tour/edit_step.php:182 app/views/tour/admin_details.php:105
 #: app/views/tour/admin_overview.php:112
 #: app/views/multipersonsearch/no_js_form.php:113
-#: app/views/multipersonsearch/js_form.php:44
-#: app/views/multipersonsearch/js_form.php:46
+#: app/views/multipersonsearch/js_form.php:47
+#: app/views/multipersonsearch/js_form.php:49
 #: app/views/userfilter/filter/configure.php:17
 #: app/views/blubber/compose.php:127
 #: app/views/help_content/admin_overview.php:66
@@ -15050,34 +15059,34 @@ msgstr "Module directory - courses of study"
 msgid "Unbekannter Studiengang"
 msgstr "Unknown course of study"
 
-#: app/controllers/search/studiengaenge.php:209
+#: app/controllers/search/studiengaenge.php:221
 msgid "Kein Verlaufsplan im gewählten Bereich verfügbar."
 msgstr "No recommendation in selected area."
 
-#: app/controllers/search/studiengaenge.php:335
+#: app/controllers/search/studiengaenge.php:347
 msgid "Nur Module mit Veranstaltungen anzeigen"
 msgstr "Display only modules with assigned courses"
 
-#: app/controllers/search/studiengaenge.php:343
+#: app/controllers/search/studiengaenge.php:355
 msgid "Aktuelle Modulhandbücher"
 msgstr "Current module handbooks"
 
-#: app/controllers/search/studiengaenge.php:348
+#: app/controllers/search/studiengaenge.php:360
 msgid "Originalfassung als PDF"
 msgstr "Original version as PDF"
 
-#: app/controllers/search/studiengaenge.php:351
+#: app/controllers/search/studiengaenge.php:363
 #, php-format
 msgid "Zweitfassung (%s) als PDF"
 msgstr "Secondary version (%s) as PDF"
 
-#: app/controllers/search/studiengaenge.php:418
+#: app/controllers/search/studiengaenge.php:430
 #: app/views/search/angebot/info.php:1
 #, php-format
 msgid "Informationen zum Studiengang: %s"
 msgstr "Information on course of study: %s"
 
-#: app/controllers/search/studiengaenge.php:505
+#: app/controllers/search/studiengaenge.php:517
 msgid "Versionenauswahl"
 msgstr "Versions"
 
@@ -17302,32 +17311,32 @@ msgstr "Open folder"
 
 #: app/controllers/files_dashboard/helpers.php:43
 #: app/views/file/edit_urlfile.php:10 lib/filesystem/URLFile.php:83
-#: lib/filesystem/StandardFile.php:259
+#: lib/filesystem/StandardFile.php:268
 msgid "Datei bearbeiten"
 msgstr "Edit file"
 
 #: app/controllers/files_dashboard/helpers.php:49
-#: lib/filesystem/StandardFile.php:266
+#: lib/filesystem/StandardFile.php:275
 msgid "Datei aktualisieren"
 msgstr "Update file"
 
 #: app/controllers/files_dashboard/helpers.php:58
-#: lib/filesystem/StandardFile.php:275
+#: lib/filesystem/StandardFile.php:284
 msgid "Datei verschieben"
 msgstr "Move file"
 
 #: app/controllers/files_dashboard/helpers.php:67
-#: lib/filesystem/StandardFile.php:284
+#: lib/filesystem/StandardFile.php:293
 msgid "Datei kopieren"
 msgstr "Copy file"
 
 #: app/controllers/files_dashboard/helpers.php:76
-#: lib/filesystem/StandardFile.php:338 lib/filesystem/LibraryFile.class.php:246
+#: lib/filesystem/StandardFile.php:340 lib/filesystem/LibraryFile.class.php:246
 msgid "Datei löschen"
 msgstr "Delete file"
 
 #: app/controllers/files_dashboard/helpers.php:78
-#: lib/filesystem/StandardFile.php:342 lib/filesystem/LibraryFile.class.php:250
+#: lib/filesystem/StandardFile.php:344 lib/filesystem/LibraryFile.class.php:250
 #, php-format
 msgid "Soll die Datei \"%s\" wirklich gelöscht werden?"
 msgstr "Do you really want to delete the file \"%s\"?"
@@ -17881,7 +17890,7 @@ msgstr "Sent mail"
 #: app/views/fachabschluss/kategorien/kategorie.php:54
 #: app/views/fachabschluss/faecher/fach.php:108
 #: app/views/multipersonsearch/no_js_form.php:114
-#: app/views/multipersonsearch/js_form.php:47
+#: app/views/multipersonsearch/js_form.php:50
 #: app/views/userfilter/filter/configure.php:18
 #: app/views/help_content/edit.php:45
 #: app/views/lvgruppen/lvgruppen/lvgruppe.php:25
@@ -19660,7 +19669,7 @@ msgstr "Date type"
 #: app/views/profile/public_files.php:31 app/views/files/_flat_tfoot.php:15
 #: app/views/files/flat.php:20 app/views/files/index.php:44
 #: app/views/oer/market/details.php:51 app/views/oer/market/details.php:53
-#: app/views/oer/market/details.php:304 lib/filesystem/StandardFile.php:363
+#: app/views/oer/market/details.php:304 lib/filesystem/StandardFile.php:365
 #: lib/filesystem/LibraryFile.class.php:280
 msgid "Herunterladen"
 msgstr "Download"
@@ -26808,10 +26817,6 @@ msgstr "last change"
 msgid "Es sind keine Anfragen vorhanden!"
 msgstr "No requests available!"
 
-#: app/views/resources/room_request/_add_edit_form.php:41
-msgid "Anfragetext"
-msgstr "Request text"
-
 #: app/views/resources/room_request/resolve_room_tr.php:34
 msgid "Zum Belegungsplan"
 msgstr "Go to booking plan"
@@ -26856,10 +26861,6 @@ msgstr "Requested booking periods"
 #: app/views/resources/room_request/resolve.php:160
 msgid "Gewünschte Raumeigenschaften"
 msgstr "Requested room properties"
-
-#: app/views/resources/room_request/resolve.php:181
-msgid "Kommentar des Anfragenden"
-msgstr "Comment by the requesting person"
 
 #: app/views/resources/room_request/resolve.php:184
 #: public/eval_summary_export.php:297 public/eval_summary.php:312
@@ -35860,10 +35861,11 @@ msgstr ""
 "license, if necessary."
 
 #: app/views/oer/market/licenseinfo.php:36
+#, fuzzy
 msgid ""
 "Wie gesagt: wir hoffen, dass dieser Weg für alle ein sehr intuitiver Weg "
 "ist, Materialien zu verbreiten und zu nutzen. Die meisten Menschen wollen "
-"sich keine Gedanken um Rechten und Pflichten in diesem Zusammenhang machen. "
+"sich keine Gedanken um Rechte und Pflichten in diesem Zusammenhang machen. "
 "Wir hoffen, dass wir diesen Menschen eine Freude mit dem Marktplatz machen "
 "können."
 msgstr ""
@@ -40427,7 +40429,7 @@ msgstr "Missing GD library"
 msgid "Der Typ des Bilds wird nicht unterstützt."
 msgstr "The file format of the image file is not supported."
 
-#: lib/classes/MultiPersonSearch.class.php:555
+#: lib/classes/MultiPersonSearch.class.php:568
 msgid "Bitte wählen Sie aus, wen Sie hinzufügen möchten."
 msgstr "Please select the user(s) you want to add."
 
@@ -42139,15 +42141,15 @@ msgstr "The maximum file size of %s has been exceeded!"
 msgid "Ein Systemfehler ist beim Upload aufgetreten. Fehlercode: %s."
 msgstr "A system error occurred during upload. Error code: %s."
 
-#: lib/filesystem/StandardFile.php:291
+#: lib/filesystem/StandardFile.php:259
 msgid "Link kopieren"
 msgstr "Copy link"
 
-#: lib/filesystem/StandardFile.php:305
+#: lib/filesystem/StandardFile.php:307
 msgid "Im OER Campus veröffentlichen"
 msgstr "Publish in the OER campus"
 
-#: lib/filesystem/StandardFile.php:319
+#: lib/filesystem/StandardFile.php:321
 msgid "Material für OER Campus vorschlagen"
 msgstr "Suggest learning material for the OER Campus"
 
@@ -42690,82 +42692,82 @@ msgstr ""
 "You have been promoted within the wait list for the course **%s(%s)**. At "
 "present you are at position %s."
 
-#: lib/models/Course.class.php:826
+#: lib/models/Course.class.php:832
 msgid "unvollständig"
 msgstr "incomplete"
 
-#: lib/models/Course.class.php:827
+#: lib/models/Course.class.php:833
 msgid "in Bearbeitung"
 msgstr "in Editing"
 
-#: lib/models/Course.class.php:828
+#: lib/models/Course.class.php:834
 msgid "fertig"
 msgstr "ready"
 
-#: lib/models/Course.class.php:829
+#: lib/models/Course.class.php:835
 msgid "undefiniert"
 msgstr "undefined"
 
-#: lib/models/Course.class.php:851
+#: lib/models/Course.class.php:857
 msgid "Neuer Anmeldemodus: Vorläufiger Eintrag"
 msgstr "New enrolment mode: Preliminary enrolment"
 
-#: lib/models/Course.class.php:851
+#: lib/models/Course.class.php:857
 msgid "Neuer Anmeldemodus: Direkter Eintrag"
 msgstr "New enrolment mode: Direct enrolment"
 
-#: lib/models/Course.class.php:855
+#: lib/models/Course.class.php:861
 msgid "Anmeldung verbindlich"
 msgstr "Binding admission"
 
-#: lib/models/Course.class.php:855
+#: lib/models/Course.class.php:861
 msgid "Anmeldung unverbindlich"
 msgstr "Non-binding admission"
 
-#: lib/models/Course.class.php:859
+#: lib/models/Course.class.php:865
 #, php-format
 msgid "Neue Teilnehmerzahl: %s"
 msgstr "New amount of participants: %s"
 
-#: lib/models/Course.class.php:863
+#: lib/models/Course.class.php:869
 msgid "Warteliste aktiviert"
 msgstr "Wait list activated"
 
-#: lib/models/Course.class.php:863
+#: lib/models/Course.class.php:869
 msgid "Warteliste deaktiviert"
 msgstr "Wait list deactivated"
 
-#: lib/models/Course.class.php:867
+#: lib/models/Course.class.php:873
 #, php-format
 msgid "Plätze auf der Warteliste geändert: %u"
 msgstr "Seats changed on the wait list: %u"
 
-#: lib/models/Course.class.php:871
+#: lib/models/Course.class.php:877
 msgid "Nachrücken aktiviert"
 msgstr "Moving up activated"
 
-#: lib/models/Course.class.php:871
+#: lib/models/Course.class.php:877
 msgid "Nachrücken deaktiviert"
 msgstr "Moving up deactivated"
 
-#: lib/models/Course.class.php:876
+#: lib/models/Course.class.php:882
 #, php-format
 msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
 msgstr "New note for the case of preliminary enrolment: %s"
 
-#: lib/models/Course.class.php:878
+#: lib/models/Course.class.php:884
 msgid "Hinweistext bei vorläufigen Eintragungen wurde entfert"
 msgstr "The note for the case of preliminary enrolment has been removed"
 
-#: lib/models/Course.class.php:970
+#: lib/models/Course.class.php:976
 msgid "Seminare"
 msgstr "Courses"
 
-#: lib/models/CronjobSchedule.class.php:90
+#: lib/models/CronjobSchedule.class.php:96
 msgid "niedrig"
 msgstr "low"
 
-#: lib/models/CronjobSchedule.class.php:92
+#: lib/models/CronjobSchedule.class.php:98
 msgid "hoch"
 msgstr "high"
 
@@ -42806,7 +42808,7 @@ msgstr "Selection question"
 msgid "%s in %s"
 msgstr "%s in %s"
 
-#: lib/models/BlubberStatusgruppeThread.php:91 lib/models/BlubberThread.php:647
+#: lib/models/BlubberStatusgruppeThread.php:91 lib/models/BlubberThread.php:669
 #, php-format
 msgid "%s hat eine Nachricht geschrieben."
 msgstr "%s wrote a message."
@@ -45583,20 +45585,20 @@ msgstr "External person"
 msgid "%s hat Sie in einem Blubber erwähnt."
 msgstr "%s mentioned you in a Blubber."
 
-#: lib/models/BlubberThread.php:375
+#: lib/models/BlubberThread.php:397
 msgid "Blubber-Threads"
 msgstr "Blubber threads"
 
-#: lib/models/BlubberThread.php:383
+#: lib/models/BlubberThread.php:405
 #, php-format
 msgid "Blubber von %s"
 msgstr "Blubber from %s"
 
-#: lib/models/BlubberThread.php:408
+#: lib/models/BlubberThread.php:430
 msgid "ich"
 msgstr "me"
 
-#: lib/models/BlubberThread.php:433
+#: lib/models/BlubberThread.php:455
 msgid "Ein mysteröser Blubber"
 msgstr "A mysterious Blubber"
 
@@ -46314,7 +46316,7 @@ msgstr "Terms of use"
 msgid "Formulieren Sie hier die Teilnahmebedingungen."
 msgstr "Enter your terms of use here."
 
-#: lib/admissionrules/termsadmission/templates/input.php:9
+#: lib/admissionrules/termsadmission/templates/input.php:5
 msgid "Hiermit akzeptiere ich die Teilnahmebedingungen"
 msgstr "I hereby accept the terms of use"
 
@@ -54025,10 +54027,11 @@ msgid "Schneller Austausch von Informationen in Gesprächsform"
 msgstr "Quick exchange of information while talking"
 
 #: lib/modules/Blubber.class.php:122
+#, fuzzy
 msgid ""
 "Blubber ist eine Kommunikationsform mit Ähnlichkeiten zu einem Forum, in dem "
 "aber in Echtzeit miteinander kommuniziert werden kann und das durch den "
-"etwas informelleren Charakter eher einem Chat anmutet. Anders als im Forum "
+"etwas informelleren Charakter eher wie ein Chat anmutet. Anders als im Forum "
 "ist es nicht notwendig, die Seiten neu zu laden, um die neuesten Einträge "
 "(z. B. Antworten auf eigene Postings) sehen zu können: Die Seite "
 "aktualisiert sich selbst bei neuen Einträgen. Dateien (z.B. Fotos, "
@@ -56731,6 +56734,12 @@ msgstr ""
 "placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
 "file\") or it can be limited to its capital letters or its abbreviation "
 "(e.g. \"MC/file\" or \"C/file\")."
+
+#~ msgid "Anfragetext"
+#~ msgstr "Request text"
+
+#~ msgid "Kommentar des Anfragenden"
+#~ msgstr "Comment by the requesting person"
 
 #~ msgid "Das Dokument wurde gelöscht."
 #~ msgstr "The document has been deleted."
