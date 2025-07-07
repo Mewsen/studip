@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "PO-Revision-Date: 2025-07-05 09:00+0000\n"
 "Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-6-0-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-6-0-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -351,7 +351,7 @@ msgstr[1] "%{n} ratings"
 msgid "%{n} Tage Zeit für das Review"
 msgstr "Thank you for the review!"
 
-#: resources/vue/components/tree/StudipTreeList.vue:79
+#: resources/vue/components/tree/StudipTreeList.vue:80
 msgid "%{name} bearbeiten"
 msgstr "Edit %{name}"
 
@@ -857,6 +857,11 @@ msgstr "Change"
 msgid "Änderung durch %{user} am %{time}"
 msgstr "Modified by %{user} on %{time}"
 
+#: resources/vue/components/WikiEditor.vue:69
+#, fuzzy
+msgid "Änderungen automatisch speichern"
+msgstr "Save changes"
+
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:29
 msgid ""
 "Änderungen sind nach Abgabe nicht mehr möglich. Möchten Sie diese Aufgabe "
@@ -1025,11 +1030,11 @@ msgstr "Number of appointments"
 msgid "Apfelgrün"
 msgstr "Apple green"
 
-#: resources/assets/javascripts/studip-ui.js:577
+#: resources/assets/javascripts/studip-ui.js:580
 msgid "Apr"
 msgstr "Apr"
 
-#: resources/assets/javascripts/studip-ui.js:563
+#: resources/assets/javascripts/studip-ui.js:566
 #: resources/vue/components/form_inputs/RepetitionInput.vue:267
 msgid "April"
 msgstr "April"
@@ -1094,12 +1099,12 @@ msgstr "Allow audio recordings"
 msgid "Audiodatei:"
 msgstr "Audio file:"
 
-#: resources/vue/components/tree/StudipTreeList.vue:133
+#: resources/vue/components/tree/StudipTreeList.vue:134
 #: resources/vue/components/tree/StudipTreeTable.vue:80
 msgid "Auf dieser Ebene existieren keine weiteren Unterebenen."
 msgstr "No further sub-levels exist below this level."
 
-#: resources/vue/components/tree/StudipTreeList.vue:136
+#: resources/vue/components/tree/StudipTreeList.vue:137
 #: resources/vue/components/tree/StudipTreeTable.vue:90
 msgid "Auf dieser Ebene sind keine Veranstaltungen zugeordnet."
 msgstr "No courses are assigned on this layer."
@@ -1255,11 +1260,11 @@ msgstr "Ascending"
 msgid "Aufsteigend sortiert, "
 msgstr "Sorted ascending, "
 
-#: resources/assets/javascripts/studip-ui.js:581
+#: resources/assets/javascripts/studip-ui.js:584
 msgid "Aug"
 msgstr "Aug"
 
-#: resources/assets/javascripts/studip-ui.js:567
+#: resources/assets/javascripts/studip-ui.js:570
 #: resources/vue/components/form_inputs/RepetitionInput.vue:283
 msgid "August"
 msgstr "August"
@@ -1278,7 +1283,7 @@ msgstr "Select from the image pool"
 msgid "Aus Datei importieren"
 msgstr "Import from file"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:470
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:469
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogSettings.vue:257
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogAdd.vue:118
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogTopics.vue:112
@@ -1368,11 +1373,6 @@ msgstr "Automatically"
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogLayout.vue:172
 msgid "Automatisch mit Inhaltsverzeichnis"
 msgstr "Automatically with table of contents"
-
-#: resources/vue/components/WikiEditor.vue:69
-#, fuzzy
-msgid "Automatisches Speichern aktivieren."
-msgstr "Manage automatic updates"
 
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:276
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:284
@@ -2118,14 +2118,14 @@ msgid "blau"
 msgstr "blue"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:24
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:488
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:487
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:28
 #: resources/vue/components/stock-images/colors.js:15
 #: resources/vue/mixins/courseware/colors.js:23
 msgid "Blau"
 msgstr "Blue"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:500
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:499
 msgid "Blaue Balken"
 msgstr "Blue bars"
 
@@ -2225,7 +2225,7 @@ msgid ""
 "anlegen werden."
 msgstr ""
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:498
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:497
 msgid "Blueprint"
 msgstr "Blueprint"
 
@@ -2237,7 +2237,7 @@ msgstr "Brown"
 msgid "Breite"
 msgstr "Width"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:504
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:503
 msgid "Bright Rain"
 msgstr "Bright Rain"
 
@@ -2668,16 +2668,16 @@ msgstr "Details"
 msgid "Details zur Datei %{filename} anzeigen"
 msgstr "Display filename"
 
-#: resources/assets/javascripts/studip-ui.js:585
+#: resources/assets/javascripts/studip-ui.js:588
 msgid "Dez"
 msgstr "Dec"
 
-#: resources/assets/javascripts/studip-ui.js:571
+#: resources/assets/javascripts/studip-ui.js:574
 #: resources/vue/components/form_inputs/RepetitionInput.vue:299
 msgid "Dezember"
 msgstr "December"
 
-#: resources/assets/javascripts/studip-ui.js:599
+#: resources/assets/javascripts/studip-ui.js:602
 msgid "Di"
 msgstr "Tue."
 
@@ -2905,7 +2905,7 @@ msgid "Die Zugangsberechtigungen wurden gespeichert."
 msgstr "The permissions have been saved!"
 
 #: resources/assets/javascripts/lib/calendar.js:7
-#: resources/assets/javascripts/studip-ui.js:590
+#: resources/assets/javascripts/studip-ui.js:593
 #: resources/vue/components/ConsultationCreator.vue:77
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:32
 #: resources/vue/components/form_inputs/RepetitionInput.vue:152
@@ -3183,7 +3183,7 @@ msgstr "Directy select ..."
 msgid "divers"
 msgstr "diverse"
 
-#: resources/assets/javascripts/studip-ui.js:601
+#: resources/assets/javascripts/studip-ui.js:604
 msgid "Do"
 msgstr "Thu."
 
@@ -3198,14 +3198,14 @@ msgid "Dokument suchen"
 msgstr "Search document"
 
 #: resources/assets/javascripts/lib/calendar.js:9
-#: resources/assets/javascripts/studip-ui.js:592
+#: resources/assets/javascripts/studip-ui.js:595
 #: resources/vue/components/ConsultationCreator.vue:79
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:40
 #: resources/vue/components/form_inputs/RepetitionInput.vue:170
 msgid "Donnerstag"
 msgstr "Thursday"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:264
+#: resources/vue/components/tree/StudipTreeTable.vue:266
 msgid "Download des Ergebnisses"
 msgstr "Download result"
 
@@ -3284,7 +3284,7 @@ msgstr "Editor"
 msgid "Eigene Einstellungen"
 msgstr "Further settings"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:36
+#: resources/vue/components/tree/TreeSearchResult.vue:37
 msgid "Ein Eintrag für den Begriff \"%{searchterm}\" gefunden"
 msgid_plural "%{count} Einträge für den Begriff \"%{searchterm}\" gefunden"
 msgstr[0] "One entry found for the term \"%{searchterm}\""
@@ -3873,7 +3873,7 @@ msgstr "No activities have been found."
 msgid "Es wurden keine Einträge gefunden."
 msgstr "No course of study found."
 
-#: resources/vue/components/tree/TreeSearchResult.vue:106
+#: resources/vue/components/tree/TreeSearchResult.vue:109
 msgid "Es wurden keine Ergebnisse zu Ihrem Suchbegriff \"%{term}\" gefunden."
 msgstr "No results could be found for your search term \"%{term}\"."
 
@@ -4015,7 +4015,7 @@ msgstr "Delete panel"
 msgid "Fachsemester auswählen (optional)"
 msgstr "Select semester of study (optional)"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:502
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:501
 msgid "Faded Sun"
 msgstr "Faded Sun"
 
@@ -4070,11 +4070,11 @@ msgstr "Gradient"
 msgid "Favoriten"
 msgstr "Favourites"
 
-#: resources/assets/javascripts/studip-ui.js:575
+#: resources/assets/javascripts/studip-ui.js:578
 msgid "Feb"
 msgstr "Feb"
 
-#: resources/assets/javascripts/studip-ui.js:561
+#: resources/assets/javascripts/studip-ui.js:564
 #: resources/vue/components/form_inputs/RepetitionInput.vue:259
 msgid "Februar"
 msgstr "February"
@@ -4313,7 +4313,7 @@ msgstr "Progress: %{progress} %"
 msgid "Fortschritt: %{progress}%"
 msgstr "Progress: %{progress}%"
 
-#: resources/assets/javascripts/studip-ui.js:602
+#: resources/assets/javascripts/studip-ui.js:605
 msgid "Fr"
 msgstr "Fri."
 
@@ -4372,7 +4372,7 @@ msgid "Freigeben"
 msgstr "Released"
 
 #: resources/assets/javascripts/lib/calendar.js:10
-#: resources/assets/javascripts/studip-ui.js:593
+#: resources/assets/javascripts/studip-ui.js:596
 #: resources/vue/components/ConsultationCreator.vue:80
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:44
 #: resources/vue/components/form_inputs/RepetitionInput.vue:179
@@ -4488,7 +4488,7 @@ msgid "gelb"
 msgstr "yellow"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:25
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:493
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:492
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:32
 #: resources/vue/components/stock-images/colors.js:9
 #: resources/vue/mixins/courseware/colors.js:55
@@ -4545,7 +4545,7 @@ msgid "gewähren"
 msgstr "grant"
 
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:170
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:499
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:498
 msgid "Gitter"
 msgstr "Grid"
 
@@ -4566,7 +4566,7 @@ msgid "grau"
 msgstr "grey"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:30
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:496
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:495
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:34
 #: resources/vue/components/stock-images/colors.js:7
 #: resources/vue/mixins/courseware/colors.js:63
@@ -4602,7 +4602,7 @@ msgid "grün"
 msgstr "green"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:26
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:494
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:493
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:29
 #: resources/vue/components/stock-images/colors.js:17
 #: resources/vue/mixins/courseware/colors.js:47
@@ -4629,7 +4629,7 @@ msgstr "Basic details"
 msgid "Grundeinstellungen"
 msgstr "Basic settings"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:501
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:500
 msgid "Grüne Balken"
 msgstr "Green bars"
 
@@ -4744,11 +4744,11 @@ msgstr "Light gray"
 msgid "Hervorhebung aufheben"
 msgstr "Delete mark"
 
-#: resources/assets/javascripts/studip-ui.js:558
+#: resources/assets/javascripts/studip-ui.js:561
 msgid "Heute"
 msgstr "Today"
 
-#: resources/assets/javascripts/studip-ui.js:621
+#: resources/assets/javascripts/studip-ui.js:624
 msgid "HH:mm"
 msgstr "HH:mm"
 
@@ -4836,7 +4836,7 @@ msgstr "Background picture"
 msgid "Hintergrundfarbe"
 msgstr "Background color"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:484
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:483
 msgid "Hintergrundfarbverlauf"
 msgstr "Background colour gradient"
 
@@ -5109,10 +5109,10 @@ msgid "Infobox vor Download"
 msgstr "Info box before download"
 
 #: resources/vue/components/StudipDialog.vue:117
-#: resources/vue/components/tree/StudipTreeList.vue:182
+#: resources/vue/components/tree/StudipTreeList.vue:183
 #: resources/vue/components/tree/StudipTreeTable.vue:137
 #: resources/vue/components/tree/StudipTreeTable.vue:191
-#: resources/vue/components/tree/TreeSearchResult.vue:55
+#: resources/vue/components/tree/TreeSearchResult.vue:56
 msgid "Information"
 msgstr "Information"
 
@@ -5390,17 +5390,17 @@ msgstr "yearly"
 msgid "Jährliche Wiederholung"
 msgstr "Yearly repetition"
 
-#: resources/assets/javascripts/studip-ui.js:574
+#: resources/assets/javascripts/studip-ui.js:577
 msgid "Jan"
 msgstr "Jan"
 
-#: resources/assets/javascripts/studip-ui.js:560
+#: resources/assets/javascripts/studip-ui.js:563
 #: resources/vue/components/form_inputs/RepetitionInput.vue:255
 msgid "Januar"
 msgstr "January"
 
 #: resources/assets/javascripts/lib/datetime.js:43
-#: resources/assets/javascripts/studip-ui.js:631
+#: resources/assets/javascripts/studip-ui.js:634
 msgid "Jetzt"
 msgstr "Now"
 
@@ -5409,20 +5409,20 @@ msgstr "Now"
 msgid "Jetzt hochladen"
 msgstr "upload"
 
-#: resources/assets/javascripts/studip-ui.js:580
+#: resources/assets/javascripts/studip-ui.js:583
 msgid "Jul"
 msgstr "Jul"
 
-#: resources/assets/javascripts/studip-ui.js:566
+#: resources/assets/javascripts/studip-ui.js:569
 #: resources/vue/components/form_inputs/RepetitionInput.vue:279
 msgid "Juli"
 msgstr "July"
 
-#: resources/assets/javascripts/studip-ui.js:579
+#: resources/assets/javascripts/studip-ui.js:582
 msgid "Jun"
 msgstr "Jun"
 
-#: resources/assets/javascripts/studip-ui.js:565
+#: resources/assets/javascripts/studip-ui.js:568
 #: resources/vue/components/form_inputs/RepetitionInput.vue:275
 msgid "Juni"
 msgstr "June"
@@ -6203,8 +6203,8 @@ msgstr "Delete this request"
 msgid "Lösung von"
 msgstr "Achievements"
 
-#: resources/assets/javascripts/studip-ui.js:564
-#: resources/assets/javascripts/studip-ui.js:578
+#: resources/assets/javascripts/studip-ui.js:567
+#: resources/assets/javascripts/studip-ui.js:581
 #: resources/vue/components/form_inputs/RepetitionInput.vue:271
 msgid "Mai"
 msgstr "May"
@@ -6218,11 +6218,11 @@ msgstr "male"
 msgid "Manuell"
 msgstr "current"
 
-#: resources/assets/javascripts/studip-ui.js:576
+#: resources/assets/javascripts/studip-ui.js:579
 msgid "Mär"
 msgstr "Mar"
 
-#: resources/assets/javascripts/studip-ui.js:562
+#: resources/assets/javascripts/studip-ui.js:565
 #: resources/vue/components/form_inputs/RepetitionInput.vue:263
 msgid "März"
 msgstr "March"
@@ -6298,15 +6298,15 @@ msgstr "Key point"
 msgid "Metadaten"
 msgstr "Metadata"
 
-#: resources/assets/javascripts/studip-ui.js:600
+#: resources/assets/javascripts/studip-ui.js:603
 msgid "Mi"
 msgstr "Wed."
 
-#: resources/assets/javascripts/studip-ui.js:619
+#: resources/assets/javascripts/studip-ui.js:622
 msgid "Mikrosekunde"
 msgstr "Microsecond"
 
-#: resources/assets/javascripts/studip-ui.js:618
+#: resources/assets/javascripts/studip-ui.js:621
 msgid "Millisekunde"
 msgstr "Millisecond"
 
@@ -6319,7 +6319,7 @@ msgstr "At least one mandatory field is empty!"
 msgid "Minimum"
 msgstr "Minimum"
 
-#: resources/assets/javascripts/studip-ui.js:616
+#: resources/assets/javascripts/studip-ui.js:619
 #: resources/vue/components/courseware/blocks/CoursewareDateBlock.vue:81
 msgid "Minute"
 msgstr "Minute"
@@ -6367,14 +6367,14 @@ msgid "Mitgliedschaft ist in mindestens einer dieser Veranstaltungen notwendig"
 msgstr "Enrolment into at least one of those courses is necessary"
 
 #: resources/assets/javascripts/lib/calendar.js:8
-#: resources/assets/javascripts/studip-ui.js:591
+#: resources/assets/javascripts/studip-ui.js:594
 #: resources/vue/components/ConsultationCreator.vue:78
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:36
 #: resources/vue/components/form_inputs/RepetitionInput.vue:161
 msgid "Mittwoch"
 msgstr "Wednesday"
 
-#: resources/assets/javascripts/studip-ui.js:598
+#: resources/assets/javascripts/studip-ui.js:601
 msgid "Mo"
 msgstr "Mon."
 
@@ -6504,7 +6504,7 @@ msgid "Monatliche Wiederholung"
 msgstr "Monthly repetition"
 
 #: resources/assets/javascripts/lib/calendar.js:6
-#: resources/assets/javascripts/studip-ui.js:589
+#: resources/assets/javascripts/studip-ui.js:592
 #: resources/vue/components/ConsultationCreator.vue:76
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:28
 #: resources/vue/components/form_inputs/RepetitionInput.vue:143
@@ -6580,7 +6580,7 @@ msgstr "Don't sort"
 msgid "Nachher"
 msgstr "Later"
 
-#: resources/assets/javascripts/studip-ui.js:623
+#: resources/assets/javascripts/studip-ui.js:626
 msgid "nachm."
 msgstr "PM"
 
@@ -6645,10 +6645,10 @@ msgstr "Next content element"
 #: resources/vue/components/form_inputs/MyCoursesColouredTable.vue:52
 #: resources/vue/components/my-courses/TableView.vue:101
 #: resources/vue/components/stock-images/ImagesList.vue:48
-#: resources/vue/components/tree/StudipTreeList.vue:181
+#: resources/vue/components/tree/StudipTreeList.vue:182
 #: resources/vue/components/tree/StudipTreeTable.vue:136
 #: resources/vue/components/tree/StudipTreeTable.vue:190
-#: resources/vue/components/tree/TreeSearchResult.vue:54
+#: resources/vue/components/tree/TreeSearchResult.vue:55
 msgid "Name"
 msgstr "Name"
 
@@ -6858,11 +6858,11 @@ msgstr "normal"
 msgid "Normal"
 msgstr "Normal"
 
-#: resources/assets/javascripts/studip-ui.js:584
+#: resources/assets/javascripts/studip-ui.js:587
 msgid "Nov"
 msgstr "Nov"
 
-#: resources/assets/javascripts/studip-ui.js:570
+#: resources/assets/javascripts/studip-ui.js:573
 #: resources/vue/components/form_inputs/RepetitionInput.vue:295
 msgid "November"
 msgstr "November"
@@ -6931,7 +6931,7 @@ msgstr "OAuth signature method of the LTI tool"
 #: resources/assets/javascripts/lib/user_filter.js:61
 #: resources/vue/components/admission/ConditionalAdmission.vue:58
 #: resources/vue/components/admission/PreferentialAdmission.vue:39
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:465
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:464
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogSettings.vue:251
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogAdd.vue:112
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogTopics.vue:106
@@ -6996,11 +6996,11 @@ msgstr "ok"
 msgid "Ok"
 msgstr "Ok"
 
-#: resources/assets/javascripts/studip-ui.js:583
+#: resources/assets/javascripts/studip-ui.js:586
 msgid "Okt"
 msgstr "Oct"
 
-#: resources/assets/javascripts/studip-ui.js:569
+#: resources/assets/javascripts/studip-ui.js:572
 #: resources/vue/components/form_inputs/RepetitionInput.vue:291
 msgid "Oktober"
 msgstr "October"
@@ -7029,7 +7029,7 @@ msgid "orange"
 msgstr "orange"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:28
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:492
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:491
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:33
 #: resources/vue/components/stock-images/colors.js:10
 msgid "Orange"
@@ -7126,7 +7126,7 @@ msgstr "Annotations"
 msgid "Paarungen manuell festlegen"
 msgstr "Set end date manually."
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:497
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:496
 msgid "Papier"
 msgstr "Paper"
 
@@ -7271,7 +7271,7 @@ msgstr "Personal file area"
 msgid "Persönliches Ziel"
 msgstr "Personal goal"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:495
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:494
 #: resources/vue/components/stock-images/colors.js:16
 msgid "Petrol"
 msgstr "Petrol"
@@ -7322,7 +7322,7 @@ msgstr "Open profile navigation"
 msgid "Profilnavigation schließen"
 msgstr "Close profile navigation"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:489
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:488
 msgid "Purpur"
 msgstr "Purple"
 
@@ -7413,7 +7413,7 @@ msgstr "huge"
 msgid "Ringdiagramm"
 msgstr "Ring diagram"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:503
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:502
 msgid "Romantic Sun"
 msgstr "Romantic Sun"
 
@@ -7422,7 +7422,7 @@ msgid "rot"
 msgstr "red"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:23
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:491
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:490
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:31
 #: resources/vue/components/stock-images/colors.js:12
 #: resources/vue/mixins/courseware/colors.js:39
@@ -7433,12 +7433,12 @@ msgstr "Red"
 msgid "Rückgängig"
 msgstr "Undo"
 
-#: resources/assets/javascripts/studip-ui.js:603
+#: resources/assets/javascripts/studip-ui.js:606
 msgid "Sa"
 msgstr "Sat."
 
 #: resources/assets/javascripts/lib/calendar.js:11
-#: resources/assets/javascripts/studip-ui.js:594
+#: resources/assets/javascripts/studip-ui.js:597
 #: resources/vue/components/ConsultationCreator.vue:81
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:48
 #: resources/vue/components/form_inputs/RepetitionInput.vue:188
@@ -7461,7 +7461,7 @@ msgstr "close"
 #: resources/assets/javascripts/lib/dialog.js:465
 #: resources/assets/javascripts/lib/jsupdater.js:174
 #: resources/assets/javascripts/lib/qr_code.js:55
-#: resources/assets/javascripts/studip-ui.js:555
+#: resources/assets/javascripts/studip-ui.js:558
 #: resources/vue/components/StudipDialog.vue:90
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:62
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:129
@@ -7696,7 +7696,7 @@ msgstr "Aspect ratio"
 msgid "Sektion entfernen"
 msgstr "Remove section"
 
-#: resources/assets/javascripts/studip-ui.js:617
+#: resources/assets/javascripts/studip-ui.js:620
 #: resources/vue/components/courseware/blocks/CoursewareDateBlock.vue:90
 msgid "Sekunde"
 msgstr "Second"
@@ -7719,11 +7719,11 @@ msgstr "Semester"
 msgid "Senden"
 msgstr "Send"
 
-#: resources/assets/javascripts/studip-ui.js:582
+#: resources/assets/javascripts/studip-ui.js:585
 msgid "Sep"
 msgstr "Sep"
 
-#: resources/assets/javascripts/studip-ui.js:568
+#: resources/assets/javascripts/studip-ui.js:571
 #: resources/vue/components/form_inputs/RepetitionInput.vue:287
 msgid "September"
 msgstr "September"
@@ -8019,11 +8019,11 @@ msgstr "Are you sure to delete this area?"
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
 msgstr "Do really want to discard your posting?"
 
-#: resources/assets/javascripts/studip-ui.js:597
+#: resources/assets/javascripts/studip-ui.js:600
 msgid "So"
 msgstr "Sun."
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:505
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:504
 msgid "Soft Weather"
 msgstr "Soft Weather"
 
@@ -8051,7 +8051,7 @@ msgid "Sonnenschein"
 msgstr "Sunglow"
 
 #: resources/assets/javascripts/lib/calendar.js:12
-#: resources/assets/javascripts/studip-ui.js:588
+#: resources/assets/javascripts/studip-ui.js:591
 #: resources/vue/components/ConsultationCreator.vue:82
 #: resources/vue/components/form_inputs/DayOfWeekSelect.vue:52
 #: resources/vue/components/form_inputs/RepetitionInput.vue:197
@@ -8080,7 +8080,7 @@ msgstr ""
 "Sorting element for the element %{node}. Press the up or down arrow key to "
 "move this element inside the list."
 
-#: resources/vue/components/tree/StudipTreeList.vue:114
+#: resources/vue/components/tree/StudipTreeList.vue:115
 #: resources/vue/components/tree/StudipTreeTableRows.vue:19
 msgid ""
 "Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben "
@@ -8275,7 +8275,7 @@ msgstr "Study groups"
 msgid "Studierende"
 msgstr "Students"
 
-#: resources/assets/javascripts/studip-ui.js:615
+#: resources/assets/javascripts/studip-ui.js:618
 #: resources/vue/components/courseware/blocks/CoursewareDateBlock.vue:72
 msgid "Stunde"
 msgstr "Hour"
@@ -8286,14 +8286,14 @@ msgstr "Hours"
 
 #: resources/vue/components/SearchWidget.vue:16
 #: resources/vue/components/admission/ConfigureCourseSet.vue:242
-#: resources/vue/components/blubber/SearchWidget.vue:20
+#: resources/vue/components/blubber/SearchWidget.vue:21
 #: resources/vue/components/courseware/blocks/CoursewareDocumentBlock.vue:114
 #: resources/vue/components/courseware/widgets/CoursewareSearchWidget.vue:13
 #: resources/vue/components/stock-images/SearchWidget.vue:14
 msgid "Suche"
 msgstr "Search"
 
-#: resources/vue/components/blubber/SearchWidget.vue:56
+#: resources/vue/components/blubber/SearchWidget.vue:65
 msgid "Suche ausführen"
 msgstr "Perform search"
 
@@ -8301,8 +8301,8 @@ msgstr "Perform search"
 msgid "Suche läuft."
 msgstr "Search in progress."
 
-#: resources/vue/components/blubber/SearchWidget.vue:30
-#: resources/vue/components/blubber/SearchWidget.vue:36
+#: resources/vue/components/blubber/SearchWidget.vue:39
+#: resources/vue/components/blubber/SearchWidget.vue:45
 msgid "Suche nach …"
 msgstr "Search for …"
 
@@ -8323,7 +8323,7 @@ msgstr "Start search"
 
 #: resources/assets/javascripts/mvv.js:236
 #: resources/vue/components/StudipMultiPersonSearch.vue:33
-#: resources/vue/components/blubber/SearchWidget.vue:45
+#: resources/vue/components/blubber/SearchWidget.vue:54
 #: resources/vue/components/courseware/toolbar/CoursewareToolbarBlocks.vue:52
 msgid "Suche zurücksetzen"
 msgstr "Reset search"
@@ -8729,7 +8729,7 @@ msgstr "set invisible"
 msgid "Unterebene %{ node } öffnen"
 msgstr "Open sub-layer %{ node }"
 
-#: resources/vue/components/tree/StudipTreeList.vue:96
+#: resources/vue/components/tree/StudipTreeList.vue:97
 msgid "Unterebenen"
 msgstr "Sub-layers"
 
@@ -8824,25 +8824,25 @@ msgstr "Courses"
 
 #: resources/vue/components/AdminCourses.vue:49
 #: resources/vue/components/AdminCourses.vue:60
-#: resources/vue/components/tree/StudipTreeList.vue:162
+#: resources/vue/components/tree/StudipTreeList.vue:163
 msgid "Veranstaltungen"
 msgstr "Courses"
 
-#: resources/vue/components/tree/StudipTreeList.vue:145
 #: resources/vue/components/tree/StudipTreeList.vue:146
+#: resources/vue/components/tree/StudipTreeList.vue:147
 #: resources/vue/components/tree/StudipTreeTable.vue:99
 #: resources/vue/components/tree/StudipTreeTable.vue:100
 msgid "Veranstaltungen auf dieser Ebene anzeigen"
 msgstr "Display all courses on this level"
 
-#: resources/vue/components/tree/StudipTreeList.vue:154
 #: resources/vue/components/tree/StudipTreeList.vue:155
+#: resources/vue/components/tree/StudipTreeList.vue:156
 #: resources/vue/components/tree/StudipTreeTable.vue:113
 #: resources/vue/components/tree/StudipTreeTable.vue:114
 msgid "Veranstaltungen auf Unterebenen anzeigen"
 msgstr "Show courses on sub-layers"
 
-#: resources/vue/components/tree/StudipTreeList.vue:250
+#: resources/vue/components/tree/StudipTreeList.vue:253
 msgid "Veranstaltungen exportieren"
 msgstr "Export courses"
 
@@ -9031,7 +9031,7 @@ msgstr "Quarter"
 msgid "vierteljährlich"
 msgstr "quarterly"
 
-#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:490
+#: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:489
 msgid "Violet"
 msgstr "Violet"
 
@@ -9075,7 +9075,7 @@ msgstr "From"
 msgid "Von mir geteilte Seiten"
 msgstr "Pages shared by me"
 
-#: resources/assets/javascripts/studip-ui.js:557
+#: resources/assets/javascripts/studip-ui.js:560
 msgid "Vor"
 msgstr "Before"
 
@@ -9139,7 +9139,7 @@ msgstr ""
 "Templates contain sections and blocks that are ordered for certain purposes. "
 "When creating the page, it will be filled with sections and blocks."
 
-#: resources/assets/javascripts/studip-ui.js:622
+#: resources/assets/javascripts/studip-ui.js:625
 msgid "vorm."
 msgstr "AM"
 
@@ -9514,7 +9514,7 @@ msgstr "Currently being edited by %{ userName }"
 msgid "Wirklich löschen?"
 msgstr "Really delete?"
 
-#: resources/assets/javascripts/studip-ui.js:605
+#: resources/assets/javascripts/studip-ui.js:608
 msgid "Wo"
 msgstr "Where"
 
@@ -9560,13 +9560,13 @@ msgstr "Remaining characters: "
 msgid "Zeichenwerkzeug"
 msgstr "Drawing tool"
 
-#: resources/assets/javascripts/studip-ui.js:614
+#: resources/assets/javascripts/studip-ui.js:617
 #: resources/vue/components/courseware/blocks/CoursewareTimelineBlock.vue:116
 #: resources/vue/components/courseware/blocks/CoursewareTimelineBlock.vue:252
 msgid "Zeit"
 msgstr "Time"
 
-#: resources/assets/javascripts/studip-ui.js:613
+#: resources/assets/javascripts/studip-ui.js:616
 msgid "Zeit wählen"
 msgstr "Select time"
 
@@ -9608,7 +9608,7 @@ msgstr "Time period for resetting the progress"
 msgid "Zeitraum zwischen Erinnerungen"
 msgstr "Time period between reminders"
 
-#: resources/assets/javascripts/studip-ui.js:620
+#: resources/assets/javascripts/studip-ui.js:623
 msgid "Zeitzone"
 msgstr "Timezone"
 
@@ -9779,13 +9779,13 @@ msgstr "The following conditions must be met for enrolment:"
 msgid "zur nächsten Karte"
 msgstr "to the next card"
 
-#: resources/vue/components/tree/StudipTreeList.vue:195
-#: resources/vue/components/tree/StudipTreeTable.vue:211
+#: resources/vue/components/tree/StudipTreeList.vue:196
+#: resources/vue/components/tree/StudipTreeTable.vue:213
 #, fuzzy
 msgid "Zur Veranstaltung %{ title }"
 msgstr "To the course %{ course }"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:73
+#: resources/vue/components/tree/TreeSearchResult.vue:76
 #, fuzzy
 msgid "Zur Veranstaltung %{title}"
 msgstr "To the course %{name}"
@@ -9801,7 +9801,7 @@ msgstr "to the previous card"
 msgid "zurück"
 msgstr "back"
 
-#: resources/assets/javascripts/studip-ui.js:556
+#: resources/assets/javascripts/studip-ui.js:559
 #: resources/vue/components/StudipPagination.vue:46
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:151
 #: resources/vue/components/courseware/blocks/CoursewareTestBlock.vue:39
@@ -9851,6 +9851,10 @@ msgstr "second element"
 #: resources/vue/components/ConsultationCreator.vue:90
 msgid "zweiwöchentlich"
 msgstr "fortnightly"
+
+#, fuzzy
+#~ msgid "Automatisches Speichern aktivieren."
+#~ msgstr "Manage automatic updates"
 
 #~ msgid "Aussage hinzufügen"
 #~ msgstr "Add statement"
