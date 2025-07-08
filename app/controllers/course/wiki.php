@@ -254,12 +254,14 @@ class Course_WikiController extends AuthenticatedController
                     'read_permission' => [
                         'label' => _('Lesezugriff für'),
                         'type' => 'select',
-                        'options' => $groups
+                        'options' => $groups,
+                        'permission' => $GLOBALS['perm']->have_studip_perm('tutor', $page['range_id'])
                     ],
                     'write_permission' => [
                         'label' => _('Schreibzugriff für'),
                         'type' => 'select',
-                        'options' => $groups
+                        'options' => $groups,
+                        'permission' => $GLOBALS['perm']->have_studip_perm('tutor', $page['range_id'])
                     ]
                 ]
             ],
