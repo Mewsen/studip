@@ -57,13 +57,18 @@ class Institute_OverviewController extends AuthenticatedController
     {
         //gibt es eine Anweisung zur Umleitung?
         $redirect_to = Request::get('redirect_to');
-        if ($redirect_to) {
+        if (
+            $redirect_to
+            && !(
+                str_starts_with($redirect_to, '#')
+                || str_starts_with($redirect_to, '?')
+            )
+        ) {
             if (!is_internal_url($redirect_to)) {
                 throw new Exception('Invalid redirection');
             }
 
-            $this->response->add_header('Location', URLHelper::getURL($redirect_to, ['cid' => $this->institute_id]));
-            $this->render_nothing();
+            $this->redirect(URLHelper::getURL($redirect_to, ['cid' => $this->institute_id]));
             return;
         }
 
