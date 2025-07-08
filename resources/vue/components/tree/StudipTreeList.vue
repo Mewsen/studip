@@ -97,7 +97,7 @@
                                { title: course.attributes.title },
                                true
                            )">
-                            <img :src="course.meta.avatar.small" :title="course.attributes.title" class="avatar-small" alt="">
+                            <studip-icon shape="seminar" :size="26"></studip-icon>
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}
                             </template>
