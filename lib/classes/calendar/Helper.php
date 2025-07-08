@@ -219,4 +219,79 @@ class Helper
             ]
         );
     }
+
+    public static function getPersonalFullcalendar(): \Studip\Fullcalendar
+    {
+        $calendar_owner = \User::findCurrent();
+
+        $fullcalendar_studip_urls = [];
+        $fullcalendar_studip_urls['add'] = \URLHelper::getURL('dispatch.php/calendar/date/add', ['user_id' => $calendar_owner->id]);
+
+        $calendar_settings = $calendar_owner->getConfiguration()->CALENDAR_SETTINGS ?? [];
+
+        //Map calendar settings to fullcalendar settings:
+        $default_view = 'timeGridWeek';
+        if (!empty($calendar_settings['view'])) {
+            if ($calendar_settings['view'] === 'day') {
+                $default_view = 'timeGridDay';
+            } elseif ($calendar_settings['view'] === 'month') {
+                $default_view = 'dayGridMonth';
+            }
+        }
+
+        $slot_durations = [
+            'day'        => self::getCalendarSlotDuration('day'),
+            'week'       => self::getCalendarSlotDuration('week'),
+            'day_group'  => self::getCalendarSlotDuration('day_group'),
+            'week_group' => self::getCalendarSlotDuration('week_group')
+        ];
+
+        return new \Studip\Fullcalendar(
+            _('Kalender'),
+            [
+                'editable'    => true,
+                'selectable'  => true,
+                'studip_urls' => $fullcalendar_studip_urls,
+                'dialog_size' => 'auto',
+                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
+                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
+                'defaultDate' => self::getDefaultCalendarDate()->format('Y-m-d'),
+                'allDaySlot'  => true,
+                'allDayText'  => '',
+                'header'      => [
+                    'left'   => 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay',
+                    'right'  => 'prev,today,next'
+                ],
+                'weekNumbers' => true,
+                'views' => [
+                    'dayGridMonth' => [
+                        'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
+                        'displayEventEnd' => true
+                    ],
+                    'timeGridWeek' => [
+                        'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'       => $slot_durations['week']
+                    ],
+                    'timeGridDay' => [
+                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'       => $slot_durations['day']
+                    ]
+                ],
+                'defaultView' => $default_view,
+                'eventSources' => [
+                    [
+                        'url' => \URLHelper::getURL(
+                            'dispatch.php/calendar/calendar/calendar_data/user_' . $calendar_owner->id
+                        ),
+                        'method' => 'GET',
+                        'extraParams' => []
+                    ]
+                ]
+            ]
+        );
+    }
 }
