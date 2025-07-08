@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2025-07-04 11:00+0000\n"
+"PO-Revision-Date: 2025-07-08 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -22388,16 +22388,15 @@ msgstr ""
 "participate in."
 
 #: app/views/course/enrolment/_priocourses.php:45
-#, fuzzy
 msgid ""
 "Sortieren Sie die in Frage kommenden Veranstaltungen im Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen zuweisen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Drag and drop your choice to the right side and sort them by priority (most "
-"desired at the top). You can drag more courses than you really want to "
-"participate in."
+"Drag and drop relevant courses to the right side and sort them by priority ("
+"most desired at the top). You can select more courses than you actually want "
+"to attend."
 
 #: app/views/course/enrolment/_priocourses.php:54
 msgid "Verfügbare Veranstaltungen"
@@ -25061,8 +25060,7 @@ msgstr "Semester plan"
 #: app/views/resources/room_group/permissions.php:31
 msgid ""
 "Es sind keine gemeinsamen Rechte für die zuvor aufgelisteten Räume vorhanden."
-msgstr ""
-"There are no common permissions available for the previously listed rooms."
+msgstr "There are no common permissions for the rooms shown above."
 
 #: app/views/resources/room_group/permissions.php:38
 msgid "Gemeinsame Rechte"
@@ -28428,8 +28426,8 @@ msgid ""
 "Tragen Sie bei gitlab, github.com oder dem Pluginmarktplatz die folgende URL "
 "ein, die der Webhook aufrufen soll."
 msgstr ""
-"Add the following URL the web hook shall invoke on gitlab, github.com or the "
-"plugin marketplace."
+"Add the URL below for the web hook call to GitLab, GitHub.com or the Stud.IP "
+"marketplace."
 
 #: app/views/admin/plugin/edit_automaticupdate.php:45
 msgid "Dieser Aufruf muss noch mit dem Sicherheitstoken abgesichert werden."
