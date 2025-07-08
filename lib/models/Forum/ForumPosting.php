@@ -81,10 +81,11 @@ class ForumPosting extends SimpleORMap
             FROM forum_topics
             JOIN forum_discussions USING(topic_id)
             JOIN forum_postings USING(discussion_id)
-            WHERE forum_topics.range_id = :course_id
+            WHERE forum_topics.range_id = :course_id AND forum_postings.user_id != :user_id
             ",
             [
-                'course_id' => $course_id
+                'course_id' => $course_id,
+                'user_id' => User::findCurrent()->user_id
             ]
         ];
 
