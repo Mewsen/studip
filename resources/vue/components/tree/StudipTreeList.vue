@@ -1,7 +1,7 @@
 <template>
     <article class="studip-tree-list">
         <header>
-            <tree-breadcrumb v-if="currentNode.id !== 'root'" :node="currentNode"
+            <tree-breadcrumb v-if="currentNode.id !== 0" :node="currentNode"
                              :edit-url="editUrl" :icon="breadcrumbIcon" :assignable="assignable"
                              :num-children="children.length" :num-courses="courses.length"
                              :show-navigation="showStructureAsNavigation"
@@ -12,7 +12,7 @@
             <h1>
                 {{ currentNode.attributes.name }}
 
-                <a v-if="editable && currentNode.attributes.id !== 'root'"
+                <a v-if="editable && currentNode.attributes.id !== 0"
                    :href="editUrl + '/' + currentNode.attributes.id"
                    @click.prevent="editNode(editUrl, currentNode.id)" data-dialog="size=medium"
                    :title="$gettext('%{name} bearbeiten', {name: currentNode.attributes.name}, true)">

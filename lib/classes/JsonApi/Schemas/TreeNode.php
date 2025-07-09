@@ -26,7 +26,7 @@ class TreeNode extends SchemaProvider
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         $schema = [
-            'id' => (string) $resource->getId(),
+            'id' => $resource->getId(),
             'name' => (string) $resource->getName(),
             'description' => (string) $resource->getDescription(),
             'description-formatted' => (string) formatReady($resource->getDescription()),

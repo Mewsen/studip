@@ -427,9 +427,9 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
 
     public static function getNode($id): StudipTreeNode
     {
-        if ($id === 'root') {
+        if ($id == static::ROOT) {
             return static::build([
-                'id'   => 'root',
+                'id'   => self::ROOT,
                 'name' => Config::get()->UNI_NAME_CLEAN,
             ]);
         }
@@ -506,7 +506,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         $semclass = 0,
         $with_children = false
     ): int {
-        if ($this->id === 'root' && !$with_children) {
+        if ($this->id == 0 && !$with_children) {
             return 0;
         }
 
@@ -519,12 +519,11 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         $query = "SELECT COUNT(DISTINCT t.`seminar_id`) FROM `seminar_sem_tree` t {$condition}";
 
         if ($with_children) {
-            $query .= " AND t.`sem_tree_id` IN (:ids)";
-            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+            $query .= " AND (t.`ancestors` LIKE '%|:id|%' OR t.`ancestors` LIKE ':id|%' OR t.`ancestors` LIKE '%|:id')";
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
-            $parameters['id'] = $this->id;
         }
+        $parameters['id'] = $this->id;
 
         return DBManager::get()->fetchColumn($query, $parameters);
     }
@@ -548,12 +547,11 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         $query = "SELECT DISTINCT s.* FROM `seminar_sem_tree` AS t {$condition}";
 
         if ($with_children) {
-            $query .= " AND t.`sem_tree_id` IN (:ids)";
-            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+            $query .= " AND (t.`ancestors` LIKE '%|:id|%' OR t.`ancestors` LIKE ':id|%' OR t.`ancestors` LIKE '%|:id')";
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
-            $parameters['id'] = $this->id;
         }
+        $parameters['id'] = $this->id;
 
         $query .= " ORDER BY " . implode(', ', $order_by);
 
@@ -562,19 +560,25 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
 
     public function getAncestorNodes(): array
     {
-        $path = [
+        return array_merge(
             [
-                'id' => $this->id,
-                'name' => $this->getName(),
-                'classname' => static::class
-            ]
-        ];
-
-        if ($this->parent_id) {
-            $path = array_merge($this->getNode($this->parent_id)->getAncestorNodes(), $path);
-        }
-
-        return $path;
+                [
+                    'id' => static::ROOT,
+                    'name' => Config::get()->UNI_NAME_CLEAN,
+                    'classname' => static::class
+                ]
+            ],
+            static::findAndMapMany(
+                function ($node) {
+                    return [
+                        'id' => $node->id,
+                        'name' => $node->getName(),
+                        'classname' => static::class
+                    ];
+                },
+                explode('|', $this->ancestors)
+            )
+        );
     }
 
     /**

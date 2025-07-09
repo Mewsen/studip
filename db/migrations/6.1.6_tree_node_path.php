@@ -4,7 +4,7 @@ return new class extends Migration
 {
     public function description()
     {
-        return 'Adds the path to the current node to all sem_tree and range_tree entries.';
+        return 'Introduces numeric IDs and adds the path to the current node to all sem_tree and range_tree entries.';
     }
 
     public function up()
@@ -44,11 +44,16 @@ return new class extends Migration
     {
         foreach ($classname::findByParent_id($oldParentId, "ORDER BY `priority`") as $child) {
             $currentId++;
+            $newAncestors = $ancestors;
+            if ($ancestors !== '') {
+                $newAncestors .= '|';
+            }
+            $newAncestors .= $newParentId;
 
             $oldId = $child->id;
             $child->id = $currentId;
             $child->parent_id = $newParentId;
-            $child->ancestors = $ancestors . ($ancestors === '' ? '' : '|') . $newParentId;
+            $child->ancestors = $newAncestors;
             $child->store();
 
             DBManager::get()->execute(
@@ -56,7 +61,7 @@ return new class extends Migration
                 ['new' => $child->id, 'old' => $oldId]
             );
 
-            $currentId = $this->buildStructure($classname, $oldId, $child->id, $currentId, $child->ancestors);
+            $currentId = $this->buildStructure($classname, $oldId, $child->id, $currentId, $newAncestors);
         }
 
         return $currentId;

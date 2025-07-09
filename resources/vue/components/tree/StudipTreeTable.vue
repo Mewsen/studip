@@ -4,7 +4,7 @@
     </div>
     <article v-else class="studip-tree-table">
         <header>
-            <tree-breadcrumb v-if="currentNode.id !== 'root'" :node="currentNode"
+            <tree-breadcrumb v-if="currentNode.id !== 0" :node="currentNode"
                              :icon="breadcrumbIcon" :editable="editable" :edit-url="editUrl" :create-url="createUrl"
                              :delete-url="deleteUrl" :show-navigation="showStructureAsNavigation"
                              :num-children="children.length" :num-courses="courses.length"

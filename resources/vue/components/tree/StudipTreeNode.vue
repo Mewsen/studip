@@ -6,7 +6,7 @@
                     <studip-icon :shape="openState ? 'arr_1down': 'arr_1right'"/>
                 </div>
             </a>
-            <button v-if="isAssignable && node.attributes.id !== 'root'" class="studip-tree-node-assignment-state"
+            <button v-if="isAssignable && node.attributes.id !== 0" class="studip-tree-node-assignment-state"
                     @click.prevent="changeAssignmentState()" :title="$gettext('Zuordnung ändern')">
                 <studip-icon :shape="assignmentState === 0
                     ? 'checkbox-unchecked'
@@ -19,9 +19,9 @@
             </a>
             <studip-tooltip-icon v-if="withInfo && !isLoading && node.attributes.description?.trim() !== ''"
                                  :text="node.attributes['description-formatted'].trim()"></studip-tooltip-icon>
-            <input v-if="isAssignable && node.attributes.id !== 'root'" type="hidden" :name="assignmentAction"
+            <input v-if="isAssignable && node.attributes.id !== 0" type="hidden" :name="assignmentAction"
                    :value="node.attributes.id">
-            <a v-if="editable && node.attributes.id !== 'root'" :href="editUrl + '/' + node.attributes.id"
+            <a v-if="editable && node.attributes.id !== 0" :href="editUrl + '/' + node.attributes.id"
                @click.prevent="editNode(editUrl, node.id)" data-dialog="size=medium"
                class="studip-tree-node-edit-link">
                 <studip-icon shape="edit"></studip-icon>
@@ -267,7 +267,7 @@ export default {
             if (this.theAncestors?.includes(this.node.id) && !this.openState) {
                 this.toggleNode();
             }
-            if (this.isAssignable && this.node.attributes.id !== 'root') {
+            if (this.isAssignable && this.node.attributes.id !== 0) {
                 this.checkAssignments();
             }
         });
