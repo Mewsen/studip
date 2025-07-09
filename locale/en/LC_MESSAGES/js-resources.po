@@ -2,15 +2,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-05-23 13:51+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-5-js/en/>\n"
+"PO-Revision-Date: 2025-07-10 10:00+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-5-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -6790,7 +6791,7 @@ msgstr "Do not regard course"
 #: resources/vue/components/SearchWidget.vue:28
 #: resources/vue/components/SearchWidget.vue:29
 msgid "Veranstaltung suchen"
-msgstr "Search for courses"
+msgstr "Find course"
 
 #: resources/vue/components/AdminCourses.vue:42
 #: resources/vue/components/AdminCourses.vue:53
