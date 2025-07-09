@@ -97,7 +97,7 @@ class ForumCategory extends \SimpleORMap
         ];
     }
 
-    public function onDelete()
+    public function onDelete(): void
     {
         DBManager::get()->execute(
             "Update `forum_topics` SET `category_id` = null WHERE `category_id` = ?",

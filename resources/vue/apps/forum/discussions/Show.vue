@@ -13,7 +13,7 @@ import StudipIcon from "../../../components/StudipIcon.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vue";
 import {highlightText, removeHighlight} from "@/vue/components/forum/helpers";
-import {getSearchURL, getTopicURL} from "@/vue/components/forum/helpers/urls";
+import {getSearchURL, getTopicURL, getDiscussionIndexURL} from "@/vue/components/forum/helpers/urls";
 import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
 
 const forumConfig = useForumConfig();
@@ -64,7 +64,14 @@ const addPost = () => {
 }
 
 const goBackURL = computed(() => {
-    return props.redirect === 'search' ? getSearchURL() : getTopicURL(props.discussion.topic_id);
+    switch (props.redirect) {
+        case 'search':
+            return getSearchURL();
+        case 'discussions':
+            return getDiscussionIndexURL();
+        default:
+            return getTopicURL(props.discussion.topic_id);
+    }
 });
 
 const fetchPostings = async () => {

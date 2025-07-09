@@ -773,6 +773,7 @@ input.allow-plaintext-toggle {
 
     &__close-button {
         position: absolute;
+        z-index: 1;
         right: 10px;
         top: 10px;
         display: flex;

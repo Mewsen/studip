@@ -1,6 +1,8 @@
 <?php
 namespace Forum;
 
+use OpenGraph;
+use OpenGraphURLCollection;
 use SimpleORMap;
 use Forum\Service\PostingNotification;
 use User;
@@ -100,19 +102,19 @@ class ForumPosting extends SimpleORMap
         );
     }
 
-    public function getOpenGraphURLs()
+    public function getOpenGraphURLs(): OpenGraphURLCollection
     {
         $content = preg_replace("~<blockquote(.*?)>(.*)</blockquote>~si", '', $this['content']);
-        return \OpenGraph::extract($content);
+        return OpenGraph::extract($content);
     }
 
-    public function onCreate()
+    public function onCreate(): void
     {
         $postingNotification = new PostingNotification($this);
         $postingNotification->notifySubscribers();
     }
 
-    public function onDelete()
+    public function onDelete(): void
     {
         ForumPostingReaction::deleteBySQL("posting_id = ?", [$this->posting_id]);
     }

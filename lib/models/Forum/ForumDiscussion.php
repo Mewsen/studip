@@ -71,7 +71,7 @@ class ForumDiscussion extends SimpleORMap
         parent::configure($config);
     }
 
-    public function getTags()
+    public function getTags(): array
     {
         return DBManager::get()->fetchAll(
             "SELECT DISTINCT `tags_relations`.`tag_id`, `tags`.`name` FROM `tags`
@@ -186,13 +186,13 @@ class ForumDiscussion extends SimpleORMap
         );
     }
 
-    public function onCreate()
+    public function onCreate(): void
     {
         $discussionNotification = new DiscussionNotification($this);
         $discussionNotification->notifySubscribers();
     }
 
-    public function onDelete()
+    public function onDelete(): void
     {
         ForumSubscription::deleteBySQL("subject_id = ?", [$this->discussion_id]);
         ForumPosting::deleteBySQL("discussion_id = ?", [$this->discussion_id]);

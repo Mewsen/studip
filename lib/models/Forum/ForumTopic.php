@@ -46,7 +46,7 @@ class ForumTopic extends SimpleORMap
         parent::configure($config);
     }
 
-    public static function getCourseTopics($course_id)
+    public static function getCourseTopics($course_id): array
     {
         return self::findBySQL(
             "range_id = :course_id
@@ -56,7 +56,7 @@ class ForumTopic extends SimpleORMap
         );
     }
 
-    public static function getCourseTopic($course_id, $topic_id)
+    public static function getCourseTopic($course_id, $topic_id): self
     {
         return self::findOneBySQL("range_id = ? AND topic_id = ?", [$course_id, $topic_id]);
     }
@@ -145,7 +145,7 @@ class ForumTopic extends SimpleORMap
         ];
     }
 
-    public function onDelete()
+    public function onDelete(): void
     {
         ForumSubscription::deleteBySQL("subject_id = ?", [$this->topic_id]);
         ForumDiscussion::deleteBySQL("topic_id = ?", [$this->topic_id]);

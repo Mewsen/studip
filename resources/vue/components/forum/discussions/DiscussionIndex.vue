@@ -3,7 +3,7 @@ import {getDiscussionURL, getSearchURL} from "../helpers/urls";
 import {numberFormatter} from "../../../../assets/javascripts/lib/number_formatter";
 import ForumMembers from "../ForumMembers.vue";
 import {useSortable} from "../../../composables/useSortable";
-import {toRef} from "vue";
+import {onMounted, toRef} from "vue";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import StudipDateTime from "@/vue/components/StudipDateTime.vue";
 import StudipActionMenu from "@/vue/components/StudipActionMenu.vue";
@@ -67,6 +67,10 @@ const deleteDiscussion = id => STUDIP.Dialog.confirm(
     },
     STUDIP.Dialog.close()
 );
+
+onMounted(() => {
+    sortBy('meta.recent_activity', 'desc');
+});
 </script>
 
 <template>
@@ -187,7 +191,7 @@ const deleteDiscussion = id => STUDIP.Dialog.confirm(
                             </div>
                             <div class="inline-flex gap-10 items-start mb-10 mt-10">
                                 <div v-if="discussion.category" class="discussion-category">
-                                    <span :style="{ width: '12px', height: '12px', backgroundColor: discussion.category.color }"></span>
+                                    <span v-if="discussion.category.color" :style="{ width: '12px', height: '12px', backgroundColor: discussion.category.color }"></span>
                                     <p class="m-0">
                                         {{ discussion.category.name }}
                                     </p>

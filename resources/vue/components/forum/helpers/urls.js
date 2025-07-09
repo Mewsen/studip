@@ -3,6 +3,7 @@ export const getTopicEditURL = id => STUDIP.URLHelper.getURL(`dispatch.php/cours
 export const getTopicDeleteURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/topics/delete/${id}`);
 
 // Discussions
+export const getDiscussionIndexURL = () => STUDIP.URLHelper.getURL('dispatch.php/course/forum/discussions/index');
 export const getDiscussionCreateURL = () => STUDIP.URLHelper.getURL('dispatch.php/course/forum/discussions/edit');
 export const getDiscussionURL = (discussion_id, params = {}) => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussions/show/${discussion_id}`, params);
 
@@ -12,6 +13,5 @@ export const getCategoryEditURL = id => STUDIP.URLHelper.getURL(`dispatch.php/co
 export const getCategoryDeleteURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/categories/delete/${id}`);
 
 export const getSearchURL = (hashtags='') => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/search?${hashtags}`);
-
 
 export const userProfileURL = username => STUDIP.URLHelper.getURL('dispatch.php/profile', {username});

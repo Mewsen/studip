@@ -31,6 +31,11 @@ class CoreForum extends CorePlugin implements StudipModule
         }
 
         $navigation->addSubNavigation(
+            'discussions',
+            new Navigation(_('Alle Diskussionen'), 'dispatch.php/course/forum/discussions')
+        );
+
+        $navigation->addSubNavigation(
             'subscriptions',
             new Navigation(_('Abonnierte Diskussionen'), 'dispatch.php/course/forum/subscriptions')
         );
@@ -73,6 +78,7 @@ class CoreForum extends CorePlugin implements StudipModule
     public function getInfoTemplate($course_id)
     {
         // TODO: Implement getInfoTemplate() method.
+        return null;
     }
 
     public static function isAdmin($course_id): bool
@@ -91,7 +97,7 @@ class CoreForum extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Veranstaltungsbegleitender Meinungsaustausch zu bestimmten Themen'),
@@ -112,7 +118,7 @@ class CoreForum extends CorePlugin implements StudipModule
         ];
     }
 
-    public static function deleteCourseContents($course_id)
+    public static function deleteCourseContents($course_id): void
     {
         \Forum\ForumCategory::deleteBySQL("range_id = ?", [$course_id]);
         \Forum\ForumTopic::deleteBySQL("range_id = ?", [$course_id]);

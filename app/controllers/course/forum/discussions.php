@@ -17,7 +17,36 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
     {
         parent::before_filter($action, $args);
 
-        Navigation::activateItem('course/forum/topics');
+        if ($action === 'index') {
+            Navigation::activateItem('course/forum/discussions');
+        } else {
+            Navigation::activateItem('course/forum/topics');
+        }
+    }
+
+    public function index_action() {
+
+        $metadata = DBManager::get()->fetchOne(
+            "SELECT
+              COUNT(posting_id) as 'postings_count',
+              COUNT(DISTINCT user_id) as 'users_count' ,
+              MAX(mkdate) as 'recent_activity'
+            FROM forum_postings WHERE range_id = :course_id",
+            [
+                'course_id' => $this->course_id
+            ]
+        );
+
+        $this->render_vue_app(
+            Studip\VueApp::create('forum/discussions/Index')
+                ->withProps([
+                    'metadata' => [
+                        'postings_count' => (int) $metadata['postings_count'],
+                        'users_count' => (int) $metadata['users_count'],
+                        'recent_activity' => $metadata['recent_activity'] ? date('c', $metadata['recent_activity']) : ''
+                    ]
+                ])
+        );
     }
 
     public function show_action($discussion_id)

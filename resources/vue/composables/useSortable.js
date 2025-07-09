@@ -25,12 +25,12 @@ export function useSortable(data) {
 
     watch([data, sortKey, sortOrder], sortData, { immediate: true });
 
-    function sortBy(key){
+    function sortBy(key, order = 'asc') {
         if (sortKey.value === key) {
             sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
         } else {
             sortKey.value = key;
-            sortOrder.value = 'asc';
+            sortOrder.value = order;
         }
     }
 
