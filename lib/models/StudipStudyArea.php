@@ -498,6 +498,23 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         return $result;
     }
 
+    public function getDescendantNodeIds(): array
+    {
+        return DBManager::get()->fetchFirst(
+            "SELECT DISTINCT `sem_tree_id`
+            FROM `sem_tree`
+            WHERE `ancestors` LIKE :inline
+               OR `ancestors` LIKE :start
+               OR `ancestors` LIKE :end
+            ORDER BY `ancestors`, `priority`",
+            [
+                'inline' => '%|' . $this->id . '|%',
+                'start' => $this->id . '|%',
+                'end' => '%|' . $this->id
+            ]
+        );
+    }
+
     /**
      * @see StudipTreeNode::countCourses()
      */
@@ -519,11 +536,12 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         $query = "SELECT COUNT(DISTINCT t.`seminar_id`) FROM `seminar_sem_tree` t {$condition}";
 
         if ($with_children) {
-            $query .= " AND (t.`ancestors` LIKE '%|:id|%' OR t.`ancestors` LIKE ':id|%' OR t.`ancestors` LIKE '%|:id')";
+            $query .= " AND t.`sem_tree_id` IN (:ids)";
+            $parameters['ids'] = $this->getDescendantIds() ?: [''];
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
+            $parameters['id'] = $this->id;
         }
-        $parameters['id'] = $this->id;
 
         return DBManager::get()->fetchColumn($query, $parameters);
     }
@@ -547,11 +565,12 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         $query = "SELECT DISTINCT s.* FROM `seminar_sem_tree` AS t {$condition}";
 
         if ($with_children) {
-            $query .= " AND (t.`ancestors` LIKE '%|:id|%' OR t.`ancestors` LIKE ':id|%' OR t.`ancestors` LIKE '%|:id')";
+            $query .= " AND t.`sem_tree_id` IN (:ids)";
+            $parameters['ids'] = $this->getDescendantIds() ?: [''];
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
+            $parameters['id'] = $this->id;
         }
-        $parameters['id'] = $this->id;
 
         $query .= " ORDER BY " . implode(', ', $order_by);
 

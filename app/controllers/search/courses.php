@@ -59,7 +59,7 @@ class Search_CoursesController extends AuthenticatedController
             $this->editUrl = $this->url_for('rangetree/edit');
             $title = _('Einrichtungsverzeichnis');
         }
-        $this->startId = Request::option('node_id', $nodeClass . '_root');
+        $this->startId = Request::option('node_id', $nodeClass . '_0');
 
         $this->setupSidebar();
         PageLayout::setTitle($title);

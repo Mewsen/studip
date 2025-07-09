@@ -111,4 +111,11 @@ interface StudipTreeNode
      */
     public function getAncestorNodes(): array;
 
+    /**
+     * Returns an array containing all descendant node IDs.
+     *
+     * @return array
+     */
+    public function getDescendantNodeIds(): array;
+
 }

@@ -47,9 +47,7 @@ trait StudipTreeNodeCachableTrait
 
         $ids = [];
 
-        foreach ($this->getChildNodes() as $child) {
-            $ids = array_merge($ids, [$child->id], $child->getDescendantIds());
-        }
+        $ids = $this->getDescendantNodeIds();
 
         $cache[$this->id] = $ids;
 

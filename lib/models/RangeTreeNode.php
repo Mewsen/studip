@@ -198,4 +198,21 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         return $path;
     }
 
+    public function getDescendantNodeIds(): array
+    {
+        return DBManager::get()->fetchFirst(
+            "SELECT DISTINCT `item_id`
+            FROM `range_tree`
+            WHERE `ancestors` LIKE :inline
+               OR `ancestors` LIKE :start
+               OR `ancestors` LIKE :end
+            ORDER BY `ancestors`, `priority`",
+            [
+                'inline' => '%|' . $this->id . '|%',
+                'start' => $this->id . '|%',
+                'end' => '%|' . $this->id
+            ]
+        );
+    }
+
 }
