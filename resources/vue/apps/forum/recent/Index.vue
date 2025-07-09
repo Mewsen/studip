@@ -16,7 +16,7 @@ const discussions = ref([]);
 const pagination = ref({});
 const isLoading = ref(false);
 
-const fetchDiscussions = async (offset = 0) => {
+const fetchDiscussions = async (_, offset = 0) => {
     try {
         isLoading.value = true;
         const response = await STUDIP.jsonapi.withPromises().GET(
@@ -34,6 +34,7 @@ const fetchDiscussions = async (offset = 0) => {
 
         pagination.value = {
             ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
             links: response.links
         };
 
@@ -58,10 +59,10 @@ onMounted(async () => {
                     <tr>
                         <td colspan="7">
                             <StudipPagination
-                                :currentOffset="pagination.offset"
+                                :currentPage="pagination.currentPage"
                                 :totalItems="pagination.total"
                                 :itemsPerPage="pagination.limit"
-                                @updateOffset="fetchDiscussions" />
+                                @pageUpdated="fetchDiscussions" />
                         </td>
                     </tr>
                 </tfoot>

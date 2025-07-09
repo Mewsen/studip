@@ -2,18 +2,18 @@
     <div>
         <StudipPagination
             v-show="totalItems > perPage"
-            :currentOffset="offset"
+            :currentPage="offset"
             :totalItems="totalItems"
             :itemsPerPage="perPage"
-            @updateOffset="onUpdateOffset"
+            @pageUpdated="onUpdateOffset"
         />
         <slot></slot>
         <StudipPagination
             v-show="totalItems > perPage"
-            :currentOffset="offset"
+            :currentPage="offset"
             :totalItems="totalItems"
             :itemsPerPage="perPage"
-            @updateOffset="onUpdateOffset"
+            @pageUpdated="onUpdateOffset"
         />
     </div>
 </template>

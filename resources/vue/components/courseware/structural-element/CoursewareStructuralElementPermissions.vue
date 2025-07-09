@@ -60,10 +60,10 @@
                 <tr>
                     <td colspan="5">
                         <studip-pagination
-                            :currentOffset="autorOffset"
+                            :currentPage="autorOffset"
                             :totalItems="autor_members.length"
                             :itemsPerPage="entries_per_page"
-                            @updateOffset="updateAutorOffset" />
+                            @pageUpdated="updateAutorOffset" />
                     </td>
                 </tr>
             </tfoot>
@@ -108,10 +108,10 @@
                 <tr>
                     <td colspan="3">
                         <studip-pagination
-                            :currentOffset="userOffset"
+                            :currentPage="userOffset"
                             :totalItems="user_members.length"
                             :itemsPerPage="entries_per_page"
-                            @updateOffset="updateUserOffset"/>
+                            @pageUpdated="updateUserOffset"/>
                     </td>
                 </tr>
             </tfoot>

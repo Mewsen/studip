@@ -31,7 +31,7 @@ const toggleLayoutMessage = computed(() => {
     return $gettext('Tabellarische Ansicht aktiviert');
 });
 
-const fetchCategories = async (offset = 0) => {
+const fetchCategories = async (_, offset = 0) => {
     try {
         const response = await STUDIP.jsonapi.withPromises().GET(
             `courses/${STUDIP.URLHelper.parameters.cid}/forum-categories`,
@@ -42,6 +42,7 @@ const fetchCategories = async (offset = 0) => {
 
         pagination.value = {
             ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
             links: response.links
         };
 
@@ -261,10 +262,10 @@ onMounted(async () => {
             </table>
             <StudipPagination
                 v-if="pagination.total > pagination.limit"
-                :currentOffset="pagination.offset"
+                :currentPage="pagination.currentPage"
                 :totalItems="pagination.total"
                 :itemsPerPage="pagination.limit"
-                @updateOffset="fetchCategories" />
+                @pageUpdated="fetchCategories" />
         </div>
     </ForumApp>
 </template>

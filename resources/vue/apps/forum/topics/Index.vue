@@ -24,7 +24,7 @@ const toggleLayoutMessage = computed(() => {
 const topics = ref([]);
 const isLoading = ref(false);
 const pagination = ref({});
-const fetchTopics = async (offset = 0) => {
+const fetchTopics = async (_, offset = 0) => {
     try {
         isLoading.value = true;
 
@@ -35,6 +35,7 @@ const fetchTopics = async (offset = 0) => {
 
         pagination.value = {
             ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
             links: response.links
         };
 
@@ -88,10 +89,10 @@ onMounted(async () => {
                     <template #pagination>
                         <StudipPagination
                             v-if="pagination.total > pagination.limit"
-                            :currentOffset="pagination.offset"
+                            :currentPage="pagination.currentPage"
                             :totalItems="pagination.total"
                             :itemsPerPage="pagination.limit"
-                            @updateOffset="fetchTopics" />
+                            @pageUpdated="fetchTopics" />
                     </template>
                 </TopicsIndex>
             </div>

@@ -42,7 +42,7 @@ const getSubscriptionDropdownTitle = type => {
     }
 }
 
-const fetchSubscribedDiscussions = async (offset = 0) => {
+const fetchSubscribedDiscussions = async (_, offset = 0) => {
     try {
         isLoading.value = true;
 
@@ -55,6 +55,7 @@ const fetchSubscribedDiscussions = async (offset = 0) => {
 
         pagination.value = {
             ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
             links: response.links
         };
 
@@ -220,10 +221,10 @@ onMounted(async () => {
                     <tr>
                         <td colspan="5">
                             <StudipPagination
-                                :currentOffset="pagination.offset"
+                                :currentPage="pagination.currentPage"
                                 :totalItems="pagination.total"
                                 :itemsPerPage="pagination.limit"
-                                @updateOffset="fetchSubscribedDiscussions" />
+                                @pageUpdated="fetchSubscribedDiscussions" />
                         </td>
                     </tr>
                 </tfoot>

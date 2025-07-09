@@ -93,10 +93,10 @@
             <thead>
             <tr v-if="totalCourseCount > limit">
                 <td colspan="4">
-                    <studip-pagination :items-per-page="limit"
-                                       :total-items="totalCourseCount"
-                                       :current-offset="offset"
-                                       @updateOffset="updateOffset"
+                    <studip-pagination :itemsPerPage="limit"
+                                       :totalItems="totalCourseCount"
+                                       :currentPage="offset"
+                                       @pageUpdated="updateOffset"
                     />
                 </td>
             </tr>
@@ -136,10 +136,10 @@
             <tfoot v-if="totalCourseCount > limit">
                 <tr>
                     <td colspan="4">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
+                        <studip-pagination :itemsPerPage="limit"
+                                           :totalItems="totalCourseCount"
+                                           :currentPage="offset"
+                                           @pageUpdated="updateOffset"
                         />
                     </td>
                 </tr>
