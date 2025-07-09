@@ -191,14 +191,20 @@ article.studip.wiki {
      li {
          margin-bottom: 5px;
          display: flex;
+         justify-content: space-between;
+
+         a {
+             min-height: var(--avatar-small);
+             &.with_avatar {
+                 background-size: var(--avatar-small);
+                 background-position: left top;
+                 background-repeat: no-repeat;
+                 padding-left: calc(var(--avatar-small) + 1ex);
+             }
+         }
+
      }
-     a {
-         background-position: left top;
-         background-repeat: no-repeat;
-         background-size: var(--avatar-small);
-         min-height: var(--avatar-small);
-         padding-left: calc(var(--avatar-small) + 1ex);
-     }
+
  }
 
  p.last-save-date {
