@@ -537,7 +537,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
 
         if ($with_children) {
             $query .= " AND t.`sem_tree_id` IN (:ids)";
-            $parameters['ids'] = $this->getDescendantIds() ?: [''];
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
             $parameters['id'] = $this->id;
@@ -566,7 +566,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
 
         if ($with_children) {
             $query .= " AND t.`sem_tree_id` IN (:ids)";
-            $parameters['ids'] = $this->getDescendantIds() ?: [''];
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
         } else {
             $query .= " AND t.`sem_tree_id` = :id";
             $parameters['id'] = $this->id;
