@@ -51,7 +51,7 @@ final class ModernizeWiki extends Migration
                 `wiki`.`body`,
                 NULL,
                 IF(`wiki_page_config`.`read_restricted` > 0, 'tutor', 'all'),
-                IF(`wiki_page_config`.`edit_restricted` > 0, 'tutor', 'all'),
+                IF(`wiki_page_config`.`edit_restricted` > 0 OR (`wiki_page_config`.`edit_restricted` IS NULL AND `config_values`.`value` IS NOT NULL), 'tutor', 'all'),
                 `wiki`.`user_id`,
                 `wiki`.`chdate`,
                 IFNULL(`wiki`.`mkdate`, UNIX_TIMESTAMP())
@@ -62,6 +62,7 @@ final class ModernizeWiki extends Migration
                 GROUP BY `wiki`.`range_id`, `wiki`.`keyword`
             ) AS `wiki_grouped` ON (`wiki_grouped`.`range_id` = `wiki`.`range_id` AND `wiki_grouped`.`keyword` = `wiki`.`keyword` AND `wiki_grouped`.`version` = `wiki`.`version`)
             LEFT JOIN `wiki_page_config` ON (`wiki`.`keyword` = `wiki_page_config`.`keyword` AND `wiki_page_config`.`range_id` = `wiki_grouped`.`range_id`)
+            LEFT JOIN `config_values` ON (`config_values`.`range_id` = `wiki`.`range_id` AND `config_values`.`field` = 'WIKI_COURSE_EDIT_RESTRICTED' AND `config_values`.`value` = '1')
         ");
         DBManager::get()->exec("
             UPDATE `wiki_pages`
@@ -136,13 +137,22 @@ final class ModernizeWiki extends Migration
         ]);
 
         DBManager::get()->exec("
-            INSERT INTO `config_values` (`field`, `range_id`, `value`, `mkdate`, `chdate`, `comment`)
+            INSERT IGNORE INTO `config_values` (`field`, `range_id`, `value`, `mkdate`, `chdate`, `comment`)
             SELECT 'WIKI_STARTPAGE_ID', `wiki_pages`.`range_id`, `wiki_pages`.`page_id`, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ''
             FROM `wiki`
                 INNER JOIN `wiki_pages` ON (`wiki_pages`.`name` = `wiki`.`keyword` AND `wiki_pages`.`range_id` = `wiki`.`range_id`)
             WHERE `keyword` = 'WikiWikiWeb'
             GROUP BY `wiki`.`range_id`
         ");
+
+        DBManager::get()->exec("
+            INSERT IGNORE INTO `config_values` (`field`, `range_id`, `value`, `mkdate`, `chdate`, `comment`)
+            SELECT 'WIKI_CREATE_PERMISSION', `config_values`.`range_id`, 'tutor', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ''
+            FROM `config_values`
+            WHERE `config_values`.`field` = 'WIKI_COURSE_EDIT_RESTRICTED'
+                AND `config_values`.`value` = '1'
+        ");
+
         DBManager::get()->exec("
             CREATE TABLE `wiki_online_editing_users` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
