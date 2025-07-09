@@ -20,11 +20,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 10:59+0200\n"
-"PO-Revision-Date: 2025-07-03 15:00+0000\n"
+"PO-Revision-Date: 2025-07-10 10:01+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-6-0/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-6-0/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -652,7 +652,7 @@ msgstr "The selected operation could not be executed."
 
 #: app/controllers/settings/deputies.php:140
 msgid "Die gewünschten Personen wurden als Ihre Vertretung eingetragen!"
-msgstr "Selected Persons added as substitutes!"
+msgstr "The selected users have been added as your substitutes!"
 
 #: app/controllers/settings/deputies.php:156
 msgid "Die Vertretung wurde entfernt."
@@ -1126,14 +1126,14 @@ msgid "Benachrichtigung über neue Inhalte anpassen"
 msgstr "Customise new content notification"
 
 #: app/controllers/settings/notification.php:62
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie "
 "%s<b>Veranstaltung suchen / hinzufügen</b>%s um sich für Veranstaltungen "
 "anzumdelden."
 msgstr ""
-"You are not enrolled in any course. Please use %s<b>Search / add courses</"
-"b>%s to enroll yourself in courses."
+"You are not enrolled in any course. Please use %s<b>Find/add courses</b>%s "
+"to enroll yourself in courses."
 
 #: app/controllers/settings/statusgruppen.php:34
 #: app/controllers/my_institutes.php:117
@@ -1652,8 +1652,7 @@ msgstr "This user does not exist"
 msgid ""
 "Sie können die Zwei-Faktor-Authentifizierung nicht für andere Personen "
 "einrichten."
-msgstr ""
-"You may not configure the two-factor authentification for other persons."
+msgstr "You may not configure two-factor authentification for other users."
 
 #: app/controllers/tfa.php:66
 msgid "Die Zwei-Faktor-Authentifizierung wurde eingerichtet"
@@ -2219,26 +2218,24 @@ msgid "Anmeldemodus ändern"
 msgstr "Change admission"
 
 #: app/controllers/course/admission.php:131
-#, fuzzy
 msgid ""
 "Sie beabsichtigen, den Anmeldemodus auf \"Vorläufiger Eintrag\" zu ändern. "
 "Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in "
 "vorläufige Teilnehmende umgewandelt werden?"
 msgstr ""
-"You are about to change the admission mode to preliminary admission. Do you "
-"want to convert the participants already enrolled in the course to "
+"You are about to change the admission mode to \"Preliminary admission\". Do "
+"you want to convert the participants already enrolled in the course to "
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:134
-#, fuzzy
 msgid ""
 "Sie beabsichtigen, den Anmeldemodus auf \"Direkter Eintrag\" zu ändern. "
 "Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
-"You are about to change the admission mode to direct enrollment. Do you want "
-"to enroll the preliminary participants into the course (otherwise the "
+"You are about to change the admission mode to \"Direct enrollment\". Do you "
+"want to enroll the preliminary participants into the course (otherwise the "
 "preliminary participants will be removed from the course) ?"
 
 #: app/controllers/course/admission.php:149
@@ -2319,8 +2316,8 @@ msgid ""
 "Sie beabsichtigen die Anzahl der Wartenden zu begrenzen. Die letzten %s "
 "Einträge der Warteliste werden gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to limit the number of persons on the wait list. %s persons "
-"will be excluded. Proceed?"
+"You are about to limit the number of users on the waiting list. %s users "
+"will be excluded. Are you sure?"
 
 #: app/controllers/course/admission.php:293
 #: app/controllers/course/admission.php:388
@@ -3472,7 +3469,7 @@ msgstr "Date of enrollment"
 #: app/views/vips/sheets/print_assignment.php:50 app/views/profile/index.php:63
 #: app/views/login/privacy_info.php:53
 msgid "Matrikelnummer"
-msgstr "Matriculation number"
+msgstr "Student ID"
 
 #: app/controllers/course/statusgroups.php:324
 #: app/controllers/course/members.php:1822
@@ -3923,7 +3920,7 @@ msgstr "unlimited"
 #: lib/classes/searchtypes/MyCoursesSearch.php:52
 #: lib/classes/searchtypes/StandardSearch.php:76
 msgid "Veranstaltung suchen"
-msgstr "Search for courses"
+msgstr "Find course"
 
 #: app/controllers/course/topics.php:213 app/controllers/course/topics.php:251
 msgid "Themen aus Veranstaltung kopieren"
@@ -4677,19 +4674,17 @@ msgid "Sie haben keine %s zum Herunterstufen ausgewählt"
 msgstr "You didn't select any %s to demote"
 
 #: app/controllers/course/members.php:1327
-#, fuzzy
 msgid "Eine Person wurde auf die Warteliste verschoben."
 msgid_plural "%{number} Personen wurden auf die Warteliste verschoben."
-msgstr[0] "One person was moved to the waiting list."
-msgstr[1] "%{number} persons were moved to the waiting list."
+msgstr[0] "One user was moved to the waiting list."
+msgstr[1] "%{number} users were moved to the waiting list."
 
 #: app/controllers/course/members.php:1339
-#, fuzzy
 msgid "Eine Person konnte nicht auf die Warteliste verschoben werden:"
 msgid_plural ""
 "%{number} Personen konnten nicht auf die Warteliste verschoben werden:"
-msgstr[0] "One person could not be moved to the waiting list."
-msgstr[1] "%{number} persons could not be moved to the waiting list."
+msgstr[0] "One user could not be moved to the waiting list."
+msgstr[1] "%{number} users could not be moved to the waiting list."
 
 #: app/controllers/course/members.php:1349
 msgid "Sie haben keine Personen zum Verschieben auf die Warteliste ausgewählt"
@@ -6332,9 +6327,8 @@ msgid "Die Mindestanzahl der Sitzplätze beträgt 1!"
 msgstr "The minimum amount of seats is 1!"
 
 #: app/controllers/course/room_requests.php:507
-#, fuzzy
 msgid "Die Mindestanzahl der Sitzplätze muss größer als 0 sein!"
-msgstr "The minimum amount of seats is 1!"
+msgstr "The minimum amount of seats must be greater than 0!"
 
 #: app/controllers/course/room_requests.php:580
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
@@ -6424,19 +6418,16 @@ msgid "Das ausgewählte LTI-Tool unterstützt kein Deep Linking."
 msgstr "The selected LTI tool does not support deep linking."
 
 #: app/controllers/course/lti.php:483
-#, fuzzy
 msgid "Die Einbindung des LTI-Tools in die Veranstaltung ist fehlgeschlagen."
-msgstr "Setting up LTI tools for courses is disabled."
+msgstr "Failed to integrate the LTI tool with the course."
 
 #: app/controllers/course/lti.php:487
-#, fuzzy
 msgid "Es konnte kein LTI-Deployment für LTI Deep Linking erstellt werden."
-msgstr "No room list could be created!"
+msgstr "No LTI deployment could be created for LTI Deep Linking."
 
 #: app/controllers/course/lti.php:502
-#, fuzzy
 msgid "Die Einbindung des LTI-Tools wurde nicht gefunden."
-msgstr "The LTI tool integration could not be found!"
+msgstr "The LTI tool integration could not be found."
 
 #: app/controllers/course/lti.php:507 app/controllers/course/lti.php:590
 msgid ""
@@ -8676,7 +8667,7 @@ msgstr ""
 #: app/controllers/lvgruppen/lvgruppen.php:525
 #: app/views/module/module/modulteil_lvg.php:56
 msgid "LV-Gruppe suchen"
-msgstr "Search course group"
+msgstr "Find course group"
 
 #: app/controllers/module/module.php:947
 msgid "Unbekannte Lehrveranstaltungsgruppe"
@@ -11487,7 +11478,7 @@ msgstr "List of applications"
 msgid "Studiengang"
 msgid_plural "Studiengängen"
 msgstr[0] "Course of study"
-msgstr[1] "Course of studies"
+msgstr[1] "Courses of study"
 
 #: app/controllers/admission/courseset.php:703
 msgid "Anmeldung:"
@@ -12954,7 +12945,7 @@ msgstr "Start semester"
 #: app/controllers/admin/courses.php:1490 lib/navigation/MVVNavigation.php:67
 #: lib/modules/CoreAdmin.php:75
 msgid "LV-Gruppen"
-msgstr "Course group"
+msgstr "Course groups"
 
 #: app/controllers/admin/courses.php:829 app/controllers/admin/courses.php:1495
 #: app/controllers/admin/courses.php:1496
@@ -14308,7 +14299,6 @@ msgid "Schlagwort „%s“ bearbeiten"
 msgstr "Edit keyword %s"
 
 #: app/controllers/admin/tags.php:41
-#, fuzzy
 msgid "Schlagwörter sollen keine Großbuchstaben enthalten"
 msgstr "Keywords should not contain uppercase letters"
 
@@ -15375,7 +15365,7 @@ msgstr "%1$d worksheets with a total of %2$d tasks have been added."
 
 #: app/controllers/vips/sheets.php:1862 app/controllers/vips/sheets.php:1868
 msgid "(keine Matrikelnummer)"
-msgstr "(no student registration number)"
+msgstr "(no student ID)"
 
 #: app/controllers/vips/sheets.php:1926 app/controllers/vips/solutions.php:64
 msgid "Aufgabenblätter ohne Blockzuordnung"
@@ -19838,7 +19828,9 @@ msgstr ""
 
 #: app/views/settings/studies/studiengang.php:3
 msgid "Ich studiere folgende Fächer und Abschlüsse:"
-msgstr "I study the following subjects and in degree programmes:"
+msgstr ""
+"I study the following subjects and am enrolled in the following courses of "
+"study:"
 
 #: app/views/settings/studies/studiengang.php:21
 #: app/views/settings/studies/studiengang.php:46
@@ -19887,8 +19879,7 @@ msgid ""
 "Wählen Sie die Fächer, Abschlüsse und Fachsemester in der folgenden Liste "
 "aus:"
 msgstr ""
-"Select out of the following list your subjects, degree programmes and "
-"semester of study:"
+"Select your subjects, courses of study and semesters from the list below:"
 
 #: app/views/settings/studies/studiengang.php:126
 #: app/views/settings/studies/studiengang.php:127
@@ -23333,7 +23324,6 @@ msgid "Datenschutzhinweise"
 msgstr "Privacy information"
 
 #: app/views/course/lti/consent.php:31
-#, fuzzy
 msgid "Die folgenden Daten werden übertragen"
 msgstr "The following information will be transmitted"
 
@@ -29892,7 +29882,6 @@ msgid "Indirekte Zuweisung durch Berechtigungsstufe"
 msgstr "Indirect assignment by permission level"
 
 #: app/views/admin/role/index.php:29
-#, fuzzy
 msgid "Benutzer implizit"
 msgstr "Users implicit"
 
@@ -31956,13 +31945,12 @@ msgid "Deployment-ID"
 msgstr "Deployment ID"
 
 #: app/views/admin/lti/index.php:30
-#, fuzzy
 msgid "Deep Links"
-msgstr "Direct link"
+msgstr "Deep links"
 
 #: app/views/admin/lti/index.php:65
 msgid "Dieses Tool hat mehrere Deployment-IDs zur generellen Nutzung!"
-msgstr ""
+msgstr "This tool has multiple deployment IDs for general use!"
 
 #: app/views/admin/lti/index.php:89 app/views/admin/lti/index.php:91
 msgid "LTI-Tool löschen"
@@ -32155,9 +32143,8 @@ msgid "Stud.IP-User können sich bestehende ILIAS-Accounts manuell zuordnen"
 msgstr "Stud.IP users can assign themselves to existing ILIAS accounts"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:39
-#, fuzzy
 msgid "Rollenzuweisungen"
-msgstr "Without role assignment"
+msgstr "Role assignments"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:44
 #, php-format
@@ -32166,36 +32153,31 @@ msgstr "Rights level %s receives additional global role(s):"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:47
 #: app/views/admin/ilias_interface/edit_permissions.php:83
-#, fuzzy, php-format
+#, php-format
 msgid "%s (ID %s)"
-msgstr "(Course-ID %s)"
+msgstr "%s (ID %s)"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:50
-#, fuzzy
 msgid "Diese Rollenzuweisung entfernen"
-msgstr "Display role allocations"
+msgstr "Remove this role assignment"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:51
-#, fuzzy
 msgid "Sind Sie sicher, dass Sie diese ILIAS-Rollenzuweisung entfernen wollen?"
-msgstr "Are you sure to delete this institute?"
+msgstr "Are you sure you want to remove this ILIAS role assignment?"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:68
 #: app/views/admin/ilias_interface/edit_permissions.php:70
-#, fuzzy
 msgid "Stud.IP-Rechtestufe"
-msgstr "Permission level"
+msgstr "Stud.IP permission level"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:77
 #: app/views/admin/ilias_interface/edit_permissions.php:79
-#, fuzzy
 msgid "ILIAS-Rolle"
-msgstr "ILIAS courses"
+msgstr "ILIAS role"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:88
-#, fuzzy
 msgid "Zusätzliche Rolle zuweisen und speichern"
-msgstr "Role assignments saved."
+msgstr "Assign and save additional role"
 
 #: app/views/admin/ilias_interface/edit_content.php:14
 msgid "Wurzelkategorie für Stud.IP-Daten"
@@ -32244,20 +32226,19 @@ msgid "Kein Präfix"
 msgstr "No prefix"
 
 #: app/views/admin/ilias_interface/edit_content.php:54
-#, fuzzy
 msgid ""
 "Datenfeld (Name) mit Matrikelnummer (nur ausfüllen, wenn die Matrikelnummer "
 "in einem Datenfeld gespeichert wird)"
 msgstr ""
-"Data field (name) with matriculation number (if empty, no matriculation "
-"number will be transferred)"
+"Data field (name) with student ID (only fill in if the student ID will be "
+"saved in a data field)"
 
 #: app/views/admin/ilias_interface/edit_content.php:59
 msgid ""
 "ILIAS-Datenfeld für Studiengang 1 (wenn leer, wird der Studiengang nicht "
 "übertragen)"
 msgstr ""
-"ILIAS data field for degree programme 1 (if empty, the programme will not be "
+"ILIAS data field for course of study 1 (if empty, the course will not be "
 "transferred)"
 
 #: app/views/admin/ilias_interface/edit_content.php:68
@@ -32265,7 +32246,7 @@ msgid ""
 "ILIAS-Datenfeld für Studiengang 2 (wenn leer, wird der Studiengang nicht "
 "übertragen)"
 msgstr ""
-"ILIAS data field for degree programme 2 (if empty, the programme will not be "
+"ILIAS data field for course of study 2 (if empty, the course will not be "
 "transferred)"
 
 #: app/views/admin/ilias_interface/edit_content.php:78
@@ -32351,11 +32332,10 @@ msgid ""
 "Die Kursübersicht auf dem Arbeitsplatz zeigt die Magazinpfade der Kurse in "
 "ILIAS und erlaubt das Filtern nach Semesternamen"
 msgstr ""
-"The course overview on the workstation shows the magazine paths of the "
-"courses in ILIAS and allows filtering by semester name"
+"The course overview in your workspace shows the archive paths of the courses "
+"in ILIAS and allows filtering by semester name"
 
 #: app/views/admin/ilias_interface/edit_interface_settings.php:40
-#, fuzzy
 msgid ""
 "Die Accountübersicht auf dem Arbeitsplatz ist für alle Nutzenden (auch für "
 "Studierende ohne Berechtigung zum Anlegen von Lernobjekten) sichtbar"
@@ -32715,18 +32695,16 @@ msgid "Institution"
 msgstr "Institution"
 
 #: app/views/admin/datafields/index.php:40
-#, fuzzy
 msgid "benötigter Status änderbar"
-msgstr "required status"
+msgstr "required status is modifiable"
 
 #: app/views/admin/datafields/index.php:41
 msgid "Gibt den Status an, ab dem das Datenfeld änderbar ist"
 msgstr "Shows which role can edit this field"
 
 #: app/views/admin/datafields/index.php:44
-#, fuzzy
 msgid "benötigter Status öffentlich"
-msgstr "required status"
+msgstr "required status is public"
 
 #: app/views/admin/datafields/index.php:45
 msgid "Gibt den Status an, ab dem das Datenfeld für andere sichtbar ist"
@@ -33147,7 +33125,6 @@ msgstr ""
 "bookings?"
 
 #: app/views/consultation/admin/edit.php:48
-#, fuzzy
 msgid "Maximale Teilnehmendenzahl"
 msgstr "maximum number of participants"
 
@@ -33326,9 +33303,8 @@ msgid "Zur Zeit laufen keine Klausuren."
 msgstr "There are no currently active exams."
 
 #: app/views/vips/sheets/start_assignment_dialog.php:13
-#, fuzzy
 msgid "Bitte bestätigen Sie den Endzeitpunkt:"
-msgstr "Please confirm action"
+msgstr "Please confirm the end time:"
 
 #: app/views/vips/sheets/list_assignments_stud.php:12
 msgid "Es gibt aktuell keine laufenden Aufgabenblätter."
@@ -33431,9 +33407,8 @@ msgstr "Achieved points: %g / %g"
 #: app/views/vips/sheets/print_assignment.php:97
 #: app/views/vips/sheets/edit_assignment.php:207
 #: app/views/vips/solutions/student_assignment_solutions.php:116
-#, fuzzy
 msgid "Kommentar zur Bewertung"
-msgstr "Comments and annotations"
+msgstr "Comment on rating"
 
 #: app/views/vips/sheets/move_assignments_dialog.php:16
 #: app/views/vips/sheets/copy_assignments_dialog.php:16
@@ -33506,16 +33481,14 @@ msgstr "Allow students to enter comments"
 #: app/views/vips/sheets/content_bar_icons.php:3
 #: app/views/vips/solutions/view_solution.php:15
 #: app/views/vips/solutions/edit_solution.php:53
-#, fuzzy
 msgid "Vorige Aufgabe"
-msgstr "Previous request"
+msgstr "Previous task"
 
 #: app/views/vips/sheets/content_bar_icons.php:13
 #: app/views/vips/solutions/view_solution.php:27
 #: app/views/vips/solutions/edit_solution.php:65
-#, fuzzy
 msgid "Nächste Aufgabe"
-msgstr "Next request"
+msgstr "Next task"
 
 #: app/views/vips/sheets/edit_assignment.php:27
 msgid ""
@@ -33548,9 +33521,8 @@ msgid "Neuen Block anlegen"
 msgstr "Create new block"
 
 #: app/views/vips/sheets/edit_assignment.php:113
-#, fuzzy
 msgid "Aufgaben können in Gruppen bearbeitet werden"
-msgstr "Exercises can be solved in groups"
+msgstr "Tasks can be worked on in groups"
 
 #: app/views/vips/sheets/edit_assignment.php:118
 msgid "Testklausur zur Selbsteinschätzung der Teilnehmenden"
@@ -33574,9 +33546,8 @@ msgid ""
 msgstr "Display items in random order for multiple and single choice tasks"
 
 #: app/views/vips/sheets/edit_assignment.php:134
-#, fuzzy
 msgid "Teilnehmende dürfen ihre Lösungen zurücksetzen und den Test neu starten"
-msgstr "Participants may revise their answers"
+msgstr "Participants may reset their solutions and restart the test"
 
 #: app/views/vips/sheets/edit_assignment.php:139
 msgid "Anzeige der Musterlösung nach eingesteller Anzahl von Fehlversuchen"
@@ -33604,9 +33575,8 @@ msgid "… führen zur Bewertung der Aufgabe mit 0 Punkten"
 msgstr "... will cause the task to be assessed 0 points"
 
 #: app/views/vips/sheets/edit_assignment.php:164
-#, fuzzy
 msgid "Notizen (für Teilnehmende unsichtbar)"
-msgstr "Wiki page readable for all participants"
+msgstr "Notes (invisible to participants)"
 
 #: app/views/vips/sheets/edit_assignment.php:169
 msgid "Zugangscode zur Klausur (optional)"
@@ -33621,9 +33591,8 @@ msgid "Raum hinzufügen:"
 msgstr "Add room:"
 
 #: app/views/vips/sheets/edit_assignment.php:196
-#, fuzzy
 msgid "Automatisches Feedback"
-msgstr "Detect automatically"
+msgstr "Automatic feedback"
 
 #: app/views/vips/sheets/edit_assignment.php:204
 msgid "Erforderliche Punkte"
@@ -33680,9 +33649,9 @@ msgstr "Delete task"
 
 #: app/views/vips/sheets/list_exercises.php:60
 #: app/views/vips/pool/list_exercises.php:117
-#, fuzzy, php-format
+#, php-format
 msgid "Wollen Sie wirklich die Aufgabe „%s“ löschen?"
-msgstr "Are you sure to delete role \"%s\"?"
+msgstr "Are you sure you want to delete the task %s?"
 
 #: app/views/vips/sheets/copy_exercise_dialog.php:22
 #: app/views/vips/sheets/copy_assignment_dialog.php:6
@@ -33788,15 +33757,13 @@ msgstr "Submission date"
 
 #: app/views/vips/sheets/show_assignment.php:119
 #: app/views/vips/solutions/student_assignment_solutions.php:33
-#, fuzzy
 msgid "Bearbeitet"
-msgstr "Edited:"
+msgstr "Edited"
 
 #: app/views/vips/sheets/show_assignment.php:122
 #: app/views/vips/solutions/student_assignment_solutions.php:41
-#, fuzzy
 msgid "Max. Punkte"
-msgstr "Score"
+msgstr "Max. points"
 
 #: app/views/vips/sheets/show_assignment.php:173
 msgid "Keine Aufgaben gefunden."
@@ -33804,15 +33771,14 @@ msgstr "No tasks found."
 
 #: app/views/vips/sheets/list_assignments_list.php:23
 #: app/views/vips/solutions/assignments_list.php:67
-#, fuzzy
 msgid "(für Teilnehmende unsichtbar)"
-msgstr "(%s participants)"
+msgstr "(invisible to participants)"
 
 #: app/views/vips/sheets/list_assignments_list.php:25
 #: app/views/vips/solutions/assignments_list.php:69
-#, fuzzy, php-format
+#, php-format
 msgid "(sichtbar für Gruppe „%s“)"
-msgstr "visible to all"
+msgstr "(visible to group %s)"
 
 #: app/views/vips/sheets/list_assignments_list.php:27
 #: app/views/vips/solutions/assignments_list.php:71
@@ -33824,9 +33790,9 @@ msgid "Block löschen"
 msgstr "Delete block"
 
 #: app/views/vips/sheets/list_assignments_list.php:44
-#, fuzzy, php-format
+#, php-format
 msgid "Wollen Sie wirklich den Block „%s“ löschen?"
-msgstr "Are you sure to delete role \"%s\"?"
+msgstr "Are you sure you want to delete the block %s?"
 
 #: app/views/vips/sheets/list_assignments_list.php:55
 #: app/views/vips/solutions/assignments_list.php:23
@@ -33865,9 +33831,9 @@ msgstr "Delete worksheet"
 
 #: app/views/vips/sheets/list_assignments_list.php:167
 #: app/views/vips/pool/list_assignments.php:140
-#, fuzzy, php-format
+#, php-format
 msgid "Wollen Sie wirklich das Aufgabenblatt „%s“ löschen?"
-msgstr "Really delete module \"%s\"?"
+msgstr "Are you sure you want to delete the worksheet %s?"
 
 #: app/views/vips/sheets/list_assignments_list.php:181
 msgid "Block zuweisen"
@@ -33881,9 +33847,8 @@ msgstr "Do you really want to delete the selected worksheets?"
 #: app/views/vips/sheets/list_assignments.php:9
 #: app/views/vips/pool/assignments.php:9 lib/modules/VipsModule.php:345
 #: lib/modules/VipsModule.php:364
-#, fuzzy
 msgid "Aufgaben und Prüfungen"
-msgstr "Examinations and examiners"
+msgstr "Tasks and examinations"
 
 #: app/views/vips/sheets/list_assignments.php:11
 #: app/views/vips/pool/assignments.php:11 lib/modules/VipsModule.php:349
@@ -33993,9 +33958,8 @@ msgid "Aufgabe bearbeitet"
 msgstr "Task submitted"
 
 #: app/views/vips/config/pending_assignments.php:8
-#, fuzzy
 msgid "Es gibt zur Zeit keine anstehenden Klausuren."
-msgstr "At present no category exists."
+msgstr "There are currently no upcoming exams."
 
 #: app/views/vips/config/pending_assignments.php:12
 #: app/views/vips/solutions/participants_overview.php:92
@@ -34011,9 +33975,8 @@ msgstr[0] "%d Exam"
 msgstr[1] "%d Exams"
 
 #: app/views/vips/config/index.php:13
-#, fuzzy
 msgid "Einstellungen für Klausuren"
-msgstr "Settings for courses"
+msgstr "Settings for exams"
 
 #: app/views/vips/config/index.php:17
 msgid "Klausurmodus aktivieren"
@@ -34069,19 +34032,17 @@ msgstr ""
 "be completely hidden."
 
 #: app/views/vips/admin/edit_block.php:25
-#, fuzzy
 msgid "Alle Teilnehmenden (keine Beschränkung)"
-msgstr "Participants list"
+msgstr "All participants (without limitation)"
 
 #: app/views/vips/admin/edit_block.php:28
-#, fuzzy
 msgid "Für Teilnehmende unsichtbar"
-msgstr "Search participant"
+msgstr "Invisible to participants"
 
 #: app/views/vips/admin/edit_block.php:32
-#, fuzzy, php-format
+#, php-format
 msgid "Gruppe „%s“"
-msgstr "Number: \"%s\""
+msgstr "Group %s"
 
 #: app/views/vips/admin/edit_block.php:40
 msgid "Aufgabenblätter in der Bewertung gruppieren"
@@ -34119,9 +34080,9 @@ msgstr "Remark from corrector"
 
 #: app/views/vips/solutions/view_solution.php:58
 #: app/views/vips/solutions/assignment_solutions.php:209
-#, fuzzy, php-format
+#, php-format
 msgid "Nachricht an „%s“ schreiben"
-msgstr "Send message to %s"
+msgstr "Write message to %s"
 
 #: app/views/vips/solutions/solution_color_tooltip.php:1
 #, php-format
@@ -34142,9 +34103,9 @@ msgid "%sRot dargestellte Aufgaben%s wurden noch nicht fertig korrigiert."
 msgstr "%sTasks shown in red%s have not been graded yet."
 
 #: app/views/vips/solutions/solution_color_tooltip.php:4
-#, fuzzy, php-format
+#, php-format
 msgid "%sAusgegraute Aufgaben%s wurden nicht bearbeitet."
-msgstr "This request has not been processed yet."
+msgstr "%sGrayed-out tasks%s have not been completed."
 
 #: app/views/vips/solutions/assignments.php:17
 msgid "Es ist kein beendetes Aufgabenblatt vorhanden."
@@ -34177,9 +34138,8 @@ msgid "Blöcke"
 msgstr "Blocks"
 
 #: app/views/vips/solutions/edit_assignment_attempt.php:17
-#, fuzzy
 msgid "Teilnehmer/-in"
-msgstr "Participants "
+msgstr "Participant"
 
 #: app/views/vips/solutions/edit_assignment_attempt.php:27
 #: lib/models/Courseware/BlockTypes/Date.php:67
@@ -34187,55 +34147,50 @@ msgid "Abgabezeitpunkt"
 msgstr "Submission date"
 
 #: app/views/vips/solutions/edit_group_dialog.php:17
-#, fuzzy
 msgid "Wählen Sie aus, wen Sie aus der Gruppe entfernen möchten:"
-msgstr "Please select the user(s) you want to add."
+msgstr "Please select the user(s) you want to remove."
 
 #: app/views/vips/solutions/gradebook_dialog.php:19
 msgid "Name im Gradebook"
 msgstr "Name of gradebook entry"
 
 #: app/views/vips/solutions/edit_solution.php:28
-#, fuzzy
 msgid "Voriger Teilnehmer / vorige Teilnehmerin"
-msgstr "a participant"
+msgstr "previous participant"
 
 #: app/views/vips/solutions/edit_solution.php:31
 msgid "Keiner der vorhergehenden Teilnehmenden hat diese Aufgabe bearbeitet"
-msgstr ""
+msgstr "None of the previous participants have completed this task"
 
 #: app/views/vips/solutions/edit_solution.php:42
 msgid "Nächster Teilnehmer / nächste Teilnehmerin"
-msgstr ""
+msgstr "Next participant"
 
 #: app/views/vips/solutions/edit_solution.php:45
 msgid "Keiner der nachfolgenden Teilnehmenden hat diese Aufgabe bearbeitet"
-msgstr ""
+msgstr "None of the following participants have completed this task"
 
 #: app/views/vips/solutions/edit_solution.php:56
-#, fuzzy
 msgid ""
 "Die teilnehmende Person hat keine der vorhergehenden Aufgaben bearbeitet"
-msgstr "Notify the creator and all lecturers."
+msgstr "The participant has not completed any of the previous tasks"
 
 #: app/views/vips/solutions/edit_solution.php:68
 msgid "Die teilnehmende Person hat keine der nachfolgenden Aufgaben bearbeitet"
-msgstr ""
+msgstr "The participant has not completed any of the following tasks"
 
 #: app/views/vips/solutions/edit_solution.php:87
 #, php-format
 msgid "Bewertung der Lösung von „%s“"
-msgstr ""
+msgstr "Rating of the solution by %s"
 
 #: app/views/vips/solutions/edit_solution.php:90
-#, fuzzy
 msgid "Manuell korrigiert"
-msgstr "Enter manually"
+msgstr "Manually corrected"
 
 #: app/views/vips/solutions/edit_solution.php:92
-#, fuzzy
 msgid "Automatisch korrigiert"
-msgstr "Detect automatically"
+msgstr "Automatically corrected"
 
 #: app/views/vips/solutions/edit_solution.php:114
 #, php-format
@@ -34327,9 +34282,8 @@ msgid "Ergebnisse des Aufgabenblatts"
 msgstr "Grades of this worksheet"
 
 #: app/views/vips/solutions/student_assignment_solutions.php:37
-#, fuzzy
 msgid "Erreichte Punkte"
-msgstr "Credit points"
+msgstr "Credit points achieved"
 
 #: app/views/vips/solutions/autocorrect_dialog.php:17
 msgid ""
@@ -34349,9 +34303,9 @@ msgstr ""
 "Affected tasks will remain flagged as uncorrected if this option is not set."
 
 #: app/views/vips/solutions/assignment_solutions.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "Aufgabenblatt „%s“"
-msgstr "Signature: \"%s\""
+msgstr "Worksheet %s"
 
 #: app/views/vips/solutions/assignment_solutions.php:36
 msgid "Studierende mit abgegebenen Lösungen"
@@ -34362,14 +34316,12 @@ msgid "Studierende mit unkorrigierten Lösungen"
 msgstr "students that have ungraded solutions"
 
 #: app/views/vips/solutions/assignment_solutions.php:42
-#, fuzzy
 msgid "Alle Studierende"
-msgstr "Amount of students"
+msgstr "All students"
 
 #: app/views/vips/solutions/assignment_solutions.php:46
-#, fuzzy
 msgid "Beendete Klausuren"
-msgstr "Finished evaluations:"
+msgstr "Finished exams"
 
 #: app/views/vips/solutions/assignment_solutions.php:49
 msgid "Laufende Klausuren"
@@ -34377,31 +34329,27 @@ msgstr "Ongoing exams"
 
 #: app/views/vips/solutions/assignment_solutions.php:52
 msgid "Noch nicht begonnene Klausuren"
-msgstr ""
+msgstr "Exams not yet started"
 
 #: app/views/vips/solutions/assignment_solutions.php:63
-#, fuzzy
 msgid "Alle Teilnehmenden auswählen"
-msgstr "Select all permissions"
+msgstr "Select all participants"
 
 #: app/views/vips/solutions/assignment_solutions.php:68
-#, fuzzy
 msgid "Aufgaben aller Teilnehmenden anzeigen"
-msgstr "Number of participants:"
+msgstr "Show tasks for all participants"
 
 #: app/views/vips/solutions/assignment_solutions.php:69
-#, fuzzy
 msgid "Aufgaben aller Teilnehmenden verstecken"
-msgstr "Number of participants:"
+msgstr "Hide tasks for all participants"
 
 #: app/views/vips/solutions/assignment_solutions.php:83
 msgid "Unkorrigierte Lösungen"
-msgstr ""
+msgstr "Uncorrected solutions"
 
 #: app/views/vips/solutions/assignment_solutions.php:86
-#, fuzzy
 msgid "Unbearbeitete Aufgaben"
-msgstr "modified %s"
+msgstr "Unfinished tasks"
 
 #: app/views/vips/solutions/assignment_solutions.php:111
 msgid "Aufgaben anzeigen"
@@ -34431,6 +34379,8 @@ msgid ""
 "Achtung: Wenn Sie die Teilnahme zurücksetzen, werden alle Lösungen der "
 "teilnehmenden Person archiviert!"
 msgstr ""
+"Attention: If you reset the participation, all solutions of the participant "
+"will be archived!"
 
 #: app/views/vips/solutions/assignment_solutions.php:196
 msgid "Abgabeprotokoll anzeigen"
@@ -34441,9 +34391,8 @@ msgid "Nachricht an die Gruppe schreiben"
 msgstr "Write a message to the group"
 
 #: app/views/vips/solutions/assignment_solutions.php:218
-#, fuzzy
 msgid "Personen aus der Gruppe entfernen"
-msgstr "Remove from group"
+msgstr "Remove users from group"
 
 #: app/views/vips/exercises/TextTask/correct.php:16
 msgid "Kommentierte Lösung"
@@ -34632,7 +34581,7 @@ msgstr "Add choice"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:30
 msgid "Auswahlmöglichkeit „keine Antwort“ hinzufügen (ohne Bewertung)"
-msgstr ""
+msgstr "Add the option \"no answer\" (without rating)"
 
 #: app/views/vips/exercises/MatrixChoiceTask/edit.php:34
 msgid "Fragen/Aussagen"
@@ -34651,17 +34600,15 @@ msgstr "Add question"
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:85
 #: app/views/vips/exercises/MultipleChoiceTask/edit.php:45
 msgid "Leere Antwortalternativen werden automatisch gelöscht."
-msgstr "Empy answer alternatives are deleted automatically."
+msgstr "Empy answer options are deleted automatically."
 
 #: app/views/vips/exercises/flexible_input.php:24
-#, fuzzy
 msgid "Auf mehrzeilige Eingabe umschalten"
-msgstr "Switch detailed view"
+msgstr "Switch to multi-line entry"
 
 #: app/views/vips/exercises/flexible_input.php:25
-#, fuzzy
 msgid "Auf einzeilige Eingabe umschalten"
-msgstr "Switch detailed view"
+msgstr "Switch to single-line entry"
 
 #: app/views/vips/exercises/show_exercise_hint.php:8
 #: templates/globalsearch/_hints.php:4
@@ -34670,7 +34617,7 @@ msgstr "Information:"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:8
 msgid "Antwortalternative „keine Antwort“ hinzufügen (ohne Bewertung)"
-msgstr ""
+msgstr "Add the answer option \"no answer\" (without rating)"
 
 #: app/views/vips/exercises/SingleChoiceTask/edit.php:12
 #: app/views/vips/exercises/MultipleChoiceTask/edit.php:7
@@ -34761,9 +34708,8 @@ msgstr "Answers to match"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:31
 #: app/views/vips/exercises/MatchingTask/edit.php:64
-#, fuzzy
 msgid "Zuordnung löschen"
-msgstr "Delete all assignments"
+msgstr "Delete assignment"
 
 #: app/views/vips/exercises/MatchingTask/edit.php:80
 msgid "Zuordnung hinzufügen"
@@ -35061,9 +35007,8 @@ msgid "-- Kategorie wählen --"
 msgstr "-- Select category --"
 
 #: app/views/shared/deskriptor_language.php:17
-#, fuzzy
 msgid "neu"
-msgstr "never"
+msgstr "new"
 
 #: app/views/shared/contacts/details.php:3
 msgid "Diese Person wurde noch nicht referenziert."
@@ -35643,11 +35588,11 @@ msgstr "sign out of the study group"
 
 #: app/views/my_studygroups/proposals.php:13
 #: app/views/search/studiengaenge/verlauf.php:149
-#, fuzzy, php-format
+#, php-format
 msgid "1 Mitglied"
 msgid_plural "%s Mitglieder"
-msgstr[0] "Member"
-msgstr[1] "Member"
+msgstr[0] "1 member"
+msgstr[1] "%s members"
 
 #: app/views/questionnaire/_widget_questionnaire.php:30
 msgid "Anzahl der Antworten"
@@ -35845,37 +35790,31 @@ msgstr "Statement"
 
 #: app/views/questionnaire/question_types/automated_data/evaluation.php:83
 #: lib/models/QuestionnaireAutomatedData.php:149
-#, fuzzy
 msgid "Studiengang und Fachsemester"
-msgstr "Study semester"
+msgstr "Course of study and semester"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:14
-#, fuzzy
 msgid "Geschlecht:"
-msgstr "Gender"
+msgstr "Gender:"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:21
-#, fuzzy
 msgid "Studienfach:"
-msgstr "Subject"
+msgstr "Subject:"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:21
 #: app/views/questionnaire/question_types/automated_data/answer.php:28
 #: app/views/questionnaire/question_types/automated_data/answer.php:35
 #: app/views/questionnaire/question_types/automated_data/answer.php:45
-#, fuzzy
 msgid "Kein Eintrag"
 msgstr "No entries"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:28
-#, fuzzy
 msgid "Studiengang:"
-msgstr "Course of study"
+msgstr "Course of study:"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:35
-#, fuzzy
 msgid "Studiengang und Fachsemester:"
-msgstr "Study semester"
+msgstr "Course of study and semester:"
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:51
 msgid ""
@@ -35883,10 +35822,14 @@ msgid ""
 "Teilnahme an diesem Fragebogen erfolgt grundsätzlich anonym, aber eventuell "
 "können die automatisch erfassten Daten zu einer Deanonymisierung führen."
 msgstr ""
+"The following data is collected automatically in this questionnaire. "
+"Participation in this questionnaire is generally anonymous, but the "
+"automatically collected data may lead to de-anonymisation."
 
 #: app/views/questionnaire/question_types/automated_data/answer.php:53
 msgid "Die folgenden Daten werden in diesem Fragebogen automatisch erfasst:"
 msgstr ""
+"The following information is recorded automatically in this questionnaire:"
 
 #: app/views/questionnaire/_question.php:6
 msgid "Frage nach oben verschieben"
@@ -35915,9 +35858,8 @@ msgid "URL zum Fragebogen (nur lesbar)"
 msgstr "URL of questionnaire (read only)"
 
 #: app/views/questionnaire/context.php:10
-#, fuzzy
 msgid "QR-Code zum Link anzeigen"
-msgstr "Show QR code"
+msgstr "Show QR code for the link"
 
 #: app/views/questionnaire/context.php:15
 msgid "Freigaben bearbeiten"
@@ -35976,7 +35918,7 @@ msgstr "No questionnaires available."
 msgid ""
 "Nutzen Sie die Aktion „Fragebogen hinzufügen“ um einen neuen Fragebogen "
 "hinzuzufügen."
-msgstr ""
+msgstr "Use the \"Add questionnaire\" action to add a new questionnaire."
 
 #: app/views/questionnaire/widget.php:43
 msgid "Abgelaufene Fragebögen ausblenden"
