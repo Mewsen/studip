@@ -2,8 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-05 09:00+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"PO-Revision-Date: 2025-07-10 10:00+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main-js/en/>\n"
 "Language: en\n"
@@ -6236,7 +6237,6 @@ msgid "Maximale Anzahl erlaubter Anmeldungen"
 msgstr "Maximum amount of allowed enrolments"
 
 #: resources/vue/components/ConsultationCreator.vue:249
-#, fuzzy
 msgid "Maximale Teilnehmendenzahl"
 msgstr "maximum number of participants"
 
@@ -8806,7 +8806,7 @@ msgstr "Do not regard course"
 #: resources/vue/components/SearchWidget.vue:28
 #: resources/vue/components/SearchWidget.vue:29
 msgid "Veranstaltung suchen"
-msgstr "Search for courses"
+msgstr "Find course"
 
 #: resources/vue/components/admission/CourseMemberAdmission.vue:49
 #, fuzzy
