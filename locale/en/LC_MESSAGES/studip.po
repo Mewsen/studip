@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2025-07-08 10:00+0000\n"
+"PO-Revision-Date: 2025-07-10 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -489,7 +489,7 @@ msgstr "The selected operation could not be executed."
 
 #: app/controllers/settings/deputies.php:137
 msgid "Die gewünschten Personen wurden als Ihre Vertretung eingetragen!"
-msgstr "Selected Persons added as substitutes!"
+msgstr "The selected users have been added as your substitutes!"
 
 #: app/controllers/settings/deputies.php:153
 msgid "Die Vertretung wurde entfernt."
@@ -1203,8 +1203,7 @@ msgstr "This user does not exist"
 msgid ""
 "Sie können die Zwei-Faktor-Authentifizierung nicht für andere Personen "
 "einrichten."
-msgstr ""
-"You may not configure the two-factor authentification for other persons."
+msgstr "You may not configure two-factor authentification for other users."
 
 #: app/controllers/tfa.php:66
 msgid "Die Zwei-Faktor-Authentifizierung wurde eingerichtet"
@@ -2050,8 +2049,8 @@ msgid ""
 "Sie beabsichtigen die Anzahl der Wartenden zu begrenzen. Die letzten %s "
 "Einträge der Warteliste werden gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to limit the number of persons on the wait list. %s persons "
-"will be excluded. Proceed?"
+"You are about to limit the number of users on the waiting list. %s users "
+"will be excluded. Are you sure?"
 
 #: app/controllers/course/admission.php:279
 #: app/controllers/course/admission.php:366
@@ -3237,7 +3236,7 @@ msgstr "unlimited"
 #: lib/classes/searchtypes/MyCoursesSearch.class.php:52
 #: lib/admissionrules/coursememberadmission/templates/configure.php:38
 msgid "Veranstaltung suchen"
-msgstr "Search for courses"
+msgstr "Find course"
 
 #: app/controllers/course/topics.php:211 app/controllers/course/topics.php:249
 msgid "Themen aus Veranstaltung kopieren"
@@ -8094,7 +8093,7 @@ msgstr ""
 #: app/controllers/lvgruppen/lvgruppen.php:446
 #: app/views/module/module/modulteil_lvg.php:57
 msgid "LV-Gruppe suchen"
-msgstr "Search course group"
+msgstr "Find course group"
 
 #: app/controllers/module/module.php:894
 msgid "Unbekannte Lehrveranstaltungsgruppe"
@@ -10815,7 +10814,7 @@ msgstr "List of applications"
 msgid "Studiengang"
 msgid_plural "Studiengängen"
 msgstr[0] "Course of study"
-msgstr[1] "Course of studies"
+msgstr[1] "Courses of study"
 
 #: app/controllers/admission/courseset.php:630
 msgid "Anmeldung:"
@@ -12199,7 +12198,7 @@ msgstr "Start semester"
 #: app/controllers/admin/courses.php:1036 lib/navigation/MVVNavigation.php:64
 #: lib/modules/CoreAdmin.class.php:55
 msgid "LV-Gruppen"
-msgstr "Course group"
+msgstr "Course groups"
 
 #: app/controllers/admin/courses.php:1041
 #: app/controllers/admin/courses.php:1042
@@ -17530,7 +17529,9 @@ msgstr ""
 
 #: app/views/settings/studies/studiengang.php:3
 msgid "Ich studiere folgende Fächer und Abschlüsse:"
-msgstr "I study the following subjects and in degree programmes:"
+msgstr ""
+"I study the following subjects and am enrolled in the following courses of "
+"study:"
 
 #: app/views/settings/studies/studiengang.php:21
 #: app/views/settings/studies/studiengang.php:46
@@ -17595,8 +17596,7 @@ msgid ""
 "Wählen Sie die Fächer, Abschlüsse und Fachsemester in der folgenden Liste "
 "aus:"
 msgstr ""
-"Select out of the following list your subjects, degree programmes and "
-"semester of study:"
+"Select your subjects, courses of study and semesters from the list below:"
 
 #: app/views/settings/studies/studiengang.php:126
 #: app/views/settings/studies/studiengang.php:127
@@ -32075,7 +32075,7 @@ msgstr "No questionnaires available."
 msgid ""
 "Nutzen Sie die Aktion „Fragebogen hinzufügen“ um einen neuen Fragebogen "
 "hinzuzufügen."
-msgstr "Use the action \"Add questionnaire\" to add a new questionnaire."
+msgstr "Use the \"Add questionnaire\" action to add a new questionnaire."
 
 #: app/views/questionnaire/widget.php:44
 msgid "Abgelaufene Fragebögen ausblenden"
@@ -54118,7 +54118,7 @@ msgstr "Find me"
 
 #: templates/privacy.php:53
 msgid "Matrikelnummer"
-msgstr "Matriculation number"
+msgstr "Student ID"
 
 #: templates/privacy.php:105
 msgid "Teilname an einer best. VA"
