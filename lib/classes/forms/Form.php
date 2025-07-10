@@ -136,7 +136,7 @@ class Form extends Part
                     || $object->isAdditionalField($fieldname)
                     || $object->isAliasField($fieldname)
                 ) {
-                    $params['fields'][$fieldname]['value'] = $object[$fieldname];
+                    $params['fields'][$fieldname]['value'] = (string) $object[$fieldname];
                 }
             }
         }
