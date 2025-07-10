@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2025-07-04 11:00+0000\n"
+"PO-Revision-Date: 2025-07-10 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -9237,7 +9237,9 @@ msgstr ""
 
 #: app/views/settings/studies/studiengang.php:3
 msgid "Ich studiere folgende Fächer und Abschlüsse:"
-msgstr "I study the following subjects and in degree programmes:"
+msgstr ""
+"I study the following subjects and am enrolled in the following courses of "
+"study:"
 
 #: app/views/settings/studies/studiengang.php:22
 #: app/views/settings/studies/studiengang.php:48
@@ -9264,8 +9266,7 @@ msgid ""
 "Wählen Sie die Fächer, Abschlüsse und Fachsemester in der folgenden Liste "
 "aus:"
 msgstr ""
-"Select out of the following list your subjects, degree programmes and "
-"semester of study:"
+"Select your subjects, courses of study and semesters from the list below:"
 
 #: app/views/settings/studies/studiengang.php:162
 msgid ""
@@ -9458,7 +9459,7 @@ msgstr "%s semester (%s)"
 msgid "Studiengang"
 msgid_plural "Studiengängen"
 msgstr[0] "Course of study"
-msgstr[1] "Course of studies"
+msgstr[1] "Courses of study"
 
 #: app/views/search/studiengaenge/mehrfach.php:13
 #: app/views/fachabschluss/faecher/fachbereiche.php:8
@@ -9703,7 +9704,7 @@ msgstr "Course name"
 #: lib/classes/searchtypes/StandardSearch.class.php:76
 #: lib/admissionrules/coursememberadmission/templates/configure.php:37
 msgid "Veranstaltung suchen"
-msgstr "Search for courses"
+msgstr "Find course"
 
 #: app/views/search/archive/index.php:18
 msgid "Name des/der Lehrenden"
@@ -16065,7 +16066,7 @@ msgstr "Add course group:"
 #: app/controllers/lvgruppen/lvgruppen.php:441
 #: app/controllers/lvgruppen/lvgruppen.php:446
 msgid "LV-Gruppe suchen"
-msgstr "Search course group"
+msgstr "Find course group"
 
 #: app/views/module/module/modulteil_lvg.php:58
 msgid "LV-Gruppe zuordnen"
@@ -23869,7 +23870,7 @@ msgstr "Locked courses"
 #: app/controllers/admin/courses.php:1036 lib/navigation/MVVNavigation.php:64
 #: lib/modules/CoreAdmin.class.php:55
 msgid "LV-Gruppen"
-msgstr "Course group"
+msgstr "Course groups"
 
 #: app/controllers/admin/courses.php:1103
 msgid "Personen auf Warteliste"
@@ -26003,7 +26004,7 @@ msgstr "The selected operation could not be executed."
 
 #: app/controllers/settings/deputies.php:137
 msgid "Die gewünschten Personen wurden als Ihre Vertretung eingetragen!"
-msgstr "Selected Persons added as substitutes!"
+msgstr "The selected users have been added as your substitutes!"
 
 #: app/controllers/settings/deputies.php:153
 msgid "Die Vertretung wurde entfernt."
@@ -32117,8 +32118,8 @@ msgid ""
 "Sie beabsichtigen die Anzahl der Wartenden zu begrenzen. Die letzten %s "
 "Einträge der Warteliste werden gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to limit the number of persons on the wait list. %s persons "
-"will be excluded. Proceed?"
+"You are about to limit the number of users on the waiting list. %s users "
+"will be excluded. Are you sure?"
 
 #: app/controllers/course/admission.php:279
 #: app/controllers/course/admission.php:366
@@ -52868,7 +52869,7 @@ msgstr "Find me"
 
 #: templates/privacy.php:53
 msgid "Matrikelnummer"
-msgstr "Matriculation number"
+msgstr "Student ID"
 
 #: templates/privacy.php:105
 msgid "Teilname an einer best. VA"
