@@ -155,8 +155,11 @@ class Calendar_ScheduleController extends AuthenticatedController
 
     public function data_action()
     {
-        //Fullcalendar sets the week time range in which to put the course dates
+        //Fullcalendar sets the time range in which to put the course dates
         //of the semester. Therefore, start and end are handled in here.
+        //The range is not necessary a full week: If fullcalendar starts in the day
+        //view (like in the mobile view), the start of the range may lie in the middle
+        //of the week.
         $begin = Request::getDateTime('start', \DateTime::RFC3339);
         $end = Request::getDateTime('end', \DateTime::RFC3339);
         if (!($begin instanceof \DateTime) || !($end instanceof \DateTime)) {
@@ -171,11 +174,18 @@ class Calendar_ScheduleController extends AuthenticatedController
         $show_hidden = Request::bool('show_hidden', false);
 
         if ($semester) {
-            //Get all regular course dates for that semester:
+            //Get all regular course dates for that semester
+            //whose day of week lies in the range of the fullcalendar time range:
+            $days_of_week = [];
+            for ($dow = clone $begin; $dow <= $end; $dow = $dow->add(new DateInterval('P1D'))) {
+                $days_of_week[] = $dow->format('N');
+            }
             $cycle_dates = SeminarCycleDate::findBySql(
                 'JOIN `termine` USING (`metadate_id`)
                  JOIN `seminare` USING (`seminar_id`)
                 WHERE
+                `weekday` IN ( :days_of_week )
+                AND
                 `seminar_id` IN (
                     SELECT `seminar_id` FROM `seminar_user`
                     WHERE `user_id` = :user_id
@@ -190,9 +200,10 @@ class Calendar_ScheduleController extends AuthenticatedController
                 )
                 GROUP BY `metadate_id`',
                 [
-                    'user_id' => $GLOBALS['user']->id,
-                    'begin' => $semester->beginn,
-                    'end' => $semester->ende
+                    'days_of_week' => $days_of_week,
+                    'user_id'      => $GLOBALS['user']->id,
+                    'begin'        => $semester->beginn,
+                    'end'          => $semester->ende
                 ]
             );
 
