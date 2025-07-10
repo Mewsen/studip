@@ -30,7 +30,7 @@
     <dt><?= _('Aufgabe') ?></dt>
     <dd><?= htmlReady($schedule->task->name) ?></dd>
 
-    <dt><?= _('Ausführungsrhytmus') ?></dt>
+    <dt><?= _('Ausführungsrhythmus') ?></dt>
     <dd>
         <?= $this->render_partial('admin/cronjobs/schedules/periodic-schedule', $schedule->toArray()) ?>
     </dd>
