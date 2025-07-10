@@ -31,6 +31,10 @@ $app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'dispatch.php');
 $studip_dispatcher = app(\Trails\Dispatcher::class);
 $route_callable = $studip_dispatcher->getRouteCallable(Request::pathInfo());
 $app->any(Request::pathInfo(), $route_callable);
+
+// Add legacy director so links shall not break
+$app->add(Studip\Middleware\LegacyRedirectorMiddleware::class);
+
 NotificationCenter::postNotification('SLIM_BEFORE_RUN', $app);
 $app->run();
 NotificationCenter::postNotification('SLIM_AFTER_RUN', $app);
