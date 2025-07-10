@@ -48,8 +48,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             },
             jsupdate_enable: <?= json_encode(
                              is_object($GLOBALS['perm']) &&
-                             $GLOBALS['perm']->have_perm('autor') &&
-                             PersonalNotifications::isActivated()) ?>,
+                             $GLOBALS['perm']->have_perm('autor')) ?>,
             wysiwyg_enabled: true,
             editor_enabled: true
         }
