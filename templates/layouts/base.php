@@ -44,8 +44,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             USER_ID: <?= json_encode($GLOBALS['user']->id) ?>,
             jsupdate_enable: <?= json_encode(
                              is_object($GLOBALS['perm']) &&
-                             $GLOBALS['perm']->have_perm('autor') &&
-                             PersonalNotifications::isActivated()) ?>,
+                             $GLOBALS['perm']->have_perm('autor')) ?>,
             wysiwyg_enabled: <?= json_encode((bool) Config::get()->WYSIWYG) ?>,
             server_timestamp: <?= time() ?>,
             config: <?= json_encode([

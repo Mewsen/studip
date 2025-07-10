@@ -77,7 +77,7 @@ $start_pages = [
             <input type="checkbox" name="personal_notifications_activated"
                    aria-describedby="personal_notifications_activated_description" value="1"
                 <? if (PersonalNotifications::isActivated($user->user_id)) echo 'checked'; ?>>
-            <?= _('Benachrichtigungen über Javascript') ?>
+            <?= _('Benachrichtigungen über Neuigkeiten') ?>
             <?= tooltipIcon(_('Hiermit wird in der Kopfzeile dargestellt, wenn es Benachrichtigungen für '
                 .'Sie gibt. Die Benachrichtigungen werden auch angezeigt, wenn Sie nicht die '
                 .'Seite neuladen.')) ?>
