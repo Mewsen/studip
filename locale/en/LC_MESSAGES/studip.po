@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 10:59+0200\n"
-"PO-Revision-Date: 2025-07-10 10:01+0000\n"
+"PO-Revision-Date: 2025-07-11 11:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -3966,7 +3966,7 @@ msgstr "Membership application already submitted!"
 
 #: app/controllers/course/studygroup.php:112
 msgid "Direkt zur Studiengruppe"
-msgstr "Directly to the study group"
+msgstr "Go to study group"
 
 #: app/controllers/course/studygroup.php:115 lib/classes/Information.php:111
 #: lib/classes/MessageBox.php:162
@@ -36062,14 +36062,14 @@ msgid "%s Semester (%s)"
 msgstr "%s semester (%s)"
 
 #: app/views/search/studiengaenge/verlauf.php:132
-#, fuzzy
 msgid "Studentische Arbeitsgruppen"
-msgstr "Students' work group"
+msgstr "Students' work groups"
 
 #: app/views/search/studiengaenge/verlauf.php:162
-#, fuzzy, php-format
+#, php-format
 msgid "Wirklich diese Studiengruppe aus dem Studiengang %s entfernen?"
-msgstr "Do you want to remove %s from the study group?"
+msgstr ""
+"Are you sure you want to remove this study group from the course of study %s?"
 
 #: app/views/search/studiengaenge/einfach.php:3
 msgid "Ausprägungen"
@@ -36133,20 +36133,20 @@ msgid ""
 "durchzusehen. Achtung, hier geänderte Einstellungen wirken sich auf das "
 "gesamte System aus!"
 msgstr ""
+"This dialogue is used to view the changes since the last update. Please note "
+"that changes made here will affect the entire system!"
 
 #: app/views/root_assistant/index.php:35
-#, fuzzy
 msgid "Neue Konfigurationen"
-msgstr "User configurations"
+msgstr "New configurations"
 
 #: app/views/root_assistant/index.php:50
-#, fuzzy
 msgid "Aktueller Wert"
-msgstr "Current folder"
+msgstr "Current value"
 
 #: app/views/root_assistant/index.php:90
 msgid "Für alle Roots als gelesen kennzeichnen und nicht mehr anzeigen"
-msgstr ""
+msgstr "Mark as read for all roots and don't display again"
 
 #: app/views/quickselection/configuration.php:11
 msgid "Inhalte des Schnellzugriff-Widget:"
@@ -36381,6 +36381,8 @@ msgid ""
 "Es sind aktuell keine Ankündigungen vorhanden. Nutzen Sie die Funktion "
 "„Hinzufügen“, um eine neue Ankündigung zu erstellen."
 msgstr ""
+"There are currently no announcements. Use the \"Add\" function to create a "
+"new announcement."
 
 #: app/views/news/display.php:60 app/views/news/display.php:66
 #, php-format
@@ -36413,7 +36415,7 @@ msgstr "Enable / disable"
 
 #: app/views/lti/_tool_info.php:18
 msgid "Launch-URL"
-msgstr ""
+msgstr "Launch URL"
 
 #: app/views/lti/_tool_info.php:43 app/views/lti/_link_user_info.php:36
 #: lib/navigation/FooterNavigation.php:59
@@ -36422,47 +36424,43 @@ msgstr "Privacy statement"
 
 #: app/views/lti/_tool_info.php:53
 msgid "Client-ID"
-msgstr ""
+msgstr "Client ID"
 
 #: app/views/lti/_tool_info.php:62
 msgid "LTI custom parameters"
-msgstr ""
+msgstr "LTI custom parameters"
 
 #: app/views/lti/_tool_info.php:67
-#, fuzzy
 msgid "Direktlink zum LTI-Tool"
-msgstr "Direct link"
+msgstr "Direct link to the LTI tool"
 
 #: app/views/lti/_tool_info.php:82
-#, fuzzy
 msgid "Plattform-Konfiguration"
-msgstr "Configuration"
+msgstr "Platform configuration"
 
 #: app/views/lti/_link_user_info.php:23
-#, fuzzy
 msgid "Domain"
-msgstr "Without domain"
+msgstr "Domain"
 
 #: app/views/lti/_platform_data.php:7
 msgid "Plattform-ID"
-msgstr ""
+msgstr "Platform ID"
 
 #: app/views/lti/_platform_data.php:14
 msgid "OAuth2 access token URL"
-msgstr ""
+msgstr "OAuth2 access token URL"
 
 #: app/views/lti/_platform_data.php:21
 msgid "OIDC authentication URL"
-msgstr ""
+msgstr "OIDC authentication URL"
 
 #: app/views/lti/_platform_data.php:28
 msgid "JWKS URL"
-msgstr ""
+msgstr "JWKS URL"
 
 #: app/views/lti/_platform_data.php:42
-#, fuzzy
 msgid "Öffentlicher Schlüssel"
-msgstr "Search public templates"
+msgstr "Public key"
 
 #: app/views/lti/content_item.php:6
 msgid "Veranstaltung auswählen"
@@ -36484,51 +36482,54 @@ msgid ""
 "Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten "
 "gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)"
 msgstr ""
+"Please provide some information about the connected tool. What is it called, "
+"who offers it, what is it used for and what data is transferred? (Example: "
+"\"Tool XY is used to carry out language tests. Test results and grades (if "
+"any) are saved. Name and user ID are transmitted for registration.\")"
 
 #: app/views/lti/_tool_form_fields.php:25
 msgid "URL zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)"
-msgstr ""
+msgstr "Link to the terms of use of the LTI tool (if available)"
 
 #: app/views/lti/_tool_form_fields.php:29
 msgid "URL zur Datenschutzerklärung des LTI-Tools (falls verfügbar)"
-msgstr ""
+msgstr "Link to the privacy statement for the LTI tool (if available)"
 
 #: app/views/lti/_tool_form_fields.php:51
 msgid "LTI Launch-URL"
-msgstr ""
+msgstr "LTI launch URL"
 
 #: app/views/lti/_tool_form_fields.php:59
 msgid "OIDC Login-URL"
-msgstr ""
+msgstr "OIDC login URL"
 
 #: app/views/lti/_tool_form_fields.php:60
 msgid "Die URL, mit der der Login via OpenID Connect stattfindet."
-msgstr ""
+msgstr "The URL used to log in via OpenID Connect."
 
 #: app/views/lti/_tool_form_fields.php:64
 msgid "Deep-linking URL"
-msgstr ""
+msgstr "Deep-linking URL"
 
 #: app/views/lti/_tool_form_fields.php:68
 msgid "JWKS-URL"
-msgstr ""
+msgstr "JWKS URL"
 
 #: app/views/lti/_tool_form_fields.php:69
 msgid "Die URL, mit der der der Austausch von JSON web keys stattfinden kann."
-msgstr ""
+msgstr "The URL with which the exchange of JSON web keys can take place."
 
 #: app/views/lti/_tool_form_fields.php:74
-#, fuzzy
 msgid "Schlüssel-ID"
-msgstr "Key"
+msgstr "Key ID"
 
 #: app/views/lti/_tool_form_fields.php:75
 msgid "Die ID des Schlüssels, der über die JWKS-URL geladen werden soll."
-msgstr ""
+msgstr "The ID of the key to be loaded via the JWKS URL."
 
 #: app/views/lti/_tool_form_fields.php:79
 msgid "Öffentlicher Schlüssel des LTI-Tools"
-msgstr ""
+msgstr "Public key of the LTI tool"
 
 #: app/views/lti/_tool_form_fields.php:96
 msgid "Consumer-Key des LTI-Tools"
@@ -36539,19 +36540,17 @@ msgid "Consumer-Secret des LTI-Tools"
 msgstr "LTI tool consumer secret"
 
 #: app/views/lti/_tool_form_fields.php:110
-#, fuzzy
 msgid "Personendaten an das LTI-Tool senden"
-msgstr "Send user data to LTI tool"
+msgstr "Send personal data to LTI tool"
 
 #: app/views/lti/_tool_form_fields.php:111
-#, fuzzy
 msgid ""
 "Personendaten dürfen nur an das externe Tool gesendet werden, wenn es keine "
 "Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die "
 "Übermittlung der Daten zulässig ist."
 msgstr ""
 "User data can only be sent to the external tool if no privacy concerns "
-"exist. By setting the checkbox you confirm that data transfer is permitted."
+"exist. Check the box to confirm that data transfer is permitted."
 
 #: app/views/lti/_tool_form_fields.php:114
 msgid "Zusätzliche LTI-Parameter"
@@ -36562,9 +36561,8 @@ msgid "Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56"
 msgstr "One value per line, example: Review:Chapter=1.2.56"
 
 #: app/views/lti/_tool_form_fields.php:124
-#, fuzzy
 msgid "Anzeigeeinstellungen"
-msgstr "Page settings"
+msgstr "Display settings"
 
 #: app/views/lti/_tool_form_fields.php:127
 msgid "Anzeige im IFRAME auf der Seite"
@@ -37478,9 +37476,8 @@ msgid "Alle Dateien, Seite %d"
 msgstr "All files, page %d"
 
 #: app/views/files/upload-drag-and-drop.php:3
-#, fuzzy
 msgid "Lege Dateien zum Hochladen hier ab."
-msgstr "Select a file for upload"
+msgstr "Place files here for uploading them."
 
 #: app/views/files/my_uploaded_files.php:3
 msgid "Meine hochgeladenen Dateien mit ungeklärter Lizenz"
@@ -37827,7 +37824,6 @@ msgid "Avatar für die Studiengruppe auswählen"
 msgstr "Select avatar for the study group"
 
 #: app/views/accessibility/forms/report_barrier.php:1
-#, fuzzy
 msgid ""
 "Auf dieser Seite können Sie eine Barriere melden, die die Nutzbarkeit von "
 "Stud.IP für Sie einschränkt. Füllen Sie dazu das folgende Formular aus."
@@ -37990,50 +37986,44 @@ msgid "Webseite"
 msgstr "Website"
 
 #: app/views/login/index.php:73
-#, fuzzy
 msgid "Registrieren, um das System erstmalig zu nutzen"
-msgstr "for using the system for the first time"
+msgstr "Register to access the system for the first time"
 
 #: app/views/login/index.php:74
-#, fuzzy
 msgid "Kein Zugang? Jetzt registrieren"
-msgstr "Register plug-in"
+msgstr "No access? Register now"
 
 #: app/views/login/index.php:96
-#, fuzzy
 msgid "Ankündigungen anzeigen"
-msgstr "Edit this announcement"
+msgstr "Display announcements"
 
 #: app/views/login/index.php:99
-#, fuzzy
 msgid "Hinweise zum Login anzeigen"
-msgstr "Login hints"
+msgstr "Show login hints"
 
 #: app/views/login/activate_email.php:5
-#, fuzzy
 msgid ""
 "Sie haben Ihre E-Mail-Adresse geändert.\n"
 "        Um diese frei zu schalten müssen Sie den Ihnen an Ihre neue Adresse "
 "zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld "
 "eintragen."
 msgstr ""
-"You have changed your e-mail address. In order to activate it, you have to "
-"enter in the input field below the confirmation code which has been sent to "
-"the new e-mail address. "
+"You have changed your email address. \n"
+"To activate it, please enter the confirmation code we sent to your new e-"
+"mail address in the input field below."
 
 #: app/views/login/activate_email.php:10
 msgid "Aktivierungs Schlüssel"
 msgstr "Confirmation code"
 
 #: app/views/login/activate_email.php:23
-#, fuzzy
 msgid ""
 "Sollten Sie keine E-Mail erhalten haben, können Sie sich einen neuen "
 "Aktivierungsschlüssel zuschicken lassen. Geben Sie dazu Ihre gewünschte E-"
 "Mail-Adresse unten an."
 msgstr ""
-"If you have not received any e-mail yet, then you may request a new "
-"confirmation code. To this end, please enter your e-mail address below"
+"If you have not received an email yet, simpy request a new confirmation code "
+"- just enter the desired email address below."
 
 #: app/views/login/privacy_info.php:7
 msgid "Stud.IP - Erläuterungen zum Datenschutz im Überblick"
@@ -38392,7 +38382,6 @@ msgid "Werden Sie Teil des weltweiten Stud.IP Lernmarktplatzes!"
 msgstr "Become a part of the worldwide Stud.IP learning marketplace!"
 
 #: app/views/oer/admin/hosts.php:81
-#, fuzzy
 msgid ""
 "Der Lernmarktplatz ist ein Ort des Austauschs von kostenlosen und freien "
 "Lernmaterialien. Daher wäre es schade, wenn er nur auf Ihr einzelnes Stud.IP "
@@ -38411,21 +38400,20 @@ msgid ""
 "ganzen Netzwerks. Achten Sie darauf, dass Sie mit mindestens einem, aber "
 "auch nicht zu vielen Indexservern verbunden sind."
 msgstr ""
-"The learning marketplace is a place for exchanging of free learning "
-"materials that are also free of charge. It would be a pity if it would be "
-"limited to your single Stud.IP. Therefore, the learning marketplace is "
-"designed as decentralised network in which all users of all Stud.IP "
-"instances can share learning materials and search for learning materials of "
-"other users. This network is called <em>decentralised</em> since there is no "
-"single central server that holds all information like in a big search "
-"engine. Instead, all Stud.IP instances are connected with each other in the "
-"best case. Such a decentralised network is very secured against failure and "
-"it fits into the open source idea of Stud.IP, because one doesn't become "
-"dependent of a central institution. But your Stud.IP must somehow find a "
-"first contact to the big network of all learning marketplaces to get "
-"started. For this, select one of the servers listed below. They are called "
-"index servers and form the gate to the rest of the whole network. Make sure "
-"that your are connected to at least one but not too many index servers."
+"The learning marketplace is a place for exchanging free learning materials. "
+"It would be a pity if it were limited to just one Stud.IP system. That is "
+"why the learning marketplace has been designed to be a decentralised network "
+"in which all users of all Stud.IP instances can share learning materials and "
+"search for learning materials of other users. This network is "
+"<em>decentralised</em> in the sense that there is no single central server "
+"that holds all information like in a big search engine. Ideally, all Stud.IP "
+"instances are connected with each other. Decentralised networks are highly "
+"fail-safe and because there is no dependency on a central institution, they "
+"are appropriate for the open source idea of Stud.IP. But your Stud.IP must "
+"somehow find a first contact to the big network of all learning marketplaces "
+"to get started. For this, select one of the servers listed below. They are "
+"called index servers and provide the gate to the rest of the network. Make "
+"sure that you are connected to at least one but not too many index servers."
 
 #: app/views/oer/admin/hosts.php:86
 msgid "Stud.IP Entwicklungsserver"
@@ -38743,7 +38731,6 @@ msgstr ""
 "license, if necessary."
 
 #: app/views/oer/market/licenseinfo.php:36
-#, fuzzy
 msgid ""
 "Wie gesagt: wir hoffen, dass dieser Weg für alle ein sehr intuitiver Weg "
 "ist, Materialien zu verbreiten und zu nutzen. Die meisten Menschen wollen "
@@ -38751,9 +38738,9 @@ msgid ""
 "Wir hoffen, dass wir diesen Menschen eine Freude mit dem Marktplatz machen "
 "können."
 msgstr ""
-"As said: We hope that this way is a very intuitive way for everyone to "
-"distribute and use learning materials. Most people do not want to think "
-"about rights and liabilities in this context. We hope that we can make those "
+"As we said earlier, we hope that this is a very intuitive way for everyone "
+"to distribute and use materials. Most people don't want to think about "
+"rights and obligations in this context. We hope that we can make these "
 "people happy with the marketplace."
 
 #: app/views/oer/market/add_to_course.php:13
@@ -39026,9 +39013,8 @@ msgid "Reise"
 msgstr "Journey"
 
 #: config/config_develop.inc.php:336
-#, fuzzy
 msgid "Videokonferenz"
-msgstr "Copy version"
+msgstr "Video conference"
 
 #: config/config_develop.inc.php:368
 msgid "Titel1 Vorname Nachname Titel2"
@@ -39769,14 +39755,13 @@ msgid "Diese Nachricht bis zum nächsten Login nicht mehr anzeigen"
 msgstr "Do not display this message until the next login"
 
 #: lib/middleware/SeminarOpenMiddleware.php:243
-#, fuzzy
 msgid "Sie haben ein Stud.IP-Update durchgeführt."
-msgstr "You didn't select any contact."
+msgstr "You have updated Stud.IP."
 
 #: lib/middleware/SeminarOpenMiddleware.php:246
 #, php-format
 msgid "Zu den %sRelease-Notes%s"
-msgstr ""
+msgstr "Go to %srelease notes%s"
 
 #: lib/middleware/DispatchPluginMiddleware.php:53
 msgid "Sie besitzen keine Rechte zum Aufruf dieses Plugins."
@@ -39957,15 +39942,16 @@ msgstr ""
 "admissions in the attachment."
 
 #: lib/cronjobs/expire_studygroups.class.php:16
-#, fuzzy
 msgid "Studiengruppen abräumen"
-msgstr "Search for study groups"
+msgstr "Clean up study groups"
 
 #: lib/cronjobs/expire_studygroups.class.php:21
 msgid ""
 "Löscht ablaufende Studiengruppen und benachrichtigt einen Monat vor Ablauf "
 "der Studiengruppe über die Löschung."
 msgstr ""
+"Deletes expiring study groups and notifies you of the deletion one month "
+"before the study group expires."
 
 #: lib/cronjobs/courseware.php:14
 msgid ""
@@ -40045,9 +40031,8 @@ msgstr ""
 "already been sent."
 
 #: lib/cronjobs/studygroup_expiration.php:20
-#, fuzzy
 msgid "Studiengruppen aufräumen"
-msgstr "Search for study groups"
+msgstr "Clean up study groups"
 
 #: lib/cronjobs/studygroup_expiration.php:28
 msgid ""
@@ -40055,6 +40040,8 @@ msgid ""
 "Gruppengründer:innen benachrichtigt, wenn ihre Studiengruppen in einem Monat "
 "ablaufen."
 msgstr ""
+"Study groups that have expired are deleted. In addition, group founders are "
+"notified when their study groups expire in a month."
 
 #: lib/cronjobs/studygroup_expiration.php:79
 #, php-format
@@ -40063,11 +40050,13 @@ msgid ""
 "gelöscht werden. Falls Sie die Studiengruppe noch benötigen, ändern Sie in "
 "der Verwaltung der Studiengruppe das Ablaufdatum."
 msgstr ""
+"Your study group %s will expire in one month and will then be deleted "
+"automatically. If you still need the study group, change its expiry date in "
+"the administration menu."
 
 #: lib/cronjobs/studygroup_expiration.php:82
-#, fuzzy
 msgid "Ablauf Ihrer Studiengruppe"
-msgstr "Study group name"
+msgstr "Study group expiry"
 
 #: lib/cronjobs/garbage_collector.php:16
 msgid "Datenbank bereinigen"
@@ -40276,14 +40265,12 @@ msgid "Die Datei ist keine gültige iCalendar-Datei!"
 msgstr "The file is not a valid iCalendar file!"
 
 #: lib/classes/calendar/ICalendarImport.php:471
-#, fuzzy
 msgid "Die Zeitangabe ist ungültig"
-msgstr "The username is invalid"
+msgstr "Invalid time"
 
 #: lib/classes/calendar/ICalendarImport.php:486
-#, fuzzy
 msgid "Die Datumsangabe ist ungültig"
-msgstr "The room selection is invalid!"
+msgstr "Invalid date"
 
 #: lib/classes/calendar/ICalendarImport.php:541
 #: lib/classes/calendar/ICalendarImport.php:564
@@ -40299,18 +40286,16 @@ msgid "Stud.IP-Startseite"
 msgstr "Stud.IP start page"
 
 #: lib/classes/forms/NewsRangesInput.php:130 lib/models/NewsRange.php:60
-#, fuzzy
 msgid "Stud.IP-Loginseite"
-msgstr "Stud.IP link target"
+msgstr "Stud.IP login page"
 
 #: lib/classes/forms/NewsRangesInput.php:144
 msgid "Meine Profilseite"
 msgstr "My profile"
 
 #: lib/classes/forms/Captcha.php:16
-#, fuzzy
 msgid "Bitte bestätigen Sie, dass Sie kein Roboter sind"
-msgstr "Please confirm action"
+msgstr "Please confirm you are not a robot"
 
 #: lib/classes/forms/Form.php:73
 msgid "Daten wurden gespeichert."
@@ -40576,42 +40561,36 @@ msgid "Änderungen an Ihrem Blubber."
 msgstr "Modifications to your Blubber."
 
 #: lib/classes/visibility/visibilitySettings/Domain.php:26
-#, fuzzy
 msgid "nur für meine Nutzerdomäne sichtbar"
-msgstr "visible to your own user domain"
+msgstr "only visible in my own user domain"
 
 #: lib/classes/visibility/visibilitySettings/Me.php:26
-#, fuzzy
 msgid "nur mich selbst"
-msgstr "Me"
+msgstr "only me"
 
 #: lib/classes/visibility/visibilitySettings/Me.php:27
-#, fuzzy
 msgid "nur für mich sichtbar"
-msgstr "publicly visible"
+msgstr "only visible for me"
 
 #: lib/classes/visibility/visibilitySettings/Extern.php:26
-#, fuzzy
 msgid "externe Seiten"
-msgstr "External pages"
+msgstr "external pages"
 
 #: lib/classes/visibility/visibilitySettings/Extern.php:27
-#, fuzzy
 msgid "auf externen Seiten sichtbar"
-msgstr "Module \"external pages\" is deactivated"
+msgstr "visible on external pages"
 
 #: lib/classes/visibility/visibilitySettings/Buddies.php:26
 msgid "nur für meine Kontakte sichtbar"
-msgstr ""
+msgstr "only visible for my contacts"
 
 #: lib/classes/visibility/visibilitySettings/Studip.php:25
-#, fuzzy
 msgid "Stud.IP-intern"
-msgstr "Stud.IP-Score"
+msgstr "Stud.IP internal"
 
 #: lib/classes/visibility/visibilitySettings/Studip.php:26
 msgid "für alle Stud.IP-Nutzenden sichtbar"
-msgstr ""
+msgstr "visible for all Stud.IP users"
 
 #: lib/classes/visibility/User_Visibility_Settings.php:123
 #: lib/classes/Visibility.php:211
@@ -40638,34 +40617,34 @@ msgid "Einladung akzeptiert"
 msgstr "Invitation accepted"
 
 #: lib/classes/StudygroupModel.php:559
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s hat die Einladung zur Studiengruppe %s akzeptiert. Klicken Sie auf den "
 "folgenden Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " [Direkt zur Studiengruppe]%s"
 msgstr ""
-"%s has accepted the invitation to the study group %s. The link below "
-"directly takes you to the study group.\n"
+"%s has accepted the invitation to the study group %s. Click the link below "
+"to go directly to the study group.\n"
 "\n"
-" [Directly to the study group]%s"
+" [Go to study group]%s"
 
 #: lib/classes/StudygroupModel.php:568
 msgid "Neuer Mitgliedsantrag"
 msgstr "New membership application"
 
 #: lib/classes/StudygroupModel.php:570
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s möchte der Studiengruppe %s beitreten. Klicken Sie auf den folgenden "
 "Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " [Direkt zur Studiengruppe]%s"
 msgstr ""
-"%s would like to join study group %s. The link below directly takes you to "
+"%s would like to join study group %s. Click the link below to go directly to "
 "the study group.\n"
 "\n"
-" [Directly to the study group]%s"
+" [Go to study group]%s"
 
 #: lib/classes/StudygroupModel.php:623
 #, php-format
@@ -40673,6 +40652,8 @@ msgid ""
 "Ihr Vorschlag, die Studiengruppe \"%s\" mit der Veranstaltung \"%s\" zu "
 "verknüpfen, wurde angenommen."
 msgstr ""
+"Your suggestion to link the study group %s with the event %s has been "
+"accepted."
 
 #: lib/classes/StudygroupModel.php:668
 #, php-format
@@ -40681,11 +40662,12 @@ msgid ""
 "„%2$s“ zu verknüpfen. Sie können den Vorschlag unter folgendem Link annehmen "
 "oder ablehnen:"
 msgstr ""
+"It has been suggested that the study group %1$s be linked to your course %2$"
+"s. You can accept or reject the suggestion using the following link:"
 
 #: lib/classes/StudygroupModel.php:678
-#, fuzzy
 msgid "Verknüpfung Ihrer Veranstaltung zu einer Studiengruppe"
-msgstr "Assignment of course to course group"
+msgstr "Link your course to a study group"
 
 #: lib/classes/Markup.php:547
 msgid "Ungültige interne Medienverknüpfung entfernt: "
@@ -40892,27 +40874,24 @@ msgid "4. Advent"
 msgstr "4. advent sunday"
 
 #: lib/classes/Holidays.php:366
-#, fuzzy
 msgid "Internationaler Frauentag"
-msgstr "International"
+msgstr "International Women's Day"
 
 #: lib/classes/Holidays.php:368
-#, fuzzy
 msgid "Friedensfest"
-msgstr "Miscellaneous"
+msgstr "Peace festival"
 
 #: lib/classes/Holidays.php:370
-#, fuzzy
 msgid "Mariä Himmelfahrt"
-msgstr "Ascension Day"
+msgstr "Assumption day"
 
 #: lib/classes/Holidays.php:372
 msgid "Weltkindertag"
-msgstr ""
+msgstr "World Children's Day"
 
 #: lib/classes/Holidays.php:374
 msgid "Buß- und Bettag"
-msgstr ""
+msgstr "Day of Prayer and Repentance"
 
 #: lib/classes/Virusscanner.php:57
 msgid "Die Datei ist zu groß, um vom Virenscanner gelesen zu werden."
@@ -41363,7 +41342,6 @@ msgstr "Warning"
 #: lib/classes/CourseDateList.php:215 lib/classes/CourseDateList.php:217
 #: lib/classes/CourseDateList.php:222 lib/classes/CourseDateList.php:223
 #: lib/classes/CourseDateList.php:225
-#, fuzzy
 msgid "Ohne Raum"
 msgstr "No room"
 
@@ -41531,9 +41509,8 @@ msgid "eine Woche"
 msgstr "a week"
 
 #: lib/classes/UserManagement.php:692
-#, fuzzy
 msgid "Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort"
-msgstr "[Stud.IP - %s] An access was created for you - Set a password"
+msgstr "You have been given access - set a password"
 
 #: lib/classes/UserManagement.php:695
 #, php-format
@@ -41690,6 +41667,8 @@ msgid ""
 "Dummy-Dozent (id: %s) nicht gefunden. Bitte DUMMY_TEACHER_ID in "
 "Konfiguration setzen."
 msgstr ""
+"Dummy lecturer (id: %s) not found. Please use DUMMY_TEACHER_ID in the "
+"configuration."
 
 #: lib/classes/UserManagement.php:837
 #, php-format
