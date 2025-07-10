@@ -59,8 +59,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             },
             jsupdate_enable: <?= json_encode(
                              is_object($GLOBALS['perm']) &&
-                             $GLOBALS['perm']->have_perm('autor') &&
-                             PersonalNotifications::isActivated()) ?>,
+                             $GLOBALS['perm']->have_perm('autor')) ?>,
             config: <?= json_encode([
                 'ACTIONMENU_THRESHOLD' => Config::get()->ACTION_MENU_THRESHOLD,
                 'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,

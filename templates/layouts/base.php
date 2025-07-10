@@ -55,8 +55,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             USER_ID: <?= json_encode($GLOBALS['user']->id) ?>,
             jsupdate_enable: <?= json_encode(
                              is_object($GLOBALS['perm']) &&
-                             $GLOBALS['perm']->have_perm('autor') &&
-                             PersonalNotifications::isActivated()) ?>,
+                             $GLOBALS['perm']->have_perm('autor')) ?>,
             server_timestamp: <?= time() ?>,
             config: <?= json_encode([
                 'ACTIONMENU_THRESHOLD' => Config::get()->ACTION_MENU_THRESHOLD,
