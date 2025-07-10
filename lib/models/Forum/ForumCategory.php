@@ -2,6 +2,7 @@
 namespace Forum;
 
 use DBManager;
+use User;
 
 /**
  * @property string $category_id
@@ -21,6 +22,7 @@ class ForumCategory extends \SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'forum_categories';
+
         $config['has_many']['topics'] = [
             'class_name' => ForumTopic::class,
             'foreign_key' => 'category_id',
@@ -35,18 +37,16 @@ class ForumCategory extends \SimpleORMap
         parent::configure($config);
     }
 
+    /**
+     * @return self[]
+     */
+    public static function getCourseCategories($course_id): array
+    {
+       return self::findBySQL("range_id = ? ORDER BY position ASC, mkdate DESC", [$course_id]);
+    }
+
     public function getMetaData(): array
     {
-        $user_id = \User::findCurrent()->user_id;
-        $object_user_visit = \ObjectUserVisit::findOneBySQL(
-            "object_id = :object_id AND plugin_id = :plugin_id AND user_id = :user_id",
-            [
-                'object_id' => $this->range_id,
-                'plugin_id' => \PluginEngine::getPlugin(\CoreForum::class)->getPluginId(),
-                'user_id' => $user_id,
-            ]
-        );
-
         return DBManager::get()->fetchOne(
             "SELECT
                         COUNT(DISTINCT`forum_topics`.`topic_id`) AS 'topics_count',
@@ -62,23 +62,14 @@ class ForumCategory extends \SimpleORMap
                                 ON fpr.discussion_id = fd2.discussion_id
                                AND fpr.user_id = :user_id
                             WHERE ft2.category_id = :category_id
-                        ) AS 'user_read_index',
-                        (
-                            SELECT
-                                COUNT(DISTINCT fp.posting_id)
-                            FROM forum_topics ft
-                            JOIN forum_discussions fd USING(topic_id)
-                            JOIN forum_postings fp ON fp.discussion_id = fd.discussion_id AND fp.mkdate > :last_visit
-                            WHERE ft.category_id = :category_id
-                        ) AS 'recent_postings_count'
+                        ) AS 'user_read_index'
                     FROM `forum_topics`
                     LEFT JOIN `forum_discussions` USING (`topic_id`)
                     LEFT JOIN `forum_postings` USING (`discussion_id`)
                     WHERE `forum_topics`.`category_id` = :category_id",
             [
                 'category_id' => $this->category_id,
-                'user_id' => $user_id,
-                'last_visit' => $object_user_visit->last_visitdate ?? 0
+                'user_id' => User::findCurrent()->user_id
             ]
         );
     }

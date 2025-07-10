@@ -1,7 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
-use JsonApi\Errors\BadRequestException;
+use Course;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -9,8 +9,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\JsonApiController;
 use Forum\ForumCategory;
-use Forum\ForumSubscription;
-use Forum\ForumTopic;
 
 class ForumCategoryTopics extends JsonApiController
 {
@@ -21,13 +19,13 @@ class ForumCategoryTopics extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $category = \Forum\ForumCategory::find($args['category_id']);
-
+        $category = ForumCategory::find($args['category_id']);
         if (!$category) {
             throw new RecordNotFoundException();
         }
 
-        if (!$course = \Course::find($category->range_id)) {
+        $course = Course::find($category->range_id);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 

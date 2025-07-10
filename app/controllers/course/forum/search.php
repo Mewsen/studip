@@ -64,14 +64,14 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
 
         $query = [
             "SELECT
-                    discussions.discussion_id,
-                    COUNT(DISTINCT postings.posting_id) AS 'postings_count'
-                FROM `forum_discussions` AS `discussions`
-                LEFT JOIN `forum_postings` AS `postings` USING(`discussion_id`)
-                LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = `discussions`.`discussion_id` AND `range_type` = 'forum')
-                WHERE `postings`.`range_id` = :course_id ",
+                    discussions.*,
+                    MAX(postings.mkdate) AS latest_post_date
+                FROM forum_discussions AS discussions
+                LEFT JOIN forum_postings AS postings USING(discussion_id)
+                LEFT JOIN tags_relations ON (tags_relations.range_id = discussions.discussion_id AND range_type = 'forum')
+                WHERE postings.range_id = :range_id ",
             [
-                'course_id' => $this->course_id
+                'range_id' => $this->course_id
             ]
         ];
 
@@ -117,18 +117,16 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
             default => ""
         };
 
-        $result =  DBManager::get()->fetchAll(
-            $query[0]." GROUP BY discussions.discussion_id",
-            $query[1]
+        $discussions = DBManager::get()->fetchAll(
+            $query[0]." GROUP BY discussions.discussion_id ORDER BY latest_post_date DESC",
+            $query[1],
+            ForumDiscussion::buildExisting(...)
         );
 
-        $discussions = ForumDiscussion::findBySQL("discussion_id IN (:discussion_ids)", ['discussion_ids' => array_column($result, 'discussion_id')]);
-
-
-        return array_map(function (ForumDiscussion $discussion) use ($result) {
-            $postings_count = array_find($result, fn($item) => $item['discussion_id'] === $discussion->discussion_id)['postings_count'];
+        return array_map(function (ForumDiscussion $discussion) {
             $members = array_map(fn(ForumMember $member) => $member->toRawArray(), $discussion->members);
             $tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), $discussion->tags);
+            $metadata = $discussion->getMetaData();
 
             return [
                 'id' => $discussion->discussion_id,
@@ -150,8 +148,8 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
                 'members' => $members,
                 'tags' => $tags,
                 'meta' => [
-                    'postings_count' => (int) $postings_count,
-                    'recent_activity' => $discussion->metadata['recent_activity'] ? date('c', $discussion->metadata['recent_activity']) : null,
+                    'postings_count' => (int) $metadata['postings_count'],
+                    'recent_activity' => $metadata['recent_activity'] ? date('c', $metadata['recent_activity']) : null,
                 ]
             ];
         }, $discussions);

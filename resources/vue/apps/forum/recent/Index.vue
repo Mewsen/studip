@@ -53,7 +53,7 @@ onMounted(async () => {
 
 <template>
     <ForumApp class="use-utility-classes">
-        <DiscussionIndex :discussions="discussions" :withActions="false" :isLoading="isLoading">
+        <DiscussionIndex :discussions="discussions" :withActions="false" :isLoading="isLoading" redirect="recent">
             <template #pagination>
                 <tfoot v-if="pagination && pagination.total > pagination.limit">
                     <tr>

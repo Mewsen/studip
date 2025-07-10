@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Course;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -15,11 +16,13 @@ class ForumTopicShow extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!$topic = ForumTopic::find($args['topic_id'])) {
+        $topic = ForumTopic::find($args['topic_id']);
+        if (!$topic) {
             throw new RecordNotFoundException();
         }
 
-        if (!$course = \Course::find($topic->range_id)) {
+        $course = Course::find($topic->range_id);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 

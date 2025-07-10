@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\Forum;
 
+use Course;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
@@ -13,7 +14,8 @@ class ForumConfigIndex extends JsonApiController
 {
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!$course = \Course::find($args['course_id'])) {
+        $course = Course::find($args['course_id']);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 

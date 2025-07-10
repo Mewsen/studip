@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Course;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
@@ -8,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\JsonApiController;
 use Forum\ForumDiscussion;
-use Forum\ForumPosting;
 
 class ForumDiscussionIndex extends JsonApiController
 {
@@ -25,7 +25,8 @@ class ForumDiscussionIndex extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!$course = \Course::find($args['course_id'])) {
+        $course = Course::find($args['course_id']);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 
@@ -37,20 +38,7 @@ class ForumDiscussionIndex extends JsonApiController
         $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
         $last_visit = $filtering['last-visit'] ?? 0;
 
-        if ($last_visit) {
-            $recent_posts = ForumPosting::getRecentPosts($course->id, $last_visit);
-            $discussions = ForumDiscussion::findBySQL(
-                "discussion_id IN (:discussion_ids)",
-                [
-                    'discussion_ids' => array_column($recent_posts, 'discussion_id')
-                ]
-            );
-        } else {
-            $discussions = ForumDiscussion::findBySQL(
-                "JOIN forum_topics USING(topic_id) WHERE forum_topics.range_id = :course_id ORDER BY position ASC, mkdate DESC",
-                ['course_id' => $course->id]
-            );
-        }
+        $discussions = ForumDiscussion::getCourseDiscussions($course->id, $last_visit);
 
         return $this->getPaginatedContentResponse(
             array_slice($discussions, ...$this->getOffsetAndLimit()),

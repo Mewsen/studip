@@ -2,6 +2,7 @@
 
 namespace Forum;
 
+use DBManager;
 use SimpleORMap;
 
 /**
@@ -32,5 +33,24 @@ class ForumDiscussionType extends SimpleORMap
     public static function getForumDiscussionType(): array
     {
         return self::findBySQL("TRUE ORDER BY `mkdate` DESC");
+    }
+
+    /**
+     * @return ForumDiscussion[]
+     */
+    public function getDiscussions(): array
+    {
+        return DBManager::get()->fetchAll(
+            "SELECT
+                    discussions.*,
+                    MAX(postings.mkdate) AS latest_post_date
+                FROM forum_discussions AS discussions
+                JOIN forum_postings as postings USING (discussion_id)
+                WHERE discussions.type_id = :type_id
+                GROUP BY discussions.discussion_id
+                ORDER BY discussions.sticky DESC, latest_post_date DESC",
+            ['type_id' => $this->type_id],
+            ForumDiscussion::buildExisting(...)
+        );
     }
 }

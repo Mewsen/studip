@@ -43,6 +43,17 @@ class ForumSubscription extends SimpleORMap
         parent::configure($config);
     }
 
+    public static function getUserSubscriptions($course_id, $user_id)
+    {
+        return self::findBySQL(
+            "range_id = :range_id AND user_id = :user_id ORDER BY mkdate DESC",
+            [
+                'range_id' => $course_id,
+                'user_id' => $user_id
+            ]
+        );
+    }
+
     public function getSubjectObject(): ForumDiscussion | ForumTopic
     {
         return match ($this->subject) {

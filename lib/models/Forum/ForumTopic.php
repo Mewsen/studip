@@ -36,6 +36,7 @@ class ForumTopic extends SimpleORMap
         $config['has_many']['discussions'] = [
             'class_name' => ForumDiscussion::class,
             'foreign_key' => 'topic_id',
+            'assoc_func' => 'getDiscussions',
             'assoc_foreign_key' => 'topic_id',
         ];
 
@@ -46,6 +47,9 @@ class ForumTopic extends SimpleORMap
         parent::configure($config);
     }
 
+    /**
+     * @return self[]
+     */
     public static function getCourseTopics($course_id): array
     {
         return self::findBySQL(
@@ -85,18 +89,27 @@ class ForumTopic extends SimpleORMap
         return array_values($unique_users);
     }
 
+    /**
+     * @return ForumDiscussion[]
+     */
+    public function getDiscussions(): array
+    {
+        return DBManager::get()->fetchAll(
+            "SELECT
+                    discussions.*,
+                    MAX(postings.mkdate) AS latest_post_date
+                FROM forum_discussions AS discussions
+                JOIN forum_postings as postings USING (discussion_id)
+                WHERE discussions.topic_id = :topic_id
+                GROUP BY discussions.discussion_id
+                ORDER BY discussions.sticky DESC, latest_post_date DESC",
+            ['topic_id' => $this->topic_id],
+            ForumDiscussion::buildExisting(...)
+        );
+    }
+
     public function getMetaData(): array
     {
-        $user_id = User::findCurrent()->user_id;
-        $object_user_visit = \ObjectUserVisit::findOneBySQL(
-            "object_id = :object_id AND plugin_id = :plugin_id AND user_id = :user_id",
-            [
-                'object_id' => $this->range_id,
-                'plugin_id' => \PluginEngine::getPlugin(\CoreForum::class)->getPluginId(),
-                'user_id' => $user_id,
-            ]
-        );
-
         return DBManager::get()->fetchOne(
             "SELECT
                         COUNT(DISTINCT `forum_discussions`.`discussion_id`) AS 'discussions_count',
@@ -111,22 +124,13 @@ class ForumTopic extends SimpleORMap
                                 ON fpr.discussion_id = fd2.discussion_id
                                AND fpr.user_id = :user_id
                             WHERE fd2.topic_id = :topic_id
-                        ) AS 'user_read_index',
-                        (
-                            SELECT
-                                COUNT(DISTINCT fp.posting_id)
-                            FROM forum_topics ft
-                            JOIN forum_discussions fd USING(topic_id)
-                            JOIN forum_postings fp ON fp.discussion_id = fd.discussion_id AND fp.mkdate > :last_visit
-                            WHERE ft.topic_id = :topic_id
-                        ) AS 'recent_postings_count'
+                        ) AS 'user_read_index'
                     FROM `forum_discussions`
                     LEFT JOIN `forum_postings` USING (`discussion_id`)
                     WHERE `forum_discussions`.`topic_id` = :topic_id",
             [
                 'topic_id' => $this->topic_id,
-                'user_id' => $user_id,
-                'last_visit' => $object_user_visit->last_visitdate ?? 0
+                'user_id' => User::findCurrent()->user_id
             ]
         );
     }

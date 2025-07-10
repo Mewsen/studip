@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Forum\ForumDiscussionType;
 use JsonApi\Errors\RecordNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -14,8 +15,7 @@ class ForumDiscussionTypeShow extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $discussion_type = \Forum\ForumDiscussionType::find($args['type_id']);
-
+        $discussion_type = ForumDiscussionType::find($args['type_id']);
         if (!$discussion_type) {
             throw new RecordNotFoundException();
         }

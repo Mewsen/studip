@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Course;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -34,7 +35,7 @@ class ForumPostingStore extends JsonApiController
         $user = $this->getUser($request);
 
         $discussion = ForumDiscussion::find(self::arrayGet($json, 'data.relationships.discussion.data.id'));
-        $course = \Course::find($discussion->range_id);
+        $course = Course::find($discussion->range_id);
 
         if (!$discussion || !$course) {
             throw new RecordNotFoundException();

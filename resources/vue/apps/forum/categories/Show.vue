@@ -77,7 +77,7 @@ onMounted(async () => {
                             <small>{{ metadata.users_count }}</small>
                         </span>
                         <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
-                            <StudipIcon shape="forum" :size="15" role="info" aria-hidden="true" />
+                            <StudipIcon shape="reply" :size="15" role="info" aria-hidden="true" />
                             <small>{{ metadata.postings_count }}</small>
                         </span>
                         <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">

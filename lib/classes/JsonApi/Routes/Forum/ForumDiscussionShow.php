@@ -1,6 +1,8 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Course;
+use Forum\ForumDiscussion;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
@@ -19,13 +21,13 @@ class ForumDiscussionShow extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $discussion = \Forum\ForumDiscussion::find($args['discussion_id']);
-
+        $discussion = ForumDiscussion::find($args['discussion_id']);
         if (!$discussion) {
             throw new RecordNotFoundException();
         }
 
-        if (!$course = \Course::find($discussion->range_id)) {
+        $course = Course::find($discussion->range_id);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 

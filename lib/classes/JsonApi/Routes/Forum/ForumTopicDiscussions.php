@@ -1,16 +1,14 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
-use JsonApi\Errors\BadRequestException;
+use Course;
+use Forum\ForumTopic;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\Routes\Courses\Authority as CourseAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\JsonApiController;
-use Forum\ForumCategory;
-use Forum\ForumSubscription;
-use Forum\ForumTopic;
 
 class ForumTopicDiscussions extends JsonApiController
 {
@@ -25,13 +23,13 @@ class ForumTopicDiscussions extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $topic = \Forum\ForumTopic::find($args['topic_id']);
-
+        $topic = ForumTopic::find($args['topic_id']);
         if (!$topic) {
             throw new RecordNotFoundException();
         }
 
-        if (!$course = \Course::find($topic->range_id)) {
+        $course = Course::find($topic->range_id);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 
@@ -40,10 +38,10 @@ class ForumTopicDiscussions extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $discussions = $topic->discussions ?? \SimpleORMapCollection::createFromArray([]);
+        $discussions = $topic->discussions;
 
         return $this->getPaginatedContentResponse(
-            $discussions->limit(...$this->getOffsetAndLimit()),
+            array_slice($discussions, ...$this->getOffsetAndLimit()),
             count($discussions)
         );
     }

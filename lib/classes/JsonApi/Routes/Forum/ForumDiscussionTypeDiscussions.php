@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Forum\ForumDiscussionType;
 use JsonApi\Errors\RecordNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -15,16 +16,15 @@ class ForumDiscussionTypeDiscussions extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $discussion_type = \Forum\ForumDiscussionType::find($args['type_id']);
-
-        if (!$discussion_type) {
+        $discussionType = ForumDiscussionType::find($args['type_id']);
+        if (!$discussionType) {
             throw new RecordNotFoundException();
         }
 
-        $discussions = $discussion_type->discussions ?? \SimpleORMapCollection::createFromArray([]);
+        $discussions = $discussionType->discussions;
 
         return $this->getPaginatedContentResponse(
-            $discussions->limit(...$this->getOffsetAndLimit()),
+            array_slice($discussions, ...$this->getOffsetAndLimit()),
             count($discussions)
         );
     }

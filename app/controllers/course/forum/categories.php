@@ -40,7 +40,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
                     'metadata' => [
                         'postings_count' => (int) $category->metadata['postings_count'],
                         'users_count' => (int) $category->metadata['users_count'],
-                        'recent_activity' => date('c', $category->metadata['recent_activity'])
+                        'recent_activity' => $category->metadata['recent_activity'] ? date('c', $category->metadata['recent_activity']) : null
                     ]
             ])
         );

@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Forum\ForumDiscussionType;
 use JsonApi\Errors\BadRequestException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -15,7 +16,7 @@ class ForumDiscussionTypeIndex extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $discussion_types = \Forum\ForumDiscussionType::findBySQL('1');
+        $discussion_types = ForumDiscussionType::findBySQL('1');
 
         return $this->getPaginatedContentResponse(
             array_slice($discussion_types, ...$this->getOffsetAndLimit()),

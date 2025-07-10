@@ -1,6 +1,7 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
+use Course;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
@@ -26,12 +27,12 @@ class ForumPostingReactionStore extends JsonApiController
         $user = $this->getUser($request);
 
         $posting = ForumPosting::find(self::arrayGet($json, 'data.relationships.posting.data.id'));
-
         if (!$posting) {
             throw new BadRequestException();
         }
 
-        if (!$course = \Course::find($posting->range_id)) {
+        $course = Course::find($posting->range_id);
+        if (!$course) {
             throw new RecordNotFoundException();
         }
 

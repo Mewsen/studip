@@ -56,7 +56,6 @@ class ForumTopic extends SchemaProvider
         return [
             'discussions-count' => (int) $metaData['discussions_count'],
             'postings-count' => (int) $metaData['postings_count'],
-            'recent-postings-count' => (int) $metaData['recent_postings_count'],
             'user-read-index' => (int) $metaData['user_read_index'],
             'users-count' => (int) $metaData['users_count'],
             'recent-activity' => $metaData['recent_activity'] ? date('c', $metaData['recent_activity']) : '',

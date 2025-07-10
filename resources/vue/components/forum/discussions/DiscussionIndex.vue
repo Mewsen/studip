@@ -169,14 +169,24 @@ onMounted(() => {
                                         :title="$gettext('Zur Diskussion')">
                                         <h3 class="title-with-actions_title line-clamp-2 m-0">{{ discussion.title }}</h3>
                                         <span
-                                            v-if="discussion.meta.postings_count > discussion.meta.user_read_index"
+                                            v-if="redirect !== 'recent' && discussion.meta.postings_count > discussion.meta.user_read_index"
                                             class="unread-items-badge"
                                             role="status"
                                             aria-live="polite"
-                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
-                                            :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
+                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
+                                            :title="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
                                         >
                                             {{ discussion.meta.postings_count - discussion.meta.user_read_index }}
+                                        </span>
+                                        <span
+                                            v-if="redirect === 'recent' && discussion.meta.recent_postings_count"
+                                            class="unread-items-badge"
+                                            role="status"
+                                            aria-live="polite"
+                                            :aria-label="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
+                                            :title="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
+                                        >
+                                            {{ discussion.meta.recent_postings_count }}
                                         </span>
                                     </a>
                                 </div>
@@ -221,7 +231,7 @@ onMounted(() => {
 
                                 <dt>{{ $gettext('Anzahl der Beitrage') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
-                                    <StudipIcon shape="forum" :size="15" role="info" />
+                                    <StudipIcon shape="reply" :size="15" role="info" />
                                     {{ discussion.meta.postings_count }}
                                 </dd>
 

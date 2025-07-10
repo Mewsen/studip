@@ -1,12 +1,12 @@
 <?php
 namespace Forum;
 
+use User;
 use DBManager;
 use SimpleORMap;
-use Forum\Service\DiscussionNotification;
 use Forum\DTO\ForumMember;
 use Forum\DTO\ForumTag;
-use User;
+use Forum\Service\DiscussionNotification;
 
 /**
  * @property string $discussion_id
@@ -49,7 +49,8 @@ class ForumDiscussion extends SimpleORMap
         $config['has_many']['postings'] = [
             'class_name' => ForumPosting::class,
             'foreign_key' => 'discussion_id',
-            'assoc_foreign_key' => 'discussion_id'
+            'assoc_foreign_key' => 'discussion_id',
+            'order_by' => 'ORDER BY mkdate',
         ];
 
         $config['has_many']['subscribers'] = [
@@ -69,6 +70,34 @@ class ForumDiscussion extends SimpleORMap
         $config['registered_callbacks']['after_delete'][] = 'onDelete';
 
         parent::configure($config);
+    }
+
+    /**
+     * @return self[]
+     */
+    public static function getCourseDiscussions($course_id, $last_visit = 0): array
+    {
+        $query = [
+            "SELECT
+                    discussions.*,
+                    MAX(postings.mkdate) AS latest_post_date
+                FROM forum_discussions AS discussions
+                JOIN forum_postings as postings USING (discussion_id)
+                JOIN forum_topics AS topics USING (topic_id)
+                WHERE topics.range_id = :range_id",
+            ['range_id' => $course_id]
+        ];
+
+        if ($last_visit) {
+            $query[0] .= " AND postings.mkdate > :last_visit";
+            $query[1]["last_visit"] = $last_visit;
+        }
+
+        return \DBManager::get()->fetchAll(
+            $query[0]." GROUP BY discussions.discussion_id ORDER BY latest_post_date DESC",
+            $query[1],
+            self::buildExisting(...)
+        );
     }
 
     public function getTags(): array
@@ -149,17 +178,14 @@ class ForumDiscussion extends SimpleORMap
         ];
     }
 
-    public function getMetaData(): array
+    public function getMetaData(int $last_visit = 0): array
     {
         $user_id = \User::findCurrent()->user_id;
-        $object_user_visit = \ObjectUserVisit::findOneBySQL(
-            "object_id = :object_id AND plugin_id = :plugin_id AND user_id = :user_id",
-            [
-                'object_id' => $this->topic->range_id,
-                'plugin_id' => \PluginEngine::getPlugin(\CoreForum::class)->getPluginId(),
-                'user_id' => $user_id,
-            ]
-        );
+
+        if (!$last_visit) {
+            $plugin_id = \PluginEngine::getPlugin(\CoreForum::class)->getPluginId();
+            $last_visit = object_get_visit($this->topic->range_id, $plugin_id, 'last', '', $user_id);
+        }
 
         return DBManager::get()->fetchOne(
             "SELECT
@@ -181,7 +207,7 @@ class ForumDiscussion extends SimpleORMap
             [
                 'discussion_id' => $this->discussion_id,
                 'user_id' => $user_id,
-                'last_visit' => $object_user_visit->last_visitdate ?? 0
+                'last_visit' => $last_visit
             ]
         );
     }
