@@ -81,6 +81,12 @@ form.default .cw-radioset {
                 }
             }
         }
+        &.disabled {
+            opacity: 0.5;
+            label {
+                cursor: default;
+            }
+        }
         &:last-child {
             margin-right: 0;
         }

@@ -5,6 +5,16 @@
                 {{ $gettext('Vorlagen') }}
             </a>
         </li>
+        <li>
+            <a :href="blockTypeUrl">
+                {{ $gettext("Block-Typen") }}
+            </a>
+        </li>
+        <li>
+            <a :href="containerTypeUrl">
+                {{ $gettext("Container-Typen") }}
+            </a>
+        </li>
   </ul>
 </template>
 
@@ -17,6 +27,12 @@ export default {
         ...mapGetters({
             adminViewMode: 'adminViewMode'
         }),
+        blockTypeUrl() {
+            return window.STUDIP.URLHelper.getURL('dispatch.php/admin/courseware/block_types');
+        },
+        containerTypeUrl() {
+            return window.STUDIP.URLHelper.getURL('dispatch.php/admin/courseware/container_types');
+        },
         templatesView() {
             return this.adminViewMode === 'templates';
         },

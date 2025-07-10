@@ -68,6 +68,7 @@ class Instance extends SchemaProvider
             'content_types' => $typeClass::getContentTypes(),
             'file_types' => $typeClass::getFileTypes(),
             'tags' => $typeClass::getTags(),
+            'is-activated' => $typeClass::isActivated(),
         ];
     }
 
@@ -80,6 +81,7 @@ class Instance extends SchemaProvider
             'type' => $typeClass::getType(),
             'title' => $typeClass::getTitle(),
             'description' => $typeClass::getDescription(),
+            'is-activated' => $typeClass::isActivated(),
         ];
     }
 

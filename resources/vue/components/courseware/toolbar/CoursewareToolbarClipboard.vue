@@ -126,15 +126,28 @@ export default {
             containerById: 'courseware-containers/byId',
             usersClipboards: 'courseware-clipboards/all',
             userId: 'userId',
+            blockTypes: 'blockTypes',
+            containerTypes: 'containerTypes'
         }),
         clipboardBlocks() {
             return this.usersClipboards
-                .filter((clipboard) => clipboard.attributes['object-type'] === 'courseware-blocks')
+                .filter((clipboard) => {
+                    const isBlock = clipboard.attributes['object-type'] === 'courseware-blocks';
+                    const blockType = this.blockTypes.find((blockType) => blockType.type === clipboard.attributes['object-kind']);
+
+                    return isBlock && blockType['is-activated'];
+                })
                 .sort((a, b) => b.attributes.mkdate - a.attributes.mkdate);
         },
         clipboardContainers() {
             return this.usersClipboards
-                .filter((clipboard) => clipboard.attributes['object-type'] === 'courseware-containers')
+                .filter((clipboard) =>  {
+                    const isContainer = clipboard.attributes['object-type'] === 'courseware-containers';
+
+                    const containerType = this.containerTypes.find((containerType) => containerType.type === clipboard.attributes['object-kind']);
+
+                    return isContainer && containerType['is-activated'];
+                })
                 .sort((a, b) => b.attributes.mkdate < a.attributes.mkdate);
         },
         textDeleteClipboardTitle() {

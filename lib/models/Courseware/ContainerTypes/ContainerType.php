@@ -12,6 +12,8 @@ use Opis\JsonSchema\Validator;
  * @author  Ron Lucke <lucke@elan-ev.de>
  * @license GPL2 or any later version
  *
+ * @SuppressWarnings(PHPMD.StaticAccess)
+ *
  * @since   Stud.IP 5.0
  */
 abstract class ContainerType
@@ -81,6 +83,15 @@ abstract class ContainerType
     }
 
     /**
+     * Return all container types that are activated in this Stud.IP installation.
+     *
+     * @return iterable<string> an iterable of all activated `ContainerType` classes
+     */
+    public static function getActivatedContainerTypes(): iterable
+    {
+        return ContainerTypeState::getActivatedContainerTypes();
+    }
+    /**
      * @param string $containerType a short string describing a type of container; see `getType`
      *
      * @return bool true, if the given type of container is valid; false otherwise
@@ -138,6 +149,47 @@ abstract class ContainerType
         }
 
         return new $class($container);
+    }
+
+    /**
+     * @return bool `true`, if this `ContainerType` is activated, otherwise `false`
+     */
+    public static function isActivated(): bool
+    {
+        return in_array(static::class, ContainerTypeState::getActivatedContainerTypes());
+    }
+
+    /**
+     * Activates a `ContainerType`.
+     *
+     * @return `true`, if this `ContainerType` was activated, otherwise `false`
+     */
+    public static function activate(): bool
+    {
+        $state = static::findContainerTypeStateOrNew();
+        return $state->activate();
+    }
+
+    /**
+     * Deactivates a `ContainerType`.
+     *
+     * @return `true`, if this `ContainerType` was deactivated, otherwise `false`
+     */
+    public static function deactivate(): bool
+    {
+        $state = static::findContainerTypeStateOrNew();
+        return $state->deactivate();
+    }
+
+    private static function findContainerTypeStateOrNew(): ContainerTypeState
+    {
+        $state = ContainerTypeState::findOneBySql('container_type = ?', [static::class]);
+        if (!$state) {
+            $state = new ContainerTypeState();
+            $state->container_type = static::class;
+        }
+
+        return $state;
     }
 
     /**
@@ -253,6 +305,10 @@ abstract class ContainerType
      */
     public function getPdfHtmlTemplate(): ?\Flexi\Template
     {
+        if (!$this->isActivated()) {
+            return null;
+        }
+
         $template = null;
         try {
             $template_name = strtosnakecase((new \ReflectionClass($this))->getShortName());

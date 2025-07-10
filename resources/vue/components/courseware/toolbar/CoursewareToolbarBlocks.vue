@@ -137,7 +137,7 @@ export default {
             favoriteBlockTypes: 'favoriteBlockTypes',
         }),
         blockTypes() {
-            return _.sortBy(JSON.parse(JSON.stringify(this.unorderedBlockTypes)), ['title']);
+            return _.sortBy(JSON.parse(JSON.stringify(this.unorderedBlockTypes)), ['title']).filter(blockType => blockType['is-activated']);
         },
         blockCategories() {
             return [

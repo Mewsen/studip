@@ -55,6 +55,7 @@
 <script>
 import CoursewareContainerAdderItem from './CoursewareContainerAdderItem.vue';
 import containerMixin from '@/vue/mixins/courseware/container.js';
+import * as _ from 'lodash';
 import draggable from 'vuedraggable';
 import { mapGetters } from 'vuex';
 
@@ -73,11 +74,14 @@ export default {
     },
     computed: {
         ...mapGetters({
-            containerTypes: 'containerTypes',
+            unfilteredContainerTypes: 'containerTypes',
             structuralElementById: 'courseware-structural-elements/byId',
             relatedContainers: 'courseware-containers/related',
 
         }),
+        containerTypes() {
+            return _.sortBy(JSON.parse(JSON.stringify(this.unfilteredContainerTypes)), ['title']).filter(containerType => containerType['is-activated']);
+        },
         containerStyles() {
             return [
                 { key: 0, title: this.$gettext('Volle Breite'), colspan: 'full' },

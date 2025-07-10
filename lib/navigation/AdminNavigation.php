@@ -129,12 +129,20 @@ class AdminNavigation extends Navigation
 
             if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
                 $navigation->addSubNavigation(
-                    'courseware',
+                    'courseware_elements',
                     new Navigation(
-                        _('Courseware'),
+                        _('Courseware Inhaltselemente'),
+                        'dispatch.php/admin/courseware/elements'
+                    )
+                );
+                $navigation->addSubNavigation(
+                    'courseware_templates',
+                    new Navigation(
+                        _('Courseware Vorlagen'),
                         'dispatch.php/admin/courseware/index'
                     )
                 );
+
             }
 
             if (Config::get()->OERCAMPUS_ENABLED) {

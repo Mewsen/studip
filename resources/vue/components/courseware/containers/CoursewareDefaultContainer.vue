@@ -2,7 +2,7 @@
     <div
         :id="'cw_container_' + container.id"
         class="cw-container"
-        :class="['cw-container-colspan-' + colSpan, showEditMode && canEdit ? 'cw-container-active' : '', containerClass]"
+        :class="['cw-container-colspan-' + colSpan, showEditMode && canEdit ? 'cw-container-active' : '', containerClass, isActivated ? '' : 'cw-container-deactivated']"
     >
         <div class="cw-container-content">
             <header v-if="showEditMode" class="cw-container-header" :class="{ 'cw-container-header-open': isOpen }">
@@ -13,10 +13,14 @@
                     <span v-if="blockedByAnotherUser" class="cw-default-container-blocker-warning">
                         {{ $gettext('Wird im Moment von %{ userName } bearbeitet', { userName: this.blockingUserName }) }}
                     </span>
+                    <span v-if="!isActivated">
+                        - {{ $gettext('Abschnitts-Typ ist deaktiviert') }}
+                    </span>
                 </a>
                 <courseware-container-actions
                     :canEdit="canEdit"
                     :container="container"
+                    :isActivated="isActivated"
                     @editContainer="displayEditDialog"
                     @changeContainer="displayChangeDialog"
                     @deleteContainer="displayDeleteDialog"
@@ -76,9 +80,9 @@
                                     v-for="(container, index) in containerTypes"
                                     :key="index"
                                     class="cw-radioset-box"
-                                    :class="[container.type === changeType ? 'selected' : '']"
+                                    :class="[container.type === changeType ? 'selected' : '', container['is-activated'] ? '' : 'disabled']"
                                 >
-                                    <input type="radio" :id="'type-' + container.type" :value="container.type" v-model="changeType" name="container-type"/>
+                                    <input type="radio" :id="'type-' + container.type" :value="container.type" v-model="changeType" name="container-type" :disabled="!container['is-activated']"/>
                                     <label :for="'type-' + container.type" >
                                         <div class="label-icon" :class="[container.type, container.type === changeType ? 'selected' : '']"></div>
                                         <div class="label-text"><span>{{ container.title }}</span></div>
@@ -220,6 +224,16 @@ export default {
         },
         type() {
             return this.container.attributes['container-type'];
+        },
+        containerType() {
+            return this.containerTypes.find((containerType) => containerType.type === this.type);
+        },
+        isActivated() {
+            if (!this.containerType) {
+                return false;
+            }
+
+            return this.containerType['is-activated'];
         }
     },
     methods: {

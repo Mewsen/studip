@@ -16,6 +16,7 @@ use Opis\JsonSchema\Validator;
  * @since   Stud.IP 5.0
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.StaticAccess)
  */
 abstract class BlockType
 {
@@ -78,7 +79,7 @@ abstract class BlockType
 
     /**
      * Returns a list of tags to which this type of block is associated.
-     * 
+     *
      * @return array the list of tags
      */
     public static function getTags(): array
@@ -127,14 +128,24 @@ abstract class BlockType
         ];
 
         // try {
-            foreach (\PluginEngine::getPlugins(CoursewarePlugin::class) as $plugin) {
-                $blockTypes = $plugin->registerBlockTypes($blockTypes);
-            }
+        foreach (\PluginEngine::getPlugins(CoursewarePlugin::class) as $plugin) {
+            $blockTypes = $plugin->registerBlockTypes($blockTypes);
+        }
         // } catch (\Exception $e) {
         //     // there is nothing we can do here other than absorbing exceptions
         // }
 
         return $blockTypes;
+    }
+
+    /**
+     * Return all block types that are activated in this Stud.IP installation.
+     *
+     * @return iterable<string> an iterable of all activated `BlockType` classes
+     */
+    public static function getActivatedBlockTypes(): iterable
+    {
+        return BlockTypeState::getActivatedBlockTypes();
     }
 
     /**
@@ -181,6 +192,47 @@ abstract class BlockType
         }
 
         return new $class($block);
+    }
+
+    /**
+     * @return bool `true`, if this `BlockType` is activated, otherwise `false`
+     */
+    public static function isActivated(): bool
+    {
+        return in_array(static::class, BlockTypeState::getActivatedBlockTypes());
+    }
+
+    /**
+     * Activates a `BlockType`.
+     *
+     * @return `true`, if this `BlockType` was activated, otherwise `false`
+     */
+    public static function activate(): bool
+    {
+        $state = static::findBlockTypeStateOrNew();
+        return $state->activate();
+    }
+
+    /**
+     * Deactivates a `BlockType`.
+     *
+     * @return `true`, if this `BlockType` was deactivated, otherwise `false`
+     */
+    public static function deactivate(): bool
+    {
+        $state = static::findBlockTypeStateOrNew();
+        return $state->deactivate();
+    }
+
+    private static function findBlockTypeStateOrNew(): BlockTypeState
+    {
+        $state = BlockTypeState::findOneBySql('block_type = ?', [static::class]);
+        if (!$state) {
+            $state = new BlockTypeState();
+            $state->block_type = static::class;
+        }
+
+        return $state;
     }
 
     /**
@@ -443,6 +495,10 @@ abstract class BlockType
      */
     public function getPdfHtmlTemplate(): ?\Flexi\Template
     {
+        if (!$this->isActivated()) {
+            return null;
+        }
+
         $template = null;
         try {
             $template_name = strtosnakecase((new \ReflectionClass($this))->getShortName());

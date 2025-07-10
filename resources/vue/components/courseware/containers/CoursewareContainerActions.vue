@@ -20,6 +20,7 @@ export default {
     props: {
         canEdit: Boolean,
         container: Object,
+        isActivated: Boolean,
     },
     emits: [
         'changeContainer',
@@ -48,11 +49,13 @@ export default {
         menuItems() {
             let menuItems = [];
             if (!this.blockedByAnotherUser) {
-                if (this.container.attributes["container-type"] !== 'list') {
+                if (this.container.attributes["container-type"] !== 'list' && this.isActivated) {
                     menuItems.push({ id: 1, label: this.$gettext('Abschnitt bearbeiten'), icon: 'edit', emit: 'editContainer' });
                 }
                 menuItems.push({ id: 2, label: this.$gettext('Abschnitt verändern'), icon: 'settings', emit: 'changeContainer' });
-                menuItems.push({ id: 3, label: this.$gettext('Abschnitt merken'), icon: 'clipboard', emit: 'copyToClipboard' });
+                if (this.isActivated) {
+                    menuItems.push({ id: 3, label: this.$gettext('Abschnitt merken'), icon: 'clipboard', emit: 'copyToClipboard' });
+                }
                 menuItems.push({ id: 5, label: this.$gettext('Abschnitt löschen'), icon: 'trash', emit: 'deleteContainer' });
             }
 

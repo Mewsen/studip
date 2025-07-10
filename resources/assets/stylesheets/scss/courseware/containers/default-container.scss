@@ -105,3 +105,24 @@ form.cw-container-dialog-edit-form {
         padding-top: 10px;
     }
 }
+
+
+.cw-container-item.cw-container-deactivated  {
+    display: none;
+}
+
+.cw-container-item-sortable .cw-container-item.cw-container-deactivated  {
+    display: block;
+    .cw-container-header {
+        background-color: var(--color--attention);
+    }
+    .cw-block-wrapper {
+        background: repeating-linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.05) 2px,
+            transparent 2px,
+            transparent 10px
+        );
+    }
+}

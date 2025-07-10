@@ -84,7 +84,7 @@ export default {
                             label: this.block.attributes.visible
                                 ? this.$gettext('unsichtbar setzen')
                                 : this.$gettext('sichtbar setzen'),
-                            icon: this.block.attributes.visible ? 'visibility-visible' : 'visibility-invisible', // do we change the icons ?
+                            icon: this.block.attributes.visible ? 'visibility-visible' : 'visibility-invisible',
                             emit: 'setVisibility',
                         });
                         if (this.userIsTeacher) {
@@ -106,14 +106,6 @@ export default {
                             emit: 'removeLock',
                         });
                     }
-                    if (!this.blocked || this.blockedByThisUser) {
-                        menuItems.push({
-                            id: 9,
-                            label: this.$gettext('Block löschen'),
-                            icon: 'trash',
-                            emit: 'deleteBlock'
-                        });
-                    }
                     menuItems.push({
                         id: 2,
                         label: this.$gettext('Block merken'),
@@ -127,6 +119,14 @@ export default {
                         emit: 'showInfo',
                     });
                 }
+                if (!this.blocked || this.blockedByThisUser) {
+                        menuItems.push({
+                            id: 9,
+                            label: this.$gettext('Block löschen'),
+                            icon: 'trash',
+                            emit: 'deleteBlock'
+                        });
+                    }
             }
             menuItems.sort((a, b) => {
                 return a.id > b.id ? 1 : b.id > a.id ? -1 : 0;

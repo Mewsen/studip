@@ -176,7 +176,7 @@ class Instance
 
 
 
-    /* 
+    /*
      *
      *  GENERAL SETTINGS
      *
@@ -295,7 +295,7 @@ class Instance
     }
 
 
-    /* 
+    /*
      *
      *  FEEDBACK
      *
@@ -312,7 +312,7 @@ class Instance
     {
         $this->unit->config['show_feedback_popup'] = $showFeedbackPopup ? 1 : 0;
     }
-    
+
     public function getShowFeedbackInContentbar(): bool
     {
         $showFeedbackInContentbar = $this->unit->config['show_feedback__in_contentbar'] ?? false;
@@ -325,7 +325,7 @@ class Instance
         $this->unit->config['show_feedback__in_contentbar'] = $showFeedbackInContentbar ? 1 : 0;
     }
 
-    /* 
+    /*
      *
      *  CERTIFICATE
      *

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="block.attributes.visible || canEdit" class="cw-default-block" :class="[showEditMode ? 'cw-default-block-active' : '']">
+    <div v-if="block.attributes.visible || canEdit" class="cw-default-block" :class="[showEditMode ? 'cw-default-block-active' : '', isActivated ? '' : 'cw-default-block-deactivated']">
         <div class="cw-content-wrapper" :class="[showEditMode ? 'cw-content-wrapper-active' : '']">
             <header v-if="showEditMode" class="cw-block-header">
                 <a href="#" class="cw-block-header-toggle" :aria-expanded="isOpen" @click.prevent="isOpen = !isOpen">
@@ -13,11 +13,14 @@
                     <span v-if="!block.attributes.visible" class="cw-default-block-invisible-info">
                         {{ $gettext('Unsichtbar für Nutzende ohne Schreibrecht') }}
                     </span>
+                    <span v-if="!isActivated">
+                        - {{ $gettext('Block-Typ ist deaktiviert') }}
+                    </span>
                 </a>
                 <courseware-block-actions
                     :block="block"
                     :canEdit="canEdit"
-                    :deleteOnly="deleteOnly"
+                    :deleteOnly="deleteOnly || !isActivated"
                     @editBlock="displayFeature('Edit')"
                     @showInfo="displayFeature('Info')"
                     @showExportOptions="displayFeature('ExportOptions')"
@@ -96,7 +99,6 @@ import StudipDialog from '../../StudipDialog.vue';
 import StudipIcon from '../../StudipIcon.vue';
 import blockMixin from '@/vue/mixins/courseware/block.js';
 import { mapActions, mapGetters } from 'vuex';
-
 
 export default {
     name: 'courseware-default-block',
@@ -185,9 +187,7 @@ export default {
             return this.blockingUser ? this.blockingUser.attributes['formatted-name'] : '';
         },
         blockTitle() {
-            const type = this.block.attributes['block-type'];
-
-            return this.blockTypes.find((blockType) => blockType.type === type)?.title || this.$gettext('Fehler');
+            return this.blockTypes.find((blockType) => blockType.type === this.blockTypeName)?.title || this.$gettext('Fehler');
         },
         public() {
             return this.context.type === 'public';
@@ -195,6 +195,20 @@ export default {
         commentable() {
             return this.block?.attributes?.commentable ?? false;
         },
+        blockTypeName() {
+            return this.block.attributes['block-type'];
+        },
+        blockType(){
+            return this.blockTypes.find((blockType) => blockType.type === this.blockTypeName);
+        },
+
+        isActivated() {
+            if (!this.blockType) {
+                return false;
+            }
+
+            return this.blockType['is-activated'];
+        }
     },
     mounted() {
         if (this.blocked) {
