@@ -5,8 +5,16 @@
  * @var int $layer
  * @var array $dont_open
  * @var string $compulsory
+ * @var string|null $semester
  */
 $layer = 0;
+
+$url_params = [];
+if ($semester && $semester !== Semester::findCurrent()) {
+    $url_params['semester'] = $semester->id;
+}
+$url_params['node_id'] = 'StudipStudyArea_' . $node->id;
+
 ?>
 <li>
 <? if ($node->id !== 'root' && $node->required_children): ?>
@@ -15,7 +23,7 @@ $layer = 0;
     <label for='<?= htmlReady($node->id) ?>'></label>
 
 <? if ($node->id !== 'root'): ?>
-    <a href="<?= URLHelper::getLink('show_bereich.php?level=sbb&id=' . $node->id) ?>">
+    <a href="<?= URLHelper::getLink('dispatch.php/search/courses', $url_params, true) ?>">
         <?= htmlReady($node->name) ?>
     </a>
 <? else: ?>
@@ -25,7 +33,10 @@ $layer = 0;
 <? if ($node->required_children): ?>
     <ul>
     <? foreach ($node->required_children as $child): ?>
-        <?= $this->render_partial('study_area/tree.php', ['node' => $child, 'open' => $open, 'layer' => ((int)$layer + 1)]) ?>
+        <?= $this->render_partial(
+            'study_area/tree.php',
+            ['node' => $child, 'open' => $open, 'layer' => ((int)$layer + 1), 'semester' => $semester]
+        ) ?>
     <? endforeach; ?>
     </ul>
 <? endif; ?>
