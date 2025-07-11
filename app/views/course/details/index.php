@@ -366,7 +366,8 @@
                     [
                         'node' => $studyAreaTree,
                         'open' => true,
-                        'dont_open' => Config::get()->COURSE_SEM_TREE_CLOSED_LEVELS
+                        'dont_open' => Config::get()->COURSE_SEM_TREE_CLOSED_LEVELS,
+                        'semester' => $course->end_semester
                     ]
                 ) ?>
             </ul>
@@ -381,9 +382,17 @@
         </header>
         <section>
             <ul class="list-unstyled">
-                <? foreach ($study_areas as $area) : ?>
+                <?
+                $url_params = [];
+                if ($course->end_semester && $course->end_semester !== Semester::findCurrent()) {
+                    $url_params['semester'] = $course->end_semester->id;
+                }
+                foreach ($study_areas as $area) : ?>
+                    <?
+                        $url_params['node_id'] = 'StudipStudyArea_' . $area->id;
+                    ?>
                     <li>
-                        <a href="<?=URLHelper::getScriptLink('show_bereich.php?level=sbb&id=' . $area->id)?>">
+                        <a href="<?= URLHelper::getLink('dispatch.php/search/courses', $url_params, true) ?>">
                             <?= htmlReady($area->getPath(' > ')) ?>
                         </a>
                     </li>
