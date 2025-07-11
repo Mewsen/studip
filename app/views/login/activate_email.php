@@ -2,12 +2,12 @@
     <form action="<?= URLHelper::getLink() ?>" method="post" class="default">
         <fieldset>
         <legend>
-            <?= _('Sie haben Ihre E-Mail-Adresse geändert.
-        Um diese frei zu schalten müssen Sie den Ihnen an Ihre neue Adresse zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld eintragen.') ?>
+            <?= _('Sie haben Ihre E-Mail-Adresse geändert.') ?>
+            <?= _('Um diese freizuschalten, tragen Sie im folgenden Eingabefeld den AKtivierungsschlüssel ein, der an Ihre neue Adresse geschickt wurde.') ?>
         </legend>
         <?= CSRFProtection::tokenTag() ?>
             <label>
-                <?=_('Aktivierungs Schlüssel')?>
+                <?=_('Aktivierungsschlüssel')?>
                 <input type="text" name="key">
             </label>
             <input name="uid" type="hidden" value="<?= htmlReady(Request::option('uid')) ?>">

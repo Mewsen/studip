@@ -689,14 +689,14 @@ class UserManagement
         // new users alawys receive a link to generate a password
         if ($new) {
             $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
-            $subject = $prefix . _('Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort');
+            $subject = $prefix . _('Es wurde ein Zugang für Sie erstellt - setzen Sie ein Passwort');
 
             $mailbody = sprintf(
                 _("Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
                     ."(Studienbegleitender Internetsupport von Präsenzlehre)\n- %1\$s -\n\n"
-                    ."Es wurde für sie ein Zugang zum System erstellt, Ihr Nutzername lautet:\n\n"
+                    ."Es wurde für Sie ein Zugang zum System erstellt, Ihr Nutzername lautet:\n\n"
                     ."%2\$s\n\n"
-                    ."Um den Zugang nutzen zu können, müssen sie ein Passwort setzen.\n"
+                    ."Um den Zugang nutzen zu können, müssen Sie ein Passwort setzen.\n"
                     ."Öffnen Sie dafür bitte folgenden Link\n\n"
                     ."%3\$s\n\n"
                     ."in Ihrem Browser.\n\n"
@@ -727,7 +727,7 @@ class UserManagement
                     . "um das Passwort zurückzusetzen.\n"
                     . "Dies ist aber für den mit dieser Mail \n"
                     . "verknüpften Account so nicht möglich.\n\n"
-                    . "Wenden sie sich bitte stattdessen an\n%s"
+                    . "Wenden Sie sich bitte stattdessen an\n%s"
                 ),
                 Config::get()->UNI_NAME_CLEAN,
                 $GLOBALS['UNI_CONTACT']
@@ -813,10 +813,13 @@ class UserManagement
         }
 
         // Check if dummy teacher exists
-        if (!Config::get()->DUMMY_TEACHER_ID || !User::find(Config::get()->DUMMY_TEACHER_ID)) {
+        if (
+            !Config::get()->getValue('DUMMY_LECTURER_ID')
+            || !User::find(Config::get()->getValue('DUMMY_LECTURER_ID'))
+        ) {
             $this->msg .= 'error§' . sprintf(
-                _('Dummy-Dozent (id: %s) nicht gefunden. Bitte DUMMY_TEACHER_ID in Konfiguration setzen.'),
-                Config::get()->DUMMY_TEACHER_ID) . '§';
+                _('Dummy-Dozent (id: %s) nicht gefunden. Bitte DUMMY_LECTURER_ID in Konfiguration setzen.'),
+                Config::get()->getValue('DUMMY_LECTURER_ID')) . '§';
             return false;
         }
 
@@ -828,7 +831,7 @@ class UserManagement
             HAVING COUNT(DISTINCT user_id) = 1 AND user_id = ?",
             [
                 studygroup_sem_types(),
-                Config::get()->DUMMY_TEACHER_ID,
+                Config::get()->getValue('DUMMY_LECTURER_ID'),
                 $this->user->id
             ]
         );
@@ -848,7 +851,7 @@ class UserManagement
             HAVING COUNT(DISTINCT user_id) = 1 AND user_id = ?",
             [
                 studygroup_sem_types(),
-                Config::get()->DUMMY_TEACHER_ID,
+                Config::get()->getValue('DUMMY_LECTURER_ID'),
                 $this->user->id
             ]
         );
@@ -859,7 +862,7 @@ class UserManagement
             ) . '§';
             CourseMember::insertCourseMember(
                 $member->course->id,
-                Config::get()->DUMMY_TEACHER_ID,
+                Config::get()->getValue('DUMMY_LECTURER_ID'),
                 'dozent'
             );
 
