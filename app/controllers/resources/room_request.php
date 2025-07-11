@@ -210,6 +210,10 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
                 $sql_params['institute_ids'] = $institute_ids;
             }
+        } else if (!ResourceManager::userHasGlobalPermission($this->current_user, 'admin')) {
+            // inst admins only get requests for their rooms or courses of their institutes
+            $sql .= " AND (resource_id != '' OR course_id IN (SELECT seminar_id FROM seminare WHERE institut_id IN (:institute_ids)))";
+            $sql_params['institute_ids'] = array_column(Institute::getMyInstitutes(), 'Institut_id');
         }
 
         if (
@@ -1145,6 +1149,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 )
             );
         } else {
+            $user_has_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->request->course_id);
             PageLayout::setTitle(
                 _('Anfrage auflösen')
             );
