@@ -27,6 +27,7 @@ export default {
     mounted() {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
         this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
+        STUDIP.eventBus.emit('sidebar-widget-added', this.title)
     },
     beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
