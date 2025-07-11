@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2025-07-10 10:00+0000\n"
+"PO-Revision-Date: 2025-07-11 15:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -33525,7 +33525,7 @@ msgstr "Membership application already submitted!"
 
 #: app/controllers/course/studygroup.php:111
 msgid "Direkt zur Studiengruppe"
-msgstr "Directly to the study group"
+msgstr "Go to study group"
 
 #: app/controllers/course/studygroup.php:114
 msgid "Hinweis"
