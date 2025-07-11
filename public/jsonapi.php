@@ -2,7 +2,7 @@
 
 use Slim\Factory\AppFactory;
 
-require '../lib/bootstrap.php';
+require __DIR__ . '/../lib/bootstrap.php';
 
 \StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . 'vendor/oauth-php/library/');
 
@@ -22,14 +22,13 @@ $app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'jsonapi.php');
 $middleware = require 'lib/classes/JsonApi/middleware.php';
 $middleware($app);
 
-//register stud.ip session/auth middleware
-$app->add(app(Studip\Middleware\AuthenticationMiddleware::class));
-auth()->setNobody(true);
-$app->add(app(Studip\Middleware\SessionMiddleware::class));
+// Register routes via middleware
+$app->add(Studip\Middleware\JsonApiRouteRegistrarMiddleware::class);
 
-// Register routes
-$routes = require 'lib/classes/JsonApi/routes.php';
-$routes($app);
+//register stud.ip session/auth middleware
+$app->add(Studip\Middleware\AuthenticationMiddleware::class);
+auth()->setNobody(true);
+$app->add(Studip\Middleware\SessionMiddleware::class);
 
 // Add Error Middleware
 $displayErrors = false;
