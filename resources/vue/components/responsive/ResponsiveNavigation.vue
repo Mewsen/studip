@@ -538,6 +538,11 @@ export default {
             this.setCompactNavigation(value);
         });
 
+        // Listen to sidebar widgets coming in from other components
+        this.globalOn('sidebar-widget-added', () => {
+            this.hasSidebar = true;
+        });
+
         /*
          * Use an observer for html and body in order to check
          * whether we move into consuming mode or leave responsive mode.
@@ -593,6 +598,7 @@ export default {
         STUDIP.eventBus.off('toggle-compact-navigation');
         STUDIP.eventBus.off('has-contentbar');
         STUDIP.eventBus.off('courseware-contentbar-mounted');
+        STUDIP.eventBus.off('sidebar-widget-added');
     }
 }
 </script>
