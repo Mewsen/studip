@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, nextTick, onMounted, ref} from "vue";
 import ForumApp from "@/vue/components/forum/ForumApp.vue";
 import draggable from "vuedraggable";
 import { default as CreateCategory } from "@/vue/components/forum/categories/Create.vue";
@@ -10,6 +10,7 @@ import StudipIcon from "../../../components/StudipIcon.vue";
 import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
 import StudipPagination from "../../../components/StudipPagination.vue";
 import {useSortable} from "../../../composables/useSortable";
+import {debounce} from 'lodash';
 
 const forumConfig = useForumConfig();
 const categories = ref([]);
@@ -54,7 +55,7 @@ const fetchCategories = async (_, offset = 0) => {
 
 const updateCategoriesOrder = async () => {
     try {
-        const category_ids = categories.value.map(({ id }) => id);
+        const category_ids = sortedCategories.value.map(({ id }) => id);
 
         const data = {
             attributes: {
@@ -82,6 +83,32 @@ const updateCategoriesOrder = async () => {
 onMounted(async () => {
     await fetchCategories();
 });
+
+const updateOrderDebounced = debounce(updateCategoriesOrder, 2000);
+const assistiveLive = ref('');
+
+const swapCategory = (categoryId, step) => {
+    const index = sortedCategories.value.findIndex(({ id }) => id === categoryId);
+    const newIndex = index + step;
+
+    if (newIndex < 0 || newIndex >= sortedCategories.value.length) {
+        return;
+    }
+
+    const temp = sortedCategories.value[newIndex];
+    sortedCategories.value[newIndex] = sortedCategories.value[index];
+    sortedCategories.value[index] = temp;
+
+    nextTick(() => {
+        document.getElementById(`sort-handle-${categoryId}`)?.focus();
+        assistiveLive.value = $gettext(
+            'Aktuelle Position in der Liste: %{index} von %{length}.',
+            { index: newIndex + 1, length: sortedCategories.value.length }
+        );
+
+        updateOrderDebounced();
+    });
+}
 </script>
 
 <template>
@@ -115,6 +142,7 @@ onMounted(async () => {
             </div>
         </header>
         <div class="py-10">
+            <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
             <div v-if="forumConfig.tileLayout">
                 <draggable
                     v-if="sortedCategories.length"
@@ -127,10 +155,11 @@ onMounted(async () => {
                     :class="{
                         '--fill-free-space': sortedCategories.length > 1
                     }"
+                    handle=".drag-handle"
                     tag="ul">
                     <template #item="{element}">
                         <li>
-                            <CategoryItem :category="element" />
+                            <CategoryItem :category="element" @swapCategory="swapCategory" />
                         </li>
                     </template>
                     <template v-if="forumConfig.isModerator" #footer>
@@ -237,7 +266,7 @@ onMounted(async () => {
                     :disabled="!forumConfig.isModerator"
                     tag="tbody">
                     <template #item="{element}">
-                        <CategoryItem :category="element" render-type="tr" />
+                        <CategoryItem :category="element" render-type="tr" @swapCategory="swapCategory" />
                     </template>
                 </draggable>
                 <tbody v-else>

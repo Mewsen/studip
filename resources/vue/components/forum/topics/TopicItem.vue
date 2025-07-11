@@ -7,6 +7,7 @@ import StudipIcon from "@/vue/components/StudipIcon.vue";
 import StudipDateTime from "@/vue/components/StudipDateTime.vue";
 import {computed} from "vue";
 
+const emit = defineEmits(['swapTopic']);
 const forumConfig = useForumConfig();
 
 const props = defineProps({
@@ -38,41 +39,63 @@ const deleteTopic = () => STUDIP.Dialog.confirm(
     () => window.location = getTopicDeleteURL(props.topic.id),
     STUDIP.Dialog.close()
 );
+
+const swapTopic = event => {
+    const keyCodes = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'];
+
+    if (keyCodes.includes(event.key)) {
+        event.preventDefault();
+        const step = (event.key === 'ArrowLeft' || event.key === 'ArrowUp') ? -1 : 1;
+        emit('swapTopic', props.topic.id, step);
+    }
+}
 </script>
 
 <template>
     <tr v-if="renderType === 'tr'">
         <td>
             <div class="topic-overview">
+                <div v-if="forumConfig.isModerator" class="drag-area">
+                    <a class="drag-link"
+                       tabindex="0"
+                       role="option"
+                       :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
+                       :id="`sort-handle-${topic.id}`"
+                       @keydown="swapTopic">
+                        <span class="drag-handle"></span>
+                    </a>
+                </div>
                 <div class="content">
-                    <div class="title-with-actions">
-                        <div class="title-with-actions__content">
-                            <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
-                                <h3 class="line-clamp-2">{{ topic.name }}</h3>
-                                <span
-                                    v-if="topic.meta.postings_count > topic.meta.user_read_index"
-                                    class="unread-items-badge"
-                                    role="status"
-                                    aria-live="polite"
-                                    :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
-                                    :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
-                                >
+                    <div>
+                        <div class="title-with-actions">
+                            <div class="title-with-actions__content">
+                                <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
+                                    <h3 class="line-clamp-2">{{ topic.name }}</h3>
+                                    <span
+                                        v-if="topic.meta.postings_count > topic.meta.user_read_index"
+                                        class="unread-items-badge"
+                                        role="status"
+                                        aria-live="polite"
+                                        :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
+                                        :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
+                                    >
                                     {{ topic.meta.postings_count - topic.meta.user_read_index }}
                                 </span>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
 
-                        <div class="title-with-actions__actions-xs">
-                            <StudipActionMenu
-                                :items="topicActionMenus"
-                                @edit="editTopic"
-                                @delete="deleteTopic"
-                            />
+                            <div class="title-with-actions__actions-xs">
+                                <StudipActionMenu
+                                    :items="topicActionMenus"
+                                    @edit="editTopic"
+                                    @delete="deleteTopic"
+                                />
+                            </div>
                         </div>
+                        <p v-if="topic.description">
+                            <small class="line-clamp-3">{{ topic.description }}</small>
+                        </p>
                     </div>
-                    <p>
-                        <small class="line-clamp-3">{{ topic.description }}</small>
-                    </p>
                 </div>
             </div>
 
@@ -178,24 +201,36 @@ const deleteTopic = () => STUDIP.Dialog.confirm(
                         <small class="line-clamp-3">{{ topic.description }}</small>
                     </p>
                 </div>
-                <div class="topic-card__footer">
-                    <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" :aria-label="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
-                        <StudipIcon shape="community2" role="info"  :size="15" aria-hidden="true" />
-                        <small>{{ topic.meta.users_count }}</small>
-                    </span>
-                    <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
-                        <StudipIcon shape="reply" role="info"  :size="15" aria-hidden="true" />
-                        <small>{{ topic.meta.postings_count }}</small>
-                    </span>
-                    <span class="inline-flex gap-10 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
-                        <StudipIcon shape="activity" role="info"  :size="15" aria-hidden="true" />
-                        <small v-if="topic.meta.recent_activity">
-                            <StudipDateTime :iso="topic.meta.recent_activity" :relative="true" />
-                        </small>
-                        <small v-else>
-                            {{ $gettext('Keine Aktivität') }}
-                        </small>
-                    </span>
+                <div>
+                    <div v-if="forumConfig.isModerator" class="drag-area">
+                        <a class="drag-link"
+                           tabindex="0"
+                           role="option"
+                           :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
+                           :id="`sort-handle-${topic.id}`"
+                           @keydown="swapTopic">
+                            <span class="drag-handle"></span>
+                        </a>
+                    </div>
+                    <div class="topic-card__footer">
+                        <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" :aria-label="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
+                            <StudipIcon shape="community2" role="info"  :size="15" aria-hidden="true" />
+                            <small>{{ topic.meta.users_count }}</small>
+                        </span>
+                        <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
+                            <StudipIcon shape="reply" role="info"  :size="15" aria-hidden="true" />
+                            <small>{{ topic.meta.postings_count }}</small>
+                        </span>
+                        <span class="inline-flex gap-10 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
+                            <StudipIcon shape="activity" role="info"  :size="15" aria-hidden="true" />
+                            <small v-if="topic.meta.recent_activity">
+                                <StudipDateTime :iso="topic.meta.recent_activity" :relative="true" />
+                            </small>
+                            <small v-else>
+                                {{ $gettext('Keine Aktivität') }}
+                            </small>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

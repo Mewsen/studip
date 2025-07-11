@@ -1,6 +1,6 @@
 <script setup>
 import draggable from "vuedraggable";
-import {toRef} from "vue";
+import {nextTick, ref, toRef} from "vue";
 import CreateTopic from "./CreateTopic.vue";
 import TopicItem from "./TopicItem.vue";
 import Loader from "../Loader.vue";
@@ -9,6 +9,7 @@ import {$gettext} from "@/assets/javascripts/lib/gettext";
 import EmptyForum from "../EmptyForum.vue";
 import CategoryItem from "../categories/CategoryItem.vue";
 import {useSortable} from "../../../composables/useSortable";
+import {debounce} from "lodash";
 
 const forumConfig = useForumConfig();
 
@@ -66,12 +67,40 @@ const updateTopicsOrder = async () => {
         STUDIP.Report.error(error.statusText);
     }
 }
+
+
+const updateOrderDebounced = debounce(updateTopicsOrder, 2000);
+const assistiveLive = ref('');
+
+const swapItem = (itemId, step) => {
+    const index = sortedTopics.value.findIndex(({ id }) => id === itemId);
+    const newIndex = index + step;
+
+    if (newIndex < 0 || newIndex >= sortedTopics.value.length) {
+        return;
+    }
+
+    const temp = sortedTopics.value[newIndex];
+    sortedTopics.value[newIndex] = sortedTopics.value[index];
+    sortedTopics.value[index] = temp;
+
+    nextTick(() => {
+        document.getElementById(`sort-handle-${itemId}`)?.focus();
+        assistiveLive.value = $gettext(
+            'Aktuelle Position in der Liste: %{index} von %{length}.',
+            { index: newIndex + 1, length: sortedTopics.value.length }
+        );
+
+        updateOrderDebounced();
+    });
+}
 </script>
 
 <template>
     <Loader v-if="isLoading" />
     <template v-else>
         <template v-if="sortedTopics.length || !showEmptyForumLayout">
+            <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
             <div v-if="forumConfig.tileLayout">
                 <draggable
                     v-if="sortedTopics.length"
@@ -84,11 +113,13 @@ const updateTopicsOrder = async () => {
                     :class="{
                         '--fill-free-space': sortedTopics.length > 1
                     }"
+                    role="listbox"
+                    handle=".drag-handle"
                     tag="ul">
                     <template #item="{element}">
                         <li>
-                            <CategoryItem v-if="element.category" :category="element.category" />
-                            <TopicItem v-else :topic="element" />
+                            <CategoryItem v-if="element.category" :category="element.category" @swapCategory="swapItem" />
+                            <TopicItem v-else :topic="element" @swapTopic="swapItem" />
                         </li>
                     </template>
                     <template v-if="forumConfig.isModerator" #footer>
@@ -194,10 +225,12 @@ const updateTopicsOrder = async () => {
                     :animation="200"
                     @end="updateTopicsOrder"
                     :disabled="!forumConfig.isModerator"
+                    handle=".drag-handle"
+                    role="listbox"
                     tag="tbody">
                     <template #item="{element}">
-                        <CategoryItem v-if="element.category" :category="element.category" render-type="tr" />
-                        <TopicItem v-else :topic="element" render-type="tr" />
+                        <CategoryItem v-if="element.category" :category="element.category" render-type="tr" @swapCategory="swapItem" />
+                        <TopicItem v-else :topic="element" render-type="tr" @swapTopic="swapItem" />
                     </template>
                 </draggable>
                 <tbody v-else>
