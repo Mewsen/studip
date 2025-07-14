@@ -39,7 +39,7 @@ final class AddThemesTable extends Migration
             '--color--font-inverted'            => '#ffffff',
             '--color--main-navigation-item'     => '#28497c',
             '--color--sidebar-item'             => '#28497c',
-            '--color--sidebar-item-hover'       => '#d60000',
+            '--color--sidebar-item-hover'       => '#101010',
             '--color--highlight'                => '#28497c',
             '--color--highlight-hover'          => '#d60000',
             '--color--content-link'             => '#28497c',

@@ -42,7 +42,7 @@
         ],
         'sidebar' => [
             '--color--sidebar-item' => '#28497c',
-            '--color--sidebar-item-hover' => '#d60000',
+            '--color--sidebar-item-hover' => '#101010',
         ],
         'content' => [
             '--color--highlight' => '#28497c',

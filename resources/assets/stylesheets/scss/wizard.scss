@@ -10,6 +10,7 @@
         flex-shrink: 0;
 
         .studip-icon {
+            display: block;
             margin: auto;
         }
 
@@ -39,14 +40,8 @@
                         cursor: pointer;
 
                         &:hover {
-                            color: var(--color--highlight--hover);
+                            color: var(--color--highlight-hover);
                         }
-                    }
-
-                    img {
-                        padding-right: 4px;
-                        display: inline-block;
-                        vertical-align: sub;
                     }
                 }
             }
@@ -208,6 +203,10 @@ form.default fieldset.radiobutton-set {
 
         >.check {
             display: none;
+        }
+        >.icon,
+        >.studip-icon {
+            color: var(--color--highlight);
         }
     }
 

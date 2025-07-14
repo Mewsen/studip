@@ -125,7 +125,7 @@ ul.widget-list {
             text-indent: 0;
         }
 
-        &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a:not(:last-child, .options-radio, .options-checkbox)) {
+        &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a):not(:last-child, .options-radio, .options-checkbox) {
             border-bottom: solid thin  var(--color--sidebar-divider);
         }
 
