@@ -130,9 +130,12 @@ class Form extends Part
         foreach ($params['fields'] as $fieldname => $fielddata) {
             if (is_array($fielddata) && !array_key_exists('value', $fielddata)) {
                 if (
-                    $object->isField($fieldname)
-                    || $object->isAdditionalField($fieldname)
-                    || $object->isAliasField($fieldname)
+                    (
+                        $object->isField($fieldname)
+                        || $object->isAdditionalField($fieldname)
+                        || $object->isAliasField($fieldname)
+                    )
+                    && !($object[$fieldname] instanceof \I18NString)
                 ) {
                     $params['fields'][$fieldname]['value'] = (string) $object[$fieldname];
                 }
