@@ -13,19 +13,14 @@
         padding: 0 5px;
     }
 
-    img {
+    svg {
         vertical-align: middle;
         margin-top: -3px;
-        filter: brightness(0) saturate(100%) invert(26%) sepia(19%) saturate(1783%) hue-rotate(177deg) brightness(96%) contrast(93%); // #000 to #28497c
     }
 
     &.alert {
         background-color: var(--color--warning);
         color: var(--color--font-inverted);
-
-        img {
-            filter: invert(100); // #000 to #fff
-        }
     }
 }
 
@@ -172,6 +167,7 @@
                     flex-grow: 1;
 
                     .avatar {
+                        color: var(--color--highlight);
                         $avatar-size: 36px;
                         margin-right: 10px;
                         margin-left: 0;
@@ -187,40 +183,33 @@
         }
 
         a:not(.mark-all-as-read) {
-            color: var(--brand-color-dark);
+            color: var(--color--highlight);
             display: block;
             padding: 0;
-            &:hover { color: var(--active-color); }
+            &:hover {
+                color: var(--color--highlight-hover); 
+                text-decoration: none;
+            }
         }
 
         a.mark-all-as-read:not(.invisible),
         a.enable-desktop-notifications {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: thin solid var(--color--action-menu-divider);
-            display: block;
             max-height: 31px;
             padding: 7px 7px 7px 9px;
             z-index: 3;
         }
 
         a.mark-all-as-read {
-            @include background-icon('accept', 'clickable');
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-
-            &:hover {
-                @include background-icon('accept', 'attention');
-            }
-
-            margin: 0;
+            @include icon(after, 'accept', $align: middle);
+            color: var(--color--highlight);
         }
         a.enable-desktop-notifications {
-            @include background-icon('notification', 'clickable');
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-
-            &:hover {
-                @include background-icon('notification', 'attention');
-            }
+            @include icon(after, 'notification', $align: middle);
+            color: var(--color--highlight);
         }
 
         .options {
@@ -228,9 +217,7 @@
             background: none;
             cursor: pointer;
             height: 24px;
-            > img {
-                vertical-align: top;
-            }
+            color: var(--color--highlight);
 
             &.hidden { visibility: hidden; }
         }

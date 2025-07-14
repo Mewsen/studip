@@ -23,7 +23,7 @@
                         </button>
                         <button
                             type="submit"
-                            class="button seach-button"
+                            class="button search-button"
                             :title="$gettext('Suche starten')"
                             @click="loadSearch"
                         >

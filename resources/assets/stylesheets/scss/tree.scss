@@ -19,6 +19,15 @@ $tree-outline: 1px solid var(--light-gray-color-40);
             .contentbar-wrapper-right {
                 display: inherit;
 
+                button,
+                a {
+                    color: var(--color--highlight);
+            
+                    &:hover {
+                        color: var(--color--highlight-hover);
+                    }
+                }
+
                 .action-menu {
                     button {
                         top: -2px;
@@ -77,7 +86,7 @@ $tree-outline: 1px solid var(--light-gray-color-40);
     button {
         background: transparent;
         border: 0;
-        color: var(--base-color);
+        color: var(--color--highlight);
         cursor: pointer;
         padding: 0;
 

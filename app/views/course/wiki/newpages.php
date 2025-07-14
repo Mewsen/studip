@@ -106,7 +106,7 @@
                             <a href="<?= $controller->versiondiff($page, is_a($version, 'WikiVersion') ? $version->id : null) ?>"
                                title="<?= _('Einzelne Änderung anzeigen') ?>"
                                data-dialog>
-                                <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
+                                <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
                             </a>
                         <? endif ?>
                    <? endforeach ?>

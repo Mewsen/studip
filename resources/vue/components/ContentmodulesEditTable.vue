@@ -55,7 +55,7 @@
                             :href="getDescriptionURL(element)"
                             data-dialog
                         >
-                            <img :src="element.icon" width="20" height="20" v-if="element.icon" class="text-bottom" />
+                        <StudipIcon v-if="element.icon" :shape="element.icon.shape" :size="20" />
                             {{ element.displayname }}
                         </a>
                     </td>
@@ -110,7 +110,7 @@
                 </td>
                 <td>
                     <a class="upper_part" :href="getDescriptionURL(module)" data-dialog>
-                        <img :src="module.icon" width="20" height="20" v-if="module.icon" class="text-bottom" />
+                        <StudipIcon v-if="module.icon" :shape="module.icon.shape" :size="20" />
                         {{ module.displayname }}
                     </a>
                 </td>
@@ -152,6 +152,17 @@ table.admin_contentmodules > tbody > tr {
     }
     > td {
         height: 31px; //to make all rows equally high
+
+        a {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            color: var(--color--content-link);
+
+            &:hover {
+                color: var(--color--content-link-hover);
+            }
+        }
     }
 }
 </style>

@@ -12,8 +12,8 @@
     .cw-toolbar-tools {
         width: 270px;
         min-height: 100%;
-        border: solid thin var(--content-color-40);
-        background-color: var(--white);
+        border: solid thin var(--color--courseware-border-default);
+        background-color: var(--color--global-background);
         overflow: hidden;
         position: relative;
         padding: 0 4px;
@@ -40,7 +40,7 @@
         .cw-toolbar-tool-content {
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: var(--color--scrollbar-thumb) var(--white);
+            scrollbar-color: var(--color--scrollbar-thumb) var(--color--global-background);
             padding-right: 6px;
         }
 
@@ -85,8 +85,8 @@
     .cw-toolbar-button-wrapper {
         position: sticky;
         top: 0;
-        background-color: var(--white);
-        border-bottom: solid thin var(--content-color-40);
+        background-color: var(--color--global-background);
+        border-bottom: solid thin var(--color--courseware-border-default);
         display: flex;
         z-index: 31;
         margin: 0 0 8px -4px;
@@ -97,26 +97,28 @@
         margin: 0 4px 0 4px;
         padding: 2px 8px 0 8px;
         border: none;
-        background-color: var(--white);
-        background-repeat: no-repeat;
-        background-position: center center;
+        background-color: var(--color--global-background);
+        color: var(--color--highlight);   
         cursor: pointer;
         border-bottom: solid 2px transparent;
 
         &.cw-toolbar-button-toggle {
-            text-align: end;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
             flex-grow: 1;
         }
 
         &.active {
-            border-bottom: solid 3px var(--dark-gray-color-75);
+            color: var(--color--font-primary);
+            border-bottom: solid 3px var(--color--tabs-marker-active);
         }
     }
     .cw-toolbar-spacer-right {
         z-index: 39;
         flex-shrink: 0;
         position: relative;
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         width: 15px;
         height: calc(100% + 2px);
     }

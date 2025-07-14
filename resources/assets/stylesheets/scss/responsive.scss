@@ -45,8 +45,10 @@ $sidebarOut: -330px;
     .responsive-navigation-header {
         display: flex;
         padding: 2px 0;
+        color: var(--color--brand-primary-contrast);
 
         .menu-closed {
+            color: var(--color--brand-primary-contrast);
             cursor: pointer;
             transform: rotate(0deg);
             transition: var(--transition-duration) ease-in-out;
@@ -54,8 +56,8 @@ $sidebarOut: -330px;
 
         .menu-open {
             cursor: pointer;
+            color: var(--color--brand-primary-contrast);
             transform: rotate(90deg);
-
             transition: var(--transition-duration) ease-in-out;
         }
     }

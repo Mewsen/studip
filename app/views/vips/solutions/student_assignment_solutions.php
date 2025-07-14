@@ -64,9 +64,9 @@
                 </td>
                 <td style="text-align: center;">
                     <? if ($solution): ?>
-                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('ja')]) ?>
+                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('ja')]) ?>
                     <? else : ?>
-                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('nein')]) ?>
+                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('nein')]) ?>
                     <? endif ?>
                 </td>
                 <td style="text-align: center;">

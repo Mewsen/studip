@@ -3,16 +3,14 @@
 .cw-block-lti {
     .cw-block-content {
         .cw-block-lti-content {
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--courseware-border-default);
             box-sizing: border-box;
         }
 
         .cw-block-lti-icon-tool {
-            @include background-icon(plugin, info, 24px);
-            background-repeat: no-repeat;
+            @include icon(before, plugin, $size: 24px, $align: middle);
             display: block;
-            padding: 16px 16px 16px 40px;
-            background-position: 10px center;
+            padding: 16px;
             overflow: hidden;
             text-overflow: ellipsis;
         }

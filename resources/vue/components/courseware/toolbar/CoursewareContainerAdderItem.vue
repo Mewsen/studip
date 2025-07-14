@@ -2,12 +2,14 @@
     <div class="cw-containeradder-item-wrapper">
         <span class="cw-sortable-handle cw-sortable-handle-containeradder"></span>
         <button class="cw-containeradder-item" :class="['cw-containeradder-item-' + type]" @click.prevent="addNewContainer">
-            <header class="cw-containeradder-item-title">
-                {{ title }}
-            </header>
-            <p class="cw-containeradder-item-description">
-                {{ description }}
-            </p>
+            <div class="cw-containeradder-item-content">
+                <header class="cw-containeradder-item-title">
+                    {{ title }}
+                </header>
+                <p class="cw-containeradder-item-description">
+                    {{ description }}
+                </p>
+            </div>
         </button>
     </div>
 </template>

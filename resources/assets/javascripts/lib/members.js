@@ -1,13 +1,18 @@
 const Members = {
     addPersonToSelection: function(userId, name) {
-        var target = $('#persons-to-add'),
-            newEl = $('<li>').html(
+        const target = $('#persons-to-add');
+        let newEl = $('<li>').html(
                 $('<span>')
                     .html(name)
                     .text()
-            ),
-            input = $('<input type="hidden" name="users[]">').val(userId),
-            remove = $('<img>').attr('src', STUDIP.ASSETS_URL + 'images/icons/blue/trash.svg');
+            );
+        let input = $('<input type="hidden" name="users[]">').val(userId);
+        let remove = $('<button>')
+            .addClass('btn-icon btn-icon--trash btn-icon--inline')
+            .attr('type', 'button')
+            .on('click', function () {
+                $(this).parent().remove();
+            });
 
         remove.on('click', function() {
             $(this)

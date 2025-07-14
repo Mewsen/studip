@@ -179,11 +179,7 @@ export default {
                 event.preventDefault();
                 this.toggleSidebar();
             })
-            const sidebarIcon = document.createElement('img');
-            sidebarIcon.src = STUDIP.ASSETS_URL + '/images/icons/blue/sidebar3.svg';
-            sidebarIcon.height = 24;
-            sidebarIcon.width = 24;
-            button.appendChild(sidebarIcon);
+            button.classList.add('btn-icon btn-icon--sidebar-toggle');
 
             return button;
         }

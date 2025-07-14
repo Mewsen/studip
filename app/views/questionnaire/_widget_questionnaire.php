@@ -38,10 +38,10 @@
                              compact('range_type', 'range_id')
                          ) ?>"
                    class="questionnaire-qr"
-                   title="<?= _("QR-Code zu diesem Fragebogen anzeigen") ?>" aria-label="<?= _("QR-Code zu diesem Fragebogen anzeigen") ?>"
+                   title="<?= _('QR-Code zu diesem Fragebogen anzeigen') ?>" aria-label="<?= _('QR-Code zu diesem Fragebogen anzeigen') ?>"
                    data-qr-code>
                     <? URLHelper::setBaseURL($oldbase) ?>
-                    <?= Icon::create('code-qr')->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('code-qr')->asSvg(['class' => 'text-bottom']) ?>
                 </a>
             </span>
         </nav>

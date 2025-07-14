@@ -90,7 +90,7 @@
 
                                 <a href="<?= $controller->link_for('vips/sheets/preview_exercise', ['assignment_id' => $exercise['assignment_id'], 'exercise_id' => $exercise['id']]) ?>"
                                    data-dialog="id=vips_preview;size=800x600" target="_blank">
-                                    <?= Icon::create('question-circle')->asImg(['title' => _('Vorschau anzeigen')]) ?>
+                                    <?= Icon::create('question-circle')->asSvg(['title' => _('Vorschau anzeigen')]) ?>
                                 </a>
                             </label>
                         </td>

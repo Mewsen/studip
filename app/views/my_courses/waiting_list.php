@@ -75,7 +75,7 @@
                        href="<?= $controller->link_for('course/details/index', $wait['seminar_id']) ?>"
                     >
                         <? $params = tooltip2(_('Veranstaltungsdetails anzeigen')) ?>
-                        <?= Icon::create('info-circle', Icon::ROLE_INACTIVE)->asImg(['style' => 'cursor: pointer']) ?>
+                        <?= Icon::create('info-circle', Icon::ROLE_INACTIVE)->asSvg(['style' => 'cursor: pointer']) ?>
                     </a>
                 </td>
                 <td style="text-align: center">
@@ -99,11 +99,11 @@
                 <td style="text-align: right">
                     <? if ($wait['status'] === 'accepted' && $wait['admission_binding']) : ?>
                         <a href="<?= $controller->url_for('my_courses/decline_binding') ?>">
-                            <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
+                            <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
                         </a>
                     <? else : ?>
                         <a href="<?= $controller->link_for('my_courses/decline', $wait['seminar_id'], ['cmd' => 'suppose_to_kill_admission']) ?>">
-                            <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('aus der Veranstaltung abmelden')]) ?>
+                            <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Aus der Veranstaltung abmelden')]) ?>
                         </a>
                     <? endif ?>
                 </td>

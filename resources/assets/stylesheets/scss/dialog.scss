@@ -14,9 +14,9 @@
     }
 
     .ui-dialog-titlebar {
-        background: var(--brand-color-darker);
+        background: var(--color--info);
         border: 0;
-        color: var(--contrast-content-white);
+        color: var(--color--info-contrast);
         font-size:1.3em;
         font-weight: normal;
 
@@ -27,6 +27,7 @@
 
     .ui-dialog-titlebar-close {
         @include square(32px);
+        color: var(--color--info-contrast);
         background: inherit;
         border: 0;
         line-height:32px;
@@ -42,18 +43,14 @@
             padding: 0;
         }
         .ui-icon {
-            @include square($icon-size-default);
-            @include background-icon(decline, info_alt);
-            background-position: 0;
-            display:inline-block;
             margin: 0;
-
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-
-            &:hover{
-              @include background-icon(decline, info_alt);
+            @include square($icon-size-default);
+            @include icon(before, decline);
+            &::before {
+                display: block;
             }
         }
     }
@@ -116,15 +113,15 @@
     }
 }
 .ui-dialog-titlebar-wiki {
-    @include background-icon(question-circle, info_alt, 24px);
-    background-position: center;
-    background-repeat: no-repeat;
-    display: inline-block;
     position: absolute;
-    @include square(32px);
     margin-top: -16px;
     top: 50%;
     right: 34px; // This is ugly but hard to avoid since the close button's position on a dialog is also hardcoded
+    @include icon(before, question-circle, $size: 24px);
+    @include square(32px);
+    &::before {
+        color: var(--color--info-contrast);
+    }
 }
 
 // Centered content in dialog
@@ -145,28 +142,31 @@
     min-width: 30em;
 
     .ui-dialog-titlebar {
-        background-color: var(--yellow);
-        color: text-contrast($yellow, $black, $white);
+        background-color: var(--color--attention);
+        color: var(--color--attention-contrast);
         text-align: left;
     }
     .ui-dialog-titlebar-close {
+        color: var(--color--attention-contrast);
         background: transparent;
         border: 0;
 
         .ui-icon, .ui-icon:hover {
-            @include background-icon(decline);
-            background-position: 0;
+            @include icon(before, decline);
+            &::before {
+                display: block;
+            }
         }
     }
 
     .ui-dialog-content {
         box-sizing: border-box;
-        @include background-icon(question-circle-full, status-yellow);
-        background-position: 12px 8px;
-        background-repeat: no-repeat;
-        background-size: 32px;
-        padding: 15px 15px 15px 55px;
+        padding: 15px;
         max-height: 60vh;
+        @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+        &::before {
+            color: var(--color--attention);
+        }
     }
 
     .ui-dialog-buttonpane {
@@ -343,7 +343,7 @@ v u e  d i a l o g
         display: flex;
     }
     .studip-dialog-header {
-        background: var(--base-color) none repeat scroll 0 0;
+        background: var(--color--info) none repeat scroll 0 0;
         border-bottom: 1px solid var(--dark-gray-color-10);
         color: var(--white);
         justify-content: space-between;
@@ -356,12 +356,10 @@ v u e  d i a l o g
         }
     }
     .studip-dialog-close-button {
-        @include background-icon(decline, info-alt);
-        background-repeat: no-repeat;
-        background-position-y: center;
-        background-color: transparent;
+        @include icon(before, decline, $align: text-bottom);
         border: none;
-
+        background-color: transparent;
+        color: var(--color--info-contrast);
         width: 22px;
         height: 22px;
         margin-right: -10px;
@@ -371,7 +369,7 @@ v u e  d i a l o g
     .studip-dialog-content {
         color: var(--black);
         position: relative;
-        padding: 15px;
+        padding: 10px 15px;
         overflow-y: auto;
         min-width: 100%;
         box-sizing: border-box;
@@ -385,9 +383,6 @@ v u e  d i a l o g
     &.studip-dialog-warning,
     &.studip-dialog-alert {
         .studip-dialog-content {
-            padding: 15px 15px 15px 62px;
-            background-position: 12px center;
-            background-repeat: no-repeat;
             box-sizing: border-box;
             display: flex;
             align-items: center;
@@ -396,24 +391,31 @@ v u e  d i a l o g
 
     &.studip-dialog-alert {
         .studip-dialog-header {
-            background: var(--active-color) none repeat scroll 0 0;
+            background: var(--color--warning) none repeat scroll 0 0;
+            .studip-dialog-close-button {
+                color: var(--color--warning-contrast);
+            }
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, attention, 32px);
+            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+            &::before {
+                color: var(--color--warning);
+            }
         }
     }
     &.studip-dialog-warning {
         .studip-dialog-header {
             color: var(--black);
-            background: var(--activity-color) none repeat scroll 0 0;
-        }
-        .studip-dialog-close-button {
-            @include background-icon(decline);
-            border: none;
-            background-color: transparent;
+            background: var(--color--attention) none repeat scroll 0 0;
+            .studip-dialog-close-button {
+                color: var(--color--attention-contrast);
+            }
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, status-yellow, 32px);
+            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+            &::before {
+                color: var(--color--attention);
+            }
         }
     }
     &.studip-dialog-with-tab {

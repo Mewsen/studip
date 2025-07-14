@@ -4,7 +4,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
         padding: 36px;
         gap: 64px;
     }
@@ -39,7 +39,7 @@
 
             .default-cover {
                 padding: 64px;
-                border: solid thin var(--content-color-40);
+                border: solid thin var(--color--courseware-border-default);
             }
 
             &.loading {
@@ -86,14 +86,14 @@
                         cursor: pointer;
                         outline: none;
                         height: 2px;
-                        background: var(--content-color-40);
+                        background: var(--color--courseware-border-default);
 
                         &::-webkit-slider-thumb {
                             -webkit-appearance: none;
                             appearance: none;
                             height: 16px;
                             width: 16px;
-                            background-color: var(--base-color);
+                            background-color: var(--color--highlight);
                             border-radius: 50%;
                             border: none;
                         }
@@ -101,7 +101,7 @@
                         &::-moz-range-thumb {
                             height: 16px;
                             width: 16px;
-                            background-color: var(--base-color);
+                            background-color: var(--color--highlight);
                             border-radius: 50%;
                             border: none;
                         }
@@ -122,12 +122,12 @@
                     height: 28px;
                     margin-bottom: 1em;
                     padding-bottom: 4px;
-                    border-bottom: solid 2px var(--content-color-40);
+                    border-bottom: solid 2px var(--color--courseware-border-default);
 
                     .cw-recorder-visualization-bar {
                         min-height: 4px;
                         width: calc(100% / 32);
-                        background-color: var(--base-color);
+                        background-color: var(--color--highlight);
 
                         &.idle-bar {
                             height: 4px !important;
@@ -163,7 +163,7 @@
 
             li {
                 &:not(:last-child) {
-                    border-bottom: solid thin var(--dark-gray-color-30);
+                    border-bottom: solid thin var(--color--courseware-border-active);
                 }
 
                 .cw-playlist-item {
@@ -190,7 +190,7 @@
 
         &.default-cover {
             padding: 32px;
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--courseware-border-default);
         }
     }
 

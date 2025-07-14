@@ -42,7 +42,7 @@
                                      ) ?>" target="_blank"
                                title="<?= _('Belegungsplan anzeigen') ?>">
                                 <?= htmlReady($room_info['room']->getFullName()) ?>
-                                <?= Icon::create('link-intern')->asImg(
+                                <?= Icon::create('link-intern')->asSvg(
                                     [
                                         'class' => 'text-bottom',
                                         'title' => ''

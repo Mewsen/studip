@@ -281,8 +281,11 @@ ul.reviews, ol.reviews {
             button {
                 border-right: none;
                 height: 35px;
+                color: var(--color--highlight);
+
                 &.active {
-                    background-color: var(--base-color);
+                    background-color: var(--color--highlight);
+                    color: var(--color--highlight-contrast);
                 }
                 &.erase {
                     background-color: white;
@@ -302,7 +305,7 @@ ul.reviews, ol.reviews {
 
         button {
             border: thin solid var(--color--input-field-border);
-            background-color: var(--color--button-background);
+            background-color: var(--color--global-background);
             display: flex;
             align-items: center;
             justify-content: center;

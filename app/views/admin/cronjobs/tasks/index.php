@@ -50,22 +50,22 @@ use Studip\Button;
                 <td style="text-align: center;" data-sort-value="'<?= (int) $task->active ?>'">
                 <? if ($task->active): ?>
                     <a href="<?= $controller->deactivate($task) ?>" data-behaviour="ajax-toggle">
-                        <?= Icon::create('checkbox-checked')->asImg(['title' => _('Aufgabe deaktivieren')]) ?>
+                        <?= Icon::create('checkbox-checked')->asSvg(['title' => _('Aufgabe deaktivieren')]) ?>
                     </a>
                 <? else: ?>
                     <a href="<?= $controller->activate($task) ?>" data-behaviour="ajax-toggle">
-                        <?= Icon::create('checkbox-unchecked')->asImg(['title' => _('Aufgabe aktivieren')]) ?>
+                        <?= Icon::create('checkbox-unchecked')->asSvg(['title' => _('Aufgabe aktivieren')]) ?>
                     </a>
                 <? endif; ?>
                 </td>
                 <td style="text-align: right">
                 <? if ($task->valid): ?>
                     <a data-dialog href="<?= $controller->execute($task) ?>">
-                        <?= Icon::create('play')->asImg(['title' => _('Aufgabe ausführen')]) ?>
+                        <?= Icon::create('play')->asSvg(['title' => _('Aufgabe ausführen')]) ?>
                     </a>
                 <? endif; ?>
                     <a href="<?= $controller->link_for('admin/cronjobs/logs/task', $task) ?>">
-                        <?= Icon::create('log')->asImg(['title' => _('Log anzeigen')]) ?>
+                        <?= Icon::create('log')->asSvg(['title' => _('Log anzeigen')]) ?>
                     </a>
                     <?= Icon::create('trash')->asInput([
                         'data-confirm' => _('Wollen Sie die ausgewählte Aufgabe wirklich löschen?'),

@@ -13,7 +13,7 @@
     ) : ?>
 <div style="width: 100%; text-align: right;">
     <a href="<?= $action_reset ?>">
-        <?= Icon::create('refresh', 'clickable', ['title' => _('Filter zurücksetzen')])->asImg(); ?>
+        <?= Icon::create('refresh', 'clickable', ['title' => _('Filter zurücksetzen')])->asSvg(); ?>
         <?= _('Zurücksetzen') ?>
     </a>
 </div>

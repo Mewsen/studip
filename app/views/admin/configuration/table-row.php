@@ -37,10 +37,10 @@
     <td class="actions">
     <? if (!Config::get()->fromEnv($field)): ?>
         <a data-dialog="size=auto" href="<?= $controller->link_for($linkchunk, compact('field')) ?>">
-            <?= Icon::create('edit')->asImg(['title' => _('Konfigurationsparameter bearbeiten')]) ?>
+            <?= Icon::create('edit')->asSvg(['title' => _('Konfigurationsparameter bearbeiten')]) ?>
         </a>
     <? else: ?>
-        <?= Icon::create('ufo', Icon::ROLE_INFO)->asImg([
+        <?= Icon::create('ufo', Icon::ROLE_INFO)->asSvg([
             'title' => _('Wert wurde über eine Umgebungsvariable gesetzt und kann an dieser Stelle nicht verändert werden.'),
         ]) ?>
     <? endif; ?>

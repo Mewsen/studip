@@ -12,6 +12,7 @@
 $icon-padding: 3px;
 
 .my-courses-navigation {
+    color: var(--color--highlight);
     list-style: none;
     margin: 0 0 -10px;
     padding: 0;
@@ -27,11 +28,13 @@ $icon-padding: 3px;
         padding: $icon-padding;
     }
 
+    @include highlight-anchor;
+
     &:last-child {
         margin-right: 0;
     }
 
-    img {
+    svg {
         vertical-align: bottom;
     }
 
@@ -40,12 +43,19 @@ $icon-padding: 3px;
         padding-left: $icon-padding;
         padding-right: $icon-padding;
     }
-}
-.my-courses-navigation-important {
-    $border-width: 1px;
-    border: $border-width solid var(--red);
 
-    a {
-        padding: $icon-padding - $border-width;
+    &.my-courses-navigation-important {
+        $border-width: 1px;
+        border: $border-width solid var(--color--warning);
+
+        a {
+            padding: $icon-padding - $border-width;
+            color: var(--color--warning);
+
+            &:hover {
+                color: var(--color--warning);
+            }
+        }
     }
 }
+

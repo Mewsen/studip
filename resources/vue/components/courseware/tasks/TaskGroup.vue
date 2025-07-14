@@ -67,9 +67,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.cw-task-group-peer-review-processes {
-    margin-block-start: 3rem;
-}
-</style>

@@ -25,7 +25,7 @@
                     <? foreach ($availableClasses as $className) : ?>
                         <li>
                             <a href="#" onClick="jQuery('input[name=classname]').val('<?= htmlReady($className) ?>');">
-                                <?= Icon::create('arr_2up', 'info')->asImg(['class' => "text-bottom"]) ?>
+                                <?= Icon::create('arr_2up', 'info')->asSvg(['class' => "text-bottom"]) ?>
                                 <?= htmlReady($className) ?>
                             </a>
                         </li>

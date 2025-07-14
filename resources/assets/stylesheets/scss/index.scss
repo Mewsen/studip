@@ -195,18 +195,17 @@ $gap-between-boxes: calc($login-page-margin / 2);
         height: 36px;
 
         .login-news-nav {
+            background-color: transparent;
+            color: var(--color--highlight);
             margin-left: 8px;
             width: 48px;
             height: 48px;
             border: none;
-            @include background-icon('bullet-dot', $size: 28px);
-            background-repeat: no-repeat;
-            background-color: transparent;
-            background-position: center;
+            @include icon(before, 'bullet-dot', $size: 28px, $align: middle);
             cursor: pointer;
 
             &.active-news-bullet {
-                background-size: 42px;
+                @include icon(before, 'bullet-dot', $size: 42px, $align: middle);
             }
         }
     }

@@ -17,9 +17,9 @@
             <td style="white-space: nowrap;">
                 <? if (isset($response[$key]) && $response[$key] !== '' && $response[$key] != -1 && $print_correction): ?>
                     <? if ($response[$key] == $entry['choice']): ?>
-                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
+                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
                     <? else: ?>
-                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
+                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
                     <? endif ?>
                 <? endif ?>
 

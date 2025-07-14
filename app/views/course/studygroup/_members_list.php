@@ -51,7 +51,7 @@
                 <td class="actions">
                     <a href="<?= $controller->link_for('messages/write', ['rec_uname' => $m['username']]) ?>"
                        data-dialog="size=50%">
-                        <?= Icon::create('mail')->asImg(['title' => _('Nachricht schreiben')]) ?>
+                        <?= Icon::create('mail')->asSvg(['title' => _('Nachricht schreiben')]) ?>
                     </a>
                 <? if ($GLOBALS['perm']->have_studip_perm('tutor', $sem_id)) : ?>
                     <?= $this->render_partial('course/studygroup/_members_options.php', compact('m')) ?>

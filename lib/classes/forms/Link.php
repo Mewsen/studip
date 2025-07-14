@@ -159,7 +159,7 @@ class Link extends Part
             '<div class="formpart"><a href="%1$s" %2$s>%3$s %4$s</a></div>',
             \URLHelper::getLink($this->url, [], true),
             arrayToHtmlAttributes($this->attributes),
-            $this->icon ? $this->icon->asImg(['class' => 'text-bottom']) : '',
+            $this->icon ? $this->icon->asSvg(['class' => 'text-bottom']) : '',
             htmlReady($this->label)
         );
     }

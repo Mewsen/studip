@@ -76,9 +76,9 @@ export default {
     margin: 0;
     li {
         list-style: none;
-        a img {
-            vertical-align: text-bottom;
-        }
+        display: inline-flex;
+        gap: 4px;
+        font-size: var(--icon-size-inline);
         span {
             padding: 0 4px 0 0;
         }

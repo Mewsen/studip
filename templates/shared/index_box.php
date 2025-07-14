@@ -20,8 +20,8 @@
             <td class="table_header_bold" style="text-align: right;">
             <? if (isset($admin_url)): ?>
                 <a href="<?= URLHelper::getLink($admin_url) ?>" title="<?= htmlReady($admin_title ?? _('Administration')) ?>">
-                    <?= Icon::create('admin', Icon::ROLE_INFO_ALT)->asImg([
-                        'alt' => $admin_title ??  ('Administration'),
+                    <?= Icon::create('admin', Icon::ROLE_INFO_ALT)->asSvg([
+                        'alt' => $admin_title ??  _('Administration'),
                     ]) ?>
                 </a>
             <? endif ?>

@@ -1,20 +1,22 @@
 <template v-if="folderIsReadable">
     <li class="file-chooser-tree-item">
-        <span class="folder-toggle">
-            <a
-                v-if="hasSubfolders"
-                herf="#"
-                @click.prevent="toggleSubfolders"
-                :title="unfold ? $gettext('Ordner zuklappen') : $gettext('Ordner aufklappen')"
-            >
-                <studip-icon :shape="unfold ? 'arr_1down' : 'arr_1right'" />
+        <div class="file-chooser-tree-item-content">
+            <span class="folder-toggle">
+                <a
+                    v-if="hasSubfolders"
+                    herf="#"
+                    @click.prevent="toggleSubfolders"
+                    :title="unfold ? $gettext('Ordner zuklappen') : $gettext('Ordner aufklappen')"
+                >
+                    <studip-icon :shape="unfold ? 'arr_1down' : 'arr_1right'" />
+                </a>
+            </span>
+            <a href="#" @click.prevent="selectFolder" :class="{ selected: isSelected }">
+                <studip-icon :shape="folderIcon" />
+                <span>{{ folder.attributes.name }}</span>
             </a>
-        </span>
-        <a href="#" @click.prevent="selectFolder" :class="{ selected: isSelected }">
-            <studip-icon :shape="folderIcon" />
-            <span>{{ folder.attributes.name }}</span>
-        </a>
-        <ul v-if="unfold" class="file-chooser-tree">
+        </div>
+        <ul v-if="unfold" class="file-chooser-tree file-chooser-tree-item-subfolders">
             <li v-for="child in folder.children" :key="child.id" class="file-chooser-tree-item">
                 <file-chooser-tree :folder="child" />
             </li>
@@ -68,31 +70,40 @@ export default {
 
 <style lang="scss">
 .file-chooser-tree {
-    padding-left: 18px;
+    padding-left: 22px;
     &.file-chooser-tree-first-level {
         padding-left: 0;
     }
 }
 .file-chooser-tree-item {
     list-style: none;
-    padding: 2px 0 0 0;
-    .folder-toggle {
-        width: 16px;
-    }
-    a.selected {
-        font-weight: 700;
-    }
-    img {
-        vertical-align: middle;
-    }
-    span {
-        width: calc(100% - 46px);
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 16px;
-        white-space: nowrap;
-        vertical-align: sub;
+    padding: 2px 0;
+
+    .file-chooser-tree-item-content {
+        display: flex;
+        .folder-toggle {
+            width: 22px;
+            min-width: 22px;
+        }
+        > a {
+            display: inline-flex;
+            gap: 4px;
+            width: calc(100% - 26px);
+            &.selected {
+                font-weight: 700;
+            }
+        }
+        svg {
+            vertical-align: middle;
+        }
+        span {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 20px;
+            white-space: nowrap;
+            vertical-align: sub;
+        }
     }
 }
 </style>

@@ -64,7 +64,7 @@ div.at_least_one_teacher {
 
             // Show visual toggle indicator
             header h1 a {
-                @include icon(before, arr_1right);
+                @include icon(before, arr_1right, $align: text-bottom);
             }
 
             &.open {
@@ -77,21 +77,24 @@ div.at_least_one_teacher {
     article header {
         &.red {
             border-left: 3px solid var(--red);
+            .tooltip {
+                color: var(--color--warning);
+            }
         }
         &.yellow {
             border-left: 3px solid var(--activity-color);
+            .tooltip {
+                color: var(--color--attention);
+            }
         }
         &.green {
             border-left: 3px solid var(--green);
+            .tooltip {
+                color: var(--color--good);
+            }
         }
-        &.red .tooltip-icon {
-            @include icon(before, radiobutton-checked, status-red);
-        }
-        &.yellow .tooltip-icon {
-            @include icon(before, radiobutton-checked, status-yellow);
-        }
-        &.green .tooltip-icon {
-            @include icon(before, radiobutton-checked, status-green);
+        .tooltip-icon {
+            @include icon(before, radiobutton-checked);
         }
     }
     form.default {

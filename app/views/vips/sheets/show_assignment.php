@@ -56,8 +56,8 @@
     <form class="default width-1200" style="margin-bottom: 1.5ex;">
         <input id="options-toggle" class="options-toggle" type="checkbox" value="on">
         <a class="caption" href="#" role="button" data-toggles="#options-toggle" aria-controls="options-panel" aria-expanded="false">
-            <?= Icon::create('arr_1down')->asImg(['class' => 'toggle-open']) ?>
-            <?= Icon::create('arr_1right')->asImg(['class' => 'toggle-closed']) ?>
+            <?= Icon::create('arr_1down')->asSvg(['class' => 'toggle-open']) ?>
+            <?= Icon::create('arr_1right')->asSvg(['class' => 'toggle-closed']) ?>
             <?= _('Teilnahmebedingungen') ?>
         </a>
 
@@ -148,9 +148,9 @@
                         </td>
                         <td style="text-align: center;">
                             <? if ($solution): ?>
-                                <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('ja')]) ?>
+                                <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('ja')]) ?>
                             <? else : ?>
-                                <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('nein')]) ?>
+                                <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('nein')]) ?>
                             <? endif ?>
                         </td>
                         <td style="text-align: center;">

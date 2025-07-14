@@ -497,11 +497,13 @@ section.course-statusgroups article header h1 a img {
 
 .js form.default.collapsable fieldset legend,
 form.default fieldset.collapsable legend {
-    @include background-icon(arr_1down, info_alt);
+    @include icon(before, arr_1down);
+    color: var(--white);
 }
 .js form.default.collapsable fieldset.collapsed legend,
 form.default fieldset.collapsable.collapsed legend {
-    @include background-icon(arr_1right, info_alt);
+    @include icon(before, arr_1right);
+    color: var(--white);
 }
 
 .sidebar-widget-header > div > a > img {

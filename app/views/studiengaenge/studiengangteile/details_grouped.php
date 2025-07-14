@@ -13,7 +13,7 @@
                 <tr>
                     <td>
                         <? if (!empty($ampel_icon)) : ?>
-                            <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                            <?= $ampel_icon->asSvg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
                         <? endif; ?>
                         <?= htmlReady($stgteil->getDisplayName()) ?>
                     </td>

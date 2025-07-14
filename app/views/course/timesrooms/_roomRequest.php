@@ -59,7 +59,7 @@
                         <a class="load-in-new-row"
                            href="<?= $controller->link_for('course/room_requests/info/' . $rr->id) ?>"
                             aria-expanded="false">
-                            <?= Icon::create('info')->asImg(['title' => _('Weitere Informationen einblenden')]) ?>
+                            <?= Icon::create('info')->asSvg(['title' => _('Weitere Informationen einblenden')]) ?>
                         </a>
                         <? $params = [] ?>
                         <? $dialog = []; ?>

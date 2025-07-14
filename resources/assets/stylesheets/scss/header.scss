@@ -6,9 +6,8 @@
     margin-bottom: 10px;
 }
 #top-bar {
-    background-color: var(--base-color);
-    color: var(--contrast-content-white);
-    border-bottom: 1px solid var(--brand-color-darker);
+    background-color: var(--color--brand-primary);
+    color: var(--color--brand-primary-contrast);
     height: $bar-bottom-container-height;
     width: 100%;
     min-width: $site-width;
@@ -28,7 +27,7 @@
 
     #site-title {
         flex: 1;
-        color: var(--white);
+        color: var(--color--brand-primary-contrast);
         margin-left: 0;
         z-index: 1002;
         line-height: $bar-bottom-container-height;
@@ -49,12 +48,15 @@
             > li {
 
                 > a {
-                    color: var(--white);
+                    color: var(--color--brand-primary-contrast);
                     margin: 0 6px;
                     text-decoration: none;
                     &:hover {
                         text-decoration: underline;
                     }
+                }
+                > button {
+                    color: var(--color--brand-primary-contrast);
                 }
             }
         }
@@ -178,6 +180,13 @@
     > ul {
         flex: 1 1 auto;
     }
+
+    #fullscreen-on {
+        color: var(--color--highlight);
+        svg {
+            vertical-align: middle;
+        }
+    }
 }
 
 #responsive-menu,
@@ -223,18 +232,19 @@
                 position: absolute;
                 top: 40px;
                 right: 0;
-                background: var(--white);
+                background: var(--color--global-background);
                 box-shadow: 1px 1px 1px var(--dark-gray-color-60);
                 text-align: left;
                 white-space: nowrap;
 
                 a:link,
                 a:visited {
-                    color: var(--base-color);
+                    color: var(--color--highlight);
                 }
                 a:hover,
                 a:active {
-                    color: var(--active-color);
+                    color: var(--color--highlight-hover);
+                    text-decoration: none;
                 }
 
                 div {

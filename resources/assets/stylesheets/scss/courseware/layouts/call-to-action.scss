@@ -1,19 +1,20 @@
 @use '../../../mixins.scss' as *;
 
 .cw-call-to-action {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--courseware-border-default);
 
     .action-button {
         width: 100%;
-        background-color: var(--activity-color-20);
+        background-color: var(--color--global-background);
         border: none;
         text-align: left;
         padding: 1em;
         cursor: pointer;
 
-        img {
-            margin: 0 1em;
+        .studip-icon {
+            display: inline-block;
             vertical-align: middle;
+            margin-right: 1em;
         }
     }
 }

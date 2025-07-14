@@ -1,59 +1,7 @@
 .cw-action-widget {
-    .cw-action-widget-show-toc {
-        @include background-icon(table-of-contents);
-    }
-    .cw-action-widget-edit {
-        @include background-icon(edit);
-    }
-    .cw-action-widget-sort {
-        @include background-icon(arr_1sort);
-    }
-    .cw-action-widget-add {
-        @include background-icon(add);
-    }
-    .cw-action-widget-export {
-        @include background-icon(export);
-    }
-    .cw-action-widget-info {
-        @include background-icon(info);
-    }
-    .cw-action-widget-star {
-        @include background-icon(star);
-    }
-    .cw-action-widget-trash {
-        @include background-icon(trash);
-    }
-    .cw-action-widget-oer {
-        @include background-icon(oer-campus);
-    }
-    .cw-action-widget-remove-lock {
-        @include background-icon(lock-unlocked);
-    }
-}
-
-.cw-export-widget {
-    .cw-export-widget-export {
-        @include background-icon(export);
-    }
-    .cw-export-widget-export-pdf {
-        @include background-icon(export);
-    }
-    .cw-export-widget-oer {
-        @include background-icon(share);
-    }
-}
-
-.cw-import-widget {
-    .cw-import-widget-archive {
-        @include background-icon(import);
-    }
-    .cw-import-widget-copy {
-        @include background-icon(copy);
-    }
-    .cw-import-widget-import {
-        @include background-icon(import);
-    }
-    .cw-action-widget-link {
-        @include background-icon(group);
+    @each $name, $icon in $button-icons {
+        &-#{$name} button {
+            @include icon(before, $icon);
+        }
     }
 }

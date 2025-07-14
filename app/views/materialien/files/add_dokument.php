@@ -37,7 +37,7 @@
             <td>
                 <div class="attachments" style="<?= (empty($documents) || !array_key_exists($key, $documents))  ? '' : 'display: none;'?>">
                     <span style="cursor:pointer;" onClick="$('#fileselector_<?= $language_key; ?>').toggle();$(this).toggle();">
-                        <?= Icon::create('add')->asImg(['title' => _('Datei hinzufügen'), 'class' => 'text-bottom']); ?>
+                        <?= Icon::create('add')->asSvg(['title' => _('Datei hinzufügen'), 'class' => 'text-bottom']); ?>
                         <?= _('Datei hinzufügen') ?>
                     </span>
                     <div id="fileselector_<?= $language_key; ?>" style="display:none;">
@@ -48,13 +48,13 @@
                                 <span class="name"></span>
                                 <span class="size"></span>
                                 <button class="refresh_attachment as-link" data-language="<?= htmlReady($language_key) ?>">
-                                    <?= Icon::create('refresh')->asImg([
+                                    <?= Icon::create('refresh')->asSvg([
                                         'class' => 'text-bottom',
                                         'title' => _('Datei aktualisieren'),
                                     ]) ?>
                                 </button>
                                 <button class="remove_attachment as-link">
-                                    <?= Icon::create('trash')->asImg([
+                                    <?= Icon::create('trash')->asSvg([
                                         'class' => 'text-bottom',
                                         'title' => _('Datei löschen'),
                                     ]) ?>
@@ -69,8 +69,8 @@
                         </div>
                         <label id="upload_chooser" style="cursor: pointer;">
                             <input type="file" id="fileupload" multiple onChange="STUDIP.MVV.Document.upload_from_input(this, '<?= $language_key; ?>');" style="display: none;">
-                            <?= Icon::create('upload')->asImg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
-                            <?= _("Datei hochladen") ?>
+                            <?= Icon::create('upload')->asSvg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
+                            <?= _('Datei hochladen') ?>
                         </label>
                         <br>
                         <b><?= _('oder'); ?></b>
@@ -91,13 +91,13 @@
                             <span class="name"><?= htmlReady($documents[$language_key]->filename) ?></span>
                             <span class="size"><?= relsize($documents[$language_key]->file_ref->size) ?></span>
                             <button class="refresh_attachment as-link" data-language="<?= htmlReady($language_key) ?>">
-                                <?= Icon::create('refresh')->asImg([
+                                <?= Icon::create('refresh')->asSvg([
                                     'class' => 'text-bottom',
                                     'title' => _('Datei aktualisieren'),
                                 ]) ?>
                             </button>
                             <button class="remove_attachment as-link">
-                                <?= Icon::create('trash')->asImg([
+                                <?= Icon::create('trash')->asSvg([
                                     'class' => 'text-bottom',
                                     'title' => _('Datei löschen'),
                                 ]) ?>

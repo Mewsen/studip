@@ -27,12 +27,13 @@ form.default .cw-radioset {
             width: 100%;
             margin: 0;
             cursor: pointer;
-            @include background-icon(radiobutton-unchecked);
+            @include icon(after, radiobutton-unchecked);
             background-position: center 104px;
             background-repeat: no-repeat;
+            color: var(--color--highlight);
 
             .label-text {
-                height: 48px;
+                height: 42px;
                 max-width: 80%;
                 overflow: hidden;
                 display: grid;
@@ -48,7 +49,7 @@ form.default .cw-radioset {
 
                 @each $type, $icon in $radio-icons {
                     &.#{$type} {
-                        @include background-icon(#{$icon}, $size: 48px);
+                        @include icon(before, #{$icon}, $size: 48px);
                     }
                 }
             }
@@ -68,14 +69,15 @@ form.default .cw-radioset {
         }
 
         &.selected {
-            border-color: var(--base-color);
+            border-color: var(--color--highlight);
+            color: var(--color--highlight);
             background-color: var(--color--tile-background-active);
             label {
-                @include background-icon(check-circle);
+                @include icon(after, check-circle);
                 .label-icon {
                     @each $type, $icon in $radio-icons {
                         &.#{$type} {
-                            @include background-icon(#{$icon}, $size: 48px);
+                            @include icon(before, #{$icon}, $size: 48px);
                         }
                     }
                 }

@@ -300,7 +300,6 @@ class Course_ContentmodulesController extends AuthenticatedController
             $visibility = $tool ? $tool->getVisibilityPermission() : 'nobody';
 
             $metadata = $plugin->getMetadata();
-            $icon = $this->getIconFromMetadata($metadata, $plugin);
             $list[$plugin_id] = [
                 'id'             => $plugin_id,
                 'moduleclass'    => get_class($plugin),
@@ -309,7 +308,7 @@ class Course_ContentmodulesController extends AuthenticatedController
                 'displayname'    => $displayname,
                 'visibility'     => $visibility,
                 'active'         => (bool) $tool,
-                'icon'           => $icon ? $icon->asImagePath() : null,
+                'icon'           => $this->getIconFromMetadata($metadata, $plugin),
                 'summary'        => $metadata['summary'] ?? null,
                 'mandatory'      => $this->sem_class->isModuleMandatory(get_class($plugin)),
                 'highlighted'    => (bool) $plugin->isHighlighted(),

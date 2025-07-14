@@ -32,7 +32,7 @@
             </td>
             <td data-sort-value="<?= htmlReady($page->user ? $page->user->getFullName() : _('unbekannt')) ?>">
                 <? if ($page->user) : ?>
-                <a href="<?= URLhelper::getLink('dispatch.php/profile', ['username' => $page->user->username]) ?>">
+                <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $page->user->username]) ?>">
                 <? endif ?>
                     <?= Avatar::getAvatar($page['user_id'])->getImageTag(Avatar::SMALL) ?>
                     <?= htmlReady($page->user ? $page->user->getFullName() : _('unbekannt')) ?>
@@ -43,7 +43,7 @@
             <td data-sort-value="<?= $page->chdate ?>"><?= $page->chdate > 0 ? date('d.m.Y H:i:s', $page->chdate) : _('unbekannt') ?></td>
             <td class="actions">
                 <a href="<?= $controller->versiondiff($page) ?>" data-dialog>
-                    <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>
@@ -56,7 +56,7 @@
             </td>
             <td>
                 <? if ($version->user) : ?>
-                <a href="<?= URLhelper::getLink('dispatch.php/profile', ['username' => $version->user->username]) ?>">
+                <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $version->user->username]) ?>">
                 <? endif ?>
                     <?= Avatar::getAvatar($version['user_id'])->getImageTag(Avatar::SMALL) ?>
                     <?= htmlReady($version->user ? $version->user->getFullName() : _('unbekannt')) ?>
@@ -67,7 +67,7 @@
             <td><?= $version->mkdate > 0 ? date('d.m.Y H:i:s', $version->mkdate) : _('unbekannt') ?></td>
             <td class="actions">
                 <a href="<?= $controller->versiondiff($page, $version->id) ?>" data-dialog>
-                    <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>

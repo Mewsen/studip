@@ -60,7 +60,7 @@
             <td class="actions">
             <? if (!$role->getSystemtype()): ?>
                 <a href="<?= $controller->link_for('admin/role/ask_remove_role', $role_id) ?>">
-                    <?= Icon::create('trash')->asImg(tooltip2(_('Rolle löschen'))) ?>
+                    <?= Icon::create('trash')->asSvg(tooltip2(_('Rolle löschen'))) ?>
                 </a>
             <? endif ?>
             </td>

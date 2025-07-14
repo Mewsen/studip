@@ -10,7 +10,7 @@
     <tr class="table-header header-row" id="modul_<?= htmlReady($modul->id) ?>">
         <td>
             <a data-dialog="size=auto" title="<?= htmlReady($modul->getDisplayName()) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul->id) ?>">
-                <?= Icon::create('log')->asImg(['title' => _('Vollständige Modulbeschreibung')]) ?>
+                <?= Icon::create('log')->asSvg(['title' => _('Vollständige Modulbeschreibung')]) ?>
             </a>
         </td>
     <? if (count($modul->getAssignedCoursesBySemester($selected_semester->id, $GLOBALS['user']->id))) : ?>

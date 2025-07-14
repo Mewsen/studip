@@ -15,7 +15,7 @@
                     data-confirm="<?= _('Wirklich die letzte Änderung löschen?') ?>"
                     formaction="<?= $controller->deleteversionURL($page, ['redirect_to' => 'page']) ?>"
                 >
-                    <?= Icon::create('archive2')->asImg(50) ?>
+                    <?= Icon::create('archive2')->asSvg(50) ?>
                     <?= _('Nur die letzte Änderung löschen') ?>
                 </button>
             </div>
@@ -27,7 +27,7 @@
                     data-confirm="<?= _('Wollen Sie wirklich die komplette Seite löschen?') ?>"
                     formaction="<?= $controller->deleteURL($page) ?>"
                 >
-                    <?= Icon::create('wiki')->asImg(50) ?>
+                    <?= Icon::create('wiki')->asSvg(50) ?>
                     <?= _('Ganze Wikiseite löschen') ?>
                 </button>
             </div>

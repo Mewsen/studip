@@ -9,6 +9,10 @@ div.messagebox {
     position: relative;
     text-align: left;
 
+    div {
+        margin-left: 8px;
+    }
+
     &:first-child {
         margin-top: 0;
     }
@@ -32,17 +36,17 @@ div.messagebox {
                 span { display: none; }
             }
             &.close {
-                @include background-icon(decline);
+                @include icon(before, decline);
             }
             &.details {
-                @include background-icon(arr_eol-down);
+                @include icon(before, arr_eol-down);
             }
         }
     }
 
     &.details_hidden {
         .messagebox_buttons a.details {
-            @include background-icon(arr_eol-up);
+            @include icon(before, arr_eol-up);
         }
         .messagebox_details { height: 0; }
     }
@@ -61,22 +65,65 @@ section.contentbox {
     }
 }
 
+$messagebox-icons: (
+    info: 'info',
+    success: 'accept',
+    error: 'decline',
+    exception: 'decline',
+    warning: 'exclaim',
+);
+
 // Messagebox definitions
 @mixin messagebox($name, $color, $background-color, $border-color: $color, $image: $name) {
-    div.messagebox_#{$name} {
-        color: $color;
-        background-color: $background-color;
-        background-image: url("#{$image-path}/messagebox/#{$image}.png");
-        background-size: 32px 32px;
-        border-color: $border-color;
-    }
-}
+    $icon-name: map-get($messagebox-icons, $name);
+    $svg: icon-path($icon-name, clickable);
 
-@include messagebox(info, var(--color--black), var(--color--info-alternative), var(--color--info));
-@include messagebox(success, var(--color--black), var(--color--good-alternative), var(--color--good));
-@include messagebox(error, var(--color--black), var(--color--warning-alternative), var(--color--warning));
-@include messagebox(exception, var(--color--black), var(--color--warning-alternative), var(--color--warning));
-@include messagebox(warning, var(--color--black), var(--color--attention-alternative), var(--color--attention), advice);
+    div.messagebox_#{$name} {
+      color: $color;
+      background-color: $background-color;
+      border-color: $border-color;
+      position: relative;
+      display: flex;
+      align-items: center;
+  
+      // Der Kreis mit ::before
+      &::before {
+        content: "";
+        width: 32px;  // Größe des Kreises
+        height: 32px;
+        background-color: $border-color;  // Kreisfarbe
+        border-radius: 50%;  // Macht es rund
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 12px;  // Platz für den Text, je nach Bedarf anpassen
+      }
+  
+      // Das Icon mit ::after auf dem Kreis
+      &::after {
+        content: "";
+        width: 20px;  // Größe des Icons
+        height: 20px;
+        mask: url("#{$svg}") no-repeat center / contain;  // Maskierung mit dem Icon
+        background-color: $background-color;  // Farbe des Icons
+        position: absolute;
+        top: 50%;
+        left: 32px;
+        transform: translate(-50%, -50%);  // Zentriert das Icon im Kreis
+      }
+    }
+  }
+  
+
+@include messagebox(info, var(--color--info-secondary-contrast), var(--color--info-secondary), var(--color--info));
+@include messagebox(success, var(--color--good-secondary-contrast), var(--color--good-secondary), var(--color--good));
+@include messagebox(error, var(--color--warning-secondary-contrast), var(--color--warning-secondary), var(--color--warning));
+@include messagebox(exception, var(--color--warning-secondary-contrast), var(--color--warning-secondary), var(--color--warning));
+@include messagebox(warning, var(--color--attention-secondary-contrast), var(--color--attention-secondary), var(--color--attention), advice);
 
 // Define modal messagebox
 .modaloverlay {
@@ -108,7 +155,7 @@ section.contentbox {
         max-width: 50%;
         width: auto;
 
-        color: #000;
+        color: var(--color--font-primary);
         border-color: var(--yellow);
         background-color: white;
         background-image: url("@{image-path}/messagebox/question.png");

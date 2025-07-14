@@ -58,7 +58,7 @@
                                             'messages/write',
                                             ['rec_uname' => $user->username]
                                         ) ?>" data-dialog>
-                                            <?= Icon::create('mail')->asImg(
+                                            <?= Icon::create('mail')->asSvg(
                                                 ['class' => 'text-bottom']
                                             ) ?>
                                         </a>
@@ -69,7 +69,7 @@
                                     <a href="<?= htmlReady($property->state) ?>"
                                        target="_blank">
                                         <?= htmlReady($property->state) ?>
-                                        <?= Icon::create('link-extern')->asImg(
+                                        <?= Icon::create('link-extern')->asSvg(
                                             ['class' => 'text-bottom']
                                         ) ?>
                                     </a>

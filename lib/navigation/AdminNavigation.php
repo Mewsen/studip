@@ -178,6 +178,13 @@ class AdminNavigation extends Navigation
                 )
             );
             $navigation->addSubNavigation(
+                'layout',
+                new Navigation(
+                    _('Darstellung'),
+                    'dispatch.php/admin/layout'
+                )
+            );
+            $navigation->addSubNavigation(
                 'tags',
                 new Navigation(
                     _('Schlagwortverwaltung'),
@@ -205,7 +212,7 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation('roles', new Navigation(_('Rollen'), 'dispatch.php/admin/role'));
             $navigation->addSubNavigation('datafields', new Navigation(_('Datenfelder'), 'dispatch.php/admin/datafields'));
             $navigation->addSubNavigation('configuration', new Navigation(_('Konfiguration'), 'dispatch.php/admin/configuration/configuration'));
-
+            
             $navigation->addSubNavigation('coursewizardsteps',
                 new Navigation(_('Anlegeassistent'), 'dispatch.php/admin/coursewizardsteps'));
             $navigation->addSubNavigation('studygroup', new Navigation(_('Studiengruppen'), 'dispatch.php/course/studygroup/globalmodules'));

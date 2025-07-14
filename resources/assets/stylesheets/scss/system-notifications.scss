@@ -110,11 +110,8 @@
         height: 20px;
         width: 20px;
 
-        img, svg {
+        svg {
             cursor: pointer;
-            position: absolute;
-            right: 10px;
-            top: 10px;
         }
     }
 
@@ -171,30 +168,31 @@
 
 }
 
-.system-notification-exception {
-    background-color: var(--color--warning);
-    color: var(--color--white);
 
-    .system-notification-timeout {
-        background-color: var(--color--warning-alternative);
-    }
-}
-
+.system-notification-exception,
 .system-notification-error {
     background-color: var(--color--warning);
-    color: var(--color--white);
+    color: var(--color--warning-contrast);
+
+    .studip-icon {
+        color: var(--color--warning-contrast);
+    }
 
     .system-notification-timeout {
-        background-color: var(--color--warning-alternative);
+        background-color: var(--color--warning-secondary);
     }
 }
 
 .system-notification-warning {
     background-color: var(--color--attention);
-    color: var(--color--black);
+    color: var(--color--attention-contrast);
+
+    .studip-icon {
+        color: var(--color--attention-contrast);
+    }
 
     .system-notification-timeout {
-        background-color: var(--color--attention-alternative);
+        background-color: var(--color--attention-secondary);
     }
 
     a:not(.system-notification-message) {
@@ -211,16 +209,26 @@
 
 .system-notification-success {
     background-color: var(--color--good);
+    color: var(--color--good-contrast);
+
+    .studip-icon {
+        color: var(--color--good-contrast);
+    }
 
     .system-notification-timeout {
-        background-color: var(--color--good-alternative);
+        background-color: var(--color--good-secondary);
     }
 }
 
 .system-notification-info {
     background-color: var(--color--info);
+    color: var(--color--info-contrast);
+
+    .studip-icon {
+        color: var(--color--info-contrast);
+    }
 
     .system-notification-timeout {
-        background-color: var(--color--info-alternative);
+        background-color: var(--color--info-secondary);
     }
 }

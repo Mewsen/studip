@@ -11,7 +11,7 @@
             <span class="sr-only">{{ status.description }}</span>
         </td>
         <td>
-            <span v-if="user">
+            <span v-if="user" class="cw-taskgroup-task-item-solver-info">
                 <studip-icon shape="person2" role="info" aria-hidden="true" :title="$gettext('Teilnehmende Person')" />
                 <span class="sr-only">{{ $gettext('Teilnehmende Person') }}</span>
                 {{ user.attributes['formatted-name'] }}

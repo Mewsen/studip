@@ -14,10 +14,10 @@
         <div class="contentbar-wrapper-left">
             <nav class="contentbar-breadcrumb">
             <? if ($toc->isActive()): ?>
-                <?= $icon->asImg(24, ['class' => 'text-bottom contentbar-icon']) ?>
+                <?= $icon->asSvg(24, ['class' => 'text-bottom contentbar-icon']) ?>
             <? else: ?>
                 <a href="<?= $toc->getUrl() ?>" title="<?= htmlReady($toc->getTitle()) ?>" class="contentbar-icon">
-                    <?= $icon->asImg(24, ['class' => 'text-bottom']) ?>
+                    <?= $icon->asSvg(24, ['class' => 'text-bottom']) ?>
                 </a>
             <? endif ?>
                 <?= $breadcrumbs->render() ?>

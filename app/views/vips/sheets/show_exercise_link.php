@@ -17,7 +17,7 @@
     </div>
     <div class="sidebar_exercise_state">
         <? if ($assignment->getSolution($solver_id, $item->task_id)): ?>
-            <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('Aufgabe bearbeitet')]) ?>
+            <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('Aufgabe bearbeitet')]) ?>
         <? endif ?>
     </div>
 </a>

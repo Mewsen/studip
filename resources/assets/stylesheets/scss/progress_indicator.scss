@@ -24,7 +24,8 @@
     }
     @media (prefers-reduced-motion) {
         .progress-indicator {
-            @include background-icon(refresh, info, 32px);
+            @include icon(before, refresh, $size: 32px);
+            color: var(--color--font-primary);
         }
         .progress-indicator-description-default {
             display: block;

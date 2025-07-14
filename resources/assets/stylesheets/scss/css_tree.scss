@@ -52,12 +52,11 @@ $css-tree-border: 1px solid var(--light-gray-color-80);
     input[type=checkbox] {
         display: none;
         + label {
-            @include icon(before, arr_1right);
+            @include icon(before, arr_1right, $align: bottom);
             cursor: pointer;
 
             &:before {
                 transition: transform var(--transition-duration);
-                vertical-align: baseline;
             }
         }
         ~ ul {

@@ -49,11 +49,11 @@
                    name="all_in_room" value="<?= htmlReady($room->id) ?>"
                    <?= $room_availability_share[$room->id] <= 0.0  ? 'disabled="disabled"' : '' ?>>
             <? if ($room_availability_share[$room->id] >= 1.0) : ?>
-                <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'text-bottom']) ?>
             <? elseif ($room_availability_share[$room->id] <= 0.0) : ?>
-                <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asImg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'text-bottom']) ?>
             <? else : ?>
-                <?= Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asImg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asSvg(['class' => 'text-bottom']) ?>
                 <?= tooltipIcon(sprintf(
                     _('%u von %u Terminen nicht verfügbar'),
                     $unavailable_dates[$room->id],
@@ -78,11 +78,11 @@
                     ? 'checked'
                     : ''?>>
                 <? if ($availability >= 1.0) : ?>
-                    <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'text-bottom']) ?>
                 <? elseif ($availability <= 0.0) : ?>
-                    <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'text-bottom']) ?>
                 <? else : ?>
-                    <?= Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asSvg(['class' => 'text-bottom']) ?>
                     <?= tooltipIcon(sprintf(
                         _('%u von %u Terminen nicht verfügbar'),
                         $unavailable_metadate_dates[$room->id][$metadate_id],
@@ -119,12 +119,12 @@
                                      || (!empty($interval['booked_room']) && $interval['booked_room'] === $room->id))
                                  ? 'checked="checked"'
                                  : ''?>>
-                        <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'text-bottom']) ?>
                     <? else: ?>
                         <input type="radio" name="<?= htmlReady($room_radio_name) ?>"
                                value="1" disabled="disabled"
                                class="text-bottom">
-                        <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asImg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('decline-circle', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'text-bottom']) ?>
                     <? endif ?>
                 </td>
                 <? $i++ ?>

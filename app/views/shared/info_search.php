@@ -6,6 +6,6 @@
     </script>
     <?= $search ?>
     <? if ($reset) : ?>
-    <a href="<?= $reset ?>"><?= Icon::create('refresh', 'clickable', ['title' => _('Suche zurücksetzen')])->asImg(); ?></a>
+    <a href="<?= $reset ?>"><?= Icon::create('refresh', 'clickable', ['title' => _('Suche zurücksetzen')])->asSvg(); ?></a>
     <? endif; ?>
 </form>

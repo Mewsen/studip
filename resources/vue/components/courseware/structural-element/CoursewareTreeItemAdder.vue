@@ -101,20 +101,3 @@ export default {
     },
 };
 </script>
-
-<style scoped lang="scss">
-.cw-tree-root-list > .cw-tree-item.cw-tree-item-adder > .cw-tree-item-wrapper {
-    border-bottom: none;
-}
-.cw-tree-item-adder {
-    .add-element {
-        border: none;
-        cursor: pointer;
-        background-color: transparent;
-        height: 28px;
-        img {
-            vertical-align: middle;
-        }
-    }
-}
-</style>

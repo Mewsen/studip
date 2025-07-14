@@ -58,12 +58,12 @@
                 <? if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/course/overview', ['cid' => $course->id]) ?>">
                         <?= _('Direkt zur Veranstaltung') ?>
-                        <?= Icon::create('link-intern')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-intern')->asSvg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                     </a>
                 <? else : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $course->id]) ?>">
                         <?= _('Direkt zur Veranstaltung') ?>
-                        <?= Icon::create('link-intern')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-intern')->asSvg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                     </a>
                 <? endif ?>
             </section>

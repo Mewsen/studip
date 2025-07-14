@@ -5,17 +5,17 @@
     .cw-element-selector-item {
         display: block;
         width: 100%;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
         padding: 0.5em;
         margin-bottom: 5px;
-        background-color: var(--white);
-        color: var(--base-color);
+        background-color: var(--color--global-background);
+        color: var(--color--highlight);
         text-align: left;
         cursor: pointer;
 
         &:hover {
-            color: var(--white);
-            background-color: var(--base-color);
+            color: var(--color--global-background);
+            background-color: var(--color--highlight);
         }
     }
 }
@@ -25,7 +25,13 @@ form.default .courseware-structural-element-selector {
     padding-left: 0;
 
     .courseware-structural-element-selector-item {
+        .studip-icon {
+            display: inline-block;
+        }
+
         .radiobutton {
+            display: inline-block;
+            height: var(--icon-size-default);
             background: none;
             border: none;
             padding: 0;
@@ -39,7 +45,6 @@ form.default .courseware-structural-element-selector {
             display: inline-block;
             margin-bottom: 0;
             text-indent: 0;
-            vertical-align: middle;
         }
 
         img {

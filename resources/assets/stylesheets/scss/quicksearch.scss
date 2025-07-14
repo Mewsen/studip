@@ -33,21 +33,18 @@ div.quicksearch_frame {
         margin-top: 0 !important;
     }
 
-    input[type=submit] {
-        font: 0/0 a;
-        color: transparent;
-        text-shadow: none;
-        background-color: transparent;
-        border: 0;
+    label.icon-button {
+        display: inline-block;
+        color: var(--color--highlight);
         width: 36px;
         height: 30px;
-        @include background-icon(search);
-        background-position: center;
-        background-repeat: no-repeat;
         vertical-align: middle;
         margin-left: -40px;
-        margin-top: 1px;
         border-left: solid thin var(--color--input-field-border);
+
+        svg {
+            padding: 5px 7px;
+        }
     }
 }
 

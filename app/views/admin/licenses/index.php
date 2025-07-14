@@ -34,9 +34,9 @@
             </td>
             <td class="actions">
                 <a href="<?= $controller->link_for("admin/licenses/edit", ['identifier' => $license['identifier']]) ?>" data-dialog>
-                    <?= Icon::create('edit')->asImg(['class' => "text-bottom"]) ?>
+                    <?= Icon::create('edit')->asSvg(['class' => "text-bottom"]) ?>
                 </a>
-                <form action="<?= $controller->link_for("admin/licenses/delete", ['identifier' => $license->getId()]) ?>"
+                <form action="<?= $controller->link_for('admin/licenses/delete', ['identifier' => $license->getId()]) ?>"
                       method="post"
                       data-confirm="<?= _("Wirklich löschen?") ?>"
                       class="inline">

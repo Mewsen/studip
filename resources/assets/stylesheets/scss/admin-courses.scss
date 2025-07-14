@@ -1,40 +1,10 @@
-.button.has-notice,
-.button.has-no-notice {
-    &::before {
-        display: inline-block;
-        height: var(--icon-size-inline);
-        vertical-align: sub;
-        width: var(--icon-size-inline);
-    }
-    &::before {
-        margin-right: 0.5ex;
-    }
-}
-
-.button.has-notice {
-    &::before {
-        content: url("#{$image-path}/icons/blue/file-text.svg");
-    }
-    &:hover::before {
-        content: url("#{$image-path}/icons/white/file-text.svg");
-    }
-
-}
-.button.has-no-notice {
-    &::before {
-        content: url("#{$image-path}/icons/blue/file.svg");
-    }
-    &:hover::before {
-        content: url("#{$image-path}/icons/white/file.svg");
-    }
-}
-
 .action-menu.filter {
     margin-left: 1em;
 }
 
 .action-menu.filter:not(.is-open) .action-menu-icon {
-    @include background-icon(settings);
+    @include icon(before, settings);
+    color: var(--color--highlight);
     span {
         display: none;
     }

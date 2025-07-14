@@ -13,7 +13,7 @@ if (Request::get('to_folder_id')) {
 
 <div style="text-align: center; margin-bottom: 20px;">
     <?= _('Kopieren nach') ?>
-    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
+    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
     <?= htmlReady($to_folder_name) ?>
 </div>
 
@@ -95,9 +95,9 @@ if (Request::get('to_folder_id')) {
                     <a href="<?= $controller->link_for('file/choose_file/' . $subfolder->id, $options) ?>" data-dialog>
                 <? endif ?>
                 <? if (!empty($is_empty)): ?>
-                    <?= Icon::create('folder-empty')->asImg(24) ?>
+                    <?= Icon::create('folder-empty')->asSvg(24) ?>
                 <? else: ?>
-                    <?= Icon::create('folder-full')->asImg(24) ?>
+                    <?= Icon::create('folder-full')->asSvg(24) ?>
                 <? endif; ?>
                 <? if ($subfolder->isReadable($GLOBALS['user']->id)) : ?>
                     </a>
@@ -128,11 +128,11 @@ if (Request::get('to_folder_id')) {
                     <form action="<?= $controller->link_for('file/choose_file/' . $top_folder->id, $options) ?>" method="post" data-dialog>
                         <input type="hidden" name="file_id" value="<?= htmlReady($file->getId()) ?>">
                         <a href="#" onclick="jQuery(this).closest('form').submit(); return false;">
-                            <?= FileManager::getIconForMimeType($file->getMimetype())->asImg(24) ?>
+                            <?= FileManager::getIconForMimeType($file->getMimetype())->asSvg(24) ?>
                         </a>
                     </form>
                 <? else: ?>
-                    <?= FileManager::getIconForMimeType($file->getMimetype(), Icon::ROLE_INACTIVE)->asImg(24) ?>
+                    <?= FileManager::getIconForMimeType($file->getMimetype(), Icon::ROLE_INACTIVE)->asSvg(24) ?>
                 <? endif ?>
                 </td>
                 <td>

@@ -226,6 +226,7 @@ $calendar-category-255-aux: $light-gray-color-20;
 $color--black: #000;
 $color--blue-1: #28497c;
 $color--blue-2: #36598f;
+$color--blue-3: #d0d7e3;
 $color--gray-1: #101010;
 $color--gray-2: #3c454e;
 $color--gray-3: #676767;
@@ -234,22 +235,39 @@ $color--gray-5: #d8d8d8;
 $color--gray-6: #ededed;
 $color--gray-7: #fbfbfc;
 $color--green-1: #6ead10;
+$color--green-2: #e2efcf;
 $color--red-1: #d60000;
+$color--red-2: #f7cccc;
 $color--white: #fff;
 $color--yellow-1: #ffbc33;
+$color--yellow-2: #fff2d6;
 
 $color--global-background: $color--white;
-
-$color--brand-primary: $color--blue-1;
-$color--brand-secondary: $color--gray-2;
 
 $color--font-primary: $color--gray-1;
 $color--font-secondary: $color--gray-3;
 $color--font-inactive: $color--gray-3;
 $color--font-inverted: $color--white;
 
+$color--brand-primary: $color--blue-1;
+$color--brand-primary-contrast: $color--font-inverted;
+$color--brand-secondary: $color--gray-2;
+$color--brand-secondary-contrast: $color--font-inverted;
+
+$color--highlight: $color--blue-1;  
+$color--highlight-hover: $color--red-1;  
+$color--highlight-contrast: $color--font-inverted;
+
+$color--content-link: $color--blue-1; 
+$color--content-link-hover: $color--red-1; 
+
+$color--sidebar-item: $color--blue-1;
+$color--sidebar-item-hover: $color--gray-1;
+
 $color--main-navigation-background: $color--gray-7;
 $color--main-navigation-border: $color--gray-5;
+$color--main-navigation-item: $color--blue-1;
+$color--main-navigation-item-inactive: $color--gray-4;
 
 $color--sidebar-marker-active: $color--gray-5;
 $color--sidebar-marker-active-navigation: $color--blue-1;
@@ -283,6 +301,8 @@ $color--tile-title-background: $color--gray-6;
 
 $color--scrollbar-thumb: $color--gray-5;
 
+$color--content-bar-background: $color--gray-6;
+
 $color--content-box-border: $color--gray-6;
 $color--content-box-header: $color--gray-6;
 $color--content-box-background: $color--white;
@@ -290,16 +310,16 @@ $color--content-box-background: $color--white;
 $color--fieldset-header: $color--gray-6;
 $color--fieldset-border: $color--gray-6;
 
+$color--tabs-marker-hover: $color--gray-4;
+$color--tabs-marker-active: $color--gray-3;
+
 $color--table-header: $color--gray-6;
 $color--table-border: $color--gray-6;
 $color--table-focus: $color--gray-6;
 $color--table-hover: $color--gray-6;
 
-$color--button-background: $color--white;
-$color--button-border: $color--blue-1;
-$color--button-focus: $color--blue-1;
-$color--button-hover: $color--blue-1;
 $color--button-inactive-background: $color--gray-7;
+$color--button-inactive-background-contrast: $color--font-inactive;
 $color--button-inactive-border: $color--gray-5;
 
 $color--radiobuttonset-background: $color--white;
@@ -316,15 +336,27 @@ $color--shadow: $color--gray-4;
 $color--focus: $color--gray-4;
 
 $color--warning: $color--red-1;
-$color--warning-alternative: mix($color--warning, $color--white, 20%);
-$color--attention: $color--yellow-1;
-$color--attention-alternative: mix($color--attention, $color--white, 20%);
-$color--good: $color--green-1;
-$color--good-alternative: mix($color--good, $color--white, 20%);
-$color--info: $color--blue-2;
-$color--info-alternative: mix($color--info, $color--white, 20%);
+$color--warning-secondary: $color--red-2;
+$color--warning-contrast: $color--font-primary;
+$color--warning-secondary-contrast: $color--font-primary;
 
-$color-image-placeholder-background: $color--gray-6;
+$color--attention: $color--yellow-1;
+$color--attention-secondary: $color--yellow-2;
+$color--attention-contrast: $color--font-primary;
+$color--attention-secondary-contrast: $color--font-primary;
+
+$color--good: $color--green-1;
+$color--good-secondary: $color--green-2;
+$color--good-contrast: $color--font-inverted;
+$color--good-secondary-contrast: $color--font-primary;
+
+$color--info: $color--blue-2;
+$color--info-secondary: $color--blue-3;
+$color--info-contrast: $color--font-inverted;
+$color--info-secondary-contrast: $color--font-primary;
+
+$color--image-placeholder-background: $color--gray-6;
+$color--image-placeholder-icon: $color--gray-4;
 
 $color-header-inverted: $color--white;
 

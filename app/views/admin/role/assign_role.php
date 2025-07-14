@@ -133,7 +133,7 @@ use Studip\Button, Studip\LinkButton;
                 </td>
                 <td class="actions">
                     <a href="<?= $controller->action_link('assign_role_institutes/' . $assignedrole->getRoleid() . '/' . $currentuser->id) ?>" data-dialog="size=auto;reload-on-close">
-                        <?= Icon::create('edit')->asImg(['title' => _('Einrichtungszuordnung bearbeiten')]) ?>
+                        <?= Icon::create('edit')->asSvg(['title' => _('Einrichtungszuordnung bearbeiten')]) ?>
                     </a>
                 </td>
             </tr>

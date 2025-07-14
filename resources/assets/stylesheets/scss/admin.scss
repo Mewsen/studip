@@ -11,20 +11,27 @@
         border-color: var(--color--tile-border-hover);
     }
 }
+
+$upload-icon-size: 48px;
 .js .drag-and-drop {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
     margin: 0;
     overflow: hidden;
-    padding: 15px 15px 15px 80px;
+    padding: 15px;
     position: relative;
     text-align: left;
     background-color: transparent;
     border: solid thin transparent;
-    @include background-icon(upload, $size: 48px);
-    background-repeat: no-repeat;
-    background-position: 15px center;
     color: var(--base-color);
     cursor: pointer;
+
+    @include icon(before, upload, $size: $upload-icon-size);
+    &::before {
+        min-height: $upload-icon-size;
+        min-width: $upload-icon-size;
+    }
 
     input[type=file] {
         border: 0;
@@ -143,17 +150,21 @@ fieldset.attribute_table {
     }
 
     th .course-completion {
-        @include background-icon(radiobutton-checked);
+        @include icon(before, radiobutton-checked);
+        color: var(--color--highlight);
     }
 
     td .course-completion {
-        @include background-icon(span-empty, status-red);
+        @include icon(before, span-empty);
+        color: var(--color--warning);
 
         &[data-course-completion="1"] {
-            @include background-icon(span-2quarter, status-yellow);
+            @include icon(before, span-2quarter);
+            color: var(--color--attention);
         }
         &[data-course-completion="2"] {
-            @include background-icon(span-full, status-green);
+            @include icon(before, span-full);
+            color: var(--color--good);
         }
 
         &.ajaxing {

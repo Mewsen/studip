@@ -19,12 +19,12 @@ $companion-types: (
     max-width: calc(100% - 140px);
     height: 120px;
     z-index: 42000;
-    border: solid thin var(--content-color-40);
-    background-color: var(--white);
+    border: solid thin var(--color--courseware-border-default);
+    background-color: var(--color--global-background);
     background-repeat: no-repeat;
     background-position: 1em center;
     background-size: 100px;
-    box-shadow: 5px 5px var(--dark-gray-color-10);
+    box-shadow: 5px 5px var(--color--courseware-border-default);
     padding-left: 120px;
     transform: translateX(100%);
     transition: transform .5s ease;
@@ -46,27 +46,13 @@ $companion-types: (
         top: 25%;
         padding: 0 1em;
     }
-
-    .cw-compantion-overlay-close {
-        @include background-icon(decline);
-        background-color: var(--white);
-        background-repeat: no-repeat;
-
-        position: absolute;
-        top: 7px;
-        right: 7px;
-        height: var(--icon-size-default);
-        width: var(--icon-size-default);
-        border: none;
-        cursor: pointer;
-    }
 }
 
 .cw-companion-box {
     display: flex;
     height: 120px;
-    border: solid thin var(--content-color-40);
-    background-color: var(--white);
+    border: solid thin var(--color--courseware-border-default);
+    background-color: var(--color--global-background);
     background-repeat: no-repeat;
     background-position: 1em center;
     background-size: 100px;
@@ -90,6 +76,6 @@ $companion-types: (
 
     .cw-companion-message {
         margin: 0 1em 10px 0;
-        color: var(--black);
+        color: var(--color--font-primary);
     }
 }

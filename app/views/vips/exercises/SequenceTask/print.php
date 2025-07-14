@@ -39,10 +39,10 @@
                                             <div class="correction_marker sequence">
                                                 <? if ($results[$i]['points'] == 1): ?>
                                                     <span style="color: green;">}</span>
-                                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('richtig')]) ?>
+                                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('richtig')]) ?>
                                                 <? else: ?>
                                                     <span style="color: red;">}</span>
-                                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('falsch')]) ?>
+                                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('falsch')]) ?>
                                                 <? endif ?>
                                             </div>
                                         <? endif ?>
@@ -52,9 +52,9 @@
 
                                             <? if ($print_correction): ?>
                                                 <? if ($results[$i]['points'] == 1): ?>
-                                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
+                                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
                                                 <? else: ?>
-                                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
+                                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
                                                 <? endif ?>
                                             <? endif ?>
                                         </li>

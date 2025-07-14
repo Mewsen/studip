@@ -5,10 +5,10 @@
     >
     <fieldset>
         <legend><?= _("URL zum Fragebogen") ?></legend>
-        <input type="text" aria-label="<?= _("URL zum Fragebogen (nur lesbar)") ?>" readonly value="<?= htmlReady($GLOBALS['ABSOLUTE_URI_STUDIP']."dispatch.php/questionnaire/answer/".$questionnaire->getId()) ?>">
+        <input type="text" aria-label="<?= _('URL zum Fragebogen (nur lesbar)') ?>" readonly value="<?= htmlReady($GLOBALS['ABSOLUTE_URI_STUDIP'].'dispatch.php/questionnaire/answer/'.$questionnaire->getId()) ?>">
         <a href="<?= htmlReady($GLOBALS['ABSOLUTE_URI_STUDIP'] . "dispatch.php/questionnaire/answer/" . $questionnaire->id) ?>"
            data-qr-code title="<?= _('QR-Code zum Link anzeigen') ?>">
-            <?= Icon::create('code-qr')->asImg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('code-qr')->asSvg(['class' => 'text-bottom']) ?>
         </a>
     </fieldset>
     <fieldset>
@@ -38,10 +38,10 @@
                     <label>
                         <input type="checkbox" name="remove_sem[]" value="<?= htmlReady($assignment['range_id']) ?>" style="display: none;">
                         <span>
-                            <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId()]) ?>">
+                            <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $course->getId()]) ?>">
                                 <?= htmlReady((Config::get()->IMPORTANT_SEMNUMBER ? $course->veranstaltungsnummer." " : "").$course->name. ' ('.$course->semester_text.')') ?>
                             </a>
-                            <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
+                            <?= Icon::create('trash')->asSvg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
                         </span>
                     </label>
                 </li>
@@ -63,7 +63,7 @@
                                 <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $statusgruppe->getId()]) ?>">
                                     <?= htmlReady($statusgruppe->course['name'].": ".$statusgruppe->name) ?>
                                 </a>
-                                <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
+                                <?= Icon::create('trash')->asSvg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
                             </span>
                         </label>
                     </li>
@@ -81,7 +81,7 @@
                             <label>
                                 <input type="checkbox" name="remove_inst[]" value="<?= htmlReady($assignment['range_id']) ?>" style="display: none;">
                                 <span><?= htmlReady(Institute::find($assignment['range_id'])->name) ?></span>
-                                <?= Icon::create('trash', 'clickable', ['title' => _("Zuweisung zur Einrichtung aufheben.")])->asImg(['class' => "text-bottom"]) ?>
+                                <?= Icon::create('trash', 'clickable', ['title' => _('Zuweisung zur Einrichtung aufheben.')])->asSvg(['class' => 'text-bottom']) ?>
                             </label>
                         </li>
                     <? endif ?>

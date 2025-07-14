@@ -31,7 +31,7 @@ if ($folder->isReadable($GLOBALS['user']->id)) {
     </td>
     <td class="document-icon" data-sort-value="<?=crc32(get_class($folder))?>">
         <a href="<?= $controller->link_for($controllerpath . '/' . $folder->getId())  ?>">
-            <?= $folder->getIcon('clickable')->asImg(Icon::SIZE_FILES_TABLE) ?>
+            <?= $folder->getIcon('clickable')->asSvg(Icon::SIZE_FILES_TABLE) ?>
         </a>
     </td>
     <td>

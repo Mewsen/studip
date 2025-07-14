@@ -101,7 +101,7 @@
                     <li>
                         <a href="<?= $controller->link_for('resources/room/index/' . $child->id); ?>"
                             <?= (Request::isDialog()) ? 'data-dialog' : ''; ?>>
-                            <?= $child->getIcon('clickable')->asImg(
+                            <?= $child->getIcon('clickable')->asSvg(
                                 ['class' => 'text-bottom']
                             ) ?>
                             <?= htmlReady($child->name); ?>

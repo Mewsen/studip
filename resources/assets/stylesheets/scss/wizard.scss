@@ -9,13 +9,12 @@
         margin-top: 38px;
         flex-shrink: 0;
 
-        img {
+        .studip-icon {
             margin: auto;
-            display: block;
         }
 
         p {
-            margin: 15px;
+            margin: 15px 0;
         }
 
         .wizard-requirements {
@@ -30,14 +29,17 @@
                     list-style: none;
 
                     button {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 4px;
                         padding: 2px 0;
                         background-color: transparent;
                         border: none;
-                        color: var(--base-color);
+                        color: var(--color--highlight);
                         cursor: pointer;
 
                         &:hover {
-                            color: var(--red);
+                            color: var(--color--highlight--hover);
                         }
                     }
 
@@ -68,34 +70,40 @@
                 display: inline-block;
                 position: relative;
                 margin-right: 60px;
-                border: solid 2px var(--base-color);
+                border: solid 2px var(--color--highlight);
 
                 button {
+                    display: inline-flex;
+                    justify-content: center;
                     padding: 6px 0;
                     height: 36px;
                     width: 36px;
                     cursor: pointer;
                     background: no-repeat;
                     border: none;
+                    color: var(--color--highlight);
                 }
 
                 &.valid {
-                    background-color: var(--base-color);
+                    background-color: var(--color--highlight);
+                    button {
+                        color: var(--color--highlight-contrast);
+                    }
                 }
 
                 &.invalid {
-                    background-color: white;
+                    background-color: var(--color--global-background);
                 }
 
                 &.optional {
-                    border: dashed thin var(--base-color);
+                    border: dashed thin var(--color--highlight);
                 }
 
                 &::before {
                     position: absolute;
                     content: "";
                     width: 62px;
-                    border: solid thin var(--base-color);
+                    border: solid thin var(--color--highlight);
                     top: 50%;
                     transform: translateY(-50%);
                     left: 100%;
@@ -106,7 +114,7 @@
                     content: "";
                     width: 38px;
                     height: 3px;
-                    background: var(--base-color);
+                    background: var(--color--highlight);
                     top: 44px;
                     left: -1px;
                 }
@@ -132,10 +140,10 @@
                     max-height: 475px;
                     overflow-y: auto;
                     scrollbar-width: thin;
-                    scrollbar-color: var(--base-color) var(--dark-gray-color-5);
+                    scrollbar-color: var(--color--highlight) var(--dark-gray-color-5);
 
                     .wizard-required {
-                        color: var(--red);
+                        color: var(--color--warning);
                     }
 
                     textarea {

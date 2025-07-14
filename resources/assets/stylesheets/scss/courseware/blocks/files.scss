@@ -2,14 +2,14 @@
 
 // folder block
 .cw-block-folder-info {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     padding: 10px 10px 0 10px;
     overflow: hidden;
     border-bottom: none;
 }
 
 .cw-block-folder-list {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     padding: 0;
     list-style: none;
 
@@ -17,7 +17,7 @@
         list-style: none;
 
         &:not(:last-child) {
-            border-bottom: solid thin var(--content-color-40);
+            border-bottom: solid thin var(--color--content-box-border);
         }
 
         a {
@@ -30,8 +30,7 @@
     }
 
     .cw-block-folder-download-icon {
-        @include background-icon(download, $size: 24px);
-        background-repeat: no-repeat;
+        @include icon(before, download, $size: 24px);
         float: right;
         height: 24px;
         width: 24px;
@@ -40,7 +39,7 @@
 }
 
 .cw-block-folder-upload {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     padding: 1em 10px;
     border-top: none;
 
@@ -52,111 +51,73 @@
 
 // for folder and download block
 .cw-block-file-info {
-    @include background-icon(file, $size: 24px);
-    background-repeat: no-repeat;
+    @include icon(before, file, $size: 24px, $padding: 4px, $align: middle);
     display: block;
-    padding: 16px 16px 16px 40px;
-    background-position: 10px 16px;
+    padding: 16px;
     width: calc(100% - 56px);
     min-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
 
     &.cw-block-file-icon-empty {
-        color: var(--black);
-        @include background-icon(folder-empty, info, 24px);
+        color: var(--color--font-primary);
+        @include icon(before, folder-empty, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-none {
-        color: var(--black);
-        @include background-icon(file, info, 24px);
+        color: var(--color--font-primary);
+        @include icon(before, file, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-audio {
-        @include background-icon(file-audio, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-audio, info, 24px);
-        }
+        @include icon(before, file-audio, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-pic {
-        @include background-icon(file-pic, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-pic, info, 24px);
-        }
+        @include icon(before, file-pic, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-video {
-        @include background-icon(file-video, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-video, info, 24px);
-        }
+        @include icon(before, file-video, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-pdf {
-        @include background-icon(file-pdf, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-pdf, info, 24px);
-        }
+        @include icon(before, file-pdf, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-word {
-        @include background-icon(file-word, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-word, info, 24px);
-        }
+        @include icon(before, file-word, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-spreadsheet {
-        @include background-icon(file-excel, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-excel, info, 24px);
-        }
+        @include icon(before, file-excel, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-text {
-        @include background-icon(file-text, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-text, info, 24px);
-        }
+        @include icon(before, file-text, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-ppt {
-        @include background-icon(file-ppt, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-ppt, info, 24px);
-        }
+        @include icon(before, file-ppt, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-archive {
-        @include background-icon(file-archive, $size: 24px);
-
-        &.download-disabled {
-            @include background-icon(file-archive, info, 24px);
-        }
+        @include icon(before, file-archive, $size: 24px, $padding: 4px, $align: middle);
     }
 
     &.cw-block-file-icon-file {
-        @include background-icon(file, $size: 24px);
+        @include icon(before, file, $size: 24px, $padding: 4px, $align: middle);
+    }
 
-        &.download-disabled {
-            @include background-icon(file, info, 24px);
-        }
+    &.download-disabled {
+        color: var(--color--font-inactive);
     }
 }
 .cw-block-file-details {
     margin-top: -16px;
     padding-left: 40px;
     padding-bottom: 16px;
-    color: var(--dark-gray-color);
+    color: var(--color--font-secondar);
 }
 .cw-block-file-owner,
 .cw-block-file-mkdate {
@@ -169,7 +130,7 @@
 // download block
 .cw-block-download {
     .cw-block-download-content {
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--content-box-border);
 
         .cw-block-download-file-item {
             a {
@@ -177,12 +138,11 @@
             }
 
             &:hover {
-                background-color: fade-out($dark-gray-color-75, 0.8);
+                background-color: var(--color--table-hover);
             }
 
             .cw-block-download-download-icon {
-                @include background-icon(download, $size: 24px);
-                background-repeat: no-repeat;
+                @include icon(before, download, $size: 24px);
                 float: right;
                 height: 24px;
                 width: 24px;

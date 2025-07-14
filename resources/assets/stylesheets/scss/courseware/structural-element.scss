@@ -160,16 +160,19 @@
     padding-bottom: 1em;
 }
 
+$cw-placeholder-image-size: 128px;
 .cw-structural-element-image-preview-placeholder {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     width: 300px;
-    height: 200px;
+    height: $cw-placeholder-image-size;
     margin: 0 auto;
-    background-color: var(--color-image-placeholder-background);
-    background-size: 100% auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    @include background-icon(courseware, $size: 128px);
+    background-color: var(--color--image-placeholder-background);
+    color: var(--color--image-placeholder-icon);
+    @include icon(before, courseware, $size: $cw-placeholder-image-size);
     margin-bottom: 1em;
+    padding: 36px 0;
 }
 
 .cw-element-permissions {
@@ -197,8 +200,7 @@
         height: 24px;
         border: none;
         background-color: transparent;
-        @include background-icon(trash);
-        background-repeat: no-repeat;
+        @include icon(before, trash, $align: middle);
         cursor: pointer;
     }
 }

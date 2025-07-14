@@ -12,7 +12,7 @@
             <div class="header">
                 <div class="image">
                 <? if ($metadata['icon']): ?>
-                    <?= $metadata['icon']->copyWithRole(Icon::ROLE_INFO)->asImg(100) ?>
+                    <?= $metadata['icon']->copyWithRole(Icon::ROLE_INFO)->asSvg(100) ?>
                 <? endif; ?>
                 </div>
                 <div class="text">

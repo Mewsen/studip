@@ -21,13 +21,13 @@ if ($file->isDownloadable($GLOBALS['user']->id)) {
             <? endif ?>
         </td>
     <? endif ?>
-    <td class="document-icon" data-sort-value="<?= crc32($file->getMimeType()) ?>">
+    <td class="file-icon" data-sort-value="<?= crc32($file->getMimeType()) ?>">
         <? if ($file->isDownloadable($GLOBALS['user']->id)) : ?>
             <a href="<?= htmlReady($file->getDownloadURL()) ?>" target="_blank" rel="noopener noreferrer">
-                <?= $file->getIcon(Icon::ROLE_CLICKABLE)->asImg(24) ?>
+                <?= $file->getIcon(Icon::ROLE_CLICKABLE)->asSvg(24) ?>
             </a>
         <? else : ?>
-            <?= $file->getIcon(Icon::ROLE_INACTIVE)->asImg(24) ?>
+            <?= $file->getIcon(Icon::ROLE_INACTIVE)->asSvg(24, ['class' => 'icon-inactive']) ?>
         <? endif ?>
     </td>
     <td data-sort-value="<?= htmlReady($file->getFilename()) ?>">
@@ -41,7 +41,7 @@ if ($file->isDownloadable($GLOBALS['user']->id)) {
 
         <?php $terms = $file->getTermsOfUse() ?>
         <? if ($terms && !empty($topFolder) && !$terms->isDownloadable($topFolder->range_id, $topFolder->range_type, false)) : ?>
-            <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(['title' => _('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')]) ?>
+            <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(['title' => _('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')]) ?>
         <? endif ?>
     </td>
     <? $size = $file->getSize() ?>

@@ -266,7 +266,7 @@ use Studip\Button, Studip\LinkButton;
            </label>
 
            <label class="col-2">
-                <?= Icon::create('accept', Icon::ROLE_ACCEPT)->asImg([
+                <?= Icon::create('accept', Icon::ROLE_ACCEPT)->asSvg([
                     'id'    => 'pw_success',
                     'style' => 'display: none',
                 ]) ?>
@@ -574,10 +574,10 @@ use Studip\Button, Studip\LinkButton;
                 <li>
                     <?= htmlReady($inst_membership->institute->name) ?>
 
-                    <? if ($GLOBALS['perm']->have_studip_perm("admin", $inst_membership->institut_id)) : ?>
+                    <? if ($GLOBALS['perm']->have_studip_perm('admin', $inst_membership->institut_id)) : ?>
                         <a data-dialog="size=auto"
                            href="<?= $controller->url_for('admin/user/edit_institute/' . $user->user_id . '/' . $inst_membership->institut_id) ?>">
-                            <?= Icon::create('edit')->asImg([
+                            <?= Icon::create('edit')->asSvg([
                                 'class' => 'text-bottom',
                                 'title' => _('Diese Einrichtung bearbeiten'),
                             ]) ?>

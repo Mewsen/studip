@@ -216,17 +216,48 @@ class LinkElement extends WidgetElement implements ArrayAccess
         );
     }
 
+    public function renderWithIcon($icon)
+    {
+        $disabled = $this->isDisabled();
+
+        if ($this->as_button && !$disabled) {
+            return $this->renderButton($icon);
+        }
+
+        if ($this->active) {
+            $this->addClass('active');
+        }
+
+        $attributes = (array) $this->attributes;
+
+        if ($disabled) {
+            $tag = 'span';
+        } else {
+            $tag = 'a';
+            $attributes['href'] = $this->url;
+        }
+
+        return sprintf(
+            '<%1$s %2$s>%3$s%4$s</%1$s>',
+            $tag,
+            arrayToHtmlAttributes($attributes),
+            $icon->asSvg(),
+            htmlReady($this->label)
+        );
+    }
+
     /**
      * Renders the element as a button/form.
      *
      * @return string
      */
-    protected function renderButton()
+    protected function renderButton(?Icon $icon = null)
     {
         return sprintf(
-            '<button formaction="%s" %s>%s</button>',
+            '<button formaction="%s" %s>%s %s</button>',
             htmlReady($this->url),
             arrayToHtmlAttributes((array) $this->attributes),
+            $icon?->asSvg() ?? '',
             htmlReady($this->label)
         );
     }

@@ -20,7 +20,7 @@
                                 <?= $key ?>="<?= htmlReady($value) ?>"
                             <? endif ?>
                         <? endforeach ?>>
-                        <?= $nav->getImage() ?>
+                        <?= $nav->getImage()->asSvg() ?>
                     </a>
                 <? endif ?>
             <?endforeach ?>
@@ -28,12 +28,12 @@
 
         <? if (isset($admin_url)): ?>
             <a href="<?= URLHelper::getLink($admin_url) ?>">
-                <?= Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => $admin_title, 'size' => 20]) ?>
+                <?= Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => $admin_title])->asSvg() ?>
             </a>
         <? endif ?>
 
         <a href="<?= $controller->url_for('start/delete/' . $widget->getPluginId()) ?>">
-            <?= Icon::create('decline', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen'), 'size' => 20]) ?>
+            <?= Icon::create('decline', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asSvg() ?>
         </a>
     </span>
     <span id="widgetName<?= $widget->getPluginId() ?>" class="widget-title">

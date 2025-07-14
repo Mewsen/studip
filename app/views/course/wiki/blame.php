@@ -17,7 +17,7 @@
             if (trim($collect) !== '') : ?>
                 <div class="wiki_line">
                     <div class="author">
-                        <a href="<?= URLhelper::getLink('dispatch.php/profile', ['username' => get_username($last_author)]) ?>" title="<?= htmlReady(get_fullname($last_author)) ?>">
+                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => get_username($last_author)]) ?>" title="<?= htmlReady(get_fullname($last_author)) ?>">
                             <?= Avatar::getAvatar($last_author)->getImageTag(Avatar::SMALL) ?>
                             <div class="author_name"><?= htmlReady(get_fullname($last_author)) ?></div>
                         </a>
@@ -26,7 +26,7 @@
                        href="<?= $controller->versiondiff(!$version || is_a($version, WikiPage::class) ? $version : $version->page, is_a($version, WikiVersion::class) ? $version->id : null) ?>"
                        data-dialog
                        title="<?= _('Änderungen anzeigen') ?>">
-                        <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
                     </a>
                     <div class="content">
                         <?= wikiReady($collect) ?>

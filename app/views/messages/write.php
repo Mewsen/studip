@@ -8,7 +8,7 @@
              class="validation_notes studip">
         <header>
             <h1>
-                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom validation_notes_icon']) ?>
+                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom validation_notes_icon']) ?>
                 <?= _('Hinweise zum Ausfüllen des Formulars') ?>
             </h1>
         </header>
@@ -36,7 +36,7 @@
             <li id="template_adressee" style="display: none;" class="adressee">
                 <input type="hidden" name="message_to[]" value="">
                 <span class="visual"></span>
-                <a class="remove_adressee"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                <a class="remove_adressee"><?= Icon::create('trash', 'clickable')->asSvg(['class' => 'text-bottom']) ?></a>
             </li>
             <? foreach ($default_message->getRecipients() as $user) : ?>
             <li class="adressee">
@@ -44,7 +44,7 @@
                 <span class="visual">
                     <?= htmlReady($user['fullname']) ?>
                 </span>
-                <a class="remove_adressee"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                <a class="remove_adressee"><?= Icon::create('trash', 'clickable')->asSvg(['class' => 'text-bottom']) ?></a>
             </li>
             <? endforeach ?>
         </ul>
@@ -92,26 +92,26 @@
                 <a href="" onClick="STUDIP.Messages.toggleSetting('attachments'); return false;" aria-expanded="false"
                    role="button" title="<?= _('Anhänge verwalten') ?>" aria-controls="attachments"
                    id="toggle-attachments">
-                    <?= Icon::create('staple')->asImg(40) ?>
+                    <?= Icon::create('staple')->asSvg(40) ?>
                     <br>
-                    <strong><?= _("Anhänge") ?></strong>
+                    <strong><?= _('Anhänge') ?></strong>
                 </a>
             </li>
         <? endif; ?>
             <li>
                 <a href="" onClick="STUDIP.Messages.toggleSetting('tags'); return false;" aria-expanded="false"
                    role="button" title="<?= _('Schlagworte verwalten') ?>" aria-controls="tags" id="toggle-tags">
-                    <?= Icon::create('star')->asImg(40) ?>
+                    <?= Icon::create('star')->asSvg(40) ?>
                     <br>
-                    <strong><?= _("Schlagworte") ?></strong>
+                    <strong><?= _('Schlagworte') ?></strong>
                 </a>
             </li>
             <li>
                 <a href="" onClick="STUDIP.Messages.toggleSetting('settings'); return false;" aria-expanded="false"
                    role="button" title="<?= _('Optionen') ?>" aria-controls="settings" id="toggle-settings">
-                    <?= Icon::create('admin', 'clickable')->asImg(40) ?>
+                    <?= Icon::create('admin', 'clickable')->asSvg(40) ?>
                     <br>
-                    <strong><?= _("Optionen") ?></strong>
+                    <strong><?= _('Optionen') ?></strong>
                 </a>
             </li>
         </ul>
@@ -126,7 +126,7 @@
                     <span class="icon"></span>
                     <span class="name"></span>
                     <span class="size"></span>
-                    <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                    <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asSvg(['class' => 'text-bottom']) ?></a>
                 </li>
                 <? if ($default_attachments) : ?>
                     <? foreach ($default_attachments as $a) : ?>
@@ -134,7 +134,7 @@
                     <span class="icon"><?=$a['icon']?></span>
                     <span class="name"><?=$a['name']?></span>
                     <span class="size"><?=$a['size']?></span>
-                    <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                    <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asSvg(['class' => 'text-bottom']) ?></a>
                     </li>
                     <? endforeach ?>
                 <? endif ?>
@@ -147,8 +147,8 @@
             </div>
             <label >
                 <input type="file" id="fileupload" multiple onChange="STUDIP.Messages.upload_from_input(this);" style="display: none;">
-                <?= Icon::create('upload')->asImg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
-                <?= _("Datei hochladen") ?>
+                <?= Icon::create('upload')->asSvg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
+                <?= _('Datei hochladen') ?>
             </label>
 
             <div id="upload_finished" style="display: none"><?= _("wird verarbeitet") ?></div>

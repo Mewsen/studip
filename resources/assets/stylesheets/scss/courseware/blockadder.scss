@@ -17,7 +17,7 @@
         }
 
         &:hover {
-            border-color: var(--base-color);
+            border-color: var(--color--highlight-hover);
 
             .cw-sortable-handle {
                 opacity: 1;
@@ -28,24 +28,22 @@
             align-items: flex-start;
             flex-direction: column;
             text-align: left;
-            color: var(--base-color);
+            color: var(--color--highlight);
             border: none;
             background-color: var(--white);
-            padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, $size: 48px);
-            background-position: 16px 10px;
-            background-repeat: no-repeat;
+            padding: 8px 16px 8px 16px;
+            @include icon(before, unit-test, $size: 48px);
             cursor: pointer;
 
             @each $item, $icon in $blockadder-items {
                 &.cw-blockadder-item-#{$item} {
-                    @include background-icon($icon, $size: 48px);
+                    @include icon(before, $icon, $size: 48px);
                 }
             }
             .cw-blockadder-item-title {
                 display: inline-block;
                 font-weight: 600;
-                margin-bottom: 2px;
+                margin: 4px 0 2px 0;
             }
             .cw-blockadder-item-description {
                 display: inline-block;
@@ -53,13 +51,14 @@
             }
 
             &:hover {
-                color: var(--active-color);
+                color: var(--color--highlight-hover);
             }
         }
         .cw-blockadder-item-fav {
             height: 32px;
             padding: 8px;
             background-color: transparent;
+            color: var(--color--highlight);
             border: none;
             cursor: pointer;
         }
@@ -75,28 +74,34 @@
     }
 
     &:hover {
-        border-color: var(--base-color);
+        border-color: var(--color--highlight-hover);
 
         .cw-sortable-handle {
             opacity: 1;
         }
     }
 
+    $containeradder-icon-size: 48px;
     .cw-containeradder-item {
+        display: inline-flex;
+        gap: 16px;
         border: none;
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         min-height: 5em;
-        padding: 1em 1em 1em 6em;
-        @include background-icon(unit-test, $size: 48px);
-        background-position: 16px center;
-        background-repeat: no-repeat;
+        padding: 16px;
+        @include icon(before, unit-test, $size: $containeradder-icon-size);
         text-align: left;
-        color: var(--base-color);
+        color: var(--color--highlight);
         cursor: pointer;
 
+        
         @each $item, $icon in $containeradder-items {
             &.cw-containeradder-item-#{$item} {
-                @include background-icon($icon, $size: 48px);
+                @include icon(before, $icon, $size: $containeradder-icon-size);
+                &::before {
+                    min-width: $containeradder-icon-size;
+                    min-height: $containeradder-icon-size;
+                }
             }
         }
 
@@ -105,13 +110,13 @@
         }
 
         &:hover {
-            color: var(--active-color);
+            color: var(--color--highlight-hover);
         }
     }
 }
 
 
-
+$container-style-selector-icon-size: 32px;
 .cw-container-style-selector {
     display: flex;
     border-bottom: solid thin var(--color--content-box-border);
@@ -119,10 +124,14 @@
     margin-bottom: 8px;
 
     label {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
         border: solid thin var(--color--tile-border);
         border-right: none;
-        padding: calc(0.5em + 32px) 1em 0.5em 1em;
-        color: var(--base-color);
+        padding: 8px 16px;
+        color: var(--color--highlight);
         text-align: center;
         width: 33%;
         background-position: center 0.5em;
@@ -134,20 +143,20 @@
         }
 
         &.full {
-            @include background-icon(column-full, $size: 32px);
+            @include icon(before, column-full, $size: $container-style-selector-icon-size);
         }
         &.half {
-            @include background-icon(column-half, $size: 32px);
+            @include icon(before, column-half, $size: $container-style-selector-icon-size);
         }
         &.half-center {
-            @include background-icon(column-half-centered, $size: 32px);
+            @include icon(before, column-half-centered, $size: $container-style-selector-icon-size);
         }
         &:hover {
-            color: var(--active-color);
+            color: var(--color--highlight-hover);
         }
         &.cw-container-style-selector-active {
-            background-color: var(--content-color-20);
-            border: solid thin var(--base-color);
+            background-color: var(--color--tile-background-active);
+            border: solid thin var(--color--highlight);
         }
     }
     input[type='radio'] {
@@ -164,7 +173,7 @@
     }
 
     &.sortable-ghost {
-        background-color: var(--active-color);
+        background-color: var(--color--highlight-hover);
     }
 }
 .cw-element-inserter-wrapper {
@@ -186,40 +195,41 @@
         }
 
         &:hover {
-            border-color: var(--base-color);
+            border-color: var(--color--highlight-hover);
 
             .cw-sortable-handle {
                 opacity: 1;
             }
         }
 
+        $clipboard-item-icon-size: 48px;
         .cw-clipboard-item {
+            display: inline-flex;
+            flex-direction: column;
             width: calc(100% - 36px);
-            padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, $size: 48px);
-            background-position: 16px 10px;
-            background-repeat: no-repeat;
+            padding: 8px 16px;
+            @include icon(before, unit-test, $size: $clipboard-item-icon-size);
             cursor: pointer;
-            background-color: var(--white);
+            background-color: var(--color--global-background);
             border: none;
             text-align: left;
-            color: var(--base-color);
+            color: var(--color--highlight);
 
             @each $item, $icon in $blockadder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, $size: 48px);
+                    @include icon(before, $icon, $size: $clipboard-item-icon-size);
                 }
             }
             @each $item, $icon in $containeradder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, $size: 48px);
+                    @include icon(before, $icon, $size: $clipboard-item-icon-size);
                 }
             }
 
             .cw-clipboard-item-title {
                 display: inline-block;
                 font-weight: 600;
-                margin-bottom: 2px;
+                margin: 4px 0 2px 0;
             }
 
             .cw-clipboard-item-description {

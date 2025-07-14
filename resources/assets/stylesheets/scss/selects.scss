@@ -3,6 +3,7 @@ $select-border-focus: 1px solid var(--brand-color-dark);
 $select-border-radius: var(--border-radius-default);
 $select-height-default: 32px;
 $select-arrow-size: 10px;
+$svg: icon-path(arr_1down, info);
 
 select {
     // Reset appearance
@@ -25,8 +26,8 @@ select {
         // Allow all other paddings to be overwritten but the right padding
         // to ensure the icon is always clearly visible
         padding-right: 20px;
-
-        @include background-icon(arr_1down, $size: $select-arrow-size);
+        background-image: url("#{$svg}");
+        background-size: icon-size($select-arrow-size);
         background-position: right 4px center;
         background-repeat: no-repeat;
 
@@ -91,9 +92,7 @@ select {
 
     .select2-selection--single {
         .select2-selection__clear {
-            @include background-icon(decline, $size: $select-arrow-size);
-            background-position: right center;
-            background-repeat: no-repeat;
+            @include icon(after, decline, $size: $select-arrow-size, $align: middle);
             color: transparent;
             display: inline-block;
             float: none;
@@ -118,16 +117,14 @@ select {
 
     .select2-selection--multiple {
         padding-right: ($select-arrow-size + 5px);
-        @include background-icon(arr_1down, $size: $select-arrow-size);
-        $backgroundPosition: calc($select-height-default / 2 - 4px);
-        background-position: right 4px top $backgroundPosition;
-        background-repeat: no-repeat;
+        @include icon(after,arr_1down, $size: $select-arrow-size, $align: super);
+
+        .select2-selection__rendered {
+            width: calc(100% - $select-arrow-size);
+        }
 
         .select2-selection__choice__remove {
-            @include background-icon(decline, $size: $select-arrow-size);
-            background-position: right center;
-            background-repeat: no-repeat;
-            color: transparent !important;
+            @include icon(after, decline, $size: $select-arrow-size , $align: bottom, $padding: 4px);
             display: inline-block;
             float: none;
             width: ($select-arrow-size + 5px);
@@ -150,9 +147,7 @@ select {
     }
 
     .select2-selection__arrow {
-        @include background-icon(arr_1down, $size: $select-arrow-size);
-        background-position: right 4px center;
-        background-repeat: no-repeat;
+        @include icon(after, arr_1down, $role: info, $size: $select-arrow-size , $align: bottom, $padding: 4px);
 
         b {
             visibility: hidden;

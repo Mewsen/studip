@@ -33,7 +33,7 @@
              class="validation_notes studip">
         <header>
             <h1>
-                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom validation_notes_icon']) ?>
+                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom validation_notes_icon']) ?>
                 <?= _('Hinweise zum Ausfüllen des Formulars') ?>
             </h1>
         </header>

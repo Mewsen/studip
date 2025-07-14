@@ -60,7 +60,7 @@
                 </select>
 
                 <a href="<?= $controller->show(['action_id' => $action_id]) ?>">
-                    <?= Icon::create('decline')->asImg(['title' => _('Neue Suche')]) ?>
+                    <?= Icon::create('decline')->asSvg(['title' => _('neue Suche')]) ?>
                 </a>
             </div>
         </label>

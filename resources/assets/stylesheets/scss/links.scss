@@ -1,10 +1,10 @@
 /* --- Links ---------------------------------------------------------------- */
 a, a:link, a:visited {
-    color: var(--base-color);
+    color: var(--color--content-link);
     text-decoration: none;
 
-    &.index     { color: var(--base-gray); }
-    &.printhead { color: var(--base-color); }
+    &.index     { color: var(--color--font-secondary); }
+    &.printhead { color: var(--black); }
     &.tree      { color: var(--black); }
     &.toolbar {
         color: var(--brand-color-lighter);
@@ -19,8 +19,8 @@ a[disabled] {
 }
 
 a:hover, a:active, a:hover.index, a:active.index, a:hover.tree {
-    color: var(--active-color);
-    text-decoration: none;
+    color: var(--color--content-link-hover);
+    text-decoration: underline;
 }
 
 a:hover.toolbar {
@@ -28,16 +28,16 @@ a:hover.toolbar {
 }
 
 a.link-intern {
-    @include icon(before, link-intern, $padding: 2px, $inline: true);
+    @include icon(before, link-intern, $padding: 2px, $inline: true, $align: text-bottom);
 }
 a.link-extern {
-    @include icon(before, link-extern, $padding: 2px, $inline: true);
+    @include icon(before, link-extern, $padding: 2px, $inline: true, $align: text-bottom);
 }
 a.link-add {
-    @include icon(before, add, $padding: 2px, $inline: true);
+    @include icon(before, add, $padding: 2px, $inline: true, $align: text-bottom);
 }
 a.link-edit {
-    @include icon(before, edit, $padding: 2px, $inline: true);
+    @include icon(before, edit, $padding: 2px, $inline: true, $align: text-bottom);
 }
 
 a img {

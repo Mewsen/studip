@@ -1,42 +1,42 @@
 @use '../mixins.scss' as *;
 
 :root {
-    --ck-color-base-foreground: var(--dark-gray-color-5);
-    --ck-color-base-background: var(--white);
-    --ck-color-base-border: var(--content-color-40);
-    --ck-color-base-action: var(--green);
-    --ck-color-base-focus: var(--base-color);
+    --ck-color-base-foreground: var(--color--tile-background);
+    --ck-color-base-background: var(--color--global-background);
+    --ck-color-base-border: var(--color--tile-border);
+    --ck-color-base-action: var(--color--good);
+    --ck-color-base-focus: var(--color--highlight);
     --ck-color-base-text: #000;
-    --ck-color-base-active: var(--base-color);
-    --ck-color-base-active-focus: var(--base-color);
-    --ck-color-base-error: var(--red);
+    --ck-color-base-active: var(--color--highlight);
+    --ck-color-base-active-focus: var(--color--highlight);
+    --ck-color-base-error: var(--color--warning);
 
     /* -- Buttons ------------------------------------------------------------------------------- */
 
-    --ck-color-button-default-hover-background: var(--base-color);
-    --ck-color-button-default-active-background: var(--base-color);
+    --ck-color-button-default-hover-background: var(--color--highlight);
+    --ck-color-button-default-active-background: var(--color--highlight);
     --ck-color-button-default-active-shadow: transparent;
-    --ck-color-button-on-background: var(--base-color);
-    --ck-color-button-on-hover-background: var(--base-color);
-    --ck-color-button-on-active-background: var(--base-color);
+    --ck-color-button-on-background: var(--color--highlight);
+    --ck-color-button-on-hover-background: var(--color--highlight);
+    --ck-color-button-on-active-background: var(--color--highlight);
     --ck-color-button-on-active-shadow: transparent;
-    --ck-color-button-action-background: var(--white);
-    --ck-color-switch-button-on-background: var(--base-color);
-    --ck-color-switch-button-on-hover-background: var(--base-color);
+    --ck-color-button-action-background: var(--color--font-inverted);
+    --ck-color-switch-button-on-background: var(--color--highlight);
+    --ck-color-switch-button-on-hover-background: var(--color--highlight);
     --ck-color-split-button-hover-border: transparent;
     --ck-color-split-button-hover-background: transparent;
 
     /* -- Generic colors ------------------------------------------------------------------------ */
 
-    --ck-color-focus-border: var(--base-color);
+    --ck-color-focus-border: var(--color--highlight);
     --ck-color-text: var(--ck-color-base-text);
 
 
     /* -- Link -------------------------------------------------------------------------------- */
 
-    --ck-color-link-default: var(--base-color);
-    --ck-color-link-selected-background: var(--base-color);
-    --ck-color-link-fake-selection: var(--base-color);
+    --ck-color-link-default: var(--color--content-link);
+    --ck-color-link-selected-background: var(--color--content-link);
+    --ck-color-link-fake-selection: var(--color--content-link);
 
     /* disable border radius*/
 
@@ -66,7 +66,7 @@
 }
 
 .ck.ck-icon, .ck.ck-icon * {
-    color: var(--base-color);
+    color: var(--color--font-primary);
 }
 .ck.ck-button.ck-on .ck.ck-icon,
 .ck.ck-button.ck-on .ck.ck-icon *,
@@ -78,7 +78,7 @@
 /* buttons */
 .ck.ck-button, a.ck.ck-button {
     font-size: 12px;
-    color: var(--base-color);
+    color: var(--color--font-primary);
 }
 
 .ck.ck-button:hover {
@@ -86,20 +86,16 @@
 }
 
 .ck.ck-button.ck-off.ck-button-save {
-    @include background-icon(accept, $size: 24px);
-    background-position: center;
-    background-repeat: no-repeat;
+    @include icon(after, accept, $size: 24px, $align: middle);
 }
 
 .ck.ck-button.ck-off.ck-button-cancel {
-    @include background-icon(decline, $size: 24px);
-    background-position: center;
-    background-repeat: no-repeat;
+    @include icon(after, decline, $size: 24px,  $align: middle);
 }
 
 .ck.ck-button.ck-off.ck-button_with-text:not(.ck-character-grid__tile):not(.ck-source-editing-button) {
     background-position: 5px 50%;
-    border: solid thin var(--base-color);
+    border: solid thin var(--color--font-primary);
 }
 
 .ck-list .ck.ck-button.ck-off.ck-button_with-text:not(.ck-character-grid__tile):not(.ck-source-editing-button) {
@@ -107,18 +103,23 @@
 }
 
 .ck.ck-button.ck-off.ck-button_with-text:hover {
-    background-color: var(--base-color);
+    background-color: var(--color--highlight);
+    color: var(--color--font-inverted);
 }
 .ck.ck-button.ck-button_with-text.ck-dropdown__button:not(.ck-disabled, .ck-on):hover {
-    background-color: var(--white);
-    color: var(--base-color);
+    background-color: var(--color--font-inverted);
+    color: var(--color--highlight);
 }
 
 
 .ck.ck-button.ck-off.ck-button_with-text.ck-disabled:hover,
 .ck.ck-button.ck-off.ck-button_with-text.ck-character-grid__tile:hover {
     background: transparent;
-    color: var(--black);
+    color: var(--color--font-primary);
+}
+
+.ck-list__item  .ck.ck-button.ck-on.ck-button_with-text { 
+    background-color: var(--color--highlight);
 }
 
 .ck-list__item  .ck.ck-button.ck-on.ck-button_with-text { 
@@ -127,7 +128,12 @@
 
 
 .ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled) .ck.ck-button__label {
-    color: var(--base-color);
+    color: var(--color--font-primary);
+}
+
+.ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled):hover .ck.ck-button__label,
+.ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled) .ck.ck-button__label {
+    color: var(--color--font-inverted);
 }
 
 .ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled, .ck-dropdown__button):hover .ck.ck-button__label,
@@ -146,22 +152,22 @@
 }
 
 .ck.ck-button.ck-on.ck-button_with-text.ck-switchbutton {
-    color: var(--base-color);
+    color: var(--color--font-primary);
 }
 .ck.ck-button.ck-on.ck-button_with-text.ck-switchbutton:hover {
-    color: var(--white);
+    color: var(-color--font-inverted);
 }
 
 .ck.ck-button.ck-off.ck-button-save:hover:not(.ck-disabled) {
-    @include background-icon(accept, info_alt, 24px);
+    color: var(--color--font-inverted);
 }
 
 .ck.ck-button.ck-off.ck-button-save.ck-disabled {
-    @include background-icon(accept, inactive, 24px);
+    color: var(--color--font-inactive);
 }
 
 .ck.ck-button.ck-off.ck-button-cancel:hover {
-    @include background-icon(decline, info_alt, 24px);
+    color: var(--color--font-inverted);
 }
 
 .ck.ck-button.ck-off.ck-button-save svg,
@@ -179,8 +185,8 @@
 }
 
 .ck.ck-button.ck-button_with-text.ck-switchbutton {
-    color: var(--base-color);
-    background-color: var(--white);
+    color: var(--color--font-primary);
+    background-color: var(--color--font-inverted);
 }
 
 .ck.ck-button.ck-button_with-text.ck-switchbutton,
@@ -194,24 +200,24 @@
 
 .ck.ck-collapsible.ck-collapsible_collapsed .ck.ck-button.ck-button_with-text:hover .ck.ck-button__label,
 .ck.ck-collapsible .ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled):not(.ck-switchbutton):not(.ck-dropdown__button) .ck.ck-button__label {
-    color: var(--base-color);
+    color: var(--color--highlight);
 }
 
 .ck.ck-collapsible.ck-collapsible_collapsed .ck.ck-button.ck-disabled.ck-button_with-text:hover .ck.ck-button__label {
-    color: var(--black);
+    color: var(--color--font-primary);
 }
 
 .ck.ck-collapsible .ck.ck-icon.ck-button__icon *,
 .ck.ck-collapsible .ck.ck-button:hover .ck.ck-icon.ck-button__icon *,
 .ck.ck-collapsible .ck.ck-button.ck-on .ck.ck-icon.ck-button__icon *  {
-    color: var(--base-color);
+    color: var(--color--highlight);
 }
 
 
 
 .ck.ck-button.ck-button_with-text.ck-switchbutton.ck-on:hover,
 .ck.ck-button.ck-button_with-text.ck-switchbutton:hover {
-    background-color: var(--white);
+    background-color: var(--color--font-inverted);
 
 }
 .ck.ck-button.ck-button_with-text.ck-switchbutton.ck-on:hover span,
@@ -236,7 +242,7 @@
 /* links */
 .ck .ck-fake-link-selection,
 .ck .ck-link_selected {
-    color: var(--white);
+    color: var(--color--font-inverted);
 }
 
 /* input */
@@ -321,7 +327,7 @@
 
 /* table inserter */
 .ck.ck-insert-table-dropdown-grid-box.ck-on {
-    background: var(--base-color-20);
+    background: var(--color--highlight);
 }
 
 /* tooltips */

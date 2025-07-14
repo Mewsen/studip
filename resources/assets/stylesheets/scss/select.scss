@@ -22,8 +22,13 @@
         border-radius: var(--border-radius-default);
     }
 
-    .vs__actions {
-        align-items: end;
+    .vs__dropdown-option {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .vs__actions .studip-icon {
+        line-height: 10px;
     }
 
     &.studip-v-select-drop-up {

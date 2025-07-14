@@ -53,6 +53,7 @@
 @import "scss/headings";
 @import "scss/helpbar";
 @import "scss/i18n";
+@import "scss/icons";
 @import "scss/ilias-interface";
 @import "scss/index";
 @import "scss/fullscreen";
@@ -80,7 +81,6 @@
 @import "scss/questionnaire";
 @import "scss/quicksearch";
 @import "scss/raumzeit";
-@import "scss/report";
 @import "scss/responsive";
 @import "scss/resources";
 @import "scss/sidebar";
@@ -104,6 +104,7 @@
 @import "scss/talk-bubble";
 @import "scss/tooltip";
 @import "scss/tfa";
+@import "scss/themes";
 @import "scss/tour";
 @import "scss/tree";
 @import "scss/typography";
@@ -380,8 +381,8 @@ td.index_box_cell {
 
     a {
         box-sizing: border-box;
-        background-color: var(--content-color-20);
-        border: 1px solid var(--dark-gray-color-30);
+        background-color: var(--color--tile-background);
+        border: 1px solid var(--color--tile-border);
         display: block;
         height: 11em;
         margin: 0 0 1em;
@@ -390,15 +391,16 @@ td.index_box_cell {
         position: relative;
 
         &:hover {
-            background-color: var(--content-color-10);
-            border-color: var(--dark-gray-color-45);
+            background-color: var(--color--tile-background-hover);
+            border-color: var(--color--tile-border-hover);
+            text-decoration: none;
 
             p {
-                color: var(--black);
+                color: var(--color--font-primary);
             }
         }
     }
-    img {
+    svg {
         height: calc(100% - 20px);
         position: absolute;
         top: 10px;
@@ -416,25 +418,25 @@ td.index_box_cell {
         padding: 0;
     }
     p {
-        color: var(--dark-gray-color-80);
+        color: var(--color--font-secondary);
     }
 }
 
 /* --- general style classes ------------------------------------------------ */
 .arrow_down {
     background: transparent top left no-repeat !important;
-    @include background-icon(arr_1down);
+    @include icon(before, arr_1down);
 }
 .arrow_right {
     background: transparent top left no-repeat !important;
-    @include background-icon(arr_1right);
+    @include icon(before, arr_1right);
 }
 h1:hover, h2:hover, h3:hover, h4:hover {
     .arrow_down  {
-        @include background-icon(arr_1down, attention);
+        @include icon(before, arr_1down, attention);
     }
     .arrow_right {
-        @include background-icon(arr_1right, attention);
+        @include icon(before, arr_1right, attention);
     }
 }
 
@@ -643,10 +645,11 @@ input.allow-plaintext-toggle {
         position: absolute;
         transform: translateY(-50%);
 
-        @include background-icon(visibility-invisible);
+        @include icon($position: before, $icon: visibility-invisible, $padding: 6px);
+        color: var(--color--font-primary);
 
         &.password-is-hidden {
-            @include background-icon(visibility-checked);
+            @include icon($position: before, $icon: visibility-checked, $padding: 6px);
         }
     }
 }

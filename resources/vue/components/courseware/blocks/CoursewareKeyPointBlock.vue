@@ -10,11 +10,11 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div class="cw-keypoint-content" :class="['cw-keypoint-' + currentColor]">
-                    <div class="cw-keypoint-icon-wrapper">
-                        <StudipIcon v-if="currentIcon" :size="48" :shape="currentIcon" role="info" class="cw-keypoint-icon" />
+                <div class="cw-keypoint-content">
+                    <div class="cw-keypoint-icon-wrapper" :style="{ borderColor: currentHexColor }">
+                        <StudipIcon v-if="currentIcon" :size="48" :shape="currentIcon" role="info" class="cw-keypoint-icon" :style="{ color: currentHexColor }"/>
                     </div>
-                    <p class="cw-keypoint-sentence">{{ currentText }}</p>
+                    <p class="cw-keypoint-sentence" :style="{ backgroundColor: getRgbaFromHex(currentHexColor, 0.2) }">{{ currentText }}</p>
                 </div>
             </template>
             <template v-if="canEdit" #edit>
@@ -36,7 +36,7 @@
                             :options="colors"
                             label="name"
                             :clearable="false"
-                            :reduce="(option) => option.icon"
+                            :reduce="(option) => option.class"
                             v-model="currentColor"
                         >
                             <template #open-indicator="{ selectAttributes }">
@@ -159,6 +159,9 @@ export default {
                 default:
                     return 'clickable';
             }
+        },
+        currentHexColor() {
+            return this.colors.find((color) => color.class === this.currentColor)?.hex ?? '#000000';
         },
     },
     methods: {

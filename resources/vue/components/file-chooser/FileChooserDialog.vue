@@ -15,23 +15,31 @@
             <div class="file-chooser-content">
                 <ul class="file-chooser-folder-selector">
                     <li v-if="courseId && allowCourseFolders" class="file-chooser-tree-item">
-                        <a
-                            href="#"
-                            @click.prevent="setFolder('courses')"
-                            :class="{ selected: coursesRootFolderSelected }"
-                        >
-                            <studip-icon shape="seminar" />
-                            <span>{{ $gettext('Diese Veranstaltung') }}</span>
-                        </a>
+                        <div class="file-chooser-tree-item-content">
+                            <a
+                                href="#"
+                                @click.prevent="setFolder('courses')"
+                                :class="{ selected: coursesRootFolderSelected }"
+                            >
+                                <studip-icon shape="seminar" />
+                                <span>{{ $gettext('Diese Veranstaltung') }}</span>
+                            </a>
+                        </div>
                         <ul class="file-chooser-tree file-chooser-tree-first-level">
                             <file-chooser-tree v-for="child in coursesTree.children" :key="child.id" :folder="child" />
                         </ul>
                     </li>
                     <li v-if="userId && allowUserFolders" class="file-chooser-tree-item">
-                        <a href="#" @click.prevent="setFolder('users')" :class="{ selected: usersRootFolderSelected }">
-                            <studip-icon shape="content" />
-                            <span>{{ $gettext('Arbeitsplatz') }}</span>
-                        </a>
+                        <div class="file-chooser-tree-item-content">
+                            <a
+                                href="#"
+                                @click.prevent="setFolder('users')"
+                                :class="{ selected: usersRootFolderSelected }"
+                            >
+                                <studip-icon shape="content" />
+                                <span>{{ $gettext('Arbeitsplatz') }}</span>
+                            </a>
+                        </div>
                         <ul class="file-chooser-tree file-chooser-tree-first-level">
                             <file-chooser-tree v-for="child in usersTree.children" :key="child.id" :folder="child" />
                         </ul>
@@ -280,7 +288,6 @@ export default {
     }
 }
 
-
 @media (max-width: 580px) {
     .file-chooser-content .file-chooser-folder-selector {
         display: none;
@@ -292,5 +299,4 @@ export default {
         max-width: 130px;
     }
 }
-
 </style>

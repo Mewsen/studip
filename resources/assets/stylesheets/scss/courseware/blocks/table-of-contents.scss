@@ -10,17 +10,17 @@
 .cw-block-table-of-contents-list {
     padding: 0;
     list-style: none;
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--courseware-border-default);
     li {
         &:not(:last-child) {
-            border-bottom: solid thin var(--dark-gray-color-30);
+            border-bottom: solid thin var(--color--courseware-border-active);
         }
         a {
             display: block;
             padding: 1em;
         }
         &:hover {
-            background-color: fade-out($dark-gray-color-75, 0.8);
+            background-color: var(--color--courseware-background-highlight);
         }
     }
 }
@@ -28,14 +28,14 @@
 .cw-block-table-of-contents-list-details {
     padding: 0;
     list-style: none;
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--courseware-border-default);
     li {
         &:not(:last-child) {
-            border-bottom: solid thin var(--dark-gray-color-30);
+            border-bottom: solid thin var(--color--courseware-border-active);
         }
 
         &:hover {
-            background-color: fade-out($dark-gray-color-75, 0.8);
+            background-color: var(--color--courseware-background-highlight);
         }
         a {
             display: block;
@@ -58,7 +58,7 @@
 
     p,
     p:hover {
-        color: var(--black);
+        color: var(--color--font-primary);
     }
 }
 

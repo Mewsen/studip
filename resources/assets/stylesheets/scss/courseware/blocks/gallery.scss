@@ -26,37 +26,29 @@
 .cw-block-gallery-next {
     cursor: pointer;
     position: absolute;
-    background-color: fade-out($white, 0.6);
+    background-color: fade-out($color--global-background, 0.6);
+    color: var(--color--font-primary);
     top: 50%;
     height: 36px;
     width: 36px;
-    background-repeat: no-repeat;
-    background-position: center;
     margin-top: -22px;
     transition: 200ms ease;
     user-select: none;
     border: none;
 
     &:hover {
-        background-color: var(--base-color);
+        background-color: var(--color--highlight);
+        color: var(--color--highlight-contrast);
     }
 }
 
 .cw-block-gallery-prev {
-    @include background-icon(arr_1left, $size: 24px);
-
-    &:hover {
-        @include background-icon(arr_1left, info-alt, 24px);
-    }
+    @include icon(before, arr_1left, $size: 24px, $align: middle, $padding: -4px);
 }
 
 .cw-block-gallery-next {
     right: 0;
-    @include background-icon(arr_1right, $size: 24px);
-
-    &:hover {
-        @include background-icon(arr_1right, info-alt, 24px);
-    }
+    @include icon(before, arr_1right, $size: 24px, $align: middle, $padding: -4px);
 }
 
 .cw-block-gallery-file-description {

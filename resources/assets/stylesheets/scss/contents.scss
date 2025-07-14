@@ -14,6 +14,10 @@
                 padding: 5px;
                 grid-template-columns: 42px 135px;
 
+                &:hover {
+                    text-decoration: none;
+                }
+
                 .content-item-img-wrapper {
                     margin: 0 10px 5px 5px;
                     width: 32px;
@@ -50,7 +54,7 @@
         justify-content: stretch;
 
         .content-item-link {
-            color: var(--color--font-primary);
+            color: var(--color--highlight);
             display: grid;
             flex: 1;
             grid-template-columns: 74px auto;
@@ -58,19 +62,26 @@
             padding: 25px 10px 10px;
             transition: 0.5s;
 
+            &:hover {
+                text-decoration: none;
+            }
+
             .content-item-img-wrapper {
                 width: 64px;
             }
 
             .content-item-text {
                 .content-item-title {
-                    color: var(--color--brand-primary);
                     font-size: 1.3em;
                     width: 100%;
                     max-width: 160px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+
+                .content-item-description {
+                    color: var(--color--font-primary);
                 }
             }
 
@@ -82,9 +93,10 @@
             color: unset;
 
             .content-item-link {
+                color: var(--color--highlight-hover);
                 .content-item-text {
-                    .content-item-title {
-                        color: var(--red);
+                    .content-item-description {
+                        color: var(--color--font-primary);
                     }
                 }
             }

@@ -5,26 +5,20 @@
     margin-bottom: -1px;
 
     .cw-collapsible-title {
-        @include background-icon(arr_1right);
-        background-position: 6px center;
-        background-repeat: no-repeat;
+        @include icon(before, arr_1right, $align: middle, $padding: 4px);
         background-color: var(--color--content-box-header);
-        padding: 0.5em 2em;
+        padding: 0.5em;
         margin: 0;
         font-weight: 600;
-        color: var(--base-color);
+        color: var(--color--highlight);
         cursor: pointer;
 
         &.cw-collapsible-open {
-            @include background-icon(arr_1down);
+            @include icon(before, arr_1down, $align: middle, $padding: 4px);
 
             .cw-container-list-sort-mode {
                 margin-top: 8px;
             }
-        }
-
-        img {
-            vertical-align: top;
         }
     }
 

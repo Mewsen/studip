@@ -176,7 +176,7 @@ use Studip\Button, Studip\LinkButton;
                     <? if ($perm->haveFieldPerm('institut_id', MvvPerm::PERM_WRITE)): ?>
                         <div class="mvv-item-list-buttons">
                             <a href="#"
-                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE , ['title' => _('Einrichtung entfernen')])->asImg() ?></a>
+                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE , ['title' => _('Einrichtung entfernen')])->asSvg() ?></a>
                         </div>
                     <? endif ?>
                     <input type="hidden" name="institut_item" value="<?= $studiengang->institut_id ?>">
@@ -242,7 +242,7 @@ use Studip\Button, Studip\LinkButton;
                 <li id="language_<?= $assigned_language->lang ?>" class="drag-handle sort_items">
                     <div class="mvv-item-list-text"><?= htmlReady($assigned_language->getDisplayName()) ?></div>
                     <div class="mvv-item-list-buttons">
-                        <a href="#" class="mvv-item-remove"><?= Icon::create('trash', 'clickable', array('title' => _('Sprache entfernen')))->asImg() ?></a>
+                        <a href="#" class="mvv-item-remove"><?= Icon::create('trash', 'clickable', array('title' => _('Sprache entfernen')))->asSvg() ?></a>
                     </div>
                     <input type="hidden" name="language_items[]" value="<?= htmlReady($assigned_language->lang) ?>">
                 </li>

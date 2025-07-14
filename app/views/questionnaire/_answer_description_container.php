@@ -10,7 +10,7 @@
     </div>
     <article class="description">
         <? if (isset($vote->questiondata['mandatory']) && $vote->questiondata['mandatory']) : ?>
-            <?= Icon::create('star', Icon::ROLE_ATTENTION)->asImg(['class' => 'text-bottom', 'alt' => '']) ?>
+            <?= Icon::create('star', Icon::ROLE_ATTENTION)->asSvg(['class' => 'text-bottom', 'alt' => '']) ?>
             <?= _('Pflichtantwort') ?>
         <? endif ?>
         <?= formatReady($vote->questiondata['description']) ?>

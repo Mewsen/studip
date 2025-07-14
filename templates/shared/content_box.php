@@ -11,7 +11,7 @@
         <? if (isset($admin_url)): ?>
             <nav>
                 <a href="<?= URLHelper::getLink($admin_url) ?>" title="<?= htmlReady($admin_title) ?>">
-                    <?= Icon::create('admin')->asImg(tooltip2(htmlReady($admin_title))) ?>
+                    <?= Icon::create('admin')->asSvg(tooltip2(htmlReady($admin_title))) ?>
                 </a>
             </nav>
         <? endif; ?>

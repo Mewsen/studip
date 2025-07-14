@@ -59,8 +59,8 @@ class Course_WikiController extends AuthenticatedController
                     '<a href="%s">%s</a>',
                     URLHelper::getLink('dispatch.php/course/wiki/edit_toc'),
                     $toc_content_empty
-                        ? Icon::create('add')->asImg(['title' => _('Erstellen')])
-                        : Icon::create('edit')->asImg(['title' => _('Bearbeiten')])
+                        ? Icon::create('add')->asSvg(['title' => _('Erstellen')])
+                        : Icon::create('edit')->asSvg(['title' => _('Bearbeiten')])
                 );
                 $widget->setExtra($extra);
             }

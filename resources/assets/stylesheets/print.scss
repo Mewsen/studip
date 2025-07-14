@@ -181,14 +181,12 @@ td.quote {
 
 a.link-intern {
     padding-left: 18px;
-    @include background-icon(intern);
-    background-repeat: no-repeat;
+    @include icon(before, intern);
 }
 
 a.link-extern {
     padding-left: 18px;
-    @include background-icon(link-extern);
-    background-repeat: no-repeat;
+    @include icon(before, link-extern);
 }
 
 .formatted-content {

@@ -9,7 +9,7 @@
         padding: 0.5em;
         background: var(--dark-gray-color-5);
         color: black;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
     }
 
     .hljs-comment,
@@ -24,7 +24,7 @@
     .hljs-built_in,
     .hljs-name,
     .hljs-tag {
-        color: var(--base-color);
+        color: var(--color--blue-1);
         font-weight: 600;
     }
 
@@ -55,7 +55,7 @@
     }
 
     .hljs-attr {
-        color: var(--active-color);
+        color: var(--red);
         font-weight: 400;
     }
 
@@ -76,12 +76,12 @@
     }
 
     .code-lang {
-        background: var(--dark-gray-color-5);
-        border: solid thin var(--content-color-40);
+        background: var(--color--courseware-background-highlight);
+        border: solid thin var(--color--courseware-border-default);
         border-top: none;
         padding: 5px 10px;
         text-align: right;
-        color: var(--dark-gray-color-45);
+        color: var(--color--font-secondary);
         font-family: monospace;
         text-transform: full-width;
     }

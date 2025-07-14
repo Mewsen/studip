@@ -14,7 +14,7 @@
     <li>
         <strong><?= htmlReady($course->getFullName('number-name-semester')) ?></strong>
         <a href="<?= URLHelper::getLink('dispatch.php/course/details/index/' . $course->id) ?>"  data-dialog>
-            <?= Icon::create('info-circle')->asImg([
+            <?= Icon::create('info-circle')->asSvg([
                 'title' => _('Veranstaltungsdetails aufrufen')
             ]) ?>
         </a>

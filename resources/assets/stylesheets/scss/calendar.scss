@@ -2,11 +2,11 @@
     .fc-event {
 
         background-color: #fff;
-        color: #000;
+        color: var(--color--font-primary);
         border-width: 1px;
 
         &:hover {
-            color: #000;
+            color: var(--color--font-primary);
         }
 
         &.course-color-0 {
@@ -140,6 +140,20 @@
             .fc-title > img {
                 filter: #{"invert()"};
             }
+        }
+
+        .fc-title.has-icon::before {
+            content: '';
+            display: inline-block;
+            vertical-align: text-bottom;
+            margin-right: 3px;
+            width: 14px;
+            height: 14px;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            background-color: currentColor;
+            mask-image: var(--icon-url);
         }
     }
 }

@@ -52,7 +52,7 @@ use Studip\Button, Studip\LinkButton;
                         <? if ($perm->haveFieldPerm('fach', MvvPerm::PERM_WRITE)) : ?>
                             <div class="mvv-item-list-buttons">
                                 <a href="#" class="mvv-item-remove">
-                                    <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Fach entfernen')])->asImg(); ?>
+                                    <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Fach entfernen')])->asSvg(); ?>
                                 </a>
                             </div>
                         <? endif; ?>

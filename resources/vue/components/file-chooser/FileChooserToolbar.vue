@@ -181,7 +181,7 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    border-top: solid thin var(--content-color-40);
+    border-top: solid thin var(--color--action-menu-divider);
 
     &.with-table {
         border: none;
@@ -204,19 +204,16 @@ export default {
         input {
             flex-grow: 1;
             padding: 4px;
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--input-field-border);
             border-radius: 0;
         }
         button {
-            border: solid thin var(--base-color);
+            border: solid thin var(--color--input-field-border);
+            color: var(--color--highlight);
             background-color: transparent;
             height: 30px;
             width: 30px;
             cursor: pointer;
-
-            img {
-                vertical-align: middle;
-            }
         }
     }
 }

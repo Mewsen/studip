@@ -65,8 +65,8 @@
                 <th style="width: 1em;"></th>
                 <th>
                     <a href="#" class="solution-toggle">
-                        <?= Icon::create('arr_1right')->asImg(['class' => 'arrow_all', 'title' => _('Aufgaben aller Teilnehmenden anzeigen')]) ?>
-                        <?= Icon::create('arr_1down')->asImg(['class' => 'arrow_all', 'title' => _('Aufgaben aller Teilnehmenden verstecken'), 'style' => 'display: none;']) ?>
+                        <?= Icon::create('arr_1right')->asSvg(['class' => 'arrow_all', 'title' => _('Aufgaben aller Teilnehmenden anzeigen')]) ?>
+                        <?= Icon::create('arr_1down')->asSvg(['class' => 'arrow_all', 'title' => _('Aufgaben aller Teilnehmenden verstecken'), 'style' => 'display: none;']) ?>
                         <?= _('Teilnehmende') ?>
                     </a>
                 </th>
@@ -108,8 +108,8 @@
 
                     <td>
                         <a href="#" class="solution-toggle">
-                            <?= Icon::create('arr_1right')->asImg(['class' => 'solution-open', 'title' => _('Aufgaben anzeigen')]) ?>
-                            <?= Icon::create('arr_1down')->asImg(['class' => 'solution-close', 'title' => _('Aufgaben verstecken')]) ?>
+                            <?= Icon::create('arr_1right')->asSvg(['class' => 'solution-open', 'title' => _('Aufgaben anzeigen')]) ?>
+                            <?= Icon::create('arr_1down')->asSvg(['class' => 'solution-close', 'title' => _('Aufgaben verstecken')]) ?>
                             <?= htmlReady($solver['name']) ?>
                         </a>
 

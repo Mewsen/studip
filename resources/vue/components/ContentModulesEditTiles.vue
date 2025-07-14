@@ -21,7 +21,7 @@
                     <div>
                         <a class="upper_part dragarea" :href="getDescriptionURL(element)" data-dialog>
                             <div>
-                                <img :src="element.icon" width="40" height="40" v-if="element.icon" />
+                                <StudipIcon v-if="element.icon" :shape="element.icon.shape" :size="40" />
                             </div>
                             <div>
                                 <h3>{{ element.displayname }}</h3>
@@ -118,7 +118,7 @@
                 <div>
                     <a class="upper_part" :href="getDescriptionURL(module)" data-dialog>
                         <div>
-                            <img :src="module.icon" width="40" height="40" v-if="module.icon" />
+                            <StudipIcon v-if="module.icon" :shape="module.icon.shape" :size="40" />
                         </div>
                         <div>
                             <h3>{{ module.displayname }}</h3>
@@ -182,7 +182,7 @@ export default {
 }
 .inactive-modules {
     margin-top: 1em;
-    border-top: solid thin var(--content-color-40);
+    border-top: solid thin var(--color--tile-border);
     padding-top: 1em;
 }
 .studip-grid-element {
@@ -205,7 +205,7 @@ export default {
     }
 
     &.sortable-ghost {
-        border: dashed 2px var(--content-color-40);
+        border: dashed 2px var(--color--tile-border);
         margin: 0;
         * {
             opacity: 0;
@@ -244,8 +244,11 @@ export default {
         min-height: 150px;
         width: 100%;
 
-        > .upper_part {
+        > a.upper_part {
             display: flex;
+            color: var(--color--highlight);
+            height: 100%;
+
             > :first-child {
                 padding: 10px 5px 10px 15px;
             }
@@ -254,7 +257,14 @@ export default {
 
                 h3 {
                     margin-top: 0;
-                    color: var(--base-color);
+                    color: var(--color--highlight);
+                }
+            }
+            &:hover {
+                color: var(--color--highlight-hover);
+                text-decoration: none;
+                h3 {
+                    color: var(--color--highlight-hover);
                 }
             }
         }

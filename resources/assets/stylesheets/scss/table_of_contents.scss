@@ -21,7 +21,7 @@ ul.numberedchapters {
     position: absolute;
     right: -10px;
     top: -11px;
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     border: 1px solid var(--content-color-40);
     margin: 11px 11px 10px;
     box-shadow: 2px 2px var(--dark-gray-color-30);
@@ -46,11 +46,9 @@ ul.numberedchapters {
         right: 0;
         top: 12px;
         cursor: pointer;
-        @include background-icon(decline, $size: 24px);
-        background-repeat: no-repeat;
-        background-size: 24px;
-        background-position: center right;
-        background-color: var(--white);
+        color: var(--color--highlight);
+        background-color: var(--color--global-background);
+        @include icon(after, decline, $size: 24px, $align: middle, $padding: -4px);
     }
 
     &.cw-ribbon-slide-enter-active,

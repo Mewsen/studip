@@ -131,7 +131,7 @@
                 <tr>
                     <td>
                         <a href="<?= htmlReady($file_ref->getDownloadURL()) ?>">
-                            <?= Icon::create('file')->asImg(['title' => _('Datei herunterladen')]) ?>
+                            <?= Icon::create('file')->asSvg(['title' => _('Datei herunterladen')]) ?>
                             <?= htmlReady($file_ref->name) ?>
                         </a>
                     </td>

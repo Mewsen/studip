@@ -11,7 +11,7 @@
     height: 420px;
     width: 270px;
     margin: 0;
-    background-color: var(--base-color);
+    background-color: var(--color--blue-1);
     &:last-child {
         margin-right: 0;
     }
@@ -27,18 +27,18 @@
         width: 100%;
         background-size: 100% auto;
         background-repeat: no-repeat;
-        background-color: var(--content-color-20);
+        background-color: var(--color--courseware-background-highlight);
         background-position: center;
 
         .overlay-handle {
             @extend .drag-handle;
-            background-color: var(--white);
+            background-color: var(--color--global-background);
             background-position: center !important;
             height: 22px;
             padding: 4px 8px;
             margin-top: 3px;
             float: left;
-            border-left: solid thin var(--content-color-20);
+            border-left: solid thin var(--color--courseware-background-highlight);
         }
 
 
@@ -86,14 +86,14 @@
     .description {
         height: 220px;
         padding: 14px;
-        color: var(--white);
+        color: var(--color--font-inverted);
         position: relative;
         display: block;
 
         header {
             font-size: 20px;
             line-height: 22px;
-            color: var(--white);
+            color: var(--color--font-inverted);
             border: none;
             width: 240px;
             overflow: hidden;
@@ -148,15 +148,17 @@
         footer {
             display: table-cell;
             height: 5em;
-            color: var(--white);
+            color: var(--color--font-inverted);
             overflow: hidden;
             text-overflow: ellipsis;
             vertical-align: bottom;
 
             p {
+                display: inline-flex;
                 margin: 0;
+                gap: 4px;
             }
-            img {
+            svg {
                 vertical-align: text-bottom;
             }
         }
@@ -171,7 +173,7 @@
     a.description:visited,
     a.description:hover {
         height: 210px;
-        color: var(--white);
+        color: var(--color--font-inverted);
         text-decoration: unset;
     }
 }

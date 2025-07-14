@@ -93,7 +93,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                             <? if ($perm->haveFieldPerm('modul_variante', MvvPerm::PERM_WRITE)) : ?>
                                 <div class="mvv-item-list-buttons">
                                     <a href="#"
-                                       class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asImg(); ?></a>
+                                       class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asSvg(); ?></a>
                                 </div>
                             <? endif; ?>
                             <input type="hidden" name="modul_item" value="<?= $modul->modul_variante->id ?>">
@@ -298,7 +298,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                         </div>
                         <div class="mvv-item-list-buttons">
                             <a href="#"
-                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asImg(); ?></a>
+                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Entfernen')])->asSvg(); ?></a>
                         </div>
                         <input type="hidden" name="responsible_item"
                                value="<?= $modul->responsible_institute->institut_id ?>">
@@ -350,7 +350,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                         </div>
                         <div class="mvv-item-list-buttons">
                             <a href="#" class="mvv-item-remove">
-                                <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Einrichtung entfernen')])->asImg(); ?>
+                                <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Einrichtung entfernen')])->asSvg(); ?>
                             </a>
                         </div>
                         <input type="hidden" name="institutes_items[]" value="<?= $assigned_institute->institut_id ?>">
@@ -394,7 +394,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 <li id="language_<?= $assigned_language->lang ?>" class="drag-handle sort_items">
                     <div class="mvv-item-list-text"><?= htmlReady($assigned_language->getDisplayName()) ?></div>
                     <div class="mvv-item-list-buttons">
-                        <a href="#" class="mvv-item-remove"><?= Icon::create('trash', 'clickable', array('title' => _('Sprache entfernen')))->asImg(); ?></a>
+                        <a href="#" class="mvv-item-remove"><?= Icon::create('trash', 'clickable', array('title' => _('Sprache entfernen')))->asSvg(); ?></a>
                     </div>
                     <input type="hidden" name="language_items[]" value="<?= htmlReady($assigned_language->lang) ?>">
                 </li>

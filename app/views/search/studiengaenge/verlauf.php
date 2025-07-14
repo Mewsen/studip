@@ -72,7 +72,7 @@
                                 </th>
                                 <th>
                                     <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
-                                        <?= Icon::create('info-circle')->asImg(['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
+                                        <?= Icon::create('info-circle')->asSvg(['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
                                     </a>
                                 </th>
                                 <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>

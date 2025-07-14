@@ -177,9 +177,9 @@ STUDIP.MVV.Search = {
         const qs_name = qs_item.attr('id');
         const target_name = qs_name.slice(0, qs_name.lastIndexOf('_'));
         const item_id = jQuery('#' + qs_name + '_realvalue').val();
-        jQuery('<img src="' + STUDIP.ASSETS_URL
-            + 'images/icons/yellow/arr_2down.svg">')
-            .attr('alt', $gettext("hinzufügen"))
+        jQuery('<button>')
+            .addClass('btn-icon btn-icon--add')
+            .attr('aria-label', $gettext('hinzufügen'))
             .appendTo(add_button);
         if (item_id === '') {
             qs_item.siblings('.mvv-add-button').find('.mvv-add-item')

@@ -41,6 +41,7 @@ class Icon implements JsonSerializable
     protected string $role;
     protected array $attributes = [];
 
+    private static array $svg_cache = [];
 
     /**
      * This is the magical Role to Color mapping.
@@ -153,7 +154,7 @@ class Icon implements JsonSerializable
      */
     public function getShape()
     {
-        return $this->shapeToPath($this->shape);
+        return $this->shapeToPath();
     }
 
     /**
@@ -197,7 +198,7 @@ class Icon implements JsonSerializable
      */
     public function __toString()
     {
-        return $this->asImg();
+        return $this->asSvg();
     }
 
     public function jsonSerialize(): mixed
@@ -227,6 +228,78 @@ class Icon implements JsonSerializable
         );
     }
 
+    public function asSvg($size = self::SIZE_DEFAULT, $view_attributes = []): string
+    {
+        if (self::isStatic($this->shape)) {
+            return $this->asImg($size, $view_attributes);
+        }
+
+        if (is_array($size)) {
+            [$view_attributes, $size] = [$size, $size['size'] ?? self::SIZE_DEFAULT];
+        }
+
+        $cacheKey = md5(json_encode([
+            'role' => $this->role,
+            'shape' => $this->shape,
+            'size' => $size,
+            'attrs' => $view_attributes
+        ]));
+
+        if (isset(self::$svg_cache[$cacheKey])) {
+            return self::$svg_cache[$cacheKey];
+        }
+
+        $path = __DIR__ . '/../../public/assets/images/icons/' . self::roleToColor($this->role) . '/' . $this->shapeToPath($this->shape) . '.svg';
+        $roleClass = $this->role ? 'icon-role-' . $this->role : '';
+
+        $classes = trim("studip-icon $roleClass");
+        if (!empty($view_attributes['class'])) {
+            $classes .= ' ' . $view_attributes['class'];
+        }
+        $view_attributes['class'] = $classes;
+
+        $titleTag = '';
+        if (!empty($view_attributes['title'])) {
+            $titleTag = '<title>' . htmlspecialchars($view_attributes['title']) . '</title>';
+            unset($view_attributes['title']); // Entfernt 'title' aus den View-Attributen, da es separat hinzugefügt wird
+        }
+
+        $attrString = $this->buildSvgAttributes($view_attributes);
+
+        if (!file_exists($path)) {
+            return '';
+        }
+
+        $svgContent = file_get_contents($path);
+
+        $svgContent = preg_replace('/fill="(?!none)[^"]+"/', 'fill="currentColor"', $svgContent);
+
+        $svgContent = preg_replace('/(width|height)="[^"]+"/', '', $svgContent);
+        if ($size !== false) {
+            $svgContent = preg_replace('/<svg([^>]+)>/', '<svg$1 style="width:' . $size . 'px;height:' . $size . 'px">', $svgContent);
+        }
+
+        $svgContent = preg_replace_callback('/<svg([^>]+)>/', function($matches) use ($attrString) {
+            return '<svg' . $matches[1] . ' ' . $attrString . '>';
+        }, $svgContent);
+
+        if (!empty($titleTag)) {
+            $svgContent = preg_replace('/(<svg[^>]*>)/', '$1' . $titleTag, $svgContent, 1);
+        }
+
+        self::$svg_cache[$cacheKey] = $svgContent;
+        return $svgContent;
+    }
+
+    private function buildSvgAttributes(array $attributes): string
+    {
+        $attrString = '';
+        foreach ($attributes as $key => $value) {
+            $attrString .= sprintf(' %s="%s"', htmlspecialchars($key, ENT_QUOTES, 'UTF-8'), htmlspecialchars($value, ENT_QUOTES, 'UTF-8'));
+        }
+        return trim($attrString);
+    }
+
     /**
      * Renders the icon inside an input html tag.
      *
@@ -236,16 +309,27 @@ class Icon implements JsonSerializable
      *                                into the rendered output
      * @return String containing the html representation for the icon.
      */
-    public function asInput($size = null, $view_attributes = [])
+    public function asInput($size = self::SIZE_DEFAULT, $view_attributes = [])
     {
         if (is_array($size)) {
-            [$view_attributes, $size] = [$size, null];
+            [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
+
+        $view_attributes['tabindex'] ??= '0';
+        $view_attributes['role'] ??= 'button';
+
+        $text = isset($view_attributes['text']) ? htmlReady($view_attributes['text']) : '';
+
+        $svgContent = $this->asSvg($size, $view_attributes);
+
         return sprintf(
-            '<input type="image" %s>',
-            arrayToHtmlAttributes(
-                $this->prepareHTMLAttributes($size, $view_attributes)
-            )
+            '<label class="icon-button undecorated">
+                <input type="submit" hidden %s>
+                %s%s
+            </label>',
+            arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
+            $svgContent,
+            $text
         );
     }
 

@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <focus-trap v-model="trap">
-            <div class="studip-dialog" @keydown.esc="closeDialog" :style="{zIndex: zIndex}">
+            <div class="studip-dialog" @keydown.esc="closeDialog" :style="{ zIndex: zIndex }">
                 <transition name="dialog-fade">
                     <div class="studip-dialog-backdrop" v-if="true">
                         <vue-resizeable
@@ -30,7 +30,7 @@
                                 :class="[
                                     { 'studip-dialog-warning': question, 'studip-dialog-alert': alert },
                                     'studip-dialog-body',
-                                    $attrs.class
+                                    $attrs.class,
                                 ]"
                                 role="dialog"
                                 aria-modal="true"
@@ -38,14 +38,14 @@
                                 :aria-describedby="dialogDescId"
                                 ref="dialog"
                             >
-                                <header
-                                    class="studip-dialog-header"
-                                >
-                                    <span :id="dialogTitleId"
-                                          class="studip-dialog-title"
-                                          :title="dialogTitle"
-                                          role="heading"
-                                          aria-level="2">
+                                <header class="studip-dialog-header">
+                                    <span
+                                        :id="dialogTitleId"
+                                        class="studip-dialog-title"
+                                        :title="dialogTitle"
+                                        role="heading"
+                                        aria-level="2"
+                                    >
                                         {{ dialogTitle }}
                                     </span>
                                     <slot name="dialogHeader"></slot>
@@ -54,8 +54,7 @@
                                         :title="$gettext('Schließen')"
                                         class="studip-dialog-close-button"
                                         @click="closeDialog"
-                                    >
-                                    </button>
+                                    ></button>
                                 </header>
                                 <section
                                     :id="dialogDescId"
@@ -125,32 +124,32 @@ export default {
     props: {
         height: {
             type: [String, Number],
-            default: 300
+            default: 300,
         },
         width: {
             type: [String, Number],
-            default: 450
+            default: 450,
         },
         title: String,
         confirmText: String,
         closeText: String,
         confirmShow: {
             type: Boolean,
-            default: true
+            default: true,
         },
         confirmDisabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         confirmClass: String,
-        closeClass: String,
+        closeClass: [String, Boolean],
         question: String,
         alert: String,
         message: String,
         defaultFocus: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     data() {
         const dialogId = uuid++;
@@ -166,8 +165,8 @@ export default {
             minH: 100,
             left: 0,
             top: 0,
-            dragSelector: ".studip-dialog-header",
-            handlers: ["r", "rb", "b", "lb", "l", "lt", "t", "rt"],
+            dragSelector: '.studip-dialog-header',
+            handlers: ['r', 'rb', 'b', 'lb', 'l', 'lt', 't', 'rt'],
             fit: false,
             footerHeight: 68,
 
@@ -189,7 +188,7 @@ export default {
                 button = {};
                 button.text = this.confirmText;
                 button.class = this.confirmClass;
-                button.disabled = this.confirmDisabled
+                button.disabled = this.confirmDisabled;
             }
 
             return button;
@@ -209,8 +208,10 @@ export default {
             if (this.closeText) {
                 button = {};
                 button.text = this.closeText;
-                if (this.closeClass) {
+                if (typeof this.closeClass === 'string') {
                     button.class = this.closeClass;
+                } else if (this.closeClass === false) {
+                    // keine Klasse setzen
                 } else {
                     button.class = 'cancel';
                 }
@@ -231,14 +232,14 @@ export default {
             return '';
         },
         dialogWidth() {
-            return this.currentWidth ? (this.currentWidth - dialogPadding * 4) + 'px' : 'unset';
+            return this.currentWidth ? this.currentWidth - dialogPadding * 4 + 'px' : 'unset';
         },
         dialogHeight() {
-            return this.currentHeight ? (this.currentHeight - dialogPadding * 4) + 'px' : 'unset';
+            return this.currentHeight ? this.currentHeight - dialogPadding * 4 + 'px' : 'unset';
         },
         contentHeight() {
             return this.currentHeight ? this.currentHeight - this.footerHeight + 'px' : 'unset';
-        }
+        },
     },
     methods: {
         closeDialog() {
@@ -272,25 +273,21 @@ export default {
             if (el) {
                 el.blur();
             }
-        }
+        },
     },
     mounted() {
         if (this.defaultFocus) {
-            this.$nextTick()
-                .then(() => {
-                    this.$refs.buttonB.focus();
-                });
+            this.$nextTick().then(() => {
+                this.$refs.buttonB.focus();
+            });
         }
     },
     created() {
-        const maxZIndex = Array.from(document.querySelectorAll('.studip-dialog')).reduce(
-            (acc, el) => {
-                const style = getComputedStyle(el);
-                return Math.max(acc, Number.parseInt(style.zIndex, 10));
-            },
-            1000
-        );
+        const maxZIndex = Array.from(document.querySelectorAll('.studip-dialog')).reduce((acc, el) => {
+            const style = getComputedStyle(el);
+            return Math.max(acc, Number.parseInt(style.zIndex, 10));
+        }, 1000);
         this.zIndex = maxZIndex + 1;
-    }
+    },
 };
 </script>

@@ -3,17 +3,17 @@
         <template #content>
             <ul class="widget-list widget-links cw-action-widget">
                 <template v-if="taskGroup">
-                    <li v-if="isBeforeEndDate" class="cw-action-widget-task-groups-deadline">
+                    <li v-if="isBeforeEndDate" class="cw-action-widget-date">
                         <button @click="modifyDeadline(taskGroup)">
                             {{ $gettext('Bearbeitungszeit verlängern') }}
                         </button>
                     </li>
-                    <li v-if="isBeforeEndDate" class="cw-action-widget-task-groups-add-solvers">
+                    <li v-if="isBeforeEndDate" class="cw-action-widget-add">
                         <button @click="addSolvers(taskGroup)">
                             {{ $gettext('Teilnehmende hinzufügen') }}
                         </button>
                     </li>
-                    <li class="cw-action-widget-task-groups-delete">
+                    <li class="cw-action-widget-delete">
                         <button @click="deleteTaskGroup(taskGroup)">
                             {{ $gettext('Aufgabe löschen') }}
                         </button>
@@ -24,7 +24,7 @@
                         {{ $gettext('Aufgabe verteilen') }}
                     </button>
                 </li>
-                <li v-if="taskGroup && !hasPeerReviewProcesses" class="cw-action-widget-add">
+                <li v-if="taskGroup && !hasPeerReviewProcesses" class="cw-action-widget-play">
                     <button @click="$emit('add-peer-review-process')">
                         {{ $gettext('Peer-Review-Verfahren aktivieren') }}
                     </button>
@@ -61,18 +61,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.cw-action-widget-task-groups-add-solvers {
-    background-image: url('../images/icons/blue/add.svg');
-    background-size: 20px;
-}
-.cw-action-widget-task-groups-deadline {
-    background-image: url('../images/icons/blue/date.svg');
-    background-size: 20px;
-}
-.cw-action-widget-task-groups-delete {
-    background-image: url('../images/icons/blue/trash.svg');
-    background-size: 20px;
-}
-</style>

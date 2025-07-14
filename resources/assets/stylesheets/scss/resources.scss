@@ -181,6 +181,7 @@ ul.resource-tree {
                     select, span.selection, span.select2 {
                         height: 30px;
                         width: calc(100% - 2em) !important;
+                        color: var(--color--font-primary);
                     }
                 }
             }
@@ -359,22 +360,25 @@ ul.resource-tree {
 
 .request-list {
     a.request-marking-icon {
-        background-repeat: no-repeat;
         display: block;
         width: var(--icon-size-default);
         height: var(--icon-size-default);
-        @include background-icon(radiobutton-unchecked);
+        @include icon(before, radiobutton-unchecked);
+        color: var(--color--font-primary);
 
         &[data-marked="1"] {
-            @include background-icon(radiobutton-checked, status-red);
+            @include icon(before, radiobutton-checked);
+            color: var(--color--warning)
         }
 
         &[data-marked="2"] {
-            @include background-icon(radiobutton-checked, status-yellow);
+            @include icon(before, radiobutton-checked);
+            color: var(--color--attention);
         }
 
         &[data-marked="3"] {
-            @include background-icon(radiobutton-checked, status-green);
+            @include icon(before, radiobutton-checked);
+            color: var(--color--good);
         }
     }
 }

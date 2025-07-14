@@ -24,32 +24,3 @@ export default {
     },
 };
 </script>
-<style scoped lang="scss">
-$size: 130px;
-.square-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    max-height: $size;
-    max-width: $size;
-    min-width: $size;
-    min-height: $size;
-    margin: 10px;
-    padding: 10px;
-    background-color: transparent;
-    border: solid thin var(--content-color-40);
-    cursor: pointer;
-
-    img {
-        height: 50px;
-        margin: 0 auto 8px auto;
-    }
-    span {
-        color: var(--base-color);
-        min-width: 110px;
-    }
-    &:hover span {
-        color: var(--red);
-    }
-}
-</style>

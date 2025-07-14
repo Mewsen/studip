@@ -43,7 +43,7 @@
                     </td>
                     <td class="actions">
                         <a href="<?= $controller->url_for('admin/lockrules/edit/' . $rule->lock_id) ?>">
-                            <?= Icon::create('edit')->asImg(['title' => _('Diese Regel bearbeiten')]) ?>
+                            <?= Icon::create('edit')->asSvg(['title' => _('Diese Regel bearbeiten')]) ?>
                         </a>
 
                         <?

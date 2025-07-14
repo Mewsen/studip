@@ -254,7 +254,7 @@ class ResourcePropertyDefinition extends SimpleORMap
                 ),
                 $this->__toString(),
                 $search->render(),
-                Icon::create('refresh')->asImg(
+                Icon::create('refresh')->asSvg(
                     [
                         'class'           => 'delete-assigned-user-icon enter-accessible',
                         'data-input-name' => $input_name,

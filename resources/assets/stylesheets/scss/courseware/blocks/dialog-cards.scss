@@ -40,7 +40,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            color: var(--black);
+            color: var(--color--font-primary);
             text-align: center;
             font-weight: bold;
             font-size: 1.2em;
@@ -54,11 +54,11 @@
             }
 
             .cw-dialogcards-front-no-image {
-                @include background-icon(question, navigation, 150px);
+                @include icon(before, question, navigation, $size: 150px);
             }
 
             .cw-dialogcards-back-no-image {
-                @include background-icon(exclaim, navigation, 150px);
+                @include icon(before, exclaim, navigation, $size: 150px);
             }
 
             .cw-dialogcards-front-no-image,
@@ -80,29 +80,31 @@
         }
 
         .card__face--front {
-            @include background-icon(arr_1right);
-            background-color: var(--white);
-            background-repeat: no-repeat;
-            background-position: 95% 95%;
+            @include icon(after, arr_1right);
         }
 
         .card__face--back {
-            @include background-icon(arr_1left);
-            background-color: var(--white);
-            background-repeat: no-repeat;
-            background-position: 5% 95%;
+            @include icon(after, arr_1left);
             transform: rotateY(180deg);
+        }
+
+        .card__face--front,
+        .card__face--back {
+            background-color: var(--color--global-background);
+            &::after {
+                position: absolute;
+                right: 25px;
+                bottom: 25px;
+            }
         }
     }
 
     .cw-dialogcards-navbutton {
-        color: transparent;
+        background-color: var(--color--highlight);
+        color: var(--color--highlight-contrast);
         width: 35px;
         height: 35px;
-        border-radius: 2px;
-        background-position: 50%;
-        background-repeat: no-repeat;
-        background-color: var(--base-color);
+        border-radius: var(--border-radius-default);
         border: none;
         display: block;
         z-index: 4;
@@ -111,17 +113,18 @@
         cursor: pointer;
 
         &.cw-dialogcards-prev {
-            @include background-icon(arr_1left, info-alt, 24px);
+            @include icon(before, arr_1left, $size: 24px, $align: middle, $padding: -2px);
         }
 
         &.cw-dialogcards-next {
-            @include background-icon(arr_1right, info-alt, 24px);
-            right: 0;
+            @include icon(before, arr_1right, $size: 24px, $align: middle, $padding: -2px);
         }
 
         &.cw-dialogcards-prev-disabled,
         &.cw-dialogcards-next-disabled {
-            background-color: var(--light-gray-color-40);
+            color: var(--color--button-inactive-background-contrast);
+            background-color: var(--color--button-inactive-background);
+            cursor: not-allowed;
         }
     }
 

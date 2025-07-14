@@ -1,11 +1,11 @@
 .cw-block-document {
     .cw-pdf-main-container {
         width: calc(100% - 2px);
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
 
         .cw-block-title {
             border: none;
-            border-bottom: solid thin var(--content-color-40);
+            border-bottom: solid thin var(--color--courseware-border-default);
         }
     }
     .cw-pdf-toolbar {
@@ -15,7 +15,7 @@
         justify-content: flex-start;
         align-items: baseline;
         align-content: space-around;
-        background-color: var(--content-color-20);
+        background-color: var(--color--courseware-background-highlight);
         padding: 4px 8px;
 
         button {
@@ -24,7 +24,7 @@
             padding: 4px;
 
             &.active {
-                background-color: var(--base-color);
+                background-color: var(--color--highlight);
             }
         }
 
@@ -84,7 +84,7 @@
             top: 33px;
             left: 22px;
             width: auto;
-            background-color: var(--content-color-20);
+            background-color: var(--color--courseware-background-highlight);
             border-top: none;
             padding: 6px;
             z-index: 2;
@@ -119,8 +119,8 @@
                 width: 25%;
                 min-width: 270px;
                 align-self: stretch;
-                background-color: var(--white);
-                border-right: solid 1px var(--content-color-40);
+                background-color: var(--color--global-background);
+                border-right: solid 1px var(--color--courseware-border-default);
 
                 ul.cw-pdf-toc-list,
                 ul.cw-pdf-toc-sub-list {

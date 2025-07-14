@@ -2,7 +2,7 @@
 @import '../mixins/colors';
 
 // Typography
-$text-color: #000;
+$text-color: var(--color--font-primary);
 
 $font-family-base: "Lato", sans-serif;
 
@@ -81,15 +81,21 @@ $grid-gap: 0;
 // Buttons
 $button-icons: (
     accept: accept,
-    cancel: decline,
-    edit: edit,
-    move-up: arr_1up,
-    move-down: arr_1down,
     add: add,
-    trash: trash,
-    download: download,
-    search: search,
     arr_left: arr_1left,
     arr_right: arr_1right,
+    cancel: decline,
+    date: date,
+    delete: trash,
+    edit: edit,
+    move-down: arr_1down,
+    move-up: arr_1up,
+    play: play,
     refresh: refresh,
+    search: search,
+    sidebar-toggle: sidebar3,
+    trash: trash,
+    upload: upload,
+    has-notice: file-text,
+    has-no-notice: file,
 );

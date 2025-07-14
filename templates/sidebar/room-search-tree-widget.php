@@ -8,7 +8,7 @@
         <li <?=  ((!$resource_path && $resource->level > $max_open_depth) || $hide) ? 'style="display: none;"' : ''; ?> >
             <? if (count($resource->children)): ?>
 
-                <?= Icon::create('arr_1right')->asImg(
+                <?= Icon::create('arr_1right')->asSvg(
                     [
                         'class' => implode(
                             ' ',
@@ -38,7 +38,7 @@
 
             <? endif ?>
             <span id="<?= $search_object; ?>" style="cursor: pointer;">
-                <?= $resource->getIcon()->asImg(
+                <?= $resource->getIcon()->asSvg(
                     [
                         'class' => 'text-bottom'
                     ]

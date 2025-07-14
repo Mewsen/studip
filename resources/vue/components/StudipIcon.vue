@@ -1,118 +1,80 @@
 <template>
-    <input
-        v-if="name"
+    <div
+        v-if="!name"
         v-bind="$attrs"
-        type="image"
-        :name="name"
-        :src="url"
-        :style="{ width: realSize + 'px', height: realSize + 'px' }"
+        v-html="svgContent"
         :role="ariaRole"
         :class="cssClass"
-        :alt="$attrs.alt ?? ''"
+        :style="computedStyle"
     />
-    <img v-else
-         v-bind="$attrs"
-         :src="url"
-         :style="{ width: realSize + 'px', height: realSize + 'px' }"
-         :role="ariaRole"
-         :class="cssClass"
-         :alt="$attrs.alt ?? ''"
-    />
+
+    <label v-else class="icon-button undecorated">
+        <input type="submit" hidden v-bind="$attrs">
+        <div v-html="svgContent" :role="ariaRole" :class="cssClass" :style="computedStyle" />
+        <span v-if="text">{{ text }}</span>
+    </label>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-
-function getCSSVariableValue(property: string): number {
-    const value = getComputedStyle(document.body).getPropertyValue(property);
-    return parseInt(value, 10);
-}
-
-const defaultIconSize: number = getCSSVariableValue('--icon-size-default');
-const inlineIconSize: number = getCSSVariableValue('--icon-size-inline');
+import iconLoader from "../../assets/javascripts/lib/icon-loader";
 
 export default defineComponent({
     name: 'studip-icon',
     props: {
-        ariaRole: {
-            type: String,
-            required: false,
-        },
-        name: {
-            type: String,
-            required: false,
-        },
-        role: {
-            type: String,
-            required: false,
-            default: 'clickable',
-        },
-        shape: {
-            type: String,
-            required: true,
-        },
-        size: {
-            type: Number,
-            required: false,
-            default: defaultIconSize,
-        },
-        inline: {
-            type: Boolean,
-            default: false
-        }
+        ariaRole: { type: String, required: false },
+        name: { type: String, required: false },
+        role: { type: String, required: false, default: 'clickable' },
+        shape: { type: String, required: true },
+        size: { type: Number, required: false, default: null },
+        inline: { type: Boolean, default: false },
+        text: { type: String, required: false }
+    },
+    data() {
+        return { svgContent: '' };
     },
     computed: {
-        realSize(): number | undefined {
-            if (this.inline) {
-                return inlineIconSize;
-            }
-            return Number(this.size) !== defaultIconSize ? this.size : undefined;
-        },
-        url(): string {
-            if (this.shape.indexOf('http') === 0) {
-                return this.shape;
-            }
-            var path = this.shape.split('+').reverse().join('/');
-            return `${window.STUDIP.ASSETS_URL}images/icons/${this.color}/${path}.svg`;
-        },
         color(): string {
-            switch (this.role) {
-                case 'info':
-                    return 'black';
+            const roleColors: Record<string, string> = {
+                accept: 'green',
+                attention: 'red',
+                clickable: 'blue',
+                info: 'black',
+                info_alt: 'white',
+                inactive: 'grey',
+                navigation: 'blue',
+                new: 'red',
+                sort: 'blue',
+                'status-green': 'green',
+                'status-red': 'red',
+                'status-yellow': 'yellow',
+            };
 
-                case 'inactive':
-                    return 'grey';
-
-                case 'accept':
-                case 'status-green':
-                    return 'green';
-
-                case 'attention':
-                case 'new':
-                case 'status-red':
-                    return 'red';
-
-                case 'info_alt':
-                    return 'white';
-
-                case 'status-yellow':
-                    return 'yellow';
-
-                case 'sort':
-                case 'clickable':
-                case 'navigation':
-                default:
-                    return 'blue';
-            }
+            return roleColors[this.role] ?? 'blue';
         },
-        cssClass(): Array<string> {
+        cssClass(): string[] {
             return [
                 'studip-icon',
                 this.inline ? 'studip-icon-inline' : '',
                 `icon-role-${this.role}`,
-                `icon-shape-${this.shape}`,
+                `icon-shape-${this.shape}`
             ];
+        },
+        computedStyle(): Record<string, string> {
+            return this.size
+                ? { width: `${this.size}px`, height: `${this.size}px` }
+                : {}; // Falls size nicht gesetzt ist, greift CSS mit --icon-size-default
         }
     },
+    watch: {
+        shape: {
+            immediate: true,
+            handler(shape) {
+                iconLoader.load(shape).then((svg: string) => {
+                    this.svgContent = svg;
+                });
+            }
+        }
+    }
 });
 </script>

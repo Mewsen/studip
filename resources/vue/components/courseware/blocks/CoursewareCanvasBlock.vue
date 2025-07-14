@@ -69,7 +69,6 @@
                             :title="$gettext('Textwerkzeug')"
                             @click="setTool('text')"
                         >
-                            T
                         </button>
                     </div>
                 </div>

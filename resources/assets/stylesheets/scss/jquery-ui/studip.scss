@@ -172,13 +172,14 @@ textarea.ui-resizable-handle.ui-resizable-s {
     background-color: var(--brand-color-light);
     color: var(--white);
 }
-
+$schedule-icon-path: icon-path(schedule, info);
 .hasDatepicker,
 [data-date-picker],
 .has-date-picker,
 [data-datetime-picker],
 .has-datetime-picker {
-    @include background-icon(schedule);
+    background-image: url("#{$schedule-icon-path}");
+    background-size: var(--icon-size-default);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 12ex;
@@ -187,10 +188,12 @@ textarea.ui-resizable-handle.ui-resizable-s {
         border-color: var(--brand-color-dark);
     }
 }
+$date-icon-path: icon-path(date, info);
 .hasTimepicker,
 [data-time-picker],
 .has-time-picker {
-    @include background-icon(date);
+    background-image: url("#{$date-icon-path}");
+    background-size: var(--icon-size-default);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 10ex;

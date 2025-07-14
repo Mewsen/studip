@@ -36,7 +36,7 @@
                     <a hidden download="<?= htmlReady($exercise->title) ?>.txt" target="_blank"></a>
                     <?= Studip\Button::create(_('Antwort herunterladen'), 'download', ['class' => 'vips_file_download']) ?>
                     <input hidden class="file_upload inline" type="file">
-                    <?= Studip\Button::create(_('Text in das Eingabefeld hochladen'), 'upload', ['class' => 'vips_file_upload']) ?>
+                    <?= Studip\Button::create(_('Text in das Eingabefeld hochladen'), 'upload', ['class' => 'upload']) ?>
                 <? else: ?>
                     <textarea name="answer[0]" class="character_input size-l" rows="20"><?= htmlReady($answer) ?></textarea>
                 <? endif ?>
@@ -97,7 +97,7 @@
                         <td>
                             <input type="hidden" name="file_ids[]" value="<?= $file_ref->id ?>">
                             <a href="<?= htmlReady($file_ref->getDownloadURL()) ?>">
-                                <?= Icon::create('file')->asImg(['title' => _('Datei herunterladen')]) ?>
+                                <?= Icon::create('file')->asSvg(['title' => _('Datei herunterladen')]) ?>
                                 <?= htmlReady($file_ref->name) ?>
                             </a>
                         </td>
@@ -121,7 +121,7 @@
         <tfoot>
             <tr>
                 <td colspan="5">
-                    <?= Studip\Button::create(_('Datei als Lösung hochladen'), '', ['class' => 'vips_file_upload', 'data-label' => _('%d Dateien ausgewählt')]) ?>
+                    <?= Studip\Button::create(_('Datei als Lösung hochladen'), '', ['class' => 'upload vips_file_upload', 'data-label' => _('%d Dateien ausgewählt')]) ?>
                     <span class="file_upload_hint" style="display: none;"><?= _('Klicken Sie auf „Speichern“, um die gewählten Dateien hochzuladen.') ?></span>
                     <input class="file_upload attach" style="display: none;" type="file" name="upload[]" multiple>
                 </td>

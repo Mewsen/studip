@@ -28,10 +28,10 @@
 
 body:not(.fixed) #navigation-level-1-items {
     > li.active {
-        @include border-beneath(var(--dark-gray-color-80));
+        @include border-beneath(var(--color--tabs-marker-active));
     }
     > li:not(.active) {
-        @include border-beneath(var(--dark-gray-color-40));
+        @include border-beneath(var(--color--tabs-marker-hover));
         &:not(:hover)::after {
             @include border-shrink;
         }
@@ -46,7 +46,7 @@ body:not(.fixed) #navigation-level-1-items {
     }
 
     .overflow li:hover {
-        @include border-beneath(var(--dark-gray-color-40), 2px, 3px);
+        @include border-beneath(var(--color--tabs-marker-hover), 2px, 3px);
         &::after {
             transform: translate(0, -4px);
         }
@@ -59,10 +59,10 @@ body:not(.fixed) #navigation-level-1-items {
             line-height: 25px;
         }
         &.current {
-            @include border-beneath(var(--dark-gray-color-80), -2px, 3px);
+            @include border-beneath(var(--color--tabs-marker-active), -2px, 3px);
         }
         &:not(.current) {
-            @include border-beneath(var(--dark-gray-color-40), -2px, 3px);
+            @include border-beneath(var(--color--tabs-marker-hover), -2px, 3px);
             &:not(:hover)::after {
                 @include border-shrink;
             }

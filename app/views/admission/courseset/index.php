@@ -57,18 +57,18 @@ if ($coursesets) {
                 </td>
                 <td class="actions">
                     <a class="load-in-new-row" href="<?= $controller->link_for('', ['course_set_details' => $courseset->getId()]); ?>">
-                        <?= Icon::create('info')->asImg(['title' => _('Weitere Informationen einblenden')]) ?>
+                        <?= Icon::create('info')->asSvg(['title' => _('Weitere Informationen einblenden')]) ?>
                     </a>
                     <? if ($courseset->isUserAllowedToEdit($GLOBALS['user']->id)) : ?>
                     <a href="<?= $controller->link_for('admission/courseset/copy/'.$courseset->getId()); ?>">
-                            <?= Icon::create('clipboard')->asImg(['title' => _('Anmeldeset kopieren'), "alt" => _('Anmeldeset kopieren')]); ?>
+                            <?= Icon::create('clipboard')->asSvg(['title' => _('Anmeldeset kopieren'), "alt" => _('Anmeldeset kopieren')]); ?>
                         </a>
                     <a href="<?= $controller->link_for('admission/courseset/configure/'.$courseset->getId()); ?>">
-                            <?= Icon::create('edit')->asImg(['title' => _('Anmeldeset bearbeiten')]) ?>
+                            <?= Icon::create('edit')->asSvg(['title' => _('Anmeldeset bearbeiten')]) ?>
                         </a>
                         <a href="<?= $controller->link_for('admission/courseset/delete/'. $courseset->getId(), ['really' => 1]) ?>"
                            data-confirm="<?= sprintf(_('Soll das Anmeldeset %s wirklich gelöscht werden?'), htmlReady($courseset->getName())) ?>">
-                            <?= Icon::create('trash')->asImg(['title' => _('Anmeldeset löschen')]) ?>
+                            <?= Icon::create('trash')->asSvg(['title' => _('Anmeldeset löschen')]) ?>
                         </a>
                      <? endif ?>
                 </td>

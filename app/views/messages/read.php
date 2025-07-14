@@ -52,9 +52,9 @@
                         <?= Icon::create('trash', 'clickable', ['title' => _("Schlagwort entfernen")])->asInput(["class" => 'text-bottom', "name" => 'remove_tag', "value" => $tag]) ?>
                     </span>
                 <? endforeach ?>
-                    <span>
-                        <input type="text" name="add_tag" style="width: 50px; opacity: 0.8;">
-                        <?= Icon::create('add', 'clickable', ['title' => _("Schlagwort hinzufügen")])->asInput(["class" => 'text-bottom']) ?>
+                    <span class="message-tags-wrapper">
+                        <input type="text" name="add_tag">
+                        <?= Icon::create('add', 'clickable', ['title' => _('Schlagwort hinzufügen')])->asInput() ?>
                     </span>
                 </form>
             </td>
@@ -67,8 +67,8 @@
     <?= formatReady($message["message"]) ?>
 </div>
 <? if($attachment_folder): ?>
-<h3><?= Icon::create('staple', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-bottom']) ?><?= _('Anhänge') ?></h3>
-    <table class="default sortable-table" data-sortlist="[[2, 0]]">
+    <table class="default sortable-table message-attachments" data-sortlist="[[2, 0]]">
+        <caption><?= _('Anhänge') ?></caption>
         <?= $this->render_partial('files/_files_thead') ?>
         <? foreach($attachment_folder->getFiles() as $file): ?>
             <? if ($file->isVisible($GLOBALS['user']->id)) : ?>

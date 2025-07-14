@@ -1,0 +1,99 @@
+.studip-color-picker {
+    position: relative;
+    display: inline-block;
+
+    .studip-color-picker-value {
+        width: 64px;
+        height: 24px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .color-picker-popup {
+        position: absolute;
+        z-index: 10;
+        top: 100%;
+        left: 0;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        min-width: 180px;
+    }
+
+    .tabs {
+        display: flex;
+        margin-bottom: 1rem;
+
+        button {
+            flex: 1;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+
+            &.active {
+                border-bottom-color: var(--color--tabs-marker-active);
+                font-weight: bold;
+            }
+        }
+    }
+
+    .palette-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 0fr);
+        gap: 8px;
+        margin-bottom: 1rem;
+
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border: 1px solid transparent;
+            cursor: pointer;
+
+            &.selected {
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    position: relative;
+                    top: -4px;
+                    outline: 2px solid var(--color--font-inverted);
+                    outline-offset: 10px;
+                }
+                &.inverted {
+                    &::before {
+                        outline: 2px solid var(--color--font-secondary);
+                    }
+                }
+            }
+            &.inverted {
+                border: 1px solid var(--color--font-secondary);
+            }
+        }
+    }
+
+    .actions {
+        text-align: right;
+    }
+
+    /* vue color */
+    .vc-chrome-picker {
+        background-color: unset;
+        background: unset;
+        border-radius: unset;
+        box-shadow: unset;
+        width: unset;
+        font-family: unset;
+    }
+    .active-color {
+        border-radius: unset;
+    }
+}
+
+
+label {
+    .studip-color-picker {
+        display: block;
+    }
+}

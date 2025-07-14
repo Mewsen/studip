@@ -140,7 +140,7 @@ if ($navigation) {
                                     aria-expanded="false"
                             >
                                 <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
-                                <?= Icon::create('notification2', Icon::ROLE_INFO) ?>
+                                <?= Icon::create('notification2', Icon::ROLE_INFO)->asSvg() ?>
                             </button>
                             <input type="checkbox" id="notification_checkbox">
                             <div class="list below" id="notification_list">
@@ -179,11 +179,11 @@ if ($navigation) {
                         <input type="hidden" name="user_config_submitted" value="1">
                         <div id="contrast">
                             <? if (!empty($_SESSION['contrast'])): ?>
-                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
                                 <button class="as-link" name="unset_contrast"><?= _('Normalen Kontrast aktivieren') ?></button>
                                 <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.'), false, false, true); ?>
                             <? else: ?>
-                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
                                 <button class="as-link" name="set_contrast"><?= _('Hohen Kontrast aktivieren') ?></button>
                                 <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
                                 Sie können sie in Ihren persönlichen Einstellungen ändern.'), false, false, true); ?>
@@ -197,13 +197,13 @@ if ($navigation) {
                 <li id="responsive-toggle-fullscreen">
                     <button class="styleless" id="fullscreen-off"
                             title="<?= _('Kompakte Navigation ausschalten') ?>">
-                        <?= Icon::create('screen-standard', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                        <?= Icon::create('screen-standard', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
                     </button>
                 </li>
                 <li id="responsive-toggle-focusmode">
                     <button class="styleless consuming_mode_trigger" id="focusmode-on"
                             title="<?= _('Vollbild aktivieren') ?>">
-                        <?= Icon::create('screen-full', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                        <?= Icon::create('screen-full', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
                     </button>
                 </li>
             </ul>
@@ -226,7 +226,7 @@ if ($navigation) {
                 <input type="checkbox" id="header-sink">
                 <label for="header-sink">
                     <a class="canvasready" href="#">
-                        <?= Icon::create('action', 'navigation')->asImg(28, [
+                        <?= Icon::create('action', 'navigation')->asSvg(28, [
                             'class'  => 'headericon original',
                             'title'  => '',
                             'alt'    => '',

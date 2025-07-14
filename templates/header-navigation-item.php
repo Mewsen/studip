@@ -17,7 +17,7 @@ $attr_str = arrayToHtmlAttributes($attributes);
 
 <li id="nav_<?= $path ?>"<? if ($nav->isActive()) : ?> class="active"<? endif ?>>
     <a href="<?= URLHelper::getLink($nav->getURL(), $link_params) ?>" <?= $attr_str ?>>
-        <?= $nav->getImage()->asImg(['class' => 'headericon original', 'title' => null]) ?>
+        <?= $nav->getImage()->asSvg(32, ['class' => 'headericon original', 'title' => null]) ?>
         <div class="navtitle"><?= htmlReady($nav->getTitle()) ?></div>
     </a>
 </li>

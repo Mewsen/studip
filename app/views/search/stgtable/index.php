@@ -20,7 +20,7 @@
                 <? foreach ($kategorien as $kat_id => $kategorie): ?>
                     <? if (!empty($stg[$kat_id])) : ?>
                 <td style="text-align: center;">
-                    <a href="<?= $controller->action_link('studiengang', $stg[$kat_id]) ?>"><?= Icon::create('info-circle-full', 'clickable', ['title' => _('Studiengang anzeigen')])->asImg(); ?></a>
+                    <a href="<?= $controller->action_link('studiengang', $stg[$kat_id]) ?>"><?= Icon::create('info-circle-full', 'clickable', ['title' => _('Studiengang anzeigen')])->asSvg(); ?></a>
                 </td>
                     <? else : ?>
                         <td></td>

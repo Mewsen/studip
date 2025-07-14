@@ -52,36 +52,34 @@ $icon-size: 20px;
     }
     .sidebar-widget,
     .sidebar-widget-placeholder {
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         border: none;
         margin: 15px 0 0;
         width: $sidebar-width;
     }
     .sidebar-widget-header {
-        background-color: var(--white);
-        color: var(--black);
+        background-color: var(--color--global-background);
+        color: var(--color--font-primary);
         font-weight: bold;
         padding: 4px;
         word-break: break-word;
     }
 
     .sidebar-widget-extra {
-        background-color: var(--white);
-        a {
+        background-color: var(--color--global-background);
+        a, a:link, a:visited {
             display: inline-block;
             height: $icon-size;
             width: $icon-size;
             padding: 4px;
-            border: solid thin var(--base-color);
+            color: var(--color--sidebar-item);
+            border: solid thin var(--color--sidebar-item);
             border-radius: 5px;
             margin-bottom: 4px;
 
             &:hover {
-                background-color: var(--base-color);
-
-                img {
-                    filter: brightness(100);
-                }
+                background-color: var(--color--sidebar-item);
+                color: var(--color--global-background);
             }
         }
     }
@@ -115,15 +113,19 @@ ul.widget-list {
         border-left: solid 4px var(--white);
 
         > *:not(label):not(.options-radio, .options-checkbox) {
-            padding: 4px 0 4px 28px;
+            display: inline-flex;
+            flex-direction: row;
+            padding: 4px 0 4px 2px;
             line-height: $icon-size;
+            gap: 6px;
+            width: 100%;
         }
         
         .label-text {
             text-indent: 0;
         }
 
-        &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a):not(:last-child) {
+        &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a:not(:last-child, .options-radio, .options-checkbox)) {
             border-bottom: solid thin  var(--color--sidebar-divider);
         }
 
@@ -133,12 +135,13 @@ ul.widget-list {
             }
         }
 
-        &:hover:not(:has(>label)):not(:has(button.options-radio)) {
+        &:hover:not(:has(>label)):not(:has(.options-checkbox, .options-radio)):not(.active):has(button, a) {
             background-color: var(--color--sidebar-active);
             border-left-color: var(--color--sidebar-marker-active);
 
             a, button {
-                color: var(--color--font-primary);
+                color: var(--color--sidebar-item-hover);
+                text-decoration: none;
             }
         }
 
@@ -162,6 +165,11 @@ ul.widget-list {
         @extend .as-link;
         text-align: left;
         width: 100%;
+        color: var(--color--sidebar-item);
+    }
+
+    a, a:link, a:visited {
+        color: var(--color--sidebar-item);
     }
 
     &.sidebar-navigation,
@@ -194,26 +202,21 @@ div#sidebar-navigation {
         cursor: not-allowed;
         font-weight: lighter;
     }
-    &.sidebar-navigation > li.active {
-        background-color: var(--color--sidebar-active);
-        border-left: solid 4px var(--color--sidebar-marker-active-navigation);
-        margin-left: -4px;
-        padding-left: 1px;
 
-        a {
-            color: var(--black);
-            padding-left: 4px;
-        }
-    }
+    &.sidebar-navigation > li.active,
     &.sidebar-views > li.active {
         background-color: var(--color--sidebar-active);
-        border-left: solid 4px var(--color--sidebar-marker-active-view);
+        border-left: solid 4px var(--color--sidebar-item);
         margin-left: -4px;
         padding-left: 1px;
 
         a, button {
-            color: var(--base-color);
+            color: var(--color--font-primary);
             padding-left: 5px;
+
+            &:hover {
+                text-decoration: none;
+            }
         }
     }
     &.sidebar-navigation > li,
@@ -241,7 +244,7 @@ div#sidebar-navigation {
 }
 
 .sidebar-widget {
-    background: var(--white);
+    background: var(--color--global-background);
 
     .widget-options {
         list-style: none;
@@ -266,36 +269,34 @@ div#sidebar-navigation {
         }
 
         .options-checkbox {
-            background-repeat: no-repeat;
-            background-position: 2px center;
             display: block;
-            padding-left: 28px;
+            margin-left: 2px;
 
             &.options-checked {
-                @include background-icon(checkbox-checked);
+                @include icon(before, checkbox-checked, $padding: 6px, $align: middle);
             }
             &.options-unchecked {
-                @include background-icon(checkbox-unchecked);
+                @include icon(before, checkbox-unchecked, $padding: 6px, $align: middle);
             }
             &:hover {
-                color: var(--color--font-primary);
+                color: var(--color--sidebar-item-hover);
+                text-decoration: none;
             }
         }
 
         .options-radio {
-            background-repeat: no-repeat;
-            background-position: 2px center;
             display: block;
-            padding-left: 28px;
+            margin-left: 2px;
 
             &.options-checked {
-                @include background-icon(radiobutton-checked);
+                @include icon(before, radiobutton-checked, $padding: 6px, $align: middle);
             }
             &.options-unchecked {
-                @include background-icon(radiobutton-unchecked);
+                @include icon(before, radiobutton-unchecked, $padding: 6px, $align: middle);
             }
             &:hover {
-                color: var(--color--font-primary);
+                color: var(--color--sidebar-item-hover);
+                text-decoration: none;
             }
         }
     }
@@ -352,10 +353,10 @@ select.sidebar-selectlist {
                 }
 
                 .submit-search {
-                    background-color: var(--color--button-background);
+                    background-color: var(--color--global-background);
                     border: 1px solid var(--color--input-field-border);
                     border-radius: 0;
-                    color: transparent;
+                    color: var(--color--sidebar-item);
                     cursor: pointer;
                     font: 0/0 a;
                     text-shadow: none;
@@ -369,10 +370,9 @@ select.sidebar-selectlist {
                     display: inline-block;
                     cursor: pointer;
                     order: 2;
-                    height: 100%;
+                    height: var(--icon-size);
                     box-sizing: border-box;
-                    margin-right: 2px;
-                    margin-left: -22px;
+                    margin: auto 2px auto -22px;
 
                     img {
                         padding-top: 4px;

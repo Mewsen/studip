@@ -52,10 +52,10 @@
                         <td class="actions">
                             <a href="<?= URLHelper::getURL('dispatch.php/help_content/edit/' . $help_content_id) ?>" <?= tooltip(_('Hilfe-Text bearbeiten')) ?>
                                data-dialog="size=auto;reload-on-close">
-                                <?= Icon::create('edit', 'clickable')->asImg() ?></a>
+                                <?= Icon::create('edit', 'clickable')->asSvg() ?></a>
                             <a href="<?= URLHelper::getURL('dispatch.php/help_content/delete/' . $help_content_id) ?>" <?= tooltip(_('Hilfe-Text löschen')) ?>
                                data-dialog="size=auto;reload-on-close">
-                                <?= Icon::create('trash', 'clickable')->asImg() ?></a>
+                                <?= Icon::create('trash', 'clickable')->asSvg() ?></a>
                         </td>
                     </tr>
                 <? endforeach ?>

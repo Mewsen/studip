@@ -46,7 +46,7 @@
             </td>
             <td class="actions">
                 <a href="<?= $controller->cancel($slot->block, $slot, 1) ?>" data-dialog="size=auto">
-                    <?= Icon::create('trash')->asImg(tooltip2(_('Termin absagen'))) ?>
+                    <?= Icon::create('trash')->asSvg(tooltip2(_('Termin absagen'))) ?>
                 </a>
             </td>
         </tr>

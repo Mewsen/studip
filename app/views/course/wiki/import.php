@@ -29,14 +29,14 @@
                 <? if ($bad_course_search): ?>
                     <a href="<?= $controller->import() ?>"
                        data-dialog="1">
-                        <?= Icon::create('decline')->asImg([
+                        <?= Icon::create('decline')->asSvg([
                             'class'   => 'text-bottom',
                             'title'   => _('Suche zurücksetzen'),
                             'onclick' => "STUDIP.QuickSearch.reset('wiki_import_form', 'selected_range_id');"
                         ]) ?>
                     </a>
                 <? else : ?>
-                    <?= Icon::create('search')->asImg([
+                    <?= Icon::create('search')->asSvg([
                         'class'   => 'text-bottom',
                         'title'   => _('Suche starten'),
                         'onclick' => "jQuery(this).closest('form').submit();"

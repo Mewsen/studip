@@ -176,8 +176,11 @@ html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
             }
         }
 
-        &:checked + label::before {
-            @include background-icon(checkbox-checked, info_alt, 100%);
+        &:checked + label {
+            @include icon(before, checkbox-checked, $size: 100%);
+            &::before {
+                background-color: var(--color--font-inverted);
+            }
         }
     }
 }
@@ -196,10 +199,16 @@ html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
     right: 0;
 
     &.white {
-        @include background-icon(group4, info_alt, 100%);
+        @include icon(before, group4, $size: 100%);
+        &::before {
+            background-color: var(--color--font-inverted);
+        }
     }
     &.black {
-        @include background-icon(group4, info, 100%);
+        @include icon(before, group4, $size: 100%);
+        &::before {
+            background-color: var(--color--font-primary);
+        }
     }
 }
 

@@ -3,12 +3,12 @@
 .cw-block-iframe {
     .cw-block-content {
         iframe {
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--courseware-border-default);
             width: calc(100% - 2px);
         }
 
         .cw-block-iframe-cc-data {
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--courseware-border-default);
             border-top: none;
             margin-top: -6px;
             padding-top: 10px;

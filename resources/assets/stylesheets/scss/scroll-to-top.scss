@@ -8,7 +8,8 @@ body #scroll-to-top {
     margin-right: $scroll-to-top-margin;
     margin-bottom: $scroll-to-top-margin;
     padding: 10px;
-    background: var(--base-color);
+    background: var(--color--highlight);
+    color: var(--color--highlight-contrast);
     border: 1px solid transparent;
     background-clip: padding-box;
     cursor: pointer;
@@ -16,12 +17,9 @@ body #scroll-to-top {
     position: fixed;
     right: 0;
     bottom: 0;
-    transition: all 250ms ease-in-out;
+    transition: bottom 250ms ease-in-out;
     z-index: 1;
-    &:hover {
-        background: var(--brand-color-darker);
-        border-radius: 2px;
-    }
+
     &.hide {
         bottom: calc( 0px - #{$scroll-to-top-height + $scroll-to-top-margin});
     }

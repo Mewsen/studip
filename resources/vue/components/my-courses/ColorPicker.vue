@@ -93,9 +93,12 @@ export default {
     }
 
     .color-selected {
-        @include mixins.background-icon(accept, info, 32px);
-        background-position: center;
-        background-repeat: no-repeat;
+        @include mixins.icon(after, accept, $size: 32px);
+        &::after {
+            display: block;
+            margin: auto;
+            height: 100%;
+        }
     }
 }
 </style>

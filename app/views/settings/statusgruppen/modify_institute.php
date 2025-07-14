@@ -58,7 +58,7 @@ $entries = (array)DataFieldEntry::getDataFieldEntries([$user->user_id, $inst_id]
     <label>
 
         <? if ($institute['externdefault']) : ?>
-            <?= Icon::create('accept', 'inactive')->asImg(['class' => 'text-top']); ?>
+            <?= Icon::create('accept', 'inactive')->asSvg(['class' => 'text-top']); ?>
             <input type="hidden" name="default_institute" value="1">
         <? else : ?>
             <input type="checkbox" id="default_institute" name="default_institute" value="1"

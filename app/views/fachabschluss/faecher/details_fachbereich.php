@@ -12,7 +12,7 @@
                 <td class="actions">
                     <? if (MvvPerm::havePermWrite($fach)) : ?>
                         <a href="<?= $controller->action_link('fach/' . $fach->id) ?>">
-                            <?= Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Fach bearbeiten')])->asImg(); ?>
+                            <?= Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Fach bearbeiten')])->asSvg(); ?>
                         </a>
                     <? endif; ?>
                 </td>

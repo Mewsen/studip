@@ -147,12 +147,10 @@ STUDIP.MVV.CourseWizard = {
             const mvv_ids = values.id.split('-');
 
             item.addClass('lvgroup-tree-' + values.id);
-            const assign = $('<input>')
-                .attr('type', 'image')
+            const assign = $('<button>')
+                .attr('type', 'button')
                 .attr('name', 'assign[' + values.id + ']')
-                .attr('src', STUDIP.ASSETS_URL + 'images/icons/yellow/arr_2left.svg')
-                .attr('width', '16')
-                .height('height', '16')
+                .addClass('btn-icon btn-icon--add btn-icon--inline')
                 .attr('onclick', "return STUDIP.MVV.CourseWizard.assignNode('" + values.id + "')");
             if (values.assignable) {
                 item.append(assign);

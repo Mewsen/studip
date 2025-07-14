@@ -11,11 +11,11 @@
     border-bottom: none;
 
     button {
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         border: none;
         padding: 1em 0 4px 0;
         margin: 0 7px 0 21px;
-        color: var(--base-color);
+        color: var(--color--highlight);
         cursor: pointer;
         text-align: center;
         flex-grow: 1;
@@ -28,14 +28,20 @@
             margin-left: -14px;
             width: calc(100% + 28px);
             content: '';
-            border-bottom: solid 3px var(--dark-gray-color-75);
+            border-bottom: solid 3px var(--color--tabs-marker-hover);
             transform: scaleX(0);
             transition: transform var(--transition-duration) ease-in-out;
         }
 
+        &.is-active {
+            &:after {
+                border-bottom: solid 3px var(--color--tabs-marker-active);
+            }
+        }
+
         &.is-active,
         &:hover {
-            color: var(--black);
+            color: var(--color--font-primary);
             &:after {
                 transform: scaleX(1);
             }
@@ -43,44 +49,22 @@
 
         @each $icon in $icons {
             &.cw-tabs-nav-icon-text-#{$icon} {
-                &::before {
-                    @include background-icon($icon);
-                    background-repeat: no-repeat;
-                    background-position: left bottom;
-
-                    display: inline-block;
-                    height: var(--icon-size-inline);
-                    width: var(--icon-size-inline);
-                    margin-bottom: -2px;
-                    padding-left: 4px;
-                    content: '';
-                }
+                @include icon(before, $icon, $padding: 4px, $align: middle);
             }
             &.is-active.cw-tabs-nav-icon-text-#{$icon},
             &.cw-tabs-nav-icon-text-#{$icon}:hover {
-                &::before {
-                    @include background-icon($icon, info);
-                }
+                color: var(--color--font-primary);
             }
         }
+
+        $cw-tabs-nav-icon-solo-size: 24px;
         @each $icon in $icons {
             &.cw-tabs-nav-icon-solo-#{$icon} {
-                &::before {
-                    display: inline-block;
-                    height: 24px;
-                    width: 24px;
-                    content: '';
-
-                    @include background-icon($icon, $size: 24px);
-                    background-repeat: no-repeat;
-                    background-position: center;
-                }
+                @include icon(before, $icon, $size: $cw-tabs-nav-icon-solo-size);
             }
             &.is-active.cw-tabs-nav-icon-solo-#{$icon},
             &.cw-tabs-nav-icon-solo-#{$icon}:hover {
-                &::before {
-                    @include background-icon($icon, info, 24px);
-                }
+                color: var(--color--font-primary);
             }
         }
     }

@@ -3,12 +3,12 @@
 
     <? if ($thread['user_id'] === $GLOBALS['user']->id || $GLOBALS['perm']->have_perm("root")) : ?>
         <div class="center blubber-edit-icons">
-            <a href="<?= URLHelper::getLink("dispatch.php/blubber/compose/".$thread->getId()) ?>"
+            <a href="<?= URLHelper::getLink('dispatch.php/blubber/compose/'.$thread->getId()) ?>"
                data-dialog
                title="<?= _('Blubber bearbeiten') ?>">
-                <?= Icon::create('edit')->asImg(30) ?>
+                <?= Icon::create('edit')->asSvg(30) ?>
             </a>
-            <form action="<?= URLHelper::getLink("dispatch.php/blubber/delete/".$thread->getId()) ?>"
+            <form action="<?= URLHelper::getLink('dispatch.php/blubber/delete/'.$thread->getId()) ?>"
                   method="post"
                   data-confirm="<?= _('Wirklich löschen?') ?>">
                 <?= CSRFProtection::tokenTag() ?>

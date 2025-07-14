@@ -108,7 +108,7 @@ div.file_select_possibilities,
             cursor: pointer;
             background-color: transparent;
             margin: 10px;
-            border: thin solid var(--content-color-20);
+            border: thin solid var(--color--tile-border);
             padding: 10px;
             width: $width;
             min-width: $width;
@@ -122,15 +122,23 @@ div.file_select_possibilities,
             justify-content: space-around;
             align-items: center;
             text-align: center;
-            > img {
+            color: var(--color--highlight);
+            > svg {
                 margin-left: auto;
                 margin-right: auto;
             }
 
-            button img {
+            button svg {
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
+            }
+
+            &:hover {
+                border-color: var(--color--highlight);
+                color: var(--color--highlight-hover);
+                text-decoration: none;
+
             }
         }
 
@@ -169,7 +177,7 @@ div.file_select_possibilities,
         font-size:0.7em;
         cursor: pointer;
 
-        img {
+        svg {
             width: 40%;
             height: 40%;
             display: block;
@@ -190,10 +198,6 @@ div.file_select_possibilities,
         &:checked + label {
             background-color: var(--brand-color-darker);
             color: var(--contrast-content-white);
-
-            img {
-                filter: invert(100%) brightness(200%);
-            }
         }
     }
 

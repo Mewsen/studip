@@ -19,7 +19,7 @@
            placeholder="<?= $beschriftung && !$defaultID ? htmlReady($beschriftung) : '' ?>">
 <? if ($withButton): ?>
     <? if ($box_align !== 'left'): ?>
-        <input type="submit" value="<?= _('Suche starten') ?>" name="<?= htmlReady($search_button_name) ?>">
+        <?= Icon::create('search')->asInput(['type' => 'submit', 'value' =>  _('Suche starten'), 'name' => htmlReady($search_button_name)]) ?>
     <? endif; ?>
 </div>
 <? endif ?>

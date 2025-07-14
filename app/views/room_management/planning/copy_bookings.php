@@ -209,7 +209,7 @@
                                 <?= Icon::create(
                                     $data['available'] ? 'accept' : 'decline',
                                     $data['available'] ? Icon::ROLE_STATUS_GREEN : Icon::ROLE_STATUS_RED
-                                )->asImg(['class' => 'text-bottom']) ?>
+                                )->asSvg(['class' => 'text-bottom']) ?>
                             </td>
                         </tr>
                     <? endforeach ?>

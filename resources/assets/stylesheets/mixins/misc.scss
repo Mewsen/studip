@@ -6,7 +6,7 @@
     &::before,
     &::after {
         display: table;
-        content: "";
+        content: '';
         // Fixes Opera/contenteditable bug:
         // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
         line-height: 0;
@@ -16,7 +16,6 @@
     }
 }
 
-
 @mixin size($height, $width) {
     width: $width;
     height: $height;
@@ -25,14 +24,54 @@
     @include size($size, $size);
 }
 
-// https://codepen.io/kennyglenn/pen/kxqWjP
-@function text-contrast($color, $dark, $light, $threshold: 51) {
-    @return if(lightness($color) < $threshold, $light, $dark)
-}
-
-
 @mixin vertical-three-colors($startColor: #00b3ee, $midColor: #7a43b6, $colorStop: 50%, $endColor: #c3325f) {
     background-color: mix($midColor, $endColor, 80%);
     background-image: linear-gradient($startColor, $midColor $colorStop, $endColor);
     background-repeat: no-repeat;
+}
+
+@mixin highlight-anchor {
+    a:not(.button) {
+        color: var(--color--highlight);
+
+        &:hover {
+            color: var(--color--highlight-hover);
+            text-decoration: none;
+        }
+    }
+}
+
+@function luminance($value) {
+    @if $value <= 0.03928 {
+        @return $value / 12.92;
+    } @else {
+        @return (($value + 0.055) / 1.055) * (($value + 0.055) / 1.055);
+    }
+}
+
+@function relative-luminance($color) {
+    $rgb: red($color) / 255, green($color) / 255, blue($color) / 255;
+
+    @return luminance(nth($rgb, 1)) * 0.2126 + luminance(nth($rgb, 2)) * 0.7152 + luminance(nth($rgb, 3)) * 0.0722;
+}
+
+@function contrast-ratio($color1, $color2) {
+    $luminance1: relative-luminance($color1) + 0.05;
+    $luminance2: relative-luminance($color2) + 0.05;
+
+    @if $luminance1 > $luminance2 {
+        @return $luminance1 / $luminance2;
+    } @else {
+        @return $luminance2 / $luminance1;
+    }
+}
+
+@function text-contrast($color, $dark, $light, $threshold: 4.5) {
+    $ratio: contrast-ratio($color, $dark);
+
+    @if $ratio < $threshold {
+        @return $light;
+    } @else {
+        @return $dark;
+    }
 }

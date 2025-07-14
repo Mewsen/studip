@@ -15,16 +15,24 @@
                     :class="[currentStyle, currentHeight, hasGradient ? currentGradient : '']"
                     :style="headlineStyle"
                 >
-                    <div class="cw-block-headline-iconbox" :class="['border-' + currentIconColor, currentHeight]">
+                    <div
+                        class="cw-block-headline-iconbox"
+                        :class="[currentHeight]"
+                        :style="{ '--cw-headline-border-color': currentTextColor }"
+                    >
                         <div
                             class="icon-layer"
-                            :class="['icon-' + currentIconColor + '-' + currentIcon, currentHeight]"
+                            :class="['icon-name-' + currentIcon, currentHeight]"
+                            :style="textStyle"
                         ></div>
                     </div>
                     <div
                         class="cw-block-headline-textbox"
-                        :class="['border-' + currentIconColor, currentHeight]"
-                        :style="currentStyle === 'ribbon' ? headlineTextboxStyle.rgba : {}"
+                        :class="[currentHeight]"
+                        :style="{
+                            ...(currentStyle === 'ribbon' ? headlineTextboxStyle.rgba : {}),
+                            '--cw-headline-border-color': currentTextColor,
+                        }"
                     >
                         <div
                             class="cw-block-headline-title"
@@ -170,39 +178,6 @@
                                         <template #option="option">
                                             <studip-icon :shape="option.label" />
                                             <span class="vs__option-with-icon">{{ option.label }}</span>
-                                        </template>
-                                    </studip-select>
-                                </label>
-                                <label>
-                                    {{ $gettext('Icon-Farbe') }}
-                                    <studip-select
-                                        :options="iconColors"
-                                        label="name"
-                                        :reduce="(iconColor) => iconColor.class"
-                                        :clearable="false"
-                                        v-model="currentIconColor"
-                                    >
-                                        <template #open-indicator="{ selectAttributes }">
-                                            <span v-bind="selectAttributes"
-                                                ><studip-icon shape="arr_1down" :size="10"
-                                            /></span>
-                                        </template>
-                                        <template #no-options>
-                                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                                        </template>
-                                        <template #selected-option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
-                                        </template>
-                                        <template #option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
                                         </template>
                                     </studip-select>
                                 </label>
@@ -360,7 +335,6 @@ export default {
             currentTextColor: '',
             currentTextBackgroundColor: '',
             currentIcon: '',
-            currentIconColor: '',
             currentBackgroundType: '',
             currentBackgroundImageId: '',
             currentBackgroundImageType: '',
@@ -409,9 +383,6 @@ export default {
         icon() {
             return this.block?.attributes?.payload?.icon;
         },
-        iconColor() {
-            return this.block?.attributes?.payload?.icon_color;
-        },
         backgroundImageId() {
             return this.block?.attributes?.payload?.background_image_id;
         },
@@ -432,9 +403,6 @@ export default {
         },
         colors() {
             return this.mixinColors;
-        },
-        iconColors() {
-            return this.mixinColors.filter((color) => color.icon && color.class !== 'studip-lightblue');
         },
         textStyle() {
             let style = {};
@@ -508,7 +476,6 @@ export default {
             this.currentTextColor = this.textColor;
             this.currentTextBackgroundColor = this.textBackgroundColor;
             this.currentIcon = this.icon;
-            this.currentIconColor = this.iconColor;
             this.currentBackgroundType = this.backgroundType;
             this.currentBackgroundImageId = this.backgroundImageId;
             this.currentBackgroundImageType = this.backgroundImageType ?? 'file-refs';
@@ -579,7 +546,6 @@ export default {
             attributes.payload.text_color = this.currentTextColor;
             attributes.payload.text_background_color = this.currentTextBackgroundColor;
             attributes.payload.icon = this.currentIcon;
-            attributes.payload.icon_color = this.currentIconColor;
             attributes.payload.background_type = this.currentBackgroundType;
             attributes.payload.background_color = '';
             attributes.payload.gradient = '';
@@ -602,45 +568,6 @@ export default {
                 blockId: this.block.id,
                 containerId: this.block.relationships.container.data.id,
             });
-        },
-        calcComplement(color) {
-            const RGB = this.calcRGB(color);
-
-            return '#' + this.compToHex(255 - RGB.r) + this.compToHex(255 - RGB.g) + this.compToHex(255 - RGB.b);
-        },
-        calcIconColor(color) {
-            const RGB = this.calcRGB(color);
-
-            return (RGB.r + RGB.g + RGB.b) / 3 > 129 ? 'black' : 'white';
-        },
-        calcRGB(color) {
-            color = color.slice(1); // remove #
-            let val = parseInt(color, 16);
-            let r = val >> 16;
-            let g = (val >> 8) & 0x00ff;
-            let b = val & 0x0000ff;
-
-            if (g > 255) {
-                g = 255;
-            } else if (g < 0) {
-                g = 0;
-            }
-            if (b > 255) {
-                b = 255;
-            } else if (b < 0) {
-                b = 0;
-            }
-
-            return { r: r, g: g, b: b };
-        },
-        compToHex(comp) {
-            let hex = comp.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        },
-        hexToRgbA(hex, a) {
-            const RGB = this.calcRGB(hex);
-
-            return 'rgba(' + RGB.r + ',' + RGB.g + ',' + RGB.b + ',' + a + ')';
         },
         onSelectStockImage(stockImage) {
             this.updateCurrentBackgroundImage({

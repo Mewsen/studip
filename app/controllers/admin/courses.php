@@ -634,7 +634,7 @@ class Admin_CoursesController extends AuthenticatedController
             $d['name'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 . htmlReady($course->name)
                 .'</a> '
-                .'<a href="'.URLHelper::getLink('dispatch.php/course/details/index/'. $course->id).'" data-dialog><button class="undecorated">'.Icon::create('info-circle', Icon::ROLE_INACTIVE)->asImg($params).'</button></a> '
+                .'<a href="'.URLHelper::getLink('dispatch.php/course/details/index/'. $course->id).'" data-dialog><button class="undecorated">'.Icon::create('info-circle', Icon::ROLE_INACTIVE)->asSvg($params).'</button></a> '
                 .(!$course->visible ? _('(versteckt)') : '');
         }
         if (in_array('number', $activated_fields)) {
@@ -705,7 +705,7 @@ class Admin_CoursesController extends AuthenticatedController
             foreach ($icons as $icon) {
                 $d['contents'] .= '<li class="my-courses-navigation-item '. ($icon->getImage()->signalsAttention() ? 'my-courses-navigation-important' : '').'">
                         <a href="'. URLHelper::getLink('dispatch.php/course/go', ['to' => $course->id, 'redirect_to' => $icon->getURL()]).'"'. ($icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : '') .'>
-                            '. $icon->getImage()->asImg() .'
+                            '. $icon->getImage()->asSvg() .'
                         </a>
                     </li>';
             }

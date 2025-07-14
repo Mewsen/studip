@@ -21,13 +21,14 @@
         background-color: var(--color--content-box-header);
         padding: 4px 10px 4px 22px;
 
+        @include highlight-anchor;
         .cw-container-header-toggle {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             width: calc(100% - 40px);
         }
 
         span {
-            color: var(--base-color);
             font-weight: 700;
             line-height: 2em;
             font-size: 16px;
@@ -35,11 +36,6 @@
             &.cw-default-container-blocker-warning {
                 font-weight: 400;
             }
-        }
-
-        img {
-            vertical-align: middle;
-            margin-bottom: 2px;
         }
 
         .cw-container-actions {

@@ -42,7 +42,7 @@
                               tabindex="0"
                               data-tooltip
                               aria-label="<?= htmlReady($booking_status_message) ?>">
-                            <?= $booking_status_icon->asImg(['class' => 'text-bottom']) ?>
+                            <?= $booking_status_icon->asSvg(['class' => 'text-bottom']) ?>
                             <span class="tooltip-content"><?= $booking_status_message ?></span>
                         </span>
                         <a href="<?= ContentBoxHelper::href($metadate_id) ?>">

@@ -18,7 +18,7 @@
             <ul class="list-unstyled">
                 <? foreach ($category->property_definitions as $definition): ?>
                     <li>
-                        <?= Icon::create('checkbox-checked')->asImg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('checkbox-checked')->asSvg(['class' => 'text-bottom']) ?>
                         <? if ($definition->system): ?>
                             <strong><?= htmlReady($definition) ?></strong>
                         <? else: ?>

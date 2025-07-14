@@ -86,9 +86,9 @@
             <label for="result_<?= htmlReady($result_id) ?>">
                 <section class="contentbox">
                     <header>
-                        <span class="title no-overflow"><?= $result->getIcon()->asImg() ?> <?= $result->getTitle('long-comma') ?></span>
+                        <span class="title no-overflow"><?= $result->getIcon()->asSvg() ?> <?= $result->getTitle('long-comma') ?></span>
                         <nav>
-                            <?= Icon::create('accept', 'status-green')->asImg(
+                            <?= Icon::create('accept', 'status-green')->asSvg(
                                 20,
                                 ['class' => 'hidden-checkbox-checked-icon']
                             ) ?>
@@ -156,7 +156,7 @@
 <? endif ?>
 <? if (!empty($library_plugins)) : ?>
     <section class="big-help-box">
-        <?= Icon::create('support')->asImg(96, ['class' => 'icon']) ?>
+        <?= Icon::create('support')->asSvg(96, ['class' => 'icon']) ?>
         <div class="text">
             <strong><?= _('Passendes Dokument nicht gefunden?') ?></strong>
             <p><?= _('Gerne unterstützen wir Sie bei der Suche nach Dokumenten.') ?></p>

@@ -223,7 +223,7 @@ export default {
             }
             h1,
             p {
-                color: #fff;
+                color: var(--color--font-inverted);
                 margin-right: 2em;
             }
         }

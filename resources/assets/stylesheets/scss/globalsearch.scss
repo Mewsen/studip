@@ -25,6 +25,11 @@
         display: none;
     }
 
+    .icon-button {
+        margin-left: 4px;
+        color: var(--color--font-inverted);
+    }
+
     #globalsearch-input {
         flex: 1;
         border: none;
@@ -93,12 +98,10 @@
         margin-left: -5px;
         border-radius: var(--border-radius-default);
 
-        a {
-            color: var(--base-color);
+        @include highlight-anchor;
 
-            &:hover {
-                color: var(--active-color);
-            }
+        article a:hover {
+            text-decoration: none;
         }
 
         section {
@@ -120,6 +123,10 @@
         width: 400px;
         background-color: var(--white);
 
+        .icon-button {
+            color: var(--color--highlight);
+        }
+
         #globalsearch-input {
             background-color: var(--color--header-inverted);
             color: var(--color--font-primary);
@@ -127,11 +134,6 @@
             &::placeholder {
                 color: var(--color--font-primary);
             }
-        }
-
-        #globalsearch-clear,
-        #globalsearch-icon {
-            filter: brightness(0) saturate(100%) invert(25%) sepia(7%) saturate(6410%) hue-rotate(181deg) brightness(95%) contrast(88%);
         }
 
         #globalsearch-list {
@@ -270,7 +272,7 @@
                     margin: 20px 0 0 -32px;
 
                     a {
-                        @include background-icon(arr_1right, $size: 24px);
+                        @include icon(before, arr_1right, $size: 24px, $align: middle);
                         @include square(24px);
                         display: inline-block;
                     }

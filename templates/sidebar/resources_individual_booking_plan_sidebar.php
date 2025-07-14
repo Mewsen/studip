@@ -11,7 +11,7 @@
             <input type="color" value="#000000" class="big-colour-input">
         </div>
     <? endfor ?>
-    <?= Icon::create('print')->asImg(Icon::SIZE_LARGE, [
+    <?= Icon::create('print')->asSvg(Icon::SIZE_LARGE, [
         'class' => 'text-bottom print-action',
         'title' => _('Individuelle Druckansicht drucken'),
         'onclick' => 'javascript:window.print();'

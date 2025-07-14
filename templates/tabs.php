@@ -23,14 +23,14 @@ foreach (Navigation::getItem("/")->getSubNavigation() as $path => $nav) {
                         ?>
                         <a href="<?= URLHelper::getLink($nav->getURL()) ?>" <?= arrayToHtmlAttributes($attr) ?>>
                             <? if ($image = $nav->getImage()) : ?>
-                                <?= $image->asImg(['class' => "tab-icon", 'title' => $nav->getTitle() ? $nav->getTitle() : $nav->getDescription()]) ?>
+                                <?= $image->asSvg(['class' => "tab-icon", 'title' => $nav->getTitle() ? $nav->getTitle() : $nav->getDescription()]) ?>
                             <? endif ?>
                             <span title="<?= $nav->getDescription() ? htmlReady($nav->getDescription()) : htmlReady($nav->getTitle())?>" class="tab-title"><?= htmlReady($nav->getTitle()) ?></span>
                         </a>
                     <? else: ?>
                         <span class="quiet tab-title">
                             <? if ($image = $nav->getImage()) : ?>
-                                <?= $image->asImg(['class' => "tab-icon", 'title' => $nav->getTitle()]) ?>
+                                <?= $image->asSvg(['class' => "tab-icon", 'title' => $nav->getTitle()]) ?>
                             <? endif ?>
                             <?= htmlReady($nav->getTitle()) ?>
                         </span>
@@ -47,7 +47,7 @@ foreach (Navigation::getItem("/")->getSubNavigation() as $path => $nav) {
     <div id="non-responsive-toggle-fullscreen">
         <button class="styleless" id="fullscreen-on"
                 title="<?= _('Kompakte Navigation aktivieren') ?>">
-            <?= Icon::create('screen-compact')->asImg(24) ?>
+            <?= Icon::create('screen-compact')->asSvg(24) ?>
         </button>
     </div>
     <? endif ?>

@@ -35,7 +35,6 @@ import Fullscreen from './lib/fullscreen.js';
 import GlobalSearch from './lib/global_search.js';
 import HeaderMagic from './lib/header_magic.js';
 import i18n from './lib/i18n.js';
-import InlineEditing from './lib/inline-editing.js';
 import JSONAPI, { jsonapi } from './lib/jsonapi.ts';
 import JSUpdater from './lib/jsupdater.js';
 import Lightbox from './lib/lightbox.js';
@@ -116,7 +115,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     GlobalSearch,
     HeaderMagic,
     i18n,
-    InlineEditing,
     jsonapi,
     JSONAPI,
     JSUpdater,

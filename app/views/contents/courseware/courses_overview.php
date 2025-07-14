@@ -25,7 +25,7 @@
                 <li class="tile <?= htmlReady($element['payload']['color'])?>">
                     <a href="<?= URLHelper::getLink('dispatch.php/course/courseware/?cid='.$element['range_id'].'#/structural_element/'.$element['id']) ?>">
                         <? if ($element->getImageUrl() === null) : ?>
-                            <div class="preview-image default-image" style="<?= Icon::create('courseware')->asCSS(112) ?>">
+                            <div class="preview-image default-image" style="background-image: url(<?= Icon::create('courseware')->asImagePath() ?>); background-size: 112px" >
                             </div>
                         <? else : ?>
                             <div class="preview-image" style="background-image: url(<?= htmlReady($element->getImageUrl()) ?>)" ></div>

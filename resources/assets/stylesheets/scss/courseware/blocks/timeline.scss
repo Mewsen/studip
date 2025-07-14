@@ -21,7 +21,7 @@
         content:"";
         width: 3px;
         height: 100%;
-        background: var(--content-color-40);
+        background: var(--color--courseware-border-default);
         left: 50%;
         top: 0;
         position: absolute;
@@ -40,7 +40,7 @@
         @extend %clearfix;
 
         .cw-timeline-item-icon {
-            background: var(--white);
+            background: var(--color--global-background);
             width: 50px;
             height: 50px;
             position: absolute;
@@ -51,73 +51,28 @@
             @each $name, $color in $tile-colors {
                 &.cw-timeline-item-icon-color-#{"" + $name} {
                     border: solid 2px $color;
+                    color: $color;
                 }
             }
 
             border-radius: 50%;
 
-            img {
+            .studip-icon {
                 position: relative;
                 top: 9px;
                 left: 9px;
-
-                &.charcoal {
-                    filter: brightness(0) saturate(100%) invert(22%) sepia(29%) saturate(364%) hue-rotate(168deg) brightness(87%) contrast(79%);
-                }
-                &.royal-purple {
-                    filter: brightness(0) saturate(100%) invert(35%) sepia(43%) saturate(658%) hue-rotate(234deg) brightness(100%) contrast(87%);
-                }
-                &.iguana-green {
-                    filter: brightness(0) saturate(100%) invert(74%) sepia(9%) saturate(1885%) hue-rotate(76deg) brightness(86%) contrast(88%);
-                }
-                &.queen-blue {
-                    filter: brightness(0) saturate(100%) invert(44%) sepia(10%) saturate(2086%) hue-rotate(178deg) brightness(88%) contrast(80%);
-                }
-                &.verdigris {
-                    filter: brightness(0) saturate(100%) invert(64%) sepia(11%) saturate(4959%) hue-rotate(131deg) brightness(103%) contrast(49%);
-                }
-                &.mulberry {
-                    filter: brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(1665%) hue-rotate(271deg) brightness(88%) contrast(95%);
-                }
-                &.pumpkin {
-                    filter: brightness(0) saturate(100%) invert(38%) sepia(86%) saturate(1993%) hue-rotate(13deg) brightness(104%) contrast(108%);
-                }
-                &.sunglow {
-                    filter: brightness(0) saturate(100%) invert(93%) sepia(69%) saturate(6824%) hue-rotate(313deg) brightness(102%) contrast(100%);
-                }
-                &.apple-green {
-                    filter: brightness(0) saturate(100%) invert(69%) sepia(5%) saturate(5203%) hue-rotate(42deg) brightness(100%) contrast(84%);
-                }
-                &.studip-blue {
-                    filter: brightness(0) saturate(100%) invert(26%) sepia(19%) saturate(1783%) hue-rotate(177deg) brightness(96%) contrast(93%);
-                }
-                &.studip-lightblue {
-                    filter: brightness(0) saturate(100%) invert(91%) sepia(12%) saturate(190%) hue-rotate(190deg) brightness(104%) contrast(89%);
-                }
-                &.studip-red {
-                    filter: brightness(0) saturate(100%) invert(8%) sepia(95%) saturate(6904%) hue-rotate(1deg) brightness(95%) contrast(109%);
-                }
-                &.studip-green {
-                    filter: brightness(0) saturate(100%) invert(27%) sepia(85%) saturate(1531%) hue-rotate(109deg) brightness(95%) contrast(101%);
-                }
-                &.studip-yellow {
-                    filter: brightness(0) saturate(100%) invert(94%) sepia(14%) saturate(7314%) hue-rotate(330deg) brightness(103%) contrast(101%);
-                }
-                &.studip-gray {
-                    filter: brightness(0) saturate(100%) invert(46%) sepia(1%) saturate(2621%) hue-rotate(169deg) brightness(87%) contrast(87%);
-                }
             }
         }
 
         .cw-timeline-item-content {
             width: 40%;
-            background: var(--white);
+            background: var(--color--global-background);
             padding: 20px;
             transition: all var(--transition-duration) ease;
 
             h3 {
                 padding: 15px;
-                color: var(--white);
+                color: var(--color--font-inverted);
                 margin: -20px -20px 0 -20px;
                 font-weight: 700;
                 min-height: 1.1em;
@@ -125,7 +80,7 @@
 
             article {
                 min-height: 2em;
-                border: solid thin var(--content-color-20);
+                border: solid thin var(--color--courseware-border-active);
                 border-top: none;
                 margin: 0 -20px;
                 padding: 15px;

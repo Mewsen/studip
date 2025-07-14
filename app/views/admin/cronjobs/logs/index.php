@@ -114,19 +114,19 @@ use Studip\Button, Studip\LinkButton;
                 <td><?= htmlReady($log->schedule->title ?: $log->schedule->task->name) ?></td>
                 <td>
                     <? if ($log->duration == -1): ?>
-                        <?= Icon::create('question', Icon::ROLE_INACTIVE)->asImg(['title' => _('Läuft noch')]) ?>
+                        <?= Icon::create('question', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Läuft noch')]) ?>
                     <? elseif ($log->exception === null): ?>
-                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('Ja')]) ?>
+                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('Ja')]) ?>
                     <? else: ?>
-                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('Nein')]) ?>
+                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('Nein')]) ?>
                     <? endif; ?>
                 </td>
                 <td style="text-align: right">
                     <a data-dialog href="<?= $controller->display($log, $pagination->getCurrentPage()) ?>">
-                        <?= Icon::create('admin')->asImg(['title' => _('Logeintrag anzeigen')]) ?>
+                        <?= Icon::create('admin')->asSvg(['title' => _('Logeintrag anzeigen')]) ?>
                     </a>
                     <a href="<?= $controller->delete($log, $pagination->getCurrentPage()) ?>">
-                        <?= Icon::create('trash')->asImg(['title' => _('Logeintrag löschen')]) ?>
+                        <?= Icon::create('trash')->asSvg(['title' => _('Logeintrag löschen')]) ?>
                     </a>
                 </td>
             </tr>

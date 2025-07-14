@@ -30,7 +30,7 @@
     }
 
     .cw-unit-progress-subchapter-list {
-        border-top: solid thin var(--content-color-40);
+        border-top: solid thin var(--color--courseware-border-default);
         padding: 0 1em 0 1em;
 
         .cw-unit-empty-info {
@@ -41,7 +41,7 @@
 
 .cw-unit-progress-item {
     display: block;
-    border-bottom: solid thin var(--content-color-40);
+    border-bottom: solid thin var(--color--courseware-border-default);
     padding: 10px 0;
 
     &:hover {
@@ -60,7 +60,7 @@
 
     .cw-unit-progress-item-value {
         width: 70px;
-        color: var(--base-color);
+        color: var(--color--highlight);
         font-size: xx-large;
 
         .cw-progress-circle {
@@ -70,7 +70,7 @@
     }
 
     .cw-unit-progress-item-description {
-        color: var(--base-color);
+        color: var(--color--highlight);
         padding: 0.5em 0 0 1em;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -85,7 +85,7 @@
     padding: 0;
     width: 5em;
     height: 5em;
-    background-color: var(--dark-gray-color-10);
+    background-color: var(--color--courseware-background-highlight);
     border-radius: 50%;
     line-height: 5em;
 
@@ -109,7 +109,7 @@
         width: 5em;
         text-align: center;
         display: block;
-        color: var(--base-color);
+        color: var(--color--highlight);
         z-index: 2;
     }
 
@@ -131,14 +131,14 @@
         width: 5em;
         height: 5em;
         border-radius: 50%;
-        border: 0.45em solid var(--base-color);
+        border: 0.45em solid var(--color--highlight);
         box-sizing: border-box;
     }
 
     &.over50 .first50-bar {
         position: absolute;
         clip: rect(0, 5em, 5em, 2.5em);
-        background-color: var(--base-color);
+        background-color: var(--color--highlight);
         border-radius: 50%;
         width: 5em;
         height: 5em;

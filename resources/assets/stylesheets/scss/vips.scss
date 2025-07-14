@@ -36,18 +36,6 @@ form.default {
     }
 }
 
-button.vips_file_upload {
-    @include background-icon(upload);
-    background-position: 0.5em center;
-    background-repeat: no-repeat;
-    background-size: var(--icon-size-inline);
-    padding-left: 30px;
-
-    &:hover {
-        @include background-icon(upload, info_alt);
-    }
-}
-
 progress.assignment {
     appearance: none;
     background: var(--light-gray-color-20);
@@ -157,6 +145,9 @@ progress.assignment {
 }
 
 .exercise_type {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
     background-color: transparent;
     background-position: 0.5em center;
     background-repeat: no-repeat;
@@ -165,13 +156,22 @@ progress.assignment {
     cursor: pointer;
     margin-top: 1.5ex;
     min-height: 50px;
-    padding: 4px 4px 4px 56px;
+    padding: 8px;
     text-align: left;
     width: 342px;
 
     &:hover {
         border: 1px solid var(--brand-color-dark);
         color: var(--active-color);
+    }
+
+    .exercise_type_description {
+        display: flex;
+        flex-direction: column;
+
+        .exercise_type_name {
+            font-weight: bold;
+        }
     }
 }
 

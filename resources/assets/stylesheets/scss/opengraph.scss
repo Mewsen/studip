@@ -22,25 +22,21 @@
         .switch-right {
             @include hide-text;
             @include square(var(--icon-size-default));
-            background-position: center;
-            background-repeat: no-repeat;
             padding: 0;
+            color: var(--color--highlight);
 
             &:not([disabled]) {
                 cursor: pointer;
             }
+            &[disabled] {
+                color: var(--color--font-inactive);
+            }
         }
         .switch-left {
-            @include background-icon(arr_1left);
-            &[disabled] {
-                @include background-icon(arr_1left);
-            }
+            @include icon(before, arr_1left);
         }
         .switch-right {
-            @include background-icon(arr_1right);
-            &[disabled] {
-                @include background-icon(arr_1right);
-            }
+            @include icon(before, arr_1right);
         }
     }
 

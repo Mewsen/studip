@@ -13,28 +13,25 @@ const CourseWizard = {
     addParticipatingInst: function(id, name) {
         // Check if already set.
         if ($('input[name="participating[' + id + ']"]').length == 0) {
-            var wrapper = $('<div>').addClass('institute');
+            const wrapper = $('<div>').addClass('institute');
             $('#wizard-participating')
                 .children('div.description')
                 .removeClass('hidden-js');
-            var input = $('<input>')
+            const input = $('<input>')
                 .attr('type', 'hidden')
                 .attr('name', 'participating[' + id + ']')
                 .attr('id', id)
                 .attr('value', '1');
-            var trash = $('<input>')
-                .attr('type', 'image')
-                .attr('src', STUDIP.ASSETS_URL + 'images/icons/blue/trash.svg')
-                .attr('name', 'remove_participating[' + id + ']')
-                .attr('value', '1')
-                .attr('onclick', "return STUDIP.CourseWizard.removeParticipatingInst('" + id + "')")
-                .addClass('text-bottom')
-                .css({
-                    width: 16,
-                    height: 16
-                });
+            const trash = $('<button>')
+            .attr('type', 'button')
+            .attr('name', 'remove_participating[' + id + ']')
+            .attr('value', '1')
+            .addClass('btn-icon btn-icon--trash btn-icon--inline')
+            .on('click', function () {
+                return STUDIP.CourseWizard.removeParticipatingInst(id);
+            });
             wrapper.append(input);
-            var nametext = $('<span>')
+            const nametext = $('<span>')
                 .html(name)
                 .text();
             wrapper.append(nametext);
@@ -72,27 +69,25 @@ const CourseWizard = {
     addPerson: function(id, name, inputName, elClass, elId, otherInput) {
         // Check if already set.
         if ($('input[name="' + inputName + '[' + id + ']"]').length == 0) {
-            var wrapper = $('<div>').addClass(elClass);
+            const wrapper = $('<div>').addClass(elClass);
             $('#' + elId)
                 .children('div.description')
                 .removeClass('hidden-js');
-            var input = $('<input>')
+            const input = $('<input>')
                 .attr('type', 'hidden')
                 .attr('name', inputName + '[' + id + ']')
                 .attr('id', id)
                 .attr('value', '1');
-            var trash = $('<input>')
-                .attr('type', 'image')
-                .attr('src', STUDIP.ASSETS_URL + 'images/icons/blue/trash.svg')
+            const trash = $('<button>')
+                .attr('type', 'button')
                 .attr('name', 'remove_' + elClass + '[' + id + ']')
                 .attr('value', '1')
-                .attr('onclick', "return STUDIP.CourseWizard.removePerson('" + id + "')")
-                .css({
-                    width: 16,
-                    height: 16
+                .addClass('btn-icon btn-icon--trash btn-icon--inline')
+                .on('click', function () {
+                    return STUDIP.CourseWizard.removePerson(id);
                 });
             wrapper.append(input);
-            var nametext = $('<span>')
+            const nametext = $('<span>')
                 .html(name)
                 .text();
             wrapper.append(nametext);
@@ -314,13 +309,14 @@ const CourseWizard = {
                         .attr('name', 'studyareas[]')
                         .attr('value', items[i].id);
                     node.children('ul').before(input);
-                    var unassign = $('<input>')
-                        .attr('type', 'image')
+                    const unassign = $('<button>')
+                        .attr('type', 'button')
                         .attr('name', 'unassign[' + items[i].id + ']')
-                        .attr('src', STUDIP.ASSETS_URL + 'images/icons/blue/trash.svg')
-                        .attr('width', '16')
-                        .height('height', '16')
-                        .attr('onclick', "return STUDIP.CourseWizard.unassignNode('" + items[i].id + "')");
+                        .attr('value', '1')
+                        .addClass('btn-icon btn-icon--trash btn-icon--inline')
+                        .on('click', function () {
+                            return STUDIP.CourseWizard.unassignNode(items[i].id);
+                    });
                     node.children('input[name="studyareas[]"]').before(unassign);
                 }
             }
@@ -344,38 +340,37 @@ const CourseWizard = {
      * @returns {*|jQuery}
      */
     createTreeNode: function(values, assignable, selected) {
-        let item = $('<li/>');
+        const item = $('<li/>');
 
         // Node in "All study areas" tree.
         if (assignable) {
             item.addClass('sem-tree-' + values.id);
-            var assign = $('<input>')
-                .attr('type', 'image')
+            const assign = $('<button>')
+                .attr('type', 'button')
                 .attr('name', 'assign[' + values.id + ']')
-                .attr('src', STUDIP.ASSETS_URL + 'images/icons/yellow/arr_2left.svg')
-                .attr('width', '16')
-                .height('height', '16')
+                .attr('value', '1')
+                .addClass('btn-icon btn-icon--add btn-icon--inline')
                 .attr('onclick', "return STUDIP.CourseWizard.assignNode('" + values.id + "')");
             if (values.assignable) {
                 item.append(assign);
                 item.append(document.createTextNode(' '));
             }
             if (values.has_children) {
-                var input = $('<input>')
+                const input = $('<input>')
                     .attr('type', 'checkbox')
                     .attr('id', values.id);
-                var label = $('<label>')
+                const label = $('<label>')
                     .addClass('undecorated')
                     .attr('for', values.id)
                     .attr('onclick', "return STUDIP.CourseWizard.getTreeChildren('" + values.id + "', true)");
                 // Build link for opening the current node.
-                var link = $('div#studyareas').data('forward-url');
+                let link = $('div#studyareas').data('forward-url');
                 if (link.indexOf('?') > -1) {
                     link += '&open_node=' + values.id;
                 } else {
                     link += '?open_node=' + values.id;
                 }
-                var openLink = $('<a>').attr('href', link);
+                const openLink = $('<a>').attr('href', link);
                 openLink.html(
                     $('<div/>')
                         .text(values.name)
@@ -413,17 +408,16 @@ const CourseWizard = {
                     .html()
             );
             if ((!values.has_children || values.assignable) && selected) {
-                var unassign = $('<input>')
-                    .attr('type', 'image')
-                    .attr('name', 'unassign[' + values.id + ']')
-                    .attr('src', STUDIP.ASSETS_URL + 'images/icons/blue/trash.svg')
-                    .attr('width', '16')
-                    .height('height', '16')
+                const unassign = $('<button>')
+                    .attr('type', 'button')
+                    .attr('name', 'assiunassigngn[' + values.id + ']')
+                    .attr('value', '1')
+                    .addClass('btn-icon btn-icon--trash btn-icon--inline')
                     .attr('onclick', "return STUDIP.CourseWizard.unassignNode('" + values.id + "')");
                 item.append(unassign);
             }
             if (values.assignable && selected) {
-                input = $('<input>')
+                const input = $('<input>')
                     .attr('type', 'hidden')
                     .attr('name', 'studyareas[]')
                     .attr('value', values.id);
@@ -452,7 +446,7 @@ const CourseWizard = {
                 var items = $.parseJSON(data);
                 CourseWizard.buildPartialTree(items, false, id);
                 $('.sem-tree-assigned-root').removeClass('hidden-js');
-                $('input[name="assign[' + id + ']"]').hide();
+                $('button[name="assign[' + id + ']"]').hide();
                 $('svg[name="assign[' + id + ']"]').hide();
             },
             error: function(xhr, status, error) {
@@ -471,12 +465,12 @@ const CourseWizard = {
         var target = $('li.sem-tree-assigned-' + id);
         if (target.children('ul').children('li').length > 0) {
             target.children('input[name="studyareas[]"]').remove();
-            target.children('input[name="unassign[' + id + ']"]').remove();
+            target.children('button[name="unassign[' + id + ']"]').remove();
             target.children('a').remove();
         } else {
             CourseWizard.cleanupAssignTree(target);
         }
-        $('input[name="assign[' + id + ']"]').show();
+        $('button[name="assign[' + id + ']"]').show();
         $('svg[name="assign[' + id + ']"]').show();
         return false;
     },

@@ -6,11 +6,11 @@
 
         <span class="input-group-append">
             <button type="submit" class="button" id="reset-search">
-                <?= Icon::create('decline')->asImg(['title' => _('Suche zurücksetzen')]) ?>
+                <?= Icon::create('decline')->asSvg(['title' => _('Suche zurücksetzen')]) ?>
             </button>
 
-            <button type="submit" class="button seach-button" id="search-btn">
-                <?= Icon::create('search')->asImg(['title' => _('Suche starten')]) ?>
+            <button type="submit" class="button search-button" id="search-btn">
+                <?= Icon::create('search')->asSvg(['title' => _('Suche starten')]) ?>
             </button>
 
         </span>
@@ -38,8 +38,8 @@
         data-all-results="<?= _('Filter aufheben') ?>"
         data-searchterm="<?= htmlReady(Request::get('q')) ?>"
         data-category="<?= htmlReady(Request::get('category')) ?>"
-        data-img-add="<?= htmlReady(Icon::create('add')->asImg(['title' => _('Unterveranstaltungen anzeigen')])) ?>"
-        data-img-remove="<?= htmlReady(Icon::create('remove')->asImg(['title' => _('Unterveranstaltungen ausblenden')])) ?>"
+        data-img-add="<?= htmlReady(Icon::create('add')->asSvg(['title' => _('Unterveranstaltungen anzeigen')])) ?>"
+        data-img-remove="<?= htmlReady(Icon::create('remove')->asSvg(['title' => _('Unterveranstaltungen ausblenden')])) ?>"
         data-results-per-type="<?= Config::get()->GLOBALSEARCH_MAX_RESULT_OF_TYPE ?>"
         data-filters="<?= htmlReady(json_encode($filters)) ?>">
     </div>

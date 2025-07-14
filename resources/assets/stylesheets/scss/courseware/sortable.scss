@@ -102,8 +102,8 @@
 }
 
 .container-ghost {
-    background: var(--white);
-    border: dashed 2px var(--content-color-40);
+    background: var(--color--global-background);
+    border: dashed 2px var(--color--courseware-border-default);
     margin-top: -5px;
     margin-bottom: 15px;
 
@@ -128,8 +128,8 @@
 }
 
 .block-ghost {
-    background: var(--white);
-    border: dashed 2px var(--content-color-40);
+    background: var(--color--global-background);
+    border: dashed 2px var(--color--courseware-border-default);
     padding-top: 5px;
     padding-left: 5px;
     height: 100px;

@@ -1,11 +1,11 @@
 @import '../mixins';
 
 @mixin button() {
-    background: var(--color--button-background);
-    border: 1px solid var(--color--button-border);
+    background: var(--color--global-background);
+    border: 1px solid var(--color--highlight);
     border-radius: 4px;
     box-sizing: border-box;
-    color: var(--color--button-border);
+    color: var(--color--highlight);
     cursor: pointer;
     display: inline-block;
     font-family: $font-family-base;
@@ -25,8 +25,8 @@
     &:hover,
     &:active,
     &.active  {
-        background-color: var(--color--button-focus);
-        color: var(--color--font-inverted);
+        background-color: var(--color--highlight);
+        color: var(--color--highlight-contrast);
     }
 
     &.disabled,
@@ -59,32 +59,16 @@ button.button {
     }
 }
 
-@mixin button-with-icon($icon, $role, $roleOnHover) {
+@mixin button-with-icon($icon, $role: clickable, $roleOnHover: clickable) {
     @extend .button-with-empty-icon;
-    &::before {
-        @include background-icon($icon, $role, $icon-size-button);
-    }
-
-    &:hover::before {
-        @include background-icon($icon, $roleOnHover, $icon-size-button);
-    }
-
-    &.disabled,
-    &[disabled] {
-        &:hover::before {
-            @include background-icon($icon, $role, $icon-size-button);
-        }
-    }
+    @include icon(before, $icon, $size: $icon-size-button, $padding: 8px);
 }
 // $button-icons is a map of class names and icon names located in resources/assets/stylesheets/scss/_variables.scss
 @each $class, $icon in $button-icons {
     .button {
         &.#{'' + $class} {
-            padding-right: ($icon-size-button + 4px);
-            @include button-with-icon($icon, clickable, info_alt);
-            &.disabled, &[disabled] {
-                @include button-with-icon($icon, inactive, inactive);
-            }
+            padding-right: ($icon-size-button + 8px);
+            @include button-with-icon($icon);
         }
     }
 }
@@ -145,5 +129,75 @@ button,
         &[disabled] {
             pointer-events: none;
         }
+    }
+}
+
+label {
+    &.undecorated.icon-button {
+        cursor: pointer;
+        svg {
+            vertical-align: middle;
+        }
+    }
+}
+
+.btn-icon {
+    all: unset;
+    cursor: pointer;
+    display: inline-block;
+
+    // $button-icons is a map of class names and icon names located in resources/assets/stylesheets/scss/_variables.scss
+    @each $name, $icon in $button-icons {
+        &--#{$name} {
+            @include icon(before, $icon, $align: middle);
+
+            &.btn-icon--inline {
+                @include icon(before, $icon, $align: middle, $inline: true);
+            }
+        }
+    }
+}
+
+button.button.btn-icon--only {
+    min-width: unset;
+    padding: 5px;
+
+}
+
+.square-button-panel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+$square-button-size: 130px;
+.square-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    max-height: $square-button-size;
+    max-width: $square-button-size;
+    min-width: $square-button-size;
+    min-height: $square-button-size;
+    margin: 10px;
+    padding: 10px;
+    background-color: transparent;
+    color: var(--color--highlight);
+    border: solid thin var(--color--tile-border);
+    cursor: pointer;
+
+    .studip-icon {
+        height: 50px;
+        margin-bottom: 8px;
+    }
+    span {
+        min-width: 110px;
+    }
+    &:hover {
+        color: var(--color--highlight-hover);
+        border-color: var(--color--highlight);
     }
 }

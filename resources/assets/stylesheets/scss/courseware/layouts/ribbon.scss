@@ -16,7 +16,7 @@ $consum_ribbon_width: calc(100% - 58px);
 .cw-ribbon-wrapper-consume {
     padding-top: 7px;
     padding-bottom: 15px;
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     z-index: 42;
 }
 
@@ -25,7 +25,7 @@ $consum_ribbon_width: calc(100% - 58px);
     height: 15px;
     left: 0;
     width: calc(100% - 1em);
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     z-index: 40;
 }
 
@@ -34,7 +34,7 @@ $consum_ribbon_width: calc(100% - 58px);
     top: 40px;
     height: 20px;
     width: calc(100% - 314px);
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     z-index: 39;
 }
 
@@ -43,7 +43,7 @@ $consum_ribbon_width: calc(100% - 58px);
     top: 108px;
     height: 16px;
     width: calc(100% - 314px);
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     z-index: 39;
 }
 
@@ -61,7 +61,7 @@ $consum_ribbon_width: calc(100% - 58px);
     margin-bottom: 15px;
     padding: 0 2em;
     justify-content: space-between;
-    background-color: var(--dark-gray-color-10);
+    background-color: var(--color--content-bar-background);
 
     &.cw-ribbon-sticky {
         position: fixed;
@@ -82,33 +82,26 @@ $consum_ribbon_width: calc(100% - 58px);
         padding: 1px 2px;
         border: none;
         background-color: transparent;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 24px;
+        color: var(--color--highlight);
         cursor: pointer;
 
         &.cw-ribbon-button-menu {
-            @include background-icon(table-of-contents);
+            @include icon(before, table-of-contents, $align: middle);
         }
 
         &.cw-ribbon-button-prev {
-            @include background-icon(arr_1left, $size: 24px);
+            @include icon(before, arr_1left, $size: 24px, $align: middle);
             margin: 0 0.5em 0 0;
         }
 
         &.cw-ribbon-button-next {
-            @include background-icon(arr_1right, $size: 24px);
+            @include icon(before, arr_1right, $size: 24px, $align: middle);
             margin: 0 0.5em 0 0;
         }
 
-        &.cw-ribbon-button-prev-disabled {
-            @include background-icon(arr_1left, inactive, 24px);
-            margin: 0 0.5em 0 0;
-            cursor: default;
-        }
-
-        &.cw-ribbon-button-next-disabled {
-            @include background-icon(arr_1right, inactive, 24px);
+        &.cw-ribbon-button-prev.disabled, 
+        &.cw-ribbon-button-next.disabled {
+            color: var(--color--font-inactive);
             margin: 0 0.5em 0 0;
             cursor: default;
         }
@@ -125,12 +118,10 @@ $consum_ribbon_width: calc(100% - 58px);
             display: flex;
             align-items: center;
 
+            @include highlight-anchor;
+
             .contentbar-icon {
                 margin: 0 15px 0 10px;
-
-                img {
-                    vertical-align: middle;
-                }
             }
         }
 
@@ -160,13 +151,7 @@ $consum_ribbon_width: calc(100% - 58px);
                     text-overflow: ellipsis;
                     white-space: nowrap;
 
-                    a {
-                        color: var(--base-color);
-                        text-decoration: none;
-                        &:hover {
-                            color: var(--active-color);
-                        }
-                    }
+                    @include highlight-anchor;
 
                     img {
                         vertical-align: text-top;
@@ -178,6 +163,10 @@ $consum_ribbon_width: calc(100% - 58px);
 
                     &.cw-ribbon-breadcrumb-item-current {
                         flex-shrink: 1;
+
+                        .studip-icon {
+                            display: inline-block;
+                        }
                     }
                 }
             }
@@ -203,44 +192,43 @@ $consum_ribbon_width: calc(100% - 58px);
             }
         }
 
-        button:not(.action-menu-icon) {
+        button:not(.action-menu-icon):not(.button) {
             height: 32px;
             width: 32px;
             border-radius: var(--border-radius-default);
-            border: solid thin var(--color--button-border);
-            background-color: var(--color--button-background);
+            border: solid thin var(--color--highlight);
+            background-color: var(--color--global-background);
             cursor: pointer;
 
             &:hover,
             &:active,
             &.active {
-                background: var(--color--button-focus);
+                background: var(--color--highlight);
                 color: var(--color--font-inverted);
             }
 
             &.cw-ribbon-button-menu {
-                @include background-icon(table-of-contents);
-                background-repeat: no-repeat;
-                background-position: center;
+                color: var(--color--highlight);
+                @include icon(before, table-of-contents, $align: middle);
 
                 &:hover,
                 &:active,
                 &.active {
-                    @include background-icon(table-of-contents, info_alt);
+                    color: var(--color--highlight-contrast);
                 }
             }
         }
 
         .action-menu:not(.is-open) {
-            border: solid thin var(--color--button-border);
+            border: solid thin var(--color--highlight);
             border-radius: var(--border-radius-default);
-            background-color: var(--color--button-background);
+            background-color: var(--color--global-background);
             padding: 5px;
 
             &:hover,
             &:active,
             &.active {
-                background: var(--color--button-focus);
+                background: var(--color--highlight);
 
                 .action-menu-icon span {
                     background-color: var(--color--font-inverted);
@@ -260,9 +248,9 @@ $consum_ribbon_width: calc(100% - 58px);
 }
 
 .cw-ribbon-tools {
-    background-color: var(--white);
-    border: solid thin var(--content-color-40);
-    box-shadow: 2px 2px var(--dark-gray-color-30);
+    background-color: var(--color--global-background);
+    border: solid thin var(--color--courseware-border-default);
+    box-shadow: 2px 2px var(--color--courseware-border-default);
     position: absolute;
     right: 0;
     top: 0;
@@ -294,18 +282,22 @@ $consum_ribbon_width: calc(100% - 58px);
     .cw-ribbon-tool-content {
         height: 100%;
         width: 540px;
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         padding: 0;
         overflow: hidden;
+
+        a {
+            text-decoration: none;
+        }
 
         .cw-ribbon-tool-content-nav {
             position: sticky;
             height: 100%;
             top: 0;
-            background-color: var(--white);
+            background-color: var(--color--global-background);
             margin: 0;
             padding: 0;
-            color: var(--base-color);
+            color: var(--color--highlight);
             display: flex;
             z-index: 43;
 
@@ -320,11 +312,9 @@ $consum_ribbon_width: calc(100% - 58px);
                 right: 0;
                 top: 12px;
                 cursor: pointer;
-                @include background-icon(decline, $size: 24px);
-                background-repeat: no-repeat;
-                background-size: 24px;
-                background-position: center right;
-                background-color: var(--white);
+                @include icon(before, decline, $size: 24px, $align: baseline);
+                background-color: var(--color--global-background);
+                color: var(--color--highlight);
             }
 
             > .cw-ribbon-tool-content-tablist {
@@ -348,7 +338,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
                 > .cw-tabs-content {
                     border: none;
-                    border-top: solid thin var(--content-color-40);
+                    border-top: solid thin var(--color--courseware-border-default);
                     padding: 0;
                     height: calc(100% - 58px);
 
@@ -359,7 +349,7 @@ $consum_ribbon_width: calc(100% - 58px);
                         overflow-y: auto;
                         overflow-x: hidden;
                         scrollbar-width: thin;
-                        scrollbar-color: var(--color--scrollbar-thumb) var(--white);
+                        scrollbar-color: var(--color--scrollbar-thumb) var(--color--global-background);
 
                         &.cw-ribbon-tool-blockadder-tab {
                             height: 100%;
@@ -387,7 +377,7 @@ $consum_ribbon_width: calc(100% - 58px);
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: thin;
-            scrollbar-color: var(--base-color) var(--white);
+            scrollbar-color: var(--color--scrollbar-thumb) var(--color--global-background);
         }
     }
 }
@@ -453,7 +443,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
         &.contentbar-button-menu,
         &.cw-ribbon-button-menu {
-            @include background-icon(table-of-contents, $size: 24px);
+            @include icon(before, table-of-contents, $size: 24px, $align: middle);
         }
 
         &.contentbar-button-zoom::before {

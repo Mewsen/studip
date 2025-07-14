@@ -1,7 +1,7 @@
 <? if ($file['is_folder']) : ?>
     <? if ($name !== "__MACOSX") : ?>
         <li class="folder">
-            <?= Icon::create('folder-full', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('folder-full', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
             <?= htmlReady($name) ?>
             <ol>
                 <? foreach ($file['structure'] as $name => $subfile) : ?>
@@ -15,7 +15,7 @@
         <div class="size" style="float: right">
             <?= htmlReady(number_format($file['size'] / 1024, 2)) ?> KB
         </div>
-        <?= FileManager::getFileIcon($name, Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
+        <?= FileManager::getFileIcon($name, Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
         <?= htmlReady($name) ?>
     </li>
 <? endif ?>

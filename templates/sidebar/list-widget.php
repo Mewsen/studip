@@ -7,9 +7,12 @@
             <? $icon = $icon->copyWithRole(Icon::ROLE_INACTIVE) ?>
         <? endif ?>
         <li id="<?= htmlReady($index) ?>"
-            <?= isset($icon) ? 'style="' . $icon->asCSS() .'"' : '' ?>
             <?= !empty($element->active) ? 'class="active"' : '' ?>>
-            <?= $element->render() ?>
+            <? if (isset($icon)): ?>
+                <?= $element->renderWithIcon($icon) ?>
+            <? else: ?>
+                <?= $element->render() ?>
+            <? endif ?>
         </li>
     <? endforeach; ?>
     </ul>

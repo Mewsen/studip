@@ -23,7 +23,7 @@
 
                         > .cw-tree-item-wrapper {
                             display: block;
-                            border-bottom: solid thin var(--content-color-40);
+                            border-bottom: solid thin var(--color--courseware-border-default);
                             margin-bottom: 12px;
 
                             > .cw-sortable-handle {
@@ -67,9 +67,6 @@
                                         border-bottom: none;
                                         font-size: 14px;
                                         width: calc(100% - 20px);
-                                        background-repeat: no-repeat;
-                                        background-position-y: center;
-                                        padding-left: 18px;
                                         margin-left: 4px;
                                         margin-bottom: 0;
                                         line-height: 28px;
@@ -78,7 +75,7 @@
                                             width: calc(100% - 38px);
                                         }
 
-                                        @include background-icon(bullet-dot, $size: 18px);
+                                        @include icon(before, bullet-dot, $size: 18px, $align: middle, $padding: 4px);
                                     }
                                     form {
                                         display: inline;
@@ -86,13 +83,6 @@
                                     }
                                     > a.cw-tree-item-link {
                                         display: inline-block;
-
-                                        &:hover {
-                                            @include background-icon(bullet-dot, attention, 18px);
-                                        }
-                                        &.cw-tree-item-link-current {
-                                            @include background-icon(bullet-dot, info, 18px);
-                                        }
                                     }
                                 }
 
@@ -126,21 +116,20 @@
         .cw-tree-item-edit-button {
             opacity: 0;
             padding: 0 4px;
-            vertical-align: bottom;
+            vertical-align: text-bottom;
             border: none;
             background-color: transparent;
             cursor: pointer;
-            img {
-                vertical-align: middle;
-            }
+            color: var(--color--highlight);
+
             &:focus {
                 opacity: 1;
             }
         }
 
         &:hover {
-            background-color: var(--light-gray-color-20);
-            color: var(--active-color);
+            background-color: var(--color--sidebar-hover);
+            color: var(--color--content-link-hover);
 
             .cw-tree-item-edit-button {
                 opacity: 1;
@@ -148,12 +137,12 @@
         }
 
         &.cw-tree-item-link-current {
-            color: var(--black);
+            color: var(--color--font-primary);
             font-weight: 600;
             cursor: default;
 
             &::before {
-                color: var(--black);
+                color: var(--color--font-primary);
             }
         }
 
@@ -168,15 +157,15 @@
                 height: var(--icon-size-inline);
                 vertical-align: top;
                 float: right;
-                @include background-icon(#{$icon}, $size: $icon-size-inline);
+                @include icon(after, #{$icon}, $size: $icon-size-inline);
             }
 
             &:hover .cw-tree-item-flag-#{$type} {
-                @include background-icon(#{$icon}, $size: $icon-size-inline);
+                @include icon(after, #{$icon}, $size: $icon-size-inline);
             }
 
             &.cw-tree-item-link-current .cw-tree-item-flag-#{$type} {
-                @include background-icon(#{$icon}, $size: $icon-size-inline);
+                @include icon(after, #{$icon}, $size: $icon-size-inline);
             }
         }
     }
@@ -190,7 +179,7 @@
             width: var(--icon-size-inline);
             height: var(--icon-size-inline);
             vertical-align: top;
-            @include background-icon(accept, info, $icon-size-inline);
+            @include icon(after, accept, $size: $icon-size-inline);
         }
 
         &.cw-tree-item-sequential-percentage {
@@ -201,7 +190,7 @@
 
     .cw-tree-item-ghost {
         opacity: 0.6;
-        border: dashed 2px var(--content-color-40);
+        border: dashed 2px var(--color--courseware-border-default);
         height: 28px;
         margin-left: 24px !important;
 
@@ -228,6 +217,19 @@
             &::before {
                 margin: 4px;
             }
+        }
+    }
+
+    .cw-tree-root-list > .cw-tree-item.cw-tree-item-adder > .cw-tree-item-wrapper {
+        border-bottom: none;
+    }
+    .cw-tree-item-adder {
+        .add-element {
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+            color: var(--color--highlight);
+            height: 28px;
         }
     }
 }

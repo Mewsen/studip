@@ -161,6 +161,11 @@ class PageLayout
 
             URLHelper::setBaseURL($old_base);
         }
+
+        self::addHeadElement('link', [
+            'rel' => 'stylesheet',
+            'href' => Assets::url('stylesheets/theme.php')
+        ]);
     }
 
     /**
@@ -269,6 +274,28 @@ class PageLayout
         }
         return self::$tab_navigation_path;
     }
+
+    /**
+     * Add CSS variables to the :root selector in the HTML HEAD section.
+     *
+     * @param array $variables Associative array of CSS variable names and values.
+     */
+    public static function addRootStyle(array $variables)
+    {
+        if (empty($variables)) {
+            return;
+        }
+
+        $style = ':root {' . PHP_EOL;
+        foreach ($variables as $name => $value) {
+            $style .= "    --$name: $value;" . PHP_EOL;
+        }
+        $style .= '}' . PHP_EOL;
+
+        // Add the <style> tag with the generated CSS to the head
+        self::addHeadElement('style', [], $style);
+    }
+
 
     /**
      * Add a STYLE element to the HTML HEAD section.

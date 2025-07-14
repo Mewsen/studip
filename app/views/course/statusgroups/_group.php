@@ -20,7 +20,7 @@
                 <a class="no-contentbox-link"
                         href="<?= $controller->url_for('course/statusgroups/groupinfo', $group->id) ?>"
                         data-dialog="size=auto">
-                    <?= Icon::create('info-circle')->asImg([
+                    <?= Icon::create('info-circle')->asSvg([
                         'title' => sprintf(_('Informationen zu %s'), $group->name)
                     ]) ?>
                 </a>
@@ -137,7 +137,7 @@
                         'course_id' => $course_id,
                         'default_subject' => $course_title.' ('.$group->name.')'
                     ]) ?>" data-dialog="size=auto;">
-                        <?= Icon::create('mail')->asImg(['title' => _('Nachricht an alle nicht zugeordneten Personen schicken')]) ?>
+                        <?= Icon::create('mail')->asSvg(['title' => _('Nachricht an alle nicht zugeordneten Personen schicken')]) ?>
                     </a>
                 </nav>
             <?php endif ?>

@@ -80,12 +80,3 @@ export default {
     },
 };
 </script>
-<style scoped lang="scss">
-.square-button-panel {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: center;
-}
-</style>

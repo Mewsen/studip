@@ -5,7 +5,7 @@
             <a href="<?= URLHelper::getLink($nav->getURL()) ?>">
                 <h3>
                     <? if ($nav->getImage()): ?>
-                        <?= $nav->getImage()->asImg(false, $nav->getLinkAttributes()) ?>
+                        <?= $nav->getImage()->asSvg(false, $nav->getLinkAttributes()) ?>
                     <? endif; ?>
                     <?= htmlReady($nav->getTitle()) ?>
                 </h3>

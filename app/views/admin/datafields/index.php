@@ -89,7 +89,7 @@
             <td>
             <? if (in_array($val->type, words('selectbox selectboxmultiple radio combo'))): ?>
                 <a data-dialog="size=auto" href="<?= $controller->url_for('admin/datafields/config/'. $val->id) ?>">
-                    <?= Icon::create('edit')->asImg(['class'=> 'text-top', 'title' => 'Einträge bearbeiten']) ?>
+                    <?= Icon::create('edit')->asSvg(['class'=> 'text-top', 'title' => 'Einträge bearbeiten']) ?>
                 </a>
             <? endif; ?>
                  <span><?= htmlReady($val->type) ?></span>
@@ -131,31 +131,31 @@
         <? if ($key === 'user'): ?>
             <td>
             <? if ($val->system): ?>
-                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asImg() ?>
+                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asSvg() ?>
             <? else: ?>
-                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asImg() ?>
+                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asSvg() ?>
             <? endif; ?>
             </td>
             <td>
             <? if ($val->is_userfilter): ?>
-                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asImg() ?>
+                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asSvg() ?>
             <? else: ?>
-                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asImg() ?>
+                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asSvg() ?>
             <? endif; ?>
             </td>
         <? elseif ($key === 'sem'): ?>
             <td>
             <? if ($val->is_required): ?>
-                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asImg() ?>
+                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asSvg() ?>
             <? else: ?>
-                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asImg() ?>
+                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asSvg() ?>
             <? endif; ?>
             </td>
             <td>
             <? if (trim($val->description)): ?>
-                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asImg() ?>
+                <?= Icon::create('checkbox-checked', Icon::ROLE_INACTIVE, ['title' => _('Ja')])->asSvg() ?>
             <? else: ?>
-                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asImg() ?>
+                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE, ['title' => _('Nein')])->asSvg() ?>
             <? endif; ?>
             </td>
         <? else: ?>
@@ -165,10 +165,10 @@
             <td style="text-align: right;"><?= count($val) ?></td>
             <td class="actions">
                 <a href="<?=$controller->url_for('admin/datafields/edit/' . $val->id)?>" data-dialog>
-                    <?= Icon::create('edit')->asImg(['title' => 'Datenfeld ändern']) ?>
+                    <?= Icon::create('edit')->asSvg(['title' => 'Datenfeld ändern']) ?>
                 </a>
                 <a href="<?=$controller->url_for('admin/datafields/delete/' . $val->id)?>">
-                    <?= Icon::create('trash')->asImg(['title' => 'Datenfeld löschen']) ?>
+                    <?= Icon::create('trash')->asSvg(['title' => 'Datenfeld löschen']) ?>
                 </a>
             </td>
         </tr>

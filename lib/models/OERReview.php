@@ -204,15 +204,15 @@ class OERReview extends BlubberThread
         $data['thread_posting']['html'] .= "<div>";
         $rating = round($this['metadata']['rating'], 1);
         $v = $rating >= 0.75 ? "" : ($rating >= 0.25 ? "-halffull" : "-empty");
-        $data['thread_posting']['html'] .= Icon::create("star$v", "info")->asImg(25);
+        $data['thread_posting']['html'] .= Icon::create("star{$v}", 'info')->asSvg(25);
         $v = $rating >= 1.75 ? "" : ($rating >= 1.25 ? "-halffull" : "-empty");
-        $data['thread_posting']['html'] .= Icon::create("star$v", "info")->asImg(25);
+        $data['thread_posting']['html'] .= Icon::create("star{$v}", 'info')->asSvg(25);
         $v = $rating >= 2.75 ? "" : ($rating >= 2.25 ? "-halffull" : "-empty");
-        $data['thread_posting']['html'] .= Icon::create("star$v", "info")->asImg(25);
+        $data['thread_posting']['html'] .= Icon::create("star{$v}", 'info')->asSvg(25);
         $v = $rating >= 3.75 ? "" : ($rating >= 3.25 ? "-halffull" : "-empty");
-        $data['thread_posting']['html'] .= Icon::create("star$v", "info")->asImg(25);
+        $data['thread_posting']['html'] .= Icon::create("star{$v}", 'info')->asSvg(25);
         $v = $rating >= 4.75 ? "" : ($rating >= 4.25 ? "-halffull" : "-empty");
-        $data['thread_posting']['html'] .= Icon::create("star$v", "info")->asImg(25);
+        $data['thread_posting']['html'] .= Icon::create("star{$v}", 'info')->asSvg(25);
         $data['thread_posting']['html'] .= "</div>";
 
         return $data;

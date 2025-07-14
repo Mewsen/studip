@@ -60,7 +60,7 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
 
             display: block;
             position: absolute;
-            background: var(--base-color);
+            background-color: var(--color--highlight);
             border-radius: 50%;
             opacity: 1;
             left: 50%;
@@ -100,14 +100,12 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         > label {
             margin: 0;
             padding: 2px 30px 2px 0;
-            display: block;
+            display: inline-flex;
+            align-items: center;
         }
 
         .action-menu-item-icon {
-            display: inline-block;
-            margin: 0 0.5em 0.25em 0;
-            vertical-align: middle;
-
+            margin-right: 0.5em;
             width: var(--icon-size-action-menu);
             height: var(--icon-size-action-menu);
         }
@@ -121,11 +119,13 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         }
 
         > label,
-        > button {
-            color: var(--base-color);
+        > button,
+        > a {
+            color: var(--color--highlight);
             cursor: pointer;
             &:hover {
-                color: var(--active-color);
+                color: var(--color--highlight-hover);
+                text-decoration: none;
             }
         }
 
@@ -138,11 +138,11 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         &.action-menu-item-disabled {
             > label,
             > button {
-                color: var(--dark-gray-color-80);
+                color: var(--color--font-inactive);
                 cursor: default;
 
                 &:hover {
-                    color: var(--dark-gray-color-80);
+                    color: var(--color--font-inactive);
                 }
             }
         }

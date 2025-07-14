@@ -81,6 +81,7 @@ class SchemaMap
             \Modul::class => Schemas\Module::class,
             \Modulteil::class => Schemas\ModuleComponent::class,
             \StgteilAbschnitt::class => Schemas\ComponentSection::class,
+            \Theme::class => Schemas\Theme::class,
 
             \Courseware\Block::class => Schemas\Courseware\Block::class,
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,

@@ -40,19 +40,20 @@
     .next {
         .pagination--link {
             @include hide-text;
-            background-position: center;
-            background-repeat: no-repeat;
             display: inline-block;
             height: 16px;
             width: 16px;
             vertical-align: top;
+            &::before {
+                color: var(--color--highlight);
+            }
         }
     }
     .prev .pagination--link {
-        @include background-icon(arr_1left);
+        @include icon(before, arr_1left, $align: middle);
     }
     .next .pagination--link {
-        @include background-icon(arr_1right);
+        @include icon(before, arr_1right, $align: middle);
     }
 }
 

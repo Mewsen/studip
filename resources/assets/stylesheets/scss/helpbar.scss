@@ -16,6 +16,13 @@ $border-width: 4px;
     min-width: 32px;
     right: 10px;
 
+    #helpbar_icon {
+        color: var(--color--highlight);
+        &:hover {
+            color: var(--color--highlight-hover);
+        }
+    }
+
     h2, h3 {
         border-bottom: 0;
         color: var(--color--font-inverted);
@@ -76,6 +83,7 @@ $border-width: 4px;
     }
 
     .helpbar-toggler {
+        color: var(--color--font-inverted);
         margin-top: -5px;
         margin-right: 5px;
     }
@@ -115,28 +123,27 @@ $border-width: 4px;
         padding: 0;
 
         a {
-            @include background-icon(play, info_alt);
+            @include icon(before, play, $padding: 4px, $align: middle);
             background-position: left;
             background-repeat: no-repeat;
             display: block;
-            padding-left: 24px;
 
             &.tour-paused {
-                @include background-icon(pause, info_alt);
+                @include icon(before, pause, $padding: 4px, $align: middle);
             }
 
             &.tour-completed {
-                @include background-icon(accept, info_alt);
+                @include icon(before, accept, $padding: 4px, $align: middle);
             }
         }
     }
 
     a.link-extern {
-        @include icon(before, link-extern, info_alt);
+        @include icon(before, link-extern);
     }
 
     a.link-intern {
-        @include icon(before, link-intern, info_alt);
+        @include icon(before, link-intern);
     }
 }
 

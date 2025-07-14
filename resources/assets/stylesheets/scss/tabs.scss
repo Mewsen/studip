@@ -38,10 +38,10 @@ div.clear
             margin-right: 0;
         }
         &.current {
-            color: var(--base-color);
+            color: var(--color--main-navigation-item);
         }
         &:hover {
-            color: var(--base-color);
+            color: var(--color--main-navigation-item);
             padding-top: 0;
         }
 
@@ -49,17 +49,25 @@ div.clear
             padding-top: 0;
             line-height: 25px;
             a, span.quiet {
-                color: var(--base-color);
+                color: var(--color--main-navigation-item);
+
+                &:hover {
+                    text-decoration: none;
+                }
             }
         }
     }
     a, span.quiet {
-        color: var(--black);
+        color: var(--color--font-primary);
         float: left;
         display: block;
 
         padding: 5px 8px;
         white-space: nowrap;
+
+        &:hover {
+            text-decoration: none;
+        }
     }
 }
 

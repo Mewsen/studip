@@ -3,7 +3,7 @@
 .cw-block-canvas {
     .cw-canvasblock-canvas {
         max-width: 100%;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
     }
 
     .cw-canvasblock-upload-message {
@@ -23,28 +23,33 @@
     }
 
     .cw-canvasblock-toolbar {
-        border: solid thin var(--content-color-40);
+        display: flex;
+        border: solid thin var(--color--content-box-border);
         border-bottom: none;
 
         .cw-canvasblock-buttonset {
-            display: inline-block;
+            display: inline-flex;
             padding: 5px;
             margin-right: 0.5em;
 
             button {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
                 cursor: pointer;
                 user-select: none;
-                border: solid thin var(--content-color-40);
+                border: solid thin var(--color--action-menu-border);
                 height: 32px;
                 width: 32px;
-                background-color: var(--white);
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: 24px 24px;
+                background-color: var(--color--global-background);
+
+                &:not(:last-child) {
+                    border-right: none;
+                }
 
                 &.cw-canvasblock-color {
                     $colors: (
-                        white: var(--white),
+                        white: #ffffff,
                         blue: #3498db,
                         green: #2ecc71,
                         purple: #9b59b6,
@@ -53,86 +58,94 @@
                         orange: #f39c12,
                         grey: #95a5a6,
                         darkgrey: #34495e,
-                        black: var(--black),
+                        black: #000000,
                     );
 
                     @each $name, $color in $colors {
-                        &.#{'' + $name} {
+                        &.#{'' + $name}::before {
+                            content: '';
+                            width: 24px;
+                            height: 24px;
                             background-color: $color;
                         }
                     }
 
                     &.selected-color {
-                        border: solid 2px var(--black);
+                        border: solid 2px var(--color--highlight);
+                        width: 34px;
                     }
                 }
 
                 &.cw-canvasblock-reset {
-                    @include background-icon(refresh, $size: 24px);
+                    @include icon(before, refresh, $size: 24px);
                 }
 
                 &.cw-canvasblock-size {
-                    @include background-icon(stop);
-
-                    &.cw-canvasblock-size-small {
-                        background-size: 8px 7px;
+                    &::before {
+                        content: '';
+                        background-color: var(--color--font-primary);
+                        border-radius: 50%;
                     }
-                    &.cw-canvasblock-size-normal {
-                        background-size: 16px 14px;
+                    &.cw-canvasblock-size-small::before {
+                        height: 4px;
+                        width: 4px;
                     }
-                    &.cw-canvasblock-size-large {
-                        background-size: 22px 20px;
+                    &.cw-canvasblock-size-normal::before {
+                        height: 8px;
+                        width: 8px;
                     }
-                    &.cw-canvasblock-size-huge {
-                        background-size: 26px 24px;
+                    &.cw-canvasblock-size-large::before {
+                        height: 12px;
+                        width: 12px;
+                    }
+                    &.cw-canvasblock-size-huge::before {
+                        height: 16px;
+                        width: 16px;
                     }
                     &.selected-size {
-                        border: solid 2px var(--black);
+                        border: solid 2px var(--color--highlight);
                     }
                 }
 
                 &.cw-canvasblock-tool {
                     &.cw-canvasblock-tool-pen {
-                        @include background-icon(comment);
+                        @include icon(before, comment);
                     }
 
                     &.cw-canvasblock-tool-text {
-                        vertical-align: top;
-                        font-size: 22px;
-                        color: var(--base-color);
-                        font-weight: 600;
+                        @include icon(before, block-typewriter);
                     }
 
                     &.selected-tool {
-                        border: solid 2px var(--black);
+                        border: solid 2px var(--color--highlight);
                     }
                 }
 
                 &.cw-canvasblock-undo {
-                    @include background-icon(arr_2left, $size: 24px);
+                    @include icon(before, arr_2left, $size: 24px);
                 }
 
                 &.cw-canvasblock-download {
-                    @include background-icon(download, $size: 24px);
+                    @include icon(before, download, $size: 24px);
                 }
 
                 &.cw-canvasblock-store {
-                    @include background-icon(upload, $size: 24px);
+                    @include icon(before, upload, $size: 24px);
                 }
 
                 &.cw-canvasblock-show-all {
-                    @include background-icon(group2, $size: 24px);
+                    @include icon(before, group2, $size: 24px);
 
                     &.selected-view {
-                        border: solid 2px var(--black);
+                        border: solid 2px var(--color--highlight);
                     }
                 }
 
                 &.cw-canvasblock-show-own {
-                    @include background-icon(person, $size: 24px);
+                    @include icon(before, person, $size: 24px);
 
                     &.selected-view {
-                        border: solid 2px var(--black);
+                        border: solid 2px var(--color--highlight);
                     }
                 }
             }

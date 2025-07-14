@@ -105,28 +105,34 @@ td.tree-indent {
     }
 
     .toggle-indicator {
-        color: var(--black);
+        color: var(--color--font-primary);
         font-weight: bold;
 
         a {
             background: left center no-repeat;
-            @include background-icon(arr_1down);
-            color: var(--black);
+            @include icon(before, arr_1down, $align: middle, $padding: -4px);
+            color: var(--color--font-primary);
             cursor: pointer;
             display: block;
+            &::before {
+                color: var(--color--highlight);
+            }
         }
 
     }
 
     .empty .toggle-indicator a {
-        @include background-icon(arr_1right, inactive);
+        @include icon(before, arr_1right, $align: middle, $padding: -4px);
+        ::before {
+            color: var(--color--font-inactive);
+        }
     }
 
     .collapsed .toggle-indicator a {
-        @include background-icon(arr_1right);
+        @include icon(before, arr_1right, $align: middle, $padding: -4px);
     }
 
-    td.label-cell, .toggle-indicator a, .empty .toggle-indicator {
+    td.label-cell, .empty .toggle-indicator {
         padding-left: 20px;
     }
 
@@ -258,14 +264,21 @@ tr.sortable {
         .tablesorter-header-inner {
             display: inline-block;
         }
+        &::after {
+            color: var(--color--highlight);
+        }
     }
 
     th.sortasc {
-        @include icon('after', 'arr_1up', 'clickable', $icon-size-inline);
+        @include icon('after', 'arr_1up', $size: $icon-size-inline, $align: top, $padding: 2px);
     }
 
     th.sortdesc {
-        @include icon('after', 'arr_1down', 'clickable', $icon-size-inline);
+        @include icon('after', 'arr_1down', $size: $icon-size-inline, $align: top, $padding: 2px);
+    }
+
+    th {
+        @include highlight-anchor;
     }
 }
 
@@ -393,17 +406,11 @@ table.tree {
             padding-left: 5px;
 
             &.open {
-                @include background-icon(arr_1down);
-                background-position: left center;
-                background-repeat: no-repeat;
-                padding-left: 20px;
+                @include icon(before, arr_1down);
             }
 
             &.closed {
-                @include background-icon(arr_1right);
-                background-position: left center;
-                background-repeat: no-repeat;
-                padding-left: 20px;
+                @include icon(before, arr_1right);
             }
         }
     }
@@ -609,15 +616,18 @@ table.default {
         float: right;
         text-align: right;
         white-space: nowrap;
+        color: var(--color--highlight);
 
         img, svg, input[type="image"] {
             vertical-align: middle;
         }
+        @include highlight-anchor;
     }
 
     > caption .actions {
         font-size: $font-size-base;
         border-left: 1px solid var(--color--table-border);
+        color: var(--color--font-primary);
         margin-bottom: -2px;
         padding-left: 0.5em;
         input[type=text] {
@@ -630,6 +640,16 @@ table.default {
         float: none;
     }
 
+    th.actions {
+        color: var(--color--font-primary);
+    }
+
+    td.actions:has(>svg) {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 4px;
+    }
+
     > caption {
         .caption-container {
             display: flex;
@@ -637,9 +657,17 @@ table.default {
             justify-content: space-between;
             margin-bottom: 5px;
 
-            img.text-bottom {
+            .files-home {
+                display: inline-flex;
+                gap: 8px;
+            }
+
+            svg {
                 vertical-align: middle;
-                margin: -4px 8px 0 0;
+                margin-top: -4px;
+            }
+            span > a {
+                margin-left: 2px;
             }
         }
 
@@ -659,7 +687,7 @@ table.default {
     > tbody.toggleable {
         &.toggled {
             .toggle-switch {
-                @include background-icon(arr_1right);
+                @include icon(before, arr_1right);
             }
 
             tr:not(:first-child) {
@@ -669,7 +697,7 @@ table.default {
 
         .toggle-switch {
             @include hide-text;
-            @include background-icon(arr_1down);
+            @include icon(before, arr_1down);
             display: inline-block;
             height: $icon-size-inline;
             text-align: center;
@@ -742,11 +770,10 @@ article.studip > section > table.default:last-child {
 
 table.withdetails {
     > tbody > tr:not(.details) > td:first-child {
-        @include background-icon(arr_1right);
-        background-repeat: no-repeat;
-        background-position: 2px center;
-        padding-left: 20px;
-
+        @include icon(before, arr_1right, $align: bottom);
+        &::before {
+            color: var(--color--highlight);
+        }
         > a {
             margin-left: -20px;
             padding-left: 20px;
@@ -755,10 +782,13 @@ table.withdetails {
 
     > tbody > tr.open > td {
         background-color: var(--color--table-header);
+        &::before {
+            color: var(--color--highlight);
+        }
     }
 
     > tbody > tr.open > td:first-child {
-        @include background-icon(arr_1down);
+        @include icon(before, arr_1down, $align: bottom);
     }
 
     tr.details {
@@ -794,15 +824,9 @@ table.withdetails {
 }
 
 @mixin sortable-dreieck($direction) {
+    @include icon(after, 'arr_1#{$direction}', $size: $icon-size-inline);
     &::after {
-        background-repeat: no-repeat;
-        content: ' ';
-        display: inline-block;
-        height: $icon-size-inline;
-        margin-left: 0;
-        @include background-icon('arr_1#{$direction}', clickable, $icon-size-inline);
-        vertical-align: text-bottom;
-        width: $icon-size-inline;
+        color: var('--color--highlight');
     }
 }
 
@@ -811,19 +835,19 @@ table.withdetails {
     .tablesorter-header:not(.sorter-false) {
         white-space: nowrap;
 
-        color: var(--base-color);
+        color: var(--color--highlight);
 
         &:hover {
-            color: var(--active-color);
+            color: var(--color--highlight-hover);
             cursor: pointer;
         }
 
-        &.tablesorter-headerDesc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1down, status-red, $icon-size-inline);
+        &.tablesorter-headerDesc:hover .tablesorter-header-inner {
+            @include icon(after, arr_1down, $size: $icon-size-inline);
         }
 
-        &.tablesorter-headerAsc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1up, status-red, $icon-size-inline);
+        &.tablesorter-headerAsc:hover .tablesorter-header-inner {
+            @include icon(after, arr_1up, $size: $icon-size-inline);
         }
     }
 
@@ -930,7 +954,7 @@ table.show-tree {
 
             a:hover {
                 background-color: var(--color--table-header) !important;
-                color: var(--base-color) !important;
+                color: var(--color--content-link-hover) !important;
             }
         }
 

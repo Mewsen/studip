@@ -6,10 +6,9 @@
             <caption>
                 <div class="caption-container">
                     <div v-if="breadcrumbs && !table_title">
-                        <a v-if="breadcrumbs[0]" :href="breadcrumbs[0].url" :title="$gettext('Zum Hauptordner')">
+                        <a v-if="breadcrumbs[0]" :href="breadcrumbs[0].url" :title="$gettext('Zum Hauptordner')" class="files-home">
                             <studip-icon shape="folder-home-full"
                                          role="clickable"
-                                         class="text-bottom"
                                          :size="30"></studip-icon>
                             <span v-if="breadcrumbs.length === 1">
                                 {{ breadcrumbs[0].name }}

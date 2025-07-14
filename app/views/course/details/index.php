@@ -340,7 +340,7 @@
                         <a class="module-info" href="<?= URLHelper::getLink($module['nav']->getUrl())?>">
                             <?= htmlReady($module['title']) ?>
                             <? if ($module['nav']->getImage()) : ?>
-                                <?= $module['nav']->getImage()->asImg($module['nav']->getLinkAttributes()) ?>
+                                <?= $module['nav']->getImage()->asSvg($module['nav']->getLinkAttributes()) ?>
                             <? endif ?>
                             <span><?= htmlReady($module['nav']->getTitle())?></span>
                         </a>

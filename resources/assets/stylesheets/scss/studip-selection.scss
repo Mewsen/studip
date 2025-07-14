@@ -16,14 +16,14 @@
     }
 
     li:not(.empty-placeholder) {
-        color: var(--base-color);
+        color: var(--color--highlight);
         cursor: pointer;
         margin: 1px 0;
         padding-right: 0.5em;
     }
 
     li.empty-placeholder {
-        color: fade-out($text-color, 0.3);
+        color: var(--color--font-secondary);
 
         &:not(:only-child) {
             display: none;
@@ -50,11 +50,11 @@
     }
 
     .studip-selection-selected .studip-selection-label {
-        @include icon(before, radiobutton-checked);
+        @include icon(before, radiobutton-checked, $align: bottom);
     }
 
     .studip-selection-selectable .studip-selection-label {
-        @include icon(before, radiobutton-unchecked);
+        @include icon(before, radiobutton-unchecked, $align: bottom);
     }
 
     .studip-selection-image + .studip-selection-label {
@@ -65,15 +65,15 @@
 
     .studip-selection-selected li:hover {
         .studip-selection-image,
-        .studip-selection-label::before {
-            @include background-icon(remove-circle-full);
+        .studip-selection-label {
+            @include icon(before, remove-circle-full, $align: bottom);
         }
     }
 
     .studip-selection-selectable li:hover {
         .studip-selection-image,
-        .studip-selection-label::before {
-            @include background-icon(add-circle-full);
+        .studip-selection-label {
+            @include icon(before, add-circle-full, $align: bottom);
         }
     }
 
@@ -98,7 +98,7 @@
             }
 
             .studip-selection-label {
-                color: var(--active-color);
+                color: var(--color--highlight-hover);
             }
         }
     }

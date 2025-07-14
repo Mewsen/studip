@@ -85,6 +85,9 @@
     @return $size;
 }
 
+/**
+ * Deprecated mixin, use `icon` instead
+ */
 @mixin background-icon($icon, $role: clickable, $size: $icon-size-default) {
     $svg: icon-path($icon, $role);
 
@@ -104,8 +107,9 @@
     }
 }
 
-@mixin icon($position, $icon, $role: clickable, $size: $icon-size-default, $padding: 0, $inline: false) {
+@mixin icon($position, $icon, $role: clickable, $size: $icon-size-default, $padding: 0, $inline: false, $align: text-top) {
     $position: $position;
+    $svg: icon-path($icon, $role);
 
     @if $inline {
         $size: $icon-size-inline;
@@ -113,13 +117,14 @@
 
     @if $position == before or $position == after {
         &::#{$position} {
-            @include background-icon($icon, $role, $size);
-            background-repeat: no-repeat;
-            content: ' ';
+            content: '';
             display: inline-block;
             height: icon-size($size);
-            vertical-align: text-top;
             width: icon-size($size);
+            background-color: currentColor;
+            mask: url("#{$svg}") no-repeat center / contain;
+            vertical-align: $align;
+            
 
             @if $position == before {
                 margin-right: $padding;
@@ -137,12 +142,12 @@
     display: inline-block;
     vertical-align: bottom;
 
-    @include background-icon($default-icon-name, $size: $icon-size-default);
+    @include icon(before, $default-icon-name, $size: $icon-size-default);
     @include hide-text;
     @include square($icon-size-default);
 
     &.toggled {
-        @include background-icon($toggled-icon-name, $size: $icon-size-default);
+        @include icon(before, $toggled-icon-name, $size: $icon-size-default);
     }
 }
 
@@ -238,9 +243,8 @@
         width: var(--icon-size-default);
         height: var(--icon-size-default);
 
-        @include background-icon($icon, $role);
+        @include icon(before, $icon, $role);
 
-        background-repeat: no-repeat;
         cursor: pointer;
         display: block;
         // vertical-align: middle;

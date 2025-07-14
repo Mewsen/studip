@@ -625,7 +625,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             }
             if ($request_dates_booked === 0) {
                 $this->available_room_icons[$room->id] =
-                    Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(
+                    Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asSvg(
                         [
                             'class' => 'text-bottom',
                             'title' => _('freier Raum')
@@ -633,7 +633,7 @@ class Course_RoomRequestsController extends AuthenticatedController
                     );
                 $available_rooms[] = $room;
             } elseif ($request_dates_booked < $request_time_intervals) {
-                $this->available_room_icons[$room->id] = Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asImg([
+                $this->available_room_icons[$room->id] = Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asSvg([
                     'class' => 'text-bottom',
                     'title' => _('teilweise belegter Raum')
                 ]);

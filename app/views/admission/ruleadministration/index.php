@@ -19,14 +19,14 @@
                 <td>
                     <a href="<?= $controller->toggle_activation($type) ?>" role="button">
                     <? if ($details['active']): ?>
-                        <?= Icon::create('checkbox-checked')->asImg([
+                        <?= Icon::create('checkbox-checked')->asSvg([
                             'title' => sprintf(
                                 _('Die Regel "%s" ist aktiv. Klicken Sie hier, um sie zu deaktivieren.'),
                                 $details['name']
                             )
                         ]) ?>
                     <? else: ?>
-                        <?= Icon::create('checkbox-unchecked')->asImg([
+                        <?= Icon::create('checkbox-unchecked')->asSvg([
                             'title' => sprintf(
                                 _('Die Regel "%s" ist inaktiv. Klicken Sie hier, um sie zu aktivieren.'),
                                 $details['name']

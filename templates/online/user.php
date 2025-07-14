@@ -7,7 +7,7 @@
         <? if (!$is_buddy) : ?>
             <a href="<?= URLHelper::getLink('online.php', ['cmd' => 'add_user',
                                                                 'add_uname' => $tmp_online_uname]) ?>">
-                <?= Icon::create('arr_2left', Icon::ROLE_SORT)->asImg([
+                <?= Icon::create('arr_2left', Icon::ROLE_SORT)->asSvg([
                     'title' => _('zu den Buddies hinzufügen'),
                     'style' => 'padding-right: 0.33em;',
                     'class' => 'middle',
@@ -29,7 +29,7 @@
             <?= htmlReady($fullname) ?>
         </a>
             <? foreach (StudipKing::is_king($tmp_user_id, TRUE) as $type => $text) : ?>
-                <?= Icon::create('crown', Icon::ROLE_SORT)->asImg(['title' => $text, 'class' => 'text-bottom']) ?>
+                <?= Icon::create('crown', Icon::ROLE_SORT)->asSvg(['title' => $text, 'class' => 'text-bottom']) ?>
             <? endforeach ?>
     </td>
 
@@ -38,25 +38,25 @@
     </td>
 
     <td width="3%" align="center">
-        <? if (class_exists("Blubber")) : ?>
+        <? if (class_exists('Blubber')) : ?>
         <a href="<?= URLHelper::getLink('dispatch.php/course/streams/global', ['mention' => $tmp_online_uname]) ?>">
-            <?= Icon::create('blubber')->asImg(['title' => _("Blubber diesen Nutzer an"), 'class' => 'text-bottom']) ?>
+            <?= Icon::create('blubber')->asSvg(['title' => _('Blubber diesen Nutzer an'), 'class' => 'text-bottom']) ?>
         </a>
         <? endif ?>
     </td>
 
     <td width="3%" align="center">
         <a href="<?= URLHelper::getLink('dispatch.php/messages/write', ['rec_uname' => $tmp_online_uname]) ?>">
-            <?= Icon::create('mail')->asImg(['title' => _('Nachricht an Benutzer verschicken'), 'class' => 'text-bottom']) ?>
+            <?= Icon::create('mail')->asSvg(['title' => _('Nachricht an Benutzer verschicken'), 'class' => 'text-bottom']) ?>
         </a>
     </td>
 
     <td width="3%" align="center">
         <? if ($is_buddy) : ?>
-            <a href="<?= URLHelper::getLink("online.php",
-                                            ["cmd" => "delete_user",
-                                                  "delete_uname" => $tmp_online_uname]) ?>">
-                <?= Icon::create('trash')->asImg(['title' => _('aus der Buddy-Liste entfernen'), 'class' => 'text-bottom']) ?>
+            <a href="<?= URLHelper::getLink('online.php',
+                                            ['cmd' => 'delete_user',
+                                                  'delete_uname' => $tmp_online_uname]) ?>">
+                <?= Icon::create('trash')->asSvg(['title' => _('aus der Buddy-Liste entfernen'), 'class' => 'text-bottom']) ?>
             </a>
         <? else : ?>
             &nbsp;

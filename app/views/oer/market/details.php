@@ -180,11 +180,11 @@
                         title="<?= $GLOBALS['perm']->have_perm("autor") ? _('Geben Sie die erste Bewertung ab.') : _('Noch keine Bewertung abgegeben.') ?>"
                         href="<?= $controller->link_for('oer/market/review/' . $material->getId()) ?>" data-dialog>
                     <? endif ?>
-                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asImg(50) ?>
-                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asImg(50) ?>
-                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asImg(50) ?>
-                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asImg(50) ?>
-                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asImg(50) ?>
+                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asSvg(50) ?>
+                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asSvg(50) ?>
+                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asSvg(50) ?>
+                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asSvg(50) ?>
+                    <?= Icon::create("star", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asSvg(50) ?>
                     <? if ($allowed_to_review) : ?>
                         </a>
                     <? endif ?>
@@ -194,15 +194,15 @@
                     <? endif ?>
                     <? $material['rating'] = round($material['rating'], 1) / 2 ?>
                     <? $v = $material['rating'] >= 0.75 ? "" : ($material['rating'] >= 0.25 ? "-halffull" : "-empty") ?>
-                    <?= Icon::create("star$v", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asImg(50) ?>
+                    <?= Icon::create("star{$v}", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asSvg(50) ?>
                     <? $v = $material['rating'] >= 1.75 ? "" : ($material['rating'] >= 1.25 ? "-halffull" : "-empty") ?>
-                    <?= Icon::create("star$v", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asImg(50) ?>
+                    <?= Icon::create("star{$v}", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asSvg(50) ?>
                     <? $v = $material['rating'] >= 2.75 ? "" : ($material['rating'] >= 2.25 ? "-halffull" : "-empty") ?>
-                    <?= Icon::create("star$v", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asImg(50) ?>
+                    <?= Icon::create("star{$v}", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asSvg(50) ?>
                     <? $v = $material['rating'] >= 3.75 ? "" : ($material['rating'] >= 3.25 ? "-halffull" : "-empty") ?>
-                    <?= Icon::create("star$v", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asImg(50) ?>
+                    <?= Icon::create("star{$v}", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asSvg(50) ?>
                     <? $v = $material['rating'] >= 4.75 ? "" : ($material['rating'] >= 4.25 ? "-halffull" : "-empty") ?>
-                    <?= Icon::create("star$v", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asImg(50) ?>
+                    <?= Icon::create("star{$v}", $allowed_to_review ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO)->asSvg(50) ?>
                     <? if ($allowed_to_review) : ?>
                         </a>
                     <? endif ?>
@@ -260,12 +260,12 @@
                             <div class="comments center">
                                 <? if (count($review->comments)) : ?>
                                     <a href="<?= $controller->link_for("oer/market/discussion/".$review->getId()) ?>">
-                                        <?= Icon::create("comment")->asImg(['class' => "text-bottom"]) ?>
+                                        <?= Icon::create('comment')->asSvg(['class' => 'text-bottom']) ?>
                                         <?= sprintf(_('%s Kommentare dazu'), count($review->comments)) ?>
                                     </a>
                                 <? elseif ($material->isMine()) : ?>
                                     <a href="<?= $controller->link_for("oer/market/discussion/".$review->getId()) ?>">
-                                        <?= Icon::create("comment")->asImg(['class' => "text-bottom"]) ?>
+                                        <?= Icon::create('comment')->asSvg(['class' => 'text-bottom']) ?>
                                         <?= _('Dazu einen Kommentar schreiben') ?>
                                     </a>
                                 <? endif ?>

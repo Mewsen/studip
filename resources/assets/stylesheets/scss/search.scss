@@ -155,7 +155,7 @@ label.inactive-settings-category {
                     margin: 20px 0 0 -32px;
 
                     a {
-                        @include background-icon(arr_1right, $size: 24px);
+                        @include icon(after, arr_1right, $size: 24px, $align: middle);
                         @include square(24px);
                         display: inline-block;
                     }
@@ -186,7 +186,7 @@ div#div-search-input {
 
 }
 
-.button.seach-button {
+.button.search-button {
     border-radius: 0;
 }
 
@@ -209,19 +209,7 @@ div#div-search-input {
             white-space: nowrap;
             padding: 8px;
             margin: 0 5px;
-
-            &::before {
-                background-repeat: no-repeat;
-                content: " ";
-                float: right;
-                height: var(--icon-size-default);
-                width: var(--icon-size-default);
-                @include background-icon(trash);
-            }
-
-            &:hover::before {
-                @include background-icon(trash);
-            }
+            @include icon(after, trash, $align: middle);
         }
     }
 }

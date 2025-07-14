@@ -4,7 +4,7 @@
     <input type="hidden" name="file_refs[]" value="<?= htmlReady($file->getId()) ?>">
 <? endforeach ?>
 
-    <?= Icon::create('unit-test', Icon::ROLE_INACTIVE)->asImg(120, ['style' => 'display: block; margin-left: auto; margin-right: auto;']) ?>
+    <?= Icon::create('unit-test', Icon::ROLE_INACTIVE)->asSvg(120, ['style' => 'display: block; margin-left: auto; margin-right: auto;']) ?>
 
     <?= _('Soll diese ZIP-Datei entpackt werden?') ?>
 

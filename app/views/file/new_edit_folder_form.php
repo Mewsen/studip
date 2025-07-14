@@ -27,8 +27,8 @@
                id="folder-type-<?= htmlReady($folder_type['class']) ?>"
                <? if ($folder_type['class'] === get_class($folder)) echo 'checked'; ?>>
         <label for="folder-type-<?= htmlReady($folder_type['class']) ?>">
-            <?= Icon::create('radiobutton-unchecked')->asImg(['class' => 'arrow']) ?>
-            <?= Icon::create('radiobutton-checked')->asImg(['class' => 'check']) ?>
+            <?= Icon::create('radiobutton-unchecked')->asSvg(['class' => 'arrow']) ?>
+            <?= Icon::create('radiobutton-checked')->asSvg(['class' => 'check']) ?>
             <div class="text">
                 <?= htmlReady($folder_type['name']) ?>
             <? if ($template = $folder_type['instance']->getDescriptionTemplate()): ?>
@@ -37,7 +37,7 @@
             </div>
             <div class="icon">
                 <? if ($folder_type['icon']) : ?>
-                    <?= $folder_type['icon']->asImg(32) ?>
+                    <?= $folder_type['icon']->asSvg(32) ?>
                 <? endif ?>
             </div>
         </label>

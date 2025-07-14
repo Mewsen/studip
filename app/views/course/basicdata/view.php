@@ -133,12 +133,12 @@ $dialog_attr = Request::isXhr() ? ' data-dialog="size=50%"' : '';
                 <? if ($perm_dozent && !$dozent_is_locked): ?>
                     <? if ($num > 0) : ?>
                         <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
-                            <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
+                            <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asSvg(['class' => 'middle']) ?>
                         </button>
                     <? endif; ?>
                     <? if ($num < count($dozenten) - 1): ?>
                         <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
-                            <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
+                            <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asSvg(['class' => 'middle']) ?>
                         </button>
                     <? endif; ?>
                         <?= Icon::create('trash')->asInput([
@@ -270,12 +270,12 @@ $dialog_attr = Request::isXhr() ? ' data-dialog="size=50%"' : '';
                 <? if ($perm_dozent && !$tutor_is_locked): ?>
                     <? if ($num > 0) : ?>
                         <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
-                            <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
+                            <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asSvg(['class' => 'middle']) ?>
                         </button>
                     <? endif; ?>
                     <? if ($num < count($tutoren) - 1) : ?>
                         <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
-                            <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
+                            <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asSvg(['class' => 'middle']) ?>
                         </button>
                     <? endif; ?>
                         <?= Icon::create('trash')->asInput([

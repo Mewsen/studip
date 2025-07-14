@@ -78,7 +78,7 @@ export default {
         background-size: 100% auto;
         background-repeat: no-repeat;
         background-position: center;
-        background-color: var(--content-color-20);
+        background-color: var(--color--courseware-background-highlight);
     }
 
     .cw-tools-units-item-header-details {
@@ -99,7 +99,7 @@ export default {
         }
         p {
             margin: 0;
-            color: var(--black);
+            color: var(--color--font-primary);
         }
     }
 }

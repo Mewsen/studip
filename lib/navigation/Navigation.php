@@ -202,7 +202,7 @@ class Navigation implements IteratorAggregate
     public function getImageTag()
     {
         if ($image = $this->getImage()) {
-            return $image->asImg($this->getLinkAttributes());
+            return $image->asSvg($this->getLinkAttributes());
         } else {
             return '';
         }

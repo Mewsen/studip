@@ -16,7 +16,7 @@
     </label>
 </li>
 <li class="template invisible" data-template-type="range">
-    <?= Icon::create('trash')->asImg(
+    <?= Icon::create('trash')->asSvg(
         [
             'class' => 'text-bottom remove-icon',
             'aria-label' => _('Kriterium entfernen'),
@@ -38,7 +38,7 @@
     </label>
 </li>
 <li class="template invisible" data-template-type="num">
-    <?= Icon::create('trash')->asImg(
+    <?= Icon::create('trash')->asSvg(
         [
             'class' => 'text-bottom remove-icon',
             'aria-label' => _('Kriterium entfernen'),
@@ -51,7 +51,7 @@
     </label>
 </li>
 <li class="template invisible" data-template-type="select">
-    <?= Icon::create('trash')->asImg(['class' => 'text-bottom remove-icon']) ?>
+    <?= Icon::create('trash')->asSvg(['class' => 'text-bottom remove-icon']) ?>
     <label class="undecorated">
         <span></span>
         <select class="room-search-widget_criteria-list_input">
@@ -60,7 +60,7 @@
 </li>
 <li class="template invisible"
     data-template-type="other">
-    <?= Icon::create('trash')->asImg(
+    <?= Icon::create('trash')->asSvg(
         [
             'class' => 'text-bottom remove-icon',
             'aria-label' => _('Kriterium entfernen'),

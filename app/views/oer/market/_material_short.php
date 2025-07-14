@@ -8,7 +8,7 @@
     <a href="<?= $controller->link_for('oer/market/details', $material) ?>" target="_blank">
         <header>
             <h1>
-                <?= $material->getIcon()->asImg(['class' => 'text-bottom']) ?>
+                <?= $material->getIcon()->asSvg(['class' => 'text-bottom']) ?>
                 <div class="title">
                     <? if (strlen($material->name) > 50) : ?>
                         <?= htmlReady(substr($material->name, 0, 50)) . ' ...' ?>

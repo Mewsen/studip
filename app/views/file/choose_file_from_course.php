@@ -57,7 +57,7 @@ if (Request::get('range_type')) {
                 </td>
                 <td class="actions">
                     <a href="<?= $controller->link_for('file/choose_file_from_course/' . $folder_id, array_merge($options, ['course_id' => $course->id])) ?>" data-dialog>
-                        <?= Icon::create('folder-full')->asImg(30) ?>
+                        <?= Icon::create('folder-full')->asSvg(30) ?>
                     </a>
                 </td>
             </tr>

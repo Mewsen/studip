@@ -15,7 +15,7 @@
                             </router-link>
                             <div
                                 v-else
-                                class="cw-ribbon-button cw-ribbon-button-prev-disabled"
+                                class="cw-ribbon-button cw-ribbon-button-prev disabled"
                                 :title="$gettext('Keine vorherige Seite')"
                             />
                             <router-link v-if="nextElement" :to="'/structural_element/' + nextElement.id">
@@ -23,7 +23,7 @@
                             </router-link>
                             <div
                                 v-else
-                                class="cw-ribbon-button cw-ribbon-button-next-disabled"
+                                class="cw-ribbon-button cw-ribbon-button-next disabled"
                                 :title="$gettext('Keine nächste Seite')"
                             />
                         </template>
@@ -52,6 +52,7 @@
                                             v-if="complete"
                                             shape="accept"
                                             role="info"
+                                            :inline="true"
                                             :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
                                         />
                                         <span
@@ -98,6 +99,7 @@
                                 :items="menuItems"
                                 class="cw-ribbon-action-menu"
                                 :context="structuralElement.attributes.title"
+                                :collapseAt="1"
                                 @editCurrentElement="menuAction('editCurrentElement')"
                                 @addElement="menuAction('addElement')"
                                 @exportElement="menuAction('exportElement')"

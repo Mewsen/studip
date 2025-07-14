@@ -10,7 +10,7 @@
         <li class="content-item">
             <a class="content-item-link" href="<?= $controller->edit($type_id) ?>">
                 <div class="content-item-img-wrapper">
-                    <?= Icon::create($config_type['icon'])->asImg(64) ?>
+                    <?= Icon::create($config_type['icon'])->asSvg(64) ?>
                 </div>
                 <div class="content-item-text">
                     <p class="content-item-title">

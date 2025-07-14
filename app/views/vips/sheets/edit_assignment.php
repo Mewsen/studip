@@ -81,8 +81,8 @@
         <section>
             <input id="options-toggle" class="options-toggle" type="checkbox" value="on" <?= $assignment_id ? '' : 'checked' ?>>
             <a class="caption" href="#" role="button" data-toggles="#options-toggle" aria-controls="options-panel" aria-expanded="<?= $assignment_id ? 'false' : 'true' ?>">
-                <?= Icon::create('arr_1down')->asImg(['class' => 'toggle-open']) ?>
-                <?= Icon::create('arr_1right')->asImg(['class' => 'toggle-closed']) ?>
+                <?= Icon::create('arr_1down')->asSvg(['class' => 'toggle-open']) ?>
+                <?= Icon::create('arr_1right')->asSvg(['class' => 'toggle-closed']) ?>
                 <?= _('Weitere Einstellungen') ?>
             </a>
 
@@ -191,8 +191,8 @@
             <div class="practice-hidden exam-hidden">
                 <input id="feedback-toggle" class="options-toggle" type="checkbox" value="on">
                 <a class="caption" href="#" role="button" data-toggles="#feedback-toggle" aria-controls="feedback-panel" aria-expanded="false">
-                    <?= Icon::create('arr_1down')->asImg(['class' => 'toggle-open']) ?>
-                    <?= Icon::create('arr_1right')->asImg(['class' => 'toggle-closed']) ?>
+                    <?= Icon::create('arr_1down')->asSvg(['class' => 'toggle-open']) ?>
+                    <?= Icon::create('arr_1right')->asSvg(['class' => 'toggle-closed']) ?>
                     <?= _('Automatisches Feedback') ?>
                 </a>
 

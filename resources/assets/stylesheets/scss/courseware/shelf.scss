@@ -2,7 +2,7 @@
 
 .cw-contents-overview-teaser {
     max-width: 782px;
-    background-color: var(--content-color-20);
+    background-color: var(--color--courseware-background-highlight);
     background-image: url('#{$image-path}/courseware-keyvisual-negative.svg');
     background-repeat: no-repeat;
     background-size: 196px;
@@ -54,8 +54,8 @@
 
 .cw-unit-items {
     .unit-ghost {
-        background: var(--white);
-        border: dashed 2px var(--content-color-40);
+        background: var(--color--global-background);
+        border: dashed 2px var(--color--courseware-border-default);
     }
     .unit-ghost .cw-tile {
         opacity: 0;

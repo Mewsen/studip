@@ -187,15 +187,16 @@ export default {
         flex-direction: row;
         position: sticky;
         top: 0;
-        background-color: var(--content-color-20);
+        background-color: var(--color--courseware-background-highlight);
         padding: 0.5em 1em;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
         margin-bottom: 1em;
 
         .file-chooser-breadcrumb {
             flex-grow: 1;
         }
         .toggle-view {
+            color: var(--color--highlight);
             width: 20px;
             height: 20px;
             border: none;
@@ -208,7 +209,7 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         overflow-y: scroll;
-        height: calc(100% - 36px);
+        height: calc(100% - 42px);
     }
 }
 .file-chooser-items {
@@ -219,6 +220,7 @@ export default {
 
     .file-chooser-item {
         display: flex;
+        align-items: center;
         flex-direction: column;
         width: 104px;
         min-height: 104px;
@@ -228,10 +230,12 @@ export default {
         margin: 0 4px 4px 4px;
         padding: 4px;
         cursor: pointer;
+        color: var(--color--font-primary);
 
         &.selected {
-            background-color: var(--activity-color-20);
-            border: solid thin var(--base-color);
+            background-color: var(--color--tile-background-active);
+            border: solid thin var(--color--tile-border-focus);
+            color: var(--color--highlight);
             font-weight: 700;
         }
         &.disabled {

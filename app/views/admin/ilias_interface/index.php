@@ -11,7 +11,7 @@
             <?= _('Angebundene ILIAS-Installationen') ?>
             <span class="actions">
                 <a href="<?= $controller->url_for('admin/ilias_interface/edit_server/new') ?>" data-dialog="size=auto">
-                    <?= Icon::create('add')->asImg(tooltip2(_('Neue ILIAS-Installation hinzufügen'))) ?>
+                    <?= Icon::create('add')->asSvg(tooltip2(_('Neue ILIAS-Installation hinzufügen'))) ?>
                 </a>
             </span>
         </caption>
@@ -44,7 +44,7 @@
                     }
                     ?>
                     <a href="<?= $controller->url_for('admin/ilias_interface/'.$cmd.'/'.$ilias_index) ?>">
-                        <?= Icon::create($img)->asImg(['title' => $text]) ?>
+                        <?= Icon::create($img)->asSvg(['title' => $text]) ?>
                     </a>
                 </td>
                 <td><?= htmlReady($ilias_config['name']) ?></td>

@@ -40,13 +40,11 @@
             line-height: 1.5em;
 
             a {
-                @include background-icon(folder-parent, $size: 24px);
-                background-position: left center;
-                background-repeat: no-repeat;
+                @include icon(before, folder-parent, $size: 24px);
                 padding-left: 30px;
             }
             &:first-child a {
-                @include background-icon(folder-empty, $size: 24px);
+                @include icon(before, folder-empty, $size: 24px);
             }
         }
     }

@@ -13,13 +13,13 @@ a.message-tag {
 
 #statusbar_container {
     > .statusbar {
-        border: thin solid var(--light-gray-color);
+        border: thin solid var(--color--input-field-border);
         min-width: 100%;
         max-width: 100%;
-        background-color: var(--content-color-40);
+        background-color: var(--color--input-field-background);
 
         > .progress {
-            background-color: var(--content-color);
+            background-color: var(--color--highlight);
             width: 100%;
             min-width: 0;
             max-width: 0;
@@ -27,22 +27,27 @@ a.message-tag {
             line-height: 20px;
 
             &.progress-error {
-                background-color: var(--red);
+                background-color: var(--color--warning);
             }
         }
 
         > .progresstext {
             margin-top: -20px;
             text-align: center;
-            color: var(--white);
+            color: var(--color--font-inverted);
             height: 20px;
             line-height: 20px;
         }
     }
 }
 
-#message_metadata tr {
-    vertical-align: top;
+#message_metadata {
+    svg {
+        color: var(--color--highlight);
+    }
+    tr {
+        vertical-align: top;
+    }
 }
 
 #adressees {
@@ -55,15 +60,15 @@ a.message-tag {
 }
 
 .message_body {
-    background-color: var(--content-color-20);
     margin: 3px;
     padding: 10px;
+    background-color: var(--color--tile-background);
 }
 
 .responsive_author {
     margin: 0;
     font-size: 0.8em;
-    color: var(--base-gray);
+    color: var(--color--font-secondary);
 }
 
 form.default {
@@ -89,7 +94,7 @@ form.default {
     .multi_person_search_link {
         line-height: 30px;
 
-        img {
+        svg {
             vertical-align: middle;
             margin-top: -2px;
         }
@@ -116,7 +121,19 @@ ul.message-options {
             > div.message-indicators {
                 float: right;
                 margin-right: 5px;
+
+                svg {
+                    vertical-align: bottom;
+                }
             }
         }
+    }
+}
+
+.message-attachments {
+    margin-top: 2em;
+
+    .file-icon svg {
+        vertical-align: bottom;
     }
 }

@@ -4,9 +4,9 @@
       enctype="multipart/form-data">
 
     <div style="display: flex; justify-content: center; align-items: center">
-        <?= Icon::create('blubber', Icon::ROLE_INFO)->asImg(50, ['style' => "margin-right: 50px;"]) ?>
-        <?= Icon::create('arr_2right', Icon::ROLE_INFO)->asImg(['style' => "margin-right: 50px;"]) ?>
-        <?= Icon::create('studygroup', Icon::ROLE_INFO)->asImg(50) ?>
+        <?= Icon::create('blubber', Icon::ROLE_INFO)->asSvg(50, ['style' => 'margin-right: 50px;']) ?>
+        <?= Icon::create('arr_2right', Icon::ROLE_INFO)->asSvg(['style' => 'margin-right: 50px;']) ?>
+        <?= Icon::create('studygroup', Icon::ROLE_INFO)->asSvg(50) ?>
     </div>
 
     <label>

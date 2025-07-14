@@ -132,7 +132,7 @@ export default {
     }
     span {
         box-sizing: border-box;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--courseware-border-default);
         border-left: none;
         display: inline-block;
         font-size: 14px;

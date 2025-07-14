@@ -1,5 +1,5 @@
 .contentbar {
-    background-color: var(--dark-gray-color-10);
+    background-color: var(--color--content-bar-background);
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -51,13 +51,7 @@
                     text-overflow: ellipsis;
                     white-space: nowrap;
 
-                    a {
-                        color: var(--base-color);
-                        text-decoration: none;
-                        &:hover {
-                            color: var(--active-color);
-                        }
-                    }
+                    @include highlight-anchor;
 
                     &.contentbar-breadcrumb-item-current {
                         flex-shrink: 1;
@@ -93,7 +87,7 @@
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: 24px;
-                border: solid thin var(--color--button-border);
+                border: solid thin var(--color--highlight);
                 border-radius: var(--border-radius-default);
                 cursor: pointer;
                 display: inline-block;
@@ -102,7 +96,7 @@
 
                 &.contentbar-button-menu,
                 &.cw-ribbon-button-menu {
-                    @include background-icon(table-of-contents);
+                    @include icon(before, table-of-contents, $align: middle);
                 }
 
                 &.contentbar-button-zoom::before {

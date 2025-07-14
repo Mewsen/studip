@@ -139,6 +139,7 @@ class RouteMap
         $this->addAuthenticatedNewsRoutes($group);
         $this->addAuthenticatedStockImagesRoutes($group);
         $this->addAuthenticatedStudyAreasRoutes($group);
+        $this->addAuthenticatedThemesRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
     }
@@ -733,6 +734,15 @@ class RouteMap
 
         $group->post('/stock-images/{id}/blob', Routes\StockImages\StockImagesUpload::class);
         $group->post('/stock-images/zip', Routes\StockImages\StockImagesZipUpload::class);
+    }
+
+    private function addAuthenticatedThemesRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/studip-themes', Routes\Themes\ThemesIndex::class);
+        $group->get('/studip-themes/{id}', Routes\Themes\ThemesShow::class);
+        $group->post('/studip-themes', Routes\Themes\ThemesCreate::class);
+        $group->patch('/studip-themes/{id}', Routes\Themes\ThemesUpdate::class);
+        $group->delete('/studip-themes/{id}', Routes\Themes\ThemesDelete::class);
     }
 
     private function addAuthenticatedAvatarRoutes(RouteCollectorProxy $group): void

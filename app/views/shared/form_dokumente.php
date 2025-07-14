@@ -51,14 +51,14 @@
                                 'trash',
                                 Icon::ROLE_CLICKABLE,
                                 ['title' => _('Dokument entfernen')]
-                            )->asImg(); ?>
+                            )->asSvg(); ?>
                         </a>
                         <a href="#" class="mvv-item-edit-properties">
                             <?= Icon::create(
                                 'edit',
                                 Icon::ROLE_CLICKABLE,
                                 ['title' => _('Kommentar bearbeiten')]
-                            )->asImg(); ?>
+                            )->asSvg(); ?>
                         </a>
                     </div>
                     <fieldset class="mvv-item-document-comments" style="display: none;">
@@ -93,7 +93,7 @@
                     'add',
                     Icon::ROLE_CLICKABLE,
                     ['title' => _('Neues Dokument anlegen')]
-                )->asImg(); ?>
+                )->asSvg(); ?>
             </a>
         </div>
         <div style="padding-top: 15px; width: 100%; max-width: 48em;">

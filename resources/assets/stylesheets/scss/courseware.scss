@@ -8,6 +8,7 @@
 @import './courseware/content-courses';
 @import './courseware/dashboard';
 @import './courseware/sortable';
+@import './courseware/tasks';
 @import './courseware/toolbar';
 @import './courseware/widgets';
 @import './courseware/wizards';
@@ -19,7 +20,6 @@
 @import './courseware/containers/list';
 @import './courseware/containers/tabs';
 @import './courseware/blocks/default-block';
-
 
 @import './courseware/layouts/call-to-action';
 @import './courseware/layouts/collapsible';
@@ -35,3 +35,11 @@
 @import './courseware/layouts/tile';
 @import './courseware/layouts/tree';
 @import './courseware/layouts/tree-units';
+
+:root {
+    --color--courseware-border-default: #{$color--gray-5};
+    --color--courseware-border-active: #{$color--gray-4};
+    --color--courseware-background-default: #{$color--global-background};
+    --color--courseware-background-highlight: #{$color--gray-6};
+    --color--courseware-call-to-action-background: #{$petrol-20};
+}

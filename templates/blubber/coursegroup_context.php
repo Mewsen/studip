@@ -35,8 +35,8 @@
         <? if ($thread->statusgruppe->hasFolder()) : ?>
             <? $folder = $thread->statusgruppe->getFolder() ?>
             <div>
-                <a href="<?= URLHelper::getLink("dispatch.php/course/files/index/".$folder->getId(), ['cid' => $course->getId()]) ?>">
-                    <?= $folder->getIcon("clickable")->asImg(25, ['class' => "text-bottom"]) ?>
+                <a href="<?= URLHelper::getLink('dispatch.php/course/files/index/'.$folder->getId(), ['cid' => $course->getId()]) ?>">
+                    <?= $folder->getIcon('clickable')->asSvg(25, ['class' => 'text-bottom']) ?>
                     <?= htmlReady($folder->name) ?>
                 </a>
             </div>

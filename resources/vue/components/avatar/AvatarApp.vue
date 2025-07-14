@@ -370,13 +370,6 @@ export default {
     height: 500px;
     margin-bottom: 1em;
 }
-.square-button-panel {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: center;
-}
 
 .cropper-actions-wrapper {
     max-width: 500px;

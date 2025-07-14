@@ -21,7 +21,7 @@
                 <? if ($resource_path && !in_array($resource->id, $resource_path)): ?>
                     <a href="<?= $link ?>">
                 <? endif; ?>
-                <?= Icon::create('arr_1right')->asImg([
+                <?= Icon::create('arr_1right')->asSvg([
                     'class' => in_array($resource->id, $resource_path) || (!$resource_path && $resource->level < $max_open_depth)
                         ? 'rotated'
                         : '',
@@ -42,7 +42,7 @@
                <?= $selected
                    ? 'class="selected-resource"'
                    : '' ?>>
-                <?= $resource->getIcon($selected ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE)->asImg([
+                <?= $resource->getIcon($selected ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE)->asSvg([
                     'class' => 'text-bottom'
                 ]) ?>
                 <?= htmlReady($resource->name) ?>

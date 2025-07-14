@@ -377,14 +377,14 @@ select.mvv-search-select-list {
             }
 
             &.selected {
-                @include background-icon(arr_2right, inactive);
+                @include icon(before, arr_2right);
                 background-position: right;
                 background-repeat: no-repeat;
                 cursor: pointer;
                 font-weight: bold;
 
                 &.last {
-                    @include background-icon(accept, inactive);
+                    @include icon(before, accept);
                     background-position: right;
                     background-repeat: no-repeat;
                 }

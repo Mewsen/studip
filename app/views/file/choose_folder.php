@@ -23,7 +23,7 @@ $buttonLabels = [
 
 <div style="text-align: center; margin-bottom: 20px;">
     <?= $headings[$options['copymode']] ?>
-    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
+    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
     <?= htmlReady($top_folder_name) ?>
 </div>
 
@@ -104,9 +104,9 @@ $buttonLabels = [
                     <!-- neu -->
                     <button formaction="<?= $controller->action_link('choose_folder/' . $subfolder->getId()) ?>" class="undecorated" data-dialog>
                     <? if ($subfolder->is_empty): ?>
-                        <?= Icon::create('folder-empty')->asImg(24) ?>
+                        <?= Icon::create('folder-empty')->asSvg(24) ?>
                     <? else: ?>
-                        <?= Icon::create('folder-full')->asImg(24) ?>
+                        <?= Icon::create('folder-full')->asSvg(24) ?>
                     <? endif; ?>
                     </button>
                 </td>
@@ -127,9 +127,9 @@ $buttonLabels = [
             <tr>
                 <td class="document-icon" data-sort-value="0">
                 <? if ($subfolder->is_empty): ?>
-                    <?= Icon::create('folder-empty', Icon::ROLE_INACTIVE)->asImg(24) ?>
+                    <?= Icon::create('folder-empty', Icon::ROLE_INACTIVE)->asSvg(24) ?>
                 <? else: ?>
-                    <?= Icon::create('folder-full', Icon::ROLE_INACTIVE)->asImg(24) ?>
+                    <?= Icon::create('folder-full', Icon::ROLE_INACTIVE)->asSvg(24) ?>
                 <? endif ?>
                 </td>
                 <td>

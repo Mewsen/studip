@@ -9,9 +9,7 @@
     cursor: pointer;
     height: 28px;
 
-    @include background-icon(zoom-in2);
-    background-position: center;
-    background-repeat: no-repeat;
+    @include icon(before, zoom-in2);
 
     text-indent: 200%;
     overflow: hidden;

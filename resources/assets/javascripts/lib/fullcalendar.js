@@ -600,23 +600,17 @@ class Fullcalendar
 
                 if (event.extendedProps.icon) {
                     //Check if the icon is already an URL or just the name of an icon.
-                    let icon_url = '';
+                    let iconUrl = '';
                     if (event.extendedProps.icon.includes('://')) {
                         //The icon already is an URL.
-                        icon_url = event.extendedProps.icon;
+                        iconUrl = event.extendedProps.icon;
                     } else {
-                        //The icon is just referenced by its name.
-                        icon_url = `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`
+                        //The icon is just referenced by its name. We do not need a specific color here, background-color is currentColor.
+                        iconUrl = `${STUDIP.ASSETS_URL}images/icons/black/${event.extendedProps.icon}.svg`
                     }
-                    $(eventElement).find('.fc-title').prepend(
-                        $('<img>').attr('src', icon_url)
-                            .css({
-                                verticalAlign: 'text-bottom',
-                                marginRight: '3px',
-                                width: 14,
-                                height: 14
-                            })
-                    );
+                    const $title = $(eventElement).find('.fc-title');
+                    $title.addClass('has-icon');
+                    $title.css('--icon-url', `url('${iconUrl}')`);
                 }
             },
             eventSourceSuccess: function(content) {
@@ -690,7 +684,7 @@ class Fullcalendar
                         $('<a>').attr('href', url).text(renderInfo.resource.title)
                     );
                 } else if ($("*[data-fullcalendar='1']").hasClass('institute-plan') && renderInfo.resource.id > 0) {
-                    let icon = '<img class="text-bottom icon-role-clickable icon-shape-edit" width="20" height="20" src="' + STUDIP.URLHelper.getURL('assets/images/icons/blue/edit.svg') + '" alt="edit">';
+                    const icon = '<span class="btn-icon btn-icon--edit icon-role-clickable" aria-label="edit"></span>';
                     $(renderInfo.el).append(
                         '<a href="'
                         + STUDIP.URLHelper.getURL('dispatch.php/admin/courseplanning/rename_column/'

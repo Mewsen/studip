@@ -6,13 +6,11 @@
     }
 
     .cw-link {
-        border: solid thin var(--content-color-40);
-        color: var(--base-color);
-        height: 20px;
+        border: solid thin var(--color--highlight);
+        color: var(--color--highlight);
         padding: 1em;
 
         .cw-link-title {
-            margin-left: 3em;
             &.unit {
                 header {
                     font-size: 16px;
@@ -21,29 +19,16 @@
         }
 
         &:hover {
-            background-color: var(--base-color);
-            border: solid thin var(--base-color);
-            color: var(--white);
+            background-color: var(--color--highlight);
+            color: var(--color--highlight-contrast);
         }
 
         &.internal {
-            @include background-icon(link-intern, $size: 28px);
-            background-position: 1em 50%;
-            background-repeat: no-repeat;
-
-            &:hover {
-                @include background-icon(link-intern, info-alt, 28px);
-            }
+            @include icon(before, link-intern, $size: 28px, $align: middle, $padding: 8px);
         }
 
         &.external {
-            @include background-icon(link-extern, $size: 28px);
-            background-position: 1em 50%;
-            background-repeat: no-repeat;
-
-            &:hover {
-                @include background-icon(link-extern, info-alt, 28px);
-            }
+            @include icon(before, link-extern, $size: 28px, $align: middle, $padding: 8px);
 
             .cw-link-og-image {
                 display: inline-block;
@@ -69,7 +54,7 @@
                 }
 
                 .cw-link-og-description {
-                    color: var(--base-color-80);
+                    color: var(--color--font-secondary);
                     text-align: justify;
                 }
             }
@@ -78,6 +63,7 @@
         &.unit {
             height: unset;
             display: flex;
+            gap: 8px;
 
             .cw-unit-link {
                 background-repeat: no-repeat;
@@ -95,10 +81,10 @@
 
             &:hover {
                 background-color: unset;
-                border: solid thin var(--base-color);
+                border: solid thin var(--color--highlight);
                 .cw-link-title {
                     header {
-                        color: var(--active-color);
+                        color: var(--color--content-link-hover);
                     }
 
                 }

@@ -12,9 +12,3 @@ export default {
     components: { ProcessesList, TasksList },
 };
 </script>
-
-<style scoped>
-.courseware-dashboard-tasks > * + * {
-    margin-block-start: 2rem;
-}
-</style>

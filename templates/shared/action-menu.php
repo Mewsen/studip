@@ -37,7 +37,7 @@
             <? if ($action['disabled']): ?>
                 <label class="undecorated" aria-disabled="true" <?= arrayToHtmlAttributes($action['attributes']) ?>>
                     <? if ($action['icon']): ?>
-                        <?= $action['icon']->asImg(false, ['class' => 'action-menu-item-icon']) ?>
+                        <?= $action['icon']->asSvg(false, ['class' => 'action-menu-item-icon']) ?>
                     <? else: ?>
                         <span class="action-menu-no-icon"></span>
                     <? endif ?>
@@ -47,7 +47,7 @@
             <? elseif ($action['type'] === 'link'): ?>
                 <a href="<?= htmlReady($action['link']) ?>" <?= arrayToHtmlAttributes($action['attributes']) ?>>
                     <? if ($action['icon']): ?>
-                        <?= $action['icon']->asImg(false, ['class' => 'action-menu-item-icon']) ?>
+                        <?= $action['icon']->asSvg(false, ['class' => 'action-menu-item-icon']) ?>
                     <? else: ?>
                         <span class="action-menu-no-icon"></span>
                     <? endif ?>
