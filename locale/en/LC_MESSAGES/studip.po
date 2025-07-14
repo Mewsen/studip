@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 10:59+0200\n"
-"PO-Revision-Date: 2025-07-11 11:00+0000\n"
+"PO-Revision-Date: 2025-07-15 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -2201,7 +2201,7 @@ msgid ""
 "Für diese Veranstaltung sind keine Anmelderegeln festgelegt. Die "
 "Veranstaltung ist damit für alle Nutzer zugänglich."
 msgstr ""
-"There are no admission rules for this course. Therefore the course is "
+"There are no admission rules for this course. This means the course is "
 "accessible for all users."
 
 #: app/controllers/course/admission.php:105
@@ -2235,7 +2235,7 @@ msgid ""
 "entfernt) ?"
 msgstr ""
 "You are about to change the admission mode to \"Direct enrollment\". Do you "
-"want to enroll the preliminary participants into the course (otherwise the "
+"want to enroll the preliminary participants in the course (otherwise the "
 "preliminary participants will be removed from the course) ?"
 
 #: app/controllers/course/admission.php:149
@@ -2307,8 +2307,8 @@ msgid ""
 "Sie beabsichtigen die Warteliste zu deaktivieren. Die bestehende Warteliste "
 "mit %s Einträgen wird gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to deactivate a wait list. It contains already %s entries. "
-"Proceed?"
+"You are about to deactivate a waiting list. This will delete the existing "
+"waiting list with %s entries. Are you sure?"
 
 #: app/controllers/course/admission.php:278
 #, php-format
@@ -2316,8 +2316,8 @@ msgid ""
 "Sie beabsichtigen die Anzahl der Wartenden zu begrenzen. Die letzten %s "
 "Einträge der Warteliste werden gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to limit the number of users on the waiting list. %s users "
-"will be excluded. Are you sure?"
+"You are about to limit the number of users on the waiting list.This will "
+"delete the last %s entries in the list. Are you sure?"
 
 #: app/controllers/course/admission.php:293
 #: app/controllers/course/admission.php:388
@@ -2326,14 +2326,14 @@ msgid ""
 "Die Warteliste der Veranstaltung **%s** wurde deaktiviert, Sie sind damit "
 "__nicht__ zugelassen worden."
 msgstr ""
-"The waiting list of course **%s** was deactivated. You have __NOT__ been "
-"enrolled."
+"The waiting list of the course **%s** has been deactivated. This means you "
+"have __NOT__ been admitted."
 
 #: app/controllers/course/admission.php:302
 #: app/controllers/course/admission.php:397
 #, php-format
 msgid "%s Wartende wurden entfernt."
-msgstr "%s persons cancelled from wait list."
+msgstr "%s users removed from waiting list."
 
 #: app/controllers/course/admission.php:309
 msgid "Die Teilnehmendenanzahl wurde geändert."
@@ -2357,7 +2357,9 @@ msgstr "Cancel admission"
 msgid ""
 "In dieser Veranstaltung existiert eine Warteliste. Die bestehende Warteliste "
 "mit %s Einträgen wird gelöscht. Sind sie sicher?"
-msgstr "The course has a wait list with %s entries. Delete it anyway?"
+msgstr ""
+"The course has a waiting list with %s entries which will be deleted. Are you "
+"sure?"
 
 #: app/controllers/course/admission.php:369
 #, php-format
@@ -2371,7 +2373,7 @@ msgstr ""
 #: app/controllers/course/admission.php:377
 #, php-format
 msgid "Die Zuordnung zum Anmeldeset %s wurde aufgehoben."
-msgstr "Assignment to admission %s cancelled."
+msgstr "The assignment to the admission set %s has been removed."
 
 #: app/controllers/course/admission.php:426
 msgid "Neue Anmelderegel"
@@ -4439,7 +4441,7 @@ msgstr "Persons waiting"
 
 #: app/controllers/course/members.php:151
 msgid "Warteliste (nicht aktiv)"
-msgstr "Waitlist (not active)"
+msgstr "Waiting list (not active)"
 
 #: app/controllers/course/members.php:157
 #: app/controllers/admission/courseset.php:483
@@ -4501,15 +4503,15 @@ msgstr[1] "%u %s have been added."
 #, php-format
 msgid "Eine Person wurde zur Warteliste hinzugefügt."
 msgid_plural "%u Personen wurden zur Warteliste hinzugefügt."
-msgstr[0] "One person has been added to the waiting list."
-msgstr[1] "%u persons have been added to the waiting list."
+msgstr[0] "One user has been added to the waiting list."
+msgstr[1] "%u users have been added to the waiting list."
 
 #: app/controllers/course/members.php:421
 #, php-format
 msgid "Eine Person konnte nicht zur Warteliste hinzugefügt werden:"
 msgid_plural "%u Personen konnten nicht zur Warteliste hinzugefügt werden:"
-msgstr[0] "One person could not be added to the waiting list."
-msgstr[1] "%u persons could not be added to the waiting list."
+msgstr[0] "One user could not be added to the waiting list."
+msgstr[1] "%u users could not be added to the waiting list."
 
 #: app/controllers/course/members.php:526
 #: app/views/course/members/select_course.php:5
@@ -4609,7 +4611,7 @@ msgid ""
 "%1$s wurde aus der Anmelde- bzw. Warteliste mit dem Status \"%2$s\" in die "
 "Veranstaltung eingetragen."
 msgstr ""
-"%1$s has been enrolled in the course with a status of <b>%2$s</b>\n"
+"%1$s has been added to the course with a status of <b>%2$s</b>\n"
 "                         from the registration/waiting list."
 
 #: app/controllers/course/members.php:1077
@@ -4666,7 +4668,7 @@ msgstr "You didn't select any %s to promote"
 #: app/controllers/course/members.php:1277
 #, php-format
 msgid "Der/die %s %s wurde auf den Status %s heruntergestuft."
-msgstr "The %s %s has been degraded to the state %s."
+msgstr "The %s %s has been downgraded to a status of %s."
 
 #: app/controllers/course/members.php:1284
 #, php-format
@@ -5726,7 +5728,7 @@ msgstr ""
 #: app/controllers/course/enrolment.php:220
 #, php-format
 msgid "Sie wurden in die Veranstaltung %s vorläufig eingetragen."
-msgstr "You have been preliminary assigned to course %s."
+msgstr "You have been provisionally assigned to course %s."
 
 #: app/controllers/course/enrolment.php:261
 #, php-format
@@ -13800,7 +13802,7 @@ msgstr "Enrolled in closed courses (lecturer / tutor / author / user)"
 
 #: app/controllers/admin/user.php:1457
 msgid "Eingetragen in Wartelisten (wartend / vorläufig akzeptiert)"
-msgstr "Subscribed to waiting list (waiting / accepted preliminary)"
+msgstr "Subscribed to waiting list (waiting / provisionally accepted)"
 
 #: app/controllers/admin/user.php:1465
 msgid "Eingetragen in Anmeldelisten"
@@ -13865,7 +13867,7 @@ msgstr "Create account"
 
 #: app/controllers/admin/user.php:1678
 msgid "Vorläufiges Konto anlegen"
-msgstr "Create preliminary account"
+msgstr "Create provisional account"
 
 #: app/controllers/admin/user.php:1683
 msgid "Konten zusammenführen"
@@ -17595,7 +17597,7 @@ msgstr "USER IS LOCKED!"
 
 #: app/controllers/profile.php:389 app/views/admin/user/edit.php:27
 msgid "vorläufiger Benutzer"
-msgstr "preliminary user"
+msgstr "provisional user"
 
 #: app/controllers/profile.php:429
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
@@ -21659,11 +21661,11 @@ msgstr "Instant entry"
 
 #: app/views/course/admission/index.php:156
 msgid "Vorläufiger Eintrag"
-msgstr "Preliminary enrolment"
+msgstr "Provisional entry"
 
 #: app/views/course/admission/index.php:158
 msgid "Hinweistext bei vorläufigen Eintragungen:"
-msgstr "Hint shown in case of preliminary enrolment:"
+msgstr "Note shown for provisional entries:"
 
 #: app/views/course/admission/index.php:168
 msgid ""
@@ -21685,10 +21687,10 @@ msgid ""
 "Inhalte damit weltweit ohne Anmeldung einsehbar sind. Die Teilnehmerliste "
 "ist für externe Nutzer nicht sichtbar."
 msgstr ""
-"With this settings you can allow access to courses for external users who "
+"With this setting, you can allow access to courses for external users who "
 "don't have a Stud.IP account. Please note that content created by course "
 "participants will thereby be available worldwide without registration. The "
-"participant list is not visible for external users."
+"participant list is not visible to external users."
 
 #: app/views/course/admission/index.php:191
 msgid "Lesezugriff für nicht in Stud.IP angemeldete Personen erlauben"
@@ -24333,7 +24335,8 @@ msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
 msgid "Alle vorläufig akzeptierten Teilnehmende der Veranstaltung"
-msgstr "All preliminary enrolled participants of the course"
+msgstr ""
+"All participants of the course who have been accepted on a provisional basis"
 
 #: app/views/course/members/circular_mail.php:89
 msgid "Alle Personen auf der Warteliste der Veranstaltung"
@@ -24345,15 +24348,15 @@ msgstr "All persons on the lot-list of the course"
 
 #: app/views/course/members/accepted_list.php:17
 msgid "vorläufig akzeptierten Nutzer/-innen"
-msgstr "preliminary accepted users"
+msgstr "users who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:22
 msgid "Vorläufig akzeptierte Teilnehmende"
-msgstr "Preliminary enrolled participants"
+msgstr "Participants who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:38
 msgid "vorläufig akzeptierten NutzerInnen"
-msgstr "preliminary accepted user"
+msgstr "users who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:156
 #: app/views/course/members/accepted_list.php:157
@@ -29210,7 +29213,9 @@ msgid ""
 "Sind Sie sicher, dass das Anmeldeset \"%s\" gelöscht werden soll? Damit "
 "werden alle Regeln zur Anmeldung zu den verknüpften Veranstaltungen "
 "aufgehoben."
-msgstr "Delete admission \"%s\"? All assigned courses will be opened."
+msgstr ""
+"Delete admission set \"%s\"? This will disable all registration regulations "
+"for the associated courses."
 
 #: app/views/admission/userlist/index.php:36
 msgid "Es sind noch keine Personenlisten vorhanden."
@@ -29279,7 +29284,7 @@ msgstr "Number of participants"
 
 #: app/views/admission/restricted_courses/index.php:40
 msgid "vorläufige Teilnahme: "
-msgstr "preliminary enrolment: "
+msgstr "provisional enrolment: "
 
 #: app/views/admission/institute-select.php:9
 msgid "Einrichtung:"
@@ -38927,11 +38932,11 @@ msgstr "Readers"
 
 #: config/config_develop.inc.php:90
 msgid "Vorläufig akzeptierte Person"
-msgstr "Provisionally enrolled participants"
+msgstr "Provisionally accepted person"
 
 #: config/config_develop.inc.php:91
 msgid "Vorläufig akzeptierte Personen"
-msgstr "Provisionally accepted participant"
+msgstr "Provisionally accepted persons"
 
 #: config/config_develop.inc.php:180
 msgid "Nutzerbilder"
@@ -40337,7 +40342,7 @@ msgstr "Login into your account is not allowed from this network."
 
 #: lib/classes/auth_plugins/StudipAuthAbstract.php:377
 msgid "Dies ist ein vorläufiger Benutzer."
-msgstr "This is a preliminary account."
+msgstr "This is a provisional user."
 
 #: lib/classes/auth_plugins/StudipAuthAbstract.php:381
 #: lib/classes/auth_plugins/StudipAuthStandard.php:59
@@ -41093,9 +41098,9 @@ msgid ""
 "weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung "
 "entnehmen."
 msgstr ""
-"You have been accepted as participant of the course **%s**. This is "
-"preliminary. Final admittance to the course depends on further pre-"
-"requisites specified in the course description."
+"You have been provisionally accepted as a participant of the course **%s**. "
+"Final admittance to the course depends on further pre-requisites specified "
+"in the course description."
 
 #: lib/classes/admission/RandomAlgorithm.php:398
 #, php-format
@@ -41105,9 +41110,8 @@ msgid ""
 "Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer "
 "Veranstaltungen."
 msgstr ""
-"You obtained a seat in the seat allocation of the course **%s**. You are "
-"thereby approved for the participation in the course. You will find the "
-"course in the overview of your courses from now on."
+"You have been admitted to the course **%s**. You will now see the course in "
+"your course overview."
 
 #: lib/classes/admission/AdmissionUserList.php:342
 msgid ""
@@ -41418,7 +41422,7 @@ msgstr "A mail with instructions how to set the passwort by the user was sent."
 
 #: lib/classes/UserManagement.php:357
 msgid "Es können keine vorläufigen Administrationsaccounts angelegt werden."
-msgstr "Preliminary accounts with status admin cannot be created."
+msgstr "It is not possible to create provisional admin accounts."
 
 #: lib/classes/UserManagement.php:371
 msgid ""
@@ -41428,7 +41432,7 @@ msgstr "Please enter <em>status</em>, <em>name</em> and <em>family name</em>!"
 #: lib/classes/UserManagement.php:394
 #, php-format
 msgid "BenutzerIn \"%s\" (vorläufig) angelegt."
-msgstr "Preliminary account %s created. "
+msgstr "Provisional user %s created."
 
 #: lib/classes/UserManagement.php:414 lib/classes/UserManagement.php:639
 msgid "Sie haben keine Berechtigung Accounts zu verändern."
@@ -41673,18 +41677,18 @@ msgstr ""
 #: lib/classes/UserManagement.php:837
 #, php-format
 msgid "User ist einziges Mitglied in Veranstaltung (%s), lösche Veranstaltung."
-msgstr ""
+msgstr "User is only participant in course (%s), deleting course."
 
 #: lib/classes/UserManagement.php:857
 #, php-format
 msgid ""
 "User ist einziger Dozent in Veranstaltung (id: %s), füge Dummy-Dozent hinzu."
-msgstr ""
+msgstr "User is ony lecturer in course (id: %s), adding dummy lecturer."
 
 #: lib/classes/UserManagement.php:923
-#, fuzzy, php-format
+#, php-format
 msgid "Aus %s Veranstaltungen/Studiengruppen ausgetragen."
-msgstr "Sign out of course"
+msgstr "Removed from %s courses/study groups."
 
 #: lib/classes/UserManagement.php:936
 #, php-format
@@ -41762,9 +41766,8 @@ msgid "Das Passwort wurde neu gesetzt."
 msgstr "The password has been reset."
 
 #: lib/classes/UserManagement.php:1325
-#, fuzzy
 msgid "Passwortänderung"
-msgstr "Change password"
+msgstr "Password change"
 
 #: lib/classes/UserManagement.php:1328
 #, php-format
@@ -41884,9 +41887,8 @@ msgid "Sie müssen die Nutzungsbedingungen akzeptieren."
 msgstr "You need to accept the terms of use. "
 
 #: lib/classes/coursewizardsteps/BasicDataWizardStep.php:391
-#, fuzzy
 msgid "Sie müssen die maximale Teilnehmendenzahl angeben"
-msgstr "The name of the semester is mandatory."
+msgstr "You must specify the maximum number of participants."
 
 #: lib/classes/coursewizardsteps/LVGroupsWizardStep.php:417
 msgid ""
@@ -42151,14 +42153,12 @@ msgid "ok"
 msgstr "ok"
 
 #: lib/classes/MessageBox.php:159
-#, fuzzy
 msgid "Systemfehler"
-msgstr "System field"
+msgstr "System error"
 
 #: lib/classes/MessageBox.php:163
-#, fuzzy
 msgid "Erfolg"
-msgstr "Successes"
+msgstr "Success"
 
 #: lib/classes/ForumActivity.php:29
 #, php-format
@@ -42336,7 +42336,7 @@ msgstr "admissible courses of study"
 
 #: lib/classes/LockRules.php:200
 msgid "Vorläufigkeit der Anmeldungen"
-msgstr "Provisionality of enrolments"
+msgstr "Provisional enrolment status"
 
 #: lib/classes/LockRules.php:201
 msgid "Hinweistext bei Anmeldungen"
@@ -42578,14 +42578,13 @@ msgstr "at most"
 #: lib/classes/UserFilterFields/MassMail/MassMailSelfAssignedInstituteFilter.php:69
 #: lib/classes/UserFilterFields/MassMail/MassMailInstituteFilter.php:43
 #: lib/classes/UserFilterFields/MassMail/MassMailInstituteFilter.php:69
-#, fuzzy, php-format
+#, php-format
 msgid "%s und Untereinrichtungen"
-msgstr "%s of the institute"
+msgstr "%s and sub-institutes"
 
 #: lib/classes/UserFilterFields/MassMail/MassMailSelfAssignedInstituteFilter.php:101
-#, fuzzy
 msgid "Selbst zugeordnete Einrichtung"
-msgstr "Edit associated institute"
+msgstr "Self-assigned institute"
 
 #: lib/classes/UserFilterFields/DatafieldCondition.php:30
 msgid "Datenfeld"
@@ -42845,14 +42844,14 @@ msgid "[%s] Terminausfall"
 msgstr "[%s] Date cancellation"
 
 #: lib/dates.inc.php:311
-#, fuzzy, php-format
+#, php-format
 msgid "In der Veranstaltung %s fällt der folgende Termine aus:"
-msgstr "The following date(s) have been cancelled for the course %s:"
+msgstr "The following date has been cancelled for the course %s:"
 
 #: lib/dates.inc.php:312
-#, fuzzy, php-format
+#, php-format
 msgid "In der Veranstaltung %s fallen die folgenden Termine aus:"
-msgstr "The following date(s) have been cancelled for the course %s:"
+msgstr "The following dates have been cancelled for the course %s:"
 
 #: lib/include/header.php:44 templates/header.php:359
 msgid "öffentliche Einrichtung"
@@ -43169,9 +43168,8 @@ msgid "Persönliche Angaben"
 msgstr "Personal details"
 
 #: lib/navigation/ProfileNavigation.php:65
-#, fuzzy
 msgid "Profilbild"
-msgstr "Profile"
+msgstr "Profile picture"
 
 #: lib/navigation/ProfileNavigation.php:102
 msgid "Allgemeines"
@@ -43232,9 +43230,8 @@ msgid "Nachrichten an Zielgruppen"
 msgstr "Messages to target groups"
 
 #: lib/navigation/MessagingNavigation.php:87
-#, fuzzy
 msgid "Nachrichtenübersicht"
-msgstr "Message deleted!"
+msgstr "Message overview"
 
 #: lib/navigation/LoginNavigation.php:30
 msgid "für registrierte Nutzende"
@@ -43335,9 +43332,8 @@ msgid "Automatisiertes Eintragen"
 msgstr "Automatic enrolment"
 
 #: lib/navigation/AdminNavigation.php:75
-#, fuzzy
 msgid "Einrichtungsbild"
-msgstr "Institute"
+msgstr "Institute image"
 
 #: lib/navigation/AdminNavigation.php:77
 msgid "Funktionen / Gruppen"
@@ -43362,9 +43358,8 @@ msgid "Veranstaltungshierarchie"
 msgstr "Course hierarchy"
 
 #: lib/navigation/AdminNavigation.php:103
-#, fuzzy
 msgid "Ferien und Feiertage"
-msgstr "Share and embed"
+msgstr "Holidays"
 
 #: lib/navigation/AdminNavigation.php:127
 msgid "Werbebanner"
@@ -43598,7 +43593,6 @@ msgid "Der Ordner wurde im Dateisystem des Servers nicht gefunden!"
 msgstr "The folder could not be found in the server's file system!"
 
 #: lib/filesystem/CourseTopicFolder.php:25
-#, fuzzy
 msgid "Themenordner"
 msgstr "Topic folder"
 
@@ -43806,7 +43800,6 @@ msgid "%'.02d. %s am %s"
 msgstr "%'.02d. %s on %s"
 
 #: lib/filesystem/CourseDateFolder.php:33
-#, fuzzy
 msgid "Sitzungsordner"
 msgstr "Session folder"
 
@@ -43927,19 +43920,16 @@ msgid "%u. Semesterwoche (ab %s)"
 msgstr "%u. week of semester (from %s)"
 
 #: lib/models/MassMail/MassMailMessage.php:112
-#, fuzzy
 msgid "Beschäftigte"
-msgstr "Label"
+msgstr "Employees"
 
 #: lib/models/MassMail/MassMailMessage.php:113
-#, fuzzy
 msgid "Aktive Lehrende"
-msgstr "Activate"
+msgstr "Active lecturers"
 
 #: lib/models/MassMail/MassMailMessage.php:115
-#, fuzzy
 msgid "Liste von Benutzernamen"
-msgstr "Username"
+msgstr "List of usernames"
 
 #: lib/models/MassMail/MassMailMessage.php:152
 msgid "Nachricht an Zielgruppen"
@@ -44007,7 +43997,7 @@ msgstr ""
 
 #: lib/models/SeminarCycleDate.php:232
 msgid "%{weekday_short}. %{beginning} - %{end}"
-msgstr ""
+msgstr "%{weekday_short} %{beginning} - %{end}"
 
 #: lib/models/SeminarCycleDate.php:237 templates/dates/seminar_export.php:20
 #: templates/dates/seminar_xml.php:3
@@ -44025,65 +44015,71 @@ msgstr "every third week"
 
 #: lib/models/SeminarCycleDate.php:241 lib/models/SeminarCycleDate.php:245
 msgid "%{weekday}, %{beginning} - %{end}, %{interval}"
-msgstr ""
+msgstr "%{weekday}, %{beginning} - %{end}, %{interval}"
 
 #: lib/models/SeminarCycleDate.php:266
 msgid ""
 "%{weekday}, %{beginning} - %{end}, %{interval} (ab dem %{start_date} im Raum "
 "%{room_name})"
 msgstr ""
+"%{weekday}, %{beginning} - %{end}, %{interval} (from %{start_date} in room "
+"%{room_name})"
 
 #: lib/models/SeminarCycleDate.php:268
 msgid "%{weekday}, %{beginning} - %{end}, %{interval} (im Raum %{room_name})"
-msgstr ""
+msgstr "%{weekday}, %{beginning} - %{end}, %{interval} (in room %{room_name})"
 
 #: lib/models/SeminarCycleDate.php:270
 msgid "%{weekday}, %{beginning} - %{end}, %{interval} (ab dem %{start_date})"
-msgstr ""
+msgstr "%{weekday}, %{beginning} - %{end}, %{interval} (from %{start_date})"
 
 #: lib/models/SeminarCycleDate.php:284
 msgid ""
 "%{weekday}, %{beginning} - %{end}, %{interval}, von der %{start_week}. bis "
 "zur %{end_week}. Semesterwoche (%{description})"
 msgstr ""
+"%{weekday}, %{beginning} - %{end}, %{interval}, from semester week "
+"%{start_week} to %{end_week} (%{description})"
 
 #: lib/models/SeminarCycleDate.php:289
 msgid ""
 "%{weekday}, %{beginning} - %{end}, %{interval}, ab der %{start_week}. "
 "Semesterwoche (%{description})"
 msgstr ""
+"%{weekday}, %{beginning} - %{end}, %{interval}, from semester week "
+"%{start_week} (%{description})"
 
 #: lib/models/SeminarCycleDate.php:296
 msgid ""
 "%{weekday}, %{beginning} - %{end}, %{interval}, von der %{start_week}. bis "
 "zur %{end_week}. Semesterwoche"
 msgstr ""
+"%{weekday}, %{beginning} - %{end}, %{interval}, from semester week "
+"%{start_week} to %{end_week}"
 
 #: lib/models/SeminarCycleDate.php:301
 msgid ""
 "%{weekday}, %{beginning} - %{end}, %{interval}, ab der %{start_week}. "
 "Semesterwoche"
 msgstr ""
+"%{weekday}, %{beginning} - %{end}, %{interval}, from semester week "
+"%{start_week}"
 
 #: lib/models/SeminarCycleDate.php:1084
-#, fuzzy
 msgid "Alle Termine haben Raumbuchungen."
-msgstr "All dates have a room booking."
+msgstr "All dates have room bookings."
 
 #: lib/models/SeminarCycleDate.php:1086
-#, fuzzy
 msgid "Alle Termine haben keine Raumbuchungen."
-msgstr "All dates have a room booking."
+msgstr "No dates have room bookings."
 
 #: lib/models/SeminarCycleDate.php:1101
-#, fuzzy
 msgid "Die folgenden Termine haben keine Raumbuchungen:"
-msgstr "The following dates have no room allocation:"
+msgstr "The following dates have no room bookings:"
 
 #: lib/models/SeminarCycleDate.php:1108
-#, fuzzy
 msgid "Es sind keine Informationen zu Buchungen verfügbar."
-msgstr "No new files are available in this course!"
+msgstr "There is no booking information available."
 
 #: lib/models/calendar/CalendarDateAssignment.php:96
 #, php-format
@@ -44306,7 +44302,7 @@ msgstr "Every %1$u. year on %2$u. %3$s never ending"
 
 #: lib/models/calendar/ScheduleEntry.php:330
 msgid "Termin jeden %{dow} von %{start_time} bis %{end_time} Uhr"
-msgstr ""
+msgstr "Every %{dow} from %{start_time} to %{end_time}"
 
 #: lib/models/AuxLockRule.php:145
 msgid "Dozenten"
@@ -45310,14 +45306,13 @@ msgid "Einrichtungs Informationen"
 msgstr "Institute information"
 
 #: lib/models/Keyring.php:83
-#, fuzzy
 msgid "Es konnte kein Schlüsselpaar erzeugt werden."
-msgstr "No room list could be created!"
+msgstr "No key pair could be created."
 
 #: lib/models/Keyring.php:89
-#, fuzzy, php-format
+#, php-format
 msgid "Der Schlüsselalgorithmus %s wird nicht unterstützt."
-msgstr "The selected export module is not supported."
+msgstr "The key algorithm %s is not supported."
 
 #: lib/models/Courseware/UserDataField.php:86
 msgid "Courseware Nutzerdaten"
@@ -45465,6 +45460,7 @@ msgid ""
 "Lehrende können eine Konversation starten oder eine bestehende Konversation "
 "einbinden."
 msgstr ""
+"Lecturers can start a conversation or integrate an existing conversation."
 
 #: lib/models/Courseware/BlockTypes/Document.php:22
 #: lib/models/Courseware/BlockTypes/Document.php:96
@@ -45874,7 +45870,7 @@ msgstr "Animation"
 
 #: lib/models/Courseware/BlockTypes/TestBlock.php:40
 msgid "Stellt ein vorhandenes Aufgabenblatt bereit."
-msgstr ""
+msgstr "Provides an existing worksheet."
 
 #: lib/models/Courseware/BlockTypes/Chart.php:22
 #: lib/models/Courseware/BlockTypes/Chart.php:69
@@ -46820,29 +46816,24 @@ msgid ""
 msgstr "A course group with the name \"%s\" already exists!"
 
 #: lib/models/LtiTool.php:76
-#, fuzzy
 msgid "Es wurde kein Name angegeben."
-msgstr "No name has been provided!"
+msgstr "No name has been provided."
 
 #: lib/models/LtiTool.php:79
-#, fuzzy
 msgid "Es wurde keine Launch-URL angegeben."
-msgstr "No room name has been provided!"
+msgstr "No launch URL has been provided!"
 
 #: lib/models/LtiTool.php:82
-#, fuzzy
 msgid "Die ausgewählte LTI-Version ist ungültig."
-msgstr "The ILIAS version is invalid."
+msgstr "The LTI version you selected is invalid."
 
 #: lib/models/LtiTool.php:86
-#, fuzzy
 msgid "Es wurde kein Consumer-Key angegeben."
-msgstr "No folder type has been specified!"
+msgstr "No consumer key has been specified."
 
 #: lib/models/LtiTool.php:89
-#, fuzzy
 msgid "Es wurde kein Consumer-Secret angegeben."
-msgstr "No link target given."
+msgstr "No consumer secret has been specified."
 
 #: lib/models/StgteilabschnittModul.php:59
 #: lib/models/StgteilabschnittModul.php:67
@@ -46859,19 +46850,19 @@ msgstr "Questionnaire answers"
 
 #: lib/models/CourseExDate.php:141
 msgid "%{weekday}, %{date}, %{start} - %{end} Uhr (ganztägig, fällt aus)"
-msgstr ""
+msgstr "%{weekday}, %{date}, %{start} - %{end} (all day, has been cancelled)"
 
 #: lib/models/CourseExDate.php:142
 msgid "%{weekday}, %{date}, %{start} - %{end} (ganztägig, fällt aus)"
-msgstr ""
+msgstr "%{weekday}, %{date}, %{start} - %{end} (all day, has been cancelled)"
 
 #: lib/models/CourseExDate.php:156
 msgid "%{weekday}, %{date}, %{start} - %{end} Uhr (fällt aus)"
-msgstr ""
+msgstr "%{weekday}, %{date}, %{start} - %{end} (has been cancelled)"
 
 #: lib/models/CourseExDate.php:157
 msgid "%{weekday}, %{date}, %{start} - %{end} (fällt aus)"
-msgstr ""
+msgstr "%{weekday}, %{date}, %{start} - %{end} (has been cancelled)"
 
 #: lib/models/CourseExDate.php:250
 msgid "ausgefallende Termine"
@@ -46905,66 +46896,63 @@ msgid "Unbekannte Unterrichtssprache"
 msgstr "Unknown language of instruction"
 
 #: lib/models/Course.php:772
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s konnte nicht als vorläufig teilnehmende Person zur Veranstaltung %2$s "
 "hinzugefügt werden."
-msgstr "Questionnaire \"%1$s\" could not be assigned to course \"%2$s\"!"
+msgstr "%1$s could not be added to course %2$s as a provisional participant."
 
 #: lib/models/Course.php:825
-#, fuzzy
 msgid ""
 "Ihre vorläufige Anmeldung zur Veranstaltung %{name} wurde aufgehoben. Sie "
 "sind damit __nicht__ zugelassen worden."
 msgstr ""
-"The waiting list of course **%s** was deactivated. You have __NOT__ been "
-"enrolled."
+"Your provisional enrolment for course %[name] has been withdrawn. This means "
+"you have __NOT__ been admitted."
 
 #: lib/models/Course.php:830
-#, fuzzy
 msgid ""
 "Sie wurden von der Warteliste der Veranstaltung %{name} gestrichen. Sie sind "
 "damit __nicht__ zugelassen worden."
 msgstr ""
-"You have been removed from the waiting list of the course **%s** and "
-"therefore you are __not__ enrolled."
+"You have been removed from the waiting list of the course **%s**. This means "
+"you have __NOT__ been admitted."
 
 #: lib/models/Course.php:844
-#, fuzzy
 msgid "%{course_name}: Sie wurden nicht zugelassen!"
-msgstr "%d room parts could not be found!"
+msgstr "%{course_name}: You have not been admitted!"
 
 #: lib/models/Course.php:854
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s konnte nicht als vorläufig teilnehmende Person aus der Veranstaltung "
 "%2$s entfernt werden."
-msgstr "You cannot be removed as substitute for %s."
+msgstr ""
+"%1$s could not be removed from the course %2$s as a provisional participant."
 
 #: lib/models/Course.php:887
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s ist bereits Mitglied der Veranstaltung %2$s."
-msgstr "Subtitle of course %s"
+msgstr "%1$s is already a member of the course %2$s."
 
 #: lib/models/Course.php:921
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s konnte nicht auf die Warteliste der Veranstaltung %2$s gesetzt werden."
-msgstr "%u person could not be added to the wait list."
+msgstr "%1$s could not be added to the waiting list for the course %2$s."
 
 #: lib/models/Course.php:947
-#, fuzzy, php-format
+#, php-format
 msgid "Sie wurden auf die Warteliste der Veranstaltung %s gesetzt."
-msgstr "All persons on the waitlist of the course"
+msgstr "You have been placed on the waiting list for the course %s."
 
 #: lib/models/Course.php:959
-#, fuzzy
 msgid "Auf die Warteliste einer Veranstaltung eingetragen"
-msgstr "%s persons added to the course!"
+msgstr "Added to the waiting list for a course"
 
 #: lib/models/Course.php:1045
 msgid "Die Rechtestufe ist für die Eintragung in eine Veranstaltung unpassend."
-msgstr ""
+msgstr "The permissions level is not appropriate for registration for a course."
 
 #: lib/models/Course.php:1074
 #, php-format
@@ -46972,59 +46960,61 @@ msgid ""
 "Die einzutragende Person hat die Rechtestufe \"%s\", ist aber kein Mitglied "
 "einer Einrichtung, zu der die Veranstaltung zugeordnet ist."
 msgstr ""
+"The person to be added has a permissions level of %s but is not a member of "
+"an institute that the course is associated with."
 
 #: lib/models/Course.php:1132
-#, fuzzy, php-format
+#, php-format
 msgid "Für %s ist kein Platz mehr in der Veranstaltung frei."
-msgstr "No date exists in this course"
+msgstr "There are no more places available in the course for %s."
 
 #: lib/models/Course.php:1206 lib/models/Course.php:1213
-#, fuzzy
 msgid "Zulassung zur Veranstaltung"
-msgstr "Go to course"
+msgstr "Admission to course"
 
 #: lib/models/Course.php:1208
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden für die Veranstaltung %s zugelassen. Ihr Eintrag auf der "
 "Warteliste wurde daher entfernt."
 msgstr ""
-"You have been removed from the course **%s**. You are now on the waiting "
-"list for that course."
+"You have been admitted to the course %s. Your entry on the waiting list has "
+"therefore been removed."
 
 #: lib/models/Course.php:1215
-#, fuzzy, php-format
+#, php-format
 msgid "Sie wurden für die Veranstaltung %s endgültig zugelassen."
-msgstr "You have been enrolled in the course **%s**."
+msgstr "You have been finally admitted to the course %s."
 
 #: lib/models/Course.php:1220
 msgid "Eintragung in Veranstaltung"
 msgstr "Enrolment in course"
 
 #: lib/models/Course.php:1222
-#, fuzzy, php-format
+#, php-format
 msgid "Sie wurden in die Veranstaltung %s eingetragen."
-msgstr "You have been enrolled in the course **%s**."
+msgstr "You have been added to the course %s."
 
 #: lib/models/Course.php:1253
-#, fuzzy
 msgid "Die Person kann nicht hochgestuft werden."
-msgstr "Cannot create account."
+msgstr "This user cannot be upgraded."
 
 #: lib/models/Course.php:1260
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Person kann nicht herabgestuft werden, da mindestens eine lehrende "
 "Person (%1$s) in die Veranstaltung eingetragen sein muss! Tragen Sie deshalb "
 "zuerst eine weitere Person als lehrende Person (%1$s) ein und versuchen Sie "
 "es dann erneut!"
 msgstr ""
-"At least <b>one</b> course supervisor (%s) must be entered in the course!"
+"This user cannot be downgraded because at least one lecturer (%1$s) must be "
+"registered for the course! Therefore, first add another person as lecturer "
+"(%1$s) and then try again!"
 
 #: lib/models/Course.php:1289
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s ist kein Mitglied der Veranstaltung %2$s."
-msgstr "The resource %1$s is not a member of the resource category %2$s!"
+msgstr "%1$s is not a member of course %2$s."
 
 #: lib/models/Course.php:1305
 #, php-format
@@ -47033,149 +47023,137 @@ msgid ""
 "sein. Um diese Person aus der Veranstaltung zu entfernen, muss zunächst eine "
 "weitere lehrende Person eingetragen werden."
 msgstr ""
+"At least one lecturer (%s) must be registered for the course. To remove this "
+"person from the course, another lecturer must first be added."
 
 #: lib/models/Course.php:1319
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Es trat ein Fehler auf beim Austragen von %1$s aus der Veranstaltung %2$s."
-msgstr "Errors occurred while resolving the request for %s!"
+msgstr "An error occurred when removing %1$s from the course %2$s."
 
 #: lib/models/Course.php:1361
-#, fuzzy, php-format
+#, php-format
 msgid "%s: Anmeldung aufgehoben"
-msgstr "Enrolment cancelled"
+msgstr "%s: Registration cancelled"
 
 #: lib/models/Course.php:1362
-#, fuzzy, php-format
+#, php-format
 msgid "Ihre Anmeldung für die Veranstaltung %s wurde aufgehoben."
-msgstr "Your enrolment to the course **%s** has been revoked."
+msgstr "Your registration for the course %s has been cancelled."
 
 #: lib/models/Course.php:1454
-#, fuzzy
 msgid "%{course}: Anmeldung aufgehoben, auf Warteliste gesetzt"
-msgstr "Enrolment cancelled, added to wait list"
+msgstr "%{course}: registration cancelled, placed on waiting list"
 
 #: lib/models/Course.php:1458
-#, fuzzy
 msgid ""
 "Sie wurden aus der Veranstaltung %{course} abgemeldet und auf die zugehörige "
 "Warteliste gesetzt."
 msgstr ""
-"You have been removed from the course **%s**. You are now on the waiting "
+"You have been removed from the course %s{course}. You are now on the waiting "
 "list for that course."
 
 #: lib/models/Course.php:1507
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s konnte nicht an die Position %2$u verschoben werden."
-msgstr "%u person could not be moved inside the group %s."
+msgstr "%1$s could not be moved to position %2$u."
 
 #: lib/models/Course.php:1631
-#, fuzzy
 msgid ""
 "Diese Veranstaltung ist die Hauptveranstaltung einer Veranstaltungsgruppe. "
 "Sie können sich nur in die zugehörigen Unterveranstaltungen eintragen."
 msgstr ""
-"This is a course group. You may only enroll yourself in one of its sub-"
-"courses."
+"This is the main course of a group of courses. You may only register for one "
+"of its sub-courses."
 
 #: lib/models/Course.php:1644
 msgid "Sie haben root-Rechte und dürfen damit alles in Stud.IP."
-msgstr ""
+msgstr "You have root permissions which means you can do anything in Stud.IP."
 
 #: lib/models/Course.php:1653
-#, fuzzy
 msgid "Sie verwalten diese Veranstaltung."
-msgstr "Learning modules for this course"
+msgstr "You manage this course."
 
 #: lib/models/Course.php:1661
-#, fuzzy
 msgid ""
 "Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung "
 "eintragen."
-msgstr "As an administrator you cannot enroll yourself into a course."
+msgstr "As an administrator you cannot register for a course."
 
 #: lib/models/Course.php:1672
-#, fuzzy
 msgid "Sie sind bereits in der Veranstaltung eingetragen."
-msgstr "You are not enrolled into the course \"%s\"."
+msgstr "You are already registered for the course."
 
 #: lib/models/Course.php:1686
-#, fuzzy
 msgid "Die Anmeldung zu dieser Veranstaltung folgt bestimmten Regeln."
-msgstr "Course under special admission. Please read the note.  "
+msgstr "Reigstration for this course is subject to specific rules."
 
 #: lib/models/Course.php:1691
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie stehen auf der Anmeldeliste für die automatische Platzverteilung der "
 "Veranstaltung mit der Priorität %u."
 msgstr ""
-"(You are subscribed to the waiting list for automated assignment with "
-"priority %s.)"
+"You are on the waiting list for automated assignment of places in this "
+"course with a priority of %u."
 
 #: lib/models/Course.php:1695
-#, fuzzy
 msgid ""
 "Sie stehen auf der Anmeldeliste für die automatische Platzverteilung der "
 "Veranstaltung."
-msgstr "(You are on a waiting list)"
+msgstr ""
+"You are on the waiting list for automated assignment of places in this "
+"course."
 
 #: lib/models/Course.php:1704
-#, fuzzy
 msgid "Für diese Veranstaltung ist keine Anmeldung erforderlich."
-msgstr "There is no enrolment necessary for the course."
+msgstr "Registration is not required for this course."
 
 #: lib/models/Course.php:1718
-#, fuzzy
 msgid "Sie dürfen sich in diese Veranstaltung nicht eintragen."
-msgstr "You must not copy this course"
+msgstr "You may not register for this course."
 
 #: lib/models/Course.php:1728
-#, fuzzy
 msgid "Sie dürfen sich in diese Veranstaltung nicht selbst eintragen."
-msgstr "You are not allowed to be enrolled in the course \"%s\"."
+msgstr "You mey not register for this course yourself."
 
 #: lib/models/Course.php:1739
-#, fuzzy
 msgid ""
 "Sie sind nicht in Stud.IP angemeldet und können sich daher nicht in die "
 "Veranstaltung eintragen."
-msgstr "You have entered all required data. The course can be created."
+msgstr ""
+"You cannot register for the course because you are not logged in to Stud.IP."
 
 #: lib/models/Course.php:1747
-#, fuzzy
 msgid ""
 "Sie haben keine ausreichende Berechtigung, um sich in die Veranstaltung "
 "einzutragen."
-msgstr "You are not allowed to edit pages in this course!"
+msgstr "You do not have sufficient authorisation to enrol in the course."
 
 #: lib/models/Course.php:1759
 msgid "Sie wurden für diese Veranstaltung vorläufig akzeptiert."
-msgstr "You have been admitted preliminary access  to this course."
+msgstr "You have been provisionally admitted to this course."
 
 #: lib/models/Course.php:1766
-#, fuzzy
 msgid "Sie sind auf der Warteliste für diese Veranstaltung."
-msgstr "You have been added to the wait list of this course."
+msgstr "You have been added to the waiting list of this course."
 
 #: lib/models/Course.php:1785
-#, fuzzy
 msgid ""
 "Sie sind nicht in der gleichen Domäne wie die Veranstaltung und können sich "
 "daher nicht für die Veranstaltung eintragen."
 msgstr ""
-"This is a course group. You may only enroll yourself in one of its sub-"
-"courses."
+"You are not in the same domain as the course and therefore cannot register "
+"for the course."
 
 #: lib/models/Course.php:1795
-#, fuzzy
 msgid "Sie können sich zur Veranstaltung anmelden."
-msgstr "You cannot sign off course <b>%s</b>."
+msgstr "You can register for the course."
 
 #: lib/models/Course.php:1913
-#, fuzzy
 msgid "Das Endsemester darf nicht vor dem Startsemester liegen."
-msgstr "The end semester must come after the start semester."
+msgstr "The end semester must not come before the start semester."
 
 #: lib/models/Course.php:2209
 msgid "unvollständig"
@@ -47195,7 +47173,7 @@ msgstr "undefined"
 
 #: lib/models/Course.php:2295
 msgid "Neuer Anmeldemodus: Vorläufiger Eintrag"
-msgstr "New enrolment mode: Preliminary enrolment"
+msgstr "New enrolment mode: provisional enrolment"
 
 #: lib/models/Course.php:2295
 msgid "Neuer Anmeldemodus: Direkter Eintrag"
@@ -47238,20 +47216,20 @@ msgstr "Moving up deactivated"
 #: lib/models/Course.php:2320
 #, php-format
 msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
-msgstr "New note for the case of preliminary enrolment: %s"
+msgstr "New note for provisional enrolment: %s"
 
 #: lib/models/Course.php:2322
 msgid "Hinweistext bei vorläufigen Eintragungen wurde entfert"
-msgstr "The note for the case of preliminary enrolment has been removed"
+msgstr "The note for provisional enrolment has been removed"
 
 #: lib/models/Course.php:2393
 msgid "Seminare"
 msgstr "Courses"
 
 #: lib/models/Course.php:2528
-#, fuzzy, php-format
+#, php-format
 msgid "Das Werkzeug %s ist nicht aktiviert."
-msgstr "The calendar has not been activated."
+msgstr "The %s tool is not active."
 
 #: lib/models/DatafieldEntryModel.php:261
 msgid "Datenfeld Einträge"
@@ -47275,9 +47253,8 @@ msgid "Ankündigungen auf der Stud.IP Startseite"
 msgstr "Announcements on the Stud.IP start page"
 
 #: lib/models/StudipNews.php:337
-#, fuzzy
 msgid "Ankündigungen auf der Stud.IP Loginseite"
-msgstr "Announcements on the Stud.IP start page"
+msgstr "Announcements on the Stud.IP login page"
 
 #: lib/models/StudipNews.php:421
 #, php-format
@@ -47500,17 +47477,17 @@ msgid ""
 "Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der "
 "Übersicht Ihrer Veranstaltungen."
 msgstr ""
-"You have been enrolled in the course **%s (%s)**, because a seat has become "
-"available for you. You are thereby approved for the participation in the "
-"course. You will find the course in the overview of your courses from now on."
+"You have been enrolled in the course **%s (%s)**, because a place has become "
+"available for you. This means you can attend the course. You will find the "
+"course in the overview of your courses from now on."
 
 #: lib/models/AdmissionApplication.php:218
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie haben den Status \"vorläufig akzeptiert\" in der Veranstaltung **%s "
 "(%s)** erhalten, da für Sie ein Platz frei geworden ist."
 msgstr ""
-"You have been preliminary enrolled for the course **%s (%s)**, because a "
+"You have been provisionally admitted to the course **%s (%s)** because a "
 "place became available."
 
 #: lib/models/AdmissionApplication.php:258
@@ -47519,8 +47496,8 @@ msgid ""
 "Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft "
 "worden. Sie stehen zur Zeit auf Position %s."
 msgstr ""
-"You have been promoted within the wait list for the course **%s(%s)**. At "
-"present you are at position %s."
+"You have moved up in the wait list for the course **%s(%s)**. You are "
+"currently at position %s."
 
 #: lib/models/AdmissionApplication.php:262
 #, php-format
@@ -47568,9 +47545,8 @@ msgid "Wiki Einträge"
 msgstr "Wiki entries"
 
 #: lib/models/QuestionnaireAutomatedData.php:35
-#, fuzzy
 msgid "Automatik"
-msgstr "Autom."
+msgstr "Automatic system"
 
 #: lib/models/StgteilBezeichnung.php:142
 msgid "Der Name der Studiengangteil-Bezeichnung darf nicht leer sein."
@@ -47603,21 +47579,19 @@ msgstr "Anonymous questionnaire answers"
 
 #: lib/models/CaptchaChallenge.php:58
 msgid "Sie haben nicht bestätigt, dass Sie kein Roboter sind"
-msgstr ""
+msgstr "You have not confirmed that you are not a robot."
 
 #: lib/models/CaptchaChallenge.php:63
-#, fuzzy
 msgid "Die Challenge ist abgelaufen"
-msgstr "The link to this page has expired."
+msgstr "The challenge has expired."
 
 #: lib/models/CaptchaChallenge.php:68
-#, fuzzy
 msgid "Nicht schummeln!"
-msgstr "Send message"
+msgstr "Don't cheat!"
 
 #: lib/models/CaptchaChallenge.php:78
 msgid "Sie sind scheinbar ein Roboter..."
-msgstr ""
+msgstr "Looks like you're a robot..."
 
 #: lib/models/ContentTermsOfUse.php:112
 msgid "Ohne Bedingung"
@@ -47668,13 +47642,11 @@ msgid "Termin am %1$s, %2$s von %3$s bis %4$s"
 msgstr "Date on %1$s, %2$s from %3$s to %4$s"
 
 #: lib/bootstrap.php:141
-#, fuzzy
 msgid ""
 "Momentan ist das Stud.IP System nicht erreichbar, bitte versuchen Sie es "
 "später noch einmal."
 msgstr ""
-"The enrolment has not been possible due to technical problems. Please try "
-"again later."
+"At the moment the Stud.IP system is not available, please try again later."
 
 #: lib/exceptions/AccessDeniedException.php:25
 msgid ""
@@ -47723,9 +47695,8 @@ msgid ""
 msgstr "Registration is only possible after accepting the terms of use:"
 
 #: lib/admissionrules/termsadmission/templates/input.php:5
-#, fuzzy
 msgid "Hiermit akzeptiere ich die Teilnahmebedingungen"
-msgstr "I hereby accept the terms of use shown above"
+msgstr "I hereby accept the terms of use."
 
 #: lib/admissionrules/connectedcourseadmission/templates/info.php:1
 #: lib/admissionrules/lockedadmission/LockedAdmission.php:32
@@ -47734,28 +47705,24 @@ msgid "Die Anmeldung ist gesperrt."
 msgstr "Admission locked. "
 
 #: lib/admissionrules/connectedcourseadmission/ConnectedcourseAdmission.class.php:28
-#, fuzzy
 msgid ""
 "Die Anmeldung ist nur für Mitglieder der dazu gehörigen Lehrveranstaltung "
 "möglich."
-msgstr ""
-"The enrolment is only allowed for participants of at least one of the "
-"following courses:"
+msgstr "Only members of the corresponding course can register."
 
 #: lib/admissionrules/connectedcourseadmission/ConnectedcourseAdmission.class.php:38
-#, fuzzy
 msgid ""
 "Diese Art von Anmelderegel erlaubt die Anmeldung an bestimmte "
 "Studiengruppen. Nur wer in einer verknüpften Lehrveranstaltung eingetragen "
 "ist, darf sich auch in die Studiengruppe anmelden."
 msgstr ""
-"This admission rule locks the enrolment for all associated courses, "
-"preventing enrolment for everybody."
+"This type of registration rule allows students to register for specific "
+"study groups. Only students who are enrolled in a linked course may register "
+"for the study group."
 
 #: lib/admissionrules/connectedcourseadmission/ConnectedcourseAdmission.class.php:46
-#, fuzzy
 msgid "Anmeldung nur über verknüpfte Lehrveranstaltung"
-msgstr "Settings for courses"
+msgstr "You must register via a linked course"
 
 #: lib/admissionrules/conditionaladmission/ConditionalAdmission.php:65
 #, php-format
@@ -48095,9 +48062,9 @@ msgstr "No role template named \"%s\" found in system %s."
 
 #: lib/ilias_interface/ConnectedIlias.php:436
 #: lib/ilias_interface/ConnectedIlias.php:444
-#, fuzzy, php-format
+#, php-format
 msgid "Verbindung mit Account ID %s wiederhergestellt."
-msgstr "Connection to user-id %s established."
+msgstr "Connection with account ID %s restored."
 
 #: lib/ilias_interface/ConnectedIlias.php:447
 #, php-format
@@ -48123,9 +48090,9 @@ msgid "Eigene Daten von %s (%s)."
 msgstr "Personal details of %s (%s)."
 
 #: lib/ilias_interface/ConnectedIlias.php:651
-#, fuzzy, php-format
+#, php-format
 msgid "Hier befinden sich die persönlichen Lernmodule von %s."
-msgstr "Here are the personal learning modules of user %s."
+msgstr "Here are the personal learning modules of %s."
 
 #: lib/ilias_interface/ConnectedIlias.php:671
 msgid "ILIAS-User-Kategorie konnte nicht angelegt werden."
@@ -48218,19 +48185,16 @@ msgid "Neue Verknüpfung zu ILIAS-User angelegt."
 msgstr "New link to ILIAS user was created."
 
 #: lib/ilias_interface/IliasSoap.php:1734
-#, fuzzy
 msgid "Kursmitglied"
-msgstr "Member"
+msgstr "Course member"
 
 #: lib/ilias_interface/IliasSoap.php:1737
-#, fuzzy
 msgid "Kurstutor/-in"
-msgstr "Author"
+msgstr "Course tutor"
 
 #: lib/ilias_interface/IliasSoap.php:1740
-#, fuzzy
 msgid "Kursadministrator/-in"
-msgstr "Administrator"
+msgstr "Course administrator"
 
 #: lib/ilias_interface/StudipSoapClient.php:38
 #, php-format
@@ -48598,7 +48562,6 @@ msgid "Schneller Austausch von Informationen in Gesprächsform"
 msgstr "Quick exchange of information while talking"
 
 #: lib/modules/Blubber.php:123
-#, fuzzy
 msgid ""
 "Blubber ist eine Kommunikationsform mit Ähnlichkeiten zu einem Forum, in dem "
 "aber in Echtzeit miteinander kommuniziert werden kann und das durch den "
@@ -48653,9 +48616,8 @@ msgstr ""
 "(#keyword); Include files via drag and drop"
 
 #: lib/modules/MyStudygroupsWidget.php:19
-#, fuzzy
 msgid "Dieses Widget zeigt eine Liste Ihrer Studiengruppen an."
-msgstr "This widget shows a list of your courses."
+msgstr "This widget shows a list of your study groups."
 
 #: lib/modules/ConsultationModule.php:138
 msgid "Generische Terminvergabe"
@@ -48737,24 +48699,20 @@ msgstr ""
 "event"
 
 #: lib/modules/FeedbackModule.php:60
-#, fuzzy
 msgid "Übersichtsseite des Feedbacktools"
-msgstr "Courseware overview page"
+msgstr "Overview page for the feedback tool"
 
 #: lib/modules/FeedbackModule.php:61
-#, fuzzy
 msgid "Lernmaterial Feedback"
-msgstr "Learning materials"
+msgstr "Feedback for learning materials"
 
 #: lib/modules/FeedbackModule.php:62
-#, fuzzy
 msgid "Feedback an einer Datei"
-msgstr "Edit feedback"
+msgstr "feedback to a file"
 
 #: lib/modules/CoreStudygroupAdmin.php:41
-#, fuzzy
 msgid " Studiengruppenbild"
-msgstr "Study groups"
+msgstr " study group image"
 
 #: lib/modules/CoreStudygroupAdmin.php:46 lib/modules/CoreAdmin.php:171
 msgid "Erstellen und bearbeiten von Fragebögen."
@@ -48765,9 +48723,8 @@ msgid "Bearbeiten der Grundeinstellungen dieser Veranstaltung."
 msgstr "Manage basic settings of this course."
 
 #: lib/modules/CoreAdmin.php:65
-#, fuzzy
 msgid "Veranstaltungsbild"
-msgstr "Course board"
+msgstr "course image"
 
 #: lib/modules/CoreAdmin.php:66
 msgid "Infobild dieser Veranstaltung bearbeiten oder löschen."
@@ -48804,9 +48761,8 @@ msgid "Vorlagen zur Erhebung weiterer Angaben von Teilnehmenden auswählen."
 msgstr "Choose template for additional questionnaire for participants."
 
 #: lib/modules/CoreAdmin.php:98
-#, fuzzy
 msgid "Studiengruppen verknüpfen bzw. verwalten"
-msgstr "Edit study groups"
+msgstr "Link or manage study groups"
 
 #: lib/modules/CoreAdmin.php:118
 msgid ""
@@ -48821,19 +48777,17 @@ msgstr ""
 "Assign this course to an existing main course or an existing assignment."
 
 #: lib/modules/CoreAdmin.php:147
-#, fuzzy
 msgid ""
 "Verwaltung der Grunddaten, Zugangsberechtigungen und sonstigen Einstellungen"
-msgstr "Access permission management"
+msgstr "Management of basic data, access authorisations and other settings"
 
 #: lib/modules/LtiToolModule.php:93
 msgid "LTI-Ergebnisse"
 msgstr "LTI results"
 
 #: lib/modules/LtiToolModule.php:102
-#, fuzzy
 msgid "Anbindung von LTI-Tools"
-msgstr "LTI tool inclusion (version 1.x)"
+msgstr "LTI tool connection"
 
 #: lib/modules/LtiToolModule.php:103
 msgid ""
@@ -48845,7 +48799,7 @@ msgstr ""
 
 #: lib/modules/LtiToolModule.php:106
 msgid "E-Learning"
-msgstr ""
+msgstr "E-learning"
 
 #: lib/modules/CoursewareModule.php:68 lib/modules/ActivityFeed.php:11
 msgid "Aktivitäten"
@@ -48860,12 +48814,10 @@ msgid "neue Seiten"
 msgstr "new pages"
 
 #: lib/modules/CoursewareModule.php:136
-#, fuzzy
 msgid "Lernmaterialien erstellen, verteilen und erleben"
-msgstr "Create, distribute and experience learning contents"
+msgstr "Create, distribute and experience learning materials"
 
 #: lib/modules/CoursewareModule.php:137
-#, fuzzy
 msgid ""
 "Mit Courseware können Sie interaktive, multimediale Lernmaterialien "
 "erstellen und nutzen. Diese Materialien lassen sich hierarchisch "
@@ -48882,15 +48834,14 @@ msgid ""
 "und den Einsatz von Courseware in Studiengruppen unterstützt."
 msgstr ""
 "With Courseware, you can create and use interactive multimedia learning "
-"contents. The learning contents can be subdivided hierarchically and can "
-"consist of texts, video sequences, tasks, communication elements and a "
-"variety of other elements. Finished learning contents can be exported and "
+"materials. The learning materials can be arranged in a hierarchic fashion. "
+"They may include text, video sequences, tasks, communication elements and a "
+"variety of other elements. Finished learning materials can be exported and "
 "imported into other courses or other installations. Courseware is not only "
-"designed for digital formats. It can also be used to supplement classic "
-"courses in presence with online parts. Formats like integrated learning "
-"(Blended Learning) can be ideally implemented with Courseware. Collaborative "
-"learning can be realised in study groups using write permissions and the use "
-"of Courseware."
+"designed for digital formats. It can also be used to supplement traditional "
+"face-to-face courses with online elements. Courseware is idel for formats "
+"like integrated learning (Blended Learning). Collaborative learning is "
+"facilitated via write permissions and the use of Courseware in study groups."
 
 #: lib/modules/CoursewareModule.php:139 lib/modules/CoreDocuments.php:174
 #: lib/modules/GradebookModule.php:158
@@ -48901,29 +48852,24 @@ msgid "Lehr- und Lernorganisation"
 msgstr "Lecturing and learning organisation"
 
 #: lib/modules/CoursewareModule.php:145
-#, fuzzy
 msgid "Übersicht Lernmaterialien"
-msgstr "Personal learning materials"
+msgstr "Learning materials overview"
 
 #: lib/modules/CoursewareModule.php:146
-#, fuzzy
 msgid "Lernmaterial Inhalt"
-msgstr "Learning materials"
+msgstr "Learning materials content"
 
 #: lib/modules/CoursewareModule.php:148
-#, fuzzy
 msgid "Inhalt bearbeiten"
-msgstr "Edit file"
+msgstr "Edit content"
 
 #: lib/modules/CoursewareModule.php:149
-#, fuzzy
 msgid "Rechte und Sichtbarkeit"
-msgstr "Visibility"
+msgstr "Permissions and visibility"
 
 #: lib/modules/CoursewareModule.php:150
-#, fuzzy
 msgid "Courseware Aufgabe mit Peer-Review"
-msgstr "Courseware tasks"
+msgstr "Courseware task with peer review"
 
 #: lib/modules/ContentsWidget.php:20
 msgid "Mit diesem Widget haben Sie einen Überblick über Ihre Inhalte."
@@ -49001,14 +48947,12 @@ msgstr ""
 "structuring of posts; edit function for lecturers"
 
 #: lib/modules/CoreForum.php:205
-#, fuzzy
 msgid "Beitrag"
-msgstr "Postings"
+msgstr "Posting"
 
 #: lib/modules/CoreForum.php:206
-#, fuzzy
 msgid "Beitrag verfassen"
-msgstr "Move post"
+msgstr "Create post"
 
 #: lib/modules/CorePersonal.php:24 lib/modules/CorePersonal.php:49
 msgid "MitarbeiterInnen"
@@ -49119,14 +49063,12 @@ msgstr ""
 "independently for every folder.  "
 
 #: lib/modules/CoreDocuments.php:196
-#, fuzzy
 msgid "Dateiinformationen"
-msgstr "Additional information"
+msgstr "File information"
 
 #: lib/modules/CoreDocuments.php:197
-#, fuzzy
 msgid "Ordnerinformationen"
-msgstr "Free information"
+msgstr "Folder information"
 
 #: lib/modules/CoreDocuments.php:198
 msgid "Neuen Ordner erstellen"
@@ -49150,9 +49092,8 @@ msgid "Schnittstelle zu ILIAS"
 msgstr "ILIAS interface"
 
 #: lib/modules/IliasInterfaceModule.php:28
-#, fuzzy
 msgid "Meine Kurse"
-msgstr "My rooms"
+msgstr "My courses"
 
 #: lib/modules/IliasInterfaceModule.php:87
 #, php-format
@@ -49264,14 +49205,12 @@ msgstr ""
 "achievements;personal progress supervision"
 
 #: lib/modules/GradebookModule.php:165
-#, fuzzy
 msgid "Ansicht für Lehrende"
-msgstr "Start page for lecturers"
+msgstr "Lecturers view"
 
 #: lib/modules/GradebookModule.php:166
-#, fuzzy
 msgid "Ansicht für Studierenden"
-msgstr "%s for students"
+msgstr "Students view"
 
 #: lib/modules/VipsModule.php:39
 msgid "Single Choice"
@@ -49302,9 +49241,8 @@ msgid "Reihenfolge"
 msgstr "Sequence"
 
 #: lib/modules/VipsModule.php:56
-#, fuzzy
 msgid "Erstellen und Verwalten von Aufgabenblättern"
-msgstr "Create and edit questionnaires."
+msgstr "Create and manage worksheets"
 
 #: lib/modules/VipsModule.php:130
 msgid "Sie verfügen nicht über die notwendigen Rechte für diese Aktion."
@@ -49330,7 +49268,7 @@ msgstr[1] "%d new worksheets"
 
 #: lib/modules/VipsModule.php:347
 msgid "Erstellung und Durchführung von Übungen, Tests und Klausuren"
-msgstr ""
+msgstr "Create and carry out exercises, tests and exams"
 
 #: lib/modules/VipsModule.php:357
 msgid ""
@@ -49344,29 +49282,24 @@ msgstr ""
 "exercises; List of unfinished corrections and graded exercises"
 
 #: lib/modules/VipsModule.php:365
-#, fuzzy
 msgid "Aufgabenübersicht"
-msgstr "File overview"
+msgstr "Task overview"
 
 #: lib/modules/VipsModule.php:366
-#, fuzzy
 msgid "Aufgaben-Typen"
-msgstr "Tasks"
+msgstr "Types of tasks"
 
 #: lib/modules/VipsModule.php:367
-#, fuzzy
 msgid "Aufgabe erstellen"
-msgstr "Manage tasks"
+msgstr "Create task"
 
 #: lib/modules/VipsModule.php:368
-#, fuzzy
 msgid "Ergebnisübersicht"
-msgstr "File overview"
+msgstr "Results overview"
 
 #: lib/modules/VipsModule.php:455
-#, fuzzy
 msgid "Aufgaben-Gruppenzuordnung"
-msgstr "Group allocation"
+msgstr "Task-group allocation"
 
 #: lib/modules/NewsWidget.php:22
 msgid "Mit diesem Widget haben Sie Zugriff auf systemweite Ankündigungen."
@@ -49476,14 +49409,12 @@ msgstr ""
 "also be deleted (only for lecturers). An export as PDF file is integrated."
 
 #: lib/modules/CoreWiki.php:171
-#, fuzzy
 msgid "Wiki Seite"
-msgstr "Wiki pages"
+msgstr "Wiki page"
 
 #: lib/modules/CoreWiki.php:172
-#, fuzzy
 msgid "Wiki Seite bearbeiten"
-msgstr "Edit page"
+msgstr "Edit Wiki page"
 
 #: lib/modules/CoreParticipants.php:84
 #, php-format
@@ -49551,21 +49482,18 @@ msgid "Liste aller Teilnehmenden einer Veranstaltung"
 msgstr "Participants list"
 
 #: lib/modules/CoreParticipants.php:175
-#, fuzzy
 msgid "Rundmail an alle Teilnehmenden einer Veranstaltung"
-msgstr "Mail to all participants of a course"
+msgstr "Email message to all participants of a course"
 
 #: lib/modules/StudygroupWidget.php:14
-#, fuzzy
 msgid "Für dich vorgeschlagene Studiengruppen"
-msgstr "Closed study groups"
+msgstr "Your suggested study groups"
 
 #: lib/modules/StudygroupWidget.php:20
-#, fuzzy
 msgid ""
 "Dieses Widget zeigt eine Liste von Vorschlägen interessanter Studiengruppen "
 "an."
-msgstr "This widget shows a list of your courses."
+msgstr "This widget shows a list of study groups that might interest you."
 
 #: lib/modules/CoreSchedule.php:44
 #, php-format
@@ -49731,14 +49659,14 @@ msgid "Diese Installation ist bereits konfiguriert"
 msgstr "This installation is already configured"
 
 #: public/wiki.php:37
-#, fuzzy, php-format
+#, php-format
 msgid "Fehlender URL-Parameter: %s"
-msgstr "Missing parameter!"
+msgstr "Missing URL parameter: %s"
 
 #: public/wiki.php:115
-#, fuzzy, php-format
+#, php-format
 msgid "Die Wikiseite mit dem Schlagwort \"%s\" wurde nicht gefunden."
-msgstr "The regular date with the ID %s could not be found!"
+msgstr "The Wiki page with the keyword %s could not be found!"
 
 #: public/sendfile.php:123
 msgid "Sie haben keine Zugriffsberechtigung für diesen Download!"
@@ -50095,7 +50023,7 @@ msgstr "By registering, the following terms of use are accepted:"
 #: templates/mail/notification_html.php:124 templates/mail/html.php:96
 #, php-format
 msgid "Stud.IP hat eine automatische Systemnachricht für Sie."
-msgstr ""
+msgstr "Stud.IP has an automatic system message for you."
 
 #: templates/mail/notification_html.php:130
 msgid ""
@@ -50116,7 +50044,7 @@ msgstr ""
 #: templates/mail/notification_html.php:166
 #, php-format
 msgid "Diese E-Mail wurde von Stud.IP an %1$s (%2$s) versendet."
-msgstr ""
+msgstr "This email was sent from Stud.IP to %1$s (%2$s)."
 
 #: templates/mail/notification_text.php:4
 msgid ""
@@ -50145,18 +50073,18 @@ msgid "In der Veranstaltung \"%s\" gibt es folgende Neuigkeiten:"
 msgstr "Within the course \"%s\" there are the following announcements:"
 
 #: templates/mail/html.php:92
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s hat Ihnen eine Nachricht in Stud.IP geschickt."
-msgstr "%s wrote a message."
+msgstr "%1$s has sent you a message in Stud.IP."
 
 #: templates/mail/html.php:124
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Diese E-Mail ist eine Kopie einer systeminternen Nachricht,<br>die in "
 "Stud.IP an %1$s (%2$s) versendet wurde."
 msgstr ""
-"This e-mail is a copy of an internal system message, which was sent within "
-"Stud.IP %s."
+"This email is a copy of an internal system message <br>that was sent to %1$s "
+"(%2$s) in Stud.IP."
 
 #: templates/mail/html.php:129 templates/mail/text.php:32
 #, php-format
@@ -50363,27 +50291,25 @@ msgid "Den Inhalt des Ordners können nur Lehrende und TutorInnen verändern."
 msgstr "Only lecturers and tutors may modify the folder's content."
 
 #: templates/filesystem/root_folder/edit.php:12
-#, fuzzy
 msgid "Studierenden das Hochladen von Dateien in den Hauptordner erlauben."
-msgstr "Students may upload files into this folder"
+msgstr "Allow students to upload files into the main folder."
 
 #: templates/filesystem/root_folder/edit.php:14
-#, fuzzy
 msgid ""
 "Studierenden ist es standardmäßig verboten, Dateien in den Hauptordner einer "
 "Veranstaltung hochzuladen."
-msgstr "Students may upload files into this folder"
+msgstr ""
+"By default, students are prohibited from uploading files to the main folder "
+"of a course."
 
 #: templates/filesystem/root_folder/edit.php:21
-#, fuzzy
 msgid "Studierenden das Hochladen von Dateien in den Hauptordner verbieten."
-msgstr "Students may upload files into this folder"
+msgstr "Prohibit students from uploading files to the main folder."
 
 #: templates/filesystem/root_folder/edit.php:23
-#, fuzzy
 msgid ""
 "Studierenden ist es weiterhin möglich, Dateien in Unterordnern hochzuladen."
-msgstr "Students may upload files into this folder"
+msgstr "Students can still upload files in subfolders."
 
 #: templates/filesystem/date_folder/description.php:2
 msgid "Dieser Ordner ist einem Veranstaltungstermin zugeordnet."
@@ -50610,7 +50536,6 @@ msgid "Hohen Kontrast aktivieren"
 msgstr "Activate high contrast"
 
 #: templates/header.php:220
-#, fuzzy
 msgid ""
 "Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach "
 "dem Login übernommen.\n"
@@ -50645,9 +50570,8 @@ msgid "Vollbildmodus verlassen"
 msgstr "Leave full screen mode"
 
 #: templates/layouts/base.php:117
-#, fuzzy
 msgid "Zurück zum Seitenanfang"
-msgstr "Back to start"
+msgstr "Back to start of page"
 
 #: templates/adminarea-start.php:4
 #, php-format
@@ -50855,13 +50779,13 @@ msgstr ""
 "object (course or institute)."
 
 #: templates/check_object_exception.php:6
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dieser Fehler tritt auch auf, wenn Ihre Session abgelaufen ist. Bitte nutzen "
 "Sie in diesem Fall den folgenden Link, um zurück zur Anmeldung zu gelangen."
 msgstr ""
 "This error also occurs if your session has expired. In this case, clicking "
-"the link below takes you back to the login screen. "
+"the link below takes you back to the login screen."
 
 #: templates/check_object_exception.php:10
 msgid "Folgender von Ihnen eingegebene Text konnte nicht gespeichert werden:"
