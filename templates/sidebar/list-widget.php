@@ -8,7 +8,7 @@
         <? endif ?>
         <li id="<?= htmlReady($index) ?>"
             <?= !empty($element->active) ? 'class="active"' : '' ?>>
-            <? if (isset($icon)): ?>
+            <? if (isset($icon) && $element instanceof LinkElement): ?>
                 <?= $element->renderWithIcon($icon) ?>
             <? else: ?>
                 <?= $element->render() ?>
