@@ -162,10 +162,12 @@ class PageLayout
             URLHelper::setBaseURL($old_base);
         }
 
+        $old_base = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
         self::addHeadElement('link', [
             'rel' => 'stylesheet',
             'href' => URLHelper::getURL('theme.php', ignore_registered_params: true)
         ]);
+        URLHelper::setBaseURL($old_base);
     }
 
     /**
