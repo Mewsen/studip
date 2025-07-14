@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-10 10:00+0000\n"
+"PO-Revision-Date: 2025-07-15 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -3439,9 +3439,8 @@ msgid "Einrichtung wählen"
 msgstr "Select institute"
 
 #: resources/vue/components/avatar/AvatarApp.vue:57
-#, fuzzy
 msgid "Einrichtungsbild"
-msgstr "Institute"
+msgstr "Institute image"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:116
 msgid "Einrichtungszuordnung"
@@ -7380,9 +7379,8 @@ msgstr "Visibility"
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissionScope.vue:7
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:119
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:238
-#, fuzzy
 msgid "Rechte und Sichtbarkeit"
-msgstr "Visibility"
+msgstr "Permissions and visibility"
 
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:191
 msgid "Rechteck hinzufügen"
@@ -8853,9 +8851,8 @@ msgid "Veranstaltungen werden gesucht..."
 msgstr "%u courses have been created."
 
 #: resources/vue/components/avatar/AvatarApp.vue:51
-#, fuzzy
 msgid "Veranstaltungsbild"
-msgstr "Course board"
+msgstr "course image"
 
 #: resources/vue/mixins/MyCoursesMixin.js:99
 msgid "Veranstaltungsdetails"
