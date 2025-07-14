@@ -1,9 +1,12 @@
 const getDefaultState = () => {
     return {
         blockAdder: {},
+        blockTypes: [],
+        containerTypes: [],
         containerAdder: false,
         context: null,
         courseware: {},
+        httpClient: null,
         isAuthenticated: false,
         password: null,
         pluginManager: null,
@@ -21,6 +24,14 @@ const getters = {
         return state.blockAdder;
     },
 
+    blockTypes(state) {
+        return state.blockTypes;
+    },
+
+    containerTypes(state) {
+        return state.containerTypes;
+    },
+
     containerAdder(state) {
         return state.containerAdder;
     },
@@ -31,6 +42,10 @@ const getters = {
 
     courseware(state) {
         return state.courseware;
+    },
+
+    httpClient(state) {
+        return state.httpClient;
     },
 
     isAuthenticated(state) {
@@ -57,6 +72,10 @@ const getters = {
         return state.userId;
     },
 
+    userIsTeacher() {
+        return false;
+    },
+
     viewMode(state) {
         return state.viewMode;
     },
@@ -66,6 +85,13 @@ export const state = { ...initialState };
 
 export const actions = {
     // setters
+    setBlockTypes({ commit }, blockTypes) {
+        commit('setBlockTypes', blockTypes);
+    },
+    setContainerTypes({ commit }, containerTypes) {
+        commit('setContainerTypes', containerTypes);
+    },
+
     coursewareContainerAdder(context, adder) {
         context.commit('setContainerAdder', adder);
     },
@@ -94,18 +120,32 @@ export const actions = {
         commit('setPassword', password);
     },
 
-    // other actions
-    loadStructuralElement({ dispatch }, structuralElementId) {
-        const options = {
-            include:
-                'containers,containers.blocks',
-        };
+    setHttpClient({ commit }, httpClient) {
+        commit('setHttpClient', httpClient);
+    },
 
-        return dispatch(
-            'courseware-structural-elements/loadById',
-            { id: structuralElementId, options },
-            { root: true }
+    // other actions
+    async loadStructuralElement({ dispatch, rootGetters }, structuralElementId) {
+        const context = rootGetters['context'];
+        const httpClient = rootGetters['httpClient'];
+
+        let response = await httpClient.get(
+            `public/courseware/${context.id}/courseware-structural-elements/${structuralElementId}`,
+            {
+                params: {
+                    include: 'containers,containers.blocks',
+                },
+            }
         );
+
+        const element = response.data.data;
+        const includedObjects = response.data.included ?? [];
+        dispatch('courseware-structural-elements/storeRecord', element, { root: true });
+        for (const includedObject of includedObjects) {
+            dispatch(`${includedObject.type}/storeRecord`, includedObject, { root: true });
+        }
+
+        return element;
     },
 
     validatePassword({ getters, dispatch }, password) {
@@ -116,13 +156,21 @@ export const actions = {
         }
 
         return false;
-    }
+    },
 };
 
 export const mutations = {
 
     coursewareSet(state, data) {
         state.courseware = data;
+    },
+
+    setBlockTypes(state, blockTypes) {
+        state.blockTypes = blockTypes;
+    },
+
+    setContainerTypes(state, containerTypes) {
+        state.containerTypes = containerTypes;
     },
 
     setContainerAdder(state, containerAdder) {
@@ -151,6 +199,10 @@ export const mutations = {
 
     setViewMode(state, data) {
         state.viewMode = data;
+    },
+
+    setHttpClient(state, httpClient) {
+        state.httpClient = httpClient;
     },
 };
 

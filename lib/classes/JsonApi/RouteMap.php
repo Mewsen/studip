@@ -163,6 +163,7 @@ class RouteMap
 
         if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
+            $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}/descendants', Routes\Courseware\DescendantsOfPublicStructuralElementsIndex::class);
             $group->get('/public/courseware/{link_id}/courseware-structural-elements', Routes\Courseware\PublicStructuralElementsIndex::class);
         }
 
