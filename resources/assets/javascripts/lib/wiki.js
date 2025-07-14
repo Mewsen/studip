@@ -87,6 +87,10 @@ const Wiki = {
                         securityHandler(event) {
                             event.preventDefault();
                             event.returnValue = true;
+                        },
+                        saveWikiPage() {
+                            this.toggleSecurityHandler(this.isChanged);
+                            this.$refs.form.submit();
                         }
                     },
                     mounted() {

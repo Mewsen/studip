@@ -15,7 +15,7 @@
 
     <?= $contentbar ?>
 
-    <form action="<?= $controller->save($page) ?>" method="post" class="default" v-show="editing">
+    <form action="<?= $controller->save($page) ?>" method="post" class="default" v-show="editing" ref="form">
         <?= CSRFProtection::tokenTag() ?>
         <textarea class="wiki-editor size-l"
                   ref="wiki_editor"
@@ -35,7 +35,7 @@
         <div data-dialog-button="">
             <button class="button"
                     :title="isChanged ? '<?= _('Den aktuellen Stand speichern.') ?>' : '<?= _('Der aktuelle Stand wurde bereits gespeichert.') ?>'"
-                    @click="toggleSecurityHandler(false)"
+                    @click.prevent="saveWikiPage"
             >
                 <?= _('Speichern') ?>
             </button>
