@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../lib/bootstrap.php';
+require_once __DIR__ . '/../../lib/bootstrap.php';
 $themes = Theme::getActiveThemes();
 
 header('Content-Type: text/css');

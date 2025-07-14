@@ -164,7 +164,7 @@ class PageLayout
 
         self::addHeadElement('link', [
             'rel' => 'stylesheet',
-            'href' => Assets::url('stylesheets/theme.php')
+            'href' => Assets::url('theme.php')
         ]);
     }
 
