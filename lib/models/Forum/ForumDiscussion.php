@@ -75,7 +75,7 @@ class ForumDiscussion extends SimpleORMap
     /**
      * @return self[]
      */
-    public static function getCourseDiscussions($course_id, $last_visit = 0): array
+    public static function getCourseDiscussions($range_id, $last_visit = 0): array
     {
         $query = [
             "SELECT
@@ -85,7 +85,7 @@ class ForumDiscussion extends SimpleORMap
                 JOIN forum_postings as postings USING (discussion_id)
                 JOIN forum_topics AS topics USING (topic_id)
                 WHERE topics.range_id = :range_id",
-            ['range_id' => $course_id]
+            ['range_id' => $range_id]
         ];
 
         if ($last_visit) {

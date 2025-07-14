@@ -2,6 +2,7 @@
 namespace Forum;
 
 use DBManager;
+use Range;
 use SimpleORMap;
 use User;
 
@@ -15,6 +16,7 @@ use User;
  * @property int $mkdate
  * @property int $chdate
  *
+ * @property Range $range
  * @property ForumCategory $category
  * @property ForumDiscussion[] $discussions
  * @property User[] $users
@@ -40,6 +42,15 @@ class ForumTopic extends SimpleORMap
             'assoc_foreign_key' => 'topic_id',
         ];
 
+        $config['additional_fields']['range'] = [
+            'set' => function (ForumTopic $topic, string $field, Range $range) {
+                $topic->range_id = $range->getRangeId();
+            },
+            'get' => function (ForumTopic $topic): Range {
+                return get_object_by_range_id($topic->range_id);
+            },
+        ];
+
         $config['additional_fields']['users']['get'] = 'getUsers';
         $config['additional_fields']['metadata']['get'] = 'getMetaData';
         $config['registered_callbacks']['after_delete'][] = 'onDelete';
@@ -50,19 +61,19 @@ class ForumTopic extends SimpleORMap
     /**
      * @return self[]
      */
-    public static function getCourseTopics($course_id): array
+    public static function getCourseTopics(string $range_id): array
     {
         return self::findBySQL(
-            "range_id = :course_id
+            "range_id = :range_id
                 GROUP BY CASE WHEN category_id IS NULL THEN topic_id ELSE category_id END
                 ORDER BY position ASC, mkdate DESC",
-            ["course_id" => $course_id]
+            ["range_id" => $range_id]
         );
     }
 
-    public static function getCourseTopic($course_id, $topic_id): self
+    public static function getCourseTopic(string $range_id, string $topic_id): self
     {
-        return self::findOneBySQL("range_id = ? AND topic_id = ?", [$course_id, $topic_id]);
+        return self::findOneBySQL("range_id = ? AND topic_id = ?", [$range_id, $topic_id]);
     }
 
     public function getUsers($last_visit = null): array

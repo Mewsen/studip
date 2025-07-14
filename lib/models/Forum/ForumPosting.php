@@ -74,7 +74,7 @@ class ForumPosting extends SimpleORMap
         return null;
     }
 
-    public static function getRecentPosts($course_id, int $last_visit = 0): array
+    public static function getRecentPosts($range_id, int $last_visit = 0): array
     {
         $query = [
             "SELECT
@@ -83,10 +83,10 @@ class ForumPosting extends SimpleORMap
             FROM forum_topics
             JOIN forum_discussions USING(topic_id)
             JOIN forum_postings USING(discussion_id)
-            WHERE forum_topics.range_id = :course_id AND forum_postings.user_id != :user_id
+            WHERE forum_topics.range_id = :range_id AND forum_postings.user_id != :user_id
             ",
             [
-                'course_id' => $course_id,
+                'range_id' => $range_id,
                 'user_id' => User::findCurrent()->user_id
             ]
         ];

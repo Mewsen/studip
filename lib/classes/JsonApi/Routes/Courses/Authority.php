@@ -13,7 +13,7 @@ class Authority
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function canShowCourse(User $user, Course $course, $scope)
+    public static function canShowCourse(User $user, Course $course, $scope = self::SCOPE_BASIC): bool
     {
         switch ($scope) {
             case self::SCOPE_BASIC:

@@ -1,7 +1,7 @@
 <?php
 namespace Forum;
 
-use Course;
+use Range;
 use SimpleORMap;
 use User;
 use Forum\Enum\SubscriptionNotificationType;
@@ -17,7 +17,7 @@ use Forum\Enum\SubscriptionNotificationType;
  *
  * @property ForumDiscussion | ForumTopic $subject_object
  * @property User $user
- * @property Course $range
+ * @property Range $range
  */
 
 class ForumSubscription extends SimpleORMap
@@ -32,10 +32,13 @@ class ForumSubscription extends SimpleORMap
             'assoc_foreign_key' => 'user_id'
         ];
 
-        $config['belongs_to']['range'] = [
-            'class_name' => Course::class,
-            'foreign_key' => 'range_id',
-            'assoc_foreign_key' => 'Seminar_id'
+        $config['additional_fields']['range'] = [
+            'set' => function (ForumSubscription $subscription, string $field, Range $range) {
+                $subscription->range_id = $range->getRangeId();
+            },
+            'get' => function (ForumSubscription $subscription): Range {
+                return get_object_by_range_id($subscription->range_id);
+            },
         ];
 
         $config['additional_fields']['subject_object']['get'] = 'getSubjectObject';
@@ -43,12 +46,15 @@ class ForumSubscription extends SimpleORMap
         parent::configure($config);
     }
 
-    public static function getUserSubscriptions($course_id, $user_id)
+    /**
+     * @return self[]
+     */
+    public static function getUserSubscriptions(string $range_id, string $user_id): array
     {
         return self::findBySQL(
             "range_id = :range_id AND user_id = :user_id ORDER BY mkdate DESC",
             [
-                'range_id' => $course_id,
+                'range_id' => $range_id,
                 'user_id' => $user_id
             ]
         );

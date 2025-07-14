@@ -2,6 +2,7 @@
 namespace Forum;
 
 use DBManager;
+use Range;
 use User;
 
 /**
@@ -14,6 +15,7 @@ use User;
  * @property int $mkdate
  * @property int $chdate
  *
+ * @property Range $range
  * @property ForumTopic[] $topics
  * @property array $metadata
  */
@@ -30,6 +32,15 @@ class ForumCategory extends \SimpleORMap
             'order_by' => 'ORDER BY position ASC, mkdate DESC',
         ];
 
+        $config['additional_fields']['range'] = [
+            'set' => function (ForumCategory $category, string $field, Range $range) {
+                $category->range_id = $range->getRangeId();
+            },
+            'get' => function (ForumCategory $category): Range {
+                return get_object_by_range_id($category->range_id);
+            },
+        ];
+
         $config['additional_fields']['metadata']['get'] = 'getMetaData';
 
         $config['registered_callbacks']['after_delete'][] = 'onDelete';
@@ -40,9 +51,9 @@ class ForumCategory extends \SimpleORMap
     /**
      * @return self[]
      */
-    public static function getCourseCategories($course_id): array
+    public static function getCourseCategories($range_id): array
     {
-       return self::findBySQL("range_id = ? ORDER BY position ASC, mkdate DESC", [$course_id]);
+       return self::findBySQL("range_id = ? ORDER BY position ASC, mkdate DESC", [$range_id]);
     }
 
     public function getMetaData(): array

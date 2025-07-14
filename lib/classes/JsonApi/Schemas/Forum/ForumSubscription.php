@@ -39,8 +39,8 @@ class ForumSubscription extends SchemaProvider
         $relationships = [];
         if ($isPrimary) {
             $relationships = $this->addUserRelationship($relationships, $subscription, $includeList);
-            $relationships = $this->addRangeRelationship($relationships, $subscription, $includeList);
             $relationships = $this->addSubjectRelationship($relationships, $subscription, $includeList);
+            $relationships = $this->addRangeRelationship($relationships, $subscription, $includeList);
         }
 
         return $relationships;

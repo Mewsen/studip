@@ -18,9 +18,9 @@ abstract class ForumBaseController extends StudipController
     {
         object_set_visit_module('forum');
 
-        $this->course_id = Context::getId();
-        $this->is_moderator = CoreForum::isModerator($this->course_id);
-        $this->is_admin = CoreForum::isAdmin($this->course_id);
+        $this->range_id = Context::getId();
+        $this->is_moderator = CoreForum::isModerator($this->range_id);
+        $this->is_admin = CoreForum::isAdmin($this->range_id);
 
         $this->buildSidebar();
 

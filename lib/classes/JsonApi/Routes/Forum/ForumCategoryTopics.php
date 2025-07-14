@@ -1,9 +1,8 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
-use Course;
 use JsonApi\Errors\RecordNotFoundException;
-use JsonApi\Routes\Courses\Authority as CourseAuthority;
+use JsonApi\Routes\RangeAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
@@ -24,13 +23,13 @@ class ForumCategoryTopics extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $course = Course::find($category->range_id);
-        if (!$course) {
+        $range = get_object_by_range_id($category->range_id);
+        if (!$range) {
             throw new RecordNotFoundException();
         }
 
         $user = $this->getUser($request);
-        if (!CourseAuthority::canShowCourse($user, $course, CourseAuthority::SCOPE_BASIC)) {
+        if (!RangeAuthority::canShowRange($user, $range)) {
             throw new AuthorizationFailedException();
         }
 

@@ -2,7 +2,6 @@
 namespace JsonApi\Routes\Forum;
 
 use CoreForum;
-use Course;
 use JsonApi\Errors\RecordNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -18,14 +17,14 @@ class ForumTopicUpdateSort extends JsonApiController
     public function __invoke(Request $request, Response $response, $args)
     {
         $json = $this->validate($request);
-        $course_id = self::arrayGet($json, 'data.relationships.range.data.id');
+        $range_id = self::arrayGet($json, 'data.relationships.range.data.id');
 
-        $course = Course::find($course_id);
-        if (!$course) {
+        $range = get_object_by_range_id($range_id);
+        if (!$range) {
             throw new RecordNotFoundException();
         }
 
-        if (!CoreForum::isModerator($course->id)) {
+        if (!CoreForum::isModerator($range->id)) {
             throw new AuthorizationFailedException();
         }
 
@@ -39,7 +38,7 @@ class ForumTopicUpdateSort extends JsonApiController
             "topic_id IN (:topic_ids) AND range_id = :course_id",
             [
                 "topic_ids" => $topic_ids,
-                "course_id" => $course->id
+                "course_id" => $range->id
             ]
         );
 

@@ -107,16 +107,18 @@ function get_object_name($range_id, $object_type)
  * Returns a sorm object for a given range_id
  *
  * @param string the range_id
- * @return bool|SimpleORMap Course/Institute/User/Statusgruppen/
+ * @return Course | Institute | User | null
  */
-function get_object_by_range_id($range_id) {
+function get_object_by_range_id($range_id): Course | Institute | User | null
+{
     $possible_sorms = "Course Institute User";
     foreach(words($possible_sorms) as $sorm) {
         if ($object = $sorm::find($range_id)) {
             return $object;
         }
     }
-    return false;
+
+    return null;
 }
 
 /**

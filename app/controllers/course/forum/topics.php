@@ -11,7 +11,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
     {
         parent::before_filter($action, $args);
 
-        unset($_SESSION['forum'][$this->course_id]['search']);
+        unset($_SESSION['forum'][$this->range_id]['search']);
 
         Navigation::activateItem('course/forum/topics');
     }
@@ -65,7 +65,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
 
         if ($topic_id) {
             PageLayout::setTitle(_('Thema bearbeiten'));
-            $topic = ForumTopic::getCourseTopic($this->course_id, $topic_id);
+            $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
 
             if (!$topic) {
                 throw new AccessDeniedException();
@@ -78,7 +78,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
 
         $categories = DBManager::get()->fetchAll(
             "SELECT * FROM `forum_categories` WHERE `range_id` = ? ORDER BY `position` ASC, `mkdate` DESC",
-            [$this->course_id]
+            [$this->range_id]
         );
 
         $this->render_vue_app(
@@ -99,20 +99,20 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($topic_id) {
-            $topic = ForumTopic::getCourseTopic($this->course_id, $topic_id);
+            $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
             if (!$topic) {
                 throw new AccessDeniedException();
             }
         } else {
             $topic = new ForumTopic();
-            $topic->range_id = $this->course_id;
+            $topic->range_id = $this->range_id;
         }
 
         $category = json_decode(Request::get('category'), true);
 
         if (empty($category['category_id']) && !empty($category['name'])) {
             $newCategory = ForumCategory::create([
-                'range_id' => $this->course_id,
+                'range_id' => $this->range_id,
                 'color' => '#28497C',
                 'name' => $category['name']
             ]);
@@ -142,7 +142,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
             throw new AccessDeniedException();
         }
 
-        $topic = ForumTopic::getCourseTopic($this->course_id, $topic_id);
+        $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
 
         if (!$topic) {
             throw new AccessDeniedException();

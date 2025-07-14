@@ -1,10 +1,9 @@
 <?php
 namespace JsonApi\Routes\Forum;
 
-use Course;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
-use JsonApi\Routes\Courses\Authority as CourseAuthority;
+use JsonApi\Routes\RangeAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\JsonApiController;
@@ -21,17 +20,17 @@ class ForumSubscriptionIndex extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $course = Course::find($args['course_id']);
-        if (!$course) {
+        $range = get_object_by_range_id($args['range_id']);
+        if (!$range) {
             throw new RecordNotFoundException();
         }
 
         $user = $this->getUser($request);
-        if (!CourseAuthority::canShowCourse($user, $course, CourseAuthority::SCOPE_BASIC)) {
+        if (!RangeAuthority::canShowRange($user, $range)) {
             throw new AuthorizationFailedException();
         }
 
-        $subscriptions = ForumSubscription::getUserSubscriptions($course->id, $user->user_id);
+        $subscriptions = ForumSubscription::getUserSubscriptions($range->id, $user->user_id);
 
         return $this->getPaginatedContentResponse(
             array_slice($subscriptions, ...$this->getOffsetAndLimit()),

@@ -22,10 +22,10 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
                     `ft`.`topic_id`, `ft`.`name`, `fc`.`color`
                 FROM `forum_topics` AS `ft`
                 LEFT JOIN `forum_categories` AS `fc` USING (`category_id`)
-                WHERE `ft`.`range_id` = :course_id
+                WHERE `ft`.`range_id` = :range_id
                 ORDER BY `ft`.`position` ASC, `ft`.`mkdate` DESC
             ",
-            ['course_id' => $this->course_id]
+            ['range_id' => $this->range_id]
         );
 
         $course_members = [];
@@ -58,7 +58,7 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
     private function getResult($search_object): array
     {
         if ($this->isSearchObjectEmpty($search_object)) {
-            unset($_SESSION['forum'][$this->course_id]['search']);
+            unset($_SESSION['forum'][$this->range_id]['search']);
             return [];
         }
 
@@ -71,7 +71,7 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
                 LEFT JOIN tags_relations ON (tags_relations.range_id = discussions.discussion_id AND range_type = 'forum')
                 WHERE postings.range_id = :range_id ",
             [
-                'range_id' => $this->course_id
+                'range_id' => $this->range_id
             ]
         ];
 
@@ -196,11 +196,11 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
                 'user_ids' => Request::getArray('user_ids')
             ];
 
-            $_SESSION['forum'][$this->course_id]['search'] = $search_object;
+            $_SESSION['forum'][$this->range_id]['search'] = $search_object;
             return $search_object;
         }
 
-        $session_search = $_SESSION['forum'][$this->course_id]['search'] ?? [];
+        $session_search = $_SESSION['forum'][$this->range_id]['search'] ?? [];
         return [
             'keyword' => $session_search['keyword'] ?? '',
             'begin' => $session_search['begin'] ?? 0,

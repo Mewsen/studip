@@ -31,9 +31,9 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
               COUNT(posting_id) as 'postings_count',
               COUNT(DISTINCT user_id) as 'users_count' ,
               MAX(mkdate) as 'recent_activity'
-            FROM forum_postings WHERE range_id = :course_id",
+            FROM forum_postings WHERE range_id = :range_id",
             [
-                'course_id' => $this->course_id
+                'range_id' => $this->range_id
             ]
         );
 
@@ -105,7 +105,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
                     'category' => $category ? $category->toRawArray() : [],
                     'read_index' => (int) ($posting_read ? $posting_read->read_index : 0),
                     'redirect' => Request::option('redirect'),
-                    'search_keyword' => $_SESSION['forum'][$this->course_id]['search']['keyword'] ?? ''
+                    'search_keyword' => $_SESSION['forum'][$this->range_id]['search']['keyword'] ?? ''
                 ])
         );
     }
@@ -128,10 +128,10 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
                     `ft`.`topic_id`, `ft`.`name`, `fc`.`color`
                 FROM `forum_topics` AS `ft`
                 LEFT JOIN `forum_categories` AS `fc` USING (`category_id`)
-                WHERE `ft`.`range_id` = :course_id
+                WHERE `ft`.`range_id` = :range_id
                 ORDER BY `ft`.`position` ASC, `ft`.`mkdate` DESC
             ",
-            ['course_id' => $this->course_id]
+            ['range_id' => $this->range_id]
         );
 
         $all_tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), ForumTag::getForumTags());
@@ -179,7 +179,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
         if (empty($topic['topic_id'])) {
             $newTopic = ForumTopic::create([
-                'range_id' => $this->course_id,
+                'range_id' => $this->range_id,
                 'name' => $topic['name']
             ]);
 
@@ -191,7 +191,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
         if (!$discussion_id && Request::get('content')) {
             ForumPosting::create([
-                'range_id' => $this->course_id,
+                'range_id' => $this->range_id,
                 'discussion_id' => $discussion->discussion_id,
                 'content' => Markup::markAsHtml(Request::get('content')),
                 'user_id' => User::findCurrent()->user_id

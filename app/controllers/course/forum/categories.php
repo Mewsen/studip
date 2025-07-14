@@ -9,7 +9,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
     {
         parent::before_filter($action, $args);
 
-        if (!CourseConfig::get($this->course_id)->FORUM_HIDE_CATEGORIES_NAVIGATION) {
+        if (!RangeConfig::get($this->range_id)->FORUM_HIDE_CATEGORIES_NAVIGATION) {
             Navigation::activateItem('course/forum/categories');
         } else {
             Navigation::activateItem('course/forum/topics');
@@ -54,7 +54,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
 
         if ($category_id) {
             PageLayout::setTitle(_('Kategorie bearbeiten'));
-            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->course_id, $category_id]);
+            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
 
             if (!$category) {
                 throw new AccessDeniedException();
@@ -81,13 +81,13 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($category_id) {
-            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->course_id, $category_id]);
+            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
             if (!$category) {
                 throw new AccessDeniedException();
             }
         } else {
             $category = new ForumCategory();
-            $category->range_id = $this->course_id;
+            $category->range_id = $this->range_id;
         }
 
         $category->name = Request::get('name');
@@ -107,7 +107,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
             throw new AccessDeniedException();
         }
 
-        $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->course_id, $category_id]);
+        $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
 
         if (!$category) {
             throw new AccessDeniedException();

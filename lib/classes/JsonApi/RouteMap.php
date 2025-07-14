@@ -672,7 +672,7 @@ class RouteMap
 
     private function addAuthenticatedForumRoutes(RouteCollectorProxy $group): void
     {
-        $group->group('/courses/{course_id}', function ($forum) {
+        $group->group('/courses/{range_id}', function ($forum) {
             $forum->get('/forum-configs', Routes\Forum\ForumConfigIndex::class);
             $forum->get('/forum-categories', Routes\Forum\ForumCategoryIndex::class);
             $forum->get('/forum-discussions', Routes\Forum\ForumDiscussionIndex::class);
