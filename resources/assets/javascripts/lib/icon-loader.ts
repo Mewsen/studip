@@ -29,7 +29,9 @@ class IconLoader
             return this.#promises.get(shape)!;
         }
 
-        const url = `${this.#baseUrl}images/icons/blue/${shape}.svg`;
+        const containsUrl = (shape: string): boolean => /\bhttps?:\/\/[^\s]+/i.test(shape);
+
+        const url = containsUrl(shape) ? shape : `${this.#baseUrl}images/icons/blue/${shape}.svg`;
 
         const promise = (async () => {
             try {

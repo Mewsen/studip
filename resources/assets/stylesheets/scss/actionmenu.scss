@@ -100,11 +100,12 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         > label {
             margin: 0;
             padding: 2px 30px 2px 0;
-            display: inline-flex;
+            display: block;
             align-items: center;
         }
 
         .action-menu-item-icon {
+            vertical-align: middle;
             margin-right: 0.5em;
             width: var(--icon-size-action-menu);
             height: var(--icon-size-action-menu);

@@ -57,13 +57,17 @@ export default defineComponent({
                 'studip-icon',
                 this.inline ? 'studip-icon-inline' : '',
                 `icon-role-${this.role}`,
-                `icon-shape-${this.shape}`
+                `icon-shape-${this.shapeName}`
             ];
         },
         computedStyle(): Record<string, string> {
             return this.size
                 ? { width: `${this.size}px`, height: `${this.size}px` }
                 : {}; // Falls size nicht gesetzt ist, greift CSS mit --icon-size-default
+        },
+        shapeName(): string {
+            const containsUrl = (shape: string): boolean => /\bhttps?:\/\/[^\s]+/i.test(shape);
+            return containsUrl(this.shape) ? (this.shape.split('/').pop()?.replace('.svg', '') ?? '') : this.shape;
         }
     },
     watch: {

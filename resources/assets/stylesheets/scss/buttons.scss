@@ -135,6 +135,9 @@ button,
 label {
     &.undecorated.icon-button {
         cursor: pointer;
+        .input-hidden {
+            display: none;
+        }
         svg {
             vertical-align: middle;
         }

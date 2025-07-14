@@ -373,8 +373,9 @@ select.sidebar-selectlist {
                     height: var(--icon-size);
                     box-sizing: border-box;
                     margin: auto 2px auto -22px;
+                    color: var(--color--sidebar-item);
 
-                    img {
+                    svg {
                         padding-top: 4px;
                     }
                 }

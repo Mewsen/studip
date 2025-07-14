@@ -30,7 +30,7 @@
                             'title' =>  _('Suche zurücksetzen'),
                             'class' => 'reset-search',
                             'onclick' => "window.document.getElementById('needle-".$hash."').value = '';"
-                        ]) ?>
+                        ], without_label: true) ?>
                     <? else : ?>
                         <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
                             <?= $onsubmit ? 'onclick="'."window.document.getElementById('needle-".$hash."').value = ''; window.document.getElementById('".$id."').submit(); return false; ".'"' : '' ?>
@@ -49,7 +49,7 @@
                         'title' =>  _('Suche zurücksetzen'),
                         'class' => 'reset-search',
                         'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();" . ($onclear ?? ''),
-                    ]) ?>
+                    ], without_label: true) ?>
                 <? else : ?>
                     <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
                        title="<?= _('Suche zurücksetzen') ?>">
