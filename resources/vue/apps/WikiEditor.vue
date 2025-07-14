@@ -7,7 +7,7 @@
             </template>
             <template #breadcrumb-list><content-bar-breadcrumbs :toc="toc" /></template>
         </ContentBar>
-        <form :action="saveUrl" method="post" class="default" v-show="isEditing">
+        <form :action="saveUrl" method="post" class="default" v-show="isEditing" ref="form">
             <input type="hidden" :name="csrf.name" :value="csrf.value" />
 
             <textarea
@@ -36,7 +36,7 @@
                             ? $gettext('Den aktuellen Stand speichern.')
                             : $gettext('Der aktuelle Stand wurde bereits gespeichert.')
                     "
-                    @click="toggleSecurityHandler(false)"
+                    @click.prevent="saveWikiPage"
                 >
                     {{ $gettext('Speichern') }}
                 </button>
@@ -228,6 +228,10 @@ export default {
 
             event.returnValue = true;
         },
+        saveWikiPage() {
+            this.toggleSecurityHandler(this.isChanged);
+            this.$refs.form.submit();
+        }
     },
     mounted() {
         const textarea = this.$refs['wiki_editor'];
