@@ -5,6 +5,8 @@
     link-pass="<?= htmlReady($link_pass) ?>"
     entry-type="public"
     entry-element-id="<?= htmlReady($entry_element_id) ?>"
+    block-types="<?= htmlReady($block_types) ?>"
+    container-types="<?= htmlReady($container_types) ?>"
 >
 </div>
 <? endif; ?>

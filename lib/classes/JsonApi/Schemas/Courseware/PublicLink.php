@@ -40,12 +40,12 @@ class PublicLink extends SchemaProvider
     {
         $relationships = [];
 
-        $relationships[self::REL_STRUCTURAL_ELEMENT] = $resource['structural_element_id']
+        $relationships[self::REL_STRUCTURAL_ELEMENT] = $resource->structural_element
         ? [
             self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($resource['structural_element']),
+                Link::RELATED => $this->createLinkToResource($resource->structural_element),
             ],
-            self::RELATIONSHIP_DATA => $resource['structural_element'],
+            self::RELATIONSHIP_DATA => $resource->structural_element,
         ]
         : [self::RELATIONSHIP_DATA => null];
 

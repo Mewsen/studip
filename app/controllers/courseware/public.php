@@ -22,11 +22,23 @@ class Courseware_PublicController extends StudipController
             $publicLink = PublicLink::find($this->link_id);
             $this->invalid = $publicLink === null;
             if (!$this->invalid) {
-                $this->block_types = Courseware\BlockTypes\BlockType::getBlockTypes();
+                $blockTypes = Courseware\BlockTypes\BlockType::getBlockTypes();
+                $this->block_types = json_encode( array_map([$this, 'mapType'], $blockTypes));
+                $containerTypes = Courseware\ContainerTypes\ContainerType::getContainerTypes();
+                $this->container_types = json_encode( array_map([$this, 'mapType'], $containerTypes));
                 $this->expired = $publicLink->isExpired();
                 $this->link_pass = $publicLink->password;
                 $this->entry_element_id = $publicLink->structural_element_id;
             }
         }
+    }
+
+    private function mapType(string $typeClass): array
+    {
+        return [
+            'type' => $typeClass::getType(),
+            'title' => $typeClass::getTitle(),
+            'is-activated' => $typeClass::isActivated(),
+        ];
     }
 }
