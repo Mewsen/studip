@@ -27,7 +27,7 @@ const wysiwyg = {
     markAsHtml: function markAsHtml(text) {
         // NOTE keep this function in sync with
         // Markup::markAsHtml in Markup.php
-        if (this.hasHtmlMarker(text) || text.trim() == '') {
+        if (this.hasHtmlMarker(text) || text.trim() === '') {
             return text; // marker already set, don't set twice
         }
         return this.htmlMarker + text;
