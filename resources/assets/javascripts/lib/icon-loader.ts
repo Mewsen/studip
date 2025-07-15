@@ -1,14 +1,18 @@
 type CacheOption = 'off' | 'session' | 'local';
+type CachedIcon = {
+    isSvg: boolean,
+    content: string
+};
 
 class IconLoader
 {
-    readonly #cacheKey: string = 'studip/svg-icons';
+    readonly #cacheKey: string = 'studip/icons';
 
     #baseUrl: string;
     #useCache: CacheOption = 'off';
 
     #cache: Map<string, string>;
-    #promises: Map<string, Promise<string>>;
+    #promises: Map<string, Promise<CachedIcon>>;
 
     constructor(baseUrl: string, useCache: CacheOption = 'off')
     {
@@ -16,13 +20,13 @@ class IconLoader
         this.#useCache = useCache;
 
         this.#cache = new Map<string, string>(this.#initialState());
-        this.#promises = new Map<string, Promise<string>>();
+        this.#promises = new Map<string, Promise<CachedIcon>>();
     }
 
-    async load(shape: string): Promise<string>
+    async load(shape: string): Promise<CachedIcon>
     {
         if (this.#cache.has(shape)) {
-            return this.#cache.get(shape)!;
+            return JSON.parse(this.#cache.get(shape)!);
         }
 
         if (this.#promises.has(shape)) {
@@ -37,19 +41,37 @@ class IconLoader
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
-                    return '';
+                    throw new Error(`IconLoader: HTTP ${response.status} ${response.statusText}`);
                 }
-                let svg = await response.text();
 
-                svg = svg.replace(/fill="(?!none)[^"]+"/g, 'fill="currentColor"');
-                svg = svg.replace(/(width|height)="[^"]+"/g, '');
+                const icon: CachedIcon = {
+                    isSvg: response.headers.get('Content-Type')?.includes('image/svg+xml') ?? false,
+                    content: ''
+                };
 
-                this.store(shape, svg);
+                if (icon.isSvg) {
+                    let svg = await response.text();
+                    svg = svg.replace(/fill="(?!none)[^"]+"/g, 'fill="currentColor"');
+                    svg = svg.replace(/(width|height)="[^"]+"/g, '');
+                    icon.content = svg;
+                } else {
+                    const blob = await response.blob();
+                    icon.content = await (new Promise(resolve => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result as string);
+                        reader.readAsDataURL(blob);
+                    }));
+                }
 
-                return svg;
+                this.store(shape, icon);
+
+                return icon;
             } catch(error) {
                 console.error(`IconLoader: Fehler beim Laden von ${shape}`, error);
-                return '';
+                return {
+                    isSvg: true,
+                    content: ''
+                } as CachedIcon;
             } finally {
                 this.#promises.delete(shape);
             }
@@ -60,9 +82,9 @@ class IconLoader
         return promise;
     }
 
-    store(shape: string, svg: string): void
+    store(shape: string, icon: CachedIcon): void
     {
-        this.#cache.set(shape, svg);
+        this.#cache.set(shape, JSON.stringify(icon));
 
         this.#getStorage()?.setItem(
             this.#cacheKey,
@@ -96,4 +118,4 @@ class IconLoader
 const defaultLoader = new IconLoader(window.STUDIP.ASSETS_URL, 'session');
 
 export default defaultLoader;
-export { IconLoader };
+export { IconLoader, CachedIcon };
