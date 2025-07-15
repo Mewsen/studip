@@ -7,7 +7,9 @@ import StudipIcon from "../../../components/StudipIcon.vue";
 import StudipWysiwyg from "../../../components/StudipWysiwyg.vue";
 import StudipSwitch from "../../../components/StudipSwitch.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 const CSRF = STUDIP.CSRF_TOKEN;
 
 const props = defineProps({
@@ -140,7 +142,7 @@ onMounted(() => {
                 <section class="mt-10">
                     <StudipSwitch name="closed_at" v-model="discussionForm.closed_at" :label="$gettext('Diskussion schließen')" />
                 </section>
-                <section class="mt-10">
+                <section v-if="forumConfig.isModerator" class="mt-10">
                     <StudipSwitch name="sticky" v-model="discussionForm.sticky" :label="$gettext('Anpinnen')" />
                 </section>
             </fieldset>

@@ -31,13 +31,11 @@ abstract class ForumBaseController extends StudipController
     {
         $actions = new ActionsWidget();
 
-        if ($this->is_moderator) {
-            $actions->addLink(
-                _('Neue Diskussion starten'),
-                $this->url_for('course/forum/discussions/edit'),
-                Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neue Diskussion starten')])
-            )->asDialog('width=900;height=750');
-        }
+        $actions->addLink(
+            _('Neue Diskussion starten'),
+            $this->url_for('course/forum/discussions/edit'),
+            Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neue Diskussion starten')])
+        )->asDialog('width=900;height=750');
 
         if ($this->is_admin) {
             $actions->addLink(

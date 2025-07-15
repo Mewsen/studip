@@ -23,7 +23,7 @@ const fetchDiscussions = async (_, offset = 0) => {
             `courses/${STUDIP.URLHelper.parameters.cid}/forum-discussions`,
             {
                 data: {
-                    include: 'category,discussion-type,members,tags',
+                    include: 'category,discussion-type,members,tags,user&fields[users]=id',
                     filter: {
                         'last-visit': props.last_visit
                     },
@@ -53,7 +53,7 @@ onMounted(async () => {
 
 <template>
     <ForumApp class="use-utility-classes">
-        <DiscussionIndex :discussions="discussions" :withActions="false" :isLoading="isLoading" redirect="recent">
+        <DiscussionIndex :discussions="discussions" :withActions="true" :isLoading="isLoading" redirect="recent">
             <template #pagination>
                 <tfoot v-if="pagination && pagination.total > pagination.limit">
                     <tr>

@@ -112,10 +112,6 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
     public function edit_action(ForumDiscussion $discussion = null)
     {
-        if (!$this->is_moderator) {
-            throw new AccessDeniedException();
-        }
-
         if ($discussion->isNew()) {
             PageLayout::setTitle(_('Neue Diskussion starten'));
         } else {
@@ -155,21 +151,20 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
     public function save_action($discussion_id = null)
     {
-        if (!$this->is_moderator) {
-            throw new AccessDeniedException();
-        }
-
         CSRFProtection::verifyUnsafeRequest();
 
         if ($discussion_id) {
             $discussion = ForumDiscussion::find($discussion_id);
         } else {
             $discussion = new ForumDiscussion();
+            $discussion->user_id = User::findCurrent()->user_id;
         }
 
         $discussion->title = Request::get('title');
         $discussion->closed_at = Request::bool('closed_at', false) ? time() : null;
-        $discussion->sticky = Request::bool('sticky', false);
+        if ($this->is_moderator) {
+            $discussion->sticky = Request::bool('sticky', false);
+        }
 
         if (Request::get('type_id')) {
             $discussion->type_id = Request::get('type_id');
@@ -227,13 +222,13 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
     public function delete_action($discussion_id)
     {
-        if (!$this->is_moderator) {
-            throw new AccessDeniedException();
-        }
-
         $discussion = ForumDiscussion::find($discussion_id);
 
         if (!$discussion) {
+            throw new AccessDeniedException();
+        }
+
+        if (!$this->is_moderator && $discussion->user_id !== User::findCurrent()->user_id) {
             throw new AccessDeniedException();
         }
 

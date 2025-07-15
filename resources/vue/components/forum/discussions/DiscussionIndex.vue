@@ -42,8 +42,8 @@ const {
     getAriaSortLabel
 } = useSortable(discussionsRef);
 
-const getActionMenusItems = () => {
-    if (forumConfig.isModerator) {
+const getActionMenusItems = discussion => {
+    if (forumConfig.isModerator || discussion.user.id === STUDIP.USER_ID) {
         return [
             { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
             { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}

@@ -16,6 +16,7 @@ class ForumDiscussionIndex extends JsonApiController
     protected $allowedIncludePaths = [
         \JsonApi\Schemas\Forum\ForumCategory::REL_TOPICS,
         \JsonApi\Schemas\Forum\ForumDiscussion::REL_CATEGORY,
+        \JsonApi\Schemas\Forum\ForumDiscussion::REL_USER,
         \JsonApi\Schemas\Forum\ForumDiscussion::REL_DISCUSSION_TYPE,
         \JsonApi\Schemas\Forum\ForumDiscussion::REL_MEMBERS,
         \JsonApi\Schemas\Forum\ForumDiscussion::REL_TAGS

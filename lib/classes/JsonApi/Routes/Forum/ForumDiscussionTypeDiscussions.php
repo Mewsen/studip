@@ -11,7 +11,8 @@ class ForumDiscussionTypeDiscussions extends JsonApiController
 {
     protected $allowedPagingParameters = ['offset', 'limit'];
     protected $allowedIncludePaths = [
-        \JsonApi\Schemas\Forum\ForumDiscussionType::REL_DISCUSSIONS
+        \JsonApi\Schemas\Forum\ForumDiscussionType::REL_DISCUSSIONS,
+        \JsonApi\Schemas\Forum\ForumDiscussion::REL_USER,
     ];
 
     public function __invoke(Request $request, Response $response, $args)

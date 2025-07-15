@@ -12,6 +12,7 @@ class ForumDiscussion extends SchemaProvider
     const REL_POSTINGS = 'postings';
     const REL_TOPIC = 'topic';
     const REL_CATEGORY = 'category';
+    const REL_USER = 'user';
     const REL_DISCUSSION_TYPE = 'discussion-type';
     const REL_MEMBERS = 'members';
     const REL_TAGS = 'tags';
@@ -57,6 +58,7 @@ class ForumDiscussion extends SchemaProvider
         $relationships = $this->addPostingsRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_POSTINGS));
         $relationships = $this->addTopicRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_TOPIC));
         $relationships = $this->addCategoryRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_CATEGORY));
+        $relationships = $this->addUserRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_USER));
         $relationships = $this->addDiscussionTypeRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_DISCUSSION_TYPE));
         $relationships = $this->addMembersRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_MEMBERS));
         $relationships = $this->addTagsRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_TAGS));
@@ -96,12 +98,26 @@ class ForumDiscussion extends SchemaProvider
     {
         $category = $discussion->category;
         if ($withCategory && $category) {
-
             $relationships[self::REL_CATEGORY] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->createLinkToResource($category)
                 ],
                 self::RELATIONSHIP_DATA => $category
+            ];
+        }
+
+        return $relationships;
+    }
+
+    private function addUserRelationship(array $relationships, $discussion, bool $withUser = false)
+    {
+        if ($withUser) {
+            $user = $discussion->user;
+            $relationships[self::REL_USER] = [
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->createLinkToResource($user)
+                ],
+                self::RELATIONSHIP_DATA => $user
             ];
         }
 

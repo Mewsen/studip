@@ -27,7 +27,7 @@ const fetchDiscussions = async (_, offset = 0) => {
         const response = await STUDIP.jsonapi.withPromises().GET(
             `courses/${STUDIP.URLHelper.parameters.cid}/forum-discussions`,
             {
-                data: { include: 'category,discussion-type,members,tags', page: { offset } }
+                data: { include: 'category,discussion-type,members,tags,user&fields[users]=id', page: { offset } }
             }
         );
 

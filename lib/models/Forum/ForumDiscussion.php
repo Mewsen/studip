@@ -20,6 +20,7 @@ use Forum\Service\DiscussionNotification;
  * @property int $chdate
  *
  * @property ForumTopic $topic
+ * @property User $user
  * @property ForumDiscussionType $discussion_type
  * @property ForumPosting[] $postings
  * @property ForumSubscription[] $subscribers
@@ -57,6 +58,12 @@ class ForumDiscussion extends SimpleORMap
             'class_name' => ForumSubscription::class,
             'foreign_key' => 'discussion_id',
             'assoc_foreign_key' => 'discussion_id'
+        ];
+
+        $config['belongs_to']['user'] = [
+            'class_name' => User::class,
+            'foreign_key' => 'user_id',
+            'assoc_foreign_key' => 'user_id'
         ];
 
         $config['additional_fields']['range_id']['get'] = 'getRangeId';
@@ -169,6 +176,7 @@ class ForumDiscussion extends SimpleORMap
             'discussion_id' => $this->discussion_id,
             'topic_id' => $this->topic_id,
             'type_id' => $this->type_id,
+            'user_id' => $this->user_id,
             'title' => $this->title,
             'sticky' => (int) $this->sticky,
             'closed_at' => $this->closed_at ? date('c', $this->closed_at) : '',

@@ -74,6 +74,10 @@ const goBackURL = computed(() => {
     }
 });
 
+const canEditDiscussion = computed(() => {
+    return forumConfig.isModerator || props.discussion.user_id === STUDIP.USER_ID
+})
+
 const fetchPostings = async () => {
     let allPostings = [];
     let offset = 0;
@@ -190,7 +194,7 @@ onMounted(async () => {
                         </em>
                         <StudipIcon shape="lock-locked2" :size="20" role="inactive" />
                     </div>
-                    <button v-if="forumConfig.isModerator" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="icon-button">
+                    <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="icon-button">
                         <StudipIcon shape="edit" :size="20" />
                     </button>
                     <SubscriptionDropdown
