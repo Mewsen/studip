@@ -12,6 +12,7 @@
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
 # Moritz Strohm <strohm@data-quest.de>, 2023, 2024.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2025.
 #
 # Translators:
 #
@@ -20,16 +21,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:07+0200\n"
-"PO-Revision-Date: 2024-05-23 13:59+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-4/en/>\n"
+"PO-Revision-Date: 2025-07-15 09:00+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-4/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -1931,7 +1933,7 @@ msgid ""
 "Für diese Veranstaltung sind keine Anmelderegeln festgelegt. Die "
 "Veranstaltung ist damit für alle Nutzer zugänglich."
 msgstr ""
-"There are no admission rules for this course. Therefore the course is "
+"There are no admission rules for this course. This means the course is "
 "accessible for all users."
 
 #: app/controllers/course/admission.php:106
@@ -1959,15 +1961,14 @@ msgstr ""
 "preliminary participants?"
 
 #: app/controllers/course/admission.php:135
-#, fuzzy
 msgid ""
 "Sie beabsichtigen, den Anmeldemodus auf \"Direkter Eintrag\" zu ändern. "
 "Sollen die vorläufigen Teilnehmenden in die Veranstaltung übernommen werden "
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
-"You are about to change the admission mode to direct enrolment. Do you want "
-"to enrol the preliminary participants into the course (otherwise the "
+"You are about to change the admission mode to \"Direct enrollment\". Do you "
+"want to enroll the preliminary participants in the course (otherwise the "
 "preliminary participants will be removed from the course) ?"
 
 #: app/controllers/course/admission.php:146
@@ -2039,8 +2040,8 @@ msgid ""
 "Sie beabsichtigen die Warteliste zu deaktivieren. Die bestehende Warteliste "
 "mit %s Einträgen wird gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to deactivate a wait list. It contains already %s entries. "
-"Proceed?"
+"You are about to deactivate a waiting list. This will delete the existing "
+"waiting list with %s entries. Are you sure?"
 
 #: app/controllers/course/admission.php:271
 #, php-format
@@ -2048,8 +2049,8 @@ msgid ""
 "Sie beabsichtigen die Anzahl der Wartenden zu begrenzen. Die letzten %s "
 "Einträge der Warteliste werden gelöscht. Sind sie sicher?"
 msgstr ""
-"You are about to limit the number of persons on the wait list. %s persons "
-"will be excluded. Proceed?"
+"You are about to limit the number of users on the waiting list.This will "
+"delete the last %s entries in the list. Are you sure?"
 
 #: app/controllers/course/admission.php:286
 #: app/controllers/course/admission.php:381
@@ -2058,14 +2059,14 @@ msgid ""
 "Die Warteliste der Veranstaltung **%s** wurde deaktiviert, Sie sind damit "
 "__nicht__ zugelassen worden."
 msgstr ""
-"The waiting list of course **%s** was deactivated. You have __NOT__ been "
-"enroled."
+"The waiting list of the course **%s** has been deactivated. This means you "
+"have __NOT__ been admitted."
 
 #: app/controllers/course/admission.php:295
 #: app/controllers/course/admission.php:390
 #, php-format
 msgid "%s Wartende wurden entfernt."
-msgstr "%s persons cancelled from wait list."
+msgstr "%s users removed from waiting list."
 
 #: app/controllers/course/admission.php:302
 msgid "Die Teilnehmendenanzahl wurde geändert."
@@ -2089,7 +2090,9 @@ msgstr "Cancel admission"
 msgid ""
 "In dieser Veranstaltung existiert eine Warteliste. Die bestehende Warteliste "
 "mit %s Einträgen wird gelöscht. Sind sie sicher?"
-msgstr "The course has a wait list with %s entries. Delete it anyway?"
+msgstr ""
+"The course has a waiting list with %s entries which will be deleted. Are you "
+"sure?"
 
 #: app/controllers/course/admission.php:362
 #, php-format
@@ -2103,7 +2106,7 @@ msgstr ""
 #: app/controllers/course/admission.php:370
 #, php-format
 msgid "Die Zuordnung zum Anmeldeset %s wurde aufgehoben."
-msgstr "Assignment to admission %s cancelled."
+msgstr "The assignment to the admission set %s has been removed."
 
 #: app/controllers/course/admission.php:419
 msgid "Neue Anmelderegel"
@@ -3585,7 +3588,7 @@ msgstr "Persons waiting"
 
 #: app/controllers/course/members.php:150
 msgid "Warteliste (nicht aktiv)"
-msgstr "Waitlist (not active)"
+msgstr "Waiting list (not active)"
 
 #: app/controllers/course/members.php:156
 #: app/controllers/admission/courseset.php:425
@@ -3877,7 +3880,7 @@ msgstr "You didn't select any %s to promote"
 #: app/controllers/course/members.php:1209
 #, php-format
 msgid "Der/die %s %s wurde auf den Status %s heruntergestuft."
-msgstr "The %s %s has been degraded to the state %s."
+msgstr "The %s %s has been downgraded to a status of %s."
 
 #: app/controllers/course/members.php:1216
 #, php-format
@@ -4975,7 +4978,7 @@ msgstr ""
 #: app/controllers/course/enrolment.php:208
 #, php-format
 msgid "Sie wurden in die Veranstaltung %s vorläufig eingetragen."
-msgstr "You have been preliminary assigned to course %s."
+msgstr "You have been provisionally assigned to course %s."
 
 #: app/controllers/course/enrolment.php:247
 #, php-format
@@ -13257,7 +13260,7 @@ msgstr "Enroled in closed courses (lecturer / tutor / author / user)"
 
 #: app/controllers/admin/user.php:1433
 msgid "Eingetragen in Wartelisten (wartend / vorläufig akzeptiert)"
-msgstr "Subscribed to waiting list (waiting / accepted preliminary)"
+msgstr "Subscribed to waiting list (waiting / provisionally accepted)"
 
 #: app/controllers/admin/user.php:1441
 msgid "Eingetragen in Anmeldelisten"
@@ -13326,7 +13329,7 @@ msgstr "Create account"
 
 #: app/controllers/admin/user.php:1657
 msgid "Vorläufiges Konto anlegen"
-msgstr "Create preliminary account"
+msgstr "Create provisional account"
 
 #: app/controllers/admin/user.php:1662
 msgid "Konten zusammenführen"
@@ -16124,7 +16127,7 @@ msgstr "USER IS LOCKED!"
 
 #: app/controllers/profile.php:403 app/views/admin/user/edit.php:27
 msgid "vorläufiger Benutzer"
-msgstr "preliminary user"
+msgstr "provisional user"
 
 #: app/controllers/profile.php:443
 msgid "Der Nutzer wurde zu Ihren Kontakten hinzugefügt."
@@ -20163,11 +20166,11 @@ msgstr "Instant entry"
 
 #: app/views/course/admission/index.php:156
 msgid "Vorläufiger Eintrag"
-msgstr "Preliminary enrolment"
+msgstr "Provisional entry"
 
 #: app/views/course/admission/index.php:158
 msgid "Hinweistext bei vorläufigen Eintragungen:"
-msgstr "Hint shown in case of preliminary enrolment:"
+msgstr "Note shown for provisional entries:"
 
 #: app/views/course/admission/index.php:168
 msgid ""
@@ -20189,10 +20192,10 @@ msgid ""
 "Inhalte damit weltweit ohne Anmeldung einsehbar sind. Die Teilnehmerliste "
 "ist für externe Nutzer nicht sichtbar."
 msgstr ""
-"With this settings you can allow access to courses for external users who "
+"With this setting, you can allow access to courses for external users who "
 "don't have a Stud.IP account. Please note that content created by course "
 "participants will thereby be available worldwide without registration. The "
-"participant list is not visible for external users."
+"participant list is not visible to external users."
 
 #: app/views/course/admission/index.php:191
 msgid "Lesezugriff für nicht in Stud.IP angemeldete Personen erlauben"
@@ -22642,7 +22645,8 @@ msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
 msgid "Alle vorläufig akzeptierten Teilnehmende der Veranstaltung"
-msgstr "All preliminary enroled participants of the course"
+msgstr ""
+"All participants of the course who have been accepted on a provisional basis"
 
 #: app/views/course/members/circular_mail.php:89
 msgid "Alle Personen auf der Warteliste der Veranstaltung"
@@ -22654,15 +22658,15 @@ msgstr "All persons on the lot-list of the course"
 
 #: app/views/course/members/accepted_list.php:17
 msgid "vorläufig akzeptierten Nutzer/-innen"
-msgstr "preliminary accepted users"
+msgstr "users who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:22
 msgid "Vorläufig akzeptierte Teilnehmende"
-msgstr "Preliminary enroled participants"
+msgstr "Participants who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:38
 msgid "vorläufig akzeptierten NutzerInnen"
-msgstr "preliminary accepted user"
+msgstr "users who have been accepted on a provisional basis"
 
 #: app/views/course/members/accepted_list.php:156
 #: app/views/course/members/accepted_list.php:157
@@ -27815,7 +27819,9 @@ msgid ""
 "Sind Sie sicher, dass das Anmeldeset \"%s\" gelöscht werden soll? Damit "
 "werden alle Regeln zur Anmeldung zu den verknüpften Veranstaltungen "
 "aufgehoben."
-msgstr "Delete admission \"%s\"? All assigned courses will be opened."
+msgstr ""
+"Delete admission set \"%s\"? This will disable all registration regulations "
+"for the associated courses."
 
 #: app/views/admission/userlist/index.php:36
 msgid "Es sind noch keine Personenlisten vorhanden."
@@ -27884,7 +27890,7 @@ msgstr "Number of participants"
 
 #: app/views/admission/restricted_courses/index.php:32
 msgid "vorläufige Teilnahme: "
-msgstr "preliminary enrolment: "
+msgstr "provisional enrolment: "
 
 #: app/views/admission/institute-select.php:9
 msgid "Einrichtung:"
@@ -36643,11 +36649,11 @@ msgstr "Readers"
 
 #: config/config.inc.php:86
 msgid "Vorläufig akzeptierte Person"
-msgstr "Provisionally enroled participants"
+msgstr "Provisionally accepted person"
 
 #: config/config.inc.php:87
 msgid "Vorläufig akzeptierte Personen"
-msgstr "Provisionally accepted participant"
+msgstr "Provisionally accepted persons"
 
 #: config/config.inc.php:166
 msgid "Zentrum"
@@ -37454,9 +37460,9 @@ msgid ""
 "Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der "
 "Übersicht Ihrer Veranstaltungen."
 msgstr ""
-"You have been enroled in the course **%s (%s)**, because a seat has become "
-"available for you. You are thereby approved for the participation in the "
-"course. You will find the course in the overview of your courses from now on."
+"You have been enrolled in the course **%s (%s)**, because a place has become "
+"available for you. This means you can attend the course. You will find the "
+"course in the overview of your courses from now on."
 
 #: lib/admission.inc.php:288
 #, php-format
@@ -37768,7 +37774,7 @@ msgstr "Login into your account is not allowed from this network."
 
 #: lib/classes/auth_plugins/StudipAuthAbstract.class.php:337
 msgid "Dies ist ein vorläufiger Benutzer."
-msgstr "This is a preliminary account."
+msgstr "This is a provisional user."
 
 #: lib/classes/auth_plugins/StudipAuthAbstract.class.php:499
 #: lib/classes/auth_plugins/StudipAuthAbstract.class.php:518
@@ -38833,9 +38839,9 @@ msgid ""
 "weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung "
 "entnehmen."
 msgstr ""
-"You have been accepted as participant of the course **%s**. This is "
-"preliminary. Final admittance to the course depends on further pre-"
-"requisites specified in the course description."
+"You have been provisionally accepted as a participant of the course **%s**. "
+"Final admittance to the course depends on further pre-requisites specified "
+"in the course description."
 
 #: lib/classes/admission/RandomAlgorithm.class.php:390
 #, php-format
@@ -38845,9 +38851,8 @@ msgid ""
 "Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer "
 "Veranstaltungen."
 msgstr ""
-"You obtained a seat in the seat allocation of the course **%s**. You are "
-"thereby approved for the participation in the course. You will find the "
-"course in the overview of your courses from now on."
+"You have been admitted to the course **%s**. You will now see the course in "
+"your course overview."
 
 #: lib/classes/admission/AdmissionRule.class.php:208
 msgid ""
@@ -39239,7 +39244,7 @@ msgstr "You have been enroled in the course."
 
 #: lib/classes/Seminar.class.php:2225
 msgid "Sie wurden für diese Veranstaltung vorläufig akzeptiert."
-msgstr "You have been admitted preliminary access  to this course."
+msgstr "You have been provisionally admitted to this course."
 
 #: lib/classes/Seminar.class.php:2231
 msgid "Sie stehen auf der Warteliste für diese Veranstaltung."
@@ -39800,7 +39805,7 @@ msgstr "A mail with instructions how to set the passwort by the user was sent."
 
 #: lib/classes/UserManagement.class.php:357
 msgid "Es können keine vorläufigen Administrationsaccounts angelegt werden."
-msgstr "Preliminary accounts with status admin cannot be created."
+msgstr "It is not possible to create provisional admin accounts."
 
 #: lib/classes/UserManagement.class.php:371
 msgid ""
@@ -39810,7 +39815,7 @@ msgstr "Please enter <em>status</em>, <em>name</em> and <em>family name</em>!"
 #: lib/classes/UserManagement.class.php:394
 #, php-format
 msgid "BenutzerIn \"%s\" (vorläufig) angelegt."
-msgstr "Preliminary account %s created. "
+msgstr "Provisional user %s created."
 
 #: lib/classes/UserManagement.class.php:414
 #: lib/classes/UserManagement.class.php:639
@@ -40654,7 +40659,7 @@ msgstr "admissible courses of study"
 
 #: lib/classes/LockRules.class.php:200
 msgid "Vorläufigkeit der Anmeldungen"
-msgstr "Provisionality of enrolments"
+msgstr "Provisional enrolment status"
 
 #: lib/classes/LockRules.class.php:201
 msgid "Hinweistext bei Anmeldungen"
@@ -42313,7 +42318,6 @@ msgid "Der Bibliothekseintrag ist nicht mit einer virtuellen Datei verknüpft!"
 msgstr "The library entry is not linked to a virtual file!"
 
 #: lib/filesystem/CourseTopicFolder.php:25
-#, fuzzy
 msgid "Themenordner"
 msgstr "Topic folder"
 
@@ -42530,7 +42534,6 @@ msgid "%'.02d. %s am %s"
 msgstr "%'.02d. %s on %s"
 
 #: lib/filesystem/CourseDateFolder.php:33
-#, fuzzy
 msgid "Sitzungsordner"
 msgstr "Session folder"
 
@@ -42689,8 +42692,8 @@ msgid ""
 "Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft "
 "worden. Sie stehen zur Zeit auf Position %s."
 msgstr ""
-"You have been promoted within the wait list for the course **%s(%s)**. At "
-"present you are at position %s."
+"You have moved up in the wait list for the course **%s(%s)**. You are "
+"currently at position %s."
 
 #: lib/models/Course.class.php:832
 msgid "unvollständig"
@@ -42710,7 +42713,7 @@ msgstr "undefined"
 
 #: lib/models/Course.class.php:857
 msgid "Neuer Anmeldemodus: Vorläufiger Eintrag"
-msgstr "New enrolment mode: Preliminary enrolment"
+msgstr "New enrolment mode: provisional enrolment"
 
 #: lib/models/Course.class.php:857
 msgid "Neuer Anmeldemodus: Direkter Eintrag"
@@ -42753,11 +42756,11 @@ msgstr "Moving up deactivated"
 #: lib/models/Course.class.php:882
 #, php-format
 msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
-msgstr "New note for the case of preliminary enrolment: %s"
+msgstr "New note for provisional enrolment: %s"
 
 #: lib/models/Course.class.php:884
 msgid "Hinweistext bei vorläufigen Eintragungen wurde entfert"
-msgstr "The note for the case of preliminary enrolment has been removed"
+msgstr "The note for provisional enrolment has been removed"
 
 #: lib/models/Course.class.php:976
 msgid "Seminare"
@@ -45736,13 +45739,11 @@ msgid "SOAP-Fehler, Funktion \"%s\":"
 msgstr "SOAP error, function \"%s\":"
 
 #: lib/bootstrap.php:132
-#, fuzzy
 msgid ""
 "Momentan ist das Stud.IP System nicht erreichbar, bitte versuchen Sie es "
 "später noch einmal."
 msgstr ""
-"The enrolment has not been possible due to technical problems. Please try "
-"again later."
+"At the moment the Stud.IP system is not available, please try again later."
 
 #: lib/exceptions/AccessDeniedException.php:25
 msgid ""
@@ -46318,7 +46319,7 @@ msgstr "Enter your terms of use here."
 
 #: lib/admissionrules/termsadmission/templates/input.php:5
 msgid "Hiermit akzeptiere ich die Teilnahmebedingungen"
-msgstr "I hereby accept the terms of use"
+msgstr "I hereby accept the terms of use."
 
 #: lib/admissionrules/termsadmission/TermsAdmission.class.php:57
 msgid ""
@@ -54027,7 +54028,6 @@ msgid "Schneller Austausch von Informationen in Gesprächsform"
 msgstr "Quick exchange of information while talking"
 
 #: lib/modules/Blubber.class.php:122
-#, fuzzy
 msgid ""
 "Blubber ist eine Kommunikationsform mit Ähnlichkeiten zu einem Forum, in dem "
 "aber in Echtzeit miteinander kommuniziert werden kann und das durch den "
@@ -54039,12 +54039,12 @@ msgid ""
 "verlinkt werden. Auch Textformatierungen sind möglich."
 msgstr ""
 "Blubber is a form of communication similar to a forum which allows people to "
-"communicate with each other in real time and which, due to its somewhat more "
-"informal character, looks more like a chat. Unlike the forum, it is not "
-"necessary to reload the pages to see the latest entries (e.g. replies to "
-"your own postings): The page refreshes itself when new entries are made. "
-"Files (e.g. photos, audio files, links) can be dragged and dropped into the "
-"field and thus linked. Text formatting is also possible."
+"communicate in real time and which, due to its somewhat more informal "
+"character, looks more like a chat. Unlike the forum, it is not necessary to "
+"reload the pages to see the latest entries (e.g. replies to your own "
+"postings): The page refreshes itself when new entries are made. Files (e.g. "
+"photos, audio files, links) can be dragged and dropped into the field and "
+"thus linked. Text formatting is also possible."
 
 #: lib/modules/Blubber.class.php:123
 msgid ""
@@ -56377,7 +56377,7 @@ msgstr "Leave full screen mode"
 
 #: templates/layouts/base.php:99
 msgid "Zurück zum Seitenanfang"
-msgstr "Back to start"
+msgstr "Back to start of page"
 
 #: templates/adminarea-start.php:4
 #, php-format
@@ -56663,7 +56663,7 @@ msgid ""
 "Sie in diesem Fall den folgenden Link, um zurück zur Anmeldung zu gelangen."
 msgstr ""
 "This error also occurs if your session has expired. In this case, clicking "
-"the following link takes you back to the login screen."
+"the link below takes you back to the login screen."
 
 #: templates/check_object_exception.php:10
 msgid "Folgender von Ihnen eingegebene Text konnte nicht gespeichert werden:"
