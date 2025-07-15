@@ -111,8 +111,8 @@ class ForumDiscussion extends SchemaProvider
 
     private function addUserRelationship(array $relationships, $discussion, bool $withUser = false)
     {
-        if ($withUser) {
-            $user = $discussion->user;
+        $user = $discussion->user;
+        if ($withUser && $user) {
             $relationships[self::REL_USER] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->createLinkToResource($user)
