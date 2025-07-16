@@ -1700,18 +1700,6 @@ $card-max-width: 300px;
         .forum-form {
             padding: 5px   ;
         }
-
-        .post-reactions {
-            position: unset;
-            &__container {
-                transform: unset;
-                left: 0;
-            }
-        }
-
-        .post-reactions-container {
-            position: relative;
-        }
     }
 }
 
