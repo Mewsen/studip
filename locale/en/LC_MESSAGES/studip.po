@@ -20,11 +20,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-16 08:31+0200\n"
-"PO-Revision-Date: 2025-07-15 08:00+0000\n"
-"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
-"oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-6-0/en/>\n"
+"PO-Revision-Date: 2025-07-16 06:53+0000\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-6-0/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1243,9 +1242,8 @@ msgid "Geteiltes Lernmaterial"
 msgstr "Shared learning material"
 
 #: app/controllers/contents/courseware.php:152
-#, fuzzy
 msgid "Der geteilte Inhalt kann nicht gefunden werden."
-msgstr "The requested file could not be found."
+msgstr "The shared content could not be found."
 
 #: app/controllers/contents/courseware.php:169 app/controllers/files.php:230
 #: app/controllers/module/module.php:1590
@@ -20452,9 +20450,8 @@ msgid "Benachrichtigungen"
 msgstr "Notifications"
 
 #: app/views/settings/general.php:80
-#, fuzzy
 msgid "Benachrichtigungen über Neuigkeiten"
-msgstr "Notifications about bookings"
+msgstr "Notifications about news/changes"
 
 #: app/views/settings/general.php:81
 msgid ""
@@ -24348,7 +24345,6 @@ msgstr[0] "%u person"
 msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
-#, fuzzy
 msgid "Alle vorläufig akzeptierten Teilnehmenden der Veranstaltung"
 msgstr ""
 "All participants of the course who have been accepted on a provisional basis"
@@ -29688,7 +29684,6 @@ msgid "Parameter"
 msgstr "Parameter(s)"
 
 #: app/views/admin/cronjobs/schedules/display.php:33
-#, fuzzy
 msgid "Ausführungsrhythmus"
 msgstr "Execution rhythm"
 
@@ -36497,7 +36492,6 @@ msgid "Verknüpfen"
 msgstr "Link"
 
 #: app/views/lti/_tool_form_fields.php:22
-#, fuzzy
 msgid ""
 "Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen "
 "bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt "
@@ -42868,7 +42862,7 @@ msgid "[%s] Terminausfall"
 msgstr "[%s] Date cancellation"
 
 #: lib/dates.inc.php:311
-#, fuzzy, php-format
+#, php-format
 msgid "In der Veranstaltung %s fällt der folgende Termin aus:"
 msgstr "The following date has been cancelled for the course %s:"
 
@@ -47244,7 +47238,6 @@ msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
 msgstr "New note for provisional enrolment: %s"
 
 #: lib/models/Course.php:2322
-#, fuzzy
 msgid "Hinweistext bei vorläufigen Eintragungen wurde entfernt"
 msgstr "The note for provisional enrolment has been removed"
 
