@@ -19,12 +19,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-07 11:06+0200\n"
+"POT-Creation-Date: 2025-07-16 08:31+0200\n"
 "PO-Revision-Date: 2025-07-15 09:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-5/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-5-5/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgstr "Institutes"
 #: lib/classes/globalsearch/GlobalSearchCourses.php:19
 #: lib/navigation/CourseNavigation.php:33
 #: lib/navigation/BrowseNavigation.php:29 lib/models/DataField.class.php:129
-#: lib/modules/CoreOverview.class.php:92
+#: lib/modules/CoreOverview.class.php:97
 msgid "Veranstaltungen"
 msgstr "Courses"
 
@@ -654,7 +654,7 @@ msgstr "Substitute removed."
 #: app/controllers/settings/deputies.php:183
 #: app/controllers/settings/general.php:83
 #: app/controllers/settings/notification.php:156
-#: app/controllers/course/wiki.php:294 app/controllers/course/wiki.php:431
+#: app/controllers/course/wiki.php:296 app/controllers/course/wiki.php:433
 #: app/controllers/course/feedback.php:170 app/controllers/course/lti.php:111
 #: app/controllers/admin/accessibility_info_text.php:35
 #: app/controllers/admin/cache.php:111 app/controllers/admin/api.php:206
@@ -1237,7 +1237,7 @@ msgstr "No learning material has been found."
 
 #: app/controllers/contents/courseware.php:127 app/controllers/files.php:232
 #: app/controllers/module/module.php:1438
-#: app/controllers/resources/room_request.php:2584
+#: app/controllers/resources/room_request.php:2589
 #: app/controllers/admin/datafields.php:281
 #: app/controllers/admin/courses.php:166
 #: app/controllers/search/globalsearch.php:75
@@ -1642,8 +1642,8 @@ msgid "Ablaufplan"
 msgstr "Schedule"
 
 #: app/controllers/course/dates.php:442
-#: app/controllers/resources/room_request.php:1876
-#: app/controllers/resources/room_request.php:2635
+#: app/controllers/resources/room_request.php:1881
+#: app/controllers/resources/room_request.php:2640
 #: app/views/admin/cronjobs/schedules/edit.php:153
 #: app/views/admin/cronjobs/schedules/periodic-schedule.php:46
 #: templates/sidebar/room-search-criteria-available-range.php:100
@@ -1841,7 +1841,7 @@ msgid "Raumbeschreibung"
 msgstr "Room description"
 
 #: app/controllers/course/dates.php:453
-#: app/controllers/resources/room_request.php:1875
+#: app/controllers/resources/room_request.php:1880
 #: app/views/resources/room/_add_edit_form.php:45
 #: app/views/resources/room_planning/overbooked_rooms.php:6
 #: app/views/resources/room_group/permissions.php:7
@@ -2311,7 +2311,7 @@ msgstr "This course is hidden. There's nothing to see here."
 #: app/views/materialien/files/range.php:79 app/views/event_log/show.php:31
 #: app/views/resources/_common/_action_menu.php:8
 #: app/views/admin/cronjobs/schedules/edit.php:34
-#: lib/modules/CoreOverview.class.php:101
+#: lib/modules/CoreOverview.class.php:114
 msgid "Details"
 msgstr "Details"
 
@@ -2337,7 +2337,7 @@ msgid "Zugang zur Veranstaltung"
 msgstr "Go to course"
 
 #: app/controllers/course/details.php:226
-#: app/views/course/details/index.php:480
+#: app/views/course/details/index.php:489
 msgid ""
 "Die Anmeldung ist verbindlich, Teilnehmende können sich nicht selbst "
 "austragen."
@@ -2427,11 +2427,11 @@ msgstr "Edit"
 msgid "Keine QuickLinks vorhanden"
 msgstr "No QuickLinks available"
 
-#: app/controllers/course/wiki.php:82 app/controllers/course/wiki.php:368
+#: app/controllers/course/wiki.php:82 app/controllers/course/wiki.php:370
 msgid "Neue Wiki-Seite anlegen"
 msgstr "Create new wiki page"
 
-#: app/controllers/course/wiki.php:89 app/controllers/course/wiki.php:374
+#: app/controllers/course/wiki.php:89 app/controllers/course/wiki.php:376
 msgid "Wiki verwalten"
 msgstr "Manage wiki"
 
@@ -2439,8 +2439,8 @@ msgstr "Manage wiki"
 msgid "Seiten aus Veranstaltung importieren"
 msgstr "Import pages from course"
 
-#: app/controllers/course/wiki.php:110 app/controllers/course/wiki.php:384
-#: app/controllers/course/wiki.php:1006 app/controllers/course/wiki.php:1032
+#: app/controllers/course/wiki.php:110 app/controllers/course/wiki.php:386
+#: app/controllers/course/wiki.php:1008 app/controllers/course/wiki.php:1034
 msgid "Im Wiki suchen"
 msgstr "Search in the Wiki"
 
@@ -2474,15 +2474,15 @@ msgstr "Do you really want to delete the whole page?"
 msgid "Als Vollbild anzeigen"
 msgstr "Show as full screen"
 
-#: app/controllers/course/wiki.php:194 app/controllers/course/wiki.php:846
+#: app/controllers/course/wiki.php:194 app/controllers/course/wiki.php:848
 #: app/views/resources/room_request/resolve.php:130
 msgid "Keine"
 msgstr "None"
 
 #: app/controllers/course/wiki.php:212
-#: app/controllers/resources/room_request.php:2497
-#: app/controllers/resources/room_request.php:2541
-#: app/controllers/resources/room_request.php:2642
+#: app/controllers/resources/room_request.php:2502
+#: app/controllers/resources/room_request.php:2546
+#: app/controllers/resources/room_request.php:2647
 #: app/controllers/admin/courses.php:1603
 #: app/controllers/admin/courses.php:1642
 #: app/controllers/admin/courses.php:1670
@@ -2536,7 +2536,7 @@ msgstr "Page title"
 msgid "Dieser Name ist bereits vergeben."
 msgstr "This name is already in use."
 
-#: app/controllers/course/wiki.php:247 app/controllers/course/wiki.php:884
+#: app/controllers/course/wiki.php:247 app/controllers/course/wiki.php:886
 msgid "Übergeordnete Seite im Inhaltsverzeichnis"
 msgstr "Superordinated page in the table of contents"
 
@@ -2544,123 +2544,123 @@ msgstr "Superordinated page in the table of contents"
 msgid "Lesezugriff für"
 msgstr "Read access for"
 
-#: app/controllers/course/wiki.php:257
+#: app/controllers/course/wiki.php:258
 msgid "Schreibzugriff für"
 msgstr "Write access for"
 
-#: app/controllers/course/wiki.php:309
+#: app/controllers/course/wiki.php:311
 msgid "Was genau soll gelöscht werden?"
 msgstr "What exactly shall be deleted?"
 
-#: app/controllers/course/wiki.php:320
+#: app/controllers/course/wiki.php:322
 #, php-format
 msgid "Die Seite %s wurde gelöscht."
 msgstr "The page %s has been deleted."
 
-#: app/controllers/course/wiki.php:342
+#: app/controllers/course/wiki.php:344
 msgid "Version wurde gelöscht."
 msgstr "Version has been deleted."
 
-#: app/controllers/course/wiki.php:392
+#: app/controllers/course/wiki.php:394
 msgid "Alle Wiki-Seiten als PDF exportieren"
 msgstr "Export all wiki pages as PDF"
 
-#: app/controllers/course/wiki.php:500 app/views/course/wiki/edit.php:31
+#: app/controllers/course/wiki.php:502 app/views/course/wiki/edit.php:31
 msgid "Zuletzt gespeichert"
 msgstr "Last saved"
 
-#: app/controllers/course/wiki.php:620
+#: app/controllers/course/wiki.php:622
 msgid "Die Seite wurde gespeichert."
 msgstr "The page has been saved."
 
-#: app/controllers/course/wiki.php:711
+#: app/controllers/course/wiki.php:713
 #, php-format
 msgid "Version %1$s vom %2$s"
 msgstr "Version %1$s from %2$s"
 
-#: app/controllers/course/wiki.php:815
+#: app/controllers/course/wiki.php:817
 msgid "Änderungen dieser Version"
 msgstr "Changes of this version"
 
-#: app/controllers/course/wiki.php:844
+#: app/controllers/course/wiki.php:846
 msgid "Neue Wikiseite erstellen"
 msgstr "Create new wiki page"
 
-#: app/controllers/course/wiki.php:858 lib/classes/forms/Form.php:151
+#: app/controllers/course/wiki.php:860 lib/classes/forms/Form.php:154
 #: lib/models/Courseware/BlockTypes/BiographyPersonalInformation.php:70
 #: lib/models/Courseware/BlockTypes/Chart.php:66
 msgid "Daten"
 msgstr "Data"
 
-#: app/controllers/course/wiki.php:870
+#: app/controllers/course/wiki.php:872
 msgid "Name der Seite"
 msgstr "Page name"
 
-#: app/controllers/course/wiki.php:879
+#: app/controllers/course/wiki.php:881
 msgid "Name existiert schon."
 msgstr "The name already exists."
 
-#: app/controllers/course/wiki.php:889
+#: app/controllers/course/wiki.php:891
 msgid ""
 "Den Seitennamen der neuen Seite automatisch in anderen Wikiseiten verlinken."
 msgstr "Automatically link the page name of the new page in other wiki pages."
 
-#: app/controllers/course/wiki.php:1047 app/controllers/course/wiki.php:1071
+#: app/controllers/course/wiki.php:1049 app/controllers/course/wiki.php:1073
 msgid "Wiki: "
 msgstr "Wiki:"
 
-#: app/controllers/course/wiki.php:1048 app/controllers/course/wiki.php:1072
+#: app/controllers/course/wiki.php:1050 app/controllers/course/wiki.php:1074
 #, php-format
 msgid "Wiki von \"%s\""
 msgstr "Wiki of \"%s\""
 
-#: app/controllers/course/wiki.php:1049 app/controllers/course/wiki.php:1079
+#: app/controllers/course/wiki.php:1051 app/controllers/course/wiki.php:1081
 #, php-format
 msgid "Seite: %s"
 msgstr "Page: %s"
 
-#: app/controllers/course/wiki.php:1102
+#: app/controllers/course/wiki.php:1104
 msgid "Lesen"
 msgstr "Read"
 
-#: app/controllers/course/wiki.php:1106
+#: app/controllers/course/wiki.php:1108
 msgid "Seiten-Historie"
 msgstr "Page history"
 
-#: app/controllers/course/wiki.php:1110 app/views/course/wiki/diff.php:7
+#: app/controllers/course/wiki.php:1112 app/views/course/wiki/diff.php:7
 msgid "Änderungsliste"
 msgstr "Revision list"
 
-#: app/controllers/course/wiki.php:1114 app/views/course/wiki/blame.php:8
+#: app/controllers/course/wiki.php:1116 app/views/course/wiki/blame.php:8
 msgid "Text mit Autor/-innenzuordnung"
 msgstr "Text with author assignment"
 
-#: app/controllers/course/wiki.php:1132
+#: app/controllers/course/wiki.php:1134
 msgid "Sie haben keine Berechtigung, Änderungen an Wiki-Seiten vorzunehmen!"
 msgstr "You are not allowed to make changes to wiki pages!"
 
-#: app/controllers/course/wiki.php:1137
+#: app/controllers/course/wiki.php:1139
 msgid "Die ausgewählte Veranstaltung wurde nicht gefunden!"
 msgstr "The selected course could not be found!"
 
-#: app/controllers/course/wiki.php:1191
+#: app/controllers/course/wiki.php:1193
 msgid "Es wurden keine Wiki-Seiten ausgewählt!"
 msgstr "No wiki pages have been selected!"
 
-#: app/controllers/course/wiki.php:1204
+#: app/controllers/course/wiki.php:1206
 msgid "Es wurden keine Wiki-Seiten gefunden!"
 msgstr "No wiki pages have been found!"
 
-#: app/controllers/course/wiki.php:1230
+#: app/controllers/course/wiki.php:1232
 #, php-format
 msgid "Fehler beim Import der Wiki-Seite %s!"
 msgstr "Error while importing the wiki page %s!"
 
-#: app/controllers/course/wiki.php:1246
+#: app/controllers/course/wiki.php:1248
 msgid "Die folgenden Fehler traten beim Import auf:"
 msgstr "The following errors occurred during import:"
 
-#: app/controllers/course/wiki.php:1254
+#: app/controllers/course/wiki.php:1256
 msgid ""
 "Die Wiki-Seite wurde importiert! Sie ist unter der Ansicht \"Alle Seiten\" "
 "erreichbar."
@@ -2674,17 +2674,17 @@ msgstr[1] ""
 "The wiki pages have been imported! They are available at the navigation item "
 "\"All pages\"."
 
-#: app/controllers/course/wiki.php:1329
+#: app/controllers/course/wiki.php:1331
 #, fuzzy, php-format
 msgid "Diese Wikiseite gehört nicht zu dieser %s"
 msgstr "This wiki page does not exist anymore!"
 
-#: app/controllers/course/wiki.php:1336
+#: app/controllers/course/wiki.php:1338
 #, fuzzy
 msgid "Sie dürfen keine neue Wikiseite anlegen."
 msgstr "Who may create new wiki pages?"
 
-#: app/controllers/course/wiki.php:1338
+#: app/controllers/course/wiki.php:1340
 #, fuzzy
 msgid "Sie dürfen diese Wikiseite nicht bearbeiten"
 msgstr "You must not edit this profile"
@@ -3006,7 +3006,7 @@ msgstr "You have not selected any object."
 
 #: app/controllers/course/overview.php:30
 #: app/controllers/institute/overview.php:46
-#: lib/modules/CoreOverview.class.php:91 lib/modules/CoreOverview.class.php:99
+#: lib/modules/CoreOverview.class.php:92 lib/modules/CoreOverview.class.php:112
 msgid "Kurzinfo"
 msgstr "Brief information"
 
@@ -4631,7 +4631,7 @@ msgstr "The following dates have been cancelled"
 #: app/controllers/admin/courses.php:1412 app/controllers/search/courses.php:47
 #: app/views/course/wizard/steps/studyareas/index.php:4
 #: app/views/course/details/index.php:360
-#: app/views/course/details/index.php:380
+#: app/views/course/details/index.php:381
 #: app/views/institute/extern/extern_config/_study_areas_selector.php:9
 #: lib/classes/SemBrowse.class.php:384
 #: lib/classes/StudipSemTreeViewAdmin.class.php:456
@@ -5026,7 +5026,7 @@ msgid "Art der Veranstaltung"
 msgstr "Type of course"
 
 #: app/controllers/course/basicdata.php:75
-#: app/controllers/resources/room_request.php:1870
+#: app/controllers/resources/room_request.php:1875
 #: app/controllers/admin/specification.php:147 app/controllers/tree.php:15
 #: app/views/course/archive/confirm.php:52
 #: app/views/course/grouping/create_children.php:24
@@ -5465,8 +5465,8 @@ msgstr ""
 
 #: app/controllers/course/timesrooms.php:469
 #: app/controllers/course/timesrooms.php:1030
-#: app/controllers/resources/room_request.php:708
-#: app/controllers/resources/room_request.php:924
+#: app/controllers/resources/room_request.php:712
+#: app/controllers/resources/room_request.php:928
 #: lib/raumzeit/SingleDate.class.php:637
 #, php-format
 msgid ""
@@ -5887,7 +5887,7 @@ msgstr "Room request management"
 #: app/controllers/course/room_requests.php:397
 #: app/controllers/course/room_requests.php:501
 #: app/controllers/course/room_requests.php:555
-#: app/controllers/resources/room_request.php:555
+#: app/controllers/resources/room_request.php:559
 msgid "Das Erstellen von Raumanfragen ist nicht erlaubt!"
 msgstr "Creating room request is not allowed!"
 
@@ -6061,7 +6061,7 @@ msgstr "Shown are tours matching the search \"%s\"."
 #: lib/models/Courseware/BlockTypes/TableOfContents.php:67
 #: lib/evaluation/evaluation_admin_overview.lib.php:547
 #: lib/modules/FeedbackModule.class.php:39 lib/modules/CoreForum.class.php:35
-#: lib/modules/CoreOverview.class.php:87 lib/modules/CoreOverview.class.php:113
+#: lib/modules/CoreOverview.class.php:88 lib/modules/CoreOverview.class.php:126
 msgid "Übersicht"
 msgstr "Overview"
 
@@ -7040,19 +7040,19 @@ msgstr "External pages (Institute)"
 msgid "Es wurde keine passende Einrichtung gefunden."
 msgstr "No matching institute found."
 
-#: app/controllers/institute/overview.php:91
+#: app/controllers/institute/overview.php:96
 msgid "Einrichtung abonnieren"
 msgstr "Subscribe to institute"
 
-#: app/controllers/institute/overview.php:96
+#: app/controllers/institute/overview.php:101
 msgid "Austragen aus der Einrichtung"
 msgstr "Unsubscribe from institution"
 
-#: app/controllers/institute/overview.php:113
+#: app/controllers/institute/overview.php:118
 msgid "Sie haben die Einrichtung abonniert."
 msgstr "Subscribed to this institution."
 
-#: app/controllers/institute/overview.php:128
+#: app/controllers/institute/overview.php:133
 msgid "Sie haben sich aus der Einrichtung ausgetragen."
 msgstr "Subscription removed."
 
@@ -7342,7 +7342,7 @@ msgid "Einrichtung"
 msgstr "Institute"
 
 #: app/controllers/institute/members.php:533
-#: app/controllers/resources/room_request.php:1868
+#: app/controllers/resources/room_request.php:1873
 #: app/views/institute/basicdata/index.php:27
 #: app/views/institute/overview/index.php:38
 #: app/views/search/archive/index.php:131 config/config.inc.php:170
@@ -7420,7 +7420,8 @@ msgstr "Notification of lecturers"
 #: app/controllers/admin/courseplanning.php:44
 #: app/controllers/admin/courseplanning.php:63
 #: app/controllers/admin/courseplanning.php:102
-#: lib/navigation/BrowseNavigation.php:72 lib/modules/CoreOverview.class.php:93
+#: lib/navigation/BrowseNavigation.php:72
+#: lib/modules/CoreOverview.class.php:105
 msgid "Veranstaltungs-Stundenplan"
 msgstr "Course timetable"
 
@@ -7976,7 +7977,7 @@ msgid "Module"
 msgstr "Modules"
 
 #: app/controllers/module/mvv_controller.php:248
-#: app/controllers/resources/room_request.php:2567
+#: app/controllers/resources/room_request.php:2572
 #: app/views/settings/privacy.php:167 app/views/settings/privacy.php:179
 #: app/views/course/timesrooms/editStack.php:125
 #: app/views/course/timesrooms/editStack.php:151
@@ -8408,9 +8409,9 @@ msgid "Der gewählte Raum wurde nicht gefunden!"
 msgstr "The selected room could not be found!"
 
 #: app/controllers/resources/room_request.php:68
-#: app/controllers/resources/room_request.php:1465
-#: app/controllers/resources/room_request.php:1488
-#: app/controllers/resources/room_request.php:2125
+#: app/controllers/resources/room_request.php:1470
+#: app/controllers/resources/room_request.php:1493
+#: app/controllers/resources/room_request.php:2130
 #: app/views/resources/room_request/planning.php:120
 #, php-format
 msgid "Es wurde kein Raum ausgewählt!"
@@ -8437,33 +8438,33 @@ msgstr "The selected room group could not be found!"
 msgid "Die gewählte Raumgruppe enthält keine Räume!"
 msgstr "The selected room group doesn't contain rooms!"
 
-#: app/controllers/resources/room_request.php:463
+#: app/controllers/resources/room_request.php:467
 #: app/views/room_management/overview/index.php:10
 #: lib/navigation/ResourceNavigation.php:134
 msgid "Anfragenliste"
 msgstr "List of requests"
 
-#: app/controllers/resources/room_request.php:488
+#: app/controllers/resources/room_request.php:492
 msgid "Gefilterte Anfragen"
 msgstr "Filtered requests"
 
-#: app/controllers/resources/room_request.php:493
-#: app/controllers/resources/room_request.php:2586
+#: app/controllers/resources/room_request.php:497
+#: app/controllers/resources/room_request.php:2591
 msgid "Alle Anfragen"
 msgstr "All requests"
 
-#: app/controllers/resources/room_request.php:525
-#: app/controllers/resources/room_request.php:781
-#: app/controllers/resources/room_request.php:992
-#: app/controllers/resources/room_request.php:1109
-#: app/controllers/resources/room_request.php:1723
+#: app/controllers/resources/room_request.php:529
+#: app/controllers/resources/room_request.php:785
+#: app/controllers/resources/room_request.php:996
+#: app/controllers/resources/room_request.php:1113
+#: app/controllers/resources/room_request.php:1728
 msgid "Die angegebene Anfrage wurde nicht gefunden!"
 msgstr "The specified request could not be found!"
 
-#: app/controllers/resources/room_request.php:533
-#: app/controllers/resources/room_request.php:564
-#: app/controllers/resources/room_request.php:788
-#: app/controllers/resources/room_request.php:2329
+#: app/controllers/resources/room_request.php:537
+#: app/controllers/resources/room_request.php:568
+#: app/controllers/resources/room_request.php:792
+#: app/controllers/resources/room_request.php:2334
 #: app/controllers/resources/room_planning.php:512
 #: app/controllers/resources/booking.php:140
 #: app/controllers/resources/export.php:445
@@ -8473,110 +8474,110 @@ msgstr "The specified request could not be found!"
 msgid "Die angegebene Ressource wurde nicht gefunden!"
 msgstr "The specified resource could not be found!"
 
-#: app/controllers/resources/room_request.php:541
+#: app/controllers/resources/room_request.php:545
 #, php-format
 msgid "%s: Details zur Anfrage"
 msgstr "%s: Request details"
 
-#: app/controllers/resources/room_request.php:571
-#: app/controllers/resources/room_request.php:796
+#: app/controllers/resources/room_request.php:575
+#: app/controllers/resources/room_request.php:800
 #, php-format
 msgid "%s: Neue Anfrage erstellen"
 msgstr "%s: Create new request"
 
-#: app/controllers/resources/room_request.php:582
-#: app/controllers/resources/room_request.php:806
+#: app/controllers/resources/room_request.php:586
+#: app/controllers/resources/room_request.php:810
 msgid "Die angegebene Ressource ist kein Raum!"
 msgstr "The specified resource is not a room!"
 
-#: app/controllers/resources/room_request.php:588
+#: app/controllers/resources/room_request.php:592
 msgid "Die angegebene Ressource kann nicht angefragt werden!"
 msgstr "The specified resource cannot be requested!"
 
-#: app/controllers/resources/room_request.php:619
-#: app/controllers/resources/room_request.php:847
+#: app/controllers/resources/room_request.php:623
+#: app/controllers/resources/room_request.php:851
 #, php-format
 msgid "Der Raum %1$s ist ein Teilraum des Raumes %2$s. Weitere Teilräume sind:"
 msgstr "The room %1$s is a part of the room %2$s. Other room parts are:"
 
-#: app/controllers/resources/room_request.php:628
-#: app/controllers/resources/room_request.php:856
+#: app/controllers/resources/room_request.php:632
+#: app/controllers/resources/room_request.php:860
 #, php-format
 msgid "Der Raum %1$s ist ein Teilraum des Raumes %2$s."
 msgstr "The room %1$s is a part of the room %2$s."
 
-#: app/controllers/resources/room_request.php:683
-#: app/controllers/resources/room_request.php:899
+#: app/controllers/resources/room_request.php:687
+#: app/controllers/resources/room_request.php:903
 msgid "Es wurde kein Startdatum angegeben!"
 msgstr "No start date has been provided!"
 
-#: app/controllers/resources/room_request.php:689
-#: app/controllers/resources/room_request.php:905
+#: app/controllers/resources/room_request.php:693
+#: app/controllers/resources/room_request.php:909
 msgid "Es wurde kein Startzeitpunkt angegeben!"
 msgstr "No start time has been provided!"
 
-#: app/controllers/resources/room_request.php:695
-#: app/controllers/resources/room_request.php:911
+#: app/controllers/resources/room_request.php:699
+#: app/controllers/resources/room_request.php:915
 msgid "Es wurde kein Enddatum angegeben!"
 msgstr "No end date has been provided!"
 
-#: app/controllers/resources/room_request.php:701
-#: app/controllers/resources/room_request.php:917
+#: app/controllers/resources/room_request.php:705
+#: app/controllers/resources/room_request.php:921
 msgid "Es wurde kein Endzeitpunkt angegeben!"
 msgstr "No end time has been provided!"
 
-#: app/controllers/resources/room_request.php:760
-#: app/controllers/resources/room_request.php:976
+#: app/controllers/resources/room_request.php:764
+#: app/controllers/resources/room_request.php:980
 msgid "Die Anfrage wurde gespeichert."
 msgstr "The request has been saved."
 
-#: app/controllers/resources/room_request.php:980
+#: app/controllers/resources/room_request.php:984
 msgid "Die Anfrage konnte nicht gespeichert werden."
 msgstr "The request could not be saved."
 
-#: app/controllers/resources/room_request.php:1000
-#: app/controllers/resources/room_request.php:1740
+#: app/controllers/resources/room_request.php:1004
+#: app/controllers/resources/room_request.php:1745
 #, php-format
 msgid "%s: Anfrage löschen"
 msgstr "%s: Delete request"
 
-#: app/controllers/resources/room_request.php:1022
-#: app/controllers/resources/room_request.php:1782
+#: app/controllers/resources/room_request.php:1026
+#: app/controllers/resources/room_request.php:1787
 msgid "Die Anfrage wurde gelöscht!"
 msgstr "The request has been deleted!"
 
-#: app/controllers/resources/room_request.php:1026
-#: app/controllers/resources/room_request.php:1784
+#: app/controllers/resources/room_request.php:1030
+#: app/controllers/resources/room_request.php:1789
 msgid "Fehler beim Löschen der Anfrage!"
 msgstr "Error while deleting the request!"
 
-#: app/controllers/resources/room_request.php:1143
+#: app/controllers/resources/room_request.php:1147
 #, php-format
 msgid "%s: Anfrage auflösen"
 msgstr "%s: Resolve request"
 
-#: app/controllers/resources/room_request.php:1149
+#: app/controllers/resources/room_request.php:1154
 #: app/views/resources/_common/_request_tr.php:17
 #: app/views/resources/_common/_request_tr.php:101
 #: app/views/resources/room_request/resolve.php:414
 msgid "Anfrage auflösen"
 msgstr "Resolve request"
 
-#: app/controllers/resources/room_request.php:1161
+#: app/controllers/resources/room_request.php:1166
 msgid "Abgelehnte Anfrage"
 msgstr "Denied request"
 
-#: app/controllers/resources/room_request.php:1163
-#: app/controllers/resources/room_request.php:1794
+#: app/controllers/resources/room_request.php:1168
+#: app/controllers/resources/room_request.php:1799
 msgid "Die Anfrage wurde abgelehnt!"
 msgstr "The request has been denied!"
 
-#: app/controllers/resources/room_request.php:1167
+#: app/controllers/resources/room_request.php:1172
 msgid "Die Anfrage wurde bereits aufgelöst!"
 msgstr "The request has already been resolved!"
 
-#: app/controllers/resources/room_request.php:1472
-#: app/controllers/resources/room_request.php:1669
+#: app/controllers/resources/room_request.php:1477
+#: app/controllers/resources/room_request.php:1674
 msgid ""
 "Es wurden nicht für alle Termine der Anfrage Räume ausgewählt! Soll die "
 "Anfrage wirklich aufgelöst werden?"
@@ -8584,115 +8585,115 @@ msgstr ""
 "Not every date of the request has been assigned to a room! Do you really "
 "want to resolve the request?"
 
-#: app/controllers/resources/room_request.php:1498
-#: app/controllers/resources/room_request.php:2135
+#: app/controllers/resources/room_request.php:1503
+#: app/controllers/resources/room_request.php:2140
 #, php-format
 msgid "Die Ressource mit der ID %s ist kein Raum!"
 msgstr "The resource with the ID %s is not a room!"
 
-#: app/controllers/resources/room_request.php:1508
-#: app/controllers/resources/room_request.php:2145
+#: app/controllers/resources/room_request.php:1513
+#: app/controllers/resources/room_request.php:2150
 #, php-format
 msgid "Unzureichende Berechtigungen zum Buchen des Raumes %s!"
 msgstr "Insufficient permissions for booking the room %s!"
 
-#: app/controllers/resources/room_request.php:1523
-#: app/controllers/resources/room_request.php:2160
+#: app/controllers/resources/room_request.php:1528
+#: app/controllers/resources/room_request.php:2165
 #, php-format
 msgid "Der Veranstaltungstermin mit der ID %s wurde nicht gefunden!"
 msgstr "The course date with the ID %s could not be found!"
 
-#: app/controllers/resources/room_request.php:1571
-#: app/controllers/resources/room_request.php:2195
+#: app/controllers/resources/room_request.php:1576
+#: app/controllers/resources/room_request.php:2200
 #, php-format
 msgid "Die Terminserie mit der ID %s wurde nicht gefunden!"
 msgstr "The regular date with the ID %s could not be found!"
 
-#: app/controllers/resources/room_request.php:1619
-#: app/controllers/resources/room_request.php:2233
+#: app/controllers/resources/room_request.php:1624
+#: app/controllers/resources/room_request.php:2238
 #, php-format
 msgid "Die Person mit der ID %s wurde nicht gefunden!"
 msgstr "The person with the ID %s could not be found!"
 
-#: app/controllers/resources/room_request.php:1650
-#: app/controllers/resources/room_request.php:2264
+#: app/controllers/resources/room_request.php:1655
+#: app/controllers/resources/room_request.php:2269
 #, php-format
 msgid ""
 "Der Termin mit der ID %s ist mit einem unpassenden Stud.IP-Objekt verknüpft!"
 msgstr "The date with the ID %s is linked with an unsuitable Stud.IP object!"
 
-#: app/controllers/resources/room_request.php:1664
+#: app/controllers/resources/room_request.php:1669
 msgid "Es traten Fehler beim Auflösen der Anfrage auf!"
 msgstr "Error occurred during request resolving!"
 
-#: app/controllers/resources/room_request.php:1684
+#: app/controllers/resources/room_request.php:1689
 msgid "Die Anfrage wurde aufgelöst!"
 msgstr "The request has been resolved!"
 
-#: app/controllers/resources/room_request.php:1688
+#: app/controllers/resources/room_request.php:1693
 msgid "Die Anfrage wurde aufgelöst, konnte aber nicht geschlossen werden!"
 msgstr "The request has been resolved but could not be closed!"
 
-#: app/controllers/resources/room_request.php:1747
+#: app/controllers/resources/room_request.php:1752
 #, php-format
 msgid "%s: Anfrage ablehnen"
 msgstr "%s: Deny request"
 
-#: app/controllers/resources/room_request.php:1758
+#: app/controllers/resources/room_request.php:1763
 #: app/views/resources/_common/_request_tr.php:115
 #: app/views/resources/room_request/resolve.php:440
 msgid "Anfrage löschen"
 msgstr "Delete request"
 
-#: app/controllers/resources/room_request.php:1760
+#: app/controllers/resources/room_request.php:1765
 #: app/views/resources/_common/_request_tr.php:108
 #: app/views/resources/room_request/resolve.php:435
 msgid "Anfrage ablehnen"
 msgstr "Deny request"
 
-#: app/controllers/resources/room_request.php:1769
+#: app/controllers/resources/room_request.php:1774
 msgid "Die angegebene Anfrage wurde bereits abgelehnt!"
 msgstr "The specified request has already been denied!"
 
-#: app/controllers/resources/room_request.php:1798
+#: app/controllers/resources/room_request.php:1803
 msgid "Fehler beim Ablehnen der Anfrage!"
 msgstr "Error while denying the request!"
 
-#: app/controllers/resources/room_request.php:1867
+#: app/controllers/resources/room_request.php:1872
 #: app/views/resources/room_request/overview.php:74
 #: app/views/resources/room_request/planning.php:135
 #: app/views/room_management/overview/index.php:107
 msgid "Anfragende Person"
 msgstr "Requesting person"
 
-#: app/controllers/resources/room_request.php:1869
+#: app/controllers/resources/room_request.php:1874
 #: app/controllers/admin/statusgroups.php:377
 msgid "Institut"
 msgstr "Institute"
 
-#: app/controllers/resources/room_request.php:1871
+#: app/controllers/resources/room_request.php:1876
 #: app/controllers/admin/specification.php:148
 #: app/views/course/wizard/steps/basicdata/index.php:35
 #: app/views/shared/modul/_modullv.php:11 lib/models/AuxLockRule.php:147
 msgid "Veranstaltungstitel"
 msgstr "Course name"
 
-#: app/controllers/resources/room_request.php:1872
+#: app/controllers/resources/room_request.php:1877
 #: app/views/resources/room_request/overview.php:59
 #: app/views/resources/room_request/planning.php:132
 #: app/views/room_management/overview/index.php:104
 msgid "Lehrende Person(en)"
 msgstr "Lecturer(s)"
 
-#: app/controllers/resources/room_request.php:1873
+#: app/controllers/resources/room_request.php:1878
 msgid "Angefragter Raum"
 msgstr "Requested room"
 
-#: app/controllers/resources/room_request.php:1874
+#: app/controllers/resources/room_request.php:1879
 msgid "Erwartete Teilnehmerzahl"
 msgstr "Expected amount of participants"
 
-#: app/controllers/resources/room_request.php:1877
+#: app/controllers/resources/room_request.php:1882
 #: app/views/admin/cronjobs/schedules/edit.php:237
 #: app/views/consultation/admin/index.php:41
 #: app/views/consultation/overview/index.php:27
@@ -8705,8 +8706,8 @@ msgstr "Expected amount of participants"
 msgid "Uhrzeit"
 msgstr "Time"
 
-#: app/controllers/resources/room_request.php:1878
-#: app/controllers/resources/room_request.php:2365
+#: app/controllers/resources/room_request.php:1883
+#: app/controllers/resources/room_request.php:2370
 #: app/controllers/resources/room_planning.php:417
 #: app/controllers/resources/room_planning.php:747
 #: app/controllers/resources/export.php:332
@@ -8721,32 +8722,32 @@ msgstr "Time"
 msgid "Rüstzeit"
 msgstr "Preparation time"
 
-#: app/controllers/resources/room_request.php:1879
+#: app/controllers/resources/room_request.php:1884
 #: app/views/course/block_appointments/index.php:143
 msgid "Anzahl der Termine"
 msgstr "Number of appointments"
 
-#: app/controllers/resources/room_request.php:1880
+#: app/controllers/resources/room_request.php:1885
 #: app/views/course/timesrooms/_roomRequest.php:40
 #: app/views/course/room_requests/index.php:18
 #: app/views/resources/room_request/resolve.php:118
 msgid "Art der Anfrage"
 msgstr "Type of request"
 
-#: app/controllers/resources/room_request.php:1881
+#: app/controllers/resources/room_request.php:1886
 msgid "Datum des ersten Termins"
 msgstr "First date"
 
-#: app/controllers/resources/room_request.php:1882
+#: app/controllers/resources/room_request.php:1887
 msgid "Datum der Anfrage"
 msgstr "Request date"
 
-#: app/controllers/resources/room_request.php:1883
+#: app/controllers/resources/room_request.php:1888
 #: app/views/course/wiki/newpages.php:16
 msgid "Letzte Änderungen"
 msgstr "Last changes"
 
-#: app/controllers/resources/room_request.php:1884
+#: app/controllers/resources/room_request.php:1889
 #: app/views/resources/room_request/overview.php:42
 #: app/views/room_management/overview/index.php:98
 #: lib/models/Courseware/BlockTypes/Confirm.php:64
@@ -8755,7 +8756,7 @@ msgstr "Last changes"
 msgid "Markierung"
 msgstr "Marking"
 
-#: app/controllers/resources/room_request.php:1885
+#: app/controllers/resources/room_request.php:1890
 #: app/controllers/admission/courseset.php:590
 #: app/views/course/members/awaiting_list.php:60
 #: app/views/admin/cronjobs/schedules/display.php:19
@@ -8765,53 +8766,53 @@ msgstr "Marking"
 msgid "Priorität"
 msgstr "Priority"
 
-#: app/controllers/resources/room_request.php:1886
+#: app/controllers/resources/room_request.php:1891
 msgid "Bemerkungen"
 msgstr "Comment"
 
-#: app/controllers/resources/room_request.php:2017
+#: app/controllers/resources/room_request.php:2022
 #, php-format
 msgid "Raumanfragen-%s"
 msgstr "Request-%s"
 
-#: app/controllers/resources/room_request.php:2028
+#: app/controllers/resources/room_request.php:2033
 msgid "Buchung in Anfrage wandeln"
 msgstr "Convert booking to request"
 
-#: app/controllers/resources/room_request.php:2074
+#: app/controllers/resources/room_request.php:2079
 msgid "Die Buchung wurde in eine Anfrage umgewandelt!"
 msgstr "The booking has been converted into a request!"
 
-#: app/controllers/resources/room_request.php:2078
+#: app/controllers/resources/room_request.php:2083
 msgid "Die Buchung konnte nicht gelöscht werden!"
 msgstr "The booking could not be deleted!"
 
-#: app/controllers/resources/room_request.php:2084
+#: app/controllers/resources/room_request.php:2089
 msgid "Die Buchung konnte nicht in eine Anfrage umgewandelt werden!"
 msgstr "The booking could not be converted into a request!"
 
-#: app/controllers/resources/room_request.php:2278
+#: app/controllers/resources/room_request.php:2283
 #, php-format
 msgid "Es traten Fehler beim Auflösen der Anfrage auf für %s!"
 msgstr "Errors occurred while resolving the request for %s!"
 
-#: app/controllers/resources/room_request.php:2293
+#: app/controllers/resources/room_request.php:2298
 #, php-format
 msgid "Die Anfrage für %s wurde aufgelöst!"
 msgstr "The request for %s has been resolved!"
 
-#: app/controllers/resources/room_request.php:2298
+#: app/controllers/resources/room_request.php:2303
 #, php-format
 msgid ""
 "Die Anfrage für %s wurde aufgelöst, konnte aber nicht geschlossen werden!"
 msgstr "The request for %s has been resolved but it could not be closed!"
 
-#: app/controllers/resources/room_request.php:2318
+#: app/controllers/resources/room_request.php:2323
 #: lib/navigation/ResourceNavigation.php:140
 msgid "Anfragenplan"
 msgstr "List of requests"
 
-#: app/controllers/resources/room_request.php:2353
+#: app/controllers/resources/room_request.php:2358
 #: app/controllers/resources/room_planning.php:405
 #: app/controllers/resources/room_planning.php:735
 #: app/controllers/room_management/planning.php:229
@@ -8819,7 +8820,7 @@ msgstr "List of requests"
 msgid "Manuelle Buchung"
 msgstr "Manual bookings"
 
-#: app/controllers/resources/room_request.php:2357
+#: app/controllers/resources/room_request.php:2362
 #: app/controllers/resources/room_planning.php:409
 #: app/controllers/resources/room_planning.php:739
 #: app/controllers/room_management/planning.php:233
@@ -8827,7 +8828,7 @@ msgstr "Manual bookings"
 msgid "Veranstaltungsbezogene Buchung"
 msgstr "Course-related booking"
 
-#: app/controllers/resources/room_request.php:2361
+#: app/controllers/resources/room_request.php:2366
 #: app/controllers/resources/room_planning.php:413
 #: app/controllers/resources/room_planning.php:743
 #: app/controllers/resources/export.php:133
@@ -8842,7 +8843,7 @@ msgstr "Course-related booking"
 msgid "Sperrbuchung"
 msgstr "Lock booking"
 
-#: app/controllers/resources/room_request.php:2369
+#: app/controllers/resources/room_request.php:2374
 #: app/controllers/resources/room_planning.php:421
 #: app/controllers/resources/room_planning.php:751
 #: app/controllers/resources/export.php:132
@@ -8857,42 +8858,42 @@ msgstr "Lock booking"
 msgid "Reservierung"
 msgstr "Reservation"
 
-#: app/controllers/resources/room_request.php:2448
+#: app/controllers/resources/room_request.php:2453
 #: app/views/admin/cronjobs/schedules/index.php:62
 #: app/views/admin/cronjobs/logs/index.php:68 app/views/shared/filter.php:16
 #: app/views/news/admin_news.php:57
 msgid "Filter zurücksetzen"
 msgstr "Reset filters"
 
-#: app/controllers/resources/room_request.php:2477
+#: app/controllers/resources/room_request.php:2482
 msgid "Status der Anfrage"
 msgstr "Request status"
 
-#: app/controllers/resources/room_request.php:2482
+#: app/controllers/resources/room_request.php:2487
 msgid "offen"
 msgstr "open"
 
-#: app/controllers/resources/room_request.php:2483
+#: app/controllers/resources/room_request.php:2488
 msgid "bearbeitet"
 msgstr "modified"
 
-#: app/controllers/resources/room_request.php:2484
+#: app/controllers/resources/room_request.php:2489
 msgid "abgelehnt"
 msgstr "denied"
 
-#: app/controllers/resources/room_request.php:2490
+#: app/controllers/resources/room_request.php:2495
 #: app/controllers/admin/courses.php:1741
 #: app/controllers/admin/courseplanning.php:659
 #: app/views/admin/courses/sidebar.php:47
 msgid "Veranstaltungstypfilter"
 msgstr "Course type filter"
 
-#: app/controllers/resources/room_request.php:2534
+#: app/controllers/resources/room_request.php:2539
 #: app/views/resources/export/select_booking_sources.php:88
 msgid "Raumgruppen"
 msgstr "Room groups"
 
-#: app/controllers/resources/room_request.php:2560
+#: app/controllers/resources/room_request.php:2565
 #: app/views/resources/room_group/permissions.php:3
 #: app/views/resources/export/select_booking_sources.php:48
 #: app/views/resources/building/index.php:96
@@ -8901,33 +8902,33 @@ msgstr "Room groups"
 msgid "Räume"
 msgstr "Rooms"
 
-#: app/controllers/resources/room_request.php:2591
+#: app/controllers/resources/room_request.php:2596
 msgid "Nur markierte Anfragen"
 msgstr "Only marked requests"
 
-#: app/controllers/resources/room_request.php:2596
+#: app/controllers/resources/room_request.php:2601
 msgid "Nur unmarkierte Anfragen"
 msgstr "Only unmarked requests"
 
-#: app/controllers/resources/room_request.php:2604
+#: app/controllers/resources/room_request.php:2609
 #: app/views/calendar/calendar/export.php:28
 #: app/views/resources/room_request/resolve.php:283
 msgid "Alle Termine"
 msgstr "All dates"
 
-#: app/controllers/resources/room_request.php:2609
+#: app/controllers/resources/room_request.php:2614
 msgid "Nur regelmäßige Termine"
 msgstr "Only periodic dates"
 
-#: app/controllers/resources/room_request.php:2614
+#: app/controllers/resources/room_request.php:2619
 msgid "Nur unregelmäßige Termine"
 msgstr "Only aperiodic dates"
 
-#: app/controllers/resources/room_request.php:2622
+#: app/controllers/resources/room_request.php:2627
 msgid "Nur mit Raumangabe"
 msgstr "Only with room"
 
-#: app/controllers/resources/room_request.php:2627
+#: app/controllers/resources/room_request.php:2632
 msgid "Eigene Anfragen anzeigen"
 msgstr "Display own requests"
 
@@ -12334,7 +12335,7 @@ msgstr "Multiple assignment of study areas"
 #: app/views/help_content/admin_overview.php:66
 #: app/views/help_content/edit.php:44 app/views/oer/mymaterial/edit.php:286
 #: app/views/oer/admin/add_new_host.php:8 app/views/oer/market/abo.php:12
-#: lib/classes/forms/Form.php:204 templates/evaluation/config.php:113
+#: lib/classes/forms/Form.php:207 templates/evaluation/config.php:113
 msgid "Speichern"
 msgstr "Save"
 
@@ -16739,7 +16740,7 @@ msgstr "Your report of an accessibility barrier has been forwarded."
 
 #: app/controllers/accessibility/forms.php:213
 #: app/views/course/wizard/step.php:21 app/views/course/wizard/summary.php:57
-#: app/views/course/details/index.php:521
+#: app/views/course/details/index.php:530
 #: app/views/course/ilias_interface/view_object.php:9
 #: app/views/privacy/index.php:58 app/views/privacy/index.php:60
 #: app/views/file/choose_file.php:172
@@ -16770,8 +16771,7 @@ msgstr "Back"
 #: lib/classes/Siteinfo.php:573 lib/classes/ModulesNotification.class.php:58
 #: lib/navigation/ContentsNavigation.php:100
 #: lib/navigation/StartNavigation.php:232 lib/models/StudipNews.class.php:685
-#: lib/models/User.class.php:902 lib/modules/CoreOverview.class.php:43
-#: lib/modules/NewsWidget.php:16
+#: lib/models/User.class.php:902 lib/modules/NewsWidget.php:16
 msgid "Ankündigungen"
 msgstr "Announcements"
 
@@ -17008,7 +17008,7 @@ msgstr "Finish registration"
 #: app/views/multipersonsearch/js_form.php:50
 #: app/views/userfilter/filter/configure.php:18
 #: app/views/help_content/edit.php:45
-#: app/views/lvgruppen/lvgruppen/lvgruppe.php:25 lib/classes/forms/Form.php:229
+#: app/views/lvgruppen/lvgruppen/lvgruppe.php:25 lib/classes/forms/Form.php:232
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:554
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:735
 #: lib/classes/StudipSemTreeViewAdmin.class.php:527
@@ -18958,8 +18958,9 @@ msgid "Benachrichtigungen"
 msgstr "Notifications"
 
 #: app/views/settings/general.php:80
-msgid "Benachrichtigungen über Javascript"
-msgstr "Notifications via Javascript"
+#, fuzzy
+msgid "Benachrichtigungen über Neuigkeiten"
+msgstr "Notifications about bookings"
 
 #: app/views/settings/general.php:81
 msgid ""
@@ -20081,7 +20082,7 @@ msgid "Zuordnen"
 msgstr "Assign"
 
 #: app/views/course/admission/index.php:4
-#: app/views/course/details/index.php:447
+#: app/views/course/details/index.php:456
 #: app/views/admission/courseset/configure.php:172
 #: app/views/admin/semester/lock.php:21 lib/navigation/AdminNavigation.php:210
 msgid "Anmelderegeln"
@@ -20092,7 +20093,7 @@ msgid "Bitte geben Sie hier an, welche speziellen Anmelderegeln gelten sollen."
 msgstr "Please specify here which special admission rule shall be used."
 
 #: app/views/course/admission/index.php:10
-#: app/views/course/details/index.php:451
+#: app/views/course/details/index.php:460
 #, php-format
 msgid "Diese Veranstaltung gehört zum Anmeldeset \"%s\"."
 msgstr "The course is part of admission \"%s\"."
@@ -20203,7 +20204,7 @@ msgid "Teilnehmendenanzahl und Warteliste ändern"
 msgstr "Change number of participants and waiting list"
 
 #: app/views/course/admission/index.php:141
-#: app/views/course/details/index.php:463
+#: app/views/course/details/index.php:472
 #: app/views/admin/sem_classes/details.php:115
 msgid "Anmeldemodus"
 msgstr "Registration mode"
@@ -20706,21 +20707,21 @@ msgstr "Rooms and times"
 msgid "Studienmodule"
 msgstr "Study modules"
 
-#: app/views/course/details/index.php:401
-#: app/views/course/details/index.php:417
+#: app/views/course/details/index.php:410
+#: app/views/course/details/index.php:426
 msgid "Modulzuordnungen"
 msgstr "Module assignments"
 
-#: app/views/course/details/index.php:436
+#: app/views/course/details/index.php:445
 msgid "Kommentar/Beschreibung"
 msgstr "Comment/Description"
 
-#: app/views/course/details/index.php:467
+#: app/views/course/details/index.php:476
 msgid ""
 "Die Auswahl der Teilnehmenden wird nach der Eintragung manuell vorgenommen."
 msgstr "After enrolment, participants will manually be selected."
 
-#: app/views/course/details/index.php:472
+#: app/views/course/details/index.php:481
 msgid ""
 "Nutzer/-innen, die sich für diese Veranstaltung eintragen möchten,\n"
 "                    erhalten nähere Hinweise und können sich dann noch gegen "
@@ -20729,11 +20730,11 @@ msgstr ""
 "Potential participants are given additional information before enroling to "
 "the course."
 
-#: app/views/course/details/index.php:489
+#: app/views/course/details/index.php:498
 msgid "Zugelassenene Nutzerdomänen:"
 msgstr "Admissible user domains:"
 
-#: app/views/course/details/index.php:527
+#: app/views/course/details/index.php:536
 msgid "Direkt zur Veranstaltung"
 msgstr "Directly to the course"
 
@@ -22961,7 +22962,8 @@ msgstr[0] "%u person"
 msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
-msgid "Alle vorläufig akzeptierten Teilnehmende der Veranstaltung"
+#, fuzzy
+msgid "Alle vorläufig akzeptierten Teilnehmenden der Veranstaltung"
 msgstr ""
 "All participants of the course who have been accepted on a provisional basis"
 
@@ -38843,21 +38845,21 @@ msgstr "This text has been added"
 msgid "Dieser Text wurde gelöscht bzw. ersetzt."
 msgstr "This text has been deleted or replaced."
 
-#: lib/classes/MyRealmModel.php:131
+#: lib/classes/MyRealmModel.php:132
 #, php-format
 msgid "%1$u Fragebogen, %2$u neuer"
 msgid_plural "%1$u Fragebögen, %2$u neue"
 msgstr[0] "%1$u questionnaire, %2$u new one"
 msgstr[1] "%1$u questionnaires, %2$u new ones"
 
-#: lib/classes/MyRealmModel.php:144
+#: lib/classes/MyRealmModel.php:145
 #, php-format
 msgid "%u Fragebogen"
 msgid_plural "%u Fragebögen"
 msgstr[0] "%u questionnaire"
 msgstr[1] "%u questionnaires"
 
-#: lib/classes/MyRealmModel.php:797 lib/meine_seminare_func.inc.php:56
+#: lib/classes/MyRealmModel.php:798 lib/meine_seminare_func.inc.php:56
 msgid "Keinem Modul zugeordnet"
 msgstr "Not assigned to a module"
 
@@ -42696,7 +42698,8 @@ msgid "Neuer Hinweistext bei vorläufigen Eintragungen: %s"
 msgstr "New note for provisional enrolment: %s"
 
 #: lib/models/Course.class.php:891
-msgid "Hinweistext bei vorläufigen Eintragungen wurde entfert"
+#, fuzzy
+msgid "Hinweistext bei vorläufigen Eintragungen wurde entfernt"
 msgstr "The note for provisional enrolment has been removed"
 
 #: lib/models/Course.class.php:983
@@ -49590,25 +49593,25 @@ msgstr ""
 "Possibility for intensive sustainable text-based exchange; (afterward) "
 "structuring of posts; edit function for lecturers"
 
-#: lib/modules/CoreOverview.class.php:49
+#: lib/modules/CoreOverview.class.php:50
 #, php-format
 msgid "%1$d Ankündigung, %2$d neue"
 msgid_plural "%1$d Ankündigungen, %2$d neue"
 msgstr[0] "%1$d announcement, %2$d new ones"
 msgstr[1] "%1$d announcements, %2$d new ones"
 
-#: lib/modules/CoreOverview.class.php:62
+#: lib/modules/CoreOverview.class.php:63
 #, php-format
 msgid "%d Ankündigung"
 msgid_plural "%d Ankündigungen"
 msgstr[0] "%d announcement"
 msgstr[1] "%d announcements"
 
-#: lib/modules/CoreOverview.class.php:96
+#: lib/modules/CoreOverview.class.php:109
 msgid "Administration der Einrichtung"
 msgstr "Manage institutes"
 
-#: lib/modules/CoreOverview.class.php:114
+#: lib/modules/CoreOverview.class.php:127
 msgid "Ankündigungen, Termine, Fragebögen & Details"
 msgstr "Announcements, dates, questionnaires & details"
 
@@ -51429,15 +51432,15 @@ msgstr "Mark this comment for deleting"
 msgid "Kommentar entfernen"
 msgstr "Remove comment"
 
-#: templates/layouts/base.php:85
+#: templates/layouts/base.php:84
 msgid "Hauptinhalt"
 msgstr "Main content"
 
-#: templates/layouts/base.php:89
+#: templates/layouts/base.php:88
 msgid "Vollbildmodus verlassen"
 msgstr "Leave full screen mode"
 
-#: templates/layouts/base.php:99
+#: templates/layouts/base.php:98
 msgid "Zurück zum Seitenanfang"
 msgstr "Back to start of page"
 
@@ -51800,6 +51803,9 @@ msgstr ""
 "placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
 "file\") or it can be limited to its capital letters or its abbreviation "
 "(e.g. \"MC/file\" or \"C/file\")."
+
+#~ msgid "Benachrichtigungen über Javascript"
+#~ msgstr "Notifications via Javascript"
 
 #~ msgid "geschlecht"
 #~ msgstr "Gender"
