@@ -5,8 +5,8 @@ msgstr ""
 "PO-Revision-Date: 2025-07-15 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-6-0-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-6-0-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4536,7 +4536,7 @@ msgstr "Speed"
 msgid "Gestaltung"
 msgstr "Design"
 
-#: resources/vue/components/courseware/unit/CoursewareSharedItems.vue:14
+#: resources/vue/components/courseware/unit/CoursewareSharedItems.vue:12
 msgid "Geteilte Lernmaterialien"
 msgstr "Shared learning materials"
 
@@ -5957,6 +5957,7 @@ msgstr "Delete learning material"
 msgid "Lernmaterial neu laden"
 msgstr "Reload learning material"
 
+#: resources/vue/components/courseware/unit/CoursewareSharedItems.vue:22
 #: resources/vue/components/courseware/unit/CoursewareUnitItem.vue:29
 msgid "Lernmaterial öffnen"
 msgstr "Open learning material"
@@ -7584,11 +7585,9 @@ msgstr "Very fast"
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogLink.vue:21
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogLink.vue:147
 #: resources/vue/components/courseware/tasks/TaskGroup.vue:24
-#: resources/vue/components/courseware/unit/CoursewareSharedItems.vue:39
+#, fuzzy
 msgid "Seite"
-msgid_plural "Seiten"
-msgstr[0] "Page"
-msgstr[1] "Pages"
+msgstr "Page"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogExportOer.vue:12
 #, fuzzy
