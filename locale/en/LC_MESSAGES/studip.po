@@ -21,7 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
 "PO-Revision-Date: 2025-07-17 09:00+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main/en/>\n"
 "Language: en\n"
@@ -14818,7 +14819,7 @@ msgstr "Nothing entered in the search field!"
 #: lib/classes/UserFilterFields/SubjectCondition.php:53
 #: lib/models/QuestionnaireAutomatedData.php:143
 msgid "Studienfach"
-msgstr "Subject"
+msgstr "Field of study"
 
 #: app/controllers/admin/autoinsert.php:235
 msgid "Studienabschluss"
@@ -15331,7 +15332,7 @@ msgstr "This is the student's view (preview) of the worksheet."
 #: app/controllers/vips/solutions.php:374
 #: app/views/vips/solutions/assignments_list.php:150
 msgid "Aufgabenblatt bearbeiten"
-msgstr "Edit this worksheet"
+msgstr "Edit worksheet"
 
 #: app/controllers/vips/sheets.php:700 app/controllers/vips/sheets.php:1352
 msgid "Ungültiger Endzeitpunkt, der Wert wurde nicht übernommen."
