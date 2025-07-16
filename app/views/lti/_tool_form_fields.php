@@ -19,7 +19,7 @@
     <label>
         <?= _('Datenschutzhinweise') ?>
         <textarea name="data_protection_notes" class="wysiwyg"
-                  placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)') ?>"><?= wysiwygReady($tool->data_protection_notes) ?></textarea>
+                  placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten werden gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)') ?>"><?= wysiwygReady($tool->data_protection_notes) ?></textarea>
     </label>
     <label>
         <?= _('URL zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)') ?>
