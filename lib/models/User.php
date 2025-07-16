@@ -232,6 +232,23 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             'on_delete'  => 'delete',
         ];
 
+        // Forum
+        $config['has_many']['forum_posting_reads'] = [
+            'class_name' => Forum\ForumPostingRead::class,
+            'assoc_foreign_key' => 'user_id',
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['forum_posting_reactions'] = [
+            'class_name' => Forum\ForumPostingReaction::class,
+            'assoc_foreign_key' => 'user_id',
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['forum_subscriptions'] = [
+            'class_name' => Forum\ForumSubscription::class,
+            'assoc_foreign_key' => 'user_id',
+            'on_delete'  => 'delete',
+        ];
+
         $config['additional_fields']['config']['get'] = function ($user) {
             return UserConfig::get($user->id);
         };
@@ -239,7 +256,6 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $config['additional_fields']['salutation']['get'] = 'getSalutation';
 
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveFeedback';
-        $config['registered_callbacks']['after_delete'][] = 'cbRemoveForumVisits';
         $config['registered_callbacks']['before_store'][] = 'cbClearCaches';
         $config['registered_callbacks']['before_store'][] = 'cbStudipLog';
 
@@ -1582,17 +1598,6 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
     {
         FeedbackElement::deleteBySQL('user_id = ?', [$this->id]);
         FeedbackEntry::deleteBySQL('user_id = ?', [$this->id]);
-    }
-
-    /**
-     * This callback is called after deleting a User.
-     * It removes forum visit entries that are associated with the User.
-     */
-    public function cbRemoveForumVisits()
-    {
-        $query = "DELETE FROM `forum_visits`
-                  WHERE `user_id` = ?";
-        DBManager::get()->execute($query, [$this->id]);
     }
 
     public function cbClearCaches()
