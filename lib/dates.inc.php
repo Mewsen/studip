@@ -308,7 +308,7 @@ function raumzeit_send_cancel_message($comment, $dates)
         $lecturers = $course->members->findBy('status', 'dozent')->pluck('nachname');
         $message = sprintf(
             ngettext(
-                _('In der Veranstaltung %s fällt der folgende Termine aus:'),
+                _('In der Veranstaltung %s fällt der folgende Termin aus:'),
                 _('In der Veranstaltung %s fallen die folgenden Termine aus:'),
                 count($dates)
             ),
