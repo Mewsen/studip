@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-10 10:00+0000\n"
+"PO-Revision-Date: 2025-07-17 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -1551,9 +1551,8 @@ msgid "Bitte geben Sie einen Titel für die Seite ein."
 msgstr "Please enter a title for this page."
 
 #: resources/assets/javascripts/lib/jsupdater.js:169
-#, fuzzy
 msgid "Bitte laden Sie die Seite neu, um fortzufahren."
-msgstr "To continue, please reload the page"
+msgstr "To continue, please reload the page."
 
 #: resources/vue/components/courseware/tasks/PagesTaskGroupsShow.vue:85
 msgid "Bitte schreiben Sie ein Feedback."
@@ -1891,7 +1890,7 @@ msgstr "File \"%{fileName}\" selected"
 
 #: resources/vue/components/FilesTable.vue:487
 msgid "Datei %{filename} anzeigen"
-msgstr "Show file %{filename}"
+msgstr "Display file %{filename}"
 
 #: resources/vue/components/FilesTable.vue:465
 msgid "Datei %{filename} herunterladen"
@@ -2092,7 +2091,7 @@ msgstr "Detailed list of courses"
 
 #: resources/vue/components/FilesTable.vue:499
 msgid "Details zur Datei %{filename} anzeigen"
-msgstr "Display details for the file %{filename}"
+msgstr "Show details of the file %{filename}"
 
 #: resources/assets/javascripts/studip-ui.js:655
 msgid "Dez"
@@ -2383,7 +2382,7 @@ msgstr "This course"
 
 #: resources/vue/components/MyCoursesTables.vue:149
 msgid "Diese Veranstaltung gehört zur Farbgruppe %{group}"
-msgstr "This course belongs to the colour group %{group}"
+msgstr "This course belongs to the colour group %{group}."
 
 #: resources/vue/components/StudipDialog.vue:85
 msgid "Diesen Dialog schließen"
@@ -3051,11 +3050,11 @@ msgstr "Add panel"
 #: resources/vue/components/courseware/containers/CoursewareAccordionContainer.vue:147
 #: resources/vue/components/courseware/containers/CoursewareAccordionContainer.vue:214
 msgid "Fach löschen"
-msgstr "Delete panel"
+msgstr "Delete field of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:29
 msgid "Fachsemester auswählen (optional)"
-msgstr "Select semester of study (optional)"
+msgstr "Select semester (optional)"
 
 #: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:506
 msgid "Faded Sun"
@@ -7080,8 +7079,7 @@ msgid ""
 "Wählen Sie das Lernmaterial aus, in dem sich der zu kopierende Lerninhalt "
 "befindet."
 msgstr ""
-"Select the learning material in which the learning content that shall be "
-"copied resides in."
+"Select the learning material containing the content you would like to copy."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogLink.vue:20
 msgid ""
@@ -7089,9 +7087,9 @@ msgid ""
 "befindet. Die Lerninhalte, die verknüpft werden können, müssen unter "
 "Arbeitsplatz/Courseware vorher erstellt werden."
 msgstr ""
-"Select the learning material in which the learning content that shall be "
-"linked resides in. The learning contents that can be linked must be created "
-"at Work place/Courseware before."
+"Select the learning material containing the content you would like to link. "
+"The content to be linked must have been created in the Work place/courseware "
+"previously."
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:26
 msgid ""
@@ -7196,8 +7194,7 @@ msgid ""
 "Wählen Sie hier den Ort in Stud.IP aus, an dem sich der zu kopierende "
 "Lerninhalt befindet."
 msgstr ""
-"Select the location in Stud.IP here where the learning content that shall be "
-"copied resides in."
+"Select the location containing the content you would like to copy in Stud.IP."
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:47
 msgid ""
