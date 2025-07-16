@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-15 08:00+0000\n"
+"PO-Revision-Date: 2025-07-17 09:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -36,9 +36,8 @@ msgid "--leer--"
 msgstr "--empty--"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:208
-#, fuzzy
 msgid "\"%{ title }\" wurde freigegeben."
-msgstr "has been successfully submitted."
+msgstr "\"%{ title }\" has been released."
 
 #: resources/assets/javascripts/cke/studip-quote/StudipBlockQuote.js:91
 msgid "\"Name\""
@@ -305,11 +304,10 @@ msgstr[1] ""
 "permissions)"
 
 #: resources/vue/components/stock-images/Page.vue:97
-#, fuzzy
 msgid "%{length} Bild wurde hinzugefügt"
 msgid_plural "%{length} Bilder wurden hinzugefügt"
 msgstr[0] "%s has been added."
-msgstr[1] "%s has been added."
+msgstr[1] "%s have been added."
 
 #: resources/vue/components/courseware/CoursewareBlockCommentsOverview.vue:96
 #: resources/vue/components/courseware/CoursewareStructuralElementCommentsOverview.vue:91
@@ -348,52 +346,46 @@ msgstr[0] "%{n} rating"
 msgstr[1] "%{n} ratings"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessConfiguration.vue:13
-#, fuzzy
 msgid "%{n} Tage Zeit für das Review"
-msgstr "Thank you for the review!"
+msgstr "%{n} days time for the review"
 
 #: resources/vue/components/tree/StudipTreeList.vue:79
 msgid "%{name} bearbeiten"
 msgstr "Edit %{name}"
 
 #: resources/vue/components/form_inputs/FileUpload.vue:42
-#, fuzzy
 msgid "%{number} Dateien gewählt"
-msgstr "no file selected"
+msgstr "%{number} files selected"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:300
-#, fuzzy
 msgid "%{number} Personen werden bevorzugt"
-msgstr "%u persons have been removed."
+msgstr "%{number} users receive preferential treatment"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:299
-#, fuzzy
 msgid "%{number} Personen werden nachrangig eingetragen"
-msgstr "%u persons have been removed."
+msgstr "%{number} users are registered with low priority"
 
 #: resources/vue/components/courseware/structural-element/CoursewareRootContent.vue:113
-#, fuzzy
 msgid "%{pages} Seite"
 msgid_plural "%{pages} Seiten"
-msgstr[0] "%{length} page"
-msgstr[1] "%{length} pages"
+msgstr[0] "%{pages} page"
+msgstr[1] "%{pages} pages"
 
 #: resources/vue/components/form_inputs/FileUpload.vue:83
 msgid "%{size} B"
-msgstr ""
+msgstr "%{size} B"
 
 #: resources/vue/components/form_inputs/FileUpload.vue:87
 msgid "%{size} KB"
-msgstr ""
+msgstr "%{size} KB"
 
 #: resources/vue/components/form_inputs/FileUpload.vue:92
 msgid "%{size} MB"
-msgstr ""
+msgstr "%{size} MB"
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:45
-#, fuzzy
 msgid "%{subjects} Fächer"
-msgstr "%s fields of study"
+msgstr "%{subjects} Fields of study"
 
 #: resources/vue/components/StudipActionMenu.vue:75
 msgid "%{title} für %{context}"
@@ -405,7 +397,7 @@ msgstr "%{title} is being exported. Please be patient..."
 
 #: resources/vue/components/courseware/blocks/CoursewareTestBlock.vue:47
 msgid "%{title}, Aufgabe %{num} von %{length}"
-msgstr ""
+msgstr "%{title}, task %{num} of %{length}"
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:331
 #: resources/vue/components/courseware/tasks/TaskGroupsAddSolversDialog.vue:65
@@ -679,9 +671,8 @@ msgid "Aktivitäten"
 msgstr "Activities"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:200
-#, fuzzy
 msgid "Aktuell sind keine Einrichtungen zugeordnet."
-msgstr "You are not assigned to any institutions."
+msgstr "Currently no institutions are assigned."
 
 #: resources/vue/components/courseware/tasks/TaskGroupsModifyDeadlineDialog.vue:26
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDurationDialog.vue:26
@@ -776,9 +767,8 @@ msgstr "Select all students"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPermissions.vue:102
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:102
-#, fuzzy
 msgid "alle Studierenden"
-msgstr "Amount of students"
+msgstr "all students"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementPermissions.vue:52
 msgid "Alle Teilnehmenden haben Leserechte"
@@ -801,14 +791,12 @@ msgid "Allgemeine Einstellungen"
 msgstr "General settings"
 
 #: resources/vue/components/tree/StudipTreeViewWidget.vue:24
-#, fuzzy
 msgid "Als Liste anzeigen"
-msgstr "display as link "
+msgstr "Display as list"
 
 #: resources/vue/components/tree/StudipTreeViewWidget.vue:33
-#, fuzzy
 msgid "Als Tabelle anzeigen"
-msgstr "Show all"
+msgstr "Display as table"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:523
 msgid "Als Vollbild anzeigen"
@@ -844,7 +832,7 @@ msgstr "On the second selected day of week"
 
 #: resources/vue/components/form_inputs/CaptchaInput.vue:9
 msgid "An dieser Stelle prüfen wir automatisch, ob Sie ein Mensch sind."
-msgstr ""
+msgstr "At this point, we automatically check whether you are human."
 
 #: resources/vue/components/form_inputs/RepetitionInput.vue:413
 msgid "An einem bestimmten Datum"
@@ -910,9 +898,8 @@ msgid "Anmeldebedingungen"
 msgstr "Conditions: "
 
 #: resources/vue/components/admission/AdmissionRuleConfig.vue:13
-#, fuzzy
 msgid "Anmelderegel bearbeiten"
-msgstr "Edit admission"
+msgstr "Edit admission rule"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:443
 msgid "Anmelderegel hinzufügen"
@@ -982,12 +969,11 @@ msgstr "Anonymous"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateForm.vue:111
 msgid "Anonymes oder offenes Review:"
-msgstr ""
+msgstr "Anonymous or open review:"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessConfiguration.vue:11
-#, fuzzy
 msgid "Anonymes Review"
-msgstr "Anonymous participation"
+msgstr "Anonymous review"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogCopy.vue:27
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogCopy.vue:23
@@ -1083,9 +1069,8 @@ msgid "Art des Links"
 msgstr "Link type"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateForm.vue:157
-#, fuzzy
 msgid "Art des Reviews:"
-msgstr "Date type"
+msgstr "Type of review:"
 
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:539
 msgid "Audio-Aufnahmen zulassen"
@@ -1172,14 +1157,12 @@ msgid "Aufgaben wurden verteilt."
 msgstr "Tasks have been distributed."
 
 #: resources/vue/components/courseware/blocks/CoursewareTestBlock.vue:126
-#, fuzzy
 msgid "Aufgabenblatt"
-msgstr "Tasks"
+msgstr "Worksheet"
 
 #: resources/vue/components/courseware/blocks/CoursewareTestBlock.vue:97
-#, fuzzy
 msgid "Aufgabenblatt bearbeiten"
-msgstr "Edit data"
+msgstr "Edit worksheet"
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:45
 msgid "Aufgabeneinstellungen"
@@ -1270,9 +1253,8 @@ msgid "Aus Arbeitsplatz verknüpfen"
 msgstr "Link from work place"
 
 #: resources/vue/components/avatar/AvatarApp.vue:240
-#, fuzzy
 msgid "Aus Bilderpool auswählen"
-msgstr "Select from the image pool"
+msgstr "Select from image pool"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogAddChooser.vue:39
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogAddChooser.vue:39
@@ -1298,15 +1280,13 @@ msgid "ausgewählt"
 msgstr "selected"
 
 #: resources/vue/components/admission/AdmissionRuleTypeSelector.vue:95
-#, fuzzy
 msgid "Ausgewählte Regel konfigurieren"
-msgstr "Configure selected courses"
+msgstr "Configure selected rule"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPermissions.vue:123
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:123
-#, fuzzy
 msgid "ausgewählte Studierende"
-msgstr "Amount of students"
+msgstr "selected students"
 
 #: resources/vue/components/stock-images/ImagesList.vue:95
 msgid "Ausgewähltes Bild unwideruflich löschen?"
@@ -1329,9 +1309,8 @@ msgid "Auswahl"
 msgstr "Selection"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeUnits.vue:76
-#, fuzzy
 msgid "Auswahl abbrechen"
-msgstr "Cancel license selection"
+msgstr "cancel selection"
 
 #: resources/vue/components/courseware/blocks/CoursewareLtiBlock.vue:87
 msgid "Auswahl des externen Tools"
@@ -1413,17 +1392,16 @@ msgstr "Request that you want to edit the text now."
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:194
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:265
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:347
-#, fuzzy
 msgid "Bearbeitbar"
-msgstr "Edit"
+msgstr "editable"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitItem.vue:290
 msgid "Bearbeitbar bis zum %{end}"
-msgstr ""
+msgstr "Can be edited up to %{end}"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitItem.vue:314
 msgid "Bearbeitbar für %{persons}"
-msgstr ""
+msgstr "Can be edited by %{persons}"
 
 #: resources/vue/components/blubber/Comment.vue:75
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:117
@@ -1436,14 +1414,12 @@ msgid "Bearbeiten"
 msgstr "Edit"
 
 #: resources/vue/components/WikiEditor.vue:108
-#, fuzzy
 msgid "Bearbeiten beantragen"
-msgstr "Abort modification"
+msgstr "Request editing"
 
 #: resources/vue/components/WikiEditor.vue:114
-#, fuzzy
 msgid "Bearbeiten beantragt"
-msgstr "Edit parameters"
+msgstr "Editing requested"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:47
 #: resources/vue/components/courseware/tasks/TaskGroup.vue:25
@@ -1455,14 +1431,12 @@ msgid "Bearbeitet"
 msgstr "Edited"
 
 #: resources/vue/components/courseware/toolbar/CoursewareToolbar.vue:97
-#, fuzzy
 msgid "Bearbeitungselemente anzeigen"
-msgstr "Display booking plan"
+msgstr "Display editing elements"
 
 #: resources/vue/components/courseware/toolbar/CoursewareToolbar.vue:98
-#, fuzzy
 msgid "Bearbeitungselemente ausblenden"
-msgstr "Change status"
+msgstr "Hide editing elements"
 
 #: resources/vue/components/AdminCourses.vue:85
 #: resources/vue/components/AdminCourses.vue:86
@@ -1480,9 +1454,8 @@ msgid "Bearbeitungszeit"
 msgstr "Processing time"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDurationDialog.vue:15
-#, fuzzy
 msgid "Bearbeitungszeit ändern"
-msgstr "Prolong editing time"
+msgstr "Change editing time"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardStudents.vue:89
 #: resources/vue/components/courseware/tasks/TaskGroupsModifyDeadlineDialog.vue:15
@@ -1496,26 +1469,22 @@ msgid "Bearbeitungszeit verlängern bis zum"
 msgstr "Editing time prolonged until"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDurationDialog.vue:35
-#, fuzzy
 msgid "Bearbeitungszeit verlängern bis zum:"
-msgstr "Editing time prolonged until"
+msgstr "Exted editing time until:"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDetail.vue:37
-#, fuzzy
 msgid "Bearbeitungszeit:"
-msgstr "Processing time"
+msgstr "Editing time:"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateForm.vue:131
-#, fuzzy
 msgid "Bearbeitungszeitraum in Tagen:"
-msgstr "Prolong editing time"
+msgstr "Processing time in days:"
 
 #: resources/vue/components/StudipUserFilter.vue:16
 #: resources/vue/components/admission/ConditionalAdmission.vue:149
 #: resources/vue/components/admission/PreferentialAdmission.vue:56
-#, fuzzy
 msgid "Bedingung hinzufügen"
-msgstr "Add comment"
+msgstr "Add condition"
 
 #: resources/assets/javascripts/lib/user_filter.js:12
 msgid "Bedingung konfigurieren"
@@ -1526,9 +1495,8 @@ msgid "Beginn"
 msgstr "Beginning"
 
 #: resources/vue/components/courseware/tasks/peer-review/assessment-types/forms/AssessmentTypeTable.vue:38
-#, fuzzy
 msgid "Begründung"
-msgstr "created"
+msgstr "Justification"
 
 #: resources/vue/components/courseware/widgets/CoursewareSearchWidget.vue:55
 msgid "Bei der Anfrage ist ein Fehler aufgetreten."
@@ -1547,9 +1515,8 @@ msgid "Beim Hochladen der Bilddatei ist ein Fehler aufgetretten."
 msgstr "An error occurred while uploading the image file."
 
 #: resources/vue/components/stock-images/Page.vue:111
-#, fuzzy
 msgid "Beim importieren der Bilder ist ein Fehler aufgetreten."
-msgstr "An error occurred while uploading the image file."
+msgstr "An error occurred when inporting the images."
 
 #: resources/vue/components/courseware/IndexApp.vue:46
 #: resources/vue/components/courseware/PublicApp.vue:43
@@ -1588,9 +1555,8 @@ msgid "Benachrichtigungen aktiviert"
 msgstr "Notifications activated"
 
 #: resources/vue/components/my-courses/NotificationConfiguration.vue:68
-#, fuzzy
 msgid "Benachrichtigungen für die folgenden Veranstaltungen:"
-msgstr "Notification for the following courses:"
+msgstr "Notifications for the following courses:"
 
 #: resources/vue/components/blubber/ThreadSubscriber.vue:14
 msgid "Benachrichtigungen für diese Konversation abstellen."
@@ -1618,9 +1584,8 @@ msgstr ""
 "guidance, so that you can be sure that the file may actually be provided."
 
 #: resources/vue/components/form_inputs/FileUpload.vue:68
-#, fuzzy
 msgid "Bereits hochgeladen:"
-msgstr "Upload picture"
+msgstr "Already uploaded:"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:158
 #: resources/vue/components/admission/ConfigureCourseSet.vue:313
@@ -1687,9 +1652,8 @@ msgid "Bestätigung"
 msgstr "Confirmation"
 
 #: resources/vue/components/ConsultationCreator.vue:524
-#, fuzzy
 msgid "Bestätigung der Erstellung vieler Termine"
-msgstr "Confirmation of e-mail address"
+msgstr "Confirm the creation of a large number of dates"
 
 #: resources/vue/components/ConsultationCreator.vue:509
 msgid "Bestätigung für folgenden Text einholen"
@@ -1738,14 +1702,12 @@ msgid "Bewertungen"
 msgstr "Ratings"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateDialog.vue:46
-#, fuzzy
 msgid "Bewertungssystem"
-msgstr "Ratings"
+msgstr "Rating system"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDetail.vue:90
-#, fuzzy
 msgid "Bewertungssystem konfigurieren"
-msgstr "Configure assessment"
+msgstr "Configure rating system"
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:163
 #: resources/vue/components/courseware/blocks/CoursewareImageMapBlock.vue:407
@@ -1823,11 +1785,11 @@ msgid "Bild wählen"
 msgstr "Select image"
 
 #: resources/vue/components/avatar/AvatarApp.vue:87
-#, fuzzy
 msgid ""
 "Bildauswahl zu klein. Bitte wählen Sie einen größeren Ausschnitt oder ein "
 "anderes Bild aus."
-msgstr "Please select a before and after image."
+msgstr ""
+"Image selection too small. Please select a larger area or a different image."
 
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:90
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:138
@@ -1837,29 +1799,25 @@ msgid "Bilddatei"
 msgstr "Picture file"
 
 #: resources/vue/components/stock-images/Page.vue:54
-#, fuzzy
 msgid "Bilder werden hochgeladen..."
-msgstr "A picture has been uploaded."
+msgstr "Uploading images..."
 
 #: resources/vue/components/stock-images/ZipUploadDialog.vue:25
-#, fuzzy
 msgid "Bildersammlung"
-msgstr "Link collection"
+msgstr "Image collection"
 
 #: resources/vue/components/stock-images/ActionsWidget.vue:30
 #: resources/vue/components/stock-images/ZipUploadDialog.vue:13
-#, fuzzy
 msgid "Bildersammlung importieren"
-msgstr "Import dates"
+msgstr "Import image selection"
 
 #: resources/vue/components/stock-images/ImagesListItem.vue:57
 msgid "Bildfarben"
 msgstr "Image colours"
 
 #: resources/vue/components/avatar/AvatarApp.vue:225
-#, fuzzy
 msgid "Bildquelle auswählen"
-msgstr "Select source"
+msgstr "Select image source"
 
 #: resources/vue/composables/courseware/useBlockCategoryManager.js:10
 msgid "Biografie"
@@ -1881,14 +1839,12 @@ msgid "Bis"
 msgstr "Until"
 
 #: resources/vue/components/courseware/tasks/peer-review/PeerReviewList.vue:43
-#, fuzzy
 msgid "Bisher sind noch keine Peer-Review-Paarungen erstellt worden."
-msgstr "No person lists are available yet."
+msgstr "No peer review pairings have been created yet."
 
 #: resources/vue/components/courseware/blocks/CoursewareBlubberThread.vue:34
-#, fuzzy
 msgid "Bisher wurde noch nicht diskutiert."
-msgstr "This request has not been saved yet."
+msgstr "No discussions started yet."
 
 #: resources/assets/javascripts/bootstrap/forms.js:146
 msgid "Bitte %u Zeichen mehr eingeben"
@@ -1950,26 +1906,22 @@ msgid "Bitte geben Sie eine Beschreibung ein."
 msgstr "Please enter a description."
 
 #: resources/vue/components/admission/TimedAdmission.vue:50
-#, fuzzy
 msgid "Bitte geben Sie eine gültige Endzeit an."
-msgstr "Enter a valid final date, please."
+msgstr "Please specify a valid end time."
 
 #: resources/vue/components/admission/TimedAdmission.vue:47
-#, fuzzy
 msgid "Bitte geben Sie eine gültige Startzeit an."
-msgstr "Enter a valid starting date, please."
+msgstr "Please enter a valid start time."
 
 #: resources/vue/components/courseware/blocks/CoursewareIframeBlock.vue:134
-#, fuzzy
 msgid "Bitte geben Sie eine gültige URL ein."
-msgstr "Please enter a valid token"
+msgstr "Please enter a valid URL."
 
 #: resources/vue/components/admission/LimitedAdmission.vue:37
-#, fuzzy
 msgid ""
 "Bitte geben Sie eine gültige Zahl für die Anzahl der maximalen Anmeldungen "
 "an."
-msgstr "Please specify the maximum amount of allowed enrolments."
+msgstr "Please enter a valid maximum number of participants."
 
 #: resources/vue/components/courseware/blocks/CoursewareDateBlock.vue:94
 msgid "Bitte geben Sie eine Uhrzeit an."
@@ -1992,38 +1944,34 @@ msgid "Bitte geben Sie einen Titel für die Seite ein."
 msgstr "Please enter a title for this page."
 
 #: resources/vue/components/admission/PreferentialAdmission.vue:63
-#, fuzzy
 msgid ""
 "Bitte geben Sie mindestens eine Auswahlbedingung an oder bevorzugen Sie "
 "höhere Fachsemester."
-msgstr "Please specify at least one institution assigned to the admission!"
+msgstr ""
+"Please specify at least one selection condition or give preference to higher "
+"semesters."
 
 #: resources/vue/components/admission/ConditionalAdmission.vue:67
-#, fuzzy
 msgid "Bitte geben Sie mindestens eine Auswahlbedingung an."
-msgstr "Please add a person to the role %s."
+msgstr "Please specify at least one selection condition."
 
 #: resources/vue/components/admission/CourseMemberAdmission.vue:46
-#, fuzzy
 msgid "Bitte geben Sie mindestens eine Veranstaltung an."
-msgstr "Please enter a name for the course. "
+msgstr "Please specify at least one course."
 
 #: resources/assets/javascripts/lib/jsupdater.js:169
-#, fuzzy
 msgid "Bitte laden Sie die Seite neu, um fortzufahren."
-msgstr "To continue, please reload the page"
+msgstr "To continue, please reload the page."
 
 #: resources/vue/components/courseware/tasks/PagesTaskGroupsShow.vue:112
 msgid "Bitte schreiben Sie ein Feedback."
 msgstr "Please write a feedback."
 
 #: resources/vue/components/courseware/blocks/CoursewareBlubberComment.vue:103
-#, fuzzy
 msgid "Bitte schreiben Sie etwas in das Textfeld."
-msgstr "Please write a feedback."
+msgstr "Please write something in the text box."
 
 #: resources/vue/components/courseware/blocks/CoursewareBlubberBlock.vue:76
-#, fuzzy
 msgid "Bitte vergeben Sie einen Titel."
 msgstr "Please enter a title."
 
@@ -2094,9 +2042,8 @@ msgid "Bitte wählen Sie eine Seite aus."
 msgstr "Please select a page."
 
 #: resources/vue/components/courseware/blocks/CoursewareLinkBlock.vue:119
-#, fuzzy
 msgid "Bitte wählen Sie eine URL als Ziel aus."
-msgstr "Please select a page as target."
+msgstr "Please select a URL as a target."
 
 #: resources/assets/javascripts/lib/quick_search.js:149
 msgid "Bitte wählen Sie einen gültigen Wert aus!"
@@ -2207,24 +2154,23 @@ msgid "Blöcke und Seiten"
 msgstr "Blocks and pages"
 
 #: resources/vue/components/courseware/toolbar/CoursewareToolbarBlocks.vue:81
-#, fuzzy
 msgid "Blockkategorien"
-msgstr "Categories"
+msgstr "Block categories"
 
 #: resources/vue/components/courseware/CoursewareBlockCommentsOverview.vue:62
 msgid "Blocktyp"
 msgstr "Block type"
 
 #: resources/vue/components/courseware/blocks/CoursewareBlubberBlock.vue:63
-#, fuzzy
 msgid "Blubber Konversation"
-msgstr "Conversations"
+msgstr "Blubber conversation"
 
 #: resources/vue/components/courseware/blocks/CoursewareBlubberBlock.vue:27
 msgid ""
 "Blubber-Konversationen für Courseware Blöcke können nur in Veranstaltungen "
 "anlegen werden."
 msgstr ""
+"Blubber conversations for Courseware blocks can only be created in courses."
 
 #: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:498
 msgid "Blueprint"
@@ -2256,10 +2202,8 @@ msgid "Cachetyp auswählen"
 msgstr "Select cache type"
 
 #: resources/vue/components/CacheAdministration.vue:24
-#, fuzzy
 msgid "Caching ist systemweit ausgeschaltet."
-msgstr ""
-"Caching is disabled system-wide, therefore nothing can be configured here."
+msgstr "Caching is disabled system-wide."
 
 #: resources/vue/components/courseware/blocks/CoursewareLtiBlock.vue:141
 msgid "Consumer-Key des LTI-Tools"
@@ -2357,22 +2301,21 @@ msgstr "The element for your first content has been created."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPermissions.vue:236
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:211
-#, fuzzy
 msgid ""
 "Das Enddatum des Bearbeitungszeitraums darf nicht vor dem Startdatum liegen."
-msgstr "The end date must not lie before the start date."
+msgstr ""
+"The end date of the processing period must not be before the start date."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPermissions.vue:222
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:197
-#, fuzzy
 msgid ""
 "Das Enddatum des Sichtbarkeitszeitraums darf nicht vor dem Startdatum liegen."
-msgstr "The end date must not lie before the start date."
+msgstr ""
+"The end date of the visibility period must not be before the start date."
 
 #: resources/vue/components/ConsultationCreator.vue:160
-#, fuzzy
 msgid "Das Enddatum liegt vor dem Startdatum!"
-msgstr "The end date is before the starting date."
+msgstr "The end date is before the start date!"
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:113
 msgid "Das Feld für die Wikiseite darf nicht leer sein."
@@ -2404,14 +2347,12 @@ msgid "Datei \"%{fileName}\" ausgewählt"
 msgstr "File \"%{fileName}\" selected"
 
 #: resources/vue/components/FilesTable.vue:467
-#, fuzzy
 msgid "Datei %{filename} anzeigen"
-msgstr "Display filename"
+msgstr "Display file %{filename}"
 
 #: resources/vue/components/FilesTable.vue:448
-#, fuzzy
 msgid "Datei %{filename} herunterladen"
-msgstr "Download file"
+msgstr "Download file %{filename}"
 
 #: resources/vue/components/FilesTable.vue:153
 msgid "Datei %{name} auswählen"
@@ -2544,7 +2485,6 @@ msgid "Datum und Zeit"
 msgstr "Date and time"
 
 #: resources/vue/components/ConsultationCreator.vue:293
-#, fuzzy
 msgid "Dauer der Pause in Minuten"
 msgstr "Pause duration in minutes"
 
@@ -2557,14 +2497,12 @@ msgid "deaktiviert"
 msgstr "deactivated"
 
 #: resources/vue/components/WikiEditor.vue:80
-#, fuzzy
 msgid "Den aktuellen Stand speichern."
-msgstr "The current state has already been saved."
+msgstr "Save the current state."
 
 #: resources/vue/components/ConsultationCreator.vue:446
-#, fuzzy
 msgid "Den freien Termin auch im Kalender markieren"
-msgstr "Also mark the free dates in the calendar"
+msgstr "Also mark the free date in the calendar"
 
 #: resources/vue/mixins/courseware/clipboard.js:14
 #: resources/vue/mixins/courseware/container.js:195
@@ -2572,7 +2510,6 @@ msgid "Der Abschnitt wurde erfolgreich eingefügt."
 msgstr "The section has been successfully inserted."
 
 #: resources/vue/components/WikiEditor.vue:80
-#, fuzzy
 msgid "Der aktuelle Stand wurde bereits gespeichert."
 msgstr "The current state has already been saved."
 
@@ -2580,7 +2517,7 @@ msgstr "The current state has already been saved."
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogPermissions.vue:218
 msgid ""
 "Der Bearbeitungszeitraum muss innerhalb des Sichtbarkeitszeitraums liegen."
-msgstr ""
+msgstr "The processing period must be within the visibility period."
 
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:254
 msgid ""
@@ -2605,18 +2542,16 @@ msgid "Der eingegebene Link ist nicht korrekt und wird nicht angezeigt werden."
 msgstr "The entered link is not correct and will not be displayed."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogOerSuggest.vue:20
-#, fuzzy
 msgid ""
 "Der folgende Lerninhalt wird %{ ownerName } zur Veröffentlichung im OER "
 "Campus vorgeschlagen:"
 msgstr ""
-"The following Courseware learning material will be suggested to %"
-"{ ownerName } for publication in the OER Campus:"
+"The following learning content will be suggested to %{ ownerName } for "
+"publication in the OER Campus:"
 
 #: resources/assets/javascripts/bootstrap/vips.js:86
-#, fuzzy
 msgid "Der IP-Zugriffsbereich ist ungültig."
-msgstr "Invalid IP area %s."
+msgstr "The IP access range is invalid."
 
 #: resources/vue/components/form_inputs/CalendarPermissionsTable.vue:42
 msgid "Der Kalender wird mit keinem Kontakt geteilt."
@@ -2639,17 +2574,20 @@ msgid ""
 "Der Peer-Review-Prozess hat bereits begonnen. Die Einstellungen können bis "
 "auf die Bearbeitungsdauer nicht geändert werden."
 msgstr ""
+"The peer review process has already begun. The settings cannot be changed "
+"except for the processing time."
 
 #: resources/vue/components/courseware/tasks/peer-review/AssessmentDialog.vue:26
 msgid ""
 "Der Peer-Review-Prozess ist abgeschlossen. Sie können das Peer-Review nicht "
 "mehr ändern."
 msgstr ""
+"The peer review process has been completed. You can no longer change the "
+"peer review."
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateDialog.vue:71
-#, fuzzy
 msgid "Der Peer-Review-Prozess wird jetzt angelegt."
-msgstr "The folder has been created."
+msgstr "The peer review process is now being created."
 
 #: resources/vue/mixins/courseware/oermessage.js:17
 msgid "Der Vorschlag wurde verschickt."
@@ -2665,9 +2603,8 @@ msgid "Details"
 msgstr "Details"
 
 #: resources/vue/components/FilesTable.vue:478
-#, fuzzy
 msgid "Details zur Datei %{filename} anzeigen"
-msgstr "Display filename"
+msgstr "Show details of the file %{filename}"
 
 #: resources/assets/javascripts/studip-ui.js:585
 msgid "Dez"
@@ -2683,9 +2620,8 @@ msgid "Di"
 msgstr "Tue."
 
 #: resources/vue/components/courseware/blocks/CoursewareChartBlock.vue:94
-#, fuzzy
 msgid "Diagramm aktualisieren"
-msgstr "Update file"
+msgstr "Update diagram"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:626
 msgid "Die angeforderte Seite ist nicht Teil dieser Courseware."
@@ -2696,9 +2632,8 @@ msgid "Die Anmeldung ist gesperrt."
 msgstr "Admission locked. "
 
 #: resources/vue/components/admission/TimedAdmission.vue:23
-#, fuzzy
 msgid "Die Anmeldung ist nur innerhalb des angegebenen Zeitraums möglich."
-msgstr "Password required."
+msgstr "Registration is only possible within the specified period."
 
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:579
 msgid "Die Aufnahme wurde erfolgreich im Dateibereich abgelegt."
@@ -2760,9 +2695,8 @@ msgstr ""
 "The defined time until the pause is shorter than the duration of a date."
 
 #: resources/vue/components/admission/PasswordAdmission.vue:32
-#, fuzzy
 msgid "Die eingegebenen Passwörter stimmen nicht überein."
-msgstr "The passwords don't match."
+msgstr "The passwords you entered don't match."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:281
 msgid ""
@@ -2776,7 +2710,6 @@ msgid "Die Endzeit liegt vor der Startzeit!"
 msgstr "The end time lies before the start time!"
 
 #: resources/vue/components/admission/TimedAdmission.vue:53
-#, fuzzy
 msgid "Die Endzeit muss nach der Startzeit liegen."
 msgstr "The end time may not be earlier than the start time!"
 
@@ -2790,6 +2723,10 @@ msgid ""
 "können zu einer Deanonymisierung der Teilnehmenden führen. Die Teilnehmenden "
 "sehen einen Hinweis, dass und welche Daten von ihnen erfasst werden."
 msgstr ""
+"The following data can be collected automatically. Please note: This data "
+"may lead to participants being de-anonymised. Participants will see a notice "
+"indicating that their data is being collected and which data is being "
+"collected."
 
 #: resources/vue/components/courseware/unit/CoursewareUnitProgress.vue:33
 msgid ""
@@ -2804,9 +2741,8 @@ msgid "Die freien Termine auch im Kalender markieren"
 msgstr "Also mark the free dates in the calendar"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:212
-#, fuzzy
 msgid "Die Freigabe für %{ \"title }\" wurde zurückgenommen."
-msgstr "The parameters have been saved."
+msgstr "The share for %{ \"title }\" has been cancelled."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogImport.vue:68
 msgid "Die gewählte Datei ist kein Archiv oder das Archiv ist beschädigt."
@@ -2887,23 +2823,20 @@ msgstr ""
 "posting."
 
 #: resources/vue/mixins/TreeMixin.js:132
-#, fuzzy
 msgid "Die Sortierung konnte nicht geändert werden."
-msgstr "The achievement could not be modified."
+msgstr "The sort order could not be changed."
 
 #: resources/vue/mixins/TreeMixin.js:129
-#, fuzzy
 msgid "Die Sortierung wurde geändert."
-msgstr "The course of study has been changed."
+msgstr "The sort order has been changed."
 
 #: resources/vue/mixins/MyCoursesMixin.js:127
 msgid "Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden."
 msgstr "Participation is binding. Please contact the lecturers."
 
 #: resources/vue/components/admission/InstantCourseSet.vue:66
-#, fuzzy
 msgid "Die Zugangsberechtigungen wurden gespeichert."
-msgstr "The permissions have been saved!"
+msgstr "The access permissions have been saved."
 
 #: resources/assets/javascripts/lib/calendar.js:7
 #: resources/assets/javascripts/studip-ui.js:590
@@ -2932,18 +2865,16 @@ msgid "Dies ist ein Pflichtfeld"
 msgstr "This is a mandatory field"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:1271
-#, fuzzy
 msgid "Diese Aufgabe hat ein Peer-Review erhalten."
-msgstr "Courseware tasks"
+msgstr "This task has received a peer review."
 
 #: resources/vue/components/courseware/tasks/TaskGroup.vue:54
 msgid "Diese Aufgabe wurde an niemanden verteilt."
 msgstr "This tasks has not been distributed to anyone."
 
 #: resources/vue/components/admission/ConditionalAdmission.vue:80
-#, fuzzy
 msgid "Diese Bedingung löschen"
-msgstr "Delete this course of study"
+msgstr "Delete this condition"
 
 #: resources/vue/components/courseware/tasks/PagesTaskGroupsShow.vue:93
 msgid "Diese Courseware-Aufgabe konnte nicht gefunden werden."
@@ -2973,9 +2904,8 @@ msgid "Diese Datei ist zu groß. Bitte wählen Sie eine kleinere Datei."
 msgstr "This file is too large. Please choose a smaller file."
 
 #: resources/vue/components/SystemNotification.vue:73
-#, fuzzy
 msgid "Diese Meldung schließen"
-msgstr "Close this dialog"
+msgstr "Close this message"
 
 #: resources/vue/components/WikiEditorOnlineUsers.vue:46
 msgid "Diese Person beantragt den Bearbeitungsmodus."
@@ -2986,13 +2916,12 @@ msgid "Diese Person hat den Bearbeitungsmodus."
 msgstr "This person has the edit mode."
 
 #: resources/vue/components/admission/ValidityTime.vue:37
-#, fuzzy
 msgid "Diese Regel gilt von"
-msgstr "Valid from %s"
+msgstr "This rule will apply from"
 
 #: resources/vue/components/admission/ValidityTime.vue:30
 msgid "Diese Regel soll ab sofort zeitlich unbegrenzt gelten"
-msgstr ""
+msgstr "This rule is to apply indefinitely with immediate effect"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitProgress.vue:68
 msgid "diese Seite"
@@ -3007,11 +2936,10 @@ msgid "Diese Seite enthält keine darunter liegenden Seiten."
 msgstr "This page does not contain any sub-pages."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:265
-#, fuzzy
 msgid ""
 "Diese Seite gehört zu einer Aufgabe, die von einer anderen Person bearbeitet "
 "wird."
-msgstr "This page can be edited by participants"
+msgstr "This page is part of a task that is processed by a different user"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitProgress.vue:64
 msgid "diese Seite inkl. darunter liegender Seiten"
@@ -3019,27 +2947,23 @@ msgstr "this page incl. underlying pages"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:161
 msgid "Diese Seite ist vom %{start} bis zum %{end} für %{persons} sichtbar"
-msgstr ""
+msgstr "This page is visible from %{start} to %{end} for %{persons}"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:208
-#, fuzzy
 msgid "Diese Seite kann von %{persons} bearbeitet werden"
-msgstr "This page can be edited by participants"
+msgstr "This page can be edited by %{persons}"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:260
-#, fuzzy
 msgid "Diese Seite kann von %{persons} nicht gesehen werden"
-msgstr "This page cannot be seen by participants"
+msgstr "This page cannot be seen by %{persons}."
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:183
-#, fuzzy
 msgid "Diese Seite kann von allen Studierenden bearbeitet werden"
-msgstr "This page can be edited by participants"
+msgstr "This page can be edited by all students."
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:238
-#, fuzzy
 msgid "Diese Seite kann von Studierenden nicht gesehen werden"
-msgstr "This page cannot be seen by participants"
+msgstr "This page cannot be seen by students."
 
 #: resources/vue/components/courseware/IndexApp.vue:44
 #: resources/vue/components/courseware/PublicApp.vue:41
@@ -3071,9 +2995,8 @@ msgid "Diese Veranstaltung"
 msgstr "This course"
 
 #: resources/vue/components/my-courses/TableView.vue:142
-#, fuzzy
 msgid "Diese Veranstaltung gehört zur Farbgruppe %{group}"
-msgstr "This course belongs to a main course"
+msgstr "This course belongs to the colour group %{group}."
 
 #: resources/vue/components/StudipDialog.vue:89
 msgid "Diesen Dialog schließen"
@@ -3084,9 +3007,8 @@ msgid "Diesen Eintrag zuweisen"
 msgstr "Assign this entry"
 
 #: resources/vue/components/form_inputs/UserFilterInput.vue:37
-#, fuzzy
 msgid "Diesen Filter löschen"
-msgstr "Delete this page"
+msgstr "Delete this filter"
 
 #: resources/vue/components/courseware/containers/CoursewareListContainer.vue:56
 msgid "Dieser Abschnitt enthält keine Blöcke."
@@ -3135,9 +3057,8 @@ msgstr ""
 "users may use it."
 
 #: resources/vue/components/courseware/tasks/peer-review/AssessmentTypeEditor.vue:14
-#, fuzzy
 msgid "Dieses Bewertungssystem kann nicht konfiguriert werden."
-msgstr "The achievement could not be defined."
+msgstr "The rating system cannot be configured."
 
 #: resources/assets/javascripts/lib/big_image_handler.js:61
 msgid ""
@@ -3150,9 +3071,8 @@ msgid "Dieses Element bearbeiten"
 msgstr "Edit this element"
 
 #: resources/vue/components/form_inputs/QuicksearchListInput.vue:33
-#, fuzzy
 msgid "Dieses Element entfernen"
-msgstr "Open this element"
+msgstr "Remove this element"
 
 #: resources/vue/components/tree/TreeBreadcrumb.vue:90
 msgid "Dieses Element löschen"
@@ -3164,9 +3084,8 @@ msgid "Dieses Fach enthält keine Blöcke."
 msgstr "This field of study does not contain blocks."
 
 #: resources/vue/components/StudipUserFilter.vue:88
-#, fuzzy
 msgid "Dieses Feld löschen"
-msgstr "Delete this rule"
+msgstr "Delete this field"
 
 #: resources/assets/javascripts/bootstrap/forms.js:345
 msgid "Dieses Feld muss ausgewählt sein."
@@ -3281,9 +3200,8 @@ msgid "Editor"
 msgstr "Editor"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessCreateForm.vue:94
-#, fuzzy
 msgid "Eigene Einstellungen"
-msgstr "Further settings"
+msgstr "Own settings"
 
 #: resources/vue/components/tree/TreeSearchResult.vue:36
 msgid "Ein Eintrag für den Begriff \"%{searchterm}\" gefunden"
@@ -3328,9 +3246,8 @@ msgid "Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56"
 msgstr "One value per line, example: Review:Chapter=1.2.56"
 
 #: resources/vue/components/form_inputs/FileUpload.vue:39
-#, fuzzy
 msgid "Eine Datei gewählt"
-msgstr "No file selected"
+msgstr "One file selected"
 
 #: resources/vue/components/responsive/ResponsiveNavigation.vue:209
 #: resources/vue/components/responsive/ResponsiveNavigation.vue:210
@@ -3340,11 +3257,10 @@ msgstr "One layer above"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:151
 #: resources/vue/components/courseware/unit/CoursewareUnitItem.vue:452
-#, fuzzy
 msgid "eine Gruppe"
 msgid_plural "%{count} Gruppen"
-msgstr[0] "No grouping"
-msgstr[1] "No grouping"
+msgstr[0] "one group"
+msgstr[1] "%{count} groups"
 
 #: resources/vue/components/ConsultationCreator.vue:280
 msgid "Eine Pause nach wie vielen Minuten einfügen?"
@@ -3376,8 +3292,8 @@ msgstr "a week old"
 #, fuzzy
 msgid "einem Studierendem"
 msgid_plural "%{count} Studierenden"
-msgstr[0] "Every student"
-msgstr[1] "Every student"
+msgstr[0] "to one student"
+msgstr[1] "to %{count} students"
 
 #: resources/vue/components/courseware/structural-element/CoursewareWelcomeScreen.vue:26
 msgid "Einen Abschnitt auswählen"
@@ -3389,11 +3305,10 @@ msgstr "Add a section"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:141
 #: resources/vue/components/courseware/unit/CoursewareUnitItem.vue:439
-#, fuzzy
 msgid "einen Studierenden"
 msgid_plural "%{count} Studierende"
-msgstr[0] "Every student"
-msgstr[1] "Every student"
+msgstr[0] "one student"
+msgstr[1] "%{count} students"
 
 #: resources/vue/components/courseware/widgets/CoursewareCommentsOverviewWidgetFilterCreated.vue:26
 msgid "einen Tag alt"
@@ -4009,11 +3924,11 @@ msgstr "Add panel"
 #: resources/vue/components/courseware/containers/CoursewareAccordionContainer.vue:150
 #: resources/vue/components/courseware/containers/CoursewareAccordionContainer.vue:217
 msgid "Fach löschen"
-msgstr "Delete panel"
+msgstr "Delete field of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:30
 msgid "Fachsemester auswählen (optional)"
-msgstr "Select semester of study (optional)"
+msgstr "Select semester (optional)"
 
 #: resources/vue/components/courseware/blocks/CoursewareHeadlineBlock.vue:502
 msgid "Faded Sun"
@@ -4261,10 +4176,10 @@ msgid ""
 msgstr "The following fields must be corrected to be able to submit the form:"
 
 #: resources/vue/components/admission/PreferentialAdmission.vue:10
-#, fuzzy
 msgid "Folgende Gruppen werden bei der Platzverteilung bevorzugt behandelt: %s"
 msgstr ""
-"The following categories of people are preferred during seat allocation:"
+"The following categories of people receive preferential treatment during "
+"seat allocation: %s"
 
 #: resources/vue/components/admission/PreferentialAdmission.vue:30
 msgid "Folgende Personen bei der Platzverteilung bevorzugen:"
@@ -4363,9 +4278,8 @@ msgid "Freigabe löschen"
 msgstr "Delete share"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:134
-#, fuzzy
 msgid "Freigabe widerrufen"
-msgstr "Releases"
+msgstr "Cancel share"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasksList.vue:127
 msgid "Freigeben"
@@ -5089,12 +5003,16 @@ msgid ""
 "In diesem Peer-Review-Prozess werden die Paarungen automatisch verteilt, "
 "sobald der Bearbeitungszeitraum beginnt."
 msgstr ""
+"In this peer review process, the pairings are distributed automatically "
+"before the processing period begins."
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDetail.vue:56
 msgid ""
 "In diesem Peer-Review-Prozess werden die Paarungen manuell verteilt, bevor "
 "der Bearbeitungszeitraum beginnt."
 msgstr ""
+"In this peer review process, the pairings are distributed manually before "
+"the processing period begins."
 
 #: resources/vue/components/courseware/blocks/CoursewareDownloadBlock.vue:124
 msgid "Infobox"
@@ -6974,12 +6892,12 @@ msgid "Öffentlichen Link für Seite erzeugen"
 msgstr "Create public link for page"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPublicLink.vue:45
-#, fuzzy
 msgid ""
 "Öffentlicher Link wurde angelegt. Unter „Freigaben“ finden Sie alle Ihre "
 "öffentlichen Links."
 msgstr ""
-"Public link has been created. At Shares you will find all your public links."
+"A public link has been created. You will find all your public links in the "
+"Shares section."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogAdd.vue:125
 msgid "ohne Vorlage"
@@ -7894,11 +7812,12 @@ msgid "Sie können direkt auf eine URL in der Anwendung verlinken."
 msgstr "You can link directly to an URL in the application."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:1278
-#, fuzzy
 msgid ""
 "Sie können es jedoch nicht öffnen, da der Bearbeitungszeitraum noch nicht "
 "abgelaufen ist."
-msgstr "You cannot delete this date since it is occupied."
+msgstr ""
+"However, you cannot open it because the processing period has not yet "
+"expired."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogCopy.vue:28
 msgid ""
@@ -8240,7 +8159,7 @@ msgstr "Search study area"
 
 #: resources/vue/components/questionnaires/AutomatedDataEdit.vue:42
 msgid "Studienfach"
-msgstr "Subject"
+msgstr "Field of study"
 
 #: resources/vue/components/questionnaires/AutomatedDataEdit.vue:53
 #, fuzzy
@@ -9154,8 +9073,7 @@ msgid ""
 "Wählen Sie das Lernmaterial aus, in dem sich der zu kopierende Lerninhalt "
 "befindet."
 msgstr ""
-"Select the learning material in which the learning content that shall be "
-"copied resides in."
+"Select the learning material containing the content you would like to copy."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogLink.vue:20
 msgid ""
@@ -9163,9 +9081,9 @@ msgid ""
 "befindet. Die Lerninhalte, die verknüpft werden können, müssen unter "
 "Arbeitsplatz/Courseware vorher erstellt werden."
 msgstr ""
-"Select the learning material in which the learning content that shall be "
-"linked resides in. The learning contents that can be linked must be created "
-"at Work place/Courseware before."
+"Select the learning material containing the content you would like to link. "
+"The content to be linked must have been created in the Work place/courseware "
+"previously."
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:27
 msgid ""
@@ -9270,8 +9188,7 @@ msgid ""
 "Wählen Sie hier den Ort in Stud.IP aus, an dem sich der zu kopierende "
 "Lerninhalt befindet."
 msgstr ""
-"Select the location in Stud.IP here where the learning content that shall be "
-"copied resides in."
+"Select the location containing the content you would like to copy in Stud.IP."
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:48
 msgid ""
