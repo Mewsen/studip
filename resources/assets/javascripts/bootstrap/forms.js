@@ -404,14 +404,18 @@ STUDIP.ready(function () {
                     computed: {
                         ordererValidationNotes: function () {
                             let orderedNotes = [];
+                            let inserted = [];
                             for (let i in this.STUDIPFORM_INPUTS_ORDER) {
                                 for (let k in this.STUDIPFORM_VALIDATIONNOTES) {
                                     if (this.STUDIPFORM_VALIDATIONNOTES[k].name === this.STUDIPFORM_INPUTS_ORDER[i]) {
                                         orderedNotes.push(this.STUDIPFORM_VALIDATIONNOTES[k]);
+                                        inserted.push(k);
                                     }
                                 }
                             }
-                            return orderedNotes;
+                            return orderedNotes.concat(
+                                this.STUDIPFORM_VALIDATIONNOTES.filter((note, index) => !inserted.includes(index))
+                            );
                         }
                     },
                     mounted() {
