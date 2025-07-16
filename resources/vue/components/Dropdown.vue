@@ -1,5 +1,5 @@
 <script setup>
-import {useTemplateRef} from "vue";
+import {nextTick, ref, useTemplateRef, watch} from "vue";
 import useDetectOutsideClick from "../composables/useDetectOutsideClick";
 import StudipIcon from "./StudipIcon.vue";
 
@@ -11,12 +11,27 @@ defineProps({
         type: Boolean,
         default: true
     }
-})
+});
 
 const isOpen = defineModel({ default: false });
-
+const dropdownStyle = ref({});
 const dropdown = useTemplateRef('dropdown');
-useDetectOutsideClick(dropdown, () => isOpen.value = false)
+const dropdownContent = useTemplateRef('dropdownContent');
+
+useDetectOutsideClick(dropdown, () => isOpen.value = false);
+
+watch(isOpen, async (open) => {
+    if (open) {
+        await nextTick();
+
+        const trigger = dropdown.value?.getBoundingClientRect();
+        const content = dropdownContent.value?.getBoundingClientRect();
+
+        dropdownStyle.value = {
+            ...(content.width > trigger.left ? {left: '0'} : {right: '0'})
+        };
+    }
+});
 </script>
 
 <template>
@@ -31,7 +46,13 @@ useDetectOutsideClick(dropdown, () => isOpen.value = false)
         </slot>
 
         <Transition name="fade-down">
-            <div v-if="isOpen" class="dropdown__content" aria-labelledby="dropdown-title">
+            <div
+                v-if="isOpen"
+                ref="dropdownContent"
+                class="dropdown__content"
+                :style="dropdownStyle"
+                aria-labelledby="dropdown-title"
+            >
                 <button
                     v-if="withCloseButton"
                     @click="isOpen = false"
