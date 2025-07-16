@@ -20,8 +20,8 @@ const discussionCreateURL = computed(() => {
         :href="discussionCreateURL"
         :title="$gettext('Neue Diskussion starten')"
         data-dialog="width=900;height=750"
-        type="button"
-        class="icon-button">
+        role="button"
+        class="button button--icon-only">
         <StudipIcon shape="add" :size="20" aria-hidden="true" />
     </a>
 </template>

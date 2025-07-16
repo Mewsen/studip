@@ -69,7 +69,7 @@ onMounted(async () => {
                             @click="forumConfig.toggleForumLayout();"
                             :title="$gettext('Tabellarische Ansicht')"
                             type="button"
-                            class="icon-button">
+                            class="button button--icon-only">
                             <StudipIcon shape="view-list" :size="20" />
                         </button>
                         <button
@@ -77,7 +77,7 @@ onMounted(async () => {
                             @click="forumConfig.toggleForumLayout();"
                             :title="$gettext('Kachelansicht')"
                             type="button"
-                            class="icon-button">
+                            class="button button--icon-only">
                             <StudipIcon shape="view-wall" :size="20" />
                         </button>
                         <div aria-live="polite" class="sr-only" role="status">{{ toggleLayoutMessage }}</div>

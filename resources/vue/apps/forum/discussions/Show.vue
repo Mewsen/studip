@@ -91,7 +91,7 @@ const fetchPostings = async () => {
                 `forum-discussions/${props.discussion.discussion_id}/postings`,
                 {
                     data: {
-                        include: 'author,opengraph-urls,posting,reactions,reactions.user&fields[users]=id',
+                        include: 'author,opengraph-urls,posting,reactions,reactions.user&fields[users]=id,username,formatted-name',
                         page: { offset }
                     }
                 }
@@ -194,7 +194,7 @@ onMounted(async () => {
                         </em>
                         <StudipIcon shape="lock-locked2" :size="20" role="inactive" />
                     </div>
-                    <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="icon-button">
+                    <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="button button--icon-only">
                         <StudipIcon shape="edit" :size="20" />
                     </button>
                     <SubscriptionDropdown
@@ -243,7 +243,7 @@ onMounted(async () => {
                 <a
                     v-if="!discussion.closed_at"
                     href="#new-post"
-                    class="button --with-icon m-0"
+                    class="button button--icon-label"
                     role="button"
                     :title="$gettext('Antworten')"
                     :aria-label="$gettext('Antworten')"
@@ -252,8 +252,7 @@ onMounted(async () => {
                         }"
                     @click="postCreateForm = true"
                 >
-                    <StudipIcon shape="reply" :size="20"  class="icon-default" aria-hidden="true" />
-                    <StudipIcon shape="reply" :size="20"  class="icon-hover" role="info_alt" aria-hidden="true" />
+                    <StudipIcon shape="reply" :size="20" aria-hidden="true" />
                     {{ $gettext('Antworten') }}
                 </a>
             </div>
@@ -296,7 +295,7 @@ onMounted(async () => {
                 <a
                     v-if="!discussion.closed_at"
                     href="#new-post"
-                    class="button --with-icon m-0"
+                    class="button button--icon-label"
                     role="button"
                     :title="$gettext('Antworten')"
                     :aria-label="$gettext('Antworten')"
@@ -305,8 +304,7 @@ onMounted(async () => {
                     }"
                     @click="postCreateForm = true"
                 >
-                    <StudipIcon shape="reply" :size="20"  class="icon-default" aria-hidden="true" />
-                    <StudipIcon shape="reply" :size="20"  class="icon-hover" role="info_alt" aria-hidden="true" />
+                    <StudipIcon shape="reply" :size="20" aria-hidden="true" />
                     {{ $gettext('Antworten') }}
                 </a>
             </div>

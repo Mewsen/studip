@@ -5,7 +5,7 @@
                 <? if (filter_var($notification['avatar'], FILTER_VALIDATE_URL)): ?>
                     <div class="avatar" style="background-color: currentColor; mask: url(<?= $notification['avatar'] ?>) no-repeat center / contain;;"></div>
                 <? else: ?>
-                    <div class="html-emoji">
+                    <div class="emoji-icon">
                         <?= $notification['avatar'] ?>
                     </div>
                 <? endif ?>

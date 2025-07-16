@@ -80,26 +80,24 @@ onUnmounted(() => {
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>
-        <div class="flex items-center gap-10">
+        <div class="post-form__footer">
             <button
                 type="submit"
                 :disabled="isLoading || !content"
-                class="button --with-icon"
+                class="button button--icon-label"
                 :value="$gettext('Speichern')"
                 :title="$gettext('Speichern')"
             >
-                <StudipIcon shape="reply" :size="20"  class="icon-default" aria-hidden="true" />
-                <StudipIcon shape="reply" :size="20"  class="icon-hover" role="info_alt" aria-hidden="true" />
+                <StudipIcon shape="reply" :size="20" aria-hidden="true" />
                 {{ $gettext('Speichern') }}
             </button>
             <button
                 type="button"
-                class="button --with-icon"
+                class="button button--icon-label"
                 :title="$gettext('Abbrechen')"
                 @click="$emit('canceled')"
             >
-                <StudipIcon shape="decline" :size="20" class="icon-default" aria-hidden="true"/>
-                <StudipIcon shape="decline" :size="20" class="icon-hover" role="info_alt" aria-hidden="true"/>
+                <StudipIcon shape="decline" :size="20" aria-hidden="true"/>
                 {{ $gettext('Abbrechen') }}
             </button>
         </div>

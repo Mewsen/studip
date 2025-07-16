@@ -24,14 +24,12 @@ const emptyForumIllustration = `${STUDIP.ASSETS_URL}images/forum/forum-keyvisual
             </p>
 
             <div class="buttons-container">
-                <button type="button" class="button --with-icon">
-                    <StudipIcon shape="lightbulb" :size="20" class="icon-default" aria-hidden="true" />
-                    <StudipIcon shape="lightbulb" :size="20" class="icon-hover" role="info_alt" aria-hidden="true" />
+                <button type="button" class="button button--icon-label">
+                    <StudipIcon shape="lightbulb" :size="20" aria-hidden="true" />
                     {{ $gettext('Tour ansehen') }}
                 </button>
-                <a :href="getDiscussionCreateURL()" data-dialog="width=900;height=700" class="button --with-icon">
-                    <StudipIcon shape="add" :size="20" class="icon-default" aria-hidden="true" />
-                    <StudipIcon shape="add" :size="20" class="icon-hover" role="info_alt" aria-hidden="true" />
+                <a :href="getDiscussionCreateURL()" data-dialog="width=900;height=700" class="button button--icon-label">
+                    <StudipIcon shape="add" :size="20" aria-hidden="true" />
                     {{ $gettext('Eine Diskussion starten') }}
                 </a>
             </div>

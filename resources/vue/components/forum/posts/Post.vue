@@ -203,17 +203,17 @@ const removePostHighlight = id => {
                     <div class="inline-flex items-center gap-40">
                         <div v-if="!discussion.closed_at" class="inline-flex items-center gap-10">
                             <template v-if="post.author?.id === auth_user.id">
-                                <button :disabled="editPost === post.id" @click="editPost = post.id" type="button" class="icon-button" :title="$gettext('Beitrag bearbeiten')" :aria-label="$gettext('Beitrag bearbeiten')">
+                                <button :disabled="editPost === post.id" @click="editPost = post.id" type="button" class="button button--icon-only" :title="$gettext('Beitrag bearbeiten')" :aria-label="$gettext('Beitrag bearbeiten')">
                                     <StudipIcon shape="edit" :size="20" aria-hidden="true" />
                                 </button>
-                                <button @click="deletePost(post)" type="button" class="icon-button" :title="$gettext('Beitrag löschen')" :aria-label="$gettext('Beitrag löschen')">
+                                <button @click="deletePost(post)" type="button" class="button button--icon-only" :title="$gettext('Beitrag löschen')" :aria-label="$gettext('Beitrag löschen')">
                                     <StudipIcon shape="trash" :size="20" aria-hidden="true" />
                                 </button>
                             </template>
-                            <button type="button" @click="forwardPost(post)" class="icon-button" :title="$gettext('Beitrage weiterleiten')" :aria-label="$gettext('Beitrage weiterleiten')">
+                            <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrage weiterleiten')" :aria-label="$gettext('Beitrage weiterleiten')">
                                 <StudipIcon shape="export" :size="20" aria-hidden="true" />
                             </button>
-                            <button :disabled="postCreateForm" @click="addReply(post)" type="button" class="icon-button" :title="$gettext('Zitieren und antworten')" :aria-label="$gettext('Zitieren und Antworten')">
+                            <button :disabled="postCreateForm" @click="addReply(post)" type="button" class="button button--icon-only" :title="$gettext('Zitieren und antworten')" :aria-label="$gettext('Zitieren und Antworten')">
                                 <StudipIcon shape="quote" :size="20" aria-hidden="true" />
                             </button>
                         </div>

@@ -127,14 +127,14 @@ const swapCategory = (categoryId, step) => {
                         v-if="forumConfig.tileLayout"
                         @click="forumConfig.toggleForumLayout()"
                         type="button"
-                        :title="$gettext('Tabellarische Ansicht')" class="icon-button">
+                        :title="$gettext('Tabellarische Ansicht')" class="button button--icon-only">
                         <StudipIcon shape="view-list" :size="20" />
                     </button>
                     <button
                         v-else
                         @click="forumConfig.toggleForumLayout()"
                         type="button"
-                        :title="$gettext('Kachelansicht')" class="icon-button">
+                        :title="$gettext('Kachelansicht')" class="button button--icon-only">
                         <StudipIcon shape="view-wall" :size="20" />
                     </button>
                     <div aria-live="polite" class="sr-only" role="status">{{ toggleLayoutMessage }}</div>

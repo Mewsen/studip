@@ -28,7 +28,8 @@ const topicCreateURL = computed(() => {
         data-dialog="width=700"
         :title="$gettext('Neues Thema anlegen')"
         :aria-label="$gettext('Neues Thema anlegen')"
-        class="icon-button"
+        class="button button--icon-only"
+        :class="label ? 'button--icon-label' : 'button--icon-only'"
         role="button"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />

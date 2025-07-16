@@ -187,7 +187,7 @@
             display: block;
             padding: 0;
             &:hover {
-                color: var(--color--highlight-hover); 
+                color: var(--color--highlight-hover);
                 text-decoration: none;
             }
         }
@@ -224,7 +224,7 @@
         .item:hover .options.hidden { visibility: visible; }
     }
 
-    .html-emoji {
+    .emoji-icon {
         font-family: apple color emoji, segoe ui emoji, notocoloremoji, segoe ui symbol, android emoji, emojisymbols, emojione mozilla;
         font-size: 20px;
         margin-right: 10px;

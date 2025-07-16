@@ -70,7 +70,7 @@ const swapTopic = event => {
                         <div class="title-with-actions">
                             <div class="title-with-actions__content">
                                 <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
-                                    <h3 class="line-clamp-2">{{ topic.name }}</h3>
+                                    <span class="topic-title line-clamp-2">{{ topic.name }}</span>
                                     <span
                                         v-if="topic.meta.postings_count > topic.meta.user_read_index"
                                         class="unread-items-badge"
@@ -173,9 +173,9 @@ const swapTopic = event => {
                 <div class="topic-card__body">
                     <div class="flex space-between">
                         <div class="flex items-start gap-10">
-                            <h3 class="topic-card__title line-clamp-2">
+                            <span class="topic-card__title topic-title line-clamp-2">
                                 {{ topic.name }}
-                            </h3>
+                            </span>
 
                             <span
                                 v-if="topic.meta.postings_count > topic.meta.user_read_index"

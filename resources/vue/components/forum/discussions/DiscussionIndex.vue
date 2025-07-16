@@ -167,7 +167,7 @@ onMounted(() => {
                                         class="title-with-actions__link"
                                         :href="getDiscussionURL(discussion.id, {redirect})"
                                         :title="$gettext('Zur Diskussion')">
-                                        <h3 class="title-with-actions_title line-clamp-2 m-0">{{ discussion.title }}</h3>
+                                        <span class="title-with-actions_title discussion-title line-clamp-2 m-0">{{ discussion.title }}</span>
                                         <span
                                             v-if="redirect !== 'recent' && discussion.meta.postings_count > discussion.meta.user_read_index"
                                             class="unread-items-badge"

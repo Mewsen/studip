@@ -18,7 +18,8 @@ defineProps({
         data-dialog="size=700"
         :title="$gettext('Neue Kategorie anlegen')"
         :aria-label="$gettext('Neue Kategorie anlegen')"
-        class="icon-button"
+        class="button"
+        :class="label ? 'button--icon-label' : 'button--icon-only'"
         role="button"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />

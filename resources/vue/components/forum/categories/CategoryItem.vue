@@ -74,7 +74,7 @@ const swapCategory = event => {
                                     class="title-with-actions__link"
                                     :href="getCategoryURL(category.id)"
                                     :title="$gettext('Zur Kategorie')">
-                                    <h3 class="line-clamp-2">{{ category.name }}</h3>
+                                    <span class="category-title line-clamp-2">{{ category.name }}</span>
                                     <span
                                         v-if="category.meta.postings_count > category.meta.user_read_index"
                                         class="unread-items-badge"
@@ -185,9 +185,9 @@ const swapCategory = event => {
                 <div class="topic-card__body">
                     <div class="flex space-between">
                         <div class="flex items-start gap-10">
-                            <h3 class="topic-card__title line-clamp-2">
+                            <span class="topic-card__title category-title line-clamp-2">
                                 {{ category.name }}
-                            </h3>
+                            </span>
 
                             <span
                                 v-if="category.meta.postings_count > category.meta.user_read_index"

@@ -146,14 +146,13 @@ onMounted(() => {
                 </div>
                 <button
                     type="submit"
-                    class="button m-0 --with-icon"
+                    class="button button--icon-label"
                     :title="$gettext('Suchen')"
                 >
-                    <StudipIcon shape="search" :size="20" class="icon-default" aria-hidden="true" />
-                    <StudipIcon shape="search" :size="20" class="icon-hover" role="info_alt" aria-hidden="true" />
+                    <StudipIcon shape="search" :size="20" aria-hidden="true" />
                     {{ $gettext('Suchen') }}
                 </button>
-                <button @click="resetSearchForm" type="button" class="icon-button" :title="$gettext('Zurücksetzen')">
+                <button @click="resetSearchForm" type="button" class="button button--icon-only" :title="$gettext('Zurücksetzen')">
                     <StudipIcon shape="decline" :size="20" />
                 </button>
             </div>

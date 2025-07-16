@@ -128,7 +128,13 @@ const subscribe = async (notification_type = 'all') => {
 <template>
     <Dropdown class="forum-subscriptions-dropdown" v-model="isOpen" :title="title">
         <template #trigger>
-            <button class="icon-button subscription-button" type="button" @click="isOpen = !isOpen" :title="title">
+            <button
+                type="button"
+                :title="title"
+                class="button subscription-button"
+                :class="subscriptionButtonLabel ? 'button--icon-label' : 'button--icon-only'"
+                @click="isOpen = !isOpen"
+            >
                 <span v-if="subscriptionButtonLabel">
                     {{ subscriptionButtonLabel }}
                 </span>
