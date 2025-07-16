@@ -20,8 +20,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-16 08:31+0200\n"
-"PO-Revision-Date: 2025-07-16 08:45+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"PO-Revision-Date: 2025-07-16 09:38+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-6-0/en/>\n"
 "Language: en\n"
@@ -14702,7 +14703,7 @@ msgstr "Nothing entered in the search field!"
 #: lib/classes/UserFilterFields/SubjectCondition.php:53
 #: lib/models/QuestionnaireAutomatedData.php:143
 msgid "Studienfach"
-msgstr "Subject"
+msgstr "Field of study"
 
 #: app/controllers/admin/autoinsert.php:235
 msgid "Studienabschluss"
