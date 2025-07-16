@@ -168,14 +168,14 @@ onMounted(async () => {
                     </tr>
                     <tr v-else v-for="subscription in sortedData" :key="subscription.id">
                     <td>
-                        <div class="discussion-overview">
+                        <div class="table-row-overview">
                             <div class="title-with-actions">
                                 <div class="title-with-actions__content">
                                     <a v-if="subscription.subject.type === 'forum-topics'" :href="getTopicURL(subscription.subject.id)" :title="$gettext('Zum Thema')">
-                                        <h3 class="line-clamp-2">{{ subscription.subject.name }}</h3>
+                                        <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.name }}</span>
                                     </a>
                                     <a v-else-if="subscription.subject.type === 'forum-discussions'" :href="getDiscussionURL(subscription.subject.id)" :title="$gettext('Zur Diskussion')">
-                                        <h3 class="line-clamp-2">{{ subscription.subject.title }}</h3>
+                                        <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.title }}</span>
                                     </a>
                                 </div>
 
@@ -193,7 +193,7 @@ onMounted(async () => {
                     </td>
                     <td>
                         <StudipIcon
-                            v-if="subscription.subject.type === 'forum-discussion' && subscription.subject.closed_at"
+                            v-if="subscription.subject.type === 'forum-discussions' && subscription.subject.closed_at"
                             :title="$gettext('Diskussion ist geschlossen')"
                             shape="lock-locked2"
                             :size="20"

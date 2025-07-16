@@ -159,7 +159,7 @@ onMounted(() => {
             <template v-else>
                 <tr v-for="discussion in sortedData" :key="discussion.id">
                     <td>
-                        <div class="discussion-overview">
+                        <div class="table-row-overview">
                             <div class="title-with-actions">
                                 <div class="title-with-actions__content">
                                     <StudipIcon class="icon" v-if="discussion.sticky" shape="pin" role="info" :size="20" />

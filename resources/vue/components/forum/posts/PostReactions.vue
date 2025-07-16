@@ -53,7 +53,7 @@ const getPostReactionJSONAPIObject = (emoji) => ({
 const storeReaction = async (emoji) => {
     try {
         const response = await STUDIP.jsonapi.withPromises().POST(
-            'forum-posting-reactions?include=user&fields[users]=id',
+            'forum-posting-reactions?include=user&fields[users]=id,username,formatted-name',
             { data: getPostReactionJSONAPIObject(emoji) }
         );
 
@@ -105,7 +105,7 @@ const reactionShowDialog = reactive({
             <template v-for="(reaction, emoji) in groupedReactions" :key="emoji">
                 <button
                     type="button"
-                    class="post-reaction"
+                    class="post-reaction as-link"
                     :class="{
                         '--active': findUserReaction(emoji, reaction)
                     }"
@@ -121,7 +121,7 @@ const reactionShowDialog = reactive({
             <div class="post-reactions__button-group">
                 <button
                     type="button"
-                    class="post-reactions__add-reaction"
+                    class="post-reactions__add-reaction as-link"
                     :title="$gettext('Reagieren')"
                     :aria-label="$gettext('Reagieren')"
                     @click="showReactions = !showReactions">
@@ -130,7 +130,7 @@ const reactionShowDialog = reactive({
                 <button
                     v-if="reactions.length"
                     type="button"
-                    class="post-reactions__show-reactions"
+                    class="post-reactions__show-reactions as-link"
                     :title="$gettext('Reaktionen anzeigen')"
                     :aria-label="$gettext('%{count} Reaktionen anzeigen', { count: reactions.length })"
                     @click="reactionShowDialog.isOpen = true">

@@ -309,11 +309,12 @@ $card-max-width: 300px;
 
     .topic-title,
     .category-title,
+    .subscription-title,
     .discussion-title {
         font-size: 16px;
     }
 
-    .discussion-overview {
+    .table-row-overview {
         p {
             margin-top: 5px;
             color: var(--color--font-secondary);
@@ -596,38 +597,17 @@ $card-max-width: 300px;
         &__button-group {
             display: inline-flex;
             align-items: center;
+            gap: 5px;
         }
 
+        &__show-reactions,
         &__add-reaction {
             display: inline-flex;
-            cursor: pointer;
-            background: none;
-            border: navajowhite;
-            padding: 0;
             align-items: center;
-            gap: 5px;
-
-            p {
-                margin: 0;
-            }
-
-            .add-reaction-icon {
-                width: 20px;
-                height: auto;
-                fill: var(--color--font-secondary);
-                transition: fill 0.2s;
-            }
-
-            &:hover {
-                .add-reaction-icon {
-                    fill: var(--color--highlight);
-                }
-            }
-        }
-
-        &__show-reactions {
+            cursor: pointer;
             border: none;
             background: none;
+            padding: 4px 0;
         }
 
         &__container {
@@ -1086,7 +1066,7 @@ $card-max-width: 300px;
             border: thin solid $color--gray-5;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
 
             &.--active {
