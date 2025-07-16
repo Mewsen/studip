@@ -842,7 +842,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             if ($this->admission_prelim_txt) {
                 $log[] = sprintf(_('Neuer Hinweistext bei vorläufigen Eintragungen: %s'), strip_tags(kill_format($this->admission_prelim_txt)));
             } else {
-                $log[] = _('Hinweistext bei vorläufigen Eintragungen wurde entfert');
+                $log[] = _('Hinweistext bei vorläufigen Eintragungen wurde entfernt');
             }
         }
 

@@ -71,7 +71,7 @@
                     <? if (!$accepted_count): echo 'disabled'; ?>
                     <? elseif (in_array('accepted', $default_selected_groups)): echo 'checked'; ?>
                     <? endif; ?>>
-                <?= _('Alle vorläufig akzeptierten Teilnehmende der Veranstaltung') ?>
+                <?= _('Alle vorläufig akzeptierten Teilnehmenden der Veranstaltung') ?>
                 <em>
                     (<?= sprintf(
                         ngettext('%u Person', '%u Personen', $accepted_count),
