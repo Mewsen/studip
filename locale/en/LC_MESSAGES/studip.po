@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-16 08:31+0200\n"
-"PO-Revision-Date: 2025-07-16 06:53+0000\n"
+"PO-Revision-Date: 2025-07-16 08:45+0000\n"
 "Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-6-0/en/>\n"
@@ -2231,7 +2231,7 @@ msgid ""
 "Sollen die bereits in der Veranstaltung eingetragenen Teilnehmenden in "
 "vorläufige Teilnehmende umgewandelt werden?"
 msgstr ""
-"You are about to change the admission mode to \"Preliminary admission\". Do "
+"You are about to change the admission mode to \"Provisional admission\". Do "
 "you want to convert the participants already enrolled in the course to "
 "preliminary participants?"
 
@@ -2243,8 +2243,9 @@ msgid ""
 "entfernt) ?"
 msgstr ""
 "You are about to change the admission mode to \"Direct enrollment\". Do you "
-"want to enroll the preliminary participants in the course (otherwise the "
-"preliminary participants will be removed from the course) ?"
+"want to enroll the provisionally accepted participants in the course ("
+"otherwise the provisionally accepted participants will be removed from the "
+"course) ?"
 
 #: app/controllers/course/admission.php:149
 #, php-format
@@ -2267,7 +2268,7 @@ msgstr "Status change %s"
 #: app/controllers/course/admission.php:156
 #, php-format
 msgid "%s Teilnehmende wurden auf vorläufigen Eintrag gesetzt."
-msgstr "%s participants have been set to preliminary enrolled."
+msgstr "%s participants have been set to provisionally accepted."
 
 #: app/controllers/course/admission.php:172
 #, php-format
@@ -2295,7 +2296,7 @@ msgstr ""
 #: app/controllers/course/admission.php:196
 #, php-format
 msgid "%s vorläufige Teilnehmende wurden entfernt."
-msgstr "%s preliminary participants have been removed."
+msgstr "%s provisionally accepted participants have been removed."
 
 #: app/controllers/course/admission.php:204
 msgid "Der Anmeldemodus wurde geändert."
@@ -4698,7 +4699,7 @@ msgstr[1] "%{number} users could not be moved to the waiting list."
 
 #: app/controllers/course/members.php:1349
 msgid "Sie haben keine Personen zum Verschieben auf die Warteliste ausgewählt"
-msgstr "You did not select a person for moving them onto the wait list"
+msgstr "You did not select a person for moving them onto the waiting list"
 
 #: app/controllers/course/members.php:1426
 #: app/controllers/admin/coursewizardsteps.php:95
@@ -5673,7 +5674,7 @@ msgid ""
 "gesetzt."
 msgstr ""
 "No seats available. You have therefore been put on the position %s on the "
-"wait list."
+"waiting list."
 
 #: app/controllers/course/enrolment.php:128
 msgid ""
@@ -5687,7 +5688,7 @@ msgid ""
 "keine Wartelistenplätze zur Verfügung, da die Warteliste voll ist."
 msgstr ""
 "The enrollment has not been successful. All seats have been occupied and "
-"there are no seats left on the wait list since the wait list is full."
+"there are no seats left on the waiting list since the waiting list is full."
 
 #: app/controllers/course/enrolment.php:133
 msgid ""
@@ -11189,11 +11190,11 @@ msgstr "Number of applications"
 
 #: app/controllers/admission/restricted_courses.php:83
 msgid "Anzahl vorl. Anmeldungen"
-msgstr "Number of preliminary enrolments"
+msgstr "Number of provisionally accepted enrolments"
 
 #: app/controllers/admission/restricted_courses.php:84
 msgid "Anzahl Warteliste"
-msgstr "Number wait list"
+msgstr "Number waiting list"
 
 #: app/controllers/admission/restricted_courses.php:85
 #: app/views/admission/restricted_courses/index.php:19
@@ -11374,11 +11375,11 @@ msgstr "Number of application with priority 1"
 
 #: app/controllers/admission/courseset.php:483
 msgid "max. Anzahl Warteliste"
-msgstr "max. numbers of applicants on the wait list"
+msgstr "max. numbers of applicants on the waiting list"
 
 #: app/controllers/admission/courseset.php:484
 msgid "automatisches Nachrücken aus der Warteliste"
-msgstr "automatic moving up from the wait list"
+msgstr "automatic moving up from the waiting list"
 
 #: app/controllers/admission/courseset.php:484
 #: app/views/admission/courseset/configure_courses.php:18
@@ -13817,7 +13818,7 @@ msgstr "Subscribed to waiting list (waiting / provisionally accepted)"
 
 #: app/controllers/admin/user.php:1465
 msgid "Eingetragen in Anmeldelisten"
-msgstr "Entered into wait lists"
+msgstr "Entered into waiting lists"
 
 #: app/controllers/admin/user.php:1473
 msgid "Eingetragen in Einrichtungen (admin / dozent / tutor / autor)"
@@ -21618,7 +21619,7 @@ msgid ""
 "der Anmeldungen die maximale Personenzahl überschreitet."
 msgstr ""
 "Please specify here how many persons are allowed for the course at maximum\n"
-"                and if a wait list shall be created if the amount of "
+"                and if a waiting list shall be created if the amount of "
 "enrolments exceeds the maximum amount of persons."
 
 #: app/views/course/admission/index.php:98
@@ -21641,15 +21642,15 @@ msgstr "Activate waiting list"
 #: app/views/course/admission/index.php:112
 #, php-format
 msgid "(%s Wartende)"
-msgstr "(%s on the wait list)"
+msgstr "(%s on the waiting list)"
 
 #: app/views/course/admission/index.php:121
 msgid "automatisches Nachrücken aus der Warteliste aktivieren"
-msgstr "activate move up from wait list"
+msgstr "activate move up from waiting list"
 
 #: app/views/course/admission/index.php:123
 msgid "max. Anzahl an Wartenden (optional)"
-msgstr "max. number of persons on wait list (optional)"
+msgstr "max. number of persons on waiting list (optional)"
 
 #: app/views/course/admission/index.php:132
 msgid "Teilnehmendenanzahl und Warteliste ändern"
@@ -29164,17 +29165,17 @@ msgstr "Moving up"
 #: app/views/admission/courseset/configure_courses.php:51
 #, php-format
 msgid "Warteliste für %s aktivieren"
-msgstr "Activate wait list for %s"
+msgstr "Activate waiting list for %s"
 
 #: app/views/admission/courseset/configure_courses.php:58
 #, php-format
 msgid "Anzahl der Plätze auf der Warteliste für %s"
-msgstr "Amount of seats on the wait list for %s"
+msgstr "Amount of seats on the waiting list for %s"
 
 #: app/views/admission/courseset/configure_courses.php:65
 #, php-format
 msgid "Aktivieren des automatischen Nachrückens aus der Warteliste für %s"
-msgstr "Activate automatic moving up from the wait list for %s"
+msgstr "Activate automatic moving up from the waiting list for %s"
 
 #: app/views/admission/courseset/configure_courses.php:74
 msgid "Anzahl aller Teilnehmenden:"
@@ -47213,16 +47214,16 @@ msgstr "New amount of participants: %s"
 
 #: lib/models/Course.php:2307
 msgid "Warteliste aktiviert"
-msgstr "Wait list activated"
+msgstr "Waiting list activated"
 
 #: lib/models/Course.php:2307
 msgid "Warteliste deaktiviert"
-msgstr "Wait list deactivated"
+msgstr "Waiting list deactivated"
 
 #: lib/models/Course.php:2311
 #, php-format
 msgid "Plätze auf der Warteliste geändert: %u"
-msgstr "Seats changed on the wait list: %u"
+msgstr "Seats changed on the waiting list: %u"
 
 #: lib/models/Course.php:2315
 msgid "Nachrücken aktiviert"
@@ -47515,7 +47516,7 @@ msgid ""
 "Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft "
 "worden. Sie stehen zur Zeit auf Position %s."
 msgstr ""
-"You have moved up in the wait list for the course **%s(%s)**. You are "
+"You have moved up in the waiting list for the course **%s(%s)**. You are "
 "currently at position %s."
 
 #: lib/models/AdmissionApplication.php:262
@@ -47997,7 +47998,7 @@ msgid ""
 "Weitere Plätze werden evtl. über Wartelisten zur Verfügung gestellt."
 msgstr ""
 "The seats in the affected courses have been assigned at %s on %s. Additional "
-"seats may be available via a wait list."
+"seats may be available via a waiting list."
 
 #: lib/admissionrules/participantrestrictedadmission/templates/info.php:14
 msgid "Die Plätze werden in der Reihenfolge der Anmeldung vergeben."
