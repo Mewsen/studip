@@ -1,18 +1,19 @@
 # Moritz Strohm <strohm@data-quest.de>, 2022, 2023, 2024.
-# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025.
 # Ron Lucke <lucke@elan-ev.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-05-23 14:00+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2025-07-17 10:00+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -1726,11 +1727,11 @@ msgstr "Add panel"
 #: resources/vue/components/courseware/CoursewareAccordionContainer.vue:51
 #: resources/vue/components/courseware/CoursewareAccordionContainer.vue:25
 msgid "Fach löschen"
-msgstr "Delete panel"
+msgstr "Delete field of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:29
 msgid "Fachsemester auswählen (optional)"
-msgstr "Select semester of study (optional)"
+msgstr "Select semester (optional)"
 
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:96
 msgid "FAQ"
