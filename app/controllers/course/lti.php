@@ -85,9 +85,8 @@ class Course_LtiController extends StudipController
             $this->links = \LtiResourceLink::findBySQL(
                 "JOIN `lti_deployments`
                 ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
-                WHERE
-                `lti_resource_links`.`course_id` = :course_id
-                AND (`lti_deployments`.`options` IS NULL OR `lti_deployments`.`options` NOT LIKE '%unfinished_deep_linking%')
+                WHERE `lti_resource_links`.`course_id` = :course_id
+                AND (`lti_resource_links`.`options` IS NULL OR `lti_resource_links`.`options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `lti_resource_links`.`position`",
                 ['course_id' => $this->course_id]
             );
