@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-17 10:00+0000\n"
+"PO-Revision-Date: 2025-07-18 14:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -2617,7 +2617,7 @@ msgstr "Insert"
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyPersonalInformationBlock.vue:76
 msgid "eingetragene Lebenspartnerin/eingetragener Lebenspartner verstorben"
-msgstr ""
+msgstr "Registered life partner deceased"
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyPersonalInformationBlock.vue:74
 msgid "eingetragene Lebenspartnerschaft"
