@@ -2,11 +2,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-17 09:00+0000\n"
+"PO-Revision-Date: 2025-07-18 13:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-6-0-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-6-0-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3288,7 +3288,6 @@ msgstr "a week old"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:190
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:241
-#, fuzzy
 msgid "einem Studierendem"
 msgid_plural "%{count} Studierenden"
 msgstr[0] "to one student"
@@ -3315,11 +3314,10 @@ msgstr "one day old"
 
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:199
 #: resources/vue/components/courseware/structural-element/CoursewareTreeItem.vue:251
-#, fuzzy
 msgid "einer Gruppe"
 msgid_plural "%{count} Gruppen"
-msgstr[0] "below group name"
-msgstr[1] "below group name"
+msgstr[0] "to a group"
+msgstr[1] "to %{count} groups"
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:22
 msgid "Einfügen"
@@ -3327,7 +3325,7 @@ msgstr "Insert"
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyPersonalInformationBlock.vue:76
 msgid "eingetragene Lebenspartnerin/eingetragener Lebenspartner verstorben"
-msgstr ""
+msgstr "Registered life partner deceased"
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyPersonalInformationBlock.vue:74
 msgid "eingetragene Lebenspartnerschaft"
@@ -3339,16 +3337,14 @@ msgid "Einleitungstext"
 msgstr "Introduction text"
 
 #: resources/vue/components/ConsultationCreator.vue:88
-#, fuzzy
 msgid "einmalig (ohne Wiederholung)"
-msgstr "Monthly repetition"
+msgstr "once (without repetition)"
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:27
 msgid "Einrichtung"
 msgstr "Institute"
 
 #: resources/vue/components/admission/ConfigureCourseSet.vue:120
-#, fuzzy
 msgid "Einrichtung wählen"
 msgstr "Select institute"
 
@@ -3372,9 +3368,8 @@ msgid "Einstellungen"
 msgstr "Settings"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessDetail.vue:82
-#, fuzzy
 msgid "Einstellungen ändern"
-msgstr "Edit wiki settings"
+msgstr "Change settings"
 
 #: resources/vue/components/courseware/layouts/CoursewareTalkBubble.vue:66
 msgid "Eintrag löschen"
@@ -3433,6 +3428,11 @@ msgid ""
 "eine Courseware von einer Kleingruppe bearbeiten lassen wollen. Anschließend "
 "können Sie einstellen, in welchem Zeitraum diese Rechte gelten."
 msgstr ""
+"First decide whether \"all students\" should have the same rights or whether "
+"\"individual students\" or previously created \"groups\" require different "
+"rights. The setting \"individual students\" or \"groups\" is useful, for "
+"example, if you want a small group to edit courseware. You can then set the "
+"period in which these rights apply."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogPermissions.vue:242
 msgid ""
@@ -3443,6 +3443,11 @@ msgid ""
 "eine Coursewareseite von einer Kleingruppe bearbeiten lassen wollen. "
 "Anschließend können Sie einstellen, in welchem Zeitraum diese Rechte gelten."
 msgstr ""
+"First decide whether \"all students\" should have the same rights or whether "
+"\"individual students\" or previously created \"groups\" require different "
+"rights. The setting \"individual students\" or \"groups\" is useful, for "
+"example, if you want a small group to edit courseware. You can then set the "
+"period in which these rights apply."
 
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:112
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:92
@@ -3491,14 +3496,12 @@ msgid "Ergebnisse einsehbar"
 msgstr "Show results"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessesList.vue:35
-#, fuzzy
 msgid "Erhaltene Peer-Reviews"
-msgstr "Contained settings:"
+msgstr "Peer reviews received"
 
 #: resources/vue/components/courseware/tasks/peer-review/ProcessesList.vue:69
-#, fuzzy
 msgid "Erhaltenes Peer-Review anzeigen"
-msgstr "Show rejected dates"
+msgstr "Show peer review received"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:186
 msgid "Erinnerungen"
@@ -3513,9 +3516,8 @@ msgid "Erlauben"
 msgstr "Allow"
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:29
-#, fuzzy
 msgid "Erlaubte Zielgruppen"
-msgstr "Study group"
+msgstr "Permitted target groups"
 
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:124
 msgid ""
@@ -3607,13 +3609,11 @@ msgid "Es gab einen Fehler. Bitte versuchen Sie es erneut!"
 msgstr "An error occurred. Please try again!"
 
 #: resources/vue/components/admission/PasswordAdmission.vue:30
-#, fuzzy
 msgid ""
 "Es ist bereits ein Passwort eingerichtet. Um es zu überschreiben, geben Sie "
 "hier ein neues ein."
 msgstr ""
-"A tour with this ID already exists. To replace it, you have to delete the "
-"old tour \"%s\" first."
+"A password has already been set up. To overwrite it, enter a new one here."
 
 #: resources/assets/javascripts/bootstrap/forms.js:293
 #: resources/assets/javascripts/lib/dialog.js:321
@@ -3676,15 +3676,13 @@ msgstr ""
 "At least one responsible person, status group or institute must be assigned."
 
 #: resources/vue/components/massmail/MassMailPermissions.vue:69
-#, fuzzy
 msgid ""
 "Es sind keine Berechtigungen für Personen ohne Root-Rechte konfiguriert."
-msgstr "No content terms of use are defined!"
+msgstr "No permissions for users without root privileges have been configured."
 
 #: resources/vue/components/admission/TermsAdmission.vue:35
-#, fuzzy
 msgid "Es sind keine Teilnahmebedingungen angegeben."
-msgstr "Add at least one condition."
+msgstr "No participation conditions specified."
 
 #: resources/vue/components/courseware/blocks/CoursewareTableOfContentsBlock.vue:127
 msgid ""
