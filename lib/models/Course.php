@@ -353,6 +353,38 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             }
         ];
 
+        $config['additional_fields']['context_tools'] = [
+            'get' => function (Course $course) {
+                $tools = $course->tools;
+                $class = $course->getSemClass();
+                $tools_classes = [];
+                $highest_position = 0;
+                foreach ($tools as $index => $tool) {
+                    $plugin = PluginManager::getInstance()->getPluginById($tool->plugin_id);
+                    if (!$class->isModuleAllowed(get_class($plugin))) {
+                        $tool->delete();
+                        unset($tools[$index]);
+                    } else {
+                        $tools_classes[] = get_class($plugin);
+                        $highest_position = max($highest_position, $tool->position);
+                    }
+                }
+                $pluginInfos = PluginManager::getInstance()->getPluginInfos('StudipModule');
+                foreach ($pluginInfos as $pluginInfo) {
+                    if (!in_array($pluginInfo['class'], $tools_classes) && $class->isModuleMandatory($pluginInfo['class'])) {
+                        $newTool = new ToolActivation();#
+                        $newTool->range_id = $course->id;
+                        $newTool->range_type = 'course';
+                        $newTool->plugin_id = $pluginInfo['id'];
+                        $newTool->position = ++$highest_position;
+                        $newTool->store();
+                        $tools[] = $newTool;
+                    }
+                }
+                return $tools;
+            }
+        ];
+
         $config['notification_map']['after_create'] = 'CourseDidCreateOrUpdate';
         $config['notification_map']['after_store'] = 'CourseDidCreateOrUpdate';
 
