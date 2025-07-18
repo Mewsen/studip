@@ -71,7 +71,7 @@ class TermsController extends AuthenticatedController
     {
         $url = Config::get()->TERMS_OF_USE_URL;
 
-        if (is_internal_url($url)) {
+        if ($url && is_internal_url($url)) {
             $url_parts = explode('/', $url);
             $detail_id = $url_parts[4];
             $si = new Siteinfo();
