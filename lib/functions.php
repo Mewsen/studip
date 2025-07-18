@@ -821,7 +821,7 @@ function is_internal_url($url)
         return mb_strpos($url, $GLOBALS['ABSOLUTE_URI_STUDIP']) === 0;
     }
 
-    if ($url[0] === '/') {
+    if (str_starts_with($url, '/')) {
         return mb_strpos($url, $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']) === 0;
     }
 
