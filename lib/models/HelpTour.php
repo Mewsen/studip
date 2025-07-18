@@ -72,11 +72,14 @@ class HelpTour extends SimpleORMap
             'on_delete'         => 'delete',
             'on_store'          => 'store',
         ];
-        $config['has_one']['author'] = [
-            'class_name'  => User::class,
-            'foreign_key' => 'author_email',
-            'assoc_func'  => 'findOneByEmail',
-        ];
+
+        $config['additional_fields']['author']['get'] = function (HelpTour $tour): ?User {
+            if (!$tour->author_email) {
+                return null;
+            }
+
+            return User::findOneByEmail($tour->author_email);
+        };
 
         $config['registered_callbacks']['before_store'][] = 'cbUpdateStudipVersion';
 
