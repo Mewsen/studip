@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // Clearfix
 // --------
 // For clearing floats like a boss h5bp.com/q
@@ -43,14 +45,14 @@
 
 @function luminance($value) {
     @if $value <= 0.03928 {
-        @return $value / 12.92;
+        @return math.div($value, 12.92);
     } @else {
-        @return (($value + 0.055) / 1.055) * (($value + 0.055) / 1.055);
+        @return math.pow(math.div($value + 0.055, 1.055), 2);
     }
 }
 
 @function relative-luminance($color) {
-    $rgb: red($color) / 255, green($color) / 255, blue($color) / 255;
+    $rgb: math.div(red($color), 255), math.div(green($color), 255), math.div(blue($color), 255);
 
     @return luminance(nth($rgb, 1)) * 0.2126 + luminance(nth($rgb, 2)) * 0.7152 + luminance(nth($rgb, 3)) * 0.0722;
 }
@@ -60,9 +62,9 @@
     $luminance2: relative-luminance($color2) + 0.05;
 
     @if $luminance1 > $luminance2 {
-        @return $luminance1 / $luminance2;
+        @return math.div($luminance1, $luminance2);
     } @else {
-        @return $luminance2 / $luminance1;
+        @return math.div($luminance2, $luminance1);
     }
 }
 
