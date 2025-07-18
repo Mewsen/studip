@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:07+0200\n"
-"PO-Revision-Date: 2025-07-17 07:00+0000\n"
+"PO-Revision-Date: 2025-07-18 13:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -33115,8 +33115,9 @@ msgid "Teilnehmende dürfen ihre Antworten revidieren"
 msgstr "Participants may revise their answers"
 
 #: app/views/questionnaire/edit.php:115
+#, fuzzy
 msgid "Ergebnisse einsehbar"
-msgstr "Results viewable"
+msgstr "Show results"
 
 #: app/views/questionnaire/edit.php:117
 msgid "Immer"
