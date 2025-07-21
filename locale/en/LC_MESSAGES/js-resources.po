@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-18 14:00+0000\n"
+"PO-Revision-Date: 2025-07-22 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -525,7 +525,7 @@ msgstr "Descending"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:24
 msgid "Absteigend sortiert, "
-msgstr "Sorted descending, "
+msgstr "Sorted in descending order, "
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyGoalsBlock.vue:38
 #: resources/vue/components/courseware/blocks/CoursewareBiographyGoalsBlock.vue:60
@@ -869,7 +869,7 @@ msgstr "April"
 #: resources/vue/components/file-chooser/FileChooserBreadcrumb.vue:20
 #: resources/vue/components/file-chooser/FileChooserDialog.vue:65
 msgid "Arbeitsplatz"
-msgstr "Work place"
+msgstr "Workplace"
 
 #: resources/vue/components/courseware/blocks/CoursewareBiographyCareerBlock.vue:162
 msgid "Art"
@@ -1065,7 +1065,7 @@ msgstr "Ascending"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:23
 msgid "Aufsteigend sortiert, "
-msgstr "Sorted ascending, "
+msgstr "Sorted in ascending order, "
 
 #: resources/assets/javascripts/studip-ui.js:651
 msgid "Aug"
@@ -1078,7 +1078,7 @@ msgstr "August"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogAddChooser.vue:33
 msgid "Aus Arbeitsplatz verknüpfen"
-msgstr "Link from work place"
+msgstr "Link from workplace"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogAddChooser.vue:39
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogAddChooser.vue:39
@@ -2258,7 +2258,7 @@ msgid ""
 "Beitrag aufmerksam machen. "
 msgstr ""
 "The sender of this message wants to call your attention to the following "
-"posting."
+"post. "
 
 #: resources/vue/mixins/MyCoursesMixin.js:105
 msgid "Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden."
@@ -2852,7 +2852,7 @@ msgid ""
 "unter Arbeitsplatz/Courseware ein Lernmaterial."
 msgstr ""
 "Unfortunately, no learning material could be found. Please create a learning "
-"material under Work place/Courseware."
+"material under Workplace/Courseware."
 
 #: resources/vue/components/stock-images/ImagesList.vue:72
 msgid "Es konnten keine Bilder gefunden werden."
@@ -2906,14 +2906,12 @@ msgid "Es werden auch alle Beiträge in diesem Bereich gelöscht!"
 msgstr "All postings in this area will be deleted as well!"
 
 #: resources/vue/components/FilesTable.vue:169
-#, fuzzy
 msgid "Es wird absteigend nach der Spalte %{ label } sortiert."
-msgstr "The sorting will be done descending by the column %{colName}."
+msgstr "Sorting in descending order according to the %{ label } column."
 
 #: resources/vue/components/FilesTable.vue:168
-#, fuzzy
 msgid "Es wird aufsteigend nach der Spalte %{ label } sortiert."
-msgstr "The sorting will be done ascending by the column %{colName}."
+msgstr "Sorting in ascending order according to the %{ label } column."
 
 #: resources/vue/components/file-chooser/FileChooserBox.vue:111
 msgid "Es wurde eine Datei hochgeladen."
@@ -3203,7 +3201,7 @@ msgstr "Error"
 
 #: resources/vue/mixins/courseware/import.js:421
 msgid "Fehler beim Anlegen der Datei"
-msgstr "Error while creating the file"
+msgstr "Error creating the file."
 
 #: resources/assets/javascripts/lib/tour.js:104
 msgid "Fehler beim Aufruf des Tour-Controllers"
@@ -3222,9 +3220,8 @@ msgid "Fehler beim Hochladen des Vorschaubildes."
 msgstr "Error while uploading the preview image."
 
 #: resources/vue/mixins/courseware/import.js:215
-#, fuzzy
 msgid "Fehler beim Laden des Vorschaubildes."
-msgstr "Error while uploading the preview image."
+msgstr "Error loading the preview image."
 
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogImport.vue:76
 msgid "Fehler im Import-Archiv"
@@ -3741,7 +3738,6 @@ msgid "Icon-Farbe"
 msgstr "Icon colour"
 
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:695
-#, fuzzy
 msgid "Ihr Browser unterstützt das Audioformat leider nicht."
 msgstr "Unfortunately, your browser does not support this audio format."
 
@@ -3812,7 +3808,7 @@ msgstr "Import finished. Errors occurred!"
 
 #: resources/vue/mixins/courseware/import.js:420
 msgid "Import einer Datei fehlgeschlagen."
-msgstr "Import of a file failed."
+msgstr "File could not be imported."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogImport.vue:67
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogImport.vue:172
@@ -4050,9 +4046,8 @@ msgid "Inhalt"
 msgstr "Content"
 
 #: resources/vue/components/courseware/tasks/CoursewareDashboardTasks.vue:96
-#, fuzzy
 msgid "Inhalt auf Arbeitsplatz kopieren"
-msgstr "Copy content"
+msgstr "Copy content to workplace"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogImport.vue:57
 msgid "Inhalte anhängen"
@@ -4710,7 +4705,7 @@ msgstr "Link has been copied"
 
 #: resources/assets/javascripts/lib/forum.js:474
 msgid "Link zum Beitrag: "
-msgstr "Link to posting:"
+msgstr "Link to post: "
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:24
 msgid "Linktext"
@@ -5067,15 +5062,15 @@ msgstr "Sort by %{ colName }"
 
 #: resources/vue/components/FilesTable.vue:278
 msgid "Nach Autor/-in sortieren"
-msgstr "Sort by Author"
+msgstr "Sort by author"
 
 #: resources/vue/components/FilesTable.vue:290
 msgid "Nach Datum sortieren"
-msgstr "Sort by Date"
+msgstr "Sort by date"
 
 #: resources/vue/components/FilesTable.vue:265
 msgid "Nach Downloads sortieren"
-msgstr "Sort by Download"
+msgstr "Sort by downloads"
 
 #: resources/vue/components/form_inputs/RepetitionInput.vue:417
 msgid "Nach einer Anzahl von Terminen"
@@ -5083,15 +5078,15 @@ msgstr "After an amount of dates"
 
 #: resources/vue/components/FilesTable.vue:251
 msgid "Nach Größe sortieren"
-msgstr "Sort by Size"
+msgstr "Sort by size"
 
 #: resources/vue/components/FilesTable.vue:239
 msgid "Nach Name sortieren"
-msgstr "Sort by Name"
+msgstr "Sort by name"
 
 #: resources/vue/components/FilesTable.vue:227
 msgid "Nach Typ sortieren"
-msgstr "Sort by Type"
+msgstr "Sort by type"
 
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:110
 msgid "Nachher"
@@ -5594,11 +5589,11 @@ msgstr "Petrol"
 
 #: resources/vue/components/tree/TreeNodeCoursePath.vue:19
 msgid "Pfad im Verzeichnis anzeigen"
-msgstr "Show path in the directory"
+msgstr "Show path in directory"
 
 #: resources/vue/components/tree/TreeNodeCoursePath.vue:18
 msgid "Pfad im Verzeichnis ausblenden"
-msgstr "Hide path in the directory"
+msgstr "Hide path in directory"
 
 #: resources/vue/components/questionnaires/FreetextEdit.vue:34
 #: resources/vue/components/questionnaires/LikertEdit.vue:68
@@ -6127,7 +6122,6 @@ msgid "Sie sind nicht berechtigt, den Inhalt dieses Ordners anzuzeigen."
 msgstr "You are not allowed to see the content of this folder."
 
 #: resources/assets/javascripts/lib/jsupdater.js:189
-#, fuzzy
 msgid "Sie sind nicht mehr im System angemeldet"
 msgstr "You are no longer logged in."
 
@@ -6169,7 +6163,7 @@ msgstr "Are you sure to delete this area?"
 
 #: resources/assets/javascripts/lib/forum.js:375
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
-msgstr "Do really want to discard your posting?"
+msgstr "Are you sure you want to discard your post?"
 
 #: resources/assets/javascripts/studip-ui.js:667
 msgid "So"
@@ -6338,7 +6332,7 @@ msgstr "Search course of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:11
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementPermissions.vue:13
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:295
@@ -6655,6 +6649,9 @@ msgid ""
 "Browser unterstützt das genutze Audioformat nicht. Bitte verwenden Sie "
 "Firefox, Chrome oder einen ähnlichen Browser."
 msgstr ""
+"A folder must be selected to enable recordings. The Safari browser does not "
+"support the audio format used. Please use Firefox, Chrome or a similar "
+"browser."
 
 #: resources/vue/mixins/MyCoursesMixin.js:64
 msgid ""
@@ -6691,7 +6688,7 @@ msgstr "unknown"
 
 #: resources/vue/components/courseware/widgets/CoursewareCommentsOverviewWidgetFilterCreated.vue:25
 msgid "unbeschränkt"
-msgstr "unlimited"
+msgstr "unrestricted"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:229
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:117
@@ -6928,11 +6925,11 @@ msgstr "widowed"
 
 #: resources/vue/components/tree/StudipTreeViewWidget.vue:22
 msgid "Verzeichnis als Liste anzeigen"
-msgstr "Show directory as list"
+msgstr "Show directory as a list"
 
 #: resources/vue/components/tree/StudipTreeViewWidget.vue:31
 msgid "Verzeichnis als Tabelle anzeigen"
-msgstr "Show directory as table"
+msgstr "Show directory as a table"
 
 #: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:124
 msgid "Video Einstellungen"
@@ -7088,7 +7085,7 @@ msgid ""
 "Arbeitsplatz/Courseware vorher erstellt werden."
 msgstr ""
 "Select the learning material containing the content you would like to link. "
-"The content to be linked must have been created in the Work place/courseware "
+"The content to be linked must have been created in the workplace/courseware "
 "previously."
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:26
@@ -7097,7 +7094,7 @@ msgid ""
 "Es sind nur Lernmaterialien aus Ihrem Arbeitsplatz aufgeführt."
 msgstr ""
 "Select the learning material in which the task template resides in. Only "
-"learning materials from your work place are listed."
+"learning materials from your workplace are listed."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogCopy.vue:26
 msgid ""
@@ -7177,9 +7174,9 @@ msgid ""
 "Lernmaterial haben. Prüfen Sie gegebenenfalls die Leserechte und die "
 "Sichtbarkeit."
 msgstr ""
-"Select the learning material here in which the task shall be distributed "
-"into. To edit the task, lecturers must have access to the learning material. "
-"Check the reading permissions and the visibility."
+"Select the learning material in which the task is to be distributed here. "
+"Learners must have access to the learning material to complete the task. "
+"Check the read authorisation and visibility to make sure."
 
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogCopy.vue:20
 msgid ""
@@ -7212,10 +7209,10 @@ msgid ""
 "Aufgabe müssen Lernende Zugriff auf die Seite haben. Prüfen Sie ggf. die "
 "Leserechte und die Sichtbarkeit."
 msgstr ""
-"Select the page under which the task shall be distributed here. To show sub-"
-"pages, click on the page name. With one additional click, the sub-pages are "
-"collapsed again. For being able to edit the task, lecturers must have access "
-"to the page. Check the read permissions and the visibility."
+"Select the page under which you want to distribute the task here. To show "
+"sub-pages, click on the page name. Click again to collapse the sub-pages "
+"again. Lecturers must have access to the page to edit the task. Check the "
+"read permissions and the visibility to make sure."
 
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:144
 msgid ""
@@ -7322,9 +7319,8 @@ msgid "Werte anderer Nutzer anzeigen"
 msgstr "Show values of other users"
 
 #: resources/vue/components/form_inputs/RepetitionInput.vue:342
-#, fuzzy
 msgid "Wiederholung am einem bestimmten Tag des Monats"
-msgstr "Repetition on a certain day of month:"
+msgstr "Repetition on a certain day of the month"
 
 #: resources/vue/components/form_inputs/RepetitionInput.vue:135
 msgid "Wiederholung an bestimmten Wochentagen"
