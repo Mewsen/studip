@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2025-07-17 09:00+0000\n"
+"PO-Revision-Date: 2025-07-22 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -3960,7 +3960,7 @@ msgstr "%s topics copied."
 #: templates/filesystem/timed_folder/edit.php:13
 #: templates/filesystem/timed_folder/edit.php:14
 msgid "unbegrenzt"
-msgstr "unlimited"
+msgstr "unrestricted"
 
 #: app/controllers/course/topics.php:173 app/controllers/course/topics.php:192
 #: app/controllers/course/topics.php:209
@@ -4061,7 +4061,7 @@ msgstr "back to search"
 #: app/views/course/timesrooms/editSemester.php:42
 #: app/views/admin/statusgroups/editGroup.php:44
 msgid "Unbegrenzt"
-msgstr "Unlimited"
+msgstr "Unrestricted"
 
 #: app/controllers/course/studygroup.php:185
 #: app/views/course/studygroup/edit.php:29
@@ -15231,11 +15231,11 @@ msgstr "Time has expired!"
 
 #: app/controllers/vips/sheets.php:386
 msgid "Lösung dieser Aufgabe löschen"
-msgstr "Delete solution to this task"
+msgstr "Delete solution for this task"
 
 #: app/controllers/vips/sheets.php:389
 msgid "Wollen Sie die Lösung dieser Aufgabe wirklich löschen?"
-msgstr "Do you really want to delete the solution to this task?"
+msgstr "Do you really want to delete the solution for this task?"
 
 #: app/controllers/vips/sheets.php:397
 msgid ""
@@ -16175,9 +16175,9 @@ msgid ""
 "abmelden? Der Anmeldezeitraum ist abgelaufen und Sie können sich nicht "
 "wieder anmelden!"
 msgstr ""
-"Do you really want to sign out of the course \"%s\" that has limited "
-"participation? The enrolment time range has expired and you cannot enrol "
-"again!"
+"Do you really want to cancel your registration for the course \"%s\" that "
+"has restricted participation? The registration period has expired and you "
+"cannot register again!"
 
 #: app/controllers/my_courses.php:354
 #, php-format
@@ -17475,7 +17475,7 @@ msgstr "Fields of study grouped by categories of degrees"
 #: app/views/shared/contacts/add_ranges_to_contact.php:9
 #: app/views/studiengaenge/studiengaenge/studiengangteile.php:74
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: app/controllers/studiengaenge/studiengaenge.php:428
 #: app/controllers/studiengaenge/studiengaenge.php:490
@@ -23321,7 +23321,7 @@ msgstr ""
 
 #: app/views/course/forum/index/_post.php:146
 msgid "Beitrag löschen"
-msgstr "Delete posting"
+msgstr "Delete post"
 
 #: app/views/course/forum/index/_post.php:149
 msgid "Möchten Sie diesen Beitrag wirklich löschen?"
@@ -25009,7 +25009,7 @@ msgstr "Information about %s"
 #: app/views/course/statusgroups/groupinfo.php:13
 #, php-format
 msgid "Diese Gruppe ist auf **%u** Mitglieder beschränkt."
-msgstr "This group is limited to **%u** members."
+msgstr "This group is restricted to **%u** members."
 
 #: app/views/course/statusgroups/groupinfo.php:14
 msgid "Die Größe dieser Gruppe ist **nicht beschränkt**."
@@ -26958,8 +26958,8 @@ msgid ""
 "Das Modul kann nicht kopiert werden, da die aktuellste Version unbegrenzt "
 "gültig ist. Setzen Sie erst ein Endsemester für die aktuellste Version."
 msgstr ""
-"The module cannot be copied since the most current version is valid "
-"unlimitedly. Set an end semester first for the current version."
+"The module cannot be copied because the latest version is valid "
+"indefinitely. Set an end semester first for the current version."
 
 #: app/views/module/module/copy_form.php:12
 #: app/views/module/module/module.php:95 app/views/module/module/module.php:96
@@ -31355,7 +31355,7 @@ msgstr "Can have sub-courses"
 
 #: app/views/admin/sem_classes/details.php:210
 msgid "Unbegrenzte Laufzeit verbieten"
-msgstr "Forbid unlimited duration"
+msgstr "Prohibit unlimited duration"
 
 #: app/views/admin/sem_classes/details.php:215
 msgid "Geplante Teilnehmendenzahl muss angegeben werden"
@@ -33336,7 +33336,7 @@ msgstr ""
 
 #: app/views/consultation/admin/edit.php:48
 msgid "Maximale Teilnehmendenzahl"
-msgstr "maximum number of participants"
+msgstr "Maximum number of participants"
 
 #: app/views/consultation/admin/edit.php:49
 msgid ""
@@ -34243,8 +34243,8 @@ msgid ""
 "Blöcke und zugeordnete Aufgabenblätter können nur für bestimmte Gruppen "
 "sichtbar oder auch komplett unsichtbar gemacht werden."
 msgstr ""
-"Blocks and related worksheets can be limited to a specific group or set to "
-"be completely hidden."
+"Blocks and assigned worksheets can be made visible only to certain groups or "
+"completely invisible."
 
 #: app/views/vips/admin/edit_block.php:25
 msgid "Alle Teilnehmenden (keine Beschränkung)"
@@ -41507,7 +41507,7 @@ msgstr "New posting"
 
 #: lib/classes/CoursesetModel.php:129
 msgid "(unbegrenzt)"
-msgstr "(unlimited)"
+msgstr "(unrestricted)"
 
 #: lib/classes/wiki/WikiDiffer.php:35
 msgid "Dieser Text wurde hinzugefügt"
@@ -43345,7 +43345,7 @@ msgstr "Circular mails"
 
 #: lib/navigation/ContentsNavigation.php:23
 msgid "Arbeitsplatz"
-msgstr "Work place"
+msgstr "Workplace"
 
 #: lib/navigation/ContentsNavigation.php:47
 #: lib/navigation/ContentsNavigation.php:51
@@ -51058,11 +51058,11 @@ msgid ""
 "auch auf einen Teil (z.B. \"Veran/Datei\") oder auf die Großbuchstaben bzw. "
 "auch deren Abkürzung (z.B. \"MV/Datei\" oder \"V/Datei\") beschränkt werden."
 msgstr ""
-"The file search can be refined using a slash (/). Example: \"My courses/"
-"file\" will display all files which contain the word \"file\" and which are "
-"placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
-"file\") or it can be limited to its capital letters or its abbreviation "
-"(e.g. \"MC/file\" or \"C/file\")."
+"The file search can be refined using a slash (/). Example: "
+"\"My courses/file\" will display all files which contain the word \"file\" "
+"and which are placed inside \"My courses\". The course can also be reduced ("
+"e.g. \"courses/file\") or it can be restricted to its capital letters or its "
+"abbreviation (e.g. \"MC/file\" or \"C/file\")."
 
 #, fuzzy
 #~ msgid "geschlecht"
