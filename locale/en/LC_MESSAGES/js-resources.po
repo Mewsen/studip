@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-17 10:00+0000\n"
+"PO-Revision-Date: 2025-07-22 10:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -186,7 +186,7 @@ msgstr "Play"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:24
 msgid "Absteigend sortiert, "
-msgstr "Sorted descending, "
+msgstr "Sorted in descending order, "
 
 #: resources/vue/components/FilesTable.vue:255
 #: resources/vue/components/StudipActionMenu.vue:39
@@ -502,7 +502,7 @@ msgstr "Repeat recording"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:23
 msgid "Aufsteigend sortiert, "
-msgstr "Sorted ascending, "
+msgstr "Sorted in ascending order, "
 
 #: resources/assets/javascripts/studip-ui.js:542
 msgid "Aug"
@@ -1250,7 +1250,7 @@ msgid ""
 "Beitrag aufmerksam machen. "
 msgstr ""
 "The sender of this message wants to call your attention to the following "
-"posting. "
+"post. "
 
 #: resources/vue/mixins/MyCoursesMixin.js:89
 msgid "Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden."
@@ -2869,7 +2869,7 @@ msgstr "Link has been copied"
 
 #: resources/assets/javascripts/lib/forum.js:495
 msgid "Link zum Beitrag: "
-msgstr "Link to posting: "
+msgstr "Link to post: "
 
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:53
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:9
@@ -3887,7 +3887,7 @@ msgstr "Are you sure to delete this area? "
 
 #: resources/assets/javascripts/lib/forum.js:382
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
-msgstr "Do really want to discard your posting?"
+msgstr "Are you sure you want to discard your post?"
 
 #: resources/assets/javascripts/lib/smiley_picker.js:70
 msgid "Smileys"
@@ -4030,7 +4030,7 @@ msgstr "Search course of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:11
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: resources/vue/components/courseware/CoursewareStructuralElementPermissions.vue:13
 msgid "Studierende"
