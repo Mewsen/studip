@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2025-07-17 09:00+0000\n"
+"PO-Revision-Date: 2025-07-22 09:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -6707,7 +6707,7 @@ msgstr "Size"
 #: app/views/evaluation/_admin_list_vote.php:19
 #: app/views/course/timesrooms/editSemester.php:35
 msgid "Unbegrenzt"
-msgstr "Unlimited"
+msgstr "Unrestricted"
 
 #: app/views/admin/statusgroups/editGroup.php:46
 #: app/views/course/statusgroups/create_groups.php:110
@@ -7073,7 +7073,7 @@ msgstr "until"
 #: templates/filesystem/timed_folder/edit.php:13
 #: templates/filesystem/timed_folder/edit.php:14
 msgid "unbegrenzt"
-msgstr "unlimited"
+msgstr "unrestricted"
 
 #: app/views/admin/banner/index.php:54
 #: app/views/resources/admin/property_groups.php:30
@@ -12661,7 +12661,7 @@ msgstr "Add component"
 #: app/controllers/studiengaenge/studiengaenge.php:352
 #: app/controllers/studiengaenge/studiengaenge.php:381
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: app/views/studiengaenge/studiengaenge/studiengangteile.php:74
 #: app/views/studiengaenge/studiengaenge/stgteil_bezeichnungen.php:44
@@ -15922,7 +15922,7 @@ msgstr "sign out of the course"
 
 #: app/views/my_courses/groups.php:6
 msgid "Gruppenzuordnung"
-msgstr "Group allocation"
+msgstr "Group assignment"
 
 #: app/views/my_courses/groups.php:16
 msgid "Gruppen/Farbe"
@@ -16297,8 +16297,8 @@ msgid ""
 "Das Modul kann nicht kopiert werden, da die aktuellste Version unbegrenzt "
 "gültig ist. Setzen Sie erst ein Endsemester für die aktuellste Version."
 msgstr ""
-"The module cannot be copied since the most current version is valid "
-"unlimitedly. Set an end semester first for the current version."
+"The module cannot be copied because the latest version is valid "
+"indefinitely. Set an end semester first for the current version."
 
 #: app/views/module/module/copy_form.php:13
 msgid "Aktuellste Version bearbeiten"
@@ -21866,7 +21866,7 @@ msgstr "Join"
 #: app/views/course/statusgroups/groupinfo.php:7
 #, php-format
 msgid "Diese Gruppe ist auf **%u** Mitglieder beschränkt."
-msgstr "This group is limited to **%u** members."
+msgstr "This group is restricted to **%u** members."
 
 #: app/views/course/statusgroups/groupinfo.php:8
 msgid "Die Größe dieser Gruppe ist **nicht beschränkt**."
@@ -25390,9 +25390,9 @@ msgid ""
 "abmelden? Der Anmeldezeitraum ist abgelaufen und Sie können sich nicht "
 "wieder anmelden!"
 msgstr ""
-"Do you really want to sign out of the course \"%s\" that has limited "
-"participation? The enrolment time range has expired and you cannot enrol "
-"again!"
+"Do you really want to cancel your registration for the course \"%s\" that "
+"has restricted participation? The registration period has expired and you "
+"cannot register again!"
 
 #: app/controllers/my_courses.php:523
 #, php-format
@@ -37714,7 +37714,7 @@ msgstr "Without domain"
 
 #: lib/classes/CoursesetModel.php:134
 msgid "(unbegrenzt)"
-msgstr "(unlimited)"
+msgstr "(unrestricted)"
 
 #: lib/classes/UserConfig.class.php:37
 msgid "Benutzer Konfigurationen"
@@ -39237,7 +39237,7 @@ msgstr "Timetable"
 
 #: lib/navigation/ContentsNavigation.php:23
 msgid "Arbeitsplatz"
-msgstr "Work place"
+msgstr "Workplace"
 
 #: lib/navigation/ContentsNavigation.php:47
 msgid "Erstellen und Sammeln von Lernmaterialien"
@@ -44853,7 +44853,7 @@ msgstr ""
 
 #: lib/admissionrules/preferentialadmission/templates/configure.php:3
 msgid "Folgende Personen bei der Platzverteilung bevorzugen:"
-msgstr "Prefer the following people during seat allocation:"
+msgstr "Prefer the following people when allocating places:"
 
 #: lib/admissionrules/preferentialadmission/templates/configure.php:7
 msgid "Sie haben noch keine Auswahl festgelegt."
@@ -45159,7 +45159,7 @@ msgstr "Conditions:"
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:23
 msgid "Sie haben noch keine Bedingungen festgelegt."
-msgstr "You did not yet define conditions."
+msgstr "You have not defined any conditions yet."
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:29
 #: lib/admissionrules/conditionaladmission/templates/configure.php:61
@@ -52208,7 +52208,7 @@ msgstr "Are you sure to delete this posting?"
 
 #: public/plugins_packages/core/Forum/views/index/_post.php:146
 msgid "Beitrag löschen"
-msgstr "Delete posting"
+msgstr "Delete post"
 
 #: public/plugins_packages/core/Forum/views/index/_post.php:152
 msgid "Beitrag weiterleiten"
@@ -53820,11 +53820,11 @@ msgid ""
 "auch auf einen Teil (z.B. \"Veran/Datei\") oder auf die Großbuchstaben bzw. "
 "auch deren Abkürzung (z.B. \"MV/Datei\" oder \"V/Datei\") beschränkt werden."
 msgstr ""
-"The file search can be refined using a slash (/). Example: \"My courses/file"
-"\" will display all files which contain the word \"file\" and which are "
-"placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
-"file\") or it can be limited to its capital letters or its abbreviation (e."
-"g. \"MC/file\" or \"C/file\")."
+"The file search can be refined using a slash (/). Example: "
+"\"My courses/file\" will display all files which contain the word \"file\" "
+"and which are placed inside \"My courses\". The course can also be reduced ("
+"e.g. \"courses/file\") or it can be restricted to its capital letters or its "
+"abbreviation (e.g. \"MC/file\" or \"C/file\")."
 
 #: templates/online/user.php:10
 msgid "zu den Buddies hinzufügen"
