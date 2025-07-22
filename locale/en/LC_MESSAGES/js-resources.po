@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-17 10:00+0000\n"
+"PO-Revision-Date: 2025-07-22 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -335,7 +335,7 @@ msgstr "Descending"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:24
 msgid "Absteigend sortiert, "
-msgstr "Sorted descending, "
+msgstr "Sorted in descending order, "
 
 #: resources/vue/components/courseware/CoursewareBiographyGoalsBlock.vue:19
 #: resources/vue/components/courseware/CoursewareBiographyGoalsBlock.vue:7
@@ -558,7 +558,7 @@ msgstr "April"
 #: resources/vue/components/courseware/CoursewareShelfDialogCopy.vue:45
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:44
 msgid "Arbeitsplatz"
-msgstr "Work place"
+msgstr "Workplace"
 
 #: resources/vue/components/courseware/CoursewareBiographyCareerBlock.vue:53
 #: resources/vue/components/courseware/CoursewareBiographyCareerBlock.vue:24
@@ -734,7 +734,7 @@ msgstr "Ascending"
 
 #: resources/assets/javascripts/chunks/tablesorter.js:23
 msgid "Aufsteigend sortiert, "
-msgstr "Sorted ascending, "
+msgstr "Sorted in ascending order, "
 
 #: resources/assets/javascripts/studip-ui.js:563
 msgid "Aug"
@@ -1648,7 +1648,7 @@ msgid ""
 "Beitrag aufmerksam machen. "
 msgstr ""
 "The sender of this message wants to call your attention to the following "
-"posting."
+"post. "
 
 #: resources/vue/mixins/MyCoursesMixin.js:89
 msgid "Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden."
@@ -2089,7 +2089,7 @@ msgid ""
 "unter Arbeitsplatz/Courseware ein Lernmaterial."
 msgstr ""
 "Unfortunately, no learning material could be found. Please create a learning "
-"material under Work place/Courseware."
+"material under Workplace/Courseware."
 
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:137
 msgid ""
@@ -2149,14 +2149,12 @@ msgid "Es werden auch alle Beiträge in diesem Bereich gelöscht!"
 msgstr "All postings in this area will be deleted as well!"
 
 #: resources/vue/components/FilesTable.vue:169
-#, fuzzy
 msgid "Es wird absteigend nach der Spalte %{ label } sortiert."
-msgstr "The sorting will be done descending by the column %{colName}."
+msgstr "Sorting in descending order according to the %{ label } column."
 
 #: resources/vue/components/FilesTable.vue:168
-#, fuzzy
 msgid "Es wird aufsteigend nach der Spalte %{ label } sortiert."
-msgstr "The sorting will be done ascending by the column %{colName}."
+msgstr "Sorting in ascending order according to the %{ label } column."
 
 #: resources/vue/components/courseware/CoursewareBlockFeedback.vue:39
 #: resources/vue/components/courseware/CoursewareStructuralElementFeedback.vue:37
@@ -2384,7 +2382,7 @@ msgstr "Error"
 
 #: resources/vue/mixins/courseware/import.js:412
 msgid "Fehler beim Anlegen der Datei"
-msgstr "Error while creating the file"
+msgstr "Error creating the file."
 
 #: resources/assets/javascripts/lib/tour.js:104
 msgid "Fehler beim Aufruf des Tour-Controllers"
@@ -2892,7 +2890,7 @@ msgstr "Import finished. Errors occurred!"
 
 #: resources/vue/mixins/courseware/import.js:411
 msgid "Import einer Datei fehlgeschlagen."
-msgstr "Import of a file failed."
+msgstr "File could not be imported."
 
 #: resources/vue/components/courseware/CoursewareShelfDialogImport.vue:172
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogImport.vue:67
@@ -3135,9 +3133,8 @@ msgid "Inhalt"
 msgstr "Content"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:96
-#, fuzzy
 msgid "Inhalt auf Arbeitsplatz kopieren"
-msgstr "Copy content"
+msgstr "Copy content to workplace"
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogImport.vue:57
 msgid "Inhalte anhängen"
@@ -3677,7 +3674,7 @@ msgstr "Link has been copied"
 
 #: resources/assets/javascripts/lib/forum.js:498
 msgid "Link zum Beitrag: "
-msgstr "Link to posting:"
+msgstr "Link to post: "
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:24
 msgid "Linktext"
@@ -3965,27 +3962,27 @@ msgstr "Sort by %{ colName }"
 
 #: resources/vue/components/FilesTable.vue:280
 msgid "Nach Autor/-in sortieren"
-msgstr "Sort by Author"
+msgstr "Sort by author"
 
 #: resources/vue/components/FilesTable.vue:292
 msgid "Nach Datum sortieren"
-msgstr "Sort by Date"
+msgstr "Sort by date"
 
 #: resources/vue/components/FilesTable.vue:267
 msgid "Nach Downloads sortieren"
-msgstr "Sort by Download"
+msgstr "Sort by downloads"
 
 #: resources/vue/components/FilesTable.vue:253
 msgid "Nach Größe sortieren"
-msgstr "Sort by Size"
+msgstr "Sort by size"
 
 #: resources/vue/components/FilesTable.vue:241
 msgid "Nach Name sortieren"
-msgstr "Sort by Name"
+msgstr "Sort by name"
 
 #: resources/vue/components/FilesTable.vue:229
 msgid "Nach Typ sortieren"
-msgstr "Sort by Type"
+msgstr "Sort by type"
 
 #: resources/assets/javascripts/studip-ui.js:605
 msgid "nachm."
@@ -4876,7 +4873,7 @@ msgstr "Are you sure to delete this area?"
 
 #: resources/assets/javascripts/lib/forum.js:385
 msgid "Sind sie sicher, dass Sie ihren bisherigen Beitrag verwerfen wollen?"
-msgstr "Do really want to discard your posting?"
+msgstr "Are you sure you want to discard your post?"
 
 #: resources/assets/javascripts/lib/smiley_picker.js:70
 msgid "Smileys"
@@ -5009,7 +5006,7 @@ msgstr "Search course of study"
 
 #: resources/assets/javascripts/lib/overlapping.js:11
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: resources/vue/components/courseware/CoursewareStructuralElementPermissions.vue:13
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:387
@@ -5547,7 +5544,7 @@ msgid ""
 "Arbeitsplatz/Courseware vorher erstellt werden."
 msgstr ""
 "Select the learning material containing the content you would like to link. "
-"The content to be linked must have been created in the Work place/courseware "
+"The content to be linked must have been created in the workplace/courseware "
 "previously."
 
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:21
@@ -5556,7 +5553,7 @@ msgid ""
 "Es sind nur Lernmaterialien aus Ihrem Arbeitsplatz aufgeführt."
 msgstr ""
 "Select the learning material in which the task template resides in. Only "
-"learning materials from your work place are listed."
+"learning materials from your workplace are listed."
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:24
 msgid ""
@@ -5634,9 +5631,9 @@ msgid ""
 "Lernmaterial haben. Prüfen Sie gegebenenfalls die Leserechte und die "
 "Sichtbarkeit."
 msgstr ""
-"Select the learning material here in which the task shall be distributed "
-"into. To edit the task, lecturers must have access to the learning material. "
-"Check the reading permissions and the visibility."
+"Select the learning material in which the task is to be distributed here. "
+"Learners must have access to the learning material to complete the task. "
+"Check the read authorisation and visibility to make sure."
 
 #: resources/vue/components/courseware/CoursewareShelfDialogCopy.vue:20
 msgid ""
