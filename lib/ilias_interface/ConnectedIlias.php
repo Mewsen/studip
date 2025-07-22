@@ -79,6 +79,7 @@ class ConnectedIlias
         $this->operations = [];
         $this->course_modules = [];
         $this->user_modules = [];
+        $this->user_workgroups = [];
 
         // set ILIAS version as integer value
         $this->ilias_int_version = $this->getIntVersion($this->ilias_config['version']);
@@ -900,7 +901,7 @@ class ConnectedIlias
                 }
 
                 foreach ($object_data['references'] as $ref_id => $ref_data) {
-                    if ($ref_data['parent_id'] !== $this->ilias_config['workgroup_category']) {
+                    if ($ref_data['parent_id'] != $this->ilias_config['workgroup_category']) {
                         continue;
                     }
 
