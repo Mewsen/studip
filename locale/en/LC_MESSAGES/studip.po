@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2025-07-17 09:00+0000\n"
+"PO-Revision-Date: 2025-07-22 09:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
@@ -3228,7 +3228,7 @@ msgstr "%s topics copied."
 #: templates/filesystem/timed_folder/edit.php:13
 #: templates/filesystem/timed_folder/edit.php:14
 msgid "unbegrenzt"
-msgstr "unlimited"
+msgstr "unrestricted"
 
 #: app/controllers/course/topics.php:171 app/controllers/course/topics.php:190
 #: app/controllers/course/topics.php:207
@@ -14246,9 +14246,9 @@ msgid ""
 "abmelden? Der Anmeldezeitraum ist abgelaufen und Sie können sich nicht "
 "wieder anmelden!"
 msgstr ""
-"Do you really want to sign out of the course \"%s\" that has limited "
-"participation? The enrolment time range has expired and you cannot enrol "
-"again!"
+"Do you really want to cancel your registration for the course \"%s\" that "
+"has restricted participation? The registration period has expired and you "
+"cannot register again!"
 
 #: app/controllers/my_courses.php:523
 #, php-format
@@ -15487,7 +15487,7 @@ msgstr "Fields of study grouped by categories of degrees"
 #: app/views/shared/contacts/add_ranges_to_contact.php:9
 #: app/views/studiengaenge/studiengaenge/studiengangteile.php:63
 msgid "Studiengangteil suchen"
-msgstr "Search course of study"
+msgstr "Find course of study component"
 
 #: app/controllers/studiengaenge/studiengaenge.php:434
 #: app/controllers/studiengaenge/studiengaenge.php:496
@@ -20561,7 +20561,7 @@ msgstr "One semester"
 #: app/views/admin/statusgroups/editGroup.php:36
 #: app/views/evaluation/_admin_list_vote.php:19
 msgid "Unbegrenzt"
-msgstr "Unlimited"
+msgstr "Unrestricted"
 
 #: app/views/course/timesrooms/editSemester.php:41
 msgid "Semester speichern"
@@ -22203,7 +22203,7 @@ msgstr "Information about %s"
 #: app/views/course/statusgroups/groupinfo.php:7
 #, php-format
 msgid "Diese Gruppe ist auf **%u** Mitglieder beschränkt."
-msgstr "This group is limited to **%u** members."
+msgstr "This group is restricted to **%u** members."
 
 #: app/views/course/statusgroups/groupinfo.php:8
 msgid "Die Größe dieser Gruppe ist **nicht beschränkt**."
@@ -24256,8 +24256,8 @@ msgid ""
 "Das Modul kann nicht kopiert werden, da die aktuellste Version unbegrenzt "
 "gültig ist. Setzen Sie erst ein Endsemester für die aktuellste Version."
 msgstr ""
-"The module cannot be copied since the most current version is valid "
-"unlimitedly. Set an end semester first for the current version."
+"The module cannot be copied because the latest version is valid "
+"indefinitely. Set an end semester first for the current version."
 
 #: app/views/module/module/copy_form.php:12
 #: app/views/module/module/module.php:89 app/views/module/module/module.php:90
@@ -30726,9 +30726,9 @@ msgid ""
 "Gruppe mit dem Status \"tutor\" und \"dozent\" als durchführende Personen "
 "zugewiesen werden und über alle Buchungen informiert werden."
 msgstr ""
-"Please note that on assignment of status groups, all persons of the group "
-"with the status \"tutor\" and \"dozent\" are being assigned and will be "
-"notified about all bookings."
+"Please note that when assigning status groups, all persons in the group with "
+"the status \"tutor\" and \"lecturer\" are assigned as the persons carrying "
+"out the course and are informed of all bookings."
 
 #: app/views/consultation/admin/create.php:145
 msgid ""
@@ -33405,10 +33405,9 @@ msgstr "Course's wiki pages"
 
 #: app/views/my_courses/groups.php:6
 msgid "Gruppenzuordnung"
-msgstr "Group allocation"
+msgstr "Group assignment"
 
 #: app/views/my_courses/groups.php:16
-#, fuzzy
 msgid "Gruppe/Farbe"
 msgstr "Group/colour"
 
@@ -37647,7 +37646,7 @@ msgstr "Action menu"
 
 #: lib/classes/CoursesetModel.php:134
 msgid "(unbegrenzt)"
-msgstr "(unlimited)"
+msgstr "(unrestricted)"
 
 #: lib/classes/MyRealmModel.php:131
 #, php-format
@@ -40401,7 +40400,7 @@ msgstr "Circular mails"
 
 #: lib/navigation/ContentsNavigation.php:23
 msgid "Arbeitsplatz"
-msgstr "Work place"
+msgstr "Workplace"
 
 #: lib/navigation/ContentsNavigation.php:47
 msgid "Erstellen und Sammeln von Lernmaterialien"
@@ -43761,7 +43760,7 @@ msgstr "Add condition"
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:23
 msgid "Sie haben noch keine Bedingungen festgelegt."
-msgstr "You did not yet define conditions."
+msgstr "You have not defined any conditions yet."
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:29
 #: lib/admissionrules/conditionaladmission/templates/configure.php:61
@@ -43923,7 +43922,7 @@ msgstr "Higher semesters will be preferred."
 
 #: lib/admissionrules/preferentialadmission/templates/configure.php:3
 msgid "Folgende Personen bei der Platzverteilung bevorzugen:"
-msgstr "Prefer the following people during seat allocation:"
+msgstr "Prefer the following people when allocating places:"
 
 #: lib/admissionrules/preferentialadmission/templates/configure.php:7
 msgid "Sie haben noch keine Auswahl festgelegt."
@@ -52575,7 +52574,7 @@ msgstr "Are you sure to delete this posting?"
 
 #: public/plugins_packages/core/Forum/views/index/_post.php:146
 msgid "Beitrag löschen"
-msgstr "Delete posting"
+msgstr "Delete post"
 
 #: public/plugins_packages/core/Forum/views/index/_post.php:152
 msgid "Beitrag weiterleiten"
@@ -54619,11 +54618,11 @@ msgid ""
 "auch auf einen Teil (z.B. \"Veran/Datei\") oder auf die Großbuchstaben bzw. "
 "auch deren Abkürzung (z.B. \"MV/Datei\" oder \"V/Datei\") beschränkt werden."
 msgstr ""
-"The file search can be refined using a slash (/). Example: \"My courses/"
-"file\" will display all files which contain the word \"file\" and which are "
-"placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
-"file\") or it can be limited to its capital letters or its abbreviation (e."
-"g. \"MC/file\" or \"C/file\")."
+"The file search can be refined using a slash (/). Example: "
+"\"My courses/file\" will display all files which contain the word \"file\" "
+"and which are placed inside \"My courses\". The course can also be reduced ("
+"e.g. \"courses/file\") or it can be restricted to its capital letters or its "
+"abbreviation (e.g. \"MC/file\" or \"C/file\")."
 
 #~ msgid "Zugeordnet zu Gruppe "
 #~ msgstr "Assigned to group "
