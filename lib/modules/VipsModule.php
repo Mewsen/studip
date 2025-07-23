@@ -52,7 +52,7 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
 
         if (Navigation::hasItem('/contents')) {
             $nav_item = new Navigation(_('Aufgaben'));
-            $nav_item->setImage(Icon::create('vips'));
+            $nav_item->setImage(Icon::create('tasks'));
             $nav_item->setDescription(_('Erstellen und Verwalten von Aufgabenblättern'));
             Navigation::addItem('/contents/vips', $nav_item);
 
@@ -246,7 +246,7 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
         $navigation->addSubNavigation('course', $course);
 
         $vips = new Navigation($this->getPluginName());
-        $vips->setImage(Icon::create('vips'));
+        $vips->setImage(Icon::create('tasks'));
         $course->addSubNavigation('vips', $vips);
 
         $nav_item = new Navigation(_('Aufgabenblätter'), 'dispatch.php/vips/sheets');
@@ -307,11 +307,11 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
         }
 
         $overview_message = $this->getPluginName();
-        $icon = Icon::create('vips');
+        $icon = Icon::create('tasks');
 
         if ($new_items > 0) {
             $overview_message = sprintf($message, $new_items);
-            $icon = Icon::create('vips', Icon::ROLE_NEW);
+            $icon = Icon::create('tasks', Icon::ROLE_NEW);
         }
 
         $icon_navigation = new Navigation($this->getPluginName(), 'dispatch.php/vips/sheets');
@@ -328,7 +328,7 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
     public function getTabNavigation($course_id)
     {
         $navigation = new Navigation($this->getPluginName());
-        $navigation->setImage(Icon::create('vips'));
+        $navigation->setImage(Icon::create('tasks'));
 
         $nav_item = new Navigation(_('Aufgabenblätter'), 'dispatch.php/vips/sheets');
         $navigation->addSubNavigation('sheets', $nav_item);
@@ -357,7 +357,7 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
             _('Einsatz bei Hausaufgaben und Präsenzprüfungen; Reduzierter Arbeitsaufwand bei der Auswertung; ' .
                   'Sortierte Übersicht der eingereichten Ergebnisse; Single-, Multiple-Choice- und Textaufgaben, ' .
                   'Lückentexte und Zuordnungen; Notwendige Korrekturen und erzielte Punktzahlen auf einen Blick');
-        $metadata['icon'] = Icon::create('vips');
+        $metadata['icon'] = Icon::create('tasks');
         $metadata['screenshots'] = [
             'path' => 'assets/images/plus/screenshots/Vips',
             'pictures' => [

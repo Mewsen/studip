@@ -397,9 +397,9 @@ class VipsAssignment extends SimpleORMap
     public static function getAssignmentTypes(): array
     {
         return [
-            'practice' => ['name' => _('Übung'),      'icon' => 'file'],
-            'selftest' => ['name' => _('Selbsttest'), 'icon' => 'check-circle'],
-            'exam'     => ['name' => _('Klausur'),    'icon' => 'doctoral_cap']
+            'practice' => ['name' => _('Übung'),      'icon' => 'assignment-practice'],
+            'selftest' => ['name' => _('Selbsttest'), 'icon' => 'assignment-quiz'],
+            'exam'     => ['name' => _('Klausur'),    'icon' => 'assignment-exam']
         ];
     }
 
