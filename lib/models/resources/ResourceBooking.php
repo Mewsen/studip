@@ -1970,11 +1970,6 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
      */
     public function sendDeleteNotification()
     {
-        if ($this->booking_type != self::TYPE_NORMAL) {
-            //We only handle real bookings in this method.
-            return;
-        }
-
         if ($this->end < time()) {
             //Bookings that lie in the past can be deleted without
             //sending notifications.
@@ -2005,6 +2000,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             $lang_path . '/LC_MAILS/delete_booking_notification.php'
         );
         $template->set_attribute('resource', $booking_resource->getDerivedClassInstance());
+        $template->set_attribute('booking_type', $this->booking_type);
         $template->set_attribute('begin', $this->begin);
         $template->set_attribute('end', $this->end);
         $template->set_attribute('deleting_user', User::findCurrent());
