@@ -175,16 +175,23 @@ const removePostHighlight = id => {
                     <div class="post__text">
                         <PostContent ref="postContent" v-model="selectedText" :content="post.content" class="forum-quote">
                             <template #actions>
-                                <button
-                                    type="button"
+                                <a
+                                    :href="`#create_form_${post.id}`"
+                                    class="ballon-action__button"
                                     v-if="!postCreateForm && !discussion.closed_at"
                                     @click="postCreateForm = true; postContent.removeSelection()"
                                     :title="$gettext('Auswahl zitieren und antworten')"
                                     :aria-label="$gettext('Auswahl zitieren und antworten')"
                                 >
                                     <StudipIcon shape="quote" :size="20" />
-                                </button>
-                                <button type="button" @click="copyToClipboard" :title="$gettext('Kopieren')" :aria-label="$gettext('Kopieren')">
+                                </a>
+                                <button
+                                    type="button"
+                                    class="ballon-action__button"
+                                    @click="copyToClipboard"
+                                    :title="$gettext('Kopieren')"
+                                    :aria-label="$gettext('Kopieren')"
+                                >
                                     <StudipIcon shape="clipboard" :size="20" />
                                 </button>
                             </template>
@@ -203,9 +210,19 @@ const removePostHighlight = id => {
                     <div class="inline-flex items-center gap-40">
                         <div v-if="!discussion.closed_at" class="inline-flex items-center gap-10">
                             <template v-if="post.author?.id === auth_user.id">
-                                <button :disabled="editPost === post.id" @click="editPost = post.id" type="button" class="button button--icon-only" :title="$gettext('Beitrag bearbeiten')" :aria-label="$gettext('Beitrag bearbeiten')">
+                                <a
+                                    :href="`#post_${post.id}`"
+                                    @click="editPost = post.id"
+                                    type="button"
+                                    class="button button--icon-only"
+                                    :class="{
+                                        'disabled': editPost === post.id
+                                    }"
+                                    :title="$gettext('Beitrag bearbeiten')"
+                                    :aria-label="$gettext('Beitrag bearbeiten')"
+                                >
                                     <StudipIcon shape="edit" :size="20" aria-hidden="true" />
-                                </button>
+                                </a>
                                 <button @click="deletePost(post)" type="button" class="button button--icon-only" :title="$gettext('Beitrag löschen')" :aria-label="$gettext('Beitrag löschen')">
                                     <StudipIcon shape="trash" :size="20" aria-hidden="true" />
                                 </button>
@@ -222,7 +239,7 @@ const removePostHighlight = id => {
             </div>
         </div>
     </div>
-    <div v-if="postCreateForm && !discussion.closed_at" class="post-form-container">
+    <div v-if="postCreateForm && !discussion.closed_at" :id="`create_form_${post.id}`" class="post-form-container" style="scroll-margin-top: 200px;">
         <PostCreateForm
             :parent_id="post.id"
             :discussion_id="props.discussion.discussion_id"

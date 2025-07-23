@@ -126,7 +126,7 @@ onMounted(async () => {
         if (urlHash === 'new-post') {
             postCreateForm.value = true;
         }
-        document.getElementById(urlHash).scrollIntoView();
+        document.getElementById(urlHash)?.scrollIntoView();
     } else if (props.read_index < posts.value.length) {
         document.querySelectorAll(".post")[props.read_index].scrollIntoView();
     }
@@ -330,5 +330,8 @@ onMounted(async () => {
 #sidebar #sidebar-actions {
     position: sticky;
     top: 50px;
+}
+html {
+    scroll-behavior: smooth;
 }
 </style>

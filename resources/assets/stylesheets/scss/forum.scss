@@ -954,18 +954,18 @@ $card-max-width: 300px;
         overflow: hidden;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
-        button {
+        &__button {
             background: none;
             border: none;
             padding: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
 
-        button:hover {
-            cursor: pointer;
-            background-color: $content-color-10;
+            &:hover {
+                cursor: pointer;
+                background-color: $content-color-10;
+            }
         }
     }
 
