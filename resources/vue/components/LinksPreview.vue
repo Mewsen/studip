@@ -8,11 +8,11 @@ const props = defineProps({
         type: Array,
         required: true
     }
-})
+});
 
-const currentIndex = ref(0)
+const currentIndex = ref(0);
 
-const currentLink = computed(() => props.links[currentIndex.value])
+const currentLink = computed(() => props.links[currentIndex.value]);
 </script>
 
 <template>

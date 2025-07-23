@@ -46,7 +46,7 @@ class ForumPosting extends SchemaProvider
                 'title' => $og['title'],
                 'description' => $og['description'],
                 'image' => $og['image'],
-            ], $posting->getOpenGraphURLs()->toArray())
+            ], $posting->getOpenGraphURLs())
         ];
     }
 

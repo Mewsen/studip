@@ -2,7 +2,6 @@
 namespace Forum;
 
 use OpenGraph;
-use OpenGraphURLCollection;
 use SimpleORMap;
 use Forum\Service\PostingNotification;
 use User;
@@ -102,10 +101,10 @@ class ForumPosting extends SimpleORMap
         );
     }
 
-    public function getOpenGraphURLs(): OpenGraphURLCollection
+    public function getOpenGraphURLs(): array
     {
         $content = preg_replace("~<blockquote(.*?)>(.*)</blockquote>~si", '', $this['content']);
-        return OpenGraph::extract($content);
+        return array_filter(OpenGraph::extract($content)->toArray(), fn($og) => $og['is_opengraph']);
     }
 
     public function onCreate(): void
