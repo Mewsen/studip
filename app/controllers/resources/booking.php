@@ -1077,7 +1077,7 @@ class Resources_BookingController extends AuthenticatedController
             //a lock booking.
             CSRFProtection::verifyUnsafeRequest();
 
-            $this->overwrite_bookings = Request::get('overwrite_bookings');
+            $this->overwrite_bookings = Request::bool('overwrite_bookings', false);
 
             $this->semester_id = Request::get('semester_id');
             $this->selected_end = Request::get('selected_end');
