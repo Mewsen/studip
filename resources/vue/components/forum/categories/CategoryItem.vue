@@ -126,7 +126,7 @@ const swapCategory = event => {
                         {{ category.meta.postings_count }}
                     </dd>
 
-                    <dt>{{ $gettext('Aktivitäten') }}</dt>
+                    <dt>{{ $gettext('Letzte Aktivität') }}</dt>
                     <dd class="inline-flex gap-5 items-center">
                         <StudipIcon shape="activity" role="info" :size="15" />
                         <StudipDateTime v-if="category.meta.recent_activity" :iso="category.meta.recent_activity" :relative="true" />

@@ -80,7 +80,7 @@ onMounted(() => {
             <col style="width: 15%;">
             <col style="width: 10%;">
             <col style="width: 10%;">
-            <col style="width: 10%;">
+            <col style="width: 15%;">
             <col style="width: 5%">
             <col v-if="withActions" style="width: 10%">
         </colgroup>
@@ -137,13 +137,13 @@ onMounted(() => {
                 <th
                     :class="getSortClass('meta.recent_activity')"
                     :aria-sort="getAriaSortString('meta.recent_activity')"
-                    :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Aktivitäten'))"
+                    :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
                 >
                     <a
                         href="#"
                         @click.prevent="sortBy('meta.recent_activity')"
-                        :title="$gettext('Nach Aktivitäten sortieren')">
-                        {{ $gettext('Aktivitäten') }}
+                        :title="$gettext('Nach letzter Aktivität sortieren')">
+                        {{ $gettext('Letzte Aktivität') }}
                     </a>
                 </th>
                 <th></th>
@@ -235,7 +235,7 @@ onMounted(() => {
                                     {{ discussion.meta.postings_count }}
                                 </dd>
 
-                                <dt>{{ $gettext('Aktivitäten') }}</dt>
+                                <dt>{{ $gettext('Letzte Aktivität') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
                                     <StudipIcon shape="activity" :size="15" role="info" />
                                     <StudipDateTime :iso="discussion.meta.recent_activity" :relative="true" />

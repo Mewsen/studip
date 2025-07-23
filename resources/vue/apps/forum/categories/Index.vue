@@ -189,7 +189,7 @@ const swapCategory = (categoryId, step) => {
                     <col style="width: 15%;">
                     <col style="width: 15%;">
                     <col style="width: 15%;">
-                    <col style="width: 10%;">
+                    <col style="width: 15%;">
                     <col style="width: 5%">
                 </colgroup>
                 <thead>
@@ -245,13 +245,13 @@ const swapCategory = (categoryId, step) => {
                         <th
                             :class="getSortClass('meta.recent_activity')"
                             :aria-sort="getAriaSortString('meta.recent_activity')"
-                            :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Aktivitäten'))"
+                            :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
                         >
                             <a
                                 href="#"
                                 @click.prevent="sortBy('meta.recent_activity')"
-                                :title="$gettext('Nach Aktivitäten sortieren')">
-                                {{ $gettext('Aktivitäten') }}
+                                :title="$gettext('Nach letzter Aktivität sortieren')">
+                                {{ $gettext('Letzte Aktivität') }}
                             </a>
                         </th>
                         <th></th>

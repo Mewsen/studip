@@ -54,10 +54,10 @@ export function useSortable(data) {
         }
 
         if (sortOrder.value === 'asc') {
-            return $gettext('Es wird aufsteigend nach der Spalte %{ label } sortiert.', { label });
+            return $gettext('Es wird aufsteigend nach der Spalte „%{ label }“ sortiert.', { label });
         }
 
-        return $gettext('Es wird absteigend nach der Spalte %{ label } sortiert.', { label });
+        return $gettext('Es wird absteigend nach der Spalte „%{ label }“ sortiert.', { label });
     }
 
     return {
