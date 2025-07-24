@@ -215,7 +215,7 @@ class CoreWiki extends CorePlugin implements StudipModule
     {
         $toc = new TOCItem($page->isNew() ? _('Wiki-Startseite') : $page->name);
         $toc->setURL($page->isNew() ? URLHelper::getURL('dispatch.php/course/wiki/page') : URLHelper::getURL('dispatch.php/course/wiki/page/' . $page->id));
-        $toc->setActive($page->page_id === $active_page_id);
+        $toc->setActive($page->page_id == $active_page_id);
         foreach ($page->children as $child) {
             $childToc = self::getTOCRecursive($child, $active_page_id);
             $toc->children[] = $childToc;
