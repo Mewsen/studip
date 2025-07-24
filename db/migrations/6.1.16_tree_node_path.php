@@ -11,15 +11,15 @@ return new class extends Migration
     {
         // Add the new database column for storing node ancestry path.
         DBManager::get()->exec("ALTER TABLE `sem_tree`
-            ADD `ancestors` VARCHAR(255) NOT NULL AFTER `parent_id`,
-            ADD INDEX `ancestors` (`ancestors`)"
+            ADD IF NOT EXISTS `ancestors` VARCHAR(255) NOT NULL AFTER `parent_id`,
+            ADD INDEX IF NOT EXISTS `ancestors` (`ancestors`)"
         );
         StudipStudyArea::expireTableScheme();
         $this->buildStructure(StudipStudyArea::class, 'root', 0, 0, '');
 
         DBManager::get()->exec("ALTER TABLE `range_tree`
             ADD `ancestors` VARCHAR(255) NOT NULL AFTER `parent_id`,
-            ADD INDEX `ancestors` (`ancestors`)"
+            ADD INDEX IF NOT EXISTS `ancestors` (`ancestors`)"
         );
         RangeTreeNode::expireTableScheme();
         $this->buildStructure(RangeTreeNode::class, 'root', 0, 0, '');
