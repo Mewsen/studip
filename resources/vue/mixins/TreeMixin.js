@@ -62,7 +62,10 @@ export const TreeMixin = {
             );
         },
         getCachedNodeCourseInfo(node, semesterId, semClass) {
-            return cache.get(['course-info', node.id, semesterId, semClass].join('/')) ?? null;
+            return {
+                courses: cache.get(['course-count', node.id, semesterId, semClass].join('/')) ?? null,
+                allCourses: cache.get(['course-count-all', node.id, semesterId, semClass].join('/')) ?? null
+            };
         },
         getNodeCourseInfo(node, semesterId, semClass = 0) {
             let parameters = {};
@@ -80,8 +83,13 @@ export const TreeMixin = {
                 parameters
             ).then(courseinfo => {
                 cache.set(
-                    ['course-info', node.id, semesterId, semClass].join('/'),
+                    ['course-count', node.id, semesterId, semClass].join('/'),
                     courseinfo.data.courses ?? 0,
+                    3 * 60 * 60
+                );
+                cache.set(
+                    ['course-count-all', node.id, semesterId, semClass].join('/'),
+                    courseinfo.data.allcourses ?? 0,
                     3 * 60 * 60
                 );
                 return courseinfo;

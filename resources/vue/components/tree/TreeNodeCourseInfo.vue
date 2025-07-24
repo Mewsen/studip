@@ -1,14 +1,14 @@
 <template>
     <div class="studip-tree-child-description">
         <studip-loading-skeleton v-if="isLoading" />
-        <div v-else
-             v-html="$ngettext(
-                 '<strong>Eine</strong> Veranstaltung',
-                 '<strong>%{count}</strong> Veranstaltungen',
+        <div v-else>
+             <div v-html="$ngettext(
+                 '<strong>%{count}</strong> Veranstaltung auf dieser Ebene',
+                 '<strong>%{count}</strong> Veranstaltungen auf dieser Ebene',
                  courseCount,
                  { count: courseCount }
-             )"
-        ></div>
+             )"></div>
+        </div>
     </div>
 </template>
 
@@ -37,8 +37,11 @@ export default {
         }
     },
     data() {
+        const cachedCourseInfo = this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass);
+
         return {
-            courseCount: this.getCachedNodeCourseInfo(this.node, this.semester, this.semClass),
+            allCourseCount: cachedCourseInfo.allCourses,
+            courseCount: cachedCourseInfo.courses,
             showingAllCourses: false
         }
     },
