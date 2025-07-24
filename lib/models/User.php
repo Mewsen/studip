@@ -1515,7 +1515,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
      * @param string|null $user_id Optional id of a user, defaults to current user
      * @return bool
      */
-    public function isAccessibleToUser($user_id = null)
+    public function isAccessibleToUser($user_id = null): bool
     {
         if ($user_id === null) {
             $user_id = self::findCurrent()->id;

@@ -48,7 +48,7 @@ interface Range
      * @param string|null $user_id Optional id of a user, defaults to current user
      * @return bool
      */
-    public function isAccessibleToUser($user_id = null);
+    public function isAccessibleToUser($user_id = null): bool;
 
     /**
      * Decides whether the user may edit/alter the range.

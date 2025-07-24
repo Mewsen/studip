@@ -300,11 +300,14 @@ class Institute extends SimpleORMap implements Range
      *
      * @param string|null $user_id Optional id of a user, defaults to current user
      * @return bool
-     * @todo Check permissions
      */
     public function isAccessibleToUser($user_id = null): bool
     {
-        return true;
+        if (Config::get()->ENABLE_FREE_ACCESS === '1') {
+            return true;
+        }
+
+        return $GLOBALS['perm']->have_perm('user');
     }
 
     /**
