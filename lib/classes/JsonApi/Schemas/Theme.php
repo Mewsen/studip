@@ -2,10 +2,7 @@
 
 namespace JsonApi\Schemas;
 
-use JsonApi\Schemas\SchemaProvider;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
-use Neomerx\JsonApi\Schema\Link;
-use Neomerx\JsonApi\Contracts\Schema\LinkInterface;
 
 class Theme extends SchemaProvider
 {
@@ -25,22 +22,23 @@ class Theme extends SchemaProvider
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'name' => $resource['name'],
-            'active' => (bool)$resource['active'],
-            'origin' => $resource['origin'],
-            'studip_min_version' => $resource['studip_min_version'],
-            'studip_max_version' => $resource['studip_max_version'],
-            'author' => $resource['author'],
-            'description' => $resource['description'],
-            'type' => $resource['type'],
-            'values' => empty($resource['values']) ? null : json_decode($resource['values']),
+            'name'               => $resource->name,
+            'active'             => (bool) $resource->active,
+            'origin'             => $resource->origin,
+            'studip_min_version' => $resource->studip_min_version,
+            'studip_max_version' => $resource->studip_max_version,
+            'author'             => $resource->author,
+            'description'        => $resource->description,
+            'type'               => $resource->type,
+            'values'             => $resource->values->getArrayCopy() ?: null,
 
-            'mkdate' => date('c', $resource['mkdate']),
-            'chdate' => date('c', $resource['chdate']),
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate),
         ];
     }
 
     /**
+     * @param \Theme $resource
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getRelationships($resource, ContextInterface $context): iterable
@@ -48,11 +46,17 @@ class Theme extends SchemaProvider
         return [];
     }
 
+    /**
+     * @param \Theme $resource
+     */
     public function hasResourceMeta($resource): bool
     {
         return true;
     }
 
+    /**
+     * @param \Theme $resource
+     */
     public function getResourceMeta($resource): iterable
     {
         return [

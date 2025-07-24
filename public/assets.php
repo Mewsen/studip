@@ -12,51 +12,52 @@
  * @since   Stud.IP 3.4
  */
 
-require_once '../lib/bootstrap.php';
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Factory\AppFactory;
 
-// Obtain request information
-$uri = ltrim(Request::pathInfo(), '/');
-list($type, $id) = explode('/', $uri, 2);
+require_once __DIR__  .'/../lib/bootstrap.php';
 
-// Setup response
-$response = new Trails\Response();
+// Build PHP_DI Container
+$container = app();
 
-// Create response
-if (!$type || !$id) {
-    // Invalid call
-    $response->set_status(400);
-} elseif (!in_array($type, ['css', 'js'])) {
-    // Invalid type
-    $response->set_status(501);
-} elseif (!PluginAsset::exists($id)) {
-    // Asset does not exist
-    $response->set_status(404);
-} else {
-    // Load asset
-    $model = PluginAsset::find($id);
-    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $model->chdate <= strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-        // Cached and still valid
-        $response->set_status(304);
-    } else {
-        // Output asset
-        $asset = new Assets\PluginAsset($model);
-        try {
-            $response->set_body($asset->getContent());
+// Instantiate the app
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'assets.php');
 
-            // Set appropriate header
-            $response->add_header('Content-Type', $type === 'css' ? 'text/css' : 'application/javascript');
-            $response->add_header('Content-Length', $model->size);
-            $response->add_header('Content-Disposition', 'inline; ' . encode_header_parameter('filename', $model->filename));
-
-            // Store cache information
-            if (Studip\ENV !== 'development') {
-                $response->add_header('Last-Modified', gmdate('D, d M Y H:i:s', $model->chdate) . ' GMT');
-                $response->add_header('Expires', gmdate('D, d M Y H:i:s', $model->chdate + PluginAsset::CACHE_DURATION) . ' GMT');
-            }
-        } catch (Exception $e) {
-            $asset->delete();
-            $response->set_status(500);
-        }
+$app->get('/{type:js|css}/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($app) {
+    $model = PluginAsset::find($args['id']);
+    if (!$model) {
+        return $response->withStatus(404);
     }
-}
-$response->output();
+
+    if (
+        $request->hasHeader('If-Modified-Since')
+        && $model->chdate <= strtotime($request->getHeaderLine('If-Modified-Since')[0])
+    ) {
+        return $response->withStatus(304);
+    }
+
+    $asset = new Assets\PluginAsset($model);
+
+    try {
+        $response->getBody()->write($asset->getContent());
+
+        $response = $response->withHeader('Content-Type', $args['type'] === 'css' ? 'text/css' : 'application/javascript');
+        $response = $response->withHeader('Content-Length', $model->size);
+
+        // Store cache information
+        if (Studip\ENV !== 'development') {
+            $response = $response->withHeader('Last-Modified', gmdate('D, d M Y H:i:s', $model->chdate) . ' GMT');
+            $response = $response->withHeader('Expires', gmdate('D, d M Y H:i:s', $model->chdate + PluginAsset::CACHE_DURATION) . ' GMT');
+        }
+
+        return $response;
+    } catch (Exception $e) {
+        $asset->delete();
+        return $response->withStatus(500);
+    }
+});
+
+$app->run();

@@ -142,6 +142,17 @@ class PageLayout
         self::addHeadElement('script', [], 'window.Vue.use = () => {};');
 
         self::addStylesheet('studip-base.css?v=' . $v, ['media' => 'screen']);
+
+        try {
+            $old_base = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
+            self::addHeadElement('link', [
+                'rel' => 'stylesheet',
+                'href' => Theme::getDownloadURL(),
+            ]);
+            URLHelper::setBaseURL($old_base);
+        } catch (Exception) {
+        }
+
         self::addScript('studip-base.js?v=' . $v);
         self::addScript('studip-wysiwyg.js?v=' . $v);
 
@@ -161,13 +172,6 @@ class PageLayout
 
             URLHelper::setBaseURL($old_base);
         }
-
-        $old_base = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
-        self::addHeadElement('link', [
-            'rel' => 'stylesheet',
-            'href' => URLHelper::getURL('theme.php', ignore_registered_params: true)
-        ]);
-        URLHelper::setBaseURL($old_base);
     }
 
     /**
