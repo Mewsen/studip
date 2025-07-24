@@ -3,15 +3,16 @@
         <button v-if="showButtons" class="button" :disabled="!canAddFolder" @click="addFolder">
             {{ $gettext('Ordner hinzufügen') }}
         </button>
-        <form v-if="showFolderAdder" class="inline-form" @submit.prevent="">
-            <label for="file-chooser-add-folder">{{ $gettext('Ordner hinzufügen') }}:</label>
+        <form v-if="showFolderAdder" class="default inline-form" @submit.prevent="">
+            <label for="file-chooser-add-folder">{{ $gettext('Ordnername') }}
             <input
                 id="file-chooser-add-folder"
                 type="text"
                 v-model="newFolderName"
                 :placeholder="$gettext('Ordnername')"
             />
-            <div class="inline-buttons">
+            </label>
+            <div class="inline-button-group">
                 <button :title="$gettext('Ordner anlegen')" @click="createFolder">
                     <studip-icon shape="accept" />
                 </button>
@@ -22,17 +23,45 @@
             {{ $gettext('Datei hinzufügen') }}
         </button>
         <input v-show="false" type="file" ref="fileInput" :disabled="!canAddFile" @change="updateUpload" />
-        <form v-if="showUpload" class="inline-form" @submit.prevent="">
-            <label for="file-chooser-add-file">{{ $gettext('Datei hinzufügen') }}:</label>
-            <input
-                id="file-chooser-add-file"
-                :title="$gettext('Datei auswählen')"
-                type="text"
-                :value="uploadFileName"
-                readonly
-                @click="$refs.fileInput.click()"
-            />
-            <div class="inline-buttons">
+
+        <form v-if="showUpload" class="default inline-form" @submit.prevent="">
+            <label>
+                {{ $gettext('Datei') }}
+                <input
+                    :title="$gettext('Datei auswählen')"
+                    type="text"
+                    :value="uploadFileName"
+                    readonly
+                    @click="$refs.fileInput.click()"
+                />
+            </label>
+            <label class="file-chooser-license">
+                {{ $gettext('Lizenzauswahl') }}
+                <studip-select
+                    :options="termsOfUse"
+                    label="name"
+                    :reduce="(termsOfUse) => termsOfUse.id"
+                    :clearable="false"
+                    v-model="uploadFileLicense"
+                >
+                    <template #open-indicator="{ selectAttributes }">
+                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
+                    </template>
+                    <template #no-options>
+                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                    </template>
+                    <template #selected-option="option">
+                        <studip-icon :shape="option.attributes.icon" />
+                        <span>{{ option.attributes.name }}</span>
+                    </template>
+                    <template #option="option">
+                        <studip-icon :shape="option.attributes.icon" />
+                        <span>{{ option.attributes.name }}</span>
+                    </template>
+                </studip-select>
+            </label>
+
+            <div class="inline-button-group">
                 <button :title="$gettext('Datei hochladen')" @click="createFile"><studip-icon shape="accept" /></button>
                 <button :title="$gettext('Abbrechen')" @click="closeAddFile"><studip-icon shape="decline" /></button>
             </div>
@@ -53,6 +82,7 @@ export default {
             newFolderName: '',
             showUpload: false,
             uploadFile: null,
+            uploadFileLicense: null,
         };
     },
     computed: {
@@ -63,6 +93,7 @@ export default {
             courseId: 'file-chooser/courseId',
             isFolderChooser: 'file-chooser/isFolderChooser',
             userId: 'file-chooser/userId',
+            termsOfUse: 'terms-of-use/all',
         }),
         showButtons() {
             return !this.showUpload && !this.showFolderAdder;
@@ -85,10 +116,15 @@ export default {
             return this.uploadFile.name;
         },
     },
+    async mounted() {
+        await this.loadTermsOfUse();
+        this.uploadFileLicense = this.getDefaultTerm();
+    },
     methods: {
         ...mapActions({
             loadRangeFolders: 'file-chooser/loadRangeFolders',
             loadFolderFiles: 'file-chooser/loadFolderFiles',
+            loadTermsOfUse: 'terms-of-use/loadAll',
         }),
         addFolder() {
             this.showFolderAdder = true;
@@ -147,9 +183,13 @@ export default {
         },
         async createFile() {
             this.showUpload = false;
+            const termId = this.uploadFileLicense || this.getDefaultTerm();
             const httpClient = await this.getHttpClient();
             const formData = new FormData();
             formData.append('file', this.uploadFile, this.uploadFileName);
+            if (termId) {
+                formData.append('term-id', termId);
+            }
             const url = `folders/${this.activeFolderId}/file-refs`;
             let request = await httpClient.post(url, formData, {
                 headers: {
@@ -165,6 +205,13 @@ export default {
             await this.loadFolderFiles({ folderId: this.activeFolderId });
             this.$emit('fileAdded');
             this.$refs.fileInput.value = null;
+        },
+        getDefaultTerm() {
+            const defaultTerm = this.termsOfUse.filter((term) => term.attributes['is-default'])[0];
+            if (defaultTerm) {
+                return defaultTerm.id;
+            }
+            return null;
         },
     },
     watch: {
@@ -190,30 +237,32 @@ export default {
 
     .inline-form {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: start;
-        gap: 4px;
+        justify-content: space-between;
+        gap: 5px;
         width: 100%;
-        margin: 0.8em 0.6em 0.8em 0;
+        margin: 0.8em 0;
 
         label {
-            line-height: 30px;
+            flex-grow: 1;
+            &.file-chooser-license {
+                min-width: 50%;
+            }
         }
 
-        input {
-            flex-grow: 1;
-            padding: 4px;
-            border: solid thin var(--color--input-field-border);
-            border-radius: 0;
-        }
-        button {
-            border: solid thin var(--color--input-field-border);
-            color: var(--color--highlight);
-            background-color: transparent;
-            height: 30px;
-            width: 30px;
-            cursor: pointer;
+        .inline-button-group {
+            margin-top: 25px;
+            button {
+                border: solid thin var(--base-color);
+                border-radius: var(--border-radius-default);
+                background-color: transparent;
+                height: 30px;
+                width: 30px;
+                cursor: pointer;
+
+                svg {
+                    vertical-align: middle;
+                }
+            }
         }
     }
 }
