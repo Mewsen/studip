@@ -9,7 +9,7 @@ class Authority
 {
     public static function canShowInstitute(User $user, Institute $institute): bool
     {
-        return $GLOBALS['perm']->have_studip_perm('user', $institute->id, $user->id);
+        return $institute->isAccessibleToUser($user->id);
     }
 
     /**
