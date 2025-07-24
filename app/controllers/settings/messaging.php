@@ -53,7 +53,7 @@ class Settings_MessagingController extends Settings_SettingsController
                 $this->user->smsforward_copy = 0;
             }
 
-            $this->user->email_forward = Request::int('send_as_email');
+            $this->user->email_forward = Request::int('send_as_email', 0);
             $this->user->store();
 
             // write to user config table
