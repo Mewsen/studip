@@ -99,7 +99,7 @@ $consum_ribbon_width: calc(100% - 58px);
             margin: 0 0.5em 0 0;
         }
 
-        &.cw-ribbon-button-prev.disabled, 
+        &.cw-ribbon-button-prev.disabled,
         &.cw-ribbon-button-next.disabled {
             color: var(--color--font-inactive);
             margin: 0 0.5em 0 0;
@@ -182,15 +182,6 @@ $consum_ribbon_width: calc(100% - 58px);
         display: flex;
         gap: 0.5em;
         align-items: center;
-
-        .contentbar-toc-wrapper {
-            margin-top: 4px;
-            @-moz-document url-prefix() {
-                &.contentbar-toc-wrapper {
-                    margin-top: 0;
-                }
-            }
-        }
 
         button:not(.action-menu-icon):not(.button) {
             height: 32px;

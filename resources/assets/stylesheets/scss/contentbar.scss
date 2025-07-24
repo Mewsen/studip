@@ -75,9 +75,6 @@
         .contentbar-button-wrapper {
 
             @-moz-document url-prefix() {
-                &.contentbar-toc-wrapper {
-                    margin-top: -4px;
-                }
                 &.contentbar-action-menu-wrapper {
                     margin-top: 2px;
                 }
