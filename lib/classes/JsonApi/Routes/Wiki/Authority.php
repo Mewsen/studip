@@ -7,13 +7,13 @@ class Authority
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function canIndexWiki(\User $user, $range)
+    public static function canIndexWiki(\User $user, \Range $range)
     {
         if (!($range instanceof \Course || $range instanceof \Institute)) {
             return false;
         }
 
-        return $GLOBALS['perm']->have_studip_perm('user', $range->id, $user->id);
+        return $range->isAccessibleToUser($user->id);
     }
 
     /**
