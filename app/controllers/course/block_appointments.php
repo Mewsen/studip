@@ -26,7 +26,7 @@ class Course_BlockAppointmentsController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        $course_id = $args[0];
+        $course_id = $args[0] ?? null;
 
         $this->course_id = Request::option('cid', $course_id);
         if (!get_object_type($this->course_id, ['sem']) ||
