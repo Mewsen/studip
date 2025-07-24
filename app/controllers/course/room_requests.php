@@ -480,7 +480,10 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->redirect('course/room_requests/request_show_summary/' . $this->request_id  );
         } else {
             $room = Room::find($this->fromSession('room_id'));
-            $this->toSession('room_category_id', $room->category_id);
+
+            if ($room) {
+                $this->toSession('room_category_id', $room->category_id);
+            }
 
             $this->redirect(
                 'course/room_requests/request_find_matching_rooms/' . $this->request_id . '/2'
