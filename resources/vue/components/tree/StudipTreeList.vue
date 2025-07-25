@@ -221,8 +221,6 @@ export default {
         }
     },
     data() {
-        const cachedCourseInfo = this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass);
-
         return {
             currentNode: this.node,
             isLoading: false,
@@ -230,8 +228,8 @@ export default {
             children: [],
             courses: [],
             assistiveLive: '',
-            subLevelsCourses: cachedCourseInfo.allCourses,
-            thisLevelCourses: cachedCourseInfo.courses,
+            subLevelsCourses: null,
+            thisLevelCourses: null,
             showingAllCourses: false
         }
     },
@@ -251,11 +249,14 @@ export default {
                 });
             }
 
-            this.getNodeCourseInfo(node, this.semester, this.semClass)
-                .then(response => {
-                    this.thisLevelCourses = response?.data.courses;
-                    this.subLevelsCourses = response?.data.allCourses;
-                });
+            if (node.attributes.ancestors.length > 1) {
+                this.getNodeCourseInfo(node, this.semester, this.semClass)
+                    .then(response => {
+                        console.log('Response', response);
+                        this.thisLevelCourses = response?.data.courses;
+                        this.subLevelsCourses = response?.data.allCourses;
+                    });
+            }
 
             if (this.withCourses) {
                 this.getNodeCourses(node, this.offset, this.semester, this.semClass, '', false)
@@ -341,8 +342,8 @@ export default {
 
         this.getNodeCourseInfo(this.currentNode, this.semester, this.semClass)
             .then(response => {
-                this.thisLevelCourses = response?.data.courses;
-                this.subLevelsCourses = response?.data.allCourses;
+                this.thisLevelCourses = response.data.courses;
+                this.subLevelsCourses = response.data.allcourses;
             });
 
         if (this.withCourses) {

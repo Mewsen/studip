@@ -1,5 +1,5 @@
 <template>
-    <div class="studip-tree-child-description">
+    <div v-if="node.attributes.ancestors.length > 1" class="studip-tree-child-description">
         <studip-loading-skeleton v-if="isLoading" />
         <div v-else>
              <div v-html="$ngettext(
@@ -7,6 +7,13 @@
                  '<strong>%{count}</strong> Veranstaltungen auf dieser Ebene',
                  courseCount,
                  { count: courseCount }
+             )"></div>
+             <div v-if="node.attributes['has-children']"
+                  v-html="$ngettext(
+                 '<strong>%{count}</strong> Veranstaltung auf Unterebenen',
+                 '<strong>%{count}</strong> Veranstaltungen auf Unterebenen',
+                 allCourseCount,
+                 { count: allCourseCount }
              )"></div>
         </div>
     </div>
@@ -37,11 +44,9 @@ export default {
         }
     },
     data() {
-        const cachedCourseInfo = this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass);
-
         return {
-            allCourseCount: cachedCourseInfo.allCourses,
-            courseCount: cachedCourseInfo.courses,
+            allCourseCount: null,
+            courseCount: null,
             showingAllCourses: false
         }
     },
@@ -57,10 +62,13 @@ export default {
             this.$emit('showAllCourses', state);
         },
         loadNodeInfo(node) {
-            this.getNodeCourseInfo(node, this.semester, this.semClass)
-                .then(info => {
-                    this.courseCount = info?.data.courses ?? 0;
-                });
+            if (node.id) {
+                this.getNodeCourseInfo(node, this.semester, this.semClass)
+                    .then(info => {
+                        this.courseCount = info?.data.courses;
+                        this.allCourseCount = info?.data.allcourses;
+                    });
+            }
         }
     },
     watch: {

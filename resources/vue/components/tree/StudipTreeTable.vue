@@ -241,8 +241,6 @@ export default {
         }
     },
     data() {
-        const cachedCourseInfo = this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass);
-
         return {
             currentNode: this.node,
             isLoading: false,
@@ -250,8 +248,8 @@ export default {
             children: [],
             courses: [],
             assistiveLive: '',
-            subLevelsCourses: cachedCourseInfo.allCourses,
-            thisLevelCourses: cachedCourseInfo.courses,
+            subLevelsCourses: null,
+            thisLevelCourses: null,
             showingAllCourses: false
         }
     },

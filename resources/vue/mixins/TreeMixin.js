@@ -61,13 +61,7 @@ export const TreeMixin = {
                 {params: parameters}
             );
         },
-        getCachedNodeCourseInfo(node, semesterId, semClass) {
-            return {
-                courses: cache.get(['course-count', node.id, semesterId, semClass].join('/')) ?? null,
-                allCourses: cache.get(['course-count-all', node.id, semesterId, semClass].join('/')) ?? null
-            };
-        },
-        getNodeCourseInfo(node, semesterId, semClass = 0) {
+        getNodeCourseInfo(node, semesterId, semClass = 0, forceLive = false) {
             let parameters = {};
 
             if (semesterId !== 'all' && semesterId !== '0') {
@@ -78,22 +72,33 @@ export const TreeMixin = {
                 parameters['filter[semclass]'] = semClass;
             }
 
-            return requester.addRequest(
-                STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/courseinfo'),
-                parameters
-            ).then(courseinfo => {
-                cache.set(
-                    ['course-count', node.id, semesterId, semClass].join('/'),
-                    courseinfo.data.courses ?? 0,
-                    3 * 60 * 60
-                );
-                cache.set(
-                    ['course-count-all', node.id, semesterId, semClass].join('/'),
-                    courseinfo.data.allcourses ?? 0,
-                    3 * 60 * 60
-                );
-                return courseinfo;
-            });
+            const cachedCourseCount = cache.get(['course-count', node.id, semesterId, semClass].join('/')) ?? -1;
+            const cachedAllCoursesCount = cache.get(['course-count-all', node.id, semesterId, semClass].join('/')) ?? -1;
+            if (!forceLive && cachedCourseCount !== -1 && cachedAllCoursesCount !== -1) {
+                return Promise.resolve({
+                    data: {
+                        courses: cache.get(['course-count', node.id, semesterId, semClass].join('/')),
+                        allcourses: cache.get(['course-count-all', node.id, semesterId, semClass].join('/'))
+                    }
+                });
+            } else {
+                return requester.addRequest(
+                    STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/courseinfo'),
+                    parameters
+                ).then(courseinfo => {
+                    cache.set(
+                        ['course-count', node.id, semesterId, semClass].join('/'),
+                        courseinfo.data.courses,
+                        3 * 60 * 60
+                    );
+                    cache.set(
+                        ['course-count-all', node.id, semesterId, semClass].join('/'),
+                        courseinfo.data.allcourses,
+                        3 * 60 * 60
+                    );
+                    return courseinfo;
+                });
+                }
         },
         nodeUrl(node_id, semester = null ) {
             return STUDIP.URLHelper.getURL('', { node_id, semester })
