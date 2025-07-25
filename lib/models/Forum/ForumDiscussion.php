@@ -80,9 +80,12 @@ class ForumDiscussion extends SimpleORMap
     }
 
     /**
+     * @param string $range_id course_id or institute_id.
+     * @param array $filter Optional: filters to apply.
+     *
      * @return self[]
      */
-    public static function getCourseDiscussions($range_id, $last_visit = 0): array
+    public static function getCourseDiscussions(string $range_id, array $filter = []): array
     {
         $query = [
             "SELECT
@@ -91,13 +94,58 @@ class ForumDiscussion extends SimpleORMap
                 FROM forum_discussions AS discussions
                 JOIN forum_postings as postings USING (discussion_id)
                 JOIN forum_topics AS topics USING (topic_id)
+                LEFT JOIN tags_relations ON (tags_relations.range_id = discussions.discussion_id AND range_type = 'forum')
                 WHERE topics.range_id = :range_id",
             ['range_id' => $range_id]
         ];
 
-        if ($last_visit) {
+        if (isset($filter['last_visit'])) {
             $query[0] .= " AND postings.mkdate > :last_visit";
-            $query[1]["last_visit"] = $last_visit;
+            $query[1]["last_visit"] = $filter['last_visit'];
+        }
+
+        if (isset($filter['keyword'])) {
+            $keyword = $filter['keyword'];
+            $query[0] .= " AND (discussions.title LIKE :keyword OR postings.content LIKE :keyword)";
+            $query[1]["keyword"] = "%$keyword%";
+        }
+
+        if (isset($filter['begin'])) {
+            $query[0] .= " AND postings.mkdate >= :begin";
+            $query[1]['begin'] = $filter['begin'];
+        }
+
+        if (isset($filter['end'])) {
+            $query[0] .= " AND postings.mkdate <= :end";
+            $query[1]['end'] = $filter['end'];
+        }
+
+        if (isset($filter['topic_ids'])) {
+            $query[0] .= " AND discussions.topic_id IN (:topic_ids)";
+            $query[1]['topic_ids'] = $filter['topic_ids'];
+        }
+
+        if (isset($filter['type_ids'])) {
+            $query[0] .= " AND discussions.type_id IN (:type_ids)";
+            $query[1]['type_ids'] = $filter['type_ids'];
+        }
+
+        if (isset($filter['tag_ids'])) {
+            $query[0] .= " AND tags_relations.tag_id IN (:tag_ids)";
+            $query[1]['tag_ids'] = $filter['tag_ids'];
+        }
+
+        if (isset($filter['user_ids'])) {
+            $query[0] .= " AND postings.user_id IN (:user_ids)";
+            $query[1]['user_ids'] = $filter['user_ids'];
+        }
+
+        if (isset($filter['status'])) {
+            $query[0] .= match ($filter['status']) {
+                2 => " AND discussions.closed_at IS NULL", // opens
+                3 => " AND discussions.closed_at IS NOT NULL", // closed
+                default => ""
+            };
         }
 
         return \DBManager::get()->fetchAll(

@@ -24,7 +24,7 @@ const selectedTopics = defineModel();
         <template #search="{attributes, events}">
             <input
                 class="vs__search"
-                :required="!selectedTopics"
+                :required="!selectedTopics && $attrs.required"
                 v-bind="attributes"
                 v-on="events"
             />

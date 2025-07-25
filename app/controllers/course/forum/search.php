@@ -1,9 +1,7 @@
 <?php
 require_once 'ForumBaseController.php';
 
-use Forum\ForumDiscussion;
 use Forum\ForumDiscussionType;
-use Forum\DTO\ForumMember;
 use Forum\DTO\ForumTag;
 
 class Course_Forum_SearchController extends Forum\ForumBaseController
@@ -38,178 +36,75 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
             ];
         }
 
-        $search_object = $this->buildSearchObject();
-        $all_tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), ForumTag::getForumTags());
+        $tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), ForumTag::getForumTags());
         $discussion_types = array_map(fn(ForumDiscussionType $discussion_type) => $discussion_type->toRawArray(), ForumDiscussionType::getForumDiscussionType());
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/search/Index')
                 ->withProps([
-                    'search' => $search_object,
-                    'discussions' =>  $this->getResult($search_object),
+                    'filter' => $this->getForumFilter(),
                     'topics' => $topics,
                     'discussion_types' => $discussion_types,
-                    'tags' => $all_tags,
+                    'tags' => $tags,
                     'course_members' => $course_members,
                 ])
         );
     }
 
-    private function getResult($search_object): array
-    {
-        if ($this->isSearchObjectEmpty($search_object)) {
-            unset($_SESSION['forum'][$this->range_id]['search']);
-            return [];
-        }
-
-        $query = [
-            "SELECT
-                    discussions.*,
-                    MAX(postings.mkdate) AS latest_post_date
-                FROM forum_discussions AS discussions
-                LEFT JOIN forum_postings AS postings USING(discussion_id)
-                LEFT JOIN tags_relations ON (tags_relations.range_id = discussions.discussion_id AND range_type = 'forum')
-                WHERE postings.range_id = :range_id ",
-            [
-                'range_id' => $this->range_id
-            ]
-        ];
-
-        $keyword = $search_object['keyword'];
-        if ($keyword) {
-            $query[0] .= " AND (discussions.title LIKE :keyword OR postings.content LIKE :keyword)";
-            $query[1]["keyword"] = "%$keyword%";
-        }
-
-        if ($search_object['begin']) {
-            $query[0] .= " AND postings.mkdate >= :begin";
-            $query[1]['begin'] = $search_object['begin'];
-        }
-
-        if ($search_object['end']) {
-            $query[0] .= " AND postings.mkdate <= :end";
-            $query[1]['end'] = $search_object['end'];
-        }
-
-        if ($search_object['topic_ids']) {
-            $query[0] .= " AND discussions.topic_id IN (:topic_ids)";
-            $query[1]['topic_ids'] = $search_object['topic_ids'];
-        }
-
-        if ($search_object['discussion_type_ids']) {
-            $query[0] .= " AND discussions.type_id IN (:type_ids)";
-            $query[1]['type_ids'] = $search_object['discussion_type_ids'];
-        }
-
-        if ($search_object['tag_ids']) {
-            $query[0] .= " AND tags_relations.tag_id IN (:tag_ids)";
-            $query[1]['tag_ids'] = $search_object['tag_ids'];
-        }
-
-        if ($search_object['user_ids']) {
-            $query[0] .= " AND postings.user_id IN (:user_ids)";
-            $query[1]['user_ids'] = $search_object['user_ids'];
-        }
-
-        $query[0] .= match ($search_object['discussion_status']) {
-            2 => " AND discussions.closed_at IS NULL", // opens
-            3 => " AND discussions.closed_at IS NOT NULL", // closed
-            default => ""
-        };
-
-        $discussions = DBManager::get()->fetchAll(
-            $query[0]." GROUP BY discussions.discussion_id ORDER BY latest_post_date DESC",
-            $query[1],
-            ForumDiscussion::buildExisting(...)
-        );
-
-        return array_map(function (ForumDiscussion $discussion) {
-            $members = array_map(fn(ForumMember $member) => $member->toRawArray(), $discussion->members);
-            $tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), $discussion->tags);
-            $metadata = $discussion->getMetaData();
-
-            return [
-                'id' => $discussion->discussion_id,
-                'title' => $discussion->title,
-                'closed_at' => $discussion->closed_at ? date('c', $discussion->closed_at) : null,
-                'view_count' => (int) $discussion->view_count,
-                'sticky' => (bool) $discussion->sticky,
-                'mkdate' => date('c', $discussion->mkdate),
-                'chdate' => date('c', $discussion->chdate),
-                'topic' => $discussion->topic->toRawArray(),
-                'category' => $discussion->category ? [
-                    'name' => $discussion->category->name,
-                    'color' => $discussion->category->color,
-                ] : [],
-                'discussion_type' => $discussion->discussion_type ? [
-                    'name' => $discussion->discussion_type->name,
-                    'icon' => $discussion->discussion_type->icon,
-                ] : [],
-                'members' => $members,
-                'tags' => $tags,
-                'meta' => [
-                    'postings_count' => (int) $metadata['postings_count'],
-                    'recent_activity' => $metadata['recent_activity'] ? date('c', $metadata['recent_activity']) : null,
-                ]
-            ];
-        }, $discussions);
-    }
-
-    private function isSearchObjectEmpty($search_object): bool {
-        if (
-            $search_object['keyword'] ||
-            $search_object['begin'] ||
-            $search_object['end'] ||
-            $search_object['discussion_status'] ||
-            $search_object['discussion_type_ids'] ||
-            $search_object['tag_ids'] ||
-            $search_object['topic_ids'] ||
-            $search_object['user_ids']
-        ) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function buildSearchObject(): array
+    private function getForumFilter(): array
     {
         $request = Request::getInstance();
-        if (
-            $request->offsetExists('keyword') ||
-            $request->offsetExists('begin') ||
-            $request->offsetExists('end') ||
-            $request->offsetExists('discussion_status') ||
-            $request->offsetExists('discussion_type_ids') ||
-            $request->offsetExists('tag_ids') ||
-            $request->offsetExists('topic_ids') ||
-            $request->offsetExists('user_ids')
-        ) {
-            $search_object =  [
-                'keyword' => Request::get('keyword'),
-                'begin' => Request::int('begin'),
-                'end' => Request::int('end'),
-                'discussion_status' => Request::int('discussion_status'),
-                'discussion_type_ids' =>  Request::getArray('discussion_type_ids'),
-                'tag_ids' => Request::getArray('tag_ids'),
-                'topic_ids' => Request::getArray('topic_ids'),
-                'user_ids' => Request::getArray('user_ids')
-            ];
+        $filter = [];
+        $session_filter = $_SESSION['forum'][$this->range_id]['search_filter'] ?? [];
 
-            $_SESSION['forum'][$this->range_id]['search'] = $search_object;
-            return $search_object;
+        if ($request->offsetExists('keyword')) {
+            $filter['keyword'] = Request::get('keyword');
+        } else if (isset($session_filter['keyword'])) {
+            $filter['keyword'] = $session_filter['keyword'];
         }
 
-        $session_search = $_SESSION['forum'][$this->range_id]['search'] ?? [];
-        return [
-            'keyword' => $session_search['keyword'] ?? '',
-            'begin' => $session_search['begin'] ?? 0,
-            'end' => $session_search['end'] ?? 0,
-            'discussion_status' => $session_search['discussion_status'] ?? 0,
-            'discussion_type_ids' => $session_search['discussion_type_ids'] ?? [],
-            'tag_ids' => $session_search['tag_ids'] ?? [],
-            'topic_ids' => $session_search['topic_ids'] ?? [],
-            'user_ids' => $session_search['user_ids'] ?? []
-        ];
+        if ($request->offsetExists('begin')) {
+            $filter['begin'] = Request::int('begin');
+        } else if (isset($session_filter['begin'])) {
+            $filter['begin'] = (int) $session_filter['begin'];
+        }
+
+        if ($request->offsetExists('end')) {
+            $filter['end'] = Request::int('end');
+        } else if (isset($session_filter['end'])) {
+            $filter['end'] = (int) $session_filter['end'];
+        }
+
+        if ($request->offsetExists('status')) {
+            $filter['status'] = Request::int('status');
+        } else if (isset($session_filter['status'])) {
+            $filter['status'] = (int) $session_filter['status'];
+        }
+
+        if ($request->offsetExists('type_ids')) {
+            $filter['type_ids'] = Request::getArray('type_ids');
+        } else if (isset($session_filter['type_ids'])) {
+            $filter['type_ids'] = $session_filter['type_ids'];
+        }
+
+        if ($request->offsetExists('tag_ids')) {
+            $filter['tag_ids'] = Request::getArray('tag_ids');
+        } else if (isset($session_filter['tag_ids'])) {
+            $filter['tag_ids'] = $session_filter['tag_ids'];
+        }
+
+        if ($request->offsetExists('topic_ids')) {
+            $filter['topic_ids'] = Request::getArray('topic_ids');
+        } else if (isset($session_filter['topic_ids'])) {
+            $filter['topic_ids'] = $session_filter['topic_ids'];
+        }
+
+        if ($request->offsetExists('user_ids')) {
+            $filter['user_ids'] = Request::getArray('user_ids');
+        } else if (isset($session_filter['user_ids'])) {
+            $filter['user_ids'] = $session_filter['user_ids'];
+        }
+
+        return $filter;
     }
 }

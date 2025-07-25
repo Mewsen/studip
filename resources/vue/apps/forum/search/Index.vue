@@ -11,6 +11,8 @@ import DiscussionIndex from "@/vue/components/forum/discussions/DiscussionIndex.
 import StudipIcon from "../../../components/StudipIcon.vue";
 import StudipSelect from "../../../components/StudipSelect.vue";
 import {highlightText, removeHighlight} from "@/vue/components/forum/helpers";
+import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
+import StudipPagination from "../../../components/StudipPagination.vue";
 
 const discussionStatuses = [
     {
@@ -30,12 +32,8 @@ const discussionStatuses = [
 const CSRF = STUDIP.CSRF_TOKEN;
 
 const props = defineProps({
-    search: {
+    filter: {
         type: Object,
-        required: true
-    },
-    discussions: {
-        type: Array,
         required: true
     },
     topics: {
@@ -56,17 +54,20 @@ const props = defineProps({
     }
 });
 
+const discussions = ref([]);
+const pagination = ref({});
+const isLoading = ref(false);
 const isFilterVisible = ref(true);
 
 const searchForm = reactive({
-    ...props.search,
-    begin: toDateString(props.search.begin),
-    end: toDateString(props.search.end),
-    discussion_status: discussionStatuses.find(status => status.value === props.search.discussion_status),
-    topics: props.topics.filter(({ topic_id }) => props.search.topic_ids.includes(topic_id)),
-    tags: props.tags.filter(({ id }) => props.search.tag_ids.includes(id.toString())),
-    types: props.discussion_types.filter(({ type_id }) => props.search.discussion_type_ids.includes(type_id.toString())),
-    authors: props.course_members.filter(({ user_id }) => props.search.user_ids.includes(user_id))
+    ...(props.filter.keyword && { keyword: props.filter.keyword }),
+    ...(props.filter.begin && { begin: parseToDateString(props.filter.begin) }),
+    ...(props.filter.end && { end: parseToDateString(props.filter.end) }),
+    ...(props.filter.status && { status: discussionStatuses.find(status => status.value === props.filter.status) }),
+    ...(props.filter.topic_ids && { topics: props.topics.filter(({ topic_id }) => props.filter.topic_ids.includes(topic_id)) }),
+    ...(props.filter.tag_ids && { tags: props.tags.filter(({ id }) => props.filter.tag_ids.includes(id.toString())) }),
+    ...(props.filter.type_ids && { types: props.discussion_types.filter(({ type_id }) => props.filter.type_ids.includes(type_id.toString())) }),
+    ...(props.filter.user_ids && { authors: props.course_members.filter(({ user_id }) => props.filter.user_ids.includes(user_id)) }),
 });
 
 const availableTags = computed(() => {
@@ -96,12 +97,10 @@ const availableTypes = computed(() => {
     return props.discussion_types;
 });
 
-const actionURL = STUDIP.URLHelper.getURL(`dispatch.php/course/forum/search`);
-
 const resetSearchForm = () => {
     Object.assign(searchForm, {
         keyword: '',
-        discussion_status: null,
+        status: null,
         begin: null,
         end: null,
         topics: [],
@@ -109,40 +108,91 @@ const resetSearchForm = () => {
         types: [],
         authors: []
     });
+
+    discussions.value = [];
 }
 
-function toUnixTimestamp(date) {
-    return (new Date(date)).getTime() / 1000;
-}
-
-function toDateString(unixTimestamp) {
-    if (!unixTimestamp) {
+function parseToDateString(timestamp) {
+    if (!timestamp) {
         return '';
     }
 
-    return (new Date(parseInt(unixTimestamp) * 1000)).toISOString().split('T')[0];
+    return STUDIP.Dates.unixTimestampToISO(timestamp).split('T')[0];
 }
 
-onMounted(() => {
-    if(searchForm.keyword.length > 1 && props.discussions.length) {
-        highlightText(searchForm.keyword, '.title');
+const filterQueryParams = computed(() => {
+    const filter = {
+        ...(searchForm.keyword && { 'keyword': searchForm.keyword }),
+        ...(searchForm.status && { 'status': parseInt(searchForm.status.value) }),
+        ...(searchForm.begin && { 'begin': STUDIP.Dates.stringToUnixTimestamp(searchForm.begin) }),
+        ...(searchForm.end && { 'end': STUDIP.Dates.stringToUnixTimestamp(searchForm.end) }),
+        ...(searchForm.types?.length && { 'type-ids': searchForm.types.map(({ type_id }) => type_id).join(',') }),
+        ...(searchForm.topics?.length && { 'topic-ids': searchForm.topics.map(({ topic_id }) => topic_id).join(',') }),
+        ...(searchForm.authors?.length && { 'user-ids': searchForm.authors.map(({ user_id }) => user_id).join(',') }),
+        ...(searchForm.tags?.length && { 'tag-ids': searchForm.tags.map(({ id }) => id).join(',') }),
+    };
+
+    if (Object.keys(filter).length === 0) {
+        return '';
+    }
+
+    return Object.entries(filter)
+        .map(([key, value]) => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(value)}`)
+        .join('&');
+});
+
+const fetchDiscussions = async (_, offset = 0) => {
+    try {
+        isLoading.value = true;
+
+        const response = await STUDIP.jsonapi.withPromises().GET(
+            `courses/${STUDIP.URLHelper.parameters.cid}/forum-discussions`,
+            {
+                data: {
+                    include: `category,discussion-type,members,tags,user&fields[users]=id&${filterQueryParams.value}`,
+                    page: { offset }
+                }
+            }
+        );
+
+        pagination.value = {
+            ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
+            links: response.links
+        };
+
+        discussions.value = await deserializeJSONAPIResponse(response);
+    } catch (error) {
+        STUDIP.Report.error(error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+onMounted(async () => {
+    if (filterQueryParams.value) {
+        await fetchDiscussions();
+    }
+
+    if(searchForm.keyword.length > 1 && discussions.value.length) {
+        highlightText(searchForm.keyword, '.discussion-title');
 
         // remove highlights
         document.getElementById("forum-search").addEventListener("click", function() {
-            removeHighlight('.title mark');
+            removeHighlight('.discussion-title mark');
         });
     }
-})
+});
 </script>
 
 <template>
     <ForumApp id="forum-search">
-        <form :action="actionURL" method="post" class="default search-container use-utility-classes">
+        <form action="#" @submit.prevent="fetchDiscussions" method="post" class="default search-container use-utility-classes">
             <input type="hidden" :name="CSRF.name" :value="CSRF.value">
             <h1>{{ $gettext('Suche') }}</h1>
             <div class="search-controls">
                 <div class="search-input-container">
-                    <input name="keyword" type="text" :value="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
+                    <input name="keyword" type="text" v-model="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
                 </div>
                 <button
                     type="submit"
@@ -217,32 +267,22 @@ onMounted(() => {
                 <div v-if="isFilterVisible" class="filter-controls">
                     <label>
                         <span class="sr-only">{{ $gettext('Thema') }}</span>
-                        <template v-for="topic in searchForm.topics" :key="topic.topic_id">
-                            <input type="hidden" name="topic_ids[]" :value="topic.topic_id">
-                        </template>
-                        <SelectTopicInput id="" :options="availableTopics" v-model="searchForm.topics" multiple />
+                        <SelectTopicInput id="" :options="availableTopics" v-model="searchForm.topics" :required="false" multiple />
                     </label>
                     <label>
                         <span class="sr-only">{{ $gettext('Diskussionstyp') }}</span>
-                        <template v-for="type in searchForm.types" :key="type.type_id">
-                            <input type="hidden" name="discussion_type_ids[]" :value="type.type_id">
-                        </template>
                         <SelectDiscussionType :options="availableTypes" v-model="searchForm.types" multiple />
                     </label>
                     <label>
                         <span class="sr-only">{{ $gettext('Schlagworte') }}</span>
-                        <template v-for="tag in searchForm.tags" :key="tag.id">
-                            <input type="hidden" name="tag_ids[]" :value="tag.id">
-                        </template>
                         <SelectTagsInput :options="availableTags" v-model="searchForm.tags" multiple />
                     </label>
                     <label>
                         <span class="sr-only">{{ $gettext('Status der Diskussion') }}</span>
-                        <input v-if="searchForm.discussion_status" type="hidden" name="discussion_status" :value="searchForm.discussion_status.value">
                         <StudipSelect
                             :options="discussionStatuses"
                             :placeholder="$gettext('Status der Diskussion')"
-                            v-model="searchForm.discussion_status"
+                            v-model="searchForm.status"
                         >
                             <template #no-options>
                                 <div>
@@ -254,15 +294,9 @@ onMounted(() => {
                     <div class="date-inputs-container">
                         <input type="date" v-model="searchForm.begin" :placeholder="$gettext('Von')" :aria-label="$gettext('Von')" autocomplete="off" />
                         <input type="date" v-model="searchForm.end" :placeholder="$gettext('Bis')" :aria-label="$gettext('Bis')" autocomplete="off" />
-
-                        <input type="hidden" name="begin" :value="toUnixTimestamp(searchForm.begin)" />
-                        <input type="hidden" name="end" :value="toUnixTimestamp(searchForm.end)" />
                     </div>
                     <label>
                         <span class="sr-only">{{ $gettext('Autor/-in') }}</span>
-                        <template v-for="user in searchForm.authors" :key="user.user_id">
-                            <input type="hidden" name="user_ids[]" :value="user.user_id">
-                        </template>
                         <SelectUserInput
                             :options="course_members"
                             multiple
@@ -275,7 +309,21 @@ onMounted(() => {
 
         <div class="search-result-container">
             <h2>{{ $gettext('Suchergebnisse') }}</h2>
-            <DiscussionIndex :discussions="discussions" :withActions="false" redirect="search" />
+            <DiscussionIndex :discussions="discussions" :isLoading="isLoading" redirect="search">
+                <template #pagination>
+                    <tfoot v-if="pagination && pagination.total > pagination.limit">
+                    <tr>
+                        <td colspan="7">
+                            <StudipPagination
+                                :currentPage="pagination.currentPage"
+                                :totalItems="pagination.total"
+                                :itemsPerPage="pagination.limit"
+                                @pageUpdated="fetchDiscussions" />
+                        </td>
+                    </tr>
+                    </tfoot>
+                </template>
+            </DiscussionIndex>
         </div>
     </ForumApp>
 </template>

@@ -105,7 +105,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
                     'category' => $category ? $category->toRawArray() : [],
                     'read_index' => (int) ($posting_read ? $posting_read->read_index : 0),
                     'redirect' => Request::option('redirect'),
-                    'search_keyword' => $_SESSION['forum'][$this->range_id]['search']['keyword'] ?? ''
+                    'search_keyword' => $_SESSION['forum'][$this->range_id]['search_filter']['keyword'] ?? ''
                 ])
         );
     }

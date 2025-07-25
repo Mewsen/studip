@@ -121,7 +121,7 @@ onMounted(() => {
                     <label class="flex-1">
                         <span class="sr-only">{{ $gettext('Thema') }}</span>
                         <input type="hidden" name="topic" :value="JSON.stringify(discussionForm.topic)">
-                        <SelectTopicInput :options="topics" v-model="discussionForm.topic" :taggable="true" />
+                        <SelectTopicInput :options="topics" v-model="discussionForm.topic" :taggable="true" :required="true" />
                     </label>
                     <label class="flex-1">
                         <span class="sr-only">{{ $gettext('Diskussionstyp') }}</span>

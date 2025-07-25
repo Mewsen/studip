@@ -11,7 +11,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
     {
         parent::before_filter($action, $args);
 
-        unset($_SESSION['forum'][$this->range_id]['search']);
+        unset($_SESSION['forum'][$this->range_id]['search_filter']);
 
         Navigation::activateItem('course/forum/topics');
     }

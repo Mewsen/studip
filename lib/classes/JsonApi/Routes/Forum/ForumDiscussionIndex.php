@@ -12,7 +12,17 @@ use Forum\ForumDiscussion;
 class ForumDiscussionIndex extends JsonApiController
 {
     protected $allowedPagingParameters = ['offset', 'limit'];
-    protected $allowedFilteringParameters = ['last-visit'];
+    protected $allowedFilteringParameters = [
+        'last-visit',
+        'keyword',
+        'begin',
+        'end',
+        'topic-ids',
+        'type-ids',
+        'tag-ids',
+        'user-ids',
+        'status'
+    ];
     protected $allowedIncludePaths = [
         \JsonApi\Schemas\Forum\ForumCategory::REL_TOPICS,
         \JsonApi\Schemas\Forum\ForumDiscussion::REL_CATEGORY,
@@ -35,14 +45,61 @@ class ForumDiscussionIndex extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
-        $last_visit = $filtering['last-visit'] ?? 0;
+        $filters = $this->getFilter();
+        if ($filters) {
+            $_SESSION['forum'][$range->id]['search_filter'] = $filters;
+        }
 
-        $discussions = ForumDiscussion::getCourseDiscussions($range->id, $last_visit);
+        $discussions = ForumDiscussion::getCourseDiscussions($range->id, $filters);
 
         return $this->getPaginatedContentResponse(
             array_slice($discussions, ...$this->getOffsetAndLimit()),
             count($discussions)
         );
+    }
+
+    private function getFilter(): array
+    {
+        $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
+
+        $discussion_filter = [];
+
+        if (isset($filtering['last-visit'])) {
+            $discussion_filter['last_visit'] = (int) $filtering['last-visit'];
+        }
+
+        if (isset($filtering['keyword'])) {
+            $discussion_filter['keyword'] = $filtering['keyword'];
+        }
+
+        if (isset($filtering['status'])) {
+            $discussion_filter['status'] = (int) $filtering['status'];
+        }
+
+        if (isset($filtering['begin'])) {
+            $discussion_filter['begin'] = (int) $filtering['begin'];
+        }
+
+        if (isset($filtering['end'])) {
+            $discussion_filter['end'] = (int) $filtering['end'];
+        }
+
+        if (isset($filtering['topic-ids'])) {
+            $discussion_filter['topic_ids'] = explode(',', $filtering['topic-ids']);
+        }
+
+        if (isset($filtering['type-ids'])) {
+            $discussion_filter['type_ids'] = explode(',', $filtering['type-ids']);
+        }
+
+        if (isset($filtering['tag-ids'])) {
+            $discussion_filter['tag_ids'] = explode(',', $filtering['tag-ids']);
+        }
+
+        if (isset($filtering['user-ids'])) {
+            $discussion_filter['user_ids'] = explode(',', $filtering['user-ids']);
+        }
+
+        return $discussion_filter;
     }
 }
