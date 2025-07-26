@@ -238,7 +238,7 @@ class AddVipsModule extends Migration
                     'range_id'    => $row['course_id'],
                     'type'        => $row['type'],
                     'start'       => strtotime($row['start']),
-                    'end'         => strtotime($row['end']),
+                    'end'         => $row['end'] ? strtotime($row['end']) : null,
                     'active'      => $row['active'],
                     'weight'      => $row['weight'],
                     'block_id'    => $row['block_id'],
@@ -323,6 +323,9 @@ class AddVipsModule extends Migration
         $sql = 'INSERT INTO etask_group_members (group_id, user_id, start, end)
                 VALUES (:group_id, :user_id, :start, :end)';
         $stmt = $db->prepare($sql);
+        $sql = 'INSERT INTO statusgruppe_user (statusgruppe_id, user_id, mkdate)
+                VALUES (:group_id, :user_id, :start)';
+        $stmt2 = $db->prepare($sql);
         $data = $db->query('SELECT * FROM vips_group_member');
 
         while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
@@ -331,9 +334,13 @@ class AddVipsModule extends Migration
                     'group_id'   => $group_id[$row['group_id']],
                     'user_id'    => $row['user_id'],
                     'start'      => strtotime($row['start']),
-                    'end'        => strtotime($row['end'])
+                    'end'        => $row['end'] ? strtotime($row['end']) : null
                 ];
                 $stmt->execute($values);
+
+                if ($row['end'] === null) {
+                    $stmt2->execute($values);
+                }
             }
         }
 
