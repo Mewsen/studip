@@ -553,6 +553,14 @@ $card-max-width: 300px;
         .opengraph-urls {
             margin-top: 10px;
             margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 40% 60%;
+
+            .og-preview {
+                &__description {
+                    -webkit-line-clamp: 2;
+                }
+            }
         }
     }
 
@@ -1583,6 +1591,14 @@ $card-max-width: 300px;
 
         .timeline-container {
             display: none;
+        }
+
+        .post .opengraph-urls {
+            grid-template-columns: 1fr;
+
+            .og-preview__description {
+                -webkit-line-clamp: 3;
+            }
         }
     }
 

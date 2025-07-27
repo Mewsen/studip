@@ -42,7 +42,7 @@ const currentLink = computed(() => props.links[currentIndex.value]);
                     <img :src="currentLink.image" :alt="currentLink.title" />
                 </div>
                 <div class="og-preview__details">
-                    <h4 class="og-preview__title">{{ currentLink.title }}</h4>
+                    <p class="og-preview__title">{{ currentLink.title }}</p>
                     <p class="og-preview__description">{{ currentLink.description }}</p>
                 </div>
             </a>

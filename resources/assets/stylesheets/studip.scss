@@ -656,7 +656,6 @@ input.allow-plaintext-toggle {
 
 .links-preview {
     &__item {
-        min-height: 150px;
         border: solid 1px $color--content-box-border;
         border-radius: 5px;
         overflow: hidden;
@@ -690,11 +689,12 @@ input.allow-plaintext-toggle {
 
 .og-preview {
     display: grid;
+    min-height: 100px;
     grid-template-columns: 1fr 2fr;
-    grid-gap: 10px;
+    gap: 5px;
 
     &__image-container {
-        max-height: 150px;
+        max-height: 120px;
 
         img {
             width: 100%;
@@ -705,11 +705,12 @@ input.allow-plaintext-toggle {
     }
 
     &__details {
-        padding: 20px 10px;
+        padding: 10px;
     }
 
     &__title {
-        color: $color--font-primary;
+        font-size: 12px;
+        font-weight: bold;
         margin: 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -718,13 +719,17 @@ input.allow-plaintext-toggle {
     }
 
     &__description {
+        font-size: smaller;
         color: $color--font-inactive;
         margin-top: 5px;
-        font-size: small;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+
+        &:hover {
+            color: inherit;
+        }
     }
 }
 
