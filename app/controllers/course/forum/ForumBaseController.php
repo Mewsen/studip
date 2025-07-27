@@ -55,7 +55,7 @@ abstract class ForumBaseController extends StudipController
 
         $search->addNeedle(
             _('Suche nach Diskussionen oder Beiträge'),
-            'keyword',
+            'q',
             true
         );
 

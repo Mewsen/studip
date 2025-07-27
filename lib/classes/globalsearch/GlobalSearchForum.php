@@ -10,36 +10,25 @@
 class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFulltext
 {
     /**
-     * Returns the displayname for this module
-     *
-     * @return string
+     * @inheritDoc
      */
-    public static function getName()
+    public static function getName(): string
     {
         return _('Forenbeiträge');
     }
 
     /**
-     * Returns the filters that are displayed in the sidebar of the global search.
-     *
-     * @return array Filters for this class.
+     * @inheritDoc
      */
-    public static function getFilters()
+    public static function getFilters(): array
     {
         return ['semester'];
     }
 
     /**
-     * Transforms the search request into an sql statement, that provides the id (same as getId) as type and
-     * the object id, that is later passed to the filter.
-     *
-     * This function is required to make use of the mysql union parallelism
-     *
-     * @param string $search the input query string
-     * @param array $filter an array with search limiting filter information (e.g. 'category', 'semester', etc.)
-     * @return String SQL Query to discover elements for the search
+     * @inheritDoc
      */
-    public static function getSQL($search, $filter, $limit)
+    public static function getSQL($search, $filter, $limit): string
     {
         $search = str_replace(" ", "% ", $search);
         $query = DBManager::get()->quote("%$search%");
@@ -95,77 +84,60 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
     }
 
     /**
-     * Returns an array of information for the found element. Following informations (key: description) are necessary
-     *
-     * - name: The name of the object
-     * - url: The url to send the user to when he clicks the link
-     *
-     * Additional informations are:
-     *
-     * - additional: Subtitle for the hit
-     * - expand: Url if the user further expands the search
-     * - img: Avatar for the
-     *
-     * @param array $data
-     * @param string $search
-     * @return array
+     * @inheritDoc
      */
-    public static function filter($data, $search)
+    public static function filter($data, $search): array
     {
         $user = self::fromCache("user/{$data['user_id']}", function () use ($data) {
             return User::findFull($data['user_id']);
         });
-        $course = self::fromCache("range/{$data['seminar_id']}", function () use ($data) {
-            return Course::find($data['seminar_id']);
+        $range = self::fromCache("range/{$data['range_id']}", function () use ($data) {
+            return get_object_by_range_id($data['range_id']);
         });
 
-        // Get name
-        $name = _('Ohne Titel');
-        if ($data['name']) {
-            $name = self::mark($data['name'], $search);
-        } elseif ($course) {
-            $name = htmlReady($course->getFullName());
+        // Get posts author name
+        if (!$user) {
+            $author_name = _('Unbekannt');
+        } else if ($user->id !== User::findCurrent()->id && $data['anonymous']) {
+            $author_name = _('Anonym');
+        } else {
+            $author_name = self::mark($user->getFullName(), $search);
         }
 
         // Get additional info
-        if ($user && !$data['anonymous']) {
-            $temp = $user->getFullName();
-        } else {
-            $temp = _('Anonym');
-        }
         $additional = sprintf(
             _('Beitrag von %1$s in %2$s'),
-            $temp,
-            $course ? $course->getFullName() : _('Ohne Titel')
+            $author_name,
+            $range->getFullName()
         );
 
         // Clear content from blockquotes
         $filtered_content = self::blockquote_filter($data['content']);
 
-        //in case the search query is found in either $name or $filtered_content (via direct_search), the result should be returned
-        if (mb_strpos($name, "<mark>") !== false || self::direct_search($filtered_content, $search)) {
+        $range_avatar = match (get_class($range)) {
+            Institute::class => InstituteAvatar::getAvatar($range->id)->getURL(Avatar::NORMAL),
+            Course::class => CourseAvatar::getAvatar($range->id)->getURL(Avatar::NORMAL)
+        };
+
+        //in case the search query is found in either $author_name or $filtered_content (via direct_search), the result should be returned
+        if (mb_strpos($author_name, "<mark>") !== false || self::direct_search($filtered_content, $search)) {
             $result = [
-                'id'          => $data['topic_id'],
-                'name'        => $name,
+                'id'          => $data['posting_id'],
+                'name'        => $author_name,
                 'url'         => URLHelper::getURL(
-                    "dispatch.php/course/forum/index/index/{$data['topic_id']}#{$data['topic_id']}",
-                    ['cid' => $data['seminar_id'], 'highlight_topic' => $data['topic_id']],
+                    "dispatch.php/course/forum/discussions/show/{$data['discussion_id']}#post_{$data['posting_id']}",
+                    ['cid' => $range->id, 'q' => $search],
                     true
                 ),
-                'img'         => CourseAvatar::getAvatar($course->id)->getUrl(Avatar::MEDIUM),
+                'img'         => $range_avatar,
                 'date'        => strftime('%x', $data['chdate']),
                 'description' => self::mark($filtered_content, $search, true),
                 'additional'  => htmlReady($additional),
-                'expand' => URLHelper::getURL('dispatch.php/course/forum/index/search', [
-                    'cid'            => $data['seminar_id'],
-                    'backend'        => 'search',
-                    'searchfor'      => $search,
-                    'search_title'   => 1,
-                    'search_content' => 1,
-                    'search_author'  => 1
+                'expand' => URLHelper::getURL('dispatch.php/course/forum/search', [
+                    'cid'   => $range->id,
+                    'q'     => $search
                 ]),
                 'expandtext'  => _('Im Forum dieser Veranstaltung suchen'),
-                'user'        => $temp
             ];
 
             return $result;
@@ -180,7 +152,7 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
      * @param string $content data content
      * @return string purified content (without blockquote)
      */
-    public static function blockquote_filter($content)
+    public static function blockquote_filter($content): string
     {
         $beg = '<blockquote>';
         $end = '</blockquote>';
@@ -218,28 +190,25 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
     }
 
     /**
-     * Enables fulltext (MATCH AGAINST) search by creating the corresponding indices.
+     * @inheritDoc
      */
-    public static function enable()
+    public static function enable(): void
     {
-        DBManager::get()->exec("ALTER TABLE `forum_entries` ADD FULLTEXT INDEX globalsearch (`name`, `content`)");
+        DBManager::get()->exec("ALTER TABLE `forum_postings` ADD FULLTEXT INDEX globalsearch (`content`)");
     }
 
     /**
-     * Disables fulltext (MATCH AGAINST) search by removing the corresponding indices.
+     * @inheritDoc
      */
-    public static function disable()
+    public static function disable(): void
     {
-        DBManager::get()->exec("DROP INDEX globalsearch ON `forum_entries`");
+        DBManager::get()->exec("DROP INDEX globalsearch ON `forum_postings`");
     }
 
     /**
-     * Returns the URL that can be called for a full search.
-     *
-     * @param string $searchterm what to search for?
-     * @return string URL to the full search, containing the searchterm and the category
+     * @inheritDoc
      */
-    public static function getSearchURL($searchterm)
+    public static function getSearchURL($searchterm): string
     {
         return URLHelper::getURL('dispatch.php/search/globalsearch', [
             'q'        => $searchterm,

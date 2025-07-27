@@ -192,7 +192,7 @@ onMounted(async () => {
             <h1>{{ $gettext('Suche') }}</h1>
             <div class="search-controls">
                 <div class="search-input-container">
-                    <input name="keyword" type="text" v-model="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
+                    <input name="q" type="text" v-model="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
                 </div>
                 <button
                     type="submit"

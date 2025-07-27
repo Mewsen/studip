@@ -57,8 +57,8 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
         $filter = [];
         $session_filter = $_SESSION['forum'][$this->range_id]['search_filter'] ?? [];
 
-        if ($request->offsetExists('keyword')) {
-            $filter['keyword'] = Request::get('keyword');
+        if ($request->offsetExists('q')) {
+            $filter['keyword'] = Request::get('q');
         } else if (isset($session_filter['keyword'])) {
             $filter['keyword'] = $session_filter['keyword'];
         }
