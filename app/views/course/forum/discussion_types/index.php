@@ -1,11 +1,10 @@
 <?php
+use Forum\DiscussionType;
+
 /**
  * @var Course_Forum_DiscussionTypesController $controller
- * @var ForumDiscussionType[] $discussion_types
+ * @var DiscussionType[] $discussion_types
  */
-
-use Forum\ForumDiscussionType;
-
 ?>
 
 <div class="forum">

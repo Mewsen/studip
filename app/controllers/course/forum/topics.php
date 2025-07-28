@@ -1,11 +1,11 @@
 <?php
-require_once 'ForumBaseController.php';
+require_once 'BaseController.php';
 
-use Forum\ForumCategory;
-use Forum\ForumSubscription;
-use Forum\ForumTopic;
+use Forum\Category;
+use Forum\Subscription;
+use Forum\Topic;
 
-class Course_Forum_TopicsController extends Forum\ForumBaseController
+class Course_Forum_TopicsController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {
@@ -25,7 +25,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
 
     public function show_action($topic_id)
     {
-        $topic = ForumTopic::find($topic_id);
+        $topic = Topic::find($topic_id);
 
         if (!$topic) {
             throw new AccessDeniedException();
@@ -33,7 +33,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
 
         PageLayout::setTitle($topic->name);
 
-        $user_subscription = ForumSubscription::findOneBySQL(
+        $user_subscription = Subscription::findOneBySQL(
             "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
             [
                 'subject' => 'topic',
@@ -65,14 +65,14 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
 
         if ($topic_id) {
             PageLayout::setTitle(_('Thema bearbeiten'));
-            $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
+            $topic = Topic::getCourseTopic($this->range_id, $topic_id);
 
             if (!$topic) {
                 throw new AccessDeniedException();
             }
         } else {
             PageLayout::setTitle(_('Neues Thema anlegen'));
-            $topic = new ForumTopic();
+            $topic = new Topic();
             $topic['category_id'] = Request::get('category_id');
         }
 
@@ -99,19 +99,19 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($topic_id) {
-            $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
+            $topic = Topic::getCourseTopic($this->range_id, $topic_id);
             if (!$topic) {
                 throw new AccessDeniedException();
             }
         } else {
-            $topic = new ForumTopic();
+            $topic = new Topic();
             $topic->range_id = $this->range_id;
         }
 
         $category = json_decode(Request::get('category'), true);
 
         if (empty($category['category_id']) && !empty($category['name'])) {
-            $newCategory = ForumCategory::create([
+            $newCategory = Category::create([
                 'range_id' => $this->range_id,
                 'color' => '#28497C',
                 'name' => $category['name']
@@ -142,7 +142,7 @@ class Course_Forum_TopicsController extends Forum\ForumBaseController
             throw new AccessDeniedException();
         }
 
-        $topic = ForumTopic::getCourseTopic($this->range_id, $topic_id);
+        $topic = Topic::getCourseTopic($this->range_id, $topic_id);
 
         if (!$topic) {
             throw new AccessDeniedException();

@@ -1,17 +1,17 @@
 <?php
-require_once 'ForumBaseController.php';
+require_once 'BaseController.php';
 
 use Studip\Markup;
-use Forum\ForumDiscussion;
-use Forum\ForumDiscussionType;
-use Forum\DTO\ForumMember;
-use Forum\ForumPosting;
-use Forum\ForumPostingRead;
-use Forum\ForumSubscription;
-use Forum\DTO\ForumTag;
-use Forum\ForumTopic;
+use Forum\Discussion;
+use Forum\DiscussionType;
+use Forum\Posting;
+use Forum\PostingRead;
+use Forum\Subscription;
+use Forum\DTO\Member as MemberDTO;
+use Forum\DTO\Tag as TagDTO;
+use Forum\Topic;
 
-class Course_Forum_DiscussionsController extends Forum\ForumBaseController
+class Course_Forum_DiscussionsController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {
@@ -51,7 +51,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
     public function show_action($discussion_id)
     {
-        $discussion = ForumDiscussion::find($discussion_id);
+        $discussion = Discussion::find($discussion_id);
 
         if (!$discussion) {
             throw new AccessDeniedException();
@@ -64,7 +64,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         $discussion->view_count += 1;
         $discussion->store();
 
-        $posting_read = ForumPostingRead::findOneBySQL(
+        $posting_read = PostingRead::findOneBySQL(
             "discussion_id = :discussion_id AND user_id = :user_id",
             [
                 'discussion_id' => $discussion->getId(),
@@ -72,7 +72,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
             ]
         );
 
-        $user_subscription = ForumSubscription::findOneBySQL(
+        $user_subscription = Subscription::findOneBySQL(
             "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
             [
                 'subject' => 'discussion',
@@ -82,8 +82,8 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         );
 
         $category = $discussion->getCategory();
-        $tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), $discussion->tags);
-        $members = array_map(fn(ForumMember $member) => $member->toRawArray(), $discussion->members);
+        $tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
+        $members = array_map(fn(MemberDTO $member) => $member->toRawArray(), $discussion->members);
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Show')
@@ -110,7 +110,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         );
     }
 
-    public function edit_action(ForumDiscussion $discussion = null)
+    public function edit_action(Discussion $discussion = null)
     {
         if ($discussion->isNew()) {
             PageLayout::setTitle(_('Neue Diskussion starten'));
@@ -130,9 +130,9 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
             ['range_id' => $this->range_id]
         );
 
-        $all_tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), ForumTag::getForumTags());
-        $discussion_tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), $discussion->tags);
-        $discussion_types = array_map(fn(ForumDiscussionType $discussion_type) => $discussion_type->toRawArray(), ForumDiscussionType::getForumDiscussionType());
+        $all_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), TagDTO::getForumTags());
+        $discussion_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
+        $discussion_types = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getForumDiscussionType());
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Edit')
@@ -154,9 +154,9 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($discussion_id) {
-            $discussion = ForumDiscussion::find($discussion_id);
+            $discussion = Discussion::find($discussion_id);
         } else {
-            $discussion = new ForumDiscussion();
+            $discussion = new Discussion();
             $discussion->user_id = User::findCurrent()->user_id;
         }
 
@@ -173,7 +173,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         $topic = json_decode(Request::get('topic'), true);
 
         if (empty($topic['topic_id'])) {
-            $newTopic = ForumTopic::create([
+            $newTopic = Topic::create([
                 'range_id' => $this->range_id,
                 'name' => $topic['name']
             ]);
@@ -185,7 +185,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
         $discussion->store();
 
         if (!$discussion_id && Request::get('content')) {
-            ForumPosting::create([
+            Posting::create([
                 'range_id' => $this->range_id,
                 'discussion_id' => $discussion->discussion_id,
                 'content' => Markup::markAsHtml(Request::get('content')),
@@ -222,7 +222,7 @@ class Course_Forum_DiscussionsController extends Forum\ForumBaseController
 
     public function delete_action($discussion_id)
     {
-        $discussion = ForumDiscussion::find($discussion_id);
+        $discussion = Discussion::find($discussion_id);
 
         if (!$discussion) {
             throw new AccessDeniedException();

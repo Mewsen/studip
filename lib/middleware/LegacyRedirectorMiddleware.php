@@ -1,7 +1,7 @@
 <?php
 namespace Studip\Middleware;
 
-use Forum\ForumTopic;
+use Forum\Topic;
 use NotificationCenter;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\{ResponseInterface as Response,
@@ -82,7 +82,7 @@ final class LegacyRedirectorMiddleware implements MiddlewareInterface
                     $uri->getPath()
                 )
             );
-        } elseif (ForumTopic::exists($forum_id)) {
+        } elseif (Topic::exists($forum_id)) {
             $redirectUri = $uri->withPath(
                 str_replace(
                     'course/forum/index/index',

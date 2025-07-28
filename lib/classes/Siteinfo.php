@@ -557,7 +557,7 @@ class SiteinfoMarkupEngine {
         if ($key === 'posting') {
             $template->title  = _('Forenbeiträge');
             $template->detail = _('Anzahl Beiträge aller verwendeten Foren');
-            $template->count = \Forum\ForumPosting::countBySql();
+            $template->count = \Forum\Posting::countBySql();
         } else {
             // iterate over the other indicators
             if (in_array($key,array_keys($indicator))) {

@@ -234,17 +234,17 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
         // Forum
         $config['has_many']['forum_posting_reads'] = [
-            'class_name' => Forum\ForumPostingRead::class,
+            'class_name' => Forum\PostingRead::class,
             'assoc_foreign_key' => 'user_id',
             'on_delete'  => 'delete',
         ];
         $config['has_many']['forum_posting_reactions'] = [
-            'class_name' => Forum\ForumPostingReaction::class,
+            'class_name' => Forum\PostingReaction::class,
             'assoc_foreign_key' => 'user_id',
             'on_delete'  => 'delete',
         ];
         $config['has_many']['forum_subscriptions'] = [
-            'class_name' => Forum\ForumSubscription::class,
+            'class_name' => Forum\Subscription::class,
             'assoc_foreign_key' => 'user_id',
             'on_delete'  => 'delete',
         ];

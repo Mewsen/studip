@@ -51,7 +51,7 @@ class CourseTopic extends SimpleORMap
             'foreign_key' => 'author_id'
         ];
         $config['has_and_belongs_to_many']['forum_topics'] = [
-            'class_name' => \Forum\ForumTopic::class,
+            'class_name' => \Forum\Topic::class,
             'thru_table' => 'forum_topics_issues',
             'on_delete'  => 'delete',
             'on_store'   => 'store'
@@ -122,7 +122,7 @@ class CourseTopic extends SimpleORMap
     public function connectWithForumThread()
     {
         if ($this->seminar_id && !$this->forum_thread_url) {
-            $forum_topic = new \Forum\ForumTopic();
+            $forum_topic = new \Forum\Topic();
             $forum_topic['range_id'] = $this->seminar_id;
             $forum_topic['name'] = $this['title'];
             $forum_topic['description'] = $this['description'];

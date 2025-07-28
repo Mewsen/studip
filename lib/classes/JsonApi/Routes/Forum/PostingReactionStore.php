@@ -1,0 +1,76 @@
+<?php
+namespace JsonApi\Routes\Forum;
+
+use JsonApi\Errors\AuthorizationFailedException;
+use JsonApi\Errors\BadRequestException;
+use JsonApi\Errors\RecordNotFoundException;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use JsonApi\JsonApiController;
+use JsonApi\Routes\ValidationTrait;
+use Forum\Posting;
+use Forum\PostingReaction;
+
+class PostingReactionStore extends JsonApiController
+{
+    use ValidationTrait;
+
+    protected $allowedIncludePaths = [
+        \JsonApi\Schemas\Forum\PostingReaction::REL_USER
+    ];
+
+    public function __invoke(Request $request, Response $response, $args)
+    {
+        $json = $this->validate($request);
+        $user = $this->getUser($request);
+
+        $posting = Posting::find(self::arrayGet($json, 'data.relationships.posting.data.id'));
+        if (!$posting) {
+            throw new BadRequestException();
+        }
+
+        $range = get_object_by_range_id($posting->range_id);
+        if (!$range) {
+            throw new RecordNotFoundException();
+        }
+
+        if (!Authority::canShowForum($user, $range)) {
+            throw new AuthorizationFailedException();
+        }
+
+        $posting_reaction = PostingReaction::create([
+            'posting_id' => $posting->posting_id,
+            'user_id' => $user->user_id,
+            'emoji' => self::arrayGet($json, 'data.attributes.emoji')
+        ]);
+
+        if ($user->user_id !== $posting->user_id) {
+            \PersonalNotifications::add(
+                $posting->user_id,
+                \URLHelper::getURL('dispatch.php/course/forum/discussions/show/'.$posting->discussion_id, ['cid' => $posting->range_id], true)."#post_" . $posting->posting_id,
+                sprintf(_("%s hat auf deinen Beitrag reagiert."), $user->getFullName()),
+                null,
+                self::arrayGet($json, 'data.meta.emoji-icon')
+            );
+        }
+
+        return $this->getCreatedResponse($posting_reaction);
+    }
+
+    protected function validateResourceDocument($json, $data)
+    {
+        $required_keys = [
+            'data.attributes.emoji' => 'Missing `data.attributes.emoji`',
+            'data.meta.emoji-icon' => 'Missing `data.meta.emoji-icon`',
+            'data.relationships.posting.data.id' => 'Missing `data.relationships.posting.data.id`',
+        ];
+
+        foreach ($required_keys as $key => $error_message) {
+            if (!self::arrayHas($json, $key)) {
+                return $error_message;
+            }
+        }
+
+        return null;
+    }
+}

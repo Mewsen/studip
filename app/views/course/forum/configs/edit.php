@@ -4,6 +4,7 @@
  * @var CourseConfig $config
  */
 ?>
+
 <form class="default" method="post" action="<?= $controller->url_for('course/forum/configs/save') ?>">
     <?= CSRFProtection::tokenTag() ?>
 

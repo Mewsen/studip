@@ -8,7 +8,7 @@
  * @since   Stud.IP 6.1
  */
 
-use Forum\ForumPosting;
+use Forum\Posting;
 
 class CoreForum extends CorePlugin implements StudipModule
 {
@@ -49,7 +49,7 @@ class CoreForum extends CorePlugin implements StudipModule
         $navigation_title = _('Forum');
 
         if ($GLOBALS['perm']->have_studip_perm('user', $course_id)) {
-            $recent_posts = ForumPosting::getRecentPosts($course_id, $last_visit);
+            $recent_posts = Posting::getRecentPosts($course_id, $last_visit);
             $recent_posts_count = array_sum(array_column($recent_posts, 'posts'));
 
             if ($recent_posts_count > 0) {
@@ -120,7 +120,7 @@ class CoreForum extends CorePlugin implements StudipModule
 
     public static function deleteCourseContents($course_id): void
     {
-        \Forum\ForumCategory::deleteBySQL("range_id = ?", [$course_id]);
-        \Forum\ForumTopic::deleteBySQL("range_id = ?", [$course_id]);
+        \Forum\Category::deleteBySQL("range_id = ?", [$course_id]);
+        \Forum\Topic::deleteBySQL("range_id = ?", [$course_id]);
     }
 }

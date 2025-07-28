@@ -4,19 +4,19 @@ namespace Forum\Service;
 use Forum\Enum\SubscriptionNotificationType;
 use Icon;
 use PersonalNotifications;
-use Forum\ForumDiscussion;
-use Forum\ForumPosting;
-use Forum\ForumSubscription;
-use Forum\ForumTopic;
+use Forum\Discussion;
+use Forum\Posting;
+use Forum\Subscription;
+use Forum\Topic;
 use URLHelper;
 
 class PostingNotification
 {
-    protected ForumPosting $posting;
-    protected ForumDiscussion $discussion;
-    protected ForumTopic $topic;
+    protected Posting $posting;
+    protected Discussion $discussion;
+    protected Topic $topic;
 
-    public function __construct(ForumPosting $posting)
+    public function __construct(Posting $posting)
     {
         $this->posting = $posting;
         $this->topic = $posting->discussion->topic;
@@ -60,7 +60,7 @@ class PostingNotification
             $query[1]['user_id'] = $excludeUserId;
         }
 
-        $subscriptions = ForumSubscription::findBySQL(...$query);
+        $subscriptions = Subscription::findBySQL(...$query);
 
         /**
          * Allow only one subscription per user.
@@ -89,7 +89,7 @@ class PostingNotification
         return array_values($filteredSubscriptions);
     }
 
-    protected function sendNotifications(ForumSubscription $subscriber): void
+    protected function sendNotifications(Subscription $subscriber): void
     {
         $url = URLHelper::getURL('dispatch.php/course/forum/discussions/show/'.$this->discussion->discussion_id, ['cid' => $this->topic->range_id], true)."#post_" . $this->posting->posting_id;
 
@@ -107,11 +107,11 @@ class PostingNotification
         );
     }
 
-    protected function notifyParentPostAuthor(): ?ForumSubscription
+    protected function notifyParentPostAuthor(): ?Subscription
     {
         $parent = $this->posting->posting;
 
-        $subscriber = ForumSubscription::findOneBySQL(
+        $subscriber = Subscription::findOneBySQL(
             "range_id = :range_id AND subject_id IN (:subject_ids) AND user_id = :user_id AND notification_type != :notification_type ORDER BY subject",
             [
                 'range_id' => $parent->range_id,

@@ -1,7 +1,7 @@
 <?php
-require_once 'ForumBaseController.php';
+require_once 'BaseController.php';
 
-class Course_Forum_RecentController extends Forum\ForumBaseController
+class Course_Forum_RecentController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {

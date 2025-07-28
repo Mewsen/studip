@@ -4,17 +4,17 @@ namespace Forum\Service;
 use Forum\Enum\SubscriptionNotificationType;
 use Icon;
 use PersonalNotifications;
-use Forum\ForumDiscussion;
-use Forum\ForumSubscription;
-use Forum\ForumTopic;
+use Forum\Discussion;
+use Forum\Subscription;
+use Forum\Topic;
 use URLHelper;
 
 class DiscussionNotification
 {
-    protected ForumTopic $topic;
-    protected ForumDiscussion $discussion;
+    protected Topic $topic;
+    protected Discussion $discussion;
 
-    public function __construct(ForumDiscussion $discussion)
+    public function __construct(Discussion $discussion)
     {
         $this->discussion = $discussion;
         $this->topic = $discussion->topic;
@@ -31,7 +31,7 @@ class DiscussionNotification
 
     protected function getSubscribers(): array
     {
-        return ForumSubscription::findBySQL(
+        return Subscription::findBySQL(
             "subject = :subject AND subject_id = :subject_id AND notification_type = :notification_type",
             [
                 'subject' => 'topic',
@@ -41,7 +41,7 @@ class DiscussionNotification
         );
     }
 
-    protected function sendNotifications(ForumSubscription $subscriber): void
+    protected function sendNotifications(Subscription $subscriber): void
     {
         $url = URLHelper::getURL('dispatch.php/course/forum/discussions/show/'.$this->discussion->discussion_id, ['cid' => $this->topic->range_id], true);
 

@@ -89,7 +89,7 @@ class Activity extends SchemaProvider
     {
         $mapping = [
             'documents' => \FileRef::class,
-            'forum' => \Forum\ForumPosting::class,
+            'forum' => \Forum\Posting::class,
             'message' => \Message::class,
             'news' => \StudipNews::class,
             'participants' => \Course::class,

@@ -1,10 +1,10 @@
 <?php
-require_once 'ForumBaseController.php';
+require_once 'BaseController.php';
 
-use Forum\ForumDiscussionType;
-use Forum\DTO\ForumTag;
+use Forum\DiscussionType;
+use Forum\DTO\Tag as TagDTO;
 
-class Course_Forum_SearchController extends Forum\ForumBaseController
+class Course_Forum_SearchController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {
@@ -36,8 +36,8 @@ class Course_Forum_SearchController extends Forum\ForumBaseController
             ];
         }
 
-        $tags = array_map(fn(ForumTag $tag) => $tag->toRawArray(), ForumTag::getForumTags());
-        $discussion_types = array_map(fn(ForumDiscussionType $discussion_type) => $discussion_type->toRawArray(), ForumDiscussionType::getForumDiscussionType());
+        $tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), TagDTO::getForumTags());
+        $discussion_types = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getForumDiscussionType());
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/search/Index')

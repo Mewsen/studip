@@ -674,54 +674,53 @@ class RouteMap
     private function addAuthenticatedForumRoutes(RouteCollectorProxy $group): void
     {
         $group->group('/courses/{range_id}', function ($forum) {
-            $forum->get('/forum-configs', Routes\Forum\ForumConfigIndex::class);
-            $forum->get('/forum-categories', Routes\Forum\ForumCategoryIndex::class);
-            $forum->get('/forum-discussions', Routes\Forum\ForumDiscussionIndex::class);
-            $forum->get('/forum-topics', Routes\Forum\ForumTopicIndex::class);
-            $forum->get('/forum-subscriptions', Routes\Forum\ForumSubscriptionIndex::class);
+            $forum->get('/forum-configs', Routes\Forum\ConfigIndex::class);
+            $forum->get('/forum-categories', Routes\Forum\CategoryIndex::class);
+            $forum->get('/forum-discussions', Routes\Forum\DiscussionIndex::class);
+            $forum->get('/forum-topics', Routes\Forum\TopicIndex::class);
+            $forum->get('/forum-subscriptions', Routes\Forum\SubscriptionIndex::class);
         });
 
         $group->group('/forum-subscriptions', function ($forum) {
-            $forum->post('', Routes\Forum\ForumSubscriptionStore::class);
-            $forum->get('/{subscription_id}', Routes\Forum\ForumSubscriptionShow::class);
-            $forum->delete('/{subscription_id}', Routes\Forum\ForumSubscriptionDelete::class);
+            $forum->post('', Routes\Forum\SubscriptionStore::class);
+            $forum->get('/{subscription_id}', Routes\Forum\SubscriptionShow::class);
+            $forum->delete('/{subscription_id}', Routes\Forum\SubscriptionDelete::class);
         });
 
         $group->group('/forum-topics', function ($forum) {
-            $forum->get('/{topic_id}', Routes\Forum\ForumTopicShow::class);
-            $forum->get('/{topic_id}/discussions', Routes\Forum\ForumTopicDiscussions::class);
-            $forum->patch('/sort', Routes\Forum\ForumTopicUpdateSort::class);
+            $forum->get('/{topic_id}', Routes\Forum\TopicShow::class);
+            $forum->get('/{topic_id}/discussions', Routes\Forum\TopicDiscussions::class);
+            $forum->patch('/sort', Routes\Forum\TopicUpdateSort::class);
         });
 
         $group->group('/forum-categories', function ($forum) {
-            $forum->get('/{category_id}', Routes\Forum\ForumCategoryShow::class);
-            $forum->get('/{category_id}/topics', Routes\Forum\ForumCategoryTopics::class);
-            $forum->patch('/sort', Routes\Forum\ForumCategoryUpdateSort::class);
+            $forum->get('/{category_id}', Routes\Forum\CategoryShow::class);
+            $forum->get('/{category_id}/topics', Routes\Forum\CategoryTopics::class);
+            $forum->patch('/sort', Routes\Forum\CategoryUpdateSort::class);
         });
 
         $group->group('/forum-discussion-types', function ($forum) {
-            $forum->get('', Routes\Forum\ForumDiscussionTypeIndex::class);
-            $forum->get('/{type_id}', Routes\Forum\ForumDiscussionTypeShow::class);
-            $forum->get('/{type_id}/discussions', Routes\Forum\ForumDiscussionTypeDiscussions::class);
+            $forum->get('', Routes\Forum\DiscussionTypeIndex::class);
+            $forum->get('/{type_id}', Routes\Forum\DiscussionTypeShow::class);
         });
 
         $group->group('/forum-discussions', function ($forum) {
-            $forum->get('/{discussion_id}', Routes\Forum\ForumDiscussionShow::class);
-            $forum->get('/{discussion_id}/postings', Routes\Forum\ForumDiscussionPostings::class);
+            $forum->get('/{discussion_id}', Routes\Forum\DiscussionShow::class);
+            $forum->get('/{discussion_id}/postings', Routes\Forum\DiscussionPostings::class);
         });
 
         $group->group('/forum-postings', function ($forum) {
-            $forum->post('', Routes\Forum\ForumPostingStore::class);
-            $forum->get('/{posting_id}', Routes\Forum\ForumPostingShow::class);
-            $forum->get('/{posting_id}/reactions', Routes\Forum\ForumPostingReactions::class);
-            $forum->patch('/{posting_id}', Routes\Forum\ForumPostingUpdate::class);
-            $forum->delete('/{posting_id}', Routes\Forum\ForumPostingDelete::class);
+            $forum->post('', Routes\Forum\PostingStore::class);
+            $forum->get('/{posting_id}', Routes\Forum\PostingShow::class);
+            $forum->get('/{posting_id}/reactions', Routes\Forum\PostingReactions::class);
+            $forum->patch('/{posting_id}', Routes\Forum\PostingUpdate::class);
+            $forum->delete('/{posting_id}', Routes\Forum\PostingDelete::class);
         });
 
         $group->group('/forum-posting-reactions', function ($forum) {
-            $forum->post('', Routes\Forum\ForumPostingReactionStore::class);
-            $forum->get('/{reaction_id}', Routes\Forum\ForumPostingReactionShow::class);
-            $forum->delete('/{reaction_id}', Routes\Forum\ForumPostingReactionDelete::class);
+            $forum->post('', Routes\Forum\PostingReactionStore::class);
+            $forum->get('/{reaction_id}', Routes\Forum\PostingReactionShow::class);
+            $forum->delete('/{reaction_id}', Routes\Forum\PostingReactionDelete::class);
         });
     }
 

@@ -1,9 +1,9 @@
 <?php
-require_once 'ForumBaseController.php';
+require_once 'BaseController.php';
 
-use Forum\ForumCategory;
+use Forum\Category;
 
-class Course_Forum_CategoriesController extends Forum\ForumBaseController
+class Course_Forum_CategoriesController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {
@@ -25,7 +25,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
 
     public function show_action($category_id)
     {
-        $category = ForumCategory::find($category_id);
+        $category = Category::find($category_id);
 
         if (!$category) {
             throw new AccessDeniedException();
@@ -54,14 +54,14 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
 
         if ($category_id) {
             PageLayout::setTitle(_('Kategorie bearbeiten'));
-            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
+            $category = Category::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
 
             if (!$category) {
                 throw new AccessDeniedException();
             }
         } else {
             PageLayout::setTitle(_('Neue Kategorie anlegen'));
-            $category = new ForumCategory();
+            $category = new Category();
         }
 
         $this->render_vue_app(
@@ -81,12 +81,12 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($category_id) {
-            $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
+            $category = Category::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
             if (!$category) {
                 throw new AccessDeniedException();
             }
         } else {
-            $category = new ForumCategory();
+            $category = new Category();
             $category->range_id = $this->range_id;
         }
 
@@ -107,7 +107,7 @@ class Course_Forum_CategoriesController extends Forum\ForumBaseController
             throw new AccessDeniedException();
         }
 
-        $category = ForumCategory::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
+        $category = Category::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
 
         if (!$category) {
             throw new AccessDeniedException();

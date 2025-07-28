@@ -7,11 +7,6 @@ use User;
 
 class Authority
 {
-    public static function canShowInstitute(User $user, Institute $institute): bool
-    {
-        return $institute->isAccessibleToUser($user->id);
-    }
-
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */

@@ -1,5 +1,5 @@
 <?php
-use Forum\ForumDiscussionType;
+use Forum\DiscussionType;
 
 class Course_Forum_DiscussionTypesController extends AuthenticatedController
 {
@@ -26,10 +26,10 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
 
     public function index_action()
     {
-        $this->discussion_types = ForumDiscussionType::findBySQL("TRUE ORDER BY mkdate DESC");
+        $this->discussion_types = DiscussionType::findBySQL("TRUE ORDER BY mkdate DESC");
     }
 
-    public function edit_action(ForumDiscussionType $discussion_type = null)
+    public function edit_action(DiscussionType $discussion_type = null)
     {
         if ($discussion_type->isNew()) {
             PageLayout::setTitle(_('Neuen Diskussionstyp anlegen'));
@@ -58,7 +58,7 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         );
     }
 
-    public function save_action(ForumDiscussionType $discussion_type = null)
+    public function save_action(DiscussionType $discussion_type = null)
     {
         CSRFProtection::verifyUnsafeRequest();
 
@@ -72,7 +72,7 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         $this->relocate('course/forum/discussion_types/index');
     }
 
-    public function delete_action(ForumDiscussionType $discussion_type)
+    public function delete_action(DiscussionType $discussion_type)
     {
         $discussion_type->delete();
 
