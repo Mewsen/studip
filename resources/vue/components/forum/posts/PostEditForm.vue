@@ -43,15 +43,22 @@ const updatePost = async () => {
         isLoading.value = true;
 
         const response = await STUDIP.jsonapi.withPromises().PATCH(
-            `forum-postings/${props.post.id}?include=author,opengraph-urls,posting,reactions,reactions.user&fields[users]=id`,
+            `forum-postings/${props.post.id}`,
             { data: getPostJSONAPIObject }
         );
 
-        const post = await deserializeJSONAPIResponse(response)
+        const post = await deserializeJSONAPIResponse(response);
 
-        forumDiscussionPost.updatePost(post);
+        const updatedPost = {
+            ...props.post,
+            content: post.content,
+            anonymous: content.value,
+            chdate: post.chdate
+        };
+
+        forumDiscussionPost.updatePost(updatedPost);
         content.value = "";
-        emit("updated", post);
+        emit("updated", updatedPost);
 
         STUDIP.Report.success($gettext("Die Änderungen wurde gespeichert."));
     } catch (error) {
@@ -76,6 +83,7 @@ onUnmounted(() => {
 
 <template>
     <form @submit.prevent="updatePost" class="default post-form forum-quote">
+        {{ content }}
         <StudipWysiwyg required="required" v-model="content" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />

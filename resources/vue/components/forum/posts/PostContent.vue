@@ -57,7 +57,7 @@ watch(() => props.modelValue, newValue => {
 
 <template>
     <div @mouseup="onTextSelected" class="with-ballon-action" v-bind="$attrs">
-        <p class="text-highlight m-0 post-content" v-html="content"></p>
+        <div class="text-highlight m-0 post-content" v-html="content"></div>
 
         <div class="ballon-action" ref="actions">
             <slot name="actions"></slot>
