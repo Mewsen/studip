@@ -52,7 +52,7 @@ class PostingStore extends JsonApiController
             'range_id' => $discussion->range_id,
             'parent_id' => $parent_id ?? null,
             'discussion_id' => $discussion->discussion_id,
-            'content' => Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content')),
+            'content' => Markup::purifyHtml(Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content'))),
             'anonymous' => (self::arrayGet($json, 'data.attributes.anonymous') && \Config::get()->FORUM_ANONYMOUS_POSTINGS),
             'user_id' => $user->user_id
         ]);

@@ -44,7 +44,7 @@ class PostingUpdate extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $posting->content = Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content'));
+        $posting->content = Markup::purifyHtml(Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content')));
         $posting->anonymous = (self::arrayGet($json, 'data.attributes.anonymous') && \Config::get()->FORUM_ANONYMOUS_POSTINGS);
         $posting->store();
 
