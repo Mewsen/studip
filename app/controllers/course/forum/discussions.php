@@ -188,7 +188,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
             Posting::create([
                 'range_id' => $this->range_id,
                 'discussion_id' => $discussion->discussion_id,
-                'content' => Markup::markAsHtml(Request::get('content')),
+                'content' => Markup::purifyHtml(Markup::markAsHtml(Request::get('content'))),
                 'user_id' => User::findCurrent()->user_id
             ]);
         } else {
