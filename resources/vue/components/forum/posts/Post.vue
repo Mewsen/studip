@@ -175,7 +175,7 @@ const removePostHighlight = id => {
                 </template>
                 <template v-else>
                     <div class="post__text">
-                        <PostContent ref="postContent" v-model="selectedText" :content="post.content" class="forum-quote">
+                        <PostContent ref="postContent" v-model="selectedText" :content="post.content_html" class="forum-quote">
                             <template #actions>
                                 <a
                                     :href="`#create_form_${post.id}`"

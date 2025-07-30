@@ -25,7 +25,8 @@ class Posting extends SchemaProvider
     public function getAttributes($posting, ContextInterface $context): iterable
     {
         return [
-            'content' => formatReady($posting->content),
+            'content' => \Studip\Markup::markupToHtml($posting->content),
+            'content-html' => formatReady($posting->content),
             'anonymous' => (bool) $posting->anonymous,
             'mkdate' => date('c', $posting->mkdate),
             'chdate' => date('c', $posting->chdate)

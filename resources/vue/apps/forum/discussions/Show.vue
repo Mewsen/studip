@@ -134,7 +134,7 @@ onMounted(async () => {
     if (props.search_keyword !== "") {
         highlightText(props.search_keyword, '.post-content');
 
-        document.querySelector('.post-content mark').scrollIntoView();
+        document.querySelector('.post-content mark')?.scrollIntoView();
 
         // remove highlights
         document.getElementById("discussion_start").addEventListener("click", function() {
