@@ -12,7 +12,6 @@ import {$gettext} from "@/assets/javascripts/lib/gettext";
 import Loader from "../Loader.vue";
 
 const forumConfig = useForumConfig();
-
 const props = defineProps({
     discussions: {
         type: Array,
@@ -168,26 +167,28 @@ onMounted(() => {
                                         :href="getDiscussionURL(discussion.id, {redirect})"
                                         :title="$gettext('Zur Diskussion')">
                                         <span class="title-with-actions_title discussion-title line-clamp-2 m-0">{{ discussion.title }}</span>
-                                        <span
-                                            v-if="redirect !== 'recent' && discussion.meta.postings_count > discussion.meta.user_read_index"
-                                            class="unread-items-badge"
-                                            role="status"
-                                            aria-live="polite"
-                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
-                                            :title="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
-                                        >
-                                            {{ discussion.meta.postings_count - discussion.meta.user_read_index }}
-                                        </span>
-                                        <span
-                                            v-if="redirect === 'recent' && discussion.meta.recent_postings_count"
-                                            class="unread-items-badge"
-                                            role="status"
-                                            aria-live="polite"
-                                            :aria-label="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
-                                            :title="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
-                                        >
-                                            {{ discussion.meta.recent_postings_count }}
-                                        </span>
+                                        <template v-if="!forumConfig.allowGuestAccess">
+                                            <span
+                                                v-if="redirect !== 'recent' && discussion.meta.postings_count > discussion.meta.user_read_index"
+                                                class="unread-items-badge"
+                                                role="status"
+                                                aria-live="polite"
+                                                :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
+                                                :title="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
+                                            >
+                                                {{ discussion.meta.postings_count - discussion.meta.user_read_index }}
+                                            </span>
+                                            <span
+                                                v-if="redirect === 'recent' && discussion.meta.recent_postings_count"
+                                                class="unread-items-badge"
+                                                role="status"
+                                                aria-live="polite"
+                                                :aria-label="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
+                                                :title="$gettext('%{count} neue Beiträge seit Ihrem letzten Besuch.', {count: discussion.meta.recent_postings_count})"
+                                            >
+                                                {{ discussion.meta.recent_postings_count }}
+                                            </span>
+                                        </template>
                                     </a>
                                 </div>
                                 <div class="title-with-actions__actions-xs">

@@ -32,6 +32,7 @@ const isOpen = defineModel({ default: false });
                 }"
                 :title="label ?? user.name"
                 :aria-label="label ?? $gettext('vCard')"
+                :aria-pressed="isOpen"
             >
                 <img class="user-profile" :src="user.avatar_url" :style="{ width: size, height: size }" :alt="user.name" />
             </button>

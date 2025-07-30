@@ -52,7 +52,9 @@ const Dates = {
         }).done(function() {
             $('.topic_' + termin_id + '_' + topic_id).remove();
         });
-    }
+    },
+    stringToUnixTimestamp: date => ((new Date(date)).getTime() / 1000),
+    unixTimestampToISO: timestamp => new Date(timestamp * 1000).toISOString()
 };
 
 export default Dates;

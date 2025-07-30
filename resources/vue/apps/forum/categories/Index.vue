@@ -122,7 +122,7 @@ const swapCategory = (categoryId, step) => {
                 </div>
 
                 <div class="actions">
-                    <CreateCategory v-if="forumConfig.isModerator" />
+                    <CreateCategory />
                     <button
                         v-if="forumConfig.tileLayout"
                         @click="forumConfig.toggleForumLayout()"
@@ -176,7 +176,6 @@ const swapCategory = (categoryId, step) => {
                 <div v-else-if="forumConfig.isModerator" class="topic-cards-container">
                     <div class="topic-card --new-topic">
                         <CreateCategory
-                            v-if="forumConfig.isModerator"
                             class="--with-label"
                             :label="$gettext('Neue Kategorie anlegen')"
                         />

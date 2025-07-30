@@ -80,7 +80,7 @@ class Category extends \SimpleORMap
                     WHERE `forum_topics`.`category_id` = :category_id",
             [
                 'category_id' => $this->category_id,
-                'user_id' => User::findCurrent()->user_id
+                'user_id' => User::findCurrent()?->user_id
             ]
         );
     }

@@ -40,7 +40,9 @@ class DiscussionPostings extends JsonApiController
 
         $postings = $discussion->postings ?? \SimpleORMapCollection::createFromArray([]);
 
-        PostingRead::updateUserReadPoint($user->user_id, $discussion->discussion_id, count($postings));
+        if ($user) {
+            PostingRead::updateUserReadPoint($user->user_id, $discussion->discussion_id, count($postings));
+        }
 
         return $this->getPaginatedContentResponse(
             $postings->limit(...$this->getOffsetAndLimit()),

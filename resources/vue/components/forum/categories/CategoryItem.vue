@@ -5,10 +5,11 @@ import StudipDateTime from "@/vue/components/StudipDateTime.vue";
 import StudipActionMenu from "@/vue/components/StudipActionMenu.vue";
 import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 import {$gettext} from "@/assets/javascripts/lib/gettext";
-import {computed} from "vue";
+import {computed, ref} from "vue";
+import ShowCategory from "./ShowCategory.vue";
 
-const emit = defineEmits(['swapCategory']);
 const forumConfig = useForumConfig();
+const emit = defineEmits(['swapCategory']);
 
 const props = defineProps({
     category: {
@@ -22,15 +23,25 @@ const props = defineProps({
 });
 
 const categoryActionMenus = computed(() => {
+    let menu = [
+        { label: $gettext('Informationen'),  icon: 'info', emit: 'show'},
+    ];
+
     if (forumConfig.isModerator) {
-        return [
+        menu.push(
             { label: $gettext('Kategorie bearbeiten'),  icon: 'edit', emit: 'edit'},
             { label: $gettext('Kategorie löschen'),  icon: 'trash', emit: 'delete'}
-        ];
+        );
     }
 
-    return [];
+    return menu;
 });
+
+const isCategoryDialogOpen = ref(false);
+
+const displayCategory = () => {
+    isCategoryDialogOpen.value = true;
+}
 
 const editCategory = () => STUDIP.Dialog.fromURL(getCategoryEditURL(props.category.id), { width: '700' });
 
@@ -67,7 +78,7 @@ const swapCategory = event => {
                 </div>
                 <div class="flag" v-if="category.color" :style="{ backgroundColor: category.color}"></div>
                 <div class="content">
-                    <div>
+                    <div class="flex-1">
                         <div class="title-with-actions">
                             <div class="title-with-actions__content">
                                 <a
@@ -76,7 +87,7 @@ const swapCategory = event => {
                                     :title="$gettext('Zur Kategorie')">
                                     <span class="category-title line-clamp-2">{{ category.name }}</span>
                                     <span
-                                        v-if="category.meta.postings_count > category.meta.user_read_index"
+                                        v-if="!forumConfig.allowGuestAccess && category.meta.postings_count > category.meta.user_read_index"
                                         class="unread-items-badge"
                                         role="status"
                                         aria-live="polite"
@@ -91,6 +102,7 @@ const swapCategory = event => {
                             <div class="title-with-actions__actions-xs">
                                 <StudipActionMenu
                                     :items="categoryActionMenus"
+                                    @show="displayCategory"
                                     @edit="editCategory"
                                     @delete="deleteCategory"
                                 />
@@ -161,6 +173,7 @@ const swapCategory = event => {
         <td class="actions">
             <StudipActionMenu
                 :items="categoryActionMenus"
+                @show="displayCategory"
                 @edit="editCategory"
                 @delete="deleteCategory"
             />
@@ -190,7 +203,7 @@ const swapCategory = event => {
                             </span>
 
                             <span
-                                v-if="category.meta.postings_count > category.meta.user_read_index"
+                                v-if="!forumConfig.allowGuestAccess && category.meta.postings_count > category.meta.user_read_index"
                                 class="unread-items-badge"
                                 role="status"
                                 aria-live="polite"
@@ -203,6 +216,7 @@ const swapCategory = event => {
                         <div class="actions">
                             <StudipActionMenu
                                 :items="categoryActionMenus"
+                                @show="displayCategory"
                                 @edit="editCategory"
                                 @delete="deleteCategory"
                             />
@@ -244,4 +258,5 @@ const swapCategory = event => {
             </div>
         </div>
     </a>
+    <ShowCategory :category="category" v-model:isOpen="isCategoryDialogOpen" />
 </template>

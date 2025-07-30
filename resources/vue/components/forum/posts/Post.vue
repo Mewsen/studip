@@ -12,7 +12,9 @@ import {$gettext} from "@/assets/javascripts/lib/gettext";
 import LinksPreview from "@/vue/components/LinksPreview.vue";
 import UserAvatarDropdown from "../UserAvatarDropdown.vue";
 import {userProfileURL} from "../helpers/urls";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 const forumDiscussionPost = useForumPost();
 const props = defineProps({
     discussion: {
@@ -107,7 +109,7 @@ const removePostHighlight = id => {
 
 <template>
     <div :id="'post_'+post.id" class="post" @click="removePostHighlight('post_'+post.id)">
-        <div v-if="isUnread" class="post__unread">
+        <div v-if="!forumConfig.allowGuestAccess && isUnread" class="post__unread">
         </div>
         <div class="post__body">
             <div class="post__author">
@@ -178,7 +180,7 @@ const removePostHighlight = id => {
                                 <a
                                     :href="`#create_form_${post.id}`"
                                     class="ballon-action__button"
-                                    v-if="!postCreateForm && !discussion.closed_at"
+                                    v-if="!forumConfig.allowGuestAccess && !postCreateForm && !discussion.closed_at"
                                     @click="postCreateForm = true; postContent.removeSelection()"
                                     :title="$gettext('Auswahl zitieren und antworten')"
                                     :aria-label="$gettext('Auswahl zitieren und antworten')"
@@ -208,7 +210,7 @@ const removePostHighlight = id => {
                 <div class="post__footer">
                     <div></div>
                     <div class="inline-flex items-center gap-40">
-                        <div v-if="!discussion.closed_at" class="inline-flex items-center gap-10">
+                        <div v-if="!forumConfig.allowGuestAccess && !discussion.closed_at" class="inline-flex items-center gap-10">
                             <template v-if="post.author?.id === auth_user.id">
                                 <a
                                     :href="`#post_${post.id}`"
@@ -230,9 +232,19 @@ const removePostHighlight = id => {
                             <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrage weiterleiten')" :aria-label="$gettext('Beitrage weiterleiten')">
                                 <StudipIcon shape="export" :size="20" aria-hidden="true" />
                             </button>
-                            <button :disabled="postCreateForm" @click="addReply(post)" type="button" class="button button--icon-only" :title="$gettext('Zitieren und antworten')" :aria-label="$gettext('Zitieren und Antworten')">
+                            <a
+                                :href="`#create_form_${post.id}`"
+                                @click="addReply(post)"
+                                type="button"
+                                class="button button--icon-only"
+                                :class="{
+                                    'disabled': postCreateForm
+                                }"
+                                :title="$gettext('Zitieren und antworten')"
+                                :aria-label="$gettext('Zitieren und Antworten')"
+                            >
                                 <StudipIcon shape="quote" :size="20" aria-hidden="true" />
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

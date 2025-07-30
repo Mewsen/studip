@@ -63,7 +63,7 @@ $card-max-width: 300px;
                 justify-content: end;
                 padding: 0;
                 &:hover {
-                    color: var(--color--highlight);
+                    color: var(--active-color);
                 }
             }
         }
@@ -304,6 +304,8 @@ $card-max-width: 300px;
         p {
             margin-top: 5px;
             color: var(--color--font-secondary);
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
     }
 
@@ -318,6 +320,8 @@ $card-max-width: 300px;
         p {
             margin-top: 5px;
             color: var(--color--font-secondary);
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .discussion-category {
@@ -437,6 +441,8 @@ $card-max-width: 300px;
         p {
             margin-top: 5px;
             color: var(--color--font-secondary);
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         &__content {
@@ -500,9 +506,8 @@ $card-max-width: 300px;
         }
 
         &__text {
-            p {
-                color: var(--color--font-primary);
-            }
+            word-break: break-word;
+            overflow-wrap: break-word;
 
             img {
                 max-width: 100% !important;
@@ -765,7 +770,7 @@ $card-max-width: 300px;
 
             &:hover,
             &:focus,
-            &.active {
+            &[aria-ppressed="true"] {
                 position: relative;
                 z-index: 1;
 
@@ -1094,60 +1099,58 @@ $card-max-width: 300px;
 
         .dropdown__items {
             max-width: 300px;
-            li {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                padding: 10px 15px;
 
-                .subscription-option {
-                    flex: 1;
+            li {
+                padding: 0;
+
+                button {
+                    cursor: pointer;
+                    background: none;
+                    border: none;
+                    width: 100%;
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
-                    gap: 5px;
-                }
+                    gap: 15px;
+                    padding: 10px 15px;
 
-                .option-title {
-                    font-size: 14px;
-                    color: var(--color--font-primary);
-                    font-weight: 400;
-                    margin: 0;
-                }
+                    &:disabled {
+                        cursor: not-allowed;
+                        opacity: 0.5;
+                    }
 
-                p {
-                    color: var(--color--font-secondary);
-                    margin-top: 6px;
-                    font-size: small;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
+                    .subscription-option {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 5px;
+                    }
 
-                &.all {
-                    background-color: $green-20;
-                    cursor: default;
-                }
+                    .option-title {
+                        font-size: 14px;
+                        font-weight: 400;
+                        margin: 0;
+                    }
 
-                &.replies_only {
-                    background-color: $activity-color-20;
-                    cursor: default;
-                }
+                    &.all {
+                        background-color: $green-20;
+                        cursor: default;
+                    }
 
-                &.none {
-                    background-color: $dark-gray-color-20;
-                    cursor: default;
-                }
+                    &.replies_only {
+                        background-color: $activity-color-20;
+                        cursor: default;
+                    }
 
-                &.--active {
-                    background-color: $dark-gray-color-10;
-                    cursor: default;
-                }
+                    &.none {
+                        background-color: $dark-gray-color-20;
+                        cursor: default;
+                    }
 
-                &.--disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
+                    &.active {
+                        background-color: $dark-gray-color-10;
+                        cursor: default;
+                    }
                 }
             }
         }
@@ -1300,6 +1303,10 @@ $card-max-width: 300px;
         }
         .color-font-secondary {
             color: var(--color--font-secondary);
+        }
+
+        .break-word {
+            word-break: break-word;
         }
     }
 
@@ -1468,6 +1475,7 @@ $card-max-width: 300px;
     .tab {
         &__buttons {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             border-bottom: 2px solid var(--color--divider);
         }
@@ -1475,8 +1483,6 @@ $card-max-width: 300px;
         &__button {
             label {
                 position: relative;
-                transition: color 0.3s ease;
-                color: var(--color--highlight);
                 font-weight: bold;
                 padding: 6px 12px;
                 cursor: pointer;
@@ -1485,15 +1491,13 @@ $card-max-width: 300px;
                 gap: 5px;
 
                 &:hover {
-                    color: var(--color--highlight-hover);
-
                     &::after {
                         background-color: var(--color--focus);
                     }
                 }
 
                 &:hover,
-                &.is-checked {
+                &.active {
                     &::after {
                         content: '';
                         position: absolute;
@@ -1504,7 +1508,7 @@ $card-max-width: 300px;
                     }
                 }
 
-                &.is-checked {
+                &.active {
                     &::after {
                         background-color: var(--color--highlight);
                     }

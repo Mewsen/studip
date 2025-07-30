@@ -9,7 +9,9 @@ import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jso
 import StudipIcon from "../../StudipIcon.vue";
 import PostReactionShow from "./PostReactionShow.vue";
 import StudipDialog from "../../StudipDialog.vue";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 const forumDiscussionPost = useForumPost();
 const props = defineProps({
     posting_id: {
@@ -26,7 +28,14 @@ const props = defineProps({
 const showReactions = ref(false);
 const reactionStatusMessage = ref(null);
 
-const groupedReactions = computed(() => Object.groupBy(props.reactions, ({ emoji }) => emoji));
+const transformedReactions = computed(() => props.reactions.map(reaction => {
+    return {
+        ...reaction,
+        ...(!reaction?.user ? { user: { formatted_name: $gettext('Unbekannt') } } : {})
+    }
+}));
+
+const groupedReactions = computed(() => Object.groupBy(transformedReactions.value, ({ emoji }) => emoji));
 
 const announceToScreenReader = message => reactionStatusMessage.value.textContent = message;
 
@@ -74,7 +83,11 @@ const deleteReaction = async (reactionId) => {
     }
 }
 
-const toggleReaction = async (emoji, reactions = props.reactions) => {
+const toggleReaction = async (emoji, reactions = transformedReactions.value) => {
+    if (forumConfig.allowGuestAccess) {
+        return;
+    }
+
     const userReaction = findUserReaction(emoji, reactions);
 
     if (userReaction) {
@@ -86,7 +99,7 @@ const toggleReaction = async (emoji, reactions = props.reactions) => {
     }
 }
 
-const findUserReaction = (emoji, reactions = props.reactions) => reactions.find(reaction => reaction.user.id === STUDIP.USER_ID && reaction.emoji === emoji);
+const findUserReaction = (emoji, reactions = transformedReactions.value) => reactions.find(reaction => reaction.user.id === STUDIP.USER_ID && reaction.emoji === emoji);
 
 const reactionCreate = useTemplateRef('reactionCreate');
 useDetectOutsideClick(reactionCreate, () => showReactions.value = false);
@@ -101,11 +114,11 @@ const reactionShowDialog = reactive({
     <div class="post-reactions-container">
         <div aria-live="polite" class="sr-only" role="status" ref="reactionStatusMessage"></div>
 
-        <template v-if="reactions.length">
+        <template v-if="transformedReactions.length">
             <template v-for="(reaction, emoji) in groupedReactions" :key="emoji">
                 <button
                     type="button"
-                    class="post-reaction as-link"
+                    class="post-reaction"
                     :class="{
                         '--active': findUserReaction(emoji, reaction)
                     }"
@@ -120,21 +133,23 @@ const reactionShowDialog = reactive({
         <div ref="reactionCreate" class="post-reactions">
             <div class="post-reactions__button-group">
                 <button
+                    v-if="!forumConfig.allowGuestAccess"
                     type="button"
-                    class="post-reactions__add-reaction as-link"
+                    class="post-reactions__add-reaction"
                     :title="$gettext('Reagieren')"
                     :aria-label="$gettext('Reagieren')"
+                    :aria-pressed="showReactions"
                     @click="showReactions = !showReactions">
                     <StudipIcon shape="add-reaction" class="add-reaction-icon" :size="18" />
                 </button>
                 <button
-                    v-if="reactions.length"
+                    v-if="transformedReactions.length"
                     type="button"
-                    class="post-reactions__show-reactions as-link"
+                    class="post-reactions__show-reactions"
                     :title="$gettext('Reaktionen anzeigen')"
-                    :aria-label="$gettext('%{count} Reaktionen anzeigen', { count: reactions.length })"
+                    :aria-label="$gettext('%{count} Reaktionen anzeigen', { count: transformedReactions.length })"
                     @click="reactionShowDialog.isOpen = true">
-                    {{ numberFormatter(reactions.length, 1) }}
+                    {{ numberFormatter(transformedReactions.length, 1) }}
                 </button>
             </div>
             <Transition name="fade">
@@ -158,7 +173,7 @@ const reactionShowDialog = reactive({
     </div>
 
     <StudipDialog
-        v-if="reactionShowDialog.isOpen && reactions.length"
+        v-if="reactionShowDialog.isOpen && transformedReactions.length"
         :title="$gettext('Reaktionen anzeigen')"
         :closeText="$gettext('Schließen')"
         closeClass="cancel"
@@ -178,9 +193,9 @@ const reactionShowDialog = reactive({
                                 value="all"
                                 v-model="reactionShowDialog.emoji"
                             />
-                            <label for="reaction-all" :class="{ 'is-checked': reactionShowDialog.emoji === 'all' }">
+                            <label class="button-base" for="reaction-all" :class="{ 'active': reactionShowDialog.emoji === 'all' }">
                                 {{ $gettext('Alle') }}
-                                <span>{{ numberFormatter(reactions.length, 1) }}</span>
+                                <span>{{ numberFormatter(transformedReactions.length, 1) }}</span>
                             </label>
                         </div>
                         <div
@@ -195,7 +210,7 @@ const reactionShowDialog = reactive({
                                 :value="emoji"
                                 v-model="reactionShowDialog.emoji"
                             />
-                            <label :for="`reaction-${emoji}`" :class="{ 'is-checked': reactionShowDialog.emoji === emoji }">
+                            <label class="button-base" :for="`reaction-${emoji}`" :class="{ 'active': reactionShowDialog.emoji === emoji }">
                                 <span class="emoji-icon" v-html="REACTION_ICONS[emoji].icon" aria-hidden="true"></span>
                                 <span class="sr-only">{{ emoji }}</span>
                                 <span>{{ numberFormatter(reaction.length, 1) }}</span>
@@ -203,7 +218,7 @@ const reactionShowDialog = reactive({
                         </div>
                     </div>
                     <div class="tab__content">
-                        <PostReactionShow :reactions="reactions" :emoji="reactionShowDialog.emoji" />
+                        <PostReactionShow :reactions="transformedReactions" :emoji="reactionShowDialog.emoji" />
                     </div>
                 </div>
             </div>

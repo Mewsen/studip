@@ -3,7 +3,9 @@
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import {getCategoryCreateURL} from "../helpers/urls";
 import {$gettext} from "@/assets/javascripts/lib/gettext";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 defineProps({
     label: {
         type: String,
@@ -14,6 +16,7 @@ defineProps({
 
 <template>
     <a
+        v-if="forumConfig.isModerator"
         :href="getCategoryCreateURL()"
         data-dialog="size=700"
         :title="$gettext('Neue Kategorie anlegen')"

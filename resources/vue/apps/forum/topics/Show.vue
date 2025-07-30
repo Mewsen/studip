@@ -10,7 +10,9 @@ import StudipDateTime from "../../../components/StudipDateTime.vue";
 import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vue";
 import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
 import StudipPagination from "../../../components/StudipPagination.vue";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 const props = defineProps({
     topic: {
         type: Object,
@@ -25,8 +27,7 @@ const props = defineProps({
         required: true,
     },
     user_subscription: {
-        type: Object,
-        required: true
+        type: Object
     },
 });
 
@@ -96,7 +97,7 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="actions">
+                <div v-if="!forumConfig.allowGuestAccess" class="actions">
                     <CreateDiscussion :topic_id="topic.topic_id" />
                     <SubscriptionDropdown
                         :title="$gettext('Thema abonnieren')"

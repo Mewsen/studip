@@ -1,5 +1,4 @@
 <?php
-require_once 'BaseController.php';
 
 use Studip\Markup;
 use Forum\Discussion;
@@ -59,27 +58,38 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
 
         PageLayout::setTitle($discussion->title);
 
-        $auth_user = User::findCurrent();
-
         $discussion->view_count += 1;
         $discussion->store();
 
-        $posting_read = PostingRead::findOneBySQL(
-            "discussion_id = :discussion_id AND user_id = :user_id",
-            [
-                'discussion_id' => $discussion->getId(),
-                'user_id' => User::findCurrent()->user_id
-            ]
-        );
+        $auth = User::findCurrent();
+        $posting_read = null;
+        $auth_user = [];
+        if ($auth) {
+            $posting_read = PostingRead::findOneBySQL(
+                "discussion_id = :discussion_id AND user_id = :user_id",
+                [
+                    'discussion_id' => $discussion->getId(),
+                    'user_id' => $auth->user_id
+                ]
+            );
 
-        $user_subscription = Subscription::findOneBySQL(
-            "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
-            [
-                'subject' => 'discussion',
-                'subject_id' => $discussion->getId(),
-                'user_id' => $auth_user->user_id
-            ]
-        );
+            $user_subscription = Subscription::findOneBySQL(
+                "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
+                [
+                    'subject' => 'discussion',
+                    'subject_id' => $discussion->getId(),
+                    'user_id' => $auth->user_id
+                ]
+            );
+
+            $auth_user = [
+                'id' => $auth->id,
+                'username' => $auth->username,
+                'name' => $auth->getFullName(),
+                'avatar_url' => Avatar::getAvatar($auth->user_id)->getURL(Avatar::NORMAL),
+                'subscription' => $user_subscription ? $user_subscription->toRawArray() : []
+            ];
+        }
 
         $category = $discussion->getCategory();
         $tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
@@ -88,13 +98,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Show')
                 ->withProps([
-                    'auth_user' => [
-                        'id' => $auth_user->id,
-                        'username' => $auth_user->username,
-                        'name' => $auth_user->getFullName(),
-                        'avatar_url' => Avatar::getAvatar($auth_user->user_id)->getURL(Avatar::NORMAL),
-                        'subscription' => $user_subscription ? $user_subscription->toRawArray() : []
-                    ],
+                    'auth_user' => $auth_user,
                     'discussion' => [
                         ...$discussion->transformData(),
                         'topic' => $discussion->topic->toRawArray(),
@@ -157,7 +161,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
             $discussion = Discussion::find($discussion_id);
         } else {
             $discussion = new Discussion();
-            $discussion->user_id = User::findCurrent()->user_id;
+            $discussion->user_id = $this->user_id;
         }
 
         $discussion->title = Request::get('title');
@@ -189,7 +193,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
                 'range_id' => $this->range_id,
                 'discussion_id' => $discussion->discussion_id,
                 'content' => Markup::purifyHtml(Markup::markAsHtml(Request::get('content'))),
-                'user_id' => User::findCurrent()->user_id
+                'user_id' => $this->user_id
             ]);
         } else {
             TagRelation::deleteBySQL("range_id = ? AND range_type = 'forum'", [$discussion->discussion_id]);
@@ -228,7 +232,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
             throw new AccessDeniedException();
         }
 
-        if (!$this->is_moderator && $discussion->user_id !== User::findCurrent()->user_id) {
+        if (!$this->is_moderator && $discussion->user_id !== $this->user_id) {
             throw new AccessDeniedException();
         }
 

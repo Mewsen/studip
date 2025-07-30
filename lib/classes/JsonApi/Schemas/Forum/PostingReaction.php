@@ -55,14 +55,15 @@ class PostingReaction extends SchemaProvider
         return $relationships;
     }
 
-    private function addUserRelationship(array $relationships, $discussion, bool $withUser = false)
+    private function addUserRelationship(array $relationships, $postingReaction, bool $withUser = false)
     {
-        if ($withUser) {
+        $user = $postingReaction->user;
+        if ($withUser && $user) {
             $relationships[self::REL_USER] = [
                 self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->createLinkToResource($discussion->user)
+                    Link::RELATED => $this->createLinkToResource($user)
                 ],
-                self::RELATIONSHIP_DATA => $discussion->user
+                self::RELATIONSHIP_DATA => $user
             ];
         }
 

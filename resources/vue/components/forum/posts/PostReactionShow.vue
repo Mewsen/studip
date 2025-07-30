@@ -81,6 +81,7 @@ onMounted(() => {
                     <div class="user-reaction">
                         <UserAvatarDropdown
                             size="30px"
+                            v-if="reaction.user.id"
                             :user="{
                                 id: reaction.user.id,
                                 username: reaction.user.username,
@@ -94,6 +95,7 @@ onMounted(() => {
                 </td>
                 <td>
                     <a
+                        v-if="reaction.user.id"
                         :href="userProfileURL(reaction.user.username)"
                         :title="$gettext('Zum Profil')"
                         :aria-label="$gettext('Zum Profil von %{name}', { name: reaction.user.formatted_name })"
@@ -101,6 +103,9 @@ onMounted(() => {
                     >
                         {{ reaction.user.formatted_name }}
                     </a>
+                    <p v-else class="author-name">
+                        {{ $gettext('Unbekannt') }}
+                    </p>
                 </td>
                 <td>
                     <StudipDateTime :iso="reaction.mkdate" :relative="true" />

@@ -1,5 +1,4 @@
 <?php
-require_once 'BaseController.php';
 
 class Course_Forum_RecentController extends Forum\BaseController
 {

@@ -12,6 +12,7 @@ class PostingShow extends JsonApiController
 {
     protected $allowedIncludePaths = [
         \JsonApi\Schemas\Forum\Posting::REL_DISCUSSION,
+        \JsonApi\Schemas\Forum\Posting::REL_AUTHOR,
         \JsonApi\Schemas\Forum\Posting::REL_POSTING,
         \JsonApi\Schemas\Forum\Posting::REL_OPENGRAPH_URLS,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS,

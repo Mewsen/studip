@@ -2,7 +2,6 @@
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import {$gettext} from "@/assets/javascripts/lib/gettext";
 import StudipSelect from "@/vue/components/StudipSelect.vue";
-
 const selectedTopics = defineModel();
 </script>
 

@@ -1,5 +1,4 @@
 <?php
-require_once 'BaseController.php';
 
 use Forum\DiscussionType;
 use Forum\DTO\Tag as TagDTO;

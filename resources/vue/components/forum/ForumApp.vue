@@ -3,8 +3,7 @@ import {onMounted} from "vue";
 import {useForumConfig} from "../../store/pinia/forum/ForumConfig";
 
 const forumConfig = useForumConfig();
-
-onMounted(async () => {
+const fetchConfigs = async () => {
     try {
         const response = await STUDIP.jsonapi.withPromises().GET(`courses/${STUDIP.URLHelper.parameters.cid}/forum-configs`);
 
@@ -16,6 +15,16 @@ onMounted(async () => {
         });
     } catch (error) {
         STUDIP.Report.error(error.statusText);
+    }
+}
+
+onMounted(async () => {
+    if (STUDIP.USER_ID === 'nobody') {
+        forumConfig.$patch({
+            allowGuestAccess: true
+        });
+    } else {
+        await fetchConfigs();
     }
 })
 </script>

@@ -242,7 +242,7 @@ class Discussion extends SimpleORMap
 
     public function getMetaData(int $last_visit = 0): array
     {
-        $user_id = \User::findCurrent()->user_id;
+        $user_id = User::findCurrent()?->user_id;
 
         if (!$last_visit) {
             $plugin_id = \PluginEngine::getPlugin(\CoreForum::class)->getPluginId();

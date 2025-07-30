@@ -5,7 +5,8 @@ import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 import StudipActionMenu from "@/vue/components/StudipActionMenu.vue";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import StudipDateTime from "@/vue/components/StudipDateTime.vue";
-import {computed} from "vue";
+import {computed, ref} from "vue";
+import ShowTopic from "./ShowTopic.vue";
 
 const emit = defineEmits(['swapTopic']);
 const forumConfig = useForumConfig();
@@ -22,15 +23,25 @@ const props = defineProps({
 });
 
 const topicActionMenus = computed(() => {
+    let menu = [
+        { label: $gettext('Informationen'),  icon: 'info', emit: 'show'},
+    ];
+
     if (forumConfig.isModerator) {
-        return [
+        menu.push(
             { label: $gettext('Thema bearbeiten'),  icon: 'edit', emit: 'edit'},
             { label: $gettext('Thema löschen'),  icon: 'trash', emit: 'delete'}
-        ];
+        );
     }
 
-    return [];
+    return menu;
 });
+
+const isTopicDialogOpen = ref(false);
+
+const displayTopic = () => {
+    isTopicDialogOpen.value = true;
+}
 
 const editTopic = () => STUDIP.Dialog.fromURL(getTopicEditURL(props.topic.id),{ width: '700' });
 
@@ -66,13 +77,13 @@ const swapTopic = event => {
                     </a>
                 </div>
                 <div class="content">
-                    <div>
+                    <div class="flex-1">
                         <div class="title-with-actions">
                             <div class="title-with-actions__content">
                                 <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
                                     <span class="topic-title line-clamp-2">{{ topic.name }}</span>
                                     <span
-                                        v-if="topic.meta.postings_count > topic.meta.user_read_index"
+                                        v-if="!forumConfig.allowGuestAccess && topic.meta.postings_count > topic.meta.user_read_index"
                                         class="unread-items-badge"
                                         role="status"
                                         aria-live="polite"
@@ -87,6 +98,7 @@ const swapTopic = event => {
                             <div class="title-with-actions__actions-xs">
                                 <StudipActionMenu
                                     :items="topicActionMenus"
+                                    @show="displayTopic"
                                     @edit="editTopic"
                                     @delete="deleteTopic"
                                 />
@@ -157,6 +169,7 @@ const swapTopic = event => {
         <td class="actions">
             <StudipActionMenu
                 :items="topicActionMenus"
+                @show="displayTopic"
                 @edit="editTopic"
                 @delete="deleteTopic"
             />
@@ -178,7 +191,7 @@ const swapTopic = event => {
                             </span>
 
                             <span
-                                v-if="topic.meta.postings_count > topic.meta.user_read_index"
+                                v-if="!forumConfig.allowGuestAccess && topic.meta.postings_count > topic.meta.user_read_index"
                                 class="unread-items-badge"
                                 role="status"
                                 aria-live="polite"
@@ -192,6 +205,7 @@ const swapTopic = event => {
                         <div class="actions">
                             <StudipActionMenu
                                 :items="topicActionMenus"
+                                @show="displayTopic"
                                 @edit="editTopic"
                                 @delete="deleteTopic"
                             />
@@ -235,4 +249,5 @@ const swapTopic = event => {
             </div>
         </div>
     </a>
+    <ShowTopic :topic="topic" v-model:isOpen="isTopicDialogOpen" />
 </template>

@@ -141,7 +141,7 @@ class Topic extends SimpleORMap
                     WHERE `forum_discussions`.`topic_id` = :topic_id",
             [
                 'topic_id' => $this->topic_id,
-                'user_id' => User::findCurrent()->user_id
+                'user_id' => User::findCurrent()?->user_id
             ]
         );
     }

@@ -1,5 +1,4 @@
 <?php
-require_once 'BaseController.php';
 
 use Forum\Category;
 use Forum\Subscription;
@@ -33,14 +32,17 @@ class Course_Forum_TopicsController extends Forum\BaseController
 
         PageLayout::setTitle($topic->name);
 
-        $user_subscription = Subscription::findOneBySQL(
-            "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
-            [
-                'subject' => 'topic',
-                'subject_id' => $topic->getId(),
-                'user_id' => User::findCurrent()->user_id
-            ]
-        );
+        $user_subscription = null;
+        if ($this->user_id) {
+            $user_subscription = Subscription::findOneBySQL(
+                "subject = :subject AND subject_id = :subject_id AND user_id = :user_id",
+                [
+                    'subject' => 'topic',
+                    'subject_id' => $topic->getId(),
+                    'user_id' => $this->user_id
+                ]
+            );
+        }
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/topics/Show')

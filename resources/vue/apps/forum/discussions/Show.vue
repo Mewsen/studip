@@ -1,8 +1,6 @@
 <script setup>
 import {onMounted, computed, ref} from "vue";
 import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import ForumMembers from "@/vue/components/forum/ForumMembers.vue";
-import {numberFormatter} from "../../../../assets/javascripts/lib/number_formatter";
 import {useForumPost} from "../../../store/pinia/forum/ForumPost";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import Post from "@/vue/components/forum/posts/Post.vue";
@@ -15,6 +13,7 @@ import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vu
 import {highlightText, removeHighlight} from "@/vue/components/forum/helpers";
 import {getSearchURL, getTopicURL, getDiscussionIndexURL} from "@/vue/components/forum/helpers/urls";
 import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
+import DiscussionFooter from "../../../components/forum/discussions/DiscussionFooter.vue";
 
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
@@ -115,7 +114,6 @@ const fetchPostings = async () => {
 };
 
 
-
 onMounted(async () => {
     isLoading.value = true;
 
@@ -194,17 +192,19 @@ onMounted(async () => {
                         </em>
                         <StudipIcon shape="lock-locked2" :size="20" role="inactive" />
                     </div>
-                    <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="button button--icon-only">
-                        <StudipIcon shape="edit" :size="20" />
-                    </button>
-                    <SubscriptionDropdown
-                        v-if="!discussion.closed_at"
-                        :subject="{
-                            id: discussion.discussion_id,
-                            type: 'forum-discussions'
-                        }"
-                        :user_subscription="auth_user.subscription"
-                    />
+                    <template v-if="!forumConfig.allowGuestAccess">
+                        <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="button button--icon-only">
+                            <StudipIcon shape="edit" :size="20" />
+                        </button>
+                        <SubscriptionDropdown
+                            v-if="!discussion.closed_at"
+                            :subject="{
+                                id: discussion.discussion_id,
+                                type: 'forum-discussions'
+                            }"
+                            :user_subscription="auth_user.subscription"
+                        />
+                    </template>
                 </div>
             </div>
         </header>
@@ -219,43 +219,12 @@ onMounted(async () => {
                 </p>
             </div>
             <hr />
-            <div class="discussion__status">
-                <div class="flex items-start gap-20">
-                    <div class="text-center">
-                        <p>{{ $gettext('Erstellt') }}</p>
-                        <StudipDateTime :iso="discussion.mkdate" :date_only="true"/>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Beiträge') }}</p>
-                        <p>{{ posts.length }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Aufrufe') }}</p>
-                        <p>{{ numberFormatter(discussion.view_count, 1) }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Aktivität') }}</p>
-                        <StudipDateTime v-if="posts[posts.length -1]" :iso="posts[posts.length -1].mkdate" :relative="true" />
-                        <StudipDateTime v-else :iso="discussion.mkdate" :relative="true"/>
-                    </div>
-                </div>
-                <ForumMembers :members="discussion.members" :limit="5" size="35px" />
-                <a
-                    v-if="!discussion.closed_at"
-                    href="#new-post"
-                    class="button button--icon-label"
-                    role="button"
-                    :title="$gettext('Antworten')"
-                    :aria-label="$gettext('Antworten')"
-                    :class="{
-                            'disabled': postCreateForm
-                        }"
-                    @click="postCreateForm = true"
-                >
-                    <StudipIcon shape="reply" :size="20" aria-hidden="true" />
-                    {{ $gettext('Antworten') }}
-                </a>
-            </div>
+            <DiscussionFooter
+                :discussion="discussion"
+                :posts_count="posts.length"
+                :recent_activity="posts[posts.length - 1] ? posts[posts.length - 1].mkdate : null"
+                v-model:postCreateForm="postCreateForm"
+            />
             <hr />
         </div>
         <div class="posts-container">
@@ -271,43 +240,12 @@ onMounted(async () => {
         </div>
 
         <div v-if="posts.length > 3" class="discussion">
-            <div class="discussion__status">
-                <div class="flex items-start gap-20">
-                    <div class="text-center">
-                        <p>{{ $gettext('Erstellt') }}</p>
-                        <StudipDateTime :iso="discussion.mkdate" :date_only="true"/>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Beiträge') }}</p>
-                        <p>{{ posts.length }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Aufrufe') }}</p>
-                        <p>{{ numberFormatter(discussion.view_count, 1) }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p>{{ $gettext('Aktivität') }}</p>
-                        <StudipDateTime v-if="posts[posts.length -1]" :iso="posts[posts.length -1].mkdate" :relative="true" />
-                        <StudipDateTime v-else :iso="discussion.mkdate" :relative="true"/>
-                    </div>
-                </div>
-                <ForumMembers :members="discussion.members" :limit="5" size="35px" />
-                <a
-                    v-if="!discussion.closed_at"
-                    href="#new-post"
-                    class="button button--icon-label"
-                    role="button"
-                    :title="$gettext('Antworten')"
-                    :aria-label="$gettext('Antworten')"
-                    :class="{
-                        'disabled': postCreateForm
-                    }"
-                    @click="postCreateForm = true"
-                >
-                    <StudipIcon shape="reply" :size="20" aria-hidden="true" />
-                    {{ $gettext('Antworten') }}
-                </a>
-            </div>
+            <DiscussionFooter
+                :discussion="discussion"
+                :posts_count="posts.length"
+                :recent_activity="posts[posts.length - 1].mkdate"
+                v-model:postCreateForm="postCreateForm"
+            />
         </div>
 
         <div id="new-post" class="post-form-container">

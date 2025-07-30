@@ -49,8 +49,8 @@ const fetchTopics = async (_, offset = 0) => {
 }
 
 onMounted(async () => {
-    await fetchTopics()
-})
+    await fetchTopics();
+});
 </script>
 
 <template>
@@ -63,7 +63,7 @@ onMounted(async () => {
                         {{ $gettext('Themen') }}
                     </h2>
                     <div class="actions">
-                        <CreateTopic v-if="forumConfig.isModerator" />
+                        <CreateTopic />
                         <button
                             v-if="forumConfig.tileLayout"
                             @click="forumConfig.toggleForumLayout();"

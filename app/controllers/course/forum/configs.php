@@ -1,11 +1,14 @@
 <?php
-require_once 'BaseController.php';
 
 class Course_Forum_ConfigsController extends Forum\BaseController
 {
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
+
+        if (!$this->user_id) {
+            throw new LoginException();
+        }
 
         if (! $this->is_admin) {
             throw new AccessDeniedException();

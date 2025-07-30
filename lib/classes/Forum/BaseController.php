@@ -9,21 +9,27 @@ use Request;
 use SearchWidget;
 use Sidebar;
 use StudipController;
+use User;
 
 abstract class BaseController extends StudipController
 {
     protected $with_session = true;
+    protected $is_admin = false;
+    protected $is_moderator = false;
 
     public function before_filter(&$action, &$args)
     {
         object_set_visit_module('forum');
 
         $this->range_id = Context::getId();
-        $this->is_moderator = CoreForum::isModerator($this->range_id);
-        $this->is_admin = CoreForum::isAdmin($this->range_id);
+        $this->user_id = User::findCurrent()?->user_id;
+
+        if ($this->user_id) {
+            $this->is_admin = CoreForum::isAdmin($this->range_id);
+            $this->is_moderator = CoreForum::isModerator($this->range_id);
+        }
 
         $this->buildSidebar();
-
         parent::before_filter($action, $args);
     }
 
@@ -31,11 +37,13 @@ abstract class BaseController extends StudipController
     {
         $actions = new ActionsWidget();
 
-        $actions->addLink(
-            _('Neue Diskussion starten'),
-            $this->url_for('course/forum/discussions/edit'),
-            Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neue Diskussion starten')])
-        )->asDialog('width=900;height=750');
+        if ($this->user_id) {
+            $actions->addLink(
+                _('Neue Diskussion starten'),
+                $this->url_for('course/forum/discussions/edit'),
+                Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neue Diskussion starten')])
+            )->asDialog('width=900;height=750');
+        }
 
         if ($this->is_admin) {
             $actions->addLink(

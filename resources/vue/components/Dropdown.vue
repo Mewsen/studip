@@ -54,6 +54,7 @@ watch(isOpen, async (open) => {
                 aria-labelledby="dropdown-title"
             >
                 <button
+                    type="button"
                     v-if="withCloseButton"
                     @click="isOpen = false"
                     class="dropdown__close-button">

@@ -2,7 +2,9 @@
 <script setup>
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import {computed} from "vue";
+import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 
+const forumConfig = useForumConfig();
 const props = defineProps({
     category_id: {
         type: String,
@@ -24,6 +26,7 @@ const topicCreateURL = computed(() => {
 
 <template>
     <a
+        v-if="forumConfig.isModerator"
         :href="topicCreateURL"
         data-dialog="width=700"
         :title="$gettext('Neues Thema anlegen')"

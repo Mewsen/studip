@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const isOpen = defineModel({ default: false });
-const AUTH_ID = STUDIP.USER_ID
+const AUTH_ID = STUDIP.USER_ID;
 const vCardDownloadURL = STUDIP.URLHelper.getURL('dispatch.php/contact/vcard', {'user[]': props.user.username});
 const userProfileURL = STUDIP.URLHelper.getURL('dispatch.php/profile', {username: props.user.username});
 
@@ -26,7 +26,7 @@ const writeMessage = () => {
         }
     );
 
-    isOpen.value = false
+    isOpen.value = false;
 }
 
 const openBlubberChat = () => {
@@ -37,7 +37,7 @@ const openBlubberChat = () => {
         }
     );
 
-    isOpen.value = false
+    isOpen.value = false;
 }
 </script>
 <template>
@@ -55,7 +55,7 @@ const openBlubberChat = () => {
                 <button
                     v-if="user.id !== AUTH_ID"
                     @click="openBlubberChat"
-                    class="action-item as-link"
+                    class="action-item"
                     :title="$gettext('Blubber diesen Nutzer an')"
                     :aria-label="$gettext('Blubber diesen Nutzer an')"
                 >
@@ -77,7 +77,7 @@ const openBlubberChat = () => {
             <li>
                 <button
                     v-if="user.id !== AUTH_ID"
-                    class="action-item as-link"
+                    class="action-item"
                     :title="$gettext('Nachricht schreiben')"
                     :aria-label="$gettext('Nachricht schreiben')"
                     @click="writeMessage()"
