@@ -1085,7 +1085,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             }
             $this->validation_key = $key;
 
-            $activatation_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'activate_email.php?uid=' . $this->user_id . '&key=' . $this->validation_key;
+            $activatation_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/login/activate_email?uid=' . $this->user_id . '&key=' . $this->validation_key;
             // include language-specific subject and mailbody with fallback to german
             $lang = getUserLanguagePath($this->id);
             if($lang == '') {
