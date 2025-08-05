@@ -1188,6 +1188,10 @@ function get_title_for_status($type, $count, $sem_type = NULL)
  */
 function is_internal_url($url)
 {
+    if (mb_substr($url, 0, 2) === '//') {
+        $url = Request::protocol() . ':' . $url;
+    }
+
     if (preg_match('%^[a-z]+:%', $url)) {
         return mb_strpos($url, $GLOBALS['ABSOLUTE_URI_STUDIP']) === 0;
     }
