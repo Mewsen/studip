@@ -169,17 +169,8 @@ class Admin_InstallController extends Trails\Controller
     public function prepare_action()
     {
         $this->files = [
-            'studip.sql'                        => _('Datenbankschema'),
-            'studip_default_data.sql'           => _('Voreinstellungen'),
-            'studip_resources_default_data.sql' => _('Struktur für Ressourcen'),
-            'studip_demo_data.sql'              => _('Allgemeine Beispieldaten'),
-            'studip_mvv_demo_data.sql'          => _('Demodaten für das Modul- und Veranstaltungsverzeichnis'),
-            'studip_resources_demo_data.sql'    => _('Demodaten für die Ressourcenverwaltung '),
-        ];
-        $this->required = [
-            'studip.sql',
-            'studip_default_data.sql',
-            'studip_resources_default_data.sql',
+            'studip-basic-installation.sql' => _('Basisinstallation ohne Daten'),
+            'studip-demo-installation.sql'  => _('Demoinstallation mit Beispieldaten')
         ];
 
         $this->defaults = [

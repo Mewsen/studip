@@ -7,32 +7,23 @@
  */
 ?>
 <p>
-    <?= _('In diesem Schritt wählen Sie aus, welche Beispieldaten in Ihre '
-        . 'Datenbank eingespielt werden und geben einige Grunddaten zur '
-        . 'Installation an, die in der Datenbank gespeichert werden.') ?>
+    <?= _('In diesem Schritt wählen Sie aus, welche Art von Installation erstellt werden soll: ein leeres System, '
+        . 'in dem nur die für den Betrieb notwendigen Daten hinterlegt sind, oder ein Demosystem mit einigen '
+        . 'Beispieldaten. Darüber hinaus geben Sie Weitere Grunddaten zur Installation an, die in der Datenbank '
+        . 'gespeichert werden.') ?>
     <?= _('Die Grunddaten können Sie nach der Installation weiterhin bearbeiten.') ?>
 </p>
 
 <h3><?= _('SQL-Daten einspielen') ?></h3>
-<ul>
 <?php $i = 0; foreach ($files as $file => $description): ?>
-    <li>
-        <label for="option-<?= $i ?>" class="plain">
-        <?php if (in_array($file, $required)): ?>
-            <input type="hidden" name="files[]" value="<?= htmlReady($file) ?>">
-            <input type="checkbox" checked disabled>
-        <?php else: ?>
-            <input type="checkbox" name="files[]" value="<?= htmlReady($file) ?>"
-                   id="option-<?= $i ?>">
-        <?php endif; ?>
-            <strong <?php if (in_array($file, $required)): ?>class="required"<?php endif; ?>>
-                <?= htmlReady($description) ?>
-            </strong><br>
-            <?= htmlReady($file) ?>
+    <div class="type-text">
+        <label class="plain">
+            <input type="radio" name="files[]" value="<?= htmlReady($file) ?>" required class="required"
+                <?= in_array($file, $_SESSION['STUDIP_INSTALLATION']['system']['files'] ?? []) ? ' checked' : '' ?>>
+            <?= htmlReady($description) ?>
         </label>
-    </li>
+    </div>
 <?php $i += 1; endforeach; ?>
-</ul>
 
 <h3><?= _('Daten zum System') ?></h3>
 <div class="type-text required">
