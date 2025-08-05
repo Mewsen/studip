@@ -63,7 +63,7 @@ $card-max-width: 300px;
                 justify-content: end;
                 padding: 0;
                 &:hover {
-                    color: var(--active-color);
+                    color: var(--base-color);
                 }
             }
         }
@@ -1040,27 +1040,37 @@ $card-max-width: 300px;
         border: thin solid var(--color--button-inactive-border);
         max-width: calc(48em - 30px);
 
-        .icon {
-            border-radius: 5px;
-            padding: 0.5rem;
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            margin: 0;
+            min-width: unset;
             cursor: pointer;
-            border: 1px solid $light-gray-color-20;
-            outline: transparent;
+            border: 1px solid var(--light-gray-color-20);
+            outline: 1px solid transparent;
             background: none;
-            transition: background-color 0.2s ease;
+            transition: all var(--transition-duration) ease;
 
-            &:hover:not(.active) {
-                background-color: $light-gray-color-20;
+            &.disabled
+            {
+                opacity: 0.5;
             }
 
-            &.disabled {
-                opacity: 0.25;
+            &:hover:not(.active),
+            &:focus:not(.active)
+            {
+                opacity: 1;
+                color: var(--base-color);
+                border-color: var(--color--focus);
+                outline: 1px solid var(--color--focus);
             }
 
             &.active {
-                border-color: $green-40;
-                outline-color: $green-40;
-                outline-style: solid;
+                color: var(--base-color);
+                border-color: var(--base-color);
+                outline: 1px solid var(--base-color);
             }
         }
     }

@@ -64,7 +64,7 @@ const formActionURL = computed(() => {
 
                     <template v-for="icon in icons" :key="icon">
                         <button
-                            class="icon"
+                            class="button"
                             type="button"
                             :title="icon"
                             :class="{
@@ -72,7 +72,7 @@ const formActionURL = computed(() => {
                                 'active': formSate.icon === icon
                             }"
                             @click="formSate.icon = icon">
-                            <StudipIcon :shape="icon" :size="40" />
+                            <StudipIcon :shape="icon" :size="35" />
                         </button>
                     </template>
                 </div>

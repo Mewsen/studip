@@ -101,20 +101,10 @@ button.button {
 @mixin button-base() {
     color: var(--base-color);
     transition: color var(--transition-duration);
-
-    &:hover,
-    &:active,
-    &.active,
-    &[aria-pressed="true"] {
-        color: var(--active-color);
-        text-decoration: none;
-    }
 }
 
 button,
 .button {
-    @include button-base;
-
     &.as-link,
     &.styleless,
     &.undecorated,
@@ -128,6 +118,21 @@ button,
         cursor: pointer;
         margin: 0;
         padding: 0;
+    }
+
+    &.as-link,
+    &.undecorated[formaction] {
+        @include button-base;
+
+        &:hover,
+        &:active {
+            color: var(--active-color);
+            text-decoration: none;
+        }
+
+        &[disabled] {
+            pointer-events: none;
+        }
     }
 }
 
