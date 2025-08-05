@@ -300,6 +300,10 @@ function isURL($url) {
 }
 
 function isLinkIntern($url) {
+    if (mb_substr($url, 0, 2) === '//') {
+        $url = Request::protocol() . ':' . $url;
+    }
+
     $pum = @parse_url(TransformInternalLinks($url));
 
     if (!$pum) {
