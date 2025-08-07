@@ -15,6 +15,6 @@ class AddIndexBlubberCommentsMkdate extends Migration
 
     public function down()
     {
-        DBManager::get()->exec("ALTER TABLE `blubber_comments` DROP INDEX (`mkdate`)");
+        DBManager::get()->exec("ALTER TABLE `blubber_comments` DROP INDEX `mkdate`");
     }
 }
