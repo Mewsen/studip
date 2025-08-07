@@ -6,7 +6,9 @@ if (isset($termin) && $termin instanceof CourseExDate) {
 }
 ?>
 <p>
-    <strong> <?= _('Wenn Sie die nicht stattfindenden Termine mit einem Kommentar versehen, werden die Ausfalltermine im Ablaufplan weiterhin dargestellt und auch im Kalender angezeigt.') ?></strong>
+    <strong> <?= _('Wenn Sie die nicht stattfindenden Termine mit einem Kommentar versehen, werden die Ausfalltermine '
+            . 'im Ablaufplan weiterhin dargestellt und auch im Kalender angezeigt.<br>Der Kommentar ist darüber hinaus '
+            . 'Teil der Benachrichtigung an alle Teilnehmenden.') ?></strong>
 </p>
 
 <label for="cancel_comment">
@@ -14,7 +16,7 @@ if (isset($termin) && $termin instanceof CourseExDate) {
     <textarea rows="5" id="cancel_comment" name="cancel_comment"><?= htmlReady($content) ?></textarea>
 </label>
 <label for="cancel_send_message" class="inline">
-    <input type="checkbox" id="cancel_send_message" name="cancel_send_message" value="1">
+    <input type="checkbox" id="cancel_send_message" name="cancel_send_message" value="1" checked>
     <?= _('Benachrichtigung über ausfallende Termine an alle Teilnehmenden verschicken') ?>
 </label>
 

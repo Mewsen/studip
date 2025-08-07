@@ -12,11 +12,13 @@
 
         <label>
             <?= _('Kommentar') ?>
-            <?= tooltipIcon(_('Wenn Sie die nicht stattfindenden Termine mit einem Kommentar versehen, werden die Ausfalltermine im Ablaufplan weiterhin dargestellt und auch im Kalender angezeigt.')) ?>
+            <?= tooltipIcon(_('Wenn Sie die nicht stattfindenden Termine mit einem Kommentar versehen, werden die '
+                . 'Ausfalltermine im Ablaufplan weiterhin dargestellt und auch im Kalender angezeigt.<br>Der '
+                . 'Kommentar ist darüber hinaus Teil der Benachrichtigung an alle Teilnehmenden.'), false, true) ?>
             <textarea wrap="virtual" name="cancel_dates_comment" id="cancel_dates_comment"></textarea>
         </label>
         <label>
-            <input type="checkbox" name="cancel_dates_snd_message" value="1">
+            <input type="checkbox" name="cancel_dates_snd_message" value="1" checked>
             <?= _('Benachrichtigung über ausfallende Termine an alle Teilnehmenden verschicken') ?>
         </label>
     </fieldset>
