@@ -127,7 +127,7 @@ class PostingNotification
                 \URLHelper::getURL('dispatch.php/course/forum/discussions/show/'.$this->posting->discussion_id, ['cid' => $this->topic->range_id], true)."#post_" . $this->posting->posting_id,
                 sprintf(
                     _('%s hat ihren Beitrag zur Diskussion „%s“ zitiert.'),
-                    $this->posting->user->getFullName(),
+                    $this->posting->anonymous ? _('Jemand') : $this->posting->user->getFullName(),
                     $this->discussion->title
                 ),
                 "post_" . $this->posting->posting_id,
