@@ -14,14 +14,18 @@ $tree-outline: 1px solid var(--light-gray-color-40);
         }
 
         .contentbar {
-            display: relative;
-
             .contentbar-wrapper-right {
                 display: inherit;
 
+                button,
+                a {
+                    position: relative;
+                    top: 4px;
+                }
+
                 .action-menu {
                     button {
-                        top: -2px;
+                        top: -3px;
                     }
                 }
             }
@@ -217,17 +221,21 @@ $tree-outline: 1px solid var(--light-gray-color-40);
 
         .contentbar-wrapper-left {
             max-width: calc(100% - 25px);
+            width: calc(100% - 25px);
 
             &.with-navigation {
                 max-width: calc(100% - 50px);
+                width: calc(100% - 50px);
             }
 
             &.editable {
                 max-width: calc(100% - 50px);
+                width: calc(100% - 50px);
             }
 
             &.with-navigation-and-editable {
                 max-width: calc(100% - 75px);
+                width: calc(100% - 75px);
             }
 
             img {
