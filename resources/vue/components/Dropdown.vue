@@ -1,5 +1,6 @@
 <script setup>
-import {nextTick, ref, useTemplateRef, watch} from "vue";
+import {nextTick, onBeforeUnmount, ref, useTemplateRef, watch} from "vue";
+import { createPopper } from '@popperjs/core';
 import useDetectOutsideClick from "../composables/useDetectOutsideClick";
 import StudipIcon from "./StudipIcon.vue";
 
@@ -14,22 +15,41 @@ defineProps({
 });
 
 const isOpen = defineModel({ default: false });
-const dropdownStyle = ref({});
 const dropdown = useTemplateRef('dropdown');
+const trigger = useTemplateRef('trigger');
 const dropdownContent = useTemplateRef('dropdownContent');
+const popperInstance = ref(null);
 
 useDetectOutsideClick(dropdown, () => isOpen.value = false);
 
-watch(isOpen, async (open) => {
+watch(isOpen, async open => {
     if (open) {
         await nextTick();
 
-        const trigger = dropdown.value?.getBoundingClientRect();
-        const content = dropdownContent.value?.getBoundingClientRect();
+        popperInstance.value = createPopper(trigger.value, dropdownContent.value, {
+            placement: 'bottom-end',
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 6]
+                    }
+                },
+                {
+                    name: 'preventOverflow',
+                    options: {
+                        padding: 10
+                    }
+                }
+            ]
+        });
+    }
+});
 
-        dropdownStyle.value = {
-            ...(content.width > trigger.left ? {left: '0'} : {right: '0'})
-        };
+onBeforeUnmount(() => {
+    if (popperInstance.value) {
+        popperInstance.value.destroy();
+        popperInstance.value = null;
     }
 });
 </script>
@@ -42,15 +62,16 @@ watch(isOpen, async (open) => {
         aria-haspopup="true"
         :aria-expanded="isOpen.toString()"
     >
-        <slot name="trigger">
-        </slot>
+        <div ref="trigger">
+            <slot name="trigger">
+            </slot>
+        </div>
 
         <Transition name="fade-down">
             <div
                 v-if="isOpen"
                 ref="dropdownContent"
                 class="dropdown__content"
-                :style="dropdownStyle"
                 aria-labelledby="dropdown-title"
             >
                 <button

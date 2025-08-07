@@ -542,8 +542,8 @@ $card-max-width: 300px;
             z-index: 1;
 
             .dropdown__content {
-                right: auto;
-                left: 0;
+                right: auto !important;
+                left: 0 !important;
             }
         }
 
@@ -758,34 +758,6 @@ $card-max-width: 300px;
             justify-content: center;
             align-items: center;
             gap: 15px;
-        }
-    }
-
-    .user-avatar-dropdown {
-        &__preview {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-
-            &:hover,
-            &:focus,
-            &[aria-ppressed="true"] {
-                position: relative;
-                z-index: 1;
-
-                img.user-profile {
-                    box-shadow: 0 2px 3px rgb(0 0 0 / 0.2);
-                }
-            }
-
-            img.user-profile {
-                width: 25px;
-                height: auto;
-                border-radius: 100%;
-                border: 1.5px solid white;
-                transition: all .4s ease-in-out;
-            }
         }
     }
 
@@ -1106,6 +1078,7 @@ $card-max-width: 300px;
     .forum-subscriptions-dropdown {
         text-align: left;
         white-space: pre-wrap;
+        display: inline-flex;
 
         .dropdown__items {
             max-width: 300px;
@@ -1549,8 +1522,8 @@ $card-max-width: 300px;
     .post-reactions-dialog {
         .user-avatar-dropdown {
             .dropdown__content {
-                right: auto;
-                left: 0;
+                right: auto !important;
+                left: 0 !important;
             }
         }
     }
