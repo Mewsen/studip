@@ -75,10 +75,15 @@ class Posting extends SimpleORMap
 
     public static function getRecentPosts(array|string $range_ids): array
     {
+        $user = User::findCurrent();
+        if (!$user) {
+            return [];
+        }
         $single = is_string($range_ids);
         if ($single) {
             $range_ids = [$range_ids];
         }
+        $forum_plugin = \PluginManager::getInstance()->getPlugin(\CoreForum::class);
         $query =
             "SELECT
                 forum_topics.range_id,
@@ -87,16 +92,19 @@ class Posting extends SimpleORMap
             FROM forum_topics
             JOIN forum_discussions USING(topic_id)
             JOIN forum_postings USING(discussion_id)
-            LEFT JOIN forum_posting_reads AS fp_reads
-              ON fp_reads.discussion_id = forum_discussions.discussion_id
-                AND fp_reads.user_id = :user_id
+            LEFT JOIN object_user_visits AS ouv
+               ON ouv.object_id = forum_topics.range_id
+                 AND ouv.user_id = :user_id
+                 AND ouv.plugin_id = :plugin_id
             WHERE forum_topics.range_id IN (:range_ids)
               AND forum_postings.user_id != :user_id
-              AND forum_postings.mkdate > IFNULL(fp_reads.read_index, 0)
+              AND forum_postings.mkdate > IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
             GROUP BY forum_topics.range_id, forum_discussions.discussion_id";
         $params = [
             ':range_ids' => $range_ids,
-            ':user_id' => User::findCurrent()?->id,
+            ':user_id' => $user->id,
+            ':plugin_id' => $forum_plugin->getPluginId(),
+            ':threshold' => object_get_visit_threshold(),
         ];
 
         $res = \DBManager::get()->fetchAll($query, $params);
