@@ -1758,7 +1758,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 )
             );
         } else {
-            PageLayout::postSuccess(_('Der Termin %s wurde gelöscht!'), htmlReady($termin_date));
+            PageLayout::postSuccess(sprintf(_('Der Termin %s wurde gelöscht!'), htmlReady($termin_date)));
         }
 
         return $termin;
