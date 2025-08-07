@@ -64,6 +64,10 @@ class User extends SchemaProvider
         $visibilities = $this->getVisibilities($user);
         $observer = $this->currentUser;
 
+        if (!$visibilities || !$observer) {
+            return [];
+        }
+
         $fields = [
             ['phone', 'privatnr', 'private_phone'],
             ['homepage', 'Home', 'homepage'],
