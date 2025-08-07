@@ -195,7 +195,7 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation(
                 'forum_discussion_types',
                 new Navigation(
-                    _('Forum (Diskussionstypen)'),
+                    _('Forum'),
                     'dispatch.php/course/forum/discussion_types'
                 )
             );
@@ -212,7 +212,7 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation('roles', new Navigation(_('Rollen'), 'dispatch.php/admin/role'));
             $navigation->addSubNavigation('datafields', new Navigation(_('Datenfelder'), 'dispatch.php/admin/datafields'));
             $navigation->addSubNavigation('configuration', new Navigation(_('Konfiguration'), 'dispatch.php/admin/configuration/configuration'));
-            
+
             $navigation->addSubNavigation('coursewizardsteps',
                 new Navigation(_('Anlegeassistent'), 'dispatch.php/admin/coursewizardsteps'));
             $navigation->addSubNavigation('studygroup', new Navigation(_('Studiengruppen'), 'dispatch.php/course/studygroup/globalmodules'));

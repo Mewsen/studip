@@ -10,10 +10,10 @@ use Forum\DiscussionType;
 <div class="forum">
     <table class="default sortable-table">
         <caption>
-            <?= _('Diskussionstyps') ?>
+            <?= _('Diskussiontypen') ?>
             <span class="actions">
                 <a href="<?= $controller->url_for('course/forum/discussion_types/edit') ?>" data-dialog="width=700">
-                    <?= Icon::create('add', 'clickable', ['title' => _('Neue Diskussionstyp anlegen')]) ?>
+                    <?= Icon::create('add', 'clickable', ['title' => _('Neuen Diskussionstyp anlegen')]) ?>
                 </a>
             </span>
         </caption>
@@ -40,7 +40,7 @@ use Forum\DiscussionType;
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a href="<?= $controller->url_for('course/forum/discussion_types/show/'.$type->type_id) ?>">
+                    <a href="<?= $controller->url_for('course/forum/discussion_types/edit/'.$type->type_id) ?>" data-dialog="width=700">
                         <?= htmlReady($type->name) ?>
                     </a>
                 </td>
