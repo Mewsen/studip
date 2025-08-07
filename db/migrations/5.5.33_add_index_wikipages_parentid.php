@@ -15,6 +15,6 @@ class AddIndexWikipagesParentid extends Migration
 
     public function down()
     {
-        DBManager::get()->exec("ALTER TABLE `wiki_pages` DROP INDEX (`parent_id`)");
+        DBManager::get()->exec("ALTER TABLE `wiki_pages` DROP INDEX `parent_id`");
     }
 }
