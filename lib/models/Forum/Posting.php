@@ -61,7 +61,7 @@ class Posting extends SimpleORMap
 
     public function getAuthor(): ?MemberDTO
     {
-        if ($this->anonymous && $this->user_id !== User::findCurrent()->user_id) {
+        if ($this->anonymous && $this->user_id !== User::findCurrent()?->user_id) {
             return MemberDTO::fromArray();
         }
 
@@ -96,7 +96,7 @@ class Posting extends SimpleORMap
             GROUP BY forum_topics.range_id, forum_discussions.discussion_id";
         $params = [
             ':range_ids' => $range_ids,
-            ':user_id' => User::findCurrent()->id,
+            ':user_id' => User::findCurrent()?->id,
         ];
 
         $res = \DBManager::get()->fetchAll($query, $params);
