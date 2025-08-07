@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreOverview extends CorePlugin implements StudipModule
+class CoreOverview extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -70,6 +70,64 @@ class CoreOverview extends CorePlugin implements StudipModule
             ]);
         }
         return $nav;
+    }
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
+    {
+        $sql = "SELECT news_r.range_id,
+                       COUNT(news.news_id) AS count,
+                       COUNT(IF((news.chdate > IFNULL(b.visitdate, :threshold) AND news.user_id !=:user_id), news.news_id, NULL)) AS neue
+                FROM news_range AS news_r
+                JOIN news
+                  ON news_r.news_id = news.news_id
+                     AND UNIX_TIMESTAMP() BETWEEN date AND date + expire
+                LEFT JOIN object_user_visits AS b
+                  ON b.object_id = news_r.news_id
+                     AND b.user_id = :user_id
+                     AND b.plugin_id = :plugin_id
+                WHERE news_r.range_id IN (:course_ids)
+                GROUP BY news_r.range_id";
+        $results = DBManager::get()->fetchAll($sql, [
+            ':user_id' => $user_id,
+            ':course_ids' => $course_ids,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ]);
+
+        $navs = [];
+        foreach ($results as $result) {
+            $nav = new Navigation(_('Ankündigungen'), '');
+            if ($result['neue']) {
+                $nav->setURL('?new_news=true');
+                $nav->setImage(Icon::create('news', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Ankündigung, %2$d neue',
+                            '%1$d Ankündigungen, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    )
+                ]);
+                $nav->setBadgeNumber($result['neue']);
+            } elseif ($result['count']) {
+                $nav->setImage(Icon::create('news'));
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Ankündigung',
+                            '%d Ankündigungen',
+                            $result['count']
+                        ),
+                        $result['count']
+                    )
+                ]);
+            }
+            $navs[$result['range_id']] = $nav;
+        }
+        return $navs;
     }
 
     /**

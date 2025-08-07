@@ -9,98 +9,79 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreWiki extends CorePlugin implements StudipModule
+class CoreWiki extends CorePlugin implements StudipModuleExtended
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($range_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if (!Config::get()->WIKI_ENABLE) {
-            return null;
+            return [];
         }
         $perm = $GLOBALS['perm']->get_perm($user_id);
         if (in_array($perm, ['admin', 'root'])) {
             $perm = 'dozent';
         }
 
-        $statement = DBManager::get()->prepare("
-            SELECT `wiki_pages`.`page_id`
-            FROM `wiki_pages`
-                LEFT JOIN `statusgruppe_user` ON (`statusgruppe_user`.`statusgruppe_id` = `wiki_pages`.`read_permission`)
-            WHERE `wiki_pages`.`range_id` = :range_id
-                AND (
-                    `wiki_pages`.`read_permission` = 'all'
-                    OR `statusgruppe_user`.`user_id` = :user_id
-                    OR `wiki_pages`.`read_permission` = :perm
-                    OR (`wiki_pages`.`read_permission` = 'tutor' AND :perm = 'dozent')
-                )
-        ");
-
-        $statement->execute([
-            'range_id' => $range_id,
-            'user_id' => $user_id,
-            'perm' => $perm
+        $query = "SELECT wiki_pages.range_id,
+                    COUNT(page_id) AS count,
+                    COUNT(IF((wiki_pages.chdate > IFNULL(ouv.visitdate, :threshold) AND wiki_pages.user_id != :user_id), page_id, NULL)) AS neue
+            FROM wiki_pages
+            LEFT JOIN statusgruppe_user ON (statusgruppe_user.statusgruppe_id = wiki_pages.read_permission)
+            LEFT JOIN object_user_visits AS ouv
+              ON ouv.object_id = wiki_pages.range_id
+                AND ouv.user_id = :user_id
+                AND ouv.plugin_id = :plugin_id
+            WHERE wiki_pages.range_id IN (:range_ids)
+              AND (
+                wiki_pages.read_permission = 'all'
+                OR statusgruppe_user.user_id = :user_id
+                OR wiki_pages.read_permission = :perm
+                OR (wiki_pages.read_permission = 'tutor' AND :perm = 'dozent')
+              )
+            GROUP BY wiki_pages.range_id;";
+        $results = DBManager::get()->fetchAll($query, [
+            ':range_ids' => $course_ids,
+            ':user_id' => $user_id,
+            ':perm' => $perm,
+            ':plugin_id' => $this->getPluginId(),
+            ':threshold' => object_get_visit_threshold(),
         ]);
-        $wiki_page_ids = $statement->fetchAll(PDO::FETCH_COLUMN);
-        if (count($wiki_page_ids) === 0) {
-            return null;
-        }
 
-        $visit_date = object_get_visit($range_id, $this->getPluginId(), 'visitdate') ?? $last_visit;
-
-        $statement = DBManager::get()->prepare("
-            SELECT COUNT(*) AS `neue`
-            FROM `wiki_pages`
-            WHERE `wiki_pages`.`page_id` IN (:page_ids)
-                AND `wiki_pages`.`chdate` > :threshold
-                AND `wiki_pages`.`user_id` != :user_id
-        ");
-        $statement->execute([
-            'page_ids' => $wiki_page_ids,
-            'threshold' => $visit_date,
-            'user_id' => $user_id,
-        ]);
-        $new_pages = $statement->fetch(PDO::FETCH_COLUMN, 0);
-
-        $nav = new Navigation(_('Wiki'));
-        if ($new_pages > 0) {
-            $nav->setURL('dispatch.php/course/wiki/newpages');
-            $nav->setImage(Icon::create('wiki', Icon::ROLE_ATTENTION, [
+        $navs = array_fill_keys($course_ids, null);
+        foreach ($results as $result) {
+            $nav = new Navigation(_('Wiki'));
+            $params = [
                 'title' => sprintf(
                     ngettext(
                         '%d Wiki-Seite',
                         '%d Wiki-Seiten',
-                        count($wiki_page_ids)
+                        $result['count']
                     ),
-                    count($wiki_page_ids)
+                    $result['count']
                 )
-                . ', '
-                . sprintf(
-                    ngettext(
-                        '%d Änderung',
-                        '%d Änderungen',
-                        $new_pages
-                     ),
-                        $new_pages
-                 )
-            ]));
-            $nav->setBadgeNumber($new_pages);
-        } else {
-            $nav->setURL('dispatch.php/course/wiki/page');
-            $nav->setImage(Icon::create('wiki'));
-            $nav->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%d Wiki-Seite',
-                        '%d Wiki-Seiten',
-                        count($wiki_page_ids)
-                    ),
-                    count($wiki_page_ids)
-                )
-            ]);
+            ];
+            if ($result['neue']) {
+                $nav->setURL('dispatch.php/course/wiki/newpages');
+                $nav->setImage(Icon::create('wiki', Icon::ROLE_ATTENTION));
+                $params['title'] .= ', ' . sprintf(
+                        ngettext(
+                            '%d Änderung',
+                            '%d Änderungen',
+                            $result['neue']
+                        ),
+                        $result['neue']
+                    );
+                $nav->setBadgeNumber($result['neue']);
+            } else {
+                $nav->setURL('dispatch.php/course/wiki/page');
+                $nav->setImage(Icon::create('wiki'));
+
+            }
+            $nav->setLinkAttributes($params);
+            $navs[$result['range_id']] = $nav;
         }
-        return $nav;
+        return $navs;
     }
 
     /**
@@ -227,5 +208,4 @@ class CoreWiki extends CorePlugin implements StudipModule
     {
         return (bool) Config::get()->getValue('WIKI_ENABLE');
     }
-
 }

@@ -9,18 +9,20 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreStudygroupAdmin extends CorePlugin implements StudipModule
+class CoreStudygroupAdmin extends CorePlugin implements StudipModuleExtended
 {
+    use IconNavigationTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}");
-        $navigation->setImage(Icon::create('admin'));
-        $navigation->setLinkAttributes(['title' => _('Verwaltung')]);
-        return $navigation;
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}");
+            $navigation->setImage(Icon::create('admin'));
+            $navigation->setLinkAttributes(['title' => _('Verwaltung')]);
+            $navs[$course_id] = $navigation;
+        }
+        return $navs;
     }
 
     /**

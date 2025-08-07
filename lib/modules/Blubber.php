@@ -12,8 +12,10 @@
  * Class Blubber - the Blubber-plugin
  * This is only used to manage blubber within a course.
  */
-class Blubber extends CorePlugin implements StudipModule
+class Blubber extends CorePlugin implements StudipModuleExtended
 {
+    use IconNavigationTrait;
+
     /**
      * Returns a navigation for the tab displayed in the course.
      * @param string $course_id of the course
@@ -29,76 +31,93 @@ class Blubber extends CorePlugin implements StudipModule
         return ['blubber' => $tab];
     }
 
-    /**
-     * Returns a navigation-object with the grey/red icon for displaying in the
-     * my_courses.php page.
-     * @param string  $course_id
-     * @param int $last_visit
-     * @param string|null  $user_id
-     * @return \Navigation
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id = null)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $user_id || $user_id = $GLOBALS['user']->id;
-        $icon = new Navigation(
-            _('Blubber'),
-            'dispatch.php/course/messenger/course'
-        );
-        $icon->setImage(Icon::create('blubber'));
-        $icon->setLinkAttributes(['title' => _('Blubber-Messenger')]);
+        $user_id = $user_id ?? User::findCurrent()->id;
+        $threshold = object_get_visit_threshold();
 
-        $condition = "INNER JOIN blubber_threads USING (thread_id)
+        // check if there are comments newer than the last visit of blubber
+        $condition = "JOIN blubber_threads USING (thread_id)
+                      LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = blubber_threads.context_id
+                          AND ouv.user_id = :me
+                          AND ouv.plugin_id = :plugin_id
                       WHERE blubber_threads.context_type = 'course'
-                        AND blubber_threads.context_id = :course_id
-                        AND blubber_comments.mkdate >= :last_visit
+                        AND blubber_threads.context_id IN (:course_ids)
+                        AND blubber_comments.mkdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND blubber_comments.user_id != :me
-                        AND blubber_threads.visible_in_stream = 1
-                        ";
-        $comments = BlubberComment::findBySQL($condition, [
-            'course_id'  => $course_id,
-            'last_visit' => $last_visit,
-            'me'         => $user_id,
-        ]);
-        foreach ($comments as $comment) {
-            if (
-                $comment->thread->isVisibleInStream()
-                && $comment->thread->isReadable()
-                && $comment->thread->getLatestActivity() > $comment->thread->getLastVisit()
-            ) {
-                $icon->setImage(Icon::create('blubber', Icon::ROLE_NEW, ['title' => _('Es gibt neue Blubber')]));
-                $icon->setTitle(_('Es gibt neue Blubber'));
-                $icon->setBadgeNumber(count($comments));
-                $icon->setURL('dispatch.php/course/messenger/course', ['thread' => 'new']);
-                break;
+                        AND blubber_threads.visible_in_stream = 1";
+        $params = [
+            ':course_ids' => $course_ids,
+            ':threshold' => $threshold,
+            ':me' => $user_id,
+            ':plugin_id' => 0, // module doesnt write directly into ouv
+        ];
+        $threads = [];
+        BlubberComment::findEachBySQL(
+            function ($comment) use (&$threads) {
+                $threads[$comment->thread_id][] = $comment;
+            },
+            $condition,
+            $params
+        );
+
+        $navs = [];
+        foreach ($threads as $comments) {
+            $thread = $comments[0]->thread;
+            if (isset($navs[$thread->context_id])) {
+                continue;
+            }
+            // check if there are comments that are newer thant the last visit of the blubber thread(!)
+            if ($thread->isReadable() && $thread->getLatestActivity() > $thread->getLastVisit()) {
+                $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course', ['thread' => 'new']);
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => _('Es gibt neue Blubber')]);
+                $nav->setBadgeNumber(count($comments));
+                $navs[$thread->context_id] = $nav;
             }
         }
 
-        $condition = "context_type = 'course'
-                        AND context_id = :course_id
-                        AND mkdate >= :last_visit
-                        AND user_id != :me
-                        AND visible_in_stream = 1
+        // Check for the remaining Courses, if new threads were created
+        $remaining_courses = array_diff($course_ids, array_keys($navs));
+        $condition = "LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = blubber_threads.context_id
+                          AND ouv.user_id = :me
+                          AND ouv.plugin_id = :plugin_id
+                      WHERE blubber_threads.context_type = 'course'
+                        AND blubber_threads.context_id IN (:course_ids)
+                        AND blubber_threads.mkdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
+                        AND blubber_threads.user_id != :me
+                        AND blubber_threads.visible_in_stream = 1
                         AND (
                             blubber_threads.display_class IS NOT NULL
-                            OR blubber_threads.`content` IS NOT NULL
+                            OR blubber_threads.content IS NOT NULL
                         )";
         $threads = BlubberThread::findBySQL($condition, [
-            'course_id'  => $course_id,
-            'last_visit' => $last_visit,
-            'me'         => $GLOBALS['user']->id,
+            ':course_ids'  => $remaining_courses,
+            ':threshold' => $threshold,
+            ':me' => $user_id,
+            ':plugin_id' => 0, // module doesnt write directly into ouv
         ]);
         foreach ($threads as $thread) {
-            if (
-                $thread->isVisibleInStream()
-                && $thread->isReadable()
-                && $thread->mkdate > $thread->getLastVisit()
-            ) {
-                $icon->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION, ['title' => _('Es gibt neue Blubber')]));
-                $icon->setTitle(_('Es gibt neue Blubber'));
-                break;
+            if ($thread->isReadable()) {
+                $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => _('Es gibt neue Blubber')]);
+                $nav->setTitle(_('Es gibt neue Blubber'));
+                $navs[$thread->context_id] = $nav;
             }
         }
-        return $icon;
+
+        $default_navigation = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
+        $default_navigation->setImage(Icon::create('blubber'));
+        $default_navigation->setLinkAttributes(['title' => _('Blubber-Messenger')]);
+        foreach ($course_ids as $course_id) {
+            if (!isset($navs[$course_id])) {
+                $navs[$course_id] = $default_navigation;
+            }
+        }
+        return $navs;
     }
 
     /**

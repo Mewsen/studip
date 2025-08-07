@@ -9,19 +9,39 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreStudygroupParticipants extends CorePlugin implements StudipModule
+class CoreStudygroupParticipants extends CorePlugin implements StudipModuleExtended
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/{$course_id}");
-        $navigation->setImage(Icon::create('persons'));
-        if ($last_visit && CourseMember::countBySQL("seminar_id = :course_id AND mkdate >= :last_visit", ['last_visit' => $last_visit, 'course_id' => $course_id]) > 0) {
-            $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
+        $results = DBManager::get()->fetchAll(
+            "SELECT seminar_user.Seminar_id, COUNT(seminar_user.user_id) as neue
+                  FROM seminar_user
+                  LEFT JOIN object_user_visits AS ouv
+                    ON ouv.object_id = seminar_user.Seminar_id
+                       AND ouv.user_id = :user_id
+                       AND ouv.plugin_id = :plugin_id
+                  WHERE seminar_user.Seminar_id IN (:course_ids)
+                    AND seminar_user.mkdate > IFNULL(ouv.visitdate, :threshold)
+                  GROUP BY seminar_user.Seminar_id",
+            [
+                ':course_ids' => $course_ids,
+                ':user_id' => $user_id,
+                ':plugin_id' => $this->getPluginId(),
+                'threshold' => object_get_visit_threshold()
+            ],
+        );
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/{$course_id}");
+            $navigation->setImage(Icon::create('persons'));
+            if (isset($results[$course_id]) && !empty($results[$course_id]['neue'])) {
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
+            }
+            $navs[$course_id] = $navigation;
         }
-        return $navigation;
+        return $navs;
     }
 
     /**

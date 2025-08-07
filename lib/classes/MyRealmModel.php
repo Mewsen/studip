@@ -297,8 +297,6 @@ class MyRealmModel
             $_course['sem_class']      = $course->getSemClass();
             $_course['obj_type']       = 'sem';
 
-            $visits = get_objects_visits([$course->id], 0, null, null, $course->tools->pluck('plugin_id'));
-
             if ($group_field === 'sem_tree_id') {
                 $_course['sem_tree'] = $course->study_areas->toArray();
             }
@@ -320,8 +318,6 @@ class MyRealmModel
                 });
             }
 
-            $_course['last_visitdate'] = $visits[$course->id][0]['last_visitdate'];
-            $_course['visitdate']      = $visits[$course->id][0]['visitdate'];
             $_course['user_status']    = $user_status;
             $_course['gruppe']         = !$is_deputy ? $member_ships[$course->id]['gruppe'] ?? null : ($deputy ? $deputy->gruppe : null);
             $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id);
@@ -336,15 +332,8 @@ class MyRealmModel
             }
             $_course['parent_course'] = $course->parent_course ?? null;
             $_course['is_group'] = $course->getSemClass()->isGroup();
-            $_course['navigation'] = self::getAdditionalNavigations(
-                $_course['seminar_id'],
-                $_course,
-                $_course['sem_class'],
-                $GLOBALS['user']->id,
-                $visits[$course->id]
-            );
 
-            // add the the course to the correct semester
+            // add the course to the correct semester
 
             if (empty($_course['parent_course']) && !$course->isStudygroup()) {
                 if ($course->isOpenEnded()) {
@@ -378,6 +367,18 @@ class MyRealmModel
         // Now sort children directly under their parent.
         foreach ($children as $parent => $kids) {
             $sem_courses[$semester_assign[$parent]][$parent]['children'] = $kids;
+        }
+
+        $navs = self::getManyAdditionalNavigations(
+            $sem_courses,
+            User::findCurrent()->id
+        );
+        foreach ($sem_courses as &$courses) {
+            foreach ($courses as $c_id => &$course) {
+                if (!empty($navs[$c_id])) {
+                    $course = array_merge($course, $navs[$c_id]);
+                }
+            }
         }
 
         if (!empty($params['main_navigation'])) {
@@ -449,10 +450,6 @@ class MyRealmModel
                 continue;
             }
 
-            if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
-                continue;
-            }
-
             if ($plugin === 'vote') {
                 $navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } else if ($tool = $my_obj_values['tools']->findOneBy('plugin_id', $plugin_id)) {
@@ -479,6 +476,88 @@ class MyRealmModel
         }
         return $navigation;
     }
+
+    private static function getManyAdditionalNavigations(array $sem_courses, $user_id): array
+    {
+        // -- 0. Extract all courses: semester is irrelevant and flatten for children
+        $all_courses = [];
+        foreach ($sem_courses as $courses) {
+            foreach ($courses as $c_id => $course) {
+                $all_courses[$c_id] = $course;
+                if (!empty($course['children'])) {
+                    foreach ($course['children'] as $child_course) {
+                        $all_courses[$child_course['seminar_id']] = $child_course;
+                    }
+                }
+            }
+        }
+
+        // -- 1. Calculate all the relevant courses for each StudipModule
+        $navigation = [];
+        $activated_tools = [];
+        $default_modules = self::getDefaultModules();
+        foreach ($all_courses as $course_id => $course) {
+            // add every default module with null, so there will be blank spaces in the nav
+            $navigation[$course_id] = array_fill_keys(
+                array_keys($default_modules),
+                null
+            );
+
+            foreach ($course['tools'] as $tool) {
+                $studip_module = $tool->getStudipModule();
+                if (
+                    !$studip_module
+                    || $studip_module instanceof CoreAdmin
+                    || $studip_module instanceof CoreStudygroupAdmin
+                ) {
+                    continue;
+                }
+                if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $course_id, $user_id)) {
+                    $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
+                    $activated_tools[$tool['plugin_id']]['courses'][$course_id] = $course_id;
+                }
+            }
+        }
+        // -- 2. Fetch the Navigation per StudipModule
+        $all_course_ids = array_keys($all_courses);
+        $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
+        foreach ($activated_tools as $plugin_id => $plugin_data) {
+            $c_ids = $plugin_data['courses'];
+            if ($c_ids) {
+                if ($plugin_id === -1) {
+                    foreach ($c_ids as $c_id) {
+                        // TODO testing vote need to be done
+                        $navigation[$c_id][$plugin_id] = self::checkVote($all_courses[$c_id], $user_id, $c_id);
+                    }
+                } elseif ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
+                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $user_id);
+                    foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
+                        $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
+                    }
+                } else {
+                    foreach ($c_ids as $c_id) {
+                        $navigation[$c_id][$plugin_id] = $plugin_data['studip_module']->getIconNavigation(
+                            $c_id,
+                            $visits[$c_id][$plugin_id]['visitdate'],
+                            $user_id
+                        );
+                    }
+                }
+            }
+        }
+
+        // -- 3. Set each nav and visitdate by course
+        $result = [];
+        foreach ($navigation as $cid => $nav) {
+            $result[$cid] = [
+                'navigation' => $nav,
+                'visitdate' => $visits[$cid][0]['visitdate'] ?? null,
+                'last_visitdate' => $visits[$cid][0]['last_visitdate'] ?? null,
+            ];
+        }
+        return $result;
+    }
+
 
     /**
      * This function reset all visits on every available modules
@@ -910,7 +989,9 @@ class MyRealmModel
             }
             $default_modules[$id] = $plugin;
         }
-        $default_modules[-1] = 'vote';
+        if (Config::get()->VOTE_ENABLE) {
+            $default_modules[-1] = 'vote';
+        }
         return $default_modules;
     }
 }

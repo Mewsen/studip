@@ -3,8 +3,14 @@
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
  * @license GPL2 or any later version
  */
-class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin, HomepagePlugin
+class ConsultationModule extends CorePlugin implements
+    StudipModuleExtended,
+    SystemPlugin,
+    PrivacyPlugin,
+    HomepagePlugin
 {
+    use IconNavigationTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -88,14 +94,11 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         // TODO
 
-        return null;
+        return [];
     }
 
     /**

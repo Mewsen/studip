@@ -73,32 +73,38 @@ class Posting extends SimpleORMap
         return null;
     }
 
-    public static function getRecentPosts($range_id, int $last_visit = 0): array
+    public static function getRecentPosts(array|string $range_ids): array
     {
-        $query = [
+        $single = is_string($range_ids);
+        if ($single) {
+            $range_ids = [$range_ids];
+        }
+        $query =
             "SELECT
+                forum_topics.range_id,
                 forum_discussions.*,
                 COUNT(DISTINCT forum_postings.posting_id) AS 'posts'
             FROM forum_topics
             JOIN forum_discussions USING(topic_id)
             JOIN forum_postings USING(discussion_id)
-            WHERE forum_topics.range_id = :range_id AND forum_postings.user_id != :user_id
-            ",
-            [
-                'range_id' => $range_id,
-                'user_id' => User::findCurrent()->user_id
-            ]
+            LEFT JOIN forum_posting_reads AS fp_reads
+              ON fp_reads.discussion_id = forum_discussions.discussion_id
+                AND fp_reads.user_id = :user_id
+            WHERE forum_topics.range_id IN (:range_ids)
+              AND forum_postings.user_id != :user_id
+              AND forum_postings.mkdate > IFNULL(fp_reads.read_index, 0)
+            GROUP BY forum_topics.range_id, forum_discussions.discussion_id";
+        $params = [
+            ':range_ids' => $range_ids,
+            ':user_id' => User::findCurrent()->id,
         ];
 
-        if ($last_visit) {
-            $query[0] .= " AND forum_postings.mkdate > :last_visit";
-            $query[1]["last_visit"] = $last_visit;
+        $res = \DBManager::get()->fetchAll($query, $params);
+        $by_course = [];
+        foreach ($res as $row) {
+            $by_course[$row['range_id']][] = $row;
         }
-
-        return \DBManager::get()->fetchAll(
-            $query[0]." GROUP BY discussion_id ORDER BY forum_postings.mkdate DESC",
-            $query[1]
-        );
+        return $single ? (array_pop($by_course) ?? []) : $by_course;
     }
 
     public function getOpenGraphURLs(): array

@@ -10,8 +10,10 @@
 
 use Forum\Posting;
 
-class CoreForum extends CorePlugin implements StudipModule
+class CoreForum extends CorePlugin implements StudipModuleExtended
 {
+    use IconNavigationTrait;
+
     public function getTabNavigation($course_id)
     {
         $navigation = new Navigation(_('Forum'), 'dispatch.php/course/forum/topics');
@@ -43,36 +45,39 @@ class CoreForum extends CorePlugin implements StudipModule
         return ['forum' => $navigation];
     }
 
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $recent_posts_count = 0;
-        $navigation_title = _('Forum');
+        $navs = [];
+        $posts = Posting::getRecentPosts($course_ids);
+        foreach ($course_ids as $course_id) {
+            $recent_posts_count = 0;
+            $navigation_title = _('Forum');
 
-        if ($GLOBALS['perm']->have_studip_perm('user', $course_id)) {
-            $recent_posts = Posting::getRecentPosts($course_id, $last_visit);
-            $recent_posts_count = array_sum(array_column($recent_posts, 'posts'));
+            if ($GLOBALS['perm']->have_studip_perm('user', $course_id)) {
+                $recent_posts_count = !empty($posts[$course_id])
+                    ? array_sum(array_column($posts[$course_id], 'posts'))
+                    : 0;
 
-            if ($recent_posts_count > 0) {
-                $navigation_title = sprintf(_('%s neue Beiträge seit Ihrem letzten Besuch.'), $recent_posts_count);
-            } else {
-                $navigation_title = _('Keine neuen Beiträge seit Ihrem letzten Besuch.');
+                if ($recent_posts_count > 0) {
+                    $navigation_title = sprintf(_('%s neue Beiträge seit Ihrem letzten Besuch.'), $recent_posts_count);
+                } else {
+                    $navigation_title = _('Keine neuen Beiträge seit Ihrem letzten Besuch.');
+                }
             }
+
+            $navigation = new Navigation(_('Forum'));
+            $navigation->setBadgeNumber($recent_posts_count);
+            $navigation->setLinkAttributes(['title' => $navigation_title]);
+            if ($recent_posts_count > 0) {
+                $navigation->setImage(Icon::create('forum', Icon::ROLE_ATTENTION));
+                $navigation->setURL('dispatch.php/course/forum/recent');
+            } else {
+                $navigation->setImage(Icon::create('forum'));
+                $navigation->setURL('dispatch.php/course/forum/topics');
+            }
+            $navs[$course_id] = $navigation;
         }
-
-        $navigation = new Navigation(_("Forum"));
-        $navigation->setBadgeNumber($recent_posts_count);
-
-        $navigation->setLinkAttributes(['title' => $navigation_title]);
-
-        if ($recent_posts_count > 0) {
-            $navigation->setImage(Icon::create('forum', Icon::ROLE_ATTENTION));
-            $navigation->setURL('dispatch.php/course/forum/recent', ['last_visit' => $last_visit]);
-        } else {
-            $navigation->setImage(Icon::create('forum'));
-            $navigation->setURL('dispatch.php/course/forum/topics');
-        }
-
-        return $navigation;
+        return $navs;
     }
 
     public function getInfoTemplate($course_id)

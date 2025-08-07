@@ -8,11 +8,13 @@
  *  the License, or (at your option) any later version.
  */
 
-class CorePersonal extends CorePlugin implements StudipModule
+class CorePersonal extends CorePlugin implements StudipModuleExtended
 {
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        return null;
+        return [];
     }
 
     public function getTabNavigation($course_id)

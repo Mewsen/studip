@@ -9,102 +9,125 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreParticipants extends CorePlugin implements StudipModule
+class CoreParticipants extends CorePlugin implements StudipModuleExtended
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
+        $navs = array_fill_keys($course_ids, null);
         if ($user_id === 'nobody') {
-            return null;
+            return $navs;
         }
 
-        $auto_insert_perm = Config::get()->AUTO_INSERT_SEM_PARTICIPANTS_VIEW_PERM;
-        // show the participants-icon only if the course is not an auto-insert-sem
-        if (
-            AutoInsert::checkSeminar($course_id)
-            && (
-                ($GLOBALS['perm']->have_perm('admin', $user_id) && !$GLOBALS['perm']->have_perm($auto_insert_perm, $user_id))
-                || !$GLOBALS['perm']->have_studip_perm($auto_insert_perm, $course_id, $user_id)
-            )
-        ) {
-            return null;
+        // Filter courses that are auto-insert-seminars, to not show any icon
+        $course_ids = array_filter($course_ids, function ($course_id) use ($user_id) {
+            $auto_insert_perm = Config::get()->AUTO_INSERT_SEM_PARTICIPANTS_VIEW_PERM;
+            $is_auto_insert =
+                AutoInsert::checkSeminar($course_id)
+                && (
+                    ($GLOBALS['perm']->have_perm('admin', $user_id) && !$GLOBALS['perm']->have_perm($auto_insert_perm, $user_id))
+                    || !$GLOBALS['perm']->have_studip_perm($auto_insert_perm, $course_id, $user_id)
+                );
+            return !$is_auto_insert;
+        });
+
+        $courses = Course::findMany($course_ids);
+        $urls = [];
+        foreach ($courses as $course) {
+            $is_student = !$GLOBALS['perm']->have_studip_perm('tutor', $course->seminar_id, $user_id);
+
+            // Determine url to redirect to
+            if (!$course->getSemClass()->isGroup()) {
+                $urls[$course->seminar_id] = 'dispatch.php/course/members/index';
+            } elseif ($is_student) {
+                $navs[$course->seminar_id] = 0;
+                continue;
+            } else {
+                $urls[$course->seminar_id] = 'dispatch.php/course/grouping/members';
+            }
+
+            $navigation = new Navigation(_('Teilnehmende'), $urls[$course->seminar_id]);
+            $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+
+            // Check permission, show no indicator if not at least tutor
+            if ($is_student) {
+                $navs[$course->seminar_id] = $navigation;
+            }
         }
 
-        $course = Course::find($course_id);
+        // For the remaining courses, show if there are new users
+        $remaining_course_ids = array_filter(
+            $course_ids,
+            fn($c_id) => $navs[$c_id] === null
+        );
 
-        // Determine url to redirect to
-        if (!$course->getSemClass()->isGroup()) {
-            $url = 'dispatch.php/course/members/index';
-        } elseif (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
-            return null;
-        } else {
-            $url = 'dispatch.php/course/grouping/members';
-        }
-
-        $navigation = new Navigation(_('Teilnehmende'), $url);
-        $navigation->setImage(Icon::create('persons2'));
-
-        // Check permission, show no indicator if not at least tutor
-        if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
-            return $navigation;
-        }
-
-        $query = "SELECT COUNT(tmp.user_id) as count,
-                         COUNT(IF((tmp.mkdate > IFNULL(b.visitdate, :threshold) AND tmp.user_id != :user_id), tmp.user_id, NULL)) AS neue
+        $query = "SELECT seminar_users.seminar_id as seminar_id,
+                         COUNT(seminar_users.user_id) as count,
+                         COUNT(IF((seminar_users.mkdate > IFNULL(b.visitdate, :threshold) AND seminar_users.user_id != :user_id), seminar_users.user_id, NULL)) AS neue
                   FROM (
-                      SELECT user_id, mkdate
+                      SELECT user_id, seminar_id, mkdate
                       FROM admission_seminar_user
-                      WHERE seminar_id = :course_id
+                      WHERE seminar_id IN (:course_ids)
 
                       UNION ALL
 
-                      SELECT user_id, mkdate
+                      SELECT user_id, seminar_id, mkdate
                       FROM seminar_user
-                      WHERE seminar_id = :course_id
-                  ) AS tmp
+                      WHERE seminar_id IN (:course_ids)
+                  ) AS seminar_users
                   LEFT JOIN object_user_visits AS b
-                    ON b.object_id = :course_id
+                    ON b.object_id = seminar_users.seminar_id
                        AND b.user_id = :user_id
-                       AND b.plugin_id = :plugin_id";
-        $statement = DBManager::get()->prepare($query);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $course_id);
-        $statement->bindValue(':threshold', $last_visit);
-        $statement->bindValue(':plugin_id', $this->getPluginId());
+                       AND b.plugin_id = :plugin_id
+                  GROUP BY seminar_users.seminar_id";
+        $users_per_course = DBManager::get()->fetchAll($query, [
+            ':course_ids' => $remaining_course_ids,
+            ':user_id' => $user_id,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ]);
 
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        foreach ($users_per_course as $result) {
+            $navigation = new Navigation(_('Teilnehmende'), $urls[$result['seminar_id']]);
 
-        if ($result['neue']) {
-            $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION, [
-                'title' => sprintf(
-                    ngettext(
-                        '%1$d Teilnehmende/r, %2$d neue/r',
-                        '%1$d Teilnehmende, %2$d neue',
+            if ($result['neue']) {
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
+                $navigation->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Teilnehmende/r, %2$d neue/r',
+                            '%1$d Teilnehmende, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    )
+                ]);
+                $navigation->setBadgeNumber($result['neue']);
+            } elseif ($result['count']) {
+                $navigation->setImage(Icon::create('persons'));
+                $navigation->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Teilnehmende/r',
+                            '%d Teilnehmende',
+                            $result['count']
+                        ),
                         $result['count']
-                    ),
-                    $result['count'],
-                    $result['neue']
-                )
-            ]));
-            $navigation->setBadgeNumber($result['neue']);
-        } elseif ($result['count']) {
-            $navigation->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%d Teilnehmende/r',
-                        '%d Teilnehmende',
-                        $result['count']
-                    ),
-                    $result['count']
-                )
-            ]);
+                    )
+                ]);
+            }
+
+            $navs[$result['seminar_id']] = $navigation;
         }
-
-        return $navigation;
+        // map the zeros to null;
+        return array_map(
+            fn ($nav) => $nav ?: null,
+            $navs
+        );
     }
+
 
     /**
      * {@inheritdoc}

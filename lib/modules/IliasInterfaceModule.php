@@ -8,8 +8,10 @@
  * @since     4.3
  */
 
-class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlugin
+class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, SystemPlugin
 {
+    use IconNavigationTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -48,13 +50,16 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
         return null;
     }
 
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
+        // TODO Test this function
         if (!Config::get()->ILIAS_INTERFACE_ENABLE) {
-            return;
+            return [];
         }
 
-        $sql = "SELECT COUNT(IF(a.module_type != 'crs', module_id, NULL)) AS count_modules,
+        $results = DBManager::get()->fetchAll(
+            "SELECT a.object_id,
+                       COUNT(IF(a.module_type != 'crs', module_id, NULL)) AS count_modules,
                        COUNT(IF(a.module_type = 'crs', module_id, NULL)) AS count_courses,
                        COUNT(IF((chdate > IFNULL(b.visitdate, :threshold) AND a.module_type != 'crs'), module_id, NULL)) AS neue
                 FROM object_contentmodules AS a
@@ -62,62 +67,61 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
                   ON b.object_id = a.object_id
                      AND b.user_id = :user_id
                      AND b.plugin_id = :plugin_id
-                WHERE a.object_id = :course_id
-                GROUP BY a.object_id";
+                WHERE a.object_id IN (:course_ids)
+                GROUP BY a.object_id",
+            [
+                ':user_id' => $user_id,
+                ':course_ids' => $course_ids,
+                ':threshold' => object_get_visit_threshold(),
+                ':plugin_id' => $this->getPluginId(),
+            ]
+        );
 
-        $statement = DBManager::get()->prepare($sql);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $course_id);
-        $statement->bindValue(':threshold', $last_visit);
-        $statement->bindValue(':plugin_id', $this->getPluginId());
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if (!$result) {
-            return null;
-        }
-
-        $title = CourseConfig::get($course_id)->getValue('ILIAS_INTERFACE_MODULETITLE');
-        $nav = new Navigation($title, 'dispatch.php/course/ilias_interface/index');
-        if ($result['neue']) {
-            $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION));
-            $nav->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%1$d Lernobjekt, %2$d neues',
-                        '%1$d Lernobjekte, %2$d neue',
+        $navs = [];
+        foreach ($results as $result) {
+            $title = CourseConfig::get($result['object_id'])->getValue('ILIAS_INTERFACE_MODULETITLE');
+            $nav = new Navigation($title, 'dispatch.php/course/ilias_interface/index');
+            if ($result['neue']) {
+                $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Lernobjekt, %2$d neues',
+                            '%1$d Lernobjekte, %2$d neue',
+                            $result['count_modules']
+                        ),
+                        $result['count_modules'],
+                        $result['neue']
+                    )
+                ]);
+            } elseif ($result['count_modules']) {
+                $nav->setImage(Icon::create('learnmodule'));
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Lernobjekt',
+                            '%d Lernobjekte',
+                            $result['count_modules']
+                        ),
                         $result['count_modules']
-                    ),
-                    $result['count_modules'],
-                    $result['neue']
-                )
-            ]);
-        } elseif ($result['count_modules']) {
-            $nav->setImage(Icon::create('learnmodule'));
-            $nav->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%d Lernobjekt',
-                        '%d Lernobjekte',
-                        $result['count_modules']
-                    ),
-                    $result['count_modules']
-                )
-            ]);
-        } elseif ($result['count_courses']) {
-            $nav->setImage(Icon::create('learnmodule'));
-            $nav->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%d ILIAS-Kurs',
-                        '%d ILIAS-Kurse',
+                    )
+                ]);
+            } elseif ($result['count_courses']) {
+                $nav->setImage(Icon::create('learnmodule'));
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d ILIAS-Kurs',
+                            '%d ILIAS-Kurse',
+                            $result['count_courses']
+                        ),
                         $result['count_courses']
-                    ),
-                    $result['count_courses']
-                )
-            ]);
+                    )
+                ]);
+            }
+            $navs[$result['object_id']] = $nav;
         }
-        return $nav;
+        return $navs;
     }
 
     public function getTabNavigation($course_id)

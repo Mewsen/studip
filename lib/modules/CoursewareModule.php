@@ -3,8 +3,10 @@
 use Courseware\Instance;
 use Courseware\StructuralElement;
 
-class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
+class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleExtended
 {
+    use IconNavigationTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -79,54 +81,58 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         return ['courseware' => $navigation];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($courseId, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if ($user_id === 'nobody') {
-            return null;
+            return [];
         }
 
-        $statement = DBManager::get()->prepare("
-                SELECT COUNT(DISTINCT elem.id)
+        $results = DBManager::get()->fetchGrouped(
+            "SELECT elem.range_id,
+                    COUNT(IF((blocks.chdate > IFNULL(ouv.visitdate, :threshold) AND blocks.editor_id != :user_id), elem.id, NULL)) AS neue
                 FROM `cw_structural_elements` AS elem
                 INNER JOIN `cw_containers` as container ON (elem.id = container.structural_element_id)
                 INNER JOIN `cw_blocks` as blocks ON (container.id = blocks.container_id)
+                LEFT JOIN object_user_visits AS ouv
+                  ON ouv.object_id = elem.range_id
+                     AND ouv.user_id = :user_id
+                     AND ouv.plugin_id = :plugin_id
                 WHERE elem.range_type = 'course'
-                AND elem.range_id = :range_id
+                AND elem.range_id IN (:range_ids)
                 AND blocks.payload != ''
-                AND blocks.chdate > :last_visit
                 AND blocks.editor_id != :user_id
-        ");
+                GROUP BY elem.range_id",
+            [
+                'user_id' => $user_id,
+                'range_ids' => $course_ids,
+                'threshold' => object_get_visit_threshold(),
+                'plugin_id' => $this->getPluginId(),
+            ]
+        );
 
-        $statement->execute([
-            'range_id' => $courseId,
-            'last_visit' => $last_visit,
-            'user_id' => $user_id
-        ]);
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
+            $nav->setImage(Icon::create('courseware'));
+            $nav->setLinkAttributes(['title' => _('Courseware'),]);
 
-        $new = $statement->fetchColumn();
+            if (!empty($results[$course_id]['neue'])) {
+                $text = sprintf(
+                    ngettext(
+                        '%u neue Seite',
+                        '%u neue Seiten',
+                        $results[$course_id]['neue']
+                    ),
+                    $results[$course_id]['neue']
+                );
+                $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => $text]);
+                $nav->setBadgeNumber($results[$course_id]['neue']);
+            }
 
-        $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
-        $nav->setImage(Icon::create('courseware'));
-        $nav->setLinkAttributes(['title' => _('Courseware')]);
-
-        if ($new > 0) {
-            $text = sprintf(
-                ngettext(
-                    '%u neue Seite',
-                    '%u neue Seiten',
-                    $new
-                ),
-                $new
-            );
-            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
-            $nav->setLinkAttributes(['title' => $text]);
-            $nav->setBadgeNumber($new);
+            $navs[$course_id] = $nav;
         }
-
-        return $nav;
+        return $navs;
     }
 
     /**

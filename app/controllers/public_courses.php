@@ -85,10 +85,6 @@ class PublicCoursesController extends AuthenticatedController
                     continue;
                 }
 
-                if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
-                    continue;
-                }
-
                 if ($plugin === 'vote') {
                     $seminar['navigations'][$plugin] = false;
                 } else if ($tool = $seminar['tools']->findOneBy('plugin_id', $plugin_id)) {

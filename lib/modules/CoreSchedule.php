@@ -9,61 +9,64 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreSchedule extends CorePlugin implements StudipModule
+class CoreSchedule extends CorePlugin implements StudipModuleExtended
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $query = "SELECT COUNT(termin_id) AS count,
-                         COUNT(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND autor_id != :user_id), termin_id, NULL)) AS neue
+        $query = "SELECT termine.range_id,
+                    COUNT(termin_id) AS count,
+                    COUNT(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND autor_id != :user_id), termin_id, NULL)) AS neue
                   FROM termine
                   LEFT JOIN object_user_visits AS ouv
-                    ON ouv.object_id = range_id
+                    ON ouv.object_id = termine.range_id
                        AND ouv.user_id = :user_id
                        AND ouv.plugin_id = :plugin_id
-                  WHERE range_id = :course_id";
-        $statement = DBManager::get()->prepare($query);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $course_id);
-        $statement->bindValue(':threshold', $last_visit);
-        $statement->bindValue(':plugin_id', $this->getPluginId());
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+                  WHERE termine.range_id IN (:course_ids)
+                  GROUP BY termine.range_id ";
+        $results = DBManager::get()->fetchAll($query, [
+            ':user_id' => $user_id,
+            ':course_ids' => $course_ids,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ],PDO::FETCH_ASSOC);
 
-        if (!$result || (!$result['neue'] && !$result['count'])) {
-            return null;
+        $navs = array_fill_keys($course_ids, null);
+        foreach ($results as $result) {
+            $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates');
+            if ($result['neue']) {
+                $nav->setBadgeNumber($result['neue']);
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Termin, %2$d neuer',
+                            '%1$d Termine, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    )
+                ]);
+                $nav->setImage(Icon::create('schedule', Icon::ROLE_ATTENTION));
+            } else {
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Termin',
+                            '%d Termine',
+                            $result['count']
+                        ),
+                        $result['count']
+                    )
+                ]);
+                $nav->setImage(Icon::create('schedule'));
+            }
+
+            $navs[$result['range_id']] = $nav;
         }
 
-        $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates');
-        if ($result['neue']) {
-            $nav->setImage(Icon::create('schedule', Icon::ROLE_ATTENTION, [
-                'title' => sprintf(
-                    ngettext(
-                        '%1$d Termin, %2$d neuer',
-                        '%1$d Termine, %2$d neue',
-                        $result['count']
-                    ),
-                    $result['count'],
-                    $result['neue']
-                )
-            ]));
-            $nav->setBadgeNumber($result['neue']);
-        } else {
-            $nav->setImage(Icon::create('schedule'));
-            $nav->setLinkAttributes([
-                'title' => sprintf(
-                    ngettext(
-                        '%d Termin',
-                        '%d Termine',
-                        $result['count']
-                    ),
-                    $result['count']
-                )
-            ]);
-        }
-        return $nav;
+        return $navs;
     }
 
     /**

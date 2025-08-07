@@ -9,8 +9,9 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreDocuments extends CorePlugin implements StudipModule, OERModule
+class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModule
 {
+    use IconNavigationTrait;
 
     /**
      * {@inheritdoc}
@@ -102,43 +103,51 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         }
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
-        $navigation = new Navigation(
-            _('Dateibereich'),
-            "dispatch.php/{$range_type}/files"
-        );
-        $navigation->setImage(Icon::create('files'));
-        $navigation->setLinkAttributes(['title' => _('Dateien')]);
-
-        $condition = "INNER JOIN folders ON (folders.id = file_refs.folder_id)
+        // Assume that either courses or institutes will be fetched, but not a mix of them
+        $c_ids_copy = array_reverse($course_ids);
+        $range_type = get_object_type(array_pop($c_ids_copy), ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
+        $condition = "SELECT folders.range_id, file_refs.id
+                      FROM file_refs
+                      JOIN folders ON (folders.id = file_refs.folder_id)
+                      LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = folders.range_id
+                        AND ouv.user_id = :me
+                        AND ouv.plugin_id = :plugin_id
                       WHERE folders.range_type = :range_type
-                        AND folders.range_id = :context_id
-                        AND GREATEST(file_refs.mkdate, file_refs.chdate) >= :last_visit
+                        AND folders.range_id IN (:context_ids)
+                        AND file_refs.chdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND file_refs.user_id != :me";
-        $file_refs = FileRef::findBySQL($condition, [
-            'me'         => $user_id,
-            'last_visit' => $last_visit,
-            'context_id' => $course_id,
-            'range_type' => $range_type
+        $file_refs_by_range = DBManager::get()->fetchGroupedPairs($condition, [
+            ':me'          => $user_id,
+            ':plugin_id'   => $this->getPluginId(),
+            ':threshold'   => object_get_visit_threshold(),
+            ':context_ids' => $course_ids,
+            ':range_type'  => $range_type
         ]);
-        foreach ($file_refs as $fileref) {
-            $foldertype = $fileref->folder->getTypedFolder();
-            if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
-                $navigation->setImage(Icon::create('files', Icon::ROLE_ATTENTION), [
-                    'title' => _('Es gibt neue Dateien.'),
-                ]);
-                $navigation->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
-                break;
+
+        $navs = [];
+        foreach ($file_refs_by_range as $range_id => $file_refs) {
+            $file_ref_objs = FileRef::findMany($file_refs);
+            foreach ($file_ref_objs as $file_ref_obj) {
+                $foldertype = $file_ref_obj->folder->getTypedFolder();
+                $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
+                if ($foldertype->isFileDownloadable($file_ref_obj->getId(), $user_id)) {
+                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION));
+                    $nav->setLinkAttributes(['title' => _('Es gibt neue Dateien.')]);
+                    $nav->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
+                    $navs[$range_id] = $nav;
+                    break;
+                }
             }
         }
 
-        return $navigation;
+        $default_navigation = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
+        $default_navigation->setImage(Icon::create('files'));
+        $default_navigation->setLinkAttributes(['title' => _('Dateien')]);
+        $remaining_courses = array_diff($course_ids, array_keys($navs));
+        return array_merge($navs, array_fill_keys($remaining_courses, $default_navigation));
     }
 
     /**

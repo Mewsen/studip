@@ -9,62 +9,52 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreScm extends CorePlugin implements StudipModule
+class CoreScm extends CorePlugin implements StudipModuleExtended
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    use IconNavigationTrait;
+
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if (!Config::get()->SCM_ENABLE) {
-            return null;
+            return [];
         }
+        $navs = array_fill_keys($course_ids, null);
+        $sql = "SELECT range_id, tab_name,
+                  SUM(IF(content != '', 1, 0)) AS count,
+                  SUM(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
+           FROM scm
+           LEFT JOIN object_user_visits AS ouv
+             ON ouv.object_id = scm.range_id
+                AND ouv.user_id = :user_id
+                AND ouv.plugin_id = :plugin_id
+           WHERE scm.range_id IN (:course_ids)
+           GROUP BY scm.range_id";
+        $results = DBManager::get()->fetchAll($sql, [
+            ':user_id' => $user_id,
+            ':course_ids' => $course_ids,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ]);
 
-        $sql = "SELECT scm_id,
-                       SUM(IF(content != '', 1, 0)) AS count,
-                       SUM(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
-                FROM scm
-                LEFT JOIN object_user_visits AS ouv
-                  ON ouv.object_id = scm.range_id
-                     AND ouv.user_id = :user_id
-                     AND ouv.plugin_id = :plugin_id
-                WHERE scm.range_id = :course_id
-                GROUP BY scm.range_id";
+        foreach ($results as $result) {
+            $title = $result['tab_name'];
+            $image = Icon::create('info');
+            $badge = 0;
 
-        $statement = DBManager::get()->prepare($sql);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $course_id);
-        $statement->bindValue(':threshold', $last_visit);
-        $statement->bindValue(':plugin_id', $this->getPluginId());
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if (!$result) {
-            return null;
-        }
-
-        $scm = StudipScmEntry::find($result['scm_id']);
-
-        $nav = new Navigation((string) $scm->tab_name, 'dispatch.php/course/scm');
-
-        if ($result['count']) {
-            if ($result['neue']) {
-                $nav->setImage(Icon::create('infopage', Icon::ROLE_NEW));
-                $nav->setBadgeNumber($result['neue']);
-                if ($result['count'] == 1) {
-                    $title = $scm->tab_name . _(' (geändert)');
-                } else {
-                    $title = sprintf(
-                        _('%1$d Einträge insgesamt, %2$d neue'),
-                        $result['count'],
-                        $result['neue']
-                    );
-                }
-            } else {
-                $nav->setImage(Icon::create('infopage'));
-                if ($result['count'] == 1) {
-                    $title = $scm->tab_name;
-                } else {
+            if ($result['count']) {
+                if ($result['neue']) {
+                    $badge = $result['neue'];
+                    if ($result['count'] == 1) {
+                        $title .= _(' (geändert)');
+                    } else {
+                        $title = sprintf(
+                            _('%1$d Einträge insgesamt, %2$d neue'),
+                            $result['count'],
+                            $result['neue']
+                        );
+                    }
+                    $image = Icon::create('info', Icon::ROLE_ATTENTION);
+                } else if ($result['count'] > 1) {
                     $title = sprintf(
                         ngettext(
                             '%d Eintrag',
@@ -73,11 +63,17 @@ class CoreScm extends CorePlugin implements StudipModule
                         ),
                         $result['count']
                     );
+                    $image = Icon::create('info');
                 }
             }
+            $nav = new Navigation($title, 'dispatch.php/course/scm');
+            $nav->setBadgeNumber($badge);
+            $nav->setImage($image);
             $nav->setLinkAttributes(['title' => $title]);
+            $navs[$result['range_id']] = $nav;
         }
-        return $nav;
+
+        return $navs;
     }
 
     /**
