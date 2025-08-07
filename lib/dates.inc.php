@@ -312,12 +312,14 @@ function raumzeit_send_cancel_message($comment, $dates)
                 _('In der Veranstaltung %s fallen die folgenden Termine aus:'),
                 count($dates)
             ),
-            $course->name . ' (' . implode(',', $lecturers) . ') ' . $course->start_semester->name
+            "\n\n" . $course->name . ' (' . implode(', ', $lecturers) . ")\n\n"
         );
-        $message .= "\n\n- ";
-        $message .= implode("\n- " , array_map(fn($a) => (string) $a, $dates));
+        $message .= "\n\n" . implode("\n- " , array_map(
+                fn($a) => strftime('%A, %x %H:%M', $a->date). '-'.  date('H:i', $a->end_time),
+                $dates
+            ));
         if ($comment) {
-            $message .= "\n\n" . $comment;
+            $message .= "\n\n" . _('Hinweis:') . "\n\n" . $comment;
         }
         $msg = new messaging();
         return $msg->insert_message($message, $recipients, '____%system%____', '', '', '', '', $subject, true);
