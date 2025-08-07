@@ -42,7 +42,8 @@ class CoursesByUserIndex extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        if (!$user = User::find($args['id'])) {
+        $user = User::find($args['id']);
+        if (!$user) {
             throw new RecordNotFoundException();
         }
 
@@ -50,7 +51,8 @@ class CoursesByUserIndex extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        if ($error = $this->validateFilters()) {
+        $error = $this->validateFilters();
+        if ($error) {
             throw new BadRequestException($error);
         }
 
@@ -58,7 +60,7 @@ class CoursesByUserIndex extends JsonApiController
             $user,
             $this->getSemesterFilter()
         );
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        [$offset, $limit] = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
             array_slice($courses, $offset, $limit),
@@ -71,10 +73,11 @@ class CoursesByUserIndex extends JsonApiController
         $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
 
         // semester
-        if (isset($filtering['semester'])) {
-            if (!Semester::exists($filtering['semester'])) {
-                return 'Invalid "semester".';
-            }
+        if (
+            !empty($filtering['semester'])
+            && !Semester::exists($filtering['semester'])
+        ) {
+            return 'Invalid "semester".';
         }
     }
 
