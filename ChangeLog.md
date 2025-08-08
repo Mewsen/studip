@@ -1,3 +1,61 @@
+# 08.08.2025 v 5.5.6
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.5.6&state=all
+- matriculation_number hat keinen Index in der DB [#4577]
+- Wiki: Seiteneinstellung und Bearbeiten [#5272]
+- Wiki: Vorbelegung "keine" bei "Übergeordnete Seite" funktioniert nicht [#5277]
+- Vorlesungsverzeichnis: Avatarbild von Veranstaltungen fehlt [#5278]
+- Wiki: Seiteneinstellungen zugänglich für Studierende [#5327]
+- WIKI_COURSE_EDIT_RESTRICTED wird bei Migration zum neuen Wiki nicht beatchtet [#5351]
+- Veranstaltungsverwaltung: Teilnehmerexport hat Probleme mit gleich benannten LV [#5398]
+- Email beim Zurücksetzen des Courseware Fortschritts kann nicht zugestellt werden, wenn viele Nutzer betroffen sind. [#5659]
+- WIKI: Seite: "Letzte Änderungen" Spaltenstruktur passt nicht so ganz... [#5690]
+- Terminkalender ab 5.5: Gruppenterminkalender zeigt eigene Termine nicht an [#5695]
+- Ankündigungen: Text wird nicht angezeigt [#5714]
+- Ankündigungen: lassen sich im Arbeitsplatz nicht erstellen [#5715]
+- Wiki Seiten laden teilweise extrem lange [#5770]
+
+# 08.08.2025 v 5.4.9
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.9&state=all
+- Blubber: Im responsive Modus fehlt die Sidebar [#2347]
+- Objektblock Galerie kann nicht mit Layout "Gitter" angelegt/gespeichert werden. [#4272]
+- Raumanfragen mit 0 Teilnehmern [#4892]
+- Veranstaltungsverzeichnis (Studienbereiche aka sem_tree), keine Veranstaltungen werden angezeigt [#5696]
+- Alte Verlinkung beim Studienbereich [#5703]
+- PHP8 - Warnungen [#5752]
+- Wiki verwendet falsche Rechteabfragen in der JSON-API [#5756]
+
+# 08.08.2025 v 5.3.12
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.3.12&state=all
+- Einträge in mvv_lvgruppe_seminar bleiben nach Löschen einer Veranstaltung zurück [#28]
+- Fehlerhafte Anzeige offener Raumanfragen für Personen mit Rechten an Räumen [#432]
+- Dateibereich: Aktion "Link kopieren" an falscher Stelle im Aktionsmenü [#494]
+- ResourceRequestProperty: Falsches Objekt wird übergeben [#785]
+- Einstellung "Benachrichtigungen über Javascript" deaktivert den jsupdater [#935]
+- Raumverwaltung: Es wird keine Mail versandt, wenn eine fremde Reservierung oder Sperrbuchung gelöscht wird [#4749]
+- Wiki: automatisches Speichern funktioniert nicht, wenn "Benachrichtigungen über Javascript" deaktivert ist [#4847]
+- User-Setting JS-Updater [#4848]
+- Forum: "Thema löschen" (Aktionsmenü) wird nur admin/root angeboten [#5431]
+- Klick auf das Ankündigungen-Symbol kann zur falschen Stelle führen [#5559]
+- Bezeichnung Feld "Interner Kommentar" vereinheitlichen [#5598]
+- Externe Seiten: eigene Kategorien werden nicht in der ausgewählten Sprache ausgegeben [#5662]
+- Release-Job in der Pipeline verweist auf nicht vorhandene ChangeLog-Datei [#5665]
+- Fehler beim Erstellen eines neuen Eintrags und „Darstellung ändern“ in „Mein Stundenplan" [#5666]
+- PHP8-Warnungen bei der Verwaltungsseite der globalen Suche [#5667]
+- Globales Deaktivieren des Wiki: Werkzeug kann dennoch ausgewählt werden [#5668]
+- Schreibfehler in datetimepicker.vue [#5671]
+- Score achtet nicht darauf, dass das Forum deaktiviert sein kann [#5674]
+- Tippfehler bei den persönlichen Benachrichtigungen [#5691]
+- Weitere Tippfehler im System [#5692]
+- System->Touren zeigt User mit kleinster ID an [#5709]
+- Weitere Rechtschreibfehler [#5728]
+- Sperrbuchung kann nicht angelegt werden, wenn vorhandene Buchungen nicht überschrieben werden sollen [#5749]
+- „user_info.email_forward must not be null“ beim Speichern der persönlichen Maileinstellungen, wenn MESSAGING_FORWARD_AS_EMAIL auf false steht [#5751]
+- JSON:API: Semester-Filter "all" für Veranstaltungen funktioniert nicht [#5763]
+- Aufruf von seminar_main.php mit redirect_to-Parameter kann auf beliebige Webseiten weiterleiten [#5764]
+
 # 26.06.2025 v 5.5.5
 
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.5.5&state=all
