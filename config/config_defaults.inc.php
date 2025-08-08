@@ -150,7 +150,7 @@ $MESSAGING_FORWARD_USE_REPLYTO = TRUE;                     //send forwarded mess
 $ENABLE_EMAIL_TO_STATUSGROUP = TRUE;                                // enable to send messages to whole status groups
 
 $ENABLE_EMAIL_ATTACHMENTS = TRUE;                               // enable attachment functions for internal and external messages
-$MAIL_ATTACHMENTS_MAX_SIZE = 10;                             //maximum size of attachments in MB
+$MAIL_ATTACHMENTS_MAX_SIZE = 10;                             //maximum size of attachments in MB; set the mail size limit of your mta (e.g. postfix) to a larger value than this since the mail itself also has a certain size
 
 /*language settings
 ----------------------------------------------------------------*/
