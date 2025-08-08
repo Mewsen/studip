@@ -142,6 +142,10 @@ ul.widget-list {
             a, button {
                 color: var(--color--sidebar-item-hover);
                 text-decoration: none;
+
+                svg {
+                    color: var(--color--sidebar-item);
+                }
             }
         }
 
@@ -274,13 +278,23 @@ div#sidebar-navigation {
 
             &.options-checked {
                 @include icon(before, checkbox-checked, $padding: 6px, $align: middle);
+                &::before {
+                    background-color: var(--color--sidebar-item);
+                }
             }
             &.options-unchecked {
                 @include icon(before, checkbox-unchecked, $padding: 6px, $align: middle);
+                &::before {
+                    background-color: var(--color--sidebar-item);
+                }
             }
             &:hover {
                 color: var(--color--sidebar-item-hover);
                 text-decoration: none;
+
+                svg {
+                    color: var(--color--sidebar-item);
+                }
             }
         }
 
@@ -290,13 +304,23 @@ div#sidebar-navigation {
 
             &.options-checked {
                 @include icon(before, radiobutton-checked, $padding: 6px, $align: middle);
+                &::before {
+                    background-color: var(--color--sidebar-item);
+                }
             }
             &.options-unchecked {
                 @include icon(before, radiobutton-unchecked, $padding: 6px, $align: middle);
+                &::before {
+                    background-color: var(--color--sidebar-item);
+                }
             }
             &:hover {
                 color: var(--color--sidebar-item-hover);
                 text-decoration: none;
+
+                svg {
+                    color: var(--color--sidebar-item);
+                }
             }
         }
     }

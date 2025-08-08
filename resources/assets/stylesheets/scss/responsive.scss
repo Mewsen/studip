@@ -70,7 +70,7 @@ $sidebarOut: -330px;
 }
 
 #responsive-navigation-items {
-    background-color: var(--base-color);
+    background-color: var(--color--brand-primary);
     left: 0;
     max-height: calc(100vh - $header-bar-container-height - 5px);
     max-width: $responsive-menu-width;
@@ -129,7 +129,7 @@ $sidebarOut: -330px;
                     background-color: transparent;
 
                     &:hover {
-                        background-color: var(--base-color-80);
+                        background-color: rgba(255,255,255,0.2);
                     }
                 }
             }
@@ -151,14 +151,15 @@ $sidebarOut: -330px;
     }
 
     .navigation-item {
-        background-color: var(--base-color);
+        background-color: var(--color--brand-primary);
+        color: var(--color--brand-primary-contrast);
         display: flex;
         flex-wrap: wrap;
         list-style-type: none;
         margin: 0px;
 
         &:not(:last-child) {
-            border-bottom: 1px solid var(--white);
+            border-bottom: 1px solid var(--color--brand-primary-contrast);
         }
 
         &.navigation-up,
@@ -174,22 +175,22 @@ $sidebarOut: -330px;
             }
 
             &:hover {
-                background-color: var(--base-color-80);
+                background-color: rgba(255,255,255,0.2);
             }
 
         }
 
         &.navigation-item-active {
-            background-color: var(--base-color-80);
+            background-color: rgba(255,255,255,0.2);
         }
 
         a {
-            color: var(--white);
+            color: var(--color--brand-primary-contrast);
             cursor: pointer;
         }
 
         button {
-            color: var(--white);
+            color: var(--color--brand-primary-contrast);
             cursor: pointer;
             display: flex;
             flex: 0;
@@ -202,20 +203,20 @@ $sidebarOut: -330px;
             }
 
             &.navigation-in {
-                border-left: 1px solid var(--base-color-60);
+                border-left: 1px solid rgba(255,255,255,0.4);
             }
         }
 
         &:not(.navigation-current):not(.navigation-up) {
             button:hover {
-                background-color: var(--base-color-80);
+                background-color: rgba(255,255,255,0.2);
             }
         }
 
     }
 
     .navigation-title {
-        color: var(--white);
+        color: var(--color--brand-primary-contrast);
         flex: 1;
 
         > a,
@@ -253,7 +254,7 @@ $sidebarOut: -330px;
         flex: 0;
 
         &:hover {
-            background-color: var(--base-color-80);
+            background-color: rgba(255,255,255,0.2);
         }
 
     }

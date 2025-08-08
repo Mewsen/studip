@@ -157,6 +157,7 @@ article.new {
                 @include icon(before, arr_1right, new);
                 &::before {
                     margin-right: 5px;
+                    background-color: var(--color--red-1);
                 }
             }
         }

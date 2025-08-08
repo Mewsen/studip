@@ -17,8 +17,7 @@
     bottom: 20px;
     right: 20px;
     z-index:20001;
-    border: solid 1px var(--base-color);
-    background-color: var(--white);
+    background-color: var(--color--global-background);
     padding: 10px 10px;
     font-family: $font-family-base;
     overflow-y: auto;
@@ -41,9 +40,8 @@
     font-family: $font-family-base;
     font-size: 16px;
     box-sizing: border-box;
-    background-color: var(--base-color);
-    color: var(--white);
-    border: solid 1px var(--dark-gray-color-80);
+    background-color: var(--color--brand-primary);
+    color: var(--color--brand-primary-contrast);
     box-shadow: 0px 0px 8px rgba(0,0,0,0.5);
 
     a.link-extern {
@@ -53,11 +51,11 @@
         @include icon(before, link-intern, info-alt);
     }
     a, a:link, a:visited {
-        color: var(--white);
+        color: var(--color--brand-primary-contrast);
         text-decoration: none;
     }
     a:hover, a:active, a:hover.index, a:active.index, a:hover.tree {
-        color: var(--white);
+        color: var(--color--brand-primary-contrast);
         text-decoration: underline;
     }
 }

@@ -26,9 +26,11 @@ $icon-padding: 3px;
     a {
         display: inline-block;
         padding: $icon-padding;
-    }
 
-    @include highlight-anchor;
+        &:hover {
+            color: inherit;
+        }
+    }
 
     &:last-child {
         margin-right: 0;

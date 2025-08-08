@@ -14,9 +14,9 @@
     }
 
     .ui-dialog-titlebar {
-        background: var(--color--info);
+        background: var(--color--brand-primary);
         border: 0;
-        color: var(--color--info-contrast);
+        color: var(--color--brand-primary-contrast);
         font-size:1.3em;
         font-weight: normal;
 
@@ -27,7 +27,7 @@
 
     .ui-dialog-titlebar-close {
         @include square(32px);
-        color: var(--color--info-contrast);
+        color: var(--color--brand-primary-contrast);
         background: inherit;
         border: 0;
         line-height:32px;
