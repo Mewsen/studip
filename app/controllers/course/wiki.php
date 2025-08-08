@@ -164,12 +164,12 @@ class Course_WikiController extends AuthenticatedController
             if ($this->page->isEditable()) {
                 $action_menu->addLink(
                     $this->editURL($this->page),
-                    _('Bearbeiten'),
+                    _('Editieren'),
                     Icon::create('edit')
                 );
                 $action_menu->addLink(
                     $this->pagesettingsURL($this->page->id),
-                    _('Seiteneinstellungen'),
+                    _('Seiteneinstellungen bearbeiten'),
                     Icon::create('settings'),
                     ['data-dialog' => 'width=700']
                 );
@@ -199,6 +199,7 @@ class Course_WikiController extends AuthenticatedController
     public function pagesettings_action(WikiPage $page)
     {
         $this->validateWikiPage($page, $this->range, true);
+        PageLayout::setTitle(_('Seiteneinstellungen bearbeiten'));
 
         $options = [
             '' => _('Keine')
@@ -234,7 +235,7 @@ class Course_WikiController extends AuthenticatedController
         $this->form = \Studip\Forms\Form::fromSORM(
             $page,
             [
-                'legend' => _('Seiteneinstellung'),
+                'legend' => _('Seiteneinstellungen'),
                 'fields' => [
                     'name' => [
                         'label' => _('Titel der Seite'),
