@@ -328,10 +328,10 @@ export default {
             attributes.payload.folder_id = this.currentFolderId;
             attributes.payload.layout = this.currentLayout;
             attributes.payload.autoplay = this.currentAutoplay;
-            attributes.payload.autoplay_timer = this.currentAutoplayTimer;
+            attributes.payload.autoplay_timer = this.currentAutoplayTimer.toString();
             attributes.payload.nav = this.currentNav;
-            attributes.payload.height = this.currentHeight;
-            attributes.payload.cols = this.currentCols;
+            attributes.payload.height = this.currentHeight.toString();
+            attributes.payload.cols = this.currentCols.toString();
             attributes.payload.show_filenames = this.currentShowFileNames;
             attributes.payload.show_description = this.currentShowFileDescription;
             attributes.payload.mouseover_filenames = this.currentMouseoverFileNames;
