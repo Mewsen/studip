@@ -8,7 +8,7 @@ class HiddenInput extends Input
     {
         $template = $GLOBALS['template_factory']->open('forms/hidden_input');
         $template->name = $this->name;
-        $template->value = $this->value;
+        $template->value = $this->getValue();
         $template->id = md5(uniqid());
         $template->attributes = arrayToHtmlAttributes($this->attributes);
         return $template->render();

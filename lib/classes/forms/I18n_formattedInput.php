@@ -12,11 +12,10 @@ class I18n_formattedInput extends Input
         } else {
             $id = $this->attributes['id'];
         }
-        if (!is_object($this->value)) {
-            $value = $this->value;
-        } else {
-            $value = [\I18NString::getDefaultLanguage() => $this->value->original()];
-            $value = array_merge($value, $this->value->toArray());
+        $value = $this->getValue();
+        if (is_object($value)) {
+            $value_arr = [\I18NString::getDefaultLanguage() => $value->original()];
+            $value = array_merge($value_arr, $value->toArray());
             $value = array_map(function ($item) {
                 return $item ?? '';
             }, $value);

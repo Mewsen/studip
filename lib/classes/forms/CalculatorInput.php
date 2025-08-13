@@ -8,7 +8,7 @@ class CalculatorInput extends Input
     {
         $template = $GLOBALS['template_factory']->open('forms/calculator_input');
         $template->title = $this->title;
-        $template->value = $this->value;
+        $template->value = $this->getValue();
         $template->attributes = arrayToHtmlAttributes($this->attributes);
         return $template->render();
     }
