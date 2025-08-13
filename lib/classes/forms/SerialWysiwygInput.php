@@ -19,7 +19,7 @@ class SerialWysiwygInput extends WysiwygInput
         $template = $GLOBALS['template_factory']->open('forms/serial_wysiwyg_input');
         $template->title = $this->title;
         $template->name = $this->name;
-        $template->value = $this->value;
+        $template->value = $this->getValue();
         $template->id = $id;
         $template->required = $this->required;
         $template->markers = $this->attributes['markers'];

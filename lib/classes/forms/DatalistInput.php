@@ -11,7 +11,7 @@ class DatalistInput extends Input
         $template = $GLOBALS['template_factory']->open('forms/datalist_input');
         $template->title = $this->title;
         $template->name = $this->name;
-        $template->value = $this->value;
+        $template->value = $this->getValue();
         $template->id = md5(uniqid());
         $template->required = $this->required;
         $template->attributes = arrayToHtmlAttributes($this->attributes);

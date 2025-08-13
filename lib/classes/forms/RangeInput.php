@@ -9,7 +9,7 @@ class RangeInput extends Input
         $template = $GLOBALS['template_factory']->open('forms/range_input');
         $template->title = $this->title;
         $template->name = $this->name;
-        $template->value = $this->value;
+        $template->value = $this->getValue();
         $template->id = md5(uniqid());
         $template->min = $this->attributes['min'] ?? null;
         $template->max = $this->attributes['max'] ?? null;
