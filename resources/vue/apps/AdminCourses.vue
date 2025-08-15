@@ -3,7 +3,7 @@
         <form method="post">
             <input type="hidden" :name="csrf.name" :value="csrf.value">
 
-            <table class="default course-admin">
+            <table class="default course-admin" ref="table">
                 <caption ref="caption">
                     {{ $gettext('Veranstaltungen') }}
                     <span class="actions" v-if="isLoading">
@@ -68,7 +68,7 @@
                         </td>
                         <td v-for="active_field in sortedActivatedFields"
                             :key="active_field"
-                            @click.prevent="actionForCourseAndField(course, active_field)"
+                            @click="event => actionForCourseAndField(course, active_field, event)"
                         >
                             <div v-html="course[active_field]"></div>
                             <button v-if="active_field === 'name' && getChildren(course).length > 0"
@@ -114,48 +114,70 @@
                     </tr>
                 </tfoot>
             </table>
-            <transition name="slide">
-                <div v-if="showSlider" class="slider">
-                    <nav>
-                        <select v-model="showSlider.area">
-                            <option v-for="area in actionAreas"
-                                    :key="area.id"
-                                    :value="area.id"
-                                    :aria-label="$gettext('Aktionsbereich %{label} wählen', area)"
-                            >
-                                {{ area.label }}
-                            </option>
-                        </select>
-
-                        <button @click.prevent="showSlider = false" class="as-link">
-                            <studip-icon shape="decline"></studip-icon>
-                        </button>
-
-                        <ul>
-                            <li v-for="area in actionAreas"
-                                :key="area.id"
-                                :class="{active: area.id == showSlider.area}"
-                                :title="area.label"
-                            >
-                                <button @click.prevent="changeSliderArea(area.id)"
-                                        class="as-link"
-                                >
-                                    {{ area.label }}
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div v-html="sliderContent"></div>
-                </div>
-            </transition>
         </form>
+        <transition name="slide">
+            <div v-if="showSlider" class="slider">
+                <nav>
+                    <select v-model="showSlider.area">
+                        <option v-for="area in filteredActionAreas"
+                                :key="area.id"
+                                :value="area.id"
+                                :aria-label="$gettext('Aktionsbereich %{label} wählen', area)"
+                        >
+                            {{ area.label }}
+                        </option>
+                    </select>
+
+                    <button @click.prevent="showSlider = false" class="as-link">
+                        <studip-icon shape="decline"></studip-icon>
+                    </button>
+
+                    <!--                        <ul>-->
+                    <!--                            <li v-for="area in actionAreas"-->
+                    <!--                                :key="area.id"-->
+                    <!--                                :class="{active: area.id == showSlider.area}"-->
+                    <!--                                :title="area.label"-->
+                    <!--                            >-->
+                    <!--                                <button @click.prevent="changeSliderArea(area.id)"-->
+                    <!--                                        class="as-link"-->
+                    <!--                                >-->
+                    <!--                                    {{ area.label }}-->
+                    <!--                                </button>-->
+                    <!--                            </li>-->
+                    <!--                        </ul>-->
+                </nav>
+                <raw-html-mount :html="sliderContent"></raw-html-mount>
+            </div>
+        </transition>
+
     </div>
+
+    <teleport to="#action-area-selector" defer>
+        <sidebar-widget :title="$gettext('Aktionsbereichauswahl')">
+            <template #content>
+                <select class="sidebar-selectlist"
+                        v-model="currentActionAreaId"
+                >
+                    <option v-for="area in actionAreas"
+                            :key="area.id"
+                            :value="area.id"
+                    >
+                        {{ area.label }}
+                    </option>
+                </select>
+            </template>
+        </sidebar-widget>
+    </teleport>
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import RawHtmlMount from "../components/RawHtmlMount.vue";
+import SidebarWidget from "../components/SidebarWidget.vue";
+import {nextTick} from "vue";
 
 export default {
     name: 'AdminCourses',
+    components: {SidebarWidget, RawHtmlMount},
     props: {
         maxCourses: Number,
         showComplete: {
@@ -188,7 +210,7 @@ export default {
         this.globalOn('AdminCourses/loadCourse', this.loadCourse.bind(this));
     },
     updated() {
-        const iconNavigations = this.$el.querySelectorAll('tbody .my-courses-navigation');
+        const iconNavigations = this.$refs.table.querySelectorAll('tbody .my-courses-navigation');
 
         if (iconNavigations.length === 0) {
             this.contentWidth = null;
@@ -208,6 +230,7 @@ export default {
     },
     computed: {
         ...mapState('admincourses', [
+            'actionArea',
             'actionAreas',
             'activatedFields',
             'buttons',
@@ -216,9 +239,6 @@ export default {
             'coursesLoaded',
             'filters',
         ]),
-        ...mapState('admincourses', {
-            currentActionArea: 'actionArea',
-        }),
         ...mapGetters('admincourses', [
             'isLoading',
         ]),
@@ -272,6 +292,17 @@ export default {
         captionHeight() {
             console.log('caption height', this.$refs.caption);
             return `${this.$refs.caption.offsetHeight}px`;
+        },
+        filteredActionAreas() {
+            return this.actionAreas.filter(area => !area.multimode);
+        },
+        currentActionAreaId: {
+            get() {
+                return this.actionArea;
+            },
+            set(value) {
+                this.changeActionArea(value);
+            }
         }
     },
     methods: {
@@ -371,15 +402,21 @@ export default {
         getURL(url, params = {}) {
             return STUDIP.URLHelper.getURL(url, params);
         },
-        actionForCourseAndField(course, field) {
-            if (field !== 'name') {
+        actionForCourseAndField(course, field, event) {
+            if (
+                field !== 'name'
+                || this.actionAreas[this.currentActionAreaId].multimode
+            ) {
                 return;
             }
+            event.preventDefault();
 
-            if (this.showSlider) {
-                this.showSlider = false;
+            if (!this.showSlider) {
+                this.showSlider = {course, area: this.currentActionAreaId};
+            } else if (this.showSlider.course.id !== course.id) {
+                this.showSlider.course = course;
             } else {
-                this.showSlider = {course, area: this.currentActionArea};
+                this.showSlider = false;
             }
         },
         changeSliderArea(area) {
@@ -394,10 +431,13 @@ export default {
                     return;
                 }
 
-                console.log(data);
+
+                this.sliderContent = '<div class="studip-loading-skeleton with-animation"></div>';
 
                 const area = this.actionAreas.find(area => area.id == data.area);
                 const url = STUDIP.URLHelper.getURL(area.url.replace('%s', data.course.id), {cid: data.course.id}, true);
+
+                this.changeActionArea(area.id);
 
                 this.sliderContent = await fetch(url, {
                     redirect: 'follow',
@@ -436,6 +476,15 @@ export default {
             position: sticky;
             top: 0;
             z-index: 1;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            select {
+                flex: 1 0 auto;
+            }
+
             ul {
                 display: flex;
                 flex-direction: row;
