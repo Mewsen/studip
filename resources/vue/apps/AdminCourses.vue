@@ -173,7 +173,6 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import RawHtmlMount from "../components/RawHtmlMount.vue";
 import SidebarWidget from "../components/SidebarWidget.vue";
-import {nextTick} from "vue";
 
 export default {
     name: 'AdminCourses',
