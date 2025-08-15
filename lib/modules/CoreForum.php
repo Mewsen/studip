@@ -39,7 +39,7 @@ class CoreForum extends CorePlugin implements StudipModuleExtended
 
         $navigation->addSubNavigation(
             'subscriptions',
-            new Navigation(_('Abonnierte Diskussionen'), 'dispatch.php/course/forum/subscriptions')
+            new Navigation(_('Abonnements'), 'dispatch.php/course/forum/subscriptions')
         );
 
         return ['forum' => $navigation];

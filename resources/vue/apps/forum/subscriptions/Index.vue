@@ -88,7 +88,7 @@ onMounted(async () => {
             <div class="header__content header__content--with-actions">
                 <div class="actions">
                     <h2>
-                        {{ $gettext('Abonnent:innen') }}
+                        {{ $gettext('Abonnements') }}
                     </h2>
                 </div>
 
