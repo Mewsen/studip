@@ -1710,26 +1710,10 @@ class Admin_CoursesController extends AuthenticatedController
 
     /**
      * Adds HTML-Selector to the sidebar
-     * @param null $selected_action
      */
     private function setActionsWidget()
     {
         Sidebar::get()->addWidget(new VueWidget('action-area-selector'));
-
-//        $actions = $this->getActions();
-//        $sidebar = Sidebar::Get();
-//        $list = new SelectWidget(_('Aktionsbereichauswahl'), $this->url_for('admin/courses/set_action_type'), 'action_area');
-//
-//        foreach ($actions as $index => $action) {
-//            $list->addElement(new SelectElement(
-//                $index,
-//                $action['name'],
-//                $GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA == $index),
-//                'action-aria-' . $index
-//            );
-//        }
-//        $list->setOnSubmitHandler("STUDIP.AdminCourses.App.changeActionArea($(this).find('select').val()); return false;");
-//        $sidebar->addWidget($list, 'editmode');
     }
 
 

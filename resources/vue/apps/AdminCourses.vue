@@ -404,7 +404,7 @@ export default {
         actionForCourseAndField(course, field, event) {
             if (
                 field !== 'name'
-                || this.actionAreas[this.currentActionAreaId].multimode
+                || this.actionAreas.find(area => area.id == this.currentActionAreaId).multimode
             ) {
                 return;
             }
