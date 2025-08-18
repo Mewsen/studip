@@ -49,7 +49,7 @@ if (file_exists("./ilias.ini.php")) {
             $base_url = "ilias.php?baseClass=ilLMPresentationGUI";
             break;
         case 'tst':
-            $base_url = "ilias.php?cmd=infoScreen&cmdClass=ilobjtestgui&baseClass=ilRepositoryGUI";
+            $base_url = "ilias.php?cmd=testScreen&cmdClass=ilobjtestgui&baseClass=ilRepositoryGUI";
             break;
         case 'svy':
             $base_url = "ilias.php?cmd=infoScreen&cmdClass=ilObjSurveyGUI&baseClass=ilRepositoryGUI";
@@ -87,7 +87,7 @@ if (file_exists("./ilias.ini.php")) {
             $base_url = "ilias.php?baseClass=ilLMEditorGUI";
             break;
         case 'tst':
-            $base_url = "ilias.php?baseClass=ilObjTestGUI";
+            $base_url = "ilias.php?baseClass=ilObjTestGUI&cmd=questions";
             break;
         case 'sahs':
             $base_url = "ilias.php?baseClass=ilSAHSEditGUI";
