@@ -9,7 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Draggable } from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import resourceCommonPlugin from '@fullcalendar/resource-common';
+import resourceCommonPlugin from '@fullcalendar/resource';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
