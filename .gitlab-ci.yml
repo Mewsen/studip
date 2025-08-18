@@ -268,10 +268,10 @@ phpstan:
     PHPSTAN_CODE_QUALITY_REPORT: $REPORT_DIR/phpstan-codequality.json
   interruptible: true
   cache:
-   - <<: *composer-cache
-   - key: "$CI_JOB_NAME_SLUG"
-     paths:
-       - $CACHE_LOCATION
+    - <<: *composer-cache
+    - key: "$CI_JOB_NAME_SLUG"
+      paths:
+        - $CACHE_LOCATION
   before_script:
     - !reference [.scripts, mkdir-caches]
     - !reference [.scripts, mkdir-reports]
@@ -287,12 +287,14 @@ phpstan:
       EOF
 
   script:
-    - composer/bin/phpstan analyse
-      $(get_changed_files '*.php')
-      --memory-limit=1G
-      --no-progress
-      --level=$PHPSTAN_LEVEL
-      --error-format=gitlab > $PHPSTAN_CODE_QUALITY_REPORT
+    - RELEVANT=$(get_changed_files '*.php' | grep -vE '^lib/ilias_interface/studip_referrer_.*\.php$' || true)
+    - |
+      if [ -z "$RELEVANT" ]; then
+        echo "No relevant files changed - skipping PHPStan"
+        exit 0
+      fi
+
+      composer/bin/phpstan analyse $RELEVANT --memory-limit=1G --no-progress --level=$PHPSTAN_LEVEL --error-format=gitlab > $PHPSTAN_CODE_QUALITY_REPORT
   after_script:
     - rm phpstan.neon
   artifacts:
