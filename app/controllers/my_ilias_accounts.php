@@ -236,12 +236,12 @@ class MyIliasAccountsController extends AuthenticatedController
 
                 // add paths and studip objects
                 foreach ($this->courses_list[$ilias_list_index] as $crs_id => $course_data) {
-                    $this->courses_list[$ilias_index][$crs_id]['studip_object'] = '';
+                    $this->courses_list[$ilias_list_index][$crs_id]['studip_object'] = '';
                     if (
                         array_key_exists($ilias_list_index, $this->connected_courses_list)
                         && array_key_exists($crs_id, $this->connected_courses_list[$ilias_list_index])
                     ) {
-                        $this->courses_list[$ilias_index][$crs_id]['studip_object'] = $this->connected_courses_list[$ilias_list_index][$crs_id];
+                        $this->courses_list[$ilias_list_index][$crs_id]['studip_object'] = $this->connected_courses_list[$ilias_list_index][$crs_id];
                     }
 
                     // filter offline courses for mere members
@@ -282,7 +282,7 @@ class MyIliasAccountsController extends AuthenticatedController
                         );
                     }
 
-                    $this->workgroups_list[$ilias_index] = $ilias->getUserWorkgroups($GLOBALS['perm']->have_perm('root'));
+                    $this->workgroups_list[$ilias_list_index] = $ilias->getUserWorkgroups($GLOBALS['perm']->have_perm('root'));
                 }
             }
         }
