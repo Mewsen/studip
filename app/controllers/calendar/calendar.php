@@ -382,17 +382,17 @@ class Calendar_CalendarController extends AuthenticatedController
                 'dialog_size' => 'auto',
                 'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
                 'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
-                'defaultDate' => $default_date->format('Y-m-d'),
+                'initialDate' => $default_date->format('Y-m-d'),
                 'allDaySlot'  => true,
                 'allDayText'  => '',
                 'header'      => [
-                    'left'   => (
+                    'start'   => (
                         $timeline_view
                             ? 'resourceTimelineWeek,resourceTimelineDay'
                             : 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
                     ),
                     'center'  => 'title',
-                    'right'  => 'prev,today,next'
+                    'end'  => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views' => [
@@ -424,7 +424,7 @@ class Calendar_CalendarController extends AuthenticatedController
                         'slotDuration'       => $slot_durations['day_group']
                     ]
                 ],
-                'defaultView' => $default_view,
+                'initialView' => $default_view,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
