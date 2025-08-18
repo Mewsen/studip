@@ -3,6 +3,17 @@ namespace Studip;
 
 class Fullcalendar
 {
+    const VIEW_MONTH = 'timeGridMonth';
+
+    const VIEW_WEEK = 'timeGridWeek';
+
+    const VIEW_DAY = 'timeGridDay';
+
+    const GROUP_WEEK = 'resourceTimelineWeek';
+
+    const GROUP_DAY = 'resourceTimelineDay';
+
+
     protected $title;
 
     /**
@@ -40,6 +51,88 @@ class Fullcalendar
         );
 
         return $instance->render();
+    }
+
+    /**
+     * Creates a "standard" calendar with typical functions and
+     * behavior for Stud.IP.
+     *
+     * @return \Studip\Fullcalendar The created calendar instance.
+     */
+    public static function createSimpleCalendar(
+        string $data_url,
+        array $views = ['timeGridWeek'],
+        string $initial_view = 'timeGridWeek',
+        int $start_hour = 8,
+        int $end_hour = 20,
+        ?\DateTime $initial_date = null,
+        bool $show_weekends = false,
+        bool $show_all_day_slot = false,
+        bool $write_permissions = false,
+        string $add_entry_url = '',
+        array $resources = []
+    )
+    {
+        $fullcalendar_views = [];
+        foreach ($views as $view) {
+            if ($view === self::VIEW_MONTH) {
+                $fullcalendar_views['dayGridMonth'] = [
+                    'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
+                    'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
+                    'displayEventEnd' => true
+                ];
+            } elseif ($view === self::VIEW_WEEK) {
+                $fullcalendar_views['timeGridWeek'] = [
+                    'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    'weekends'           => $show_weekends,
+                    'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                    'slotDuration'       => $slot_durations['week']
+                ];
+            } elseif ($view === self::VIEW_DAY) {
+                $fullcalendar_views['timeGridDay'] = [
+                    'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                    'slotDuration'       => $slot_durations['day']
+                ];
+            } elseif ($view === self::GROUP_WEEK) {
+                $fullcalendar_views['resourceTimelineWeek'] = [
+                    'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                    'weekends'           => $show_weekends,
+                    'slotDuration'       => $slot_durations['week_group']
+                ];
+            } elseif ($view === self::GROUP_DAY) {
+                $fullcalendar_views['resourceTimelineDay'] = [
+                    'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                    'slotDuration'       => $slot_durations['day_group']
+                ];
+            }
+        }
+        return new \Studip\Fullcalendar(
+            '',
+            [
+                'eventSources' => [$data_url],
+                'views'        => $fullcalendar_views,
+                'initialView'  => $initial_view,
+                'weekNumbers'  => true,
+                'initialDate'  => $initial_date ? $initial_date->format('Y-m-d') : date('Y-m-d'),
+                'header'      => [
+                    'start'   => array_keys($fullcalendar_views),
+                    'center'  => 'title',
+                    'end'     => 'prev,today,next'
+                ],
+                'allDaySlot'  => $show_all_day_slot,
+                'addDayText'  => '',
+                'slotMinTime' => sprintf('%02u:00', $start_hour),
+                'slotMaxTime' => sprintf('%02u:00', $end_hour),
+                'selectable'  => $write_permissions && !empty($add_entry_url),
+                'editable'    => $write_permissions,
+                'dialog_size' => 'auto',
+                'timeGridEventMinHeight' => 20
+                //TODO: resources, resource titles
+            ]
+        );
     }
 
     public function __construct(
