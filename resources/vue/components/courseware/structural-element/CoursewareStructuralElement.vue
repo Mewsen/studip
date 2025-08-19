@@ -205,6 +205,7 @@
                                     :canAddElements="canAddElements"
                                     :isTeacher="userIsTeacher"
                                     class="cw-container-item"
+                                    @containerReady="onContainerReady"
                                 />
                             </div>
 
@@ -276,6 +277,7 @@
                                                     :class="{
                                                         'cw-container-item-selected': keyboardSelected === element.id,
                                                     }"
+                                                    @containerReady="onContainerReady"
                                                 />
                                             </li>
                                         </template>
@@ -562,6 +564,8 @@ export default {
 
             showPermissionScopeDialog: false,
             showPermissionSettingsDialog: false,
+
+            containerStatus: {},
         };
     },
 
@@ -1217,6 +1221,7 @@ export default {
 
         initCurrent() {
             this.currentElement = _.cloneDeep(this.structuralElement);
+            this.containerStatus = {};
             this.loadFeedback();
         },
         async menuAction(action) {
@@ -1719,6 +1724,17 @@ export default {
 
             return `${message} ${this.$gettext('Sie können es jedoch nicht öffnen, da der Bearbeitungszeitraum noch nicht abgelaufen ist.')}`;
         },
+        onContainerReady({ containerId, ready }) {
+             this.containerStatus[containerId] = ready;
+
+            const allReady = Object.values(this.containerStatus).every(v => v === true)
+            if (allReady) {
+                this.onAllContainersReady()
+            }
+        },
+        onAllContainersReady() {
+            this.loadProgresses();
+  }
     },
     created() {
         this.pluginManager.registerComponentsLocally(this);

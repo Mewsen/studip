@@ -96,7 +96,7 @@ export default {
             data.relationships.block.data.type = this.block.type;
 
             await this.updateUserDataFields(data);
-            this.userProgress = 1;
+            this.setUserProgress({ grade: 1, loadProgresses: true });
             this.confirm = true;
         },
         storeBlock() {

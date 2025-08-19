@@ -5,6 +5,7 @@
         :canEdit="canEdit"
         :isTeacher="isTeacher"
         :editDataValid="editDataValid"
+        :onBlockReady="onBlockReady"
         @showEdit="setShowEdit"
         @storeContainer="storeContainer"
         @closeEdit="initCurrentData"
@@ -182,6 +183,7 @@ export default {
             showDeleteDialog: false,
             currentSection: null,
             editDataValid: true,
+            readyBlocks: new Set(),
         };
     },
     computed: {
@@ -421,14 +423,24 @@ export default {
         selectTabHandler() {
             let container = _.cloneDeep(this.container);
             container.activeSection = this.selectedTab;
+            this.readyBlocks.clear();
             this.storeContainerRecord(container);
-            if (this.blockAdder.container.id === this.container.id) {
+            if (this.blockAdder?.container?.id === this.container?.id) {
                 this.setAdderStorage({
                     container: this.container,
                     section: this.selectedTab
                 });
             }
-        }
+        },
+        onBlockReady(blockId) {
+            this.readyBlocks.add(blockId);
+            const allBlocksReady = this.readyBlocks.size === this.currentSections[this.selectedTab].blocks?.length;
+            this.$emit('containerReady', {
+                containerId: this.container.id,
+                ready: allBlocksReady
+            });
+
+         },
     },
     watch: {
         blocks(newBlocks, oldBlocks) {

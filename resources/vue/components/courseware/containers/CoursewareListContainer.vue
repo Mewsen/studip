@@ -4,6 +4,7 @@
         containerClass="cw-container-list"
         :canEdit="canEdit"
         :isTeacher="isTeacher"
+        :onBlockReady="onBlockReady"
         @storeContainer="storeContainer"
     >
         <template v-slot:containerContent>
@@ -106,7 +107,8 @@ export default {
             processing: false,
             contentHeight: 0,
             keyboardSelected: null,
-            assistiveLive: ''
+            assistiveLive: '',
+            readyBlocks: new Set()
         };
     },
     computed: {
@@ -151,7 +153,8 @@ export default {
             loadContainer: 'courseware-containers/loadById',
             lockObject: 'lockObject',
             unlockObject: 'unlockObject',
-            companionInfo: 'companionInfo'
+            companionInfo: 'companionInfo',
+            loadProgresses: 'loadProgresses',
         }),
         storeContainer() {
         },
@@ -282,7 +285,13 @@ export default {
                 }
             );
             this.storeSort();
-        }
+        },
+        onBlockReady(blockId) {
+            this.readyBlocks.add(blockId);
+            if (this.readyBlocks.size === this.blocks.length) {
+                this.onAllBlocksReady({ containerId:this.container.id, ready: true });
+            }
+        },
     },
     mounted() {
         this.initCurrentData();

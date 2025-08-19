@@ -16,7 +16,7 @@ const containerMixin = {
     created: function () {
         this.pluginManager.registerComponentsLocally(this);
     },
-    emits: ['select'],
+    emits: ['select', 'containerReady'],
     methods: {
         ...mapActions({
             updateBlock: 'updateBlock',
@@ -262,6 +262,10 @@ const containerMixin = {
                 });
             }
         },
+
+        onAllBlocksReady(data) {
+            this.$emit('containerReady', data);
+        }
 
     }
 };

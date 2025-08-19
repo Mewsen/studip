@@ -100,6 +100,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-default-block',
+    inject: ['blockReady'],
     mixins: [blockMixin],
     emits: ['closeEdit', 'showEdit', 'storeEdit'],
     components: {
@@ -196,17 +197,21 @@ export default {
             return this.block?.attributes?.commentable ?? false;
         },
     },
-    mounted() {
+    async mounted() {
         if (this.blocked) {
             if (this.blockedByThisUser) {
                 this.displayFeature('Edit');
             }
         }
         if (!this.public && this.userProgress && this.userProgress.attributes.grade === 0 && this.defaultGrade) {
-            this.userProgress = 1;
+            await this.setUserProgress({ grade: 1 });
         }
         if (this.block.id && this.canEdit) {
-            this.loadFeedback(this.block.id);
+            await this.loadFeedback(this.block.id);
+        }
+
+        if (this.blockReady) {
+            this.blockReady(this.block.id ?? null)
         }
     },
     methods: {

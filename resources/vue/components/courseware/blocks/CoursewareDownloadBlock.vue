@@ -149,7 +149,7 @@ export default {
     mounted() {
         this.initCurrentData();
         if (this.userProgress && this.userProgress.attributes.grade === 0 && !this.grade) {
-            this.userProgress = 1;
+            this.setUserProgress({ grade: 1 });
         }
     },
     methods: {
@@ -276,7 +276,7 @@ export default {
                 },
             };
             this.updateUserDataFields(data);
-            this.userProgress = 1;
+            this.setUserProgress({ grade: 1, loadProgresses: true });
         },
     },
 };
