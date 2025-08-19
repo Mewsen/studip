@@ -5,6 +5,7 @@
         :canEdit="canEdit"
         :isTeacher="isTeacher"
         :editDataValid="editDataValid"
+        :onBlockReady="onBlockReady"
         @showEdit="setShowEdit"
         @storeContainer="storeContainer"
         @closeEdit="initCurrentData"
@@ -22,6 +23,7 @@
                 :title="section.name"
                 :icon="section.icon"
                 :open="index === 0 || sortInSlots.includes(index)"
+                @open="openSlot(index, $event)"
             >
                 <ul v-if="!canEdit || currentElementisLink" class="cw-container-accordion-block-list">
                     <li v-for="block in section.blocks" :key="block.id" class="cw-block-item">
@@ -180,6 +182,8 @@ export default {
             showDeleteDialog: false,
             currentSection: null,
             editDataValid: true,
+            readyBlocks: new Set(),
+            slotBlockIds: new Set(),
         };
     },
     computed: {
@@ -421,7 +425,21 @@ export default {
                 }
             );
             this.storeSort();
-        }
+        },
+        openSlot(index, isOpen) {
+            if (isOpen) {
+                const blockIds = this.currentSections[index].blocks.map(block => block.id);
+                blockIds.forEach(id => this.slotBlockIds.add(id));
+            }
+        },
+        onBlockReady(blockId) {
+            this.readyBlocks.add(blockId);
+            const allBlocksReady = this.readyBlocks.size === this.slotBlockIds.size;
+            this.$emit('containerReady', {
+                containerId: this.container.id,
+                ready: allBlocksReady
+            });
+        },
     },
     watch: {
         blocks(newBlocks, oldBlocks) {

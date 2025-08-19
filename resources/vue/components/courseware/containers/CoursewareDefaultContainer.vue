@@ -158,6 +158,9 @@ export default {
             type: Boolean,
             default: true
         },
+        onBlockReady: {
+            type: Function,
+        }
     },
     data() {
         return {
@@ -403,13 +406,17 @@ export default {
 
             await this.createClipboard(clipboard, { root: true });
             this.companionSuccess({ info: this.$gettext('Abschnitt wurde in Merkliste abgelegt.') });
-        }
-
+        },
     },
 
     watch: {
         showEditDialog(state) {
             this.$emit('showEdit', state);
+        }
+    },
+    provide() {
+        return {
+             blockReady: this.onBlockReady || (() => {})
         }
     }
 

@@ -24,6 +24,7 @@ const blockMixin = {
     methods: {
         ...mapActions({
             updateUserProgress: 'courseware-user-progresses/update',
+            loadProgresses: 'loadProgresses',
         }),
         getReadableDate(date) {
             let locale = navigator.language ? navigator.language : 'de-DE';
@@ -36,6 +37,16 @@ const blockMixin = {
         setShowEdit(state) {
             this.showEdit = state;
         },
+        async setUserProgress({ grade, loadProgresses = false }) {
+            this.userProgress.attributes.grade = grade;
+            const resp = await this.updateUserProgress(this.userProgress);
+
+            if (loadProgresses) {
+                this.loadProgresses();
+            }
+
+            return resp;
+        }
     },
 };
 
