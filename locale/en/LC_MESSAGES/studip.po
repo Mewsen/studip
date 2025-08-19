@@ -23,9 +23,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:10+0200\n"
-"PO-Revision-Date: 2025-07-22 09:00+0000\n"
-"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
-"oldenburg.de>\n"
+"PO-Revision-Date: 2025-08-19 13:00+0000\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -31801,7 +31800,7 @@ msgstr "In system %s you do not have any personal learning modules."
 #: app/views/consultation/block-description.php:4
 #, php-format
 msgid "%s bis %s Uhr"
-msgstr "%s until %s o'clock"
+msgstr "%s until %s"
 
 #: app/views/consultation/block-locked.php:3
 #, php-format
@@ -32220,7 +32219,7 @@ msgstr "Please note that your booking will be visible publicly"
 
 #: app/views/consultation/overview/book.php:36
 msgid "Ich habe den obigen Hinweis zur Kenntnis genommen"
-msgstr "I acknowledge the hint from above"
+msgstr "I have read and understood the above note"
 
 #: app/views/consultation/overview/index.php:14
 #: app/views/consultation/overview/ungrouped.php:3
