@@ -131,20 +131,6 @@
                     <button @click.prevent="showSlider = false" class="as-link">
                         <studip-icon shape="decline"></studip-icon>
                     </button>
-
-                    <!--                        <ul>-->
-                    <!--                            <li v-for="area in actionAreas"-->
-                    <!--                                :key="area.id"-->
-                    <!--                                :class="{active: area.id == showSlider.area}"-->
-                    <!--                                :title="area.label"-->
-                    <!--                            >-->
-                    <!--                                <button @click.prevent="changeSliderArea(area.id)"-->
-                    <!--                                        class="as-link"-->
-                    <!--                                >-->
-                    <!--                                    {{ area.label }}-->
-                    <!--                                </button>-->
-                    <!--                            </li>-->
-                    <!--                        </ul>-->
                 </nav>
                 <raw-html-mount :html="sliderContent"></raw-html-mount>
             </div>

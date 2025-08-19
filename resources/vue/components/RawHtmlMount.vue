@@ -1,5 +1,5 @@
 <template>
-    <div ref="mount"></div>
+    <template ref="mount"></template>
 </template>
 <script setup>
 import {nextTick, ref, watch} from "vue";

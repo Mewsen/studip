@@ -1503,7 +1503,7 @@ class Admin_CoursesController extends AuthenticatedController
             20 => [
                 'name'       => _('Notiz'),
                 'title'      => _('Notiz'),
-                'url'        => $this->noticeURL('%s'),
+                'url'        => str_replace('CID_PARAM', '%s', $this->noticeURL('CID_PARAM')),
                 'attributes' => ['data-dialog' => 'size=auto'],
                 'partial'    => 'notice-action.php',
             ],
