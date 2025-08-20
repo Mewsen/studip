@@ -337,8 +337,8 @@ $color--focus: $color--gray-4;
 
 $color--warning: $color--red-1;
 $color--warning-secondary: $color--red-2;
-$color--warning-contrast: $color--font-primary;
-$color--warning-secondary-contrast: $color--font-primary;
+$color--warning-contrast: $color--font-inverted;
+$color--warning-secondary-contrast: $color--font-inverted;
 
 $color--attention: $color--yellow-1;
 $color--attention-secondary: $color--yellow-2;
