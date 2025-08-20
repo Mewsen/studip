@@ -45,7 +45,7 @@ foreach (Navigation::getItem("/")->getSubNavigation() as $path => $nav) {
     <? endif; ?>
     <? if (User::findCurrent()) : ?>
     <div id="non-responsive-toggle-fullscreen">
-        <button class="styleless" id="fullscreen-on"
+        <button class="as-link" id="fullscreen-on"
                 title="<?= _('Kompakte Navigation aktivieren') ?>">
             <?= Icon::create('screen-compact')->asSvg(24) ?>
         </button>

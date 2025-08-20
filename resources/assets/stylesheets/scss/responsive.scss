@@ -18,7 +18,7 @@ $sidebarOut: -330px;
 
 #responsive-toggle-fullscreen,
 #responsive-toggle-focusmode {
-    img {
+    svg {
         cursor: pointer;
     }
 }
@@ -30,7 +30,7 @@ $sidebarOut: -330px;
         padding: 0;
     }
 
-    img {
+    svg {
         cursor: pointer;
         vertical-align: middle;
     }
@@ -165,7 +165,7 @@ $sidebarOut: -330px;
         &.navigation-up,
         &.navigation-current {
             .navigation-icon {
-                img {
+                svg {
                     padding-top: 0;
                 }
             }
