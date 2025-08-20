@@ -414,12 +414,15 @@ class Institute_BasicdataController extends AuthenticatedController
 
             //kill all wiki-pages
             $removed_wiki_pages = 0;
-            foreach (['', '_links', '_locks'] as $area) {
-                $query = "DELETE FROM wiki{$area} WHERE range_id = ?";
-                $statement = DBManager::get()->prepare($query);
-                $statement->execute([$i_id]);
-                $removed_wiki_pages += $statement->rowCount();
-            }
+            WikiPage::findEachBySQL(
+                function (WikiPage $page) use (&$removed_wiki_pages) {
+                    if ($page->delete()) {
+                        $removed_wiki_pages += 1;
+                    }
+                },
+                'range_id = ?',
+                [$i_id]
+            );
             if ($removed_wiki_pages > 0) {
                 $details[] = sprintf(_('%u Wikiseiten gelöscht.'));
             }
