@@ -96,7 +96,6 @@ section.contentbox {
 
     .messagebox {
         display: inline-block;
-        zoom: 1; // IE :(
         box-sizing: border-box;
 //        position: relative;
         vertical-align: middle;
@@ -127,7 +126,6 @@ section.contentbox {
     }
     .ui-dialog {
         display: inline-block;
-        zoom: 1; // IE :(
         box-sizing: border-box;
         position: relative;
         vertical-align: middle;
