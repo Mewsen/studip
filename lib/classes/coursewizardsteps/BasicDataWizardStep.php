@@ -473,7 +473,11 @@ class BasicDataWizardStep implements CourseWizardStep
             User::findEachMany(
                 function (User $user) use ($course) {
                     try {
-                        $course->addMember($user, 'dozent');
+                        $course->addMember(
+                            $user,
+                            'dozent',
+                            send_mail: $user->id !== User::findCurrent()->id
+                        );
                     } catch (\Studip\Exception $e) {
                         //Nothing here.
                     }
