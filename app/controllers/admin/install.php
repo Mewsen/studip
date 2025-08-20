@@ -169,8 +169,8 @@ class Admin_InstallController extends Trails\Controller
     public function prepare_action()
     {
         $this->files = [
-            'studip-basic-installation.sql' => _('Basisinstallation ohne Daten'),
-            'studip-demo-installation.sql'  => _('Demoinstallation mit Beispieldaten')
+            'studip-base-installation.sql' => _('Basisinstallation ohne Daten'),
+            'studip-demo-installation.sql' => _('Demoinstallation mit Beispieldaten')
         ];
 
         $this->defaults = [
