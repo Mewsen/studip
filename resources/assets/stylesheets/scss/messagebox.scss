@@ -85,7 +85,7 @@ $messagebox-icons: (
       position: relative;
       display: flex;
       align-items: center;
-  
+
       // Der Kreis mit ::before
       &::before {
         content: "";
@@ -102,7 +102,7 @@ $messagebox-icons: (
         transform: translateY(-50%);
         margin-right: 12px;  // Platz für den Text, je nach Bedarf anpassen
       }
-  
+
       // Das Icon mit ::after auf dem Kreis
       &::after {
         content: "";
@@ -117,7 +117,7 @@ $messagebox-icons: (
       }
     }
   }
-  
+
 
 @include messagebox(info, var(--color--info-secondary-contrast), var(--color--info-secondary), var(--color--info));
 @include messagebox(success, var(--color--good-secondary-contrast), var(--color--good-secondary), var(--color--good));
@@ -143,9 +143,7 @@ $messagebox-icons: (
 
     .messagebox {
         display: inline-block;
-        zoom: 1; // IE :(
         box-sizing: border-box;
-//        position: relative;
         vertical-align: middle;
         margin: auto;
 
@@ -174,7 +172,6 @@ $messagebox-icons: (
     }
     .ui-dialog {
         display: inline-block;
-        zoom: 1; // IE :(
         box-sizing: border-box;
         position: relative;
         vertical-align: middle;
