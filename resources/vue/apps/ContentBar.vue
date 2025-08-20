@@ -14,10 +14,10 @@ export default {
                     isContentBar: props.isContentBar,
                     toc: props.toc,
                 },
-                {
+                props.toc ? {
                     'breadcrumb-list': () => h(ContentBarBreadcrumbs, { toc: props.toc }),
                     ...context.slots,
-                },
+                } : {},
             );
     },
 };
