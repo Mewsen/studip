@@ -33,7 +33,7 @@ class DiscussionPostings extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $user = $this->getUser($request);
+        $user = \User::findCurrent();
         if (!Authority::canShowForum($user, $range)) {
             throw new AuthorizationFailedException();
         }
