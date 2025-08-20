@@ -7,6 +7,12 @@ module.exports = {
                 "onlyMatchedOnce": false
             }
         },
+        {
+            "name": "removeAttrs",
+            "params": {
+                "attrs": "data.*"
+            }
+        },
         'convertStyleToAttrs',
         'removeDoctype',
         'removeXMLProcInst',
