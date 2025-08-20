@@ -391,10 +391,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             StudipNews::DeleteNewsRanges($course->id);
             StudipNews::UnsetRssId($course->id);
 
-            //Cleanup remaining wiki table entries:
-            $query = 'DELETE FROM `wiki_links` WHERE `range_id` = ?';
-            DBManager::get()->execute($query, [$course->id]);
-
             //Remove all entries of the course in calendars:
             $query = 'DELETE FROM `schedule_courses` WHERE `course_id` = ?';
             $statement = DBManager::get()->execute($query, [$course->id]);
