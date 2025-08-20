@@ -142,7 +142,7 @@
             margin: 0 5px 0 -6px;
             vertical-align: top;
             max-width: 36px;
-            max-height: 36px;
+            max-height: calc(100% + 5px);
         }
 
         > .course-type {
