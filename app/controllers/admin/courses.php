@@ -178,7 +178,7 @@ class Admin_CoursesController extends AuthenticatedController
         if (!empty($visibleElements['institute'])) {
             $inst_selector = $filter->addElement($this->getInstSelector());
             if (count($inst_selector->getOptions()) === 1) {
-                $institute_id = $this->insts[0]['Institut_id'];
+                $institute_id = $this->insts[0]['Institut_id'] ?? null;
             }
         }
         if (!empty($visibleElements['semester'])) {
