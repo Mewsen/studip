@@ -1608,10 +1608,6 @@ class Seminar
             $this->createMessage(sprintf(_("%s Wiki-Seiten archiviert."), $db_wiki));
         }
 
-        $query = "DELETE FROM wiki_links WHERE range_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$s_id]);
-
         // delete course config values
         ConfigValue::deleteBySQL('range_id = ?', [$s_id]);
 
