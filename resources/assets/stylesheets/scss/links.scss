@@ -23,6 +23,10 @@ a:hover, a:active, a:hover.index, a:active.index, a:hover.tree {
     text-decoration: underline;
 }
 
+a:has(svg:only-child) {
+  text-decoration: none;
+}
+
 a:hover.toolbar {
     color: var(--dark-gray-color-10);
 }
