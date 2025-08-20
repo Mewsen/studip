@@ -230,7 +230,7 @@ export default {
             event.returnValue = true;
         },
         saveWikiPage() {
-            this.toggleSecurityHandler(this.isChanged);
+            this.toggleSecurityHandler(false);
             this.$refs.form.submit();
         }
     },
