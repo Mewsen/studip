@@ -86,7 +86,7 @@ class MvvContact extends ModuleManagementModel
     {
 
         $sortby = self::createSortStatement($sortby, $order, 'name',
-                ['count_zuordnungen']);
+                ['name', 'count_relations']);
 
         $ids = self::getIdsFiltered($filter);
         return parent::getEnrichedByQuery("
