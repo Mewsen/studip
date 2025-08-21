@@ -1010,7 +1010,7 @@ class Resources_ResourceController extends AuthenticatedController
             //a permission object already exists. If a permission object
             //exists we must update it.
             foreach (array_keys($user_permissions['user_id']) as $key) {
-                $permission_id = $user_permissions['permission_id'][$key];
+                $permission_id = $user_permissions['permission_id'][$key] ?? '';
                 $user_id = $user_permissions['user_id'][$key];
                 $permission_level = $user_permissions['level'][$key];
                 $permission_begin_date = $user_permissions['begin_date'][$key];
