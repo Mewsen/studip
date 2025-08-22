@@ -65,23 +65,9 @@ class DataFieldSelectboxEntry extends DataFieldEntry
      */
     public function getParameters()
     {
-        $params = explode("\n", rtrim($this->model->typeparam));
-        $params = array_map('trim', $params);
+        $choices = self::convertTypeParamToChoiceList($this->model->typeparam, $is_assoc);
 
-        $ret = [];
-        $is_assoc = false;
-
-        foreach ($params as $i => $p) {
-            if (mb_strpos($p, '=>') !== false) {
-                $is_assoc = true;
-
-                list($key, $value) = array_map('trim', explode('=>', $p, 2));
-                $ret[$key] = $value;
-            } else {
-                $ret[$i] = $p;
-            }
-        }
-        return [$ret, $is_assoc];
+        return [$choices, $is_assoc];
     }
 
     /**
@@ -96,5 +82,27 @@ class DataFieldSelectboxEntry extends DataFieldEntry
                ? $this->type_param[$this->getValue()]
                : $this->getValue();
         return $entities ? htmlReady($value) : $value;
+    }
+
+    public static function convertTypeParamToChoiceList(string $typeparam, ?bool &$is_assoc = null): array
+    {
+        $params = explode("\n", rtrim($typeparam));
+        $params = array_map('trim', $params);
+
+        $ret = [];
+        $is_assoc = false;
+
+        foreach ($params as $i => $p) {
+            if (mb_strpos($p, '=>') !== false) {
+                $is_assoc = true;
+
+                [$key, $value] = array_map('trim', explode('=>', $p, 2));
+                $ret[$key] = $value;
+            } else {
+                $ret[$i] = $p;
+            }
+        }
+
+        return $ret;
     }
 }

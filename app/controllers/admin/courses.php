@@ -62,11 +62,8 @@ class Admin_CoursesController extends AuthenticatedController
                     ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : 0}); return false;"]
                 );
                 return $checkboxWidget;
-            } elseif ($type == 'selectbox' || $type == 'radio' || $type == 'selectboxmultiple') {
-                $options = array_map('trim', explode("\n", DBManager::get()->fetchColumn(
-                    'SELECT typeparam FROM datafields WHERE datafield_id = ?',
-                    [$datafield->id]
-                )));
+            } elseif (in_array($type, ['selectbox', 'radio', 'selectboxmultiple'])) {
+                $options = DataFieldSelectboxEntry::convertTypeParamToChoiceList($datafield->typeparam, $is_assoc);
 
                 if ($options) {
                     $selectWidget = new SelectWidget(
@@ -80,10 +77,10 @@ class Admin_CoursesController extends AuthenticatedController
                             '(' . _('Keine Auswahl') . ')'
                         )
                     );
-                    foreach ($options as $option) {
+                    foreach ($options as $index => $option) {
                         $selectWidget->addElement(
                             new SelectElement(
-                                $option,
+                                $is_assoc ? $index : $option,
                                 $option,
                                 Request::get('df_'.$datafield->id, $datafields_filters[$datafield->id] ?? null) === $option
                             )
