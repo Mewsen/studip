@@ -367,7 +367,7 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
         const top = topBarHeight + contentBarHeight;
 
         if (lastTop !== top) {
-            STUDIP.CSS.removeRule('.ck .ck-sticky-panel .ck-sticky-panel__content_sticky');
+            STUDIP.CSS.removeRule('.ck-sticky-panel .ck-sticky-panel__content_sticky');
 
             STUDIP.CSS.addRule(
                 '.ck-sticky-panel .ck-sticky-panel__content_sticky',
