@@ -32,8 +32,7 @@ class Admin_CoursesController extends AuthenticatedController
     /**
      * This method returns the appropriate widget for the given datafield.
      *
-     * @param DataField datafield The datafield whose widget is requested.
-     *
+     * @param DataField $datafield The datafield whose widget is requested.
      * @return SidebarWidget|null Returns a SidebarWidget derivative or null in case of an error.
      */
     private function getDatafieldWidget(DataField $datafield)
@@ -45,6 +44,7 @@ class Admin_CoursesController extends AuthenticatedController
             $datafields_filters = $GLOBALS['user']->cfg->ADMIN_COURSES_DATAFIELDS_FILTERS;
 
             $type = $datafield->type;
+            $entry = DataFieldDateEntry::createDataFieldEntry($datafield);
 
             if ($type == 'bool') {
                 //bool fields just need a checkbox for the states TRUE and FALSE
@@ -62,8 +62,8 @@ class Admin_CoursesController extends AuthenticatedController
                     ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : 0}); return false;"]
                 );
                 return $checkboxWidget;
-            } elseif (in_array($type, ['selectbox', 'radio', 'selectboxmultiple'])) {
-                $options = DataFieldSelectboxEntry::convertTypeParamToChoiceList($datafield->typeparam, $is_assoc);
+            } elseif ($entry instanceof DataFieldSelectboxEntry) {
+                [$options, $is_assoc] = $entry->getParameters();
 
                 if ($options) {
                     $selectWidget = new SelectWidget(
