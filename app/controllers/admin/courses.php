@@ -599,7 +599,8 @@ class Admin_CoursesController extends AuthenticatedController
             $key = "df_{$datafield->id}";
 
             if (
-                !empty($filters[$key])
+                isset($filters[$key])
+                && $filters[$key] !== ''
                 && in_array($datafield->id, $activeSidebarElements['datafields'])
             ) {
                 $datafields_filters[$datafield->id] = $filters[$key];
