@@ -14,6 +14,7 @@
                     <template v-for="type in ruleTypes">
                         <input v-if="isAvailable(type.attributes.type)"
                                type="radio"
+                               name="selectedType"
                                v-model="selectedType"
                                :value="type.attributes.type"
                                :id="'rule-type-' + type.attributes.type"
