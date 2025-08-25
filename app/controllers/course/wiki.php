@@ -156,7 +156,7 @@ class Course_WikiController extends AuthenticatedController
             if ($this->page->isEditable()) {
                 $action_menu->addLink(
                     $this->editURL($this->page),
-                    _('Editieren'),
+                    _('Seite bearbeiten'),
                     Icon::create('edit')
                 );
                 $action_menu->addLink(
