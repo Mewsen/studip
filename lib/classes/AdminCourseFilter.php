@@ -157,14 +157,42 @@ class AdminCourseFilter
 
         if (!$reset_settings) {
             $datafields_filters = $GLOBALS['user']->cfg->ADMIN_COURSES_DATAFIELDS_FILTERS;
-            foreach ($datafields_filters as $datafield_id => $value) {
-                $this->query->join('de_'.$datafield_id, 'datafields_entries', 'de_'.$datafield_id.'.range_id = seminare.Seminar_id AND `de_'.$datafield_id.'`.datafield_id = :de_'.$datafield_id.'_id');
-                $this->query->where('de_' . $datafield_id . '_contents', 'de_' . $datafield_id . '.`content` LIKE :de_' . $datafield_id . '_content',
-                    [
-                        'de_' . $datafield_id . '_id' => $datafield_id,
-                        'de_' . $datafield_id . '_content' => '%' . $value . '%'
-                    ]);
-            }
+
+            DataField::findEachMany(
+                function (DataField $datafield) use (&$datafields_filters) {
+                    $this->query->join(
+                        "de_{$datafield->id}",
+                        'datafields_entries',
+                        "de_{$datafield->id}.range_id = seminare.Seminar_id AND `de_{$datafield->id}`.datafield_id = :de_{$datafield->id}_id"
+                    );
+                    $this->query->join(
+                        "dd_{$datafield->id}",
+                        'datafields',
+                        "dd_{$datafield->id}.datafield_id = de_{$datafield->id}.datafield_id"
+                    );
+
+                    if ($datafield->isNumericType()) {
+                        $this->query->where(
+                            "de_{$datafield->id}_contents",
+                            "IFNULL(de_{$datafield->id}.`content`, dd_{$datafield->id}.`default_value`) = :de_{$datafield->id}_content",
+                            [
+                                "de_{$datafield->id}_id"      => $datafield->id,
+                                "de_{$datafield->id}_content" => $datafields_filters[$datafield->id]
+                            ]
+                        );
+                    } else {
+                        $this->query->where(
+                            "de_{$datafield->id}_contents",
+                            "IFNULL(de_{$datafield->id}.`content`, dd_{$datafield->id}.`default_value`) LIKE :de_{$datafield->id}_content",
+                            [
+                                "de_{$datafield->id}_id"      => $datafield->id,
+                                "de_{$datafield->id}_content" => '%' . $datafields_filters[$datafield->id] . '%'
+                            ]
+                        );
+                    }
+                },
+                array_keys($datafields_filters)
+            );
         }
     }
 

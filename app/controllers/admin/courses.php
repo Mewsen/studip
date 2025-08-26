@@ -59,7 +59,7 @@ class Admin_CoursesController extends AuthenticatedController
                     URLHelper::getURL(
                         'dispatch.php/admin/courses/index'
                     ),
-                    ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : 0}); return false;"]
+                    ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : ''}); return false;"]
                 );
                 return $checkboxWidget;
             } elseif ($entry instanceof DataFieldSelectboxEntry) {
@@ -333,11 +333,17 @@ class Admin_CoursesController extends AuthenticatedController
                 'teacher_filter' => $configuration->ADMIN_COURSES_TEACHERFILTER,
             ]
         );
+        $filters = array_filter(
+            $filters,
+            function ($value): bool {
+                return isset($value) && $value !== '';
+            }
+        );
 
         return [
             'setActivatedFields' => $this->getFilterConfig(),
             'setActionArea' => $configuration->MY_COURSES_ACTION_AREA ?? '1',
-            'setFilter' => array_filter($filters),
+            'setFilter' => $filters,
         ];
     }
 
@@ -602,6 +608,7 @@ class Admin_CoursesController extends AuthenticatedController
                 isset($filters[$key])
                 && $filters[$key] !== ''
                 && in_array($datafield->id, $activeSidebarElements['datafields'])
+                && $filters[$key] != $datafield->default_value
             ) {
                 $datafields_filters[$datafield->id] = $filters[$key];
             } else {

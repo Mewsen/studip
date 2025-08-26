@@ -1,3 +1,14 @@
+<?php
+/**
+ * @var Datafield $model
+ * @var DatafieldEntry $entry
+ * @var string $value
+ * @var string $name
+ * @var bool $multiple
+ * @var bool $is_assoc
+ * @var array $type_param
+ */
+?>
 <label>
     <span class="datafield_title <?= $model->is_required ? 'required' : '' ?>">
         <?= htmlReady($model->name) ?>
@@ -18,13 +29,18 @@
         return ' selected';
     };
     ?>
-    <select name="<?= $name ?>[<?= $model->id ?>]<? if ($multiple) echo '[]'; ?>"
-            id="<?= $name ?>_<?= $model->id ?>"
-            <?= !$entry->isEditable() ? "disabled" : "" ?>
+    <select name="<?= htmlReady($name) ?>[<?= htmlReady($model->id) ?>]<? if ($multiple) echo '[]'; ?>"
+            id="<?= htmlReady($name) ?>_<?= htmlReady($model->id) ?>"
+            <?  if (!$entry->isEditable()) echo 'disabled'; ?>
             <? if ($multiple) echo 'multiple'; ?>
             <? if ($model->is_required) echo 'required'; ?>>
+    <? if (!$model->is_required): ?>
+        <option value="">
+            (<?= _('keine Auswahl') ?>)
+        </option>
+    <? endif; ?>
     <? foreach ($type_param as $pkey => $pval): ?>
-        <option value="<?= $is_assoc ? (string)$pkey : $pval ?>"
+        <option value="<?= htmlReady($is_assoc ? (string) $pkey : $pval) ?>"
                 <?= $selected($is_assoc ? (string)$pkey : $pval) ?>>
             <?= htmlReady($pval) ?>
         </option>

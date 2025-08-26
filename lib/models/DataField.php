@@ -264,6 +264,25 @@ class DataField extends SimpleORMap implements PrivacyObject
     }
 
     /**
+     * Returns whether this datafield is of a numeric type.
+     */
+    public function isNumericType(): bool
+    {
+        if ($this->type === 'bool') {
+            return true;
+        }
+
+        $entry = DataFieldEntry::createDataFieldEntry($this);
+        if (!$entry instanceof DataFieldSelectboxEntry) {
+            return false;
+        }
+
+        [, $is_assoc] = $entry->getParameters();
+
+        return $is_assoc;
+    }
+
+    /**
      * Export available data of a given user into a storage object
      * (an instance of the StoredUserData class) for that user.
      *
@@ -287,6 +306,4 @@ class DataField extends SimpleORMap implements PrivacyObject
             }
         }
     }
-
-
 }
