@@ -255,7 +255,7 @@ class CourseMemberAdmission extends AdmissionRule
                 ),
                 'modus' => $this->modus,
                 'search' => (string) new StandardSearch(
-                    User::hasPermissionLevel('admin')
+                    User::findCurrent()->hasPermissionLevel('admin')
                         ? 'AnySeminar_id'
                         : 'Seminar_id'
                 )
