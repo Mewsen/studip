@@ -140,7 +140,13 @@ class Resources_RoomPlanningController extends AuthenticatedController
         );
 
         if ($this->resource->requestable) {
-            $this->display_all_requests = Request::bool('display_all_requests');
+            $this->display_all_requests = Request::bool(
+                'display_all_requests',
+                $this->resource->userHasPermission(
+                    $this->user,
+                    'autor'
+                )
+            );
         } else {
             $this->display_all_requests = false;
         }
