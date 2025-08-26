@@ -12,8 +12,13 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
 
+
+require_once(__DIR__ . '/BookingPlanDataHelper.php');
+
 class Resources_AjaxController extends AuthenticatedController
 {
+    use BookingPlanDataHelper;
+
     public function toggle_marked_action($request_id)
     {
         $request = ResourceRequest::find($request_id);
@@ -308,6 +313,7 @@ class Resources_AjaxController extends AuthenticatedController
 
     public function get_booking_plan_action($resource_id)
     {
+        $this->renderBookingPlanData($resource_id);
         $resource = Resource::find($resource_id);
         if (!$resource) {
             throw new Exception('Resource object not found!');
@@ -852,41 +858,6 @@ class Resources_AjaxController extends AuthenticatedController
             $this->set_status(500);
             $this->render_text($e->getMessage());
         }
-    }
-
-    public function semester_week_action($timestamp)
-    {
-        $semester = \Semester::findByTimestamp($timestamp);
-        if (!$semester) {
-            $this->notFound('No semester found for given timestamp');
-            return;
-        }
-
-        $timestamp = strtotime('today', $timestamp);
-        $week_begin_timestamp = strtotime('monday this week', $semester->vorles_beginn);
-        $end_date = $semester->vorles_ende;
-
-        $i = 0;
-        $result = [
-            'semester_name' => (string)$semester->name,
-            'week_number' => sprintf(_('KW %u'), date('W', $timestamp)),
-            'current_day' => strftime('%x', $timestamp)
-        ];
-        while ($week_begin_timestamp < $end_date) {
-            $next_week_timestamp = strtotime('+1 week', $week_begin_timestamp);
-            if ($week_begin_timestamp <= $timestamp && $timestamp < $next_week_timestamp) {
-                $result['sem_week'] = sprintf(
-                    _('%u. Vorlesungswoche (ab %s)'),
-                    $i + 1,
-                    strftime('%x', $week_begin_timestamp));
-                break;
-            }
-            $i += 1;
-
-            $week_begin_timestamp = $next_week_timestamp;
-        }
-
-        $this->render_json($result);
     }
 
     private function notFound(string $message = ''): void
