@@ -362,18 +362,20 @@ class Resources_RoomPlanningController extends AuthenticatedController
             ]
         );
 
-        $actions->addLink(
-            _('QR-Code zur Eingabe der Anzahl'),
-            URLHelper::getURL(
-                'dispatch.php/resources/room_planning/courses/' . $this->resource->id
-            ),
-            Icon::create('code-qr'),
-            [
-                'data-qr-code'       => '',
-                'data-qr-code-print' => '1',
-                'data-qr-title'      => _('Zur Eingabe der Anzahl')
-            ]
-        );
+        if ($GLOBALS['user']->id !== 'nobody') {
+            $actions->addLink(
+                _('QR-Code zur Eingabe der Anzahl'),
+                URLHelper::getURL(
+                    'dispatch.php/resources/room_planning/courses/' . $this->resource->id
+                ),
+                Icon::create('code-qr'),
+                [
+                    'data-qr-code' => '',
+                    'data-qr-code-print' => '1',
+                    'data-qr-title' => _('Zur Eingabe der Anzahl')
+                ]
+            );
+        }
 
         if ($this->user instanceof User) {
             //No check necessary here: This part of the controller is only called
