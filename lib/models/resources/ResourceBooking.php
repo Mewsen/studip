@@ -1763,10 +1763,18 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
 
             if (!$this->isSimpleBooking()) {
                 if ($this->assigned_course_date->metadate_id) {
-                    $icon = 'refresh';
+                    if ($icon) {
+                        //chat2 icon already set as first icon.
+                        $icon .= ',';
+                    }
+                    $icon .= 'refresh';
                 }
             } elseif ($this->repeat_end > $this->end) {
-                $icon = 'refresh';
+                if ($icon) {
+                    //chat2 icon already set as first icon.
+                    $icon .= ',';
+                }
+                $icon .= 'refresh';
             }
 
             if ($this->assigned_course_date instanceof CourseDate) {
