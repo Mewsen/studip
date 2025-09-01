@@ -56,11 +56,14 @@ class StudipAuthAbstract
 
     /**
      * array of user domains to assign to each user, can be set in local.inc
-     *
-     * @access  public
-     * @var     array $user_domains
      */
-    public $user_domains;
+    public ?array $user_domains = null;
+
+    /**
+     * Flag that decides whether all domains should be synced or if only new
+     * ones should be added.
+     */
+    public bool $sync_all_domains = true;
 
     /**
      * associative array with mapping for database fields
@@ -421,10 +424,18 @@ class StudipAuthAbstract
         $uid = $user->id;
         if (isset($user_domains)) {
             $old_domains = UserDomain::getUserDomainsForUser($uid);
+            $old_domain_ids = array_map(
+                function (UserDomain $domain) {
+                    return $domain->id;
+                },
+                $old_domains
+            );
 
-            foreach ($old_domains as $domain) {
-                if (!in_array($domain->id, $user_domains)) {
-                    $domain->removeUser($uid);
+            if ($this->sync_all_domains) {
+                foreach ($old_domains as $domain) {
+                    if (!in_array($domain->id, $user_domains)) {
+                        $domain->removeUser($uid);
+                    }
                 }
             }
 
@@ -436,7 +447,7 @@ class StudipAuthAbstract
                     $domain->store();
                 }
 
-                if (!in_array($domain, $old_domains)) {
+                if (!in_array($domain->id, $old_domain_ids)) {
                     $domain->addUser($uid);
                 }
             }

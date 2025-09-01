@@ -377,6 +377,7 @@ $STUDIP_AUTH_CONFIG_SHIB = [
     'validate_url'      => 'https://sp.studip.de/auth/studip-sp.php',
     'logout_url'        => 'https://sp.studip.de/Shibboleth.sso/Logout',
     'local_domain'      => 'studip.de',
+    'sync_all_domains'  => false, // Set to false to only add new domains, true will remove domains!
     'user_data_mapping' => [
         'auth_user_md5.username' => ['callback' => 'dummy', 'map_args' => ''],
         'auth_user_md5.password' => ['callback' => 'dummy', 'map_args' => ''],
