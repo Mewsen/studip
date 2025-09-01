@@ -416,6 +416,7 @@ abstract class SharedVersionController extends MVVController
                     return;
                 } else if ($abschnitt) {
                     if ($abschnitt->addModul($modul)) {
+                        $abschnitt->verifyPermission();
                         $abschnitt->store();
                         PageLayout::postSuccess(sprintf(
                             _('Das Modul "%s" wurde dem Abschnitt "%s" hinzugefügt.'),
