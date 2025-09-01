@@ -57,13 +57,13 @@ class StudipAuthAbstract
     /**
      * array of user domains to assign to each user, can be set in local.inc
      */
-    public ?array $user_domains = null;
+    public $user_domains = null;
 
     /**
      * Flag that decides whether all domains should be synced or if only new
      * ones should be added.
      */
-    public bool $sync_all_domains = true;
+    public $sync_all_domains = true;
 
     /**
      * associative array with mapping for database fields
