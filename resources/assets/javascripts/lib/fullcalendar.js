@@ -599,18 +599,24 @@ class Fullcalendar
                 }
 
                 if (event.extendedProps.icon) {
-                    //Check if the icon is already an URL or just the name of an icon.
-                    let iconUrl = '';
-                    if (event.extendedProps.icon.includes('://')) {
-                        //The icon already is an URL.
-                        iconUrl = event.extendedProps.icon;
-                    } else {
-                        //The icon is just referenced by its name. We do not need a specific color here, background-color is currentColor.
-                        iconUrl = `${STUDIP.ASSETS_URL}images/icons/black/${event.extendedProps.icon}.svg`
+                    //Check if there is more than one icon:
+                    let event_icons = event.extendedProps.icon.split(',');
+                    let title = $(eventElement).find('.fc-title');
+                    for (let icon of event_icons) {
+                        //Check if the icon is already a URL or just the name of an icon.
+                        let iconUrl = '';
+                        if (icon.includes('://')) {
+                            //The icon is already a URL.
+                            iconUrl = icon;
+                        } else {
+                            //The icon is just referenced by its name. We do not need a specific color here, background-color is currentColor.
+                            iconUrl = `${STUDIP.ASSETS_URL}images/icons/black/${icon}.svg`
+                        }
+                        //Add the icons as spans in front of the content:
+                        let icon_element = $('<span class="icon"></span>');
+                        icon_element.css('--icon-url', `url('${iconUrl}')`);
+                        title.prepend(icon_element);
                     }
-                    const $title = $(eventElement).find('.fc-title');
-                    $title.addClass('has-icon');
-                    $title.css('--icon-url', `url('${iconUrl}')`);
                 }
             },
             eventSourceSuccess: function(content) {
