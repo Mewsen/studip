@@ -500,15 +500,24 @@ class Fullcalendar
                 }
 
                 if (event.extendedProps.icon) {
-                    $(eventElement).find('.fc-title').prepend(
-                        $('<img>').attr('src', `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`)
-                            .css({
-                                verticalAlign: 'text-bottom',
-                                marginRight: '3px',
-                                width: 14,
-                                height: 14
-                            })
-                    );
+                    //Check if there is more than one icon:
+                    let event_icons = event.extendedProps.icon.split(',');
+                    let title = $(eventElement).find('.fc-title');
+                    for (let icon of event_icons) {
+                        //Check if the icon is already a URL or just the name of an icon.
+                        let iconUrl = '';
+                        if (icon.includes('://')) {
+                            //The icon is already a URL.
+                            iconUrl = icon;
+                        } else {
+                            //The icon is just referenced by its name. We do not need a specific color here, background-color is currentColor.
+                            iconUrl = `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${icon}.svg`
+                        }
+                        //Add the icons as spans in front of the content:
+                        let icon_element = $('<span class="icon"></span>');
+                        icon_element.css('--icon-url', `url('${iconUrl}')`);
+                        title.prepend(icon_element);
+                    }
                 }
             },
             eventSourceSuccess: function(content, xhr) {
