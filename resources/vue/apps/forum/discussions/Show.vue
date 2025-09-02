@@ -78,12 +78,12 @@ const canEditDiscussion = computed(() => {
 })
 
 const fetchPostings = async () => {
-    let allPostings = [];
     let offset = 0;
     let total = null;
 
     try {
         let hasMore = true;
+        isLoading.value = true;
 
         while (hasMore) {
             const response = await STUDIP.jsonapi.withPromises().GET(
@@ -96,8 +96,9 @@ const fetchPostings = async () => {
                 }
             );
 
-            const deserializedPostings = await deserializeJSONAPIResponse(response);
-            allPostings.push(...deserializedPostings);
+            const deserializedPosts = await deserializeJSONAPIResponse(response);
+
+            forumPostStore.addPost(deserializedPosts);
 
             if (total === null) {
                 total = response.meta.page.total;
@@ -107,16 +108,15 @@ const fetchPostings = async () => {
             hasMore = offset < total;
         }
 
-        forumPostStore.initPosts(allPostings);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
+    } finally {
+        isLoading.value = false;
     }
 };
 
 
 onMounted(async () => {
-    isLoading.value = true;
-
     await fetchPostings();
 
     const urlHash = window.location.hash.split("#")[1];
@@ -128,8 +128,6 @@ onMounted(async () => {
     } else if (props.read_index < posts.value.length) {
         document.querySelectorAll(".post")[props.read_index].scrollIntoView();
     }
-
-    isLoading.value = false;
 
     if (props.search_keyword !== "") {
         highlightText(props.search_keyword, '.post-content');

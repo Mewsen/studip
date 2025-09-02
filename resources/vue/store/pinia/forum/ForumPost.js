@@ -11,7 +11,7 @@ export const useForumPost = defineStore(
         }
 
         function addPost(post) {
-            posts.value.push(post);
+            posts.value.push(...[].concat(post));
         }
 
         function updatePost(post) {
