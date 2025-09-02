@@ -21,13 +21,13 @@ const props = defineProps({
     },
     read_index: {
         type: Number,
-        default: 0
+        default: -1
     }
 });
 
 const recentActivity = computed(() => props.posts.at(-1)?.mkdate ?? props.discussion.mkdate);
 const hasUnreadPost = computed(() => {
-    return props.read_index < 2 && props.posts.length > 1 && props.posts[1].author.id !== STUDIP.USER_ID;
+    return props.read_index === 0 && props.posts.length > 1 && props.posts[1].author.id !== STUDIP.USER_ID;
 });
 </script>
 
