@@ -46,7 +46,7 @@ const props = defineProps({
 });
 
 const isLoading = ref(false);
-const postCreateForm = ref(false)
+const postCreateForm = ref(false);
 
 const editDiscussion = id => STUDIP.Dialog.fromURL(
     STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussions/edit/${id}`),
@@ -74,7 +74,7 @@ const goBackURL = computed(() => {
 });
 
 const canEditDiscussion = computed(() => {
-    return forumConfig.isModerator || props.discussion.user_id === STUDIP.USER_ID
+    return forumConfig.isModerator || props.discussion.user_id === STUDIP.USER_ID;
 })
 
 const fetchPostings = async () => {
@@ -137,9 +137,9 @@ onMounted(async () => {
         // remove highlights
         document.getElementById("discussion_start").addEventListener("click", function() {
             removeHighlight('.post-content mark');
-        })
+        });
     }
-})
+});
 </script>
 
 <template>
@@ -219,8 +219,8 @@ onMounted(async () => {
             <hr />
             <DiscussionFooter
                 :discussion="discussion"
-                :posts_count="posts.length"
-                :recent_activity="posts[posts.length - 1] ? posts[posts.length - 1].mkdate : null"
+                :posts="posts"
+                :read_index="read_index"
                 v-model:postCreateForm="postCreateForm"
             />
             <hr />
@@ -240,8 +240,7 @@ onMounted(async () => {
         <div v-if="posts.length > 3" class="discussion">
             <DiscussionFooter
                 :discussion="discussion"
-                :posts_count="posts.length"
-                :recent_activity="posts[posts.length - 1].mkdate"
+                :posts="posts"
                 v-model:postCreateForm="postCreateForm"
             />
         </div>

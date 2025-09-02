@@ -497,7 +497,6 @@ $card-max-width: 300px;
 
         &__unread {
             width: 5px;
-            margin-right: 15px;
             background-color: $red;
         }
 
@@ -666,6 +665,10 @@ $card-max-width: 300px;
     .discussion {
         background-color: var(--color--main-navigation-background);
 
+        hr {
+            margin: 0;
+        }
+
         &__status,
         &__body,
         &__form-container {
@@ -677,7 +680,12 @@ $card-max-width: 300px;
             gap: 15px;
         }
 
+        &__footer {
+            display: flex;
+        }
+
         &__status {
+            flex: 1;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
