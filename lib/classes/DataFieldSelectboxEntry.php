@@ -25,7 +25,7 @@ class DataFieldSelectboxEntry extends DataFieldEntry
     {
         parent::__construct($struct, $range_id, $value);
 
-        list($values, $is_assoc) = $this->getParameters();
+        [$values, $is_assoc] = $this->getParameters();
         $this->is_assoc_param = $is_assoc;
         $this->type_param     = $values;
 
@@ -74,8 +74,7 @@ class DataFieldSelectboxEntry extends DataFieldEntry
         foreach ($params as $i => $p) {
             if (mb_strpos($p, '=>') !== false) {
                 $is_assoc = true;
-
-                list($key, $value) = array_map('trim', explode('=>', $p, 2));
+                [$key, $value] = array_map('trim', explode('=>', $p, 2));
                 $ret[$key] = $value;
             } else {
                 $ret[$i] = $p;
@@ -93,8 +92,9 @@ class DataFieldSelectboxEntry extends DataFieldEntry
     public function getDisplayValue($entities = true)
     {
         $value = $this->is_assoc_param
-               ? $this->type_param[$this->getValue()]
-               : $this->getValue();
+            ? $this->type_param[$this->getValue()] ?? ''
+            : $this->getValue();
+
         return $entities ? htmlReady($value) : $value;
     }
 }

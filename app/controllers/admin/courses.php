@@ -32,8 +32,7 @@ class Admin_CoursesController extends AuthenticatedController
     /**
      * This method returns the appropriate widget for the given datafield.
      *
-     * @param DataField datafield The datafield whose widget is requested.
-     *
+     * @param DataField $datafield The datafield whose widget is requested.
      * @return SidebarWidget|null Returns a SidebarWidget derivative or null in case of an error.
      */
     private function getDatafieldWidget(DataField $datafield)
@@ -45,6 +44,7 @@ class Admin_CoursesController extends AuthenticatedController
             $datafields_filters = $GLOBALS['user']->cfg->ADMIN_COURSES_DATAFIELDS_FILTERS;
 
             $type = $datafield->type;
+            $entry = DataFieldDateEntry::createDataFieldEntry($datafield);
 
             if ($type == 'bool') {
                 //bool fields just need a checkbox for the states TRUE and FALSE
@@ -59,14 +59,11 @@ class Admin_CoursesController extends AuthenticatedController
                     URLHelper::getURL(
                         'dispatch.php/admin/courses/index'
                     ),
-                    ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : 0}); return false;"]
+                    ['onclick' => "$(this).toggleClass(['options-checked', 'options-unchecked']); STUDIP.AdminCourses.App.changeFilter({'df_".$datafield->id."': $(this).hasClass('options-checked') ? 1 : ''}); return false;"]
                 );
                 return $checkboxWidget;
-            } elseif ($type == 'selectbox' || $type == 'radio' || $type == 'selectboxmultiple') {
-                $options = array_map('trim', explode("\n", DBManager::get()->fetchColumn(
-                    'SELECT typeparam FROM datafields WHERE datafield_id = ?',
-                    [$datafield->id]
-                )));
+            } elseif ($entry instanceof DataFieldSelectboxEntry) {
+                [$options, $is_assoc] = $entry->getParameters();
 
                 if ($options) {
                     $selectWidget = new SelectWidget(
@@ -80,10 +77,10 @@ class Admin_CoursesController extends AuthenticatedController
                             '(' . _('Keine Auswahl') . ')'
                         )
                     );
-                    foreach ($options as $option) {
+                    foreach ($options as $index => $option) {
                         $selectWidget->addElement(
                             new SelectElement(
-                                $option,
+                                $is_assoc ? $index : $option,
                                 $option,
                                 Request::get('df_'.$datafield->id, $datafields_filters[$datafield->id] ?? null) === $option
                             )
@@ -336,11 +333,17 @@ class Admin_CoursesController extends AuthenticatedController
                 'teacher_filter' => $configuration->ADMIN_COURSES_TEACHERFILTER,
             ]
         );
+        $filters = array_filter(
+            $filters,
+            function ($value): bool {
+                return isset($value) && $value !== '';
+            }
+        );
 
         return [
             'setActivatedFields' => $this->getFilterConfig(),
             'setActionArea' => $configuration->MY_COURSES_ACTION_AREA ?? '1',
-            'setFilter' => array_filter($filters),
+            'setFilter' => $filters,
         ];
     }
 
@@ -602,8 +605,10 @@ class Admin_CoursesController extends AuthenticatedController
             $key = "df_{$datafield->id}";
 
             if (
-                !empty($filters[$key])
+                isset($filters[$key])
+                && $filters[$key] !== ''
                 && in_array($datafield->id, $activeSidebarElements['datafields'])
+                && $filters[$key] != $datafield->default_value
             ) {
                 $datafields_filters[$datafield->id] = $filters[$key];
             } else {

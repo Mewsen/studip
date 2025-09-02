@@ -259,7 +259,7 @@ class Admin_DatafieldsController extends AuthenticatedController
 
             PageLayout::postSuccess(_('Die Parameter wurden übernommen.'));
 
-            $this->redirect('admin/datafields/index/' . $datafield_id->object_type . '#item_' . $datafield_id);
+            $this->redirect('admin/datafields/index/' . $datafield->object_type . '#item_' . $datafield_id);
         }
 
         $this->struct = $datafield;
