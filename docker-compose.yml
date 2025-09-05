@@ -19,6 +19,7 @@ services:
       - db
     volumes:
       - web_data:/var/www/studip/data
+      - ./docker/studip/my.cnf:/etc/mysql/conf.d/my.cnf:ro
 
     # Use port to redirect port
     ports:
