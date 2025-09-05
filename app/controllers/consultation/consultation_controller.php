@@ -13,9 +13,9 @@ abstract class ConsultationController extends AuthenticatedController
         parent::before_filter($action, $args);
 
         $type = 'person';
-        if (Request::submitted('username')) {
+        if (Request::has('username')) {
             $this->range = User::findByUsername(Request::username('username'));
-        } elseif (Request::submitted('cid')) {
+        } elseif (Request::has('cid')) {
             $this->range = Context::get();
             $type = 'object';
         } else {

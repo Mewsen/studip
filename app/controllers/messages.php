@@ -240,7 +240,7 @@ class MessagesController extends AuthenticatedController {
         $group_ids = [];
         if (Request::option('group_id')) {
             $group_ids[] = Request::option('group_id');
-        } elseif (Request::submitted('group_ids')) {
+        } elseif (Request::has('group_ids')) {
             $group_ids = Request::getArray('group_ids');
         }
         if ($group_ids) {
@@ -579,9 +579,9 @@ class MessagesController extends AuthenticatedController {
 
         if (count($recipients) === 0) {
             PageLayout::postError(_('Sie haben nicht angegeben, wer die Nachricht empfangen soll!'));
-        } elseif (Request::submitted('message_id') && Message::exists(Request::option('message_id'))) {
+        } elseif (Request::has('message_id') && Message::exists(Request::option('message_id'))) {
             PageLayout::postInfo(_('Diese Nachricht wurde bereits verschickt.'));
-        } elseif (Request::submitted('message_body')) {
+        } elseif (Request::has('message_body')) {
             $messaging = new messaging();
             $rec_uname = User::findAndMapMany(function ($user) {
                 return $user->username;
@@ -1019,7 +1019,7 @@ class MessagesController extends AuthenticatedController {
             $this->url_for("messages/{$action}"),
             null,
             ['class' => 'tag all-tags']
-        )->setActive(!Request::submitted("tag"));
+        )->setActive(!Request::has("tag"));
         if (empty($this->tags)) {
             $folderwidget->style = 'display:none';
         } else {
