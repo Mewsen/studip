@@ -185,6 +185,10 @@ class TimedFolder extends PermissionEnabledFolder
         $this->folderdata['data_content']['permission'] = $permvalue;
         $start = strtotime($request['start_time']);
         $end = strtotime($request['end_time']);
+        if (date('i', $end) === '59') {
+            //Add 59 seconds to $end to get to the last second of the minute:
+            $end += 59;
+        }
 
         if (!$start && !$end) {
 
