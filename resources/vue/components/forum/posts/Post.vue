@@ -229,7 +229,7 @@ const removePostHighlight = id => {
                                     <StudipIcon shape="trash" :size="20" aria-hidden="true" />
                                 </button>
                             </template>
-                            <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrage weiterleiten')" :aria-label="$gettext('Beitrage weiterleiten')">
+                            <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrag weiterleiten')" :aria-label="$gettext('Beitrag weiterleiten')">
                                 <StudipIcon shape="export" :size="20" aria-hidden="true" />
                             </button>
                             <a

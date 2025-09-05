@@ -230,7 +230,7 @@ onMounted(() => {
                                     {{ numberFormatter(discussion.view_count, 1) }}
                                 </dd>
 
-                                <dt>{{ $gettext('Anzahl der Beitrage') }}</dt>
+                                <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
                                     <StudipIcon shape="reply" :size="15" role="info" />
                                     {{ discussion.meta.postings_count }}
