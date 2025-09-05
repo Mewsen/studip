@@ -55,7 +55,7 @@ const openBlubberChat = () => {
                 <button
                     v-if="user.id !== AUTH_ID"
                     @click="openBlubberChat"
-                    class="action-item"
+                    class="action-item button-base"
                     :title="$gettext('Blubber diesen Nutzer an')"
                     :aria-label="$gettext('Blubber diesen Nutzer an')"
                 >
@@ -77,7 +77,7 @@ const openBlubberChat = () => {
             <li>
                 <button
                     v-if="user.id !== AUTH_ID"
-                    class="action-item"
+                    class="action-item button-base"
                     :title="$gettext('Nachricht schreiben')"
                     :aria-label="$gettext('Nachricht schreiben')"
                     @click="writeMessage()"

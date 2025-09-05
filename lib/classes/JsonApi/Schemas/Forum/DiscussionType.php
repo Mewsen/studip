@@ -11,34 +11,40 @@ class DiscussionType extends SchemaProvider
 
     const REL_DISCUSSIONS = 'discussions';
 
-    public function getId($discussionType): ?string
+    /**
+     * @inheritDoc
+     * @param \Forum\DiscussionType $resource
+     */
+    public function getId($resource): ?string
     {
-        return $discussionType->type_id;
-    }
-
-    public function getAttributes($discussionType, ContextInterface $context): iterable
-    {
-        return [
-            'name' => $discussionType->name,
-            'icon' => $discussionType->icon,
-            'mkdate' => date('c', $discussionType->mkdate),
-            'chdate' => date('c', $discussionType->chdate),
-        ];
+        return $resource->type_id;
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @inheritDoc
+     * @param \Forum\DiscussionType $resource
      */
-    public function getRelationships($discussionType, ContextInterface $context): iterable
+    public function getAttributes($resource, ContextInterface $context): iterable
+    {
+        $attributes = $resource->transformData();
+        unset($attributes['id']);
+        return $attributes;
+    }
+
+    /**
+     * @inheritDoc
+     * @param \Forum\DiscussionType $resource
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
 
-        $relationships = $this->addDiscussionsRelationship($relationships, $discussionType, $this->shouldInclude($context, self::REL_DISCUSSIONS));
+        $relationships = $this->addDiscussionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSIONS));
 
         return $relationships;
     }
 
-    private function addDiscussionsRelationship($relationships, $discussionType, $withDiscussions = false)
+    private function addDiscussionsRelationship(array $relationships, \Forum\DiscussionType $discussionType, $withDiscussions = false): array
     {
         if ($withDiscussions) {
             $relationships[self::REL_DISCUSSIONS] = [

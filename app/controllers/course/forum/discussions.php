@@ -136,7 +136,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
 
         $all_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), TagDTO::getForumTags());
         $discussion_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
-        $discussion_types = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getForumDiscussionType());
+        $discussion_types = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getAll());
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Edit')

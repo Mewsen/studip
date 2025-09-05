@@ -30,9 +30,23 @@ class DiscussionType extends SimpleORMap
         parent::configure($config);
     }
 
-    public static function getForumDiscussionType(): array
+    /**
+     * @return self[]
+     */
+    public static function getAll(): array
     {
         return self::findBySQL("TRUE ORDER BY `mkdate` DESC");
+    }
+
+    public function transformData(): array
+    {
+        return [
+            'id' => $this->type_id,
+            'icon' => $this->icon,
+            'name' => $this->name,
+            'chdate' => date('c', $this->chdate),
+            'mkdate' => date('c', $this->mkdate)
+        ];
     }
 
     /**

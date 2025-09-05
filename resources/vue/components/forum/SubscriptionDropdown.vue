@@ -147,6 +147,7 @@ const subscribe = async (notification_type = 'all') => {
             <li>
                 <button
                     type="button"
+                    class="button-base"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.All
                     }"
@@ -166,6 +167,7 @@ const subscribe = async (notification_type = 'all') => {
             <li>
                 <button
                     type="button"
+                    class="button-base"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.RepliesOnly
                     }"
@@ -185,6 +187,7 @@ const subscribe = async (notification_type = 'all') => {
             <li>
                 <button
                     type="button"
+                    class="button-base"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.None
                     }"
@@ -204,6 +207,7 @@ const subscribe = async (notification_type = 'all') => {
             <li>
                 <button
                     type="button"
+                    class="button-base"
                     :disabled="!subscription?.notification_type"
                     @click="unSubscribe"
                 >

@@ -216,14 +216,14 @@ onMounted(async () => {
                     {{ $gettext('Es sind noch keine Beiträge vorhanden.') }}
                 </p>
             </div>
-            <hr />
+            <hr class="m-0" />
             <DiscussionFooter
                 :discussion="discussion"
                 :posts="posts"
                 :read_index="read_index"
                 v-model:postCreateForm="postCreateForm"
             />
-            <hr />
+            <hr class="m-0" />
         </div>
         <div class="posts-container">
             <template v-for="(post, index) in posts.slice(1)" :key="post.id">
@@ -233,7 +233,7 @@ onMounted(async () => {
                     :discussion="discussion"
                     :is_unread="read_index < index + 2"
                 />
-                <hr v-if="index < posts.slice(1).length - 1" class="divider"/>
+                <hr v-if="index < posts.length - 2" class="divider m-0" />
             </template>
         </div>
 

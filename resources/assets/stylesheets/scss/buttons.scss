@@ -99,7 +99,7 @@ button.button {
 }
 
 @mixin button-base() {
-    color: var(--base-color);
+    color: var(--color--brand-primary);
     transition: color var(--transition-duration);
 }
 

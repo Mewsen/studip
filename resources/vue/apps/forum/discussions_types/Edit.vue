@@ -1,11 +1,12 @@
 <script setup>
 import {computed, reactive} from "vue";
 import StudipIcon from "../../../components/StudipIcon.vue";
+import {getDiscussionTypeStoreURL} from "../../../components/forum/helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
 const props = defineProps({
-    discussion_type: {
+    discussionType: {
         type: Object,
     },
     icons: {
@@ -14,17 +15,11 @@ const props = defineProps({
     }
 });
 
-const formSate = reactive({
-    ...props.discussion_type
+const formState = reactive({
+    ...props.discussionType
 });
 
-const formActionURL = computed(() => {
-    if (props.discussion_type.type_id) {
-        return STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussion_types/save/${props.discussion_type.type_id}`);
-    }
-
-    return STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussion_types/save`);
-});
+const formActionURL = computed(() => getDiscussionTypeStoreURL(props.discussionType.id));
 </script>
 
 <template>
@@ -48,7 +43,7 @@ const formActionURL = computed(() => {
                         required
                         type="text"
                         name="name"
-                        v-model="formSate.name"
+                        v-model="formState.name"
                         maxlength="100" />
                 </label>
             </section>
@@ -60,7 +55,7 @@ const formActionURL = computed(() => {
                     </span>
                 </label>
                 <div id="studip_icons" class="studip-icons-container">
-                    <input type="hidden" v-model="formSate.icon" name="icon" required />
+                    <input type="hidden" v-model="formState.icon" name="icon" />
 
                     <template v-for="icon in icons" :key="icon">
                         <button
@@ -68,10 +63,10 @@ const formActionURL = computed(() => {
                             type="button"
                             :title="icon"
                             :class="{
-                                'disabled': formSate.icon && formSate.icon !== icon,
-                                'active': formSate.icon === icon
+                                'disabled': formState.icon && formState.icon !== icon,
+                                'active': formState.icon === icon
                             }"
-                            @click="formSate.icon = icon">
+                            @click="formState.icon = icon">
                             <StudipIcon :shape="icon" :size="35" />
                         </button>
                     </template>
@@ -79,7 +74,7 @@ const formActionURL = computed(() => {
             </section>
         </fieldset>
         <footer data-dialog-button>
-            <button :disabled="!formSate.icon || !formSate.name" class="button accept">
+            <button :disabled="!formState.icon || !formState.name" class="button accept">
                 {{ $gettext('Speichern') }}
             </button>
             <button class="button cancel" type="button" data-dialog-close>

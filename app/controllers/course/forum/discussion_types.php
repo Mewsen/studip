@@ -19,14 +19,16 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
             _('Neuen Diskussionstyp anlegen'),
             $this->url_for('course/forum/discussion_types/edit'),
             Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neuen Diskussionstyp anlegen')])
-        )->asDialog('width=700');
+        )->asDialog('width=700;height=650');
 
         Sidebar::Get()->addWidget($actions);
     }
 
     public function index_action()
     {
-        $this->discussion_types = DiscussionType::findBySQL("TRUE ORDER BY mkdate DESC");
+        $this->render_vue_app(
+            Studip\VueApp::create('forum/discussions_types/Index')
+        );
     }
 
     public function edit_action(DiscussionType $discussion_type = null)
@@ -51,10 +53,11 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         }
 
         $this->render_vue_app(
-            Studip\VueApp::create('forum/discussions_types/Edit')->withProps([
-                'icons' => array_unique($icons),
-                'discussion_type' => $discussion_type->toRawArray()
-            ])
+            Studip\VueApp::create('forum/discussions_types/Edit')
+                ->withProps([
+                    'icons' => array_unique($icons),
+                    'discussionType' => $discussion_type->transformData()
+                ])
         );
     }
 
@@ -68,15 +71,6 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         $discussion_type->store();
 
         PageLayout::postSuccess(sprintf(_('Der Diskussionstyp „%s“ wurde gespeichert.'), $discussion_type->name));
-
-        $this->relocate('course/forum/discussion_types/index');
-    }
-
-    public function delete_action(DiscussionType $discussion_type)
-    {
-        $discussion_type->delete();
-
-        PageLayout::postSuccess(_('Der Diskussionstyp wurde gelöscht.'));
 
         $this->relocate('course/forum/discussion_types/index');
     }

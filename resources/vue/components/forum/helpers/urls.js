@@ -15,3 +15,7 @@ export const getCategoryDeleteURL = id => STUDIP.URLHelper.getURL(`dispatch.php/
 export const getSearchURL = (hashtags='') => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/search?${hashtags}`);
 
 export const userProfileURL = username => STUDIP.URLHelper.getURL('dispatch.php/profile', {username});
+
+// Discussion Types:
+export const getDiscussionTypeEditURL = (id = null) => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussion_types/edit/${id}`);
+export const getDiscussionTypeStoreURL = (id = null) => STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussion_types/save/${id}`);

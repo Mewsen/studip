@@ -695,7 +695,9 @@ class RouteMap
 
         $group->group('/forum-discussion-types', function ($forum) {
             $forum->get('', Routes\Forum\DiscussionTypeIndex::class);
+            $forum->post('', Routes\Forum\DiscussionTypeStore::class);
             $forum->get('/{type_id}', Routes\Forum\DiscussionTypeShow::class);
+            $forum->delete('/{type_id}', Routes\Forum\DiscussionTypeDelete::class);
         });
 
         $group->group('/forum-postings', function ($forum) {

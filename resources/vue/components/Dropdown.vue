@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
                     type="button"
                     v-if="withCloseButton"
                     @click="isOpen = false"
-                    class="dropdown__close-button">
+                    class="dropdown__close-button button-base">
                     <StudipIcon shape="decline" :size="20" />
                 </button>
                 <div v-if="title" class="dropdown__header">
