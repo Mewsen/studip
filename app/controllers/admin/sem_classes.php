@@ -116,8 +116,6 @@ class Admin_SemClassesController extends AuthenticatedController
         $sem_class->set('bereiche', Request::int("bereiche"));
         $sem_class->set('module', Request::int("module"));
         $sem_class->set('show_browse', Request::int("show_browse"));
-        $sem_class->set('write_access_nobody', Request::int("write_access_nobody"));
-        $sem_class->set('topic_create_autor', Request::int("topic_create_autor"));
         $sem_class->set('visible', Request::int("visible"));
         $sem_class->set('course_creation_forbidden', Request::int("course_creation_forbidden"));
         $sem_class->set('create_description', Request::get("create_description"));

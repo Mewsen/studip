@@ -135,22 +135,6 @@
 
     <fieldset>
         <legend>
-            <?= _("Forum") ?>
-        </legend>
-
-        <label>
-            <input type="checkbox" id="topic_create_autor" value="1"<?= $sem_class['topic_create_autor'] ? " checked" : "" ?>>
-            <?= _("Autoren dürfen Themen anlegen.") ?>
-        </label>
-
-        <label>
-            <input type="checkbox" id="write_access_nobody" value="1"<?= $sem_class['write_access_nobody'] ? " checked" : "" ?>>
-            <?= _("Unangemeldete Nutzer (nobody) dürfen posten.") ?>
-        </label>
-    </fieldset>
-
-    <fieldset>
-        <legend>
             <?= _("Anzeige") ?>
         </legend>
 

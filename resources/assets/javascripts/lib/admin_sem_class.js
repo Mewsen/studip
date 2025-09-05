@@ -57,8 +57,6 @@ const admin_sem_class = {
                 bereiche: jQuery('#bereiche').is(':checked') ? 1 : 0,
                 module: jQuery('#module').is(':checked') ? 1 : 0,
                 show_browse: jQuery('#show_browse').is(':checked') ? 1 : 0,
-                write_access_nobody: jQuery('#write_access_nobody').is(':checked') ? 1 : 0,
-                topic_create_autor: jQuery('#topic_create_autor').is(':checked') ? 1 : 0,
                 visible: jQuery('#visible').is(':checked') ? 1 : 0,
                 course_creation_forbidden: jQuery('#course_creation_forbidden').is(':checked') ? 1 : 0,
                 create_description: jQuery('#create_description').val(),

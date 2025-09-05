@@ -44,9 +44,7 @@ class Course_AdmissionController extends AuthenticatedController
         foreach ($lockrules as $rule) {
             $this->is_locked[$rule] = LockRules::Check($this->course_id, $rule) ? 'disabled readonly' : '';
         }
-        if (!SeminarCategories::GetByTypeId($this->course->status)->write_access_nobody) {
-            $this->is_locked['write_level'] = 'disabled readonly';
-        }
+        $this->is_locked['write_level'] = 'disabled readonly';
         AdmissionApplication::addMembers($this->course->id);
         URLHelper::addLinkParam('return_to_dialog', Request::get('return_to_dialog'));
     }

@@ -370,8 +370,6 @@ class SemClass implements ArrayAccess
                 "bereiche = :bereiche, " .
                 "module = :module, " .
                 "show_browse = :show_browse, " .
-                "write_access_nobody = :write_access_nobody, " .
-                "topic_create_autor = :topic_create_autor, " .
                 "visible = :visible, " .
                 "course_creation_forbidden = :course_creation_forbidden, " .
                 "modules = :modules, " .
@@ -403,8 +401,6 @@ class SemClass implements ArrayAccess
             'bereiche' => (int) $this->data['bereiche'],
             'module' => (int) $this->data['module'],
             'show_browse' => (int) $this->data['show_browse'],
-            'write_access_nobody' => (int) $this->data['write_access_nobody'],
-            'topic_create_autor' => (int) $this->data['topic_create_autor'],
             'visible' => (int) $this->data['visible'],
             'course_creation_forbidden' => (int) $this->data['course_creation_forbidden'],
             'modules' => json_encode((object) $this->data['modules']),
@@ -503,10 +499,6 @@ class SemClass implements ArrayAccess
                 return (bool) $this->data['bereiche'];
             case "show_browse":
                 return (bool) $this->data['show_browse'];
-            case "write_access_nobody":
-                return (bool) $this->data['write_access_nobody'];
-            case "topic_create_autor":
-                return (bool) $this->data['topic_create_autor'];
             case "visible":
                 return (bool) $this->data['visible'];
             case "studygroup_mode":

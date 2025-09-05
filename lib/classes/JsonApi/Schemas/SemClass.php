@@ -24,8 +24,6 @@ class SemClass extends SchemaProvider
             'default-write-level' => (int) $resource['default_write_level'],
             'bereiche' => (int) $resource['bereiche'],
             'show-browse' => (bool) $resource['show_browse'],
-            'write-access-nobody' => (bool) $resource['write_access_nobody'],
-            'topic-create-autor' => (bool) $resource['topic_create_autor'],
             'visible' => (bool) $resource['visible'],
             'course-creation-forbidden' => (bool) $resource['course_creation_forbidden'],
         ];
