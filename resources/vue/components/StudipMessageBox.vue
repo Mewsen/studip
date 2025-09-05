@@ -1,9 +1,6 @@
 <template>
     <div v-if="!closed"
          role="region"
-         :aria-label="label"
-         :aria-describedby="`messagebox-${counter}`"
-         :class="classNames"
     >
         <div class="messagebox_buttons">
             <a v-if="hideDetails" class="details" href="" :title="$gettext('Detailanzeige umschalten')" @click.prevent.stop="closedDetails = !closedDetails">

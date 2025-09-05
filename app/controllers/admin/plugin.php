@@ -114,43 +114,7 @@ class Admin_PluginController extends AuthenticatedController
      * Display the list of installed plugins and show all available
      * updates (if any).
      */
-    public function index_action()
-    {
-        // Check if an activation error has been flashed from the last request
-        if (isset($this->flash['activation-error'])) {
-            PageLayout::postError(
-                $this->get_template_factory()->render(
-                    'admin/plugin/activation-error-form.php',
-                    $this->flash['activation-error'] + ['controller' => $this]
-                )
-            );
-        }
-
-        $plugin_manager = PluginManager::getInstance();
-
-        $plugins = $plugin_manager->getPluginInfos($this->plugin_filter);
-
-        if ($this->core_filter && $this->core_filter !== 'yes') {
-            $plugins = array_filter($plugins, function ($plugin) {
-                return ($this->core_filter === 'no' && !$plugin['core'])
-                    || ($this->core_filter === 'only' && $plugin['core']);
-            });
-        }
-
-        $this->plugins       = $plugins;
-        $this->plugin_types  = $this->plugin_admin->getPluginTypes();
-        $this->update_info   = $this->get_update_info($this->plugins);
-        $this->migrations    = $this->plugin_admin->getMigrationInfo();
-        $this->num_updates   = 0;
-
-        foreach ($this->update_info as $id => $info) {
-            if (isset($info['update']) && !$this->plugins[$id]['depends']) {
-                $this->num_updates += 1;
-            }
-        }
-    }
-
-    public function vue_action(): void
+    public function index_action(): void
     {
         // Check if an activation error has been flashed from the last request
         if (isset($this->flash['activation-error'])) {

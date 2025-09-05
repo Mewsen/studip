@@ -1,8 +1,10 @@
 <template>
     <StudipLoadingSkeleton v-if="!updateInfosLoaded">
-        <studip-asset-img file="ajax-indicator-black.svg" width="50"/>
+        <studipAssetImg file="ajax-indicator-black.svg" width="50"/>
     </StudipLoadingSkeleton>
-    <StudipMessageBox v-else-if="Object.keys(updateInfos).length > 0">
+    <StudipMessageBox v-else-if="Object.keys(updateInfos).length > 0"
+                      :hideClose="true"
+    >
         {{ $gettext('Es ist ein Update für ein Plugin verfügbar') }}<br>
         <form :action="updateURL" method="post">
             <input type="hidden" :name="csrf.name" :value="csrf.value">
@@ -27,7 +29,7 @@
 
     <form :action="storeURL" method="post" class="default">
         <input type="hidden" :name="csrf.name" :value="csrf.value">
-        <table class="default">
+        <table class="default" id="plugin-administration-table">
             <caption>
                 {{ $gettext('Verwaltung von Plugins') }}
                 <template v-if="sortedPlugins.length < plugins.length">
@@ -371,8 +373,8 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-tr.not-installed td {
+<style lang="scss">
+table#plugin-administration-table tr.not-installed td {
     background-color: var(--light-gray-color-20);
     text-decoration: line-through;
 }
