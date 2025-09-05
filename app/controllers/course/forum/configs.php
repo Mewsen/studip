@@ -17,18 +17,28 @@ class Course_Forum_ConfigsController extends Forum\BaseController
 
     public function edit_action()
     {
-        $this->config = Context::get()->getConfiguration();
+        $config = Context::get()->getConfiguration();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('forum/configs/Edit')
+                ->withProps([
+                    'config' => [
+                        'moderator' => $config->FORUM_MODERATION_PERMISSION,
+                        'categories_navigation' => $config->FORUM_HIDE_CATEGORIES_NAVIGATION
+                    ]
+                ])
+        );
     }
 
     public function save_action()
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $this->config = Context::get()->getConfiguration();
+        $config = Context::get()->getConfiguration();
 
-        $this->config->store('FORUM_MODERATION_PERMISSION', trim(Request::option('forum_moderation_permission')));
+        $config->store('FORUM_MODERATION_PERMISSION', trim(Request::option('moderator')));
 
-        $this->config->store('FORUM_HIDE_CATEGORIES_NAVIGATION', Request::bool('forum_hide_categories_navigation'));
+        $config->store('FORUM_HIDE_CATEGORIES_NAVIGATION', Request::bool('categories_navigation'));
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
 

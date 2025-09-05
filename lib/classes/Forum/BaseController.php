@@ -50,7 +50,7 @@ abstract class BaseController extends StudipController
                 _('Forum verwalten'),
                 $this->url_for('course/forum/configs/edit'),
                 Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Forum verwalten')]),
-                ['data-dialog' => 'width=500;height=300']
+                ['data-dialog' => 'width=500;height=350']
             );
         }
 
