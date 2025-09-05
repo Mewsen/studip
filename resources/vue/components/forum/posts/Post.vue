@@ -54,7 +54,7 @@ const copyToClipboard = () => {
 
 const deletePost = async (post) => {
     STUDIP.Dialog.confirm(
-        $gettext('Wollen Sie diese Beitrag löschen?'),
+        $gettext('Wollen Sie diesen Beitrag löschen?'),
         async () => {
             try {
                 await STUDIP.jsonapi.withPromises().DELETE(`forum-postings/${post.id}`);
