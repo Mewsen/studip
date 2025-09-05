@@ -21,16 +21,14 @@ export default defineComponent({
     },
     data() {
         return {
-
+            calendar_options: {
+                plugins: [timeGridPlugin],
+                initialView: this.config.initialView ? this.config.initialView : 'timeGridWeek'
+            }
         }
     },
     computed: {
-        calendar_options() {
-            return {
-                plugins: [timeGridPlugin],
-                initialView: this.config.initialView ? this.config.initialView : 'timeGridWeek'
-            };
-        }
+
     }
 })
 </script>

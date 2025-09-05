@@ -8,8 +8,8 @@
 <section class="studip-fullcalendar" <?= arrayToHtmlAttributes($attributes) ?>>
     <?= \Studip\VueApp::create('StudipCalendar')->withProps(
         [
-            'title' => $title,
-            'calendar_options' => $config
+            'title'  => $title,
+            'config' => $config
         ]
     ) ?>
 </section>
