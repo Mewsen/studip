@@ -436,8 +436,7 @@ class Calendar_CalendarController extends AuthenticatedController
                             ),
                             $data_url_params
                         ),
-                        'method' => 'GET',
-                        'extraParams' => []
+                        'method' => 'GET'
                     ]
                 ],
                 'resources' => $calendar_resources,
