@@ -441,6 +441,7 @@ STUDIP.ready(function () {
         }
     );
 
+    /*
     jQuery(document).on(
         'click',
         '.fc-button',
@@ -458,6 +459,7 @@ STUDIP.ready(function () {
             }
         }
     );
+     */
 
     jQuery(document).on(
         'blur',
@@ -553,6 +555,7 @@ STUDIP.ready(function () {
         });
     }
 
+    /*
     function updateViewURL(defaultView) {
         const url = new URL(window.location.href);
         url.searchParams.set('defaultView', defaultView);
@@ -568,19 +571,24 @@ STUDIP.ready(function () {
         $('.booking-plan-allday_view').attr('href', url.toString());
     }
 
+     */
 
+/*
     jQuery('#booking-plan-jmpdate').datepicker(
         {
             dateFormat: 'dd.mm.yy',
             onClose: STUDIP.Fullcalendar.submitDatePicker
         }
     );
+
+ */
     jQuery('.resource-booking-time-fields input[type="date"]').datepicker(
         {
             dateFormat: 'yy-mm-dd'
         }
     );
 
+    /*
     jQuery('.resource-plan[data-resources-fullcalendar="1"]').each(function () {
         STUDIP.loadChunk('fullcalendar').then(() => {
             //Get the default date from the sessionStorage, if it is set
@@ -639,6 +647,9 @@ STUDIP.ready(function () {
         });
     });
 
+     */
+
+    /*
     //Check if an individual booking plan is to be displayed:
     jQuery('.individual-booking-plan[data-resources-fullcalendar="1"]').each(function () {
         STUDIP.loadChunk('fullcalendar').then(() => {
@@ -684,6 +695,8 @@ STUDIP.ready(function () {
             );
         });
     });
+
+     */
 
     jQuery(document).on(
         'click',

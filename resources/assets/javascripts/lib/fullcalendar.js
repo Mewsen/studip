@@ -2,21 +2,22 @@
  * This class contains Stud.IP specific code for the fullcalendar package.
  */
 
-import { Calendar } from '@fullcalendar/core';
-import deLocale from '@fullcalendar/core/locales/de';
-import enLocale from '@fullcalendar/core/locales/en-gb';
-import interactionPlugin from '@fullcalendar/interaction';
-import { Draggable } from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import resourceCommonPlugin from '@fullcalendar/resource';
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+//import { Calendar } from '@fullcalendar/core';
+//import deLocale from '@fullcalendar/core/locales/de';
+//import enLocale from '@fullcalendar/core/locales/en-gb';
+//import interactionPlugin from '@fullcalendar/interaction';
+//import { Draggable } from '@fullcalendar/interaction';
+//import dayGridPlugin from '@fullcalendar/daygrid';
+//import timeGridPlugin from '@fullcalendar/timegrid';
+//import resourceCommonPlugin from '@fullcalendar/resource';
+//import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+//import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-import Responsive from "./responsive";
+//import { jsPDF } from 'jspdf';
+//import html2canvas from 'html2canvas';
+//import Responsive from "./responsive";
 
+/*
 Date.prototype.getWeekNumber = function () {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
     var dayNum = d.getUTCDay() || 7;
@@ -29,9 +30,10 @@ function pad(what, length = 2, char = '0') {
     let padding = new Array(length + 1).join(char);
     return `${padding}${what}`.substr(-length);
 }
+*/
 
-class Fullcalendar
-{
+//class Fullcalendar
+//{
     static holidayCache = sessionStorage.getItem('fullcalendar_holidays') ? JSON.parse(sessionStorage.getItem('fullcalendar_holidays')) : {};
     static vacationCache = sessionStorage.getItem('fullcalendar_vacations') ? JSON.parse(sessionStorage.getItem('fullcalendar_vacations')) : {};
 
@@ -124,7 +126,6 @@ class Fullcalendar
             return items;
         });
     }
-
     /**
      * The initialisation method. It loads the JS files for fullcalendar
      * in case they are not loaded and sets up a fullcalendar instance
@@ -134,8 +135,9 @@ class Fullcalendar
      *     This must either be a DOMElement or a string
      *     containing a CSS selector.
      */
-    static init(node, fullcalendar_options = null)
-    {
+    //static init(node, fullcalendar_options = null)
+   // {
+        /*
         // Convert css selector to actual dom element
         node = $(node)[0];
 
@@ -165,14 +167,16 @@ class Fullcalendar
         calendar.render();
 
         return calendar;
-    }
+         */
+    //}
 
     /**
      * Converts semester events to the default fullcalendar event format.
      * The begin and end date are converted to fit into the current week.
      */
-    static convertSemesterEvents(event_data, fake_week_start = Date())
-    {
+    //static convertSemesterEvents(event_data, fake_week_start = Date())
+    //{
+        /*
         if (!event_data) {
             return {};
         }
@@ -211,11 +215,13 @@ class Fullcalendar
         event_data.end = `${fake_end.getFullYear()}-${pad(fake_end.getMonth() + 1)}-${pad(fake_end.getDate())}T${end[1]}`;
 
         return event_data;
-    }
+         */
+    //}
 
 
-    static createSemesterCalendarFromNode(node, additional_config = {})
-    {
+    //static createSemesterCalendarFromNode(node, additional_config = {})
+    //{
+        /*
         if (!node) {
             //Ain't no fullcalendar when the node's gone!
             return;
@@ -236,11 +242,13 @@ class Fullcalendar
         }
 
         return this.createFromNode(node, config);
-    }
+         */
+    //}
 
 
-    static defaultResizeEventHandler(info)
-    {
+    //static defaultResizeEventHandler(info)
+    //{
+        /*
         if (!info.event.durationEditable || !info.view.viewSpec.options.editable) {
             //Read-only events cannot be resized!
             info.revert();
@@ -267,10 +275,13 @@ class Fullcalendar
                 }
             );
         }
-    }
 
-    static downloadPDF(format = 'landscape', withWeekend = false)
-    {
+         */
+    //}
+
+    //static downloadPDF(format = 'landscape', withWeekend = false)
+    //{
+        /*
         $('*[data-fullcalendar="1"]').each(function () {
             if (this.calendar != undefined) {
                 $(this).addClass('print-view').toggleClass('without-weekend', !withWeekend);
@@ -297,10 +308,13 @@ class Fullcalendar
                 $(this).removeClass('print-view without-weekend');
             }
         });
-    }
 
-    static toRFC3339String(date)
-    {
+         */
+   // }
+
+    //static toRFC3339String(date)
+    //{
+        /*
         var timezone_offset_min = date.getTimezoneOffset();
         var offset_hrs = parseInt(Math.abs(timezone_offset_min / 60), 10);
         var offset_min = Math.abs(timezone_offset_min%60);
@@ -332,10 +346,13 @@ class Fullcalendar
         current_datetime = `${current_year}-${current_month}-${current_date}T${current_hrs}:${current_mins}:${current_secs}`;
 
         return current_datetime + timezone_standard;
-    }
 
-    static defaultDropEventHandler(info)
-    {
+         */
+    //}
+
+   // static defaultDropEventHandler(info)
+  //  {
+        /*
         // The logic from fullcalendar is inversed here:
         // If the calendar isn't editable, the event isn't either.
         if (!info.event.startEditable || !info.view.viewSpec.options.editable) {
@@ -425,10 +442,13 @@ class Fullcalendar
                 }
             }
         }
-    }
 
-    static institutePlanDropEventHandler(info)
-    {
+         */
+  //  }
+
+ //   static institutePlanDropEventHandler(info)
+  //  {
+        /*
         //The logic from fullcalendar is inversed here:
         if (info.newResource) {
             $.post({
@@ -459,10 +479,13 @@ class Fullcalendar
                 }
             }).fail(info.revert);
         }
-    }
 
-    static institutePlanExternalDropEventHandler(info)
-    {
+         */
+ //   }
+
+  //  static institutePlanExternalDropEventHandler(info)
+  //  {
+        /*
         var resourceIds = info.event.getResources().map(resource => resource.id);
 
         $.post({
@@ -476,14 +499,21 @@ class Fullcalendar
             }
         }).done(data => {
             if (data) {
-                info.view.context.calendar.addEvent(JSON.parse(data));
+                info.view.calendar.addEvent(JSON.parse(data));
                 info.event.remove();
             }
         });
-    }
 
-    static createFromNode(node, additional_config = {})
-    {
+         */
+   // }
+
+  //  static createFromNode(node, additional_config = {})
+  //  {
+/*
+obsolete!
+
+        return;
+
         if (!node) {
             //No node? No fullcalendar!
             return;
@@ -529,19 +559,19 @@ class Fullcalendar
             studip_functions: [],
             resourceAreaWidth: '20%',
             select (selectionInfo) {
-                let calendar_config = JSON.parse(selectionInfo.view.context.calendar.el.dataset.config);
+                let calendar_config = JSON.parse(selectionInfo.view.calendar.el.dataset.config);
                 let dialog_size = 'auto';
                 if (calendar_config.dialog_size !== undefined) {
                     dialog_size = calendar_config.dialog_size;
                 }
 
-                if (!selectionInfo.view.viewSpec.options.editable || !selectionInfo.view.viewSpec.options.studip_urls) {
+                if (!calendar_config.editable || !calendar_config.studip_urls) {
                     //The calendar isn't editable.
                     return;
                 }
-                if (selectionInfo.view.viewSpec.options.studip_urls.add) {
+                if (calendar_config.studip_urls.add) {
                     if (selectionInfo.resource) {
-                        STUDIP.Dialog.fromURL( selectionInfo.view.viewSpec.options.studip_urls.add, {
+                        STUDIP.Dialog.fromURL(calendar_config.studip_urls.add, {
                             data: {
                                 begin: selectionInfo.start.getTime()/1000,
                                 end: selectionInfo.end.getTime()/1000,
@@ -551,7 +581,7 @@ class Fullcalendar
                             size: dialog_size
                         });
                     } else {
-                        STUDIP.Dialog.fromURL(selectionInfo.view.viewSpec.options.studip_urls.add, {
+                        STUDIP.Dialog.fromURL(calendar_config.studip_urls.add, {
                             data: {
                                 begin: selectionInfo.start.getTime()/1000,
                                 end: selectionInfo.end.getTime()/1000,
@@ -590,7 +620,7 @@ class Fullcalendar
                 if (extended_props.studip_view_urls === undefined) {
                     return;
                 }
-                let calendar_config = JSON.parse(eventClickInfo.view.context.calendar.el.dataset.config);
+                let calendar_config = JSON.parse(eventClickInfo.view.calendar.el.dataset.config);
                 let dialog_size = 'auto';
                 if (calendar_config.dialog_size !== undefined) {
                     //Use the configured default dialog size for the fullcalendar instance:
@@ -632,7 +662,7 @@ class Fullcalendar
             },
             eventDrop (info) {
                 let handle_drop = function() {
-                    if ($(info.view.context.calendar.el).hasClass('institute-plan')) {
+                    if ($(info.view.calendar.el).hasClass('institute-plan')) {
                         var start = info.event.start;
                         var cal_start = info.view.activeStart;
                         if ((start.getHours() - cal_start.getHours()) % 2 === 1) {
@@ -649,7 +679,7 @@ class Fullcalendar
                     }
                 };
 
-                let calendar_config = JSON.parse(info.view.context.calendar.el.dataset.config);
+                let calendar_config = JSON.parse(info.view.calendar.el.dataset.config);
                 if (calendar_config.confirm) {
                     if (calendar_config.confirm.drop) {
                         STUDIP.Dialog.confirm(calendar_config.confirm.drop)
@@ -670,7 +700,7 @@ class Fullcalendar
                 let eventElement = info.el;
                 let iconColor = event.textColor === '#000000' ? 'black' : 'white';
 
-                if ($(info.view.context.calendar.el).hasClass('institute-plan')) {
+                if ($(info.view.calendar.el).hasClass('institute-plan')) {
                     $(eventElement).attr('title', event.extendedProps.tooltip);
                     if (event.extendedProps.content_fields) {
                         for (const [css_class, field] of Object.entries(event.extendedProps.content_fields)) {
@@ -808,8 +838,8 @@ class Fullcalendar
                 });
             },
             resourceRender (renderInfo) {
-                if ($(renderInfo.view.context.calendar.el).hasClass('room-group-booking-plan')) {
-                    let action = $(renderInfo.view.context.calendar.el).hasClass('semester-plan') ? 'semester' : 'booking';
+                if ($(renderInfo.view.calendar.el).hasClass('room-group-booking-plan')) {
+                    let action = $(renderInfo.view.calendar.el).hasClass('semester-plan') ? 'semester' : 'booking';
                     let url = STUDIP.URLHelper.getURL(`dispatch.php/resources/room_planning/${action}_plan/${renderInfo.resource.id}`);
                     $(renderInfo.el).find('.fc-cell-text').html(
                         $('<a>').attr('href', url).text(renderInfo.resource.title)
@@ -832,7 +862,7 @@ class Fullcalendar
                 $(dropInfo.draggedEl).remove();
             },
             eventReceive (info) {
-                if ($(info.view.context.calendar.el).hasClass('institute-plan')) {
+                if ($(info.view.calendar.el).hasClass('institute-plan')) {
                     STUDIP.Fullcalendar.institutePlanExternalDropEventHandler(info);
                 }
             }
@@ -876,8 +906,9 @@ class Fullcalendar
         config.defaultView = defaultView;
 
         return this.init(node, config);
-    }
-
+        */
+  //  }
+/*
     static submitDatePicker() {
         let picked_date = jQuery('#booking-plan-jmpdate').val();
         if (!picked_date) {
@@ -972,6 +1003,8 @@ class Fullcalendar
         let date_html = STUDIP.DateTime.getStudipDate(date, false, true, true);
         return '<span class="dow">' + format.format(date) + '.</span> ' + date_html;
     }
-}
 
-export default Fullcalendar;
+ */
+//}
+
+//export default Fullcalendar;
