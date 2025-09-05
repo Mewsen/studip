@@ -17,7 +17,23 @@ export default defineComponent({
         config: {
             type: Object,
             required: true,
-            default: () => ({})
+            default: () => ({
+                editable:    false,
+                selectable:  false,
+                studip_urls: [],
+                dialog_size: 'auto',
+                slotMinTime: '08:00',
+                slotMaxTime: '20:00',
+                initialDate: new Date(),
+                allDaySlot:  false,
+                allDayText:  '',
+                weekNumbers: true,
+                header:      {
+                    start:  ['dayGridYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay'],
+                    center: ['title'],
+                    end:    ['prev', 'today', 'next']
+                }
+            })
         }
     },
     data() {
