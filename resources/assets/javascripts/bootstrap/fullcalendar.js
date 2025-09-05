@@ -1,3 +1,4 @@
+/*
 STUDIP.ready(function () {
     //Check if fullcalendar instances are to be displayed:
     $('*[data-fullcalendar="1"]').each(function () {
@@ -46,3 +47,4 @@ STUDIP.ready(function () {
 
     jQuery(document).on('change', '#date_select[data-calendar-control]', STUDIP.Fullcalendar.submitDatePicker);
 });
+*/
