@@ -527,7 +527,8 @@ if (!empty($mvv_tree)) : ?>
     <? foreach ($links as $link): ?>
         <?= Studip\LinkButton::create(
             $link['label'],
-            URLHelper::getURL($link['url'], $link['attributes'] ?? [])
+            URLHelper::getURL($link['url']),
+            $link['attributes']
         ) ?>
     <? endforeach ?>
     <? if (Request::get('from')): ?>
