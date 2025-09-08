@@ -3,12 +3,8 @@
         border-top: 1px solid $base-color;
         list-style: none inside;
         margin: 0;
-        overflow-x: auto;
         padding: 0;
 
-        @include media-breakpoint-medium-up() {
-            max-height: 200px;
-        }
         li {
             border-bottom: 1px solid $base-color;
             padding: 5px;
