@@ -7,6 +7,7 @@
     <? endif ?>
 </label>
 <input type="number"
+       v-model="<?= htmlReady($name) ?>"
        name="<?= htmlReady($name) ?>"
        value="<?= htmlReady($value) ?>"
        id="<?= $id ?>"
