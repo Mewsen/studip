@@ -1,9 +1,3 @@
-/*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.8.2-MariaDB, for osx10.20 (arm64)
---
--- Host: 127.0.0.1    Database: studip_6_0
--- ------------------------------------------------------
--- Server version	11.8.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,12 +8,6 @@
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
-
---
--- Table structure for table `Institute`
---
-
 DROP TABLE IF EXISTS `Institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -43,11 +31,6 @@ CREATE TABLE `Institute` (
   KEY `fakultaets_id` (`fakultaets_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `abschluss`
---
-
 DROP TABLE IF EXISTS `abschluss`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -63,11 +46,6 @@ CREATE TABLE `abschluss` (
   PRIMARY KEY (`abschluss_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activities`
---
-
 DROP TABLE IF EXISTS `activities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -90,11 +68,6 @@ CREATE TABLE `activities` (
   KEY `context_query` (`context`,`context_id`,`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_condition`
---
-
 DROP TABLE IF EXISTS `admission_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -106,11 +79,6 @@ CREATE TABLE `admission_condition` (
   PRIMARY KEY (`rule_id`,`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_conditiongroup`
---
-
 DROP TABLE IF EXISTS `admission_conditiongroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -120,11 +88,6 @@ CREATE TABLE `admission_conditiongroup` (
   PRIMARY KEY (`conditiongroup_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_seminar_user`
---
-
 DROP TABLE IF EXISTS `admission_seminar_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -141,11 +104,6 @@ CREATE TABLE `admission_seminar_user` (
   KEY `seminar_id` (`seminar_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionfactor`
---
-
 DROP TABLE IF EXISTS `admissionfactor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -159,11 +117,6 @@ CREATE TABLE `admissionfactor` (
   PRIMARY KEY (`list_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionrule_compat`
---
-
 DROP TABLE IF EXISTS `admissionrule_compat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -175,11 +128,6 @@ CREATE TABLE `admissionrule_compat` (
   PRIMARY KEY (`rule_type`,`compat_rule_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionrules`
---
-
 DROP TABLE IF EXISTS `admissionrules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -193,11 +141,6 @@ CREATE TABLE `admissionrules` (
   UNIQUE KEY `ruletype` (`ruletype`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `archiv`
---
-
 DROP TABLE IF EXISTS `archiv`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -224,11 +167,6 @@ CREATE TABLE `archiv` (
   KEY `heimat_inst_id` (`heimat_inst_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `archiv_user`
---
-
 DROP TABLE IF EXISTS `archiv_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -240,11 +178,6 @@ CREATE TABLE `archiv_user` (
   KEY `user_id` (`user_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auth_extern`
---
-
 DROP TABLE IF EXISTS `auth_extern`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -261,11 +194,6 @@ CREATE TABLE `auth_extern` (
   PRIMARY KEY (`studip_user_id`,`external_user_system_type`,`external_user_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auth_user_md5`
---
-
 DROP TABLE IF EXISTS `auth_user_md5`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -290,11 +218,6 @@ CREATE TABLE `auth_user_md5` (
   KEY `matriculation_number` (`matriculation_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auto_insert_sem`
---
-
 DROP TABLE IF EXISTS `auto_insert_sem`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -305,11 +228,6 @@ CREATE TABLE `auto_insert_sem` (
   PRIMARY KEY (`seminar_id`,`status`,`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auto_insert_user`
---
-
 DROP TABLE IF EXISTS `auto_insert_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -320,11 +238,6 @@ CREATE TABLE `auto_insert_user` (
   PRIMARY KEY (`seminar_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `aux_lock_rules`
---
-
 DROP TABLE IF EXISTS `aux_lock_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -339,11 +252,6 @@ CREATE TABLE `aux_lock_rules` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `banner_ads`
---
-
 DROP TABLE IF EXISTS `banner_ads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -364,11 +272,6 @@ CREATE TABLE `banner_ads` (
   PRIMARY KEY (`ad_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `banner_roles`
---
-
 DROP TABLE IF EXISTS `banner_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -378,11 +281,6 @@ CREATE TABLE `banner_roles` (
   PRIMARY KEY (`ad_id`,`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_comments`
---
-
 DROP TABLE IF EXISTS `blubber_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -401,11 +299,6 @@ CREATE TABLE `blubber_comments` (
   KEY `mkdate` (`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_events_queue`
---
-
 DROP TABLE IF EXISTS `blubber_events_queue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -417,11 +310,6 @@ CREATE TABLE `blubber_events_queue` (
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_mentions`
---
-
 DROP TABLE IF EXISTS `blubber_mentions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -437,11 +325,6 @@ CREATE TABLE `blubber_mentions` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_tags`
---
-
 DROP TABLE IF EXISTS `blubber_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -452,11 +335,6 @@ CREATE TABLE `blubber_tags` (
   KEY `tag` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_threads`
---
-
 DROP TABLE IF EXISTS `blubber_threads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -479,11 +357,6 @@ CREATE TABLE `blubber_threads` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_threads_followstates`
---
-
 DROP TABLE IF EXISTS `blubber_threads_followstates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -495,11 +368,6 @@ CREATE TABLE `blubber_threads_followstates` (
   PRIMARY KEY (`thread_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache`
---
-
 DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -510,11 +378,6 @@ CREATE TABLE `cache` (
   PRIMARY KEY (`cache_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache_operations`
---
-
 DROP TABLE IF EXISTS `cache_operations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -527,11 +390,6 @@ CREATE TABLE `cache_operations` (
   PRIMARY KEY (`cache_key`(200),`operation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache_types`
---
-
 DROP TABLE IF EXISTS `cache_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -544,11 +402,6 @@ CREATE TABLE `cache_types` (
   UNIQUE KEY `class_name` (`class_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_date_assignments`
---
-
 DROP TABLE IF EXISTS `calendar_date_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -561,11 +414,6 @@ CREATE TABLE `calendar_date_assignments` (
   PRIMARY KEY (`range_id`,`calendar_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_date_exceptions`
---
-
 DROP TABLE IF EXISTS `calendar_date_exceptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -579,11 +427,6 @@ CREATE TABLE `calendar_date_exceptions` (
   KEY `calendar_date_id` (`calendar_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_dates`
---
-
 DROP TABLE IF EXISTS `calendar_dates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -617,11 +460,6 @@ CREATE TABLE `calendar_dates` (
   KEY `begin` (`begin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `captcha_challenges`
---
-
 DROP TABLE IF EXISTS `captcha_challenges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -633,11 +471,6 @@ CREATE TABLE `captcha_challenges` (
   PRIMARY KEY (`challenge_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `clipboard_items`
---
-
 DROP TABLE IF EXISTS `clipboard_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -653,11 +486,6 @@ CREATE TABLE `clipboard_items` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `clipboards`
---
-
 DROP TABLE IF EXISTS `clipboards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -673,11 +501,6 @@ CREATE TABLE `clipboards` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `colour_values`
---
-
 DROP TABLE IF EXISTS `colour_values`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -690,11 +513,6 @@ CREATE TABLE `colour_values` (
   PRIMARY KEY (`colour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `comments`
---
-
 DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -710,11 +528,6 @@ CREATE TABLE `comments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `conditionaladmissions`
---
-
 DROP TABLE IF EXISTS `conditionaladmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -729,11 +542,6 @@ CREATE TABLE `conditionaladmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `config`
---
-
 DROP TABLE IF EXISTS `config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -749,11 +557,6 @@ CREATE TABLE `config` (
   PRIMARY KEY (`field`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `config_values`
---
-
 DROP TABLE IF EXISTS `config_values`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -769,11 +572,6 @@ CREATE TABLE `config_values` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_blocks`
---
-
 DROP TABLE IF EXISTS `consultation_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -799,11 +597,6 @@ CREATE TABLE `consultation_blocks` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_bookings`
---
-
 DROP TABLE IF EXISTS `consultation_bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -820,11 +613,6 @@ CREATE TABLE `consultation_bookings` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_events`
---
-
 DROP TABLE IF EXISTS `consultation_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -836,11 +624,6 @@ CREATE TABLE `consultation_events` (
   PRIMARY KEY (`slot_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_responsibilities`
---
-
 DROP TABLE IF EXISTS `consultation_responsibilities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -852,11 +635,6 @@ CREATE TABLE `consultation_responsibilities` (
   PRIMARY KEY (`block_id`,`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_slots`
---
-
 DROP TABLE IF EXISTS `consultation_slots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -873,11 +651,6 @@ CREATE TABLE `consultation_slots` (
   KEY `block_id` (`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact`
---
-
 DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -891,11 +664,6 @@ CREATE TABLE `contact` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact_group_items`
---
-
 DROP TABLE IF EXISTS `contact_group_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -907,11 +675,6 @@ CREATE TABLE `contact_group_items` (
   PRIMARY KEY (`group_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact_groups`
---
-
 DROP TABLE IF EXISTS `contact_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -924,11 +687,6 @@ CREATE TABLE `contact_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `content_terms_of_use_entries`
---
-
 DROP TABLE IF EXISTS `content_terms_of_use_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -946,11 +704,6 @@ CREATE TABLE `content_terms_of_use_entries` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursememberadmissions`
---
-
 DROP TABLE IF EXISTS `coursememberadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -966,11 +719,6 @@ CREATE TABLE `coursememberadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_factorlist`
---
-
 DROP TABLE IF EXISTS `courseset_factorlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -981,11 +729,6 @@ CREATE TABLE `courseset_factorlist` (
   PRIMARY KEY (`set_id`,`factorlist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_institute`
---
-
 DROP TABLE IF EXISTS `courseset_institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -998,11 +741,6 @@ CREATE TABLE `courseset_institute` (
   KEY `institute_id` (`institute_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_rule`
---
-
 DROP TABLE IF EXISTS `courseset_rule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1015,11 +753,6 @@ CREATE TABLE `courseset_rule` (
   KEY `type` (`set_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursesets`
---
-
 DROP TABLE IF EXISTS `coursesets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1037,11 +770,6 @@ CREATE TABLE `coursesets` (
   KEY `set_user` (`user_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursewizardsteps`
---
-
 DROP TABLE IF EXISTS `coursewizardsteps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1057,11 +785,6 @@ CREATE TABLE `coursewizardsteps` (
   UNIQUE KEY `classname` (`classname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_logs`
---
-
 DROP TABLE IF EXISTS `cronjobs_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1077,11 +800,6 @@ CREATE TABLE `cronjobs_logs` (
   KEY `schedule_id` (`schedule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_schedules`
---
-
 DROP TABLE IF EXISTS `cronjobs_schedules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1107,11 +825,6 @@ CREATE TABLE `cronjobs_schedules` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_tasks`
---
-
 DROP TABLE IF EXISTS `cronjobs_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1127,11 +840,6 @@ CREATE TABLE `cronjobs_tasks` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_block_comments`
---
-
 DROP TABLE IF EXISTS `cw_block_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1147,11 +855,6 @@ CREATE TABLE `cw_block_comments` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_block_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_block_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1167,11 +870,6 @@ CREATE TABLE `cw_block_feedbacks` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_blocks`
---
-
 DROP TABLE IF EXISTS `cw_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1192,11 +890,6 @@ CREATE TABLE `cw_blocks` (
   KEY `index_container_id` (`container_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_bookmarks`
---
-
 DROP TABLE IF EXISTS `cw_bookmarks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1208,11 +901,6 @@ CREATE TABLE `cw_bookmarks` (
   PRIMARY KEY (`user_id`,`element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_certificates`
---
-
 DROP TABLE IF EXISTS `cw_certificates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1228,11 +916,6 @@ CREATE TABLE `cw_certificates` (
   KEY `index_unit_id` (`unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_clipboards`
---
-
 DROP TABLE IF EXISTS `cw_clipboards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1253,11 +936,6 @@ CREATE TABLE `cw_clipboards` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_containers`
---
-
 DROP TABLE IF EXISTS `cw_containers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1278,11 +956,6 @@ CREATE TABLE `cw_containers` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_peer_review_processes`
---
-
 DROP TABLE IF EXISTS `cw_peer_review_processes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1301,11 +974,6 @@ CREATE TABLE `cw_peer_review_processes` (
   KEY `index_owner_id` (`owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_peer_reviews`
---
-
 DROP TABLE IF EXISTS `cw_peer_reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1326,11 +994,6 @@ CREATE TABLE `cw_peer_reviews` (
   KEY `index_reviewer_id` (`reviewer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_public_links`
---
-
 DROP TABLE IF EXISTS `cw_public_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1347,11 +1010,6 @@ CREATE TABLE `cw_public_links` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_element_comments`
---
-
 DROP TABLE IF EXISTS `cw_structural_element_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1367,11 +1025,6 @@ CREATE TABLE `cw_structural_element_comments` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_element_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_structural_element_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1387,11 +1040,6 @@ CREATE TABLE `cw_structural_element_feedbacks` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_elements`
---
-
 DROP TABLE IF EXISTS `cw_structural_elements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1434,11 +1082,6 @@ CREATE TABLE `cw_structural_elements` (
   KEY `index_range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_task_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_task_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1454,11 +1097,6 @@ CREATE TABLE `cw_task_feedbacks` (
   KEY `index_lecturer_id` (`lecturer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_task_groups`
---
-
 DROP TABLE IF EXISTS `cw_task_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1479,11 +1117,6 @@ CREATE TABLE `cw_task_groups` (
   KEY `index_lecturer_id` (`lecturer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_tasks`
---
-
 DROP TABLE IF EXISTS `cw_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1506,11 +1139,6 @@ CREATE TABLE `cw_tasks` (
   KEY `index_solver_id` (`solver_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_templates`
---
-
 DROP TABLE IF EXISTS `cw_templates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1524,11 +1152,6 @@ CREATE TABLE `cw_templates` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_units`
---
-
 DROP TABLE IF EXISTS `cw_units`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1561,11 +1184,6 @@ CREATE TABLE `cw_units` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_user_data_fields`
---
-
 DROP TABLE IF EXISTS `cw_user_data_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1578,11 +1196,6 @@ CREATE TABLE `cw_user_data_fields` (
   PRIMARY KEY (`user_id`,`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_user_progresses`
---
-
 DROP TABLE IF EXISTS `cw_user_progresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1596,11 +1209,6 @@ CREATE TABLE `cw_user_progresses` (
   KEY `block_id` (`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `datafields`
---
-
 DROP TABLE IF EXISTS `datafields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1626,11 +1234,6 @@ CREATE TABLE `datafields` (
   KEY `object_type` (`object_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `datafields_entries`
---
-
 DROP TABLE IF EXISTS `datafields_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1648,11 +1251,6 @@ CREATE TABLE `datafields_entries` (
   KEY `datafields_contents` (`datafield_id`,`content`(32))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deputies`
---
-
 DROP TABLE IF EXISTS `deputies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1668,11 +1266,6 @@ CREATE TABLE `deputies` (
   KEY `user_id` (`user_id`,`range_id`,`edit_about`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignment_attempts`
---
-
 DROP TABLE IF EXISTS `etask_assignment_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1690,11 +1283,6 @@ CREATE TABLE `etask_assignment_attempts` (
   UNIQUE KEY `assignment_id` (`assignment_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignment_ranges`
---
-
 DROP TABLE IF EXISTS `etask_assignment_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1710,11 +1298,6 @@ CREATE TABLE `etask_assignment_ranges` (
   UNIQUE KEY `assignment_id` (`assignment_id`,`range_type`,`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignments`
---
-
 DROP TABLE IF EXISTS `etask_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1737,11 +1320,6 @@ CREATE TABLE `etask_assignments` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_blocks`
---
-
 DROP TABLE IF EXISTS `etask_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1756,11 +1334,6 @@ CREATE TABLE `etask_blocks` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_group_members`
---
-
 DROP TABLE IF EXISTS `etask_group_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1773,11 +1346,6 @@ CREATE TABLE `etask_group_members` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_responses`
---
-
 DROP TABLE IF EXISTS `etask_responses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1803,11 +1371,6 @@ CREATE TABLE `etask_responses` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_task_tags`
---
-
 DROP TABLE IF EXISTS `etask_task_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1818,11 +1381,6 @@ CREATE TABLE `etask_task_tags` (
   PRIMARY KEY (`task_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_tasks`
---
-
 DROP TABLE IF EXISTS `etask_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1840,11 +1398,6 @@ CREATE TABLE `etask_tasks` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_test_tags`
---
-
 DROP TABLE IF EXISTS `etask_test_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1855,11 +1408,6 @@ CREATE TABLE `etask_test_tags` (
   PRIMARY KEY (`test_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_test_tasks`
---
-
 DROP TABLE IF EXISTS `etask_test_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1876,11 +1424,6 @@ CREATE TABLE `etask_test_tasks` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_tests`
---
-
 DROP TABLE IF EXISTS `etask_tests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1896,11 +1439,6 @@ CREATE TABLE `etask_tests` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ex_termine`
---
-
 DROP TABLE IF EXISTS `ex_termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1923,11 +1461,6 @@ CREATE TABLE `ex_termine` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `extern_pages_configs`
---
-
 DROP TABLE IF EXISTS `extern_pages_configs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1948,11 +1481,6 @@ CREATE TABLE `extern_pages_configs` (
   KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `external_users`
---
-
 DROP TABLE IF EXISTS `external_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1971,11 +1499,6 @@ CREATE TABLE `external_users` (
   KEY `contact_type` (`contact_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `fach`
---
-
 DROP TABLE IF EXISTS `fach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1992,11 +1515,6 @@ CREATE TABLE `fach` (
   PRIMARY KEY (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `feedback`
---
-
 DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2020,11 +1538,6 @@ CREATE TABLE `feedback` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `feedback_entries`
---
-
 DROP TABLE IF EXISTS `feedback_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2042,11 +1555,6 @@ CREATE TABLE `feedback_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `file_refs`
---
-
 DROP TABLE IF EXISTS `file_refs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2067,11 +1575,6 @@ CREATE TABLE `file_refs` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files`
---
-
 DROP TABLE IF EXISTS `files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2090,11 +1593,6 @@ CREATE TABLE `files` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files_search_attributes`
---
-
 DROP TABLE IF EXISTS `files_search_attributes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2117,11 +1615,6 @@ CREATE TABLE `files_search_attributes` (
   KEY `semester_end` (`semester_end`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files_search_index`
---
-
 DROP TABLE IF EXISTS `files_search_index`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2135,11 +1628,6 @@ CREATE TABLE `files_search_index` (
   FULLTEXT KEY `text` (`text`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `folders`
---
-
 DROP TABLE IF EXISTS `folders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2160,11 +1648,6 @@ CREATE TABLE `folders` (
   KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_abo_users`
---
-
 DROP TABLE IF EXISTS `forum_abo_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2174,11 +1657,6 @@ CREATE TABLE `forum_abo_users` (
   PRIMARY KEY (`topic_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_categories`
---
-
 DROP TABLE IF EXISTS `forum_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2191,11 +1669,6 @@ CREATE TABLE `forum_categories` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_categories_entries`
---
-
 DROP TABLE IF EXISTS `forum_categories_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2206,11 +1679,6 @@ CREATE TABLE `forum_categories_entries` (
   PRIMARY KEY (`category_id`,`topic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_entries`
---
-
 DROP TABLE IF EXISTS `forum_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2238,11 +1706,6 @@ CREATE TABLE `forum_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_entries_issues`
---
-
 DROP TABLE IF EXISTS `forum_entries_issues`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2252,11 +1715,6 @@ CREATE TABLE `forum_entries_issues` (
   PRIMARY KEY (`topic_id`,`issue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_favorites`
---
-
 DROP TABLE IF EXISTS `forum_favorites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2266,11 +1724,6 @@ CREATE TABLE `forum_favorites` (
   PRIMARY KEY (`user_id`,`topic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_likes`
---
-
 DROP TABLE IF EXISTS `forum_likes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2280,11 +1733,6 @@ CREATE TABLE `forum_likes` (
   PRIMARY KEY (`topic_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_visits`
---
-
 DROP TABLE IF EXISTS `forum_visits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2296,11 +1744,6 @@ CREATE TABLE `forum_visits` (
   PRIMARY KEY (`user_id`,`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `global_resource_locks`
---
-
 DROP TABLE IF EXISTS `global_resource_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2315,11 +1758,6 @@ CREATE TABLE `global_resource_locks` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `grading_definitions`
---
-
 DROP TABLE IF EXISTS `grading_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2339,11 +1777,6 @@ CREATE TABLE `grading_definitions` (
   KEY `tool` (`tool`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `grading_instances`
---
-
 DROP TABLE IF EXISTS `grading_instances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2358,11 +1791,6 @@ CREATE TABLE `grading_instances` (
   PRIMARY KEY (`definition_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_content`
---
-
 DROP TABLE IF EXISTS `help_content`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2384,11 +1812,6 @@ CREATE TABLE `help_content` (
   PRIMARY KEY (`content_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_audiences`
---
-
 DROP TABLE IF EXISTS `help_tour_audiences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2401,11 +1824,6 @@ CREATE TABLE `help_tour_audiences` (
   PRIMARY KEY (`tour_id`,`range_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_settings`
---
-
 DROP TABLE IF EXISTS `help_tour_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2418,11 +1836,6 @@ CREATE TABLE `help_tour_settings` (
   PRIMARY KEY (`tour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_steps`
---
-
 DROP TABLE IF EXISTS `help_tour_steps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2443,11 +1856,6 @@ CREATE TABLE `help_tour_steps` (
   PRIMARY KEY (`tour_id`,`step`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_user`
---
-
 DROP TABLE IF EXISTS `help_tour_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2461,11 +1869,6 @@ CREATE TABLE `help_tour_user` (
   PRIMARY KEY (`tour_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tours`
---
-
 DROP TABLE IF EXISTS `help_tours`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2486,11 +1889,6 @@ CREATE TABLE `help_tours` (
   PRIMARY KEY (`tour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `i18n`
---
-
 DROP TABLE IF EXISTS `i18n`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2503,11 +1901,6 @@ CREATE TABLE `i18n` (
   PRIMARY KEY (`object_id`,`table`,`field`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `institute_plan_columns`
---
-
 DROP TABLE IF EXISTS `institute_plan_columns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2521,11 +1914,6 @@ CREATE TABLE `institute_plan_columns` (
   PRIMARY KEY (`range_id`,`column`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `kategorien`
---
-
 DROP TABLE IF EXISTS `kategorien`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2542,11 +1930,6 @@ CREATE TABLE `kategorien` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `keyrings`
---
-
 DROP TABLE IF EXISTS `keyrings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2563,11 +1946,6 @@ CREATE TABLE `keyrings` (
   KEY `range_id` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `licenses`
---
-
 DROP TABLE IF EXISTS `licenses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2585,11 +1963,6 @@ CREATE TABLE `licenses` (
   KEY `default` (`default`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `limitedadmissions`
---
-
 DROP TABLE IF EXISTS `limitedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2604,11 +1977,6 @@ CREATE TABLE `limitedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lock_rules`
---
-
 DROP TABLE IF EXISTS `lock_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2625,11 +1993,6 @@ CREATE TABLE `lock_rules` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lockedadmissions`
---
-
 DROP TABLE IF EXISTS `lockedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2641,11 +2004,6 @@ CREATE TABLE `lockedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `log_actions`
---
-
 DROP TABLE IF EXISTS `log_actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2664,11 +2022,6 @@ CREATE TABLE `log_actions` (
   PRIMARY KEY (`action_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `log_events`
---
-
 DROP TABLE IF EXISTS `log_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2685,11 +2038,6 @@ CREATE TABLE `log_events` (
   KEY `action_id` (`action_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `login_faq`
---
-
 DROP TABLE IF EXISTS `login_faq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2700,11 +2048,6 @@ CREATE TABLE `login_faq` (
   PRIMARY KEY (`faq_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `loginbackgrounds`
---
-
 DROP TABLE IF EXISTS `loginbackgrounds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2719,11 +2062,6 @@ CREATE TABLE `loginbackgrounds` (
   PRIMARY KEY (`background_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_deployments`
---
-
 DROP TABLE IF EXISTS `lti_deployments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2737,11 +2075,6 @@ CREATE TABLE `lti_deployments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_grade`
---
-
 DROP TABLE IF EXISTS `lti_grade`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2754,11 +2087,6 @@ CREATE TABLE `lti_grade` (
   PRIMARY KEY (`link_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_resource_links`
---
-
 DROP TABLE IF EXISTS `lti_resource_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2777,11 +2105,6 @@ CREATE TABLE `lti_resource_links` (
   KEY `deployment_id` (`deployment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_tool_privacy_settings`
---
-
 DROP TABLE IF EXISTS `lti_tool_privacy_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2795,11 +2118,6 @@ CREATE TABLE `lti_tool_privacy_settings` (
   PRIMARY KEY (`tool_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_tools`
---
-
 DROP TABLE IF EXISTS `lti_tools`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2829,11 +2147,6 @@ CREATE TABLE `lti_tools` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mail_queue_entries`
---
-
 DROP TABLE IF EXISTS `mail_queue_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2851,11 +2164,6 @@ CREATE TABLE `mail_queue_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_filter`
---
-
 DROP TABLE IF EXISTS `massmail_filter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2867,11 +2175,6 @@ CREATE TABLE `massmail_filter` (
   KEY `filter_id` (`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_markers`
---
-
 DROP TABLE IF EXISTS `massmail_markers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2891,11 +2194,6 @@ CREATE TABLE `massmail_markers` (
   PRIMARY KEY (`marker_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_messages`
---
-
 DROP TABLE IF EXISTS `massmail_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2921,11 +2219,6 @@ CREATE TABLE `massmail_messages` (
   KEY `author_id` (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_degree`
---
-
 DROP TABLE IF EXISTS `massmail_permission_degree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2937,11 +2230,6 @@ CREATE TABLE `massmail_permission_degree` (
   KEY `degree_id` (`degree_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_institute`
---
-
 DROP TABLE IF EXISTS `massmail_permission_institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2953,11 +2241,6 @@ CREATE TABLE `massmail_permission_institute` (
   KEY `institute_id` (`institute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_subject`
---
-
 DROP TABLE IF EXISTS `massmail_permission_subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2969,11 +2252,6 @@ CREATE TABLE `massmail_permission_subject` (
   KEY `subject_id` (`subject_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permissions`
---
-
 DROP TABLE IF EXISTS `massmail_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2987,11 +2265,6 @@ CREATE TABLE `massmail_permissions` (
   UNIQUE KEY `institute_id` (`institute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_tokens`
---
-
 DROP TABLE IF EXISTS `massmail_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3005,11 +2278,6 @@ CREATE TABLE `massmail_tokens` (
   KEY `message_id` (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `media_cache`
---
-
 DROP TABLE IF EXISTS `media_cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3021,11 +2289,6 @@ CREATE TABLE `media_cache` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message`
---
-
 DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3041,11 +2304,6 @@ CREATE TABLE `message` (
   KEY `autor_id` (`autor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message_tags`
---
-
 DROP TABLE IF EXISTS `message_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3058,11 +2316,6 @@ CREATE TABLE `message_tags` (
   PRIMARY KEY (`message_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message_user`
---
-
 DROP TABLE IF EXISTS `message_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3079,11 +2332,6 @@ CREATE TABLE `message_user` (
   KEY `user_id_2` (`user_id`,`snd_rec`,`deleted`,`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_abschl_kategorie`
---
-
 DROP TABLE IF EXISTS `mvv_abschl_kategorie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3101,11 +2349,6 @@ CREATE TABLE `mvv_abschl_kategorie` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_abschl_zuord`
---
-
 DROP TABLE IF EXISTS `mvv_abschl_zuord`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3121,11 +2364,6 @@ CREATE TABLE `mvv_abschl_zuord` (
   KEY `kategorie_id` (`kategorie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_aufbaustudiengang`
---
-
 DROP TABLE IF EXISTS `mvv_aufbaustudiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3143,11 +2381,6 @@ CREATE TABLE `mvv_aufbaustudiengang` (
   UNIQUE KEY `grund_stg_id` (`grund_stg_id`,`aufbau_stg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_contacts`
---
-
 DROP TABLE IF EXISTS `mvv_contacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3163,11 +2396,6 @@ CREATE TABLE `mvv_contacts` (
   KEY `contact_status` (`contact_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_contacts_ranges`
---
-
 DROP TABLE IF EXISTS `mvv_contacts_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3191,11 +2419,6 @@ CREATE TABLE `mvv_contacts_ranges` (
   KEY `contact_id` (`contact_id`,`range_id`,`category`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_extern_contacts`
---
-
 DROP TABLE IF EXISTS `mvv_extern_contacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3213,11 +2436,6 @@ CREATE TABLE `mvv_extern_contacts` (
   PRIMARY KEY (`extern_contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_fach_inst`
---
-
 DROP TABLE IF EXISTS `mvv_fach_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3232,11 +2450,6 @@ CREATE TABLE `mvv_fach_inst` (
   PRIMARY KEY (`fach_id`,`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files`
---
-
 DROP TABLE IF EXISTS `mvv_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3254,11 +2467,6 @@ CREATE TABLE `mvv_files` (
   PRIMARY KEY (`mvvfile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files_filerefs`
---
-
 DROP TABLE IF EXISTS `mvv_files_filerefs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3274,11 +2482,6 @@ CREATE TABLE `mvv_files_filerefs` (
   PRIMARY KEY (`mvvfile_id`,`file_language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files_ranges`
---
-
 DROP TABLE IF EXISTS `mvv_files_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3295,11 +2498,6 @@ CREATE TABLE `mvv_files_ranges` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3314,11 +2512,6 @@ CREATE TABLE `mvv_lvgruppe` (
   PRIMARY KEY (`lvgruppe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe_modulteil`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe_modulteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3336,11 +2529,6 @@ CREATE TABLE `mvv_lvgruppe_modulteil` (
   KEY `modulteil_id` (`modulteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe_seminar`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe_seminar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3355,11 +2543,6 @@ CREATE TABLE `mvv_lvgruppe_seminar` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul`
---
-
 DROP TABLE IF EXISTS `mvv_modul`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3395,11 +2578,6 @@ CREATE TABLE `mvv_modul` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_deskriptor`
---
-
 DROP TABLE IF EXISTS `mvv_modul_deskriptor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3432,11 +2610,6 @@ CREATE TABLE `mvv_modul_deskriptor` (
   UNIQUE KEY `modul_id` (`modul_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_inst`
---
-
 DROP TABLE IF EXISTS `mvv_modul_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3453,11 +2626,6 @@ CREATE TABLE `mvv_modul_inst` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_language`
---
-
 DROP TABLE IF EXISTS `mvv_modul_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3472,11 +2640,6 @@ CREATE TABLE `mvv_modul_language` (
   PRIMARY KEY (`modul_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3508,11 +2671,6 @@ CREATE TABLE `mvv_modulteil` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_deskriptor`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_deskriptor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3538,11 +2696,6 @@ CREATE TABLE `mvv_modulteil_deskriptor` (
   KEY `modulteil_id` (`modulteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_language`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3557,11 +2710,6 @@ CREATE TABLE `mvv_modulteil_language` (
   PRIMARY KEY (`modulteil_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_stgteilabschnitt`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_stgteilabschnitt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3577,11 +2725,6 @@ CREATE TABLE `mvv_modulteil_stgteilabschnitt` (
   PRIMARY KEY (`modulteil_id`,`abschnitt_id`,`fachsemester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_conflicts`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_conflicts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3602,11 +2745,6 @@ CREATE TABLE `mvv_ovl_conflicts` (
   KEY `selection_id` (`selection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_excludes`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_excludes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3619,11 +2757,6 @@ CREATE TABLE `mvv_ovl_excludes` (
   KEY `course_id` (`course_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_selections`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_selections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3643,11 +2776,6 @@ CREATE TABLE `mvv_ovl_selections` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stg_stgteil`
---
-
 DROP TABLE IF EXISTS `mvv_stg_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3664,11 +2792,6 @@ CREATE TABLE `mvv_stg_stgteil` (
   KEY `stgteil_id` (`stgteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteil`
---
-
 DROP TABLE IF EXISTS `mvv_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3686,11 +2809,6 @@ CREATE TABLE `mvv_stgteil` (
   KEY `fach_id` (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteil_bez`
---
-
 DROP TABLE IF EXISTS `mvv_stgteil_bez`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3706,11 +2824,6 @@ CREATE TABLE `mvv_stgteil_bez` (
   PRIMARY KEY (`stgteil_bez_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilabschnitt`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilabschnitt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3730,11 +2843,6 @@ CREATE TABLE `mvv_stgteilabschnitt` (
   KEY `version_id` (`version_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilabschnitt_modul`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilabschnitt_modul`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3755,11 +2863,6 @@ CREATE TABLE `mvv_stgteilabschnitt_modul` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilversion`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilversion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3784,11 +2887,6 @@ CREATE TABLE `mvv_stgteilversion` (
   KEY `stat` (`stat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studiengang`
---
-
 DROP TABLE IF EXISTS `mvv_studiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3821,11 +2919,6 @@ CREATE TABLE `mvv_studiengang` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studycourse_language`
---
-
 DROP TABLE IF EXISTS `mvv_studycourse_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3840,11 +2933,6 @@ CREATE TABLE `mvv_studycourse_language` (
   PRIMARY KEY (`studiengang_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studycourse_type`
---
-
 DROP TABLE IF EXISTS `mvv_studycourse_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3858,11 +2946,6 @@ CREATE TABLE `mvv_studycourse_type` (
   PRIMARY KEY (`studiengang_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news`
---
-
 DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3885,11 +2968,6 @@ CREATE TABLE `news` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_range`
---
-
 DROP TABLE IF EXISTS `news_range`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3902,11 +2980,6 @@ CREATE TABLE `news_range` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_roles`
---
-
 DROP TABLE IF EXISTS `news_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3916,11 +2989,6 @@ CREATE TABLE `news_roles` (
   PRIMARY KEY (`news_id`,`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_rss_range`
---
-
 DROP TABLE IF EXISTS `news_rss_range`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3932,11 +3000,6 @@ CREATE TABLE `news_rss_range` (
   KEY `rss_id` (`rss_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_access_tokens`
---
-
 DROP TABLE IF EXISTS `oauth2_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3953,11 +3016,6 @@ CREATE TABLE `oauth2_access_tokens` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_auth_codes`
---
-
 DROP TABLE IF EXISTS `oauth2_auth_codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3974,11 +3032,6 @@ CREATE TABLE `oauth2_auth_codes` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_clients`
---
-
 DROP TABLE IF EXISTS `oauth2_clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3997,11 +3050,6 @@ CREATE TABLE `oauth2_clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_refresh_tokens`
---
-
 DROP TABLE IF EXISTS `oauth2_refresh_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4014,11 +3062,6 @@ CREATE TABLE `oauth2_refresh_tokens` (
   KEY `access_token_id` (`access_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_contentmodules`
---
-
 DROP TABLE IF EXISTS `object_contentmodules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4032,11 +3075,6 @@ CREATE TABLE `object_contentmodules` (
   PRIMARY KEY (`object_id`,`module_id`,`system_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_user_visits`
---
-
 DROP TABLE IF EXISTS `object_user_visits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4050,11 +3088,6 @@ CREATE TABLE `object_user_visits` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_views`
---
-
 DROP TABLE IF EXISTS `object_views`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4066,11 +3099,6 @@ CREATE TABLE `object_views` (
   KEY `views` (`views`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_abo`
---
-
 DROP TABLE IF EXISTS `oer_abo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4080,11 +3108,6 @@ CREATE TABLE `oer_abo` (
   UNIQUE KEY `user_id` (`user_id`,`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_comments`
---
-
 DROP TABLE IF EXISTS `oer_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4104,11 +3127,6 @@ CREATE TABLE `oer_comments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_downloadcounter`
---
-
 DROP TABLE IF EXISTS `oer_downloadcounter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4121,11 +3139,6 @@ CREATE TABLE `oer_downloadcounter` (
   PRIMARY KEY (`counter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_hosts`
---
-
 DROP TABLE IF EXISTS `oer_hosts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4146,11 +3159,6 @@ CREATE TABLE `oer_hosts` (
   UNIQUE KEY `url` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_material`
---
-
 DROP TABLE IF EXISTS `oer_material`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4188,11 +3196,6 @@ CREATE TABLE `oer_material` (
   KEY `uri_hash` (`uri_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_material_users`
---
-
 DROP TABLE IF EXISTS `oer_material_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4206,11 +3209,6 @@ CREATE TABLE `oer_material_users` (
   PRIMARY KEY (`material_id`,`user_id`,`external_contact`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_post_upload`
---
-
 DROP TABLE IF EXISTS `oer_post_upload`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4223,11 +3221,6 @@ CREATE TABLE `oer_post_upload` (
   PRIMARY KEY (`user_id`,`file_ref_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_reviews`
---
-
 DROP TABLE IF EXISTS `oer_reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4249,11 +3242,6 @@ CREATE TABLE `oer_reviews` (
   KEY `host_id` (`host_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_tags`
---
-
 DROP TABLE IF EXISTS `oer_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4263,11 +3251,6 @@ CREATE TABLE `oer_tags` (
   PRIMARY KEY (`tag_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_tags_material`
---
-
 DROP TABLE IF EXISTS `oer_tags_material`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4279,11 +3262,6 @@ CREATE TABLE `oer_tags_material` (
   KEY `material_id` (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_user`
---
-
 DROP TABLE IF EXISTS `oer_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4302,11 +3280,6 @@ CREATE TABLE `oer_user` (
   KEY `host_id` (`host_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `opengraphdata`
---
-
 DROP TABLE IF EXISTS `opengraphdata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4327,11 +3300,6 @@ CREATE TABLE `opengraphdata` (
   UNIQUE KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `participantrestrictedadmissions`
---
-
 DROP TABLE IF EXISTS `participantrestrictedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4344,11 +3312,6 @@ CREATE TABLE `participantrestrictedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `passwordadmissions`
---
-
 DROP TABLE IF EXISTS `passwordadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4363,11 +3326,6 @@ CREATE TABLE `passwordadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `personal_notifications`
---
-
 DROP TABLE IF EXISTS `personal_notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4384,11 +3342,6 @@ CREATE TABLE `personal_notifications` (
   KEY `url` (`url`(256))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `personal_notifications_user`
---
-
 DROP TABLE IF EXISTS `personal_notifications_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4400,11 +3353,6 @@ CREATE TABLE `personal_notifications_user` (
   KEY `user_id` (`user_id`,`seen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugin_assets`
---
-
 DROP TABLE IF EXISTS `plugin_assets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4420,11 +3368,6 @@ CREATE TABLE `plugin_assets` (
   PRIMARY KEY (`asset_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugins`
---
-
 DROP TABLE IF EXISTS `plugins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4447,11 +3390,6 @@ CREATE TABLE `plugins` (
   KEY `highlight_until` (`highlight_until`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugins_activated`
---
-
 DROP TABLE IF EXISTS `plugins_activated`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4464,11 +3402,6 @@ CREATE TABLE `plugins_activated` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `prefadmission_condition`
---
-
 DROP TABLE IF EXISTS `prefadmission_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4480,11 +3413,6 @@ CREATE TABLE `prefadmission_condition` (
   PRIMARY KEY (`rule_id`,`condition_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `prefadmissions`
---
-
 DROP TABLE IF EXISTS `prefadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4496,11 +3424,6 @@ CREATE TABLE `prefadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `priorities`
---
-
 DROP TABLE IF EXISTS `priorities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4515,11 +3438,6 @@ CREATE TABLE `priorities` (
   KEY `user_rule_priority` (`user_id`,`priority`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_anonymous_answers`
---
-
 DROP TABLE IF EXISTS `questionnaire_anonymous_answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4535,11 +3453,6 @@ CREATE TABLE `questionnaire_anonymous_answers` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_answers`
---
-
 DROP TABLE IF EXISTS `questionnaire_answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4555,11 +3468,6 @@ CREATE TABLE `questionnaire_answers` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_assignments`
---
-
 DROP TABLE IF EXISTS `questionnaire_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4577,11 +3485,6 @@ CREATE TABLE `questionnaire_assignments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_questions`
---
-
 DROP TABLE IF EXISTS `questionnaire_questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4598,11 +3501,6 @@ CREATE TABLE `questionnaire_questions` (
   KEY `questionnaire_id` (`questionnaire_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaires`
---
-
 DROP TABLE IF EXISTS `questionnaires`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4624,11 +3522,6 @@ CREATE TABLE `questionnaires` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `range_tree`
---
-
 DROP TABLE IF EXISTS `range_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4646,11 +3539,6 @@ CREATE TABLE `range_tree` (
   KEY `studip_object_id` (`studip_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_booking_intervals`
---
-
 DROP TABLE IF EXISTS `resource_booking_intervals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4668,11 +3556,6 @@ CREATE TABLE `resource_booking_intervals` (
   KEY `booking_id` (`booking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_bookings`
---
-
 DROP TABLE IF EXISTS `resource_bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4697,11 +3580,6 @@ CREATE TABLE `resource_bookings` (
   KEY `resource_id` (`resource_id`,`booking_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_categories`
---
-
 DROP TABLE IF EXISTS `resource_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4717,11 +3595,6 @@ CREATE TABLE `resource_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_category_properties`
---
-
 DROP TABLE IF EXISTS `resource_category_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4737,11 +3610,6 @@ CREATE TABLE `resource_category_properties` (
   PRIMARY KEY (`category_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_permissions`
---
-
 DROP TABLE IF EXISTS `resource_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4755,11 +3623,6 @@ CREATE TABLE `resource_permissions` (
   KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_properties`
---
-
 DROP TABLE IF EXISTS `resource_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4773,11 +3636,6 @@ CREATE TABLE `resource_properties` (
   KEY `property_id` (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_property_definitions`
---
-
 DROP TABLE IF EXISTS `resource_property_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4800,11 +3658,6 @@ CREATE TABLE `resource_property_definitions` (
   PRIMARY KEY (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_property_groups`
---
-
 DROP TABLE IF EXISTS `resource_property_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4817,11 +3670,6 @@ CREATE TABLE `resource_property_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_request_appointments`
---
-
 DROP TABLE IF EXISTS `resource_request_appointments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4834,11 +3682,6 @@ CREATE TABLE `resource_request_appointments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_request_properties`
---
-
 DROP TABLE IF EXISTS `resource_request_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4851,11 +3694,6 @@ CREATE TABLE `resource_request_properties` (
   PRIMARY KEY (`request_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_requests`
---
-
 DROP TABLE IF EXISTS `resource_requests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4888,11 +3726,6 @@ CREATE TABLE `resource_requests` (
   KEY `metadate_id` (`metadate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_temporary_permissions`
---
-
 DROP TABLE IF EXISTS `resource_temporary_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4910,11 +3743,6 @@ CREATE TABLE `resource_temporary_permissions` (
   KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resources`
---
-
 DROP TABLE IF EXISTS `resources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4936,11 +3764,6 @@ CREATE TABLE `resources` (
   KEY `category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles`
---
-
 DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4951,11 +3774,6 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_plugins`
---
-
 DROP TABLE IF EXISTS `roles_plugins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4965,11 +3783,6 @@ CREATE TABLE `roles_plugins` (
   PRIMARY KEY (`roleid`,`pluginid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_studipperms`
---
-
 DROP TABLE IF EXISTS `roles_studipperms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4979,11 +3792,6 @@ CREATE TABLE `roles_studipperms` (
   PRIMARY KEY (`roleid`,`permname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_user`
---
-
 DROP TABLE IF EXISTS `roles_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4994,11 +3802,6 @@ CREATE TABLE `roles_user` (
   PRIMARY KEY (`roleid`,`userid`,`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schedule_courses`
---
-
 DROP TABLE IF EXISTS `schedule_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5014,11 +3817,6 @@ CREATE TABLE `schedule_courses` (
   KEY `metadate_id` (`metadate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schedule_entries`
---
-
 DROP TABLE IF EXISTS `schedule_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5037,11 +3835,6 @@ CREATE TABLE `schedule_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schema_version`
---
-
 DROP TABLE IF EXISTS `schema_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5052,11 +3845,6 @@ CREATE TABLE `schema_version` (
   PRIMARY KEY (`domain`,`branch`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `scm`
---
-
 DROP TABLE IF EXISTS `scm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5074,11 +3862,6 @@ CREATE TABLE `scm` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_classes`
---
-
 DROP TABLE IF EXISTS `sem_classes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5117,11 +3900,6 @@ CREATE TABLE `sem_classes` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_tree`
---
-
 DROP TABLE IF EXISTS `sem_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5141,11 +3919,6 @@ CREATE TABLE `sem_tree` (
   KEY `studip_object_id` (`studip_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_types`
---
-
 DROP TABLE IF EXISTS `sem_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5158,11 +3931,6 @@ CREATE TABLE `sem_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_courses`
---
-
 DROP TABLE IF EXISTS `semester_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5175,11 +3943,6 @@ CREATE TABLE `semester_courses` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_data`
---
-
 DROP TABLE IF EXISTS `semester_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5199,11 +3962,6 @@ CREATE TABLE `semester_data` (
   PRIMARY KEY (`semester_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_holiday`
---
-
 DROP TABLE IF EXISTS `semester_holiday`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5219,11 +3977,6 @@ CREATE TABLE `semester_holiday` (
   PRIMARY KEY (`holiday_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_courseset`
---
-
 DROP TABLE IF EXISTS `seminar_courseset`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5235,11 +3988,6 @@ CREATE TABLE `seminar_courseset` (
   KEY `seminar_id` (`seminar_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_cycle_dates`
---
-
 DROP TABLE IF EXISTS `seminar_cycle_dates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5261,11 +4009,6 @@ CREATE TABLE `seminar_cycle_dates` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_inst`
---
-
 DROP TABLE IF EXISTS `seminar_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5276,11 +4019,6 @@ CREATE TABLE `seminar_inst` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_sem_tree`
---
-
 DROP TABLE IF EXISTS `seminar_sem_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5291,11 +4029,6 @@ CREATE TABLE `seminar_sem_tree` (
   KEY `sem_tree_id` (`sem_tree_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_user`
---
-
 DROP TABLE IF EXISTS `seminar_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5315,11 +4048,6 @@ CREATE TABLE `seminar_user` (
   KEY `user_id` (`user_id`,`Seminar_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_user_notifications`
---
-
 DROP TABLE IF EXISTS `seminar_user_notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5332,11 +4060,6 @@ CREATE TABLE `seminar_user_notifications` (
   PRIMARY KEY (`user_id`,`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_userdomains`
---
-
 DROP TABLE IF EXISTS `seminar_userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5346,11 +4069,6 @@ CREATE TABLE `seminar_userdomains` (
   PRIMARY KEY (`seminar_id`,`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminare`
---
-
 DROP TABLE IF EXISTS `seminare`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5396,11 +4114,6 @@ CREATE TABLE `seminare` (
   KEY `parent_course` (`parent_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `separable_room_parts`
---
-
 DROP TABLE IF EXISTS `separable_room_parts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5412,11 +4125,6 @@ CREATE TABLE `separable_room_parts` (
   PRIMARY KEY (`separable_room_id`,`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `separable_rooms`
---
-
 DROP TABLE IF EXISTS `separable_rooms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5429,11 +4137,6 @@ CREATE TABLE `separable_rooms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `session_data`
---
-
 DROP TABLE IF EXISTS `session_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5445,11 +4148,6 @@ CREATE TABLE `session_data` (
   KEY `changed` (`changed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `siteinfo_details`
---
-
 DROP TABLE IF EXISTS `siteinfo_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5464,11 +4162,6 @@ CREATE TABLE `siteinfo_details` (
   PRIMARY KEY (`detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `siteinfo_rubrics`
---
-
 DROP TABLE IF EXISTS `siteinfo_rubrics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5479,11 +4172,6 @@ CREATE TABLE `siteinfo_rubrics` (
   PRIMARY KEY (`rubric_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `statusgruppe_user`
---
-
 DROP TABLE IF EXISTS `statusgruppe_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5498,11 +4186,6 @@ CREATE TABLE `statusgruppe_user` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `statusgruppen`
---
-
 DROP TABLE IF EXISTS `statusgruppen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5526,11 +4209,6 @@ CREATE TABLE `statusgruppen` (
   KEY `position` (`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `stock_images`
---
-
 DROP TABLE IF EXISTS `stock_images`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5551,11 +4229,6 @@ CREATE TABLE `stock_images` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_courses`
---
-
 DROP TABLE IF EXISTS `studygroup_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5570,11 +4243,6 @@ CREATE TABLE `studygroup_courses` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_courses_proposals`
---
-
 DROP TABLE IF EXISTS `studygroup_courses_proposals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5591,11 +4259,6 @@ CREATE TABLE `studygroup_courses_proposals` (
   KEY `studygroup_id_2` (`studygroup_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_invitations`
---
-
 DROP TABLE IF EXISTS `studygroup_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5606,11 +4269,6 @@ CREATE TABLE `studygroup_invitations` (
   PRIMARY KEY (`sem_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_stgteil`
---
-
 DROP TABLE IF EXISTS `studygroup_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5625,11 +4283,6 @@ CREATE TABLE `studygroup_stgteil` (
   KEY `stgteil_id` (`stgteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tags`
---
-
 DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5642,11 +4295,6 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tags_relations`
---
-
 DROP TABLE IF EXISTS `tags_relations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5662,11 +4310,6 @@ CREATE TABLE `tags_relations` (
   KEY `range_type` (`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termin_related_groups`
---
-
 DROP TABLE IF EXISTS `termin_related_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5676,11 +4319,6 @@ CREATE TABLE `termin_related_groups` (
   PRIMARY KEY (`termin_id`,`statusgruppe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termin_related_persons`
---
-
 DROP TABLE IF EXISTS `termin_related_persons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5690,11 +4328,6 @@ CREATE TABLE `termin_related_persons` (
   PRIMARY KEY (`range_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termine`
---
-
 DROP TABLE IF EXISTS `termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5717,11 +4350,6 @@ CREATE TABLE `termine` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termsadmissions`
---
-
 DROP TABLE IF EXISTS `termsadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5733,11 +4361,6 @@ CREATE TABLE `termsadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themen`
---
-
 DROP TABLE IF EXISTS `themen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5755,11 +4378,6 @@ CREATE TABLE `themen` (
   KEY `seminar_id` (`seminar_id`,`priority`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themen_termine`
---
-
 DROP TABLE IF EXISTS `themen_termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5770,11 +4388,6 @@ CREATE TABLE `themen_termine` (
   KEY `termin_id` (`termin_id`,`issue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `timedadmissions`
---
-
 DROP TABLE IF EXISTS `timedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5791,11 +4404,6 @@ CREATE TABLE `timedadmissions` (
   KEY `start_end` (`start_time`,`end_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tools_activated`
---
-
 DROP TABLE IF EXISTS `tools_activated`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5811,11 +4419,6 @@ CREATE TABLE `tools_activated` (
   KEY `plugin_id` (`plugin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_factorlist`
---
-
 DROP TABLE IF EXISTS `user_factorlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5826,11 +4429,6 @@ CREATE TABLE `user_factorlist` (
   PRIMARY KEY (`list_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_info`
---
-
 DROP TABLE IF EXISTS `user_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5861,11 +4459,6 @@ CREATE TABLE `user_info` (
   KEY `score` (`score`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_inst`
---
-
 DROP TABLE IF EXISTS `user_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5889,11 +4482,6 @@ CREATE TABLE `user_inst` (
   KEY `user_id` (`user_id`,`inst_perms`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_online`
---
-
 DROP TABLE IF EXISTS `user_online`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5904,11 +4492,6 @@ CREATE TABLE `user_online` (
   KEY `last_lifesign` (`last_lifesign`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_studiengang`
---
-
 DROP TABLE IF EXISTS `user_studiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5924,11 +4507,6 @@ CREATE TABLE `user_studiengang` (
   KEY `studiengang_id` (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_token`
---
-
 DROP TABLE IF EXISTS `user_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5941,11 +4519,6 @@ CREATE TABLE `user_token` (
   KEY `index_expiration` (`expiration`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_userdomains`
---
-
 DROP TABLE IF EXISTS `user_userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5955,11 +4528,6 @@ CREATE TABLE `user_userdomains` (
   PRIMARY KEY (`user_id`,`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_visibility`
---
-
 DROP TABLE IF EXISTS `user_visibility`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5974,11 +4542,6 @@ CREATE TABLE `user_visibility` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_visibility_settings`
---
-
 DROP TABLE IF EXISTS `user_visibility_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5997,11 +4560,6 @@ CREATE TABLE `user_visibility_settings` (
   KEY `userid` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userdomains`
---
-
 DROP TABLE IF EXISTS `userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6014,11 +4572,6 @@ CREATE TABLE `userdomains` (
   PRIMARY KEY (`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userfilter`
---
-
 DROP TABLE IF EXISTS `userfilter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6031,11 +4584,6 @@ CREATE TABLE `userfilter` (
   PRIMARY KEY (`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userfilter_fields`
---
-
 DROP TABLE IF EXISTS `userfilter_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6050,11 +4598,6 @@ CREATE TABLE `userfilter_fields` (
   PRIMARY KEY (`field_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userlimits`
---
-
 DROP TABLE IF EXISTS `userlimits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6067,11 +4610,6 @@ CREATE TABLE `userlimits` (
   PRIMARY KEY (`rule_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users_tfa`
---
-
 DROP TABLE IF EXISTS `users_tfa`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6085,11 +4623,6 @@ CREATE TABLE `users_tfa` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users_tfa_tokens`
---
-
 DROP TABLE IF EXISTS `users_tfa_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6100,11 +4633,6 @@ CREATE TABLE `users_tfa_tokens` (
   PRIMARY KEY (`user_id`,`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `widget_default`
---
-
 DROP TABLE IF EXISTS `widget_default`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6116,11 +4644,6 @@ CREATE TABLE `widget_default` (
   PRIMARY KEY (`perm`,`pluginid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `widget_user`
---
-
 DROP TABLE IF EXISTS `widget_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6134,26 +4657,6 @@ CREATE TABLE `widget_user` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_links`
---
-
-DROP TABLE IF EXISTS `wiki_links`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `wiki_links` (
-  `range_id` char(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT '',
-  `from_page_id` int(10) unsigned NOT NULL,
-  `to_page_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`range_id`,`to_page_id`,`from_page_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_online_editing_users`
---
-
 DROP TABLE IF EXISTS `wiki_online_editing_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6172,11 +4675,6 @@ CREATE TABLE `wiki_online_editing_users` (
   KEY `chdate` (`chdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_pages`
---
-
 DROP TABLE IF EXISTS `wiki_pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6196,14 +4694,10 @@ CREATE TABLE `wiki_pages` (
   PRIMARY KEY (`page_id`),
   KEY `read_permission` (`read_permission`),
   KEY `write_permission` (`write_permission`),
-  KEY `range_id` (`range_id`)
+  KEY `range_id` (`range_id`),
+  KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_versions`
---
-
 DROP TABLE IF EXISTS `wiki_versions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6227,15 +4721,7 @@ CREATE TABLE `wiki_versions` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-08-05 14:27:33
-/*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.8.2-MariaDB, for osx10.20 (arm64)
---
--- Host: 127.0.0.1    Database: studip_6_0
--- ------------------------------------------------------
--- Server version	11.8.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -6246,11 +4732,6 @@ CREATE TABLE `wiki_versions` (
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
-
---
--- Dumping data for table `roles_user`
---
 
 LOCK TABLES `roles_user` WRITE;
 /*!40000 ALTER TABLE `roles_user` DISABLE KEYS */;
@@ -6260,10 +4741,6 @@ INSERT INTO `roles_user` VALUES
 /*!40000 ALTER TABLE `roles_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `siteinfo_rubrics`
---
 
 LOCK TABLES `siteinfo_rubrics` WRITE;
 /*!40000 ALTER TABLE `siteinfo_rubrics` DISABLE KEYS */;
@@ -6275,23 +4752,6 @@ INSERT INTO `siteinfo_rubrics` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `config_values`
---
-
-LOCK TABLES `config_values` WRITE;
-/*!40000 ALTER TABLE `config_values` DISABLE KEYS */;
-set autocommit=0;
-INSERT INTO `config_values` VALUES
-('RESOURCES_ENABLE','studip','1',1530292001,1530292001,'');
-/*!40000 ALTER TABLE `config_values` ENABLE KEYS */;
-UNLOCK TABLES;
-commit;
-
---
--- Dumping data for table `blubber_threads`
---
-
 LOCK TABLES `blubber_threads` WRITE;
 /*!40000 ALTER TABLE `blubber_threads` DISABLE KEYS */;
 set autocommit=0;
@@ -6300,10 +4760,6 @@ INSERT INTO `blubber_threads` VALUES
 /*!40000 ALTER TABLE `blubber_threads` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `admissionrules`
---
 
 LOCK TABLES `admissionrules` WRITE;
 /*!40000 ALTER TABLE `admissionrules` DISABLE KEYS */;
@@ -6318,28 +4774,20 @@ INSERT INTO `admissionrules` VALUES
 (7,'CourseMemberAdmission',1,1414584420,'lib/admissionrules/coursememberadmission'),
 (8,'PreferentialAdmission',1,1465458738,'lib/admissionrules/preferentialadmission'),
 (9,'TermsAdmission',1,1640797278,'lib/admissionrules/termsadmission'),
-(10,'ConnectedcourseAdmission',1,1754396851,'lib/admissionrules/connectedcourseadmission');
+(10,'ConnectedcourseAdmission',1,1757497449,'lib/admissionrules/connectedcourseadmission');
 /*!40000 ALTER TABLE `admissionrules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `semester_data`
---
 
 LOCK TABLES `semester_data` WRITE;
 /*!40000 ALTER TABLE `semester_data` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `semester_data` VALUES
-('322f640f3f4643ebe514df65f1163eb1','SoSe 2025','',1743458400,1759269599,NULL,1744581600,1752962399,1,'',NULL,1754396853),
-('4967f0a483e36554b77e3dc47aa58941','WiSe 2025/2026','',1759269600,1774994399,NULL,1760306400,1771109999,1,'',NULL,1754396853);
+('322f640f3f4643ebe514df65f1163eb1','SoSe 2026','',1774994400,1790805599,NULL,1776031200,1784411999,1,'',NULL,1757497450),
+('4967f0a483e36554b77e3dc47aa58941','WiSe 2025/2026','',1759269600,1774994399,NULL,1760306400,1771109999,1,'',NULL,1757497450);
 /*!40000 ALTER TABLE `semester_data` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `sem_types`
---
 
 LOCK TABLES `sem_types` WRITE;
 /*!40000 ALTER TABLE `sem_types` DISABLE KEYS */;
@@ -6363,10 +4811,6 @@ INSERT INTO `sem_types` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_property_definitions`
---
-
 LOCK TABLES `resource_property_definitions` WRITE;
 /*!40000 ALTER TABLE `resource_property_definitions` DISABLE KEYS */;
 set autocommit=0;
@@ -6388,10 +4832,6 @@ INSERT INTO `resource_property_definitions` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `schema_version`
---
-
 LOCK TABLES `schema_version` WRITE;
 /*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
 set autocommit=0;
@@ -6401,16 +4841,12 @@ INSERT INTO `schema_version` VALUES
 ('studip','5.2',16),
 ('studip','5.3',31),
 ('studip','5.4',19),
-('studip','5.5',32),
+('studip','5.5',34),
 ('studip','5.5.23',1),
-('studip','6.0',51);
+('studip','6.0',52);
 /*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `siteinfo_details`
---
 
 LOCK TABLES `siteinfo_details` WRITE;
 /*!40000 ALTER TABLE `siteinfo_details` DISABLE KEYS */;
@@ -6427,28 +4863,20 @@ INSERT INTO `siteinfo_details` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_markers`
---
-
 LOCK TABLES `massmail_markers` WRITE;
 /*!40000 ALTER TABLE `massmail_markers` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `massmail_markers` VALUES
-(1,'FULLNAME','Voller Name','database','Hier wird der volle Name der jeweiligen Person eingesetzt, z.B. \"Prof. Max Mustermann, PhD\".',0,'user_info.title_front {{FIRSTNAME}} {{LASTNAME}} user_info.title_rear',NULL,NULL,2,1754396850,1754396850),
-(2,'FIRSTNAME','Vorname','database','Hier wird der Vorname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Vorname',NULL,NULL,3,1754396850,1754396850),
-(3,'LASTNAME','Nachname','database','Hier wird der Nachname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Nachname',NULL,NULL,4,1754396850,1754396850),
-(4,'USERNAME','Benutzername','database','Hier wird der Benutzername der jeweiligen Person eingesetzt.',0,'auth_user_md5.username',NULL,NULL,5,1754396850,1754396850),
-(5,'SEHRGEEHRTE','Anrede mit vollem Namen','text','Hier wird eine Anrede erzeugt: \"Sehr geehrte Michaela Musterfrau\" bzw. \"Sehr geehrter Max Mustermann\".',0,'Sehr geehrter {{FULLNAME}}','Sehr geehrte {{FULLNAME}}','Sehr geehrte/r {{FULLNAME}}',1,1754396850,1754396850),
-(6,'DEARSIRMADAM','Anrede (englisch) mit vollem Namen','text','Creates a Salutation: \"Dear Jane Doe\" or \"Dear John Doe\".',0,'Dear {{FULLNAME}}',NULL,NULL,6,1754396850,1754396850),
-(7,'TOKEN','Personalisierter Code o.ä.','token','Hier wird ein persönlicher Teilnahmecode o.ä. aus einer hochgeladenen Datei eingesetzt.',1,'massmail_tokens.token',NULL,NULL,7,1754396850,1754396850);
+(1,'FULLNAME','Voller Name','database','Hier wird der volle Name der jeweiligen Person eingesetzt, z.B. \"Prof. Max Mustermann, PhD\".',0,'user_info.title_front {{FIRSTNAME}} {{LASTNAME}} user_info.title_rear',NULL,NULL,2,1757497449,1757497449),
+(2,'FIRSTNAME','Vorname','database','Hier wird der Vorname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Vorname',NULL,NULL,3,1757497449,1757497449),
+(3,'LASTNAME','Nachname','database','Hier wird der Nachname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Nachname',NULL,NULL,4,1757497449,1757497449),
+(4,'USERNAME','Benutzername','database','Hier wird der Benutzername der jeweiligen Person eingesetzt.',0,'auth_user_md5.username',NULL,NULL,5,1757497449,1757497449),
+(5,'SEHRGEEHRTE','Anrede mit vollem Namen','text','Hier wird eine Anrede erzeugt: \"Sehr geehrte Michaela Musterfrau\" bzw. \"Sehr geehrter Max Mustermann\".',0,'Sehr geehrter {{FULLNAME}}','Sehr geehrte {{FULLNAME}}','Sehr geehrte/r {{FULLNAME}}',1,1757497449,1757497449),
+(6,'DEARSIRMADAM','Anrede (englisch) mit vollem Namen','text','Creates a Salutation: \"Dear Jane Doe\" or \"Dear John Doe\".',0,'Dear {{FULLNAME}}',NULL,NULL,6,1757497449,1757497449),
+(7,'TOKEN','Personalisierter Code o.ä.','token','Hier wird ein persönlicher Teilnahmecode o.ä. aus einer hochgeladenen Datei eingesetzt.',1,'massmail_tokens.token',NULL,NULL,7,1757497449,1757497449);
 /*!40000 ALTER TABLE `massmail_markers` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `coursewizardsteps`
---
 
 LOCK TABLES `coursewizardsteps` WRITE;
 /*!40000 ALTER TABLE `coursewizardsteps` DISABLE KEYS */;
@@ -6462,10 +4890,6 @@ INSERT INTO `coursewizardsteps` VALUES
 /*!40000 ALTER TABLE `coursewizardsteps` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `licenses`
---
 
 LOCK TABLES `licenses` WRITE;
 /*!40000 ALTER TABLE `licenses` DISABLE KEYS */;
@@ -6487,10 +4911,6 @@ INSERT INTO `licenses` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `i18n`
---
-
 LOCK TABLES `i18n` WRITE;
 /*!40000 ALTER TABLE `i18n` DISABLE KEYS */;
 set autocommit=0;
@@ -6502,10 +4922,6 @@ INSERT INTO `i18n` VALUES
 /*!40000 ALTER TABLE `i18n` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_category_properties`
---
 
 LOCK TABLES `resource_category_properties` WRITE;
 /*!40000 ALTER TABLE `resource_category_properties` DISABLE KEYS */;
@@ -6539,10 +4955,6 @@ INSERT INTO `resource_category_properties` VALUES
 /*!40000 ALTER TABLE `resource_category_properties` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `roles_plugins`
---
 
 LOCK TABLES `roles_plugins` WRITE;
 /*!40000 ALTER TABLE `roles_plugins` DISABLE KEYS */;
@@ -6750,10 +5162,6 @@ INSERT INTO `roles_plugins` VALUES
 /*!40000 ALTER TABLE `roles_plugins` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tour_steps`
---
 
 LOCK TABLES `help_tour_steps` WRITE;
 /*!40000 ALTER TABLE `help_tour_steps` DISABLE KEYS */;
@@ -7021,10 +5429,6 @@ INSERT INTO `help_tour_steps` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `log_actions`
---
-
 LOCK TABLES `log_actions` WRITE;
 /*!40000 ALTER TABLE `log_actions` DISABLE KEYS */;
 set autocommit=0;
@@ -7196,10 +5600,6 @@ INSERT INTO `log_actions` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `config`
---
-
 LOCK TABLES `config` WRITE;
 /*!40000 ALTER TABLE `config` DISABLE KEYS */;
 set autocommit=0;
@@ -7237,7 +5637,7 @@ INSERT INTO `config` VALUES
 ('CALENDAR_GRANT_ALL_INSERT','1','boolean','global','calendar',1462287762,1462287762,'Ermöglicht das Eintragen von Terminen in alle Kalender der Nutzenden, ohne Beachtung des Rechtesystems.'),
 ('CALENDAR_GROUP_ENABLE','0','boolean','global','calendar',1326799692,1326799692,'Schaltet die Gruppenterminkalender-Funktionen ein.'),
 ('CALENDAR_SETTINGS','{\"view\":\"week\",\"start\":\"9\",\"end\":\"20\",\"step_day\":\"900\",\"step_week\":\"1800\",\"type_week\":\"LONG\",\"step_week_group\":\"3600\",\"step_day_group\":\"3600\"}','array','user','',1403258015,1403258015,'persönliche Einstellungen des Kalenders'),
-('CAPTCHA_KEY','','string','global','',1754396847,1754396847,'Speichert den für Captchas verwendeten Schlüssel (Wert leeren, um einen neuen zu generieren)'),
+('CAPTCHA_KEY','','string','global','',1757497446,1757497446,'Speichert den für Captchas verwendeten Schlüssel (Wert leeren, um einen neuen zu generieren)'),
 ('CONSULTATION_ALLOW_DOCENTS_RESERVING','1','boolean','global','Terminvergabe',1557244743,1557244743,'Lehrende können sich bei anderen Lehrenden anmelden'),
 ('CONSULTATION_ENABLED','1','boolean','global','Terminvergabe',1557244743,1557244743,'Schaltet die Sprechstunden global ein'),
 ('CONSULTATION_EXCLUDE_EXPIRED','1','boolean','user','global',1573236813,1573236813,'Sprechstunden: Sollen abgelaufene Blöcke ausgeblendet werden'),
@@ -7264,7 +5664,7 @@ INSERT INTO `config` VALUES
 ('COURSE_STUDENT_MAILING','0','boolean','course','',1530289048,1530289048,'Über diese Option können Sie Studierenden das Schreiben von Nachrichten an alle anderen Teilnehmer der Veranstaltung erlauben.'),
 ('CRONJOBS_ENABLE','1','boolean','global','global',1403258015,1403258015,'Schaltet die Cronjobs an'),
 ('CURRENT_LOGIN_TIMESTAMP','0','integer','user','',1403258015,1403258015,'Zeitstempel des Logins'),
-('CUSTOMIZED_HOLIDAYS','[]','array','global','global',1754396849,1754396849,'Speichert die internen Ids von Feiertagen, die als gesetztlich markiert werden sollen'),
+('CUSTOMIZED_HOLIDAYS','[]','array','global','global',1757497447,1757497447,'Speichert die internen Ids von Feiertagen, die als gesetztlich markiert werden sollen'),
 ('DEFAULT_LANGUAGE','de_DE','string','global','global',1510849314,1510849314,'Which language should we use if we can gather no information from user?'),
 ('DEFAULT_TIMEZONE','Europe/Berlin','string','global','global',1510849314,1510849314,'What timezone should be used (default: Europe/Berlin)?'),
 ('DEPUTIES_DEFAULTENTRY_ENABLE','1','boolean','global','deputies',1293118059,1293118059,'Dürfen Lehrende Standardvertretungen festlegen? Diese werden automatisch bei Hinzufügen von Lehrenden als Vertretung in Veranstaltungen eingetragen.'),
@@ -7273,7 +5673,7 @@ INSERT INTO `config` VALUES
 ('DISPLAY_DOWNLOAD_COUNTER','always','string','global','files',1591630777,1591630777,'Steuert die Anzeige der Anzahl der Downloads in Dateisichten (\"always\" zeigt die Anzahl immer an, \"flat\" nur in \"Alle Dateien\", jeder andere Wert schaltet die Anzeige komplett aus)'),
 ('DISPLAY_STGTEILVERSION_USERFILTER','0','boolean','global','coursesets',1591630778,1591630778,'Steuert die Anzeige des Studiengangteil-Version Filters beim Erstellen von bedingten Anmelderegeln.'),
 ('DOZENT_ALWAYS_VISIBLE','1','boolean','global','privacy',1293118059,1293118059,'Legt fest, ob Personen mit Lehrendenrechten immer global sichtbar sind und das auch nicht selbst ändern können.'),
-('DUMMY_TEACHER_ID','2afaa0dce05f0b12a7318075e52879e2','string','global','global',1754396851,1754396851,'ID of user that should be added to course if no teacher is left'),
+('DUMMY_TEACHER_ID','2afaa0dce05f0b12a7318075e52879e2','string','global','global',1757497449,1757497449,'ID of user that should be added to course if no teacher is left'),
 ('EASY_READ_URL','dispatch.php/siteinfo/show/1/9','string','global','accessibility',1716385357,1716385357,'URL zur Seite \"Leichte Sprache\"'),
 ('EMAIL_DOMAIN_RESTRICTION','','string','global','',1157107088,1157107088,'Beschränkt die gültigkeit von Email-Adressen bei freier Registrierung auf die angegebenen Domains. Komma-separierte Liste von Domains ohne vorangestelltes @.'),
 ('EMAIL_VISIBILITY_DEFAULT','1','boolean','global','privacy',1326799691,1326799691,'Ist die eigene Emailadresse sichtbar, falls der Nutzer nichts anderes eingestellt hat?'),
@@ -7281,7 +5681,7 @@ INSERT INTO `config` VALUES
 ('ENABLE_COURSESET_FCFS','1','boolean','global','coursesets',1403258021,1403258021,'Soll first-come-first-served (Windhundverfahren) bei der Anmeldung erlaubt sein?'),
 ('ENABLE_DESCRIPTION_ENTRY_ON_UPLOAD','1','boolean','global','files',1591630777,1591630777,'Whether to allow adding a description directly after file upload (true) or not (false). Defaults to true.'),
 ('ENABLE_FREE_ACCESS','0','string','global','global',1510849314,1510849314,'1: courses and institutes with public access are visible without login. courses_only: only courses with public access are visible without login. 0: disable this feature.'),
-('ENABLE_NUMBER_OF_PARTICIPANTS','0','','global','global',1754396849,1754396849,'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenanzahl pro Termin ein.'),
+('ENABLE_NUMBER_OF_PARTICIPANTS','0','','global','global',1757497447,1757497447,'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenanzahl pro Termin ein.'),
 ('ENABLE_REQUEST_NEW_PASSWORD_BY_USER','1','boolean','global','permissions',1510849314,1510849314,'If true, users are able to request a new password themselves'),
 ('ENABLE_SELF_REGISTRATION','1','boolean','global','permissions',1510849314,1510849314,'Should it be possible for an user to register himself'),
 ('ENABLE_STUDYCOURSE_INFO_PAGE','0','boolean','global','global',1591630777,1591630777,'Shows an icon to open a dialog with studycourse informations in module search if true.'),
@@ -7318,30 +5718,30 @@ INSERT INTO `config` VALUES
 ('LOCK_RULE_ADMIN_PERM','admin','string','global','permissions',1240427632,1240427632,'mit welchem Status dürfen Sperrebenen angepasst werden (admin, root)'),
 ('LOGIN_FAQ_TITLE','Hinweise zum Login','i18n','global','Loginseite',1716385357,1716385357,'Überschrift für den FAQ-Bereich auf der Loginseite'),
 ('LOGIN_FAQ_VISIBILITY','1','boolean','global','Loginseite',1716385357,1716385357,'Soll der FAQ-Bereich auf der Loginseite sichtbar sein?'),
-('LOGIN_NEWS_VISIBILITY','1','boolean','global','Loginseite',1754396850,1754396850,'Soll Ankündigungs-Galerie auf der Loginseite sichtbar sein?'),
+('LOGIN_NEWS_VISIBILITY','1','boolean','global','Loginseite',1757497448,1757497448,'Soll Ankündigungs-Galerie auf der Loginseite sichtbar sein?'),
 ('LOG_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob das Log global verfügbar ist.'),
-('LTI_ALLOW_TOOL_CONFIG_IN_COURSE','1','boolean','global','LTI',1754396851,1754396851,'Soll es Lehrenden möglich sein, eigene LTI-Tools zu konfigurieren? Wenn nicht, können nur global konfigurierte LTI-Tools in Veranstaltungen angebunden werden.'),
-('LTI_DATA_PROTECTION_COURSE_WARNING','','string','course','LTI',1754396851,1754396851,'Eine in einer Veranstaltung angepasste Warnung zur Weitergabe personenbezogener Daten, die angezeigt wird, wenn Personen aus der Veranstaltung in ein LTI-Tool wechseln.'),
-('LTI_DATA_PROTECTION_DEFAULT_WARNING','Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.','string','global','LTI',1754396851,1754396851,'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechseln.'),
+('LTI_ALLOW_TOOL_CONFIG_IN_COURSE','1','boolean','global','LTI',1757497449,1757497449,'Soll es Lehrenden möglich sein, eigene LTI-Tools zu konfigurieren? Wenn nicht, können nur global konfigurierte LTI-Tools in Veranstaltungen angebunden werden.'),
+('LTI_DATA_PROTECTION_COURSE_WARNING','','string','course','LTI',1757497449,1757497449,'Eine in einer Veranstaltung angepasste Warnung zur Weitergabe personenbezogener Daten, die angezeigt wird, wenn Personen aus der Veranstaltung in ein LTI-Tool wechseln.'),
+('LTI_DATA_PROTECTION_DEFAULT_WARNING','Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.','string','global','LTI',1757497449,1757497449,'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechseln.'),
 ('MAILQUEUE_ENABLE','0','boolean','global','global',1403258017,1403258017,'Aktiviert bzw. deaktiviert die Mailqueue'),
 ('MAILQUEUE_SEND_LIMIT','0','integer','global','global',1462287310,1462287310,'Wieviele Mails soll die Mailqueue maximal auf einmal an den Mailserver schicken. 0 für unendlich viele.'),
-('MAIL_AS_HTML','0','boolean','user','',1293118060,1293118060,'Benachrichtigungen werden im HTML-Format versandt'),
+('MAIL_AS_HTML','1','boolean','user','',1293118060,1293118060,'Benachrichtigungen werden im HTML-Format versandt'),
 ('MAIL_NOTIFICATION_ENABLE','1','boolean','global','',1122996278,1122996278,'Informationen über neue Inhalte per email verschicken'),
-('MAIL_SUBJECT_PREFIX','[Stud.IP]','string','global','global',1754396849,1754396849,'Stellt dem Titel von per Mail versandten Nachrichten'),
+('MAIL_SUBJECT_PREFIX','[Stud.IP]','string','global','global',1757497447,1757497447,'Stellt dem Titel von per Mail versandten Nachrichten'),
 ('MAINTENANCE_MODE_ENABLE','0','boolean','global','',1130840930,1130840930,'Schaltet das System in den Wartungsmodus, so dass nur noch Administratoren Zugriff haben'),
-('MASSMAIL_GC_DAYS','7','integer','global','MassMail',1754396850,1754396850,'Anzahl Tage, nach denen bereits verschickte Nachrichten aus der Datenbank entfernt werden (0 bedeutet nie)'),
-('MASSMAIL_LECTURER_SEM_CATEGORIES','[1]','array','global','MassMail',1754396850,1754396850,'Veranstaltungskategorien, die für die Ermittlung aktiver Lehrender berücksichtigt werden'),
-('MAX_SHOW_ADMIN_COURSES','500','integer','global','MeineVeranstaltungen',1754396848,1754396848,'Wie viele Veranstaltungen sollen auf der Admin-Veranstaltungsseite angezeigt werden.'),
+('MASSMAIL_GC_DAYS','7','integer','global','MassMail',1757497449,1757497449,'Anzahl Tage, nach denen bereits verschickte Nachrichten aus der Datenbank entfernt werden (0 bedeutet nie)'),
+('MASSMAIL_LECTURER_SEM_CATEGORIES','[1]','array','global','MassMail',1757497449,1757497449,'Veranstaltungskategorien, die für die Ermittlung aktiver Lehrender berücksichtigt werden'),
+('MAX_SHOW_ADMIN_COURSES','500','integer','global','MeineVeranstaltungen',1757497446,1757497446,'Wie viele Veranstaltungen sollen auf der Admin-Veranstaltungsseite angezeigt werden.'),
 ('MEDIA_CACHE_LIFETIME','86400','integer','global','global',1510849314,1510849314,'Wieviele Sekunden soll gecached werden?'),
 ('MEDIA_CACHE_MAX_FILES','3000','integer','global','global',1510849314,1510849314,'Wieviele Dateien sollen maximal gecached werden?'),
 ('MEDIA_CACHE_MAX_LENGTH','1000000','integer','global','global',1510849314,1510849314,'Maximale Größe von Dateien, die im Media-Cache gecached werden (in Bytes)?'),
 ('MESSAGE_PRIORITY','0','boolean','global','',1240427632,1240427632,'If enabled, messages of high priority are displayed reddish'),
 ('MESSAGING_SETTINGS','{\"show_only_buddys\":false,\"delete_messages_after_logout\":false,\"timefilter\":\"30d\",\"opennew\":1,\"logout_markreaded\":false,\"openall\":false,\"addsignature\":false,\"save_snd\":true,\"sms_sig\":\"\",\"send_view\":false,\"confirm_reading\":3,\"send_as_email\":false,\"folder\":{\"in\":[\"dummy\"],\"out\":[\"dummy\"]}}','array','user','',1403258015,1403258015,'persönliche Einstellungen Nachrichtenbereich'),
-('MIGRATION_START_TIME','1754396849','string','global','Root-Assistent',1754396849,1754396849,'Speichert die Startzeit (Timestamp) der letzten Migration'),
-('MIGRATION_START_VERSION','5.5','string','global','Root-Assistent',1754396849,1754396849,'Speichert die jeweilige Stud.IP-Version beim Start der Migration'),
+('MIGRATION_START_TIME','1757497447','string','global','Root-Assistent',1757497447,1757497447,'Speichert die Startzeit (Timestamp) der letzten Migration'),
+('MIGRATION_START_VERSION','5.5','string','global','Root-Assistent',1757497447,1757497447,'Speichert die jeweilige Stud.IP-Version beim Start der Migration'),
 ('MVV_ACCESS_ASSIGN_LVGRUPPEN','admin','string','global','mvv',1483462780,1483462780,'Ab welchem Rechtestatus können Veranstaltungen Modulen (LV-Gruppen) zugeordnet werden. Bei Angabe von fakadmin darf nur dieser Zuordnungen vornehmen.'),
 ('MVV_ALLOW_CREATE_LVGRUPPEN_INDEPENDENTLY','0','boolean','global','mvv',1573236812,1573236812,'Soll das Anlegen von LV-Gruppen unabhängig von bestehenden Modulteilen auf der Verwaltungsseite für LV-Gruppen möglich sein?'),
-('MVV_DEFAULT_LANGUAGE','de_DE','string','global','mvv',1754396851,1754396851,'Code der Inhalts-Sprache, die als Original-Sprache der Deskriptoren für Module und Modulteile vorausgewählt ist.'),
+('MVV_DEFAULT_LANGUAGE','de_DE','string','global','mvv',1757497449,1757497449,'Code der Inhalts-Sprache, die als Original-Sprache der Deskriptoren für Module und Modulteile vorausgewählt ist.'),
 ('MVV_OVERLAPPING_SHOW_VERSIONS_INSIDE_MULTIPLE_STUDY_COURSES','0','boolean','global','mvv',1591630777,1591630777,'Zeigt als zweite Auswahl bei Mehrfachstudiengängen nur Versionen der dazugehörigen Teilstudiengänge an.'),
 ('MVV_TEMPLATE_NAME_ABSCHLUSS','','string','global','mvv',1716385357,1716385357,'Template for degrees. Possible placeholders: {{degree_name}}, {{degree_short_name}}. If empty a default name will be displayed.'),
 ('MVV_TEMPLATE_NAME_FACHBEREICH','{{faculty_short_name}} - {{name}}','string','global','mvv',1716385357,1716385357,'Template for departments. Possible placeholders: {{department_name}}, {{faculty_short_name}}. Used only if the department is not a faculty. If empty the name of the institution will be displayed.'),
@@ -7385,17 +5785,17 @@ INSERT INTO `config` VALUES
 ('PDF_LOGO','','string','global','global',1311411856,1311411856,'Geben Sie hier den absoluten Pfad auf Ihrem Server (also ohne http) zu einem Logo an, das bei PDF-Exporten im Kopfbereich verwendet wird.'),
 ('PERSONAL_DETAILS_INFO_TEXT','Einige Ihrer persönlichen Daten werden nicht in Stud.IP verwaltet und können daher hier nicht geändert werden.','i18n','global','global',1698855217,1698855217,'Der Infotext der unter Profil->Persönliche Angaben->Grunddaten angezeigt wird, wenn man nicht die Standard-Auth nutzt.'),
 ('PERSONAL_NOTIFICATIONS_ACTIVATED','1','boolean','global','privacy',1403258015,1403258015,'Sollen persönliche Benachrichtigungen aktiviert sein?'),
-('PERSONAL_NOTIFICATIONS_DEACTIVATED','0','boolean','user','',1754396847,1754396847,'Deaktiviert die persönlichen Benachrichtigungen'),
+('PERSONAL_NOTIFICATIONS_DEACTIVATED','0','boolean','user','',1757497446,1757497446,'Deaktiviert die persönlichen Benachrichtigungen'),
 ('PERSONAL_STARTPAGE','0','integer','user','',1403258015,1403258015,'Persönliche Startseite'),
 ('PLUGINADMIN_DISPLAY_SETTINGS','{\"plugin_filter\":null,\"core_filter\":\"yes\"}','array','user','',1483462779,1483462779,'Speichert die Darstellungseinstellungen der Pluginadministration'),
 ('PLUS_SETTINGS','[]','array','user','',1436547919,1436547919,'Nutzer Konfiguration für Plusseite'),
-('PREVENT_ROOT_FOLDER_UPLOADS_BY_STUDENTS_IN_COURSES','0','boolean','global','files',1754396848,1754396848,'Studierende können im Dateibereich einer Veranstaltung auf der Ebene des Hauptordners keine Dateien hochladen.'),
+('PREVENT_ROOT_FOLDER_UPLOADS_BY_STUDENTS_IN_COURSES','0','boolean','global','files',1757497447,1757497447,'Studierende können im Dateibereich einer Veranstaltung auf der Ebene des Hauptordners keine Dateien hochladen.'),
 ('PRIVACY_CONTACT','','string','global','privacy',1543856104,1543856104,'Username der Kontaktperson zum Datenschutz'),
 ('PRIVACY_PERM','autor','string','global','privacy',1543856104,1543856104,'Rechtestufe zum Datenzugriff'),
 ('PRIVACY_URL','dispatch.php/siteinfo/show/1/7','string','global','privacy',1543856104,1543856104,'URL zur Datenschutzerklärung'),
 ('PROFILE_LAST_VISIT','0','integer','user','',1403258015,1403258015,'Zeitstempel des letzten Besuchs der Profilseite'),
 ('PROPOSED_TEACHER_LABELS','','string','global','global',1326799692,1326799692,'Write a list of comma separated possible labels for teachers and tutor here.'),
-('QUESTIONNAIRE_AUTOMATED_DATA_PERM','autor','string','global','global',1754396851,1754396851,'Ab welchem Status (autor, tutor, dozent, admin, root) darf man den Fragetyp Automatik in Fragebögen einbauen?'),
+('QUESTIONNAIRE_AUTOMATED_DATA_PERM','autor','string','global','global',1757497449,1757497449,'Ab welchem Status (autor, tutor, dozent, admin, root) darf man den Fragetyp Automatik in Fragebögen einbauen?'),
 ('REPORT_BARRIER_MODE','on','string','global','accessibility',1716385357,1716385357,'Einstellungen zum Formular zu Melden einer Barriere (\"on\" = immer an, \"logged-in\" = nur für angemeldete Personen, \"off\" = ausgeschaltet)'),
 ('RESOURCES_ADDITIONAL_TEXT_ROOM_EXPORT','','string','global','resources',1656513808,1656513808,'Zusatztext, der beim Seriendruck unter jedem Raumplan angezeigt werden soll'),
 ('RESOURCES_ALLOW_ROOM_PROPERTY_REQUESTS','1','boolean','global','resources',0,1074780851,'Schaltet in der Ressourcenverwaltung die Möglichkeit, im Rahmen einer Anfrage Raumeigenschaften zu wünschen, ein oder aus'),
@@ -7441,13 +5841,13 @@ INSERT INTO `config` VALUES
 ('STUDYGROUPS_INVISIBLE_ALLOWED','0','boolean','global','studygroups',1403258018,1403258018,'Ermöglicht unsichtbare Studiengruppen'),
 ('STUDYGROUP_ACCEPTANCE_TEXT','Die Moderatorinnen und Moderatoren der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.','string','global','studygroups',1448561064,1448561064,'Text, der angezeigt wird, wenn man sich in eine zugriffsbeschränkte Studiengruppe eintragen möchte'),
 ('STUDYGROUP_DEFAULT_INST','','string','global','studygroups',1258042892,1258042892,'Die Standardeinrichtung für Studiengruppen kann hier gesetzt werden.'),
-('STUDYGROUP_ON_STGTEIL_ENABLE','1','boolean','global','studygroups',1754396851,1754396851,'Are studygroups allowed to get attached to study course parts?'),
+('STUDYGROUP_ON_STGTEIL_ENABLE','1','boolean','global','studygroups',1757497449,1757497449,'Are studygroups allowed to get attached to study course parts?'),
 ('STUDYGROUP_TERMS','Mir ist bekannt, dass ich die Gruppe nicht zu rechtswidrigen Zwecken nutzen darf. Dazu zählen u.a. Urheberrechtsverletzungen, Beleidigungen und andere Persönlichkeitsdelikte.\n\nIch erkläre mich damit einverstanden, daß Administratorinnen und Administratoren die Inhalte der Gruppe zu Kontrollzwecken einsehen dürfen.','i18n','global','studygroups',1257956185,1257956185,'Hier werden die Nutzungsbedinungen der Studiengruppen hinterlegt.'),
 ('SYSTEMCACHE','{\"type\": \"Studip\\\\Cache\\\\DbCache\", \"config\": []}','array','global','global',1640797278,1640797278,'Typ und Konfiguration des zu verwendenden Systemcaches'),
-('SYSTEM_NOTIFICATIONS_PLACEMENT','topcenter','string','user','',1754396848,1754396848,'Wo sollen Systembenachrichtigungen im Fenster angezeigt werden? Gültige Werte sind \"topcenter\" und \"bottomright\"'),
+('SYSTEM_NOTIFICATIONS_PLACEMENT','topcenter','string','user','',1757497446,1757497446,'Wo sollen Systembenachrichtigungen im Fenster angezeigt werden? Gültige Werte sind \"topcenter\" und \"bottomright\"'),
 ('TERMS_ACCEPTED','0','boolean','user','',1640797279,1640797279,'Die Nutzungsbedingungen wurden akzeptiert'),
 ('TERMS_CONFIG','{\"compulsory\":false,\"denial_message\":\"\"}','array','global','global',1607702429,1607702429,'In case the terms are not compulsory, user can deny them.if denial_message is not set, a default text is displayed.'),
-('TERMS_OF_USE_URL','dispatch.php/siteinfo/show/1/10','string','global','privacy',1754396851,1754396851,'URL zu den Nutzungsbedingungen'),
+('TERMS_OF_USE_URL','dispatch.php/siteinfo/show/1/10','string','global','privacy',1757497449,1757497449,'URL zu den Nutzungsbedingungen'),
 ('TFA_MAX_TRIES','3','integer','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Maximale Anzahl fehlerhafter Versuche innerhalb eines Zeitraums'),
 ('TFA_MAX_TRIES_TIMESPAN','300','integer','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Zeitraum in Sekunden, nach dem fehlerhafte Versuche vergessen werden'),
 ('TFA_PERMS','root','string','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Systemrollen für die die Zwei-Faktor-Authentifizierung aktiviert ist (kommaseparierte Liste, mögliche Werte: autor, tutor, dozent, admin, root)'),
@@ -7456,16 +5856,16 @@ INSERT INTO `config` VALUES
 ('TFA_TRUST_DURATION','30','integer','global','Zwei-Faktor-Authentifizierung',1656513809,1656513809,'Dauer, denen Geräte vertraut werden soll in Tagen (0 für dauerhaftes Vertrauen)'),
 ('TOURS_ENABLE','1','boolean','global','global',1416496223,1416496223,'Aktiviert die Funktionen zum Anbieten von Touren in Stud.IP'),
 ('UNI_NAME_CLEAN','Stud.IP','string','global','global',1510849314,1510849314,'Name der Stud.IP-Installation bzw. Hochschule.'),
-('UPDATE_NEWS_SEEN','0','boolean','global','Root-Assistent',1754396849,1754396849,'Bestätigung, dass die Update-Neuigkeiten gesehen wurden'),
+('UPDATE_NEWS_SEEN','0','boolean','global','Root-Assistent',1757497447,1757497447,'Bestätigung, dass die Update-Neuigkeiten gesehen wurden'),
 ('USERNAME_REGULAR_EXPRESSION','/^([a-zA-Z0-9_@.-]{4,})$/','string','global','global',1510849314,1510849314,'Regulärer Ausdruck für erlaubte Zeichen in Benutzernamen. Das Kommentarfeld kann genutzt werden, um eine Fehlermeldung anzugeben, die zum Beispiel im Registrierungsformular ausgegeben wird, wenn der Ausdruck nicht erfüllt wird.'),
 ('USERNAME_TOOLTIP_TEXT','','i18n','global','Loginseite',1716385357,1716385357,'Text für den Tooltip des Benutzernamens auf der Loginseite'),
 ('USER_HIGH_CONTRAST','0','boolean','user','accessibility',1669041528,1669041528,'Schaltet ein barrierefreies Stylesheet mit hohem Kontrast ein oder aus.'),
 ('USER_VISIBILITY_CHECK','1','boolean','global','global',1510849314,1510849314,'Enable presentation of visibility decision texts for users after first login. see lib/include/header.php and lib/user_visible.inc.php for further info'),
 ('USER_VISIBILITY_UNKNOWN','1','boolean','global','privacy',1153815901,1153815901,'Sollen Nutzer mit Sichtbarkeit \"unknown\" wie sichtbare behandelt werden?'),
-('VIPS_COURSE_GRADES','[]','array','course','',1754396851,1754396851,'Kursbezogenes Schema zur Notenverteilung in Vips'),
-('VIPS_EXAM_RESTRICTIONS','0','boolean','global','',1754396851,1754396851,'Sperrt während einer Klausur andere Bereiche von Stud.IP für die Teilnehmenden'),
-('VIPS_EXAM_ROOMS','[]','array','global','',1754396851,1754396851,'Zentral verwaltete IP-Adressen für PC-Räume'),
-('VIPS_EXAM_TERMS','','string','global','',1754396851,1754396851,'Teilnahmebedingungen, die vor Beginn einer Klausur zu akzeptieren sind'),
+('VIPS_COURSE_GRADES','[]','array','course','',1757497449,1757497449,'Kursbezogenes Schema zur Notenverteilung in Vips'),
+('VIPS_EXAM_RESTRICTIONS','0','boolean','global','',1757497449,1757497449,'Sperrt während einer Klausur andere Bereiche von Stud.IP für die Teilnehmenden'),
+('VIPS_EXAM_ROOMS','[]','array','global','',1757497449,1757497449,'Zentral verwaltete IP-Adressen für PC-Räume'),
+('VIPS_EXAM_TERMS','','string','global','',1757497449,1757497449,'Teilnahmebedingungen, die vor Beginn einer Klausur zu akzeptieren sind'),
 ('VIRUSSCAN_HOST','127.0.0.1','string','global','files',1686150733,1686150733,'Host des Virenscanners (wird nur verwendet, falls kein Socket eingetragen ist)'),
 ('VIRUSSCAN_MAX_STREAMLENGTH','26214400','integer','global','files',1686150733,1686150733,'Maximale Streamlänge in Bytes, die beim Virenscanner erlaubt ist'),
 ('VIRUSSCAN_ON_UPLOAD','0','boolean','global','files',1686150733,1686150733,'Sollen Dateien beim Upload mit ClamAV auf Viren überprüft werden?'),
@@ -7474,7 +5874,7 @@ INSERT INTO `config` VALUES
 ('VOTE_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob die Umfragen global verfügbar sind.'),
 ('WIKI_CREATE_PERMISSION','all','string','course','',1716385357,1716385357,'Status, den es braucht, um neue Wiki-Seiten anzulegen.'),
 ('WIKI_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob das Wiki global verfügbar ist.'),
-('WIKI_ENABLE_AUTOSAVE','1','boolean','user','wiki',1754396852,1754396852,'Aktiviert das automatische Speichern im Wiki'),
+('WIKI_ENABLE_AUTOSAVE','1','boolean','user','wiki',1757497450,1757497450,'Aktiviert das automatische Speichern im Wiki'),
 ('WIKI_RENAME_PERMISSION','all','string','course','',1716385357,1716385357,'Status, den es braucht, um Wiki-Seiten umzubenennen.'),
 ('WIKI_STARTPAGE_ID','','string','range','',1716385357,1716385357,'ID der Wiki-Startseite des Wikis.'),
 ('ZIP_DOWNLOAD_MAX_FILES','400','integer','global','files',1219328498,1219328498,'Die maximale Anzahl an Dateien, die gezippt heruntergeladen werden kann'),
@@ -7485,10 +5885,6 @@ INSERT INTO `config` VALUES
 /*!40000 ALTER TABLE `config` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `sem_classes`
---
 
 LOCK TABLES `sem_classes` WRITE;
 /*!40000 ALTER TABLE `sem_classes` DISABLE KEYS */;
@@ -7501,10 +5897,6 @@ INSERT INTO `sem_classes` VALUES
 /*!40000 ALTER TABLE `sem_classes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `plugins`
---
 
 LOCK TABLES `plugins` WRITE;
 /*!40000 ALTER TABLE `plugins` DISABLE KEYS */;
@@ -7543,10 +5935,6 @@ INSERT INTO `plugins` VALUES
 /*!40000 ALTER TABLE `plugins` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `widget_default`
---
 
 LOCK TABLES `widget_default` WRITE;
 /*!40000 ALTER TABLE `widget_default` DISABLE KEYS */;
@@ -7593,10 +5981,6 @@ INSERT INTO `widget_default` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cronjobs_tasks`
---
-
 LOCK TABLES `cronjobs_tasks` WRITE;
 /*!40000 ALTER TABLE `cronjobs_tasks` DISABLE KEYS */;
 set autocommit=0;
@@ -7604,23 +5988,19 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('208619e89a59895771c2967076daf59e','lib/cronjobs/purge_cache.php','PurgeCacheJob',1,0,0,NULL,NULL),
 ('2f2713671892bd9624fc27866cfd4630','lib/cronjobs/check_admission.php','CheckAdmissionJob',1,0,0,NULL,NULL),
 ('3428a64935e8c6a5ab5dcf5bf95fe556','lib/cronjobs/session_gc.php','SessionGcJob',1,0,0,NULL,NULL),
-('3c124f925aee6cc299546c3e88ed5125','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1754396850,1754396850),
 ('43f9da3d9245d0f01b43f744e0b8cdce','lib/classes/FilesSearch/Cronjob.php','FilesSearch\\Cronjob',1,0,2,NULL,NULL),
 ('532b3fe76447dd85e10949a6fc5f3aa8','lib/cronjobs/cleanup_log.php','CleanupLogJob',1,0,0,NULL,NULL),
 ('5ecaecd21cd6dd3712d3d294de51c776','lib/cronjobs/import_ilias_testresults.php','ImportIliasTestresults',1,0,1,1716385357,1716385357),
 ('81f150b1a22210a1d6fac70220faa831','lib/cronjobs/courseware.php','CoursewareCronjob',1,0,1,1686150733,1686150733),
 ('823875ed4a4b2e87baca0e5137243d96','lib/cronjobs/garbage_collector.php','GarbageCollectorJob',1,0,0,NULL,NULL),
 ('9c4ad2a8fe47d07e61475d25f5e539db','lib/cronjobs/send_mail_queue.php','SendMailQueueJob',1,0,0,NULL,NULL),
+('b960823c5575ef38f9f4108e791f8d09','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1757497449,1757497449),
 ('ca6df41746dbd2077d993d3bfddbf10c','lib/cronjobs/remind_oer_upload.php','RemindOerUpload',1,0,0,NULL,NULL),
 ('d19f37c382fec524b4fd51b3c5a1ada3','lib/cronjobs/send_mail_notifications.php','SendMailNotificationsJob',1,0,0,NULL,NULL),
-('d6256af8bba0a49df4e316b97fb66e6d','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL);
+('e57bca0d1930ec0525d4efe439a2f7d9','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `cronjobs_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `loginbackgrounds`
---
 
 LOCK TABLES `loginbackgrounds` WRITE;
 /*!40000 ALTER TABLE `loginbackgrounds` DISABLE KEYS */;
@@ -7632,10 +6012,6 @@ INSERT INTO `loginbackgrounds` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_hosts`
---
-
 LOCK TABLES `oer_hosts` WRITE;
 /*!40000 ALTER TABLE `oer_hosts` DISABLE KEYS */;
 set autocommit=0;
@@ -7644,10 +6020,6 @@ INSERT INTO `oer_hosts` VALUES
 /*!40000 ALTER TABLE `oer_hosts` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cache_types`
---
 
 LOCK TABLES `cache_types` WRITE;
 /*!40000 ALTER TABLE `cache_types` DISABLE KEYS */;
@@ -7661,23 +6033,16 @@ INSERT INTO `cache_types` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cache`
---
-
 LOCK TABLES `cache` WRITE;
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `cache` VALUES
-('DB_SEM_TYPES_ARRAY','s:1945:\"a:14:{i:0;a:5:{s:2:\"id\";s:1:\"1\";s:4:\"name\";s:9:\"Vorlesung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:1;a:5:{s:2:\"id\";s:1:\"2\";s:4:\"name\";s:7:\"Seminar\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:2;a:5:{s:2:\"id\";s:1:\"3\";s:4:\"name\";s:6:\"Übung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:3;a:5:{s:2:\"id\";s:1:\"4\";s:4:\"name\";s:9:\"Praktikum\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:4;a:5:{s:2:\"id\";s:1:\"5\";s:4:\"name\";s:10:\"Colloquium\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:5;a:5:{s:2:\"id\";s:1:\"6\";s:4:\"name\";s:16:\"Forschungsgruppe\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:6;a:5:{s:2:\"id\";s:1:\"7\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:7;a:5:{s:2:\"id\";s:1:\"8\";s:4:\"name\";s:7:\"Gremium\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:8;a:5:{s:2:\"id\";s:1:\"9\";s:4:\"name\";s:13:\"Projektgruppe\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:9;a:5:{s:2:\"id\";s:2:\"10\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:10;a:5:{s:2:\"id\";s:2:\"11\";s:4:\"name\";s:11:\"Kulturforum\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:11;a:5:{s:2:\"id\";s:2:\"12\";s:4:\"name\";s:19:\"Veranstaltungsboard\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:12;a:5:{s:2:\"id\";s:2:\"13\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:13;a:5:{s:2:\"id\";s:2:\"99\";s:4:\"name\";s:13:\"Studiengruppe\";s:5:\"class\";s:2:\"99\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}}\";',1754440047),
-('DB_TABLE_SCHEMES','s:10995:\"a:6:{s:9:\"user_info\";a:2:{s:9:\"db_fields\";a:22:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"hobby\";a:5:{s:4:\"name\";s:5:\"hobby\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:10:\"lebenslauf\";a:5:{s:4:\"name\";s:10:\"lebenslauf\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:5:\"publi\";a:5:{s:4:\"name\";s:5:\"publi\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:7:\"schwerp\";a:5:{s:4:\"name\";s:7:\"schwerp\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"home\";a:5:{s:4:\"name\";s:4:\"Home\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(200)\";s:5:\"extra\";s:0:\"\";}s:8:\"privatnr\";a:5:{s:4:\"name\";s:8:\"privatnr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"privatcell\";a:5:{s:4:\"name\";s:10:\"privatcell\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:7:\"privadr\";a:5:{s:4:\"name\";s:7:\"privadr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"score\";a:5:{s:4:\"name\";s:5:\"score\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"geschlecht\";a:5:{s:4:\"name\";s:10:\"geschlecht\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"title_front\";a:5:{s:4:\"name\";s:11:\"title_front\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:10:\"title_rear\";a:5:{s:4:\"name\";s:10:\"title_rear\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:18:\"preferred_language\";a:5:{s:4:\"name\";s:18:\"preferred_language\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(20)\";s:5:\"extra\";s:0:\"\";}s:15:\"smsforward_copy\";a:5:{s:4:\"name\";s:15:\"smsforward_copy\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"smsforward_rec\";a:5:{s:4:\"name\";s:14:\"smsforward_rec\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:13:\"email_forward\";a:5:{s:4:\"name\";s:13:\"email_forward\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"motto\";a:5:{s:4:\"name\";s:5:\"motto\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:21:\"oercampus_description\";a:5:{s:4:\"name\";s:21:\"oercampus_description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:13:\"auth_user_md5\";a:2:{s:9:\"db_fields\";a:14:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"username\";a:5:{s:4:\"name\";s:8:\"username\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"password\";a:5:{s:4:\"name\";s:8:\"password\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:13:\"varbinary(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"perms\";a:5:{s:4:\"name\";s:5:\"perms\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:4:\"user\";s:4:\"type\";s:52:\"enum(\'user\',\'autor\',\'tutor\',\'dozent\',\'admin\',\'root\')\";s:5:\"extra\";s:0:\"\";}s:7:\"vorname\";a:5:{s:4:\"name\";s:7:\"Vorname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"nachname\";a:5:{s:4:\"name\";s:8:\"Nachname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"email\";a:5:{s:4:\"name\";s:5:\"Email\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(256)\";s:5:\"extra\";s:0:\"\";}s:14:\"validation_key\";a:5:{s:4:\"name\";s:14:\"validation_key\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:11:\"auth_plugin\";a:5:{s:4:\"name\";s:11:\"auth_plugin\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:8:\"standard\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:6:\"locked\";a:5:{s:4:\"name\";s:6:\"locked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"lock_comment\";a:5:{s:4:\"name\";s:12:\"lock_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"locked_by\";a:5:{s:4:\"name\";s:9:\"locked_by\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:7:\"unknown\";s:4:\"type\";s:52:\"enum(\'global\',\'always\',\'yes\',\'unknown\',\'no\',\'never\')\";s:5:\"extra\";s:0:\"\";}s:20:\"matriculation_number\";a:5:{s:4:\"name\";s:20:\"matriculation_number\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:11:\"log_actions\";a:2:{s:9:\"db_fields\";a:11:{s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(128)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:13:\"info_template\";a:5:{s:4:\"name\";s:13:\"info_template\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"active\";a:5:{s:4:\"name\";s:6:\"active\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"filename\";a:5:{s:4:\"name\";s:8:\"filename\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:5:\"class\";a:5:{s:4:\"name\";s:5:\"class\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:28:\"enum(\'core\',\'plugin\',\'file\')\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"action_id\";}}s:10:\"log_events\";a:2:{s:9:\"db_fields\";a:8:{s:8:\"event_id\";a:5:{s:4:\"name\";s:8:\"event_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:14:\"auto_increment\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"affected_range_id\";a:5:{s:4:\"name\";s:17:\"affected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"coaffected_range_id\";a:5:{s:4:\"name\";s:19:\"coaffected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"info\";a:5:{s:4:\"name\";s:4:\"info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"dbg_info\";a:5:{s:4:\"name\";s:8:\"dbg_info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"event_id\";}}s:13:\"semester_data\";a:2:{s:9:\"db_fields\";a:12:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:14:\"semester_token\";a:5:{s:4:\"name\";s:14:\"semester_token\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"sem_wechsel\";a:5:{s:4:\"name\";s:11:\"sem_wechsel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"vorles_beginn\";a:5:{s:4:\"name\";s:13:\"vorles_beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"vorles_ende\";a:5:{s:4:\"name\";s:11:\"vorles_ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"external_id\";a:5:{s:4:\"name\";s:11:\"external_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(50)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"semester_id\";}}s:16:\"semester_holiday\";a:2:{s:9:\"db_fields\";a:8:{s:10:\"holiday_id\";a:5:{s:4:\"name\";s:10:\"holiday_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"holiday_id\";}}}\";',1754440053);
+('DB_SEM_TYPES_ARRAY','s:1945:\"a:14:{i:0;a:5:{s:2:\"id\";s:1:\"1\";s:4:\"name\";s:9:\"Vorlesung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:1;a:5:{s:2:\"id\";s:1:\"2\";s:4:\"name\";s:7:\"Seminar\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:2;a:5:{s:2:\"id\";s:1:\"3\";s:4:\"name\";s:6:\"Übung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:3;a:5:{s:2:\"id\";s:1:\"4\";s:4:\"name\";s:9:\"Praktikum\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:4;a:5:{s:2:\"id\";s:1:\"5\";s:4:\"name\";s:10:\"Colloquium\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:5;a:5:{s:2:\"id\";s:1:\"6\";s:4:\"name\";s:16:\"Forschungsgruppe\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:6;a:5:{s:2:\"id\";s:1:\"7\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:7;a:5:{s:2:\"id\";s:1:\"8\";s:4:\"name\";s:7:\"Gremium\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:8;a:5:{s:2:\"id\";s:1:\"9\";s:4:\"name\";s:13:\"Projektgruppe\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:9;a:5:{s:2:\"id\";s:2:\"10\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:10;a:5:{s:2:\"id\";s:2:\"11\";s:4:\"name\";s:11:\"Kulturforum\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:11;a:5:{s:2:\"id\";s:2:\"12\";s:4:\"name\";s:19:\"Veranstaltungsboard\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:12;a:5:{s:2:\"id\";s:2:\"13\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:13;a:5:{s:2:\"id\";s:2:\"99\";s:4:\"name\";s:13:\"Studiengruppe\";s:5:\"class\";s:2:\"99\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}}\";',1757540646),
+('DB_TABLE_SCHEMES','s:10995:\"a:6:{s:9:\"user_info\";a:2:{s:9:\"db_fields\";a:22:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"hobby\";a:5:{s:4:\"name\";s:5:\"hobby\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:10:\"lebenslauf\";a:5:{s:4:\"name\";s:10:\"lebenslauf\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:5:\"publi\";a:5:{s:4:\"name\";s:5:\"publi\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:7:\"schwerp\";a:5:{s:4:\"name\";s:7:\"schwerp\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"home\";a:5:{s:4:\"name\";s:4:\"Home\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(200)\";s:5:\"extra\";s:0:\"\";}s:8:\"privatnr\";a:5:{s:4:\"name\";s:8:\"privatnr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"privatcell\";a:5:{s:4:\"name\";s:10:\"privatcell\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:7:\"privadr\";a:5:{s:4:\"name\";s:7:\"privadr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"score\";a:5:{s:4:\"name\";s:5:\"score\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"geschlecht\";a:5:{s:4:\"name\";s:10:\"geschlecht\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"title_front\";a:5:{s:4:\"name\";s:11:\"title_front\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:10:\"title_rear\";a:5:{s:4:\"name\";s:10:\"title_rear\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:18:\"preferred_language\";a:5:{s:4:\"name\";s:18:\"preferred_language\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(20)\";s:5:\"extra\";s:0:\"\";}s:15:\"smsforward_copy\";a:5:{s:4:\"name\";s:15:\"smsforward_copy\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"smsforward_rec\";a:5:{s:4:\"name\";s:14:\"smsforward_rec\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:13:\"email_forward\";a:5:{s:4:\"name\";s:13:\"email_forward\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"motto\";a:5:{s:4:\"name\";s:5:\"motto\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:21:\"oercampus_description\";a:5:{s:4:\"name\";s:21:\"oercampus_description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:13:\"auth_user_md5\";a:2:{s:9:\"db_fields\";a:14:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"username\";a:5:{s:4:\"name\";s:8:\"username\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"password\";a:5:{s:4:\"name\";s:8:\"password\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:13:\"varbinary(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"perms\";a:5:{s:4:\"name\";s:5:\"perms\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:4:\"user\";s:4:\"type\";s:52:\"enum(\'user\',\'autor\',\'tutor\',\'dozent\',\'admin\',\'root\')\";s:5:\"extra\";s:0:\"\";}s:7:\"vorname\";a:5:{s:4:\"name\";s:7:\"Vorname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"nachname\";a:5:{s:4:\"name\";s:8:\"Nachname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"email\";a:5:{s:4:\"name\";s:5:\"Email\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(256)\";s:5:\"extra\";s:0:\"\";}s:14:\"validation_key\";a:5:{s:4:\"name\";s:14:\"validation_key\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:11:\"auth_plugin\";a:5:{s:4:\"name\";s:11:\"auth_plugin\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:8:\"standard\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:6:\"locked\";a:5:{s:4:\"name\";s:6:\"locked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"lock_comment\";a:5:{s:4:\"name\";s:12:\"lock_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"locked_by\";a:5:{s:4:\"name\";s:9:\"locked_by\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:7:\"unknown\";s:4:\"type\";s:52:\"enum(\'global\',\'always\',\'yes\',\'unknown\',\'no\',\'never\')\";s:5:\"extra\";s:0:\"\";}s:20:\"matriculation_number\";a:5:{s:4:\"name\";s:20:\"matriculation_number\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:11:\"log_actions\";a:2:{s:9:\"db_fields\";a:11:{s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(128)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:13:\"info_template\";a:5:{s:4:\"name\";s:13:\"info_template\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"active\";a:5:{s:4:\"name\";s:6:\"active\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"filename\";a:5:{s:4:\"name\";s:8:\"filename\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:5:\"class\";a:5:{s:4:\"name\";s:5:\"class\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:28:\"enum(\'core\',\'plugin\',\'file\')\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"action_id\";}}s:10:\"log_events\";a:2:{s:9:\"db_fields\";a:8:{s:8:\"event_id\";a:5:{s:4:\"name\";s:8:\"event_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:14:\"auto_increment\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"affected_range_id\";a:5:{s:4:\"name\";s:17:\"affected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"coaffected_range_id\";a:5:{s:4:\"name\";s:19:\"coaffected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"info\";a:5:{s:4:\"name\";s:4:\"info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"dbg_info\";a:5:{s:4:\"name\";s:8:\"dbg_info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"event_id\";}}s:13:\"semester_data\";a:2:{s:9:\"db_fields\";a:12:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:14:\"semester_token\";a:5:{s:4:\"name\";s:14:\"semester_token\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"sem_wechsel\";a:5:{s:4:\"name\";s:11:\"sem_wechsel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"vorles_beginn\";a:5:{s:4:\"name\";s:13:\"vorles_beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"vorles_ende\";a:5:{s:4:\"name\";s:11:\"vorles_ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"external_id\";a:5:{s:4:\"name\";s:11:\"external_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(50)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"semester_id\";}}s:16:\"semester_holiday\";a:2:{s:9:\"db_fields\";a:8:{s:10:\"holiday_id\";a:5:{s:4:\"name\";s:10:\"holiday_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"holiday_id\";}}}\";',1757540650),
+('STUDIP#autoloader-classes','s:2:\"[]\";',1758102243);
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `auth_user_md5`
---
 
 LOCK TABLES `auth_user_md5` WRITE;
 /*!40000 ALTER TABLE `auth_user_md5` DISABLE KEYS */;
@@ -7687,10 +6052,6 @@ INSERT INTO `auth_user_md5` VALUES
 /*!40000 ALTER TABLE `auth_user_md5` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_content`
---
 
 LOCK TABLES `help_content` WRITE;
 /*!40000 ALTER TABLE `help_content` DISABLE KEYS */;
@@ -7870,10 +6231,6 @@ INSERT INTO `help_content` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_categories`
---
-
 LOCK TABLES `resource_categories` WRITE;
 /*!40000 ALTER TABLE `resource_categories` DISABLE KEYS */;
 set autocommit=0;
@@ -7885,10 +6242,6 @@ INSERT INTO `resource_categories` VALUES
 /*!40000 ALTER TABLE `resource_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `admissionrule_compat`
---
 
 LOCK TABLES `admissionrule_compat` WRITE;
 /*!40000 ALTER TABLE `admissionrule_compat` DISABLE KEYS */;
@@ -7951,10 +6304,6 @@ INSERT INTO `admissionrule_compat` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `colour_values`
---
-
 LOCK TABLES `colour_values` WRITE;
 /*!40000 ALTER TABLE `colour_values` DISABLE KEYS */;
 set autocommit=0;
@@ -7981,10 +6330,6 @@ INSERT INTO `colour_values` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `datafields`
---
-
 LOCK TABLES `datafields` WRITE;
 /*!40000 ALTER TABLE `datafields` DISABLE KEYS */;
 set autocommit=0;
@@ -7995,10 +6340,6 @@ INSERT INTO `datafields` VALUES
 /*!40000 ALTER TABLE `datafields` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tour_settings`
---
 
 LOCK TABLES `help_tour_settings` WRITE;
 /*!40000 ALTER TABLE `help_tour_settings` DISABLE KEYS */;
@@ -8043,34 +6384,26 @@ INSERT INTO `help_tour_settings` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cronjobs_schedules`
---
-
 LOCK TABLES `cronjobs_schedules` WRITE;
 /*!40000 ALTER TABLE `cronjobs_schedules` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `cronjobs_schedules` VALUES
-('2aa565472610de35c21dc88d8abad67f','3c124f925aee6cc299546c3e88ed5125',1,NULL,NULL,'null',-15,NULL,NULL,NULL,NULL,1754397000,NULL,NULL,0,1754396850,1754396850),
 ('3eb6cd006b1d27ab3dfd812c17d90f38','532b3fe76447dd85e10949a6fc5f3aa8',0,NULL,'','{\"cronjobs\":\"1\",\"cronjobs-success\":\"7\",\"cronjobs-error\":\"14\"}',13,2,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258107),
+('4bd4cfa8ae9e4978501256abc4891004','b960823c5575ef38f9f4108e791f8d09',1,NULL,NULL,'null',-15,NULL,NULL,NULL,NULL,1757497500,NULL,NULL,0,1757497449,1757497449),
 ('5e8536eda6d60e42c1068195b812b021','ca6df41746dbd2077d993d3bfddbf10c',1,NULL,NULL,'[]',0,1,NULL,NULL,NULL,0,NULL,NULL,0,1686150733,1686150733),
 ('69f3cf620a3ee6a3e77a554163685520','81f150b1a22210a1d6fac70220faa831',1,NULL,NULL,'{\"verbose\":false}',41,1,NULL,NULL,NULL,1686181260,NULL,NULL,0,1686150733,1686150733),
 ('6eef46d414b104b153402be299e16515','2f2713671892bd9624fc27866cfd4630',0,NULL,'','{\"verbose\":\"1\",\"send_messages\":\"1\"}',-30,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258130),
 ('81411d712690ab3a82032439dbcdc8c1','9c4ad2a8fe47d07e61475d25f5e539db',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1403258017,1403258017),
 ('8541eec0e512e4e0caa2a5566dd3633b','5ecaecd21cd6dd3712d3d294de51c776',0,NULL,NULL,'null',45,1,NULL,NULL,NULL,0,NULL,NULL,0,1716385357,1716385357),
+('9724b5e38be42908a27d4f169c405034','e57bca0d1930ec0525d4efe439a2f7d9',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1757497449,1757497449),
 ('b6e232acce27674e496bd2182aab5aaa','43f9da3d9245d0f01b43f744e0b8cdce',0,NULL,NULL,'null',55,0,NULL,NULL,NULL,1530312900,NULL,NULL,0,1530289049,1530290418),
 ('cdf293c6c5ae966d87dc5ee723d9880d','823875ed4a4b2e87baca0e5137243d96',0,NULL,'','{\"verbose\":\"1\"}',33,2,NULL,NULL,NULL,1530318780,NULL,NULL,0,1403258015,1530290419),
 ('dc849ba21c484ffbb82f7ef9edea3d7d','208619e89a59895771c2967076daf59e',0,NULL,NULL,'[]',-30,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258015),
 ('dfd35e23a8256fee930e2e748cd53f1d','3428a64935e8c6a5ab5dcf5bf95fe556',0,NULL,NULL,'null',13,3,NULL,NULL,NULL,1530321180,NULL,NULL,0,1403258015,1530290420),
-('f048bf3c13bfdb2a2a17ce867903ca0e','d19f37c382fec524b4fd51b3c5a1ada3',0,NULL,NULL,'[]',7,1,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258015),
-('f47af3c6f6a18a6ad4ef5785d74c594a','d6256af8bba0a49df4e316b97fb66e6d',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1754396851,1754396851);
+('f048bf3c13bfdb2a2a17ce867903ca0e','d19f37c382fec524b4fd51b3c5a1ada3',0,NULL,NULL,'[]',7,1,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258015);
 /*!40000 ALTER TABLE `cronjobs_schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `roles`
---
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
@@ -8095,10 +6428,6 @@ INSERT INTO `roles` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `content_terms_of_use_entries`
---
-
 LOCK TABLES `content_terms_of_use_entries` WRITE;
 /*!40000 ALTER TABLE `content_terms_of_use_entries` DISABLE KEYS */;
 set autocommit=0;
@@ -8111,10 +6440,6 @@ INSERT INTO `content_terms_of_use_entries` VALUES
 /*!40000 ALTER TABLE `content_terms_of_use_entries` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `roles_studipperms`
---
 
 LOCK TABLES `roles_studipperms` WRITE;
 /*!40000 ALTER TABLE `roles_studipperms` DISABLE KEYS */;
@@ -8132,22 +6457,14 @@ INSERT INTO `roles_studipperms` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `semester_holiday`
---
-
 LOCK TABLES `semester_holiday` WRITE;
 /*!40000 ALTER TABLE `semester_holiday` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `semester_holiday` VALUES
-('704038f0cb3ea0a285ba0a453788ebed','','Unterbrechung','',1766358000,1767481200,NULL,1754396853);
+('704038f0cb3ea0a285ba0a453788ebed','','Unterbrechung','',1766358000,1767481200,NULL,1757497450);
 /*!40000 ALTER TABLE `semester_holiday` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tours`
---
 
 LOCK TABLES `help_tours` WRITE;
 /*!40000 ALTER TABLE `help_tours` DISABLE KEYS */;
@@ -8198,6 +6515,4 @@ commit;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-08-05 14:27:33
