@@ -268,6 +268,14 @@ $sidebarOut: -330px;
     position: fixed;
     width: 100vw;
     z-index: 1000;
+
+    #toggle-sidebar {
+        color: var(--color--highlight);
+
+        .studip-icon {
+            vertical-align: bottom;
+        }
+    }
 }
 
 .responsive-display,
