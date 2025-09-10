@@ -56,6 +56,19 @@ class TimedFolder extends PermissionEnabledFolder
     }
 
     /**
+     * A helper method to calculate the real end time that is used in time comparisons.
+     * Since the end time is a timestamp that only contains hours and minutes, the folder
+     * will be invisible, unreadable and unwritable in the minute in that timestamp unless
+     * one more minute is added.
+     *
+     * @returns int The real end time. This is the end timestamp + 60.
+     */
+    protected function getRealEndTime() : int
+    {
+        return $this->end_time + 60;
+    }
+
+    /**
      * Is the current folder visible for the given user?
      * That depends on parent folder visibility and time settings.
      *
@@ -65,9 +78,10 @@ class TimedFolder extends PermissionEnabledFolder
     public function isVisible($user_id = null)
     {
         $now = time();
+        $real_end_time = $this->getRealEndTime();
         return (
                 ($this->start_time == 0 || $this->start_time <= $now) &&
-                    ($this->end_time == 0 || $this->end_time >= $now)
+                    ($this->end_time == 0 || $real_end_time > $now)
                 ||
                 $GLOBALS['perm']->have_studip_perm($this->must_have_perm, $this->range_id, $user_id)) &&
             parent::isVisible($user_id);
@@ -76,9 +90,10 @@ class TimedFolder extends PermissionEnabledFolder
     public function isReadable($user_id = null)
     {
         $now = time();
+        $real_end_time = $this->getRealEndTime();
         return (
                 ($this->start_time == 0 || $this->start_time <= $now) &&
-                ($this->end_time == 0 || $this->end_time >= $now)
+                ($this->end_time == 0 || $real_end_time > $now)
                 ||
                 $GLOBALS['perm']->have_studip_perm($this->must_have_perm, $this->range_id, $user_id)) &&
             StandardFolder::isReadable($user_id);
@@ -87,9 +102,10 @@ class TimedFolder extends PermissionEnabledFolder
     public function isWritable($user_id = null)
     {
         $now = time();
+        $real_end_time = $this->getRealEndTime();
         return (
                 ($this->start_time == 0 || $this->start_time <= $now) &&
-                ($this->end_time == 0 || $this->end_time >= $now)
+                ($this->end_time == 0 || $real_end_time > $now)
                 ||
                 $GLOBALS['perm']->have_studip_perm($this->must_have_perm, $this->range_id, $user_id)) &&
             parent::isWritable($user_id);
@@ -185,10 +201,6 @@ class TimedFolder extends PermissionEnabledFolder
         $this->folderdata['data_content']['permission'] = $permvalue;
         $start = strtotime($request['start_time']);
         $end = strtotime($request['end_time']);
-        if (date('i', $end) === '59') {
-            //Add 59 seconds to $end to get to the last second of the minute:
-            $end += 59;
-        }
 
         if (!$start && !$end) {
 
