@@ -1,9 +1,3 @@
-/*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.8.2-MariaDB, for osx10.20 (arm64)
---
--- Host: 127.0.0.1    Database: studip_6_0
--- ------------------------------------------------------
--- Server version	11.8.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,12 +8,6 @@
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
-
---
--- Table structure for table `Institute`
---
-
 DROP TABLE IF EXISTS `Institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -43,11 +31,6 @@ CREATE TABLE `Institute` (
   KEY `fakultaets_id` (`fakultaets_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `abschluss`
---
-
 DROP TABLE IF EXISTS `abschluss`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -63,11 +46,6 @@ CREATE TABLE `abschluss` (
   PRIMARY KEY (`abschluss_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `activities`
---
-
 DROP TABLE IF EXISTS `activities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -90,11 +68,6 @@ CREATE TABLE `activities` (
   KEY `context_query` (`context`,`context_id`,`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_condition`
---
-
 DROP TABLE IF EXISTS `admission_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -106,11 +79,6 @@ CREATE TABLE `admission_condition` (
   PRIMARY KEY (`rule_id`,`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_conditiongroup`
---
-
 DROP TABLE IF EXISTS `admission_conditiongroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -120,11 +88,6 @@ CREATE TABLE `admission_conditiongroup` (
   PRIMARY KEY (`conditiongroup_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admission_seminar_user`
---
-
 DROP TABLE IF EXISTS `admission_seminar_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -141,11 +104,6 @@ CREATE TABLE `admission_seminar_user` (
   KEY `seminar_id` (`seminar_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionfactor`
---
-
 DROP TABLE IF EXISTS `admissionfactor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -159,11 +117,6 @@ CREATE TABLE `admissionfactor` (
   PRIMARY KEY (`list_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionrule_compat`
---
-
 DROP TABLE IF EXISTS `admissionrule_compat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -175,11 +128,6 @@ CREATE TABLE `admissionrule_compat` (
   PRIMARY KEY (`rule_type`,`compat_rule_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `admissionrules`
---
-
 DROP TABLE IF EXISTS `admissionrules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -193,11 +141,6 @@ CREATE TABLE `admissionrules` (
   UNIQUE KEY `ruletype` (`ruletype`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `archiv`
---
-
 DROP TABLE IF EXISTS `archiv`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -224,11 +167,6 @@ CREATE TABLE `archiv` (
   KEY `heimat_inst_id` (`heimat_inst_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `archiv_user`
---
-
 DROP TABLE IF EXISTS `archiv_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -240,11 +178,6 @@ CREATE TABLE `archiv_user` (
   KEY `user_id` (`user_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auth_extern`
---
-
 DROP TABLE IF EXISTS `auth_extern`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -261,11 +194,6 @@ CREATE TABLE `auth_extern` (
   PRIMARY KEY (`studip_user_id`,`external_user_system_type`,`external_user_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auth_user_md5`
---
-
 DROP TABLE IF EXISTS `auth_user_md5`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -290,11 +218,6 @@ CREATE TABLE `auth_user_md5` (
   KEY `matriculation_number` (`matriculation_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auto_insert_sem`
---
-
 DROP TABLE IF EXISTS `auto_insert_sem`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -305,11 +228,6 @@ CREATE TABLE `auto_insert_sem` (
   PRIMARY KEY (`seminar_id`,`status`,`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `auto_insert_user`
---
-
 DROP TABLE IF EXISTS `auto_insert_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -320,11 +238,6 @@ CREATE TABLE `auto_insert_user` (
   PRIMARY KEY (`seminar_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `aux_lock_rules`
---
-
 DROP TABLE IF EXISTS `aux_lock_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -339,11 +252,6 @@ CREATE TABLE `aux_lock_rules` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `banner_ads`
---
-
 DROP TABLE IF EXISTS `banner_ads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -364,11 +272,6 @@ CREATE TABLE `banner_ads` (
   PRIMARY KEY (`ad_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `banner_roles`
---
-
 DROP TABLE IF EXISTS `banner_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -378,11 +281,6 @@ CREATE TABLE `banner_roles` (
   PRIMARY KEY (`ad_id`,`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_comments`
---
-
 DROP TABLE IF EXISTS `blubber_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -401,11 +299,6 @@ CREATE TABLE `blubber_comments` (
   KEY `mkdate` (`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_events_queue`
---
-
 DROP TABLE IF EXISTS `blubber_events_queue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -417,11 +310,6 @@ CREATE TABLE `blubber_events_queue` (
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_mentions`
---
-
 DROP TABLE IF EXISTS `blubber_mentions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -437,11 +325,6 @@ CREATE TABLE `blubber_mentions` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_tags`
---
-
 DROP TABLE IF EXISTS `blubber_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -452,11 +335,6 @@ CREATE TABLE `blubber_tags` (
   KEY `tag` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_threads`
---
-
 DROP TABLE IF EXISTS `blubber_threads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -479,11 +357,6 @@ CREATE TABLE `blubber_threads` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `blubber_threads_followstates`
---
-
 DROP TABLE IF EXISTS `blubber_threads_followstates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -495,11 +368,6 @@ CREATE TABLE `blubber_threads_followstates` (
   PRIMARY KEY (`thread_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache`
---
-
 DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -510,11 +378,6 @@ CREATE TABLE `cache` (
   PRIMARY KEY (`cache_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache_operations`
---
-
 DROP TABLE IF EXISTS `cache_operations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -527,11 +390,6 @@ CREATE TABLE `cache_operations` (
   PRIMARY KEY (`cache_key`(200),`operation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache_types`
---
-
 DROP TABLE IF EXISTS `cache_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -544,11 +402,6 @@ CREATE TABLE `cache_types` (
   UNIQUE KEY `class_name` (`class_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_date_assignments`
---
-
 DROP TABLE IF EXISTS `calendar_date_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -561,11 +414,6 @@ CREATE TABLE `calendar_date_assignments` (
   PRIMARY KEY (`range_id`,`calendar_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_date_exceptions`
---
-
 DROP TABLE IF EXISTS `calendar_date_exceptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -579,11 +427,6 @@ CREATE TABLE `calendar_date_exceptions` (
   KEY `calendar_date_id` (`calendar_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `calendar_dates`
---
-
 DROP TABLE IF EXISTS `calendar_dates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -617,11 +460,6 @@ CREATE TABLE `calendar_dates` (
   KEY `begin` (`begin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `captcha_challenges`
---
-
 DROP TABLE IF EXISTS `captcha_challenges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -633,11 +471,6 @@ CREATE TABLE `captcha_challenges` (
   PRIMARY KEY (`challenge_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `clipboard_items`
---
-
 DROP TABLE IF EXISTS `clipboard_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -653,11 +486,6 @@ CREATE TABLE `clipboard_items` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `clipboards`
---
-
 DROP TABLE IF EXISTS `clipboards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -673,11 +501,6 @@ CREATE TABLE `clipboards` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `colour_values`
---
-
 DROP TABLE IF EXISTS `colour_values`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -690,11 +513,6 @@ CREATE TABLE `colour_values` (
   PRIMARY KEY (`colour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `comments`
---
-
 DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -710,11 +528,6 @@ CREATE TABLE `comments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `conditionaladmissions`
---
-
 DROP TABLE IF EXISTS `conditionaladmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -729,11 +542,6 @@ CREATE TABLE `conditionaladmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `config`
---
-
 DROP TABLE IF EXISTS `config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -749,11 +557,6 @@ CREATE TABLE `config` (
   PRIMARY KEY (`field`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `config_values`
---
-
 DROP TABLE IF EXISTS `config_values`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -769,11 +572,6 @@ CREATE TABLE `config_values` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_blocks`
---
-
 DROP TABLE IF EXISTS `consultation_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -799,11 +597,6 @@ CREATE TABLE `consultation_blocks` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_bookings`
---
-
 DROP TABLE IF EXISTS `consultation_bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -820,11 +613,6 @@ CREATE TABLE `consultation_bookings` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_events`
---
-
 DROP TABLE IF EXISTS `consultation_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -836,11 +624,6 @@ CREATE TABLE `consultation_events` (
   PRIMARY KEY (`slot_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_responsibilities`
---
-
 DROP TABLE IF EXISTS `consultation_responsibilities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -852,11 +635,6 @@ CREATE TABLE `consultation_responsibilities` (
   PRIMARY KEY (`block_id`,`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `consultation_slots`
---
-
 DROP TABLE IF EXISTS `consultation_slots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -873,11 +651,6 @@ CREATE TABLE `consultation_slots` (
   KEY `block_id` (`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact`
---
-
 DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -891,11 +664,6 @@ CREATE TABLE `contact` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact_group_items`
---
-
 DROP TABLE IF EXISTS `contact_group_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -907,11 +675,6 @@ CREATE TABLE `contact_group_items` (
   PRIMARY KEY (`group_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `contact_groups`
---
-
 DROP TABLE IF EXISTS `contact_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -924,11 +687,6 @@ CREATE TABLE `contact_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `content_terms_of_use_entries`
---
-
 DROP TABLE IF EXISTS `content_terms_of_use_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -946,11 +704,6 @@ CREATE TABLE `content_terms_of_use_entries` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursememberadmissions`
---
-
 DROP TABLE IF EXISTS `coursememberadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -966,11 +719,6 @@ CREATE TABLE `coursememberadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_factorlist`
---
-
 DROP TABLE IF EXISTS `courseset_factorlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -981,11 +729,6 @@ CREATE TABLE `courseset_factorlist` (
   PRIMARY KEY (`set_id`,`factorlist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_institute`
---
-
 DROP TABLE IF EXISTS `courseset_institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -998,11 +741,6 @@ CREATE TABLE `courseset_institute` (
   KEY `institute_id` (`institute_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `courseset_rule`
---
-
 DROP TABLE IF EXISTS `courseset_rule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1015,11 +753,6 @@ CREATE TABLE `courseset_rule` (
   KEY `type` (`set_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursesets`
---
-
 DROP TABLE IF EXISTS `coursesets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1037,11 +770,6 @@ CREATE TABLE `coursesets` (
   KEY `set_user` (`user_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coursewizardsteps`
---
-
 DROP TABLE IF EXISTS `coursewizardsteps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1057,11 +785,6 @@ CREATE TABLE `coursewizardsteps` (
   UNIQUE KEY `classname` (`classname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_logs`
---
-
 DROP TABLE IF EXISTS `cronjobs_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1077,11 +800,6 @@ CREATE TABLE `cronjobs_logs` (
   KEY `schedule_id` (`schedule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_schedules`
---
-
 DROP TABLE IF EXISTS `cronjobs_schedules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1107,11 +825,6 @@ CREATE TABLE `cronjobs_schedules` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cronjobs_tasks`
---
-
 DROP TABLE IF EXISTS `cronjobs_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1127,11 +840,6 @@ CREATE TABLE `cronjobs_tasks` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_block_comments`
---
-
 DROP TABLE IF EXISTS `cw_block_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1147,11 +855,6 @@ CREATE TABLE `cw_block_comments` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_block_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_block_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1167,11 +870,6 @@ CREATE TABLE `cw_block_feedbacks` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_blocks`
---
-
 DROP TABLE IF EXISTS `cw_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1192,11 +890,6 @@ CREATE TABLE `cw_blocks` (
   KEY `index_container_id` (`container_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_bookmarks`
---
-
 DROP TABLE IF EXISTS `cw_bookmarks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1208,11 +901,6 @@ CREATE TABLE `cw_bookmarks` (
   PRIMARY KEY (`user_id`,`element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_certificates`
---
-
 DROP TABLE IF EXISTS `cw_certificates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1228,11 +916,6 @@ CREATE TABLE `cw_certificates` (
   KEY `index_unit_id` (`unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_clipboards`
---
-
 DROP TABLE IF EXISTS `cw_clipboards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1253,11 +936,6 @@ CREATE TABLE `cw_clipboards` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_containers`
---
-
 DROP TABLE IF EXISTS `cw_containers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1278,11 +956,6 @@ CREATE TABLE `cw_containers` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_peer_review_processes`
---
-
 DROP TABLE IF EXISTS `cw_peer_review_processes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1301,11 +974,6 @@ CREATE TABLE `cw_peer_review_processes` (
   KEY `index_owner_id` (`owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_peer_reviews`
---
-
 DROP TABLE IF EXISTS `cw_peer_reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1326,11 +994,6 @@ CREATE TABLE `cw_peer_reviews` (
   KEY `index_reviewer_id` (`reviewer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_public_links`
---
-
 DROP TABLE IF EXISTS `cw_public_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1347,11 +1010,6 @@ CREATE TABLE `cw_public_links` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_element_comments`
---
-
 DROP TABLE IF EXISTS `cw_structural_element_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1367,11 +1025,6 @@ CREATE TABLE `cw_structural_element_comments` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_element_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_structural_element_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1387,11 +1040,6 @@ CREATE TABLE `cw_structural_element_feedbacks` (
   KEY `index_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_structural_elements`
---
-
 DROP TABLE IF EXISTS `cw_structural_elements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1434,11 +1082,6 @@ CREATE TABLE `cw_structural_elements` (
   KEY `index_range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_task_feedbacks`
---
-
 DROP TABLE IF EXISTS `cw_task_feedbacks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1454,11 +1097,6 @@ CREATE TABLE `cw_task_feedbacks` (
   KEY `index_lecturer_id` (`lecturer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_task_groups`
---
-
 DROP TABLE IF EXISTS `cw_task_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1479,11 +1117,6 @@ CREATE TABLE `cw_task_groups` (
   KEY `index_lecturer_id` (`lecturer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_tasks`
---
-
 DROP TABLE IF EXISTS `cw_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1506,11 +1139,6 @@ CREATE TABLE `cw_tasks` (
   KEY `index_solver_id` (`solver_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_templates`
---
-
 DROP TABLE IF EXISTS `cw_templates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1524,11 +1152,6 @@ CREATE TABLE `cw_templates` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_units`
---
-
 DROP TABLE IF EXISTS `cw_units`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1561,11 +1184,6 @@ CREATE TABLE `cw_units` (
   KEY `index_structural_element_id` (`structural_element_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_user_data_fields`
---
-
 DROP TABLE IF EXISTS `cw_user_data_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1578,11 +1196,6 @@ CREATE TABLE `cw_user_data_fields` (
   PRIMARY KEY (`user_id`,`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cw_user_progresses`
---
-
 DROP TABLE IF EXISTS `cw_user_progresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1596,11 +1209,6 @@ CREATE TABLE `cw_user_progresses` (
   KEY `block_id` (`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `datafields`
---
-
 DROP TABLE IF EXISTS `datafields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1626,11 +1234,6 @@ CREATE TABLE `datafields` (
   KEY `object_type` (`object_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `datafields_entries`
---
-
 DROP TABLE IF EXISTS `datafields_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1648,11 +1251,6 @@ CREATE TABLE `datafields_entries` (
   KEY `datafields_contents` (`datafield_id`,`content`(32))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `deputies`
---
-
 DROP TABLE IF EXISTS `deputies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1668,11 +1266,6 @@ CREATE TABLE `deputies` (
   KEY `user_id` (`user_id`,`range_id`,`edit_about`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignment_attempts`
---
-
 DROP TABLE IF EXISTS `etask_assignment_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1690,11 +1283,6 @@ CREATE TABLE `etask_assignment_attempts` (
   UNIQUE KEY `assignment_id` (`assignment_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignment_ranges`
---
-
 DROP TABLE IF EXISTS `etask_assignment_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1710,11 +1298,6 @@ CREATE TABLE `etask_assignment_ranges` (
   UNIQUE KEY `assignment_id` (`assignment_id`,`range_type`,`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_assignments`
---
-
 DROP TABLE IF EXISTS `etask_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1737,11 +1320,6 @@ CREATE TABLE `etask_assignments` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_blocks`
---
-
 DROP TABLE IF EXISTS `etask_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1756,11 +1334,6 @@ CREATE TABLE `etask_blocks` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_group_members`
---
-
 DROP TABLE IF EXISTS `etask_group_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1773,11 +1346,6 @@ CREATE TABLE `etask_group_members` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_responses`
---
-
 DROP TABLE IF EXISTS `etask_responses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1803,11 +1371,6 @@ CREATE TABLE `etask_responses` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_task_tags`
---
-
 DROP TABLE IF EXISTS `etask_task_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1818,11 +1381,6 @@ CREATE TABLE `etask_task_tags` (
   PRIMARY KEY (`task_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_tasks`
---
-
 DROP TABLE IF EXISTS `etask_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1840,11 +1398,6 @@ CREATE TABLE `etask_tasks` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_test_tags`
---
-
 DROP TABLE IF EXISTS `etask_test_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1855,11 +1408,6 @@ CREATE TABLE `etask_test_tags` (
   PRIMARY KEY (`test_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_test_tasks`
---
-
 DROP TABLE IF EXISTS `etask_test_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1876,11 +1424,6 @@ CREATE TABLE `etask_test_tasks` (
   KEY `task_id` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `etask_tests`
---
-
 DROP TABLE IF EXISTS `etask_tests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1896,11 +1439,6 @@ CREATE TABLE `etask_tests` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ex_termine`
---
-
 DROP TABLE IF EXISTS `ex_termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1923,11 +1461,6 @@ CREATE TABLE `ex_termine` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `extern_pages_configs`
---
-
 DROP TABLE IF EXISTS `extern_pages_configs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1948,11 +1481,6 @@ CREATE TABLE `extern_pages_configs` (
   KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `external_users`
---
-
 DROP TABLE IF EXISTS `external_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1971,11 +1499,6 @@ CREATE TABLE `external_users` (
   KEY `contact_type` (`contact_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `fach`
---
-
 DROP TABLE IF EXISTS `fach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1992,11 +1515,6 @@ CREATE TABLE `fach` (
   PRIMARY KEY (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `feedback`
---
-
 DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2020,11 +1538,6 @@ CREATE TABLE `feedback` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `feedback_entries`
---
-
 DROP TABLE IF EXISTS `feedback_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2042,11 +1555,6 @@ CREATE TABLE `feedback_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `file_refs`
---
-
 DROP TABLE IF EXISTS `file_refs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2067,11 +1575,6 @@ CREATE TABLE `file_refs` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files`
---
-
 DROP TABLE IF EXISTS `files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2090,11 +1593,6 @@ CREATE TABLE `files` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files_search_attributes`
---
-
 DROP TABLE IF EXISTS `files_search_attributes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2117,11 +1615,6 @@ CREATE TABLE `files_search_attributes` (
   KEY `semester_end` (`semester_end`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `files_search_index`
---
-
 DROP TABLE IF EXISTS `files_search_index`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2135,11 +1628,6 @@ CREATE TABLE `files_search_index` (
   FULLTEXT KEY `text` (`text`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `folders`
---
-
 DROP TABLE IF EXISTS `folders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2160,11 +1648,6 @@ CREATE TABLE `folders` (
   KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_abo_users`
---
-
 DROP TABLE IF EXISTS `forum_abo_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2174,11 +1657,6 @@ CREATE TABLE `forum_abo_users` (
   PRIMARY KEY (`topic_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_categories`
---
-
 DROP TABLE IF EXISTS `forum_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2191,11 +1669,6 @@ CREATE TABLE `forum_categories` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_categories_entries`
---
-
 DROP TABLE IF EXISTS `forum_categories_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2206,11 +1679,6 @@ CREATE TABLE `forum_categories_entries` (
   PRIMARY KEY (`category_id`,`topic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_entries`
---
-
 DROP TABLE IF EXISTS `forum_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2238,11 +1706,6 @@ CREATE TABLE `forum_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_entries_issues`
---
-
 DROP TABLE IF EXISTS `forum_entries_issues`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2252,11 +1715,6 @@ CREATE TABLE `forum_entries_issues` (
   PRIMARY KEY (`topic_id`,`issue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_favorites`
---
-
 DROP TABLE IF EXISTS `forum_favorites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2266,11 +1724,6 @@ CREATE TABLE `forum_favorites` (
   PRIMARY KEY (`user_id`,`topic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_likes`
---
-
 DROP TABLE IF EXISTS `forum_likes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2280,11 +1733,6 @@ CREATE TABLE `forum_likes` (
   PRIMARY KEY (`topic_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `forum_visits`
---
-
 DROP TABLE IF EXISTS `forum_visits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2296,11 +1744,6 @@ CREATE TABLE `forum_visits` (
   PRIMARY KEY (`user_id`,`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `global_resource_locks`
---
-
 DROP TABLE IF EXISTS `global_resource_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2315,11 +1758,6 @@ CREATE TABLE `global_resource_locks` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `grading_definitions`
---
-
 DROP TABLE IF EXISTS `grading_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2339,11 +1777,6 @@ CREATE TABLE `grading_definitions` (
   KEY `tool` (`tool`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `grading_instances`
---
-
 DROP TABLE IF EXISTS `grading_instances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2358,11 +1791,6 @@ CREATE TABLE `grading_instances` (
   PRIMARY KEY (`definition_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_content`
---
-
 DROP TABLE IF EXISTS `help_content`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2384,11 +1812,6 @@ CREATE TABLE `help_content` (
   PRIMARY KEY (`content_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_audiences`
---
-
 DROP TABLE IF EXISTS `help_tour_audiences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2401,11 +1824,6 @@ CREATE TABLE `help_tour_audiences` (
   PRIMARY KEY (`tour_id`,`range_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_settings`
---
-
 DROP TABLE IF EXISTS `help_tour_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2418,11 +1836,6 @@ CREATE TABLE `help_tour_settings` (
   PRIMARY KEY (`tour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_steps`
---
-
 DROP TABLE IF EXISTS `help_tour_steps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2443,11 +1856,6 @@ CREATE TABLE `help_tour_steps` (
   PRIMARY KEY (`tour_id`,`step`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tour_user`
---
-
 DROP TABLE IF EXISTS `help_tour_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2461,11 +1869,6 @@ CREATE TABLE `help_tour_user` (
   PRIMARY KEY (`tour_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `help_tours`
---
-
 DROP TABLE IF EXISTS `help_tours`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2486,11 +1889,6 @@ CREATE TABLE `help_tours` (
   PRIMARY KEY (`tour_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `i18n`
---
-
 DROP TABLE IF EXISTS `i18n`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2503,11 +1901,6 @@ CREATE TABLE `i18n` (
   PRIMARY KEY (`object_id`,`table`,`field`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `institute_plan_columns`
---
-
 DROP TABLE IF EXISTS `institute_plan_columns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2521,11 +1914,6 @@ CREATE TABLE `institute_plan_columns` (
   PRIMARY KEY (`range_id`,`column`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `kategorien`
---
-
 DROP TABLE IF EXISTS `kategorien`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2542,11 +1930,6 @@ CREATE TABLE `kategorien` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `keyrings`
---
-
 DROP TABLE IF EXISTS `keyrings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2563,11 +1946,6 @@ CREATE TABLE `keyrings` (
   KEY `range_id` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `licenses`
---
-
 DROP TABLE IF EXISTS `licenses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2585,11 +1963,6 @@ CREATE TABLE `licenses` (
   KEY `default` (`default`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `limitedadmissions`
---
-
 DROP TABLE IF EXISTS `limitedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2604,11 +1977,6 @@ CREATE TABLE `limitedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lock_rules`
---
-
 DROP TABLE IF EXISTS `lock_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2625,11 +1993,6 @@ CREATE TABLE `lock_rules` (
   PRIMARY KEY (`lock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lockedadmissions`
---
-
 DROP TABLE IF EXISTS `lockedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2641,11 +2004,6 @@ CREATE TABLE `lockedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `log_actions`
---
-
 DROP TABLE IF EXISTS `log_actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2664,11 +2022,6 @@ CREATE TABLE `log_actions` (
   PRIMARY KEY (`action_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `log_events`
---
-
 DROP TABLE IF EXISTS `log_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2685,11 +2038,6 @@ CREATE TABLE `log_events` (
   KEY `action_id` (`action_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `login_faq`
---
-
 DROP TABLE IF EXISTS `login_faq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2700,11 +2048,6 @@ CREATE TABLE `login_faq` (
   PRIMARY KEY (`faq_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `loginbackgrounds`
---
-
 DROP TABLE IF EXISTS `loginbackgrounds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2719,11 +2062,6 @@ CREATE TABLE `loginbackgrounds` (
   PRIMARY KEY (`background_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_deployments`
---
-
 DROP TABLE IF EXISTS `lti_deployments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2737,11 +2075,6 @@ CREATE TABLE `lti_deployments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_grade`
---
-
 DROP TABLE IF EXISTS `lti_grade`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2754,11 +2087,6 @@ CREATE TABLE `lti_grade` (
   PRIMARY KEY (`link_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_resource_links`
---
-
 DROP TABLE IF EXISTS `lti_resource_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2777,11 +2105,6 @@ CREATE TABLE `lti_resource_links` (
   KEY `deployment_id` (`deployment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_tool_privacy_settings`
---
-
 DROP TABLE IF EXISTS `lti_tool_privacy_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2795,11 +2118,6 @@ CREATE TABLE `lti_tool_privacy_settings` (
   PRIMARY KEY (`tool_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `lti_tools`
---
-
 DROP TABLE IF EXISTS `lti_tools`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2829,11 +2147,6 @@ CREATE TABLE `lti_tools` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mail_queue_entries`
---
-
 DROP TABLE IF EXISTS `mail_queue_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2851,11 +2164,6 @@ CREATE TABLE `mail_queue_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_filter`
---
-
 DROP TABLE IF EXISTS `massmail_filter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2867,11 +2175,6 @@ CREATE TABLE `massmail_filter` (
   KEY `filter_id` (`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_markers`
---
-
 DROP TABLE IF EXISTS `massmail_markers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2891,11 +2194,6 @@ CREATE TABLE `massmail_markers` (
   PRIMARY KEY (`marker_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_messages`
---
-
 DROP TABLE IF EXISTS `massmail_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2921,11 +2219,6 @@ CREATE TABLE `massmail_messages` (
   KEY `author_id` (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_degree`
---
-
 DROP TABLE IF EXISTS `massmail_permission_degree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2937,11 +2230,6 @@ CREATE TABLE `massmail_permission_degree` (
   KEY `degree_id` (`degree_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_institute`
---
-
 DROP TABLE IF EXISTS `massmail_permission_institute`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2953,11 +2241,6 @@ CREATE TABLE `massmail_permission_institute` (
   KEY `institute_id` (`institute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permission_subject`
---
-
 DROP TABLE IF EXISTS `massmail_permission_subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2969,11 +2252,6 @@ CREATE TABLE `massmail_permission_subject` (
   KEY `subject_id` (`subject_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_permissions`
---
-
 DROP TABLE IF EXISTS `massmail_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2987,11 +2265,6 @@ CREATE TABLE `massmail_permissions` (
   UNIQUE KEY `institute_id` (`institute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `massmail_tokens`
---
-
 DROP TABLE IF EXISTS `massmail_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3005,11 +2278,6 @@ CREATE TABLE `massmail_tokens` (
   KEY `message_id` (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `media_cache`
---
-
 DROP TABLE IF EXISTS `media_cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3021,11 +2289,6 @@ CREATE TABLE `media_cache` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message`
---
-
 DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3041,11 +2304,6 @@ CREATE TABLE `message` (
   KEY `autor_id` (`autor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message_tags`
---
-
 DROP TABLE IF EXISTS `message_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3058,11 +2316,6 @@ CREATE TABLE `message_tags` (
   PRIMARY KEY (`message_id`,`user_id`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `message_user`
---
-
 DROP TABLE IF EXISTS `message_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3079,11 +2332,6 @@ CREATE TABLE `message_user` (
   KEY `user_id_2` (`user_id`,`snd_rec`,`deleted`,`mkdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_abschl_kategorie`
---
-
 DROP TABLE IF EXISTS `mvv_abschl_kategorie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3101,11 +2349,6 @@ CREATE TABLE `mvv_abschl_kategorie` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_abschl_zuord`
---
-
 DROP TABLE IF EXISTS `mvv_abschl_zuord`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3121,11 +2364,6 @@ CREATE TABLE `mvv_abschl_zuord` (
   KEY `kategorie_id` (`kategorie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_aufbaustudiengang`
---
-
 DROP TABLE IF EXISTS `mvv_aufbaustudiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3143,11 +2381,6 @@ CREATE TABLE `mvv_aufbaustudiengang` (
   UNIQUE KEY `grund_stg_id` (`grund_stg_id`,`aufbau_stg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_contacts`
---
-
 DROP TABLE IF EXISTS `mvv_contacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3163,11 +2396,6 @@ CREATE TABLE `mvv_contacts` (
   KEY `contact_status` (`contact_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_contacts_ranges`
---
-
 DROP TABLE IF EXISTS `mvv_contacts_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3191,11 +2419,6 @@ CREATE TABLE `mvv_contacts_ranges` (
   KEY `contact_id` (`contact_id`,`range_id`,`category`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_extern_contacts`
---
-
 DROP TABLE IF EXISTS `mvv_extern_contacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3213,11 +2436,6 @@ CREATE TABLE `mvv_extern_contacts` (
   PRIMARY KEY (`extern_contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_fach_inst`
---
-
 DROP TABLE IF EXISTS `mvv_fach_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3232,11 +2450,6 @@ CREATE TABLE `mvv_fach_inst` (
   PRIMARY KEY (`fach_id`,`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files`
---
-
 DROP TABLE IF EXISTS `mvv_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3254,11 +2467,6 @@ CREATE TABLE `mvv_files` (
   PRIMARY KEY (`mvvfile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files_filerefs`
---
-
 DROP TABLE IF EXISTS `mvv_files_filerefs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3274,11 +2482,6 @@ CREATE TABLE `mvv_files_filerefs` (
   PRIMARY KEY (`mvvfile_id`,`file_language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_files_ranges`
---
-
 DROP TABLE IF EXISTS `mvv_files_ranges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3295,11 +2498,6 @@ CREATE TABLE `mvv_files_ranges` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3314,11 +2512,6 @@ CREATE TABLE `mvv_lvgruppe` (
   PRIMARY KEY (`lvgruppe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe_modulteil`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe_modulteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3336,11 +2529,6 @@ CREATE TABLE `mvv_lvgruppe_modulteil` (
   KEY `modulteil_id` (`modulteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_lvgruppe_seminar`
---
-
 DROP TABLE IF EXISTS `mvv_lvgruppe_seminar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3355,11 +2543,6 @@ CREATE TABLE `mvv_lvgruppe_seminar` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul`
---
-
 DROP TABLE IF EXISTS `mvv_modul`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3395,11 +2578,6 @@ CREATE TABLE `mvv_modul` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_deskriptor`
---
-
 DROP TABLE IF EXISTS `mvv_modul_deskriptor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3432,11 +2610,6 @@ CREATE TABLE `mvv_modul_deskriptor` (
   UNIQUE KEY `modul_id` (`modul_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_inst`
---
-
 DROP TABLE IF EXISTS `mvv_modul_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3453,11 +2626,6 @@ CREATE TABLE `mvv_modul_inst` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modul_language`
---
-
 DROP TABLE IF EXISTS `mvv_modul_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3472,11 +2640,6 @@ CREATE TABLE `mvv_modul_language` (
   PRIMARY KEY (`modul_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3508,11 +2671,6 @@ CREATE TABLE `mvv_modulteil` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_deskriptor`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_deskriptor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3538,11 +2696,6 @@ CREATE TABLE `mvv_modulteil_deskriptor` (
   KEY `modulteil_id` (`modulteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_language`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3557,11 +2710,6 @@ CREATE TABLE `mvv_modulteil_language` (
   PRIMARY KEY (`modulteil_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_modulteil_stgteilabschnitt`
---
-
 DROP TABLE IF EXISTS `mvv_modulteil_stgteilabschnitt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3577,11 +2725,6 @@ CREATE TABLE `mvv_modulteil_stgteilabschnitt` (
   PRIMARY KEY (`modulteil_id`,`abschnitt_id`,`fachsemester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_conflicts`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_conflicts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3602,11 +2745,6 @@ CREATE TABLE `mvv_ovl_conflicts` (
   KEY `selection_id` (`selection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_excludes`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_excludes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3619,11 +2757,6 @@ CREATE TABLE `mvv_ovl_excludes` (
   KEY `course_id` (`course_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_ovl_selections`
---
-
 DROP TABLE IF EXISTS `mvv_ovl_selections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3643,11 +2776,6 @@ CREATE TABLE `mvv_ovl_selections` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stg_stgteil`
---
-
 DROP TABLE IF EXISTS `mvv_stg_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3664,11 +2792,6 @@ CREATE TABLE `mvv_stg_stgteil` (
   KEY `stgteil_id` (`stgteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteil`
---
-
 DROP TABLE IF EXISTS `mvv_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3686,11 +2809,6 @@ CREATE TABLE `mvv_stgteil` (
   KEY `fach_id` (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteil_bez`
---
-
 DROP TABLE IF EXISTS `mvv_stgteil_bez`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3706,11 +2824,6 @@ CREATE TABLE `mvv_stgteil_bez` (
   PRIMARY KEY (`stgteil_bez_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilabschnitt`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilabschnitt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3730,11 +2843,6 @@ CREATE TABLE `mvv_stgteilabschnitt` (
   KEY `version_id` (`version_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilabschnitt_modul`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilabschnitt_modul`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3755,11 +2863,6 @@ CREATE TABLE `mvv_stgteilabschnitt_modul` (
   KEY `flexnow_modul` (`flexnow_modul`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_stgteilversion`
---
-
 DROP TABLE IF EXISTS `mvv_stgteilversion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3784,11 +2887,6 @@ CREATE TABLE `mvv_stgteilversion` (
   KEY `stat` (`stat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studiengang`
---
-
 DROP TABLE IF EXISTS `mvv_studiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3821,11 +2919,6 @@ CREATE TABLE `mvv_studiengang` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studycourse_language`
---
-
 DROP TABLE IF EXISTS `mvv_studycourse_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3840,11 +2933,6 @@ CREATE TABLE `mvv_studycourse_language` (
   PRIMARY KEY (`studiengang_id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `mvv_studycourse_type`
---
-
 DROP TABLE IF EXISTS `mvv_studycourse_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3858,11 +2946,6 @@ CREATE TABLE `mvv_studycourse_type` (
   PRIMARY KEY (`studiengang_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news`
---
-
 DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3885,11 +2968,6 @@ CREATE TABLE `news` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_range`
---
-
 DROP TABLE IF EXISTS `news_range`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3902,11 +2980,6 @@ CREATE TABLE `news_range` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_roles`
---
-
 DROP TABLE IF EXISTS `news_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3916,11 +2989,6 @@ CREATE TABLE `news_roles` (
   PRIMARY KEY (`news_id`,`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `news_rss_range`
---
-
 DROP TABLE IF EXISTS `news_rss_range`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3932,11 +3000,6 @@ CREATE TABLE `news_rss_range` (
   KEY `rss_id` (`rss_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_access_tokens`
---
-
 DROP TABLE IF EXISTS `oauth2_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3953,11 +3016,6 @@ CREATE TABLE `oauth2_access_tokens` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_auth_codes`
---
-
 DROP TABLE IF EXISTS `oauth2_auth_codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3974,11 +3032,6 @@ CREATE TABLE `oauth2_auth_codes` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_clients`
---
-
 DROP TABLE IF EXISTS `oauth2_clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3997,11 +3050,6 @@ CREATE TABLE `oauth2_clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oauth2_refresh_tokens`
---
-
 DROP TABLE IF EXISTS `oauth2_refresh_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4014,11 +3062,6 @@ CREATE TABLE `oauth2_refresh_tokens` (
   KEY `access_token_id` (`access_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_contentmodules`
---
-
 DROP TABLE IF EXISTS `object_contentmodules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4032,11 +3075,6 @@ CREATE TABLE `object_contentmodules` (
   PRIMARY KEY (`object_id`,`module_id`,`system_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_user_visits`
---
-
 DROP TABLE IF EXISTS `object_user_visits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4050,11 +3088,6 @@ CREATE TABLE `object_user_visits` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `object_views`
---
-
 DROP TABLE IF EXISTS `object_views`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4066,11 +3099,6 @@ CREATE TABLE `object_views` (
   KEY `views` (`views`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_abo`
---
-
 DROP TABLE IF EXISTS `oer_abo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4080,11 +3108,6 @@ CREATE TABLE `oer_abo` (
   UNIQUE KEY `user_id` (`user_id`,`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_comments`
---
-
 DROP TABLE IF EXISTS `oer_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4104,11 +3127,6 @@ CREATE TABLE `oer_comments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_downloadcounter`
---
-
 DROP TABLE IF EXISTS `oer_downloadcounter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4121,11 +3139,6 @@ CREATE TABLE `oer_downloadcounter` (
   PRIMARY KEY (`counter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_hosts`
---
-
 DROP TABLE IF EXISTS `oer_hosts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4146,11 +3159,6 @@ CREATE TABLE `oer_hosts` (
   UNIQUE KEY `url` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_material`
---
-
 DROP TABLE IF EXISTS `oer_material`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4188,11 +3196,6 @@ CREATE TABLE `oer_material` (
   KEY `uri_hash` (`uri_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_material_users`
---
-
 DROP TABLE IF EXISTS `oer_material_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4206,11 +3209,6 @@ CREATE TABLE `oer_material_users` (
   PRIMARY KEY (`material_id`,`user_id`,`external_contact`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_post_upload`
---
-
 DROP TABLE IF EXISTS `oer_post_upload`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4223,11 +3221,6 @@ CREATE TABLE `oer_post_upload` (
   PRIMARY KEY (`user_id`,`file_ref_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_reviews`
---
-
 DROP TABLE IF EXISTS `oer_reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4249,11 +3242,6 @@ CREATE TABLE `oer_reviews` (
   KEY `host_id` (`host_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_tags`
---
-
 DROP TABLE IF EXISTS `oer_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4263,11 +3251,6 @@ CREATE TABLE `oer_tags` (
   PRIMARY KEY (`tag_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_tags_material`
---
-
 DROP TABLE IF EXISTS `oer_tags_material`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4279,11 +3262,6 @@ CREATE TABLE `oer_tags_material` (
   KEY `material_id` (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `oer_user`
---
-
 DROP TABLE IF EXISTS `oer_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4302,11 +3280,6 @@ CREATE TABLE `oer_user` (
   KEY `host_id` (`host_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `opengraphdata`
---
-
 DROP TABLE IF EXISTS `opengraphdata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4327,11 +3300,6 @@ CREATE TABLE `opengraphdata` (
   UNIQUE KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `participantrestrictedadmissions`
---
-
 DROP TABLE IF EXISTS `participantrestrictedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4344,11 +3312,6 @@ CREATE TABLE `participantrestrictedadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `passwordadmissions`
---
-
 DROP TABLE IF EXISTS `passwordadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4363,11 +3326,6 @@ CREATE TABLE `passwordadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `personal_notifications`
---
-
 DROP TABLE IF EXISTS `personal_notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4384,11 +3342,6 @@ CREATE TABLE `personal_notifications` (
   KEY `url` (`url`(256))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `personal_notifications_user`
---
-
 DROP TABLE IF EXISTS `personal_notifications_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4400,11 +3353,6 @@ CREATE TABLE `personal_notifications_user` (
   KEY `user_id` (`user_id`,`seen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugin_assets`
---
-
 DROP TABLE IF EXISTS `plugin_assets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4420,11 +3368,6 @@ CREATE TABLE `plugin_assets` (
   PRIMARY KEY (`asset_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugins`
---
-
 DROP TABLE IF EXISTS `plugins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4447,11 +3390,6 @@ CREATE TABLE `plugins` (
   KEY `highlight_until` (`highlight_until`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugins_activated`
---
-
 DROP TABLE IF EXISTS `plugins_activated`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4464,11 +3402,6 @@ CREATE TABLE `plugins_activated` (
   KEY `range` (`range_id`,`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `prefadmission_condition`
---
-
 DROP TABLE IF EXISTS `prefadmission_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4480,11 +3413,6 @@ CREATE TABLE `prefadmission_condition` (
   PRIMARY KEY (`rule_id`,`condition_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `prefadmissions`
---
-
 DROP TABLE IF EXISTS `prefadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4496,11 +3424,6 @@ CREATE TABLE `prefadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `priorities`
---
-
 DROP TABLE IF EXISTS `priorities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4515,11 +3438,6 @@ CREATE TABLE `priorities` (
   KEY `user_rule_priority` (`user_id`,`priority`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_anonymous_answers`
---
-
 DROP TABLE IF EXISTS `questionnaire_anonymous_answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4535,11 +3453,6 @@ CREATE TABLE `questionnaire_anonymous_answers` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_answers`
---
-
 DROP TABLE IF EXISTS `questionnaire_answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4555,11 +3468,6 @@ CREATE TABLE `questionnaire_answers` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_assignments`
---
-
 DROP TABLE IF EXISTS `questionnaire_assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4577,11 +3485,6 @@ CREATE TABLE `questionnaire_assignments` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaire_questions`
---
-
 DROP TABLE IF EXISTS `questionnaire_questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4598,11 +3501,6 @@ CREATE TABLE `questionnaire_questions` (
   KEY `questionnaire_id` (`questionnaire_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `questionnaires`
---
-
 DROP TABLE IF EXISTS `questionnaires`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4624,11 +3522,6 @@ CREATE TABLE `questionnaires` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `range_tree`
---
-
 DROP TABLE IF EXISTS `range_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4646,11 +3539,6 @@ CREATE TABLE `range_tree` (
   KEY `studip_object_id` (`studip_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_booking_intervals`
---
-
 DROP TABLE IF EXISTS `resource_booking_intervals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4668,11 +3556,6 @@ CREATE TABLE `resource_booking_intervals` (
   KEY `booking_id` (`booking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_bookings`
---
-
 DROP TABLE IF EXISTS `resource_bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4697,11 +3580,6 @@ CREATE TABLE `resource_bookings` (
   KEY `resource_id` (`resource_id`,`booking_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_categories`
---
-
 DROP TABLE IF EXISTS `resource_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4717,11 +3595,6 @@ CREATE TABLE `resource_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_category_properties`
---
-
 DROP TABLE IF EXISTS `resource_category_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4737,11 +3610,6 @@ CREATE TABLE `resource_category_properties` (
   PRIMARY KEY (`category_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_permissions`
---
-
 DROP TABLE IF EXISTS `resource_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4755,11 +3623,6 @@ CREATE TABLE `resource_permissions` (
   KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_properties`
---
-
 DROP TABLE IF EXISTS `resource_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4773,11 +3636,6 @@ CREATE TABLE `resource_properties` (
   KEY `property_id` (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_property_definitions`
---
-
 DROP TABLE IF EXISTS `resource_property_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4800,11 +3658,6 @@ CREATE TABLE `resource_property_definitions` (
   PRIMARY KEY (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_property_groups`
---
-
 DROP TABLE IF EXISTS `resource_property_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4817,11 +3670,6 @@ CREATE TABLE `resource_property_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_request_appointments`
---
-
 DROP TABLE IF EXISTS `resource_request_appointments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4834,11 +3682,6 @@ CREATE TABLE `resource_request_appointments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_request_properties`
---
-
 DROP TABLE IF EXISTS `resource_request_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4851,11 +3694,6 @@ CREATE TABLE `resource_request_properties` (
   PRIMARY KEY (`request_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_requests`
---
-
 DROP TABLE IF EXISTS `resource_requests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4888,11 +3726,6 @@ CREATE TABLE `resource_requests` (
   KEY `metadate_id` (`metadate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resource_temporary_permissions`
---
-
 DROP TABLE IF EXISTS `resource_temporary_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4910,11 +3743,6 @@ CREATE TABLE `resource_temporary_permissions` (
   KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `resources`
---
-
 DROP TABLE IF EXISTS `resources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4936,11 +3764,6 @@ CREATE TABLE `resources` (
   KEY `category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles`
---
-
 DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4951,11 +3774,6 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_plugins`
---
-
 DROP TABLE IF EXISTS `roles_plugins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4965,11 +3783,6 @@ CREATE TABLE `roles_plugins` (
   PRIMARY KEY (`roleid`,`pluginid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_studipperms`
---
-
 DROP TABLE IF EXISTS `roles_studipperms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4979,11 +3792,6 @@ CREATE TABLE `roles_studipperms` (
   PRIMARY KEY (`roleid`,`permname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roles_user`
---
-
 DROP TABLE IF EXISTS `roles_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -4994,11 +3802,6 @@ CREATE TABLE `roles_user` (
   PRIMARY KEY (`roleid`,`userid`,`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schedule_courses`
---
-
 DROP TABLE IF EXISTS `schedule_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5014,11 +3817,6 @@ CREATE TABLE `schedule_courses` (
   KEY `metadate_id` (`metadate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schedule_entries`
---
-
 DROP TABLE IF EXISTS `schedule_entries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5037,11 +3835,6 @@ CREATE TABLE `schedule_entries` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schema_version`
---
-
 DROP TABLE IF EXISTS `schema_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5052,11 +3845,6 @@ CREATE TABLE `schema_version` (
   PRIMARY KEY (`domain`,`branch`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `scm`
---
-
 DROP TABLE IF EXISTS `scm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5074,11 +3862,6 @@ CREATE TABLE `scm` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_classes`
---
-
 DROP TABLE IF EXISTS `sem_classes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5117,11 +3900,6 @@ CREATE TABLE `sem_classes` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_tree`
---
-
 DROP TABLE IF EXISTS `sem_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5141,11 +3919,6 @@ CREATE TABLE `sem_tree` (
   KEY `studip_object_id` (`studip_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sem_types`
---
-
 DROP TABLE IF EXISTS `sem_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5158,11 +3931,6 @@ CREATE TABLE `sem_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_courses`
---
-
 DROP TABLE IF EXISTS `semester_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5175,11 +3943,6 @@ CREATE TABLE `semester_courses` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_data`
---
-
 DROP TABLE IF EXISTS `semester_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5199,11 +3962,6 @@ CREATE TABLE `semester_data` (
   PRIMARY KEY (`semester_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `semester_holiday`
---
-
 DROP TABLE IF EXISTS `semester_holiday`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5219,11 +3977,6 @@ CREATE TABLE `semester_holiday` (
   PRIMARY KEY (`holiday_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_courseset`
---
-
 DROP TABLE IF EXISTS `seminar_courseset`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5235,11 +3988,6 @@ CREATE TABLE `seminar_courseset` (
   KEY `seminar_id` (`seminar_id`,`set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_cycle_dates`
---
-
 DROP TABLE IF EXISTS `seminar_cycle_dates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5261,11 +4009,6 @@ CREATE TABLE `seminar_cycle_dates` (
   KEY `seminar_id` (`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_inst`
---
-
 DROP TABLE IF EXISTS `seminar_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5276,11 +4019,6 @@ CREATE TABLE `seminar_inst` (
   KEY `institut_id` (`institut_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_sem_tree`
---
-
 DROP TABLE IF EXISTS `seminar_sem_tree`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5291,11 +4029,6 @@ CREATE TABLE `seminar_sem_tree` (
   KEY `sem_tree_id` (`sem_tree_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_user`
---
-
 DROP TABLE IF EXISTS `seminar_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5315,11 +4048,6 @@ CREATE TABLE `seminar_user` (
   KEY `user_id` (`user_id`,`Seminar_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_user_notifications`
---
-
 DROP TABLE IF EXISTS `seminar_user_notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5332,11 +4060,6 @@ CREATE TABLE `seminar_user_notifications` (
   PRIMARY KEY (`user_id`,`seminar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminar_userdomains`
---
-
 DROP TABLE IF EXISTS `seminar_userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5346,11 +4069,6 @@ CREATE TABLE `seminar_userdomains` (
   PRIMARY KEY (`seminar_id`,`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `seminare`
---
-
 DROP TABLE IF EXISTS `seminare`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5396,11 +4114,6 @@ CREATE TABLE `seminare` (
   KEY `parent_course` (`parent_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `separable_room_parts`
---
-
 DROP TABLE IF EXISTS `separable_room_parts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5412,11 +4125,6 @@ CREATE TABLE `separable_room_parts` (
   PRIMARY KEY (`separable_room_id`,`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `separable_rooms`
---
-
 DROP TABLE IF EXISTS `separable_rooms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5429,11 +4137,6 @@ CREATE TABLE `separable_rooms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `session_data`
---
-
 DROP TABLE IF EXISTS `session_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5445,11 +4148,6 @@ CREATE TABLE `session_data` (
   KEY `changed` (`changed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `siteinfo_details`
---
-
 DROP TABLE IF EXISTS `siteinfo_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5464,11 +4162,6 @@ CREATE TABLE `siteinfo_details` (
   PRIMARY KEY (`detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `siteinfo_rubrics`
---
-
 DROP TABLE IF EXISTS `siteinfo_rubrics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5479,11 +4172,6 @@ CREATE TABLE `siteinfo_rubrics` (
   PRIMARY KEY (`rubric_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `statusgruppe_user`
---
-
 DROP TABLE IF EXISTS `statusgruppe_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5498,11 +4186,6 @@ CREATE TABLE `statusgruppe_user` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `statusgruppen`
---
-
 DROP TABLE IF EXISTS `statusgruppen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5526,11 +4209,6 @@ CREATE TABLE `statusgruppen` (
   KEY `position` (`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `stock_images`
---
-
 DROP TABLE IF EXISTS `stock_images`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5551,11 +4229,6 @@ CREATE TABLE `stock_images` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_courses`
---
-
 DROP TABLE IF EXISTS `studygroup_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5570,11 +4243,6 @@ CREATE TABLE `studygroup_courses` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_courses_proposals`
---
-
 DROP TABLE IF EXISTS `studygroup_courses_proposals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5591,11 +4259,6 @@ CREATE TABLE `studygroup_courses_proposals` (
   KEY `studygroup_id_2` (`studygroup_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_invitations`
---
-
 DROP TABLE IF EXISTS `studygroup_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5606,11 +4269,6 @@ CREATE TABLE `studygroup_invitations` (
   PRIMARY KEY (`sem_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `studygroup_stgteil`
---
-
 DROP TABLE IF EXISTS `studygroup_stgteil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5625,11 +4283,6 @@ CREATE TABLE `studygroup_stgteil` (
   KEY `stgteil_id` (`stgteil_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tags`
---
-
 DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5642,11 +4295,6 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tags_relations`
---
-
 DROP TABLE IF EXISTS `tags_relations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5662,11 +4310,6 @@ CREATE TABLE `tags_relations` (
   KEY `range_type` (`range_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termin_related_groups`
---
-
 DROP TABLE IF EXISTS `termin_related_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5676,11 +4319,6 @@ CREATE TABLE `termin_related_groups` (
   PRIMARY KEY (`termin_id`,`statusgruppe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termin_related_persons`
---
-
 DROP TABLE IF EXISTS `termin_related_persons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5690,11 +4328,6 @@ CREATE TABLE `termin_related_persons` (
   PRIMARY KEY (`range_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termine`
---
-
 DROP TABLE IF EXISTS `termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5717,11 +4350,6 @@ CREATE TABLE `termine` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `termsadmissions`
---
-
 DROP TABLE IF EXISTS `termsadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5733,11 +4361,6 @@ CREATE TABLE `termsadmissions` (
   PRIMARY KEY (`rule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themen`
---
-
 DROP TABLE IF EXISTS `themen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5755,11 +4378,6 @@ CREATE TABLE `themen` (
   KEY `seminar_id` (`seminar_id`,`priority`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `themen_termine`
---
-
 DROP TABLE IF EXISTS `themen_termine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5770,11 +4388,6 @@ CREATE TABLE `themen_termine` (
   KEY `termin_id` (`termin_id`,`issue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `timedadmissions`
---
-
 DROP TABLE IF EXISTS `timedadmissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5791,11 +4404,6 @@ CREATE TABLE `timedadmissions` (
   KEY `start_end` (`start_time`,`end_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tools_activated`
---
-
 DROP TABLE IF EXISTS `tools_activated`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5811,11 +4419,6 @@ CREATE TABLE `tools_activated` (
   KEY `plugin_id` (`plugin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_factorlist`
---
-
 DROP TABLE IF EXISTS `user_factorlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5826,11 +4429,6 @@ CREATE TABLE `user_factorlist` (
   PRIMARY KEY (`list_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_info`
---
-
 DROP TABLE IF EXISTS `user_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5861,11 +4459,6 @@ CREATE TABLE `user_info` (
   KEY `score` (`score`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_inst`
---
-
 DROP TABLE IF EXISTS `user_inst`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5889,11 +4482,6 @@ CREATE TABLE `user_inst` (
   KEY `user_id` (`user_id`,`inst_perms`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_online`
---
-
 DROP TABLE IF EXISTS `user_online`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5904,11 +4492,6 @@ CREATE TABLE `user_online` (
   KEY `last_lifesign` (`last_lifesign`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_studiengang`
---
-
 DROP TABLE IF EXISTS `user_studiengang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5924,11 +4507,6 @@ CREATE TABLE `user_studiengang` (
   KEY `studiengang_id` (`fach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_token`
---
-
 DROP TABLE IF EXISTS `user_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5941,11 +4519,6 @@ CREATE TABLE `user_token` (
   KEY `index_expiration` (`expiration`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_userdomains`
---
-
 DROP TABLE IF EXISTS `user_userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5955,11 +4528,6 @@ CREATE TABLE `user_userdomains` (
   PRIMARY KEY (`user_id`,`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_visibility`
---
-
 DROP TABLE IF EXISTS `user_visibility`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5974,11 +4542,6 @@ CREATE TABLE `user_visibility` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_visibility_settings`
---
-
 DROP TABLE IF EXISTS `user_visibility_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -5997,11 +4560,6 @@ CREATE TABLE `user_visibility_settings` (
   KEY `userid` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userdomains`
---
-
 DROP TABLE IF EXISTS `userdomains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6014,11 +4572,6 @@ CREATE TABLE `userdomains` (
   PRIMARY KEY (`userdomain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userfilter`
---
-
 DROP TABLE IF EXISTS `userfilter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6031,11 +4584,6 @@ CREATE TABLE `userfilter` (
   PRIMARY KEY (`filter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userfilter_fields`
---
-
 DROP TABLE IF EXISTS `userfilter_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6050,11 +4598,6 @@ CREATE TABLE `userfilter_fields` (
   PRIMARY KEY (`field_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `userlimits`
---
-
 DROP TABLE IF EXISTS `userlimits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6067,11 +4610,6 @@ CREATE TABLE `userlimits` (
   PRIMARY KEY (`rule_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users_tfa`
---
-
 DROP TABLE IF EXISTS `users_tfa`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6085,11 +4623,6 @@ CREATE TABLE `users_tfa` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users_tfa_tokens`
---
-
 DROP TABLE IF EXISTS `users_tfa_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6100,11 +4633,6 @@ CREATE TABLE `users_tfa_tokens` (
   PRIMARY KEY (`user_id`,`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `widget_default`
---
-
 DROP TABLE IF EXISTS `widget_default`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6116,11 +4644,6 @@ CREATE TABLE `widget_default` (
   PRIMARY KEY (`perm`,`pluginid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `widget_user`
---
-
 DROP TABLE IF EXISTS `widget_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6134,26 +4657,6 @@ CREATE TABLE `widget_user` (
   KEY `range_id` (`range_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_links`
---
-
-DROP TABLE IF EXISTS `wiki_links`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `wiki_links` (
-  `range_id` char(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT '',
-  `from_page_id` int(10) unsigned NOT NULL,
-  `to_page_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`range_id`,`to_page_id`,`from_page_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_online_editing_users`
---
-
 DROP TABLE IF EXISTS `wiki_online_editing_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6172,11 +4675,6 @@ CREATE TABLE `wiki_online_editing_users` (
   KEY `chdate` (`chdate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_pages`
---
-
 DROP TABLE IF EXISTS `wiki_pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6196,14 +4694,10 @@ CREATE TABLE `wiki_pages` (
   PRIMARY KEY (`page_id`),
   KEY `read_permission` (`read_permission`),
   KEY `write_permission` (`write_permission`),
-  KEY `range_id` (`range_id`)
+  KEY `range_id` (`range_id`),
+  KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wiki_versions`
---
-
 DROP TABLE IF EXISTS `wiki_versions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -6227,15 +4721,7 @@ CREATE TABLE `wiki_versions` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-08-06  9:18:31
-/*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.8.2-MariaDB, for osx10.20 (arm64)
---
--- Host: 127.0.0.1    Database: studip_6_0
--- ------------------------------------------------------
--- Server version	11.8.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -6246,11 +4732,6 @@ CREATE TABLE `wiki_versions` (
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
-
---
--- Dumping data for table `Institute`
---
 
 LOCK TABLES `Institute` WRITE;
 /*!40000 ALTER TABLE `Institute` DISABLE KEYS */;
@@ -6267,10 +4748,6 @@ INSERT INTO `Institute` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `abschluss`
---
-
 LOCK TABLES `abschluss` WRITE;
 /*!40000 ALTER TABLE `abschluss` DISABLE KEYS */;
 set autocommit=0;
@@ -6281,20 +4758,12 @@ INSERT INTO `abschluss` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `activities`
---
-
 LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `admission_condition`
---
 
 LOCK TABLES `admission_condition` WRITE;
 /*!40000 ALTER TABLE `admission_condition` DISABLE KEYS */;
@@ -6303,20 +4772,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `admission_conditiongroup`
---
-
 LOCK TABLES `admission_conditiongroup` WRITE;
 /*!40000 ALTER TABLE `admission_conditiongroup` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `admission_conditiongroup` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `admission_seminar_user`
---
 
 LOCK TABLES `admission_seminar_user` WRITE;
 /*!40000 ALTER TABLE `admission_seminar_user` DISABLE KEYS */;
@@ -6325,20 +4786,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `admissionfactor`
---
-
 LOCK TABLES `admissionfactor` WRITE;
 /*!40000 ALTER TABLE `admissionfactor` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `admissionfactor` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `admissionrule_compat`
---
 
 LOCK TABLES `admissionrule_compat` WRITE;
 /*!40000 ALTER TABLE `admissionrule_compat` DISABLE KEYS */;
@@ -6401,10 +4854,6 @@ INSERT INTO `admissionrule_compat` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `admissionrules`
---
-
 LOCK TABLES `admissionrules` WRITE;
 /*!40000 ALTER TABLE `admissionrules` DISABLE KEYS */;
 set autocommit=0;
@@ -6418,14 +4867,10 @@ INSERT INTO `admissionrules` VALUES
 (7,'CourseMemberAdmission',1,1414584420,'lib/admissionrules/coursememberadmission'),
 (8,'PreferentialAdmission',1,1465458738,'lib/admissionrules/preferentialadmission'),
 (9,'TermsAdmission',1,1640797278,'lib/admissionrules/termsadmission'),
-(10,'ConnectedcourseAdmission',1,1754464709,'lib/admissionrules/connectedcourseadmission');
+(10,'ConnectedcourseAdmission',1,1757497471,'lib/admissionrules/connectedcourseadmission');
 /*!40000 ALTER TABLE `admissionrules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `archiv`
---
 
 LOCK TABLES `archiv` WRITE;
 /*!40000 ALTER TABLE `archiv` DISABLE KEYS */;
@@ -6434,10 +4879,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `archiv_user`
---
-
 LOCK TABLES `archiv_user` WRITE;
 /*!40000 ALTER TABLE `archiv_user` DISABLE KEYS */;
 set autocommit=0;
@@ -6445,20 +4886,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `auth_extern`
---
-
 LOCK TABLES `auth_extern` WRITE;
 /*!40000 ALTER TABLE `auth_extern` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `auth_extern` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `auth_user_md5`
---
 
 LOCK TABLES `auth_user_md5` WRITE;
 /*!40000 ALTER TABLE `auth_user_md5` DISABLE KEYS */;
@@ -6474,20 +4907,12 @@ INSERT INTO `auth_user_md5` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `auto_insert_sem`
---
-
 LOCK TABLES `auto_insert_sem` WRITE;
 /*!40000 ALTER TABLE `auto_insert_sem` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `auto_insert_sem` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `auto_insert_user`
---
 
 LOCK TABLES `auto_insert_user` WRITE;
 /*!40000 ALTER TABLE `auto_insert_user` DISABLE KEYS */;
@@ -6496,20 +4921,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `aux_lock_rules`
---
-
 LOCK TABLES `aux_lock_rules` WRITE;
 /*!40000 ALTER TABLE `aux_lock_rules` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `aux_lock_rules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `banner_ads`
---
 
 LOCK TABLES `banner_ads` WRITE;
 /*!40000 ALTER TABLE `banner_ads` DISABLE KEYS */;
@@ -6518,20 +4935,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `banner_roles`
---
-
 LOCK TABLES `banner_roles` WRITE;
 /*!40000 ALTER TABLE `banner_roles` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `banner_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `blubber_comments`
---
 
 LOCK TABLES `blubber_comments` WRITE;
 /*!40000 ALTER TABLE `blubber_comments` DISABLE KEYS */;
@@ -6540,20 +4949,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `blubber_events_queue`
---
-
 LOCK TABLES `blubber_events_queue` WRITE;
 /*!40000 ALTER TABLE `blubber_events_queue` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `blubber_events_queue` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `blubber_mentions`
---
 
 LOCK TABLES `blubber_mentions` WRITE;
 /*!40000 ALTER TABLE `blubber_mentions` DISABLE KEYS */;
@@ -6562,20 +4963,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `blubber_tags`
---
-
 LOCK TABLES `blubber_tags` WRITE;
 /*!40000 ALTER TABLE `blubber_tags` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `blubber_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `blubber_threads`
---
 
 LOCK TABLES `blubber_threads` WRITE;
 /*!40000 ALTER TABLE `blubber_threads` DISABLE KEYS */;
@@ -6586,10 +4979,6 @@ INSERT INTO `blubber_threads` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `blubber_threads_followstates`
---
-
 LOCK TABLES `blubber_threads_followstates` WRITE;
 /*!40000 ALTER TABLE `blubber_threads_followstates` DISABLE KEYS */;
 set autocommit=0;
@@ -6597,24 +4986,16 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cache`
---
-
 LOCK TABLES `cache` WRITE;
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `cache` VALUES
-('DB_SEMESTER_DATA','s:766:\"a:2:{i:0;a:12:{s:11:\"semester_id\";s:32:\"322f640f3f4643ebe514df65f1163eb1\";s:4:\"name\";s:9:\"SoSe 2025\";s:14:\"semester_token\";s:0:\"\";s:6:\"beginn\";s:10:\"1743458400\";s:4:\"ende\";s:10:\"1759269599\";s:11:\"sem_wechsel\";N;s:13:\"vorles_beginn\";s:10:\"1744581600\";s:11:\"vorles_ende\";s:10:\"1752962399\";s:7:\"visible\";s:1:\"1\";s:11:\"external_id\";s:0:\"\";s:6:\"mkdate\";N;s:6:\"chdate\";s:10:\"1754464710\";}i:1;a:12:{s:11:\"semester_id\";s:32:\"4967f0a483e36554b77e3dc47aa58941\";s:4:\"name\";s:14:\"WiSe 2025/2026\";s:14:\"semester_token\";s:0:\"\";s:6:\"beginn\";s:10:\"1759269600\";s:4:\"ende\";s:10:\"1774994399\";s:11:\"sem_wechsel\";N;s:13:\"vorles_beginn\";s:10:\"1760306400\";s:11:\"vorles_ende\";s:10:\"1771109999\";s:7:\"visible\";s:1:\"1\";s:11:\"external_id\";s:0:\"\";s:6:\"mkdate\";N;s:6:\"chdate\";s:10:\"1754464710\";}}\";',1754507911),
-('DB_SEM_TYPES_ARRAY','s:1945:\"a:14:{i:0;a:5:{s:2:\"id\";s:1:\"1\";s:4:\"name\";s:9:\"Vorlesung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:1;a:5:{s:2:\"id\";s:1:\"2\";s:4:\"name\";s:7:\"Seminar\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:2;a:5:{s:2:\"id\";s:1:\"3\";s:4:\"name\";s:6:\"Übung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:3;a:5:{s:2:\"id\";s:1:\"4\";s:4:\"name\";s:9:\"Praktikum\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:4;a:5:{s:2:\"id\";s:1:\"5\";s:4:\"name\";s:10:\"Colloquium\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:5;a:5:{s:2:\"id\";s:1:\"6\";s:4:\"name\";s:16:\"Forschungsgruppe\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:6;a:5:{s:2:\"id\";s:1:\"7\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:7;a:5:{s:2:\"id\";s:1:\"8\";s:4:\"name\";s:7:\"Gremium\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:8;a:5:{s:2:\"id\";s:1:\"9\";s:4:\"name\";s:13:\"Projektgruppe\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:9;a:5:{s:2:\"id\";s:2:\"10\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:10;a:5:{s:2:\"id\";s:2:\"11\";s:4:\"name\";s:11:\"Kulturforum\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:11;a:5:{s:2:\"id\";s:2:\"12\";s:4:\"name\";s:19:\"Veranstaltungsboard\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:12;a:5:{s:2:\"id\";s:2:\"13\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:13;a:5:{s:2:\"id\";s:2:\"99\";s:4:\"name\";s:13:\"Studiengruppe\";s:5:\"class\";s:2:\"99\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}}\";',1754507906),
-('DB_TABLE_SCHEMES','s:42220:\"a:26:{s:9:\"user_info\";a:2:{s:9:\"db_fields\";a:22:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"hobby\";a:5:{s:4:\"name\";s:5:\"hobby\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:10:\"lebenslauf\";a:5:{s:4:\"name\";s:10:\"lebenslauf\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:5:\"publi\";a:5:{s:4:\"name\";s:5:\"publi\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:7:\"schwerp\";a:5:{s:4:\"name\";s:7:\"schwerp\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"home\";a:5:{s:4:\"name\";s:4:\"Home\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(200)\";s:5:\"extra\";s:0:\"\";}s:8:\"privatnr\";a:5:{s:4:\"name\";s:8:\"privatnr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"privatcell\";a:5:{s:4:\"name\";s:10:\"privatcell\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:7:\"privadr\";a:5:{s:4:\"name\";s:7:\"privadr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"score\";a:5:{s:4:\"name\";s:5:\"score\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"geschlecht\";a:5:{s:4:\"name\";s:10:\"geschlecht\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"title_front\";a:5:{s:4:\"name\";s:11:\"title_front\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:10:\"title_rear\";a:5:{s:4:\"name\";s:10:\"title_rear\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:18:\"preferred_language\";a:5:{s:4:\"name\";s:18:\"preferred_language\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(20)\";s:5:\"extra\";s:0:\"\";}s:15:\"smsforward_copy\";a:5:{s:4:\"name\";s:15:\"smsforward_copy\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"smsforward_rec\";a:5:{s:4:\"name\";s:14:\"smsforward_rec\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:13:\"email_forward\";a:5:{s:4:\"name\";s:13:\"email_forward\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"motto\";a:5:{s:4:\"name\";s:5:\"motto\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:21:\"oercampus_description\";a:5:{s:4:\"name\";s:21:\"oercampus_description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:13:\"auth_user_md5\";a:2:{s:9:\"db_fields\";a:14:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"username\";a:5:{s:4:\"name\";s:8:\"username\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"password\";a:5:{s:4:\"name\";s:8:\"password\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:13:\"varbinary(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"perms\";a:5:{s:4:\"name\";s:5:\"perms\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:4:\"user\";s:4:\"type\";s:52:\"enum(\'user\',\'autor\',\'tutor\',\'dozent\',\'admin\',\'root\')\";s:5:\"extra\";s:0:\"\";}s:7:\"vorname\";a:5:{s:4:\"name\";s:7:\"Vorname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"nachname\";a:5:{s:4:\"name\";s:8:\"Nachname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"email\";a:5:{s:4:\"name\";s:5:\"Email\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(256)\";s:5:\"extra\";s:0:\"\";}s:14:\"validation_key\";a:5:{s:4:\"name\";s:14:\"validation_key\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:11:\"auth_plugin\";a:5:{s:4:\"name\";s:11:\"auth_plugin\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:8:\"standard\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:6:\"locked\";a:5:{s:4:\"name\";s:6:\"locked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"lock_comment\";a:5:{s:4:\"name\";s:12:\"lock_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"locked_by\";a:5:{s:4:\"name\";s:9:\"locked_by\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:7:\"unknown\";s:4:\"type\";s:52:\"enum(\'global\',\'always\',\'yes\',\'unknown\',\'no\',\'never\')\";s:5:\"extra\";s:0:\"\";}s:20:\"matriculation_number\";a:5:{s:4:\"name\";s:20:\"matriculation_number\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:11:\"log_actions\";a:2:{s:9:\"db_fields\";a:11:{s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(128)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:13:\"info_template\";a:5:{s:4:\"name\";s:13:\"info_template\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"active\";a:5:{s:4:\"name\";s:6:\"active\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"filename\";a:5:{s:4:\"name\";s:8:\"filename\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:5:\"class\";a:5:{s:4:\"name\";s:5:\"class\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:28:\"enum(\'core\',\'plugin\',\'file\')\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"action_id\";}}s:10:\"log_events\";a:2:{s:9:\"db_fields\";a:8:{s:8:\"event_id\";a:5:{s:4:\"name\";s:8:\"event_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:14:\"auto_increment\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"affected_range_id\";a:5:{s:4:\"name\";s:17:\"affected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"coaffected_range_id\";a:5:{s:4:\"name\";s:19:\"coaffected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"info\";a:5:{s:4:\"name\";s:4:\"info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"dbg_info\";a:5:{s:4:\"name\";s:8:\"dbg_info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"event_id\";}}s:13:\"semester_data\";a:2:{s:9:\"db_fields\";a:12:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:14:\"semester_token\";a:5:{s:4:\"name\";s:14:\"semester_token\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"sem_wechsel\";a:5:{s:4:\"name\";s:11:\"sem_wechsel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"vorles_beginn\";a:5:{s:4:\"name\";s:13:\"vorles_beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"vorles_ende\";a:5:{s:4:\"name\";s:11:\"vorles_ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"external_id\";a:5:{s:4:\"name\";s:11:\"external_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(50)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"semester_id\";}}s:16:\"semester_holiday\";a:2:{s:9:\"db_fields\";a:8:{s:10:\"holiday_id\";a:5:{s:4:\"name\";s:10:\"holiday_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"holiday_id\";}}s:9:\"resources\";a:2:{s:9:\"db_fields\";a:12:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"parent_id\";a:5:{s:4:\"name\";s:9:\"parent_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"category_id\";a:5:{s:4:\"name\";s:11:\"category_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"level\";a:5:{s:4:\"name\";s:5:\"level\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"requestable\";a:5:{s:4:\"name\";s:11:\"requestable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"lockable\";a:5:{s:4:\"name\";s:8:\"lockable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:20:\"booking_plan_request\";a:5:{s:4:\"name\";s:20:\"booking_plan_request\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(1) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"sort_position\";a:5:{s:4:\"name\";s:13:\"sort_position\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:8:\"seminare\";a:2:{s:9:\"db_fields\";a:34:{s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"Seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:20:\"veranstaltungsnummer\";a:5:{s:4:\"name\";s:20:\"VeranstaltungsNummer\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(100)\";s:5:\"extra\";s:0:\"\";}s:11:\"institut_id\";a:5:{s:4:\"name\";s:11:\"Institut_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"Name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"untertitel\";a:5:{s:4:\"name\";s:10:\"Untertitel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"status\";a:5:{s:4:\"name\";s:6:\"status\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"beschreibung\";a:5:{s:4:\"name\";s:12:\"Beschreibung\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:3:\"ort\";a:5:{s:4:\"name\";s:3:\"Ort\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"sonstiges\";a:5:{s:4:\"name\";s:9:\"Sonstiges\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"lesezugriff\";a:5:{s:4:\"name\";s:11:\"Lesezugriff\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:14:\"schreibzugriff\";a:5:{s:4:\"name\";s:14:\"Schreibzugriff\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:3:\"art\";a:5:{s:4:\"name\";s:3:\"art\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"teilnehmer\";a:5:{s:4:\"name\";s:10:\"teilnehmer\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:15:\"vorrausetzungen\";a:5:{s:4:\"name\";s:15:\"vorrausetzungen\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"lernorga\";a:5:{s:4:\"name\";s:8:\"lernorga\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:17:\"leistungsnachweis\";a:5:{s:4:\"name\";s:17:\"leistungsnachweis\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ects\";a:5:{s:4:\"name\";s:4:\"ects\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"admission_turnout\";a:5:{s:4:\"name\";s:17:\"admission_turnout\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:17:\"admission_binding\";a:5:{s:4:\"name\";s:17:\"admission_binding\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:16:\"admission_prelim\";a:5:{s:4:\"name\";s:16:\"admission_prelim\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:20:\"admission_prelim_txt\";a:5:{s:4:\"name\";s:20:\"admission_prelim_txt\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:26:\"admission_disable_waitlist\";a:5:{s:4:\"name\";s:26:\"admission_disable_waitlist\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:9:\"showscore\";a:5:{s:4:\"name\";s:9:\"showscore\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:13:\"aux_lock_rule\";a:5:{s:4:\"name\";s:13:\"aux_lock_rule\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:20:\"aux_lock_rule_forced\";a:5:{s:4:\"name\";s:20:\"aux_lock_rule_forced\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:22:\"admission_waitlist_max\";a:5:{s:4:\"name\";s:22:\"admission_waitlist_max\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:31:\"admission_disable_waitlist_move\";a:5:{s:4:\"name\";s:31:\"admission_disable_waitlist_move\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"completion\";a:5:{s:4:\"name\";s:10:\"completion\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"parent_course\";a:5:{s:4:\"name\";s:13:\"parent_course\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(11) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"seminar_id\";}}s:19:\"seminar_cycle_dates\";a:2:{s:9:\"db_fields\";a:13:{s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"start_time\";a:5:{s:4:\"name\";s:10:\"start_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"time\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"time\";s:5:\"extra\";s:0:\"\";}s:7:\"weekday\";a:5:{s:4:\"name\";s:7:\"weekday\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:3:\"sws\";a:5:{s:4:\"name\";s:3:\"sws\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:3:\"0.0\";s:4:\"type\";s:12:\"decimal(2,1)\";s:5:\"extra\";s:0:\"\";}s:5:\"cycle\";a:5:{s:4:\"name\";s:5:\"cycle\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"week_offset\";a:5:{s:4:\"name\";s:11:\"week_offset\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"end_offset\";a:5:{s:4:\"name\";s:10:\"end_offset\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"sorter\";a:5:{s:4:\"name\";s:6:\"sorter\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"metadate_id\";}}s:10:\"ex_termine\";a:2:{s:9:\"db_fields\";a:12:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"autor_id\";a:5:{s:4:\"name\";s:8:\"autor_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"content\";a:5:{s:4:\"name\";s:7:\"content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"date\";a:5:{s:4:\"name\";s:4:\"date\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"date_typ\";a:5:{s:4:\"name\";s:8:\"date_typ\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:4:\"raum\";a:5:{s:4:\"name\";s:4:\"raum\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"termin_id\";}}s:7:\"termine\";a:2:{s:9:\"db_fields\";a:12:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"autor_id\";a:5:{s:4:\"name\";s:8:\"autor_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"content\";a:5:{s:4:\"name\";s:7:\"content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"date\";a:5:{s:4:\"name\";s:4:\"date\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"date_typ\";a:5:{s:4:\"name\";s:8:\"date_typ\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:4:\"raum\";a:5:{s:4:\"name\";s:4:\"raum\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:22:\"number_of_participants\";a:5:{s:4:\"name\";s:22:\"number_of_participants\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"smallint(6)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"termin_id\";}}s:16:\"semester_courses\";a:2:{s:9:\"db_fields\";a:4:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"course_id\";a:5:{s:4:\"name\";s:9:\"course_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:11:\"semester_id\";i:1;s:9:\"course_id\";}}s:17:\"resource_bookings\";a:2:{s:9:\"db_fields\";a:15:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"repeat_end\";a:5:{s:4:\"name\";s:10:\"repeat_end\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"internal_comment\";a:5:{s:4:\"name\";s:16:\"internal_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:16:\"preparation_time\";a:5:{s:4:\"name\";s:16:\"preparation_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:12:\"booking_type\";a:5:{s:4:\"name\";s:12:\"booking_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:15:\"booking_user_id\";a:5:{s:4:\"name\";s:15:\"booking_user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"repetition_interval\";a:5:{s:4:\"name\";s:19:\"repetition_interval\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(24)\";s:5:\"extra\";s:0:\"\";}s:8:\"weekdays\";a:5:{s:4:\"name\";s:8:\"weekdays\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:10:\"varchar(7)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:6:\"themen\";a:2:{s:9:\"db_fields\";a:9:{s:8:\"issue_id\";a:5:{s:4:\"name\";s:8:\"issue_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"author_id\";a:5:{s:4:\"name\";s:9:\"author_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"title\";a:5:{s:4:\"name\";s:5:\"title\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"priority\";a:5:{s:4:\"name\";s:8:\"priority\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:20:\"smallint(5) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"paper_related\";a:5:{s:4:\"name\";s:13:\"paper_related\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"issue_id\";}}s:14:\"themen_termine\";a:2:{s:9:\"db_fields\";a:2:{s:8:\"issue_id\";a:5:{s:4:\"name\";s:8:\"issue_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:8:\"issue_id\";i:1;s:9:\"termin_id\";}}s:13:\"statusgruppen\";a:2:{s:9:\"db_fields\";a:14:{s:15:\"statusgruppe_id\";a:5:{s:4:\"name\";s:15:\"statusgruppe_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"position\";a:5:{s:4:\"name\";s:8:\"position\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:4:\"size\";a:5:{s:4:\"name\";s:4:\"size\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"selfassign\";a:5:{s:4:\"name\";s:10:\"selfassign\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"selfassign_start\";a:5:{s:4:\"name\";s:16:\"selfassign_start\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"selfassign_end\";a:5:{s:4:\"name\";s:14:\"selfassign_end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"calendar_group\";a:5:{s:4:\"name\";s:14:\"calendar_group\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"name_w\";a:5:{s:4:\"name\";s:6:\"name_w\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"name_m\";a:5:{s:4:\"name\";s:6:\"name_m\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:15:\"statusgruppe_id\";}}s:21:\"termin_related_groups\";a:2:{s:9:\"db_fields\";a:2:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:15:\"statusgruppe_id\";a:5:{s:4:\"name\";s:15:\"statusgruppe_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:9:\"termin_id\";i:1;s:15:\"statusgruppe_id\";}}s:22:\"termin_related_persons\";a:2:{s:9:\"db_fields\";a:2:{s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:8:\"range_id\";i:1;s:7:\"user_id\";}}s:19:\"resource_categories\";a:2:{s:9:\"db_fields\";a:8:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"system\";a:5:{s:4:\"name\";s:6:\"system\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"iconnr\";a:5:{s:4:\"name\";s:6:\"iconnr\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"class_name\";a:5:{s:4:\"name\";s:10:\"class_name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:8:\"Resource\";s:4:\"type\";s:11:\"varchar(60)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:26:\"resource_booking_intervals\";a:2:{s:9:\"db_fields\";a:8:{s:11:\"interval_id\";a:5:{s:4:\"name\";s:11:\"interval_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"booking_id\";a:5:{s:4:\"name\";s:10:\"booking_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"takes_place\";a:5:{s:4:\"name\";s:11:\"takes_place\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"interval_id\";}}s:7:\"folders\";a:2:{s:9:\"db_fields\";a:11:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"parent_id\";a:5:{s:4:\"name\";s:9:\"parent_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"range_type\";a:5:{s:4:\"name\";s:10:\"range_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"folder_type\";a:5:{s:4:\"name\";s:11:\"folder_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:12:\"data_content\";a:5:{s:4:\"name\";s:12:\"data_content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:9:\"file_refs\";a:2:{s:9:\"db_fields\";a:10:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"file_id\";a:5:{s:4:\"name\";s:7:\"file_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"folder_id\";a:5:{s:4:\"name\";s:9:\"folder_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"downloads\";a:5:{s:4:\"name\";s:9:\"downloads\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:23:\"content_terms_of_use_id\";a:5:{s:4:\"name\";s:23:\"content_terms_of_use_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:17:\"resource_requests\";a:2:{s:9:\"db_fields\";a:18:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"course_id\";a:5:{s:4:\"name\";s:9:\"course_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:16:\"last_modified_by\";a:5:{s:4:\"name\";s:16:\"last_modified_by\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"category_id\";a:5:{s:4:\"name\";s:11:\"category_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"comment\";a:5:{s:4:\"name\";s:7:\"comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:13:\"reply_comment\";a:5:{s:4:\"name\";s:13:\"reply_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:16:\"reply_recipients\";a:5:{s:4:\"name\";s:16:\"reply_recipients\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:9:\"requester\";s:4:\"type\";s:28:\"enum(\'requester\',\'lecturer\')\";s:5:\"extra\";s:0:\"\";}s:6:\"closed\";a:5:{s:4:\"name\";s:6:\"closed\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"preparation_time\";a:5:{s:4:\"name\";s:16:\"preparation_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"marked\";a:5:{s:4:\"name\";s:6:\"marked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:27:\"resource_request_properties\";a:2:{s:9:\"db_fields\";a:5:{s:10:\"request_id\";a:5:{s:4:\"name\";s:10:\"request_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"property_id\";a:5:{s:4:\"name\";s:11:\"property_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"state\";a:5:{s:4:\"name\";s:5:\"state\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:10:\"request_id\";i:1;s:11:\"property_id\";}}s:29:\"resource_request_appointments\";a:2:{s:9:\"db_fields\";a:5:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:14:\"auto_increment\";}s:10:\"request_id\";a:5:{s:4:\"name\";s:10:\"request_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:14:\"appointment_id\";a:5:{s:4:\"name\";s:14:\"appointment_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:29:\"resource_property_definitions\";a:2:{s:9:\"db_fields\";a:15:{s:11:\"property_id\";a:5:{s:4:\"name\";s:11:\"property_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:80:\"enum(\'bool\',\'text\',\'num\',\'select\',\'user\',\'institute\',\'position\',\'fileref\',\'url\')\";s:5:\"extra\";s:0:\"\";}s:7:\"options\";a:5:{s:4:\"name\";s:7:\"options\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"system\";a:5:{s:4:\"name\";s:6:\"system\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"info_label\";a:5:{s:4:\"name\";s:10:\"info_label\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:12:\"display_name\";a:5:{s:4:\"name\";s:12:\"display_name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(512)\";s:5:\"extra\";s:0:\"\";}s:10:\"searchable\";a:5:{s:4:\"name\";s:10:\"searchable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"range_search\";a:5:{s:4:\"name\";s:12:\"range_search\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:22:\"write_permission_level\";a:5:{s:4:\"name\";s:22:\"write_permission_level\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:12:\"admin-global\";s:4:\"type\";s:11:\"varchar(16)\";s:5:\"extra\";s:0:\"\";}s:17:\"property_group_id\";a:5:{s:4:\"name\";s:17:\"property_group_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:18:\"property_group_pos\";a:5:{s:4:\"name\";s:18:\"property_group_pos\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"property_id\";}}}\";',1754507911);
+('DB_SEMESTER_DATA','s:766:\"a:2:{i:0;a:12:{s:11:\"semester_id\";s:32:\"4967f0a483e36554b77e3dc47aa58941\";s:4:\"name\";s:14:\"WiSe 2025/2026\";s:14:\"semester_token\";s:0:\"\";s:6:\"beginn\";s:10:\"1759269600\";s:4:\"ende\";s:10:\"1774994399\";s:11:\"sem_wechsel\";N;s:13:\"vorles_beginn\";s:10:\"1760306400\";s:11:\"vorles_ende\";s:10:\"1771109999\";s:7:\"visible\";s:1:\"1\";s:11:\"external_id\";s:0:\"\";s:6:\"mkdate\";N;s:6:\"chdate\";s:10:\"1757497472\";}i:1;a:12:{s:11:\"semester_id\";s:32:\"322f640f3f4643ebe514df65f1163eb1\";s:4:\"name\";s:9:\"SoSe 2026\";s:14:\"semester_token\";s:0:\"\";s:6:\"beginn\";s:10:\"1774994400\";s:4:\"ende\";s:10:\"1790805599\";s:11:\"sem_wechsel\";N;s:13:\"vorles_beginn\";s:10:\"1776031200\";s:11:\"vorles_ende\";s:10:\"1784411999\";s:7:\"visible\";s:1:\"1\";s:11:\"external_id\";s:0:\"\";s:6:\"mkdate\";N;s:6:\"chdate\";s:10:\"1757497472\";}}\";',1757540672),
+('DB_SEM_TYPES_ARRAY','s:1945:\"a:14:{i:0;a:5:{s:2:\"id\";s:1:\"1\";s:4:\"name\";s:9:\"Vorlesung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:1;a:5:{s:2:\"id\";s:1:\"2\";s:4:\"name\";s:7:\"Seminar\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:2;a:5:{s:2:\"id\";s:1:\"3\";s:4:\"name\";s:6:\"Übung\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:3;a:5:{s:2:\"id\";s:1:\"4\";s:4:\"name\";s:9:\"Praktikum\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:4;a:5:{s:2:\"id\";s:1:\"5\";s:4:\"name\";s:10:\"Colloquium\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:5;a:5:{s:2:\"id\";s:1:\"6\";s:4:\"name\";s:16:\"Forschungsgruppe\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:6;a:5:{s:2:\"id\";s:1:\"7\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"1\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:7;a:5:{s:2:\"id\";s:1:\"8\";s:4:\"name\";s:7:\"Gremium\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:8;a:5:{s:2:\"id\";s:1:\"9\";s:4:\"name\";s:13:\"Projektgruppe\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:9;a:5:{s:2:\"id\";s:2:\"10\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"2\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:10;a:5:{s:2:\"id\";s:2:\"11\";s:4:\"name\";s:11:\"Kulturforum\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:11;a:5:{s:2:\"id\";s:2:\"12\";s:4:\"name\";s:19:\"Veranstaltungsboard\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:12;a:5:{s:2:\"id\";s:2:\"13\";s:4:\"name\";s:8:\"sonstige\";s:5:\"class\";s:1:\"3\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}i:13;a:5:{s:2:\"id\";s:2:\"99\";s:4:\"name\";s:13:\"Studiengruppe\";s:5:\"class\";s:2:\"99\";s:6:\"mkdate\";s:10:\"1366882120\";s:6:\"chdate\";s:10:\"1366882120\";}}\";',1757540668),
+('DB_TABLE_SCHEMES','s:42220:\"a:26:{s:9:\"user_info\";a:2:{s:9:\"db_fields\";a:22:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"hobby\";a:5:{s:4:\"name\";s:5:\"hobby\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:10:\"lebenslauf\";a:5:{s:4:\"name\";s:10:\"lebenslauf\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:5:\"publi\";a:5:{s:4:\"name\";s:5:\"publi\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:10:\"mediumtext\";s:5:\"extra\";s:0:\"\";}s:7:\"schwerp\";a:5:{s:4:\"name\";s:7:\"schwerp\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"home\";a:5:{s:4:\"name\";s:4:\"Home\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(200)\";s:5:\"extra\";s:0:\"\";}s:8:\"privatnr\";a:5:{s:4:\"name\";s:8:\"privatnr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"privatcell\";a:5:{s:4:\"name\";s:10:\"privatcell\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:7:\"privadr\";a:5:{s:4:\"name\";s:7:\"privadr\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"score\";a:5:{s:4:\"name\";s:5:\"score\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"geschlecht\";a:5:{s:4:\"name\";s:10:\"geschlecht\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"title_front\";a:5:{s:4:\"name\";s:11:\"title_front\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:10:\"title_rear\";a:5:{s:4:\"name\";s:10:\"title_rear\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:18:\"preferred_language\";a:5:{s:4:\"name\";s:18:\"preferred_language\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(20)\";s:5:\"extra\";s:0:\"\";}s:15:\"smsforward_copy\";a:5:{s:4:\"name\";s:15:\"smsforward_copy\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"smsforward_rec\";a:5:{s:4:\"name\";s:14:\"smsforward_rec\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:13:\"email_forward\";a:5:{s:4:\"name\";s:13:\"email_forward\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"motto\";a:5:{s:4:\"name\";s:5:\"motto\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:21:\"oercampus_description\";a:5:{s:4:\"name\";s:21:\"oercampus_description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:13:\"auth_user_md5\";a:2:{s:9:\"db_fields\";a:14:{s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"username\";a:5:{s:4:\"name\";s:8:\"username\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"password\";a:5:{s:4:\"name\";s:8:\"password\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:13:\"varbinary(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"perms\";a:5:{s:4:\"name\";s:5:\"perms\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:4:\"user\";s:4:\"type\";s:52:\"enum(\'user\',\'autor\',\'tutor\',\'dozent\',\'admin\',\'root\')\";s:5:\"extra\";s:0:\"\";}s:7:\"vorname\";a:5:{s:4:\"name\";s:7:\"Vorname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:8:\"nachname\";a:5:{s:4:\"name\";s:8:\"Nachname\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:5:\"email\";a:5:{s:4:\"name\";s:5:\"Email\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(256)\";s:5:\"extra\";s:0:\"\";}s:14:\"validation_key\";a:5:{s:4:\"name\";s:14:\"validation_key\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:11:\"auth_plugin\";a:5:{s:4:\"name\";s:11:\"auth_plugin\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:8:\"standard\";s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:6:\"locked\";a:5:{s:4:\"name\";s:6:\"locked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"lock_comment\";a:5:{s:4:\"name\";s:12:\"lock_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"locked_by\";a:5:{s:4:\"name\";s:9:\"locked_by\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:7:\"unknown\";s:4:\"type\";s:52:\"enum(\'global\',\'always\',\'yes\',\'unknown\',\'no\',\'never\')\";s:5:\"extra\";s:0:\"\";}s:20:\"matriculation_number\";a:5:{s:4:\"name\";s:20:\"matriculation_number\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:7:\"user_id\";}}s:11:\"log_actions\";a:2:{s:9:\"db_fields\";a:11:{s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(128)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(64)\";s:5:\"extra\";s:0:\"\";}s:13:\"info_template\";a:5:{s:4:\"name\";s:13:\"info_template\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"active\";a:5:{s:4:\"name\";s:6:\"active\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"filename\";a:5:{s:4:\"name\";s:8:\"filename\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:5:\"class\";a:5:{s:4:\"name\";s:5:\"class\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:28:\"enum(\'core\',\'plugin\',\'file\')\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"action_id\";}}s:10:\"log_events\";a:2:{s:9:\"db_fields\";a:8:{s:8:\"event_id\";a:5:{s:4:\"name\";s:8:\"event_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:14:\"auto_increment\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"action_id\";a:5:{s:4:\"name\";s:9:\"action_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"affected_range_id\";a:5:{s:4:\"name\";s:17:\"affected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"coaffected_range_id\";a:5:{s:4:\"name\";s:19:\"coaffected_range_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"info\";a:5:{s:4:\"name\";s:4:\"info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"dbg_info\";a:5:{s:4:\"name\";s:8:\"dbg_info\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"event_id\";}}s:13:\"semester_data\";a:2:{s:9:\"db_fields\";a:12:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:14:\"semester_token\";a:5:{s:4:\"name\";s:14:\"semester_token\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(10)\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"sem_wechsel\";a:5:{s:4:\"name\";s:11:\"sem_wechsel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"vorles_beginn\";a:5:{s:4:\"name\";s:13:\"vorles_beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"vorles_ende\";a:5:{s:4:\"name\";s:11:\"vorles_ende\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"external_id\";a:5:{s:4:\"name\";s:11:\"external_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(50)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"semester_id\";}}s:16:\"semester_holiday\";a:2:{s:9:\"db_fields\";a:8:{s:10:\"holiday_id\";a:5:{s:4:\"name\";s:10:\"holiday_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"beginn\";a:5:{s:4:\"name\";s:6:\"beginn\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ende\";a:5:{s:4:\"name\";s:4:\"ende\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"holiday_id\";}}s:9:\"resources\";a:2:{s:9:\"db_fields\";a:12:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"parent_id\";a:5:{s:4:\"name\";s:9:\"parent_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"category_id\";a:5:{s:4:\"name\";s:11:\"category_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"level\";a:5:{s:4:\"name\";s:5:\"level\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"requestable\";a:5:{s:4:\"name\";s:11:\"requestable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"lockable\";a:5:{s:4:\"name\";s:8:\"lockable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:20:\"booking_plan_request\";a:5:{s:4:\"name\";s:20:\"booking_plan_request\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(1) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"sort_position\";a:5:{s:4:\"name\";s:13:\"sort_position\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:8:\"seminare\";a:2:{s:9:\"db_fields\";a:34:{s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"Seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:20:\"veranstaltungsnummer\";a:5:{s:4:\"name\";s:20:\"VeranstaltungsNummer\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(100)\";s:5:\"extra\";s:0:\"\";}s:11:\"institut_id\";a:5:{s:4:\"name\";s:11:\"Institut_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"Name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"untertitel\";a:5:{s:4:\"name\";s:10:\"Untertitel\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"status\";a:5:{s:4:\"name\";s:6:\"status\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"beschreibung\";a:5:{s:4:\"name\";s:12:\"Beschreibung\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:3:\"ort\";a:5:{s:4:\"name\";s:3:\"Ort\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:9:\"sonstiges\";a:5:{s:4:\"name\";s:9:\"Sonstiges\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"lesezugriff\";a:5:{s:4:\"name\";s:11:\"Lesezugriff\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:14:\"schreibzugriff\";a:5:{s:4:\"name\";s:14:\"Schreibzugriff\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:3:\"art\";a:5:{s:4:\"name\";s:3:\"art\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:10:\"teilnehmer\";a:5:{s:4:\"name\";s:10:\"teilnehmer\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:15:\"vorrausetzungen\";a:5:{s:4:\"name\";s:15:\"vorrausetzungen\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"lernorga\";a:5:{s:4:\"name\";s:8:\"lernorga\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:17:\"leistungsnachweis\";a:5:{s:4:\"name\";s:17:\"leistungsnachweis\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:4:\"ects\";a:5:{s:4:\"name\";s:4:\"ects\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:17:\"admission_turnout\";a:5:{s:4:\"name\";s:17:\"admission_turnout\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:17:\"admission_binding\";a:5:{s:4:\"name\";s:17:\"admission_binding\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:16:\"admission_prelim\";a:5:{s:4:\"name\";s:16:\"admission_prelim\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:20:\"admission_prelim_txt\";a:5:{s:4:\"name\";s:20:\"admission_prelim_txt\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:26:\"admission_disable_waitlist\";a:5:{s:4:\"name\";s:26:\"admission_disable_waitlist\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:7:\"visible\";a:5:{s:4:\"name\";s:7:\"visible\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:9:\"showscore\";a:5:{s:4:\"name\";s:9:\"showscore\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:13:\"aux_lock_rule\";a:5:{s:4:\"name\";s:13:\"aux_lock_rule\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:20:\"aux_lock_rule_forced\";a:5:{s:4:\"name\";s:20:\"aux_lock_rule_forced\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:9:\"lock_rule\";a:5:{s:4:\"name\";s:9:\"lock_rule\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:22:\"admission_waitlist_max\";a:5:{s:4:\"name\";s:22:\"admission_waitlist_max\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:31:\"admission_disable_waitlist_move\";a:5:{s:4:\"name\";s:31:\"admission_disable_waitlist_move\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"completion\";a:5:{s:4:\"name\";s:10:\"completion\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"parent_course\";a:5:{s:4:\"name\";s:13:\"parent_course\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"expires\";a:5:{s:4:\"name\";s:7:\"expires\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(11) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:10:\"seminar_id\";}}s:19:\"seminar_cycle_dates\";a:2:{s:9:\"db_fields\";a:13:{s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"start_time\";a:5:{s:4:\"name\";s:10:\"start_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"time\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"time\";s:5:\"extra\";s:0:\"\";}s:7:\"weekday\";a:5:{s:4:\"name\";s:7:\"weekday\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:3:\"sws\";a:5:{s:4:\"name\";s:3:\"sws\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:3:\"0.0\";s:4:\"type\";s:12:\"decimal(2,1)\";s:5:\"extra\";s:0:\"\";}s:5:\"cycle\";a:5:{s:4:\"name\";s:5:\"cycle\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"week_offset\";a:5:{s:4:\"name\";s:11:\"week_offset\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"end_offset\";a:5:{s:4:\"name\";s:10:\"end_offset\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"sorter\";a:5:{s:4:\"name\";s:6:\"sorter\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"metadate_id\";}}s:10:\"ex_termine\";a:2:{s:9:\"db_fields\";a:12:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"autor_id\";a:5:{s:4:\"name\";s:8:\"autor_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"content\";a:5:{s:4:\"name\";s:7:\"content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"date\";a:5:{s:4:\"name\";s:4:\"date\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"date_typ\";a:5:{s:4:\"name\";s:8:\"date_typ\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:4:\"raum\";a:5:{s:4:\"name\";s:4:\"raum\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"termin_id\";}}s:7:\"termine\";a:2:{s:9:\"db_fields\";a:12:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"autor_id\";a:5:{s:4:\"name\";s:8:\"autor_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"content\";a:5:{s:4:\"name\";s:7:\"content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"date\";a:5:{s:4:\"name\";s:4:\"date\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"end_time\";a:5:{s:4:\"name\";s:8:\"end_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:8:\"date_typ\";a:5:{s:4:\"name\";s:8:\"date_typ\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:4:\"raum\";a:5:{s:4:\"name\";s:4:\"raum\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:22:\"number_of_participants\";a:5:{s:4:\"name\";s:22:\"number_of_participants\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:11:\"smallint(6)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:9:\"termin_id\";}}s:16:\"semester_courses\";a:2:{s:9:\"db_fields\";a:4:{s:11:\"semester_id\";a:5:{s:4:\"name\";s:11:\"semester_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"course_id\";a:5:{s:4:\"name\";s:9:\"course_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:11:\"semester_id\";i:1;s:9:\"course_id\";}}s:17:\"resource_bookings\";a:2:{s:9:\"db_fields\";a:15:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"repeat_end\";a:5:{s:4:\"name\";s:10:\"repeat_end\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"internal_comment\";a:5:{s:4:\"name\";s:16:\"internal_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:16:\"preparation_time\";a:5:{s:4:\"name\";s:16:\"preparation_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:12:\"booking_type\";a:5:{s:4:\"name\";s:12:\"booking_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:15:\"booking_user_id\";a:5:{s:4:\"name\";s:15:\"booking_user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:19:\"repetition_interval\";a:5:{s:4:\"name\";s:19:\"repetition_interval\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:11:\"varchar(24)\";s:5:\"extra\";s:0:\"\";}s:8:\"weekdays\";a:5:{s:4:\"name\";s:8:\"weekdays\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:10:\"varchar(7)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:6:\"themen\";a:2:{s:9:\"db_fields\";a:9:{s:8:\"issue_id\";a:5:{s:4:\"name\";s:8:\"issue_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"seminar_id\";a:5:{s:4:\"name\";s:10:\"seminar_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"author_id\";a:5:{s:4:\"name\";s:9:\"author_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"title\";a:5:{s:4:\"name\";s:5:\"title\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"priority\";a:5:{s:4:\"name\";s:8:\"priority\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:20:\"smallint(5) unsigned\";s:5:\"extra\";s:0:\"\";}s:13:\"paper_related\";a:5:{s:4:\"name\";s:13:\"paper_related\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:8:\"issue_id\";}}s:14:\"themen_termine\";a:2:{s:9:\"db_fields\";a:2:{s:8:\"issue_id\";a:5:{s:4:\"name\";s:8:\"issue_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:8:\"issue_id\";i:1;s:9:\"termin_id\";}}s:13:\"statusgruppen\";a:2:{s:9:\"db_fields\";a:14:{s:15:\"statusgruppe_id\";a:5:{s:4:\"name\";s:15:\"statusgruppe_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"position\";a:5:{s:4:\"name\";s:8:\"position\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:4:\"size\";a:5:{s:4:\"name\";s:4:\"size\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"selfassign\";a:5:{s:4:\"name\";s:10:\"selfassign\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"selfassign_start\";a:5:{s:4:\"name\";s:16:\"selfassign_start\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"selfassign_end\";a:5:{s:4:\"name\";s:14:\"selfassign_end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:14:\"calendar_group\";a:5:{s:4:\"name\";s:14:\"calendar_group\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"name_w\";a:5:{s:4:\"name\";s:6:\"name_w\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"name_m\";a:5:{s:4:\"name\";s:6:\"name_m\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:15:\"statusgruppe_id\";}}s:21:\"termin_related_groups\";a:2:{s:9:\"db_fields\";a:2:{s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:15:\"statusgruppe_id\";a:5:{s:4:\"name\";s:15:\"statusgruppe_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:9:\"termin_id\";i:1;s:15:\"statusgruppe_id\";}}s:22:\"termin_related_persons\";a:2:{s:9:\"db_fields\";a:2:{s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:8:\"range_id\";i:1;s:7:\"user_id\";}}s:19:\"resource_categories\";a:2:{s:9:\"db_fields\";a:8:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"system\";a:5:{s:4:\"name\";s:6:\"system\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"iconnr\";a:5:{s:4:\"name\";s:6:\"iconnr\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:10:\"class_name\";a:5:{s:4:\"name\";s:10:\"class_name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:8:\"Resource\";s:4:\"type\";s:11:\"varchar(60)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:26:\"resource_booking_intervals\";a:2:{s:9:\"db_fields\";a:8:{s:11:\"interval_id\";a:5:{s:4:\"name\";s:11:\"interval_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"booking_id\";a:5:{s:4:\"name\";s:10:\"booking_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"takes_place\";a:5:{s:4:\"name\";s:11:\"takes_place\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"1\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"interval_id\";}}s:7:\"folders\";a:2:{s:9:\"db_fields\";a:11:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"parent_id\";a:5:{s:4:\"name\";s:9:\"parent_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:8:\"range_id\";a:5:{s:4:\"name\";s:8:\"range_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:10:\"range_type\";a:5:{s:4:\"name\";s:10:\"range_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:11:\"varchar(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"folder_type\";a:5:{s:4:\"name\";s:11:\"folder_type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:12:\"data_content\";a:5:{s:4:\"name\";s:12:\"data_content\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:9:\"file_refs\";a:2:{s:9:\"db_fields\";a:10:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"file_id\";a:5:{s:4:\"name\";s:7:\"file_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"folder_id\";a:5:{s:4:\"name\";s:9:\"folder_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"downloads\";a:5:{s:4:\"name\";s:9:\"downloads\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:23:\"content_terms_of_use_id\";a:5:{s:4:\"name\";s:23:\"content_terms_of_use_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:17:\"resource_requests\";a:2:{s:9:\"db_fields\";a:18:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"course_id\";a:5:{s:4:\"name\";s:9:\"course_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:9:\"termin_id\";a:5:{s:4:\"name\";s:9:\"termin_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"metadate_id\";a:5:{s:4:\"name\";s:11:\"metadate_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"user_id\";a:5:{s:4:\"name\";s:7:\"user_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:16:\"last_modified_by\";a:5:{s:4:\"name\";s:16:\"last_modified_by\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"resource_id\";a:5:{s:4:\"name\";s:11:\"resource_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"category_id\";a:5:{s:4:\"name\";s:11:\"category_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:7:\"comment\";a:5:{s:4:\"name\";s:7:\"comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:13:\"reply_comment\";a:5:{s:4:\"name\";s:13:\"reply_comment\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:16:\"reply_recipients\";a:5:{s:4:\"name\";s:16:\"reply_recipients\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:9:\"requester\";s:4:\"type\";s:28:\"enum(\'requester\',\'lecturer\')\";s:5:\"extra\";s:0:\"\";}s:6:\"closed\";a:5:{s:4:\"name\";s:6:\"closed\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:5:\"begin\";a:5:{s:4:\"name\";s:5:\"begin\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:3:\"end\";a:5:{s:4:\"name\";s:3:\"end\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:16:\"preparation_time\";a:5:{s:4:\"name\";s:16:\"preparation_time\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:6:\"marked\";a:5:{s:4:\"name\";s:6:\"marked\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:27:\"resource_request_properties\";a:2:{s:9:\"db_fields\";a:5:{s:10:\"request_id\";a:5:{s:4:\"name\";s:10:\"request_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:11:\"property_id\";a:5:{s:4:\"name\";s:11:\"property_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:5:\"state\";a:5:{s:4:\"name\";s:5:\"state\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:2:{i:0;s:10:\"request_id\";i:1;s:11:\"property_id\";}}s:29:\"resource_request_appointments\";a:2:{s:9:\"db_fields\";a:5:{s:2:\"id\";a:5:{s:4:\"name\";s:2:\"id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:14:\"auto_increment\";}s:10:\"request_id\";a:5:{s:4:\"name\";s:10:\"request_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:14:\"appointment_id\";a:5:{s:4:\"name\";s:14:\"appointment_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:2:\"id\";}}s:29:\"resource_property_definitions\";a:2:{s:9:\"db_fields\";a:15:{s:11:\"property_id\";a:5:{s:4:\"name\";s:11:\"property_id\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:8:\"char(32)\";s:5:\"extra\";s:0:\"\";}s:4:\"name\";a:5:{s:4:\"name\";s:4:\"name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(255)\";s:5:\"extra\";s:0:\"\";}s:11:\"description\";a:5:{s:4:\"name\";s:11:\"description\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:4:\"type\";a:5:{s:4:\"name\";s:4:\"type\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:80:\"enum(\'bool\',\'text\',\'num\',\'select\',\'user\',\'institute\',\'position\',\'fileref\',\'url\')\";s:5:\"extra\";s:0:\"\";}s:7:\"options\";a:5:{s:4:\"name\";s:7:\"options\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";N;s:4:\"type\";s:4:\"text\";s:5:\"extra\";s:0:\"\";}s:6:\"system\";a:5:{s:4:\"name\";s:6:\"system\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:10:\"info_label\";a:5:{s:4:\"name\";s:10:\"info_label\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:12:\"display_name\";a:5:{s:4:\"name\";s:12:\"display_name\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:0:\"\";s:4:\"type\";s:12:\"varchar(512)\";s:5:\"extra\";s:0:\"\";}s:10:\"searchable\";a:5:{s:4:\"name\";s:10:\"searchable\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:12:\"range_search\";a:5:{s:4:\"name\";s:12:\"range_search\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:19:\"tinyint(3) unsigned\";s:5:\"extra\";s:0:\"\";}s:22:\"write_permission_level\";a:5:{s:4:\"name\";s:22:\"write_permission_level\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:12:\"admin-global\";s:4:\"type\";s:11:\"varchar(16)\";s:5:\"extra\";s:0:\"\";}s:17:\"property_group_id\";a:5:{s:4:\"name\";s:17:\"property_group_id\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:7:\"int(11)\";s:5:\"extra\";s:0:\"\";}s:18:\"property_group_pos\";a:5:{s:4:\"name\";s:18:\"property_group_pos\";s:4:\"null\";s:3:\"YES\";s:7:\"default\";N;s:4:\"type\";s:10:\"tinyint(4)\";s:5:\"extra\";s:0:\"\";}s:6:\"mkdate\";a:5:{s:4:\"name\";s:6:\"mkdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}s:6:\"chdate\";a:5:{s:4:\"name\";s:6:\"chdate\";s:4:\"null\";s:2:\"NO\";s:7:\"default\";s:1:\"0\";s:4:\"type\";s:16:\"int(10) unsigned\";s:5:\"extra\";s:0:\"\";}}s:2:\"pk\";a:1:{i:0;s:11:\"property_id\";}}}\";',1757540672);
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cache_operations`
---
 
 LOCK TABLES `cache_operations` WRITE;
 /*!40000 ALTER TABLE `cache_operations` DISABLE KEYS */;
@@ -6622,10 +5003,6 @@ set autocommit=0;
 /*!40000 ALTER TABLE `cache_operations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cache_types`
---
 
 LOCK TABLES `cache_types` WRITE;
 /*!40000 ALTER TABLE `cache_types` DISABLE KEYS */;
@@ -6639,20 +5016,12 @@ INSERT INTO `cache_types` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `calendar_date_assignments`
---
-
 LOCK TABLES `calendar_date_assignments` WRITE;
 /*!40000 ALTER TABLE `calendar_date_assignments` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `calendar_date_assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `calendar_date_exceptions`
---
 
 LOCK TABLES `calendar_date_exceptions` WRITE;
 /*!40000 ALTER TABLE `calendar_date_exceptions` DISABLE KEYS */;
@@ -6661,10 +5030,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `calendar_dates`
---
-
 LOCK TABLES `calendar_dates` WRITE;
 /*!40000 ALTER TABLE `calendar_dates` DISABLE KEYS */;
 set autocommit=0;
@@ -6672,20 +5037,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `captcha_challenges`
---
-
 LOCK TABLES `captcha_challenges` WRITE;
 /*!40000 ALTER TABLE `captcha_challenges` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `captcha_challenges` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `clipboard_items`
---
 
 LOCK TABLES `clipboard_items` WRITE;
 /*!40000 ALTER TABLE `clipboard_items` DISABLE KEYS */;
@@ -6701,10 +5058,6 @@ INSERT INTO `clipboard_items` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `clipboards`
---
-
 LOCK TABLES `clipboards` WRITE;
 /*!40000 ALTER TABLE `clipboards` DISABLE KEYS */;
 set autocommit=0;
@@ -6714,10 +5067,6 @@ INSERT INTO `clipboards` VALUES
 /*!40000 ALTER TABLE `clipboards` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `colour_values`
---
 
 LOCK TABLES `colour_values` WRITE;
 /*!40000 ALTER TABLE `colour_values` DISABLE KEYS */;
@@ -6745,10 +5094,6 @@ INSERT INTO `colour_values` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `comments`
---
-
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
 set autocommit=0;
@@ -6756,20 +5101,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `conditionaladmissions`
---
-
 LOCK TABLES `conditionaladmissions` WRITE;
 /*!40000 ALTER TABLE `conditionaladmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `conditionaladmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `config`
---
 
 LOCK TABLES `config` WRITE;
 /*!40000 ALTER TABLE `config` DISABLE KEYS */;
@@ -6808,7 +5145,7 @@ INSERT INTO `config` VALUES
 ('CALENDAR_GRANT_ALL_INSERT','1','boolean','global','calendar',1462287762,1462287762,'Ermöglicht das Eintragen von Terminen in alle Kalender der Nutzenden, ohne Beachtung des Rechtesystems.'),
 ('CALENDAR_GROUP_ENABLE','0','boolean','global','calendar',1326799692,1326799692,'Schaltet die Gruppenterminkalender-Funktionen ein.'),
 ('CALENDAR_SETTINGS','{\"view\":\"week\",\"start\":\"9\",\"end\":\"20\",\"step_day\":\"900\",\"step_week\":\"1800\",\"type_week\":\"LONG\",\"step_week_group\":\"3600\",\"step_day_group\":\"3600\"}','array','user','',1403258015,1403258015,'persönliche Einstellungen des Kalenders'),
-('CAPTCHA_KEY','','string','global','',1754464706,1754464706,'Speichert den für Captchas verwendeten Schlüssel (Wert leeren, um einen neuen zu generieren)'),
+('CAPTCHA_KEY','','string','global','',1757497469,1757497469,'Speichert den für Captchas verwendeten Schlüssel (Wert leeren, um einen neuen zu generieren)'),
 ('CONSULTATION_ALLOW_DOCENTS_RESERVING','1','boolean','global','Terminvergabe',1557244743,1557244743,'Lehrende können sich bei anderen Lehrenden anmelden'),
 ('CONSULTATION_ENABLED','1','boolean','global','Terminvergabe',1557244743,1557244743,'Schaltet die Sprechstunden global ein'),
 ('CONSULTATION_EXCLUDE_EXPIRED','1','boolean','user','global',1573236813,1573236813,'Sprechstunden: Sollen abgelaufene Blöcke ausgeblendet werden'),
@@ -6835,7 +5172,7 @@ INSERT INTO `config` VALUES
 ('COURSE_STUDENT_MAILING','0','boolean','course','',1530289048,1530289048,'Über diese Option können Sie Studierenden das Schreiben von Nachrichten an alle anderen Teilnehmer der Veranstaltung erlauben.'),
 ('CRONJOBS_ENABLE','1','boolean','global','global',1403258015,1403258015,'Schaltet die Cronjobs an'),
 ('CURRENT_LOGIN_TIMESTAMP','0','integer','user','',1403258015,1403258015,'Zeitstempel des Logins'),
-('CUSTOMIZED_HOLIDAYS','[]','array','global','global',1754464707,1754464707,'Speichert die internen Ids von Feiertagen, die als gesetztlich markiert werden sollen'),
+('CUSTOMIZED_HOLIDAYS','[]','array','global','global',1757497470,1757497470,'Speichert die internen Ids von Feiertagen, die als gesetztlich markiert werden sollen'),
 ('DEFAULT_LANGUAGE','de_DE','string','global','global',1510849314,1510849314,'Which language should we use if we can gather no information from user?'),
 ('DEFAULT_TIMEZONE','Europe/Berlin','string','global','global',1510849314,1510849314,'What timezone should be used (default: Europe/Berlin)?'),
 ('DEPUTIES_DEFAULTENTRY_ENABLE','1','boolean','global','deputies',1293118059,1293118059,'Dürfen Lehrende Standardvertretungen festlegen? Diese werden automatisch bei Hinzufügen von Lehrenden als Vertretung in Veranstaltungen eingetragen.'),
@@ -6844,7 +5181,7 @@ INSERT INTO `config` VALUES
 ('DISPLAY_DOWNLOAD_COUNTER','always','string','global','files',1591630777,1591630777,'Steuert die Anzeige der Anzahl der Downloads in Dateisichten (\"always\" zeigt die Anzahl immer an, \"flat\" nur in \"Alle Dateien\", jeder andere Wert schaltet die Anzeige komplett aus)'),
 ('DISPLAY_STGTEILVERSION_USERFILTER','0','boolean','global','coursesets',1591630778,1591630778,'Steuert die Anzeige des Studiengangteil-Version Filters beim Erstellen von bedingten Anmelderegeln.'),
 ('DOZENT_ALWAYS_VISIBLE','1','boolean','global','privacy',1293118059,1293118059,'Legt fest, ob Personen mit Lehrendenrechten immer global sichtbar sind und das auch nicht selbst ändern können.'),
-('DUMMY_TEACHER_ID','2afaa0dce05f0b12a7318075e52879e2','string','global','global',1754464709,1754464709,'ID of user that should be added to course if no teacher is left'),
+('DUMMY_TEACHER_ID','2afaa0dce05f0b12a7318075e52879e2','string','global','global',1757497471,1757497471,'ID of user that should be added to course if no teacher is left'),
 ('EASY_READ_URL','dispatch.php/siteinfo/show/1/9','string','global','accessibility',1716385357,1716385357,'URL zur Seite \"Leichte Sprache\"'),
 ('EMAIL_DOMAIN_RESTRICTION','','string','global','',1157107088,1157107088,'Beschränkt die gültigkeit von Email-Adressen bei freier Registrierung auf die angegebenen Domains. Komma-separierte Liste von Domains ohne vorangestelltes @.'),
 ('EMAIL_VISIBILITY_DEFAULT','1','boolean','global','privacy',1326799691,1326799691,'Ist die eigene Emailadresse sichtbar, falls der Nutzer nichts anderes eingestellt hat?'),
@@ -6852,7 +5189,7 @@ INSERT INTO `config` VALUES
 ('ENABLE_COURSESET_FCFS','1','boolean','global','coursesets',1403258021,1403258021,'Soll first-come-first-served (Windhundverfahren) bei der Anmeldung erlaubt sein?'),
 ('ENABLE_DESCRIPTION_ENTRY_ON_UPLOAD','1','boolean','global','files',1591630777,1591630777,'Whether to allow adding a description directly after file upload (true) or not (false). Defaults to true.'),
 ('ENABLE_FREE_ACCESS','0','string','global','global',1510849314,1510849314,'1: courses and institutes with public access are visible without login. courses_only: only courses with public access are visible without login. 0: disable this feature.'),
-('ENABLE_NUMBER_OF_PARTICIPANTS','0','','global','global',1754464707,1754464707,'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenanzahl pro Termin ein.'),
+('ENABLE_NUMBER_OF_PARTICIPANTS','0','','global','global',1757497470,1757497470,'Schaltet die Möglichkeit zum Erfassen der tatsächlichen Teilnehmendenanzahl pro Termin ein.'),
 ('ENABLE_REQUEST_NEW_PASSWORD_BY_USER','1','boolean','global','permissions',1510849314,1510849314,'If true, users are able to request a new password themselves'),
 ('ENABLE_SELF_REGISTRATION','1','boolean','global','permissions',1510849314,1510849314,'Should it be possible for an user to register himself'),
 ('ENABLE_STUDYCOURSE_INFO_PAGE','0','boolean','global','global',1591630777,1591630777,'Shows an icon to open a dialog with studycourse informations in module search if true.'),
@@ -6889,30 +5226,30 @@ INSERT INTO `config` VALUES
 ('LOCK_RULE_ADMIN_PERM','admin','string','global','permissions',1240427632,1240427632,'mit welchem Status dürfen Sperrebenen angepasst werden (admin, root)'),
 ('LOGIN_FAQ_TITLE','Hinweise zum Login','i18n','global','Loginseite',1716385357,1716385357,'Überschrift für den FAQ-Bereich auf der Loginseite'),
 ('LOGIN_FAQ_VISIBILITY','1','boolean','global','Loginseite',1716385357,1716385357,'Soll der FAQ-Bereich auf der Loginseite sichtbar sein?'),
-('LOGIN_NEWS_VISIBILITY','1','boolean','global','Loginseite',1754464708,1754464708,'Soll Ankündigungs-Galerie auf der Loginseite sichtbar sein?'),
+('LOGIN_NEWS_VISIBILITY','1','boolean','global','Loginseite',1757497470,1757497470,'Soll Ankündigungs-Galerie auf der Loginseite sichtbar sein?'),
 ('LOG_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob das Log global verfügbar ist.'),
-('LTI_ALLOW_TOOL_CONFIG_IN_COURSE','1','boolean','global','LTI',1754464709,1754464709,'Soll es Lehrenden möglich sein, eigene LTI-Tools zu konfigurieren? Wenn nicht, können nur global konfigurierte LTI-Tools in Veranstaltungen angebunden werden.'),
-('LTI_DATA_PROTECTION_COURSE_WARNING','','string','course','LTI',1754464709,1754464709,'Eine in einer Veranstaltung angepasste Warnung zur Weitergabe personenbezogener Daten, die angezeigt wird, wenn Personen aus der Veranstaltung in ein LTI-Tool wechseln.'),
-('LTI_DATA_PROTECTION_DEFAULT_WARNING','Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.','string','global','LTI',1754464709,1754464709,'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechseln.'),
+('LTI_ALLOW_TOOL_CONFIG_IN_COURSE','1','boolean','global','LTI',1757497471,1757497471,'Soll es Lehrenden möglich sein, eigene LTI-Tools zu konfigurieren? Wenn nicht, können nur global konfigurierte LTI-Tools in Veranstaltungen angebunden werden.'),
+('LTI_DATA_PROTECTION_COURSE_WARNING','','string','course','LTI',1757497471,1757497471,'Eine in einer Veranstaltung angepasste Warnung zur Weitergabe personenbezogener Daten, die angezeigt wird, wenn Personen aus der Veranstaltung in ein LTI-Tool wechseln.'),
+('LTI_DATA_PROTECTION_DEFAULT_WARNING','Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.','string','global','LTI',1757497471,1757497471,'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechseln.'),
 ('MAILQUEUE_ENABLE','0','boolean','global','global',1403258017,1403258017,'Aktiviert bzw. deaktiviert die Mailqueue'),
 ('MAILQUEUE_SEND_LIMIT','0','integer','global','global',1462287310,1462287310,'Wieviele Mails soll die Mailqueue maximal auf einmal an den Mailserver schicken. 0 für unendlich viele.'),
 ('MAIL_AS_HTML','1','boolean','user','',1293118060,1293118060,'Benachrichtigungen werden im HTML-Format versandt'),
 ('MAIL_NOTIFICATION_ENABLE','1','boolean','global','',1122996278,1122996278,'Informationen über neue Inhalte per email verschicken'),
-('MAIL_SUBJECT_PREFIX','[Stud.IP]','string','global','global',1754464707,1754464707,'Stellt dem Titel von per Mail versandten Nachrichten'),
+('MAIL_SUBJECT_PREFIX','[Stud.IP]','string','global','global',1757497469,1757497469,'Stellt dem Titel von per Mail versandten Nachrichten'),
 ('MAINTENANCE_MODE_ENABLE','0','boolean','global','',1130840930,1130840930,'Schaltet das System in den Wartungsmodus, so dass nur noch Administratoren Zugriff haben'),
-('MASSMAIL_GC_DAYS','7','integer','global','MassMail',1754464709,1754464709,'Anzahl Tage, nach denen bereits verschickte Nachrichten aus der Datenbank entfernt werden (0 bedeutet nie)'),
-('MASSMAIL_LECTURER_SEM_CATEGORIES','[1]','array','global','MassMail',1754464709,1754464709,'Veranstaltungskategorien, die für die Ermittlung aktiver Lehrender berücksichtigt werden'),
-('MAX_SHOW_ADMIN_COURSES','500','integer','global','MeineVeranstaltungen',1754464706,1754464706,'Wie viele Veranstaltungen sollen auf der Admin-Veranstaltungsseite angezeigt werden.'),
+('MASSMAIL_GC_DAYS','7','integer','global','MassMail',1757497471,1757497471,'Anzahl Tage, nach denen bereits verschickte Nachrichten aus der Datenbank entfernt werden (0 bedeutet nie)'),
+('MASSMAIL_LECTURER_SEM_CATEGORIES','[1]','array','global','MassMail',1757497471,1757497471,'Veranstaltungskategorien, die für die Ermittlung aktiver Lehrender berücksichtigt werden'),
+('MAX_SHOW_ADMIN_COURSES','500','integer','global','MeineVeranstaltungen',1757497469,1757497469,'Wie viele Veranstaltungen sollen auf der Admin-Veranstaltungsseite angezeigt werden.'),
 ('MEDIA_CACHE_LIFETIME','86400','integer','global','global',1510849314,1510849314,'Wieviele Sekunden soll gecached werden?'),
 ('MEDIA_CACHE_MAX_FILES','3000','integer','global','global',1510849314,1510849314,'Wieviele Dateien sollen maximal gecached werden?'),
 ('MEDIA_CACHE_MAX_LENGTH','1000000','integer','global','global',1510849314,1510849314,'Maximale Größe von Dateien, die im Media-Cache gecached werden (in Bytes)?'),
 ('MESSAGE_PRIORITY','0','boolean','global','',1240427632,1240427632,'If enabled, messages of high priority are displayed reddish'),
 ('MESSAGING_SETTINGS','{\"show_only_buddys\":false,\"delete_messages_after_logout\":false,\"timefilter\":\"30d\",\"opennew\":1,\"logout_markreaded\":false,\"openall\":false,\"addsignature\":false,\"save_snd\":true,\"sms_sig\":\"\",\"send_view\":false,\"confirm_reading\":3,\"send_as_email\":false,\"folder\":{\"in\":[\"dummy\"],\"out\":[\"dummy\"]}}','array','user','',1403258015,1403258015,'persönliche Einstellungen Nachrichtenbereich'),
-('MIGRATION_START_TIME','1754464707','string','global','Root-Assistent',1754464707,1754464707,'Speichert die Startzeit (Timestamp) der letzten Migration'),
-('MIGRATION_START_VERSION','5.5','string','global','Root-Assistent',1754464707,1754464707,'Speichert die jeweilige Stud.IP-Version beim Start der Migration'),
+('MIGRATION_START_TIME','1757497469','string','global','Root-Assistent',1757497469,1757497469,'Speichert die Startzeit (Timestamp) der letzten Migration'),
+('MIGRATION_START_VERSION','5.5','string','global','Root-Assistent',1757497469,1757497469,'Speichert die jeweilige Stud.IP-Version beim Start der Migration'),
 ('MVV_ACCESS_ASSIGN_LVGRUPPEN','admin','string','global','mvv',1483462780,1483462780,'Ab welchem Rechtestatus können Veranstaltungen Modulen (LV-Gruppen) zugeordnet werden. Bei Angabe von fakadmin darf nur dieser Zuordnungen vornehmen.'),
 ('MVV_ALLOW_CREATE_LVGRUPPEN_INDEPENDENTLY','0','boolean','global','mvv',1573236812,1573236812,'Soll das Anlegen von LV-Gruppen unabhängig von bestehenden Modulteilen auf der Verwaltungsseite für LV-Gruppen möglich sein?'),
-('MVV_DEFAULT_LANGUAGE','de_DE','string','global','mvv',1754464709,1754464709,'Code der Inhalts-Sprache, die als Original-Sprache der Deskriptoren für Module und Modulteile vorausgewählt ist.'),
+('MVV_DEFAULT_LANGUAGE','de_DE','string','global','mvv',1757497471,1757497471,'Code der Inhalts-Sprache, die als Original-Sprache der Deskriptoren für Module und Modulteile vorausgewählt ist.'),
 ('MVV_OVERLAPPING_SHOW_VERSIONS_INSIDE_MULTIPLE_STUDY_COURSES','0','boolean','global','mvv',1591630777,1591630777,'Zeigt als zweite Auswahl bei Mehrfachstudiengängen nur Versionen der dazugehörigen Teilstudiengänge an.'),
 ('MVV_TEMPLATE_NAME_ABSCHLUSS','','string','global','mvv',1716385357,1716385357,'Template for degrees. Possible placeholders: {{degree_name}}, {{degree_short_name}}. If empty a default name will be displayed.'),
 ('MVV_TEMPLATE_NAME_FACHBEREICH','{{faculty_short_name}} - {{name}}','string','global','mvv',1716385357,1716385357,'Template for departments. Possible placeholders: {{department_name}}, {{faculty_short_name}}. Used only if the department is not a faculty. If empty the name of the institution will be displayed.'),
@@ -6956,17 +5293,17 @@ INSERT INTO `config` VALUES
 ('PDF_LOGO','','string','global','global',1311411856,1311411856,'Geben Sie hier den absoluten Pfad auf Ihrem Server (also ohne http) zu einem Logo an, das bei PDF-Exporten im Kopfbereich verwendet wird.'),
 ('PERSONAL_DETAILS_INFO_TEXT','Einige Ihrer persönlichen Daten werden nicht in Stud.IP verwaltet und können daher hier nicht geändert werden.','i18n','global','global',1698855217,1698855217,'Der Infotext der unter Profil->Persönliche Angaben->Grunddaten angezeigt wird, wenn man nicht die Standard-Auth nutzt.'),
 ('PERSONAL_NOTIFICATIONS_ACTIVATED','1','boolean','global','privacy',1403258015,1403258015,'Sollen persönliche Benachrichtigungen aktiviert sein?'),
-('PERSONAL_NOTIFICATIONS_DEACTIVATED','0','boolean','user','',1754464706,1754464706,'Deaktiviert die persönlichen Benachrichtigungen'),
+('PERSONAL_NOTIFICATIONS_DEACTIVATED','0','boolean','user','',1757497468,1757497468,'Deaktiviert die persönlichen Benachrichtigungen'),
 ('PERSONAL_STARTPAGE','0','integer','user','',1403258015,1403258015,'Persönliche Startseite'),
 ('PLUGINADMIN_DISPLAY_SETTINGS','{\"plugin_filter\":null,\"core_filter\":\"yes\"}','array','user','',1483462779,1483462779,'Speichert die Darstellungseinstellungen der Pluginadministration'),
 ('PLUS_SETTINGS','[]','array','user','',1436547919,1436547919,'Nutzer Konfiguration für Plusseite'),
-('PREVENT_ROOT_FOLDER_UPLOADS_BY_STUDENTS_IN_COURSES','0','boolean','global','files',1754464707,1754464707,'Studierende können im Dateibereich einer Veranstaltung auf der Ebene des Hauptordners keine Dateien hochladen.'),
+('PREVENT_ROOT_FOLDER_UPLOADS_BY_STUDENTS_IN_COURSES','0','boolean','global','files',1757497469,1757497469,'Studierende können im Dateibereich einer Veranstaltung auf der Ebene des Hauptordners keine Dateien hochladen.'),
 ('PRIVACY_CONTACT','','string','global','privacy',1543856104,1543856104,'Username der Kontaktperson zum Datenschutz'),
 ('PRIVACY_PERM','autor','string','global','privacy',1543856104,1543856104,'Rechtestufe zum Datenzugriff'),
 ('PRIVACY_URL','dispatch.php/siteinfo/show/1/7','string','global','privacy',1543856104,1543856104,'URL zur Datenschutzerklärung'),
 ('PROFILE_LAST_VISIT','0','integer','user','',1403258015,1403258015,'Zeitstempel des letzten Besuchs der Profilseite'),
 ('PROPOSED_TEACHER_LABELS','','string','global','global',1326799692,1326799692,'Write a list of comma separated possible labels for teachers and tutor here.'),
-('QUESTIONNAIRE_AUTOMATED_DATA_PERM','autor','string','global','global',1754464709,1754464709,'Ab welchem Status (autor, tutor, dozent, admin, root) darf man den Fragetyp Automatik in Fragebögen einbauen?'),
+('QUESTIONNAIRE_AUTOMATED_DATA_PERM','autor','string','global','global',1757497471,1757497471,'Ab welchem Status (autor, tutor, dozent, admin, root) darf man den Fragetyp Automatik in Fragebögen einbauen?'),
 ('REPORT_BARRIER_MODE','on','string','global','accessibility',1716385357,1716385357,'Einstellungen zum Formular zu Melden einer Barriere (\"on\" = immer an, \"logged-in\" = nur für angemeldete Personen, \"off\" = ausgeschaltet)'),
 ('RESOURCES_ADDITIONAL_TEXT_ROOM_EXPORT','','string','global','resources',1656513808,1656513808,'Zusatztext, der beim Seriendruck unter jedem Raumplan angezeigt werden soll'),
 ('RESOURCES_ALLOW_ROOM_PROPERTY_REQUESTS','1','boolean','global','resources',0,1074780851,'Schaltet in der Ressourcenverwaltung die Möglichkeit, im Rahmen einer Anfrage Raumeigenschaften zu wünschen, ein oder aus'),
@@ -7012,13 +5349,13 @@ INSERT INTO `config` VALUES
 ('STUDYGROUPS_INVISIBLE_ALLOWED','0','boolean','global','studygroups',1403258018,1403258018,'Ermöglicht unsichtbare Studiengruppen'),
 ('STUDYGROUP_ACCEPTANCE_TEXT','Die Moderatorinnen und Moderatoren der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.','string','global','studygroups',1448561064,1448561064,'Text, der angezeigt wird, wenn man sich in eine zugriffsbeschränkte Studiengruppe eintragen möchte'),
 ('STUDYGROUP_DEFAULT_INST','','string','global','studygroups',1258042892,1258042892,'Die Standardeinrichtung für Studiengruppen kann hier gesetzt werden.'),
-('STUDYGROUP_ON_STGTEIL_ENABLE','1','boolean','global','studygroups',1754464709,1754464709,'Are studygroups allowed to get attached to study course parts?'),
+('STUDYGROUP_ON_STGTEIL_ENABLE','1','boolean','global','studygroups',1757497471,1757497471,'Are studygroups allowed to get attached to study course parts?'),
 ('STUDYGROUP_TERMS','Mir ist bekannt, dass ich die Gruppe nicht zu rechtswidrigen Zwecken nutzen darf. Dazu zählen u.a. Urheberrechtsverletzungen, Beleidigungen und andere Persönlichkeitsdelikte.\n\nIch erkläre mich damit einverstanden, daß Administratorinnen und Administratoren die Inhalte der Gruppe zu Kontrollzwecken einsehen dürfen.','i18n','global','studygroups',1257956185,1257956185,'Hier werden die Nutzungsbedinungen der Studiengruppen hinterlegt.'),
 ('SYSTEMCACHE','{\"type\": \"Studip\\\\Cache\\\\DbCache\", \"config\": []}','array','global','global',1640797278,1640797278,'Typ und Konfiguration des zu verwendenden Systemcaches'),
-('SYSTEM_NOTIFICATIONS_PLACEMENT','topcenter','string','user','',1754464706,1754464706,'Wo sollen Systembenachrichtigungen im Fenster angezeigt werden? Gültige Werte sind \"topcenter\" und \"bottomright\"'),
+('SYSTEM_NOTIFICATIONS_PLACEMENT','topcenter','string','user','',1757497469,1757497469,'Wo sollen Systembenachrichtigungen im Fenster angezeigt werden? Gültige Werte sind \"topcenter\" und \"bottomright\"'),
 ('TERMS_ACCEPTED','0','boolean','user','',1640797279,1640797279,'Die Nutzungsbedingungen wurden akzeptiert'),
 ('TERMS_CONFIG','{\"compulsory\":false,\"denial_message\":\"\"}','array','global','global',1607702429,1607702429,'In case the terms are not compulsory, user can deny them.if denial_message is not set, a default text is displayed.'),
-('TERMS_OF_USE_URL','dispatch.php/siteinfo/show/1/10','string','global','privacy',1754464709,1754464709,'URL zu den Nutzungsbedingungen'),
+('TERMS_OF_USE_URL','dispatch.php/siteinfo/show/1/10','string','global','privacy',1757497471,1757497471,'URL zu den Nutzungsbedingungen'),
 ('TFA_MAX_TRIES','3','integer','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Maximale Anzahl fehlerhafter Versuche innerhalb eines Zeitraums'),
 ('TFA_MAX_TRIES_TIMESPAN','300','integer','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Zeitraum in Sekunden, nach dem fehlerhafte Versuche vergessen werden'),
 ('TFA_PERMS','root','string','global','Zwei-Faktor-Authentifizierung',1573236813,1573236813,'Systemrollen für die die Zwei-Faktor-Authentifizierung aktiviert ist (kommaseparierte Liste, mögliche Werte: autor, tutor, dozent, admin, root)'),
@@ -7027,16 +5364,16 @@ INSERT INTO `config` VALUES
 ('TFA_TRUST_DURATION','30','integer','global','Zwei-Faktor-Authentifizierung',1656513809,1656513809,'Dauer, denen Geräte vertraut werden soll in Tagen (0 für dauerhaftes Vertrauen)'),
 ('TOURS_ENABLE','1','boolean','global','global',1416496223,1416496223,'Aktiviert die Funktionen zum Anbieten von Touren in Stud.IP'),
 ('UNI_NAME_CLEAN','Stud.IP','string','global','global',1510849314,1510849314,'Name der Stud.IP-Installation bzw. Hochschule.'),
-('UPDATE_NEWS_SEEN','0','boolean','global','Root-Assistent',1754464707,1754464707,'Bestätigung, dass die Update-Neuigkeiten gesehen wurden'),
+('UPDATE_NEWS_SEEN','0','boolean','global','Root-Assistent',1757497469,1757497469,'Bestätigung, dass die Update-Neuigkeiten gesehen wurden'),
 ('USERNAME_REGULAR_EXPRESSION','/^([a-zA-Z0-9_@.-]{4,})$/','string','global','global',1510849314,1510849314,'Regulärer Ausdruck für erlaubte Zeichen in Benutzernamen. Das Kommentarfeld kann genutzt werden, um eine Fehlermeldung anzugeben, die zum Beispiel im Registrierungsformular ausgegeben wird, wenn der Ausdruck nicht erfüllt wird.'),
 ('USERNAME_TOOLTIP_TEXT','','i18n','global','Loginseite',1716385357,1716385357,'Text für den Tooltip des Benutzernamens auf der Loginseite'),
 ('USER_HIGH_CONTRAST','0','boolean','user','accessibility',1669041528,1669041528,'Schaltet ein barrierefreies Stylesheet mit hohem Kontrast ein oder aus.'),
 ('USER_VISIBILITY_CHECK','1','boolean','global','global',1510849314,1510849314,'Enable presentation of visibility decision texts for users after first login. see lib/include/header.php and lib/user_visible.inc.php for further info'),
 ('USER_VISIBILITY_UNKNOWN','1','boolean','global','privacy',1153815901,1153815901,'Sollen Nutzer mit Sichtbarkeit \"unknown\" wie sichtbare behandelt werden?'),
-('VIPS_COURSE_GRADES','[]','array','course','',1754464709,1754464709,'Kursbezogenes Schema zur Notenverteilung in Vips'),
-('VIPS_EXAM_RESTRICTIONS','0','boolean','global','',1754464709,1754464709,'Sperrt während einer Klausur andere Bereiche von Stud.IP für die Teilnehmenden'),
-('VIPS_EXAM_ROOMS','[]','array','global','',1754464709,1754464709,'Zentral verwaltete IP-Adressen für PC-Räume'),
-('VIPS_EXAM_TERMS','','string','global','',1754464709,1754464709,'Teilnahmebedingungen, die vor Beginn einer Klausur zu akzeptieren sind'),
+('VIPS_COURSE_GRADES','[]','array','course','',1757497471,1757497471,'Kursbezogenes Schema zur Notenverteilung in Vips'),
+('VIPS_EXAM_RESTRICTIONS','0','boolean','global','',1757497471,1757497471,'Sperrt während einer Klausur andere Bereiche von Stud.IP für die Teilnehmenden'),
+('VIPS_EXAM_ROOMS','[]','array','global','',1757497471,1757497471,'Zentral verwaltete IP-Adressen für PC-Räume'),
+('VIPS_EXAM_TERMS','','string','global','',1757497471,1757497471,'Teilnahmebedingungen, die vor Beginn einer Klausur zu akzeptieren sind'),
 ('VIRUSSCAN_HOST','127.0.0.1','string','global','files',1686150733,1686150733,'Host des Virenscanners (wird nur verwendet, falls kein Socket eingetragen ist)'),
 ('VIRUSSCAN_MAX_STREAMLENGTH','26214400','integer','global','files',1686150733,1686150733,'Maximale Streamlänge in Bytes, die beim Virenscanner erlaubt ist'),
 ('VIRUSSCAN_ON_UPLOAD','0','boolean','global','files',1686150733,1686150733,'Sollen Dateien beim Upload mit ClamAV auf Viren überprüft werden?'),
@@ -7045,7 +5382,7 @@ INSERT INTO `config` VALUES
 ('VOTE_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob die Umfragen global verfügbar sind.'),
 ('WIKI_CREATE_PERMISSION','all','string','course','',1716385357,1716385357,'Status, den es braucht, um neue Wiki-Seiten anzulegen.'),
 ('WIKI_ENABLE','1','boolean','global','modules',1293118059,1293118059,'Schaltet ein oder aus, ob das Wiki global verfügbar ist.'),
-('WIKI_ENABLE_AUTOSAVE','1','boolean','user','wiki',1754464710,1754464710,'Aktiviert das automatische Speichern im Wiki'),
+('WIKI_ENABLE_AUTOSAVE','1','boolean','user','wiki',1757497472,1757497472,'Aktiviert das automatische Speichern im Wiki'),
 ('WIKI_RENAME_PERMISSION','all','string','course','',1716385357,1716385357,'Status, den es braucht, um Wiki-Seiten umzubenennen.'),
 ('WIKI_STARTPAGE_ID','','string','range','',1716385357,1716385357,'ID der Wiki-Startseite des Wikis.'),
 ('ZIP_DOWNLOAD_MAX_FILES','400','integer','global','files',1219328498,1219328498,'Die maximale Anzahl an Dateien, die gezippt heruntergeladen werden kann'),
@@ -7056,10 +5393,6 @@ INSERT INTO `config` VALUES
 /*!40000 ALTER TABLE `config` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `config_values`
---
 
 LOCK TABLES `config_values` WRITE;
 /*!40000 ALTER TABLE `config_values` DISABLE KEYS */;
@@ -7073,20 +5406,12 @@ INSERT INTO `config_values` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `consultation_blocks`
---
-
 LOCK TABLES `consultation_blocks` WRITE;
 /*!40000 ALTER TABLE `consultation_blocks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `consultation_blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `consultation_bookings`
---
 
 LOCK TABLES `consultation_bookings` WRITE;
 /*!40000 ALTER TABLE `consultation_bookings` DISABLE KEYS */;
@@ -7095,20 +5420,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `consultation_events`
---
-
 LOCK TABLES `consultation_events` WRITE;
 /*!40000 ALTER TABLE `consultation_events` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `consultation_events` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `consultation_responsibilities`
---
 
 LOCK TABLES `consultation_responsibilities` WRITE;
 /*!40000 ALTER TABLE `consultation_responsibilities` DISABLE KEYS */;
@@ -7117,20 +5434,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `consultation_slots`
---
-
 LOCK TABLES `consultation_slots` WRITE;
 /*!40000 ALTER TABLE `consultation_slots` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `consultation_slots` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `contact`
---
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
@@ -7139,10 +5448,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `contact_group_items`
---
-
 LOCK TABLES `contact_group_items` WRITE;
 /*!40000 ALTER TABLE `contact_group_items` DISABLE KEYS */;
 set autocommit=0;
@@ -7150,20 +5455,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `contact_groups`
---
-
 LOCK TABLES `contact_groups` WRITE;
 /*!40000 ALTER TABLE `contact_groups` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `contact_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `content_terms_of_use_entries`
---
 
 LOCK TABLES `content_terms_of_use_entries` WRITE;
 /*!40000 ALTER TABLE `content_terms_of_use_entries` DISABLE KEYS */;
@@ -7178,20 +5475,12 @@ INSERT INTO `content_terms_of_use_entries` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `coursememberadmissions`
---
-
 LOCK TABLES `coursememberadmissions` WRITE;
 /*!40000 ALTER TABLE `coursememberadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `coursememberadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `courseset_factorlist`
---
 
 LOCK TABLES `courseset_factorlist` WRITE;
 /*!40000 ALTER TABLE `courseset_factorlist` DISABLE KEYS */;
@@ -7200,20 +5489,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `courseset_institute`
---
-
 LOCK TABLES `courseset_institute` WRITE;
 /*!40000 ALTER TABLE `courseset_institute` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `courseset_institute` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `courseset_rule`
---
 
 LOCK TABLES `courseset_rule` WRITE;
 /*!40000 ALTER TABLE `courseset_rule` DISABLE KEYS */;
@@ -7222,20 +5503,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `coursesets`
---
-
 LOCK TABLES `coursesets` WRITE;
 /*!40000 ALTER TABLE `coursesets` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `coursesets` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `coursewizardsteps`
---
 
 LOCK TABLES `coursewizardsteps` WRITE;
 /*!40000 ALTER TABLE `coursewizardsteps` DISABLE KEYS */;
@@ -7250,20 +5523,12 @@ INSERT INTO `coursewizardsteps` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cronjobs_logs`
---
-
 LOCK TABLES `cronjobs_logs` WRITE;
 /*!40000 ALTER TABLE `cronjobs_logs` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cronjobs_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cronjobs_schedules`
---
 
 LOCK TABLES `cronjobs_schedules` WRITE;
 /*!40000 ALTER TABLE `cronjobs_schedules` DISABLE KEYS */;
@@ -7276,19 +5541,15 @@ INSERT INTO `cronjobs_schedules` VALUES
 ('81411d712690ab3a82032439dbcdc8c1','9c4ad2a8fe47d07e61475d25f5e539db',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1403258017,1403258017),
 ('8541eec0e512e4e0caa2a5566dd3633b','5ecaecd21cd6dd3712d3d294de51c776',0,NULL,NULL,'null',45,1,NULL,NULL,NULL,0,NULL,NULL,0,1716385357,1716385357),
 ('b6e232acce27674e496bd2182aab5aaa','43f9da3d9245d0f01b43f744e0b8cdce',0,NULL,NULL,'null',55,0,NULL,NULL,NULL,1530312900,NULL,NULL,0,1530289049,1530290418),
-('b913606c32ac082162658086ead45692','42ae67dba8162012eda99b0a017ac16c',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1754464709,1754464709),
+('c9417f3fb67037c2f929da4e8fe83cf8','91a8c5a5202236da43fef31e0c7a6eef',0,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1757497471,1757497471),
 ('cdf293c6c5ae966d87dc5ee723d9880d','823875ed4a4b2e87baca0e5137243d96',0,NULL,'','{\"verbose\":\"1\"}',33,2,NULL,NULL,NULL,1530318780,NULL,NULL,0,1403258015,1530290419),
 ('dc849ba21c484ffbb82f7ef9edea3d7d','208619e89a59895771c2967076daf59e',0,NULL,NULL,'[]',-30,NULL,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258015),
 ('dfd35e23a8256fee930e2e748cd53f1d','3428a64935e8c6a5ab5dcf5bf95fe556',0,NULL,NULL,'null',13,3,NULL,NULL,NULL,1530321180,NULL,NULL,0,1403258015,1530290420),
-('e9770da600a3399d4e4731885ba00c00','bc8587149433a9cb90eb91df240275d8',1,NULL,NULL,'null',-15,NULL,NULL,NULL,NULL,1754465400,NULL,NULL,0,1754464709,1754464709),
+('e7f55ee843db3d913735a1ef45c90c33','d0961d897bc84c70088d9ac1ef145164',1,NULL,NULL,'null',-15,NULL,NULL,NULL,NULL,1757497500,NULL,NULL,0,1757497471,1757497471),
 ('f048bf3c13bfdb2a2a17ce867903ca0e','d19f37c382fec524b4fd51b3c5a1ada3',0,NULL,NULL,'[]',7,1,NULL,NULL,NULL,0,NULL,NULL,0,1403258015,1403258015);
 /*!40000 ALTER TABLE `cronjobs_schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cronjobs_tasks`
---
 
 LOCK TABLES `cronjobs_tasks` WRITE;
 /*!40000 ALTER TABLE `cronjobs_tasks` DISABLE KEYS */;
@@ -7297,23 +5558,19 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('208619e89a59895771c2967076daf59e','lib/cronjobs/purge_cache.php','PurgeCacheJob',1,0,0,NULL,NULL),
 ('2f2713671892bd9624fc27866cfd4630','lib/cronjobs/check_admission.php','CheckAdmissionJob',1,0,0,NULL,NULL),
 ('3428a64935e8c6a5ab5dcf5bf95fe556','lib/cronjobs/session_gc.php','SessionGcJob',1,0,0,NULL,NULL),
-('42ae67dba8162012eda99b0a017ac16c','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
 ('43f9da3d9245d0f01b43f744e0b8cdce','lib/classes/FilesSearch/Cronjob.php','FilesSearch\\Cronjob',1,0,2,NULL,NULL),
 ('532b3fe76447dd85e10949a6fc5f3aa8','lib/cronjobs/cleanup_log.php','CleanupLogJob',1,0,0,NULL,NULL),
 ('5ecaecd21cd6dd3712d3d294de51c776','lib/cronjobs/import_ilias_testresults.php','ImportIliasTestresults',1,0,1,1716385357,1716385357),
 ('81f150b1a22210a1d6fac70220faa831','lib/cronjobs/courseware.php','CoursewareCronjob',1,0,1,1686150733,1686150733),
 ('823875ed4a4b2e87baca0e5137243d96','lib/cronjobs/garbage_collector.php','GarbageCollectorJob',1,0,0,NULL,NULL),
+('91a8c5a5202236da43fef31e0c7a6eef','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
 ('9c4ad2a8fe47d07e61475d25f5e539db','lib/cronjobs/send_mail_queue.php','SendMailQueueJob',1,0,0,NULL,NULL),
-('bc8587149433a9cb90eb91df240275d8','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1754464709,1754464709),
 ('ca6df41746dbd2077d993d3bfddbf10c','lib/cronjobs/remind_oer_upload.php','RemindOerUpload',1,0,0,NULL,NULL),
+('d0961d897bc84c70088d9ac1ef145164','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1757497471,1757497471),
 ('d19f37c382fec524b4fd51b3c5a1ada3','lib/cronjobs/send_mail_notifications.php','SendMailNotificationsJob',1,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `cronjobs_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_block_comments`
---
 
 LOCK TABLES `cw_block_comments` WRITE;
 /*!40000 ALTER TABLE `cw_block_comments` DISABLE KEYS */;
@@ -7322,20 +5579,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_block_feedbacks`
---
-
 LOCK TABLES `cw_block_feedbacks` WRITE;
 /*!40000 ALTER TABLE `cw_block_feedbacks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_block_feedbacks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_blocks`
---
 
 LOCK TABLES `cw_blocks` WRITE;
 /*!40000 ALTER TABLE `cw_blocks` DISABLE KEYS */;
@@ -7344,20 +5593,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_bookmarks`
---
-
 LOCK TABLES `cw_bookmarks` WRITE;
 /*!40000 ALTER TABLE `cw_bookmarks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_bookmarks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_certificates`
---
 
 LOCK TABLES `cw_certificates` WRITE;
 /*!40000 ALTER TABLE `cw_certificates` DISABLE KEYS */;
@@ -7366,20 +5607,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_clipboards`
---
-
 LOCK TABLES `cw_clipboards` WRITE;
 /*!40000 ALTER TABLE `cw_clipboards` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_clipboards` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_containers`
---
 
 LOCK TABLES `cw_containers` WRITE;
 /*!40000 ALTER TABLE `cw_containers` DISABLE KEYS */;
@@ -7388,20 +5621,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_peer_review_processes`
---
-
 LOCK TABLES `cw_peer_review_processes` WRITE;
 /*!40000 ALTER TABLE `cw_peer_review_processes` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_peer_review_processes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_peer_reviews`
---
 
 LOCK TABLES `cw_peer_reviews` WRITE;
 /*!40000 ALTER TABLE `cw_peer_reviews` DISABLE KEYS */;
@@ -7410,20 +5635,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_public_links`
---
-
 LOCK TABLES `cw_public_links` WRITE;
 /*!40000 ALTER TABLE `cw_public_links` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_public_links` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_structural_element_comments`
---
 
 LOCK TABLES `cw_structural_element_comments` WRITE;
 /*!40000 ALTER TABLE `cw_structural_element_comments` DISABLE KEYS */;
@@ -7432,20 +5649,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_structural_element_feedbacks`
---
-
 LOCK TABLES `cw_structural_element_feedbacks` WRITE;
 /*!40000 ALTER TABLE `cw_structural_element_feedbacks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_structural_element_feedbacks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_structural_elements`
---
 
 LOCK TABLES `cw_structural_elements` WRITE;
 /*!40000 ALTER TABLE `cw_structural_elements` DISABLE KEYS */;
@@ -7454,20 +5663,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_task_feedbacks`
---
-
 LOCK TABLES `cw_task_feedbacks` WRITE;
 /*!40000 ALTER TABLE `cw_task_feedbacks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_task_feedbacks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_task_groups`
---
 
 LOCK TABLES `cw_task_groups` WRITE;
 /*!40000 ALTER TABLE `cw_task_groups` DISABLE KEYS */;
@@ -7476,20 +5677,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_tasks`
---
-
 LOCK TABLES `cw_tasks` WRITE;
 /*!40000 ALTER TABLE `cw_tasks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_templates`
---
 
 LOCK TABLES `cw_templates` WRITE;
 /*!40000 ALTER TABLE `cw_templates` DISABLE KEYS */;
@@ -7498,20 +5691,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_units`
---
-
 LOCK TABLES `cw_units` WRITE;
 /*!40000 ALTER TABLE `cw_units` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_units` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `cw_user_data_fields`
---
 
 LOCK TABLES `cw_user_data_fields` WRITE;
 /*!40000 ALTER TABLE `cw_user_data_fields` DISABLE KEYS */;
@@ -7520,20 +5705,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `cw_user_progresses`
---
-
 LOCK TABLES `cw_user_progresses` WRITE;
 /*!40000 ALTER TABLE `cw_user_progresses` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `cw_user_progresses` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `datafields`
---
 
 LOCK TABLES `datafields` WRITE;
 /*!40000 ALTER TABLE `datafields` DISABLE KEYS */;
@@ -7546,20 +5723,12 @@ INSERT INTO `datafields` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `datafields_entries`
---
-
 LOCK TABLES `datafields_entries` WRITE;
 /*!40000 ALTER TABLE `datafields_entries` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `datafields_entries` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `deputies`
---
 
 LOCK TABLES `deputies` WRITE;
 /*!40000 ALTER TABLE `deputies` DISABLE KEYS */;
@@ -7568,20 +5737,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_assignment_attempts`
---
-
 LOCK TABLES `etask_assignment_attempts` WRITE;
 /*!40000 ALTER TABLE `etask_assignment_attempts` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `etask_assignment_attempts` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `etask_assignment_ranges`
---
 
 LOCK TABLES `etask_assignment_ranges` WRITE;
 /*!40000 ALTER TABLE `etask_assignment_ranges` DISABLE KEYS */;
@@ -7590,20 +5751,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_assignments`
---
-
 LOCK TABLES `etask_assignments` WRITE;
 /*!40000 ALTER TABLE `etask_assignments` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `etask_assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `etask_blocks`
---
 
 LOCK TABLES `etask_blocks` WRITE;
 /*!40000 ALTER TABLE `etask_blocks` DISABLE KEYS */;
@@ -7612,20 +5765,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_group_members`
---
-
 LOCK TABLES `etask_group_members` WRITE;
 /*!40000 ALTER TABLE `etask_group_members` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `etask_group_members` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `etask_responses`
---
 
 LOCK TABLES `etask_responses` WRITE;
 /*!40000 ALTER TABLE `etask_responses` DISABLE KEYS */;
@@ -7634,20 +5779,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_task_tags`
---
-
 LOCK TABLES `etask_task_tags` WRITE;
 /*!40000 ALTER TABLE `etask_task_tags` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `etask_task_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `etask_tasks`
---
 
 LOCK TABLES `etask_tasks` WRITE;
 /*!40000 ALTER TABLE `etask_tasks` DISABLE KEYS */;
@@ -7656,20 +5793,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_test_tags`
---
-
 LOCK TABLES `etask_test_tags` WRITE;
 /*!40000 ALTER TABLE `etask_test_tags` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `etask_test_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `etask_test_tasks`
---
 
 LOCK TABLES `etask_test_tasks` WRITE;
 /*!40000 ALTER TABLE `etask_test_tasks` DISABLE KEYS */;
@@ -7678,10 +5807,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `etask_tests`
---
-
 LOCK TABLES `etask_tests` WRITE;
 /*!40000 ALTER TABLE `etask_tests` DISABLE KEYS */;
 set autocommit=0;
@@ -7689,23 +5814,15 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `ex_termine`
---
-
 LOCK TABLES `ex_termine` WRITE;
 /*!40000 ALTER TABLE `ex_termine` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `ex_termine` VALUES
-('bcba86d88c4ada8a4b207955c4ec22fb','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1766995200,1767002400,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',''),
-('cf200c5191a9142eb11d8d29ea3fce4b','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1766390400,1766397600,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1','');
+('02f6943e61e8d87a30ad1ef5419d93e5','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1766995200,1767002400,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',''),
+('570366f61cc7c8026a117de163a47236','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1766390400,1766397600,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1','');
 /*!40000 ALTER TABLE `ex_termine` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `extern_pages_configs`
---
 
 LOCK TABLES `extern_pages_configs` WRITE;
 /*!40000 ALTER TABLE `extern_pages_configs` DISABLE KEYS */;
@@ -7714,20 +5831,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `external_users`
---
-
 LOCK TABLES `external_users` WRITE;
 /*!40000 ALTER TABLE `external_users` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `external_users` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `fach`
---
 
 LOCK TABLES `fach` WRITE;
 /*!40000 ALTER TABLE `fach` DISABLE KEYS */;
@@ -7739,20 +5848,12 @@ INSERT INTO `fach` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `feedback`
---
-
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `feedback_entries`
---
 
 LOCK TABLES `feedback_entries` WRITE;
 /*!40000 ALTER TABLE `feedback_entries` DISABLE KEYS */;
@@ -7761,20 +5862,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `file_refs`
---
-
 LOCK TABLES `file_refs` WRITE;
 /*!40000 ALTER TABLE `file_refs` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `file_refs` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `files`
---
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
@@ -7783,20 +5876,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `files_search_attributes`
---
-
 LOCK TABLES `files_search_attributes` WRITE;
 /*!40000 ALTER TABLE `files_search_attributes` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `files_search_attributes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `files_search_index`
---
 
 LOCK TABLES `files_search_index` WRITE;
 /*!40000 ALTER TABLE `files_search_index` DISABLE KEYS */;
@@ -7805,24 +5890,20 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `folders`
---
-
 LOCK TABLES `folders` WRITE;
 /*!40000 ALTER TABLE `folders` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `folders` VALUES
+('0d76a1bfdfe05b0d2171480655972277','76ed43ef286fb55cf9e41beadb484a9f','da3c2c2b4ea4c9781dccbae6eade5721','7cb72dab1bf896a0b55c6aa7a70a3a86','course','CourseDateFolder','00. Klausur am Sa, 13.09.25, 10:00 - 14:00','{\"termin_id\":\"a246423fcdcec4a9bd7563bd2b01930c\"}','',1757497472,1757497472),
 ('3cc9006789bceef5d3ea7bed680790b4','76ed43ef286fb55cf9e41beadb484a9f','','110ce78ffefaf1e5f167cd7019b728bf','institute','RootFolder','externe Einrichtung B','','',1510849315,1510849315),
 ('694cdcef09c2b8e70a7313b028e36fb6','','3cc9006789bceef5d3ea7bed680790b4','110ce78ffefaf1e5f167cd7019b728bf','institute','StandardFolder','Allgemeiner Dateiordner','','Ablage für allgemeine Ordner und Dokumente der Einrichtung',1156516698,1156516698),
 ('76b822dcc7f1458ae6e144c3c0fb544e','76ed43ef286fb55cf9e41beadb484a9f','','ec2e364b28357106c0f8c282733dbe56','institute','RootFolder','externe Bildungseinrichtungen','','',1510849315,1510849315),
-('8373518141e658ade0ff097fc25b2b2c','76ed43ef286fb55cf9e41beadb484a9f','da3c2c2b4ea4c9781dccbae6eade5721','7cb72dab1bf896a0b55c6aa7a70a3a86','course','CourseDateFolder','00. Klausur am Sa, 26.07.25, 10:00 - 14:00','{\"termin_id\":\"42c1555ea5ee40618f5151472354b9f1\"}','',1754464711,1754464711),
 ('9082368f7e01b24af15178d0d954f4dc','76ed43ef286fb55cf9e41beadb484a9f','','7a4f19a0a2c321ab2b8f7b798881af7c','institute','RootFolder','externe Einrichtung A','','',1510849315,1510849315),
+('a8de35de37a0746b8c1834327b0ab6ed','76ed43ef286fb55cf9e41beadb484a9f','f7fc5ae64d2c453daa9619a820a6467e','a07535cf2f8a72df33c12ddfa4b53dde','course','CourseDateFolder','15. Klausur am Sa, 21.02.26, 10:00 - 14:00','{\"termin_id\":\"f6045edc88d4d5cda9090b673be841b7\"}','',1757497472,1757497472),
 ('ad8dc6a6162fb0fe022af4a62a15e309','76ed43ef286fb55cf9e41beadb484a9f','f7fc5ae64d2c453daa9619a820a6467e','a07535cf2f8a72df33c12ddfa4b53dde','course','HomeworkFolder','Hausaufgaben','{\"permission\":\"3\"}','',1343924873,1343924877),
 ('b58081c411c76814bc8f78425fb2ab81','','9082368f7e01b24af15178d0d954f4dc','7a4f19a0a2c321ab2b8f7b798881af7c','institute','StandardFolder','Allgemeiner Dateiordner','','Ablage für allgemeine Ordner und Dokumente der Einrichtung',1156516698,1156516698),
 ('bc63814f56ec1bbbba731e07d0074b45','76ed43ef286fb55cf9e41beadb484a9f','','76ed43ef286fb55cf9e41beadb484a9f','user','RootFolder','','[]','',1543858972,1543858972),
 ('ca002fbae136b07e4df29e0136e3bd32','76ed43ef286fb55cf9e41beadb484a9f','f7fc5ae64d2c453daa9619a820a6467e','a07535cf2f8a72df33c12ddfa4b53dde','course','StandardFolder','Allgemeiner Dateiordner','','Ablage für allgemeine Ordner und Dokumente der Veranstaltung',1343924407,1343924894),
-('ca31d5812954d2f2cf252b8a77a332cd','76ed43ef286fb55cf9e41beadb484a9f','f7fc5ae64d2c453daa9619a820a6467e','a07535cf2f8a72df33c12ddfa4b53dde','course','CourseDateFolder','15. Klausur am Sa, 21.02.26, 10:00 - 14:00','{\"termin_id\":\"30b480d6506c4f2d2becceee29254e46\"}','',1754464711,1754464711),
 ('da3c2c2b4ea4c9781dccbae6eade5721','76ed43ef286fb55cf9e41beadb484a9f','','7cb72dab1bf896a0b55c6aa7a70a3a86','course','RootFolder','Test Studiengruppe','','',1510849315,1510849315),
 ('dad53cd0f0d9f36817c3c9c7c124bda3','','76b822dcc7f1458ae6e144c3c0fb544e','ec2e364b28357106c0f8c282733dbe56','institute','StandardFolder','Allgemeiner Dateiordner','','Ablage für allgemeine Ordner und Dokumente der Einrichtung',1156516698,1156516698),
 ('df122112a21812ff4ffcf1965cb48fc3','76ed43ef286fb55cf9e41beadb484a9f','f7fc5ae64d2c453daa9619a820a6467e','a07535cf2f8a72df33c12ddfa4b53dde','course','CourseGroupFolder','Dateiordner der Gruppe: Studierende','{\"group\":\"2f597139a049a768dbf8345a0a0af3de\"}','Ablage für Ordner und Dokumente dieser Gruppe',1343924860,1343924860),
@@ -7831,20 +5912,12 @@ INSERT INTO `folders` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `forum_abo_users`
---
-
 LOCK TABLES `forum_abo_users` WRITE;
 /*!40000 ALTER TABLE `forum_abo_users` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `forum_abo_users` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `forum_categories`
---
 
 LOCK TABLES `forum_categories` WRITE;
 /*!40000 ALTER TABLE `forum_categories` DISABLE KEYS */;
@@ -7853,20 +5926,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `forum_categories_entries`
---
-
 LOCK TABLES `forum_categories_entries` WRITE;
 /*!40000 ALTER TABLE `forum_categories_entries` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `forum_categories_entries` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `forum_entries`
---
 
 LOCK TABLES `forum_entries` WRITE;
 /*!40000 ALTER TABLE `forum_entries` DISABLE KEYS */;
@@ -7875,20 +5940,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `forum_entries_issues`
---
-
 LOCK TABLES `forum_entries_issues` WRITE;
 /*!40000 ALTER TABLE `forum_entries_issues` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `forum_entries_issues` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `forum_favorites`
---
 
 LOCK TABLES `forum_favorites` WRITE;
 /*!40000 ALTER TABLE `forum_favorites` DISABLE KEYS */;
@@ -7897,20 +5954,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `forum_likes`
---
-
 LOCK TABLES `forum_likes` WRITE;
 /*!40000 ALTER TABLE `forum_likes` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `forum_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `forum_visits`
---
 
 LOCK TABLES `forum_visits` WRITE;
 /*!40000 ALTER TABLE `forum_visits` DISABLE KEYS */;
@@ -7919,20 +5968,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `global_resource_locks`
---
-
 LOCK TABLES `global_resource_locks` WRITE;
 /*!40000 ALTER TABLE `global_resource_locks` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `global_resource_locks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `grading_definitions`
---
 
 LOCK TABLES `grading_definitions` WRITE;
 /*!40000 ALTER TABLE `grading_definitions` DISABLE KEYS */;
@@ -7941,20 +5982,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `grading_instances`
---
-
 LOCK TABLES `grading_instances` WRITE;
 /*!40000 ALTER TABLE `grading_instances` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `grading_instances` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_content`
---
 
 LOCK TABLES `help_content` WRITE;
 /*!40000 ALTER TABLE `help_content` DISABLE KEYS */;
@@ -8134,20 +6167,12 @@ INSERT INTO `help_content` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `help_tour_audiences`
---
-
 LOCK TABLES `help_tour_audiences` WRITE;
 /*!40000 ALTER TABLE `help_tour_audiences` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `help_tour_audiences` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tour_settings`
---
 
 LOCK TABLES `help_tour_settings` WRITE;
 /*!40000 ALTER TABLE `help_tour_settings` DISABLE KEYS */;
@@ -8191,10 +6216,6 @@ INSERT INTO `help_tour_settings` VALUES
 /*!40000 ALTER TABLE `help_tour_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tour_steps`
---
 
 LOCK TABLES `help_tour_steps` WRITE;
 /*!40000 ALTER TABLE `help_tour_steps` DISABLE KEYS */;
@@ -8462,20 +6483,12 @@ INSERT INTO `help_tour_steps` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `help_tour_user`
---
-
 LOCK TABLES `help_tour_user` WRITE;
 /*!40000 ALTER TABLE `help_tour_user` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `help_tour_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `help_tours`
---
 
 LOCK TABLES `help_tours` WRITE;
 /*!40000 ALTER TABLE `help_tours` DISABLE KEYS */;
@@ -8520,10 +6533,6 @@ INSERT INTO `help_tours` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `i18n`
---
-
 LOCK TABLES `i18n` WRITE;
 /*!40000 ALTER TABLE `i18n` DISABLE KEYS */;
 set autocommit=0;
@@ -8536,20 +6545,12 @@ INSERT INTO `i18n` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `institute_plan_columns`
---
-
 LOCK TABLES `institute_plan_columns` WRITE;
 /*!40000 ALTER TABLE `institute_plan_columns` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `institute_plan_columns` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `kategorien`
---
 
 LOCK TABLES `kategorien` WRITE;
 /*!40000 ALTER TABLE `kategorien` DISABLE KEYS */;
@@ -8558,20 +6559,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `keyrings`
---
-
 LOCK TABLES `keyrings` WRITE;
 /*!40000 ALTER TABLE `keyrings` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `keyrings` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `licenses`
---
 
 LOCK TABLES `licenses` WRITE;
 /*!40000 ALTER TABLE `licenses` DISABLE KEYS */;
@@ -8593,20 +6586,12 @@ INSERT INTO `licenses` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `limitedadmissions`
---
-
 LOCK TABLES `limitedadmissions` WRITE;
 /*!40000 ALTER TABLE `limitedadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `limitedadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `lock_rules`
---
 
 LOCK TABLES `lock_rules` WRITE;
 /*!40000 ALTER TABLE `lock_rules` DISABLE KEYS */;
@@ -8615,20 +6600,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `lockedadmissions`
---
-
 LOCK TABLES `lockedadmissions` WRITE;
 /*!40000 ALTER TABLE `lockedadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `lockedadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `log_actions`
---
 
 LOCK TABLES `log_actions` WRITE;
 /*!40000 ALTER TABLE `log_actions` DISABLE KEYS */;
@@ -8801,10 +6778,6 @@ INSERT INTO `log_actions` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `log_events`
---
-
 LOCK TABLES `log_events` WRITE;
 /*!40000 ALTER TABLE `log_events` DISABLE KEYS */;
 set autocommit=0;
@@ -8812,20 +6785,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `login_faq`
---
-
 LOCK TABLES `login_faq` WRITE;
 /*!40000 ALTER TABLE `login_faq` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `login_faq` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `loginbackgrounds`
---
 
 LOCK TABLES `loginbackgrounds` WRITE;
 /*!40000 ALTER TABLE `loginbackgrounds` DISABLE KEYS */;
@@ -8837,20 +6802,12 @@ INSERT INTO `loginbackgrounds` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `lti_deployments`
---
-
 LOCK TABLES `lti_deployments` WRITE;
 /*!40000 ALTER TABLE `lti_deployments` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `lti_deployments` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `lti_grade`
---
 
 LOCK TABLES `lti_grade` WRITE;
 /*!40000 ALTER TABLE `lti_grade` DISABLE KEYS */;
@@ -8859,20 +6816,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `lti_resource_links`
---
-
 LOCK TABLES `lti_resource_links` WRITE;
 /*!40000 ALTER TABLE `lti_resource_links` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `lti_resource_links` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `lti_tool_privacy_settings`
---
 
 LOCK TABLES `lti_tool_privacy_settings` WRITE;
 /*!40000 ALTER TABLE `lti_tool_privacy_settings` DISABLE KEYS */;
@@ -8881,20 +6830,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `lti_tools`
---
-
 LOCK TABLES `lti_tools` WRITE;
 /*!40000 ALTER TABLE `lti_tools` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `lti_tools` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mail_queue_entries`
---
 
 LOCK TABLES `mail_queue_entries` WRITE;
 /*!40000 ALTER TABLE `mail_queue_entries` DISABLE KEYS */;
@@ -8903,10 +6844,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_filter`
---
-
 LOCK TABLES `massmail_filter` WRITE;
 /*!40000 ALTER TABLE `massmail_filter` DISABLE KEYS */;
 set autocommit=0;
@@ -8914,28 +6851,20 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_markers`
---
-
 LOCK TABLES `massmail_markers` WRITE;
 /*!40000 ALTER TABLE `massmail_markers` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `massmail_markers` VALUES
-(1,'FULLNAME','Voller Name','database','Hier wird der volle Name der jeweiligen Person eingesetzt, z.B. \"Prof. Max Mustermann, PhD\".',0,'user_info.title_front {{FIRSTNAME}} {{LASTNAME}} user_info.title_rear',NULL,NULL,2,1754464709,1754464709),
-(2,'FIRSTNAME','Vorname','database','Hier wird der Vorname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Vorname',NULL,NULL,3,1754464709,1754464709),
-(3,'LASTNAME','Nachname','database','Hier wird der Nachname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Nachname',NULL,NULL,4,1754464709,1754464709),
-(4,'USERNAME','Benutzername','database','Hier wird der Benutzername der jeweiligen Person eingesetzt.',0,'auth_user_md5.username',NULL,NULL,5,1754464709,1754464709),
-(5,'SEHRGEEHRTE','Anrede mit vollem Namen','text','Hier wird eine Anrede erzeugt: \"Sehr geehrte Michaela Musterfrau\" bzw. \"Sehr geehrter Max Mustermann\".',0,'Sehr geehrter {{FULLNAME}}','Sehr geehrte {{FULLNAME}}','Sehr geehrte/r {{FULLNAME}}',1,1754464709,1754464709),
-(6,'DEARSIRMADAM','Anrede (englisch) mit vollem Namen','text','Creates a Salutation: \"Dear Jane Doe\" or \"Dear John Doe\".',0,'Dear {{FULLNAME}}',NULL,NULL,6,1754464709,1754464709),
-(7,'TOKEN','Personalisierter Code o.ä.','token','Hier wird ein persönlicher Teilnahmecode o.ä. aus einer hochgeladenen Datei eingesetzt.',1,'massmail_tokens.token',NULL,NULL,7,1754464709,1754464709);
+(1,'FULLNAME','Voller Name','database','Hier wird der volle Name der jeweiligen Person eingesetzt, z.B. \"Prof. Max Mustermann, PhD\".',0,'user_info.title_front {{FIRSTNAME}} {{LASTNAME}} user_info.title_rear',NULL,NULL,2,1757497471,1757497471),
+(2,'FIRSTNAME','Vorname','database','Hier wird der Vorname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Vorname',NULL,NULL,3,1757497471,1757497471),
+(3,'LASTNAME','Nachname','database','Hier wird der Nachname der jeweiligen Person eingesetzt.',0,'auth_user_md5.Nachname',NULL,NULL,4,1757497471,1757497471),
+(4,'USERNAME','Benutzername','database','Hier wird der Benutzername der jeweiligen Person eingesetzt.',0,'auth_user_md5.username',NULL,NULL,5,1757497471,1757497471),
+(5,'SEHRGEEHRTE','Anrede mit vollem Namen','text','Hier wird eine Anrede erzeugt: \"Sehr geehrte Michaela Musterfrau\" bzw. \"Sehr geehrter Max Mustermann\".',0,'Sehr geehrter {{FULLNAME}}','Sehr geehrte {{FULLNAME}}','Sehr geehrte/r {{FULLNAME}}',1,1757497471,1757497471),
+(6,'DEARSIRMADAM','Anrede (englisch) mit vollem Namen','text','Creates a Salutation: \"Dear Jane Doe\" or \"Dear John Doe\".',0,'Dear {{FULLNAME}}',NULL,NULL,6,1757497471,1757497471),
+(7,'TOKEN','Personalisierter Code o.ä.','token','Hier wird ein persönlicher Teilnahmecode o.ä. aus einer hochgeladenen Datei eingesetzt.',1,'massmail_tokens.token',NULL,NULL,7,1757497471,1757497471);
 /*!40000 ALTER TABLE `massmail_markers` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `massmail_messages`
---
 
 LOCK TABLES `massmail_messages` WRITE;
 /*!40000 ALTER TABLE `massmail_messages` DISABLE KEYS */;
@@ -8944,20 +6873,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_permission_degree`
---
-
 LOCK TABLES `massmail_permission_degree` WRITE;
 /*!40000 ALTER TABLE `massmail_permission_degree` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `massmail_permission_degree` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `massmail_permission_institute`
---
 
 LOCK TABLES `massmail_permission_institute` WRITE;
 /*!40000 ALTER TABLE `massmail_permission_institute` DISABLE KEYS */;
@@ -8966,20 +6887,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_permission_subject`
---
-
 LOCK TABLES `massmail_permission_subject` WRITE;
 /*!40000 ALTER TABLE `massmail_permission_subject` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `massmail_permission_subject` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `massmail_permissions`
---
 
 LOCK TABLES `massmail_permissions` WRITE;
 /*!40000 ALTER TABLE `massmail_permissions` DISABLE KEYS */;
@@ -8988,20 +6901,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `massmail_tokens`
---
-
 LOCK TABLES `massmail_tokens` WRITE;
 /*!40000 ALTER TABLE `massmail_tokens` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `massmail_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `media_cache`
---
 
 LOCK TABLES `media_cache` WRITE;
 /*!40000 ALTER TABLE `media_cache` DISABLE KEYS */;
@@ -9010,20 +6915,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `message`
---
-
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `message_tags`
---
 
 LOCK TABLES `message_tags` WRITE;
 /*!40000 ALTER TABLE `message_tags` DISABLE KEYS */;
@@ -9032,20 +6929,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `message_user`
---
-
 LOCK TABLES `message_user` WRITE;
 /*!40000 ALTER TABLE `message_user` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `message_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_abschl_kategorie`
---
 
 LOCK TABLES `mvv_abschl_kategorie` WRITE;
 /*!40000 ALTER TABLE `mvv_abschl_kategorie` DISABLE KEYS */;
@@ -9057,10 +6946,6 @@ INSERT INTO `mvv_abschl_kategorie` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_abschl_zuord`
---
-
 LOCK TABLES `mvv_abschl_zuord` WRITE;
 /*!40000 ALTER TABLE `mvv_abschl_zuord` DISABLE KEYS */;
 set autocommit=0;
@@ -9071,20 +6956,12 @@ INSERT INTO `mvv_abschl_zuord` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_aufbaustudiengang`
---
-
 LOCK TABLES `mvv_aufbaustudiengang` WRITE;
 /*!40000 ALTER TABLE `mvv_aufbaustudiengang` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_aufbaustudiengang` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_contacts`
---
 
 LOCK TABLES `mvv_contacts` WRITE;
 /*!40000 ALTER TABLE `mvv_contacts` DISABLE KEYS */;
@@ -9093,10 +6970,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_contacts_ranges`
---
-
 LOCK TABLES `mvv_contacts_ranges` WRITE;
 /*!40000 ALTER TABLE `mvv_contacts_ranges` DISABLE KEYS */;
 set autocommit=0;
@@ -9104,20 +6977,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_extern_contacts`
---
-
 LOCK TABLES `mvv_extern_contacts` WRITE;
 /*!40000 ALTER TABLE `mvv_extern_contacts` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_extern_contacts` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_fach_inst`
---
 
 LOCK TABLES `mvv_fach_inst` WRITE;
 /*!40000 ALTER TABLE `mvv_fach_inst` DISABLE KEYS */;
@@ -9129,20 +6994,12 @@ INSERT INTO `mvv_fach_inst` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_files`
---
-
 LOCK TABLES `mvv_files` WRITE;
 /*!40000 ALTER TABLE `mvv_files` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_files` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_files_filerefs`
---
 
 LOCK TABLES `mvv_files_filerefs` WRITE;
 /*!40000 ALTER TABLE `mvv_files_filerefs` DISABLE KEYS */;
@@ -9151,20 +7008,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_files_ranges`
---
-
 LOCK TABLES `mvv_files_ranges` WRITE;
 /*!40000 ALTER TABLE `mvv_files_ranges` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_files_ranges` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_lvgruppe`
---
 
 LOCK TABLES `mvv_lvgruppe` WRITE;
 /*!40000 ALTER TABLE `mvv_lvgruppe` DISABLE KEYS */;
@@ -9178,10 +7027,6 @@ INSERT INTO `mvv_lvgruppe` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_lvgruppe_modulteil`
---
-
 LOCK TABLES `mvv_lvgruppe_modulteil` WRITE;
 /*!40000 ALTER TABLE `mvv_lvgruppe_modulteil` DISABLE KEYS */;
 set autocommit=0;
@@ -9194,10 +7039,6 @@ INSERT INTO `mvv_lvgruppe_modulteil` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_lvgruppe_seminar`
---
-
 LOCK TABLES `mvv_lvgruppe_seminar` WRITE;
 /*!40000 ALTER TABLE `mvv_lvgruppe_seminar` DISABLE KEYS */;
 set autocommit=0;
@@ -9206,10 +7047,6 @@ INSERT INTO `mvv_lvgruppe_seminar` VALUES
 /*!40000 ALTER TABLE `mvv_lvgruppe_seminar` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_modul`
---
 
 LOCK TABLES `mvv_modul` WRITE;
 /*!40000 ALTER TABLE `mvv_modul` DISABLE KEYS */;
@@ -9223,10 +7060,6 @@ INSERT INTO `mvv_modul` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_modul_deskriptor`
---
-
 LOCK TABLES `mvv_modul_deskriptor` WRITE;
 /*!40000 ALTER TABLE `mvv_modul_deskriptor` DISABLE KEYS */;
 set autocommit=0;
@@ -9238,10 +7071,6 @@ INSERT INTO `mvv_modul_deskriptor` VALUES
 /*!40000 ALTER TABLE `mvv_modul_deskriptor` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_modul_inst`
---
 
 LOCK TABLES `mvv_modul_inst` WRITE;
 /*!40000 ALTER TABLE `mvv_modul_inst` DISABLE KEYS */;
@@ -9255,20 +7084,12 @@ INSERT INTO `mvv_modul_inst` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_modul_language`
---
-
 LOCK TABLES `mvv_modul_language` WRITE;
 /*!40000 ALTER TABLE `mvv_modul_language` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_modul_language` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_modulteil`
---
 
 LOCK TABLES `mvv_modulteil` WRITE;
 /*!40000 ALTER TABLE `mvv_modulteil` DISABLE KEYS */;
@@ -9282,10 +7103,6 @@ INSERT INTO `mvv_modulteil` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_modulteil_deskriptor`
---
-
 LOCK TABLES `mvv_modulteil_deskriptor` WRITE;
 /*!40000 ALTER TABLE `mvv_modulteil_deskriptor` DISABLE KEYS */;
 set autocommit=0;
@@ -9298,20 +7115,12 @@ INSERT INTO `mvv_modulteil_deskriptor` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_modulteil_language`
---
-
 LOCK TABLES `mvv_modulteil_language` WRITE;
 /*!40000 ALTER TABLE `mvv_modulteil_language` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_modulteil_language` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_modulteil_stgteilabschnitt`
---
 
 LOCK TABLES `mvv_modulteil_stgteilabschnitt` WRITE;
 /*!40000 ALTER TABLE `mvv_modulteil_stgteilabschnitt` DISABLE KEYS */;
@@ -9320,20 +7129,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_ovl_conflicts`
---
-
 LOCK TABLES `mvv_ovl_conflicts` WRITE;
 /*!40000 ALTER TABLE `mvv_ovl_conflicts` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_ovl_conflicts` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_ovl_excludes`
---
 
 LOCK TABLES `mvv_ovl_excludes` WRITE;
 /*!40000 ALTER TABLE `mvv_ovl_excludes` DISABLE KEYS */;
@@ -9342,20 +7143,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_ovl_selections`
---
-
 LOCK TABLES `mvv_ovl_selections` WRITE;
 /*!40000 ALTER TABLE `mvv_ovl_selections` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_ovl_selections` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_stg_stgteil`
---
 
 LOCK TABLES `mvv_stg_stgteil` WRITE;
 /*!40000 ALTER TABLE `mvv_stg_stgteil` DISABLE KEYS */;
@@ -9367,10 +7160,6 @@ INSERT INTO `mvv_stg_stgteil` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_stgteil`
---
-
 LOCK TABLES `mvv_stgteil` WRITE;
 /*!40000 ALTER TABLE `mvv_stgteil` DISABLE KEYS */;
 set autocommit=0;
@@ -9380,10 +7169,6 @@ INSERT INTO `mvv_stgteil` VALUES
 /*!40000 ALTER TABLE `mvv_stgteil` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_stgteil_bez`
---
 
 LOCK TABLES `mvv_stgteil_bez` WRITE;
 /*!40000 ALTER TABLE `mvv_stgteil_bez` DISABLE KEYS */;
@@ -9395,10 +7180,6 @@ INSERT INTO `mvv_stgteil_bez` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_stgteilabschnitt`
---
-
 LOCK TABLES `mvv_stgteilabschnitt` WRITE;
 /*!40000 ALTER TABLE `mvv_stgteilabschnitt` DISABLE KEYS */;
 set autocommit=0;
@@ -9408,10 +7189,6 @@ INSERT INTO `mvv_stgteilabschnitt` VALUES
 /*!40000 ALTER TABLE `mvv_stgteilabschnitt` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_stgteilabschnitt_modul`
---
 
 LOCK TABLES `mvv_stgteilabschnitt_modul` WRITE;
 /*!40000 ALTER TABLE `mvv_stgteilabschnitt_modul` DISABLE KEYS */;
@@ -9425,10 +7202,6 @@ INSERT INTO `mvv_stgteilabschnitt_modul` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_stgteilversion`
---
-
 LOCK TABLES `mvv_stgteilversion` WRITE;
 /*!40000 ALTER TABLE `mvv_stgteilversion` DISABLE KEYS */;
 set autocommit=0;
@@ -9438,10 +7211,6 @@ INSERT INTO `mvv_stgteilversion` VALUES
 /*!40000 ALTER TABLE `mvv_stgteilversion` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_studiengang`
---
 
 LOCK TABLES `mvv_studiengang` WRITE;
 /*!40000 ALTER TABLE `mvv_studiengang` DISABLE KEYS */;
@@ -9453,20 +7222,12 @@ INSERT INTO `mvv_studiengang` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `mvv_studycourse_language`
---
-
 LOCK TABLES `mvv_studycourse_language` WRITE;
 /*!40000 ALTER TABLE `mvv_studycourse_language` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `mvv_studycourse_language` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `mvv_studycourse_type`
---
 
 LOCK TABLES `mvv_studycourse_type` WRITE;
 /*!40000 ALTER TABLE `mvv_studycourse_type` DISABLE KEYS */;
@@ -9475,22 +7236,14 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `news`
---
-
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `news` VALUES
-('29f2932ce32be989022c6f43b866e744','Herzlich Willkommen!','<!--HTML-->\nDas Stud.IP-Team heisst sie herzlich willkommen.<br />\nBitte schauen Sie sich ruhig um!<br /><br />\nWenn Sie das System selbst installiert haben und diese News sehen, haben Sie die Demonstrationsdaten in die Datenbank eingefügt. Wenn Sie produktiv mit dem System arbeiten wollen, sollten Sie diese Daten später wieder löschen, <strong>da die Passwörter der Accounts öffentlich bekannt sind</strong>.<br />\n \n<p>Wenn Sie mit der Stud.IP Open Source-Community in Kontakt treten wollen und Fragen oder Ideen haben, können Sie sich auf unserem eigenen Stud.IP-System mit uns austauschen: <a href=\"https://develop.studip.de/studip\" class=\"link-extern\" target=\"_blank\" rel=\"noreferrer noopener\">develop.studip.de</a></p>\n\n<p>Falls Sie die Einführung an einer Bildungseinrichtung planen und Unterstützung bei der Einführung oder Beratung zum Einsatz von digitalen Tools für die Online Lehre haben, steht Ihnen die Firma data-quest als Dienstleister rund um Stud.IP zur Seite: <a href=\"https://www.data-quest.de\" class=\"link-extern\" target=\"_blank\" rel=\"noreferrer noopener\">https://www.data-quest.de</a></p>','Root Studip',1754464706,'76ed43ef286fb55cf9e41beadb484a9f',14562502,1,0,1754464706,'',1754464706);
+('29f2932ce32be989022c6f43b866e744','Herzlich Willkommen!','<!--HTML-->\nDas Stud.IP-Team heisst sie herzlich willkommen.<br />\nBitte schauen Sie sich ruhig um!<br /><br />\nWenn Sie das System selbst installiert haben und diese News sehen, haben Sie die Demonstrationsdaten in die Datenbank eingefügt. Wenn Sie produktiv mit dem System arbeiten wollen, sollten Sie diese Daten später wieder löschen, <strong>da die Passwörter der Accounts öffentlich bekannt sind</strong>.<br />\n \n<p>Wenn Sie mit der Stud.IP Open Source-Community in Kontakt treten wollen und Fragen oder Ideen haben, können Sie sich auf unserem eigenen Stud.IP-System mit uns austauschen: <a href=\"https://develop.studip.de/studip\" class=\"link-extern\" target=\"_blank\" rel=\"noreferrer noopener\">develop.studip.de</a></p>\n\n<p>Falls Sie die Einführung an einer Bildungseinrichtung planen und Unterstützung bei der Einführung oder Beratung zum Einsatz von digitalen Tools für die Online Lehre haben, steht Ihnen die Firma data-quest als Dienstleister rund um Stud.IP zur Seite: <a href=\"https://www.data-quest.de\" class=\"link-extern\" target=\"_blank\" rel=\"noreferrer noopener\">https://www.data-quest.de</a></p>','Root Studip',1757497468,'76ed43ef286fb55cf9e41beadb484a9f',14562502,1,0,1757497468,'',1757497468);
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `news_range`
---
 
 LOCK TABLES `news_range` WRITE;
 /*!40000 ALTER TABLE `news_range` DISABLE KEYS */;
@@ -9502,20 +7255,12 @@ INSERT INTO `news_range` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `news_roles`
---
-
 LOCK TABLES `news_roles` WRITE;
 /*!40000 ALTER TABLE `news_roles` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `news_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `news_rss_range`
---
 
 LOCK TABLES `news_rss_range` WRITE;
 /*!40000 ALTER TABLE `news_rss_range` DISABLE KEYS */;
@@ -9526,20 +7271,12 @@ INSERT INTO `news_rss_range` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oauth2_access_tokens`
---
-
 LOCK TABLES `oauth2_access_tokens` WRITE;
 /*!40000 ALTER TABLE `oauth2_access_tokens` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oauth2_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oauth2_auth_codes`
---
 
 LOCK TABLES `oauth2_auth_codes` WRITE;
 /*!40000 ALTER TABLE `oauth2_auth_codes` DISABLE KEYS */;
@@ -9548,20 +7285,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oauth2_clients`
---
-
 LOCK TABLES `oauth2_clients` WRITE;
 /*!40000 ALTER TABLE `oauth2_clients` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oauth2_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oauth2_refresh_tokens`
---
 
 LOCK TABLES `oauth2_refresh_tokens` WRITE;
 /*!40000 ALTER TABLE `oauth2_refresh_tokens` DISABLE KEYS */;
@@ -9570,20 +7299,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `object_contentmodules`
---
-
 LOCK TABLES `object_contentmodules` WRITE;
 /*!40000 ALTER TABLE `object_contentmodules` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `object_contentmodules` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `object_user_visits`
---
 
 LOCK TABLES `object_user_visits` WRITE;
 /*!40000 ALTER TABLE `object_user_visits` DISABLE KEYS */;
@@ -9592,20 +7313,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `object_views`
---
-
 LOCK TABLES `object_views` WRITE;
 /*!40000 ALTER TABLE `object_views` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `object_views` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oer_abo`
---
 
 LOCK TABLES `oer_abo` WRITE;
 /*!40000 ALTER TABLE `oer_abo` DISABLE KEYS */;
@@ -9614,10 +7327,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_comments`
---
-
 LOCK TABLES `oer_comments` WRITE;
 /*!40000 ALTER TABLE `oer_comments` DISABLE KEYS */;
 set autocommit=0;
@@ -9625,20 +7334,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_downloadcounter`
---
-
 LOCK TABLES `oer_downloadcounter` WRITE;
 /*!40000 ALTER TABLE `oer_downloadcounter` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oer_downloadcounter` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oer_hosts`
---
 
 LOCK TABLES `oer_hosts` WRITE;
 /*!40000 ALTER TABLE `oer_hosts` DISABLE KEYS */;
@@ -9649,20 +7350,12 @@ INSERT INTO `oer_hosts` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_material`
---
-
 LOCK TABLES `oer_material` WRITE;
 /*!40000 ALTER TABLE `oer_material` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oer_material` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oer_material_users`
---
 
 LOCK TABLES `oer_material_users` WRITE;
 /*!40000 ALTER TABLE `oer_material_users` DISABLE KEYS */;
@@ -9671,20 +7364,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_post_upload`
---
-
 LOCK TABLES `oer_post_upload` WRITE;
 /*!40000 ALTER TABLE `oer_post_upload` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oer_post_upload` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oer_reviews`
---
 
 LOCK TABLES `oer_reviews` WRITE;
 /*!40000 ALTER TABLE `oer_reviews` DISABLE KEYS */;
@@ -9693,20 +7378,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_tags`
---
-
 LOCK TABLES `oer_tags` WRITE;
 /*!40000 ALTER TABLE `oer_tags` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oer_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `oer_tags_material`
---
 
 LOCK TABLES `oer_tags_material` WRITE;
 /*!40000 ALTER TABLE `oer_tags_material` DISABLE KEYS */;
@@ -9715,20 +7392,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `oer_user`
---
-
 LOCK TABLES `oer_user` WRITE;
 /*!40000 ALTER TABLE `oer_user` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `oer_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `opengraphdata`
---
 
 LOCK TABLES `opengraphdata` WRITE;
 /*!40000 ALTER TABLE `opengraphdata` DISABLE KEYS */;
@@ -9737,20 +7406,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `participantrestrictedadmissions`
---
-
 LOCK TABLES `participantrestrictedadmissions` WRITE;
 /*!40000 ALTER TABLE `participantrestrictedadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `participantrestrictedadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `passwordadmissions`
---
 
 LOCK TABLES `passwordadmissions` WRITE;
 /*!40000 ALTER TABLE `passwordadmissions` DISABLE KEYS */;
@@ -9759,20 +7420,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `personal_notifications`
---
-
 LOCK TABLES `personal_notifications` WRITE;
 /*!40000 ALTER TABLE `personal_notifications` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `personal_notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `personal_notifications_user`
---
 
 LOCK TABLES `personal_notifications_user` WRITE;
 /*!40000 ALTER TABLE `personal_notifications_user` DISABLE KEYS */;
@@ -9781,20 +7434,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `plugin_assets`
---
-
 LOCK TABLES `plugin_assets` WRITE;
 /*!40000 ALTER TABLE `plugin_assets` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `plugin_assets` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `plugins`
---
 
 LOCK TABLES `plugins` WRITE;
 /*!40000 ALTER TABLE `plugins` DISABLE KEYS */;
@@ -9834,20 +7479,12 @@ INSERT INTO `plugins` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `plugins_activated`
---
-
 LOCK TABLES `plugins_activated` WRITE;
 /*!40000 ALTER TABLE `plugins_activated` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `plugins_activated` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `prefadmission_condition`
---
 
 LOCK TABLES `prefadmission_condition` WRITE;
 /*!40000 ALTER TABLE `prefadmission_condition` DISABLE KEYS */;
@@ -9856,20 +7493,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `prefadmissions`
---
-
 LOCK TABLES `prefadmissions` WRITE;
 /*!40000 ALTER TABLE `prefadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `prefadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `priorities`
---
 
 LOCK TABLES `priorities` WRITE;
 /*!40000 ALTER TABLE `priorities` DISABLE KEYS */;
@@ -9878,20 +7507,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `questionnaire_anonymous_answers`
---
-
 LOCK TABLES `questionnaire_anonymous_answers` WRITE;
 /*!40000 ALTER TABLE `questionnaire_anonymous_answers` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `questionnaire_anonymous_answers` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `questionnaire_answers`
---
 
 LOCK TABLES `questionnaire_answers` WRITE;
 /*!40000 ALTER TABLE `questionnaire_answers` DISABLE KEYS */;
@@ -9900,20 +7521,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `questionnaire_assignments`
---
-
 LOCK TABLES `questionnaire_assignments` WRITE;
 /*!40000 ALTER TABLE `questionnaire_assignments` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `questionnaire_assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `questionnaire_questions`
---
 
 LOCK TABLES `questionnaire_questions` WRITE;
 /*!40000 ALTER TABLE `questionnaire_questions` DISABLE KEYS */;
@@ -9922,20 +7535,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `questionnaires`
---
-
 LOCK TABLES `questionnaires` WRITE;
 /*!40000 ALTER TABLE `questionnaires` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `questionnaires` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `range_tree`
---
 
 LOCK TABLES `range_tree` WRITE;
 /*!40000 ALTER TABLE `range_tree` DISABLE KEYS */;
@@ -9953,89 +7558,77 @@ INSERT INTO `range_tree` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_booking_intervals`
---
-
 LOCK TABLES `resource_booking_intervals` WRITE;
 /*!40000 ALTER TABLE `resource_booking_intervals` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `resource_booking_intervals` VALUES
+('0952f0a7a59f55268bd2fddcce0a622f','728f1578de643fb08b32b4b8afb2db77','db0bab6836dec4471e855d1c42ede1b9',1763971200,1763978400,1757497472,1757497472,1),
 ('103172da14b07526e9c6ceb224c11c23','728f1578de643fb08b32b4b8afb2db77','ed37afe9ff2d96c489d5cf6e2b4fba80',1731312000,1731319200,1716456982,1716456982,1),
 ('107c4ff6a9c207cfda35a80260a3f8c2','728f1578de643fb08b32b4b8afb2db77','a672b97ead875ef080706c6f6da33a44',1731916800,1731924000,1716456982,1716456982,1),
-('11ab8ba99a07c70b2f7482b6e10405ee','728f1578de643fb08b32b4b8afb2db77','867744ed64e76e4b38dc92e26ba2495c',1763366400,1763373600,1754464711,1754464711,1),
-('1a54a465d47863fce40661e53eaf0232','728f1578de643fb08b32b4b8afb2db77','c1aabbf3f10444b165c1217082e8eabc',1764576000,1764583200,1754464711,1754464711,1),
 ('1f3b18df65f42101408da9ca0f8b06ae','728f1578de643fb08b32b4b8afb2db77','aec837593cbd51d21d58b97e9af9ba19',1737360000,1737367200,1716456982,1716456982,1),
 ('22589cca9cf15513c507d6658d267492','728f1578de643fb08b32b4b8afb2db77','6cb4d34009cee46357a98006ef824930',1732521600,1732528800,1716456982,1716456982,1),
 ('2273be6840eb462735458020165dc663','728f1578de643fb08b32b4b8afb2db77','577b04b04575ce3a60328cf97ff801c8',1730707200,1730714400,1716456982,1716456982,1),
-('2617d9f5f094798a559ff434e84c9f65','728f1578de643fb08b32b4b8afb2db77','527ddb74b97248683354a0b90a21bef5',1768204800,1768212000,1754464711,1754464711,1),
+('288ca9a17b63858d9aebe6fe4e14063f','728f1578de643fb08b32b4b8afb2db77','3c559ce0048464a341456d889ade10e3',1768204800,1768212000,1757497472,1757497472,1),
 ('298b0bc9d1be4d072c93c7cbc2647be1','728f1578de643fb08b32b4b8afb2db77','4effa9b74ecbe244bac766e6256a361c',1736150400,1736157600,1716456982,1716456982,1),
-('35eda58d9f0ba50b26cb05b5822ffdca','728f1578de643fb08b32b4b8afb2db77','538ba36ef8ba7a10fba86d803e32b624',1760338800,1760346000,1754464711,1754464711,1),
-('4628a5e642b621bafa4fe0f3f2fd9a41','728f1578de643fb08b32b4b8afb2db77','70bc2f183b95a98397c13094d09abd4f',1762156800,1762164000,1754464711,1754464711,1),
+('2e9280f637ae0ab1d8f02ccb198e5563','728f1578de643fb08b32b4b8afb2db77','6eaf77abdd2c7f4895a2ddb0a727c004',1765180800,1765188000,1757497472,1757497472,1),
+('4157e05fff8699457cd114d89a816874','728f1578de643fb08b32b4b8afb2db77','d69c66f8122cb287e6f8591c365ec8a2',1763366400,1763373600,1757497472,1757497472,1),
 ('4bf38db5dff602e6bef5a3d281783bc7','728f1578de643fb08b32b4b8afb2db77','cde83098d29a75de33e76a71b8a71a21',1736755200,1736762400,1716456982,1716456982,1),
+('4d0a6943e1dc145f1b5529406673e4df','728f1578de643fb08b32b4b8afb2db77','8f2a4108abd0d8ba4fa8c941637df130',1760338800,1760346000,1757497472,1757497472,1),
 ('5a7c2cd2975447334f0b3575513a5e6e','728f1578de643fb08b32b4b8afb2db77','9e55f071dc674f92ef7c0032bdc623f4',1733126400,1733133600,1716456982,1716456982,1),
 ('5bff17112dccfc248aa354748afceb46','728f1578de643fb08b32b4b8afb2db77','a01a39e448aa6dbab5dd5dffaae78926',1738569600,1738576800,1716456982,1716456982,1),
-('67fceecc176077eec62c5e5362f71c0f','728f1578de643fb08b32b4b8afb2db77','155c2487d750d7b350019b4d473e83e0',1762761600,1762768800,1754464711,1754464711,1),
-('7006fd587cbd06fa48b2db010ddb31fe','728f1578de643fb08b32b4b8afb2db77','8be1f929c09d77bc84f764a91c66ac6a',1767600000,1767607200,1754464711,1754464711,1),
-('7828e8d2cbf10f2a8e14026b91884f3e','728f1578de643fb08b32b4b8afb2db77','01c8cc7d1b26c398bd19c93510a6e69c',1768809600,1768816800,1754464711,1754464711,1),
+('69bb44ef6a1d50a73e10e5439a445afe','728f1578de643fb08b32b4b8afb2db77','6ba6317f328cd5f76dc1aeb97888c390',1765785600,1765792800,1757497472,1757497472,1),
 ('783aa785a85845d7eae547983afc0091','728f1578de643fb08b32b4b8afb2db77','bd9806b968f39178225603cb6812f2b0',1729494000,1729501200,1716456982,1716456982,1),
-('7be5075f87473cdc17d20db1170d642d','728f1578de643fb08b32b4b8afb2db77','81e9e741bdd7ed3e17c85259c7087a95',1760943600,1760950800,1754464711,1754464711,1),
+('7a2986ccc020b2ada1303ef3f7be8335','728f1578de643fb08b32b4b8afb2db77','f198b078ec03d31efa900a9fe0d5d124',1767600000,1767607200,1757497472,1757497472,1),
+('7d52088e968fafb36506340c7758256f','728f1578de643fb08b32b4b8afb2db77','c062cc9364069bb6bcfac734d6ec5076',1761552000,1761559200,1757497472,1757497472,1),
 ('7f7470f79dc5ca2cc9e2e73ac50b6287','728f1578de643fb08b32b4b8afb2db77','413cca32dbe8c3499ae1b7dae46b6e77',1730102400,1730109600,1716456982,1716456982,1),
+('85913eee4b92fbcec9a23e0147283d63','728f1578de643fb08b32b4b8afb2db77','aa284e0a4a16c15303f9e37850fe1c05',1762761600,1762768800,1757497472,1757497472,1),
+('8a1149f5925af79017d9a7467c271b24','728f1578de643fb08b32b4b8afb2db77','1398c8102366ca8fe7b4ecae34174022',1764576000,1764583200,1757497472,1757497472,1),
 ('914b8a1d43e28ed42cccd4bdc52d0b5c','728f1578de643fb08b32b4b8afb2db77','2a251bfb01a99e533b3bbc841fc02ca7',1733731200,1733738400,1716456982,1716456982,1),
-('9e6b85152d5815c19a383daca21c166e','728f1578de643fb08b32b4b8afb2db77','dff787ec7eee719ddc29dd8f0584da8a',1765180800,1765188000,1754464711,1754464711,1),
-('b106a0590256fff0acbd79c3a14dac74','728f1578de643fb08b32b4b8afb2db77','cf0dd39936bfed59ba593578ee01e2ec',1761552000,1761559200,1754464711,1754464711,1),
-('be54808a910ff656aa141cd2effe61a3','728f1578de643fb08b32b4b8afb2db77','6fb9fadeb6570fda655c91586ceaecc7',1769414400,1769421600,1754464711,1754464711,1),
-('cb480eba301d9e11be5f25cc6711160d','728f1578de643fb08b32b4b8afb2db77','47624836db96f0d1340605b9a04d9928',1763971200,1763978400,1754464711,1754464711,1),
-('d53513f7c1ae8879441e2949f73eac0c','728f1578de643fb08b32b4b8afb2db77','a07cc7a8cf8ce0b2cdc6befb47fdc5b1',1765785600,1765792800,1754464711,1754464711,1),
+('9186339aaea41120ef5ca3f19957f68b','728f1578de643fb08b32b4b8afb2db77','a22747b4750673886f82f73defaf2b3c',1760943600,1760950800,1757497472,1757497472,1),
+('a228e14a069664c1a8d6cb2be7153ba2','728f1578de643fb08b32b4b8afb2db77','57398d614008bb66ef1632f20ce48054',1762156800,1762164000,1757497472,1757497472,1),
+('b693f502e7798dbc3c86cd91060d1b2f','728f1578de643fb08b32b4b8afb2db77','4037e885b7c26a9515ab58ba56c32ad1',1769414400,1769421600,1757497472,1757497472,1),
+('cc8368ed836acc75d9de999d0aaca7c3','728f1578de643fb08b32b4b8afb2db77','0380c3f9feaf74778ab0c6c874d87f66',1768809600,1768816800,1757497472,1757497472,1),
 ('d566a5583c94cb7bbdbb67596780852c','728f1578de643fb08b32b4b8afb2db77','e70aaf4655d2de64852b2212b04a0e67',1737964800,1737972000,1716456982,1716456982,1),
 ('deaa9da8e6003da444d2ff4756bbab9a','728f1578de643fb08b32b4b8afb2db77','06a133ec2958178551ee6b48957058b6',1734336000,1734343200,1716456982,1716456982,1);
 /*!40000 ALTER TABLE `resource_booking_intervals` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_bookings`
---
-
 LOCK TABLES `resource_bookings` WRITE;
 /*!40000 ALTER TABLE `resource_bookings` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `resource_bookings` VALUES
-('01c8cc7d1b26c398bd19c93510a6e69c','728f1578de643fb08b32b4b8afb2db77','eb7f88966b07133303ffb858ed45f072',NULL,1768809600,1768816800,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('0380c3f9feaf74778ab0c6c874d87f66','728f1578de643fb08b32b4b8afb2db77','2560bfe8d0db4c15afbf03486062ea0f',NULL,1768809600,1768816800,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('06a133ec2958178551ee6b48957058b6','728f1578de643fb08b32b4b8afb2db77','221bb1927fcd93fab3ec7dde7c6b3cce','',1734336000,1734343200,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('155c2487d750d7b350019b4d473e83e0','728f1578de643fb08b32b4b8afb2db77','0da3ff500c2b610b559ad67ec69f8158',NULL,1762761600,1762768800,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('1398c8102366ca8fe7b4ecae34174022','728f1578de643fb08b32b4b8afb2db77','77dfcab1e947ed4f45695c4b37841ab4',NULL,1764576000,1764583200,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('2a251bfb01a99e533b3bbc841fc02ca7','728f1578de643fb08b32b4b8afb2db77','5f87ebde55d5527ceb27ccd6dcd9f66e','',1733731200,1733738400,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('3c559ce0048464a341456d889ade10e3','728f1578de643fb08b32b4b8afb2db77','4622ed5d1a881419cc23a0f09e69a6c5',NULL,1768204800,1768212000,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('4037e885b7c26a9515ab58ba56c32ad1','728f1578de643fb08b32b4b8afb2db77','868280ba53eb8a1820b5f5138d77c430',NULL,1769414400,1769421600,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('413cca32dbe8c3499ae1b7dae46b6e77','728f1578de643fb08b32b4b8afb2db77','7ec82c654e1b41819cd476ec72e77a76','',1730102400,1730109600,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('47624836db96f0d1340605b9a04d9928','728f1578de643fb08b32b4b8afb2db77','89db52985137b9e9718eb3d26313b109',NULL,1763971200,1763978400,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('4effa9b74ecbe244bac766e6256a361c','728f1578de643fb08b32b4b8afb2db77','132eec0a28623f5afde092a6960e45f4','',1736150400,1736157600,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('527ddb74b97248683354a0b90a21bef5','728f1578de643fb08b32b4b8afb2db77','d2e6708b3c86b5be09ae480af133a1e4',NULL,1768204800,1768212000,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('538ba36ef8ba7a10fba86d803e32b624','728f1578de643fb08b32b4b8afb2db77','0afb3ee903d2679dce0d3e71796b0d15',NULL,1760338800,1760346000,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('57398d614008bb66ef1632f20ce48054','728f1578de643fb08b32b4b8afb2db77','e2b816743e905dac408ce1d9617d6fd8',NULL,1762156800,1762164000,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('577b04b04575ce3a60328cf97ff801c8','728f1578de643fb08b32b4b8afb2db77','60b4659f960ef05807cbaea6368158aa','',1730707200,1730714400,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('6ba6317f328cd5f76dc1aeb97888c390','728f1578de643fb08b32b4b8afb2db77','f80cfa0eff9e3c51c17000662486c53d',NULL,1765785600,1765792800,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('6cb4d34009cee46357a98006ef824930','728f1578de643fb08b32b4b8afb2db77','13bf7a5cd577bcba5bff88d46512baad','',1732521600,1732528800,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('6fb9fadeb6570fda655c91586ceaecc7','728f1578de643fb08b32b4b8afb2db77','02191f8621da3f781ed714cae1d24e40',NULL,1769414400,1769421600,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('70bc2f183b95a98397c13094d09abd4f','728f1578de643fb08b32b4b8afb2db77','1cc62381340bb933dce847648aa57c42',NULL,1762156800,1762164000,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('81e9e741bdd7ed3e17c85259c7087a95','728f1578de643fb08b32b4b8afb2db77','25b8d290d6c8d1357053cff0d0f2c0c2',NULL,1760943600,1760950800,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('867744ed64e76e4b38dc92e26ba2495c','728f1578de643fb08b32b4b8afb2db77','ab30294bab1ca419cfe4217e8388c47c',NULL,1763366400,1763373600,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('8be1f929c09d77bc84f764a91c66ac6a','728f1578de643fb08b32b4b8afb2db77','0600718a336675ba27ea80121a4db9e2',NULL,1767600000,1767607200,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('6eaf77abdd2c7f4895a2ddb0a727c004','728f1578de643fb08b32b4b8afb2db77','1100336edeb3559be81c8ec0eed9de98',NULL,1765180800,1765188000,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('8f2a4108abd0d8ba4fa8c941637df130','728f1578de643fb08b32b4b8afb2db77','9fd96bc4e43c95bd2f07518c9f71dfa1',NULL,1760338800,1760346000,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('9e55f071dc674f92ef7c0032bdc623f4','728f1578de643fb08b32b4b8afb2db77','4f47c3d25eca9ab8fb2a1644209074ae','',1733126400,1733133600,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('a01a39e448aa6dbab5dd5dffaae78926','728f1578de643fb08b32b4b8afb2db77','be1ad3a4bc5c933d4bfbaa2b313d3ab5','',1738569600,1738576800,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('a07cc7a8cf8ce0b2cdc6befb47fdc5b1','728f1578de643fb08b32b4b8afb2db77','d8b107a56aaac63e3b64f1f4bbd267c7',NULL,1765785600,1765792800,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('a22747b4750673886f82f73defaf2b3c','728f1578de643fb08b32b4b8afb2db77','0cd215180837fd8197fd3964fbc927a3',NULL,1760943600,1760950800,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('a672b97ead875ef080706c6f6da33a44','728f1578de643fb08b32b4b8afb2db77','c729ae36a1503f471a407802e8f72cec','',1731916800,1731924000,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('aa284e0a4a16c15303f9e37850fe1c05','728f1578de643fb08b32b4b8afb2db77','95e7abe7524b3543eccca1d32af4e234',NULL,1762761600,1762768800,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('aec837593cbd51d21d58b97e9af9ba19','728f1578de643fb08b32b4b8afb2db77','7aaa9681da31192e49eaa63a4cef3dfb','',1737360000,1737367200,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('bd9806b968f39178225603cb6812f2b0','728f1578de643fb08b32b4b8afb2db77','749e52b43a4fe025442f355779489a9d','',1729494000,1729501200,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('c1aabbf3f10444b165c1217082e8eabc','728f1578de643fb08b32b4b8afb2db77','c46b36d8600655e7eda58339876a7a8a',NULL,1764576000,1764583200,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('c062cc9364069bb6bcfac734d6ec5076','728f1578de643fb08b32b4b8afb2db77','84f273f3d663b6b54dd0635ce0ae5ec2',NULL,1761552000,1761559200,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('cde83098d29a75de33e76a71b8a71a21','728f1578de643fb08b32b4b8afb2db77','1199f2c43a6ddcd05fd61456e6ac1451','',1736755200,1736762400,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('cf0dd39936bfed59ba593578ee01e2ec','728f1578de643fb08b32b4b8afb2db77','2674f544de3a8a868427bf952d450e3f',NULL,1761552000,1761559200,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('dff787ec7eee719ddc29dd8f0584da8a','728f1578de643fb08b32b4b8afb2db77','ed58ca52de8adaaf548c637950a4c63d',NULL,1765180800,1765188000,NULL,1754464711,1754464711,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('d69c66f8122cb287e6f8591c365ec8a2','728f1578de643fb08b32b4b8afb2db77','54bf6481e536a7b0e854021424ee65d8',NULL,1763366400,1763373600,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('db0bab6836dec4471e855d1c42ede1b9','728f1578de643fb08b32b4b8afb2db77','b1bff05bed29159dc0954bfb0affb7fe',NULL,1763971200,1763978400,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
 ('e70aaf4655d2de64852b2212b04a0e67','728f1578de643fb08b32b4b8afb2db77','a8f402ada308f68d5f24374923d25580','',1737964800,1737972000,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
-('ed37afe9ff2d96c489d5cf6e2b4fba80','728f1578de643fb08b32b4b8afb2db77','e8212b6e58109ae94ad2a31796c4a520','',1731312000,1731319200,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','','');
+('ed37afe9ff2d96c489d5cf6e2b4fba80','728f1578de643fb08b32b4b8afb2db77','e8212b6e58109ae94ad2a31796c4a520','',1731312000,1731319200,NULL,1716456982,1716456982,'',0,0,'76ed43ef286fb55cf9e41beadb484a9f','',''),
+('f198b078ec03d31efa900a9fe0d5d124','728f1578de643fb08b32b4b8afb2db77','a99537ed3b6af7e7da12466c038fe074',NULL,1767600000,1767607200,NULL,1757497472,1757497472,NULL,0,0,'76ed43ef286fb55cf9e41beadb484a9f','','');
 /*!40000 ALTER TABLE `resource_bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_categories`
---
 
 LOCK TABLES `resource_categories` WRITE;
 /*!40000 ALTER TABLE `resource_categories` DISABLE KEYS */;
@@ -10048,10 +7641,6 @@ INSERT INTO `resource_categories` VALUES
 /*!40000 ALTER TABLE `resource_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_category_properties`
---
 
 LOCK TABLES `resource_category_properties` WRITE;
 /*!40000 ALTER TABLE `resource_category_properties` DISABLE KEYS */;
@@ -10086,20 +7675,12 @@ INSERT INTO `resource_category_properties` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_permissions`
---
-
 LOCK TABLES `resource_permissions` WRITE;
 /*!40000 ALTER TABLE `resource_permissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `resource_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_properties`
---
 
 LOCK TABLES `resource_properties` WRITE;
 /*!40000 ALTER TABLE `resource_properties` DISABLE KEYS */;
@@ -10165,10 +7746,6 @@ INSERT INTO `resource_properties` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_property_definitions`
---
-
 LOCK TABLES `resource_property_definitions` WRITE;
 /*!40000 ALTER TABLE `resource_property_definitions` DISABLE KEYS */;
 set autocommit=0;
@@ -10190,20 +7767,12 @@ INSERT INTO `resource_property_definitions` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_property_groups`
---
-
 LOCK TABLES `resource_property_groups` WRITE;
 /*!40000 ALTER TABLE `resource_property_groups` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `resource_property_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_request_appointments`
---
 
 LOCK TABLES `resource_request_appointments` WRITE;
 /*!40000 ALTER TABLE `resource_request_appointments` DISABLE KEYS */;
@@ -10212,37 +7781,25 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `resource_request_properties`
---
-
 LOCK TABLES `resource_request_properties` WRITE;
 /*!40000 ALTER TABLE `resource_request_properties` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `resource_request_properties` VALUES
-('1f3e5754b287962a1b5c74b4148bfe27','44fd30e8811d0d962582fa1a9c452bdd','400',1754464711,1754464711),
-('feb6119e0c41e15077a0ad25c0e853dc','44fd30e8811d0d962582fa1a9c452bdd','400',1754464711,1754464711);
+('0b31bbcce6c100290029aacc8af6498b','44fd30e8811d0d962582fa1a9c452bdd','400',1757497472,1757497472),
+('a268aebcd1269bd8535344aee38e6957','44fd30e8811d0d962582fa1a9c452bdd','400',1757497472,1757497472);
 /*!40000 ALTER TABLE `resource_request_properties` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_requests`
---
 
 LOCK TABLES `resource_requests` WRITE;
 /*!40000 ALTER TABLE `resource_requests` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `resource_requests` VALUES
-('1f3e5754b287962a1b5c74b4148bfe27','a07535cf2f8a72df33c12ddfa4b53dde','30b480d6506c4f2d2becceee29254e46','','205f3efb7997a0fc9755da2b535038da','cli','728f1578de643fb08b32b4b8afb2db77','',NULL,NULL,'requester',0,1754464711,1754464711,0,0,0,0),
-('feb6119e0c41e15077a0ad25c0e853dc','7cb72dab1bf896a0b55c6aa7a70a3a86','42c1555ea5ee40618f5151472354b9f1','','205f3efb7997a0fc9755da2b535038da','cli','728f1578de643fb08b32b4b8afb2db77','',NULL,NULL,'requester',0,1754464711,1754464711,0,0,0,0);
+('0b31bbcce6c100290029aacc8af6498b','7cb72dab1bf896a0b55c6aa7a70a3a86','a246423fcdcec4a9bd7563bd2b01930c','','205f3efb7997a0fc9755da2b535038da','cli','728f1578de643fb08b32b4b8afb2db77','',NULL,NULL,'requester',0,1757497472,1757497472,0,0,0,0),
+('a268aebcd1269bd8535344aee38e6957','a07535cf2f8a72df33c12ddfa4b53dde','f6045edc88d4d5cda9090b673be841b7','','205f3efb7997a0fc9755da2b535038da','cli','728f1578de643fb08b32b4b8afb2db77','',NULL,NULL,'requester',0,1757497472,1757497472,0,0,0,0);
 /*!40000 ALTER TABLE `resource_requests` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resource_temporary_permissions`
---
 
 LOCK TABLES `resource_temporary_permissions` WRITE;
 /*!40000 ALTER TABLE `resource_temporary_permissions` DISABLE KEYS */;
@@ -10250,10 +7807,6 @@ set autocommit=0;
 /*!40000 ALTER TABLE `resource_temporary_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `resources`
---
 
 LOCK TABLES `resources` WRITE;
 /*!40000 ALTER TABLE `resources` DISABLE KEYS */;
@@ -10271,10 +7824,6 @@ INSERT INTO `resources` VALUES
 /*!40000 ALTER TABLE `resources` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `roles`
---
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
@@ -10298,10 +7847,6 @@ INSERT INTO `roles` VALUES
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `roles_plugins`
---
 
 LOCK TABLES `roles_plugins` WRITE;
 /*!40000 ALTER TABLE `roles_plugins` DISABLE KEYS */;
@@ -10510,10 +8055,6 @@ INSERT INTO `roles_plugins` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `roles_studipperms`
---
-
 LOCK TABLES `roles_studipperms` WRITE;
 /*!40000 ALTER TABLE `roles_studipperms` DISABLE KEYS */;
 set autocommit=0;
@@ -10530,10 +8071,6 @@ INSERT INTO `roles_studipperms` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `roles_user`
---
-
 LOCK TABLES `roles_user` WRITE;
 /*!40000 ALTER TABLE `roles_user` DISABLE KEYS */;
 set autocommit=0;
@@ -10543,10 +8080,6 @@ INSERT INTO `roles_user` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `schedule_courses`
---
-
 LOCK TABLES `schedule_courses` WRITE;
 /*!40000 ALTER TABLE `schedule_courses` DISABLE KEYS */;
 set autocommit=0;
@@ -10554,20 +8087,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `schedule_entries`
---
-
 LOCK TABLES `schedule_entries` WRITE;
 /*!40000 ALTER TABLE `schedule_entries` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `schedule_entries` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `schema_version`
---
 
 LOCK TABLES `schema_version` WRITE;
 /*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
@@ -10578,16 +8103,12 @@ INSERT INTO `schema_version` VALUES
 ('studip','5.2',16),
 ('studip','5.3',31),
 ('studip','5.4',19),
-('studip','5.5',32),
+('studip','5.5',34),
 ('studip','5.5.23',1),
-('studip','6.0',51);
+('studip','6.0',52);
 /*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `scm`
---
 
 LOCK TABLES `scm` WRITE;
 /*!40000 ALTER TABLE `scm` DISABLE KEYS */;
@@ -10597,10 +8118,6 @@ INSERT INTO `scm` VALUES
 /*!40000 ALTER TABLE `scm` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `sem_classes`
---
 
 LOCK TABLES `sem_classes` WRITE;
 /*!40000 ALTER TABLE `sem_classes` DISABLE KEYS */;
@@ -10613,10 +8130,6 @@ INSERT INTO `sem_classes` VALUES
 /*!40000 ALTER TABLE `sem_classes` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `sem_tree`
---
 
 LOCK TABLES `sem_tree` WRITE;
 /*!40000 ALTER TABLE `sem_tree` DISABLE KEYS */;
@@ -10631,10 +8144,6 @@ INSERT INTO `sem_tree` VALUES
 /*!40000 ALTER TABLE `sem_tree` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `sem_types`
---
 
 LOCK TABLES `sem_types` WRITE;
 /*!40000 ALTER TABLE `sem_types` DISABLE KEYS */;
@@ -10658,10 +8167,6 @@ INSERT INTO `sem_types` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `semester_courses`
---
-
 LOCK TABLES `semester_courses` WRITE;
 /*!40000 ALTER TABLE `semester_courses` DISABLE KEYS */;
 set autocommit=0;
@@ -10671,36 +8176,24 @@ INSERT INTO `semester_courses` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `semester_data`
---
-
 LOCK TABLES `semester_data` WRITE;
 /*!40000 ALTER TABLE `semester_data` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `semester_data` VALUES
-('322f640f3f4643ebe514df65f1163eb1','SoSe 2025','',1743458400,1759269599,NULL,1744581600,1752962399,1,'',NULL,1754464710),
-('4967f0a483e36554b77e3dc47aa58941','WiSe 2025/2026','',1759269600,1774994399,NULL,1760306400,1771109999,1,'',NULL,1754464710);
+('322f640f3f4643ebe514df65f1163eb1','SoSe 2026','',1774994400,1790805599,NULL,1776031200,1784411999,1,'',NULL,1757497472),
+('4967f0a483e36554b77e3dc47aa58941','WiSe 2025/2026','',1759269600,1774994399,NULL,1760306400,1771109999,1,'',NULL,1757497472);
 /*!40000 ALTER TABLE `semester_data` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `semester_holiday`
---
 
 LOCK TABLES `semester_holiday` WRITE;
 /*!40000 ALTER TABLE `semester_holiday` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `semester_holiday` VALUES
-('704038f0cb3ea0a285ba0a453788ebed','','Unterbrechung','',1766358000,1767481200,NULL,1754464710);
+('704038f0cb3ea0a285ba0a453788ebed','','Unterbrechung','',1766358000,1767481200,NULL,1757497472);
 /*!40000 ALTER TABLE `semester_holiday` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `seminar_courseset`
---
 
 LOCK TABLES `seminar_courseset` WRITE;
 /*!40000 ALTER TABLE `seminar_courseset` DISABLE KEYS */;
@@ -10708,10 +8201,6 @@ set autocommit=0;
 /*!40000 ALTER TABLE `seminar_courseset` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `seminar_cycle_dates`
---
 
 LOCK TABLES `seminar_cycle_dates` WRITE;
 /*!40000 ALTER TABLE `seminar_cycle_dates` DISABLE KEYS */;
@@ -10722,10 +8211,6 @@ INSERT INTO `seminar_cycle_dates` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `seminar_inst`
---
-
 LOCK TABLES `seminar_inst` WRITE;
 /*!40000 ALTER TABLE `seminar_inst` DISABLE KEYS */;
 set autocommit=0;
@@ -10734,10 +8219,6 @@ INSERT INTO `seminar_inst` VALUES
 /*!40000 ALTER TABLE `seminar_inst` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `seminar_sem_tree`
---
 
 LOCK TABLES `seminar_sem_tree` WRITE;
 /*!40000 ALTER TABLE `seminar_sem_tree` DISABLE KEYS */;
@@ -10749,10 +8230,6 @@ INSERT INTO `seminar_sem_tree` VALUES
 /*!40000 ALTER TABLE `seminar_sem_tree` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `seminar_user`
---
 
 LOCK TABLES `seminar_user` WRITE;
 /*!40000 ALTER TABLE `seminar_user` DISABLE KEYS */;
@@ -10766,10 +8243,6 @@ INSERT INTO `seminar_user` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `seminar_user_notifications`
---
-
 LOCK TABLES `seminar_user_notifications` WRITE;
 /*!40000 ALTER TABLE `seminar_user_notifications` DISABLE KEYS */;
 set autocommit=0;
@@ -10777,20 +8250,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `seminar_userdomains`
---
-
 LOCK TABLES `seminar_userdomains` WRITE;
 /*!40000 ALTER TABLE `seminar_userdomains` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `seminar_userdomains` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `seminare`
---
 
 LOCK TABLES `seminare` WRITE;
 /*!40000 ALTER TABLE `seminare` DISABLE KEYS */;
@@ -10802,20 +8267,12 @@ INSERT INTO `seminare` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `separable_room_parts`
---
-
 LOCK TABLES `separable_room_parts` WRITE;
 /*!40000 ALTER TABLE `separable_room_parts` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `separable_room_parts` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `separable_rooms`
---
 
 LOCK TABLES `separable_rooms` WRITE;
 /*!40000 ALTER TABLE `separable_rooms` DISABLE KEYS */;
@@ -10824,20 +8281,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `session_data`
---
-
 LOCK TABLES `session_data` WRITE;
 /*!40000 ALTER TABLE `session_data` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `session_data` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `siteinfo_details`
---
 
 LOCK TABLES `siteinfo_details` WRITE;
 /*!40000 ALTER TABLE `siteinfo_details` DISABLE KEYS */;
@@ -10854,10 +8303,6 @@ INSERT INTO `siteinfo_details` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `siteinfo_rubrics`
---
-
 LOCK TABLES `siteinfo_rubrics` WRITE;
 /*!40000 ALTER TABLE `siteinfo_rubrics` DISABLE KEYS */;
 set autocommit=0;
@@ -10867,10 +8312,6 @@ INSERT INTO `siteinfo_rubrics` VALUES
 /*!40000 ALTER TABLE `siteinfo_rubrics` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `statusgruppe_user`
---
 
 LOCK TABLES `statusgruppe_user` WRITE;
 /*!40000 ALTER TABLE `statusgruppe_user` DISABLE KEYS */;
@@ -10884,10 +8325,6 @@ INSERT INTO `statusgruppe_user` VALUES
 /*!40000 ALTER TABLE `statusgruppe_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `statusgruppen`
---
 
 LOCK TABLES `statusgruppen` WRITE;
 /*!40000 ALTER TABLE `statusgruppen` DISABLE KEYS */;
@@ -10903,20 +8340,12 @@ INSERT INTO `statusgruppen` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `stock_images`
---
-
 LOCK TABLES `stock_images` WRITE;
 /*!40000 ALTER TABLE `stock_images` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `stock_images` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `studygroup_courses`
---
 
 LOCK TABLES `studygroup_courses` WRITE;
 /*!40000 ALTER TABLE `studygroup_courses` DISABLE KEYS */;
@@ -10925,20 +8354,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `studygroup_courses_proposals`
---
-
 LOCK TABLES `studygroup_courses_proposals` WRITE;
 /*!40000 ALTER TABLE `studygroup_courses_proposals` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `studygroup_courses_proposals` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `studygroup_invitations`
---
 
 LOCK TABLES `studygroup_invitations` WRITE;
 /*!40000 ALTER TABLE `studygroup_invitations` DISABLE KEYS */;
@@ -10947,20 +8368,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `studygroup_stgteil`
---
-
 LOCK TABLES `studygroup_stgteil` WRITE;
 /*!40000 ALTER TABLE `studygroup_stgteil` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `studygroup_stgteil` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `tags`
---
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
@@ -10969,20 +8382,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `tags_relations`
---
-
 LOCK TABLES `tags_relations` WRITE;
 /*!40000 ALTER TABLE `tags_relations` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `tags_relations` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `termin_related_groups`
---
 
 LOCK TABLES `termin_related_groups` WRITE;
 /*!40000 ALTER TABLE `termin_related_groups` DISABLE KEYS */;
@@ -10991,10 +8396,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `termin_related_persons`
---
-
 LOCK TABLES `termin_related_persons` WRITE;
 /*!40000 ALTER TABLE `termin_related_persons` DISABLE KEYS */;
 set autocommit=0;
@@ -11002,37 +8403,29 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `termine`
---
-
 LOCK TABLES `termine` WRITE;
 /*!40000 ALTER TABLE `termine` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `termine` VALUES
-('02191f8621da3f781ed714cae1d24e40','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1769414400,1769421600,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('0600718a336675ba27ea80121a4db9e2','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1767600000,1767607200,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('0afb3ee903d2679dce0d3e71796b0d15','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1760338800,1760346000,1754464710,1754464710,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('0da3ff500c2b610b559ad67ec69f8158','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1762761600,1762768800,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('1cc62381340bb933dce847648aa57c42','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1762156800,1762164000,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('25b8d290d6c8d1357053cff0d0f2c0c2','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1760943600,1760950800,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('2674f544de3a8a868427bf952d450e3f','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1761552000,1761559200,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('30b480d6506c4f2d2becceee29254e46','a07535cf2f8a72df33c12ddfa4b53dde','76ed43ef286fb55cf9e41beadb484a9f','',1771664400,1760788800,1754464711,1754464711,3,NULL,NULL,NULL),
-('42c1555ea5ee40618f5151472354b9f1','7cb72dab1bf896a0b55c6aa7a70a3a86','76ed43ef286fb55cf9e41beadb484a9f','',1753516800,1745064000,1754464711,1754464711,3,NULL,NULL,NULL),
-('89db52985137b9e9718eb3d26313b109','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1763971200,1763978400,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('ab30294bab1ca419cfe4217e8388c47c','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1763366400,1763373600,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('c46b36d8600655e7eda58339876a7a8a','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1764576000,1764583200,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('d2e6708b3c86b5be09ae480af133a1e4','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1768204800,1768212000,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('d8b107a56aaac63e3b64f1f4bbd267c7','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1765785600,1765792800,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('eb7f88966b07133303ffb858ed45f072','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1768809600,1768816800,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
-('ed58ca52de8adaaf548c637950a4c63d','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1765180800,1765188000,1754464711,1754464711,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL);
+('0cd215180837fd8197fd3964fbc927a3','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1760943600,1760950800,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('1100336edeb3559be81c8ec0eed9de98','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1765180800,1765188000,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('2560bfe8d0db4c15afbf03486062ea0f','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1768809600,1768816800,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('4622ed5d1a881419cc23a0f09e69a6c5','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1768204800,1768212000,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('54bf6481e536a7b0e854021424ee65d8','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1763366400,1763373600,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('77dfcab1e947ed4f45695c4b37841ab4','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1764576000,1764583200,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('84f273f3d663b6b54dd0635ce0ae5ec2','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1761552000,1761559200,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('868280ba53eb8a1820b5f5138d77c430','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1769414400,1769421600,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('95e7abe7524b3543eccca1d32af4e234','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1762761600,1762768800,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('9fd96bc4e43c95bd2f07518c9f71dfa1','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1760338800,1760346000,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('a246423fcdcec4a9bd7563bd2b01930c','7cb72dab1bf896a0b55c6aa7a70a3a86','76ed43ef286fb55cf9e41beadb484a9f','',1757750400,1757764800,1757497472,1757497472,3,NULL,NULL,NULL),
+('a99537ed3b6af7e7da12466c038fe074','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1767600000,1767607200,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('b1bff05bed29159dc0954bfb0affb7fe','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1763971200,1763978400,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('e2b816743e905dac408ce1d9617d6fd8','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1762156800,1762164000,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL),
+('f6045edc88d4d5cda9090b673be841b7','a07535cf2f8a72df33c12ddfa4b53dde','76ed43ef286fb55cf9e41beadb484a9f','',1771664400,1760788800,1757497472,1757497472,3,NULL,NULL,NULL),
+('f80cfa0eff9e3c51c17000662486c53d','a07535cf2f8a72df33c12ddfa4b53dde','cli','',1765785600,1765792800,1757497472,1757497472,1,NULL,'fc3c44f257e448e3cd36a88406a8a9c1',NULL);
 /*!40000 ALTER TABLE `termine` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `termsadmissions`
---
 
 LOCK TABLES `termsadmissions` WRITE;
 /*!40000 ALTER TABLE `termsadmissions` DISABLE KEYS */;
@@ -11041,20 +8434,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `themen`
---
-
 LOCK TABLES `themen` WRITE;
 /*!40000 ALTER TABLE `themen` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `themen` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `themen_termine`
---
 
 LOCK TABLES `themen_termine` WRITE;
 /*!40000 ALTER TABLE `themen_termine` DISABLE KEYS */;
@@ -11063,20 +8448,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `timedadmissions`
---
-
 LOCK TABLES `timedadmissions` WRITE;
 /*!40000 ALTER TABLE `timedadmissions` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `timedadmissions` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `tools_activated`
---
 
 LOCK TABLES `tools_activated` WRITE;
 /*!40000 ALTER TABLE `tools_activated` DISABLE KEYS */;
@@ -11124,20 +8501,12 @@ INSERT INTO `tools_activated` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `user_factorlist`
---
-
 LOCK TABLES `user_factorlist` WRITE;
 /*!40000 ALTER TABLE `user_factorlist` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `user_factorlist` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `user_info`
---
 
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
@@ -11152,10 +8521,6 @@ INSERT INTO `user_info` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `user_inst`
---
-
 LOCK TABLES `user_inst` WRITE;
 /*!40000 ALTER TABLE `user_inst` DISABLE KEYS */;
 set autocommit=0;
@@ -11168,20 +8533,12 @@ INSERT INTO `user_inst` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `user_online`
---
-
 LOCK TABLES `user_online` WRITE;
 /*!40000 ALTER TABLE `user_online` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `user_online` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `user_studiengang`
---
 
 LOCK TABLES `user_studiengang` WRITE;
 /*!40000 ALTER TABLE `user_studiengang` DISABLE KEYS */;
@@ -11193,20 +8550,12 @@ INSERT INTO `user_studiengang` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `user_token`
---
-
 LOCK TABLES `user_token` WRITE;
 /*!40000 ALTER TABLE `user_token` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `user_token` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `user_userdomains`
---
 
 LOCK TABLES `user_userdomains` WRITE;
 /*!40000 ALTER TABLE `user_userdomains` DISABLE KEYS */;
@@ -11215,20 +8564,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `user_visibility`
---
-
 LOCK TABLES `user_visibility` WRITE;
 /*!40000 ALTER TABLE `user_visibility` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `user_visibility` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `user_visibility_settings`
---
 
 LOCK TABLES `user_visibility_settings` WRITE;
 /*!40000 ALTER TABLE `user_visibility_settings` DISABLE KEYS */;
@@ -11237,20 +8578,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `userdomains`
---
-
 LOCK TABLES `userdomains` WRITE;
 /*!40000 ALTER TABLE `userdomains` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `userdomains` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `userfilter`
---
 
 LOCK TABLES `userfilter` WRITE;
 /*!40000 ALTER TABLE `userfilter` DISABLE KEYS */;
@@ -11259,20 +8592,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `userfilter_fields`
---
-
 LOCK TABLES `userfilter_fields` WRITE;
 /*!40000 ALTER TABLE `userfilter_fields` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `userfilter_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `userlimits`
---
 
 LOCK TABLES `userlimits` WRITE;
 /*!40000 ALTER TABLE `userlimits` DISABLE KEYS */;
@@ -11281,10 +8606,6 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `users_tfa`
---
-
 LOCK TABLES `users_tfa` WRITE;
 /*!40000 ALTER TABLE `users_tfa` DISABLE KEYS */;
 set autocommit=0;
@@ -11292,20 +8613,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `users_tfa_tokens`
---
-
 LOCK TABLES `users_tfa_tokens` WRITE;
 /*!40000 ALTER TABLE `users_tfa_tokens` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `users_tfa_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `widget_default`
---
 
 LOCK TABLES `widget_default` WRITE;
 /*!40000 ALTER TABLE `widget_default` DISABLE KEYS */;
@@ -11352,31 +8665,12 @@ INSERT INTO `widget_default` VALUES
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `widget_user`
---
-
 LOCK TABLES `widget_user` WRITE;
 /*!40000 ALTER TABLE `widget_user` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `widget_user` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `wiki_links`
---
-
-LOCK TABLES `wiki_links` WRITE;
-/*!40000 ALTER TABLE `wiki_links` DISABLE KEYS */;
-set autocommit=0;
-/*!40000 ALTER TABLE `wiki_links` ENABLE KEYS */;
-UNLOCK TABLES;
-commit;
-
---
--- Dumping data for table `wiki_online_editing_users`
---
 
 LOCK TABLES `wiki_online_editing_users` WRITE;
 /*!40000 ALTER TABLE `wiki_online_editing_users` DISABLE KEYS */;
@@ -11385,20 +8679,12 @@ set autocommit=0;
 UNLOCK TABLES;
 commit;
 
---
--- Dumping data for table `wiki_pages`
---
-
 LOCK TABLES `wiki_pages` WRITE;
 /*!40000 ALTER TABLE `wiki_pages` DISABLE KEYS */;
 set autocommit=0;
 /*!40000 ALTER TABLE `wiki_pages` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
-
---
--- Dumping data for table `wiki_versions`
---
 
 LOCK TABLES `wiki_versions` WRITE;
 /*!40000 ALTER TABLE `wiki_versions` DISABLE KEYS */;
@@ -11413,6 +8699,4 @@ commit;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-08-06  9:18:32
