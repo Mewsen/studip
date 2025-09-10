@@ -5,20 +5,20 @@
 <? if ($folder->start_time && !$folder->end_time) : ?>
     <strong>
         <?= sprintf(_('Sichtbar ab %s'),
-            strftime('%x %X', $folder->start_time)) ?>
+            date('d.m.Y H:i', $folder->start_time)) ?>
     </strong>
     <br>
 <? elseif (!$folder->start_time && $folder->end_time) : ?>
     <strong>
         <?= sprintf(_('Sichtbar bis %s'),
-            strftime('%x %X', $folder->end_time)) ?>
+            date('d.m.Y H:i', $folder->end_time)) ?>
     </strong>
     <br>
 <? elseif ($folder->start_time && $folder->end_time) : ?>
     <strong>
         <?= sprintf(_('Sichtbar von %s bis %s'),
-            strftime('%x %X', $folder->start_time),
-            strftime('%x %X', $folder->end_time)) ?>
+            date('d.m.Y H:i', $folder->start_time),
+            date('d.m.Y H:i', $folder->end_time)) ?>
     </strong>
     <br>
 <? endif ?>
