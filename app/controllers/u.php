@@ -11,6 +11,7 @@ class UController extends AuthenticatedController
             $this->redirect($this->url_for('start'));
             return;
         }
+        dd($short_url->path);
         $this->redirect(URLHelper::getURL($short_url->path));
     }
 }

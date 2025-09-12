@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\ShortUrls;
 
+use ShortUrl;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\ConflictException;
 use JsonApi\JsonApiController;
@@ -26,12 +27,14 @@ final class ShortUrlCreate extends JsonApiController
 
         $json = $this->validate($request, $args);
 
-        if (\ShortUrl::countBySql('path = ? AND user_id = ?', [ $json['data']['attributes']['path'], $user->id]) > 0) {
-            throw new ConflictException(_('Sie haben für diese Seite bereits eine Kurz-URL erstellt!'));
+        $short_url = ShortUrl::findOneBySQL('`path` = ? AND `user_id` = ?', [$json['data']['attributes']['path'], $user->id]);
+
+        if ($short_url) {
+            return $this->getContentResponse($short_url);
         }
 
         if (\ShortUrl::countBySql('alias = ?', [ $json['data']['attributes']['alias']])) {
-            throw new ConflictException(_('Sie haben für diese Seite bereits eine Kurz-URL erstellt!'));
+            throw new ConflictException(_('Der verwendete Alias existiert bereits.'));
         }
 
         $short_url = \ShortUrl::create([
