@@ -1,5 +1,10 @@
 <template>
-    <div :class="classNames" v-if="!closed">
+    <div v-if="!closed"
+         role="region"
+         :aria-label="label"
+         :aria-describedby="`messagebox-${counter}`"
+         :class="classNames"
+    >
         <div class="messagebox_buttons">
             <a v-if="hideDetails" class="details" href="" :title="$gettext('Detailanzeige umschalten')" @click.prevent.stop="closedDetails = !closedDetails">
                 <span>{{ $gettext('Detailanzeige umschalten') }}</span>
@@ -8,18 +13,24 @@
                 <span>{{ $gettext('Nachrichtenbox schließen') }}</span>
             </a>
         </div>
-        <slot></slot>
-        <div v-if="showDetails" class="messagebox_details">
-            <slot name="details">
-                <ul>
-                    <li v-for="(detail, index) in details" v-html="detail" :key="index"></li>
-                </ul>
-            </slot>
+        <div role="status" :id="`messagebox-${counter}`">
+            <slot></slot>
+            <div v-if="showDetails" class="messagebox_details">
+                <slot name="details">
+                    <ul>
+                        <li v-for="(detail, index) in details" v-html="detail" :key="index"></li>
+                    </ul>
+                </slot>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import {$gettext} from "../../assets/javascripts/lib/gettext";
+
+let counter = 0;
+
 export default {
     name: 'studip-message-box',
     emits: ['close'],
@@ -49,11 +60,21 @@ export default {
             return {
                 messagebox: true,
                 [`messagebox_${this.type}`]: true,
-                details_hidden: !this.showDetails,
+                details_hidden: this.hasDetails && !this.showDetails,
             };
         },
         hasDetails() {
             return !!this.$slots.details || this.details.length > 0;
+        },
+        label() {
+            const labels = {
+                exception: $gettext('Systemfehler'),
+                error:     $gettext('Fehler'),
+                warning:   $gettext('Warnung'),
+                info:      $gettext('Hinweis'),
+                success:   $gettext('Erfolg'),
+            }
+            return labels[this.type];
         },
         showDetails() {
             return this.hasDetails && !this.closedDetails;
@@ -70,6 +91,7 @@ export default {
         return {
             closed: false,
             closedDetails: this.hideDetails,
+            counter: counter++
         };
     },
 };
