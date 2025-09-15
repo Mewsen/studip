@@ -1,9 +1,23 @@
+spec:
+  inputs:
+    phpversion:
+      type: string
+      default: "8.1"
+    mariadbversion:
+      type: string
+      default: "10.2.7"
+    mysqlversion:
+      type: string
+      default: "8.0"
+
+---
+
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_REF_PROTECTED == "true"'
 
-image: studip/studip:tests-php8.1
+image: studip/studip:tests-php$[[ inputs.phpversion ]]
 
 variables:
   FF_NETWORK_PER_BUILD: 1
@@ -78,10 +92,10 @@ stages:
 
 .definitions:
   mariadb-service: &mariadb-service
-    - name: mariadb:10.2.7
+    - name: mariadb:$[[ inputs.mariadbversion ]]
       command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
   mysql-service: &mysql-service
-    - name: mysql:8.0
+    - name: mysql:$[[ inputs.mysqlversion ]]
       command: [ "--sql_mode=","--character-set-server=utf8mb4","--collation-server=utf8mb4_general_ci"]
   php-changed: &php-changed
     - changes:
