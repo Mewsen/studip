@@ -14,10 +14,10 @@
         <div style="margin-bottom: 7px;">
             <? if ($answer['user_id'] && $answer['user_id'] !== 'nobody') : ?>
                 <?= Avatar::getAvatar($answer['user_id'])->getImageTag(Avatar::SMALL) ?>
-                <span style="color: #888888; font-weight: bold; font-size: 0.8em;"><?= get_fullname($answer['user_id']) ?></span>
+                <span style="color: #888888; font-weight: bold; font-size: 0.8em;"><?= htmlReady(get_fullname($answer['user_id'])) ?></span>
             <? else : ?>
                 <?= Avatar::getAvatar($answer['user_id'])->getImageTag(Avatar::SMALL) ?>
-                <span style="color: #888888; font-weight: bold; font-size: 0.8em;"><?= get_fullname($answer['user_id']) ?></span>
+                <span style="color: #888888; font-weight: bold; font-size: 0.8em;"><?= htmlReady(get_fullname($answer['user_id'])) ?></span>
             <? endif ?>
         </div>
     <? endif ?>
