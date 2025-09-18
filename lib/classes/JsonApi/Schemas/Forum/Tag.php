@@ -8,18 +8,27 @@ class Tag extends SchemaProvider
 {
     const TYPE = 'forum-tags';
 
-    public function getId($tag): ?string
+    /**
+     * @param \Forum\DTO\Tag $resource
+     */
+    public function getId($resource): ?string
     {
-        return $tag->id;
+        return $resource->id;
     }
 
-    public function getAttributes($tag, ContextInterface $context): iterable
+    /**
+     * @param \Forum\DTO\Tag $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'name' => $tag->name
+            'name' => $resource->name
         ];
     }
 
+    /**
+     * @param \Forum\DTO\Tag $resource
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [];

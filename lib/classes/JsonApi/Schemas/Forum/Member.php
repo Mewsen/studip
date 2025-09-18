@@ -8,21 +8,30 @@ class Member extends SchemaProvider
 {
     const TYPE = 'forum-members';
 
-    public function getId($member): ?string
+    /**
+     * @param \Forum\DTO\Member $resource
+     */
+    public function getId($resource): ?string
     {
-        return $member->id;
+        return $resource->id;
     }
 
-    public function getAttributes($member, ContextInterface $context): iterable
+    /**
+     * @param \Forum\DTO\Member $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'username' => $member->username,
-            'name' => $member->name,
-            'role' => $member->role,
-            'avatar_url' => $member->avatar_url
+            'username' => $resource->username,
+            'name' => $resource->name,
+            'role' => $resource->role,
+            'avatar_url' => $resource->avatar_url
         ];
     }
 
+    /**
+     * @param \Forum\DTO\Member $resource
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [];

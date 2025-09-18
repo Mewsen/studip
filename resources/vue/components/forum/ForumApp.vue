@@ -14,7 +14,7 @@ const fetchConfigs = async () => {
             tileLayout: response.meta['tile-layout'],
         });
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     }
 }
 

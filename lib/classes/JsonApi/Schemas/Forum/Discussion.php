@@ -17,31 +17,43 @@ class Discussion extends SchemaProvider
     const REL_MEMBERS = 'members';
     const REL_TAGS = 'tags';
 
-    public function getId($discussion): ?string
+    /**
+     * @param \Forum\Discussion $resource
+     */
+    public function getId($resource): ?string
     {
-        return $discussion->discussion_id;
+        return $resource->discussion_id;
     }
 
-    public function getAttributes($discussion, ContextInterface $context): iterable
+    /**
+     * @param \Forum\Discussion $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'title' => $discussion->title,
-            'closed-at' => $discussion->closed_at ? date('c', $discussion->closed_at) : null,
-            'sticky' => (bool) $discussion->sticky,
-            'view-count' => (int) $discussion->view_count,
-            'mkdate' => date('c', $discussion->mkdate),
-            'chdate' => date('c', $discussion->chdate)
+            'title' => $resource->title,
+            'closed-at' => $resource->closed_at ? date('c', $resource->closed_at) : null,
+            'sticky' => (bool) $resource->sticky,
+            'view-count' => (int) $resource->view_count,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
     }
 
-    public function hasResourceMeta($discussion): bool
+    /**
+     * @param \Forum\Discussion $resource
+     */
+    public function hasResourceMeta($resource): bool
     {
         return true;
     }
 
-    public function getResourceMeta($discussion)
+    /**
+     * @param \Forum\Discussion $resource
+     */
+    public function getResourceMeta($resource)
     {
-        $metaData = $discussion->getMetaData();
+        $metaData = $resource->getMetaData();
 
         return [
             'postings-count' => (int) $metaData['postings_count'],
@@ -51,22 +63,25 @@ class Discussion extends SchemaProvider
         ];
     }
 
-    public function getRelationships($discussion, ContextInterface $context): iterable
+    /**
+     * @param \Forum\Discussion $resource
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
 
-        $relationships = $this->addPostingsRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_POSTINGS));
-        $relationships = $this->addTopicRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_TOPIC));
-        $relationships = $this->addCategoryRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_CATEGORY));
-        $relationships = $this->addUserRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_USER));
-        $relationships = $this->addDiscussionTypeRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_DISCUSSION_TYPE));
-        $relationships = $this->addMembersRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_MEMBERS));
-        $relationships = $this->addTagsRelationship($relationships, $discussion, $this->shouldInclude($context, self::REL_TAGS));
+        $relationships = $this->addPostingsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_POSTINGS));
+        $relationships = $this->addTopicRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_TOPIC));
+        $relationships = $this->addCategoryRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_CATEGORY));
+        $relationships = $this->addUserRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_USER));
+        $relationships = $this->addDiscussionTypeRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSION_TYPE));
+        $relationships = $this->addMembersRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_MEMBERS));
+        $relationships = $this->addTagsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_TAGS));
 
         return $relationships;
     }
 
-    private function addPostingsRelationship(array $relationships, $discussion, bool $withPostings = false)
+    private function addPostingsRelationship(array $relationships, \Forum\Discussion $discussion, bool $withPostings = false)
     {
         if ($withPostings) {
             $relationships[self::REL_POSTINGS] = [
@@ -80,7 +95,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addTopicRelationship(array $relationships, $discussion, bool $withTopic = false)
+    private function addTopicRelationship(array $relationships, \Forum\Discussion $discussion, bool $withTopic = false)
     {
         if ($withTopic) {
             $relationships[self::REL_TOPIC] = [
@@ -94,7 +109,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addCategoryRelationship(array $relationships, $discussion, bool $withCategory = false)
+    private function addCategoryRelationship(array $relationships, \Forum\Discussion $discussion, bool $withCategory = false)
     {
         $category = $discussion->category;
         if ($withCategory && $category) {
@@ -109,7 +124,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addUserRelationship(array $relationships, $discussion, bool $withUser = false)
+    private function addUserRelationship(array $relationships, \Forum\Discussion $discussion, bool $withUser = false)
     {
         $user = $discussion->user;
         if ($withUser && $user) {
@@ -124,7 +139,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addDiscussionTypeRelationship(array $relationships, $discussion, bool $withDiscussionType = false)
+    private function addDiscussionTypeRelationship(array $relationships, \Forum\Discussion $discussion, bool $withDiscussionType = false)
     {
         $discussionType = $discussion->discussion_type;
 
@@ -140,7 +155,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addMembersRelationship(array $relationships, $discussion, bool $withMembers = false)
+    private function addMembersRelationship(array $relationships, \Forum\Discussion $discussion, bool $withMembers = false)
     {
         if ($withMembers) {
             $relationships[self::REL_MEMBERS] = [
@@ -154,7 +169,7 @@ class Discussion extends SchemaProvider
         return $relationships;
     }
 
-    private function addTagsRelationship(array $relationships, $discussion, bool $withTags = false)
+    private function addTagsRelationship(array $relationships, \Forum\Discussion $discussion, bool $withTags = false)
     {
         if ($withTags) {
             $relationships[self::REL_TAGS] = [

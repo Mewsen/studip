@@ -39,7 +39,7 @@ const fetchDiscussions = async (_, offset = 0) => {
 
         discussions.value = await deserializeJSONAPIResponse(response);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

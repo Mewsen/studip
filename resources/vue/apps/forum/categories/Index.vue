@@ -49,7 +49,7 @@ const fetchCategories = async (_, offset = 0) => {
 
         categories.value = await deserializeJSONAPIResponse(response);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     }
 }
 
@@ -76,7 +76,7 @@ const updateCategoriesOrder = async () => {
             { data: { data } }
         );
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     }
 }
 

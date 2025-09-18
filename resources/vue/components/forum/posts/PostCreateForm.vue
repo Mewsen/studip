@@ -109,7 +109,7 @@ const storePost = async () => {
 
         STUDIP.Report.success($gettext("Der Beitrag wurde gespeichert."));
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

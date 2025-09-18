@@ -70,7 +70,7 @@ const storeReaction = async (emoji) => {
         forumDiscussionPost.addPostReaction(reaction, props.posting_id);
         showReactions.value = false;
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     }
 }
 
@@ -79,7 +79,7 @@ const deleteReaction = async (reactionId) => {
         await STUDIP.jsonapi.withPromises().DELETE(`forum-posting-reactions/${reactionId}`);
         forumDiscussionPost.removePostReaction(reactionId, props.posting_id);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     }
 }
 
