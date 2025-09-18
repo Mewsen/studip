@@ -8,55 +8,70 @@ trait StudipTreeNodeCourseTrait
         string $searchterm = '',
         array $courses = []
     ): array {
+        $joins = [];
+        $conditions = [];
         $parameters = [];
         $order_by = [];
 
-        $condition = " JOIN `seminare` s ON (s.`Seminar_id` = {$alias}.`seminar_id`)";
+        $joins[] = "JOIN `seminare` s ON (s.`Seminar_id` = {$alias}.`seminar_id`)";
 
         if ($semester_id !== 'all') {
-            $condition .= " LEFT JOIN `semester_courses` sc ON ({$alias}.`seminar_id` = sc.`course_id`)
-                  LEFT JOIN `semester_data` sd USING (`semester_id`)
-                  WHERE (sc.`semester_id` = :semester OR sc.`semester_id` IS NULL)";
+            $joins[] = "LEFT JOIN `semester_courses` sc ON (s.`seminar_id` = sc.`course_id`)";
+            $joins[] = "LEFT JOIN `semester_data` sd USING (`semester_id`)";
+            $conditions[] = "(sc.`semester_id` = :semester OR sc.`semester_id` IS NULL)";
             $parameters[':semester'] = $semester_id;
             $order_by[] = 'sd.`beginn`';
-        } else {
-            $condition .= " WHERE 1";
         }
 
-        if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
-            $condition .= " AND s.`visible` = 1";
+        if (!$GLOBALS['perm']->have_perm(Config::get()->getValue('SEM_VISIBILITY_PERM'))) {
+            $conditions[] = "s.`visible` = 1";
         }
 
-        if ($sem_class) {
-            $condition .= "  AND s.`status` IN (:types)";
-            $parameters['types'] = array_map(
-                function ($type) {
-                    return $type['id'];
-                },
-                array_filter(
-                    SemType::getTypes(),
-                    function ($t) use ($sem_class) {
-                        return $t['class'] === $sem_class;
-                    }
-                )
-            );
+        if ($sem_class !== 0) {
+            $conditions[] = "s.`status` IN (:types)";
+            $semclass = new SemClass($sem_class);
+            $parameters['types'] = array_keys($semclass->getSemTypes());
         }
 
         if ($searchterm) {
-            $condition .= " AND s.`Name` LIKE :searchterm";
+            $lang_name = "s.`Name`";
+            if (I18N::isEnabled() && $_SESSION['_language'] !== I18NString::getDefaultLanguage()) {
+                $lang_name = "IFNULL(`i18n`.`value`, {$lang_name})";
+
+                $joins[] = "LEFT JOIN `i18n`
+                          ON `i18n`.`object_id` = s.`Seminar_id`
+                            AND `i18n`.`table` = 'seminare'
+                            AND `i18n`.`field` = 'name'
+                            AND `lang` = :language";
+                $parameters['language'] = $_SESSION['_language'];
+            }
+
             $parameters['searchterm'] = '%' . trim($searchterm) . '%';
+
+            # Search by lecturer's name
+            $joins[] = "LEFT JOIN `seminar_user` su ON (su.`Seminar_id` = s.`Seminar_id` AND su.`status` = 'dozent')";
+            $joins[] = "LEFT JOIN `auth_user_md5` a ON (a.`user_id` = su.`user_id`)";
+
+            $conditions[] = '(' . implode(' OR ', [
+                "CONCAT(IFNULL(s.`VeranstaltungsNummer`, '') , ' ', {$lang_name}) LIKE :searchterm",
+                "CONCAT(a.`Nachname`, ', ', a.`Vorname`, ' ', a.`Nachname`) LIKE :searchterm"
+            ]) . ')';
         }
 
         if ($courses) {
-            $condition .= " AND {$alias}.`seminar_id` IN (:courses)";
+            $conditions = "s.`seminar_id` IN (:courses)";
             $parameters['courses'] = $courses;
         }
 
-        if (Config::get()->IMPORTANT_SEMNUMBER) {
+        if (Config::get()->getValue('IMPORTANT_SEMNUMBER')) {
             $order_by[] = 's.`VeranstaltungsNummer`';
         }
         $order_by[] = 's.`Name`';
 
-        return [$condition, $parameters, $order_by];
+        return [
+            implode(' ', $joins) . ' WHERE ' . implode(' AND ', $conditions),
+            $parameters,
+            $order_by
+        ];
     }
 }
