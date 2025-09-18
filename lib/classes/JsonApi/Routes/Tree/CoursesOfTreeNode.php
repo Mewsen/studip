@@ -8,11 +8,18 @@ use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use StudipTreeNode;
 
 class CoursesOfTreeNode extends JsonApiController
 {
     protected $allowUnrecognizedParams = true;
-    protected $allowedFilteringParameters = ['q', 'semester', 'semclass', 'recursive', 'ids'];
+    protected $allowedFilteringParameters = [
+        'q',
+        'semester',
+        'semclass',
+        'recursive',
+        'ids',
+    ];
     protected $allowedIncludePaths = [
         'blubber-threads',
         'end-semester',
@@ -38,7 +45,13 @@ class CoursesOfTreeNode extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        list($classname, $id) = explode('_', $args['id']);
+        /**
+         * @var class-string<StudipTreeNode> $classname
+         */
+        [$classname, $id] = explode('_', $args['id']);
+        if (!class_exists($classname) || !is_subclass_of($classname, StudipTreeNode::class)) {
+            throw new BadRequestException('Invalid class name.');
+        }
 
         $node = $classname::getNode($id);
         if (!$node) {
@@ -52,7 +65,7 @@ class CoursesOfTreeNode extends JsonApiController
 
         $filters = $this->getContextFilters();
 
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        [$offset, $limit] = $this->getOffsetAndLimit();
         $courses = \SimpleCollection::createFromArray(
             $node->getCourses(
                 $filters['semester'],
@@ -95,7 +108,7 @@ class CoursesOfTreeNode extends JsonApiController
         }
     }
 
-    private function getContextFilters()
+    private function getContextFilters(): array
     {
         $defaults = [
             'q' => '',
