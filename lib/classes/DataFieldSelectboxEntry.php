@@ -93,7 +93,7 @@ class DataFieldSelectboxEntry extends DataFieldEntry
     public function getDisplayValue($entities = true)
     {
         $value = $this->is_assoc_param
-               ? $this->type_param[$this->getValue()]
+               ? $this->type_param[$this->getValue()] ?? ''
                : $this->getValue();
         return $entities ? htmlReady($value) : $value;
     }
