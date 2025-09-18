@@ -63,7 +63,7 @@ const fetchSubscribedDiscussions = async (_, offset = 0) => {
 
         subscriptions.value = data.map(subscriptionTransformer);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

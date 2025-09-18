@@ -3,7 +3,6 @@
 namespace JsonApi\Schemas\Forum;
 
 use JsonApi\Schemas\SchemaProvider;
-use JsonApi\Schemas\Studip;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
@@ -13,45 +12,43 @@ class Topic extends SchemaProvider
     const REL_CATEGORY = 'category';
     const REL_DISCUSSION = 'discussion';
 
-    public function getId($topic): ?string
+    /**
+     * @param \Forum\Topic $resource
+     */
+    public function getId($resource): ?string
     {
-        return $topic->topic_id;
+        return $resource->topic_id;
     }
 
     /**
      * @inheritdoc
-     *
-     * @param \Forum\Topic $topic
+     * @param \Forum\Topic $resource
      */
-    public function getAttributes($topic, ContextInterface $context): iterable
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'name' => $topic->name,
-            'description' => $topic->description,
-            'position' => (int) $topic->position,
-            'mkdate' => date('c', $topic->mkdate),
-            'chdate' => date('c', $topic->chdate)
+            'name' => $resource->name,
+            'description' => $resource->description,
+            'position' => (int) $resource->position,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
      }
 
     /**
-     * @inheritdoc
-     *
-     * @param \Forum\Topic $topic
+     * @param \Forum\Topic $resource
      */
-    public function hasResourceMeta($topic): bool
+    public function hasResourceMeta($resource): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param \Forum\Topic $topic
+     * @param \Forum\Topic $resource
      */
-    public function getResourceMeta($topic)
+    public function getResourceMeta($resource)
     {
-        $metaData = $topic->getMetaData();
+        $metaData = $resource->getMetaData();
 
         return [
             'discussions-count' => (int) $metaData['discussions_count'],
@@ -63,20 +60,18 @@ class Topic extends SchemaProvider
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param \Forum\Topic $topic
+     * @param \Forum\Topic $resource
      */
-    public function getRelationships($topic, ContextInterface $context): iterable
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
-        $relationships = $this->addCategoryRelationship($relationships, $topic, $this->shouldInclude($context, self::REL_CATEGORY));
-        $relationships = $this->addDiscussionsRelationship($relationships, $topic, $this->shouldInclude($context, self::REL_DISCUSSION));
+        $relationships = $this->addCategoryRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_CATEGORY));
+        $relationships = $this->addDiscussionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSION));
 
         return $relationships;
     }
 
-    private function addCategoryRelationship($relationships, $topic, $withCategory = false)
+    private function addCategoryRelationship(array $relationships, \Forum\Topic $topic, bool $withCategory = false)
     {
         if ($withCategory) {
             $relationships[self::REL_CATEGORY] = [
@@ -90,7 +85,7 @@ class Topic extends SchemaProvider
         return $relationships;
     }
 
-    private function addDiscussionsRelationship($relationships, $topic, $withDiscussions = false)
+    private function addDiscussionsRelationship(array $relationships, \Forum\Topic $topic, bool $withDiscussions = false)
     {
         if ($withDiscussions) {
             $relationships[self::REL_DISCUSSION] = [

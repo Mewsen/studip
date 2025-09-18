@@ -17,28 +17,42 @@ class Posting extends SchemaProvider
     const REL_REACTIONS_USER = 'reactions.user';
     const REL_OPENGRAPH_URLS = 'opengraph-urls';
 
-    public function getId($posting): ?string
+    /**
+     * @param \Forum\Posting $resource
+     */
+    public function getId($resource): ?string
     {
-        return $posting->posting_id;
+        return $resource->posting_id;
     }
 
-    public function getAttributes($posting, ContextInterface $context): iterable
+    /**
+     * @inheritDoc
+     * @param \Forum\Posting $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'content' => \Studip\Markup::markupToHtml($posting->content),
-            'content-html' => formatReady($posting->content),
-            'anonymous' => (bool) $posting->anonymous,
-            'mkdate' => date('c', $posting->mkdate),
-            'chdate' => date('c', $posting->chdate)
+            'content' => \Studip\Markup::markupToHtml($resource->content),
+            'content-html' => formatReady($resource->content),
+            'anonymous' => (bool) $resource->anonymous,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
     }
 
-    public function hasResourceMeta($posting): bool
+    /**
+     * @param \Forum\Posting $resource
+     */
+    public function hasResourceMeta($resource): bool
     {
         return true;
     }
 
-    public function getResourceMeta($posting)
+    /**
+     * @inheritDoc
+     * @param \Forum\Posting $resource
+     */
+    public function getResourceMeta($resource)
     {
         return [
             self::REL_OPENGRAPH_URLS => array_map(fn($og) => [
@@ -47,22 +61,25 @@ class Posting extends SchemaProvider
                 'title' => $og['title'],
                 'description' => $og['description'],
                 'image' => $og['image'],
-            ], $posting->getOpenGraphURLs())
+            ], $resource->getOpenGraphURLs())
         ];
     }
 
-    public function getRelationships($posting, ContextInterface $context): iterable
+    /**
+     * @param \Forum\Posting $resource
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
-        $relationships = $this->addAuthorRelationship($relationships, $posting, $this->shouldInclude($context, self::REL_AUTHOR));
-        $relationships = $this->addDiscussionRelationship($relationships, $posting, $this->shouldInclude($context, self::REL_DISCUSSION));
-        $relationships = $this->addPostingRelationship($relationships, $posting, $this->shouldInclude($context, self::REL_POSTING));
-        $relationships = $this->addReactionsRelationship($relationships, $posting, $this->shouldInclude($context, self::REL_REACTIONS));
+        $relationships = $this->addAuthorRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_AUTHOR));
+        $relationships = $this->addDiscussionRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSION));
+        $relationships = $this->addPostingRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_POSTING));
+        $relationships = $this->addReactionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_REACTIONS));
 
         return $relationships;
     }
 
-    private function addAuthorRelationship($relationships, $posting, $withAuthor = false)
+    private function addAuthorRelationship(array $relationships, \Forum\Posting $posting, $withAuthor = false)
     {
         $author = $posting->author;
 
@@ -78,7 +95,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addDiscussionRelationship($relationships, $posting, $withDiscussion = false)
+    private function addDiscussionRelationship(array $relationships, \Forum\Posting $posting, $withDiscussion = false)
     {
         if ($withDiscussion) {
             $relationships[self::REL_DISCUSSION] = [
@@ -92,7 +109,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addPostingRelationship($relationships, $posting, $withPosting = false)
+    private function addPostingRelationship(array $relationships, \Forum\Posting $posting, $withPosting = false)
     {
         $posting = $posting->posting;
 
@@ -108,7 +125,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addReactionsRelationship($relationships, $posting, $withReactions = false)
+    private function addReactionsRelationship(array $relationships, \Forum\Posting $posting, $withReactions = false)
     {
         if ($withReactions) {
             $relationships[self::REL_REACTIONS] = [

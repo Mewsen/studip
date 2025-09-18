@@ -13,71 +13,79 @@ class Subscription extends SchemaProvider
     const REL_RANGE = 'range';
     const REL_SUBJECT = 'subject';
 
-    public function getId($subscription): ?string
+    /**
+     * @param \Forum\Subscription $resource
+     */
+    public function getId($resource): ?string
     {
-        return $subscription->id;
+        return $resource->id;
     }
 
-    public function getAttributes($subscription, ContextInterface $context): iterable
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'notification-type' => $subscription->notification_type,
-            'mkdate' => date('c', $subscription->mkdate),
-            'chdate' => date('c', $subscription->chdate)
+            'notification-type' => $resource->notification_type,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
     }
 
-
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param \Forum\Subscription $resource
      */
-    public function getRelationships($subscription, ContextInterface $context): iterable
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
-        $isPrimary = $context->getPosition()->getLevel() === 0;
-        $includeList = $context->getIncludePaths();
-
         $relationships = [];
-        if ($isPrimary) {
-            $relationships = $this->addUserRelationship($relationships, $subscription, $includeList);
-            $relationships = $this->addSubjectRelationship($relationships, $subscription, $includeList);
-            $relationships = $this->addRangeRelationship($relationships, $subscription, $includeList);
+
+        $relationships = $this->addUserRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_USER));
+        $relationships = $this->addSubjectRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_SUBJECT));
+        $relationships = $this->addRangeRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_RANGE));
+
+        return $relationships;
+    }
+
+    private function addUserRelationship(array $relationships, \Forum\Subscription $subscription, bool $withUser = false)
+    {
+        $user = $subscription->user;
+
+        if ($withUser && $user) {
+            $relationships[self::REL_USER] = [
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->createLinkToResource($user)
+                ],
+                self::RELATIONSHIP_DATA => $user
+            ];
         }
 
         return $relationships;
     }
 
-    private function addUserRelationship(array $relationships, $subscription, array $includeList)
+    private function addSubjectRelationship(array $relationships, $subscription, bool $withSubject = false)
     {
-        $relationships[self::REL_USER] = [
-            self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($subscription->user)
-            ],
-            self::RELATIONSHIP_DATA => $subscription->user
-        ];
+        $subject = $subscription->subject_object;
+
+        if ($withSubject && $subject) {
+            $relationships[self::REL_SUBJECT] = [
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->createLinkToResource($subject)
+                ],
+                self::RELATIONSHIP_DATA => $subject
+            ];
+        }
 
         return $relationships;
     }
 
-    private function addSubjectRelationship(array $relationships, $subscription, array $includeList)
+    private function addRangeRelationship(array $relationships, $subscription, bool $withRange = false)
     {
-        $relationships[self::REL_SUBJECT] = [
-            self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($subscription->subject_object)
-            ],
-            self::RELATIONSHIP_DATA => $subscription->subject_object
-        ];
-
-        return $relationships;
-    }
-
-    private function addRangeRelationship(array $relationships, $subscription, $includeList)
-    {
-        $relationships[self::REL_RANGE] = [
-            self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($subscription->range),
-            ],
-            self::RELATIONSHIP_DATA => $subscription->range,
-        ];
+        if ($withRange) {
+            $relationships[self::REL_RANGE] = [
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->createLinkToResource($subscription->range),
+                ],
+                self::RELATIONSHIP_DATA => $subscription->range,
+            ];
+        }
 
         return $relationships;
     }

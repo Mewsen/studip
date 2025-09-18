@@ -61,7 +61,7 @@ const deletePost = async (post) => {
                 forumDiscussionPost.removePost(post.id);
                 STUDIP.Report.success($gettext('Der Beitrag wurde gelöscht.'));
             } catch (error) {
-                STUDIP.Report.error(error.statusText);
+                STUDIP.Report.error(error);
             }
         },
         STUDIP.Dialog.close());
@@ -140,10 +140,10 @@ const removePostHighlight = id => {
                     >
                         {{ post.author.name }}
                     </a>
-                    <em v-if="post.chdate > post.mkdate">
+                    <span v-if="post.chdate > post.mkdate">
                         {{ $gettext('Bearbeitet: ') }}
                         <StudipDateTime :iso="post.chdate" :relative="true" />
-                    </em>
+                    </span>
                     <StudipDateTime v-else :iso="post.mkdate" :relative="true" />
                 </div>
             </div>

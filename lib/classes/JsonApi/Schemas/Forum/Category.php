@@ -10,31 +10,43 @@ class Category extends SchemaProvider
     const TYPE = 'forum-categories';
     const REL_TOPICS = 'topics';
 
-    public function getId($category): ?string
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function getId($resource): ?string
     {
-        return $category->id;
+        return $resource->id;
     }
 
-    public function getAttributes($category, ContextInterface $context): iterable
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'name' => $category->name,
-            'description' => $category->description,
-            'color' => $category->color,
-            'position' => (int) $category->position,
-            'mkdate' => date('c', $category->mkdate),
-            'chdate' => date('c', $category->chdate)
+            'name' => $resource->name,
+            'description' => $resource->description,
+            'color' => $resource->color,
+            'position' => (int) $resource->position,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
     }
 
-    public function hasResourceMeta($category): bool
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function hasResourceMeta($resource): bool
     {
         return true;
     }
 
-    public function getResourceMeta($category)
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function getResourceMeta($resource)
     {
-        $metaData = $category->getMetaData();
+        $metaData = $resource->getMetaData();
 
         return [
             'topics-count' => (int) $metaData['topics_count'],
@@ -46,18 +58,18 @@ class Category extends SchemaProvider
         ];
     }
 
-    public function getRelationships($category, ContextInterface $context): iterable
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
-        $relationships = $this->addTopicsRelationship($relationships, $category, $this->shouldInclude($context, self::REL_TOPICS));
+        $relationships = $this->addTopicsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_TOPICS));
 
         return $relationships;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    private function addTopicsRelationship($relationships, $category, $withTopics = false)
+    private function addTopicsRelationship(array $relationships, \Forum\Category $category, $withTopics = false)
     {
         if ($withTopics) {
             $relationships[self::REL_TOPICS] = [

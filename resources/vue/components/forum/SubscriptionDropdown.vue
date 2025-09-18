@@ -118,7 +118,7 @@ const subscribe = async (notification_type = 'all') => {
 
         STUDIP.Report.success($gettext('Erfolgreich abonniert!'), subscriptionButtonLabel);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

@@ -26,7 +26,7 @@ const onTextSelected = event => {
 }
 
 const newSelectionHandler = () => {
-    if(! document.getSelection().toString()) {
+    if(!document.getSelection().toString() && actionsRef.value) {
         actionsRef.value.style.display = 'none';
     }
 }

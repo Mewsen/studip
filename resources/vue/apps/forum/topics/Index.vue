@@ -42,7 +42,7 @@ const fetchTopics = async (_, offset = 0) => {
         const data = await deserializeJSONAPIResponse(response);
         topics.value = data.map(topicTransformer);
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

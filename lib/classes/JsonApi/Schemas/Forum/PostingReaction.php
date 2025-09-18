@@ -12,36 +12,41 @@ class PostingReaction extends SchemaProvider
     const REL_POSTING = 'posting';
     const REL_USER = 'user';
 
-    public function getId($postingReaction): ?string
+    /**
+     * @param \Forum\PostingReaction $resource
+     */
+    public function getId($resource): ?string
     {
-        return $postingReaction->id;
+        return $resource->id;
     }
 
-    public function getAttributes($postingReaction, ContextInterface $context): iterable
+    /**
+     * @param \Forum\PostingReaction $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'emoji' => $postingReaction->emoji,
-            'mkdate' => date('c', $postingReaction->mkdate),
-            'chdate' => date('c', $postingReaction->chdate)
+            'emoji' => $resource->emoji,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate)
         ];
     }
 
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param \Forum\PostingReaction $resource
      */
-    public function getRelationships($postingReaction, ContextInterface $context): iterable
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
 
-        $relationships = $this->addPostingRelationship($relationships, $postingReaction, $this->shouldInclude($context, self::REL_POSTING));
-        $relationships = $this->addUserRelationship($relationships, $postingReaction, $this->shouldInclude($context, self::REL_USER));
+        $relationships = $this->addPostingRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_POSTING));
+        $relationships = $this->addUserRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_USER));
 
         return $relationships;
     }
 
-
-    private function addPostingRelationship(array $relationships, $postingReaction, bool $withPosting = false)
+    private function addPostingRelationship(array $relationships, \Forum\PostingReaction $postingReaction, bool $withPosting = false)
     {
         if ($withPosting) {
             $relationships[self::REL_POSTING] = [
@@ -55,7 +60,7 @@ class PostingReaction extends SchemaProvider
         return $relationships;
     }
 
-    private function addUserRelationship(array $relationships, $postingReaction, bool $withUser = false)
+    private function addUserRelationship(array $relationships, \Forum\PostingReaction $postingReaction, bool $withUser = false)
     {
         $user = $postingReaction->user;
         if ($withUser && $user) {

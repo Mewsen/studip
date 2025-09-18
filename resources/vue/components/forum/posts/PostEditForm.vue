@@ -60,7 +60,7 @@ const updatePost = async () => {
 
         STUDIP.Report.success($gettext("Die Änderungen wurde gespeichert."));
     } catch (error) {
-        STUDIP.Report.error(error.statusText);
+        STUDIP.Report.error(error);
     } finally {
         isLoading.value = false;
     }

@@ -35,7 +35,7 @@ class Posting extends SimpleORMap
         ];
 
         $config['belongs_to']['posting'] = [
-            'class_name' => Posting::class,
+            'class_name' => self::class,
             'foreign_key' => 'parent_id',
             'assoc_foreign_key' => 'posting_id'
         ];
