@@ -423,7 +423,7 @@ use Studip\Button, Studip\LinkButton;
                 <li>
                     <?= sprintf(
                         '%s, %s, %s. %s',
-                        htmlReady($usc->studycourse->name),
+                        htmlReady($usc->studycourse->name ?? _('Unbekannt')),
                         htmlReady($usc->degree->name ?? _('Unbekannt')),
                         htmlReady($usc->semester),
                         _('Fachsemester')
@@ -466,7 +466,7 @@ use Studip\Button, Studip\LinkButton;
             <ol class="default">
             <? foreach ($student_institutes as $i => $inst_membership) : ?>
                 <li>
-                    <?= htmlReady($inst_membership->institute->name) ?>
+                    <?= htmlReady($inst_membership->institute?->name ?? _('Unbekannt')) ?> ?>
 
                     <? if ($GLOBALS['perm']->have_studip_perm('admin', $inst_membership->institut_id)) : ?>
                         <?= Icon::create('trash')->asInput(
