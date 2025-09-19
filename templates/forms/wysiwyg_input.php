@@ -8,9 +8,10 @@
         <? endif ?>
     </label>
     <studip-wysiwyg
-                   id="<?= $id ?>"
-                   v-model="<?= htmlReady($name) ?>"
-                   value="<?= htmlReady($value) ?>"
-                   <?= $required ? 'required' : '' ?>>
+       id="<?= $id ?>"
+       v-model="<?= htmlReady($name) ?>"
+       name="<?= htmlReady($this->name) ?>"
+       value="<?= htmlReady($value) ?>"
+       <?= $required ? 'required' : '' ?>>
     </studip-wysiwyg>
     </div>

@@ -7,12 +7,13 @@
             <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
         <? endif ?>
     </label>
-    <i18n-textarea type="textarea"
-                   id="<?= $id ?>"
-                   name="<?= htmlReady($this->name) ?>"
-                   value="<?= htmlReady($value) ?>"
-                   <?= $required ? 'required' : '' ?>
-                   @selectlanguage="(language_id) => selectLanguage('<?= htmlReady($this->name) ?>', language_id)"
-                   @allinputs="setInputs">
+    <i18n-textarea
+        type="textarea"
+        id="<?= $id ?>"
+        name="<?= htmlReady($this->name) ?>"
+        value="<?= htmlReady($value) ?>"
+        <?= $required ? 'required' : '' ?>
+        @selectlanguage="(language_id) => selectLanguage('<?= htmlReady($this->name) ?>', language_id)"
+        @allinputs="setInputs">
     </i18n-textarea>
 </div>
