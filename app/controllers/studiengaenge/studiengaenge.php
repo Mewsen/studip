@@ -952,10 +952,10 @@ class Studiengaenge_StudiengaengeController extends MVVController
         if ($semester_id !== 'all') {
             $semester = Semester::find($semester_id);
             $this->filter['start_sem.beginn'] = $semester->beginn;
-            $this->filter['end_sem.ende'] = $semester->beginn;
+            $this->filter['end_sem.ende'] = $semester->ende;
         } else {
-            $this->filter['start_sem.beginn'] = -1;
-            $this->filter['end_sem.ende'] = -1;
+            $this->filter['start_sem.beginn'] = 0;
+            $this->filter['end_sem.ende'] = PHP_INT_MAX;
         }
         // Status
         if (mb_strlen(Request::option('status_filter'))) {
@@ -1041,10 +1041,10 @@ class Studiengaenge_StudiengaengeController extends MVVController
     private function sidebar_filter()
     {
         $template_factory = $this->get_template_factory();
-        $studiengang_ids = Studiengang::findByFilter($this->filter);
+        $this->studiengang_ids = $this->findByFilter($this->filter);
 
         if (!empty($this->search_result['Studiengang'])) {
-            $studiengang_ids = array_intersect($studiengang_ids, $this->search_result['Studiengang']);
+            $this->studiengang_ids = array_intersect($studiengang_ids, $this->search_result['Studiengang']);
         }
 
         // Semesters
@@ -1052,6 +1052,35 @@ class Studiengaenge_StudiengaengeController extends MVVController
         $semesters = $semesters->orderBy('beginn desc');
         $selected_semester = $semesters->findOneBy('beginn', $this->filter['start_sem.beginn']);
 
+
+        $sidebar = Sidebar::get();
+
+        $filter = new OptionsWidget(_('Filter'));
+        $filter->setId('studycourse-filter-widget');
+
+        /*
+            Now draw the configurable elements according
+            to the values inside the visibleElements array.
+        */
+        /*
+        if (!empty($visibleElements['search'])) {
+            $this->setSearchWiget();
+        }
+        */
+
+        $filter->addElement($this->getSemesterSelector());
+        $filter->addElement($this->getStatusSelector());
+        $filter->addElement($this->getSubjectSelector());
+        $filter->addElement($this->getDegreeSelector());
+        $filter->addElement($this->getCategorySelector());
+        $filter->addElement($this->getInstituteSelector());
+        /*
+        $filter->addElement($this->getDegreeSelector());
+        $filter->addElement($this->getDepartmentSelector());
+*/
+        $sidebar->addWidget($filter, 'filter');
+
+/*
         $count_faecher = $this->countFaecher($studiengang_ids, $this->filter['mvv_stgteil.fach_id'] ?? '');
         $filter_template = $template_factory->render('shared/filter', [
             'semester'             => $semesters,
@@ -1083,6 +1112,242 @@ class Studiengaenge_StudiengaengeController extends MVVController
         $widget->setTitle(_('Filter'));
         $widget->addElement(new WidgetElement($filter_template));
         $sidebar->addWidget($widget, 'filter');
+        */
+
+
+    }
+
+    private function getSemesterSelector()
+    {
+        $semesters = array_reverse(Semester::getAll());
+        $selected_semester = Semester::findByTimestamp($this->filter['start_sem.beginn']);
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($semesters as $semester) {
+            $list[] = new SelectElement(
+                $semester->id,
+                $semester->name,
+                $semester->id === $selected_semester->id
+            );
+        }
+
+        return new SelectListElement(
+            _('Semester'),
+            'semester_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    private function getStatusSelector()
+    {
+        if (is_array($this->studiengang_ids) && count($this->studiengang_ids)) {
+            $stmt = DBManager::get()->prepare("
+                SELECT IFNULL(stat, '__undefined__') AS stat,
+                    COUNT(studiengang_id) AS count_objects
+                FROM mvv_studiengang WHERE studiengang_id IN (?)
+                GROUP BY stat");
+            $stmt->execute([$this->studiengang_ids]);
+        } else {
+            $stmt = DBManager::get()->prepare("
+                SELECT IFNULL(stat, '__undefined__') AS stat,
+                    COUNT(studiengang_id) AS count_objects
+                FROM mvv_studiengang
+                GROUP BY stat
+            ");
+            $stmt->execute();
+        }
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $status) {
+            $list[] = new SelectElement(
+                $status['stat'],
+                sprintf('%1$s (%2$s)',
+                    $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$status['stat']]['name'] ?? _('Undefinierter Status'),
+                    $status['count_objects']
+                ),
+                $status['stat'] === ($this->filter['mvv_studiengang.stat'] ?? '')
+            );
+        }
+        return new SelectListElement(
+            _('Status'),
+            'status_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    private function getSubjectSelector()
+    {
+        $stmt = DBManager::get()->prepare('
+            SELECT `fach`.`fach_id`, `fach`.`name`, COUNT(DISTINCT `studiengang_id`) AS `count_objects`
+            FROM `fach`
+                JOIN `mvv_stgteil` USING(`fach_id`)
+                JOIN `mvv_stg_stgteil` USING(`stgteil_id`)
+            WHERE `mvv_stg_stgteil`.`studiengang_id` IN (?)
+            GROUP BY `fach_id`
+        ');
+        $stmt->execute([$this->studiengang_ids]);
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $subject) {
+            $list[] = new SelectElement(
+                $subject['fach_id'],
+                sprintf('%1$s (%2$s)', $subject['name'], $subject['count_objects']),
+                $subject['fach_id'] === ($this->filter['mvv_stgteil.fach_id'] ?? '')
+            );
+        }
+        return new SelectListElement(
+            _('Fach'),
+            'fach_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    private function getDegreeSelector()
+    {
+        $stmt = DBManager::get()->prepare("
+            SELECT `abschluss`.`abschluss_id`, `abschluss`.`name`,
+                COUNT(`studiengang_id`) AS `count_objects`
+            FROM `abschluss`
+                JOIN `mvv_studiengang` USING (`abschluss_id`)
+            WHERE `mvv_studiengang`.`studiengang_id` IN (?)
+            GROUP BY `abschluss_id`
+            ORDER BY `abschluss`.`name`
+        ");
+        $stmt->execute([$this->studiengang_ids]);
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $degree) {
+            $list[] = new SelectElement(
+                $degree['abschluss_id'],
+                sprintf('%1$s (%2$s)', $degree['name'], $degree['count_objects']),
+                $degree['abschluss_id'] === ($this->filter['abschluss.abschluss_id'] ?? '')
+            );
+        }
+        return new SelectListElement(
+            _('Abschluss'),
+            'abschluss_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    private function getCategorySelector()
+    {
+        $stmt = DBManager::get()->prepare("
+            SELECT `mvv_abschl_kategorie`.`kategorie_id`, `mvv_abschl_kategorie`.`name`,
+                COUNT(studiengang_id) AS count_objects
+            FROM `mvv_abschl_kategorie`
+                JOIN `mvv_abschl_zuord` USING (`kategorie_id`)
+                JOIN `mvv_studiengang` USING (`abschluss_id`)
+            WHERE `mvv_studiengang`.`studiengang_id` IN (?)
+            GROUP BY kategorie_id
+            ORDER BY `mvv_abschl_kategorie`.`name` ASC
+        ");
+        $stmt->execute([$this->studiengang_ids]);
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $category) {
+            $list[] = new SelectElement(
+                $category['kategorie_id'],
+                sprintf('%1$s (%2$s)', $category['name'], $category['count_objects']),
+                $category['kategorie_id'] === ($this->filter['mvv_abschl_zuord.kategorie_id'] ?? '')
+            );
+        }
+        return new SelectListElement(
+            _('Abschluss-Kategorie'),
+            'kategorie_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    private  function getInstituteSelector()
+    {
+        $stmt = DBManager::get()->prepare("
+            SELECT DISTINCT `Institute`.`Name` AS `inst_name`,
+                `Institute`.`Institut_id` AS `institut_id`,
+                IF(`Institute`.`Institut_id` = `Institute`.`fakultaets_id`, 1, 0)
+                AS `is_faculty`, `faculties`.`Name` AS `faculty_name`,
+                COUNT(`studiengang_id`) AS `count_objects`
+            FROM `Institute`
+                JOIN `mvv_studiengang` ON `Institute`.`Institut_id` = `mvv_studiengang`.`institut_id`
+                JOIN `Institute` AS `faculties` ON `Institute`.`fakultaets_id` = `faculties`.`Institut_id`
+            WHERE `mvv_studiengang`.`studiengang_id` IN (?)
+            GROUP BY `Institut_id`
+            ORDER BY `inst_name`
+        ");
+        $stmt->execute([$this->studiengang_ids]);
+        $list = [];
+        $list[] = new SelectElement('', _('Alle'));
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $institute) {
+            $list[] = new SelectElement(
+                $institute['institut_id'],
+                sprintf('%1$s (%2$s)', $institute['inst_name'], $institute['count_objects']),
+                $institute['institut_id'] === ($this->filter['mvv_studiengang.institut_id'] ?? '')
+            );
+        }
+        return new SelectListElement(
+            _('Verantwortliche Einrichtung'),
+            'institut_filter',
+            $list,
+            false,
+            ['data-formaction' => $this->set_filterURL()],
+            true);
+    }
+
+    /**
+     * Returns an array with ids of all Studiengaenge found by the given filter.
+     * If no filter is set an empty array will be returned.
+     *
+     * @see ModuleManagementModel::getFilterSql()
+     * @param array $filter Key-value pairs of filed names and values
+     * to filter the result set.
+     * @return array An array of Studiengang ids.
+     */
+    private function findByFilter($filter)
+    {
+        $stmt = DBManager::get()->prepare('
+            SELECT DISTINCT `mvv_studiengang`.`studiengang_id`
+            FROM `mvv_studiengang`
+                LEFT JOIN `mvv_abschl_zuord` USING(`abschluss_id`)
+                LEFT JOIN `mvv_abschl_kategorie` USING(`kategorie_id`)
+                LEFT JOIN `mvv_stg_stgteil` USING(`studiengang_id`)
+                LEFT JOIN `mvv_stgteil` USING(`stgteil_id`)
+                LEFT JOIN `mvv_fach_inst` USING(`fach_id`)
+                LEFT JOIN `semester_data` AS `start_sem` ON (`mvv_studiengang`.`start` = `start_sem`.`semester_id`)
+                LEFT JOIN `semester_data` AS `end_sem` ON (`mvv_studiengang`.`end` = `end_sem`.`semester_id`)
+            WHERE (`mvv_studiengang`.`stat` = :status OR :status)
+                AND (`mvv_studiengang`.`institut_id` IN (:institute) OR :inst_filter)
+                AND (`mvv_abschl_zuord`.`abschluss_id` = :degree OR :degree)
+                AND (`mvv_abschl_kategorie`.`kategorie_id` = :category OR :category)
+                AND (`mvv_stgteil`.`fach_id` = :subject OR :subject)
+                AND (`mvv_fach_inst`.`institut_id` = :department OR :department)
+                AND (`start_sem`.`beginn` <= :start OR ISNULL(`start_sem`.`beginn`))
+                AND (`end_sem`.`ende` >= :end OR ISNULL(`end_sem`.`ende`))
+
+            ');
+        $stmt->execute(
+            [
+                ':status' => $this->filter['mvv_studiengang.stat'] ?? 1,
+                ':inst_filter' => empty($this->filter['mvv_studiengang.institut_id']),
+                ':institute' => $this->filter['mvv_studiengang.institut_id'] ?? '',
+                ':degree' => $this->filter['abschluss.abschluss_id'] ?? 1,
+                ':category' => $this->filter['mvv_abschl_zuord.kategorie_id'] ?? 1,
+                ':subject' => $this->filter['mvv_stgteil.fach_id'] ?? 1,
+                ':department' => $this->filter['mvv_fach_inst.institut_id'] ?? 1,
+                ':start' => $this->filter['start_sem.beginn'] ?? 0,
+                ':end' => $this->filter['end_sem.ende'] ?? PHP_INT_MAX,
+            ]
+        );
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
     /**
@@ -1137,7 +1402,9 @@ class Studiengaenge_StudiengaengeController extends MVVController
      * @param array $studiengang_ids The ids of the study courses.
      * @param string $fach_id The id of the selected subject.
      * @return array Number of study courses grouped by subjects.
+     * REMOVE
      */
+    /*
     private function countFaecher(array $studiengang_ids, string $fach_id): array
     {
         if ($fach_id === '') {
@@ -1159,6 +1426,7 @@ class Studiengaenge_StudiengaengeController extends MVVController
                   GROUP BY `fach_id`";
         return DBManager::get()->fetchPairs($query, $params);
     }
+    */
 
     public function approve_action($studiengang_id)
     {

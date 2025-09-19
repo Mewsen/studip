@@ -72,12 +72,21 @@ class Studiengaenge_VersionenController extends SharedVersionController
 
     protected function chooser_kategorien_fachbereich()
     {
-        $kategorien = AbschlussKategorie::findByFachbereich(
-            $this->chooser_filter['fachbereich']
+        $stmt = DBManager::get()->prepare(
+            'SELECT `mvv_abschl_kategorie`.*
+            FROM `mvv_fach_inst`
+                JOIN `mvv_stgteil` USING (`fach_id`)
+                JOIN `mvv_stg_stgteil` USING (`stgteil_id`)
+                JOIN `mvv_studiengang` USING (`studiengang_id`)
+                JOIN `mvv_abschl_zuord` USING (`abschluss_id`)
+                JOIN `mvv_abschl_kategorie` USING (`kategorie_id`)
+            WHERE `mvv_fach_inst`.`institut_id` = ?
+            ORDER BY `mvv_abschl_kategorie`.`position`'
         );
-        foreach ($kategorien as $kategorie) {
-            $this->lists['kategorien']['elements'][$kategorie->id] = [
-                'name' => $kategorie->name
+        $stmt->execute([$this->chooser_filter['fachbereich'] ?? '']);
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $category) {
+            $this->lists['kategorien']['elements'][$category['kategorie_id']] = [
+                'name' => $category['name']
             ];
         }
         $this->lists['kategorien']['headline'] = _('Abschluss-Kategorie');

@@ -26,7 +26,7 @@ class Fachabschluss_AbschluesseController extends MVVController
         $this->sortby = $this->sortby ?: 'name';
         $this->order = $this->order ?: 'ASC';
         //get data
-        $this->abschluesse = Abschluss::getAllEnriched(
+        $this->abschluesse = self::getAllEnriched(
             $this->sortby,
             $this->order,
             self::$items_per_page,
@@ -36,7 +36,7 @@ class Fachabschluss_AbschluesseController extends MVVController
         if (count($this->abschluesse) === 0) {
             PageLayout::postInfo(_('Es wurden noch keine Abschlüsse angelegt.'));
         }
-        $this->count = Abschluss::getCount($filter);
+        $this->count = self::getCount($filter);
 
         $this->setSidebar();
 
@@ -68,7 +68,8 @@ class Fachabschluss_AbschluesseController extends MVVController
         $this->abschluss_kategorien = AbschlussKategorie::getAll();
         if (count($this->abschluss_kategorien) === 0) {
             PageLayout::postError(
-                _('Es wurden noch keine Abschluss-Kategorien angelegt. Bevor Sie fortfahren, legen Sie bitte hier zunächst eine Abschluss-Kategorie an!')
+                _('Es wurden noch keine Abschluss-Kategorien angelegt. '
+                . 'Bevor Sie fortfahren, legen Sie bitte hier zunächst eine Abschluss-Kategorie an!')
             );
             $this->redirect('fachabschluss/kategorien/kategorie');
         }
@@ -85,15 +86,20 @@ class Fachabschluss_AbschluesseController extends MVVController
         }
         if (Request::submitted('store')) {
             CSRFProtection::verifyUnsafeRequest();
-            $stored = false;
+            $store = true;
             $this->abschluss->name = Request::i18n('name')->trim();
             $this->abschluss->name_kurz = Request::i18n('name_kurz')->trim();
             $this->abschluss->beschreibung = Request::i18n('beschreibung')->trim();
-            $this->abschluss->assignKategorie(Request::option('kategorie_id'));
-            try {
+            if (!$this->assignKategorie($this->abschluss, Request::option('kategorie_id'))) {
+                PageLayout::postError(_('Es muss eine Abschluss-Kategorie ausgewählt werden.'));
+                $store = false;
+            }
+            if (Abschluss::findByName($this->abschluss->name)) {
+                sprintf(_('Es existiert bereits ein Abschluss mit dem Namen "%s"!'), $this->name);
+                $store = false;
+            }
+            if ($store) {
                 $stored = $this->abschluss->store(true);
-            } catch (InvalidValuesException $e) {
-                 PageLayout::postError(htmlReady($e->getMessage()));
             }
             if ($stored !== false) {
                 $this->sessSet('sortby', 'chdate');
@@ -106,7 +112,7 @@ class Fachabschluss_AbschluesseController extends MVVController
                 } else {
                     PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen.'));
                 }
-                $this->redirect($this->action_url('index'));
+                $this->redirect($this->indexURL());
                 return;
             }
         }
@@ -117,7 +123,7 @@ class Fachabschluss_AbschluesseController extends MVVController
             $action_widget = $sidebar->getWidget('actions');
             $action_widget->addLink(
                 _('Log-Einträge dieses Abschlusses'),
-                $this->url_for('shared/log_event/show/Abschluss/' . $this->abschluss->getId()),
+                $this->url_for('shared/log_event/show/Abschluss/' . $this->abschluss->id),
                 Icon::create('log')
             )->asDialog();
         }
@@ -151,7 +157,7 @@ class Fachabschluss_AbschluesseController extends MVVController
 
             }
         }
-        $this->redirect($this->action_url('index'));
+        $this->redirect($this->indexURL());
     }
 
     public function fach_action($fach_id = null)
@@ -179,11 +185,100 @@ class Fachabschluss_AbschluesseController extends MVVController
             $widget = new ActionsWidget();
             $widget->addLink(
                 _('Neuen Abschluss anlegen'),
-                $this->action_url('abschluss'),
-                    Icon::create('add')
+                $this->abschlussURL(),
+                Icon::create('add'),
+                ['data-dialog' => '']
             );
             $sidebar->addWidget($widget);
         }
         $this->sidebar_rendered = true;
     }
+
+    /**
+     * Returns all or a specified (by row count and offset) number of
+     * Abschluesse sorted and filtered by given parameters and enriched with
+     * some additional fields. This function is mainly used in the list view.
+     *
+     * @param string $sortby Field name to order by.
+     * @param string $order ASC or DESC direction of order.
+     * @param int $row_count The max number of objects to return.
+     * @param int $offset The first object to return in a result set.
+     * @param array $filter Key-value pairs of filed names and values
+     * to filter the result set.
+     * @return SimpleCollection A SimpleCollection of Abschluss objects.
+     */
+    private static function getAllEnriched(
+        $order_field = 'name',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ): SimpleCollection
+    {
+        $order_by = Abschluss::createSortStatement($order_field, $order, 'chdate',
+            ['kategorie_name', 'count_faecher', 'count_studiengaenge']);
+        return Abschluss::getEnrichedByQuery('
+                SELECT abschluss.*, mvv_abschl_kategorie.name AS `kategorie_name`,
+                    COUNT(DISTINCT mvv_stgteil.fach_id) AS `count_faecher`,
+                    COUNT(DISTINCT mvv_studiengang.studiengang_id) AS `count_studiengaenge`
+                FROM abschluss
+                    LEFT JOIN mvv_abschl_zuord USING (abschluss_id)
+                    LEFT JOIN mvv_abschl_kategorie USING (kategorie_id)
+                    LEFT JOIN mvv_studiengang USING (abschluss_id)
+                    LEFT JOIN mvv_stg_stgteil USING (studiengang_id)
+                    LEFT JOIN mvv_stgteil USING (stgteil_id)
+                    LEFT JOIN mvv_fach_inst USING (fach_id)
+                ' . Abschluss::getFilterSql($filter, true) . '
+                GROUP BY abschluss_id
+                ORDER BY ' . $order_by,
+            [], $row_count, $offset);
+    }
+
+    /**
+     * Returns the number of Abschlüsse optional filtered by $filter.
+     *
+     * @param array $filter Key-value pairs of filed names and values
+     * to filter the result set.
+     * @return int The number of Abschluesse
+     */
+    public static function getCount($filter = null)
+    {
+        $query = '
+            SELECT COUNT(DISTINCT(abschluss_id))
+            FROM abschluss
+                LEFT JOIN mvv_abschl_zuord USING (abschluss_id)
+                LEFT JOIN mvv_abschl_kategorie USING (kategorie_id)
+                LEFT JOIN mvv_studiengang USING (abschluss_id)
+                LEFT JOIN mvv_stg_stgteil USING (studiengang_id)
+                LEFT JOIN mvv_stgteil USING (stgteil_id)
+                LEFT JOIN mvv_fach_inst USING (fach_id)
+                ' . Abschluss::getFilterSql($filter, true);
+        $db = DBManager::get()->prepare($query);
+        $db->execute();
+        return $db->fetchColumn(0);
+    }
+
+    /**
+     * Assigns an Abschluss-Kategorie to this Abschluss.
+     *
+     * @param string $kategorie_id The id of the Abschluss-Kategorie
+     * @param int Position of this Abschluss in the given Kategorie.
+     * @return object|null The assigned Kategorie. Null if assigned
+     * Abschluss-Kategorie is unknown
+     * TODO Position?
+     */
+    private static function assignKategorie($abschluss, $kategorie_id, $position = null)
+    {
+        $kategorie = AbschlussKategorie::find($kategorie_id);
+        if ($kategorie) {
+            $category_assignment = new AbschlussZuord($abschluss->id);
+            $category_assignment->kategorie_id = $kategorie->id;
+            if (!is_null($position)) {
+                $category_assignment->position = $position;
+            }
+            $abschluss->category_assignment = $category_assignment;
+        }
+        return $kategorie;
+    }
+
 }

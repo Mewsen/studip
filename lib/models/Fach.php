@@ -430,7 +430,9 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param string $kategorie_id The id of the Abschluss-Kategorie.
      * @param string $abschluss_id The id of the Abschluss.
      * @return array Found Fachbereiche as array. Empty array if none was found.
+     * REMOVED
      */
+    /*
     public static function findUsedFachbereiche($kategorie_id = null,
             $abschluss_id = null)
     {
@@ -479,6 +481,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         }
         return $fachbereiche;
     }
+    */
 
 
     /**
@@ -600,11 +603,14 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * Returns all Abschluesse this Fach is implicitly assigned to.
      *
      * @return A collection of Faecher.
+     * REMOVED
      */
+    /*
     public function getAbschluesse()
     {
         return Abschluss::findByFach($this->getId());
     }
+    */
 
     /**
      * @see MvvTreeItem::getTrailParentId()

@@ -140,7 +140,7 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
      * @param int $offset The first object to return in a result set.
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
-     * @return object A SimpleORMapCollection of Abschluss objects.
+     * @return SimpleOrMapCollection A collection of Abschluss objects.
      */
     public static function getAllEnriched($sortby = 'position', $order = 'ASC',
             $row_count = null, $offset = null, $filter = null)
@@ -173,7 +173,7 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
     /**
      * Finds all kategorien assigned to abschluesse used by studiengaenge.
      *
-     * @return array Array of objects or empty array
+     * @return SimpleOrMapCollection Collection of objects
      */
     public static function findUsed()
     {
@@ -192,7 +192,9 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
      *
      * @param string $fachbereich_id The id of the fachbereich
      * @return array Array of objects or empty array
+     * REMOVED
      */
+    /*
     public static function findByFachbereich($fachbereich_id)
     {
         return parent::getEnrichedByQuery('
@@ -208,6 +210,7 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
             [$fachbereich_id]
         );
     }
+    */
 
     /**
      * Returns all Kategorien implicitly assigned (through
@@ -215,7 +218,9 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
      *
      * @param array $studiengang_ids Array of Studiengang ids.
      * @return object SimpleORMapCollection of Kategorien.
+     * REMOVED
      */
+    /*
     public static function findByStudiengaenge($studiengang_ids = [])
     {
         return parent::getEnrichedByQuery('
@@ -229,6 +234,7 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
             ORDER BY mak.name ASC
         ');
     }
+    */
 
     /**
      * @see ModuleManagementModel::getClassDisplayName

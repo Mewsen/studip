@@ -20,17 +20,17 @@
         continue;
     }
     ?>
-    <tbody class="<?= ($abschluss->count_studiengaenge ? '' : 'empty') ?> <?= ($abschluss_id === $abschluss->id ? 'not-collapsed' : 'collapsed') ?>">
+    <tbody class="<?= (count($abschluss->studiengaenge) ? '' : 'empty') ?> <?= ($abschluss_id === $abschluss->id ? 'not-collapsed' : 'collapsed') ?>">
         <tr class="header-row" id="abschluss_<?= $abschluss->id ?>">
             <td class="toggle-indicator">
-                <? if (is_null($abschluss->name) && $abschluss->count_studiengaenge) : ?>
-                    <a class="mvv-load-in-new-row" href="<?= $controller->action_link('details/' . $abschluss->id) ?>">
+                <? if (is_null($abschluss->name) && count($abschluss->studiengaenge)) : ?>
+                    <a class="mvv-load-in-new-row" href="<?= $controller->detailsLink($abschluss->id) ?>">
                         <?= _('Keinem Abschluss zugeordnet') ?>
                     </a>
                 <? else : ?>
-                    <? if ($abschluss->count_studiengaenge) : ?>
+                    <? if (count($abschluss->studiengaenge)) : ?>
                         <a class="mvv-load-in-new-row"
-                           href="<?= $controller->action_link('details/' . $abschluss->id) ?>">
+                           href="<?= $controller->detailsLink($abschluss->id) ?>">
                             <?= htmlReady($abschluss->getDisplayName()) ?>
                         </a>
                     <? else : ?>
@@ -38,7 +38,7 @@
                     <? endif; ?>
                 <? endif; ?>
             </td>
-            <td style="text-align: center;" class="dont-hide"><?= $abschluss->count_studiengaenge ?></td>
+            <td style="text-align: center;" class="dont-hide"><?= count($abschluss->studiengaenge) ?></td>
             <td></td>
         </tr>
         <? if (isset($abschluss_id) && $abschluss_id === $abschluss->id) : ?>

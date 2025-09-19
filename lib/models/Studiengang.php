@@ -156,14 +156,10 @@ class Studiengang extends ModuleManagementModelTreeItem
 
         $config['additional_fields']['count_dokumente']['get'] =
             function ($stg) { return $stg->count_dokumente; };
-        $config['additional_fields']['count_faecher']['get'] =
-            function ($stg) { return $stg->count_faecher; };
         $config['additional_fields']['count_module']['get'] =
             function ($stg) { return $stg->count_module; };
         $config['additional_fields']['institut_name']['get'] =
             function ($stg) { return $stg->institut_name; };
-        $config['additional_fields']['kategorie_name']['get'] =
-            function ($stg) { return $stg->kategorie_name; };
         $config['additional_fields']['display_name']['get'] =
             function ($stg) { return $stg->getDisplayName(); };
 
@@ -531,7 +527,9 @@ class Studiengang extends ModuleManagementModelTreeItem
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
      * @return SimpleORMapCollection A collection of institutes.
+     * REMOVED
      */
+    /*
     public static function getAllAssignedInstitutes($filter = null)
     {
         return Fachbereich::getEnrichedByQuery('
@@ -550,6 +548,7 @@ class Studiengang extends ModuleManagementModelTreeItem
             GROUP BY Institute.Institut_id
             ORDER BY name', []);
     }
+    */
 
     /**
      * @see ModuleManagementModel::findBySearchTerm()
@@ -663,7 +662,9 @@ class Studiengang extends ModuleManagementModelTreeItem
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
      * @return array An array of Studiengang ids.
+     * REMOVED
      */
+    /*
     public static function findByFilter($filter)
     {
         $filter_sql = self::getFilterSql($filter, true);
@@ -685,6 +686,7 @@ class Studiengang extends ModuleManagementModelTreeItem
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
     }
+    */
 
     /**
      * Returns an array with Modul ids from modules related to this Studiengang.

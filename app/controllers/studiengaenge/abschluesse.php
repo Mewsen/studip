@@ -8,7 +8,7 @@
 require_once __DIR__ . '/studiengaenge.php';
 
 class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeController {
-    
+
     /**
      * Liste der Studiengänge gruppiert nach Fachbereiche (Fachbereich ist
      * die  verantwortliche Einrichtung des zugeordneten Faches, nicht die des
@@ -17,21 +17,29 @@ class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeCon
     public function index_action($studiengang_id = null)
     {
         PageLayout::setTitle(_('Studiengänge gruppiert nach Abschlüssen'));
-        
+
         // Nur Abschlüsse von Fachbereichen an denen der User eine Rolle hat
-        $perm_institutes = MvvPerm::getOwnInstitutes();
-        
+        $own_institutes = MvvPerm::getOwnInstitutes();
+
         $this->initPageParams('abschluesse');
         $this->sortby = $this->sortby ?: 'name';
         $this->order = $this->order ?: 'ASC';
-        $this->abschluesse = Abschluss::getAllEnriched(
-            $this->sortby,
-            $this->order,
-            null,
-            null,
-            ['mvv_fach_inst.institut_id' => $perm_institutes]
+
+        $this->abschluesse = Abschluss::findBySQL(
+        'JOIN `mvv_studiengang` USING (abschluss_id)
+            JOIN `mvv_stg_stgteil` USING (studiengang_id)
+            JOIN `mvv_stgteil` USING (stgteil_id)
+            JOIN `mvv_fach_inst` USING (fach_id)
+            WHERE `mvv_fach_inst`.`institut_id` IN (?) OR ?
+            ORDER BY ? ?',
+            [
+                $own_institutes,
+                count($own_institutes) === 0,
+                $this->sortby,
+                $this->order
+            ]
         );
-        
+
         if ($studiengang_id) {
             $studiengang = Studiengang::find($studiengang_id);
             $this->details_action($studiengang->abschluss_id, $studiengang->id);
@@ -39,10 +47,10 @@ class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeCon
 
         $this->setSidebar();
     }
-    
+
     /**
      * shows the studiengaenge of a fachbereich
-     * 
+     *
      * @param string $fachbereich_id the id of the fachbereich
      */
     public function details_action($abschluss_id, $studiengang_id = null, $stgteil_bez_id = null)
@@ -67,12 +75,12 @@ class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeCon
         } else {
             $this->studiengaenge = Studiengang::findByAbschluss_id($this->abschluss_id);
         }
-        
+
         if ($studiengang_id) {
             $this->studiengang_id = $studiengang_id;
             $this->set_studiengangteile($studiengang_id, $stgteil_bez_id);
         }
-        
+
         if (Request::isXhr()) {
             if ($this->studiengang) {
                 if ($this->studiengang->typ == 'einfach') {
