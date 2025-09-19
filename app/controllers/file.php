@@ -80,7 +80,7 @@ class FileController extends AuthenticatedController
             throw new AccessDeniedException();
         }
         if (Request::isPost()) {
-            if (is_array($_FILES['file'])) {
+            if (isset($_FILES['file']) && is_array($_FILES['file'])) {
                 $validatedFiles = FileManager::handleFileUpload(
                     $_FILES['file'],
                     $folder,

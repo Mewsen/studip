@@ -43,7 +43,7 @@
         <? foreach ($user->studycourses as $usc): ?>
             <tr>
                 <td data-label="<?= _('Fach') ?>"><?= htmlReady($usc->studycourse->name) ?></td>
-                <td data-label="<?= _('Abschluss') ?>"><?= htmlReady($usc->degree->name) ?></td>
+                <td data-label="<?= _('Abschluss') ?>"><?= htmlReady($usc->degree->name ?? _('Unbekannt')) ?></td>
             <? if ($allow_change['sg']): ?>
                 <td data-label="<?= _('Versionen') ?>">
                     <? $versionen = StgteilVersion::findByFachAbschluss($usc->fach_id, $usc->abschluss_id); ?>
