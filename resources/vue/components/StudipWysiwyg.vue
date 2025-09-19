@@ -1,78 +1,62 @@
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue';
 import { ClassicEditor, BalloonEditor } from '../../assets/javascripts/chunks/wysiwyg.js';
-import {h, resolveComponent} from "vue";
 
-export default {
-    name: 'studip-wysiwyg',
-    emits: ['update:modelValue'],
-    props: {
-        modelValue: {
-            type: String,
-            required: true,
-        },
-        editorType: {
-            type: String,
-            validator(value) {
-                return ['classic', 'balloon'].includes(value);
-            },
-            default: 'classic',
-        },
-        autofocus: Boolean,
+const props = defineProps({
+    editorType: {
+        type: String,
+        validator: value => ['classic', 'balloon'].includes(value),
+        default: 'classic'
     },
-    data() {
-        return {
-            currentText: '',
-            editorConfig: {},
+    name: {
+        type: String,
+        default: 'content'
+    },
+    autofocus: Boolean
+});
 
-            createdEditor: null,
-            shouldFocus: this.autofocus,
-        };
-    },
-    computed: {
-        editor() {
-            switch (this.editorType) {
-                case 'classic':
-                    return ClassicEditor;
-                case 'balloon':
-                    return BalloonEditor;
-            }
-            throw new Error('Unknown `editorType`');
-        },
-    },
-    methods: {
-        onReady(editor) {
-            this.createdEditor = editor;
-            this.currentText = this.modelValue;
+const content = defineModel({ type: String, default: '' });
 
-            if (this.shouldFocus) {
-                this.focus();
-            }
+const createdEditor = ref(null);
+const shouldFocus = ref(props.autofocus);
 
-            STUDIP.eventBus.emit('editor-loaded', this.createdEditor);
-        },
-        onInput(value) {
-            this.currentText = value;
-            this.$emit('update:modelValue', value);
-        },
-        focus() {
-            if (this.createdEditor) {
-                this.createdEditor.focus();
-            } else {
-                this.shouldFocus = true;
-            }
-        }
-    },
-    created() {
-        STUDIP.loadChunk('mathjax');
-    },
-    render() {
-        return h(resolveComponent('ckeditor'), {
-            editor: this.editor,
-            config: this.editorConfig,
-            modelValue: this.modelValue,
-            onInput: this.onInput,
-            onReady: this.onReady,
-        })
+const editor = computed(() => {
+    switch (props.editorType) {
+        case 'classic':
+            return ClassicEditor;
+        case 'balloon':
+            return BalloonEditor;
     }
-};
+
+    throw new Error('Unknown `editorType`');
+});
+
+const focus = () => {
+    if (createdEditor.value && typeof createdEditor.value.focus === 'function') {
+        createdEditor.value.focus();
+    } else {
+        shouldFocus.value = true;
+    }
+}
+
+const onReady = editorInstance => {
+    createdEditor.value = editorInstance;
+    if (shouldFocus.value) {
+        focus();
+    }
+    STUDIP.eventBus.emit('editor-loaded', createdEditor.value);
+}
+
+onMounted(() => STUDIP.loadChunk('mathjax'));
 </script>
+
+<template>
+    <Ckeditor
+        :editor="editor"
+        :key="editorType"
+        v-model="content"
+        :onReady="onReady"
+        v-bind="$attrs"
+    />
+    <textarea :name="name" :value="content" style="display:none;"></textarea>
+</template>
