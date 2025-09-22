@@ -28,6 +28,11 @@ export default {
             password2: ''
         }
     },
+    methods: {
+        setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
+        },
+    },
     computed: {
         payload() {
             return {

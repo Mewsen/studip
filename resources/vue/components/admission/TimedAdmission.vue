@@ -63,6 +63,7 @@ export default {
     },
     methods: {
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.startTime = data.attributes.payload['starttime'];
             this.endTime = data.attributes.payload['endtime'];
         },
