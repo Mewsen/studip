@@ -72,6 +72,7 @@ export default {
     },
     methods: {
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.distributionTime = data.attributes.payload['distribution-time'] !== 0
                 ? data.attributes.payload['distribution-time']
                 : Math.floor(Date.now() / 1000 + 7 * 86400);

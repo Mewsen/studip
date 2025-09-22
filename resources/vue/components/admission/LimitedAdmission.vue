@@ -51,6 +51,7 @@ export default {
     },
     methods: {
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.max = data.attributes.payload['maxnumber'];
         },
         validate() {

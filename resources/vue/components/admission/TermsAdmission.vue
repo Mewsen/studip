@@ -42,6 +42,7 @@ export default {
     },
     methods: {
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.theTerms = data.attributes.payload.terms;
         },
         validate() {
