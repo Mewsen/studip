@@ -169,6 +169,10 @@
                             <?= htmlReady($request->resource->name) ?>
                         </dd>
                     <? endif ?>
+                    <? if ($request->booking_text) : ?>
+                        <dt><?= _('Buchungstext') ?></dt>
+                        <dd><?= htmlReady($request->booking_text) ?></dd>
+                    <? endif ?>
                     <? if ($request->comment) : ?>
                         <dt><?= _('Interner Kommentar') ?></dt>
                         <dd><?= htmlReady($request->comment) ?></dd>

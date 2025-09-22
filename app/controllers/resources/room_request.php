@@ -668,6 +668,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         $this->subsequent_time  = 0;
         $this->max_preparation_time = $config->RESOURCES_MAX_PREPARATION_TIME;
         $this->comment = '';
+        $this->booking_text = '';
 
         $this->show_form = true;
 
@@ -718,7 +719,8 @@ class Resources_RoomRequestController extends AuthenticatedController
             }
 
             //Comment is optional.
-            $this->comment = Request::get('comment');
+            $this->comment      = Request::get('comment');
+            $this->booking_text = Request::get('booking_text');
 
             //Convert the date and time strings to DateTime objects:
 
@@ -758,7 +760,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                     $new_end,
                     $this->comment,
                     $this->preparation_time * 60,
-                    $this->subsequent_time * 60
+                    $this->subsequent_time * 60,
+                    $this->booking_text
                 );
 
                 if ($request) {
@@ -885,6 +888,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         $this->subsequent_time      = $this->request->subsequent_time / 60;
         $this->max_preparation_time = $config->RESOURCES_MAX_PREPARATION_TIME;
         $this->comment              = $this->request->comment;
+        $this->booking_text         = $this->request->booking_text;
 
         $this->show_form = true;
 
@@ -935,7 +939,8 @@ class Resources_RoomRequestController extends AuthenticatedController
             }
 
             //Comment is optional.
-            $this->comment = Request::get('comment');
+            $this->comment      = Request::get('comment');
+            $this->booking_text = Request::get('booking_text');
 
             //Convert the date and time strings to DateTime objects:
 
@@ -970,6 +975,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $this->request->begin            = $new_begin->getTimestamp();
             $this->request->end              = $new_end->getTimestamp();
             $this->request->comment          = $this->comment;
+            $this->request->booking_text     = $this->booking_text;
             $this->request->preparation_time = $this->preparation_time * 60;
             $this->request->subsequent_time  = $this->subsequent_time * 60;
 
@@ -1657,7 +1663,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                             0,
                             null,
                             $this->request->preparation_time,
-                            '',
+                            $this->request->booking_text ?? '',
                             '',
                             ResourceBooking::TYPE_NORMAL,
                             false,

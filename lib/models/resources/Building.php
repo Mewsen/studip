@@ -475,7 +475,8 @@ class Building extends Resource
         DateTime $end,
         $comment = '',
         $preparation_time = 0,
-        $subsequent_time = 0
+        $subsequent_time = 0,
+        $booking_text = ''
     )
     {
         return null;

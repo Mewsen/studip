@@ -9,7 +9,7 @@
  * the License, or (at your option) any later version.
  *
  * @author      Moritz Strohm <strohm@data-quest.de>
- * @copyright   2017-2019
+ * @copyright   2017-2025
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @package     resources
@@ -29,6 +29,7 @@
  * @property string|null $category_id database column
  * @property string|null $comment database column
  * @property string|null $reply_comment database column
+ * @property string|null $booking_text database column
  * @property string $reply_recipients database column
  * @property int $closed database column
  * @property int|null $mkdate database column

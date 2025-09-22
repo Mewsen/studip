@@ -966,6 +966,9 @@ class Resource extends SimpleORMap implements StudipItem
      *       that is reserved for cleaning up or similar activities after the
      *       booking.
      *
+     * @param string $booking_text The text that shall be displayed when the
+     *       request has been turned into a booking.
+     *
      * @return ResourceRequest A resource request object.
      * @throws AccessDeniedException If the user is not permitted
      *     to request this resource.
@@ -984,7 +987,8 @@ class Resource extends SimpleORMap implements StudipItem
         DateTime $end,
         $comment = '',
         $preparation_time = 0,
-        $subsequent_time = 0
+        $subsequent_time = 0,
+        $booking_text = ''
     )
     {
         //All users are permitted to create a request,
@@ -1031,8 +1035,9 @@ class Resource extends SimpleORMap implements StudipItem
             ? $subsequent_time
             : 0;
 
-        $request->closed  = '0';
-        $request->comment = $comment;
+        $request->closed       = '0';
+        $request->comment      = $comment;
+        $request->booking_text = $booking_text;
 
         if (!$request->store()) {
             throw new ResourceRequestException(

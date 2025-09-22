@@ -1,3 +1,21 @@
+<?php
+/**
+ * @var bool $show_form
+ * @var string $form_action_link
+ * @var string $origin_url
+ * @var string $begin_date_str
+ * @var string $end_date_str
+ * @var string $begin_time_str
+ * @var string $end_time_str
+ * @var int $preparation_time
+ * @var int $max_preparation_time
+ * @var int $subsequent_time
+ * @var string $comment
+ * @var string $booking_text
+ * @var ResourceRequest $request
+ * @var Resources_RoomRequestController $controller
+ */
+?>
 <? if ($show_form): ?>
     <form class="default" method="post" action="<?= $form_action_link ?>" data-dialog="reload-on-close">
         <input type="hidden" name="origin_url" value="<?= htmlReady($origin_url ?? '') ?>">
@@ -45,6 +63,10 @@
         <label>
             <?= _('Interner Kommentar') ?>
             <textarea name="comment"><?= htmlReady($comment) ?></textarea>
+        </label>
+        <label>
+            <?= _('Buchungstext') ?>
+            <textarea name="booking_text"><?= htmlReady($booking_text) ?></textarea>
         </label>
         <footer data-dialog-button>
             <?= \Studip\Button::create(_('Speichern'), 'save') ?>
