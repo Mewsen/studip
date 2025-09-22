@@ -119,7 +119,9 @@
                             </select>
                         </label>
                         <label class="col-3">
-                            {{ $gettext('Suche nach Titel, Nummer, Lehrenden (mehr als 3 Zeichen)') }}
+                            {{ $gettext('Suche nach Titel, Nummer, Lehrenden') }}
+                            <studip-tooltip-icon :text="$gettext('Geben Sie einen Suchbegriff mit mehr als 3 '
+                                + 'Zeichen an oder lassen Sie das Feld leer, um nach allem zu suchen.')"/>
                             <input type="text"
                                    v-model="courseSearchterm"
                                    @keydown.enter.prevent="getAvailableCourses"
@@ -150,6 +152,12 @@
                         <thead>
                             <tr>
                                 <th colspan="2">
+                                    <input type="checkbox"
+                                           :checked="allCoursesChecked"
+                                           @click="checkUncheckAll"
+                                           :title="$gettext('alle (ab)wählen')"
+                                           ref="proxy"
+                                    >
                                     {{ $gettext('Veranstaltung') }}
                                 </th>
                             </tr>
@@ -160,6 +168,7 @@
                                     <label>
                                         <input type="checkbox"
                                                :value="course.id"
+                                               class="assignable-course"
                                                v-model="checkedCourses"
                                                :title="$gettext(
                                                    'Veranstaltung %{coursename} dem Anmeldeset zuordnen',
@@ -354,10 +363,11 @@ import quicksearch from '@/vue/components/Quicksearch.vue';
 import AdmissionRuleTypeSelector from '@/vue/components/admission/AdmissionRuleTypeSelector.vue';
 import AdmissionRuleConfig from '@/vue/components/admission/AdmissionRuleConfig.vue';
 import StudipProgressIndicator from "@/vue/components/StudipProgressIndicator.vue";
+import StudipTooltipIcon from '@/vue/components/StudipTooltipIcon.vue';
 
 export default {
     name: 'ConfigureCourseSet',
-    components: {StudipProgressIndicator, AdmissionRuleConfig, quicksearch, AdmissionRuleTypeSelector },
+    components: { StudipTooltipIcon, StudipProgressIndicator, AdmissionRuleConfig, quicksearch, AdmissionRuleTypeSelector },
     props: {
         courseSetId: {
             type: String,
@@ -438,10 +448,15 @@ export default {
             return this.rules.map(r => r.attributes.type);
         },
         canSearchCourses() {
-            return this.courseSearchterm?.trim().length >= 3
+            return !this.courseSearchterm
+                || this.courseSearchterm === ''
+                || this.courseSearchterm.trim().length >= 3
         },
         showUserListUsers() {
             return this.courseSetId !== '' && this.hasUserLists && this.userLists.length > 0;
+        },
+        allCoursesChecked() {
+            return this.checkedCourses.length === this.availableCourses.length;
         }
     },
     methods: {
@@ -453,6 +468,12 @@ export default {
                 this.noCoursesFound = false;
                 this.isSearching = true;
                 this.availableCourses = [];
+
+                let term = this.courseSearchterm;
+                if (!this.courseSearchterm || this.courseSearchterm === '') {
+                    term = '%%%';
+                }
+
                 STUDIP.jsonapi.withPromises().post(
                     'admission/available-courses',
                     {
@@ -463,7 +484,7 @@ export default {
                             courseset: this.courseSetId ? this.courseSetId : null,
                             exclude: this.courses.map(course => course.id),
                             semester: this.selectedSemester,
-                            filter: this.courseSearchterm
+                            filter: term
                         }
                     }
                 ).then(response => {
@@ -655,6 +676,9 @@ export default {
             STUDIP.Dialog.fromURL(
                 STUDIP.URLHelper.getURL('dispatch.php/admission/courseset/factored_users/' + this.courseSetId)
             );
+        },
+        checkUncheckAll() {
+            this.checkedCourses = this.allCoursesChecked ? [] : this.availableCourses.map(c => c.id);
         }
     },
     created() {
@@ -698,7 +722,17 @@ export default {
             }
         }
 
-        this.getAvailableCourses();
+        if (this.courseSearchterm) {
+            this.getAvailableCourses();
+        }
+    },
+    watch: {
+        checkedCourses: {
+            handler(current) {
+                this.$refs.proxy.indeterminate = current.length > 0 && current.length < this.availableCourses.length;
+            },
+            deep: true
+        }
     }
 }
 </script>

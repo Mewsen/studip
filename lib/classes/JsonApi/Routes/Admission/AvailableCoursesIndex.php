@@ -33,7 +33,9 @@ class AvailableCoursesIndex extends JsonApiController
             $body['filter']
         );
 
-        $courses = count($courses) > 0 ? \Course::findMany(array_keys($courses)) : [];
+        $courses = count($courses) > 0
+            ? \Course::findMany(array_keys($courses), "ORDER BY `VeranstaltungsNummer`, `Name`")
+            : [];
 
         return $this->getContentResponse($courses);
     }
