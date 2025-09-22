@@ -142,10 +142,7 @@ class Resources_RoomPlanningController extends AuthenticatedController
         if ($this->resource->requestable) {
             $this->display_all_requests = Request::bool(
                 'display_all_requests',
-                $this->resource->userHasPermission(
-                    $this->user,
-                    'autor'
-                )
+                Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS
             );
         } else {
             $this->display_all_requests = false;
@@ -161,23 +158,12 @@ class Resources_RoomPlanningController extends AuthenticatedController
             ResourceBooking::TYPE_RESERVATION,
             ResourceBooking::TYPE_LOCK,
         ];
+        $plan_is_visible = $this->resource->bookingPlanVisibleForUser($this->user);
         if ($this->user instanceof User) {
-            if ($this->display_all_requests) {
-                $plan_is_visible = $this->resource->userHasPermission(
-                    $this->user,
-                    'autor'
-                );
-            } else {
-                $plan_is_visible = $this->resource->bookingPlanVisibleForUser($this->user);
-            }
             $this->anonymous_view = false;
             if ($this->resource->userHasPermission($this->user, 'admin')) {
                 $this->booking_types[] = ResourceBooking::TYPE_PLANNED;
             }
-        } else {
-            //If the plan visibility cannot be determined by the user,
-            //we can still check if the plan is visible to the public:
-            $plan_is_visible = $this->resource->bookingPlanVisibleForUser($this->user);
         }
         if (!$plan_is_visible) {
             throw new AccessDeniedException(
@@ -191,13 +177,6 @@ class Resources_RoomPlanningController extends AuthenticatedController
             $this->user_has_request_permissions = $this->resource->userHasRequestRights($this->user);
             $this->user_has_booking_permissions = $this->resource->userHasBookingRights($this->user);
         }
-
-        if (!$this->user_has_booking_permissions && $this->display_all_requests) {
-            throw new AccessDeniedException(
-                _('Sie sind nicht dazu berechtigt, alle Anfragen im Belegungsplan zu sehen!')
-            );
-        }
-
 
         $week_timestamp = Request::int('timestamp');
         $default_date = Request::get('defaultDate');

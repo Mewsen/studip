@@ -2294,6 +2294,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         $booking_plan_preparation_fg = ColourValue::find('Resources.BookingPlan.PreparationTime.Fg');
 
         $user_is_resource_autor = false;
+        $user_is_resource_user = $this->resource->userHasPermission($user);
         if ($this->resource_id && $this->resource instanceof Resource) {
             $user_is_resource_autor = $this->resource->userHasPermission(
                 $user,
@@ -2348,7 +2349,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $events[] = new Studip\Calendar\EventData(
                     $begin,
                     $end,
-                    _('Rüstzeit'),
+                    $user_is_resource_user ? _('Rüstzeit') : '',
                     ['preparation-time'],
                     $booking_plan_preparation_fg->__toString(),
                     $booking_plan_preparation_bg->__toString(),
@@ -2372,7 +2373,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $events[] = new Studip\Calendar\EventData(
                     $begin,
                     $end,
-                    _('Rüstzeit'),
+                    $user_is_resource_user ? _('Rüstzeit') : '',
                     ['preparation-time'],
                     $booking_plan_preparation_fg->__toString(),
                     $booking_plan_preparation_bg->__toString(),
@@ -2396,7 +2397,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $events[] = new Studip\Calendar\EventData(
                 $begin,
                 $end,
-                $this->getRangeName(),
+                $user_is_resource_user ? $this->getRangeName() : '',
                 ['resource-request'],
                 $booking_plan_request_fg->__toString(),
                 $booking_plan_request_bg->__toString(),

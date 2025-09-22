@@ -328,15 +328,9 @@ class Resources_AjaxController extends AuthenticatedController
                 throw new AccessDeniedException();
             }
         }
-        $user_is_resource_user = $current_user && $resource->userHasPermission($current_user);
 
         $display_requests = $current_user && Request::bool('display_requests');
         $display_all_requests = Request::bool('display_all_requests');
-
-        if ($display_all_requests && !$user_is_resource_user) {
-            //The user is not allowed to see all requests.
-            throw new AccessDeniedException();
-        }
 
         $begin_date = Request::get('start');
         $end_date   = Request::get('end');
