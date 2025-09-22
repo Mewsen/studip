@@ -76,6 +76,7 @@ export default {
             }
         },
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.courseSearch = data.attributes.payload.search;
             this.courseList = data.attributes.payload.courses;
             this.theMode = data.attributes.payload.modus;

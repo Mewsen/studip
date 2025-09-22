@@ -149,6 +149,7 @@ export default {
             });
         },
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             this.ungrouped = data.attributes.payload['conditions'];
             this.groups = data.attributes.payload['grouped-conditions'];
         },

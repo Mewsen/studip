@@ -50,6 +50,7 @@ export default {
     },
     methods: {
         setRuleData(data) {
+            this.messageText = data.attributes.payload['message'];
             if (data.attributes.payload.password !== '') {
                 this.passwordSet = true;
             }
