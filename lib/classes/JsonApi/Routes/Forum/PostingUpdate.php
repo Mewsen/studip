@@ -25,25 +25,18 @@ class PostingUpdate extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $json = $this->validate($request);
-        $user = $this->getUser($request);
-
-        $posting = Posting::findOneBySQL(
-            "posting_id = :posting_id AND user_id = :user_id",
-            [
-                'posting_id' => $args['posting_id'],
-                'user_id' => $user->user_id
-            ]
-        );
-
+        $posting = Posting::find($args['posting_id']);
         if (!$posting) {
             throw new RecordNotFoundException();
         }
 
-        if ($posting->discussion->closed_at) {
+        if (
+            !Authority::canEditPost($this->getUser($request), $posting, (bool) $posting->discussion->closed_at)
+        ) {
             throw new AuthorizationFailedException();
         }
 
+        $json = $this->validate($request);
         $posting->content = Markup::purifyHtml(Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content')));
         $posting->anonymous = (self::arrayGet($json, 'data.attributes.anonymous') && \Config::get()->FORUM_ANONYMOUS_POSTINGS);
         $posting->store();

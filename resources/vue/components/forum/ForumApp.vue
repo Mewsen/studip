@@ -10,8 +10,9 @@ const fetchConfigs = async () => {
         forumConfig.$patch({
             isModerator: response.meta['is-moderator'],
             isAdmin: response.meta['is-admin'],
+            isTutor: response.meta['is-tutor'],
             anonymousPost: response.meta['anonymous-post'],
-            tileLayout: response.meta['tile-layout'],
+            tileLayout: response.meta['tile-layout']
         });
     } catch (error) {
         STUDIP.Report.error(error);
@@ -26,7 +27,7 @@ onMounted(async () => {
     } else {
         await fetchConfigs();
     }
-})
+});
 </script>
 
 <template>

@@ -21,7 +21,6 @@ class Topic extends SchemaProvider
     }
 
     /**
-     * @inheritdoc
      * @param \Forum\Topic $resource
      */
     public function getAttributes($resource, ContextInterface $context): iterable
