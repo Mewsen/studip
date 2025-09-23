@@ -24,8 +24,8 @@
  * @property string|null $locked_by_user_id database column
  * @property int $chdate database column
  * @property int $mkdate database column
- * @property SimpleORMapCollection<WikiVersion> $versions 
- * @property SimpleORMapCollection<WikiOnlineEditingUser> $onlineeditingusers 
+ * @property SimpleORMapCollection<WikiVersion> $versions
+ * @property SimpleORMapCollection<WikiOnlineEditingUser> $onlineeditingusers
  * @property User $user belongs_to User
  * @property Course $course belongs_to Course
  * @property-read (WikiPage | null) $parent additional field
@@ -88,11 +88,15 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         ];
 
         $config['registered_callbacks']['before_store'][] = 'createVersion';
+        $config['registered_callbacks']['after_delete'][] = function (WikiPage $page) {
+            $query = "UPDATE `wiki_pages` SET `parent_id` = NULL WHERE `parent_id` = ?";
+            DBManager::get()->execute($query, [$page->id]);
+        };
+
         $config['default_values']['last_author'] = 'nobody';
 
         parent::configure($config);
     }
-
 
     protected function createVersion()
     {
