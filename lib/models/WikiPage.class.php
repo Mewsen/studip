@@ -89,11 +89,15 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         ];
 
         $config['registered_callbacks']['before_store'][] = 'createVersion';
+        $config['registered_callbacks']['after_delete'][] = function (WikiPage $page) {
+            $query = "UPDATE `wiki_pages` SET `parent_id` = NULL WHERE `parent_id` = ?";
+            DBManager::get()->execute($query, [$page->id]);
+        };
+
         $config['default_values']['last_author'] = 'nobody';
 
         parent::configure($config);
     }
-
 
     protected function createVersion()
     {
