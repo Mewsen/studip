@@ -1319,7 +1319,7 @@ class ConnectedIlias
                     if (
                         !empty($this->ilias_config['cat_faculty'])
                         && empty($faculty_ref_id)
-                        && $course->home_institut->id !== $course->home_institut->fakultaets_id
+                        && !$course->home_institut->isFaculty()
                     ) {
                         $object_data['title'] = $course->home_institut->faculty->name;
                         $object_data['description'] = sprintf(_('Hier befinden sich die Einrichtungen der Stud.IP-Fakultät "%s".'), $course->home_institut->faculty->name);
@@ -1332,16 +1332,12 @@ class ConnectedIlias
                             $parent_type = 'faculty';
                             $parent_id = $course->home_institut->fakultaets_id;
                             $ref_id = $faculty_ref_id;
-                            $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
-                                             ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
                         } else {
                             $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
                         }
                     }
-                    $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index);
-                    if (!$institute_ref_id) {
-                        $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
-                    }
+                    $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
+                                     ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
                     if (!$institute_ref_id) {
                         $object_data['title'] = $course->home_institut->name;
                         $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zur Stud.IP-Einrichtung "%s".'), $course->home_institut->name);
@@ -1371,28 +1367,25 @@ class ConnectedIlias
                         $parent_id = $course->home_institut->fakultaets_id;
                         $ref_id = $faculty_ref_id;
                     }
-                } else {
-                    $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, 'root_category', 'cat', $this->index)
-                                     ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
-                }
-                if (!empty($this->ilias_config['cat_faculty']) && empty($faculty_ref_id) && ($course->home_institut->id != $course->home_institut->fakultaets_id)) {
-                    $object_data['title'] = $course->home_institut->faculty->name;
-                    $object_data['description'] = sprintf(_('Hier befinden sich die Einrichtungen der Stud.IP-Fakultät "%s".'), $course->home_institut->faculty->name);
-                    $object_data['type'] = 'cat';
-                    $object_data['owner'] =  $this->soap_client->LookupUser($this->ilias_config['admin']);
-                    $faculty_ref_id = $this->soap_client->addObject($object_data, $ref_id);
-                    if ($faculty_ref_id) {
-                        // store faculty category
-                        IliasObjectConnections::setConnection($course->home_institut->fakultaets_id, $faculty_ref_id, 'cat', $this->index, 'faculty', $parent_id, $parent_type);
-                        $parent_type = 'faculty';
-                        $parent_id = $course->home_institut->fakultaets_id;
-                        $ref_id = $faculty_ref_id;
-                        $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
-                                         ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
-                    } else {
-                        $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
+                    if (empty($faculty_ref_id) && !$course->home_institut->isFaculty()) {
+                        $object_data['title'] = $course->home_institut->faculty->name;
+                        $object_data['description'] = sprintf(_('Hier befinden sich die Einrichtungen der Stud.IP-Fakultät "%s".'), $course->home_institut->faculty->name);
+                        $object_data['type'] = 'cat';
+                        $object_data['owner'] =  $this->soap_client->LookupUser($this->ilias_config['admin']);
+                        $faculty_ref_id = $this->soap_client->addObject($object_data, $ref_id);
+                        if ($faculty_ref_id) {
+                            // store faculty category
+                            IliasObjectConnections::setConnection($course->home_institut->fakultaets_id, $faculty_ref_id, 'cat', $this->index, 'faculty', $parent_id, $parent_type);
+                            $parent_type = 'faculty';
+                            $parent_id = $course->home_institut->fakultaets_id;
+                            $ref_id = $faculty_ref_id;
+                        } else {
+                            $this->error[] = sprintf(_('ILIAS-Kategorie %s konnte nicht angelegt werden.'), $object_data["title"]);
+                        }
                     }
                 }
+                $institute_ref_id = IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, $parent_id, 'cat', $this->index)
+                                 ?: IliasObjectConnections::getExactConnectionModuleId($course->home_institut->id, '', 'cat', $this->index);
                 if (!$institute_ref_id) {
                     $object_data['title'] = $course->home_institut->name;
                     $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zur Stud.IP-Einrichtung "%s".'), $course->home_institut->name);
