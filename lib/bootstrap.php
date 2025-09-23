@@ -21,7 +21,7 @@ $dotenv->safeLoad();
 define('DEFAULT_ENV',  $_ENV['STUDIP_ENV'] ?? 'production');
 
 //software version - please leave it as it is!
-$SOFTWARE_VERSION = '6.0';
+$SOFTWARE_VERSION = '6.0.1';
 
 // Store startup time
 $STUDIP_STARTUP_TIME = microtime(true);
