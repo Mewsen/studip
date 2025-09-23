@@ -1,3 +1,53 @@
+# 23.09.2025 v 6.0.1
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+6.0.1&state=all
+- ILIAS-Schnittstelle: Standardmäßiger Sprung zur Infoseite, statt zum Objekt [#5458]
+- Im fromSORM fehlt Eingabename des `templates/forms/wysiwyg_input.php` [#5627]
+- Anmeldesets: Veranstaltungssuche funktioniert nicht mehr [#5740]
+- Anmeldesets: Liste ist unsortiert [#5791]
+- Avatar am Veranstaltungstitel wird abgeschnitten [#5802]
+- Verwaltung der Studiengruppen fehlerhaft [#5805]
+- ILIAS-Schnittstelle: Anzeigefehler bei Anbindung mehrerer ILIAS-Installationen [#5809]
+- Demo-Datensatz ist mit MySQL8 nicht kompatibel [#5819]
+- Nach Anlegen einer LV bekomme ich eine Mail bzgl. Eintragung in Veranstaltung [#5824]
+- Installationsassistent: root-Konto kann nicht ohne Demodaten eingerichtet werden [#5825]
+- Veranstaltungsadministration: PHP Warnings, wenn es keine Einrichtungen gibt [#5828]
+- Anmelderegel konfigurieren: Auswahl der Regel funktioniert komisch [#5851]
+- Anmelderegeln: Nachricht bei fehlgeschlagener Anmeldung wird nicht gespeichert [#5875]
+- HTML-Code der Messageboxen in PHP/Vue unterschiedlich [#5878]
+
+# 23.09.2025 v 5.5.7
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.5.7&state=all
+- Wiki: Gleichzeitiges automatisches und manuelles Speichern löst Popup aus [#4924]
+- Courseware: Dateiupload sollte Lizenzwähler integriert haben [#5712]
+- Wiki: Gleichzeitiges automatisches und manuelles Speichern löst Popup aus [#5823]
+- Das Löschen einer Einrichtung erzeugt eine Exception [#5826]
+- Wiki: Tabelle wiki_links wird nicht mehr verwendet [#5833]
+- Wiki: Editieren oder Bearbeiten? [#5842]
+- Sicherheitslücke in PHPSpreadsheet [#5870]
+
+
+# 23.09.2025 v 5.4.10
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.10&state=all
+- Anzeige interner Kommentar bei Serienterminen fehlt im Belegungsplan [#1726]
+- Nutzerdomänen werden beim Einloggen per Shibboleth gelöscht [#2055]
+- Anlegen neuer Veranstaltung: Eingabe-Reihenfolge mit der Tab-Taste durcheinander [#3800]
+- Fatal Error beim Löschen von Konten [#5803]
+- MVV: Die Tabelle in der Verwaltung der Ansprechpartner lässt sich nicht sortieren [#5818]
+- Obsolete Template-Dateien [#5822]
+- Firefox: Warnung wegen nicht-standardisierter Eigenschaft „zoom“ [#5834]
+- PHP Warnings beim Hinzufügen temporärer Berechtigungen an Räumen [#5838]
+- Im Dialog zur Prioritätsauswahl innerhalb eines Anmeldesets werden nicht direkt alle Veranstaltungen angezeigt [#5858]
+- Anmeldeverfahren: Auswahl bei "Zugang zur Veranstaltung" wird nicht im Dialog geöffnet [#5859]
+- MVV: Zuordnung von Modulen an Studiengangteilabschnitte immer möglich [#5867]
+- Zeitgesteuerter Ordner: Bei Wahl 23:59 - bitte Sekunden hinzunehmen (23:59:59.999) [#5874]
+- Number-Input Formularbaukasten [#5881]
+- Fehlendes htmlReady bei Ausgabe von Fragebögen Freitextantworten [#5889]
+- Suche im Vorlesungsverzeichnis findet keine Veranstaltungsnummern [#5891]
+- PHP8-Warnungen [#5892]
+
 # 14.08.2025 v 6.0
 
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+6.0&state=all
