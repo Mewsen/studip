@@ -26,7 +26,6 @@ class Posting extends SchemaProvider
     }
 
     /**
-     * @inheritDoc
      * @param \Forum\Posting $resource
      */
     public function getAttributes($resource, ContextInterface $context): iterable
@@ -49,7 +48,6 @@ class Posting extends SchemaProvider
     }
 
     /**
-     * @inheritDoc
      * @param \Forum\Posting $resource
      */
     public function getResourceMeta($resource)
@@ -79,7 +77,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addAuthorRelationship(array $relationships, \Forum\Posting $posting, $withAuthor = false)
+    private function addAuthorRelationship(array $relationships, \Forum\Posting $posting, bool $withAuthor = false)
     {
         $author = $posting->author;
 
@@ -95,7 +93,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addDiscussionRelationship(array $relationships, \Forum\Posting $posting, $withDiscussion = false)
+    private function addDiscussionRelationship(array $relationships, \Forum\Posting $posting, bool $withDiscussion = false)
     {
         if ($withDiscussion) {
             $relationships[self::REL_DISCUSSION] = [
@@ -109,7 +107,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addPostingRelationship(array $relationships, \Forum\Posting $posting, $withPosting = false)
+    private function addPostingRelationship(array $relationships, \Forum\Posting $posting, bool $withPosting = false)
     {
         $posting = $posting->posting;
 
@@ -125,7 +123,7 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addReactionsRelationship(array $relationships, \Forum\Posting $posting, $withReactions = false)
+    private function addReactionsRelationship(array $relationships, \Forum\Posting $posting, bool $withReactions = false)
     {
         if ($withReactions) {
             $relationships[self::REL_REACTIONS] = [
@@ -138,4 +136,5 @@ class Posting extends SchemaProvider
 
         return $relationships;
     }
+    
 }

@@ -7,6 +7,7 @@ export const useForumConfig = defineStore(
         const allowGuestAccess  = ref(false);
         const isAdmin  = ref(false);
         const isModerator  = ref(false);
+        const isTutor  = ref(false);
         const anonymousPost  = ref(false);
         const tileLayout  = ref(true);
 
@@ -32,6 +33,7 @@ export const useForumConfig = defineStore(
             isModerator,
             anonymousPost,
             tileLayout,
+            isTutor,
             toggleForumLayout
         }
     }

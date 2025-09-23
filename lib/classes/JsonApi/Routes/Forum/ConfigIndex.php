@@ -28,6 +28,7 @@ class ConfigIndex extends JsonApiController
         return $this->getMetaResponse([
             'is-admin' => CoreForum::isAdmin($range->id),
             'is-moderator' => CoreForum::isModerator($range->id),
+            'is-tutor' => $GLOBALS['perm']->have_studip_perm('tutor', $range->id, $user->id),
             'anonymous-post' => (bool) Config::get()->FORUM_ANONYMOUS_POSTINGS,
             'tile-layout' => (bool) UserConfig::get($user->user_id)->FORUM_TILE_LAYOUT
         ]);

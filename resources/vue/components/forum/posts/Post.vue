@@ -39,11 +39,12 @@ const postContent = useTemplateRef('postContent');
 const userAvatarContainer = useTemplateRef('userAvatarContainer');
 
 const selectedText = ref('');
-const editPost = ref('');
-const postCreateForm = ref(false);
+const showPostEditForm = ref(false);
+const showPostCreateForm = ref(false);
 
 const isUnread = computed(() => (!props.post.author && props.is_unread) || (props.is_unread && props.post.author.id !== STUDIP.USER_ID))
-
+const canEditPost = computed(() => forumConfig.isTutor || (props.post.author?.id === STUDIP.USER_ID && !props.discussion.closed_at));
+const canDeletePost = computed(() => canEditPost.value);
 const copyToClipboard = () => {
     if (selectedText.value) {
         navigator.clipboard.writeText(selectedText.value);
@@ -52,13 +53,25 @@ const copyToClipboard = () => {
     }
 }
 
-const deletePost = async (post) => {
+const editPost = () => {
+    if (!canEditPost.value) {
+        return;
+    }
+
+    showPostEditForm.value = true;
+}
+
+const deletePost = async () => {
+    if (!canDeletePost.value) {
+        return;
+    }
+
     STUDIP.Dialog.confirm(
         $gettext('Wollen Sie diesen Beitrag löschen?'),
         async () => {
             try {
-                await STUDIP.jsonapi.withPromises().DELETE(`forum-postings/${post.id}`);
-                forumDiscussionPost.removePost(post.id);
+                await STUDIP.jsonapi.withPromises().DELETE(`forum-postings/${props.post.id}`);
+                forumDiscussionPost.removePost(props.post.id);
                 STUDIP.Report.success($gettext('Der Beitrag wurde gelöscht.'));
             } catch (error) {
                 STUDIP.Report.error(error);
@@ -69,11 +82,11 @@ const deletePost = async (post) => {
 
 const addPost = () => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    postCreateForm.value = false;
+    showPostCreateForm.value = false;
 }
 
 const addReply = post => {
-    postCreateForm.value = true;
+    showPostCreateForm.value = true;
     selectedText.value = post.content;
 }
 
@@ -98,12 +111,12 @@ const forwardPost = post => {
 }
 
 const removePostHighlight = id => {
-    const element = document.getElementById(id)
+    const element = document.getElementById(id);
     if (!element) {
-        console.error("Element not found!")
-        return
+        console.error("Element not found!");
+        return;
     }
-    element.classList.remove('--highlight')
+    element.classList.remove('--highlight');
 }
 </script>
 
@@ -170,8 +183,8 @@ const removePostHighlight = id => {
                     </span>
                     <StudipDateTime v-else :iso="post.mkdate" :relative="true" />
                 </div>
-                <template v-if="editPost === post.id">
-                    <PostEditForm :post="post" :auth_user="auth_user" class="mt-10" @canceled="editPost = ''" @updated="editPost = ''"/>
+                <template v-if="showPostEditForm">
+                    <PostEditForm :post="post" :auth_user="auth_user" class="mt-10" @canceled="showPostEditForm = false" @updated="showPostEditForm = false"/>
                 </template>
                 <template v-else>
                     <div class="post__text">
@@ -180,8 +193,8 @@ const removePostHighlight = id => {
                                 <a
                                     :href="`#create_form_${post.id}`"
                                     class="ballon-action__button"
-                                    v-if="!forumConfig.allowGuestAccess && !postCreateForm && !discussion.closed_at"
-                                    @click="postCreateForm = true; postContent.removeSelection()"
+                                    v-if="!forumConfig.allowGuestAccess && !showPostCreateForm && !discussion.closed_at"
+                                    @click="showPostCreateForm = true; postContent.removeSelection()"
                                     :title="$gettext('Auswahl zitieren und antworten')"
                                     :aria-label="$gettext('Auswahl zitieren und antworten')"
                                 >
@@ -210,35 +223,41 @@ const removePostHighlight = id => {
                 <div class="post__footer">
                     <div></div>
                     <div class="inline-flex items-center gap-40">
-                        <div v-if="!forumConfig.allowGuestAccess && !discussion.closed_at" class="inline-flex items-center gap-10">
-                            <template v-if="post.author?.id === auth_user.id">
-                                <a
-                                    :href="`#post_${post.id}`"
-                                    @click="editPost = post.id"
-                                    type="button"
-                                    class="button button--icon-only"
-                                    :class="{
-                                        'disabled': editPost === post.id
-                                    }"
-                                    :title="$gettext('Beitrag bearbeiten')"
-                                    :aria-label="$gettext('Beitrag bearbeiten')"
-                                >
-                                    <StudipIcon shape="edit" :size="20" aria-hidden="true" />
-                                </a>
-                                <button @click="deletePost(post)" type="button" class="button button--icon-only" :title="$gettext('Beitrag löschen')" :aria-label="$gettext('Beitrag löschen')">
-                                    <StudipIcon shape="trash" :size="20" aria-hidden="true" />
-                                </button>
-                            </template>
+                        <div v-if="!forumConfig.allowGuestAccess" class="inline-flex items-center gap-10">
+                            <a
+                                v-if="canEditPost"
+                                :href="`#post_${post.id}`"
+                                @click="editPost"
+                                type="button"
+                                class="button button--icon-only"
+                                :class="{
+                                    'disabled': showPostEditForm
+                                }"
+                                :title="$gettext('Beitrag bearbeiten')"
+                                :aria-label="$gettext('Beitrag bearbeiten')"
+                            >
+                                <StudipIcon shape="edit" :size="20" aria-hidden="true" />
+                            </a>
+                            <button
+                                v-if="canDeletePost"
+                                @click="deletePost"
+                                type="button" class="button button--icon-only"
+                                :title="$gettext('Beitrag löschen')"
+                                :aria-label="$gettext('Beitrag löschen')"
+                            >
+                                <StudipIcon shape="trash" :size="20" aria-hidden="true" />
+                            </button>
                             <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrag weiterleiten')" :aria-label="$gettext('Beitrag weiterleiten')">
                                 <StudipIcon shape="export" :size="20" aria-hidden="true" />
                             </button>
                             <a
+                                v-if="!discussion.closed_at"
                                 :href="`#create_form_${post.id}`"
                                 @click="addReply(post)"
                                 type="button"
                                 class="button button--icon-only"
                                 :class="{
-                                    'disabled': postCreateForm
+                                    'disabled': showPostCreateForm
                                 }"
                                 :title="$gettext('Zitieren und antworten')"
                                 :aria-label="$gettext('Zitieren und Antworten')"
@@ -251,13 +270,13 @@ const removePostHighlight = id => {
             </div>
         </div>
     </div>
-    <div v-if="postCreateForm && !discussion.closed_at" :id="`create_form_${post.id}`" class="post-form-container" style="scroll-margin-top: 200px;">
+    <div v-if="showPostCreateForm && !discussion.closed_at" :id="`create_form_${post.id}`" class="post-form-container" style="scroll-margin-top: 200px;">
         <PostCreateForm
             :parent_id="post.id"
             :discussion_id="props.discussion.discussion_id"
             :auth_user="auth_user"
             v-model:quote="selectedText"
-            @canceled="postCreateForm = false; selectedText = ''"
+            @canceled="showPostCreateForm = false; selectedText = ''"
             @created="addPost"
         />
     </div>
