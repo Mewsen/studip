@@ -1,3 +1,23 @@
+# 23.09.2025 v 5.4.10
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.10&state=all
+- Anzeige interner Kommentar bei Serienterminen fehlt im Belegungsplan [#1726]
+- Nutzerdomänen werden beim Einloggen per Shibboleth gelöscht [#2055]
+- Anlegen neuer Veranstaltung: Eingabe-Reihenfolge mit der Tab-Taste durcheinander [#3800]
+- Fatal Error beim Löschen von Konten [#5803]
+- MVV: Die Tabelle in der Verwaltung der Ansprechpartner lässt sich nicht sortieren [#5818]
+- Obsolete Template-Dateien [#5822]
+- Firefox: Warnung wegen nicht-standardisierter Eigenschaft „zoom“ [#5834]
+- PHP Warnings beim Hinzufügen temporärer Berechtigungen an Räumen [#5838]
+- Im Dialog zur Prioritätsauswahl innerhalb eines Anmeldesets werden nicht direkt alle Veranstaltungen angezeigt [#5858]
+- Anmeldeverfahren: Auswahl bei "Zugang zur Veranstaltung" wird nicht im Dialog geöffnet [#5859]
+- MVV: Zuordnung von Modulen an Studiengangteilabschnitte immer möglich [#5867]
+- Zeitgesteuerter Ordner: Bei Wahl 23:59 - bitte Sekunden hinzunehmen (23:59:59.999) [#5874]
+- Number-Input Formularbaukasten [#5881]
+- Fehlendes htmlReady bei Ausgabe von Fragebögen Freitextantworten [#5889]
+- Suche im Vorlesungsverzeichnis findet keine Veranstaltungsnummern [#5891]
+- PHP8-Warnungen [#5892]
+
 # 08.08.2025 v 5.4.9
 
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.9&state=all
