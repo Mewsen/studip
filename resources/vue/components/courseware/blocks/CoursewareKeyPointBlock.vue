@@ -30,9 +30,12 @@
                         />
                     </label>
                     <br />
-                    <label class="col-2">
-                        {{ $gettext('Farbe') }}
-                        <studip-select
+                    <div class="col-2">
+                        <label for="current-color">
+                            {{ $gettext('Farbe') }}
+                        </label>
+                        <StudipSelect
+                            id="current-color"
                             :options="colors"
                             label="name"
                             :clearable="false"
@@ -53,11 +56,17 @@
                                 <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
                                 ><span>{{ option.name }}</span>
                             </template>
-                        </studip-select>
-                    </label>
-                    <label class="col-2">
-                        {{ $gettext('Icon') }}
-                        <studip-select :options="icons" :clearable="false" v-model="currentIcon">
+                        </StudipSelect>
+                    </div>
+                    <div class="col-2">
+                        <label for="current-icon">
+                            {{ $gettext('Icon') }}
+                        </label>
+                        <StudipSelect
+                            id="current-icon"
+                            :options="icons"
+                            :clearable="false"
+                            v-model="currentIcon">
                             <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                             </template>
@@ -72,8 +81,8 @@
                                 <studip-icon :shape="option.label" />
                                 <span class="vs__option-with-icon">{{ option.label }}</span>
                             </template>
-                        </studip-select>
-                    </label>
+                        </StudipSelect>
+                    </div>
                 </form>
             </template>
             <template #info>

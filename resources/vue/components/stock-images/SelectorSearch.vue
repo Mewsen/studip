@@ -37,7 +37,7 @@
             <div>
                 <div>{{ $gettext('Farbfilter') }}</div>
 
-                <studip-select
+                <StudipSelect
                     multiple
                     v-model="selectedColors"
                     :options="selectableColors"
@@ -55,7 +55,7 @@
                     <template #selected-option-container>{{ ' ' }}</template>
 
                     <template #no-options>{{ $gettext('Keine Auswahlmöglichkeiten') }}</template>
-                </studip-select>
+                </StudipSelect>
             </div>
         </div>
     </SearchWithFilter>

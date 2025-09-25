@@ -18,9 +18,12 @@
                         {{ $gettext('Beschriftung') }}
                         <input type="text" v-model="currentLabel"  />
                     </label>
-                    <label class="col-3">
-                        {{ $gettext('Typ') }}
-                        <studip-select
+                    <div class="col-3">
+                        <label for="current-type">
+                            {{ $gettext('Typ') }}
+                        </label>
+                        <StudipSelect
+                            id="current-type"
                             v-model="currentType"
                             :options="chartTypes"
                             :reduce="chartTypes => chartTypes.value"
@@ -36,8 +39,8 @@
                             <template #option="option">
                                 <span>{{ option.name }}</span>
                             </template>
-                        </studip-select>
-                    </label>
+                        </StudipSelect>
+                    </div>
                 </form>
                 <button class="button add" @click="addItem">{{ $gettext('Datensatz hinzufügen') }}</button>
                 <button class="button" @click="buildChart">{{ $gettext('Diagramm aktualisieren') }}</button>
@@ -59,9 +62,12 @@
                                 {{ $gettext('Wert') }}
                                 <input type="number" v-model="item.value" />
                             </label>
-                            <label class="col-2">
-                                {{ $gettext('Farbe') }}
-                                <studip-select
+                            <div class="col-2">
+                                <label for="colors">
+                                    {{ $gettext('Farbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="colors"
                                     :options="colors"
                                     :reduce="colors => colors.value"
                                     label="name"
@@ -80,8 +86,8 @@
                                     <template #option="option">
                                         <span class="vs__option-color" :style="{'background-color': 'rgb(' + option.rgb + ')'}"></span><span>{{ option.name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
+                                </StudipSelect>
+                            </div>
                             <label class="col-3">
                                 {{ $gettext('Bezeichnung') }}
                                 <input type="text" v-model="item.label" />

@@ -157,47 +157,60 @@
                 </p>
             </template>
 
-            <label v-if="withResponsible.users">
-                {{ $gettext('Durchführende Personen') }}
-                <StudipSelect v-model="responsibleUsers"
-                              :options="withResponsible.users"
-                              :reduce="option => option.id"
-                              multiple
-                              :clearable="true"
-                >
-                    <template #open-indicator>
-                        <span><studip-icon shape="arr_1down" :size="10" /></span>
-                    </template>
-                </StudipSelect>
-            </label>
+            <template v-if="withResponsible.users">
+                <label for="responsible-users">
+                    {{ $gettext('Durchführende Personen') }}
 
-            <label v-if="withResponsible.groups">
-                {{ $gettext('Durchführende Gruppen') }}
-                <StudipSelect v-model="responsibleGroups"
-                              :options="withResponsible.groups"
-                              :reduce="option => option.id"
-                              multiple
-                              :clearable="true"
+                </label>
+                <StudipSelect
+                    id="responsible-users"
+                    v-model="responsibleUsers"
+                    :options="withResponsible.users"
+                    :reduce="option => option.id"
+                    multiple
+                    :clearable="true"
                 >
                     <template #open-indicator>
                         <span><studip-icon shape="arr_1down" :size="10" /></span>
                     </template>
                 </StudipSelect>
-            </label>
+            </template>
 
-            <label v-if="withResponsible.institutes">
-                {{ $gettext('Durchführende Einrichtungen') }}
-                <StudipSelect v-model="responsibleInstitutes"
-                              :options="withResponsible.institutes"
-                              :reduce="option => option.id"
-                              multiple
-                              :clearable="true"
+            <template v-if="withResponsible.groups">
+                <label id="responsible-groups">
+                    {{ $gettext('Durchführende Gruppen') }}
+                </label>
+                <StudipSelect
+                    id="responsible-groups"
+                    v-model="responsibleGroups"
+                    :options="withResponsible.groups"
+                    :reduce="option => option.id"
+                    multiple
+                    :clearable="true"
                 >
                     <template #open-indicator>
                         <span><studip-icon shape="arr_1down" :size="10" /></span>
                     </template>
                 </StudipSelect>
-            </label>
+            </template>
+
+            <template v-if="withResponsible.institutes">
+                <label for="responsible-institutes">
+                    {{ $gettext('Durchführende Einrichtungen') }}
+                </label>
+                <StudipSelect
+                    id="responsible-institutes"
+                    v-model="responsibleInstitutes"
+                    :options="withResponsible.institutes"
+                    :reduce="option => option.id"
+                    multiple
+                    :clearable="true"
+                >
+                    <template #open-indicator>
+                        <span><studip-icon shape="arr_1down" :size="10" /></span>
+                    </template>
+                </StudipSelect>
+            </template>
         </fieldset>
 
         <fieldset>

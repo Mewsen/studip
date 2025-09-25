@@ -6,12 +6,10 @@ import StudipIcon from "@/vue/components/StudipIcon.vue";
 
 <template>
     <StudipSelect
-        v-bind="$attrs"
-        class="multi-select-input"
         :placeholder="$gettext('Schlagworte')"
         label="name"
         :clearable="true"
-        :reduce="(tag) => {
+        :reduce="tag => {
             if(tag.name) {
                 return tag;
             }
@@ -19,6 +17,7 @@ import StudipIcon from "@/vue/components/StudipIcon.vue";
             return { name: tag };
         }"
         :closeOnSelect="false"
+        v-bind="{...$props, ...$attrs}"
     >
         <template #open-indicator>
             <StudipIcon shape="add" :size="15" />

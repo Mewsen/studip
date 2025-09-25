@@ -265,21 +265,46 @@ onMounted(async () => {
                     <StudipIcon v-else shape="arr_1down"  :size="20" />
                 </button>
                 <div v-if="isFilterVisible" class="filter-controls">
-                    <label>
-                        <span class="sr-only">{{ $gettext('Thema') }}</span>
-                        <SelectTopicInput id="" :options="availableTopics" v-model="searchForm.topics" :required="false" multiple />
-                    </label>
-                    <label>
-                        <span class="sr-only">{{ $gettext('Diskussionstyp') }}</span>
-                        <SelectDiscussionType :options="availableTypes" v-model="searchForm.types" multiple />
-                    </label>
-                    <label>
-                        <span class="sr-only">{{ $gettext('Schlagworte') }}</span>
-                        <SelectTagsInput :options="availableTags" v-model="searchForm.tags" multiple />
-                    </label>
-                    <label>
-                        <span class="sr-only">{{ $gettext('Status der Diskussion') }}</span>
+                    <div>
+                        <label for="select-topic-input" class="sr-only">
+                            {{ $gettext('Thema') }}
+                        </label>
+                        <SelectTopicInput
+                            id="select-topic-input"
+                            :options="availableTopics"
+                            v-model="searchForm.topics"
+                            :required="false"
+                            multiple
+                        />
+                    </div>
+                    <div>
+                        <label for="select-discussion-type" class="sr-only">
+                            {{ $gettext('Diskussionstyp') }}
+                        </label>
+                        <SelectDiscussionType
+                            id="select-discussion-type"
+                            :options="availableTypes"
+                            v-model="searchForm.types"
+                            multiple
+                        />
+                    </div>
+                    <div>
+                        <label for="select-tags-input" class="sr-only">
+                            {{ $gettext('Schlagworte') }}
+                        </label>
+                        <SelectTagsInput
+                            id="select-tags-input"
+                            :options="availableTags"
+                            v-model="searchForm.tags"
+                            multiple
+                        />
+                    </div>
+                    <div>
+                        <label for="discussion-statuses-input" class="sr-only">
+                            {{ $gettext('Status der Diskussion') }}
+                        </label>
                         <StudipSelect
+                            id="discussion-statuses-input"
                             :options="discussionStatuses"
                             :placeholder="$gettext('Status der Diskussion')"
                             v-model="searchForm.status"
@@ -290,19 +315,22 @@ onMounted(async () => {
                                 </div>
                             </template>
                         </StudipSelect>
-                    </label>
+                    </div>
                     <div class="date-inputs-container">
                         <input type="date" v-model="searchForm.begin" :placeholder="$gettext('Von')" :aria-label="$gettext('Von')" autocomplete="off" />
                         <input type="date" v-model="searchForm.end" :placeholder="$gettext('Bis')" :aria-label="$gettext('Bis')" autocomplete="off" />
                     </div>
-                    <label>
-                        <span class="sr-only">{{ $gettext('Autor/-in') }}</span>
+                    <div>
+                        <label for="select-user-input" class="sr-only">
+                            {{ $gettext('Autor/-in') }}
+                        </label>
                         <SelectUserInput
+                            id="select-user-input"
                             :options="course_members"
                             multiple
                             v-model="searchForm.authors"
                         />
-                    </label>
+                    </div>
                 </div>
             </div>
         </form>

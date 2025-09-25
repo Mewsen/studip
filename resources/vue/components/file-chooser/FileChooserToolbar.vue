@@ -35,9 +35,12 @@
                     @click="$refs.fileInput.click()"
                 />
             </label>
-            <label class="file-chooser-license">
-                {{ $gettext('Lizenzauswahl') }}
-                <studip-select
+            <div class="file-chooser-license">
+                <label for="upload-file-license">
+                    {{ $gettext('Lizenzauswahl') }}
+                </label>
+                <StudipSelect
+                    id="upload-file-license"
                     :options="termsOfUse"
                     label="name"
                     :reduce="(termsOfUse) => termsOfUse.id"
@@ -58,8 +61,8 @@
                         <studip-icon :shape="option.attributes.icon" />
                         <span>{{ option.attributes.name }}</span>
                     </template>
-                </studip-select>
-            </label>
+                </StudipSelect>
+            </div>
 
             <div class="inline-button-group">
                 <button :title="$gettext('Datei hochladen')" @click="createFile"><studip-icon shape="accept" /></button>

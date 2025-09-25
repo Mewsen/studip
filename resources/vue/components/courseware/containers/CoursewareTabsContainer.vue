@@ -104,23 +104,27 @@
                         {{ $gettext('Titel') }}
                         <input type="text" v-model="section.name" />
                     </label>
-                    <label>
+                    <label for="section-icon">
                         {{ $gettext('Symbol') }}
-                        <studip-select :options="icons" v-model="section.icon">
-                            <template #open-indicator="{ selectAttributes }">
-                                <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                            </template>
-                            <template #no-options>
-                                {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                            </template>
-                            <template #selected-option="option">
-                                <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
-                            </template>
-                            <template #option="option">
-                                <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
-                            </template>
-                        </studip-select>
                     </label>
+                    <StudipSelect
+                        id="section-icon"
+                        :options="icons"
+                        v-model="section.icon"
+                    >
+                        <template #open-indicator="{ selectAttributes }">
+                            <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
+                        </template>
+                        <template #no-options>
+                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                        </template>
+                        <template #selected-option="option">
+                            <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
+                        </template>
+                        <template #option="option">
+                            <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
+                        </template>
+                    </StudipSelect>
                     <label
                         class="cw-container-section-delete"
                         v-if="currentContainer.attributes.payload.sections.length > 1"

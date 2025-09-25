@@ -1,7 +1,13 @@
 <template>
     <SidebarWidget :title="$gettext('Farbe')">
         <template #content>
-            <studip-select multiple v-model="selectedColors" :options="selectableColors" @input="onVueSelectInput" label="name">
+            <StudipSelect
+                multiple
+                v-model="selectedColors"
+                :options="selectableColors"
+                @input="onVueSelectInput"
+                label="name"
+            >
                 <template #open-indicator>
                     <span><studip-icon shape="arr_1down" :size="10" /></span>
                 </template>
@@ -16,7 +22,7 @@
                 </template>
 
                 <template #no-options>{{ $gettext('Keine Auswahlmöglichkeiten') }}</template>
-            </studip-select>
+            </StudipSelect>
         </template>
     </SidebarWidget>
 </template>

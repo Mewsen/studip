@@ -66,33 +66,34 @@
             </template>
             <template v-if="canEdit" #edit>
                 <form class="default" @submit.prevent="">
-                    <label>
+                    <label for="assignments">
                         {{ $gettext('Aufgabenblatt') }}
-                        <studip-select
-                            :options="assignments"
-                            label="title"
-                            :reduce="assignment => assignment.id"
-                            :clearable="false"
-                            v-model="assignment_id"
-                            class="cw-vs-select"
-                        >
-                            <template #open-indicator="{ attributes }">
-                                <span v-bind="attributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                            </template>
-                            <template #no-options="{}">
-                                {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                            </template>
-                            <template #selected-option="{title, icon, start, end}">
-                                <studip-icon :shape="icon" role="info"/>
-                                {{title}} ({{start}} - {{end}})
-                            </template>
-                            <template #option="{title, icon, start, end, block}">
-                                <studip-icon :shape="icon" role="info"/>
-                                {{ block ? block + ' / ' + title : title }}<br>
-                                <small>{{start}} - {{end}}</small>
-                            </template>
-                        </studip-select>
                     </label>
+                    <StudipSelect
+                        id="assignments"
+                        :options="assignments"
+                        label="title"
+                        :reduce="assignment => assignment.id"
+                        :clearable="false"
+                        v-model="assignment_id"
+                        class="cw-vs-select"
+                    >
+                        <template #open-indicator="{ attributes }">
+                            <span v-bind="attributes"><studip-icon shape="arr_1down" :size="10"/></span>
+                        </template>
+                        <template #no-options="{}">
+                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                        </template>
+                        <template #selected-option="{title, icon, start, end}">
+                            <studip-icon :shape="icon" role="info"/>
+                            {{title}} ({{start}} - {{end}})
+                        </template>
+                        <template #option="{title, icon, start, end, block}">
+                            <studip-icon :shape="icon" role="info"/>
+                            {{ block ? block + ' / ' + title : title }}<br>
+                            <small>{{start}} - {{end}}</small>
+                        </template>
+                    </StudipSelect>
                 </form>
             </template>
         </courseware-default-block>

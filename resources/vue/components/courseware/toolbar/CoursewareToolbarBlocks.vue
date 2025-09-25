@@ -34,7 +34,8 @@
             </form>
             <form class="default">
                 <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
-                <studip-select
+                <StudipSelect
+                    id="current-filter-category"
                     :clearable="true"
                     label="title"
                     :options="blockCategories"
@@ -50,7 +51,7 @@
                     </template>
                     <template #selected-option="{ title }"><span>{{ title }}</span></template>
                     <template #option="{ title }"><span>{{ title }}</span></template>
-                </studip-select>
+                </StudipSelect>
             </form>
         </div>
         <div class="cw-toolbar-tool-content" :style="toolContentStyle">

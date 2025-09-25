@@ -80,25 +80,33 @@
                         class="cw-companion-box-in-form"
                     />
                 </label>
-                <label>
+                <label for="color">
                     {{ $gettext('Farbe') }}
-                    <studip-select v-model="color" :options="colors" :reduce="(color) => color.class" label="name" name="color" :clearable="false">
-                        <template #open-indicator="{ selectAttributes }">
-                            <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
-                        </template>
-                        <template #no-options>
-                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                        </template>
-                        <template #selected-option="option">
-                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
-                            <span>{{ option.name }}</span>
-                        </template>
-                        <template #option="option">
-                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
-                            <span>{{ option.name }}</span>
-                        </template>
-                    </studip-select>
                 </label>
+                <StudipSelect
+                    id="color"
+                    v-model="color"
+                    :options="colors"
+                    :reduce="(color) => color.class"
+                    label="name"
+                    name="color"
+                    :clearable="false"
+                >
+                    <template #open-indicator="{ selectAttributes }">
+                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
+                    </template>
+                    <template #no-options>
+                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                    </template>
+                    <template #selected-option="option">
+                        <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
+                        <span>{{ option.name }}</span>
+                    </template>
+                    <template #option="option">
+                        <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
+                        <span>{{ option.name }}</span>
+                    </template>
+                </StudipSelect>
             </form>
         </template>
         <template v-slot:advanced>

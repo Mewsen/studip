@@ -7,6 +7,7 @@ import StudipSelect from "..//StudipSelect.vue";
     <StudipSelect
         label="name"
         :placeholder="$gettext('Autor/-in')"
+        v-bind="{...$props, ...$attrs}"
     >
         <template #selected-option="{name, avatar_url}">
             <div class="flex items-center">

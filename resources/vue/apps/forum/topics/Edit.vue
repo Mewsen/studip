@@ -76,39 +76,39 @@ onMounted(() => {
                     <input type="hidden" name="category" :value="JSON.stringify(topicForm.category)">
                     <label for="category_input">
                         {{ $gettext('Kategorie') }}
-                        <StudipSelect
-                            id="category_input"
-                            label="name"
-                            :options="categories"
-                            v-model="topicForm.category"
-                            :reduce="(category) => {
-                                if(category.name) {
-                                    return category;
-                                }
-
-                                return { name: category };
-                            }"
-                            :taggable="true"
-                        >
-                            <template #selected-option="{name, color}">
-                                <div class="flex items-center">
-                                    <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
-                                    <span class="line-clamp-1 flex-1">{{name}}</span>
-                                </div>
-                            </template>
-                            <template #option="{name, color}">
-                                <div :style="{ display: 'flex', alignItems: 'center' }">
-                                    <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
-                                    <span :style="{ flex: '1'}" class="line-clamp-1">{{name}}</span>
-                                </div>
-                            </template>
-                            <template #no-options>
-                                <div>
-                                    {{ $gettext('Es gibt keine Kategorie.') }}
-                                </div>
-                            </template>
-                        </StudipSelect>
                     </label>
+                    <StudipSelect
+                        id="category_input"
+                        label="name"
+                        :options="categories"
+                        v-model="topicForm.category"
+                        :reduce="(category) => {
+                            if(category.name) {
+                                return category;
+                            }
+
+                            return { name: category };
+                        }"
+                        :taggable="true"
+                    >
+                        <template #selected-option="{name, color}">
+                            <div class="flex items-center">
+                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                                <span class="line-clamp-1 flex-1">{{name}}</span>
+                            </div>
+                        </template>
+                        <template #option="{name, color}">
+                            <div :style="{ display: 'flex', alignItems: 'center' }">
+                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                                <span :style="{ flex: '1'}" class="line-clamp-1">{{name}}</span>
+                            </div>
+                        </template>
+                        <template #no-options>
+                            <div>
+                                {{ $gettext('Es gibt keine Kategorie.') }}
+                            </div>
+                        </template>
+                    </StudipSelect>
                 </section>
             </fieldset>
             <footer data-dialog-button>
