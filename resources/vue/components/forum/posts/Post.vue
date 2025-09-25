@@ -202,7 +202,7 @@ const removePostHighlight = id => {
                                 </a>
                                 <button
                                     type="button"
-                                    class="ballon-action__button"
+                                    class="ballon-action__button button-base"
                                     @click="copyToClipboard"
                                     :title="$gettext('Kopieren')"
                                     :aria-label="$gettext('Kopieren')"
