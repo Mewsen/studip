@@ -118,7 +118,7 @@ const reactionShowDialog = reactive({
             <template v-for="(reaction, emoji) in groupedReactions" :key="emoji">
                 <button
                     type="button"
-                    class="post-reaction"
+                    class="post-reaction button-base"
                     :class="{
                         '--active': findUserReaction(emoji, reaction)
                     }"
@@ -135,7 +135,7 @@ const reactionShowDialog = reactive({
                 <button
                     v-if="!forumConfig.allowGuestAccess"
                     type="button"
-                    class="post-reactions__add-reaction"
+                    class="post-reactions__add-reaction button-base"
                     :title="$gettext('Reagieren')"
                     :aria-label="$gettext('Reagieren')"
                     :aria-pressed="showReactions"
@@ -145,7 +145,7 @@ const reactionShowDialog = reactive({
                 <button
                     v-if="transformedReactions.length"
                     type="button"
-                    class="post-reactions__show-reactions"
+                    class="post-reactions__show-reactions button-base"
                     :title="$gettext('Reaktionen anzeigen')"
                     :aria-label="$gettext('%{count} Reaktionen anzeigen', { count: transformedReactions.length })"
                     @click="reactionShowDialog.isOpen = true">
