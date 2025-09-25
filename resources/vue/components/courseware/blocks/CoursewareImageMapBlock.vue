@@ -96,9 +96,12 @@
                             :icon="shape.title === '' ? 'link-extern' : ''"
                             :selected="index === 0"
                         >
-                            <label class="col-2">
-                                {{ $gettext('Farbe') }}
-                                <studip-select
+                            <div class="col-2">
+                                <label for="shape-color">
+                                    {{ $gettext('Farbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="shape-color"
                                     :options="colors"
                                     label="name"
                                     :reduce="(color) => color.class"
@@ -122,11 +125,14 @@
                                         <span class="vs__option-color" :style="{ 'background-color': option.rgba }"></span
                                         ><span>{{ option.name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
-                            <label class="col-2">
-                                {{ $gettext('Textfarbe') }}
-                                <studip-select
+                                </StudipSelect>
+                            </div>
+                            <div class="col-2">
+                                <label for="shape-text-color">
+                                    {{ $gettext('Textfarbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="shape-text-color"
                                     :options="colors"
                                     label="name"
                                     :reduce="(color) => color.class"
@@ -150,8 +156,8 @@
                                         <span class="vs__option-color" :style="{ 'background-color': rgba }"></span
                                         ><span>{{ name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
+                                </StudipSelect>
+                            </div>
                             <br />
                             <template v-if="shape.type === 'arc'">
                                 <label class="col-1">

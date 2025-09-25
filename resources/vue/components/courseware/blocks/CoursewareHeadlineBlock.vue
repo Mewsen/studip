@@ -93,42 +93,46 @@
                                 {{ $gettext('2. Untertitel') }}
                                 <input type="text" v-model="currentSecondSubtitle" />
                             </label>
-                            <label>
+                            <label for="current-text-color">
                                 {{ $gettext('Textfarbe') }}
-                                <studip-select
-                                    :options="colors"
-                                    label="name"
-                                    :reduce="(color) => color.hex"
-                                    :clearable="false"
-                                    v-model="currentTextColor"
-                                >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"
-                                            ><studip-icon shape="arr_1down" :size="10"
-                                        /></span>
-                                    </template>
-                                    <template #no-options>
-                                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                                    </template>
-                                    <template #selected-option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
-                                    </template>
-                                    <template #option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
-                                    </template>
-                                </studip-select>
                             </label>
-                            <label v-if="hasTextBackgroundColor">
-                                {{ $gettext('Texthintergrundfarbe') }}
-                                <studip-select
+                            <StudipSelect
+                                id="current-text-color"
+                                :options="colors"
+                                label="name"
+                                :reduce="(color) => color.hex"
+                                :clearable="false"
+                                v-model="currentTextColor"
+                            >
+                                <template #open-indicator="{ selectAttributes }">
+                                        <span v-bind="selectAttributes"
+                                        ><studip-icon shape="arr_1down" :size="10"
+                                        /></span>
+                                </template>
+                                <template #no-options>
+                                    {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                                </template>
+                                <template #selected-option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
+                                </template>
+                                <template #option="option">
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }"
+                                        ></span
+                                        ><span>{{ option.name }}</span>
+                                </template>
+                            </StudipSelect>
+                            <template v-if="hasTextBackgroundColor">
+                                <label for="current-tex-background-color">
+                                    {{ $gettext('Texthintergrundfarbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="current-tex-background-color"
                                     :options="colors"
                                     label="name"
                                     :reduce="(color) => color.hex"
@@ -136,51 +140,56 @@
                                     v-model="currentTextBackgroundColor"
                                 >
                                     <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"
+                                            <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
-                                        /></span>
+                                            /></span>
                                     </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
                                     <template #selected-option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                     </template>
                                     <template #option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
+                                </StudipSelect>
+                            </template>
                             <template v-if="hasIcon">
-                                <label>
+                                <label for="current-icon">
                                     {{ $gettext('Icon') }}
-                                    <studip-select :clearable="false" :options="icons" v-model="currentIcon">
-                                        <template #open-indicator="{ selectAttributes }">
-                                            <span v-bind="selectAttributes"
-                                                ><studip-icon shape="arr_1down" :size="10"
-                                            /></span>
-                                        </template>
-                                        <template #no-options>
-                                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                                        </template>
-                                        <template #selected-option="option">
-                                            <studip-icon :shape="option.label" />
-                                            <span class="vs__option-with-icon">{{ option.label }}</span>
-                                        </template>
-                                        <template #option="option">
-                                            <studip-icon :shape="option.label" />
-                                            <span class="vs__option-with-icon">{{ option.label }}</span>
-                                        </template>
-                                    </studip-select>
                                 </label>
+                                <StudipSelect
+                                    id="current-icon"
+                                    :clearable="false"
+                                    :options="icons"
+                                    v-model="currentIcon"
+                                >
+                                    <template #open-indicator="{ selectAttributes }">
+                                            <span v-bind="selectAttributes"
+                                            ><studip-icon shape="arr_1down" :size="10"
+                                            /></span>
+                                    </template>
+                                    <template #no-options>
+                                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                                    </template>
+                                    <template #selected-option="option">
+                                        <studip-icon :shape="option.label" />
+                                        <span class="vs__option-with-icon">{{ option.label }}</span>
+                                    </template>
+                                    <template #option="option">
+                                        <studip-icon :shape="option.label" />
+                                        <span class="vs__option-with-icon">{{ option.label }}</span>
+                                    </template>
+                                </StudipSelect>
                             </template>
                         </form>
                     </courseware-tab>
@@ -195,9 +204,12 @@
                                     <option value="structural-element-image">{{ $gettext('Seiten-Bild') }}</option>
                                 </select>
                             </label>
-                            <label v-if="currentBackgroundType === 'color'">
-                                {{ $gettext('Hintergrundfarbe') }}
-                                <studip-select
+                            <template v-if="currentBackgroundType === 'color'">
+                                <label for="current-background-color">
+                                    {{ $gettext('Hintergrundfarbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="current-background-color"
                                     :options="colors"
                                     label="name"
                                     :reduce="(color) => color.hex"
@@ -205,29 +217,29 @@
                                     :clearable="false"
                                 >
                                     <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"
+                                            <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
-                                        /></span>
+                                            /></span>
                                     </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
                                     <template #selected-option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                     </template>
                                     <template #option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                            <span
+                                                class="vs__option-color"
+                                                :style="{ 'background-color': option.hex }"
+                                            ></span
+                                            ><span>{{ option.name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
+                                </StudipSelect>
+                            </template>
                             <label v-if="currentBackgroundType === 'image'">
                                 <div>{{ $gettext('Hintergrundbild') }}</div>
 

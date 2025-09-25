@@ -6,10 +6,9 @@ import StudipSelect from "@/vue/components/StudipSelect.vue";
 
 <template>
     <StudipSelect
-        v-bind="$attrs"
-        class="multi-select-input"
         :placeholder="$gettext('Diskussionstyp (Optional)')"
         label="name"
+        v-bind="{...$props, ...$attrs}"
     >
         <template #open-indicator>
             <StudipIcon shape="arr_1sort" :size="15"/>

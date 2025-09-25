@@ -7,18 +7,17 @@ const selectedTopics = defineModel();
 
 <template>
     <StudipSelect
-        v-bind="$attrs"
-        class="multi-select-input"
         :placeholder="$gettext('Thema')"
         label="name"
         v-model="selectedTopics"
-        :reduce="(topic) => {
+        :reduce="topic => {
             if(topic.name) {
                 return topic;
             }
 
             return { name: topic };
         }"
+        v-bind="{...$props, ...$attrs}"
     >
         <template #search="{attributes, events}">
             <input

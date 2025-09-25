@@ -118,21 +118,43 @@ onMounted(() => {
                 </section>
 
                 <section class="inputs-container">
-                    <label class="flex-1">
-                        <span class="sr-only">{{ $gettext('Thema') }}</span>
+                    <div class="flex-1">
+                        <label for="select-topic-input">
+                            <span class="sr-only">{{ $gettext('Thema') }}</span>
+                        </label>
+                        <SelectTopicInput
+                            id="select-topic-input"
+                            :options="topics"
+                            v-model="discussionForm.topic"
+                            :taggable="true"
+                            :required="true"
+                        />
                         <input type="hidden" name="topic" :value="JSON.stringify(discussionForm.topic)">
-                        <SelectTopicInput :options="topics" v-model="discussionForm.topic" :taggable="true" :required="true" />
-                    </label>
-                    <label class="flex-1">
-                        <span class="sr-only">{{ $gettext('Diskussionstyp') }}</span>
+                    </div>
+                    <div class="flex-1">
+                        <label for="select-discussion-type">
+                            <span class="sr-only">{{ $gettext('Diskussionstyp') }}</span>
+                        </label>
+                        <SelectDiscussionType
+                            id="select-discussion-type"
+                            :options="discussion_types"
+                            v-model="discussionForm.type"
+                        />
                         <input v-if="discussionForm.type" type="hidden" name="type_id" :value="discussionForm.type.type_id">
-                        <SelectDiscussionType :options="discussion_types" v-model="discussionForm.type" />
-                    </label>
-                    <label class="flex-1">
-                        <span class="sr-only">{{ $gettext('Schlagworte') }}</span>
+                    </div>
+                    <div class="flex-1">
+                        <label for="select-tags-input">
+                            <span class="sr-only">{{ $gettext('Schlagworte') }}</span>
+                        </label>
+                        <SelectTagsInput
+                            id="select-tags-input"
+                            :options="availableTags"
+                            v-model="discussionForm.tags"
+                            multiple
+                            :taggable="true"
+                        />
                         <input type="hidden" name="tags" :value="JSON.stringify(discussionForm.tags)">
-                        <SelectTagsInput :options="availableTags"  v-model="discussionForm.tags" multiple :taggable="true" />
-                    </label>
+                    </div>
                 </section>
 
                 <section class="mt-10" v-if="!discussion.discussion_id">

@@ -79,9 +79,12 @@
                                 <textarea v-model="item.description" />
                             </label>
                             <br>
-                            <label class="col-2">
-                                {{ $gettext('Farbe') }}
-                                <studip-select
+                            <div class="col-2">
+                                <label for="item-color">
+                                    {{ $gettext('Farbe') }}
+                                </label>
+                                <StudipSelect
+                                    id="item-color"
                                     :options="colors"
                                     label="name"
                                     :clearable="false"
@@ -100,11 +103,18 @@
                                     <template #option="option">
                                         <span class="vs__option-color" :style="{'background-color': option.hex}"></span><span>{{ option.name }}</span>
                                     </template>
-                                </studip-select>
-                            </label>
-                            <label class="col-2">
-                                {{ $gettext('Icon') }}
-                                <studip-select :options="icons" :clearable="false" v-model="item.icon">
+                                </StudipSelect>
+                            </div>
+                            <div class="col-2">
+                                <label for="item-icon">
+                                    {{ $gettext('Icon') }}
+                                </label>
+                                <StudipSelect
+                                    id="item-icon"
+                                    :options="icons"
+                                    :clearable="false"
+                                    v-model="item.icon"
+                                >
                                     <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                                     </template>
@@ -117,8 +127,8 @@
                                     <template #option="option">
                                         <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
                                     </template>
-                                </studip-select>
-                            </label>
+                                </StudipSelect>
+                            </div>
                             <br>
                             <label class="col-1">
                                 {{ $gettext('Datum') }}

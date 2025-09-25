@@ -83,6 +83,10 @@ form.default .studip-v-select .vs__selected {
             display: none;
         }
     }
+
+    &__dropdown-toggle {
+        max-height: fit-content;
+    }
 }
 
 .multiselect__tags {

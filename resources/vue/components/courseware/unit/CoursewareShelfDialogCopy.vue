@@ -64,9 +64,12 @@
                             </option>
                         </select>
                     </label>
-                    <label>
-                        <span>{{ $gettext('Veranstaltung') }}</span><span aria-hidden="true" class="wizard-required">*</span>
-                        <studip-select
+                    <div>
+                        <label for="selected-range">
+                            <span>{{ $gettext('Veranstaltung') }}</span><span aria-hidden="true" class="wizard-required">*</span>
+                        </label>
+                        <StudipSelect
+                            id="selected-range"
                             v-if="filteredCourses.length !== 0 && !loadingCourses"
                             :options="filteredCourses"
                             :clearable="false"
@@ -79,14 +82,14 @@
                                     ><studip-icon shape="arr_1down" :size="10"
                                 /></span>
                             </template>
-                        </studip-select>
+                        </StudipSelect>
                         <p v-if="loadingCourses">
                             {{$gettext('Lade Veranstaltungen…')}}
                         </p>
                         <p v-if="filteredCourses.length === 0 && !loadingCourses">
                             {{$gettext('Es wurden keine geeigneten Veranstaltungen gefunden.')}}
                         </p>
-                    </label>
+                    </div>
                 </template>
 
             </form>
@@ -124,33 +127,34 @@
                     {{$gettext('Titel')}}
                     <input type="text" v-model="modifiedTitle" :placeholder="selectedUnitTitle" name="title" />
                 </label>
-                <label>
+                <label for="modified-color">
                     {{$gettext('Farbe')}}
-                    <studip-select
-                        v-model="modifiedColor"
-                        :options="colors"
-                        :reduce="(color) => color.class"
-                        :clearable="false"
-                        label="name"
-                    >
-                        <template #open-indicator="{ selectAttributes }">
-                            <span v-bind="selectAttributes"
-                                ><studip-icon shape="arr_1down" :size="10"
-                            /></span>
-                        </template>
-                        <template #no-options>
-                            {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                        </template>
-                        <template #selected-option="option">
-                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
-                            ><span>{{ option.name }}</span>
-                        </template>
-                        <template #option="option">
-                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
-                            ><span>{{ option.name }}</span>
-                        </template>
-                    </studip-select>
                 </label>
+                <StudipSelect
+                    id="modified-color"
+                    v-model="modifiedColor"
+                    :options="colors"
+                    :reduce="(color) => color.class"
+                    :clearable="false"
+                    label="name"
+                >
+                    <template #open-indicator="{ selectAttributes }">
+                            <span v-bind="selectAttributes"
+                            ><studip-icon shape="arr_1down" :size="10"
+                            /></span>
+                    </template>
+                    <template #no-options>
+                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                    </template>
+                    <template #selected-option="option">
+                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
+                            ><span>{{ option.name }}</span>
+                    </template>
+                    <template #option="option">
+                            <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span
+                            ><span>{{ option.name }}</span>
+                    </template>
+                </StudipSelect>
                 <label>
                     {{$gettext('Beschreibung')}}
                     <textarea v-model="modifiedDescription" :placeholder="selectedUnitDescription" />
