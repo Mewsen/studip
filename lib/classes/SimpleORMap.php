@@ -514,16 +514,10 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function countBySql($sql = '1', $params = [])
     {
-        $db_table = static::db_table();
-        $db = DBManager::get();
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = 'WHERE ' . $sql;
-        }
-        $sql = "SELECT count(*) FROM `" .  $db_table . "` " . $sql;
-        $st = $db->prepare($sql);
-        $st->execute($params);
-        return (int)$st->fetchColumn();
+        return (int) self::prepareAndExecuteStatement(
+            self::buildSelectQuery($sql, to_select: 'COUNT(*)'),
+            $params
+        )->fetchColumn();
     }
 
     /**
@@ -637,15 +631,10 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function findBySQL($sql, $params = [])
     {
-        $db_table = static::db_table();
-
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = 'WHERE ' . $sql;
-        }
-        $sql = "SELECT `" . $db_table . "`.* FROM `" . $db_table . "` " . $sql;
-        $stmt = DBManager::get()->prepare($sql);
-        $stmt->execute($params);
+        $statement = self::prepareAndExecuteStatement(
+            self::buildSelectQuery($sql),
+            $params
+        );
 
         $record = static::build([], false);
 
@@ -653,13 +642,14 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         do  {
             $clone = clone $record;
             $clone->setNew(false);
-            $stmt->setFetchMode(PDO::FETCH_INTO, $clone);
+            $statement->setFetchMode(PDO::FETCH_INTO, $clone);
 
-            if ($clone = $stmt->fetch()) {
+            if ($clone = $statement->fetch()) {
                 $clone->applyCallbacks('after_initialize');
                 $ret[] = $clone;
             }
         } while ($clone);
+
         return $ret;
     }
 
@@ -676,7 +666,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             $where .= " LIMIT 1";
         }
         $found = static::findBySQL($where, $params);
-        return isset($found[0]) ? $found[0] : null;
+        return $found[0] ?? null;
     }
 
     /**
@@ -696,15 +686,19 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
 
         $db_table = static::db_table();
 
-        $sql = "SELECT `$db_table`.* FROM `$thru_table`
-                JOIN `$db_table` ON `$thru_table`.`$thru_assoc_key` = `$db_table`.`$assoc_foreign_key`
-                WHERE `$thru_table`.`$thru_key` = ? ";
+        $condition = "JOIN `{$db_table}` ON `{$thru_table}`.`{$thru_assoc_key}` = `{$db_table}`.`{$assoc_foreign_key}`
+             WHERE `{$thru_table}`.`{$thru_key}` = ?";
         if (empty($options['order_by_php']) && !empty($options['order_by'])) {
-            $sql .= $options['order_by'];
+            $condition .= ' ' . $options['order_by'];
         }
 
-        $st = DBManager::get()->prepare($sql);
-        $st->execute([$foreign_key_value]);
+        $sql = self::buildSelectQuery(
+            $condition,
+            $thru_table,
+            "`{$db_table}`.*",
+        );
+
+        $st = self::prepareAndExecuteStatement($sql, [$foreign_key_value]);
 
         $record = static::build([], false);
 
@@ -719,6 +713,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 $ret[] = $clone;
             }
         } while ($clone);
+
         return $ret;
     }
 
@@ -732,14 +727,10 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function findEachBySQL($callable, $sql, $params = [])
     {
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = "WHERE {$sql}";
-        }
-
-        $db_table = static::db_table();
-        $st = DBManager::get()->prepare("SELECT `{$db_table}`.* FROM `{$db_table}` {$sql}");
-        $st->execute($params);
+        $st = self::prepareAndExecuteStatement(
+            self::buildSelectQuery($sql),
+            $params
+        );
 
         // Indicate that we are performing a batch operation
         static::$performs_batch_operation = true;
@@ -940,6 +931,13 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 $param_arr[1] =& $where;
                 $param_arr[2] = [$arguments[1]];
                 $method = 'findeachbysql';
+                break;
+            case 'yield':
+                $order = $arguments[2] ?? '';
+                $param_arr[0] = $arguments[0];
+                $param_arr[1] =& $where;
+                $param_arr[2] = [$arguments[1]];
+                $method = 'yieldbysql';
                 break;
             case 'count':
             case 'delete':
@@ -2577,8 +2575,85 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Enable/disable the fix for mariadb >= 10.2.7 default column values.
      */
-     public static function setMariadbDefaultColumnFix(bool $state = true): void
-     {
-         self::$mariadb_column_default_fix = $state;
-     }
+    public static function setMariadbDefaultColumnFix(bool $state = true): void
+    {
+        self::$mariadb_column_default_fix = $state;
+    }
+
+    /**
+     * @since Stud.IP 6.2
+     */
+    protected static function buildSelectQuery(
+        string $sql,
+        ?string $table = null,
+        ?string $to_select = null
+    ): string {
+        $has_join = stripos($sql, 'JOIN ');
+        if ($has_join === false || $has_join > 10) {
+            $sql = "WHERE {$sql}";
+        }
+
+        $table ??= static::db_table();
+        $to_select ??= "`{$table}`.*";
+
+        return "SELECT {$to_select} FROM `{$table}` {$sql}";
+    }
+
+    /**
+     * @since Stud.IP 6.2
+     */
+    protected static function prepareAndExecuteStatement(string $query, array $params): StudipPDOStatement
+    {
+        $stmt = DBManager::get()->prepare($query);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    /**
+     * @return Generator<int, static>
+     * @since Stud.IP 6.2
+     */
+    public static function yieldBySQL(string $sql, array $params = []): Generator
+    {
+        $stmt = self::prepareAndExecuteStatement(
+            self::buildSelectQuery($sql),
+            $params
+        );
+
+        $prototype = static::build([], false);
+
+        try {
+            while (true) {
+                $record = clone $prototype;
+                $record->setNew(false);
+
+                $stmt->setFetchMode(PDO::FETCH_INTO, $record);
+
+                if ($stmt->fetch() === false) {
+                    break;
+                }
+
+                $record->applyCallbacks('after_initialize');
+                yield $record;
+            }
+        } finally {
+            $stmt->closeCursor();
+        }
+    }
+
+    /**
+     * @template T
+     * @param callable(static): T $callable
+     * @return Generator<int, T>
+     */
+    public static function yieldAndMapBySQL(
+        callable $callable,
+        string $sql,
+        array $params = []
+    ): Generator {
+        foreach (self::yieldBySQL($sql, $params) as $record) {
+            yield $callable($record);
+        }
+    }
+
 }
