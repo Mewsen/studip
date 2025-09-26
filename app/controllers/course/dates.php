@@ -55,7 +55,9 @@ class Course_DatesController extends AuthenticatedController
 
         $this->last_visitdate = object_get_visit($this->course->id, $this->studip_module->getPluginId());
 
-        $semester_id = Request::get('semester_id');
+        //Use the current semester as default if no semester is set explicitly.
+        $current_semester = Semester::findCurrent();
+        $semester_id = Request::get('semester_id', $current_semester->id ?? '');
         $semester = null;
         if ($semester_id != 'all') {
             $semester = Semester::find($semester_id);
@@ -124,6 +126,9 @@ class Course_DatesController extends AuthenticatedController
                     $this->course->start_semester->beginn,
                     $this->course->end_semester->ende
                 );
+            }
+            if ($semester) {
+                $semester_widget->setSelection($semester->id);
             }
             $sidebar->addWidget($semester_widget);
         }
