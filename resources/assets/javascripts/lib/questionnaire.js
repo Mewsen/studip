@@ -429,101 +429,102 @@ const Questionnaire = {
     },
 
 
-    exportEvaluationAsPDF: function () {
-        window.scrollTo(0, 0);
-        const html2canvas = import('html2canvas');
-        const jsPDF = import('jspdf');
-        jsPDF.then(function (jsPDF) {
-            let pdfExporter = jsPDF.default;
-            html2canvas.then(function (canvas) {
-                let canvasCreator = canvas.default;
+    async exportEvaluationAsPDF(container) {
+        const [html2canvas, jsPDF] = await Promise.all([
+            import('html2canvas').then(m => m.default),
+            import('jspdf').then(m => m.default),
+        ]);
 
-                let pdf = new pdfExporter({
-                    orientation: 'portrait'
-                });
-
-                $(".questionnaire_results").addClass('print-view');
-
-                let title = $(".questionnaire_results").data('title');
-                let formattedDate = new Intl.DateTimeFormat(String.locale, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-
-                    hour: "numeric",
-                    minute: "numeric"
-                }).format(new Date());
-                let splitTitle = pdf.splitTextToSize(title, 180);
-
-
-                let count_questions = $(".questionnaire_results .question").length;
-                let questions_rendered = 0;
-                let canvasses = [];
-
-                let blobToDataURL = function (blob, callback) {
-                    let a = new FileReader();
-                    a.onload = function(e) {callback(e.target.result);}
-                    a.readAsDataURL(blob);
-                };
-
-                $(".questionnaire_results .question").each(function (index) {
-                    canvasCreator(this, {logging: false}).then(canvas => {
-                        canvasses[index] = canvas;
-                        questions_rendered++;
-                        if (questions_rendered === count_questions) {
-                            //then all renders are finished:
-                            let height_sum = 0;
-                            for (let i = 0; i < count_questions; i++) {
-                                if (i === 0) {
-                                    height_sum += 15;
-                                }
-                                let imgData = canvasses[i].toDataURL('image/png');
-
-                                let height = Math.floor(160 / canvasses[i].width * canvasses[i].height);
-                                if (height_sum + height > 240 && height < 240) {
-                                    pdf.addPage();
-                                    height_sum = 15;
-                                }
-                                pdf.addImage(imgData, 'JPEG',
-                                    25,
-                                    20 + height_sum,
-                                    160,
-                                    height,
-                                    'image_' + i,
-                                    'NONE',
-
-                                );
-                                height_sum += height + 10;
-                            }
-
-                            const pages = pdf.internal.getNumberOfPages();
-
-                            for (let i = 1; i <= pages; i++) {
-                                let pageSize = pdf.internal.pageSize;
-                                let pageHeight = pageSize.getHeight();
-                                pdf.setPage(i);
-                                pdf.setFontSize(16);
-                                pdf.text(splitTitle, 25, 20);
-                                pdf.setFontSize(8);
-                                pdf.text(
-                                    String(formattedDate),
-                                    30,
-                                    pageHeight - 8
-                                )
-                                pdf.text(
-                                    String(i) + ' / ' + String(pages),
-                                    pageSize.getWidth() - 30,
-                                    pageHeight - 8
-                                );
-                            }
-                            pdf.save(title + '.pdf');
-                        }
-                    });
-                });
-                $(".questionnaire_results").removeClass('print-view');
-            })
+        const pdf = new jsPDF({
+            orientation: 'portrait'
         });
 
+        const results = container.querySelector('.questionnaire_results');
+
+        results.classList.add('print-view');
+
+        const title = results.dataset.title;
+        const splitTitle = pdf.splitTextToSize(title, 180);
+
+        const formattedDate = new Intl.DateTimeFormat(String.locale, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+
+            hour: 'numeric',
+            minute: 'numeric'
+        }).format(new Date());
+
+        const questions = results.querySelectorAll('.question');
+
+        const canvasses = await Promise.all(
+            Array.from(questions).map(element => {
+                element.querySelectorAll('svg.ct-chart-bar').forEach(svg => {
+                    // Remove xmlns attribute from all children of the svg
+                    svg.querySelectorAll('[xmlns]').forEach(node => {
+                        node.removeAttribute('xmlns');
+                    });
+
+                    // Set width and height as attribute, not as style
+                    svg.setAttribute('width', svg.getBoundingClientRect().width);
+                    svg.setAttribute('height', svg.getBoundingClientRect().height);
+                    svg.style.width = null;
+                    svg.style.height = null;
+                });
+
+                return html2canvas(element, {
+                    allowTaint: false,
+                    foreignObjectRendering: false,
+                    useCORS: true,
+                    logging: false
+                })
+            })
+        );
+
+        //then all renders are finished:
+        let height_sum = 15;
+        canvasses.forEach((canvas, index) => {
+            let height = Math.floor(160 / canvas.width * canvas.height);
+            if (height_sum + height > 240 && height < 240) {
+                pdf.addPage();
+                height_sum = 15;
+            }
+            pdf.addImage(
+                canvas.toDataURL('image/png'),
+                'JPEG',
+                25,
+                20 + height_sum,
+                160,
+                height,
+                'image_' + index,
+                'FAST',
+            );
+            height_sum += height + 10;
+        })
+
+        const pages = pdf.internal.getNumberOfPages();
+
+        for (let i = 1; i <= pages; i++) {
+            let pageSize = pdf.internal.pageSize;
+            let pageHeight = pageSize.getHeight();
+            pdf.setPage(i);
+            pdf.setFontSize(16);
+            pdf.text(splitTitle, 25, 20);
+            pdf.setFontSize(8);
+            pdf.text(
+                String(formattedDate),
+                30,
+                pageHeight - 8
+            )
+            pdf.text(
+                String(i) + ' / ' + String(pages),
+                pageSize.getWidth() - 30,
+                pageHeight - 8
+            );
+        }
+        pdf.save(title + '.pdf');
+
+        results.classList.remove('print-view');
     },
 
     addDelayedInit(el, data, isAjax, isMultiple) {
