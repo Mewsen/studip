@@ -76,7 +76,7 @@ if (isset($filtered[$questionnaire->getId()]) && $filtered[$questionnaire->getId
             <?= \Studip\LinkButton::create(_("Starten"), URLHelper::getURL("dispatch.php/questionnaire/start/".$questionnaire->getId())) ?>
         <? endif ?>
         <? if ($questionnaire->resultsVisible()) : ?>
-            <?= \Studip\LinkButton::create(_('PDF exportieren'), '#', ['onclick' => "STUDIP.Questionnaire.exportEvaluationAsPDF(); return false;"]) ?>
+            <?= \Studip\LinkButton::create(_('PDF exportieren'), '#', ['onclick' => "STUDIP.Questionnaire.exportEvaluationAsPDF(this.closest('article.studip')); return false;"]) ?>
         <? endif ?>
         <? if ($questionnaire->isEditable() && $questionnaire->isRunning()) : ?>
             <?= \Studip\LinkButton::create(_("Beenden"), URLHelper::getURL("dispatch.php/questionnaire/stop/".$questionnaire->getId())) ?>
