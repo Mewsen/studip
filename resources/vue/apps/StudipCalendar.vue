@@ -34,6 +34,16 @@ export default defineComponent({
                     end:    ['prev', 'today', 'next']
                 }
             })
+        },
+        dialog_urls: {
+            type: Object,
+            required: false,
+            default: () => ({})
+        },
+        dialog_size: {
+            type: String,
+            required: false,
+            default: 'auto'
         }
     },
     data() {
