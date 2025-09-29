@@ -376,23 +376,22 @@ class Calendar_CalendarController extends AuthenticatedController
         $this->fullcalendar = Studip\Fullcalendar::create(
             _('Kalender'),
             [
-                'editable'    => $write_permissions,
-                'selectable'  => $write_permissions,
-                'studip_urls' => $fullcalendar_studip_urls,
-                'dialog_size' => 'auto',
-                'slotMinTime' => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
-                'slotMaxTime' => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
-                'initialDate' => $default_date->format('Y-m-d'),
-                'allDaySlot'  => true,
-                'allDayText'  => '',
-                'header'      => [
+                'editable'      => $write_permissions,
+                'selectable'    => $write_permissions,
+                'studip_urls'   => $fullcalendar_studip_urls,
+                'slotMinTime'   => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
+                'slotMaxTime'   => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
+                'initialDate'   => $default_date->format('Y-m-d'),
+                'allDaySlot'    => true,
+                'allDayText'    => '',
+                'headerToolbar' => [
                     'start'   => (
                         $timeline_view
                             ? 'resourceTimelineWeek,resourceTimelineDay'
                             : 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
                     ),
                     'center'  => 'title',
-                    'end'  => 'prev,today,next'
+                    'end'     => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views' => [
@@ -402,30 +401,30 @@ class Calendar_CalendarController extends AuthenticatedController
                         'displayEventEnd' => true
                     ],
                     'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['week']
+                        'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'weekends'        => $calendar_settings['type_week'] === 'LONG',
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['week']
                     ],
                     'timeGridDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['day']
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['day']
                     ],
                     'resourceTimelineWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'slotDuration'       => $slot_durations['week_group']
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'weekends'        => $calendar_settings['type_week'] === 'LONG',
+                        'slotDuration'    => $slot_durations['week_group']
                     ],
                     'resourceTimelineDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['day_group']
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['day_group']
                     ]
                 ],
                 'initialView' => $default_view,
-                'timeGridEventMinHeight' => 20,
+                'eventMinHeight' => 20,
                 'eventSources' => [
                     [
                         'url' => $this->url_for(
@@ -439,8 +438,8 @@ class Calendar_CalendarController extends AuthenticatedController
                         'method' => 'GET'
                     ]
                 ],
-                'resources' => $calendar_resources,
-                'resourceLabelText' => $calendar_group_title
+                'resources'                 => $calendar_resources,
+                'resourceAreaHeaderContent' => $calendar_group_title
             ]
         );
     }
