@@ -374,6 +374,9 @@ class Admin_UserController extends AuthenticatedController
         $umanager = new UserManagement();
         $umanager->getFromDatabase($user);
 
+        $user_fullname = $user->getFullName();
+        $user_username = $user->username;
+
         if (
             $umanager->deleteUser(
                 $delete_documents,
@@ -387,12 +390,12 @@ class Admin_UserController extends AuthenticatedController
             )
         ) {
             PageLayout::postSuccess(
-                htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht'), $user->getFullName(), $user->username)),
+                htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht'), $user_fullname, $user_username)),
                 explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)))
             );
         } else {
             PageLayout::postError(
-                htmlReady(sprintf(_('Fehler! "%s (%s)" konnte nicht gelöscht werden'), $user->getFullName(), $user->username)),
+                htmlReady(sprintf(_('Fehler! "%s (%s)" konnte nicht gelöscht werden'), $user_fullname, $user_username)),
                 explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)))
             );
         }
