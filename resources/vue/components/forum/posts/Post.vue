@@ -42,6 +42,23 @@ const selectedText = ref('');
 const showPostEditForm = ref(false);
 const showPostCreateForm = ref(false);
 
+const postRecentLog = computed(() => {
+    if (props.post.logs.length) {
+        return {
+            date: props.post.logs[0].mkdate,
+            author: props.post.logs[0].user.formatted_name,
+            username: props.post.logs[0].user.username,
+        }
+    } else if (props.post.meta.log.chdate) {
+        return {
+            date: props.post.meta.log.chdate,
+            author: props.post.meta.log.autor,
+            username: null,
+        }
+    }
+
+    return null;
+});
 const isUnread = computed(() => (!props.post.author && props.is_unread) || (props.is_unread && props.post.author.id !== STUDIP.USER_ID))
 const canEditPost = computed(() => forumConfig.isTutor || (props.post.author?.id === STUDIP.USER_ID && !props.discussion.closed_at));
 const canDeletePost = computed(() => canEditPost.value);
@@ -153,9 +170,22 @@ const removePostHighlight = id => {
                     >
                         {{ post.author.name }}
                     </a>
-                    <span v-if="post.chdate > post.mkdate">
-                        {{ $gettext('Bearbeitet: ') }}
-                        <StudipDateTime :iso="post.chdate" :relative="true" />
+                    <span v-if="postRecentLog">
+                        {{ $gettext('Zuletzt editiert von ') }}
+                        <template v-if="postRecentLog.username">
+                            <a
+                                :href="userProfileURL(postRecentLog.username)"
+                                :title="$gettext('Zum Profil')"
+                                :aria-label="$gettext('Zum Profil von %{name}', { name: postRecentLog.author })"
+                            >
+                                {{ postRecentLog.author }}
+                            </a>
+                        </template>
+                        <template v-else>
+                            {{ postRecentLog.author }}
+                        </template>
+                        &ndash;
+                        <StudipDateTime :iso="postRecentLog.date" :relative="true" />
                     </span>
                     <StudipDateTime v-else :iso="post.mkdate" :relative="true" />
                 </div>
@@ -177,9 +207,22 @@ const removePostHighlight = id => {
                     >
                         {{ post.author.name }}
                     </a>
-                    <span v-if="post.chdate > post.mkdate">
-                        {{ $gettext('Bearbeitet: ') }}
-                        <StudipDateTime :iso="post.chdate" :relative="true" />
+                    <span v-if="postRecentLog">
+                        {{ $gettext('Zuletzt editiert von ') }}
+                        <template v-if="postRecentLog.username">
+                            <a
+                                :href="userProfileURL(postRecentLog.username)"
+                                :title="$gettext('Zum Profil')"
+                                :aria-label="$gettext('Zum Profil von %{name}', { name: postRecentLog.author })"
+                            >
+                                {{ postRecentLog.author }}
+                            </a>
+                        </template>
+                        <template v-else>
+                            {{ postRecentLog.author }}
+                        </template>
+                        &ndash;
+                        <StudipDateTime :iso="postRecentLog.date" :relative="true" />
                     </span>
                     <StudipDateTime v-else :iso="post.mkdate" :relative="true" />
                 </div>

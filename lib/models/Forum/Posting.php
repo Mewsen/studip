@@ -52,8 +52,16 @@ class Posting extends SimpleORMap
             'assoc_foreign_key' => 'posting_id'
         ];
 
+        $config['has_many']['logs'] = [
+            'class_name' => PostingLog::class,
+            'foreign_key' => 'posting_id',
+            'assoc_foreign_key' => 'posting_id',
+            'order_by' => 'ORDER BY mkdate DESC LIMIT 1',
+        ];
+
         $config['additional_fields']['author']['get'] = 'getAuthor';
         $config['registered_callbacks']['after_create'][] = 'onCreate';
+        $config['registered_callbacks']['after_update'][] = 'onUpdate';
         $config['registered_callbacks']['after_delete'][] = 'onDelete';
 
         parent::configure($config);
@@ -127,8 +135,22 @@ class Posting extends SimpleORMap
         $postingNotification->notifySubscribers();
     }
 
+    public function onUpdate(): void
+    {
+        PostingLog::create([
+            'posting_id' => $this->posting_id,
+            'user_id' => User::findCurrent()->user_id,
+            'action' => 'edit'
+        ]);
+    }
+
     public function onDelete(): void
     {
         PostingReaction::deleteBySQL("posting_id = ?", [$this->posting_id]);
+        PostingLog::create([
+            'posting_id' => $this->posting_id,
+            'user_id' => User::findCurrent()->user_id,
+            'action' => 'delete'
+        ]);
     }
 }

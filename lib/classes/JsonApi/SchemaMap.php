@@ -44,6 +44,7 @@ class SchemaMap
             \Forum\Discussion::class => \JsonApi\Schemas\Forum\Discussion::class,
             \Forum\DiscussionType::class => \JsonApi\Schemas\Forum\DiscussionType::class,
             \Forum\Posting::class => \JsonApi\Schemas\Forum\Posting::class,
+            \Forum\PostingLog::class => \JsonApi\Schemas\Forum\PostingLog::class,
             \Forum\PostingReaction::class => \JsonApi\Schemas\Forum\PostingReaction::class,
             \Forum\Subscription::class => \JsonApi\Schemas\Forum\Subscription::class,
             \Forum\DTO\Member::class => \JsonApi\Schemas\Forum\Member::class,
