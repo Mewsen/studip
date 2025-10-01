@@ -138,11 +138,11 @@ const storePost = async () => {
                 type="submit"
                 :disabled="isLoading || !content"
                 class="button button--icon-label"
-                :title="$gettext('Antworten')"
-                :aria-label="$gettext('Antworten')"
+                :title="$gettext('Speichern')"
+                :aria-label="$gettext('Speichern')"
             >
                 <StudipIcon shape="reply" :size="20" aria-hidden="true" />
-                {{ $gettext('Antworten') }}
+                {{ $gettext('Speichern') }}
             </button>
             <button
                 type="button"
