@@ -15,6 +15,9 @@
  * @since       2.5
  */
 
+use PhpOffice\PhpWord\PhpWord;
+use Services\Export\CourseMemberService;
+
 require_once 'lib/messaging.inc.php'; //Funktionen des Nachrichtensystems
 
 class Course_MembersController extends AuthenticatedController
@@ -1766,7 +1769,7 @@ class Course_MembersController extends AuthenticatedController
 
                 $widget->addLink(
                     _('Als Excel-Datei exportieren'),
-                    URLHelper::getURL('dispatch.php/course/members/export', [
+                    $this->exportURL([
                         'course_id' => $this->course_id,
                         'format' => 'xlsx',
                     ]),
@@ -1775,9 +1778,17 @@ class Course_MembersController extends AuthenticatedController
 
                 $widget->addLink(
                     _('Als CSV-Datei exportieren'),
-                    URLHelper::getURL('dispatch.php/course/members/export', [
+                    $this->exportURL([
                         'course_id' => $this->course_id,
                         'format' => 'csv',
+                    ]),
+                    Icon::create('export')
+                );
+
+                $widget->addLink(
+                    _('Als Word-Datei exportieren'),
+                    $this->export_wordURL([
+                        'course_id' => $this->course_id
                     ]),
                     Icon::create('export')
                 );
@@ -1785,7 +1796,7 @@ class Course_MembersController extends AuthenticatedController
                 if (count($this->awaiting) > 0) {
                     $widget->addLink(
                         _('Warteliste als Excel-Datei exportieren'),
-                        URLHelper::getURL('dispatch.php/course/members/export', [
+                        $this->exportURL([
                             'course_id' => $this->course_id,
                             'format'    => 'xlsx',
                             'status'    => $this->waiting_type,
@@ -1794,10 +1805,19 @@ class Course_MembersController extends AuthenticatedController
                     );
                     $widget->addLink(
                         _('Warteliste als CSV-Datei exportieren'),
-                        URLHelper::getURL('dispatch.php/course/members/export', [
+                        $this->exportURL([
                             'course_id' => $this->course_id,
                             'format'    => 'csv',
                             'status'    => $this->waiting_type,
+                        ]),
+                        Icon::create('export')
+                    );
+
+                    $widget->addLink(
+                        _('Als Word-Datei exportieren'),
+                        $this->export_wordURL([
+                            'course_id' => $this->course_id,
+                            'status'    => $this->waiting_type
                         ]),
                         Icon::create('export')
                     );
@@ -1840,12 +1860,34 @@ class Course_MembersController extends AuthenticatedController
         }
     }
 
+    /**
+     * Handles the export of the course member list as a Word document.
+     *
+     * @return void
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function export_word_action(): void
+    {
+        $status  = Request::get('status', '');
+        $course  = Course::findCurrent();
+
+        $file = new CourseMemberService($course, $status);
+        $file->save();
+
+        $this->response->add_header('Cache-Control', 'cache, must-revalidate');
+        $this->render_temporary_file(
+            $file->getFilePath(),
+            $file->getFilename(),
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        );
+    }
+
     public function export_action()
     {
         $export_format = Request::get('format');
         $status = Request::get('status');
 
-        if ($export_format !== 'csv' && $export_format !== 'xlsx') {
+        if (!in_array($export_format, ['csv', 'xlsx'])) {
             throw new Exception('Wrong format');
         }
         $header = [

@@ -137,7 +137,8 @@
         "phpseclib/phpseclib2_compat": "1.0.6",
         "oat-sa/lib-lti1p3-deep-linking": "4.1.0",
         "lcobucci/jwt": "^4.3",
-        "guzzlehttp/guzzle": "^7.9.2"
+        "guzzlehttp/guzzle": "^7.9.2",
+        "phpoffice/phpword": "^1.4"
     },
     "replace": {
         "symfony/polyfill-php54": "*",

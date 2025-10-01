@@ -247,7 +247,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $export = new ExportWidget();
                 $export->addLink(
                     _('Als Excel-Datei exportieren'),
-                    URLHelper::getURL('dispatch.php/course/statusgroups/export', [
+                    $this->exportURL([
                         'course_id' => $this->course_id,
                         'format' => 'xlsx',
                     ]),
@@ -256,7 +256,26 @@ class Course_StatusgroupsController extends AuthenticatedController
 
                 $export->addLink(
                     _('Als CSV-Datei exportieren'),
-                    URLHelper::getURL('dispatch.php/course/statusgroups/export', [
+                    $this->exportURL([
+                        'course_id' => $this->course_id,
+                        'format' => 'csv',
+                    ]),
+                    Icon::create('export')
+                );
+
+                $export->addLink(
+                    _('Als CSV-Datei exportieren'),
+                    $this->exportURL([
+                        'course_id' => $this->course_id,
+                        'format' => 'csv',
+                    ]),
+                    Icon::create('export')
+                );
+
+
+                $export->addLink(
+                    _('Als Word-Datei exportieren'),
+                    $this->export_wordURL([
                         'course_id' => $this->course_id,
                         'format' => 'csv',
                     ]),
@@ -289,6 +308,27 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         $sidebar->addWidget($actions);
+    }
+
+    /**
+     * Handles the export of the course member list as a Word document.
+     *
+     * @return void
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function export_word_action(): void
+    {
+        $course  = Course::findCurrent();
+
+        $file = new \Services\Export\StatusGroupsService($course);
+        $file->save();
+
+        $this->response->add_header('Cache-Control', 'cache, must-revalidate');
+        $this->render_temporary_file(
+            $file->getFilePath(),
+            $file->getFilename(),
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        );
     }
 
     /**
