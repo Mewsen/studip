@@ -8,14 +8,10 @@
             $attr['name'] = "{$name}_i18n[{$locale}]";
             $text = $value->translation($locale);
 
-            if (isset($attr['id'])) {
-                unset($attr['id']);
-            }
-
-            // Remove required attribute if no text has been set
-            if (isset($attr['required']) && empty($attr['value'])) {
-                unset($attr['required']);
-            }
+            unset(
+                $attr['id'],
+                $attr['required']
+            );
         }
 
         // If special attribute locale_names is defined, use name from that
