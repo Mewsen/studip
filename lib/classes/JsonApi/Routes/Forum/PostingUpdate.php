@@ -21,7 +21,7 @@ class PostingUpdate extends JsonApiController
         \JsonApi\Schemas\Forum\Posting::REL_AUTHOR,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS_USER,
-        \JsonApi\Schemas\Forum\Posting::REL_LOGS,
+        \JsonApi\Schemas\Forum\Posting::REL_EDITOR,
         \JsonApi\Schemas\Forum\Posting::REL_LOGS_USER
     ];
 
@@ -32,8 +32,9 @@ class PostingUpdate extends JsonApiController
             throw new RecordNotFoundException();
         }
 
+        $auth = $this->getUser($request);
         if (
-            !Authority::canEditPost($this->getUser($request), $posting, (bool) $posting->discussion->closed_at)
+            !Authority::canEditPost($auth, $posting, (bool) $posting->discussion->closed_at)
         ) {
             throw new AuthorizationFailedException();
         }
@@ -41,6 +42,7 @@ class PostingUpdate extends JsonApiController
         $json = $this->validate($request);
         $posting->content = Markup::purifyHtml(Markup::markAsHtml(self::arrayGet($json, 'data.attributes.content')));
         $posting->anonymous = (self::arrayGet($json, 'data.attributes.anonymous') && \Config::get()->FORUM_ANONYMOUS_POSTINGS);
+        $posting->editor_id = $auth->user_id;
         $posting->store();
 
         return $this->getCreatedResponse($posting);

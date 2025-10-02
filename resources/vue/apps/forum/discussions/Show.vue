@@ -90,7 +90,7 @@ const fetchPostings = async () => {
                 `forum-discussions/${props.discussion.discussion_id}/postings`,
                 {
                     data: {
-                        include: 'author,opengraph-urls,posting,reactions,reactions.user,logs,logs.user&fields[users]=id,username,formatted-name',
+                        include: 'author,opengraph-urls,posting,reactions,reactions.user,editor&fields[users]=id,username,formatted-name',
                         page: { offset }
                     }
                 }

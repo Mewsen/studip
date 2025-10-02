@@ -43,11 +43,11 @@ const showPostEditForm = ref(false);
 const showPostCreateForm = ref(false);
 
 const postRecentLog = computed(() => {
-    if (props.post.logs.length) {
+    if (props.post.editor) {
         return {
-            date: props.post.logs[0].mkdate,
-            author: props.post.logs[0].user.formatted_name,
-            username: props.post.logs[0].user.username,
+            date: props.post.chdate,
+            author: props.post.editor.formatted_name,
+            username: props.post.editor.username,
         }
     } else if (props.post.meta.log.chdate) {
         return {

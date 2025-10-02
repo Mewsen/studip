@@ -17,7 +17,7 @@ class PostingShow extends JsonApiController
         \JsonApi\Schemas\Forum\Posting::REL_OPENGRAPH_URLS,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS_USER,
-        \JsonApi\Schemas\Forum\Posting::REL_LOGS,
+        \JsonApi\Schemas\Forum\Posting::REL_EDITOR,
         \JsonApi\Schemas\Forum\Posting::REL_LOGS_USER
     ];
 

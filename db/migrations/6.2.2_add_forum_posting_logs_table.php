@@ -5,21 +5,24 @@ final class AddForumPostingLogsTable extends Migration
     public function up()
     {
         \DBManager::get()->exec("
-            CREATE TABLE IF NOT EXISTS `forum_posting_logs` (
-                `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `posting_id` CHAR(32) COLLATE latin1_bin NOT NULL,
-                `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
-                `action` ENUM('create', 'edit', 'delete') NOT NULL DEFAULT 'create',
-                `mkdate` INT(11) UNSIGNED NOT NULL,
-                PRIMARY KEY (`id`)
-            )
+            ALTER TABLE `forum_postings`
+            ADD COLUMN `editor_id` CHAR(32) COLLATE latin1_bin NOT NULL AFTER `user_id`
+        ");
+
+        \DBManager::get()->exec("
+            UPDATE forum_postings
+                SET content = REGEXP_REPLACE(
+                    content,
+                    '<admin_msg autor=\"[^\"]*\" chdate=\"[^\"]*\">',
+                    ''
+                )
         ");
     }
 
     public function down()
     {
         \DBManager::get()->exec("
-            DROP TABLE IF EXISTS `forum_posting_logs`
+            ALTER TABLE `forum_postings` DROP COLUMN `editor_id`
         ");
     }
 }

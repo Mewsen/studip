@@ -20,6 +20,7 @@ use Forum\DTO\Member as MemberDTO;
  * @property Posting $posting
  * @property PostingReaction[] $reactions
  * @property User $user
+ * @property User $editor
  * @property MemberDTO $author
  */
 class Posting extends SimpleORMap
@@ -46,6 +47,12 @@ class Posting extends SimpleORMap
             'assoc_foreign_key' => 'user_id'
         ];
 
+        $config['belongs_to']['editor'] = [
+            'class_name' => User::class,
+            'foreign_key' => 'editor_id',
+            'assoc_foreign_key' => 'user_id'
+        ];
+
         $config['has_many']['reactions'] = [
             'class_name' => PostingReaction::class,
             'foreign_key' => 'posting_id',
@@ -61,7 +68,6 @@ class Posting extends SimpleORMap
 
         $config['additional_fields']['author']['get'] = 'getAuthor';
         $config['registered_callbacks']['after_create'][] = 'onCreate';
-        $config['registered_callbacks']['after_update'][] = 'onUpdate';
         $config['registered_callbacks']['after_delete'][] = 'onDelete';
 
         parent::configure($config);
@@ -135,22 +141,8 @@ class Posting extends SimpleORMap
         $postingNotification->notifySubscribers();
     }
 
-    public function onUpdate(): void
-    {
-        PostingLog::create([
-            'posting_id' => $this->posting_id,
-            'user_id' => User::findCurrent()->user_id,
-            'action' => 'edit'
-        ]);
-    }
-
     public function onDelete(): void
     {
         PostingReaction::deleteBySQL("posting_id = ?", [$this->posting_id]);
-        PostingLog::create([
-            'posting_id' => $this->posting_id,
-            'user_id' => User::findCurrent()->user_id,
-            'action' => 'delete'
-        ]);
     }
 }

@@ -16,7 +16,7 @@ class Posting extends SchemaProvider
     const REL_REACTIONS = 'reactions';
     const REL_REACTIONS_USER = 'reactions.user';
     const REL_OPENGRAPH_URLS = 'opengraph-urls';
-    const REL_LOGS = 'logs';
+    const REL_EDITOR = 'editor';
     const REL_LOGS_USER = 'logs.user';
 
     /**
@@ -76,7 +76,7 @@ class Posting extends SchemaProvider
         $relationships = $this->addDiscussionRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSION));
         $relationships = $this->addPostingRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_POSTING));
         $relationships = $this->addReactionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_REACTIONS));
-        $relationships = $this->addLogsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_LOGS));
+        $relationships = $this->addEditorRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_EDITOR));
 
         return $relationships;
     }
@@ -141,14 +141,14 @@ class Posting extends SchemaProvider
         return $relationships;
     }
 
-    private function addLogsRelationship(array $relationships, \Forum\Posting $posting, bool $withLogs = false)
+    private function addEditorRelationship(array $relationships, \Forum\Posting $posting, bool $withEditor = false)
     {
-        if ($withLogs) {
-            $relationships[self::REL_LOGS] = [
+        if ($withEditor) {
+            $relationships[self::REL_EDITOR] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->getRelationshipRelatedLink($posting, self::REL_REACTIONS)
                 ],
-                self::RELATIONSHIP_DATA => $posting->logs
+                self::RELATIONSHIP_DATA => $posting->editor
             ];
         }
 
