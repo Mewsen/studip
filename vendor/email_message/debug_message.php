@@ -9,12 +9,14 @@
 
 class debug_message_class extends email_message_class
 {
+    private $logfile = '';
 
-	private $logfile ="";
-
-	function __construct() {
-		$this->logfile = $GLOBALS['TMP_PATH'] . '/studip-mail-debug.log';
-	}
+    function __construct() {
+        $this->logfile = implode('/', [
+            $GLOBALS['TMP_PATH'],
+            $GLOBALS['DEBUG_MAIL_LOG_FILE_NAME'] ?? 'studip-mail-debug.log'
+        ]);
+    }
 
 	function SendMail($to,$subject,$body,$headers,$return_path) {
 		if ($log = fopen($this->logfile, "a")){

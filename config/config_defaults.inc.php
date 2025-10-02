@@ -143,6 +143,12 @@ $MAIL_BULK_DELIVERY = FALSE;                        //try to improve the message
 $MAIL_VALIDATE_HOST = TRUE;                             //check for valid mail host when user enters email adress
 $MAIL_VALIDATE_BOX = FALSE;                              //check for valid mail account when user enters email adress; set to false if the webserver got no valid MX record
 
+/**
+ * The file name in the temporary directory ($TMP_PATH) where debug mails shall be written into.
+ * This is only regarded when $MAIL_TRANSPORT is set to 'debug'.
+ */
+$DEBUG_MAIL_LOG_FILE_NAME = 'studip-mail-debug.log';
+
 $MESSAGING_FORWARD_AS_EMAIL = TRUE;                         //enable to forward every internal message to the user-mail (the user is able to deactivate this function in his personal settings)
 $MESSAGING_FORWARD_DEFAULT = 2;                             //the default setting: if 1, the user has to switch it on; if 2, every message will be forwarded; if 3 every message will be forwarded on request of the sender
 $MESSAGING_FORWARD_USE_REPLYTO = TRUE;                     //send forwarded messages as system user and add reply-to header
