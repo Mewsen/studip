@@ -159,8 +159,8 @@ class Posting extends SchemaProvider
     {
         $attributes = [];
 
-        if (preg_match('/^(.*)(<admin_msg.*?)$/s', $content, $matches)) {
-            $adminTag = $matches[2];
+        if (preg_match('/(<admin_msg.*?)$/s', $content, $matches)) {
+            $adminTag = $matches[1];
 
             // Extract attributes
             if (preg_match_all('/(\w+)="([^"]*)"/', $adminTag, $attrMatches, PREG_SET_ORDER)) {
