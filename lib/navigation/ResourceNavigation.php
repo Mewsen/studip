@@ -241,8 +241,7 @@ class ResourceNavigation extends Navigation
                 )
             );
             $export_navigation->addSubNavigation('print_clipboard_rooms', $sub_nav);
-        }
-        if ($show_global_admin_actions) {
+
             //Mail tab:
 
             $messages_navigation = new Navigation(
@@ -256,7 +255,8 @@ class ResourceNavigation extends Navigation
                 'dispatch.php/resources/messages/index'
             );
             $messages_navigation->addSubNavigation('index', $sub_navigation);
-
+        }
+        if ($show_global_admin_actions) {
             //Administration tab:
             $admin_navigation = new Navigation(
                 _('Administration'),

@@ -1,4 +1,4 @@
-<form class="default resources_messages-form" method="post" data-dialog="size=auto"
+<form class="default resources_messages-form" method="post" <?= Request::isDialog() ? 'data-dialog="size=auto"' : '' ?>
       action="<?= URLHelper::getLink('dispatch.php/resources/messages/index') ?>">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
