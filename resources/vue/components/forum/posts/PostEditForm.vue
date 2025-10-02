@@ -43,7 +43,7 @@ const updatePost = async () => {
         isLoading.value = true;
 
         const response = await STUDIP.jsonapi.withPromises().PATCH(
-            `forum-postings/${props.post.id}?include=opengraph-urls,posting,logs,logs.user&fields[users]=id,username,formatted-name`,
+            `forum-postings/${props.post.id}?include=opengraph-urls,posting,editor&fields[users]=id,username,formatted-name`,
             { data: getPostJSONAPIObject }
         );
 

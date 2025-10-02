@@ -17,7 +17,6 @@ class Posting extends SchemaProvider
     const REL_REACTIONS_USER = 'reactions.user';
     const REL_OPENGRAPH_URLS = 'opengraph-urls';
     const REL_EDITOR = 'editor';
-    const REL_LOGS_USER = 'logs.user';
 
     /**
      * @param \Forum\Posting $resource

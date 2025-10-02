@@ -25,8 +25,7 @@ class PostingStore extends JsonApiController
         \JsonApi\Schemas\Forum\Posting::REL_AUTHOR,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS,
         \JsonApi\Schemas\Forum\Posting::REL_REACTIONS_USER,
-        \JsonApi\Schemas\Forum\Posting::REL_EDITOR,
-        \JsonApi\Schemas\Forum\Posting::REL_LOGS_USER
+        \JsonApi\Schemas\Forum\Posting::REL_EDITOR
     ];
 
     public function __invoke(Request $request, Response $response, $args)
