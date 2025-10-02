@@ -206,10 +206,10 @@ class StudipSemSearchHelper {
             $join_sql[] = "JOIN `seminar_user` USING (`seminar_id`)";
             $join_sql[] = "JOIN `auth_user_md5` USING (`user_id`)";
 
-            $conditions[] = "(
+            $conditions[] = "((
                 CONCAT(`auth_user_md5`.`Nachname`, ', ', `auth_user_md5`.`Vorname`, ' ', `auth_user_md5`.`Nachname`) LIKE CONCAT('%', :lecturer_name, '%')
                 OR `auth_user_md5`.`username` LIKE CONCAT('%', :lecturer_name, '%')
-                )";
+                ) AND `seminar_user`.`status` = 'dozent')";
             $sql_params['lecturer_name'] = $this->params['lecturer'];
         }
 
