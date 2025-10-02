@@ -142,13 +142,14 @@ class Posting extends SchemaProvider
 
     private function addEditorRelationship(array $relationships, \Forum\Posting $posting, bool $withEditor = false)
     {
+        $relationships[self::REL_EDITOR] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($posting, self::REL_REACTIONS)
+            ],            
+        ];
+
         if ($withEditor) {
-            $relationships[self::REL_EDITOR] = [
-                self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->getRelationshipRelatedLink($posting, self::REL_REACTIONS)
-                ],
-                self::RELATIONSHIP_DATA => $posting->editor
-            ];
+            $relationships[self::REL_EDITOR][self::RELATIONSHIP_DATA] = $posting->editor;
         }
 
         return $relationships;
