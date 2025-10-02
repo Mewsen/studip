@@ -1,6 +1,6 @@
 <?php
 
-final class AddForumPostingLogsTable extends Migration
+final class AddEditorIdToPostingsTable extends Migration
 {
     public function up()
     {
