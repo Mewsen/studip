@@ -47,7 +47,7 @@ final class CourseMemberService
             ['alignment' => Jc::END]
         );
         $properties = $word->getSettings();
-        $properties->setThemeFontLang(new Language($GLOBALS['_language']));
+        $properties->setThemeFontLang(new Language($_SESSION['_language']));
 
         $section->addText(
             $this->getHeadline(),
@@ -164,7 +164,7 @@ final class CourseMemberService
                         if (count($degrees) > 1) {
                             foreach ($degrees as $degree) {
                                 $cell->addListItem(
-                                    trim($degree),
+                                    htmlReady(trim($degree)),
                                     0,
                                     $text_style,
                                     'degree_bullets',
@@ -175,7 +175,7 @@ final class CourseMemberService
                                 );
                             }
                         } else {
-                            $cell->addText($user['studiengaenge'], $text_style, $cell_style);
+                            $cell->addText(htmlReady($user['studiengaenge']), $text_style, $cell_style);
                         }
                     } else {
                         $cell->addText('', $text_style, $cell_style);
