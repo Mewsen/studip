@@ -3,6 +3,7 @@ parameters:
     phpVersion: 80100 # PHP 8.1
     paths:
         - app/controllers
+        - cli
         - lib
         - tests/functional
         - tests/jsonapi
@@ -10,6 +11,7 @@ parameters:
         - tests/_support
     scanDirectories:
         - app/controllers
+        - cli
         - lib
         - vendor
     excludePaths:
