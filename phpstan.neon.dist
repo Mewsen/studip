@@ -12,6 +12,7 @@ parameters:
         - composer/phpxmlrpc/phpxmlrpc/lib/xmlrpc.inc
     scanDirectories:
         - app/controllers
+        - cli
         - lib
         - vendor
     excludePaths:
