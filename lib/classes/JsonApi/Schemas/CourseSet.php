@@ -139,7 +139,7 @@ class CourseSet extends SchemaProvider
             ]
         ];
         if ($includeData) {
-            $related = \Course::findMany($resource->getCourses());
+            $related = \Course::findMany($resource->getCourses(), "ORDER BY `VeranstaltungsNummer`, `Name`");
             $relation[self::RELATIONSHIP_DATA] = $related;
         }
 
