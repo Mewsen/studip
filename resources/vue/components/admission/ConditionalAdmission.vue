@@ -29,6 +29,10 @@
                                :value="filter.id">
                         <span v-html="filter.attributes.text"></span>
                     </label>
+                    <a @click.prevent="editFilter(index)"
+                       :title="$gettext('Diese Bedingung bearbeiten')">
+                        <studip-icon shape="edit"></studip-icon>
+                    </a>
                     <a @click.prevent="deleteFilter(index)"
                        :title="$gettext('Diese Bedingung löschen')">
                         <studip-icon shape="trash"></studip-icon>
@@ -77,11 +81,12 @@
         </section>
         <section>
             <button class="button add"
-                    @click.prevent="editFilter">
+                    @click.prevent="editFilter(null)">
                 {{ $gettext('Bedingung hinzufügen') }}
             </button>
         </section>
         <studip-user-filter v-if="showEditFilter"
+                            :filter="currentFilter"
                             @submit="confirmDialog"
                             @close="closeDialog"></studip-user-filter>
     </form>
@@ -102,6 +107,8 @@ export default {
             ungrouped: [],
             groups: [],
             showEditFilter: false,
+            currentFilterIndex: null,
+            currentFilter: null,
             selectedFilters: []
         }
     },
@@ -122,14 +129,18 @@ export default {
         }
     },
     methods: {
-        editFilter() {
+        editFilter(index) {
             this.showEditFilter = true;
+            this.currentFilterIndex = index;
+            this.currentFilter = index === null ? [] : this.ungrouped[index].attributes.fields;
         },
         deleteFilter(index) {
             this.ungrouped.splice(index, 1);
         },
         closeDialog() {
             this.showEditFilter = false;
+            this.currentFilterIndex = null;
+            this.currentFilter = null;
         },
         confirmDialog(filter) {
             STUDIP.jsonapi.withPromises().post(
@@ -144,8 +155,13 @@ export default {
                     }
                 })
             .then(response => {
-                this.ungrouped.push(response.data);
+                if (this.currentFilterIndex !== null) {
+                    this.ungrouped[this.currentFilterIndex] = response.data;
+                } else {
+                    this.ungrouped.push(response.data);
+                }
                 this.showEditFilter = false;
+                this.currentFilterIndex = this.currentFilter = null;
             });
         },
         setRuleData(data) {

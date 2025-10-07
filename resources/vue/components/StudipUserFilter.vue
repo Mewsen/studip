@@ -44,11 +44,14 @@
                         {{ name }}
                     </option>
                 </select>
-                <studip-icon v-if="element.attributes.type && currentFilter.length > 1"
-                             shape="trash"
-                             role="button"
-                             :title="$gettext('Dieses Feld löschen')"
-                             @click="removeField(index)"></studip-icon>
+                <a v-if="element.attributes.type && currentFilter.length > 1"
+                   class="undecorated"
+                   @click.prevent="removeField(index)"
+                   :title="$gettext('Dieses Feld löschen')"
+                   tabindex="0"
+                >
+                    <studip-icon shape="trash"></studip-icon>
+                </a>
             </section>
             <section>
                 <button class="button add"
@@ -106,11 +109,14 @@ export default {
                         }
                     }
                 }
+
                 this.currentFilter[fieldIndex].attributes.type = type;
                 this.currentFilter[fieldIndex].attributes.realtype = this.fieldConfig[type].type;
                 this.currentFilter[fieldIndex].attributes.typeparam = this.fieldConfig[type].typeparam;
-                this.currentFilter[fieldIndex].attributes['compare-operator'] = Object.keys(this.fieldConfig[type].compareOps)[0];
-                this.currentFilter[fieldIndex].attributes.value = Object.keys(this.fieldConfig[type].values)[0];
+                if (!this.currentFilter[fieldIndex].attributes.id) {
+                    this.currentFilter[fieldIndex].attributes['compare-operator'] = Object.keys(this.fieldConfig[type].compareOps)[0];
+                    this.currentFilter[fieldIndex].attributes.value = Object.keys(this.fieldConfig[type].values)[0];
+                }
             }
         },
         addField() {
@@ -124,10 +130,10 @@ export default {
             // We need to build a new structure here as the "type" attribute looks different for datafield conditions.
             const data = this.currentFilter.map(item => ({
                 attributes: {
-                        type: item.attributes.realtype,
-                        typeparam: item.attributes.typeparam,
-                        'compare-operator': item.attributes['compare-operator'],
-                        value: item.attributes.value
+                    type: item.attributes.realtype,
+                    typeparam: item.attributes.typeparam,
+                    'compare-operator': item.attributes['compare-operator'],
+                    value: item.attributes.value
                 }
             }));
 
@@ -160,7 +166,13 @@ export default {
             }
         ).then(response => {
             this.availableFields = response.data;
-            this.addField();
+            if (this.currentFilter?.length === 0) {
+                this.addField();
+            } else {
+                for (let i = 0 ; i < this.currentFilter.length ; i++) {
+                    this.addFieldConfig(this.currentFilter[i].attributes.type, i);
+                }
+            }
         });
     }
 }

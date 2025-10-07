@@ -18,7 +18,21 @@
                     <p v-if="conditions.length > 1 && index >= 1">
                         {{ $gettext('oder') }}
                     </p>
-                    <p v-html="filter.attributes.text"></p>
+                    <div>
+                        <p class="condition-text"
+                           v-html="filter.attributes.text"
+                        ></p>
+                        <a @click.prevent="editFilter(index)"
+                           :title="$gettext('Diese Bedingung bearbeiten')"
+                        >
+                            <studip-icon shape="edit"></studip-icon>
+                        </a>
+                        <a @click.prevent="deleteFilter(index)"
+                           :title="$gettext('Diese Bedingung löschen')"
+                        >
+                            <studip-icon shape="trash"></studip-icon>
+                        </a>
+                    </div>
                 </div>
             </div>
             <p v-if="conditions.length === 0">
@@ -27,7 +41,7 @@
         </section>
         <section>
             <button class="button add"
-                    @click.prevent="editFilter">
+                    @click.prevent="editFilter(null)">
                 {{ $gettext('Bedingung hinzufügen') }}
             </button>
         </section>
@@ -40,6 +54,7 @@
             </label>
         </section>
         <studip-user-filter v-if="showEditFilter"
+                            :filter="currentFilter"
                             @submit="confirmDialog"
                             @close="closeDialog"></studip-user-filter>
     </form>
@@ -59,13 +74,12 @@ export default {
             conditions: [],
             favorSemester: false,
             showEditFilter: false,
+            currentFilter: null,
+            currentFilterIndex: null,
             selectedFilters: []
         }
     },
     computed: {
-        groupsAllowed() {
-            return this.assignedRuleTypes.includes('ParticipantRestrictedAdmission')
-        },
         payload() {
             return {
                 type: 'PreferentialAdmission',
@@ -78,11 +92,18 @@ export default {
         }
     },
     methods: {
-        editFilter() {
+        editFilter(index) {
             this.showEditFilter = true;
+            this.currentFilterIndex = index;
+            this.currentFilter = index === null ? [] : this.conditions[index].attributes.fields;
+        },
+        deleteFilter(index) {
+            this.conditions.splice(index, 1);
         },
         closeDialog() {
             this.showEditFilter = false;
+            this.currentFilterIndex = null;
+            this.currentFilter = null;
         },
         confirmDialog(filter) {
             STUDIP.jsonapi.withPromises().post(
@@ -97,8 +118,14 @@ export default {
                     }
                 })
             .then(response => {
-                this.conditions.push(response.data);
+                if (this.currentFilterIndex !== null) {
+                    this.conditions[this.currentFilterIndex] = response.data;
+                } else {
+                    this.conditions.push(response.data);
+                }
                 this.showEditFilter = false;
+                this.currentFilterIndex = null;
+                this.currentFilter = null;
             });
         },
         setRuleData(data) {
@@ -119,3 +146,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.condition-text {
+    display: inline-block;
+}
+</style>

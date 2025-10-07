@@ -25,7 +25,7 @@ class UserFilter extends SchemaProvider
                     'value' => $field->getValue(),
                 ]
             ],
-            $resource->getFields()
+            array_values($resource->getFields())
         );
 
         $resource->show_user_count = true;

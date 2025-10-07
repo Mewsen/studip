@@ -14,6 +14,13 @@
                         <td v-html="filter.attributes.text"></td>
                         <td class="actions">
                             <a class="undecorated"
+                               @click.prevent="editFilter(index)"
+                               :title="$gettext('Diesen Filter bearbeiten')"
+                               tabindex="0"
+                            >
+                                <studip-icon shape="edit"></studip-icon>
+                            </a>
+                            <a class="undecorated"
                                @click.prevent="deleteFilter(index)"
                                :title="$gettext('Diesen Filter löschen')"
                                tabindex="0">
@@ -26,11 +33,11 @@
         </section>
         <button class="button"
                 type="button"
-                @click.prevent="editFilter(0)">
+                @click.prevent="editFilter(null)">
             {{ $gettext('Filter hinzufügen') }}
         </button>
         <studip-user-filter v-if="currentFilter !== null"
-                            :filter="currentFilter !== 0 ? filters[currentFilter] : []"
+                            :filter="currentFilterData"
                             :context="context"
                             :target="target"
                             @submit="submitFilter"
@@ -64,13 +71,25 @@ export default {
         return {
             key: 0,
             currentFilter: null,
+            currentFilterData: [],
             filters: [],
             stringified: ''
         }
     },
     methods: {
         editFilter(index) {
-            this.currentFilter = index;
+            this.currentFilter = index !== null ? index : -1;
+            if (this.currentFilter !== -1) {
+                let data = [];
+
+                for (const field of Object.entries(this.filters[index].attributes.fields)) {
+                    data.push(field[1]);
+                }
+
+                this.currentFilterData = data;
+            } else {
+                this.currentFilterData = [];
+            }
         },
         submitFilter(filter) {
             STUDIP.jsonapi.withPromises().post(
@@ -85,12 +104,13 @@ export default {
                     }
                 })
                 .then(response => {
-                    if (this.currentFilter !== 0) {
+                    if (this.currentFilter !== -1) {
                         this.filters[this.currentFilter] = response.data;
                     } else {
                         this.filters.push(response.data);
                     }
                     this.currentFilter = null;
+                    this.currentFilterData = [];
                     this.changed();
                 })
                 .catch(error => {
