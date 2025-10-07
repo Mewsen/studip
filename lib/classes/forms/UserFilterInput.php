@@ -26,7 +26,7 @@ class UserFilterInput extends Input
                     'id' => $field->getId(),
                     'attributes' => [
                         'type' => $class,
-                        'typeparam' => $class::$isParamterized ? $field->datafield_id : null,
+                        'typeparam' => $class::$isParameterized ? $field->datafield_id : null,
                         'compare-operator' => $field->getCompareOperator(),
                         'value' => $field->getValue()
                     ]
