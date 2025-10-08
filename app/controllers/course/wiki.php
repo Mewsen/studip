@@ -530,7 +530,7 @@ class Course_WikiController extends AuthenticatedController
                     'name'      => $name,
                     'range_id'  => Context::getId(),
                     'parent_id' => Request::option('parent_id', $this->range->getConfiguration()->WIKI_STARTPAGE_ID),
-                    'user_id' => User::findCurrent()->getId(),
+                    'user_id' => User::findCurrent()->id,
                     'preliminary' => 1
                 ]);
             }
@@ -655,7 +655,7 @@ class Course_WikiController extends AuthenticatedController
             '`page_id` = :page_id AND `user_id` = :user_id',
             $pageData
         );
-        if ($page->preliminary == 1) {
+        if ($page->preliminary === 1) {
             $page->delete();
             $this->redirect($this->allpagesURL());
         } else {
