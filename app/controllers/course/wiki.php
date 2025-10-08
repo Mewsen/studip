@@ -530,6 +530,8 @@ class Course_WikiController extends AuthenticatedController
                     'name'      => $name,
                     'range_id'  => Context::getId(),
                     'parent_id' => Request::option('parent_id', $this->range->getConfiguration()->WIKI_STARTPAGE_ID),
+                    'user_id' => User::findCurrent()->getId(),
+                    'preliminary' => 1
                 ]);
             }
             $this->redirect($this->editURL($page));
@@ -653,7 +655,12 @@ class Course_WikiController extends AuthenticatedController
             '`page_id` = :page_id AND `user_id` = :user_id',
             $pageData
         );
-        $this->redirect($this->pageURL($page));
+        if ($page->preliminary == 1) {
+            $page->delete();
+            $this->redirect($this->allpagesURL());
+        } else {
+            $this->redirect($this->pageURL($page));
+        }
     }
 
     public function delegate_edit_mode_action(WikiPage $page, $user_id)
@@ -704,6 +711,7 @@ class Course_WikiController extends AuthenticatedController
     public function save_action(WikiPage $page)
     {
         CSRFProtection::verifyUnsafeRequest();
+        $page->preliminary = 0;
 
         $this->validateWikiPage($page, $this->range, true);
 
