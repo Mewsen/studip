@@ -950,7 +950,6 @@ class Course_WikiController extends AuthenticatedController
         $page = new WikiPage();
         $page->parent_id = $parent_id ?? $this->range->getConfiguration()->WIKI_STARTPAGE_ID;
         $parent_id = $parent_id ?? $this->range->getConfiguration()->WIKI_STARTPAGE_ID;
-        PageLayout::setTitle(_('Neue Wikiseite erstellen'));
         $options = [
             '' => _('Keine')
         ];
@@ -961,6 +960,12 @@ class Course_WikiController extends AuthenticatedController
             'range_id = ? ORDER BY name',
             [$this->range->id]
         );
+        $is_start_page = count($options) <= 1;
+        if ($is_start_page) {
+            PageLayout::setTitle(_('Wiki-Startseite erstellen'));
+        } else {
+            PageLayout::setTitle(_('Neue Wikiseite erstellen'));
+        }
         $this->form = \Studip\Forms\Form::fromSORM(
             $page,
             [
@@ -975,8 +980,12 @@ class Course_WikiController extends AuthenticatedController
                         'mapper' => function () { return User::findCurrent()->id; }
                     ],
                     'name' => [
-                        'required' => true,
+                        'required' => !$is_start_page,
                         'label' => _('Name der Seite'),
+                        'type' => $is_start_page ? 'no' : 'text',
+                        'mapper' => function ($value) use ($is_start_page) {
+                            return $is_start_page ? 'Wiki-Startseite' : $value;
+                        },
                         'validate' => function ($value, $input) {
                             $name_count = WikiPage::countBySql('`name` = :name AND `range_id` = :range_id', [
                                 'name' => $value,
