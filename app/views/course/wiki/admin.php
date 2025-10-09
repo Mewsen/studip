@@ -8,18 +8,6 @@
 ?>
 <form class="default" method="post" action="<?= $controller->store_course_config() ?>">
     <?= CSRFProtection::tokenTag() ?>
-    <? if (count($pages) > 0) : ?>
-        <label>
-            <?= _('Startseite des Wikis') ?>
-            <select name="wiki_startpage_id">
-                <? foreach ($pages as $page) : ?>
-                    <option value="<?= htmlReady($page->id) ?>"
-                            <? if ($config->WIKI_STARTPAGE_ID == $page->id) echo 'selected'; ?>
-                    ><?= htmlReady($page->name) ?></option>
-                <? endforeach ?>
-            </select>
-        </label>
-    <? endif ?>
 
     <? if ($config->WIKI_CREATE_PERMISSION === 'all' || $GLOBALS['perm']->have_studip_perm($config->WIKI_CREATE_PERMISSION, $range->id)) : ?>
         <label>

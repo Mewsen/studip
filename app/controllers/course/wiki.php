@@ -494,7 +494,6 @@ class Course_WikiController extends AuthenticatedController
         }
         CSRFProtection::verifyUnsafeRequest();
         $this->config = $this->range->getConfiguration();
-        $this->config->store('WIKI_STARTPAGE_ID', trim(Request::option('wiki_startpage_id')));
         if (
             $this->config->WIKI_CREATE_PERMISSION === 'all'
             || $GLOBALS['perm']->have_studip_perm($this->config->WIKI_CREATE_PERMISSION, Context::getId())
