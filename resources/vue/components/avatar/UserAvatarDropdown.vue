@@ -1,7 +1,7 @@
 <script setup>
-import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import Dropdown from "../Dropdown.vue";
-import UserAvatar from "../UserAvatar.vue";
+import {$gettext} from "@/assets/javascripts/lib/gettext";
+import Dropdown from "@/vue/components/Dropdown.vue";
+import UserAvatar from "@/vue/components/avatar/UserAvatar.vue";
 
 defineProps({
     user: {
