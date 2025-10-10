@@ -219,7 +219,7 @@ class MyCoursesController extends AuthenticatedController
                         $deputy->gruppe = $gruppe[$deputy->range_id];
                         $deputy->store();
                     },
-                    'user_id = ? AND range_id IN ?',
+                    'user_id = ? AND range_id IN (?)',
                     [
                         User::findCurrent()->id,
                         array_keys($gruppe),
