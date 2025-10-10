@@ -11,8 +11,8 @@ class RemoveWikiQuicklinks extends Migration
     {
         DBManager::get()->exec(
             "DELETE FROM `help_tour_steps`
-            WHERE `tour_id` = '4d41c9760a3248313236af202275107b' OR `tour_id`= '5d41c9760a3248313236af202275107b'
-            AND `step` = 7 OR `step` = 8"
+            WHERE (`tour_id` = '4d41c9760a3248313236af202275107b' OR `tour_id`= '5d41c9760a3248313236af202275107b')
+            AND (`step` = 7 OR `step` = 8)"
         );
     }
 
