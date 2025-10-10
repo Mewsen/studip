@@ -373,10 +373,10 @@ class MyRealmModel
             $sem_courses,
             User::findCurrent()->id
         );
-        foreach ($sem_courses as &$courses) {
-            foreach ($courses as $c_id => &$course) {
+        foreach ($sem_courses as $index => $courses) {
+            foreach ($courses as $c_id => $course) {
                 if (!empty($navs[$c_id])) {
-                    $course = array_merge($course, $navs[$c_id]);
+                    $sem_courses[$index][$c_id] = array_merge($course, $navs[$c_id]);
                 }
             }
         }
