@@ -44,33 +44,6 @@ class Course_WikiController extends AuthenticatedController
             Navigation::activateItem('/course/wiki/start');
         }
 
-        if (!$this->page->isNew()) {
-            // Table of Contents/QuickLinks
-            $widget = Sidebar::Get()->addWidget(new ListWidget());
-            $widget->setTitle(_('QuickLinks'));
-            $quicklinks = WikiPage::findOneBySQL("`name` = 'toc' AND `range_id` = ?", [$this->range->id]);
-            $toc_content = $quicklinks ? '<div class="wikitoc" id="00toc">' . wikiReady($quicklinks['content'], true, $this->range->id) . '</div>' : '';
-            $toc_content_empty = !trim(strip_tags($toc_content));
-            if (
-                (!$quicklinks && $GLOBALS['perm']->have_studip_perm($this->range->getConfiguration()->WIKI_CREATE_PERMISSION, $this->range->id))
-                || ($quicklinks && $quicklinks->isEditable())
-            ) {
-                $extra = sprintf(
-                    '<a href="%s">%s</a>',
-                    URLHelper::getLink('dispatch.php/course/wiki/edit_toc'),
-                    $toc_content_empty
-                        ? Icon::create('add')->asSvg(['title' => _('Erstellen')])
-                        : Icon::create('edit')->asSvg(['title' => _('Bearbeiten')])
-                );
-                $widget->setExtra($extra);
-            }
-            $element = new WidgetElement($toc_content_empty ? _('Keine QuickLinks vorhanden') : $toc_content);
-            if (!$toc_content_empty) {
-                $element->icon = Icon::create('link-intern');
-            }
-            $widget->addElement($element);
-        }
-
         $this->edit_perms = $this->range->getConfiguration()->WIKI_CREATE_PERMISSION;
         if (
             $GLOBALS['perm']->have_studip_perm('autor', $this->range->id)
@@ -724,21 +697,6 @@ class Course_WikiController extends AuthenticatedController
         );
         PageLayout::postSuccess(_('Die Seite wurde gespeichert.'));
         $this->redirect($this->pageURL($page));
-    }
-
-    public function edit_toc_action()
-    {
-        $quicklinks = WikiPage::findOneBySQL(
-            "`name` = 'toc' AND `range_id` = ?",
-            [$this->range->id]
-        );
-        if (!$quicklinks) {
-            $quicklinks = WikiPage::create([
-                'range_id' => $this->range->id,
-                'name' => 'toc'
-            ]);
-        }
-        $this->redirect($this->editURL($quicklinks));
     }
 
     public function newpages_action()
