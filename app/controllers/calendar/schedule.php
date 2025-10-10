@@ -180,16 +180,12 @@ class Calendar_ScheduleController extends AuthenticatedController
             for ($dow = clone $begin; $dow <= $end; $dow = $dow->add(new DateInterval('P1D'))) {
                 $days_of_week[] = $dow->format('N');
             }
-            $cycle_dates = SeminarCycleDate::findBySql(
+            $cycle_dates1 = SeminarCycleDate::findBySql(
                 'JOIN `termine` USING (`metadate_id`)
-                 JOIN `seminare` USING (`seminar_id`)
                 WHERE
                 `weekday` IN ( :days_of_week )
                 AND
                 `seminar_id` IN (
-                    SELECT `seminar_id` FROM `seminar_user`
-                    WHERE `user_id` = :user_id
-                    UNION
                     SELECT `course_id` FROM `schedule_courses`
                     WHERE `user_id` = :user_id
                 )
@@ -206,6 +202,26 @@ class Calendar_ScheduleController extends AuthenticatedController
                     'end'          => $semester->ende
                 ]
             );
+            $cycle_dates2 = SeminarCycleDate::findBySql(
+                'JOIN `termine` USING (`metadate_id`)
+                 WHERE `weekday` IN ( :days_of_week )
+                   AND `seminar_id` IN (
+                       SELECT `seminar_id`
+                       FROM `seminar_user`
+                       WHERE `user_id` = :user_id
+                   ) AND (
+                      `termine`.`date` BETWEEN :begin AND :end
+                      OR `termine`.`end_time` BETWEEN :begin AND :end
+                   )
+                 GROUP BY `metadate_id`',
+                [
+                    'days_of_week' => $days_of_week,
+                    'user_id'      => User::findCurrent()->id,
+                    'begin'        => $semester->beginn,
+                    'end'          => $semester->ende
+                ]
+            );
+            $cycle_dates = array_merge($cycle_dates1, $cycle_dates2);
 
             foreach ($cycle_dates as $cycle_date) {
                 //Calculate a fake begin and end that lies in the week
