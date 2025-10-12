@@ -396,12 +396,6 @@ export default {
             const helpbarIcon = document.querySelector('#helpbar_icon');
 
             if (helpbarIcon) {
-                const realIcon = helpbarIcon.querySelector('img.icon-shape-question-circle');
-                realIcon.src =
-                    this.isFullscreen || this.isResponsive
-                        ? realIcon.src.replace('blue', 'white')
-                        : realIcon.src.replace('white', 'blue');
-
                 helpBar.appendChild(helpbarIcon);
                 helpBar.appendChild(document.querySelector('div.helpbar'));
                 helpBar.classList.add('helpbar-container');
