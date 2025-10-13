@@ -827,10 +827,6 @@ input.allow-plaintext-toggle {
 
     hr {
         margin: 10px 0;
-        border-top: 1px solid var(--color--divider);
-        border-bottom: none;
-        border-left: none;
-        border-right: none;
     }
 
     &__header {
@@ -904,7 +900,6 @@ input.allow-plaintext-toggle {
         display: flex;
         align-items: center;
         gap: 5px;
-        width: max-content;
 
         &:hover,
         &:focus,
