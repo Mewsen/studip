@@ -278,7 +278,7 @@ if ($navigation) {
                         <? else : ?>
                             <?= CourseAvatar::getAvatar(Context::getId())->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
                         <? endif ?>
-                        <span class="course-type"><?= htmlReady(Context::get()->getFullName('type')) ?>:</span> <span class="course-name"><?= htmlReady(Context::get()->getFullName('name')) ?></span>
+                        <span class="course-type"><?= htmlReady(Context::get()->getFullName('type')) ?>:</span> <span class="course-name"><?= htmlReady(Context::get()->getFullName(Config::get()->IMPORTANT_SEMNUMBER ? 'number-name' : 'name')) ?></span>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
                             <span class="course-semester">(<?= htmlReady(Context::get()->getTextualSemester()) ?>)</span>
                         <? endif ?>
