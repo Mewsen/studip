@@ -7873,7 +7873,7 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('823875ed4a4b2e87baca0e5137243d96','lib/cronjobs/garbage_collector.php','GarbageCollectorJob',1,0,0,NULL,NULL),
 ('9c4ad2a8fe47d07e61475d25f5e539db','lib/cronjobs/send_mail_queue.php','SendMailQueueJob',1,0,0,NULL,NULL),
 ('9e6ef984f2bbf7f8010d4571678e28ce','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1754314729,1754314729),
-('b44c160302451658c60ea8c4fc06db89','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
+('b44c160302451658c60ea8c4fc06db89','lib/cronjobs/studygroup_expiration.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
 ('ca6df41746dbd2077d993d3bfddbf10c','lib/cronjobs/remind_oer_upload.php','RemindOerUpload',1,0,0,NULL,NULL),
 ('d19f37c382fec524b4fd51b3c5a1ada3','lib/cronjobs/send_mail_notifications.php','SendMailNotificationsJob',1,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `cronjobs_tasks` ENABLE KEYS */;
