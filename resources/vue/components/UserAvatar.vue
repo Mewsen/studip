@@ -1,6 +1,6 @@
 <script setup>
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
+import {$gettext} from "../../assets/javascripts/lib/gettext";
+import StudipIcon from "./StudipIcon.vue";
 
 const props = defineProps({
     user: {

@@ -1,7 +1,7 @@
 <script setup>
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipDateTime from "../../StudipDateTime.vue";
-import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
+import UserAvatarDropdown from "../UserAvatarDropdown.vue";
 import {REACTION_ICONS} from "./reactions";
 import {userProfileURL} from "../helpers/urls";
 import {computed, onMounted} from "vue";

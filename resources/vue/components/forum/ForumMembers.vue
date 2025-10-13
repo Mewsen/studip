@@ -1,10 +1,10 @@
 <script setup>
 import {computed, ref} from "vue";
 import {$gettext} from "../../../assets/javascripts/lib/gettext";
+import UserAvatarDropdown from "./UserAvatarDropdown.vue";
 import Dropdown from "../Dropdown.vue";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
-import UserAvatar from "@/vue/components/avatar/UserAvatar.vue";
-import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
+import UserAvatar from "../UserAvatar.vue";
 
 const props = defineProps({
     members: {
