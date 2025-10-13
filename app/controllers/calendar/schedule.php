@@ -180,48 +180,45 @@ class Calendar_ScheduleController extends AuthenticatedController
             for ($dow = clone $begin; $dow <= $end; $dow = $dow->add(new DateInterval('P1D'))) {
                 $days_of_week[] = $dow->format('N');
             }
-            $cycle_dates1 = SeminarCycleDate::findBySql(
-                'JOIN `termine` USING (`metadate_id`)
-                WHERE
-                `weekday` IN ( :days_of_week )
-                AND
-                `seminar_id` IN (
-                    SELECT `course_id` FROM `schedule_courses`
-                    WHERE `user_id` = :user_id
-                )
-                AND
-                (
-                `termine`.`date` BETWEEN :begin AND :end
-                OR `termine`.`end_time` BETWEEN :begin AND :end
-                )
-                GROUP BY `metadate_id`',
+            $query = "SELECT scd.*
+                      FROM (
+                        -- Ermittle alle VA der Person
+                        SELECT DISTINCT seminar_id
+                        FROM (
+                          SELECT su.Seminar_id AS seminar_id
+                          FROM seminar_user su
+                          WHERE su.user_id = :user_id
+
+                          UNION ALL
+
+                          SELECT sc.course_id
+                          FROM schedule_courses sc
+                          WHERE sc.user_id = :user_id
+                        ) AS tmp
+                      ) AS u
+                      -- JOIN-Reihenfolge forcieren (erst klein, dann groß)
+                      STRAIGHT_JOIN `seminar_cycle_dates` AS scd
+                        -- Den richtigen Index erzwingen
+                        FORCE INDEX (`seminar_id`)
+                        USING (`seminar_id`)
+                      WHERE `weekday` IN (:days_of_week)
+                        AND EXISTS (
+                          SELECT 1
+                          FROM `termine` t
+                          WHERE t.`metadate_id` = scd.`metadate_id`
+                            AND t.`date` <= :end
+                            AND t.`end_time` >= :begin
+                        )";
+            $cycle_dates = DBManager::get()->fetchAll(
+                $query,
                 [
-                    'days_of_week' => $days_of_week,
-                    'user_id'      => $GLOBALS['user']->id,
-                    'begin'        => $semester->beginn,
-                    'end'          => $semester->ende
-                ]
+                    ':days_of_week' => $days_of_week,
+                    ':user_id'      => User::findCurrent()->id,
+                    ':begin'        => $semester->beginn,
+                    ':end'          => $semester->ende
+                ],
+                fn(array $row): SeminarCycleDate => SeminarCycleDate::buildExisting($row)
             );
-            $cycle_dates2 = SeminarCycleDate::findBySql(
-                'JOIN `termine` USING (`metadate_id`)
-                 WHERE `weekday` IN ( :days_of_week )
-                   AND `seminar_id` IN (
-                       SELECT `seminar_id`
-                       FROM `seminar_user`
-                       WHERE `user_id` = :user_id
-                   ) AND (
-                      `termine`.`date` BETWEEN :begin AND :end
-                      OR `termine`.`end_time` BETWEEN :begin AND :end
-                   )
-                 GROUP BY `metadate_id`',
-                [
-                    'days_of_week' => $days_of_week,
-                    'user_id'      => User::findCurrent()->id,
-                    'begin'        => $semester->beginn,
-                    'end'          => $semester->ende
-                ]
-            );
-            $cycle_dates = array_merge($cycle_dates1, $cycle_dates2);
 
             foreach ($cycle_dates as $cycle_date) {
                 //Calculate a fake begin and end that lies in the week
