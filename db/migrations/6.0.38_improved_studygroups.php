@@ -157,9 +157,8 @@ class ImprovedStudygroups extends Migration
 
         // Add default cron tasks and schedules
         $new_job = [
-            'filename'    => 'lib/cronjobs/studygroup_expiration.class.php',
-            'class'       => 'StudygroupExpirationJob',
-            'priority'    => 'normal'
+            'filename' => 'lib/cronjobs/studygroup_expiration.php',
+            'class'    => StudygroupExpirationJob::class,
         ];
 
         $query = "INSERT IGNORE INTO `cronjobs_tasks`

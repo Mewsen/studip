@@ -7431,7 +7431,7 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('2f2713671892bd9624fc27866cfd4630','lib/cronjobs/check_admission.php','CheckAdmissionJob',1,0,0,NULL,NULL),
 ('3428a64935e8c6a5ab5dcf5bf95fe556','lib/cronjobs/session_gc.php','SessionGcJob',1,0,0,NULL,NULL),
 ('43f9da3d9245d0f01b43f744e0b8cdce','lib/classes/FilesSearch/Cronjob.php','FilesSearch\\Cronjob',1,0,2,NULL,NULL),
-('4b7f133f02418e9cc68c1a5a4213406f','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
+('4b7f133f02418e9cc68c1a5a4213406f','lib/cronjobs/studygroup_expiration.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
 ('532b3fe76447dd85e10949a6fc5f3aa8','lib/cronjobs/cleanup_log.php','CleanupLogJob',1,0,0,NULL,NULL),
 ('59efbaf1e3dd0896df9a39f27f02e6c9','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1754314767,1754314767),
 ('5ecaecd21cd6dd3712d3d294de51c776','lib/cronjobs/import_ilias_testresults.php','ImportIliasTestresults',1,0,1,1716385357,1716385357),
