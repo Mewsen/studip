@@ -5563,7 +5563,7 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('5ecaecd21cd6dd3712d3d294de51c776','lib/cronjobs/import_ilias_testresults.php','ImportIliasTestresults',1,0,1,1716385357,1716385357),
 ('81f150b1a22210a1d6fac70220faa831','lib/cronjobs/courseware.php','CoursewareCronjob',1,0,1,1686150733,1686150733),
 ('823875ed4a4b2e87baca0e5137243d96','lib/cronjobs/garbage_collector.php','GarbageCollectorJob',1,0,0,NULL,NULL),
-('91a8c5a5202236da43fef31e0c7a6eef','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
+('91a8c5a5202236da43fef31e0c7a6eef','lib/cronjobs/studygroup_expiration.php','StudygroupExpirationJob',1,0,0,NULL,NULL),
 ('9c4ad2a8fe47d07e61475d25f5e539db','lib/cronjobs/send_mail_queue.php','SendMailQueueJob',1,0,0,NULL,NULL),
 ('ca6df41746dbd2077d993d3bfddbf10c','lib/cronjobs/remind_oer_upload.php','RemindOerUpload',1,0,0,NULL,NULL),
 ('d0961d897bc84c70088d9ac1ef145164','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1757497471,1757497471),

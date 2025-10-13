@@ -5997,7 +5997,7 @@ INSERT INTO `cronjobs_tasks` VALUES
 ('b960823c5575ef38f9f4108e791f8d09','lib/cronjobs/send_massmails.php','SendMassmailsJob',1,0,1,1757497449,1757497449),
 ('ca6df41746dbd2077d993d3bfddbf10c','lib/cronjobs/remind_oer_upload.php','RemindOerUpload',1,0,0,NULL,NULL),
 ('d19f37c382fec524b4fd51b3c5a1ada3','lib/cronjobs/send_mail_notifications.php','SendMailNotificationsJob',1,0,0,NULL,NULL),
-('e57bca0d1930ec0525d4efe439a2f7d9','lib/cronjobs/studygroup_expiration.class.php','StudygroupExpirationJob',1,0,0,NULL,NULL);
+('e57bca0d1930ec0525d4efe439a2f7d9','lib/cronjobs/studygroup_expiration.php','StudygroupExpirationJob',1,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `cronjobs_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
