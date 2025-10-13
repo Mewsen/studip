@@ -215,7 +215,7 @@ final class MyCoursesHelper
 
             'avatar' => $avatar->getURL(Avatar::MEDIUM),
 
-            'navigation'       => $this->reduceNavigation($course['navigation']),
+            'navigation'       => $this->reduceNavigation($course['navigation'] ?? null),
             'extra_navigation' => $extra_navigation,
         ];
     }
