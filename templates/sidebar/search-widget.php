@@ -1,11 +1,28 @@
+<?php
+/**
+ * @var string $url
+ * @var string $method
+ * @var array $url_params
+ * @var array $needles
+ * @var array $filters
+ * @var array $quick_search
+ * @var string $reset_link
+ * @var string $onsubmit
+ * @var string $onclear
+ * @var bool $has_data
+ */
+?>
+<?php
+    $id ??= 'form-' . md5(uniqid());
+?>
 <form action="<?= URLHelper::getLink($url) ?>"
       method="<?= $method ?>"
-      <? $id = $id ?? 'form-'.md5(uniqid()) ?>
       <? printf('id="%s"', htmlReady($id)) ?>
-      <?= $onsubmit ? 'onsubmit="'.htmlReady($onsubmit).'"' : '' ?>
-      class="sidebar-search">
+      <?= $onsubmit ? 'onsubmit="' . htmlReady($onsubmit) . '"' : '' ?>
+      class="sidebar-search"
+>
 <? foreach ($url_params as $key => $value): ?>
-    <?=addHiddenFields($key,$value)?>
+    <?= addHiddenFields($key, $value) ?>
 <? endforeach; ?>
     <ul class="needles">
     <? foreach ($needles as $needle): ?>
@@ -23,21 +40,6 @@
                        value="<?= htmlReady($needle['value']) ?>"
                        <? if ($needle['placeholder']) printf('placeholder="%s"', htmlReady($needle['label'])); ?>
                        <?= arrayToHtmlAttributes($needle['attributes']) ?>>
-                <? endif; ?>
-                <? if ($reset_link): ?>
-                    <? if ($onsubmit) : ?>
-                        <?= Icon::create('decline')->asInput([
-                            'title' =>  _('Suche zurücksetzen'),
-                            'class' => 'reset-search',
-                            'onclick' => "window.document.getElementById('needle-".$hash."').value = '';"
-                        ]) ?>
-                    <? else : ?>
-                        <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
-                            <?= $onsubmit ? 'onclick="'."window.document.getElementById('needle-".$hash."').value = ''; window.document.getElementById('".$id."').submit(); return false; ".'"' : '' ?>
-                           title="<?= _('Suche zurücksetzen') ?>">
-                            <?= Icon::create('decline') ?>
-                        </a>
-                    <? endif ?>
                 <? endif; ?>
                 <button type="submit" class="submit-search<?= $reset_link ? ' is-executed' : '' ?>"
                         title="<?= _('Suche ausführen') ?>">
@@ -75,11 +77,11 @@
 <? endif; ?>
 <? if (!empty($quick_search)): ?>
 <script>
-(function ($) {
+(() => {
 <? foreach ($quick_search as $needle): ?>
     STUDIP.QuickSearch.autocomplete('needle-<?= md5($url . '|' . $needle['name']) ?>', '<?= $url ?>');
 <? endforeach; ?>
-}(jQuery));
+})();
 </script>
 <? endif; ?>
 </form>
