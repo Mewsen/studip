@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\Mvv;
 
+use Degree;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\RecordNotFoundException;
@@ -16,7 +17,7 @@ class DegreesShow extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        $degree = \Abschluss::find($args['id']);
+        $degree = Degree::find($args['id']);
         if (!$degree) {
             throw new RecordNotFoundException('Could not find degree.');
         }
