@@ -23,6 +23,7 @@ import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties';
+import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
@@ -77,6 +78,7 @@ const builtinPlugins = [
     LinkPlugin,
     ListProperties,
     Mathematics,
+    MediaEmbed,
     Paragraph,
     RemoveFormat,
     SourceEditing,

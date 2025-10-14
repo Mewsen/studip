@@ -9,6 +9,10 @@ export { createClassicEditorFromTextarea };
 ClassicEditor.builtinPlugins = builtinPlugins;
 ClassicEditor.defaultConfig = {
     ...defaultConfig,
+    mediaEmbed: {
+        // Only allow youtube for now
+        removeProviders: ['dailymotion', 'vimeo', 'spotify', 'instagram', 'twitter', 'googleMaps', 'flickr', 'facebook' ]
+    },
     toolbar: {
         items: [
             'undo',
@@ -39,6 +43,7 @@ ClassicEditor.defaultConfig = {
             'alignment:justify',
             '|',
             'link',
+            'mediaEmbed',
             'insertTable',
             'uploadImage',
             'codeBlock',

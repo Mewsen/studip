@@ -23,6 +23,7 @@ namespace Studip;
 require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_ClassifyLinks.php';
 require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_ClassifyTables.php';
 require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_LinkifyEmail.php';
+require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_OembedToIframe.php';
 require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_TransformLinks.php';
 require_once __DIR__ . '/htmlpurifier/HTMLPurifier_Injector_Unlinkify.php';
 
@@ -273,7 +274,7 @@ class Markup
             br
             caption
             code[class]
-            div[class|style]
+            div[class|style|data-oembed-url]
             em
             figure[class|style]
             figcaption
@@ -285,8 +286,10 @@ class Markup
             h6
             hr
             i
+            iframe[src|class]
             img[alt|src|height|width|class|style]
             li
+            oembed[url]
             ol[reversed|start|style]
             p[style]
             pre[class]
@@ -314,6 +317,8 @@ class Markup
         $config->set('Attr.EnableID', true);
         $config->set('Attr.AllowedClasses', [
             'author',
+            'ckeditor-embed',
+            'ckeditor-embed-container',
             'content',
             'image',
             'image-style-side',
@@ -333,6 +338,7 @@ class Markup
             'link-extern',
             'link-intern',
             'math-tex',
+            'media',
             'table',
             'usercode',
             'wiki-link'
@@ -354,7 +360,7 @@ class Markup
             'border-style',
             'float',
             'border',
-            'vertical-align'
+            'vertical-align',
         ]);
         $config->set('CSS.MaxImgLength', null);
 
@@ -363,12 +369,18 @@ class Markup
             $config->set('AutoFormat.Custom', [
                 'ClassifyLinks',
                 'ClassifyTables',
-                'LinkifyEmail'
+                'LinkifyEmail',
             ]);
             $config->set('AutoFormat.RemoveSpansWithoutAttributes', true);
         } else {
-            $config->set('AutoFormat.Custom', ['TransformLinks']);
+            $config->set('AutoFormat.Custom', [
+                'TransformLinks',
+                'OembedToIframe'
+            ]);
         }
+        // is needed for ckeditor mediaEmbed
+        $config->set('HTML.SafeIframe', true);
+        $config->set('URI.SafeIframeRegexp', '#^https?://(www\.)?youtube\.com/embed/#');
 
         // avoid <img src="evil_CSRF_stuff">
         $def = $config->getHTMLDefinition(true);
@@ -391,10 +403,16 @@ class Markup
 
         $def->addElement('figcaption', 'Inline', 'Flow', 'Common');
         $def->addElement('figure', 'Block', 'Optional: (figcaption, Flow) | (Flow, figcaption) | Flow', 'Common');
+        $def->addElement('oembed', 'Block', 'Flow', 'Common', [
+            'url' => 'URI'
+        ]);
 
         $def->addAttribute('ol', 'reversed', 'Bool');
         $def->addAttribute('ol', 'style', 'Text');
         $def->addAttribute('ul', 'style', 'Text');
+        // is needed for ckeditor mediaEmbed
+        $def->addAttribute('div', 'data-oembed-url', 'URI');
+        $def->addAttribute('iframe', 'class', 'Text');
 
         return new \HTMLPurifier($config);
     }
