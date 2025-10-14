@@ -12,11 +12,17 @@ class Degree extends SchemaProvider
     const REL_AUTHOR = 'author';
     const REL_EDITOR = 'editor';
 
+    /**
+     * @param \Degree $resource
+     */
     public function getId($resource): ?string
     {
         return $resource->id;
     }
 
+    /**
+     * @param \Degree $resource
+     */
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
@@ -28,6 +34,9 @@ class Degree extends SchemaProvider
         ];
     }
 
+    /**
+     * @param \Degree $resource
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
