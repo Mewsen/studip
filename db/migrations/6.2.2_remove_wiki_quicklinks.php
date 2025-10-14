@@ -2,12 +2,12 @@
 
 class RemoveWikiQuicklinks extends Migration
 {
-    function description(): string
+    public function description(): string
     {
         return 'Removes quicklink steps from wiki helptours.';
     }
 
-    function up(): void
+    public function up(): void
     {
         DBManager::get()->exec(
             "DELETE FROM `help_tour_steps`
@@ -16,7 +16,7 @@ class RemoveWikiQuicklinks extends Migration
         );
     }
 
-    function down(): void
+    public function down(): void
     {
         DBManager::get()->exec(
             "INSERT INTO `help_tour_steps` VALUES
