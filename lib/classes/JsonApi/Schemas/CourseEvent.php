@@ -24,7 +24,7 @@ class CourseEvent extends SchemaProvider
             'end' => date('c', $resource->getEnd()),
             'categories' => array_filter($resource->toStringCategories(true)),
             'location' => $resource->getLocation(),
-            'is-cancelled' => $resource instanceof \CourseExDate,
+            'is-cancelled' => $resource instanceof \CourseExDate || $resource instanceof \CourseCancelledEvent,
             'mkdate' => date('c', $resource->mkdate),
             'chdate' => date('c', $resource->chdate),
             'recurrence' => $resource->getRecurrence(),
