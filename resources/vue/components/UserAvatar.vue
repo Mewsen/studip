@@ -13,6 +13,8 @@ const isOpen = defineModel({ default: false });
 const AUTH_ID = STUDIP.USER_ID;
 const vCardDownloadURL = STUDIP.URLHelper.getURL('dispatch.php/contact/vcard', {'user[]': props.user.username});
 const userProfileURL = STUDIP.URLHelper.getURL('dispatch.php/profile', {username: props.user.username});
+const addContactURL     = STUDIP.URLHelper.getURL('dispatch.php/profile/add_buddy', {username: props.user.username});
+const removeContactURL  = STUDIP.URLHelper.getURL('dispatch.php/profile/remove_buddy', {username: props.user.username});
 
 const writeMessage = () => {
     STUDIP.Dialog.fromURL(
@@ -38,6 +40,18 @@ const openBlubberChat = () => {
     );
 
     isOpen.value = false;
+}
+
+const addContact = () => {
+    $.post(addContactURL).done(() => {
+        isOpen.value = false;
+    });
+}
+
+const removeContact = () => {
+    $.post(removeContactURL).done(() => {
+        isOpen.value = false;
+    });
 }
 </script>
 <template>
@@ -84,6 +98,18 @@ const openBlubberChat = () => {
                 >
                     <StudipIcon shape="mail2" :size="18" aria-hidden="true" />
                     {{ $gettext('Nachricht schreiben') }}
+                </button>
+            </li>
+            <li>
+                <button
+                    v-if="user.id !== AUTH_ID"
+                    class="action-item button-base"
+                    :title="$gettext('Kontakt hinzufügen')"
+                    :aria-label="$gettext('Kontakt hinzufügen')"
+                    @click="addContact()"
+                >
+                    <StudipIcon shape="add" :size="18" aria-hidden="ture" />
+                    {{ $gettext('Kontakt hinzufügen') }}
                 </button>
             </li>
             <li>
