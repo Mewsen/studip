@@ -2,7 +2,7 @@
 
 namespace JsonApi\Routes\Mvv;
 
-use Abschluss;
+use Degree;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\JsonApiController;
@@ -19,8 +19,8 @@ class DegreesIndex extends JsonApiController
         [$offset, $limit] = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
-            Abschluss::findBySQL("1 ORDER BY name LIMIT {$offset}, {$limit}"),
-            Abschluss::countBySql('1')
+            Degree::findBySQL("1 ORDER BY name LIMIT {$offset}, {$limit}"),
+            Degree::countBySql('1')
         );
     }
 }
