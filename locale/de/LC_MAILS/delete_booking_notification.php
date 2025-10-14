@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var int $booking_type
+ * @var Resource $resource
+ * @var ?Course $booking_course
+ * @var ?User $deleting_user
+ * @var int $begin
+ * @var int $end
+ */
+?>
 <? if (in_array($booking_type, [0, 3])) : ?>
 <? if ($resource instanceof Room): ?>
 Ihre Buchung des Raumes <?= $resource->name ?> am <?= date('d.m.Y', $begin) ?>
@@ -34,6 +44,6 @@ Es handelte sich um eine Sperrbuchung für die Veranstaltung <?= $booking_course
 <? endif ?>
 <? endif ?>
 
-<? if ($deleting_user instanceof User) : ?>
+<? if ($deleting_user && !in_array($deleting_user->id, ['nobody', 'form'])) : ?>
 Die Löschung wurde von <?= $deleting_user->getFullName() ?> vorgenommen.
 <? endif ?>
