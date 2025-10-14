@@ -116,16 +116,7 @@ class Admin_UserController extends AuthenticatedController
         //wenn suche durchgeführt
         if (!empty($request)) {
             //Suchparameter
-            $this->sortby = Request::option('sortby', 'username');
-            $this->order  = Request::option('order', 'asc');
-            if (Request::int('toggle')) {
-                $this->order = $this->order == 'desc' ? 'asc' : 'desc';
-            }
-
-            $request['sortby'] = $this->sortby;
-            $request['order'] = $this->order;
-
-            $empty_search          = $request['perm'] === 'alle';
+            $empty_search = $request['perm'] === 'alle';
 
             $values = [
                 'username',
