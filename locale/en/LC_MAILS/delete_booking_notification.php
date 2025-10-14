@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var int $booking_type
+ * @var Resource $resource
+ * @var ?Course $booking_course
+ * @var ?User $deleting_user
+ * @var int $begin
+ * @var int $end
+ */
+?>
 <? if (in_array($booking_type, [ResourceBooking::TYPE_NORMAL, ResourceBooking::TYPE_PLANNED])) : ?>
 <? if ($resource instanceof Room): ?>
 Your booking of the room <?= $resource->name ?> on <?= date('d.m.Y', $begin) ?>
@@ -34,6 +44,6 @@ The deleted lock booking belonged to course <?= $booking_course->getFullName() ?
 <? endif ?>
 <? endif ?>
 
-<? if ($deleting_user instanceof User) : ?>
+<? if ($deleting_user && !in_array($deleting_user->id, ['nobody', 'form'])) : ?>
 The deletion has been made by <?= $deleting_user->getFullName() ?>.
 <? endif ?>
