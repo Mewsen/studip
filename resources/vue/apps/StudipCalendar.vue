@@ -3,13 +3,14 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {CalendarOptions, EventClickArg} from '@fullcalendar/core';
+import {CalendarOptions, DateSelectionApi, EventClickArg} from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
+import JSONAPI from "../../assets/javascripts/lib/jsonapi";
 
 export default defineComponent({
     name: "StudipCalendar",
@@ -36,7 +37,7 @@ export default defineComponent({
                 }
             })
         },
-        dialog_urls: {
+        action_urls: {
             type: Object,
             required: false,
             default: () => ({})
@@ -74,18 +75,85 @@ export default defineComponent({
                 calendar_options.select = this.handleSelection;
             }
         }
-        if (this.dialog_urls.view) {
-            calendar_options.eventClick = this.handleEventClick;
-        } else if (this.custom_event_handlers.view) {
+        if (this.custom_event_handlers.view) {
             calendar_options.eventClick = this.custom_event_handlers.view;
+        } else {
+            calendar_options.eventClick = this.handleEventClick;
         }
+
+        let holiday_cache = sessionStorage.getItem('fullcalendar_holidays');
+        let vacation_cache = sessionStorage.getItem('fullcalendar_vacations');
 
         return {
             calendar_options: calendar_options as CalendarOptions,
+            holiday_cache: holiday_cache ? JSON.parse(holiday_cache) : {},
+            vacation_cache: vacation_cache ? JSON.parse(vacation_cache) : {}
         }
     },
     methods: {
-        handleSelection: function(selection: object) {
+        loadHolidays(year: number) {
+            if (this.holiday_cache[year]) {
+                return Promise.resolve(this.holiday_cache[year]);
+            }
+            /*
+            return JSONAPI.withPromises().get('holidays', {
+                data: { 'filter[year]': year }
+            }).then(response => {
+                const events = [];
+                if (!response) {
+                    return events;
+                }
+
+                for (const [date, data] of Object.entries(response)) {
+                    const classNames = ['holiday'];
+                    if (data.mandatory) {
+                        classNames.push('official');
+                    }
+
+                    const day = new Date(date);
+                    events.push({
+                        // Note: Since allDay is set to true, the start and end time is ignored.
+                        // See the documentation: https://fullcalendar.io/docs/v4/event-parsing
+                        start:    day,
+                        end:      day,
+                        allDay:   true,
+                        title:    data.holiday,
+                        editable: false,
+
+                        classNames,
+
+                        // Note: Colours are set via SCSS.
+                        textColor:   '',
+                        color:       '',
+                        borderColor: '',
+
+                        rendering: 'background'
+                    });
+                }
+
+                this.holiday_cache[year] = events;
+                sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(this.holiday_cache));
+                return events;
+            });
+            */
+        },
+        handleSelection: function(selection: DateSelectionApi) {
+            console.debug('select');
+            if (!this.calendar_options.editable || this.action_urls.length < 1) {
+                //The calendar isn't editable.
+                return;
+            }
+            if (this.action_urls['add']) {
+                //Add the selected time range to the URL and load it
+                //in a dialog:
+                const full_url = new URL(this.action_urls['add']);
+                const params = new URLSearchParams(full_url.search);
+                params.set('start', (selection.start.getTime() / 1000).toString());
+                params.set('end', (selection.end.getTime() / 1000).toString());
+                full_url.search = params.toString();
+                Dialog.fromURL(full_url);
+            }
+
             console.debug(selection);
         },
         handleEventClick: function(event_data: EventClickArg) {
@@ -97,9 +165,11 @@ export default defineComponent({
             }
         },
         handleEventDrop: function(event: object) {
+            console.debug('drop');
             console.debug(event);
         },
         handleEventResize: function(event: object) {
+            console.debug('resize');
             console.debug(event);
         }
     }

@@ -223,9 +223,9 @@ class Calendar_DateController extends AuthenticatedController
         $owner = $this->getCalendarOwner($range_and_id);
 
         $this->date = new CalendarDate();
-        if (Request::submitted('begin') && Request::submitted('end')) {
-            $this->date->begin = Request::get('begin');
-            $this->date->end = Request::get('end');
+        if (Request::submitted('start') && Request::submitted('end')) {
+            $this->date->begin = Request::get('start');
+            $this->date->end = Request::get('end', );
             $this->date->repetition_end = $this->date->end;
         } elseif (Request::submitted('begin_str') && Request::submitted('end_str')) {
             //Assume the textual format d.m.Y H:i:
