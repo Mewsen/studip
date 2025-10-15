@@ -646,6 +646,10 @@ class Fullcalendar
                 }
             },
             datesRender (info) {
+                if ($(node).hasClass('schedule') && info.view.type !== 'timeGridDay') {
+                    document.querySelector('.fc-right').style.display = 'none';
+                }
+
                 if ($(node).hasClass('semester-plan')) {
                     //Nothing to do in the semester plan, since it already displays
                     //all the information on loading.
