@@ -56,7 +56,7 @@
             'eventSources' => [
                 [
                     'url' => URLHelper::getLink(
-                        'dispatch.php/resources/ajax/get_clipboard_semester_plan/' . $clipboard->id
+                        'dispatch.php/resources/ajax/get_clipboard_booking_plan/' . $clipboard->id
                     ),
                     'method' => 'GET',
                     'extraParams' => [
