@@ -80,13 +80,17 @@ export default {
         editFilter(index) {
             this.currentFilter = index !== null ? index : -1;
             if (this.currentFilter !== -1) {
-                let data = [];
-
-                for (const field of Object.entries(this.filters[index].attributes.fields)) {
-                    data.push(field[1]);
-                }
-
-                this.currentFilterData = data;
+                this.currentFilterData = this.filters[index].attributes.fields.map(f => {
+                    return {
+                        attributes: {
+                            id: f.id ?? -1,
+                            type: f.attributes.type,
+                            typeparam: f.attributes.typeparam,
+                            'compare-operator': f.attributes['compare-operator'],
+                            value: f.attributes.value
+                        }
+                    }
+                });
             } else {
                 this.currentFilterData = [];
             }
@@ -152,7 +156,7 @@ export default {
             this.filters = [];
         }
     },
-    mounted() {
+    created() {
         if (this.modelValue) {
             this.filters = JSON.parse(this.modelValue);
         }
