@@ -34,6 +34,7 @@ function pad(what, length = 2, char = '0') {
 
 //class Fullcalendar
 //{
+/*
     static holidayCache = sessionStorage.getItem('fullcalendar_holidays') ? JSON.parse(sessionStorage.getItem('fullcalendar_holidays')) : {};
     static vacationCache = sessionStorage.getItem('fullcalendar_vacations') ? JSON.parse(sessionStorage.getItem('fullcalendar_vacations')) : {};
 
@@ -126,6 +127,7 @@ function pad(what, length = 2, char = '0') {
             return items;
         });
     }
+    */
     /**
      * The initialisation method. It loads the JS files for fullcalendar
      * in case they are not loaded and sets up a fullcalendar instance
