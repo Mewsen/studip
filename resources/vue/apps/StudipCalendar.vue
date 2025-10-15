@@ -95,7 +95,6 @@ export default defineComponent({
             if (this.holiday_cache[year]) {
                 return Promise.resolve(this.holiday_cache[year]);
             }
-            /*
             return JSONAPI.withPromises().get('holidays', {
                 data: { 'filter[year]': year }
             }).then(response => {
@@ -135,7 +134,6 @@ export default defineComponent({
                 sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(this.holiday_cache));
                 return events;
             });
-            */
         },
         handleSelection: function(selection: DateSelectionApi) {
             console.debug('select');
