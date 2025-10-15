@@ -98,10 +98,12 @@ class Fullcalendar
             'attributes' => array_merge(
                 $this->attributes,
                 [$real_data_name => '1']
-            )
+            ),
+            'dialog_size' => 'auto',
+            'action_urls' => []
         ];
         if (is_array($fullcalendar_config['studip_urls'])) {
-            $template_params['dialog_urls'] = $fullcalendar_config['studip_urls'];
+            $template_params['action_urls'] = $fullcalendar_config['studip_urls'];
             unset($fullcalendar_config['studip_urls']);
         }
         if (!empty($fullcalendar_config['dialog_size'])) {
