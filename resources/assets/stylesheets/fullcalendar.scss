@@ -2,7 +2,8 @@
 @import "scss/buttons";
 @import "mixins";
 
-a.fc-event, td.fc-event {
+a.fc-event,
+td.fc-event {
     border-radius: 0;
 
     .fc-time {
@@ -22,6 +23,24 @@ a.fc-event, td.fc-event {
         mask-position: center;
         background-color: currentColor;
         mask-image: var(--icon-url);
+    }
+}
+
+div.fc-bgevent,
+td.fc-bgevent {
+    .title {
+        color: $text-color;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &.holiday {
+        opacity: 1;
+        background-color: rgba($light-gray-color-60, 0.3);
+
+        &.official {
+            background-color: rgba($base-gray, 0.3);
+        }
     }
 }
 

@@ -56,9 +56,9 @@ class SemesterHoliday extends SimpleORMap
 
      /**
      * returns all SemesterHoliday between given timestamps (starting AND ending within given timestamps)
-     * @param integer $timestamp_start
-     * @param integer $timestamp_end
-     * @return array of SemesterHoliday
+     * @param int $timestamp_start
+     * @param int $timestamp_end
+     * @return SemesterHoliday[]
      */
     public static function findByTimestampRange($timestamp_start, $timestamp_end)
     {

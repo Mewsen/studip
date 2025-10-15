@@ -32,6 +32,99 @@ function pad(what, length = 2, char = '0') {
 
 class Fullcalendar
 {
+    static holidayCache = sessionStorage.getItem('fullcalendar_holidays') ? JSON.parse(sessionStorage.getItem('fullcalendar_holidays')) : {};
+    static vacationCache = sessionStorage.getItem('fullcalendar_vacations') ? JSON.parse(sessionStorage.getItem('fullcalendar_vacations')) : {};
+
+    static loadHolidays(year) {
+        if (this.holidayCache[year]) {
+            return Promise.resolve(this.holidayCache[year]);
+        }
+
+        return STUDIP.jsonapi.withPromises().get('holidays', {
+            data: { 'filter[year]': year }
+        }).then(response => {
+            const events = [];
+            if (!response) {
+                return events;
+            }
+
+            for (const [date, data] of Object.entries(response)) {
+                const classNames = ['holiday'];
+                if (data.mandatory) {
+                    classNames.push('official');
+                }
+
+                const day = new Date(date);
+                events.push({
+                    // Note: Since allDay is set to true, the start and end time is ignored.
+                    // See the documentation: https://fullcalendar.io/docs/v4/event-parsing
+                    start:    day,
+                    end:      day,
+                    allDay:   true,
+                    title:    data.holiday,
+                    editable: false,
+
+                    classNames,
+
+                    // Note: Colours are set via SCSS.
+                    textColor:   '',
+                    color:       '',
+                    borderColor: '',
+
+                    rendering: 'background'
+                });
+            }
+
+            this.holidayCache[year] = events;
+
+            sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(this.holidayCache));
+
+            return events;
+        });
+    }
+
+    static loadVacations(year) {
+        if (this.vacationCache[year]) {
+            return Promise.resolve(this.vacationCache[year]);
+        }
+
+        return STUDIP.jsonapi.withPromises().get('vacations', {
+            data: {'filter[year]': year}
+        }).then(response => {
+            if (!response) {
+                return [];
+            }
+
+            const items = [];
+
+            for (const vacation_data of Object.values(response)) {
+                const start = new Date(parseInt(vacation_data.start) * 1000);
+                const end   = new Date(parseInt(vacation_data.end) * 1000);
+                items.push({
+                    start,
+                    end,
+                    allDay: true,
+                    title: vacation_data.name,
+                    editable: false,
+                    classNames: ['holiday'],
+
+                    // Note: Colours are set via SCSS.
+                    textColor:   '',
+                    color:       '',
+                    borderColor: '',
+
+                    rendering: 'background'
+                });
+            }
+
+            this.vacationCache[year] = items;
+
+            sessionStorage.setItem('fullcalendar_vacations', JSON.stringify(this.vacationCache));
+
+            return items;
+        });
+    }
+
     /**
      * The initialisation method. It loads the JS files for fullcalendar
      * in case they are not loaded and sets up a fullcalendar instance
@@ -573,9 +666,9 @@ class Fullcalendar
                 }
             },
             eventRender (info) {
-                var event = info.event;
-                var eventElement = info.el;
-                var iconColor = event.textColor == '#000000' ? 'black' : 'white';
+                let event = info.event;
+                let eventElement = info.el;
+                let iconColor = event.textColor === '#000000' ? 'black' : 'white';
 
                 if ($(info.view.context.calendar.el).hasClass('institute-plan')) {
                     $(eventElement).attr('title', event.extendedProps.tooltip);
@@ -617,6 +710,34 @@ class Fullcalendar
                         icon_element.css('--icon-url', `url('${iconUrl}')`);
                         title.prepend(icon_element);
                     }
+                }
+
+                //If a background event with title shall be rendered, we have to check
+                //if an all-day slot is present or not.
+                let generate_title = false;
+                if (event.rendering === 'background' && event.title && event.allDay) {
+                    if (info.view.viewSpec.options.allDaySlot === true) {
+                        //An all-day slot is present in the calendar.
+                        if (info.isStart === true || info.isEnd === true) {
+
+                            generate_title = true;
+                        }
+                    } else {
+                        //No all-day slot in the calendar. Display a title
+                        //at the start of the day in the calendar.
+                        if (info.isStart === false || info.isEnd === false) {
+                            generate_title = true;
+                        }
+                    }
+                }
+                if (generate_title) {
+                    //Generate a visible title for the background element:
+                    let element = $('<div class="title"></div>');
+                    $(element).text(event.title);
+                    if (event.textColor) {
+                        element.css('color', event.textColor);
+                    }
+                    $(eventElement).append(element);
                 }
             },
             eventSourceSuccess: function(content) {
@@ -731,6 +852,26 @@ class Fullcalendar
         }
 
         config = $.extend({}, config, additional_config);
+
+        if (!Array.isArray(config.eventSources)) {
+            config.eventSources = [];
+        }
+        config.eventSources.push({
+            events: (fetchInfo, successCallback, failureCallback) => {
+                const startYear = fetchInfo.start.getFullYear();
+                const endYear = fetchInfo.end.getFullYear();
+                const requests = [];
+                for (let year = startYear; year <= endYear; year++) {
+                    requests.push(this.loadHolidays(year));
+                    requests.push(this.loadVacations(year));
+                }
+                Promise.all(requests).then(results => {
+                    const events = [].concat(...results);
+                    successCallback(events);
+                    return results;
+                }).catch(failureCallback);
+            },
+        });
 
         config.defaultView = defaultView;
 
