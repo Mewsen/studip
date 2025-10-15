@@ -183,7 +183,7 @@ class Helper
                 'allDaySlot'  => false,
                 'header'      => [
                     'left' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
-                    'right' => ''
+                    'right' => 'prev,today,next'
                 ],
                 'views' => $available_views,
                 'columnHeaderFormat' => ['weekday' => 'short'],
