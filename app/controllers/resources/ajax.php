@@ -480,6 +480,93 @@ class Resources_AjaxController extends AuthenticatedController
         $this->render_json($event_data);
     }
 
+    public function get_clipboard_booking_plan_action($clipboard_id)
+    {
+        $clipboard = \Clipboard::find($clipboard_id);
+
+        if (!empty($_SESSION['selected_clipboard_id'])) {
+            $clipboard = Clipboard::find($_SESSION['selected_clipboard_id']);
+        }
+        if (!$clipboard) {
+            throw new Exception('Clipboard object not found!');
+        }
+
+        $current_user = User::findCurrent();
+
+        //Permission check:
+        if ($clipboard->user_id !== $current_user->id) {
+            throw new AccessDeniedException();
+        }
+
+        $display_requests     = Request::bool('display_requests');
+        $display_all_requests = Request::bool('display_all_requests');
+
+        //Try the ISO format first: YYYY-MM-DDTHH:MM:SS±ZZ:ZZ
+        $start = Request::getDateTime('start', DateTime::RFC3339);
+        $end   = Request::getDateTime('end', DateTime::RFC3339);
+
+        if (!$start || !$end) {
+            $start_str = Request::get('start');
+            $end_str   = Request::get('end');
+            $start = new \DateTime();
+            $end   = new \DateTime();
+            //Assume the local timezone and use the Y-m-d format:
+            $date_regex = '/[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/';
+            if (preg_match($date_regex, $start_str)) {
+                //$begin is specified in the date formay YYYY-MM-DD:
+                $start_parts = explode('-', $start_str);
+                $start->setDate(
+                    $start_parts[0],
+                    $start_parts[1],
+                    $start_parts[2]
+                );
+                $start->setTime(0,0,0);
+            } else {
+                $start->setTimestamp($start_str);
+            }
+            //Now we do the same for $end_timestamp:
+            if (preg_match($date_regex, $end_str)) {
+                //$begin is specified in the date formay YYYY-MM-DD:
+                $end_parts = explode('-', $end_str);
+                $end->setDate(
+                    $end_parts[0],
+                    $end_parts[1],
+                    $end_parts[2]
+                );
+                $end->setTime(23,59,59);
+            } else {
+                $end->setTimestamp($end_str);
+            }
+        }
+
+        $rooms = Room::findMany($clipboard->getAllRangeIds('Room'));
+
+        $booking_types = Request::getArray('booking_types');
+
+        //Room permission check:
+        $plan_objects = [];
+        foreach ($rooms as $room) {
+            if ($room->bookingPlanVisibleForuser($current_user)) {
+                $plan_objects = array_merge(
+                    $plan_objects,
+                    \ResourceManager::getBookingPlanObjects(
+                        $room,
+                        [
+                            [
+                                'begin' => $start->getTimestamp(),
+                                'end'   => $end->getTimestamp()
+                            ]
+                        ],
+                        $booking_types,
+                        $display_all_requests ? 'all' : $display_requests
+                    )
+                );
+            }
+        }
+
+        $this->render_json(\Studip\Fullcalendar::createData($plan_objects, $start, $end));
+    }
+
     public function get_clipboard_semester_plan_action($clipboard_id = null)
     {
         if (!$clipboard_id) {
