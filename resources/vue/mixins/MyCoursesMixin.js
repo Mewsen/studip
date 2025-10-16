@@ -32,9 +32,9 @@ export default {
             });
         },
 
-        getCourseName(course, include_number = false) {
+        getCourseName(course) {
             let name = course.name;
-            if (include_number) {
+            if (this.displaySemNumber) {
                 name = `${course.number} ${course.name}`;
             }
             return name.trim();
@@ -165,7 +165,13 @@ export default {
             'isGroupOpen',
             'getConfig',
         ]),
-
+        displaySemNumber() {
+            return this.getConfig('sem_number_always')
+                || (
+                    this.getConfig('sem_number')
+                    && !this.responsiveDisplay
+                );
+        },
         numberOfNavElements () {
             return Math.max(
                 ...Object.values(this.courses).map(course => {

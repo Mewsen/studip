@@ -5,7 +5,7 @@
             <colgroup>
                 <col style="width: 7px">
                 <col style="width: 25px">
-                <col style="width: 70px" v-if="getConfig('sem_number') && !responsiveDisplay">
+                <col style="width: 70px" v-if="displaySemNumber">
                 <col>
                 <col v-if="!responsiveDisplay" :style="{width: (2 * 5 + numberOfNavElements * (iconSize + 2 * 3 + 3) - 3) + 'px'}">
                 <col v-if="!responsiveDisplay" style="width: 24px">
@@ -18,7 +18,7 @@
                         </span>
                     </th>
                     <th></th>
-                    <th v-if="getConfig('sem_number') && !responsiveDisplay" :class="getOrderClasses('number')">
+                    <th v-if="displaySemNumber" :class="getOrderClasses('number')">
                         <a href="#" @click.prevent="changeOrder('number')">
                             {{ $gettext('Nr.') }}
                         </a>
@@ -35,7 +35,7 @@
             <tbody v-for="subgroup in group.data" :key="subgroup.id" :class="{collapsed: !isGroupOpen(subgroup)}">
                 <tr class="header-row" v-if="subgroup.label !== false">
                     <th style="white-space: nowrap; text-align: left"></th>
-                    <th class="toggle-indicator" :colspan="(getConfig('sem_number') && !responsiveDisplay) ? 3 : 2">
+                    <th class="toggle-indicator" :colspan="displaySemNumber ? 3 : 2">
                         <a href="#" @click.prevent.stop="toggleOpenGroup(subgroup)">{{ subgroup.label }}</a>
                     </th>
                     <th v-if="!responsiveDisplay" class="dont-hide" colspan="2"></th>
@@ -52,12 +52,12 @@
                     <td :class="{'subcourse-indented': isChild(course)}">
                         <span :style="{backgroundImage: `url(${course.avatar}`}" class="my-courses-avatar course-avatar-small" :title="course.name" alt=""></span>
                     </td>
-                    <td v-if="getConfig('sem_number') && !responsiveDisplay"  :class="{'subcourse-indented': isChild(course)}">
+                    <td v-if="displaySemNumber" :class="{'subcourse-indented': isChild(course)}">
                         {{ course.number }}
                     </td>
                     <td :class="{'subcourse-indented': isChild(course)}">
                         <a :href="urlFor('seminar_main.php', {auswahl: course.id})">
-                            {{ getCourseName(course, getConfig('sem_number') && responsiveDisplay) }}
+                            {{ getCourseName(course) }}
                             <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
                         </a>
                         <span v-if="course.is_hidden" class="course-hidden-info">

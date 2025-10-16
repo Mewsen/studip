@@ -11,7 +11,7 @@
                 <section class="studip-grid">
                     <template v-for="course in getOrderedCourses(subgroup.ids)">
                         <div class="course-group-label" v-if="isParent(course)" :key="course.id">
-                            {{ getCourseName(course, getConfig('sem_number')) }}
+                            {{ getCourseName(course) }}
                         </div>
 
                         <article class="studip-grid-element" :data-course-id="course.id" :class="getCourseCssClasses(course)" :key="course.id">
@@ -24,10 +24,10 @@
                                     ></studip-action-menu>
                                 </span>
 
-                                <a :href="urlFor('seminar_main.php', {auswahl: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
+                                <a :href="urlFor('seminar_main.php', {auswahl: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course)">
                                     <span :style="{backgroundImage: `url(${course.avatar})`}" class="tiles-grid-element-header-image"></span>
                                     <span class="tiled-grid-element-header-title">
-                                        {{ getCourseName(course, getConfig('sem_number')) }}
+                                        {{ getCourseName(course) }}
                                         <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
 
                                     </span>
