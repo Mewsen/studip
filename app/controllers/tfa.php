@@ -13,7 +13,7 @@ class TfaController extends AuthenticatedController
 
         $this->own_profile = true;
 
-        if ($this->is_root && Request::submitted('username')) {
+        if ($this->is_root && Request::has('username')) {
             $username = Request::username('username');
             $this->user = User::findOneByUsername($username);
 

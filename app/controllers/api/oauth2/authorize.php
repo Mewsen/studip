@@ -23,7 +23,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
     {
         $method = $this->getMethod();
 
-        if (Request::submitted('auth_token')) {
+        if (Request::has('auth_token')) {
             if ('nobody' === $GLOBALS['user']->id) {
                 throw new LoginException();
             }
@@ -124,7 +124,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
      */
     private function assertValidAuthToken(string $authToken): void
     {
-        if (Request::submitted('auth_token') && $authToken !== Request::get('auth_token')) {
+        if (Request::has('auth_token') && $authToken !== Request::get('auth_token')) {
             throw InvalidAuthTokenException::different();
         }
     }

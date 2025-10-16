@@ -73,6 +73,17 @@ class RequestParametersTest extends Codeception\Test\Unit
     }
 
     /**
+     * @covers Request::has
+     */
+    public function testHasParam(): void
+    {
+        Request::set('yyy', 'xyzzy');
+
+        $this->assertTrue(Request::has('yyy'));
+        $this->assertFalse(Request::has('null'));
+    }
+
+    /**
      * @covers Request::get
      */
     public function testStringParam ()

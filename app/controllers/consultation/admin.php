@@ -643,7 +643,7 @@ class Consultation_AdminController extends ConsultationController
                 } elseif ($deleted > 0) {
                     PageLayout::postSuccess(_('Die freien Termine wurden gelöscht'));
                 }
-            } elseif (Request::option('delete') === 'cancel' && Request::submitted('reason')) {
+            } elseif (Request::option('delete') === 'cancel' && Request::has('reason')) {
                 $reason = trim(Request::get('reason'));
 
                 $deleted = 0;
@@ -668,7 +668,7 @@ class Consultation_AdminController extends ConsultationController
                 return;
             }
         } elseif (Request::submitted('cancel')) {
-            if (!Request::submitted('reason')) {
+            if (!Request::has('reason')) {
                 PageLayout::setTitle(_('Termine absagen'));
                 $this->action = $this->bulk($page, $expired);
                 $this->render_action('cancel_slots');
@@ -925,7 +925,7 @@ class Consultation_AdminController extends ConsultationController
             $index_time = $index;
         }
 
-        if (!Request::submitted("{$index}-date") || !Request::submitted("{$index_time}-time")) {
+        if (!Request::has("{$index}-date") || !Request::has("{$index_time}-time")) {
             throw new Exception("Date with index '{$index}' was not submitted properly");
         }
 
