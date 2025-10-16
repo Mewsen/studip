@@ -600,6 +600,44 @@ abstract class StudipController extends Trails\Controller
         \NotificationCenter::postNotification('VueAppDidRender', $app);
     }
 
+    /**
+     * @param array $steps either an array of \Studip\VueApp or \Studip\Forms\Form objects
+     * @return void
+     */
+    public function render_wizard(array $steps): void
+    {
+        $pattern = '/\<script type="application\/json"\>(.+)\<\/script\>/';
+        $data = [];
+
+        foreach ($steps as $step) {
+            $entry = [
+                'id' => $step['id']
+            ];
+
+            if (isset($step['name'])) {
+                $entry['name'] = $step['name'];
+            }
+
+            if (isset($step['icon'])) {
+                $entry['icon'] = $step['icon'];
+            }
+
+            $matches = [];
+            if (preg_match($pattern, $step['content']->render(), $matches)) {
+                $entry['content'] = $matches[1];
+            }
+
+            $data[] = $entry;
+        }
+
+        $this->render_vue_app(
+            Studip\VueApp::create('StudipWizard')
+                ->withProps([
+                    'steps' => $data
+                ])
+        );
+    }
+
 
     /**
      * relays current request to another controller and returns the response
