@@ -68,7 +68,6 @@ async function loadAppDependencies(config, store) {
     ];
 
     const [{ default: appComponent }, plugins = []] = await Promise.all(promises);
-    console.log('Plugins', plugins);
     return [appComponent, plugins];
 }
 
