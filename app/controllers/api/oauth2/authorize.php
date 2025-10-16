@@ -24,7 +24,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         $method = $this->getMethod();
 
         if (Request::submitted('auth_token')) {
-            if ('nobody' === $GLOBALS['user']->id) {
+            if (!User::findCurrent()) {
                 throw new LoginException();
             }
             CSRFProtection::verifyUnsafeRequest();
