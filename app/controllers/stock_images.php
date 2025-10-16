@@ -24,6 +24,7 @@ class StockImagesController extends AuthenticatedController
     {
         $this->render_vue_app(
             Studip\VueApp::create('StockImages')
+                ->withVuexStore('stock-images', 'StockImages')
                 ->withPlugin('StockImagesPlugin', 'stock-images')
         );
     }
