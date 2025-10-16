@@ -149,8 +149,8 @@ export default defineComponent({
                     this.action_urls['add'],
                     {
                         data: {
-                            start:   (selection.start.getTime() / 1000).toString(),
-                            end:     (selection.end.getTime() / 1000).toString(),
+                            start:   selection.startStr,
+                            end:     selection.endStr,
                             all_day: (selection.allDay ? '1' : '0')
                         },
                         size: this.dialog_size
@@ -164,7 +164,8 @@ export default defineComponent({
             let show_url = event_data.event.extendedProps.studip_view_urls.show;
             if (show_url) {
                 //Load the dialog:
-                Dialog.fromURL(event_data.event.extendedProps.studip_view_urls.show,
+                Dialog.fromURL(
+                    event_data.event.extendedProps.studip_view_urls.show,
                     {
                         size: this.dialog_size
                     }
@@ -172,9 +173,23 @@ export default defineComponent({
             }
         },
         handleEventDrop: function(dropped_event: EventDropArg) {
-            if (!this.calendar_options.editable || !dropped_event.event.extendedProps)
-            console.debug('drop');
-            console.debug(dropped_event);
+            if (!this.calendar_options.editable
+                || !dropped_event.event.extendedProps.studip_api_urls.move_dialog
+                || !dropped_event.event.start || !dropped_event.event.end) {
+                //Nothing to do.
+                return;
+            }
+            Dialog.fromURL(
+                dropped_event.event.extendedProps.studip_api_urls.move_dialog,
+                {
+                    data: {
+                        start: (dropped_event.event.start.getTime() / 1000).toString(),
+                        end: (dropped_event.event.end.getTime() / 1000).toString(),
+                        all_day: (dropped_event.event.allDay ? '1' : '0')
+                    },
+                    size: this.dialog_size
+                }
+            );
         },
         handleEventResize: function(event: EventResizeDoneArg) {
             console.debug('resize');

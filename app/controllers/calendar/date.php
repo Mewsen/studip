@@ -224,8 +224,8 @@ class Calendar_DateController extends AuthenticatedController
 
         $this->date = new CalendarDate();
         if (Request::submitted('start') && Request::submitted('end')) {
-            $this->date->begin = Request::get('start');
-            $this->date->end = Request::get('end', );
+            $this->date->begin = Request::getDateTime('start', DateTime::RFC3339);
+            $this->date->end = Request::get('end', DateTime::RFC3339);
             $this->date->repetition_end = $this->date->end;
         } elseif (Request::submitted('begin_str') && Request::submitted('end_str')) {
             //Assume the textual format d.m.Y H:i:
@@ -646,7 +646,7 @@ class Calendar_DateController extends AuthenticatedController
             );
         }
 
-        $this->begin = Request::getDateTime('begin', \DateTime::RFC3339);
+        $this->begin = Request::getDateTime('start', \DateTime::RFC3339);
         $this->end   = Request::getDateTime('end', \DateTime::RFC3339);
         if (!$this->begin || !$this->end) {
             throw new InvalidArgumentException();
