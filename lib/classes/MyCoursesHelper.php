@@ -119,12 +119,13 @@ final class MyCoursesHelper
         return [
             'setCourses' => $this->sanitizeNavigations(array_map([$this, 'convertCourse'], $temp_courses)),
             'setGroups'  => $groups,
-            'setUserId'  => $GLOBALS['user']->id,
+            'setUserId'  => User::findCurrent()->id,
             'setConfig'  => [
-                'allow_dozent_visibility'  => Config::get()->ALLOW_DOZENT_VISIBILITY,
-                'open_groups'              => array_values($GLOBALS['user']->cfg->MY_COURSES_OPEN_GROUPS),
-                'sem_number'               => Config::get()->IMPORTANT_SEMNUMBER,
-                'view_settings'            => $GLOBALS['user']->cfg->MY_COURSES_VIEW_SETTINGS,
+                'allow_dozent_visibility'  => Config::get()->getValue('ALLOW_DOZENT_VISIBILITY'),
+                'open_groups'              => array_values(User::findCurrent()->getConfiguration()->getValue('MY_COURSES_OPEN_GROUPS')),
+                'sem_number'               => Config::get()->getValue('IMPORTANT_SEMNUMBER'),
+                'sem_number_always'        => Config::get()->getValue('MY_COURSES_ALWAYS_SHOW_SEMNUM'),
+                'view_settings'            => User::findCurrent()->getConfiguration()->getValue('MY_COURSES_VIEW_SETTINGS'),
                 'group_by'                 => $group_field,
             ],
         ];

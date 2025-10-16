@@ -16,10 +16,7 @@ function createMixin(minimal = false) {
                 let name = course.name;
 
                 // Include sem number
-                if (
-                    this.config?.sem_number
-                    && !this.responsiveDisplay
-                ) {
+                if (this.displaySemNumber) {
                     name = `${course.number} ${name}`;
                 }
 
@@ -28,7 +25,7 @@ function createMixin(minimal = false) {
                     name = `${name} ${$gettext('[Vertretung]')}`;
                 }
 
-                return name;
+                return name.trim();
             },
             getCourseURL(course) {
                 return this.urlFor('dispatch.php/course/go', {to: course.id}, true);
@@ -45,6 +42,13 @@ function createMixin(minimal = false) {
         computed: {
             csrf() {
                 return STUDIP.CSRF_TOKEN;
+            },
+            displaySemNumber() {
+                return this.config?.sem_number_always
+                    || (
+                        this.config?.sem_number
+                        && !this.responsiveDisplay
+                    );
             }
         },
         created() {
