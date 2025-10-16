@@ -2,8 +2,6 @@
 
 namespace Courseware\Filesystem;
 
-use Courseware\Instance;
-use FileType;
 use Folder;
 use FolderType;
 use Icon;
@@ -11,29 +9,6 @@ use StandardFolder;
 
 class PublicFolder extends StandardFolder
 {
-    public static function findOrCreateTopFolder(Instance $instance): PublicFolder
-    {
-        if (!($folder = self::findTopFolder($instance))) {
-            $folder = self::createTopFolder($instance);
-        }
-
-        return $folder;
-    }
-
-    public static function findTopFolder(Instance $instance): ?PublicFolder
-    {
-        if ($folder = Folder::findOneByrange_id($instance->getRoot()->id)) {
-            return new PublicFolder($folder);
-        }
-
-        return null;
-    }
-
-    public static function createTopFolder(Instance $instance): PublicFolder
-    {
-        return new PublicFolder(Folder::createTopFolder($instance->getRoot()->id, 'courseware', PublicFolder::class));
-    }
-
     protected $folder;
 
     /**

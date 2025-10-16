@@ -940,9 +940,9 @@ SQL;
             $original_file_ref = \FileRef::find($this->image_id);
             if ($original_file_ref) {
                 $instance = new Instance($this->getCourseware($parent->range_id, $parent->range_type));
-                $folder = \Courseware\Filesystem\PublicFolder::findOrCreateTopFolder($instance);
+                $folder = \Folder::findTopFolder($instance->getRoot()->id, PublicFolder::class, 'courseware');
                 /** @var \FileRef $file_ref */
-                $file_ref = \FileManager::copyFile($original_file_ref->getFileType(), $folder, $user);
+                $file_ref = \FileManager::copyFile($original_file_ref->getFileType(), $folder->getTypedFolder(), $user);
                 $file_ref_id = $file_ref->id;
             }
 
