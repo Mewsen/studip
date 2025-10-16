@@ -141,7 +141,7 @@
         display: none;
     }
 
-    a:not(.system-notification-message) {
+    a:not(.system-notification-message,.button) {
         color: var(--color--white);
         text-decoration-line: underline;
 

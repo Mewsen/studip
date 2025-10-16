@@ -98,30 +98,42 @@ class StartController extends AuthenticatedController
                 )->asDialog();
             }
         }
-        if ($GLOBALS['perm']->get_perm() == 'user') {
-            PageLayout::postInfo(_('Sie haben noch nicht auf Ihre Bestätigungsmail geantwortet.'), [
-                _('Bitte holen Sie dies nach, um Stud.IP Funktionen wie das Belegen von Veranstaltungen nutzen zu können.'),
-                sprintf(_('Bei Problemen wenden Sie sich an: %s'), '<a href="mailto:'.$GLOBALS['UNI_CONTACT'].'">'.$GLOBALS['UNI_CONTACT'].'</a>')
-            ]);
+
+        $this->messages = [];
+
+        if (User::findCurrent()->perms == 'user') {
+            $this->messages[] = MessageBox::info(
+                _('Sie haben noch nicht auf Ihre Bestätigungsmail geantwortet.'),
+                [
+                    _('Bitte holen Sie dies nach, um Stud.IP Funktionen wie das Belegen von Veranstaltungen nutzen zu können.'),
+                    sprintf(_('Bei Problemen wenden Sie sich an: %s'), '<a href="mailto:'.$GLOBALS['UNI_CONTACT'].'">'.$GLOBALS['UNI_CONTACT'].'</a>')
+                ]
+            );
 
             $details = Studip\LinkButton::create(
                 _('Bestätigungsmail erneut verschicken'),
-                $this->url_for('start/resend_validation_mail')
+                $this->resend_validation_mailURL()
             );
 
-            if (!StudipAuthAbstract::CheckField('auth_user_md5.Email', $GLOBALS['user']->auth_plugin) && !LockRules::check($GLOBALS['user']->id, 'email')) {
+            if (
+                !StudipAuthAbstract::CheckField('auth_user_md5.Email', User::findCurrent()->auth_plugin)
+                && !LockRules::check(User::findCurrent()->id, 'email')
+            ) {
                 $details .= ' ';
                 $details .= Studip\LinkButton::create(
                     _('E-Mail-Adresse ändern'),
-                    $this->url_for('start/edit_mail_address'),
+                    $this->edit_mail_addressURL(),
                     [
                         'data-dialog' => 'size=auto',
                         'title'       => _('E-Mail-Adresse')
                     ]
                 );
             }
-            PageLayout::postInfo(
-                sprintf(_('Haben Sie die Bestätigungsmail an Ihre Adresse "%s" nicht erhalten?'), htmlReady($GLOBALS['user']->Email)),
+            $this->messages[] = MessageBox::info(
+                sprintf(
+                    _('Haben Sie die Bestätigungsmail an Ihre Adresse "%s" nicht erhalten?'),
+                    htmlReady(User::findCurrent()->email)
+                ),
                 [$details]
             );
         }

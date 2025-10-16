@@ -2,6 +2,7 @@
 /**
  * @var array $columns
  * @var Flexi\Template $widget_layout
+ * @var MessageBox[] $messages
  */
 ?>
 <h1 class="sr-only">
@@ -15,6 +16,8 @@
         <?= _("Ihre persönliche Startseite")?>
     <? endif ?>
 </h1>
+
+<?= implode('', $messages) ?>
 
 <?php
 // display a random banner if the module is enabled
