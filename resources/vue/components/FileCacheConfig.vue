@@ -1,7 +1,7 @@
 <template>
     <label class="col-4">
         <span class="required">
-            {{ $gettexdt('Dateipfad') }}
+            {{ $gettext('Dateipfad') }}
         </span>
         <input required type="text" name="path" v-model="thePath">
     </label>
