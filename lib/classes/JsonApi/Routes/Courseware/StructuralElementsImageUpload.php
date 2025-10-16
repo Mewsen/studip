@@ -29,9 +29,9 @@ class StructuralElementsImageUpload extends NonJsonApiController
         }
 
         $instance = $this->findInstanceWithRange($structuralElement['range_type'], $structuralElement['range_id']);
-        $publicFolder = PublicFolder::findOrCreateTopFolder($instance);
+        $publicFolder = \Folder::findTopFolder($instance->getRoot()->id, PublicFolder::class, 'courseware');
 
-        $fileRef = $this->handleUpload($request, $publicFolder, $structuralElement);
+        $fileRef = $this->handleUpload($request, $publicFolder->getTypedFolder(), $structuralElement);
 
         // remove existing image
         if (is_a($structuralElement->image, \FileRef::class)) {
