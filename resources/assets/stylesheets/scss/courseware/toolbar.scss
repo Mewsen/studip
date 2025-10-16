@@ -47,6 +47,14 @@
         .cw-toolbar-blocks {
             .input-group.files-search.search {
                 margin-bottom: 0;
+
+                .input-group-append .button {
+                    height: calc(var(--icon-size-default) + 16px);
+                }
+
+                #reset-search {
+                    border-radius: 0;
+                }
             }
     
             .cw-block-search {
