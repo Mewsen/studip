@@ -3,9 +3,9 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {CalendarOptions, DateSelectionApi, EventClickArg} from '@fullcalendar/core';
+import {CalendarOptions, DateSelectionApi, EventClickArg, EventDropArg} from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, {EventResizeDoneArg} from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
@@ -91,6 +91,7 @@ export default defineComponent({
         }
     },
     methods: {
+        /*
         loadHolidays(year: number) {
             if (this.holiday_cache[year]) {
                 return Promise.resolve(this.holiday_cache[year]);
@@ -135,8 +136,8 @@ export default defineComponent({
                 return events;
             });
         },
+         */
         handleSelection: function(selection: DateSelectionApi) {
-            console.debug('select');
             if (!this.calendar_options.editable || this.action_urls.length < 1) {
                 //The calendar isn't editable.
                 return;
@@ -144,29 +145,38 @@ export default defineComponent({
             if (this.action_urls['add']) {
                 //Add the selected time range to the URL and load it
                 //in a dialog:
-                const full_url = new URL(this.action_urls['add']);
-                const params = new URLSearchParams(full_url.search);
-                params.set('start', (selection.start.getTime() / 1000).toString());
-                params.set('end', (selection.end.getTime() / 1000).toString());
-                full_url.search = params.toString();
-                Dialog.fromURL(full_url);
+                Dialog.fromURL(
+                    this.action_urls['add'],
+                    {
+                        data: {
+                            start:   (selection.start.getTime() / 1000).toString(),
+                            end:     (selection.end.getTime() / 1000).toString(),
+                            all_day: (selection.allDay ? '1' : '0')
+                        },
+                        size: this.dialog_size
+                    }
+                );
             }
 
             console.debug(selection);
         },
         handleEventClick: function(event_data: EventClickArg) {
             let show_url = event_data.event.extendedProps.studip_view_urls.show;
-            console.debug(show_url);
             if (show_url) {
                 //Load the dialog:
-                Dialog.fromURL(event_data.event.extendedProps.studip_view_urls.show);
+                Dialog.fromURL(event_data.event.extendedProps.studip_view_urls.show,
+                    {
+                        size: this.dialog_size
+                    }
+                );
             }
         },
-        handleEventDrop: function(event: object) {
+        handleEventDrop: function(dropped_event: EventDropArg) {
+            if (!this.calendar_options.editable || !dropped_event.event.extendedProps)
             console.debug('drop');
-            console.debug(event);
+            console.debug(dropped_event);
         },
-        handleEventResize: function(event: object) {
+        handleEventResize: function(event: EventResizeDoneArg) {
             console.debug('resize');
             console.debug(event);
         }
