@@ -10,7 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
-import JSONAPI from "../../assets/javascripts/lib/jsonapi";
+import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 
 export default defineComponent({
     name: "StudipCalendar",
@@ -95,7 +95,7 @@ export default defineComponent({
             if (this.holiday_cache[year]) {
                 return Promise.resolve(this.holiday_cache[year]);
             }
-            return JSONAPI.withPromises().get('holidays', {
+            return jsonapi.withPromises().GET('holidays', {
                 data: { 'filter[year]': year }
             }).then(response => {
                 const events = [];
