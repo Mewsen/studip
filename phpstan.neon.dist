@@ -4,6 +4,8 @@ parameters:
     paths:
         - app/controllers
         - cli
+        - config
+        - db/migrations
         - lib
         - tests/functional
         - tests/jsonapi
