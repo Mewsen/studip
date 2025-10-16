@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var \League\OAuth2\Server\Entities\ClientEntityInterface $client
+ * @var array $scopes
+ * @var string $state
+ * @var string $authToken
+ * @var StudipController $controller
+ */
+?>
 <section class="oauth authorize">
     <header>
         <h1><?= _('Autorisierungsanfrage') ?></h1>
@@ -26,7 +35,7 @@
             <?= \CSRFProtection::tokenTag() ?>
             <input type="hidden" name="_method" value="delete">
             <input type="hidden" name="state" value="<?= htmlReady($state) ?>">
-            <input type="hidden" name="client_id" value="<?= htmlReady($client->id) ?>">
+            <input type="hidden" name="client_id" value="<?= htmlReady($client->getIdentifier()) ?>">
             <input type="hidden" name="auth_token" value="<?= htmlReady($authToken) ?>">
             <?= Studip\Button::create(_('Verweigern'), 'deny') ?>
         </form>
@@ -34,7 +43,7 @@
         <form action="<?= $controller->url_for('api/oauth2/authorize') ?>" method="post">
             <?= \CSRFProtection::tokenTag() ?>
             <input type="hidden" name="state" value="<?= htmlReady($state) ?>">
-            <input type="hidden" name="client_id" value="<?= htmlReady($client->id) ?>">
+            <input type="hidden" name="client_id" value="<?= htmlReady($client->getIdentifier()) ?>">
             <input type="hidden" name="auth_token" value="<?= htmlReady($authToken) ?>">
             <?= Studip\Button::create(_('Erlauben'), 'allow') ?>
         </form>
@@ -45,8 +54,8 @@
 
         <?= sprintf(
             _('Angemeldet als <strong>%s</strong> (%s)'),
-            htmlReady($GLOBALS['user']->getFullName()),
-            htmlReady($GLOBALS['user']->username)
+            htmlReady(User::findCurrent()->getFullName()),
+            htmlReady(User::findCurrent()->username)
             ) ?><br>
     </p>
 
@@ -55,7 +64,7 @@
             <small>
                 <?= sprintf(
                     _('Sind sie nicht <strong>%s</strong>, so melden Sie sich bitte ab und versuchen es erneut.'),
-                    htmlReady($GLOBALS['user']->getFullName())
+                    htmlReady(User::findCurrent()->getFullName())
                 ) ?>
             </small>
         </button>
