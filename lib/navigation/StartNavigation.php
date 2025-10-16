@@ -109,6 +109,9 @@ class StartNavigation extends Navigation
 
         // my courses
         if ($perm->have_perm('root')) {
+            $navigation = new Navigation(_('Wizard'), 'dispatch.php/wizard');
+            $this->addSubNavigation('wizard', $navigation);
+
             $navigation = new Navigation(_('Veranstaltungsübersicht'), 'dispatch.php/admin/courses');
         } else if ($perm->have_perm('admin')) {
             $navigation = new Navigation(_('Veranstaltungen an meinen Einrichtungen'), 'dispatch.php/my_courses');
