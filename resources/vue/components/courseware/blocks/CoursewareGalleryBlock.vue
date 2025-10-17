@@ -188,7 +188,7 @@ export default {
             currentAutoplay: '',
             currentNav: '',
             currentHeight: '',
-            currentCols: 33,
+            currentCols: 25,
             currentShowFileNames: '',
             currentShowFileDescription: '',
             currentMouseoverFileNames: '',
@@ -196,6 +196,10 @@ export default {
             editModeFiles: [],
             slideIndex: 0,
             editMode: false,
+
+            DEFAULT_COLS: 25,
+            DEFAULT_HEIGHT: 620,
+            DEFAULT_AUTOPLAY_TIMER: 2,
         };
     },
     computed: {
@@ -259,10 +263,10 @@ export default {
             this.currentFolderId = this.folderId;
             this.currentLayout = this.layout;
             this.currentAutoplay = this.autoplay;
-            this.currentAutoplayTimer = this.autoplayTimer;
+            this.currentAutoplayTimer = this.autoplayTimer ?? this.DEFAULT_AUTOPLAY_TIMER;
             this.currentNav = this.nav;
-            this.currentHeight = this.height;
-            this.currentCols = this.cols;
+            this.currentHeight = this.height ?? this.DEFAULT_HEIGHT;
+            this.currentCols = this.cols ?? this.DEFAULT_COLS;
             this.currentShowFileNames = this.showFileNames;
             this.currentShowFileDescription = this.showFileDescription;
             this.currentMouseoverFileNames = this.mouseoverFileNames;
@@ -328,10 +332,10 @@ export default {
             attributes.payload.folder_id = this.currentFolderId;
             attributes.payload.layout = this.currentLayout;
             attributes.payload.autoplay = this.currentAutoplay;
-            attributes.payload.autoplay_timer = this.currentAutoplayTimer.toString();
+            attributes.payload.autoplay_timer = (this.currentAutoplayTimer ?? this.DEFAULT_AUTOPLAY_TIMER).toString();
             attributes.payload.nav = this.currentNav;
-            attributes.payload.height = this.currentHeight.toString();
-            attributes.payload.cols = this.currentCols.toString();
+            attributes.payload.height = (this.currentHeight ?? this.DEFAULT_HEIGHT).toString();
+            attributes.payload.cols = (this.currentCols ?? this.DEFAULT_COLS).toString();
             attributes.payload.show_filenames = this.currentShowFileNames;
             attributes.payload.show_description = this.currentShowFileDescription;
             attributes.payload.mouseover_filenames = this.currentMouseoverFileNames;
