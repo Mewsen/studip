@@ -224,8 +224,10 @@ class Calendar_DateController extends AuthenticatedController
 
         $this->date = new CalendarDate();
         if (Request::submitted('start') && Request::submitted('end')) {
-            $this->date->begin = Request::getDateTime('start', DateTime::RFC3339);
-            $this->date->end = Request::get('end', DateTime::RFC3339);
+            $start = Request::getDateTime('start', DateTime::RFC3339);
+            $end   = Request::getDateTime('end', DateTime::RFC3339);
+            $this->date->begin = $start->getTimestamp();
+            $this->date->end   = $end->getTimestamp();
             $this->date->repetition_end = $this->date->end;
         } elseif (Request::submitted('begin_str') && Request::submitted('end_str')) {
             //Assume the textual format d.m.Y H:i:
