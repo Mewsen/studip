@@ -1,5 +1,5 @@
 <template>
-    <li v-if="showItem" :draggable="canEdit ? true : null" :aria-selected="canEdit ? keyboardSelected : null">
+    <li v-if="showItem" :draggable="canEdit ? true : null" :aria-selected="canEdit ? keyboardSelected : null" :elementId="element.id">
         <div class="cw-tree-item-wrapper" v-if="showRootElement || depth > 0">
             <span
                 v-if="canEdit && depth > 0 && canEdit"
@@ -484,7 +484,7 @@ export default {
                 newPos: e.newIndex,
                 oldPos: e.oldIndex,
                 oldParent: e.item.dataset.parentId,
-                newParent: e.to.__vnode.ctx.attrs.elementId,
+                newParent: e.to.parentElement.attributes.elementid.value,
                 sortArray: sortArray,
             };
 
