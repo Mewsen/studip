@@ -902,11 +902,18 @@ class Resources_BookingController extends AuthenticatedController
         $this->max_preparation_time = Config::get()->RESOURCES_MAX_PREPARATION_TIME;
 
         if ($mode == 'add') {
-            //In case a begin and end time are already given
+            //In case a start and end time are already given
             //use those values instead:
-            if (Request::submitted('begin') && Request::submitted('end')) {
-                $this->begin->setTimestamp(Request::get('begin'));
-                $this->end->setTimestamp(Request::get('end'));
+            if ((Request::submitted('begin') || Request::submitted('start')) && Request::submitted('end')) {
+                if (Request::submitted('start')) {
+                    $this->begin = Request::getDateTime('start', DateTime::RFC3339);
+                    $this->end   = Request::getDateTime('end', DateTime::RFC3339);
+                } else {
+                    //For backwards compatibility: Handle the timestamp in the old "begin" parameter.
+                    //To be removed with Stud.IP 7.0.
+                    $this->begin->setTimestamp(Request::get('begin'));
+                    $this->end->setTimestamp(Request::get('end'));
+                }
                 if (Request::get('semester_id')) {
                     $this->booking_style = 'repeat';
                     $this->repetition_style = 'weekly';
