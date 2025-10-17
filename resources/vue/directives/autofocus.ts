@@ -3,7 +3,7 @@
 import {DirectiveBinding} from "vue";
 
 function focusElement(el: HTMLElement, binding: DirectiveBinding) : void {
-    if (binding.value && !binding.value) {
+    if (binding.value !== undefined && !binding.value) {
         return;
     }
 
