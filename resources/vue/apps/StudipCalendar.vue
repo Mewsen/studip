@@ -159,8 +159,7 @@ export default defineComponent({
             }
         },
         handleEventClick: function(event_data: EventClickArg) {
-            let show_url = event_data.event.extendedProps.studip_view_urls.show;
-            if (show_url) {
+            if (event_data.event.extendedProps.studip_view_urls.show) {
                 //Load the dialog:
                 Dialog.fromURL(
                     event_data.event.extendedProps.studip_view_urls.show,
