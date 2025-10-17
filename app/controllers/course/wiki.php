@@ -152,44 +152,50 @@ class Course_WikiController extends AuthenticatedController
                 $author,
                 date('d.m.Y H:i:s', $this->page['chdate'])
             );
-            $action_menu = ActionMenu::get();
-            if ($this->page->isEditable()) {
-                $action_menu->addLink(
-                    $this->editURL($this->page),
-                    _('Seite bearbeiten'),
-                    Icon::create('edit')
-                );
-                $action_menu->addLink(
-                    $this->pagesettingsURL($this->page->id),
-                    _('Seiteneinstellungen bearbeiten'),
-                    Icon::create('settings'),
-                    ['data-dialog' => 'width=700']
-                );
-                if ($this->page->isDeletable()) {
-                    if (count($this->page->versions) > 0) {
-                        $action_menu->addLink(
-                            $this->ask_deletingURL($this->page),
-                            _('Seite / Version löschen'),
-                            Icon::create('trash'),
-                            ['data-dialog' => 'size=auto']
-                        );
-                    } else {
-                        $action_menu->addButton(
-                            'delete',
-                            _('Seite löschen'),
-                            Icon::create('trash'),
-                            ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
-                        );
-                    }
-                }
-            }
+            $action_menu = $this->getActionMenu($this->page);
             $contentbarSlots['menu'] = $action_menu->render();
         }
 
         $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')->withProps($contentbarProps)->withSlots($contentbarSlots);
     }
 
-    public function pagesettings_action(WikiPage $page)
+    public function getActionMenu(WikiPage $page, string $fromURL = '')
+    {
+        $action_menu = ActionMenu::get();
+        if ($page->isEditable()) {
+            $action_menu->addLink(
+                $this->editURL($page),
+                _('Seite bearbeiten'),
+                Icon::create('edit')
+            );
+            $action_menu->addLink(
+                $this->pagesettingsURL($page, $fromURL),
+                _('Seiteneinstellungen bearbeiten'),
+                Icon::create('settings'),
+                ['data-dialog' => 'width=700']
+            );
+            if ($page->isDeletable()) {
+                if (count($page->versions) > 0) {
+                    $action_menu->addLink(
+                        $this->ask_deletingURL($page),
+                        _('Seite / Version löschen'),
+                        Icon::create('trash'),
+                        ['data-dialog' => 'size=auto']
+                    );
+                } else {
+                    $action_menu->addButton(
+                        'delete',
+                        _('Seite löschen'),
+                        Icon::create('trash'),
+                        ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
+                    );
+                }
+            }
+        }
+        return $action_menu;
+    }
+
+    public function pagesettings_action(WikiPage $page, string $fromURL = '')
     {
         $this->validateWikiPage($page, $this->range, true);
         PageLayout::setTitle(_('Seiteneinstellungen bearbeiten'));
@@ -266,7 +272,7 @@ class Course_WikiController extends AuthenticatedController
                     ]
                 ]
             ],
-            $this->pagesettingsURL($page->id)
+            $this->pagesettingsURL($page, $fromURL)
         )->addStoreCallback(function ($form, $values) use ($oldname) {
             if ($values['name'] === $oldname) {
                 return;
@@ -298,8 +304,10 @@ class Course_WikiController extends AuthenticatedController
         if (Request::isPost()) {
             $this->form->store();
             PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
-            if ($page->isReadable()) {
+            if ($page->isReadable() && empty($fromURL)) {
                 $this->redirect($this->pageURL($page->id));
+            } elseif (!empty($fromURL)) {
+                $this->redirect(URLHelper::getURL('dispatch.php/course/wiki/' . $fromURL));
             } else {
                 $this->redirect($this->allpagesURL());
             }
