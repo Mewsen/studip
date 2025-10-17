@@ -308,8 +308,6 @@ class Course_StatusgroupsController extends AuthenticatedController
             throw new Exception('Wrong format');
         }
 
-        $course = Course::findCurrent();
-
         $header = [
             _('Gruppe'),
             _('Geschlecht'),
@@ -326,7 +324,8 @@ class Course_StatusgroupsController extends AuthenticatedController
             _('Studiengänge')
         ];
 
-
+        $course = Course::findCurrent();
+        $aux = $course->aux ? $course->aux->getCourseData($course, true) : false;
         $groups = Statusgruppen::findBySeminar_id($this->course_id);
         $result = [];
 
@@ -336,49 +335,51 @@ class Course_StatusgroupsController extends AuthenticatedController
             fn(DataField $datafield) => $datafield->accessAllowed()
         );
 
+        // Datenfelder
         if (count($datafields) > 0) {
             foreach ($datafields as $datafield) {
                 $header[] = (string)$datafield->name;
             }
         }
 
-        if ($groups) {
-            $assigned_with_group = [];
-            foreach ($groups as $group) {
-                foreach ($group->members->orderBy('nachname,vorname') as $member) {
-                    $assigned_with_group[$member->user_id] = true;
-                    $result[] = $member->getExportData();
+        // Zusatzangaben
+        if ($aux) {
+            foreach ($aux['head'] as $key => $value) {
+                if ($key === 'name') {
+                    continue;
                 }
+                $header[] = $value;
             }
-            $members = $course->members->filter(function($group_member) use ($assigned_with_group) {
-                    return !array_key_exists($group_member->user_id, $assigned_with_group);
-                })->orderBy('nachname,vorname');
+        }
 
-            foreach ($members as $member) {
-                $data = ['gruppe' => _('keiner Funktion oder Gruppe zugeordnet')]  + $member->getExportData();
+        $assigned_with_group = [];
 
-                unset($data['status']);
-                unset($data['position']);
+        foreach ($groups as $group) {
+            foreach ($group->members->orderBy('nachname,vorname') as $member) {
+                $cm = CourseMember::find([$this->course_id, $member->user_id]);
 
-                $result[$member->user_id] = $data;
+                $result_index = $group->statusgruppe_id . '_' . $member->user_id;
+                $assigned_with_group[$member->user_id] = true;
+                $result[$result_index] = ['gruppe' => $group->name]  + $cm->getExportData();
+                unset($result[$result_index]['status']);
+                unset($result[$result_index]['position']);
+
+                // Anmeldedatum der Gruppe statt der VA
+                $result[$result_index]['Anmeldedatum'] = date('d.m.Y H:i:s', $member->mkdate);
             }
+        }
 
-            // data fields
-            foreach ($members as $member) {
-                $user_datafields = DataFieldEntry::getDataFieldEntries(
-                    $member->user_id,
-                    'user'
-                );
-                foreach ($datafields as $datafield) {
-                    $user_datafield = $user_datafields[$datafield->id] ?? null;
+        // alle die nicht in einer Gruppe sind
+        $members_without_group = $course->members->filter(function($group_member) use ($assigned_with_group) {
+            return !array_key_exists($group_member->user_id, $assigned_with_group);
+        })->orderBy('nachname,vorname');
 
-                    if ($user_datafield) {
-                        $result[$member->user_id][] = $user_datafield->getDisplayValue(false);
-                    } else {
-                        $result[$member->user_id][] = '';
-                    }
-                }
-            }
+        foreach ($members_without_group as $member) {
+            $result_index = $member->user_id;
+            $result[$result_index] = ['gruppe' => _('keiner Funktion oder Gruppe zugeordnet')]  + $member->getExportData();
+            unset($result[$result_index]['status']);
+            unset($result[$result_index]['position']);
+            $result[$result_index]['Anmeldedatum'] = '';
         }
 
         $filename = FileManager::cleanFileName(_('Gruppenliste') . ' ' . $this->course_title . '.' . $export_format);
