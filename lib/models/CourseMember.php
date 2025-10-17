@@ -408,7 +408,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
 
             $studycourse[]= implode(',', $result);
         });
-        return [
+        $export = [
             'status' => $this->status,
             'salutation' => $user->salutation,
             'Titel' => $user->title_front,
@@ -424,5 +424,46 @@ class CourseMember extends SimpleORMap implements PrivacyObject
             'studiengaenge' => implode(';', $studycourse),
             'position' => $this->position,
         ];
+        $datafields = DataField::getDataFields('user');
+        $datafields = array_filter(
+            $datafields,
+            fn(DataField $datafield) => $datafield->accessAllowed()
+        );
+        $user_datafields = DataFieldEntry::getDataFieldEntries(
+            $user->user_id,
+            'user'
+        );
+        foreach ($datafields as $datafield) {
+            $user_datafield = $user_datafields[$datafield->id] ?? null;
+
+            if ($user_datafield) {
+                $export[$datafield->id] = $user_datafield->getDisplayValue(false);
+            } else {
+                $export[$datafield->id] = '';
+            }
+        }
+
+        if ($this->course && $this->course->aux) {
+            $aux = $this->course->aux->getCourseData($this->course, true);
+            foreach ($aux['rows'] as $id => $row) {
+                $user_id = explode('_', $id)[1];
+                if ($user_id === $this->user_id) {
+                    foreach ($row as $item_id => $value) {
+
+                        if ($item_id == 'name') {
+                            continue;
+                        }
+                        if ($value) {
+                            $export[$item_id] = $value;
+                        } else {
+                            $export[$item_id] = '';
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return $export;
     }
 }
