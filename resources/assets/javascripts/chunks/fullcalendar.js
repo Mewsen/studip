@@ -4,8 +4,8 @@
 //import '@fullcalendar/timeline/main.css';
 //import '@fullcalendar/resource-timeline/main.css';
 
-import "../../stylesheets/fullcalendar.scss";
+//import "../../stylesheets/fullcalendar.scss";
 
-import Fullcalendar from '../lib/fullcalendar.js';
+//import Fullcalendar from '../lib/fullcalendar.js';
 
-STUDIP.Fullcalendar = Fullcalendar;
+//STUDIP.Fullcalendar = Fullcalendar;
