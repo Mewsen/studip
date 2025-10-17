@@ -458,12 +458,16 @@ class StructuralElement extends SchemaProvider
     }
     public function getResourceMeta($resource): Array
     {
-        $user = $this->currentUser;
+        $user = $this->currentUser ?? null;
 
-        $can_read_sequential = $user ? $resource->canReadSequential($user) : false;
-
+        if (!$user) {
+            return [
+                'can-read-sequential' => false,
+            ];
+        }
+    
         return [
-            'can-read-sequential' => $can_read_sequential
+            'can-read-sequential' => (bool) $resource->canReadSequential($user),
         ];
     }
 }
