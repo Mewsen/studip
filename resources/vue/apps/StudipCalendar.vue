@@ -157,8 +157,6 @@ export default defineComponent({
                     }
                 );
             }
-
-            console.debug(selection);
         },
         handleEventClick: function(event_data: EventClickArg) {
             let show_url = event_data.event.extendedProps.studip_view_urls.show;
@@ -172,32 +170,74 @@ export default defineComponent({
                 );
             }
         },
-        handleEventDrop: function(dropped_event: EventDropArg) {
+        handleEventDrop: function(drop_arg: EventDropArg) {
             if (!this.calendar_options.editable
-                || !dropped_event.event.extendedProps.studip_api_urls.move_dialog
-                || !dropped_event.event.start || !dropped_event.event.end) {
+                || !drop_arg.event.extendedProps.studip_api_urls.move_dialog
+                || !drop_arg.event.startStr || !drop_arg.event.endStr) {
                 //Nothing to do.
                 return;
             }
             Dialog.fromURL(
-                dropped_event.event.extendedProps.studip_api_urls.move_dialog,
+                drop_arg.event.extendedProps.studip_api_urls.move_dialog,
                 {
                     data: {
-                        start: (dropped_event.event.start.getTime() / 1000).toString(),
-                        end: (dropped_event.event.end.getTime() / 1000).toString(),
-                        all_day: (dropped_event.event.allDay ? '1' : '0')
+                        start:   drop_arg.event.startStr,
+                        end:     drop_arg.event.endStr,
+                        all_day: (drop_arg.event.allDay ? '1' : '0')
                     },
                     size: this.dialog_size
                 }
             );
         },
-        handleEventResize: function(event: EventResizeDoneArg) {
-            console.debug('resize');
-            console.debug(event);
+        handleEventResize: function(resize_arg: EventResizeDoneArg) {
+            if (!this.calendar_options.editable
+            || !resize_arg.event.extendedProps.studip_api_urls.resize_dialog
+            || !resize_arg.event.startStr || !resize_arg.event.endStr) {
+                //Nothing to do.
+                return;
+            }
+            Dialog.fromURL(
+                resize_arg.event.extendedProps.studip_api_urls.resize_dialog,
+                {
+                    data: {
+                        start:   resize_arg.event.startStr,
+                        end:     resize_arg.event.endStr,
+                        all_day: (resize_arg.event.allDay ? '1' : '0')
+                    },
+                    size: this.dialog_size
+                }
+            );
         }
     }
 })
 </script>
 <style scoped lang="scss">
+@import '../../assets/stylesheets/scss/buttons';
 
+.fc {
+    .fc-toolbar.fc-header-toolbar {
+        margin-bottom: 0.5em;
+    }
+
+    .fc-button-group {
+        height: 30px;
+
+        .fc-button {
+            @include button;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            .fc-icon {
+                /* Unset rules that are set in the fullcalendar default stylesheet: */
+                line-height: unset;
+                height: unset;
+            }
+        }
+    }
+}
 </style>
