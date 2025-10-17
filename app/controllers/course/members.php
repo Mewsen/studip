@@ -1922,35 +1922,15 @@ class Course_MembersController extends AuthenticatedController
             foreach ($datafields as $datafield) {
                 $header[] = (string) $datafield->name;
             }
-
-            foreach ($members as $user_id => $data) {
-                $user_datafields = DataFieldEntry::getDataFieldEntries(
-                    $user_id,
-                    'user'
-                );
-
-                foreach ($datafields as $datafield) {
-                    $user_datafield = $user_datafields[$datafield->id] ?? null;
-                    if ($user_datafield) {
-                        $members[$user_id][] = $user_datafield->getDisplayValue(false);
-                    } else {
-                        $members[$user_id][] = '';
-                    }
-                }
-            }
         }
 
         // Zusatzangaben
         if ($aux) {
-            foreach ($aux['head'] as $head) {
-                $header[] = $head;
-            }
-
-            foreach ($aux['rows'] as $id => $row) {
-                $user_id = explode('_', $id)[1];
-                foreach ($row as $value) {
-                    $members[$user_id][] = $value;
+            foreach ($aux['head'] as $key => $value) {
+                if ($key === 'name') {
+                    continue;
                 }
+                $header[] = $value;
             }
         }
 

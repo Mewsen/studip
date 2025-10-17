@@ -9,6 +9,7 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use Course;
+use CourseMember;
 
 final class StatusGroupsService
 {
@@ -197,8 +198,9 @@ final class StatusGroupsService
             $assigned_with_group = [];
             foreach ($groups as $group) {
                 foreach ($group->members->orderBy('nachname,vorname') as $member) {
+                    $cm = CourseMember::find([$this->course->seminar_id, $member->user_id]);
                     $assigned_with_group[$member->user_id]          = true;
-                    $result[(string)$group->name][$member->user_id] = $member->getExportData();
+                    $result[(string)$group->name][$member->user_id] = $cm->getExportData();
                 }
             }
             $members = $this->course->members->filter(function ($group_member) use ($assigned_with_group) {
