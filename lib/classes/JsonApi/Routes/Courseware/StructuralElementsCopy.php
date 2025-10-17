@@ -11,6 +11,8 @@ use JsonApi\Errors\UnprocessableEntityException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+use Courseware\CoursewareCopyService;
+
 /**
  * Copy an courseware structural element in an courseware structural element
  *
@@ -55,7 +57,15 @@ class StructuralElementsCopy extends NonJsonApiController
 
     private function copyElement(\User $user, StructuralElement $sourceElement, StructuralElement $newParent)
     {
-        $newElement = $sourceElement->copy($user, $newParent);
+        $newElement = CoursewareCopyService::copyStructuralElement(
+            $sourceElement,
+            $user,
+            $newParent,
+            null,
+            null,
+            '',
+            false
+        );
 
         return $newElement;
     }

@@ -211,7 +211,15 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
     ): Unit {
         $sourceUnitElement = $this->structural_element;
 
-        $newElement = $sourceUnitElement->copyToRange($user, $rangeId, $rangeType, '', $duplicate);
+        $newElement = CoursewareCopyService::copyStructuralElement(
+            $sourceUnitElement,
+            $user,
+            null,
+            $rangeId,
+            $rangeType,
+            '',
+            $duplicate
+        );
 
         if ($modified !== null) {
             $newElement->title = $modified['title'] ?? $newElement->title;
