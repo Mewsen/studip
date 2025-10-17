@@ -38,7 +38,6 @@ class Courseware_PublicController extends StudipController
         return [
             'type' => $typeClass::getType(),
             'title' => $typeClass::getTitle(),
-            'is-activated' => $typeClass::isActivated(),
         ];
     }
 }
