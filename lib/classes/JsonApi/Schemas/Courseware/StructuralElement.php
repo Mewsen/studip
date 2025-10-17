@@ -460,8 +460,10 @@ class StructuralElement extends SchemaProvider
     {
         $user = $this->currentUser;
 
+        $can_read_sequential = $user ? $resource->canReadSequential($user) : false;
+
         return [
-            'can-read-sequential' => $resource->canReadSequential($user)
+            'can-read-sequential' => $can_read_sequential
         ];
     }
 }
