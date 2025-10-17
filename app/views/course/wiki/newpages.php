@@ -35,6 +35,7 @@
                     <?= _('Datum') ?>
                 </a>
             </th>
+            <th class="actions"><?= _('Aktionen') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -115,6 +116,9 @@
                 </ul>
             </td>
             <td><?= strftime('%x %X', $page->chdate) ?></td>
+            <td class="actions">
+                <?= $controller->getActionMenu($page, 'newpages') ?>
+            </td>
         </tr>
     <? endforeach ?>
     </tbody>
