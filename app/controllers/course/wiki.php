@@ -655,7 +655,7 @@ class Course_WikiController extends AuthenticatedController
             '`page_id` = :page_id AND `user_id` = :user_id',
             $pageData
         );
-        if ($page->preliminary === 1) {
+        if ($page->preliminary == 1) {
             $page->delete();
             $this->redirect($this->allpagesURL());
         } else {
