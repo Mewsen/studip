@@ -64,9 +64,25 @@ class ImageMap extends BlockType
         return $payload;
     }
 
+    public function performMapping(array $mapping, \Courseware\Unit $newUnit): void
+    {
+        $payload = $this->getPayload();
+        ['elements' => $elements] = $mapping;
+
+        foreach ($payload['shapes'] as &$shape) {
+            if (!empty($shape['target_internal'])) {
+                $oldId = (int) $shape['target_internal'];
+                $shape['target_internal'] = $elements[$oldId] ?? '';
+            }
+        }
+        unset($shape);
+        $this->setPayload($payload);
+        $this->block->store();
+    }
+
     public static function getJsonSchema(): string
     {
-        $schemaFile = __DIR__.'/ImageMap.json';
+        $schemaFile = __DIR__ . '/ImageMap.json';
 
         return file_get_contents($schemaFile);
     }
@@ -89,10 +105,22 @@ class ImageMap extends BlockType
     public static function getTags(): array
     {
         return [
-            _('Bild'), _('Link'), _('klicken'), _('Klickfläche'), _('Schaltfläche'),
-            _('Beschriftung'), _('Verweis'), _('Imagemap'), _('Karte'),
-            _('weiterleiten'), _('Weiterleitung'), _('Weiterführung'), _('Illustration'),
-            'jpg', 'png', 'gif',
+            _('Bild'),
+            _('Link'),
+            _('klicken'),
+            _('Klickfläche'),
+            _('Schaltfläche'),
+            _('Beschriftung'),
+            _('Verweis'),
+            _('Imagemap'),
+            _('Karte'),
+            _('weiterleiten'),
+            _('Weiterleitung'),
+            _('Weiterführung'),
+            _('Illustration'),
+            'jpg',
+            'png',
+            'gif',
         ];
     }
 }
