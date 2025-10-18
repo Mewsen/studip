@@ -288,6 +288,11 @@ abstract class BlockType
         return $this->getPayload();
     }
 
+    public function performMapping(array $mapping, \Courseware\Unit $newUnit): void
+    {
+        // do nothing by default
+    }
+
     /**
      * Returns a list of files associated to the block.
      *

@@ -40,8 +40,23 @@ class Link extends BlockType
 
     public static function getJsonSchema(): string
     {
-        $schemaFile = __DIR__.'/Link.json';
+        $schemaFile = __DIR__ . '/Link.json';
         return file_get_contents($schemaFile);
+    }
+
+    public function performMapping(array $mapping, \Courseware\Unit $newUnit): void
+    {
+        ['elements' => $elements] = $mapping;
+        $payload = $this->getPayload();
+        if ($payload['type'] === 'internal' && '' != $payload['target']) {
+            if (in_array($payload['target'], array_keys($elements))) {
+                $payload['target'] = $elements[intval($payload['target'])];
+            } else {
+                $payload['target'] = '';
+            }
+            $this->setPayload($payload);
+            $this->block->store();
+        }
     }
 
     public static function getCategories(): array

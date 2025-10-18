@@ -1172,25 +1172,6 @@ SQL;
         return $this->parent->findParentTask();
     }
 
-    private function performMapping($mapping)
-    {
-        // Blocks mapping.
-        foreach ($mapping['blocks'] as $oldBlockId => $newBlockObj) {
-            if ($newBlockObj->type->getType() === \Courseware\BlockTypes\Link::getType()) {
-                $payload = $newBlockObj->type->getPayload();
-                if ($payload['type'] === 'internal' && '' != $payload['target']) {
-                    if (in_array($payload['target'], array_keys($mapping['elements']))) {
-                        $payload['target'] = $mapping['elements'][intval($payload['target'])];
-                    } else {
-                        $payload['target'] = '';
-                    }
-                    $newBlockObj->type->setPayload($payload);
-                    $newBlockObj->store();
-                }
-            }
-        }
-    }
-
     /**
      * Export available data of a given user into a storage object
      * (an instance of the StoredUserData class) for that user.
