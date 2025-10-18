@@ -209,29 +209,10 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         ?array $modified = null,
         bool $duplicate = false
     ): Unit {
-        $sourceUnitElement = $this->structural_element;
-
-        $newElement = CoursewareCopyService::copyStructuralElement(
-            $sourceUnitElement,
-            $user,
-            null,
-            $rangeId,
-            $rangeType,
-            '',
-            $duplicate
-        );
-
-        if ($modified !== null) {
-            $newElement->title = $modified['title'] ?? $newElement->title;
-            $newElement->payload['color'] = $modified['color'] ?? 'studip-blue';
-            $newElement->payload['description'] = $modified['description'] ?? $newElement->payload['description'];
-            $newElement->store();
-        }
-
         $newUnit = \Courseware\Unit::build([
             'range_id' => $rangeId,
             'range_type' => $rangeType,
-            'structural_element_id' => $newElement->id,
+            'structural_element_id' => 0,
             'content_type' => 'courseware',
             'position' => $this->getNewPosition($rangeId),
             'creator_id' => $user->id,
@@ -251,6 +232,29 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'config' => $this->config,
         ]);
 
+        $newUnit->store();
+
+        $sourceUnitElement = $this->structural_element;
+
+        $newElement = CoursewareCopyService::copyStructuralElement(
+            $sourceUnitElement,
+            $user,
+            null,
+            $rangeId,
+            $rangeType,
+            '',
+            $duplicate,
+            $newUnit
+        );
+
+        if ($modified !== null) {
+            $newElement->title = $modified['title'] ?? $newElement->title;
+            $newElement->payload['color'] = $modified['color'] ?? 'studip-blue';
+            $newElement->payload['description'] = $modified['description'] ?? $newElement->payload['description'];
+            $newElement->store();
+        }
+
+        $newUnit->structural_element_id = $newElement->id;
         $newUnit->store();
 
         return $newUnit;
