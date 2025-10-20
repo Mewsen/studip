@@ -8,7 +8,6 @@ import {
     DateSelectionApi,
     EventClickArg,
     EventDropArg,
-    EventSourceFunc,
     EventSourceFuncArg
 } from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
@@ -272,24 +271,43 @@ export default defineComponent({
                 }
             );
         },
-        handleEventDrop: function(drop_arg: EventDropArg) {
-            if (!this.calendar_options.editable
-                || !drop_arg.event.extendedProps.studip_api_urls.move_dialog
-                || !drop_arg.event.startStr || !drop_arg.event.endStr) {
+        handleEventDrop: function(drop_arg: any) {
+            let event = drop_arg.event;
+            console.debug(event);
+            if (!this.calendar_options.editable || !event.startEditable
+                || !event.startStr || !event.endStr) {
                 //Nothing to do.
                 return;
             }
-            Dialog.fromURL(
-                drop_arg.event.extendedProps.studip_api_urls.move_dialog,
-                {
-                    data: {
-                        start:   drop_arg.event.startStr,
-                        end:     drop_arg.event.endStr,
-                        all_day: (drop_arg.event.allDay ? '1' : '0')
-                    },
-                    size: this.dialog_size
+            if (event.extendedProps.studip_api_urls.move) {
+                let data : any = {
+                    begin: event.startStr,
+                    end:   event.endStr
+                };
+                if (event.newResource) {
+                    data.resource_id = event.newResource.id;
                 }
-            );
+
+                //Call the move URL as HTTP POST:
+                $.post({
+                    async: false,
+                    url: event.extendedProps.studip_api_urls.move,
+                    data
+                }).fail(drop_arg.revert);
+            } else if (event.extendedProps.studip_view_urls.move_dialog) {
+                //Show the move dialog:
+                Dialog.fromURL(
+                    event.extendedProps.studip_api_urls.move_dialog,
+                    {
+                        data: {
+                            start:   event.startStr,
+                            end:     event.endStr,
+                            all_day: (event.allDay ? '1' : '0')
+                        },
+                        size: this.dialog_size
+                    }
+                );
+            }
         },
         handleEventResize: function(resize_arg: EventResizeDoneArg) {
             if (!this.calendar_options.editable

@@ -41,14 +41,14 @@
             'maxTime' => ($max_time),
             'allDaySlot' => false,
             'header' => [
-                'left' => '',//'resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay',
+                'left' =>  'resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay',
                 'right' => 'prev,next'
             ],
             'slotLabelFormat' => [
                 ['hour'=> '2-digit',
                  'hour12' => false]
             ],
-            'defaultView' =>
+            'initialView' =>
                 in_array(Request::get("defaultView"), ['resourceTimelineMonth', 'resourceTimelineWeek', 'resourceTimelineDay'])
                          ? Request::get("defaultView")
                          : 'resourceTimelineDay',
