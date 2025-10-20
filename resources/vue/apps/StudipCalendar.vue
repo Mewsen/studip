@@ -3,7 +3,14 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {CalendarOptions, DateSelectionApi, EventClickArg, EventDropArg} from '@fullcalendar/core';
+import {
+    CalendarOptions,
+    DateSelectionApi,
+    EventClickArg,
+    EventDropArg,
+    EventSourceFunc,
+    EventSourceFuncArg
+} from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin, {EventResizeDoneArg} from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -51,6 +58,16 @@ export default defineComponent({
             type: Object,
             required: false,
             default: () => ({})
+        },
+        display_holidays: {
+            type: Boolean,
+            required: false,
+            default: true
+        },
+        display_vacations: {
+            type: Boolean,
+            required: false,
+            default: true
         }
     },
     data() {
@@ -84,6 +101,135 @@ export default defineComponent({
         let holiday_cache = sessionStorage.getItem('fullcalendar_holidays');
         let vacation_cache = sessionStorage.getItem('fullcalendar_vacations');
 
+        //Build the event sources:
+        if (!calendar_options.eventSources) {
+            calendar_options.eventSources = [];
+        }
+        if (this.display_holidays) {
+            let holiday_source = function(arg: EventSourceFuncArg, successCallback: (events: object) => void, failureCallback: () => void) {
+                const startYear = arg.start.getFullYear();
+                const endYear   = arg.end.getFullYear();
+                const requests: any = [];
+                let holiday_cache_str = sessionStorage.getItem('fullcalendar_holidays');
+                let holiday_cache: any = {};
+                if (holiday_cache_str != null) {
+                    holiday_cache = JSON.parse(holiday_cache_str);
+                }
+                for (let year = startYear; year <= endYear; year++) {
+                    if (holiday_cache[year.toString()]) {
+                        return Promise.resolve(holiday_cache[year.toString()]);
+                    }
+                    let request = jsonapi.withPromises().GET('holidays', {
+                        data: { 'filter[year]': year }
+                    }).then(response => {
+                        const events: object[] = [];
+                        if (!response) {
+                            return events;
+                        }
+
+                        for (const [date, data] of Object.entries(response)) {
+                            const classNames = ['holiday'];
+                            if (data.mandatory) {
+                                classNames.push('official');
+                            }
+
+                            const day = new Date(date);
+                            events.push({
+                                // Note: Since allDay is set to true, the start and end time is ignored.
+                                // See the documentation: https://fullcalendar.io/docs/v4/event-parsing
+                                start:    day,
+                                end:      day,
+                                allDay:   true,
+                                title:    data.holiday,
+                                editable: false,
+
+                                classNames,
+
+                                // Note: Colours are set via SCSS.
+                                textColor:       '',
+                                backgroundColor: '',
+                                borderColor:     '',
+
+                                display: 'background'
+                            });
+                        }
+
+                        if (holiday_cache != null) {
+                            holiday_cache[year.toString()] = events;
+                        }
+                        sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(holiday_cache));
+                        return events;
+                    });
+                    requests.push(request);
+                }
+                Promise.all(requests).then(results => {
+                    const events = [].concat(...results);
+                    successCallback(events);
+                    return results;
+                }).catch(failureCallback);
+            };
+            calendar_options.eventSources.push(holiday_source);
+        }
+        if (this.display_vacations) {
+            let vacation_source = function(arg: EventSourceFuncArg, successCallback: (events: object) => void, failureCallback: () => void) {
+                const startYear = arg.start.getFullYear();
+                const endYear = arg.end.getFullYear();
+                const requests: any = [];
+                let vacation_cache_str = sessionStorage.getItem('fullcalendar_vacations');
+                let vacation_cache: any = {};
+                if (vacation_cache_str != null) {
+                    vacation_cache = JSON.parse(vacation_cache_str);
+                }
+                for (let year = startYear; year <= endYear; year++) {
+                    if (vacation_cache[year]) {
+                        return Promise.resolve(vacation_cache[year.toString()]);
+                    }
+                    let request = jsonapi.withPromises().get('vacations', {
+                        data: {'filter[year]': year}
+                    }).then(response => {
+                        if (!response) {
+                            return [];
+                        }
+
+                        const items: object[] = [];
+
+                        for (const vacation_data of Object.values(response)) {
+                            const start = new Date(parseInt(vacation_data.start) * 1000);
+                            const end = new Date(parseInt(vacation_data.end) * 1000);
+                            items.push({
+                                start,
+                                end,
+                                allDay: true,
+                                title: vacation_data.name,
+                                editable: false,
+                                classNames: ['holiday'],
+
+                                // Note: Colours are set via SCSS.
+                                textColor: '',
+                                color: '',
+                                borderColor: '',
+
+                                rendering: 'background'
+                            });
+                        }
+
+                        if (vacation_cache != null) {
+                            vacation_cache[year.toString()] = items;
+                        }
+                        sessionStorage.setItem('fullcalendar_vacations', JSON.stringify(vacation_cache));
+                        return items;
+                    });
+                    requests.push(request);
+                }
+                Promise.all(requests).then(results => {
+                    const events = [].concat(...results);
+                    successCallback(events);
+                    return results;
+                }).catch(failureCallback);
+            };
+            calendar_options.eventSources.push(vacation_source);
+        }
+
         return {
             calendar_options: calendar_options as CalendarOptions,
             holiday_cache: holiday_cache ? JSON.parse(holiday_cache) : {},
@@ -91,52 +237,6 @@ export default defineComponent({
         }
     },
     methods: {
-        /*
-        loadHolidays(year: number) {
-            if (this.holiday_cache[year]) {
-                return Promise.resolve(this.holiday_cache[year]);
-            }
-            return jsonapi.withPromises().GET('holidays', {
-                data: { 'filter[year]': year }
-            }).then(response => {
-                const events = [];
-                if (!response) {
-                    return events;
-                }
-
-                for (const [date, data] of Object.entries(response)) {
-                    const classNames = ['holiday'];
-                    if (data.mandatory) {
-                        classNames.push('official');
-                    }
-
-                    const day = new Date(date);
-                    events.push({
-                        // Note: Since allDay is set to true, the start and end time is ignored.
-                        // See the documentation: https://fullcalendar.io/docs/v4/event-parsing
-                        start:    day,
-                        end:      day,
-                        allDay:   true,
-                        title:    data.holiday,
-                        editable: false,
-
-                        classNames,
-
-                        // Note: Colours are set via SCSS.
-                        textColor:   '',
-                        color:       '',
-                        borderColor: '',
-
-                        rendering: 'background'
-                    });
-                }
-
-                this.holiday_cache[year] = events;
-                sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(this.holiday_cache));
-                return events;
-            });
-        },
-         */
         handleSelection: function(selection: DateSelectionApi) {
             if (!this.calendar_options.editable || this.action_urls.length < 1) {
                 //The calendar isn't editable.
@@ -159,15 +259,18 @@ export default defineComponent({
             }
         },
         handleEventClick: function(event_data: EventClickArg) {
-            if (event_data.event.extendedProps.studip_view_urls.show) {
-                //Load the dialog:
-                Dialog.fromURL(
-                    event_data.event.extendedProps.studip_view_urls.show,
-                    {
-                        size: this.dialog_size
-                    }
-                );
+            if (!event_data.event.extendedProps.studip_view_urls
+                || !event_data.event.extendedProps.studip_view_urls.show) {
+                //Nothing to do.
+                return;
             }
+            //Load the dialog:
+            Dialog.fromURL(
+                event_data.event.extendedProps.studip_view_urls.show,
+                {
+                    size: this.dialog_size
+                }
+            );
         },
         handleEventDrop: function(drop_arg: EventDropArg) {
             if (!this.calendar_options.editable
