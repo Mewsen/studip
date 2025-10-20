@@ -224,8 +224,26 @@ class Calendar_DateController extends AuthenticatedController
 
         $this->date = new CalendarDate();
         if (Request::submitted('start') && Request::submitted('end')) {
-            $start = Request::getDateTime('start', DateTime::RFC3339);
-            $end   = Request::getDateTime('end', DateTime::RFC3339);
+            $start = null;
+            $end   = null;
+            if (Request::get('all_day')) {
+                $start = Request::getDateTime('start');
+                $end   = Request::getDateTime('end');
+            } else {
+                $start = Request::getDateTime('start', DateTime::RFC3339);
+                $end   = Request::getDateTime('end', DateTime::RFC3339);
+            }
+            if ($start === false || $end === false) {
+                throw new InvalidArgumentException(_('Ungültiges Datumsformat'));
+            }
+            if (Request::get('all_day')) {
+                $start->setTime(0, 0, 0);
+                //Special case for the end timestamp:
+                //In Fullcalendar, all-day events end on the next day while in Stud.IP
+                //they end on 23:59:59 on the same day.
+                $end->setTime(0, 0, 0);
+                $end = $end->sub(new DateInterval('PT1S'));
+            }
             $this->date->begin = $start->getTimestamp();
             $this->date->end   = $end->getTimestamp();
             $this->date->repetition_end = $this->date->end;
