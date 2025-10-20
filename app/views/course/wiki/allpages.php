@@ -55,8 +55,11 @@
                     <?= $page->chdate > 0 ? date('d.m.Y H:i:s', $page->chdate) : _('unbekannt') ?>
                 </td>
                 <td data-text="<?= htmlReady($page->user ? $page->user->getFullName() : _('unbekannt')) ?>">
-                    <?= Avatar::getAvatar($page->user_id)->getImageTag(Avatar::SMALL) ?>
-                    <?= htmlReady($page->user ? $page->user->getFullName() : _('unbekannt')) ?>
+                <? if ($page->user): ?>
+                    <?= $page->user->getAvatarDropdownHTML(true) ?>
+                <? else: ?>
+                    <?= _('unbekannt') ?>
+                <? endif; ?>
                 </td>
                 <td class="actions">
                     <?= $controller->getActionMenu($page, 'allpages') ?>

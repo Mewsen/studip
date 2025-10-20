@@ -1,6 +1,6 @@
 <script setup>
-import {$gettext} from "../../assets/javascripts/lib/gettext";
-import StudipIcon from "./StudipIcon.vue";
+import {$gettext} from "@/assets/javascripts/lib/gettext";
+import StudipIcon from "@/vue/components/StudipIcon.vue";
 
 const props = defineProps({
     user: {
@@ -53,6 +53,7 @@ const openBlubberChat = () => {
         <ul class="user-avatar__actions">
             <li>
                 <button
+                    type="button"
                     v-if="user.id !== AUTH_ID"
                     @click="openBlubberChat"
                     class="action-item button-base"
@@ -76,6 +77,7 @@ const openBlubberChat = () => {
             </li>
             <li>
                 <button
+                    type="button"
                     v-if="user.id !== AUTH_ID"
                     class="action-item button-base"
                     :title="$gettext('Nachricht schreiben')"

@@ -3,6 +3,7 @@ import {computed, ref, useTemplateRef} from "vue";
 import PostEditForm from "./PostEditForm.vue";
 import PostCreateForm from "./PostCreateForm.vue";
 import PostContent from "@/vue/components/forum/posts/PostContent.vue";
+import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
 import PostReactions from "./PostReactions.vue";
 import {useForumPost} from "../../../store/pinia/forum/ForumPost";
 import {getDiscussionURL} from "@/vue/components/forum/helpers/urls";
@@ -10,7 +11,6 @@ import StudipDateTime from "@/vue/components/StudipDateTime.vue";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 import {$gettext} from "@/assets/javascripts/lib/gettext";
 import LinksPreview from "@/vue/components/LinksPreview.vue";
-import UserAvatarDropdown from "../UserAvatarDropdown.vue";
 import {userProfileURL} from "../helpers/urls";
 import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
 

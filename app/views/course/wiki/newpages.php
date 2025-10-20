@@ -93,12 +93,7 @@
                 <? foreach ($authors as $user_id => $user) : ?>
                     <li>
                     <? if ($user): ?>
-                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $user->username]) ?>"
-                           class="with_avatar"
-                           style="background-image: url(<?= Avatar::getAvatar($user->id)->getURL(Avatar::SMALL) ?>)"
-                        >
-                            <?= htmlReady($user->getFullName()) ?>
-                        </a>
+                        <?= $user->getAvatarDropdownHTML(true) ?>
                     <? else: ?>
                         <?= _('unbekannt') ?>
                     <? endif; ?>

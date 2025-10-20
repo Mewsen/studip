@@ -1,10 +1,10 @@
 <script setup>
 import {computed, ref} from "vue";
 import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import UserAvatarDropdown from "./UserAvatarDropdown.vue";
 import Dropdown from "../Dropdown.vue";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
-import UserAvatar from "../UserAvatar.vue";
+import UserAvatar from "@/vue/components/avatar/UserAvatar.vue";
+import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
 
 const props = defineProps({
     members: {
@@ -110,7 +110,7 @@ const isModerator = role => role === 'moderator';
                                             @click="activeUserAvatar = user.id"
                                             :title="$gettext('Aufklappen')"
                                             :aria-label="$gettext('Aufklappen')"
-                                            class="show-avatar">
+                                            class="show-avatar button-base">
                                             <StudipIcon shape="arr_1down" :size="15" aria-hidden="true" />
                                         </button>
                                     </div>
@@ -119,7 +119,7 @@ const isModerator = role => role === 'moderator';
                                         @click="activeUserAvatar = ''"
                                         :title="$gettext('Zuklappen')"
                                         :aria-label="$gettext('Zuklappen')"
-                                        class="hide-avatar">
+                                        class="hide-avatar button-base">
                                         <StudipIcon shape="arr_1up" :size="15" aria-hidden="true" />
                                     </button>
                                     <UserAvatar v-if="activeUserAvatar === user.id" :user="user" />

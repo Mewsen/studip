@@ -29,15 +29,15 @@
         <col class="hidden-small-down" width="1%">
     </colgroup>
     <thead>
-        <tr>
-            <th><div class="hidden-small-down"><?= _('Platz') ?></div></th>
-            <th></th>
-            <th><?= _('Name') ?></th>
-            <th class="hidden-small-down"></th>
-            <th><?= _('Punkte') ?></th>
-            <th class="hidden-small-down"><?= _('Titel') ?></th>
-            <th class="hidden-small-down"></th>
-        </tr>
+    <tr>
+        <th><div class="hidden-small-down"><?= _('Platz') ?></div></th>
+        <th></th>
+        <th><?= _('Name') ?></th>
+        <th class="hidden-small-down"></th>
+        <th><?= _('Punkte') ?></th>
+        <th class="hidden-small-down"><?= _('Titel') ?></th>
+        <th class="hidden-small-down"></th>
+    </tr>
     </thead>
     <tbody>
     <? foreach ($persons as $index => $person): ?>
@@ -54,71 +54,71 @@
                 <a href="<?= URLHelper::getLink('dispatch.php/profile?username='. $person['username']) ?>">
                     <?= htmlReady($person['fullname']) ?>
                 </a>
-            <? foreach ($person['is_king'] as $type => $text): ?>
-                <?= Icon::create('crown', Icon::ROLE_SORT)->asSvg(['title' => $text, 'alt' => $text, 'class' => 'text-top']) ?>
-            <? endforeach ?>
+                <? foreach ($person['is_king'] as $type => $text): ?>
+                    <?= Icon::create('crown', Icon::ROLE_SORT)->asSvg(['title' => $text, 'alt' => $text, 'class' => 'text-top']) ?>
+                <? endforeach ?>
             </td>
             <td class="hidden-small-down">
-            <?
-            $content = Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
+                <?
+                $content = Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
 
-            // News
-            if (!empty($person['newscount'])) {
-                $tmp = sprintf(ngettext('Eine persönliche Ankündigung', '%s persönliche Ankündigungen', $person['newscount']), $person['newscount']);
-                $content .= sprintf(
-                    '<a href="%s">%s</a> ',
-                    URLHelper::getLink('dispatch.php/profile?username=' . $person['username']),
-                    Icon::create('news', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
-                );
-            } else {
+                // News
+                if (!empty($person['newscount'])) {
+                    $tmp = sprintf(ngettext('Eine persönliche Ankündigung', '%s persönliche Ankündigungen', $person['newscount']), $person['newscount']);
+                    $content .= sprintf(
+                        '<a href="%s">%s</a> ',
+                        URLHelper::getLink('dispatch.php/profile?username=' . $person['username']),
+                        Icon::create('news', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    );
+                } else {
+                    $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
+                }
+
+                // Votes
+                if (!empty($person['votecount'])) {
+                    $tmp = sprintf(ngettext('Eine Umfrage', '%s Umfragen', $person['votecount']), $person['votecount']);
+                    $content .= sprintf(
+                        '<a href="%s">%s</a> ',
+                        URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#questionnaire_area'),
+                        Icon::create('vote', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    );
+                } else {
+                    $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
+                }
+
+                // Termine
+                if (!empty($person['eventcount'])) {
+                    $tmp = sprintf(ngettext('Ein Termin', '%s Termine', $person['eventcount']), $person['eventcount']);
+                    $content .= sprintf(
+                        '<a href="%s">%s</a> ',
+                        URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#a'),
+                        Icon::create('schedule', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    );
+                } else {
+                    $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
+                }
+
                 $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
-            }
 
-            // Votes
-            if (!empty($person['votecount'])) {
-                $tmp = sprintf(ngettext('Eine Umfrage', '%s Umfragen', $person['votecount']), $person['votecount']);
-                $content .= sprintf(
-                    '<a href="%s">%s</a> ',
-                    URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#questionnaire_area'),
-                    Icon::create('vote', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
-                );
-            } else {
-                $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
-            }
-
-            // Termine
-            if (!empty($person['eventcount'])) {
-                $tmp = sprintf(ngettext('Ein Termin', '%s Termine', $person['eventcount']), $person['eventcount']);
-                $content .= sprintf(
-                    '<a href="%s">%s</a> ',
-                    URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#a'),
-                    Icon::create('schedule', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
-                );
-            } else {
-                $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
-            }
-
-            $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
-
-            echo $content;
-            ?>
+                echo $content;
+                ?>
             </td>
             <td><?= number_format($person['score'], 0, ',', '.') ?></td>
             <td class="hidden-small-down" ><?= Score::getTitel($person['score'], $person['geschlecht']) ?></td>
             <td class="hidden-small-down"  style="text-align: right">
-            <? if($person['user_id'] == $GLOBALS['user']->id): ?>
-                <a href="<?= $controller->url_for('score/unpublish') ?>">
-                    <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Ihren Wert von der Liste löschen')])
-                        ->asSvg(['class' => 'text-top'])
-                    ?>
-                </a>
-            <? endif; ?>
+                <? if($person['user_id'] == $GLOBALS['user']->id): ?>
+                    <a href="<?= $controller->url_for('score/unpublish') ?>">
+                        <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Ihren Wert von der Liste löschen')])
+                            ->asSvg(['class' => 'text-top'])
+                        ?>
+                    </a>
+                <? endif; ?>
             </td>
         </tr>
     <? endforeach ?>
     </tbody>
-<? if (ceil($numberOfPersons / $max_per_page) > 1): ?>
-    <tfoot>
+    <? if (ceil($numberOfPersons / $max_per_page) > 1): ?>
+        <tfoot>
         <tr>
             <td colspan="7" style="text-align: right">
                 <?= $GLOBALS['template_factory']->render('shared/pagechooser',
@@ -131,6 +131,6 @@
                 ) ?>
             </td>
         </tr>
-    </tfoot>
-<? endif ?>
+        </tfoot>
+    <? endif ?>
 </table>

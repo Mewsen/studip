@@ -10,7 +10,7 @@
 
 <form action="<?= $controller->link_for('admin/user/bulk') ?>" method="post" data-dialog="size=auto" class="default">
     <?= CSRFProtection::tokenTag() ?>
-    <table class="default sortable-table" data-sortlist="[[0, 0]]">
+    <table class="default users-table sortable-table" data-sortlist="[[0, 0]]">
         <caption>
             <?= sprintf(_('Suchergebnis: es wurden %s Personen gefunden'), count($users)) ?>
         </caption>
@@ -52,11 +52,10 @@
         <? foreach ($users as $user) : ?>
             <tr>
                 <td style="white-space:nowrap;">
-                    <input class="check_all" type="checkbox" name="user_ids[]" value="<?= htmlReady($user->id) ?>">
-                    <a href="<?= $controller->link_for("admin/user/edit/{$user->id}") ?>"
-                       title="<?= _('Nutzer bearbeiten') ?>">
-                        <?= Avatar::getAvatar($user->id)->getImageTag(Avatar::SMALL) ?>
-                    </a>
+                    <div class="users-table__avatar-container">
+                        <input class="check_all" type="checkbox" name="user_ids[]" value="<?= htmlReady($user->id) ?>">
+                        <?= $user->getAvatarDropdownHTML() ?>
+                    </div>
                 </td>
                 <td>
                     <a href="<?= $controller->link_for("admin/user/edit/{$user->id}") ?>"

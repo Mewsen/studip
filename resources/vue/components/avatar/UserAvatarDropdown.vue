@@ -1,7 +1,6 @@
 <script setup>
-import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import Dropdown from "../Dropdown.vue";
-import UserAvatar from "../UserAvatar.vue";
+import Dropdown from "@/vue/components/Dropdown.vue";
+import UserAvatar from "@/vue/components/avatar/UserAvatar.vue";
 
 defineProps({
     user: {
@@ -24,14 +23,15 @@ const isOpen = defineModel({ default: false });
     <Dropdown class="user-avatar-dropdown" v-model="isOpen">
         <template #trigger>
             <button
-                class="user-avatar-dropdown__preview"
+                class="user-avatar-dropdown__preview button-base"
+                type="button"
                 @click="isOpen = !isOpen"
                 v-bind="$attrs"
                 :class="{
                     'active': isOpen
                 }"
                 :title="label ?? user.name"
-                :aria-label="label ?? $gettext('vCard')"
+                :aria-label="label ?? user.name"
                 :aria-pressed="isOpen"
             >
                 <img class="user-profile" :src="user.avatar_url" :style="{ width: size, height: size }" :alt="user.name" />

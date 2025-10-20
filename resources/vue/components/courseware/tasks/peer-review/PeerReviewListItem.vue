@@ -6,25 +6,37 @@
             </a>
         </td>
         <td>
-            <a v-if="isUser(submitter)" :href="userProfile(submitter)">
-                <UserAvatar
-                    :avatar-url="submitter.meta.avatar.small"
-                    :formatted-name="submitter.attributes['formatted-name']"
-                    small
+            <div v-if="isUser(submitter)" class="user-avatar-container">
+                <UserAvatarDropdown
+                    :user="{
+                        id: submitter.id,
+                        avatar_url: submitter.meta.avatar.small,
+                        username: submitter.attributes['username'],
+                        name: submitter.attributes['formatted-name']
+                    }"
                 />
-            </a>
+                <a :href="userProfile(submitter)">
+                    {{ submitter.attributes['formatted-name'] }}
+                </a>
+            </div>
             <a v-else :href="statusGroupUrl(submitter)">
                 {{ submitter.attributes.name }}
             </a>
         </td>
         <td>
-            <a v-if="isUser(reviewer)" :href="userProfile(reviewer)">
-                <UserAvatar
-                    :avatar-url="reviewer.meta.avatar.small"
-                    :formatted-name="reviewer.attributes['formatted-name']"
-                    small
+            <div v-if="isUser(reviewer)" class="user-avatar-container">
+                <UserAvatarDropdown
+                    :user="{
+                        id: reviewer.id,
+                        avatar_url: reviewer.meta.avatar.small,
+                        username: reviewer.attributes['username'],
+                        name: reviewer.attributes['formatted-name']
+                    }"
                 />
-            </a>
+                <a :href="userProfile(reviewer)">
+                    {{ reviewer.attributes['formatted-name'] }}
+                </a>
+            </div>
             <a v-else :href="statusGroupUrl(reviewer)">
                 {{ reviewer.attributes.name }}
             </a>
@@ -51,9 +63,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import StudipDate from '@/vue/components/StudipDate.vue';
-import UserAvatar from '@/vue/components/StudipUserAvatar.vue';
 import taskHelper from '../../../../mixins/courseware/task-helper.js';
 import { getProcessStatus, ProcessStatus } from './definitions';
+import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
 
 export default {
     mixins: [taskHelper],
@@ -71,7 +83,7 @@ export default {
             required: true,
         },
     },
-    components: { StudipDate, UserAvatar },
+    components: { StudipDate, UserAvatarDropdown },
     computed: {
         ...mapGetters({
             context: 'context',

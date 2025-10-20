@@ -54,7 +54,7 @@
                                     <? if (isset($flash['contacts']) && in_array($contact->id, $flash['contacts'])) echo 'checked'; ?>>
                             </td>
                             <td>
-                                <?= ObjectdisplayHelper::avatarlink($contact) ?>
+                                <?= $contact->getAvatarDropdownHTML(true) ?>
                             </td>
                             <td class="hidden-small-down">
                                 <a data-dialog="button"

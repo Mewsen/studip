@@ -34,6 +34,8 @@ const BaseComponents = {
     StudipTooltipIcon: defineAsyncComponent(() => import('./components/StudipTooltipIcon.vue')),
     StudipWysiwyg: defineAsyncComponent(() => import('./components/StudipWysiwyg.vue')),
     UserFilterInput: defineAsyncComponent(() => import('./components/form_inputs/UserFilterInput.vue')),
+    UserAvatar: defineAsyncComponent(() => import('./components/avatar/UserAvatar.vue')),
+    UserAvatarDropdown: defineAsyncComponent(() => import('./components/avatar/UserAvatarDropdown.vue')),
 };
 
 export default BaseComponents;
