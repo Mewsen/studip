@@ -209,7 +209,7 @@ export default defineComponent({
                                 color: '',
                                 borderColor: '',
 
-                                rendering: 'background'
+                                display: 'background'
                             });
                         }
 

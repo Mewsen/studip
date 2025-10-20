@@ -666,8 +666,19 @@ class Calendar_DateController extends AuthenticatedController
             );
         }
 
-        $this->begin = Request::getDateTime('start', \DateTime::RFC3339);
-        $this->end   = Request::getDateTime('end', \DateTime::RFC3339);
+        $this->begin = null;
+        $this->end = null;
+        if (Request::get('all_day')) {
+            $this->begin = Request::getDateTime('start');
+            $this->end   = Request::getDateTime('end');
+            if ($this->end) {
+                $this->end->setTime(0,0,0);
+                $this->end = $this->end->sub(new DateInterval('PT1S'));
+            }
+        } else {
+            $this->begin = Request::getDateTime('start', \DateTime::RFC3339);
+            $this->end   = Request::getDateTime('end', \DateTime::RFC3339);
+        }
         if (!$this->begin || !$this->end) {
             throw new InvalidArgumentException();
         }
