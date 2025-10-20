@@ -1,4 +1,5 @@
-import AbstractAPI from './abstract-api.js';
+import AbstractAPI, {HttpMethod, HttpMethodLower, DataType} from './abstract-api.js';
+import {isObject} from "lodash";
 
 type APIOptions = Record<string, unknown>;
 
@@ -9,21 +10,21 @@ class JSONAPI extends AbstractAPI
         super(`jsonapi.php/v${version}`);
     }
 
-    encodeData (data: object, method: string): string|null|object {
-        data = super.encodeData(data);
+    encodeData(data: DataType, method: null|HttpMethod|HttpMethodLower): DataType {
+        data = super.encodeData(data, method);
 
-        if (['DELETE', 'GET', 'HEAD'].includes(method)) {
+        if (method && ['DELETE', 'GET', 'HEAD'].includes(method)) {
             return data;
         }
 
-        if (Object.keys(data).length === 0) {
+        if (isObject(data) && Object.keys(data).length === 0) {
             return null;
         }
 
         return JSON.stringify(data);
     }
 
-    request (url: string, options: APIOptions = {}) {
+    request<T = unknown>(url: string, options: APIOptions = {}): JQuery.jqXHR<T> {
         options.contentType = 'application/vnd.api+json';
         return super.request(url, options);
     }

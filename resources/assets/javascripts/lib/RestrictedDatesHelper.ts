@@ -35,9 +35,9 @@ class RestrictedDatesHelper
 
         this.#loadedYears.push(year);
 
-        jsonapi.withPromises().request('holidays', {data: {
+        jsonapi.withPromises().request<{response: object}>('holidays', {data: {
             'filter[year]': year
-        }}).then((response: [] | object) => {
+        }}).then((response: object) => {
             // Since PHP will return an empty object as an array,
             // we need to check
             if (Array.isArray(response)) {
