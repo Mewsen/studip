@@ -1758,7 +1758,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
                 'id'         => $this->id,
                 'name'       => $this->getFullName(),
                 'username'   => $this->username,
-                'avatar_url' => Avatar::getAvatar($this->id)->getURL(Avatar::SMALL),
+                'avatar_url' => Avatar::getAvatar($this->id)->getURL(Avatar::MEDIUM)
             ])
         ];
 
