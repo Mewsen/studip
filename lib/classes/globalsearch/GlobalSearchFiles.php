@@ -191,7 +191,11 @@ class GlobalSearchFiles extends GlobalSearchModule implements GlobalSearchFullte
             return Folder::find($fileref->folder_id)->getTypedFolder();
         });
 
-        if (!($folder->isVisible($GLOBALS['user']->id) && $folder->isFileVisible($fileref, $GLOBALS['user']->id))) {
+        if (
+            $folder instanceof PermissionEnabledFolder
+            ? !$folder->isFileVisible($fileref, $GLOBALS['user']->id)
+            : !$folder->isReadable($GLOBALS['user']->id)
+        ) {
             return null;
         }
 
