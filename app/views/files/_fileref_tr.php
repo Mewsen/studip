@@ -58,10 +58,8 @@ if ($file->isDownloadable($GLOBALS['user']->id)) {
     <? endif ?>
     <? $author_name = $file->getUserName() ?>
     <td data-sort-value="<?= htmlReady($author_name) ?>" class="responsive-hidden">
-    <? if ($file->getUser() && $file->getUser()->id !== $GLOBALS['user']->id) : ?>
-        <a href="<?= URLHelper::getLink('dispatch.php/profile?username=' . $file->getUser()->username) ?>">
-            <?= htmlReady($author_name) ?>
-        </a>
+        <? if ($file->getUser()) : ?>
+            <?= Avatar::getAvatarDropdownHTML(User::find($file->getUser()->id), true) ?>
     <? else: ?>
         <?= htmlReady($author_name) ?>
     <? endif; ?>
