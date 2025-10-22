@@ -13,7 +13,7 @@
         </legend>
         <label>
             <span class="required"><?= _('Name oder ID des Rollen-Templates zum Erstellen von Lernobjekten') ?></span>
-            <input type="text" name="ilias_author_role_name" size="50" maxlength="255" value="<?= $ilias_config['author_role_name'] ? htmlReady($ilias_config['author_role_name']) : 'Author' ?>" required>
+            <input type="text" name="ilias_author_role_name" size="50" maxlength="255" value="<?= !empty($ilias_config['author_role']) ? htmlReady($ilias_config['author_role_name']) : 'Author' ?>" required>
         </label>
         <label>
             <span class="required"><?= _('Erforderliche Rechtestufe zum Erstellen von Lernobjekten') ?></span>

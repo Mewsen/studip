@@ -360,22 +360,20 @@ class ConnectedIlias
             // if an ID was entered, simply use it; else get the ID by title/name
             if ($this->ilias_config['root_category_name'] !== null) {
                 if (is_numeric($this->ilias_config['root_category_name'])) {
-                    $category = $this->ilias_config['root_category_name'];
+                    $cat_object = $this->soap_client->getObjectByReference($this->ilias_config['root_category_name']);
                 } else {
-                    $category = $this->soap_client->getReferenceByTitle($this->ilias_config['root_category_name'], 'cat');
+                    $temp_category = $this->soap_client->getReferenceByTitle($this->ilias_config['root_category_name'], 'cat');
+                    $cat_object = $this->soap_client->getObjectByReference($temp_category);
+                }
+                if (!empty($cat_object['ref_id']) && $cat_object['type'] === 'cat') {
+                    $category = $cat_object['ref_id'];
+                    $this->ilias_config['root_category_name'] = $cat_object['title'];
                 }
             }
             if (!$category) {
                 $this->error[] = sprintf(_('Die Kategorie „%s“ wurde nicht gefunden.'), $this->ilias_config['root_category_name']);
                 return false;
             } else {
-                // no ID entered manually
-                if ($this->ilias_config['root_category'] == null) {
-                    $this->ilias_config['root_category'] = $category;
-                } else {
-                    $this->ilias_config['root_category_name'] = $category['title'];
-                }
-
                 $this->ilias_config['root_category'] = $category;
                 // check user data category
                 if (! $this->ilias_config['user_data_category']) {
@@ -425,31 +423,26 @@ class ConnectedIlias
     public function getPermissionsSettingsStatus()
     {
         // check role template
-        if (!$this->ilias_config['author_role_name']) {
+        if (empty($this->ilias_config['author_role_name'])) {
             $this->error[] = _("Das Rollen-Template für die persönliche Kategorie wurde noch nicht festgelegt.");
-            return false;
-        }
-        // if an ID was entered, simply use it; else check for title
-        if (!is_numeric($this->ilias_config['author_role_name'])) {
-
+        } elseif (is_numeric($this->ilias_config['author_role_name'])) {
+            // if an ID was entered, simply use it; else check for title
+            $this->ilias_config['author_role'] = $this->ilias_config['author_role_name'];
+            $this->storeSettings();
+            return true;
+        } else {
             $role_template = $this->soap_client->getObjectByTitle($this->ilias_config['author_role_name'], 'rolt');
 
             if ($role_template == false) {
                 $this->error[] = sprintf(_('Das Rollen-Template mit dem Namen „%1$s“ wurde im System %2$s nicht gefunden.'), htmlReady($this->ilias_config['author_role_name']), htmlReady($this->getName()));
-                return false;
-            }
-            if (is_array($role_template))
-            {
+            } else if (is_array($role_template)) {
                 $this->ilias_config['author_role'] = $role_template["obj_id"];
+                $this->ilias_config['author_role_name'] = $role_template['title'];
                 $this->storeSettings();
+                return true;
             }
-            return true;
-        } else {
-            $this->ilias_config['author_role'] = 'object_id_' . $this->ilias_config['author_role_name'];
-            $this->storeSettings();
-            return true;
         }
-
+        return false;
     }
 
     /**
