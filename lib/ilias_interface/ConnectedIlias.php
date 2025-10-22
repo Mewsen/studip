@@ -232,7 +232,7 @@ class ConnectedIlias
         );
 
         // check if url exists
-        $check = @get_headers($url . 'login.php', false, $stream_context);
+        $check = @get_headers($url . '/login.php?cmd=force_login', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             return $info;
         } else {
@@ -318,7 +318,7 @@ class ConnectedIlias
             'timeout',
             $this->ilias_config['http_request_timeout']
         );
-        $check = @get_headers($this->ilias_config['url'] . 'webservice/soap/server.php', false, $stream_context);
+        $check = @get_headers($this->ilias_config['url'] . '/webservice/soap/server.php', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             $this->error[] = sprintf(_('Die URL "%s" ist nicht erreichbar.'), $this->ilias_config['url']);
             return false;
