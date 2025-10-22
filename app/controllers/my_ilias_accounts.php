@@ -441,7 +441,7 @@ class MyIliasAccountsController extends AuthenticatedController
             $this->user = new IliasUser($index, $ilias_configs[$index]['version'], $user_id);
 
             if (Request::submitted('lookup_account')) {
-                $this->ilias_login = trim(Request::option('ilias_login'));
+                $this->ilias_login = trim(Request::get('ilias_login'));
                 $this->matched_user = $this->ilias->soap_client->lookupUser($this->ilias_login);
                 if (empty($this->matched_user)) {
                     PageLayout::postError(sprintf(_('Es wurde kein Account mit dem Loginnamen "%s" gefunden.'), htmlReady($this->ilias_login)));
