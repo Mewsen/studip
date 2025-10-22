@@ -45,11 +45,8 @@
         <tr>
             <td style="text-align: right"><?= (++$nr < 10) ? sprintf('%02d', $nr) : $nr ?></td>
             <td>
-                <a href="<?= $controller->url_for(sprintf('profile?username=%s',$dozent['username'])) ?>" <? if ($dozent['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                    <?= Avatar::getAvatar($dozent['user_id'], $dozent['username'])->getImageTag(Avatar::SMALL, [
-                        'style' => 'margin-right: 5px'
-                    ]) ?>
-                    <?= htmlReady($fullname) ?>
+                <a <? if ($dozent['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                    <?= Avatar::getAvatarDropdownHTML(new User($dozent['user_id']), true) ?>
                 </a>
             <? if ($is_tutor && $dozent['comment']) : ?>
                 <?= tooltipHtmlIcon(sprintf(
