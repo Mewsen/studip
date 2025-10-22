@@ -83,11 +83,8 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <a href="<?= $controller->url_for('profile?username=' . $leser['username']) ?>" <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                        <?= Avatar::getAvatar($leser['user_id'],$leser['username'])->getImageTag(Avatar::SMALL, [
-                            'style' => 'margin-right: 5px'
-                        ]); ?>
-                        <?= htmlReady($fullname) ?>
+                    <a <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                        <?= Avatar::getAvatarDropdownHTML(new User($leser['user_id']), true)?>
                     </a>
                 </td>
             <? if ($is_tutor) : ?>
