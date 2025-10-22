@@ -177,7 +177,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                 $info = ConnectedIlias::getIliasInfo(Request::get('ilias_url'));
                 if (is_array($info) && count($info)) {
                     $this->valid_url = true;
-                    $this->ilias_config['url'] = Request::get('ilias_url');
+                    $this->ilias_config['url'] = rtrim(Request::get('ilias_url'), '/');
                     $this->ilias_config['http_connection_timeout'] = (int) Request::get('ilias_http_connection_timeout');
                     $this->ilias_config['http_request_timeout'] = (int) Request::get('ilias_http_request_timeout');
                     if ($info['version']) {
@@ -309,7 +309,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                 if (Request::getInstance()->offsetExists('ilias_version')) {
                     $this->ilias_configs[$index]['version'] = Request::get('ilias_version');
                 }
-                $this->ilias_configs[$index]['url'] = Request::get('ilias_url');
+                $this->ilias_configs[$index]['url'] = rtrim(Request::get('ilias_url'), '/');
                 $this->ilias_configs[$index]['http_connection_timeout'] = (int) Request::get('ilias_http_connection_timeout');
                 $this->ilias_configs[$index]['http_request_timeout'] = (int) Request::get('ilias_http_request_timeout');
                 if (Request::getInstance()->offsetExists('ilias_client')) {
