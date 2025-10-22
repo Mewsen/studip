@@ -1750,30 +1750,4 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
         return $GLOBALS['perm']->have_studip_perm($permission, $for_range->id, $this->id);
     }
-
-    public function getAvatarDropdownHTML(bool $with_name = false): string
-    {
-        $attributes = [
-            ':user' => json_encode([
-                'id'         => $this->id,
-                'name'       => $this->getFullName(),
-                'username'   => $this->username,
-                'avatar_url' => Avatar::getAvatar($this->id)->getURL(Avatar::MEDIUM)
-            ])
-        ];
-
-        $user_profile_link = '';
-        if ($with_name) {
-            $user_profile_link = '<a href="' . URLHelper::getLink('dispatch.php/profile', ['username' => $this->username]) . '">' . htmlReady($this->getFullName()) . '</a>';
-        }
-
-        return '
-                <div class="user-avatar-container">
-                    <div class="use-vue-components">
-                        <user-avatar-dropdown ' . HTMLAttributes::from($attributes) . '/>
-                    </div>
-                    '. $user_profile_link .'
-                </div>
-        ';
-    }
 }

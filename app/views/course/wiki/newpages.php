@@ -93,7 +93,7 @@
                 <? foreach ($authors as $user_id => $user) : ?>
                     <li>
                     <? if ($user): ?>
-                        <?= $user->getAvatarDropdownHTML(true) ?>
+                        <?= Avatar::getAvatarDropdownHTML($user, true) ?>
                     <? else: ?>
                         <?= _('unbekannt') ?>
                     <? endif; ?>

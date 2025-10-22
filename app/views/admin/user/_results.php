@@ -54,7 +54,7 @@
                 <td style="white-space:nowrap;">
                     <div class="users-table__avatar-container">
                         <input class="check_all" type="checkbox" name="user_ids[]" value="<?= htmlReady($user->id) ?>">
-                        <?= $user->getAvatarDropdownHTML() ?>
+                        <?= Avatar::getAvatarDropdownHTML($user) ?>
                     </div>
                 </td>
                 <td>

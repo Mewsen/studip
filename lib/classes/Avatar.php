@@ -637,4 +637,30 @@ class Avatar
     {
         return $this->user_id;
     }
+
+    public static function getAvatarDropdownHTML(User $user, bool $with_name = false): string
+    {
+        $attributes = [
+            ':user' => json_encode([
+                'id'         => $user->id,
+                'name'       => $user->getFullName(),
+                'username'   => $user->username,
+                'avatar_url' => self::getAvatar($user->id)->getURL(self::MEDIUM)
+            ])
+        ];
+
+        $user_profile_link = '';
+        if ($with_name) {
+            $user_profile_link = '<a href="' . URLHelper::getLink('dispatch.php/profile', ['username' => $user->username]) . '">' . htmlReady($user->getFullName()) . '</a>';
+        }
+
+        return '
+                <div class="user-avatar-container">
+                    <div class="use-vue-components">
+                        <user-avatar-dropdown ' . HTMLAttributes::from($attributes) . '/>
+                    </div>
+                    '. $user_profile_link .'
+                </div>
+        ';
+    }
 }
