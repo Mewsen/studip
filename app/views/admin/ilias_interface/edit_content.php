@@ -12,8 +12,8 @@
     <input type="hidden" name="ilias_content_settings" size="50" maxlength="255" value="1">
     <label>
         <span class="required"><?= _('Name oder ID der Wurzelkategorie für Stud.IP-Daten') ?></span>
-        <? if (!empty($ilias_config['root_category_name'])) : ?>
-            <div><?= htmlReady($ilias_config['root_category_name']) ?></div>
+        <? if (!empty($ilias_config['root_category'])) : ?>
+            <div><?= htmlReady($ilias_config['root_category_name']) ?> <?= htmlReady(sprintf(_('(ID %s)'), $ilias_config['root_category']))?></div>
         <? else : ?>
             <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= empty($ilias_config['root_category_name']) ? '' : htmlReady($ilias_config['root_category_name']) ?>" required>
         <? endif ?>
@@ -24,7 +24,7 @@
         <div><?= _('User_daten').' (ID '.htmlReady($ilias_config['user_data_category']).')'?></div>
     </label>
     <? endif ?>
-    <? if ($ilias_interface_config['create_category']) : ?>
+    <? if (!empty($ilias_interface_config['create_category'])) : ?>
         <label>
             <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= !empty($ilias_config['category_create_on_add_module']) ? 'checked' : '' ?>>
             <span><?= _('Persönliche ILIAS-Kategorie erst erzeugen, wenn Lernobjekte angelegt werden') ?></span>
@@ -126,7 +126,7 @@
         <span><?= _('Kategorie mit Arbeitsbereichen') ?> <?=!empty($ilias_config['workgroup_category']) ? htmlReady(sprintf(_('(ID %s)'), $ilias_config['workgroup_category'])) : ''?></span>
         <input type="text" name="ilias_workgroup_category_name" size="50" maxlength="255" value="<?= empty($ilias_config['workgroup_category_name']) ? '' : htmlReady($ilias_config['workgroup_category_name']) ?>">
     </label>
-    <? if ($ilias_interface_config['create_objects']) : ?>
+    <? if (!empty($ilias_interface_config['create_objects'])) : ?>
     <label>
     <span>  <?= _('Module') ?></span>
     </label>
