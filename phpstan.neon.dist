@@ -4,6 +4,8 @@ parameters:
     paths:
         - app/controllers
         - cli
+        - config
+        - db/migrations
         - lib
         - tests/functional
         - tests/jsonapi
@@ -15,6 +17,7 @@ parameters:
         - lib
         - vendor
     excludePaths:
+        - config/config_local_develop.inc.php
         - lib/ilias_interface/studip_referrer_7x.php
         - lib/ilias_interface/studip_referrer_8x.php
         - lib/ilias_interface/studip_referrer_9x.php

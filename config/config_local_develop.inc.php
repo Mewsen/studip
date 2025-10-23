@@ -30,13 +30,6 @@ namespace {
     $CACHING_FILECACHE_PATH = $TMP_PATH . '/studip_cache';
     $CACHE_IS_SESSION_STORAGE = false;                 //store session data in cache
 
-    /*Stud.IP modules
-    ----------------------------------------------------------------
-    enable or disable the Stud.IP internal modules, set and basic settings*/
-
-    $FOP_SH_CALL = "/usr/bin/fop";                       //path to fop
-
-
     /*domain name and path translation
     ----------------------------------------------------------------
     */

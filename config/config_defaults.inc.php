@@ -78,10 +78,6 @@ $SESSION_OPTIONS['lifetime'] = 7200; // session lifetime in seconds
 ----------------------------------------------------------------
 enable or disable the Stud.IP internal modules, set and basic settings*/
 
-$FOP_SH_CALL = "/usr/bin/fop";                        //path to fop
-
-$EXTERN_SERVER_NAME = "";                               //define name, if you use special setup
-
 $PLUGINS_UPLOAD_ENABLE = $_ENV['STUDIP_PLUGIN_UPLOAD_ENABLE'] ?? true;      //Upload of Plugins is enabled
 
 $PLUGIN_REPOSITORIES = [
