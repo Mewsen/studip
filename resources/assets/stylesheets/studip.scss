@@ -589,8 +589,14 @@ div.info { padding-left: 1%; }
 
 // course members
 a.new-member,
-.new-member .user-avatar-dropdown__username {
+.new-member .user-avatar-dropdown__username,
+.new-member-avatardropdown {
     @include icon(after, star, attention, 8px);
+}
+
+.new-member-avatardropdown {
+    position: absolute;
+    margin: 2px;
 }
 
 /**

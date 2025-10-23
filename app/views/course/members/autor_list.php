@@ -88,19 +88,20 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <a <? if ($autor['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                        <?= Avatar::getAvatarDropdownHTML(new User($autor['user_id']), true)?>
+                    <?= Avatar::getAvatarDropdownHTML(new User($autor['user_id']), true)?>
+                    <span <? if ($autor['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+
                     <? if ($user_id === $autor['user_id'] && $autor['visible'] === 'no') : ?>
                        (<?= _('Unsichtbar') ?>)
                     <? endif ?>
-                    </a>
-                <? if ($is_tutor && $autor['comment']) : ?>
-                    <?= tooltipHtmlIcon(sprintf(
-                        '<strong>%s</strong><br>%s',
-                        _('Bemerkung'),
-                        htmlReady($autor['comment'])
-                    )) ?>
-                <? endif ?>
+
+                    <? if ($is_tutor && $autor['comment']) : ?>
+                        <?= tooltipHtmlIcon(sprintf(
+                            '<strong>%s</strong><br>%s',
+                            _('Bemerkung'),
+                            htmlReady($autor['comment'])
+                        )) ?>
+                    <? endif ?>
                 </td>
             <? if ($is_tutor) : ?>
                 <td>

@@ -83,16 +83,16 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <a <? if ($tutor['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                        <?= Avatar::getAvatarDropdownHTML(new User($tutor['user_id']), true) ?>
-                    </a>
-                <? if ($is_tutor && $tutor['comment']) : ?>
-                    <?= tooltipHtmlIcon(sprintf(
-                        '<strong>%s</strong><br>%s',
-                        _('Bemerkung'),
-                        htmlReady($tutor['comment'])
-                    )) ?>
-                <? endif ?>
+                    <?= Avatar::getAvatarDropdownHTML(new User($tutor['user_id']), true) ?>
+                    <span <? if ($tutor['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+
+                    <? if ($is_tutor && $tutor['comment']) : ?>
+                        <?= tooltipHtmlIcon(sprintf(
+                            '<strong>%s</strong><br>%s',
+                            _('Bemerkung'),
+                            htmlReady($tutor['comment'])
+                        )) ?>
+                    <? endif ?>
                 </td>
             <? if($is_dozent) : ?>
                 <td>

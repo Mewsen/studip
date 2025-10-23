@@ -79,9 +79,8 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02d', ++$nr) ?></td>
                 <td>
-                    <a <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                        <?= Avatar::getAvatarDropdownHTML(new User($waiting['user_id']), true) ?>
-                    </a>
+                    <?= Avatar::getAvatarDropdownHTML(new User($waiting['user_id']), true) ?>
+                    <span <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
                 </td>
                 <td style="text-align: center">
                     <?= $waiting['position'] ?>

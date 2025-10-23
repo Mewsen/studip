@@ -83,9 +83,8 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <a <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
-                        <?= Avatar::getAvatarDropdownHTML(new User($leser['user_id']), true)?>
-                    </a>
+                    <?= Avatar::getAvatarDropdownHTML(new User($leser['user_id']), true)?>
+                    <span <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
                 </td>
             <? if ($is_tutor) : ?>
                 <td>
