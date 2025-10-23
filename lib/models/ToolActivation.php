@@ -99,7 +99,7 @@ class ToolActivation extends SimpleORMap
         if ($permission === self::VISIBILITY_PERMISSION_STUDENTS) {
             unset($this->metadata['visibility']);
         } else {
-            $this->metadata['visibility'] = 'tutors';
+            $this->metadata['visibility'] = 'tutor';
         }
     }
 
