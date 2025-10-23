@@ -6,35 +6,36 @@
         $max_time = Config::get()->RESOURCES_BOOKING_PLAN_END_HOUR . ':00';
     } ?>
 <section class="individual-booking-plan">
-    <?= \Studip\Fullcalendar::create(
-        _('Belegungsplan'),
-        [
-            'eventSources' => [
-                [
-                    'url' => URLHelper::getURL(
-                        'dispatch.php/resources/ajax/get_semester_booking_plan/' . $resource->id
-                    ),
-                    'method' => 'GET',
-                    'extraParams' => [
-                        'booking_types' => [
-                            ResourceBooking::TYPE_NORMAL,
-                            ResourceBooking::TYPE_RESERVATION,
-                            ResourceBooking::TYPE_LOCK,
-                        ],
-                    ]
-                ]
-            ],
-            'minTime' => ($min_time),
-            'maxTime' => ($max_time),
-            'allDaySlot' => false,
-            'defaultView' =>
-                in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
-                ? Request::get("defaultView")
-                : 'timeGridWeek',
-            'defaultDate' => Request::get("defaultDate"),
-            'editable' => false
-        ],
-        ['class' => 'individual-booking-plan'],
-        'resources-fullcalendar'
-    ) ?>
+    <?= \Studip\VueApp::create('StudipTintableCalendar')
+        ->withProps(
+            [
+                'config' => [
+                    'eventSources' => [
+                        [
+                            'url' => URLHelper::getURL(
+                                'dispatch.php/resources/ajax/get_semester_booking_plan/' . $resource->id
+                            ),
+                            'method' => 'GET',
+                            'extraParams' => [
+                                'booking_types' => [
+                                    ResourceBooking::TYPE_NORMAL,
+                                    ResourceBooking::TYPE_RESERVATION,
+                                    ResourceBooking::TYPE_LOCK,
+                                ],
+                            ]
+                        ]
+                    ],
+                    'slotMinTime' => ($min_time),
+                    'slotMaxTime' => ($max_time),
+                    'allDaySlot' => false,
+                    'initialView' =>
+                        in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
+                            ? Request::get("defaultView")
+                            : 'timeGridWeek',
+                    'initialDate' => Request::get("defaultDate"),
+                    'editable' => false
+                ],
+                ['class' => 'individual-booking-plan'],
+            ]
+        ) ?>
 </section>
