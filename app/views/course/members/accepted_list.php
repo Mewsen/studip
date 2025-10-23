@@ -102,14 +102,6 @@
                             )) ?>
                         <? endif ?>
                     </div>
-
-                    <? if ($accept['comment']): ?>
-                        <?= tooltipHtmlIcon(sprintf(
-                            '<strong>%s</strong><br>%s',
-                            _('Bemerkung'),
-                            htmlReady($accept['comment'])
-                        )) ?>
-                    <? endif ?>
                 </td>
                 <td>
                 <? if (!empty($accept['mkdate'])) : ?>

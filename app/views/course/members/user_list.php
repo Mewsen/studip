@@ -99,14 +99,6 @@
                             <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
                             <?= htmlReady($fullname) ?>
                         </a>
-
-                        <? if ($is_tutor && $leser['comment']) : ?>
-                            <?= tooltipHtmlIcon(sprintf(
-                                '<strong>%s</strong><br>%s',
-                                _('Bemerkung'),
-                                htmlReady($leser['comment'])
-                            )) ?>
-                        <? endif ?>
                     </div>
                 </td>
             <? if ($is_tutor) : ?>
