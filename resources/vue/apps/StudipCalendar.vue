@@ -115,15 +115,27 @@ export default defineComponent({
         console.debug(calendar_options);
         //Set the event handlers, if needed.
         if (calendar_options.editable) {
-            calendar_options.eventDrop   = this.handleEventDrop;
-            calendar_options.eventResize = this.handleEventResize;
+            if (this.custom_event_handlers.eventDrop) {
+                calendar_options.eventDrop   = this.custom_event_handlers.eventDrop;
+            } else {
+                calendar_options.eventDrop   = this.handleEventDrop;
+            }
+            if (this.custom_event_handlers.eventResize) {
+                calendar_options.eventResize = this.custom_event_handlers.eventResize;
+            } else {
+                calendar_options.eventResize = this.handleEventResize;
+            }
 
             if (calendar_options.selectable) {
-                calendar_options.select = this.handleSelection;
+                if (this.custom_event_handlers.select) {
+                    calendar_options.select = this.custom_event_handlers.select;
+                } else {
+                    calendar_options.select = this.handleSelection;
+                }
             }
         }
-        if (this.custom_event_handlers.view) {
-            calendar_options.eventClick = this.custom_event_handlers.view;
+        if (this.custom_event_handlers.eventClick) {
+            calendar_options.eventClick = this.custom_event_handlers.eventClick;
         } else {
             calendar_options.eventClick = this.handleEventClick;
         }
