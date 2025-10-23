@@ -344,32 +344,5 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-@import '../../assets/stylesheets/scss/buttons';
-
-.fc {
-    .fc-toolbar.fc-header-toolbar {
-        margin-bottom: 0.5em;
-    }
-
-    .fc-button-group {
-        height: 30px;
-
-        .fc-button {
-            @include button;
-            margin-top: 0;
-            margin-bottom: 0;
-            padding: 0;
-
-            &:last-of-type {
-                margin-right: 0;
-            }
-
-            .fc-icon {
-                /* Unset rules that are set in the fullcalendar default stylesheet: */
-                line-height: unset;
-                height: unset;
-            }
-        }
-    }
-}
+@import '../../assets/stylesheets/fullcalendar';
 </style>
