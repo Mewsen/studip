@@ -284,19 +284,20 @@ class Settings_StatusgruppenController extends Settings_SettingsController
                 $changed                                = true;
             }
 
-            if ($changed) {
-                $query = "UPDATE user_inst
-                          SET priority = ?
-                          WHERE user_id = ? AND Institut_id = ?";
-                $statement = DBManager::get()->prepare($query);
+            $query = "UPDATE user_inst
+                      SET priority = ?
+                      WHERE user_id = ? AND Institut_id = ?";
+            $statement = DBManager::get()->prepare($query);
 
-                foreach ($priorities as $id => $priority) {
-                    $statement->execute([
-                        $priority,
-                        $this->user->user_id,
-                        $id,
-                    ]);
-                }
+            foreach ($priorities as $id => $priority) {
+                $statement->execute([
+                    $priority,
+                    $this->user->user_id,
+                    $id,
+                ]);
+            }
+
+            if ($changed) {
                 PageLayout::postSuccess(_('Reihenfolge wurde geändert'));
             }
         }
