@@ -37,8 +37,8 @@
             'editable' => true,
             'selectable' => $all_rooms_booking_rights,
             'studip_urls' => $fullcalendar_studip_urls,
-            'slotMinTime' => ($min_time),
-            'slotMaxTime' => ($max_time),
+            'slotMinTime' => $min_time,
+            'slotMaxTime' => $max_time,
             'allDaySlot' => false,
             'headerToolbar' => [
                 'left' =>  'resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay',
