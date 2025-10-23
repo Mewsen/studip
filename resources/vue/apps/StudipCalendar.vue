@@ -112,7 +112,6 @@ export default defineComponent({
         if (!calendar_options.initialView) {
             calendar_options.initialView = 'timeGridWeek';
         }
-        console.debug(calendar_options);
         //Set the event handlers, if needed.
         if (calendar_options.editable) {
             if (this.custom_event_handlers.eventDrop) {
