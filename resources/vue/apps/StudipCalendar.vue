@@ -1,13 +1,32 @@
 <template>
-    <FullCalendar :options="calendar_options"></FullCalendar>
+    <FullCalendar :options="calendar_options">
+        <template v-slot:eventContent='arg'>
+            <section v-if="arg.event.display === 'auto'">
+                <span class="fc-event-time">
+                    {{ arg.timeText }}
+                </span>
+                <span class="fc-event-title-container">
+                    <span class="fc-event-title">
+                    {{ arg.event.title }}
+                    </span>
+                </span>
+            </section>
+            <div v-if="arg.event.display === 'background'">
+                <div v-if="arg.event.extendedProps.generate_title"
+                     class="title">
+                    {{ arg.event.title }}
+                </div>
+            </div>
+        </template>
+    </FullCalendar>
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {
-    CalendarOptions,
+    CalendarOptions, CustomRenderingHandler,
     DateSelectionApi,
-    EventClickArg,
-    EventDropArg,
+    EventClickArg, EventContentArg,
+    EventDropArg, EventRenderRange,
     EventSourceFuncArg
 } from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
@@ -339,6 +358,26 @@ export default defineComponent({
                     size: this.dialog_size
                 }
             );
+        },
+        eventRender: function(render_arg: EventContentArg) {
+            console.debug(render_arg);
+            //If a background event with title shall be rendered, we have to check
+            //if an all-day slot is present or not.
+            render_arg.event.extendedProps.generate_title = false;
+            if (render_arg.event.display === 'background' && render_arg.event.title && render_arg.event.allDay) {
+                if (render_arg.view.getOption('all-day') === true) {
+                    //An all-day slot is present in the calendar.
+                    if (render_arg.isStart || render_arg.isEnd) {
+                        render_arg.event.extendedProps.generate_title = true;
+                    }
+                } else {
+                    //No all-day slot in the calendar. Display a title
+                    //at the start of the day in the calendar.
+                    if (!render_arg.isStart || !render_arg.isEnd) {
+                        render_arg.event.extendedProps.generate_title = true;
+                    }
+                }
+            }
         }
     }
 })

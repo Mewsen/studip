@@ -2,48 +2,6 @@
 @import "scss/buttons";
 @import "mixins";
 
-a.fc-event,
-td.fc-event {
-    border-radius: 0;
-
-    .fc-time {
-        background-color: rgba(255, 255, 255, 0.2);
-        font-weight: bold;
-    }
-
-    .fc-title .icon {
-        content: '';
-        display: inline-block;
-        vertical-align: text-bottom;
-        margin-right: 3px;
-        width: 12px;
-        height: 12px;
-        mask-size: contain;
-        mask-repeat: no-repeat;
-        mask-position: center;
-        background-color: currentColor;
-        mask-image: var(--icon-url);
-    }
-}
-
-div.fc-bgevent,
-td.fc-bgevent {
-    .title {
-        color: $text-color;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    &.holiday {
-        opacity: 1;
-        background-color: rgba($light-gray-color-60, 0.3);
-
-        &.official {
-            background-color: rgba($base-gray, 0.3);
-        }
-    }
-}
-
 .fc {
     .fc-toolbar.fc-header-toolbar {
         margin-bottom: 0.5em;
@@ -66,6 +24,52 @@ td.fc-bgevent {
                 /* Unset rules that are set in the fullcalendar default stylesheet: */
                 line-height: unset;
                 height: unset;
+            }
+        }
+    }
+
+    a.fc-event,
+    td.fc-event {
+        border-radius: 0;
+
+        .fc-event-time {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+            padding: $font-size-base * 0.2;
+        }
+
+        .fc-title .icon {
+            content: '';
+            display: inline-block;
+            vertical-align: text-bottom;
+            margin-right: 3px;
+            width: 12px;
+            height: 12px;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            background-color: currentColor;
+            mask-image: var(--icon-url);
+        }
+    }
+
+    div.fc-bg-event,
+    td.fc-bg-event {
+        .fc-event-title {
+            color: $text-color;
+            font-style: normal;
+            font-size: $font-size-base;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+        }
+
+        &.holiday {
+            opacity: 1;
+            background-color: rgba($light-gray-color-60, 0.3);
+
+            &.official {
+                background-color: rgba($base-gray, 0.3);
             }
         }
     }
@@ -153,6 +157,8 @@ html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
     height: 100px;
 }
 
+/*
+obsolete?
 #external-events{
     td.fc-event {
         border-radius: 0;
@@ -161,7 +167,10 @@ html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
         border: 1px solid var(--brand-color-light);
     }
 }
+*/
 
+/*
+obsolete?
 .institute-plan {
     .fc-bg td.fc-today {
         background: none;
@@ -171,6 +180,7 @@ html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
         background-color: var(--content-color-10);
     }
 }
+*/
 
 .calendar-caption {
     background-color: transparent;
