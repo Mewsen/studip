@@ -175,20 +175,20 @@ class Helper
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
             [
-                'editable'    => true,
-                'selectable'  => true,
-                'dialog_size' => 'auto',
-                'minTime'     => $schedule_settings['start_time'] ?? '08:00',
-                'maxTime'     => $schedule_settings['end_time'] ?? '20:00',
-                'allDaySlot'  => false,
-                'header'      => [
+                'editable'      => true,
+                'selectable'    => true,
+                'dialog_size'   => 'auto',
+                'slotMinTime'   => $schedule_settings['start_time'] ?? '08:00',
+                'slotMaxTime'   => $schedule_settings['end_time'] ?? '20:00',
+                'allDaySlot'    => false,
+                'headerToolbar' => [
                     'left' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
                     'right' => 'prev,today,next'
                 ],
                 'views' => $available_views,
                 'columnHeaderFormat' => ['weekday' => 'short'],
-                'defaultView' => 'timeGridWeek',
-                'defaultDate' => date('Y-m-d'),
+                'initialView' => 'timeGridWeek',
+                'initialDate' => date('Y-m-d'),
                 'slotLabelFormat' => [
                     'hour'           => 'numeric',
                     'minute'         => '2-digit',
