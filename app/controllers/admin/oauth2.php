@@ -42,5 +42,7 @@ class Admin_Oauth2Controller extends AuthenticatedController
     {
         $this->setup = $this->container->get(SetupInformation::class);
         $this->clients = Client::findBySql('1 ORDER BY chdate DESC');
+
+        $this->message = $this->flash['oauth2-message'] ?? '';
     }
 }
