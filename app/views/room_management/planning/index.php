@@ -37,10 +37,10 @@
             'editable' => true,
             'selectable' => $all_rooms_booking_rights,
             'studip_urls' => $fullcalendar_studip_urls,
-            'minTime' => ($min_time),
-            'maxTime' => ($max_time),
+            'slotMinTime' => ($min_time),
+            'slotMaxTime' => ($max_time),
             'allDaySlot' => false,
-            'header' => [
+            'headerToolbar' => [
                 'left' =>  'resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay',
                 'right' => 'prev,next'
             ],
@@ -52,7 +52,7 @@
                 in_array(Request::get("defaultView"), ['resourceTimelineMonth', 'resourceTimelineWeek', 'resourceTimelineDay'])
                          ? Request::get("defaultView")
                          : 'resourceTimelineDay',
-            'defaultDate' => Request::get("defaultDate"),
+            'initialDate' => Request::get("defaultDate"),
             'eventSources' => [
                 [
                     'url' => URLHelper::getLink(

@@ -45,13 +45,13 @@
     <?= \Studip\Fullcalendar::create(
         _('Belegungsplan'),
         [
-            'editable' => true,
-            'selectable' => !empty($fullcalendar_studip_urls['add']),
+            'editable'    => true,
+            'selectable'  => !empty($fullcalendar_studip_urls['add']),
             'studip_urls' => $fullcalendar_studip_urls,
-            'minTime' => $min_time,
-            'maxTime' => $max_time,
-            'allDaySlot' => false,
-            'header' => [
+            'slotMinTime' => $min_time,
+            'slotMaxTime' => $max_time,
+            'allDaySlot'  => false,
+            'headerToolbar' => [
                 'left' => 'dayGridMonth,timeGridWeek,timeGridDay',
                 'right' => 'prev,next'
             ],
@@ -62,17 +62,17 @@
                     'displayEventEnd' => true
                 ],
                 'timeGridWeek' => [
-                  'columnHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
+                  'dayHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
                 ],
                 'timeGridDay' => [
-                    'columnHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
-                  ]
+                    'dayHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
+                ]
             ],
-            'defaultView' =>
+            'initialView' =>
                 in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
                 ? Request::get("defaultView")
                 : 'timeGridWeek',
-            'defaultDate' => $date->format('Y-m-d'),
+            'initialDate' => $date->format('Y-m-d'),
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(

@@ -41,23 +41,25 @@
         [
             'resources' => $scheduler_resources,
             'resourceLabelText' => _('Raum'),
-            'minTime' => ($min_time),
-            'maxTime' => ($max_time),
+            'slotMinTime' => ($min_time),
+            'slotMaxTime' => ($max_time),
             'allDaySlot' => false,
             'slotLabelFormat' => [
                 ['weekday'=> 'short'], // top level of text
                 ['hour'=> '2-digit',
                  'hour12' => false]        // lower level of text
             ],
-            'header' => [
+            'headerToolbar' => [
                 'left' => '',
                 'right' => ''
             ],
-            'defaultView' =>
+            'initialView' =>
                 in_array(Request::get("defaultView"), ['resourceTimelineMonth', 'resourceTimelineWeek', 'resourceTimelineDay'])
                          ? Request::get("defaultView")
                          : 'resourceTimelineWeek',
-            'defaultDate' => ((Request::get("semester_timerange") == 'fullsem') ? date('Y-m-d',$semester->beginn) : date('Y-m-d',$semester->vorles_beginn)),
+            'initialDate' => ((Request::get("semester_timerange") == 'fullsem') ? date('Y-m-d',$semester->beginn) : date('Y-m-d',$semester->vorles_beginn)),
+            'display_holidays' => false,
+            'display_vacations' => false,
             'eventSources' => [
                 [
                     'url' => URLHelper::getLink(
