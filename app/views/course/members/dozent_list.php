@@ -45,16 +45,31 @@
         <tr>
             <td style="text-align: right"><?= (++$nr < 10) ? sprintf('%02d', $nr) : $nr ?></td>
             <td>
-                <?= Avatar::getAvatarDropdownHTML(new User($dozent['user_id']), true) ?>
-                <span <? if ($dozent['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                <div class="user-avatar-container">
+                    <div class="use-vue-components ">
+                        <user-avatar-dropdown
+                            :user='<?= json_encode([
+                                'id' => $dozent['user_id'],
+                                'name' => $dozent['Vorname'] . ' ' . $dozent['Nachname'],
+                                'username' => $dozent['username'],
+                                'avatar_url' => Avatar::getAvatar($dozent['user_id'])->getURL(Avatar::MEDIUM)
+                            ]) ?>'
+                        >
+                        </user-avatar-dropdown>
+                    </div>
+                    <a href="<?= $controller->url_for(sprintf('profile?username=%s', $dozent['username'])) ?>"
+                        <? if ($dozent['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                        <?= htmlReady($fullname) ?>
+                    </a>
 
-                <? if ($is_tutor && $dozent['comment']) : ?>
-                    <?= tooltipHtmlIcon(sprintf(
-                        '<strong>%s</strong><br>%s',
-                        _('Bemerkung'),
-                        htmlReady($dozent['comment'])
-                    )) ?>
-                <? endif ?>
+                    <? if ($is_tutor && $dozent['comment']) : ?>
+                        <?= tooltipHtmlIcon(sprintf(
+                            '<strong>%s</strong><br>%s',
+                            _('Bemerkung'),
+                            htmlReady($dozent['comment'])
+                        )) ?>
+                    <? endif ?>
+                </div>
             </td>
             <td class="actions">
                 <? $actionMenu = ActionMenu::get()->setContext($fullname) ?>

@@ -77,8 +77,31 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <?= Avatar::getAvatarDropdownHTML(new User($accept['user_id']), true)?>
-                    <span <? if ($accept['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                    <div class="user-avatar-container">
+                        <div class="use-vue-components ">
+                            <user-avatar-dropdown
+                                :user='<?= json_encode([
+                                    'id' => $accept['user_id'],
+                                    'name' => $accept['Vorname'] . ' ' . $accept['Nachname'],
+                                    'username' => $accept['username'],
+                                    'avatar_url' => Avatar::getAvatar($accept['user_id'])->getURL(Avatar::MEDIUM)
+                                ]) ?>'
+                            >
+                            </user-avatar-dropdown>
+                        </div>
+                        <a href="<?= $controller->url_for(sprintf('profile?username=%s', $accept['username'])) ?>"
+                            <? if ($accept['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                            <?= htmlReady($fullname) ?>
+                        </a>
+
+                        <? if ($accept['comment']) : ?>
+                            <?= tooltipHtmlIcon(sprintf(
+                                '<strong>%s</strong><br>%s',
+                                _('Bemerkung'),
+                                htmlReady($accept['comment'])
+                            )) ?>
+                        <? endif ?>
+                    </div>
 
                     <? if ($accept['comment']): ?>
                         <?= tooltipHtmlIcon(sprintf(

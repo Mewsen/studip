@@ -88,20 +88,35 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <?= Avatar::getAvatarDropdownHTML(new User($autor['user_id']), true)?>
-                    <span <? if ($autor['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                    <div class="user-avatar-container">
+                        <div class="use-vue-components ">
+                            <user-avatar-dropdown
+                                :user='<?= json_encode([
+                                    'id' => $autor['user_id'],
+                                    'name' => $autor['Vorname'] . ' ' . $autor['Nachname'],
+                                    'username' => $autor['username'],
+                                    'avatar_url' => Avatar::getAvatar($autor['user_id'])->getURL(Avatar::MEDIUM)
+                                ]) ?>'
+                            >
+                            </user-avatar-dropdown>
+                        </div>
+                        <a href="<?= $controller->url_for(sprintf('profile?username=%s', $autor['username'])) ?>"
+                            <? if ($autor['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                            <?= htmlReady($fullname) ?>
 
-                    <? if ($user_id === $autor['user_id'] && $autor['visible'] === 'no') : ?>
-                       (<?= _('Unsichtbar') ?>)
-                    <? endif ?>
+                            <? if ($user_id === $autor['user_id'] && $autor['visible'] === 'no') : ?>
+                                (<?= _('Unsichtbar') ?>)
+                            <? endif ?>
+                        </a>
 
-                    <? if ($is_tutor && $autor['comment']) : ?>
-                        <?= tooltipHtmlIcon(sprintf(
-                            '<strong>%s</strong><br>%s',
-                            _('Bemerkung'),
-                            htmlReady($autor['comment'])
-                        )) ?>
-                    <? endif ?>
+                        <? if ($is_tutor && $autor['comment']) : ?>
+                            <?= tooltipHtmlIcon(sprintf(
+                                '<strong>%s</strong><br>%s',
+                                _('Bemerkung'),
+                                htmlReady($autor['comment'])
+                            )) ?>
+                        <? endif ?>
+                    </div>
                 </td>
             <? if ($is_tutor) : ?>
                 <td>

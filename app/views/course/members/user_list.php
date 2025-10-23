@@ -83,8 +83,31 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <?= Avatar::getAvatarDropdownHTML(new User($leser['user_id']), true)?>
-                    <span <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                    <div class="user-avatar-container">
+                        <div class="use-vue-components ">
+                            <user-avatar-dropdown
+                                :user='<?= json_encode([
+                                    'id' => $leser['user_id'],
+                                    'name' => $leser['Vorname'] . ' ' . $leser['Nachname'],
+                                    'username' => $leser['username'],
+                                    'avatar_url' => Avatar::getAvatar($leser['user_id'])->getURL(Avatar::MEDIUM)
+                                ]) ?>'
+                            >
+                            </user-avatar-dropdown>
+                        </div>
+                        <a href="<?= $controller->url_for(sprintf('profile?username=%s', $leser['username'])) ?>"
+                            <? if ($leser['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                            <?= htmlReady($fullname) ?>
+                        </a>
+
+                        <? if ($is_tutor && $leser['comment']) : ?>
+                            <?= tooltipHtmlIcon(sprintf(
+                                '<strong>%s</strong><br>%s',
+                                _('Bemerkung'),
+                                htmlReady($leser['comment'])
+                            )) ?>
+                        <? endif ?>
+                    </div>
                 </td>
             <? if ($is_tutor) : ?>
                 <td>

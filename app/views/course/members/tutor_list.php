@@ -83,16 +83,31 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02u', ++$nr) ?></td>
                 <td>
-                    <?= Avatar::getAvatarDropdownHTML(new User($tutor['user_id']), true) ?>
-                    <span <? if ($tutor['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                    <div class="user-avatar-container">
+                        <div class="use-vue-components ">
+                            <user-avatar-dropdown
+                                :user='<?= json_encode([
+                                    'id' => $tutor['user_id'],
+                                    'name' => $tutor['Vorname'] . ' ' . $tutor['Nachname'],
+                                    'username' => $tutor['username'],
+                                    'avatar_url' => Avatar::getAvatar($tutor['user_id'])->getURL(Avatar::MEDIUM)
+                                ]) ?>'
+                            >
+                            </user-avatar-dropdown>
+                        </div>
+                        <a href="<?= $controller->url_for(sprintf('profile?username=%s', $tutor['username'])) ?>"
+                            <? if ($tutor['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                            <?= htmlReady($fullname) ?>
+                        </a>
 
-                    <? if ($is_tutor && $tutor['comment']) : ?>
-                        <?= tooltipHtmlIcon(sprintf(
-                            '<strong>%s</strong><br>%s',
-                            _('Bemerkung'),
-                            htmlReady($tutor['comment'])
-                        )) ?>
-                    <? endif ?>
+                        <? if ($is_tutor && $tutor['comment']) : ?>
+                            <?= tooltipHtmlIcon(sprintf(
+                                '<strong>%s</strong><br>%s',
+                                _('Bemerkung'),
+                                htmlReady($tutor['comment'])
+                            )) ?>
+                        <? endif ?>
+                    </div>
                 </td>
             <? if($is_dozent) : ?>
                 <td>

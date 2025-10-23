@@ -79,8 +79,23 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02d', ++$nr) ?></td>
                 <td>
-                    <?= Avatar::getAvatarDropdownHTML(new User($waiting['user_id']), true) ?>
-                    <span <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member-avatardropdown"'; ?> />
+                    <div class="user-avatar-container">
+                        <div class="use-vue-components ">
+                            <user-avatar-dropdown
+                                :user='<?= json_encode([
+                                    'id' => $waiting['user_id'],
+                                    'name' => $waiting['Vorname'] . ' ' . $waiting['Nachname'],
+                                    'username' => $waiting['username'],
+                                    'avatar_url' => Avatar::getAvatar($waiting['user_id'])->getURL(Avatar::MEDIUM)
+                                ]) ?>'
+                            >
+                            </user-avatar-dropdown>
+                        </div>
+                        <a href="<?= $controller->url_for(sprintf('profile?username=%s', $waiting['username'])) ?>"
+                            <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                            <?= htmlReady($fullname) ?>
+                        </a>
+                    </div>
                 </td>
                 <td style="text-align: center">
                     <?= $waiting['position'] ?>
