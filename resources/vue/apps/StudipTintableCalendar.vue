@@ -1,7 +1,7 @@
 <template>
     <StudipCalendar
         :config="config"
-        :custom_event_handlers="{drop: handleColourDrop}"
+        @eventDropped="handleColourDrop"
     ></StudipCalendar>
 </template>
 <script lang="ts">
@@ -33,8 +33,8 @@ export default defineComponent({
         },
     },
     methods: {
-        handleColourDrop: function(item: any) {
-            console.debug(item);
+        handleColourDrop: function(event: any) {
+            console.debug(event);
         }
     }
 })

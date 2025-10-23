@@ -37,6 +37,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 import {getLocale} from "../../assets/javascripts/lib/gettext";
+import {EventImpl} from "@fullcalendar/core/internal";
 
 export default defineComponent({
     name: "StudipCalendar",
@@ -89,6 +90,11 @@ export default defineComponent({
             default: true
         }
     },
+    emits: {
+        eventDropped(payload: {event: EventImpl}) {
+            return true;
+        }
+    },
     data() {
         //Make sure that defaults are set for the calendar:
         let calendar_options = this.config;
@@ -114,30 +120,14 @@ export default defineComponent({
         }
         //Set the event handlers, if needed.
         if (calendar_options.editable) {
-            if (this.custom_event_handlers.eventDrop) {
-                calendar_options.eventDrop   = this.custom_event_handlers.eventDrop;
-            } else {
-                calendar_options.eventDrop   = this.handleEventDrop;
-            }
-            if (this.custom_event_handlers.eventResize) {
-                calendar_options.eventResize = this.custom_event_handlers.eventResize;
-            } else {
-                calendar_options.eventResize = this.handleEventResize;
-            }
+            calendar_options.eventDrop   = this.handleEventDrop;
+            calendar_options.eventResize = this.handleEventResize;
 
             if (calendar_options.selectable) {
-                if (this.custom_event_handlers.select) {
-                    calendar_options.select = this.custom_event_handlers.select;
-                } else {
-                    calendar_options.select = this.handleSelection;
-                }
+                calendar_options.select = this.handleSelection;
             }
         }
-        if (this.custom_event_handlers.eventClick) {
-            calendar_options.eventClick = this.custom_event_handlers.eventClick;
-        } else {
-            calendar_options.eventClick = this.handleEventClick;
-        }
+        calendar_options.eventClick = this.handleEventClick;
 
         let holiday_cache = sessionStorage.getItem('fullcalendar_holidays');
         let vacation_cache = sessionStorage.getItem('fullcalendar_vacations');
@@ -350,6 +340,7 @@ export default defineComponent({
                     }
                 );
             }
+            this.$emit('eventDropped', event);
         },
         handleEventResize: function(resize_arg: EventResizeDoneArg) {
             if (!this.calendar_options.editable
