@@ -17,6 +17,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
+import {getLocale} from "../../assets/javascripts/lib/gettext";
 
 export default defineComponent({
     name: "StudipCalendar",
@@ -77,6 +78,17 @@ export default defineComponent({
         //TODO: load on demand
         calendar_options.plugins = [dayGridPlugin, timeGridPlugin, resourceTimelinePlugin, interactionPlugin];
         calendar_options.schedulerLicenseKey = 'GPL-My-Project-Is-Open-Source';
+        calendar_options.firstDay = 1;
+
+        //Fullcalendar needs a short version of the locale:
+        let short_locale: string = getLocale();
+        if (short_locale) {
+            let underscore = short_locale.indexOf('_');
+            short_locale = short_locale.substring(0, underscore);
+        } else {
+            short_locale = 'de';
+        }
+        calendar_options.locale = short_locale;
 
         if (!calendar_options.initialView) {
             calendar_options.initialView = 'timeGridWeek';
@@ -334,7 +346,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import '../../assets/stylesheets/scss/buttons';
 
-.fc {
+:deep(.fc) {
     .fc-toolbar.fc-header-toolbar {
         margin-bottom: 0.5em;
     }
@@ -347,6 +359,7 @@ export default defineComponent({
             margin-top: 0;
             margin-bottom: 0;
             padding: 0;
+            color: red; /*debug*/
 
             &:last-of-type {
                 margin-right: 0;

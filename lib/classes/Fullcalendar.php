@@ -99,8 +99,10 @@ class Fullcalendar
                 $this->attributes,
                 [$real_data_name => '1']
             ),
-            'dialog_size' => 'auto',
-            'action_urls' => []
+            'dialog_size'       => 'auto',
+            'action_urls'       => [],
+            'display_holidays'  => true,
+            'display_vacations' => true
         ];
         if (is_array($fullcalendar_config['studip_urls'])) {
             $template_params['action_urls'] = $fullcalendar_config['studip_urls'];
@@ -109,6 +111,14 @@ class Fullcalendar
         if (!empty($fullcalendar_config['dialog_size'])) {
             $template_params['dialog_size'] = $fullcalendar_config['dialog_size'];
             unset($fullcalendar_config['dialog_size']);
+        }
+        if (!empty($fullcalendar_config['display_holidays'])) {
+            $template_params['display_holidays'] = $fullcalendar_config['display_holidays'];
+            unset($fullcalendar_config['display_holidays']);
+        }
+        if (!empty($fullcalendar_config['display_vacations'])) {
+            $template_params['display_vacations'] = $fullcalendar_config['display_vacations'];
+            unset($fullcalendar_config['display_vacations']);
         }
         $template_params['config'] = $fullcalendar_config;
 
