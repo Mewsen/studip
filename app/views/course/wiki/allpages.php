@@ -56,7 +56,11 @@
                 </td>
                 <td data-text="<?= htmlReady($page->user ? $page->user->getFullName() : _('unbekannt')) ?>">
                 <? if ($page->user): ?>
-                    <?= Avatar::getAvatarDropdownHTML($page->user, true) ?>
+                    <?= Avatar::getAvatarDropdownHTML([
+                        'id' => $page->user->id,
+                        'name' => $page->user->getFullName(),
+                        'username' => $page->user->username
+                    ]) ?>
                 <? else: ?>
                     <?= _('unbekannt') ?>
                 <? endif; ?>

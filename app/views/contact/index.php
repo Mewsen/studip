@@ -54,7 +54,11 @@
                                     <? if (isset($flash['contacts']) && in_array($contact->id, $flash['contacts'])) echo 'checked'; ?>>
                             </td>
                             <td>
-                                <?= Avatar::getAvatarDropdownHTML($contact, true) ?>
+                                <?= Avatar::getAvatarDropdownHTML([
+                                    'id' => $contact->id,
+                                    'name' => $contact->getFullName(),
+                                    'username' => $contact->username
+                                ]) ?>
                             </td>
                             <td class="hidden-small-down">
                                 <a data-dialog="button"
