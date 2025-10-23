@@ -58,11 +58,12 @@ if ($file->isDownloadable($GLOBALS['user']->id)) {
     <? endif ?>
     <? $author_name = $file->getUserName() ?>
     <td data-sort-value="<?= htmlReady($author_name) ?>" class="responsive-hidden">
-        <? if ($file->getUser()) : ?>
-            <?= Avatar::getAvatarDropdownHTML(User::find($file->getUser()->id), true) ?>
-    <? else: ?>
-        <?= htmlReady($author_name) ?>
-    <? endif; ?>
+        <?php $file_user = $file->getUser() ?>
+        <? if ($file_user) : ?>
+            <?= Avatar::getAvatarDropdownHTML($file_user, true) ?>
+        <? else: ?>
+            <?= htmlReady($author_name) ?>
+        <? endif; ?>
     </td>
     <? $chdate = $file->getLastChangeDate() ?>
     <td title="<?= strftime('%x %X', $chdate) ?>" data-sort-value="<?= htmlReady($chdate) ?>" class="responsive-hidden">
