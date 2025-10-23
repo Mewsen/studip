@@ -343,10 +343,10 @@ export default defineComponent({
     }
 })
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 @import '../../assets/stylesheets/scss/buttons';
 
-:deep(.fc) {
+.fc {
     .fc-toolbar.fc-header-toolbar {
         margin-bottom: 0.5em;
     }
@@ -359,7 +359,6 @@ export default defineComponent({
             margin-top: 0;
             margin-bottom: 0;
             padding: 0;
-            color: red; /*debug*/
 
             &:last-of-type {
                 margin-right: 0;
