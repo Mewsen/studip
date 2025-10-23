@@ -29,7 +29,7 @@ class Api_Oauth2_ClientsController extends AuthenticatedController
 
         $this->redirect('admin/oauth2');
 
-        list($valid, $data, $errors) = $this->validateCreateClientRequest();
+        [$valid, $data, $errors] = $this->validateCreateClientRequest();
 
         if (!$valid) {
             PageLayout::postError(_('Das Erstellen eines OAuth2-Clients war nicht erfolgreich.'), $errors);
@@ -55,7 +55,7 @@ class Api_Oauth2_ClientsController extends AuthenticatedController
     /**
      * Create a authorization code client.
      *
-     * @param array<string, mixed>
+     * @param array<string, mixed> $data
      */
     private function createAuthCodeClient(array $data): Client
     {
@@ -76,17 +76,30 @@ class Api_Oauth2_ClientsController extends AuthenticatedController
     private function outputClientCredentials(Client $client): void
     {
         if ($client->confidential()) {
-            PageLayout::postWarning(_('Der OAuth2-Client wurde erstellt.'), [
-                sprintf(_('Die <em lang="en"> client_id </em> lautet: <pre>%s</pre>'), $client['id']),
-                sprintf(_('Das <em lang="en"> client_secret </em> lautet: <pre>%s</pre>'), $client->plainsecret),
-                _(
-                    'Notieren Sie sich bitte das <em lang="en"> client_secret </em>. Es wird Ihnen nur <strong> dieses eine Mal </strong> angezeigt.'
-                ),
-            ]);
+            $this->flash['oauth2-message'] = MessageBox::warning(
+                _('Der OAuth2-Client wurde erstellt.'),
+                [
+                    sprintf(
+                        _('Die <em lang="en"> client_id </em> lautet: <pre>%s</pre>'),
+                        htmlReady($client['id'])
+                    ),
+                    sprintf(
+                        _('Das <em lang="en"> client_secret </em> lautet: <pre>%s</pre>'),
+                        htmlReady($client->plainsecret)
+                    ),
+                    _('Notieren Sie sich bitte das <em lang="en"> client_secret </em>. Es wird Ihnen nur <strong> dieses eine Mal </strong> angezeigt.'),
+                ]
+            );
         } else {
-            PageLayout::postSuccess(_('Der OAuth2-Client wurde erstellt.'), [
-                sprintf(_('Die <em lang="en"> client_id </em> lautet: <pre>%s</pre>'), $client['id']),
-            ]);
+            $this->flash['oauth2-message'] = MessageBox::success(
+                _('Der OAuth2-Client wurde erstellt.'),
+                [
+                    sprintf(
+                        _('Die <em lang="en"> client_id </em> lautet: <pre>%s</pre>'),
+                        htmlReady($client['id'])
+                    ),
+                ]
+            );
         }
     }
 
