@@ -75,6 +75,15 @@
     }
 }
 
+/* Special case for Fullcalendar events in a Fullcalendar
+ * that is diplayed inside a Stud.IP contentbox.
+ * The contentbox style would make events unnecessary empty.
+ */
+section.contentbox .fc .fc-event-main section
+{
+    padding: 0;
+}
+
 /* Put the year in a new line in the mobile view: */
 html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
     span.dow, span.year {
