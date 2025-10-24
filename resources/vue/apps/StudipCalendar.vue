@@ -134,13 +134,13 @@ export default defineComponent({
         if (calendar_options.editable) {
             calendar_options.eventDrop    = this.handleEventDrop;
             calendar_options.eventResize  = this.handleEventResize;
-            calendar_options.eventReceive = this.handleEventReceive;
 
             if (calendar_options.selectable) {
                 calendar_options.select = this.handleSelection;
             }
         }
-        calendar_options.eventClick = this.handleEventClick;
+        calendar_options.eventClick   = this.handleEventClick;
+        calendar_options.eventReceive = this.handleEventReceive;
 
         //Build the event sources:
         if (!calendar_options.eventSources) {
