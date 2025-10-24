@@ -459,14 +459,13 @@ class Admin_CourseplanningController extends AuthenticatedController
         $this->weekday     = $weekday;
     }
 
-    public function move_event_action()
+    public function move_event_action($cycle_date_id)
     {
-        $metadate_id = Request::option('cycle_id');
         $begin = Request::getDateTime('begin', DateTime::RFC3339);
         $end = Request::getDateTime('end', DateTime::RFC3339);
         $success = false;
 
-        $cdate = SeminarCycleDate::find($metadate_id);
+        $cdate = SeminarCycleDate::find($cycle_date_id);
         if ($cdate) {
             if (Request::submitted('resource_id')) {
                 InstituteCalendarHelper::setCourseEventcolumn(

@@ -395,7 +395,7 @@ class InstituteCalendarHelper
                 $end_time[0] += 2;
                 $end_time = implode(':', $end_time);
 
-                $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event');
+                $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event/' . $cycle_date->id);
                 $name = $course->getFullName('number-name');
 
                 if ($start_time != $cycle_date['start_time'] && $end_time != $cycle_date['end_time']) {
