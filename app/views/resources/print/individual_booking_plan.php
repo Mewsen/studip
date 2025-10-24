@@ -38,6 +38,8 @@
                             ? Request::get("defaultView")
                             : 'timeGridWeek',
                     'initialDate' => Request::get("defaultDate"),
+                    'display_holidays' => false,
+                    'display_vacations' => false,
                     'editable' => false
                 ]
             ]
