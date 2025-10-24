@@ -63,21 +63,7 @@ export default defineComponent({
         config: {
             type: Object,
             required: true,
-            default: () => ({
-                editable:    false,
-                selectable:  false,
-                slotMinTime: '08:00',
-                slotMaxTime: '20:00',
-                initialDate: new Date(),
-                allDaySlot:  false,
-                allDayText:  '',
-                weekNumbers: true,
-                header:      {
-                    start:  ['dayGridYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay'],
-                    center: ['title'],
-                    end:    ['prev', 'today', 'next']
-                }
-            })
+            default: () => ({})
         },
         action_urls: {
             type: Object,
@@ -114,13 +100,9 @@ export default defineComponent({
         let calendar_options = this.config;
         //Add the plugins here so that users of this component
         //do not need to add them separately.
-        //TODO: load on demand
+        //TODO: load plugins on demand, if possible
         calendar_options.plugins = [dayGridPlugin, timeGridPlugin, resourceTimelinePlugin, interactionPlugin];
         calendar_options.schedulerLicenseKey = 'GPL-My-Project-Is-Open-Source';
-        calendar_options.firstDay = 1;
-        calendar_options.height = 'auto';
-        calendar_options.contentHeight = 'auto';
-
         //Fullcalendar needs a short version of the locale:
         let short_locale: string = getLocale();
         if (short_locale) {
@@ -131,14 +113,52 @@ export default defineComponent({
         calendar_options.locales = [locale_de, locale_en_gb];
         calendar_options.locale = short_locale;
 
+        //Set other fixed options:
+        calendar_options.firstDay = 1;
+        calendar_options.weekNumberCalculation = 'ISO';
+        calendar_options.height = 'auto';
+        calendar_options.contentHeight = 'auto';
+
+        //Provide defaults for options that can be altered:
+        if (!calendar_options.timeFormat) {
+            calendar_options.timeFormat = 'H:mm';
+        }
+        if (!calendar_options.nowIndicator) {
+            calendar_options.nowIndicator = true;
+        }
+        if (!calendar_options.slotMinTime) {
+            calendar_options.slotMinTime = '08:00';
+        }
+        if (!calendar_options.slotMaxTime) {
+            calendar_options.slotMaxTime = '20:00';
+        }
+        if (!calendar_options.initialDate) {
+            calendar_options.initialDate = new Date();
+        }
         if (!calendar_options.initialView) {
             calendar_options.initialView = 'timeGridWeek';
         }
+        if (calendar_options.allDaySlot === undefined) {
+            calendar_options.allDaySlot = false;
+        }
+        if (calendar_options.allDayText === undefined) {
+            calendar_options.allDayText = '';
+        }
+        if (calendar_options.weekNumbers === undefined) {
+            calendar_options.weekNumbers = true;
+        }
+        if (!calendar_options.header) {
+            calendar_options.header = {
+                start:  ['dayGridYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay'],
+                center: ['title'],
+                end:    ['prev', 'today', 'next']
+            };
+        }
+
         //Set the event handlers, if needed.
         if (calendar_options.editable) {
             calendar_options.eventDrop    = this.handleEventDrop;
             calendar_options.eventResize  = this.handleEventResize;
-
             if (calendar_options.selectable) {
                 calendar_options.select = this.handleSelection;
             }
