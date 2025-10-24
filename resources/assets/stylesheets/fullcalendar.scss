@@ -39,6 +39,11 @@
             text-decoration: underline;
         }
 
+       .fc-event-title {
+           overflow-wrap: break-word;
+       }
+
+        /* TODO */
         .fc-title .icon {
             content: '';
             display: inline-block;
