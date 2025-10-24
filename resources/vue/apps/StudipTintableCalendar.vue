@@ -25,10 +25,9 @@ export default defineComponent({
                 allDaySlot:  false,
                 allDayText:  '',
                 weekNumbers: true,
-                header:      {
-                    start:  ['dayGridYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay'],
-                    center: ['title'],
-                    end:    ['prev', 'today', 'next']
+                headerToolbar: {
+                    left:  ['dayGridMonth', 'timeGridWeek', 'timeGridDay'],
+                    right: ['prev', 'next']
                 }
             })
         },

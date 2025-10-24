@@ -34,8 +34,7 @@
                             : 'timeGridWeek',
                     'initialDate' => Request::get("defaultDate"),
                     'editable' => false
-                ],
-                ['class' => 'individual-booking-plan'],
+                ]
             ]
         ) ?>
 </section>
