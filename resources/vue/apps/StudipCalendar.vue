@@ -34,6 +34,9 @@ import interactionPlugin, {EventResizeDoneArg} from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+import locale_de from '@fullcalendar/core/locales/de';
+import locale_en_gb from '@fullcalendar/core/locales/en-gb';
+
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 import {getLocale} from "../../assets/javascripts/lib/gettext";
@@ -108,11 +111,11 @@ export default defineComponent({
         //Fullcalendar needs a short version of the locale:
         let short_locale: string = getLocale();
         if (short_locale) {
-            let underscore = short_locale.indexOf('_');
-            short_locale = short_locale.substring(0, underscore);
+            short_locale = short_locale.replace('_', '-');
         } else {
-            short_locale = 'de';
+            short_locale = 'de-DE';
         }
+        calendar_options.locales = [locale_de, locale_en_gb];
         calendar_options.locale = short_locale;
 
         if (!calendar_options.initialView) {
