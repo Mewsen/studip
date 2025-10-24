@@ -3,7 +3,8 @@
         <template v-slot:eventContent='arg'>
             <section v-if="arg.event.display === 'auto' && ['timeGridDay', 'timeGridWeek'].includes(arg.view.type)"
                      :title="arg.event.title">
-                <span class="fc-event-time">
+                <span v-if="!arg.event.allDay"
+                      class="fc-event-time">
                     {{ arg.timeText }}
                 </span>
                 <span class="fc-event-title-container">
@@ -12,10 +13,11 @@
                     </span>
                 </span>
             </section>
-            <div v-if="arg.event.display === 'auto' && ['dayGridMonth', 'dayGridYear'].includes(arg.view.type)"
+            <div v-if="arg.event.display === 'auto' && ['dayGridMonth', 'dayGridYear', 'resourceTimelineWeek', 'resourceTimelineDay'].includes(arg.view.type)"
                  :style="{color: arg.event.textColor, backgroundColor: arg.event.backgroundColor, borderColor: arg.event.borderColor}"
                  :title="arg.event.title">
-                <span class="fc-event-time">
+                <span v-if="['dayGridMonth', 'dayGridYear'].includes(arg.view.type)"
+                      class="fc-event-time">
                     {{ arg.timeText }}
                 </span>
                 <span class="fc-event-title-container">
