@@ -27,6 +27,11 @@
                     ],
                     'slotMinTime' => ($min_time),
                     'slotMaxTime' => ($max_time),
+                    'headerToolbar' => [
+                        'left' => '',
+                        'center' => '',
+                        'right' => ''
+                    ],
                     'allDaySlot' => false,
                     'initialView' =>
                         in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])

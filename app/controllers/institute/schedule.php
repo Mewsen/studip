@@ -56,7 +56,7 @@ class Institute_ScheduleController extends AuthenticatedController
                 ],
                 'views' => [
                     'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long'],
+                        'dayHeaderFormat' => ['weekday' => 'long'],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'slotDuration'       => $week_slot_duration
                     ]

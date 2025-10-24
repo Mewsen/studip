@@ -104,7 +104,7 @@ class Fullcalendar
             'display_holidays'  => true,
             'display_vacations' => true
         ];
-        if (is_array($fullcalendar_config['studip_urls'])) {
+        if (!empty($fullcalendar_config['studip_urls']) && is_array($fullcalendar_config['studip_urls'])) {
             $template_params['action_urls'] = $fullcalendar_config['studip_urls'];
             unset($fullcalendar_config['studip_urls']);
         }

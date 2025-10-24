@@ -462,8 +462,8 @@ class Admin_CourseplanningController extends AuthenticatedController
     public function move_event_action()
     {
         $metadate_id = Request::option('cycle_id');
-        $begin = Request::get('begin');
-        $end = Request::get('end');
+        $begin = Request::getDateTime('begin', DateTime::RFC3339);
+        $end = Request::getDateTime('end', DateTime::RFC3339);
         $success = false;
 
         $cdate = SeminarCycleDate::find($metadate_id);
@@ -477,13 +477,9 @@ class Admin_CourseplanningController extends AuthenticatedController
                 );
             }
 
-            $begin_date = new DateTime($begin);
-            $end_date = new DateTime($end);
-            $begin_date->setTimezone(new DateTimeZone('UTC'));
-            $end_date->setTimezone(new DateTimeZone('UTC'));
-            $weekday = $begin_date->format('w');
-            $cdate->start_time = $begin_date->format('H:i:s');
-            $cdate->end_time = $end_date->format('H:i:s');
+            $weekday = $begin->format('w');
+            $cdate->start_time = $begin->format('H:i:s');
+            $cdate->end_time = $end->format('H:i:s');
             $cdate->weekday = $weekday;
             $success = $cdate->store();
         }
