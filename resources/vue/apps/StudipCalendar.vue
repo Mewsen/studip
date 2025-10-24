@@ -23,10 +23,9 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {
-    CalendarOptions, CustomRenderingHandler,
+    CalendarOptions,
     DateSelectionApi,
     EventClickArg, EventContentArg,
-    EventDropArg, EventRenderRange,
     EventSourceFuncArg
 } from '@fullcalendar/core';
 import FullCalendar from "@fullcalendar/vue3";
@@ -143,15 +142,16 @@ export default defineComponent({
             let holiday_source = function(arg: EventSourceFuncArg, successCallback: (events: object) => void, failureCallback: () => void) {
                 const startYear = arg.start.getFullYear();
                 const endYear   = arg.end.getFullYear();
-                const requests: any = [];
+                const requests: Array<Promise<unknown>> = [];
                 let holiday_cache_str = sessionStorage.getItem('fullcalendar_holidays');
-                let holiday_cache: any = {};
+                let holiday_cache     = new Map<number, Array<object>>();
                 if (holiday_cache_str != null) {
-                    holiday_cache = JSON.parse(holiday_cache_str);
+                    holiday_cache = new Map<number, Array<object>>(JSON.parse(holiday_cache_str));
                 }
                 for (let year = startYear; year <= endYear; year++) {
-                    if (holiday_cache[year.toString()]) {
-                        return Promise.resolve(holiday_cache[year.toString()]);
+                    let existing_cache = holiday_cache.get(year);
+                    if (existing_cache) {
+                        return Promise.resolve(existing_cache);
                     }
                     let request = jsonapi.withPromises().GET('holidays', {
                         data: { 'filter[year]': year }
@@ -189,15 +189,19 @@ export default defineComponent({
                         }
 
                         if (holiday_cache != null) {
-                            holiday_cache[year.toString()] = events;
+                            holiday_cache.set(year, events);
+                            sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(Array.from(holiday_cache.entries())));
                         }
-                        sessionStorage.setItem('fullcalendar_holidays', JSON.stringify(holiday_cache));
+
                         return events;
                     });
                     requests.push(request);
                 }
                 Promise.all(requests).then(results => {
-                    const events = [].concat(...results);
+                    let events: any = [];
+                    for (let result of results) {
+                        events = events.concat(result);
+                    }
                     successCallback(events);
                     return results;
                 }).catch(failureCallback);
@@ -210,13 +214,14 @@ export default defineComponent({
                 const endYear = arg.end.getFullYear();
                 const requests: any = [];
                 let vacation_cache_str = sessionStorage.getItem('fullcalendar_vacations');
-                let vacation_cache: any = {};
+                let vacation_cache = new Map<number, Array<object>>();
                 if (vacation_cache_str != null) {
-                    vacation_cache = JSON.parse(vacation_cache_str);
+                    vacation_cache = new Map<number, Array<object>>(JSON.parse(vacation_cache_str));
                 }
                 for (let year = startYear; year <= endYear; year++) {
-                    if (vacation_cache[year]) {
-                        return Promise.resolve(vacation_cache[year.toString()]);
+                    let existing_cache = vacation_cache.get(year);
+                    if (existing_cache) {
+                        return Promise.resolve(existing_cache);
                     }
                     let request = jsonapi.withPromises().get('vacations', {
                         data: {'filter[year]': year}
@@ -248,9 +253,10 @@ export default defineComponent({
                         }
 
                         if (vacation_cache != null) {
-                            vacation_cache[year.toString()] = items;
+                            vacation_cache.set(year, items);
+                            sessionStorage.setItem('fullcalendar_vacations', JSON.stringify(Array.from(vacation_cache.entries())));
                         }
-                        sessionStorage.setItem('fullcalendar_vacations', JSON.stringify(vacation_cache));
+
                         return items;
                     });
                     requests.push(request);
