@@ -18,13 +18,14 @@ $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
     'slotDuration' => '01:00:00',
     'slotLabelInterval' => '01:00',
     'slotLabelFormat' => ['hour' => '2-digit', 'minute' => '2-digit'],
-    'timeZone' => 'UTC',
     'headerToolbar' => [
         'left' => '',
         'right' => ''
     ],
     'dayHeaderFormat' => ['weekday' => 'long'],
-    'defaultView' => 'timeGridWeek',
+    'initialView' => 'timeGridWeek',
+    'display_holidays' => false,
+    'display_vacations' => false,
     'eventSources' => [compact('events')],
     'slotEventOverlap' => false,
     'displayEventTime' => false,
