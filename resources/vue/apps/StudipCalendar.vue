@@ -1,7 +1,7 @@
 <template>
     <FullCalendar :options="calendar_options">
         <template v-slot:eventContent='arg'>
-            <section v-if="arg.event.display === 'auto'">
+            <section v-if="arg.event.display === 'auto' && ['timeGridDay', 'timeGridWeek'].includes(arg.view.type)">
                 <span class="fc-event-time">
                     {{ arg.timeText }}
                 </span>
@@ -11,6 +11,17 @@
                     </span>
                 </span>
             </section>
+            <div v-if="arg.event.display === 'auto' && ['dayGridMonth', 'dayGridYear'].includes(arg.view.type)"
+                     :style="{color: arg.event.textColor, backgroundColor: arg.event.backgroundColor, borderColor: arg.event.borderColor}">
+                <span class="fc-event-time">
+                    {{ arg.timeText }}
+                </span>
+                <span class="fc-event-title-container">
+                    <span class="fc-event-title">
+                    {{ arg.event.title }}
+                    </span>
+                </span>
+            </div>
             <div v-if="arg.event.display === 'background'">
                 <div v-if="arg.event.extendedProps.generate_title"
                      class="title">
@@ -22,14 +33,14 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
+import FullCalendar from "@fullcalendar/vue3";
 import {
     CalendarOptions,
     DateSelectionApi,
-    EventClickArg, EventContentArg,
+    EventClickArg, EventContentArg, EventDropArg,
     EventSourceFuncArg
 } from '@fullcalendar/core';
-import FullCalendar from "@fullcalendar/vue3";
-import interactionPlugin, {EventResizeDoneArg} from '@fullcalendar/interaction';
+import interactionPlugin, {EventReceiveArg, EventResizeDoneArg} from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
@@ -93,9 +104,8 @@ export default defineComponent({
         }
     },
     emits: {
-        eventDropped(payload: {event: EventImpl}) {
-            return true;
-        }
+        eventDropped: (payload: EventDropArg) => payload,
+        eventReceived: (payload: EventReceiveArg) => payload
     },
     data() {
         //Make sure that defaults are set for the calendar:
@@ -122,8 +132,9 @@ export default defineComponent({
         }
         //Set the event handlers, if needed.
         if (calendar_options.editable) {
-            calendar_options.eventDrop   = this.handleEventDrop;
-            calendar_options.eventResize = this.handleEventResize;
+            calendar_options.eventDrop    = this.handleEventDrop;
+            calendar_options.eventResize  = this.handleEventResize;
+            calendar_options.eventReceive = this.handleEventReceive;
 
             if (calendar_options.selectable) {
                 calendar_options.select = this.handleSelection;
@@ -344,7 +355,7 @@ export default defineComponent({
                     }
                 );
             }
-            this.$emit('eventDropped', event);
+            this.$emit('eventDropped', drop_arg as EventDropArg);
         },
         handleEventResize: function(resize_arg: EventResizeDoneArg) {
             if (!this.calendar_options.editable
@@ -359,14 +370,31 @@ export default defineComponent({
                     data: {
                         start:   resize_arg.event.startStr,
                         end:     resize_arg.event.endStr,
-                        all_day: (resize_arg.event.allDay ? '1' : '0')
+                        all_day: resize_arg.event.allDay ? '1' : '0'
                     },
                     size: this.dialog_size
                 }
             );
         },
+        handleEventReceive(receive_arg: EventReceiveArg) {
+            console.debug(receive_arg);
+            if (receive_arg.event.startStr && receive_arg.event.endStr) {
+                if (receive_arg.event.extendedProps.studip_api_urls.receive_dialog) {
+                    Dialog.fromURL(
+                        receive_arg.event.extendedProps.studip_api_urls.receive_dialog,
+                        {
+                            data: {
+                                start:   receive_arg.event.startStr,
+                                end:     receive_arg.event.endStr,
+                                all_day: receive_arg.event.allDay ? '1' : '0'
+                            }
+                        }
+                    );
+                }
+            }
+            this.$emit('eventReceived', receive_arg);
+        },
         eventRender: function(render_arg: EventContentArg) {
-            console.debug(render_arg);
             //If a background event with title shall be rendered, we have to check
             //if an all-day slot is present or not.
             render_arg.event.extendedProps.generate_title = false;

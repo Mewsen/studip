@@ -1,12 +1,13 @@
 <template>
     <StudipCalendar
-        :config="config"
-        @eventDropped="handleColourDrop"
+        :config="calendar_config"
+        @eventReceived="handleColourDrop"
     ></StudipCalendar>
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue'
 import StudipCalendar from "./StudipCalendar.vue";
+import {EventReceiveArg} from "@fullcalendar/interaction";
 
 export default defineComponent({
     name: "StudipTintableCalendar",
@@ -32,9 +33,15 @@ export default defineComponent({
             })
         },
     },
+    data() {
+        return {
+            calendar_config: this.config
+        };
+    },
     methods: {
-        handleColourDrop: function(event: any) {
-            console.debug(event);
+        handleColourDrop: function(arg: EventReceiveArg) {
+            console.debug(arg);
+            //test
         }
     }
 })
