@@ -1,7 +1,8 @@
 <template>
     <FullCalendar :options="calendar_options">
         <template v-slot:eventContent='arg'>
-            <section v-if="arg.event.display === 'auto' && ['timeGridDay', 'timeGridWeek'].includes(arg.view.type)">
+            <section v-if="arg.event.display === 'auto' && ['timeGridDay', 'timeGridWeek'].includes(arg.view.type)"
+                     :title="arg.event.title">
                 <span class="fc-event-time">
                     {{ arg.timeText }}
                 </span>
@@ -12,7 +13,8 @@
                 </span>
             </section>
             <div v-if="arg.event.display === 'auto' && ['dayGridMonth', 'dayGridYear'].includes(arg.view.type)"
-                     :style="{color: arg.event.textColor, backgroundColor: arg.event.backgroundColor, borderColor: arg.event.borderColor}">
+                 :style="{color: arg.event.textColor, backgroundColor: arg.event.backgroundColor, borderColor: arg.event.borderColor}"
+                 :title="arg.event.title">
                 <span class="fc-event-time">
                     {{ arg.timeText }}
                 </span>
@@ -22,8 +24,9 @@
                     </span>
                 </span>
             </div>
-            <div v-if="arg.event.display === 'background'">
-                <div v-if="arg.event.extendedProps.generate_title"
+            <div v-if="arg.event.display === 'background'"
+                 :title="arg.event.title">
+                <div v-if="arg.event.extendedProps['generate-title']"
                      class="title">
                     {{ arg.event.title }}
                 </div>
@@ -37,7 +40,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import {
     CalendarOptions,
     DateSelectionApi,
-    EventClickArg, EventContentArg, EventDropArg,
+    EventClickArg, EventDropArg, EventMountArg,
     EventSourceFuncArg
 } from '@fullcalendar/core';
 import interactionPlugin, {EventReceiveArg, EventResizeDoneArg} from '@fullcalendar/interaction';
@@ -50,7 +53,6 @@ import locale_en_gb from '@fullcalendar/core/locales/en-gb';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 import {getLocale} from "../../assets/javascripts/lib/gettext";
-import {EventImpl} from "@fullcalendar/core/internal";
 
 export default defineComponent({
     name: "StudipCalendar",
@@ -139,8 +141,9 @@ export default defineComponent({
                 calendar_options.select = this.handleSelection;
             }
         }
-        calendar_options.eventClick   = this.handleEventClick;
-        calendar_options.eventReceive = this.handleEventReceive;
+        calendar_options.eventDidMount = this.handleEventMount;
+        calendar_options.eventClick    = this.handleEventClick;
+        calendar_options.eventReceive  = this.handleEventReceive;
 
         //Build the event sources:
         if (!calendar_options.eventSources) {
@@ -394,21 +397,22 @@ export default defineComponent({
             }
             this.$emit('eventReceived', receive_arg);
         },
-        eventRender: function(render_arg: EventContentArg) {
+        handleEventMount: function(mount_arg: EventMountArg) {
             //If a background event with title shall be rendered, we have to check
             //if an all-day slot is present or not.
-            render_arg.event.extendedProps.generate_title = false;
-            if (render_arg.event.display === 'background' && render_arg.event.title && render_arg.event.allDay) {
-                if (render_arg.view.getOption('all-day') === true) {
+            mount_arg.el.setAttribute('title', mount_arg.event.title);
+            mount_arg.event.setExtendedProp('generate-title', false);
+            if (mount_arg.event.display === 'background' && mount_arg.event.title && mount_arg.event.allDay) {
+                if (mount_arg.view.getOption('all-day') === true) {
                     //An all-day slot is present in the calendar.
-                    if (render_arg.isStart || render_arg.isEnd) {
-                        render_arg.event.extendedProps.generate_title = true;
+                    if (mount_arg.isStart || mount_arg.isEnd) {
+                        mount_arg.event.setExtendedProp('generate-title', true);
                     }
                 } else {
                     //No all-day slot in the calendar. Display a title
                     //at the start of the day in the calendar.
-                    if (!render_arg.isStart || !render_arg.isEnd) {
-                        render_arg.event.extendedProps.generate_title = true;
+                    if (!mount_arg.isStart || !mount_arg.isEnd) {
+                        mount_arg.event.setExtendedProp('generate-title', true);
                     }
                 }
             }
