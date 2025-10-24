@@ -525,13 +525,13 @@ class Calendar_CalendarController extends AuthenticatedController
                         'displayEventEnd' => true
                     ],
                     'timeGridWeek' => [
-                        'columnHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
+                        'dayHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['week']
                     ],
                     'timeGridDay'  => [
-                        'columnHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
+                        'dayHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['day']
                     ]

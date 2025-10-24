@@ -374,15 +374,15 @@ class Admin_OverlappingController extends AuthenticatedController
                 'defaultDate' => date('Y-m-d', $this->selected_semester->vorles_beginn),
                 'allDaySlot'  => false,
                 'allDayText'  => '',
-                'header'      => [
-                    'left'    => false,
-                    'center'  => $this->selected_semester->name,
-                    'right'   => false,
+                'headerToolbar' => [
+                    'left'   => false,
+                    'center' => $this->selected_semester->name,
+                    'right'  => false,
                 ],
                 'weekNumbers' => false,
                 'views' => [
                     'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'omitCommas' => true],
+                        'dayHeaderFormat' => ['weekday' => 'short', 'omitCommas' => true],
                         'weekends'           => true,
                         'slotDuration'       => '00:30:00'
                     ],

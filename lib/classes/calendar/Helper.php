@@ -160,14 +160,14 @@ class Helper
 
         $available_views = [
             'timeGridWeek' => [
-                'columnHeaderFormat' => ['weekday' => 'short'],
+                'dayHeaderFormat' => ['weekday' => 'short'],
                 'slotDuration'       => $slot_duration
             ]
         ];
         if (!in_array(date('N'), $hidden_days)) {
             //The current day is visible: Allow a day view:
             $available_views['timeGridDay'] = [
-                'columnHeaderFormat' => ['weekday' => 'short'],
+                'dayHeaderFormat' => ['weekday' => 'short'],
                 'slotDuration'       => $slot_duration
             ];
         }
@@ -186,7 +186,7 @@ class Helper
                     'right' => 'prev,today,next'
                 ],
                 'views' => $available_views,
-                'columnHeaderFormat' => ['weekday' => 'short'],
+                'dayHeaderFormat' => ['weekday' => 'short'],
                 'initialView' => 'timeGridWeek',
                 'initialDate' => date('Y-m-d'),
                 'slotLabelFormat' => [
@@ -270,13 +270,13 @@ class Helper
                         'displayEventEnd' => true
                     ],
                     'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['week']
                     ],
                     'timeGridDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['day']
                     ]

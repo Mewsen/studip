@@ -11,19 +11,19 @@ $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
 ?>
 
 <?= Studip\Fullcalendar::create($plan_title, [
-    'minTime' => $min_time,
-    'maxTime' => $max_time,
+    'slotMinTime' => $min_time,
+    'slotMaxTime' => $max_time,
     'allDaySlot' => false,
     'nowIndicator' => false,
     'slotDuration' => '01:00:00',
     'slotLabelInterval' => '01:00',
     'slotLabelFormat' => ['hour' => '2-digit', 'minute' => '2-digit'],
     'timeZone' => 'UTC',
-    'header' => [
+    'headerToolbar' => [
         'left' => '',
         'right' => ''
     ],
-    'columnHeaderFormat' => ['weekday' => 'long'],
+    'dayHeaderFormat' => ['weekday' => 'long'],
     'defaultView' => 'timeGridWeek',
     'eventSources' => [compact('events')],
     'slotEventOverlap' => false,

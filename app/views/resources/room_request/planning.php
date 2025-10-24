@@ -55,7 +55,7 @@
             'slotMinTime'        => $min_time,
             'slotMaxTime'        => $max_time,
             'allDaySlot'         => false,
-            'columnHeaderFormat' => ['weekday' => 'short'],
+            'dayHeaderFormat' => ['weekday' => 'short'],
             'headerToolbar'      => [
                 'left'  => '',
                 'right' => ''

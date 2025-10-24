@@ -62,7 +62,7 @@
                     'displayEventEnd' => true
                 ],
                 'timeGridWeek' => [
-                  'dayHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
+                    'dayHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
                 ],
                 'timeGridDay' => [
                     'dayHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
