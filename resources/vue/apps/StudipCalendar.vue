@@ -131,9 +131,6 @@ export default defineComponent({
         }
         calendar_options.eventClick = this.handleEventClick;
 
-        let holiday_cache = sessionStorage.getItem('fullcalendar_holidays');
-        let vacation_cache = sessionStorage.getItem('fullcalendar_vacations');
-
         //Build the event sources:
         if (!calendar_options.eventSources) {
             calendar_options.eventSources = [];
@@ -271,9 +268,7 @@ export default defineComponent({
         }
 
         return {
-            calendar_options: calendar_options as CalendarOptions,
-            holiday_cache: holiday_cache ? JSON.parse(holiday_cache) : {},
-            vacation_cache: vacation_cache ? JSON.parse(vacation_cache) : {}
+            calendar_options: calendar_options as CalendarOptions
         }
     },
     methods: {
