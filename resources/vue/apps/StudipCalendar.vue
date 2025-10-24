@@ -118,6 +118,8 @@ export default defineComponent({
         calendar_options.plugins = [dayGridPlugin, timeGridPlugin, resourceTimelinePlugin, interactionPlugin];
         calendar_options.schedulerLicenseKey = 'GPL-My-Project-Is-Open-Source';
         calendar_options.firstDay = 1;
+        calendar_options.height = 'auto';
+        calendar_options.contentHeight = 'auto';
 
         //Fullcalendar needs a short version of the locale:
         let short_locale: string = getLocale();
