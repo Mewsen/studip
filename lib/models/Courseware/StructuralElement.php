@@ -490,7 +490,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         }
 
         return
-            (empty($this->visible_start_date) || $this->visible_start_date < strtotime('today'))
+            (empty($this->visible_start_date) || $this->visible_start_date <= strtotime('today'))
             && (empty($this->visible_end_date) || $this->visible_end_date >= strtotime('today'));
     }
 
