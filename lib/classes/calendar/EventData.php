@@ -26,6 +26,17 @@ class EventData
     public $all_day;
 
     /**
+     * @var string An optional tooltip for the event.
+     */
+    public $tooltip;
+
+    /**
+     * @var array An array with extra fields that are special to the
+     * calendar view that is displayed.
+     */
+    public $extra_fields;
+
+    /**
      * @var string The ID in this field is used to group events when displayed
      * in Fullcalendar so that they can be moved together.
      */
@@ -50,7 +61,9 @@ class EventData
         string $icon = '',
         string $border_colour = '',
         bool $all_day = false,
-        string $group_id = ''
+        string $group_id = '',
+        string $tooltip = '',
+        array $extra_fields = []
     )
     {
         $this->begin = $begin;
@@ -72,6 +85,8 @@ class EventData
         $this->border_colour = $border_colour ?: $background_colour;
         $this->all_day = $all_day;
         $this->group_id = $group_id;
+        $this->tooltip = $tooltip;
+        $this->extra_fields = $extra_fields;
     }
 
 
@@ -98,25 +113,31 @@ class EventData
             ];
         }
 
-        return $fc_date + [
-            'resourceId' => $this->range_id,
-            'title' => $this->title,
-            'classNames' => $this->event_classes,
-            'textColor' => $this->text_colour,
-            'color' => $this->background_colour,
-            'borderColor' => $this->border_colour,
-            'editable' => $this->editable,
-            'studip_weekday_begin' => $this->begin->format('N'),
-            'studip_weekday_end' => $this->end->format('N'),
-            'studip_object_class' => $this->object_class,
-            'studip_object_id' => $this->object_id,
-            'studip_parent_object_class' => $this->parent_object_class,
-            'studip_parent_object_id' => $this->parent_object_id,
-            'studip_range_type' => $this->range_type,
-            'studip_range_id' => $this->range_id,
-            'studip_view_urls' => $this->view_urls,
-            'studip_api_urls' => $this->api_urls,
-            'icons' => $this->icon ? explode(',', $this->icon) : [] //Backwards compatibility in case only one icon is set.
+        return $fc_date +[
+                'resourceId'                 => $this->range_id,
+                'title'                      => $this->title,
+                'classNames'                 => $this->event_classes,
+                'textColor'                  => $this->text_colour,
+                'color'                      => $this->background_colour,
+                'borderColor'                => $this->border_colour,
+                'editable'                   => $this->editable,
+                'studip_weekday_begin'       => $this->begin->format('N'),
+                'studip_weekday_end'         => $this->end->format('N'),
+                'studip_object_class'        => $this->object_class,
+                'studip_object_id'           => $this->object_id,
+                'studip_parent_object_class' => $this->parent_object_class,
+                'studip_parent_object_id'    => $this->parent_object_id,
+                'studip_range_type'          => $this->range_type,
+                'studip_range_id'            => $this->range_id,
+                'studip_view_urls'           => $this->view_urls,
+                'studip_api_urls'            => $this->api_urls,
+                'icons'                      => (
+                    $this->icon
+                        ? explode(',', $this->icon) //Backwards compatibility in case only one icon is set.
+                        : []
+                ),
+                'tooltip'                    => $this->tooltip,
+                'extra'                      => $this->extra_fields
         ] + ($this->group_id ? ['groupId' => $this->group_id] : []);
     }
 }

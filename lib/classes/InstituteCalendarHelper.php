@@ -448,29 +448,38 @@ class InstituteCalendarHelper
                     'room'          => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_ROOMS_VISIBLE  ? $room_name : null
                 ];
 
-                $events[] = [
-                    'resourceId'       => $resource_column,
-                    'id'               => $cycle_date->id,
-                    'title'            => empty($fields) ? $name : '',
-                    'start'            => $start,
-                    'end'              => $end,
-                    'textColor'        => $textcolor,
-                    'backgroundColor'  => $backgroundcolor,
-                    'borderColor'      => '#000',
-                    'editable'         => $is_editable,
-                    'startEditable'    => $is_start_editable,
-                    'durationEditable' => $is_duration_editable,
-                    'resourceEditable' => true,
-                    'studip_api_urls'  => ['move' => $move_url],
-                    'studip_view_urls' => ['edit' => URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)],
-                    'metadate_id'      => $cycle_date->metadate_id,
-                    'course_id'        => $cycle_date->seminar_id,
-                    'tooltip'          => self::getCycleInfos($course, $cycle_date),
-                    'icon'             => $is_start_editable ? '' : 'lock-locked',
-                    'conform'          => $conform,
-                    // custom props (event.extendedProps)
-                    'content_fields'   => $fields,
-                ];
+                $event_data = new \Studip\Calendar\EventData(
+                    new DateTime($start),
+                    new DateTime($end),
+                    empty($fields) ? $name : '',
+                    [],
+                    $textcolor,
+                    $backgroundcolor,
+                    $is_editable,
+                    'SeminarCycleDate',
+                    $cycle_date->id,
+                    'Course',
+                    $cycle_date->seminar_id,
+                    'special',
+                    $resource_column,
+                    [
+                        'edit' => URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)
+                    ],
+                    ['move' => $move_url],
+                    $is_start_editable ? '' : 'lock-locked',
+                    '#000000',
+                    false,
+                    '',
+                    self::getCycleInfos($course, $cycle_date),
+                    [
+                        'start_editable'    => $is_start_editable,
+                        'duration_editable' => $is_duration_editable,
+                        'resource_editable' => true,
+                        'conform'           => $conform,
+                        'content_fields'    => $fields,
+                    ]
+                );
+                $events[] = $event_data->toFullcalendarEvent();
             }
         }, array_keys($courses));
 
@@ -574,26 +583,37 @@ class InstituteCalendarHelper
             }
         }
 
-        return [
-            'resourceId'       => $resource_column,
-            'id'               => $cycle_date->id,
-            'title'            => $name,
-            'start'            => $start,
-            'end'              => $end,
-            'textColor'        => $textcolor,
-            'backgroundColor'  => $backgroundcolor,
-            'borderColor'      => '#000',
-            'editable'         => $is_editable,
-            'startEditable'    => $is_start_editable,
-            'durationEditable' => $is_duration_editable,
-            'resourceEditable' => true,
-            'studip_api_urls'  => ['move' => $move_url],
-            'studip_view_urls' => ['edit' => URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)],
-            'metadate_id'      => $cycle_date->metadate_id,
-            'course_id'        => $cycle_date->seminar_id,
-            'tooltip'          => self::getCycleInfos($course, $cycle_date),
-            'icon'             => $is_start_editable ? '' : 'lock-locked'
-        ];
+        $event_data = new \Studip\Calendar\EventData(
+            new DateTime($start),
+            new DateTime($end),
+            $name,
+            [],
+            $textcolor,
+            $backgroundcolor,
+            $is_editable,
+            'SeminarCycleDate',
+            $cycle_date->id,
+            'Course',
+            $cycle_date->seminar_id,
+            'special',
+            $resource_column,
+            [
+                'edit' => URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)
+            ],
+            ['move' => $move_url],
+            $is_start_editable ? '' : 'lock-locked',
+            '#000000',
+            false,
+            '',
+            self::getCycleInfos($course, $cycle_date),
+            [
+                'start_editable'    => $is_start_editable,
+                'duration_editable' => $is_duration_editable,
+                'resource_editable' => true
+            ]
+        );
+
+        return $event_data->toFullcalendarEvent();
     }
 
     /**
