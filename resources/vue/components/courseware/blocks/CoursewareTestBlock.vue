@@ -212,6 +212,7 @@ export default {
         submitSolution(event) {
             let exercise_id = event.currentTarget.form.getAttribute('exercise');
             let data = new FormData(event.currentTarget.form);
+            data.set('assignment_id', this.assignment.id);
             data.set('block_id', this.block.id);
 
             $.ajax({
