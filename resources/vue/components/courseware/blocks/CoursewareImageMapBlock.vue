@@ -31,7 +31,7 @@
                     />
                 </map>
                 <div
-                    v-if="showEditMode && viewMode === 'edit' && currentShapes.length > 0"
+                    v-if="showEditMode && currentShapes.length > 0"
                     ref="draggableShapeWrapper"
                     class="cw-draggable-shapes-wrapper"
                 >
