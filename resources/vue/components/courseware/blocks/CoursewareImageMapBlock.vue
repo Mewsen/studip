@@ -26,9 +26,8 @@
                         :shape="area.shape"
                         :coords="area.coords"
                         :title="area.title"
-                        :href="area.external_target"
+                        :href="area.href"
                         :target="area.link_target"
-                        v-on="area.target_type === 'internal' ? {click: () => areaLink(area.internal_target)} : {}"
                     />
                 </map>
                 <div
@@ -260,7 +259,7 @@
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
 import VueResizeable from 'vue-resizable';
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-image-map-block',
@@ -325,6 +324,9 @@ export default {
                 return '';
             }
         },
+        inCourseContext() {
+            return this.studipContext.type === 'courses';
+        },
     },
     mounted() {
         this.initCurrentData();
@@ -343,7 +345,7 @@ export default {
         },
         async loadFile() {
             const id = this.currentFileId;
-            if (id === '') {
+            if (!id) {
                 return;
             }
             await this.loadFileRef({ id });
@@ -403,10 +405,8 @@ export default {
                 }
                 this.drawShapes();
 
-                if (this.$refs.canvas.length === 0) {
-                    this.image_from_canvas = this.context.canvas.toDataURL('image/jpeg', 1.0);
-                    this.mapImage();
-                }
+                this.image_from_canvas = this.context.canvas.toDataURL('image/jpeg', 1.0);
+                this.mapImage();
             };
         },
         drawShapes() {
@@ -533,6 +533,7 @@ export default {
                 let coords = '';
                 let x = 0;
                 let y = 0;
+                let internalURL = '';
                 area.id = 'shape-' + key;
 
                 switch (shape.type) {
@@ -558,28 +559,24 @@ export default {
                         break;
                 }
                 area.title = shape.title;
-                if (shape.link_type === 'external') {
-                    area.external_target = shape.target_external;
-                } else {
-                    area.external_target = '#';
-                }
+
                 if (shape.link_type === 'internal') {
-                    area.internal_target = shape.target_internal;
-                } else {
-                    area.internal_target = '';
+                    if (this.inCourseContext) {
+                        internalURL =  STUDIP.URLHelper.getURL(`dispatch.php/course/courseware/courseware/${this.studipContext.unit}?cid=${this.studipContext.id}#/structural_element/${shape.target_internal}`);
+                    } else {
+                        internalURL = STUDIP.URLHelper.getURL(`dispatch.php/contents/courseware/courseware/${this.studipContext.unit}?cid=${this.studipContext.id}#/structural_element/${shape.target_internal}`);
+                    }
                 }
                 if (shape.link_type === 'external') {
                     area.link_target = '_blank';
                 } else {
                     area.link_target = '_self';
                 }
+                area.href = shape.link_type === 'external' ? shape.target_external : internalURL;
                 area.link_type = shape.link_type;
                 area.target_type = shape.link_type;
                 this.areas.push(area);
             });
-        },
-        areaLink(target) {
-            this.$router.push(target);
         },
 
         //edit methods
