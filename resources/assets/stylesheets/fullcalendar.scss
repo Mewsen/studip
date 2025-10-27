@@ -39,23 +39,15 @@
             text-decoration: underline;
         }
 
+        /* The title of a calendar event: */
        .fc-event-title {
            overflow-wrap: break-word;
        }
 
-        /* TODO */
-        .fc-title .icon {
-            content: '';
-            display: inline-block;
-            vertical-align: text-bottom;
-            margin-right: 3px;
-            width: 12px;
-            height: 12px;
-            mask-size: contain;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            background-color: currentColor;
-            mask-image: var(--icon-url);
+        /* The icons inside a calendar event: */
+        .fc-event-title-container .icons .studip-icon {
+            width:  $font-size-base;
+            height: $font-size-base;
         }
     }
 
