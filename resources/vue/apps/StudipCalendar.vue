@@ -8,6 +8,13 @@
                     {{ arg.timeText }}
                 </span>
                 <span class="fc-event-title-container">
+                    <span class="debug">
+                    {{ JSON.stringify(arg.event.icons) }}
+                    </span>
+                    <span v-if="arg.event.extendedProps['icons']" class="icons">
+                        <StudipIcon v-for="icon of arg.event.extendedProps['icons']" :shape="icon" v-bind:key="icon"
+                                    class="text-bottom"></StudipIcon>
+                    </span>
                     <span class="fc-event-title">
                     {{ arg.event.title }}
                     </span>
@@ -21,6 +28,10 @@
                     {{ arg.timeText }}
                 </span>
                 <span class="fc-event-title-container">
+                    <span v-if="arg.event.extendedProps['icons']" class="icons">
+                        <StudipIcon v-for="icon of arg.event.extendedProps['icons']" :shape="icon" v-bind:key="icon"
+                                    class="text-bottom"></StudipIcon>
+                    </span>
                     <span class="fc-event-title">
                     {{ arg.event.title }}
                     </span>
@@ -55,10 +66,12 @@ import locale_en_gb from '@fullcalendar/core/locales/en-gb';
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 import {getLocale} from "../../assets/javascripts/lib/gettext";
+import StudipIcon from "../components/StudipIcon.vue";
 
 export default defineComponent({
     name: "StudipCalendar",
     components: {
+        StudipIcon,
         FullCalendar
     },
     props: {
