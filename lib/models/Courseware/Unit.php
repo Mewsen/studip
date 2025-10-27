@@ -132,7 +132,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         }
 
         return
-            (empty($this->visible_start_date) || $this->visible_start_date < strtotime('today'))
+            (empty($this->visible_start_date) || $this->visible_start_date <= strtotime('today'))
             && (empty($this->visible_end_date) || $this->visible_end_date >= strtotime('today'));
     }
 
