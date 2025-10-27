@@ -12,7 +12,7 @@
             <template #content>
                 <div v-if="currentTitle !== '' && currentURL" class="cw-block-title">{{ currentTitle }}</div>
                 <video
-                    v-show="currentURL"
+                    v-if="currentURL"
                     :src="currentURL"
                     :type="currentFile !== '' ? currentFile.mime_type : ''"
                     controls
@@ -220,6 +220,7 @@ export default {
                 this.updateCurrentFile({
                     id: fileRef.id,
                     name: fileRef.attributes.name,
+                    mime_type: fileRef.attributes['mime-type'],
                     download_url: this.urlHelper.getURL(
                         'sendfile.php',
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
