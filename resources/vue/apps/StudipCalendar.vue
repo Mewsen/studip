@@ -45,6 +45,12 @@
                 </div>
             </div>
         </template>
+        <template v-slot:dayHeaderContent="arg: DayHeaderContentArg">
+            <section>
+                <div>{{ arg.text }}</div>
+                <div>(Test-Feiertag)</div>
+            </section>
+        </template>
     </FullCalendar>
 </template>
 <script lang="ts">
@@ -52,7 +58,7 @@ import {defineComponent} from 'vue';
 import FullCalendar from "@fullcalendar/vue3";
 import {
     CalendarOptions,
-    DateSelectionApi,
+    DateSelectionApi, DayHeaderContentArg,
     EventClickArg, EventDropArg, EventMountArg,
     EventSourceFuncArg
 } from '@fullcalendar/core';
