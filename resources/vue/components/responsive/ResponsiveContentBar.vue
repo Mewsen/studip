@@ -179,7 +179,7 @@ export default {
                 event.preventDefault();
                 this.toggleSidebar();
             })
-            button.classList.add('btn-icon btn-icon--sidebar-toggle');
+            button.classList.add('btn-icon', 'btn-icon--sidebar-toggle');
 
             return button;
         }

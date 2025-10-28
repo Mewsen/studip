@@ -20,5 +20,8 @@ export default {
                 } : {},
             );
     },
+    mounted() {
+        window.STUDIP.eventBus.emit('courseware-contentbar-mounted', this);
+    }
 };
 </script>
