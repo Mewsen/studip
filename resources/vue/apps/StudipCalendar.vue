@@ -69,6 +69,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import locale_de from '@fullcalendar/core/locales/de';
 import locale_en_gb from '@fullcalendar/core/locales/en-gb';
 
+import ColumnHeaderEvent from "../../assets/javascripts/lib/calendar";
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import { jsonapi } from "../../assets/javascripts/lib/jsonapi";
 import {getLocale} from "../../assets/javascripts/lib/gettext";
@@ -193,10 +194,10 @@ export default defineComponent({
             calendar_options.eventSources = [];
         }
         if (this.display_holidays) {
-            let holiday_source = function(arg: EventSourceFuncArg, successCallback: (events: object) => void, failureCallback: () => void) {
+            let holiday_source = function(arg: EventSourceFuncArg, successCallback: (events: Array<ColumnHeaderEvent>) => void, failureCallback: () => void) {
                 const startYear = arg.start.getFullYear();
                 const endYear   = arg.end.getFullYear();
-                const requests: Array<Promise<unknown>> = [];
+                const requests: Array<Promise<Array<ColumnHeaderEvent>>> = [];
                 let holiday_cache_str = sessionStorage.getItem('fullcalendar_holidays');
                 let holiday_cache     = new Map<number, Array<object>>();
                 if (holiday_cache_str != null) {
@@ -210,36 +211,14 @@ export default defineComponent({
                     let request = jsonapi.withPromises().GET('holidays', {
                         data: { 'filter[year]': year }
                     }).then(response => {
-                        const events: object[] = [];
+                        const events: Array<ColumnHeaderEvent> = [];
                         if (!response) {
                             return events;
                         }
 
                         for (const [date, data] of Object.entries(response)) {
-                            const classNames = ['holiday'];
-                            if (data.mandatory) {
-                                classNames.push('official');
-                            }
-
                             const day = new Date(date);
-                            events.push({
-                                // Note: Since allDay is set to true, the start and end time is ignored.
-                                // See the documentation: https://fullcalendar.io/docs/v4/event-parsing
-                                start:    day,
-                                end:      day,
-                                allDay:   true,
-                                title:    data.holiday,
-                                editable: false,
-
-                                classNames,
-
-                                // Note: Colours are set via SCSS.
-                                textColor:       '',
-                                backgroundColor: '',
-                                borderColor:     '',
-
-                                display: 'background'
-                            });
+                            events.push(new ColumnHeaderEvent(day, day, data.holiday, ['holiday', 'official']));
                         }
 
                         if (holiday_cache != null) {
@@ -252,7 +231,7 @@ export default defineComponent({
                     requests.push(request);
                 }
                 Promise.all(requests).then(results => {
-                    let events: any = [];
+                    let events: Array<ColumnHeaderEvent> = [];
                     for (let result of results) {
                         events = events.concat(result);
                     }
@@ -263,10 +242,10 @@ export default defineComponent({
             calendar_options.eventSources.push(holiday_source);
         }
         if (this.display_vacations) {
-            let vacation_source = function(arg: EventSourceFuncArg, successCallback: (events: object) => void, failureCallback: () => void) {
+            let vacation_source = function(arg: EventSourceFuncArg, successCallback: (events: Array<ColumnHeaderEvent>) => void, failureCallback: () => void) {
                 const startYear = arg.start.getFullYear();
                 const endYear = arg.end.getFullYear();
-                const requests: any = [];
+                const requests: Array<Promise<Array<ColumnHeaderEvent>>> = [];
                 let vacation_cache_str = sessionStorage.getItem('fullcalendar_vacations');
                 let vacation_cache = new Map<number, Array<object>>();
                 if (vacation_cache_str != null) {
@@ -280,43 +259,31 @@ export default defineComponent({
                     let request = jsonapi.withPromises().get('vacations', {
                         data: {'filter[year]': year}
                     }).then(response => {
+                        const events: Array<ColumnHeaderEvent> = [];
                         if (!response) {
-                            return [];
+                            return events;
                         }
-
-                        const items: object[] = [];
 
                         for (const vacation_data of Object.values(response)) {
                             const start = new Date(parseInt(vacation_data.start) * 1000);
                             const end = new Date(parseInt(vacation_data.end) * 1000);
-                            items.push({
-                                start,
-                                end,
-                                allDay: true,
-                                title: vacation_data.name,
-                                editable: false,
-                                classNames: ['holiday'],
-
-                                // Note: Colours are set via SCSS.
-                                textColor: '',
-                                color: '',
-                                borderColor: '',
-
-                                display: 'background'
-                            });
+                            events.push(new ColumnHeaderEvent(start, end, vacation_data.name, ['holiday']));
                         }
 
                         if (vacation_cache != null) {
-                            vacation_cache.set(year, items);
+                            vacation_cache.set(year, events);
                             sessionStorage.setItem('fullcalendar_vacations', JSON.stringify(Array.from(vacation_cache.entries())));
                         }
 
-                        return items;
+                        return events;
                     });
                     requests.push(request);
                 }
                 Promise.all(requests).then(results => {
-                    const events = [].concat(...results);
+                    let events: Array<ColumnHeaderEvent> = [];
+                    for (let result of results) {
+                        events = events.concat(result);
+                    }
                     successCallback(events);
                     return results;
                 }).catch(failureCallback);
