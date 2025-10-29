@@ -194,10 +194,12 @@ class Helper
                     'minute'         => '2-digit',
                     'omitZeroMinute' => false
                 ],
-                'weekends'   => true,
-                'hiddenDays' => $fullcalendar_hidden_days,
+                'weekends'               => true,
+                'display_holidays'       => false,
+                'display_vacations'      => false,
+                'hiddenDays'             => $fullcalendar_hidden_days,
                 'timeGridEventMinHeight' => 20,
-                'eventSources' => [
+                'eventSources'           => [
                     [
                         'url' => \URLHelper::getURL(
                             'dispatch.php/calendar/schedule/data',
