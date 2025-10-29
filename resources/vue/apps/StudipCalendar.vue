@@ -164,7 +164,7 @@ export default defineComponent({
         }
         if (!calendar_options.header) {
             calendar_options.header = {
-                start:  ['dayGridYear', 'dayGridMonth', 'timeGridWeek', 'timeGridDay'],
+                start:  ['dayGridMonth', 'timeGridWeek', 'timeGridDay'],
                 center: ['title'],
                 end:    ['prev', 'today', 'next']
             };

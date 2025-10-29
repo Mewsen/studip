@@ -388,7 +388,7 @@ class Calendar_CalendarController extends AuthenticatedController
                     'start'   => (
                         $timeline_view
                             ? 'resourceTimelineWeek,resourceTimelineDay'
-                            : 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
+                            : 'dayGridMonth,timeGridWeek,timeGridDay'
                     ),
                     'center'  => 'title',
                     'end'     => 'prev,today,next'
