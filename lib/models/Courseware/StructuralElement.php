@@ -394,46 +394,51 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                 return $this->hasReadContentApproval($user);
 
             case 'course':
-                if (!$user || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
-                    return false;
-                }
-
-                if ($this->isTask()) {
-                    $task = $this->task;
-                    if (!$task) {
-                        $task = $this->findParentTask();
-                        if (!$task) {
-                            return false;
-                        }
-                    }
-
-                    if ($task->isSubmitted() && $this->hasEditingPermission($user)) {
-                        return true;
-                    }
-
-                    if ($task->isSubmitted()) {
-                        if ($task->visible) {
-                            return true;
-                        }
-                        $solvers = $task->getTaskGroup()->getSolvers();
-                        foreach ($solvers as $solver) {
-                            if ($solver->id === $user->id) {
-                                return true;
-                            }
-                        }
+                $unit = $this->findUnit();
+                if ($unit->permission_scope === 'unit') {
+                    return $unit->canRead($user);
+                } else {
+                    if (!$user || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
                         return false;
                     }
 
-                    return $task->userIsASolver($user);
-                    // TODO (mel): Das ist die ursprüngliche Variante, die aber jetzt kompliziert ist. Mit Nico sprechen!
-                    // return $task->userIsASolver($user) || $task->userIsAPeerReviewer($user);
-                }
+                    if ($this->isTask()) {
+                        $task = $this->task;
+                        if (!$task) {
+                            $task = $this->findParentTask();
+                            if (!$task) {
+                                return false;
+                            }
+                        }
 
-                if ($this->canEdit($user)) {
-                    return true;
-                }
+                        if ($task->isSubmitted() && $this->hasEditingPermission($user)) {
+                            return true;
+                        }
 
-                return $this->hasReadApproval($user) && $this->canReadSequential($user);
+                        if ($task->isSubmitted()) {
+                            if ($task->visible) {
+                                return true;
+                            }
+                            $solvers = $task->getTaskGroup()->getSolvers();
+                            foreach ($solvers as $solver) {
+                                if ($solver->id === $user->id) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
+                        return $task->userIsASolver($user);
+                        // TODO (mel): Das ist die ursprüngliche Variante, die aber jetzt kompliziert ist. Mit Nico sprechen!
+                        // return $task->userIsASolver($user) || $task->userIsAPeerReviewer($user);
+                    }
+
+                    if ($this->canEdit($user)) {
+                        return true;
+                    }
+
+                    return $this->hasReadApproval($user) && $this->canReadSequential($user);
+                }
 
             default:
                 throw new \InvalidArgumentException('Unknown range type.');
