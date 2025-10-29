@@ -366,6 +366,13 @@ class Admin_UserController extends AuthenticatedController
         bool $mail,
         bool $delete_courseware
     ): void {
+        $default_mailer = null;
+        if (!$mail) {
+            $dev_null       = new blackhole_message_class();
+            $default_mailer = StudipMail::getDefaultTransporter();
+            StudipMail::setDefaultTransporter($dev_null);
+        }
+
         $umanager = new UserManagement();
         $umanager->getFromDatabase($user);
 
@@ -380,7 +387,6 @@ class Admin_UserController extends AuthenticatedController
                 $delete_personal_content,
                 $delete_names,
                 $delete_memberships,
-                $mail,
                 $delete_courseware
             )
         ) {
@@ -393,6 +399,10 @@ class Admin_UserController extends AuthenticatedController
                 htmlReady(sprintf(_('Fehler! "%s (%s)" konnte nicht gelöscht werden'), $user_fullname, $user_username)),
                 explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)))
             );
+        }
+
+        if (!$mail && $default_mailer) {
+            StudipMail::setDefaultTransporter($default_mailer);
         }
     }
 
