@@ -643,15 +643,11 @@ class Calendar_CalendarController extends AuthenticatedController
         $group = null;
         $users = [];
         if ($group_id) {
-            $current_user = User::findCurrent();
             //Get the group first:
             $group = ContactGroup::find($group_id);
-            if ($group->owner_id !== $current_user->id) {
+            if ($group->owner_id !== User::findCurrent()->id) {
                 throw new AccessDeniedException();
             }
-            //Add the current user to the list of users so that they can see
-            //their own calendar in the group calendar, too:
-            $users[] = $current_user;
             foreach ($group->items as $item) {
                 if ($item->user->isCalendarReadable()) {
                     $users[] = $item->user;
