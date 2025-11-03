@@ -113,6 +113,18 @@ class ConsultationBooking extends SimpleORMap implements PrivacyObject
     }
 
     /**
+     * @return self[]
+     */
+    public static function findValidBySlot_id(int $slot_id): array
+    {
+        return self::findBySQL(
+            'JOIN auth_user_md5 USING (user_id)
+             WHERE slot_id = ?',
+            [$slot_id]
+        );
+    }
+
+    /**
      * Returns whether a user may create a booking for the given range.
      *
      * @param User $user
