@@ -695,9 +695,7 @@ class Course_MembersController extends AuthenticatedController
                     if (CourseMember::insertCourseMember($this->course_id, get_userid($selected_user), 'autor', isset($consider_contingent), $consider_contingent)) {
                         $csv_count_insert++;
                         setTempLanguage($this->user_id);
-                        $message = sprintf(_('Sie wurden manu
-
-                        ell in die Veranstaltung **%s** eingetragen.'), $this->course_title);
+                        $message = sprintf(_('Sie wurden manuell in die Veranstaltung **%s** eingetragen.'), $this->course_title);
 
                         restoreLanguage();
                         $messaging->insert_message($message, $selected_user, '____%system%____', FALSE, FALSE, '1', FALSE, sprintf('%s %s', _('Systemnachricht:'), _('Eintragung in Veranstaltung')), TRUE);
