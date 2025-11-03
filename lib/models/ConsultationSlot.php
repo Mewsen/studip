@@ -31,6 +31,7 @@ class ConsultationSlot extends SimpleORMap
         ];
         $config['has_many']['bookings'] = [
             'class_name'        => ConsultationBooking::class,
+            'assoc_func'        => 'findValidBySlot_id',
             'assoc_foreign_key' => 'slot_id',
             'on_store'          => 'store',
             'on_delete'         => 'delete',
