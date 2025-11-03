@@ -97,7 +97,6 @@ const fetchPostings = async () => {
             );
 
             const deserializedPosts = await deserializeJSONAPIResponse(response);
-
             forumPostStore.addPost(deserializedPosts);
 
             if (total === null) {
