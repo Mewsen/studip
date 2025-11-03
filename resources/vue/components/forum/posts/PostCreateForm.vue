@@ -50,9 +50,7 @@ onMounted(() => {
 
     if (props.quote) {
         content.value = `
-            <a href="#post_${props.parent_id}">
-                <blockquote>${normalizeQuote(props.quote)}</blockquote>
-            </a>
+            <blockquote>${normalizeQuote(props.quote)}</blockquote>
             <br />
         `;
     }
@@ -101,7 +99,7 @@ const storePost = async () => {
             { data: getPostJSONAPIObject }
         );
 
-        const post = await deserializeJSONAPIResponse(response)
+        const post = await deserializeJSONAPIResponse(response);
 
         forumDiscussionPost.addPost(post);
         content.value = "";

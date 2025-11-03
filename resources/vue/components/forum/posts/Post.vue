@@ -35,8 +35,8 @@ const props = defineProps({
     }
 });
 
-const postContent = useTemplateRef('postContent');
-const userAvatarContainer = useTemplateRef('userAvatarContainer');
+const postContentRef = useTemplateRef('postContent');
+const userAvatarContainerRef = useTemplateRef('userAvatarContainer');
 
 const selectedText = ref('');
 const showPostEditForm = ref(false);
@@ -48,7 +48,7 @@ const canDeletePost = computed(() => canEditPost.value);
 const copyToClipboard = () => {
     if (selectedText.value) {
         navigator.clipboard.writeText(selectedText.value);
-        postContent.value.removeSelection();
+        postContentRef.value.removeSelection();
         STUDIP.Report.info($gettext('Der markierte Text wurde in die Zwischenablage kopiert.'));
     }
 }
@@ -121,7 +121,7 @@ const removePostHighlight = id => {
 </script>
 
 <template>
-    <div :id="'post_'+post.id" class="post" @click="removePostHighlight('post_'+post.id)">
+    <div :id="`post_${post.id}`" class="post" @click="removePostHighlight(`post_${post.id}`)">
         <div v-if="!forumConfig.allowGuestAccess && isUnread" class="post__unread">
         </div>
         <div class="post__body">
@@ -132,8 +132,8 @@ const removePostHighlight = id => {
                         :user="post.author"
                         size="50px"
                         @update:modelValue="state => {
-                            if (state) userAvatarContainer.style.setProperty('z-index', 100);
-                            else userAvatarContainer.style.setProperty('z-index', 1);
+                            if (state) userAvatarContainerRef.style.setProperty('z-index', 100);
+                            else userAvatarContainerRef.style.setProperty('z-index', 1);
                         }"
                     />
                 </div>
@@ -188,13 +188,18 @@ const removePostHighlight = id => {
                 </template>
                 <template v-else>
                     <div class="post__text">
-                        <PostContent ref="postContent" v-model="selectedText" :content="post.content_html" class="forum-quote">
+                        <PostContent
+                            ref="postContent"
+                            v-model="selectedText"
+                            :content="post.content_html"
+                            class="forum-quote"
+                        >
                             <template #actions>
                                 <a
                                     :href="`#create_form_${post.id}`"
                                     class="ballon-action__button"
                                     v-if="!forumConfig.allowGuestAccess && !showPostCreateForm && !discussion.closed_at"
-                                    @click="showPostCreateForm = true; postContent.removeSelection()"
+                                    @click="showPostCreateForm = true; postContentRef.removeSelection()"
                                     :title="$gettext('Auswahl zitieren und antworten')"
                                     :aria-label="$gettext('Auswahl zitieren und antworten')"
                                 >

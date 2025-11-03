@@ -13,7 +13,6 @@ const props = defineProps({
     }
 });
 
-
 const actionsRef = useTemplateRef('actions');
 
 const onTextSelected = event => {
@@ -40,9 +39,8 @@ defineExpose({
     removeSelection
 });
 
-onMounted(() => {
-    document.addEventListener("selectionchange", newSelectionHandler);
-})
+onMounted(() => document.addEventListener('selectionchange', newSelectionHandler));
+
 
 onDeactivated(() => {
     document.removeEventListener('selectionchange', newSelectionHandler);
@@ -54,7 +52,6 @@ watch(() => props.modelValue, newValue => {
     }
 });
 </script>
-
 
 <template>
     <div @mouseup="onTextSelected" class="with-ballon-action" v-bind="$attrs">
