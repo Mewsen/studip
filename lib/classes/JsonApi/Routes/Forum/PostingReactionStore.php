@@ -38,23 +38,39 @@ class PostingReactionStore extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $posting_reaction = PostingReaction::create([
+        $data = [
             'posting_id' => $posting->posting_id,
-            'user_id' => $user->user_id,
-            'emoji' => self::arrayGet($json, 'data.attributes.emoji')
-        ]);
+            'user_id'    => $user->user_id,
+            'emoji'      => self::arrayGet($json, 'data.attributes.emoji'),
+        ];
 
-        if ($user->user_id !== $posting->user_id) {
-            \PersonalNotifications::add(
-                $posting->user_id,
-                \URLHelper::getURL('dispatch.php/course/forum/discussions/show/'.$posting->discussion_id, ['cid' => $posting->range_id], true)."#post_" . $posting->posting_id,
-                sprintf(_("%s hat auf deinen Beitrag reagiert."), $user->getFullName()),
-                null,
-                self::arrayGet($json, 'data.meta.emoji-icon')
-            );
+        $reaction = PostingReaction::findOneBySQL(
+            "posting_id = :posting_id AND user_id = :user_id AND emoji = :emoji",
+            $data
+        );
+
+        if (!$reaction) {
+            $reaction = PostingReaction::create($data);
+
+            if ($user->user_id !== $posting->user_id) {
+                \PersonalNotifications::add(
+                    $posting->user_id,
+                    \URLHelper::getURL(
+                        "dispatch.php/course/forum/discussions/show/{$posting->discussion_id}#post_{$posting->posting_id}",
+                        ['cid' => $posting->range_id],
+                        true
+                    ),
+                    studip_interpolate(
+                        _('%{name} hat auf deinen Beitrag reagiert.'),
+                        ['name' => $user->getFullName()]
+                    ),
+                    null,
+                    self::arrayGet($json, 'data.meta.emoji-icon')
+                );
+            }
         }
 
-        return $this->getCreatedResponse($posting_reaction);
+        return $this->getCreatedResponse($reaction);
     }
 
     protected function validateResourceDocument($json, $data)
