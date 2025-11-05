@@ -27,6 +27,7 @@ const props = defineProps({
 
 const showReactions = ref(false);
 const reactionStatusMessage = ref(null);
+const isLoading = ref(false);
 
 const transformedReactions = computed(() => props.reactions.map(reaction => {
     return {
@@ -39,7 +40,7 @@ const groupedReactions = computed(() => Object.groupBy(transformedReactions.valu
 
 const announceToScreenReader = message => reactionStatusMessage.value.textContent = message;
 
-const getPostReactionJSONAPIObject = (emoji) => ({
+const getPostReactionJSONAPIObject = emoji => ({
     data: {
         type: 'forum-posting-reactions',
         attributes: {
@@ -57,9 +58,9 @@ const getPostReactionJSONAPIObject = (emoji) => ({
             }
         }
     }
-})
+});
 
-const storeReaction = async (emoji) => {
+const storeReaction = async emoji => {
     try {
         const response = await STUDIP.jsonapi.withPromises().POST(
             'forum-posting-reactions?include=user&fields[users]=id,username,formatted-name',
@@ -69,25 +70,28 @@ const storeReaction = async (emoji) => {
         const reaction = await deserializeJSONAPIResponse(response);
         forumDiscussionPost.addPostReaction(reaction, props.posting_id);
         showReactions.value = false;
+        return reaction;
     } catch (error) {
         STUDIP.Report.error(error);
     }
 }
 
-const deleteReaction = async (reactionId) => {
+const deleteReaction = async reactionId => {
     try {
         await STUDIP.jsonapi.withPromises().DELETE(`forum-posting-reactions/${reactionId}`);
         forumDiscussionPost.removePostReaction(reactionId, props.posting_id);
+        return true;
     } catch (error) {
         STUDIP.Report.error(error);
     }
 }
 
 const toggleReaction = async (emoji, reactions = transformedReactions.value) => {
-    if (forumConfig.allowGuestAccess) {
+    if (forumConfig.allowGuestAccess || isLoading.value) {
         return;
     }
 
+    isLoading.value = true;
     const userReaction = findUserReaction(emoji, reactions);
 
     if (userReaction) {
@@ -97,6 +101,8 @@ const toggleReaction = async (emoji, reactions = transformedReactions.value) => 
         await storeReaction(emoji);
         announceToScreenReader($gettext('Reaktion wurde hinzugefügt.'));
     }
+
+    isLoading.value = false;
 }
 
 const findUserReaction = (emoji, reactions = transformedReactions.value) => reactions.find(reaction => reaction.user.id === STUDIP.USER_ID && reaction.emoji === emoji);
