@@ -863,6 +863,7 @@ input.allow-plaintext-toggle {
             border-radius: 100%;
             border: 1.5px solid white;
             transition: all .4s ease-in-out;
+            background: var(--base-color-20);
         }
 
         .user-info {
@@ -928,6 +929,7 @@ input.allow-plaintext-toggle {
         border: none;
         padding: 0;
         cursor: pointer;
+        border-radius: 100%;
 
         &:hover,
         &:focus,
@@ -946,6 +948,7 @@ input.allow-plaintext-toggle {
             border-radius: 100%;
             border: 1.5px solid white;
             transition: all .4s ease-in-out;
+            background: var(--base-color-20);
         }
     }
 }
