@@ -20,6 +20,7 @@ use Forum\DTO\Member as MemberDTO;
  * @property Posting $posting
  * @property PostingReaction[] $reactions
  * @property User $user
+ * @property User $editor
  * @property MemberDTO $author
  */
 class Posting extends SimpleORMap
@@ -43,6 +44,12 @@ class Posting extends SimpleORMap
         $config['belongs_to']['user'] = [
             'class_name' => User::class,
             'foreign_key' => 'user_id',
+            'assoc_foreign_key' => 'user_id'
+        ];
+
+        $config['belongs_to']['editor'] = [
+            'class_name' => User::class,
+            'foreign_key' => 'editor_id',
             'assoc_foreign_key' => 'user_id'
         ];
 

@@ -16,6 +16,7 @@ class Posting extends SchemaProvider
     const REL_REACTIONS = 'reactions';
     const REL_REACTIONS_USER = 'reactions.user';
     const REL_OPENGRAPH_URLS = 'opengraph-urls';
+    const REL_EDITOR = 'editor';
 
     /**
      * @param \Forum\Posting $resource
@@ -59,7 +60,8 @@ class Posting extends SchemaProvider
                 'title' => $og['title'],
                 'description' => $og['description'],
                 'image' => $og['image'],
-            ], $resource->getOpenGraphURLs())
+            ], $resource->getOpenGraphURLs()),
+            'log' => $this->getPostLog($resource->content)
         ];
     }
 
@@ -73,6 +75,7 @@ class Posting extends SchemaProvider
         $relationships = $this->addDiscussionRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DISCUSSION));
         $relationships = $this->addPostingRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_POSTING));
         $relationships = $this->addReactionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_REACTIONS));
+        $relationships = $this->addEditorRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_EDITOR));
 
         return $relationships;
     }
@@ -136,5 +139,42 @@ class Posting extends SchemaProvider
 
         return $relationships;
     }
-    
+
+    private function addEditorRelationship(array $relationships, \Forum\Posting $posting, bool $withEditor = false)
+    {
+        $relationships[self::REL_EDITOR] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($posting, self::REL_REACTIONS)
+            ],            
+        ];
+
+        if ($withEditor) {
+            $relationships[self::REL_EDITOR][self::RELATIONSHIP_DATA] = $posting->editor;
+        }
+
+        return $relationships;
+    }
+
+    private function getPostLog($content): array
+    {
+        $attributes = [];
+
+        if (preg_match('/(<admin_msg.*?)$/s', $content, $matches)) {
+            $adminTag = $matches[1];
+
+            // Extract attributes
+            if (preg_match_all('/(\w+)="([^"]*)"/', $adminTag, $attrMatches, PREG_SET_ORDER)) {
+                foreach ($attrMatches as [$full, $key, $value]) {
+                    if ($key === 'chdate') {
+                        $attributes[$key] = date('c', $value);
+                        continue;
+                    }
+
+                    $attributes[$key] = $value;
+                }
+            }
+        }
+
+        return $attributes;
+    }
 }
