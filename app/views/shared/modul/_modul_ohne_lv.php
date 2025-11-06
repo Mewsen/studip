@@ -36,7 +36,7 @@
         </tr>
     </tbody>
 </table>
-<table class="mvv-modul-details" data-mvv-id="<?= $deskriptor->id ?>" data-mvv-type="moduldeskriptor">
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= $deskriptor->id ?>" data-mvv-type="moduldeskriptor">
     <tbody>
         <? if (trim($deskriptor->getReplacedValue('pruef_vorleistung'))) : ?>
         <tr>
