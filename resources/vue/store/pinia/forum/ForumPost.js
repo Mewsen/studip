@@ -5,6 +5,7 @@ export const useForumPost = defineStore(
     () => {
 
         const posts = ref([]);
+        const currentPostIndex = ref(0);
 
         function initPosts(newPosts) {
             posts.value = newPosts;
@@ -40,14 +41,20 @@ export const useForumPost = defineStore(
             }
         }
 
+        function updateCurrentPostIndex(index) {
+            currentPostIndex.value = index;
+        }
+
         return {
             posts,
+            currentPostIndex,
             initPosts,
             addPost,
             updatePost,
             removePost,
             addPostReaction,
-            removePostReaction
+            removePostReaction,
+            updateCurrentPostIndex
         }
     }
 )

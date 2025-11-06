@@ -1,19 +1,20 @@
 <script setup>
 import {onMounted, computed, ref} from "vue";
 import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
+import {useForumPost} from "@/vue/store/pinia/forum/ForumPost";
+import {$gettext} from "@/assets/javascripts/lib/gettext";
 import Post from "@/vue/components/forum/posts/Post.vue";
 import PostCreateForm from "@/vue/components/forum/posts/PostCreateForm.vue";
 import Loader from "@/vue/components/forum/Loader.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import StudipDateTime from "../../../components/StudipDateTime.vue";
+import {useForumConfig} from "@/vue/store/pinia/forum/ForumConfig";
+import StudipIcon from "@/vue/components/StudipIcon.vue";
+import StudipDateTime from "@/vue/components/StudipDateTime.vue";
 import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vue";
 import {highlightText, removeHighlight} from "@/vue/components/forum/helpers";
 import {getSearchURL, getTopicURL, getDiscussionIndexURL} from "@/vue/components/forum/helpers/urls";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import DiscussionFooter from "../../../components/forum/discussions/DiscussionFooter.vue";
+import {deserializeJSONAPIResponse} from "@/assets/javascripts/lib/jsonapiUtils";
+import DiscussionFooter from "@/vue/components/forum/discussions/DiscussionFooter.vue";
+import DiscussionTimeline from "@/vue/components/forum/discussions/DiscussionTimeline.vue";
 
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
@@ -114,6 +115,14 @@ const fetchPostings = async () => {
     }
 };
 
+const jumpTo = targetElement => {
+    if (!targetElement) {
+        return;
+    }
+
+    targetElement.scrollIntoView({ behavior: 'instant' });
+    requestAnimationFrame(() => STUDIP.eventBus.emit('forum:jumpToPost', targetElement.dataset?.index || 0));
+};
 
 onMounted(async () => {
     await fetchPostings();
@@ -123,18 +132,22 @@ onMounted(async () => {
         if (urlHash === 'new-post') {
             postCreateForm.value = true;
         }
-        document.getElementById(urlHash)?.scrollIntoView();
+        jumpTo(document.getElementById(urlHash))
     } else if (props.read_index < posts.value.length) {
-        document.querySelectorAll(".post")[props.read_index].scrollIntoView();
+        if (props.read_index === 0) {
+            jumpTo(document.getElementById('discussion_start'));
+        } else {
+            jumpTo(document.querySelector(`[data-index='${props.read_index}']`));
+        }
     }
 
     if (props.search_keyword !== "") {
         highlightText(props.search_keyword, '.post-content');
 
-        document.querySelector('.post-content mark')?.scrollIntoView();
+        jumpTo(document.querySelector('.post-content mark'))
 
         // remove highlights
-        document.getElementById("discussion_start").addEventListener("click", function() {
+        document.getElementById('discussion_start').addEventListener('click', function() {
             removeHighlight('.post-content mark');
         });
     }
@@ -207,7 +220,7 @@ onMounted(async () => {
         </header>
         <div class="discussion">
             <template v-if="posts[0]">
-                <Post :post="posts[0]" :auth_user="auth_user" :discussion="discussion" :is_unread="read_index === 0" />
+                <Post :post="posts[0]" :auth_user="auth_user" :discussion="discussion" :readIndex="read_index" />
             </template>
             <div v-else class="discussion__body">
                 <Loader v-if="isLoading" />
@@ -230,7 +243,8 @@ onMounted(async () => {
                     :post="post"
                     :auth_user="auth_user"
                     :discussion="discussion"
-                    :is_unread="read_index < index + 2"
+                    :index="index + 1"
+                    :readIndex="read_index"
                 />
                 <hr v-if="index < posts.length - 2" class="divider m-0" />
             </template>
@@ -253,6 +267,10 @@ onMounted(async () => {
                 @created="addPost"
             />
         </div>
+
+        <template #sidebar>
+            <DiscussionTimeline :discussion="discussion" :posts="posts" :readIndex="read_index" />
+        </template>
     </ForumApp>
 </template>
 
@@ -267,5 +285,6 @@ onMounted(async () => {
 }
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 50px !important;
 }
 </style>

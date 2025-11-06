@@ -1,21 +1,21 @@
 <script setup>
-import {computed, ref, useTemplateRef} from "vue";
-import PostEditForm from "./PostEditForm.vue";
-import PostCreateForm from "./PostCreateForm.vue";
-import PostContent from "@/vue/components/forum/posts/PostContent.vue";
-import UserAvatarDropdown from "@/vue/components/avatar/UserAvatarDropdown.vue";
-import PostReactions from "./PostReactions.vue";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import {getDiscussionURL} from "@/vue/components/forum/helpers/urls";
-import StudipDateTime from "@/vue/components/StudipDateTime.vue";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import LinksPreview from "@/vue/components/LinksPreview.vue";
-import {userProfileURL} from "../helpers/urls";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed, onBeforeUnmount, onMounted, ref, useTemplateRef} from 'vue';
+import PostEditForm from './PostEditForm.vue';
+import PostCreateForm from './PostCreateForm.vue';
+import PostContent from '@/vue/components/forum/posts/PostContent.vue';
+import PostReactions from './PostReactions.vue';
+import {getDiscussionURL} from '@/vue/components/forum/helpers/urls';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import LinksPreview from '@/vue/components/LinksPreview.vue';
+import UserAvatarDropdown from '@/vue/components/avatar/UserAvatarDropdown.vue';
+import {userProfileURL} from '../helpers/urls';
+import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
-const forumDiscussionPost = useForumPost();
+const forumPostStore = useForumPost();
 const props = defineProps({
     discussion: {
         type: Object,
@@ -29,12 +29,17 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    is_unread: {
-        type: Boolean,
-        default: false
+    index: {
+        type: Number,
+        default: 0
+    },
+    readIndex: {
+        type: Number,
+        default: 0
     }
 });
 
+const postRef = useTemplateRef('postRef');
 const postContentRef = useTemplateRef('postContent');
 const userAvatarContainerRef = useTemplateRef('userAvatarContainer');
 
@@ -42,7 +47,7 @@ const selectedText = ref('');
 const showPostEditForm = ref(false);
 const showPostCreateForm = ref(false);
 
-const isUnread = computed(() => (!props.post.author && props.is_unread) || (props.is_unread && props.post.author.id !== STUDIP.USER_ID))
+const isUnread = computed(() => (!props.post.author && props.index >= props.readIndex) || (props.index >= props.readIndex && props.post.author.id !== STUDIP.USER_ID))
 const canEditPost = computed(() => forumConfig.isTutor || (props.post.author?.id === STUDIP.USER_ID && !props.discussion.closed_at));
 const canDeletePost = computed(() => canEditPost.value);
 const copyToClipboard = () => {
@@ -71,13 +76,14 @@ const deletePost = async () => {
         async () => {
             try {
                 await STUDIP.jsonapi.withPromises().DELETE(`forum-postings/${props.post.id}`);
-                forumDiscussionPost.removePost(props.post.id);
+                forumPostStore.removePost(props.post.id);
                 STUDIP.Report.success($gettext('Der Beitrag wurde gelöscht.'));
             } catch (error) {
                 STUDIP.Report.error(error);
             }
         },
-        STUDIP.Dialog.close());
+        STUDIP.Dialog.close()
+    );
 }
 
 const addPost = () => {
@@ -113,15 +119,39 @@ const forwardPost = post => {
 const removePostHighlight = id => {
     const element = document.getElementById(id);
     if (!element) {
-        console.error("Element not found!");
+        console.error('Element not found!');
         return;
     }
     element.classList.remove('--highlight');
 }
+
+let postObserver = null;
+
+onMounted(() => {
+    postObserver = new IntersectionObserver(
+        entries => entries.forEach(e => {
+            if (e.isIntersecting) {
+                forumPostStore.updateCurrentPostIndex(props.index);
+            }
+        }),{
+            rootMargin: `-110px 0px -${document.documentElement.clientHeight - 120}px 0px`
+        }
+    );
+
+    postObserver.observe(postRef.value);
+});
+
+onBeforeUnmount(() => postObserver.disconnect());
 </script>
 
 <template>
-    <div :id="`post_${post.id}`" class="post" @click="removePostHighlight(`post_${post.id}`)">
+    <div
+        ref="postRef"
+        :id="`post_${post.id}`"
+        class="post"
+        :data-index="index"
+        @click="removePostHighlight(`post_${post.id}`)"
+    >
         <div v-if="!forumConfig.allowGuestAccess && isUnread" class="post__unread">
         </div>
         <div class="post__body">
