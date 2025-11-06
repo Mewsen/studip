@@ -226,7 +226,7 @@ const Questionnaire = {
         }
     },
 
-    async exportEvaluationAsPDF(container) {
+    async exportEvaluationAsPDF(results) {
         const [html2canvas, jsPDF] = await Promise.all([
             import('html2canvas').then(m => m.default),
             import('jspdf').then(m => m.default),
@@ -235,8 +235,6 @@ const Questionnaire = {
         const pdf = new jsPDF({
             orientation: 'portrait'
         });
-
-        const results = container.querySelector('.questionnaire_results');
 
         results.classList.add('print-view');
 
