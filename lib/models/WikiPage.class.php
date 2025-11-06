@@ -233,6 +233,12 @@ class WikiPage extends SimpleORMap implements PrivacyObject
             return false;
         }
 
+        if ($this->id == RangeConfig::get($this->range_id)->WIKI_STARTPAGE_ID) {
+            if (self::countBySQL('range_id = ?', [$this->range_id]) > 1) {
+                return false;
+            }
+        }
+
         $permission  = $this->write_permission;
         if ($permission === 'all') {
             $permission = 'tutor';
