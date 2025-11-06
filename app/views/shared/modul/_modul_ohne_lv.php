@@ -17,7 +17,7 @@
         </tr>
     </tbody>
 </table>
-<table class="mvv-modul-details" data-mvv-id="<?= isset($modulDeskriptor) ? $modulDeskriptor->getId() : ''; ?>" data-mvv-type="moduldeskriptor">
+<table class="mvv-modul-details default nohover" data-mvv-id="<?= isset($modulDeskriptor) ? $modulDeskriptor->getId() : ''; ?>" data-mvv-type="moduldeskriptor">
     <tbody>
         <? if (trim($modulDeskriptor->pruef_vorleistung ?? '')) : ?>
         <tr>
