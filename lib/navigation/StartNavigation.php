@@ -258,7 +258,7 @@ class StartNavigation extends Navigation
         $this->addSubNavigation('contents', $navigation);
 
         // oer
-        if (Config::get()->OERCAMPUS_ENABLED) {
+        if (Config::get()->OERCAMPUS_ENABLED && $perm->have_perm(Config::get()->OER_PUBLIC_STATUS)) {
             $this->addSubNavigation('oer', new Navigation(_('OER Campus'), 'dispatch.php/oer/market'));
         }
 
