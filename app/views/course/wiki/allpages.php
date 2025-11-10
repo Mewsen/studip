@@ -30,11 +30,6 @@
         </thead>
         <tbody>
             <? foreach ($pages as $page) : ?>
-            <? if ($page->isEditable()) : ?>
-                <form action="<?= $controller->delete($page) ?>" method="post" id="delete_page">
-                    <?= CSRFProtection::tokenTag() ?>
-                </form>
-            <? endif ?>
             <tr>
                 <td>
                     <input
@@ -62,7 +57,9 @@
                 <? endif; ?>
                 </td>
                 <td class="actions">
-                    <?= $controller->getActionMenu($page, 'allpages') ?>
+                    <? if ($page->isEditable()) : ?>
+                        <?= $controller->getActionMenu($page, 'allpages') ?>
+                    <? endif ?>
                 </td>
             </tr>
             <? endforeach ?>
@@ -79,4 +76,8 @@
             </tr>
         </tfoot>
     </table>
+</form>
+
+<form action="" method="post" id="delete_page">
+    <?= CSRFProtection::tokenTag() ?>
 </form>
