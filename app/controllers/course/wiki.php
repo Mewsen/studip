@@ -186,7 +186,9 @@ class Course_WikiController extends AuthenticatedController
                     'delete',
                     _('Seite löschen'),
                     Icon::create('trash'),
-                    ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
+                    ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'),
+                        'formaction' => $this->deleteURL($page),
+                        'form' => 'delete_page']
                 );
             }
         }
