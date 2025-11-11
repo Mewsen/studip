@@ -124,10 +124,25 @@ select {
         }
 
         .select2-selection__choice__remove {
-            @include icon(after, decline, $size: $select-arrow-size , $align: bottom, $padding: 4px);
+            color: transparent;
             display: inline-block;
             float: none;
-            width: ($select-arrow-size + 5px);
+            margin-left: 1rex;
+            position: relative;
+            width: $select-arrow-size;
+
+            &:hover {
+                color: transparent;
+            }
+
+            @include icon(after, decline, $size: $select-arrow-size , $align: baseline, $padding: 0);
+            &::after {
+                color: var(--color--highlight);
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translate(0, -50%);
+            }
         }
 
         .select2-selection__choice {
