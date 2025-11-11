@@ -318,6 +318,14 @@ class Massmail_MessageController extends \AuthenticatedController
             }
         })->autoStore();
 
+        if (Config::get()->MASSMAIL_EXPORT_RECIPIENTS_ENABLE) {
+            $form->addButton(
+                \Studip\Button::create(_('Zielgruppe exportieren'),
+                    'export',
+                    ['onclick' => 'STUDIP.MassMail.exportRecipients(event)']
+                ));
+        }
+
         $this->render_form($form);
     }
 
@@ -391,6 +399,135 @@ class Massmail_MessageController extends \AuthenticatedController
 
             $this->render_nothing();
         }
+    }
+
+    public function export_action()
+    {
+        $message = new MassMail\MassMailMessage();
+        $message->target = Request::get('target');
+        $message->author_id = User::findCurrent()->id;
+
+        $data = [[_('Zielgruppe: alle')]];
+        $currentRow = 2;
+
+        switch($message->target) {
+            case 'students':
+            case 'employees':
+                $data = [[_('Zielgruppe:') . ' ' .
+                    ($message->target === 'students' ? _('Studierende') : _('Beschäftigte'))]];
+
+                $value = json_decode(
+                    Request::get($message->target === 'students' ? 'student_filters' : 'employee_filters', '[]'),
+                    true
+                );
+                $filters = [];
+                foreach ($value as $one) {
+                    $filter = new UserFilter();
+                    $filter->fields = [];
+                    foreach ($one['attributes']['fields'] as $field) {
+                        $classname = $field['attributes']['type'];
+                        $f = new $classname();
+                        if (!empty($fiele['id'])) {
+                            $f->setId($field['id']);
+                        }
+                        $f->setCompareOperator($field['attributes']['compare-operator']);
+                        $f->setValue($field['attributes']['value']);
+                        $filter->addField($f);
+                    }
+                    $filter->store();
+                    $connection = new \MassMail\MassMailFilter();
+                    $connection->filter_id = $filter->getId();
+                    $filters[] = $connection;
+
+                    $data[] = [strip_tags($filter->toString())];
+                    $currentRow++;
+                }
+                $message->filters = $filters;
+
+                break;
+            case 'lecturers':
+                $data = [[_('Zielgruppe:') . ' ' . _('Aktive Lehrende')
+                    . ' (' . Semester::find(Request::get('semester'))->name . ')']];
+
+                $message->config = json_encode([
+                    'semester' => Request::get('semester')
+                ]);
+                break;
+            case 'courses':
+                $data = [[_('Zielgruppe:') . ' ' . _('Veranstaltungen')]];
+
+                $message->config = json_encode([
+                    'courses' => Request::getArray('courses'),
+                    'perm' => Request::get('course_perm')
+                ]);
+                break;
+            case 'usernames':
+                $data = [[_('Zielgruppe:') . ' ' . _('Manuell gewählte Nutzernamen')]];
+
+                $message->config = json_encode(['usernames' => Request::getArray('manual_usernames')]);
+                break;
+        }
+        $now = time();
+
+        $data[] = [sprintf(_('Stand der Daten vom %s'), date('d.m.Y, H:i', $now))];
+        $data[] = [''];
+        $data[] = [_('Nutzername'), _('Nachname'), _('Vorname')];
+
+        $data = array_merge(
+            $data,
+            User::findAndMapBySQL(
+                fn ($user) => [$user->username, $user->nachname, $user->vorname],
+                "`username` IN (:usernames) ORDER BY `Nachname`, `Vorname`, `username`",
+                ['usernames' => $message->getRecipients() ?? ['']]
+            )
+        );
+
+        $xls = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $xls->getProperties()
+            ->setCreator(User::findCurrent()->getFullname())
+            ->setLastModifiedBy(User::findCurrent()->getFullname())
+            ->setTitle('Zielgruppenexport');
+        $sheet = $xls->getActiveSheet();
+
+        $style = $sheet->getStyle('A1:C1');
+        $style->getFill()
+            ->setFillType(PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setRGB('dddddd');
+        $style->getFont()
+            ->setSize(14)
+            ->setBold(true);
+
+        $style2 = $sheet->getStyle('A2:C' . $currentRow);
+        $style2->getFill()
+            ->setFillType(PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setRGB('dddddd');
+        $style2->getFont()
+            ->setSize(12)
+            ->setBold(true);
+
+        $style3 = $sheet->getStyle('A' . ($currentRow + 2) . ':C' . ($currentRow + 2));
+        $style3->getFont()
+            ->setBold(true);
+
+        foreach (['A', 'B', 'C'] as $column) {
+            $sheet->getColumnDimension($column)
+                ->setAutoSize(true);
+        }
+
+        $sheet->fromArray($data);
+
+        $tmpname = tempnam($GLOBALS['TMP_PATH'], '');
+        $writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($xls);
+        $writer->save($tmpname);
+
+        $this->render_text(
+            FileManager::getDownloadURLForTemporaryFile(
+                $tmpname,
+                'zielgruppe-' . date('Y-m-d-h-i', $now) . '.xlsx'
+            )
+        );
     }
 
 }

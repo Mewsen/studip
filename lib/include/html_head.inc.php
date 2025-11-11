@@ -65,7 +65,8 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,
                 'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
                 'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
-                'ENABLE_COURSESET_FCFS' => (bool) Config::get()->ENABLE_COURSESET_FCFS
+                'ENABLE_COURSESET_FCFS' => (bool) Config::get()->ENABLE_COURSESET_FCFS,
+                'USERFILTER_EXPORT_ENABLE' => (bool) Config::get()->USERFILTER_EXPORT_ENABLE
             ]) ?>,
             jsonapi_schemas: <?= json_encode($getJsonApiSchemas()) ?>,
         }

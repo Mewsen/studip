@@ -39,6 +39,7 @@ import JSONAPI, { jsonapi } from './lib/jsonapi.ts';
 import JSUpdater from './lib/jsupdater.js';
 import Lightbox from './lib/lightbox.js';
 import Markup from './lib/markup.js';
+import MassMail from './lib/massmail.js';
 import Members from './lib/members.js';
 import Messages from './lib/messages.js';
 import MultiPersonSearch from './lib/multi_person_search.js';
@@ -122,6 +123,7 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     loadChunk,
     loadScript,
     Markup,
+    MassMail,
     Members,
     Messages,
     MultiPersonSearch,
