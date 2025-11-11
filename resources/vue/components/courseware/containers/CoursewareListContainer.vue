@@ -9,7 +9,7 @@
     >
         <template v-slot:containerContent>
             <ul v-if="!canEdit || currentElementisLink"  class="cw-container-list-block-list">
-                <li v-for="block in blocks" :key="block.id" class="cw-block-item">
+                <li v-for="block in visibleBlocks" :key="block.id" class="cw-block-item">
                     <component :is="component(block)" :block="block" :canEdit="canEdit" :isTeacher="isTeacher" />
                 </li>
             </ul>
@@ -142,6 +142,9 @@ export default {
             let unallocatedBlocks = [...unallocated].map((id) => this.blockById({ id }));
 
             return sortedBlocks.concat(unallocatedBlocks);
+        },
+        visibleBlocks() {
+            return this.blocks.filter(block => block.attributes.visible === true);
         },
         empty() {
             return this.blockList.length === 0;
