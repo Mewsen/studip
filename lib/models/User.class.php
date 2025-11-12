@@ -1065,7 +1065,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
             $this->store();
 
             PageLayout::postInfo(sprintf(_('An Ihre neue E-Mail-Adresse <b>%s</b> wurde ein Aktivierungslink geschickt, dem Sie folgen müssen bevor Sie sich das nächste mal einloggen können.'), htmlReady($email)));
-            StudipLog::log('USER_NEWPWD', $this->user_id);
+            StudipLog::log('USER_CHANGE_EMAIL', $this->user_id, null, "{$this->email} -> {$email}");
         }
         return true;
     }
