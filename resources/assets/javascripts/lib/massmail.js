@@ -1,10 +1,16 @@
 import axios from 'axios';
+import {$gettext} from './gettext';
 
 const MassMail = {
     exportRecipients: (evt) => {
         evt.preventDefault();
 
-        const values = evt.target.closest('div.studipform.vueified').__vue_app__._instance.proxy.getFormValues();
+        const button = evt.target;
+        button.disabled = true;
+        const text = button.innerText;
+        button.innerText = $gettext('Exportiere...');
+
+        const values = window.STUDIP.FormAPI[0].getValues();
 
         const formData = new FormData();
         Object.keys(values).forEach(i => {
@@ -17,8 +23,12 @@ const MassMail = {
             STUDIP.URLHelper.getURL('dispatch.php/massmail/message/export'),
             formData
         ).then(response => {
+            button.disabled = false;
+            button.innerText = text;
             window.location.href = response.data;
         }).catch(error => {
+            button.disabled = false;
+            button.innerText = text;
             STUDIP.Report.error(error.message);
         });
     }

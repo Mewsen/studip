@@ -245,6 +245,9 @@ function createSelect2(element) {
         .on('click', (e) => e.preventDefault());
 }
 
+export const FormBridge = [];
+window.STUDIP.FormAPI = FormBridge;
+
 STUDIP.ready(function () {
     let forms = window.document.querySelectorAll('.studipform:not(.vueified)');
     if (forms.length > 0) {
@@ -430,7 +433,12 @@ STUDIP.ready(function () {
                         }
                     }
                 });
-                app.mount(f);
+                const vm = app.mount(f);
+                FormBridge.push(
+                    {
+                        getValues: () => vm.getFormValues()
+                    }
+                );
             });
         });
     }
