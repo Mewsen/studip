@@ -428,7 +428,14 @@ const Questionnaire = {
         }
     },
 
-    async exportEvaluationAsPDF(results) {
+    async exportEvaluationAsPDF(results, button = null) {
+        let initialButtonText = null;
+        if (button) {
+            button.setAttribute('disabled', 'disabled');
+            initialButtonText = button.innerText;
+            button.innerText = $gettext('Export läuft...');
+        }
+
         const [html2canvas, jsPDF] = await Promise.all([
             import('html2canvas').then(m => m.default),
             import('jspdf').then(m => m.default),
@@ -452,10 +459,16 @@ const Questionnaire = {
             minute: 'numeric'
         }).format(new Date());
 
-        const questions = results.querySelectorAll('.question');
+        const canvasses = [];
+        // This may seem awkward but since we cannot use parallel processing via
+        // Promise.all, we need to wait for each render to finish before
+        // continuing with the next one.
+        // Since eslint doesn't like await in a loop, we need to use
+        // Array.reduce().
+        await Array.from(results.querySelectorAll('.question')).reduce(
+            async (prev, element) => {
+                await prev;
 
-        const canvasses = await Promise.all(
-            Array.from(questions).map(element => {
                 element.querySelectorAll('svg.ct-chart-bar').forEach(svg => {
                     // Remove xmlns attribute from all children of the svg
                     svg.querySelectorAll('[xmlns]').forEach(node => {
@@ -469,13 +482,16 @@ const Questionnaire = {
                     svg.style.height = null;
                 });
 
-                return html2canvas(element, {
+                const canvas = await html2canvas(element, {
                     allowTaint: false,
                     foreignObjectRendering: false,
                     useCORS: true,
                     logging: false
-                })
-            })
+                });
+
+                canvasses.push(canvas);
+            },
+            Promise.resolve()
         );
 
         //then all renders are finished:
@@ -522,6 +538,13 @@ const Questionnaire = {
         pdf.save(title + '.pdf');
 
         results.classList.remove('print-view');
+
+        if (button) {
+            button.removeAttribute('disabled');
+            button.innerText = initialButtonText;
+        }
+
+        return Promise.resolve();
     },
 
     addDelayedInit(el, data, isAjax, isMultiple) {
