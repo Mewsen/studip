@@ -77,7 +77,7 @@ const isModerator = role => role === 'moderator';
                                             @click="activeUserAvatar = user.id"
                                             :title="$gettext('Aufklappen')"
                                             :aria-label="$gettext('Aufklappen')"
-                                            class="show-avatar">
+                                            class="show-avatar button-base">
                                             <StudipIcon shape="arr_1down" :size="15" aria-hidden="true" />
                                         </button>
                                     </div>
