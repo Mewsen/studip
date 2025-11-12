@@ -74,19 +74,21 @@ const isModerator = role => role === 'moderator';
                                             <p>{{ user.name }}</p>
                                         </div>
                                         <button
+                                            type="button"
                                             @click="activeUserAvatar = user.id"
                                             :title="$gettext('Aufklappen')"
                                             :aria-label="$gettext('Aufklappen')"
-                                            class="show-avatar">
+                                            class="show-avatar button-base">
                                             <StudipIcon shape="arr_1down" :size="15" aria-hidden="true" />
                                         </button>
                                     </div>
                                     <button
                                         v-else
+                                        type="button"
                                         @click="activeUserAvatar = ''"
                                         :title="$gettext('Zuklappen')"
                                         :aria-label="$gettext('Zuklappen')"
-                                        class="hide-avatar">
+                                        class="hide-avatar button-base">
                                         <StudipIcon shape="arr_1up" :size="15" aria-hidden="true" />
                                     </button>
                                     <UserAvatar v-if="activeUserAvatar === user.id" :user="user" />
