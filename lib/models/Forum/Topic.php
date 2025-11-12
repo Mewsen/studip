@@ -110,7 +110,7 @@ class Topic extends SimpleORMap
                     discussions.*,
                     MAX(postings.mkdate) AS latest_post_date
                 FROM forum_discussions AS discussions
-                JOIN forum_postings as postings USING (discussion_id)
+                LEFT JOIN forum_postings as postings USING (discussion_id)
                 WHERE discussions.topic_id = :topic_id
                 GROUP BY discussions.discussion_id
                 ORDER BY discussions.sticky DESC, latest_post_date DESC",
