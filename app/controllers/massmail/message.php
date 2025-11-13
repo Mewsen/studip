@@ -410,6 +410,8 @@ class Massmail_MessageController extends \AuthenticatedController
         $data = [[_('Zielgruppe: alle')]];
         $currentRow = 2;
 
+        $createdFilters = [];
+
         switch($message->target) {
             case 'students':
             case 'employees':
@@ -438,6 +440,8 @@ class Massmail_MessageController extends \AuthenticatedController
                     $connection = new \MassMail\MassMailFilter();
                     $connection->filter_id = $filter->getId();
                     $filters[] = $connection;
+
+                    $createdFilters[] = $filter;
 
                     $data[] = [strip_tags($filter->toString())];
                     $currentRow++;
@@ -521,6 +525,8 @@ class Massmail_MessageController extends \AuthenticatedController
         $tmpname = tempnam($GLOBALS['TMP_PATH'], '');
         $writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($xls);
         $writer->save($tmpname);
+
+        array_map(fn ($filter) => $filter->delete(), $createdFilters);
 
         $this->render_text(
             FileManager::getDownloadURLForTemporaryFile(
