@@ -18,16 +18,20 @@
                         </span>
                     </th>
                     <th></th>
-                    <th v-if="displaySemNumber" :class="getOrderClasses('number')">
-                        <a href="#" @click.prevent="changeOrder('number')">
-                            {{ $gettext('Nr.') }}
-                        </a>
-                    </th>
-                    <th :class="getOrderClasses('name')">
-                        <a href="#" @click.prevent="changeOrder('name')">
-                            {{ $gettext('Name') }}
-                        </a>
-                    </th>
+                    <sortable-toggle-element v-if="displaySemNumber"
+                                             column="number"
+                                             v-model:sort-by="orderBy"
+                                             v-model:sort-dir="orderDir"
+                                             :label="$gettext('Veranstaltungsnummer')"
+                    >
+                        {{ $gettext('Nr.') }}
+                    </sortable-toggle-element>
+                    <sortable-toggle-element column="name"
+                                             v-model:sort-by="orderBy"
+                                             v-model:sort-dir="orderDir"
+                    >
+                        {{ $gettext('Name') }}
+                    </sortable-toggle-element>
                     <th v-if="!responsiveDisplay" >{{ $gettext('Inhalt') }}</th>
                     <th v-if="!responsiveDisplay"></th>
                 </tr>
@@ -88,6 +92,7 @@
 
 <script>
 import MyCoursesMixin from '../../mixins/MyCoursesMixin.js';
+import SortableToggleElement from "../SortableToggleElement.vue";
 
 const defaultIconSize = parseInt(
     getComputedStyle(document.body).getPropertyValue('--icon-size-default'),
@@ -96,6 +101,7 @@ const defaultIconSize = parseInt(
 
 export default {
     name: 'TableView',
+    components: {SortableToggleElement},
     mixins: [MyCoursesMixin],
     props: {
         iconSize: {

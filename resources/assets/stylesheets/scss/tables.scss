@@ -269,11 +269,17 @@ tr.sortable {
         }
     }
 
-    th.sortasc {
+    th.sortasc:not(:has(button.as-link)) {
         @include icon('after', 'arr_1up', $size: $icon-size-inline, $align: top, $padding: 2px);
     }
+    th.sortdesc:not(:has(button.as-link)) {
+        @include icon('after', 'arr_1down', $size: $icon-size-inline, $align: top, $padding: 2px);
+    }
 
-    th.sortdesc {
+    th.sortasc button.as-link {
+        @include icon('after', 'arr_1up', $size: $icon-size-inline, $align: top, $padding: 2px);
+    }
+    th.sortdesc button.as-link {
         @include icon('after', 'arr_1down', $size: $icon-size-inline, $align: top, $padding: 2px);
     }
 
