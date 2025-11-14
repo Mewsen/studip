@@ -56,6 +56,9 @@ class CommunityNavigation extends Navigation
             //Blubber messenger
             $navigation = new Navigation(_('Blubber'), 'dispatch.php/blubber');
             $this->addSubNavigation('blubber', $navigation);
+            // temporary navigation for new chat
+            $navigation = new Navigation(_('Chat'), 'dispatch.php/chat');
+            $this->addSubNavigation('chat', $navigation);
         }
 
         // online list

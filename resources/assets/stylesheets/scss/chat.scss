@@ -1,0 +1,16 @@
+#chat-index { 
+    #sidebar {
+        #chat-room-actions-widget {
+            margin-top: 17px;
+        }
+        
+    }
+    #content-wrapper {
+    position: relative;
+    padding-bottom: 15px;
+
+    [data-vue-app] {
+        height: 100%;
+    }
+}
+}
