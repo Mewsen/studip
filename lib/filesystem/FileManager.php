@@ -1650,9 +1650,12 @@ class FileManager
 
         // Weg über einen Locationheader:
         $location_header = $header['Location'] ?? $header['location'] ?? null;
-        if (in_array($header['response_code'], [300, 301, 302, 303, 305, 307]) && $location_header) {
-            if (mb_strpos($location_header, 'http') !== 0) {
-                $location_header = $url_parts['scheme'] . '://' . $url_parts['host'] . '/' . $location_header;
+        if (
+            in_array($header['response_code'], [300, 301, 302, 303, 305, 307, 308])
+            && $location_header
+        ) {
+            if (!str_starts_with($location_header, 'http')) {
+                $location_header = $url_parts['scheme'] . '://' . $url_parts['host'] . $location_header;
             }
             $header = self::fetchURLMetadata($location_header, $level + 1);
         }
