@@ -216,11 +216,11 @@ class RouteMap
         $group->patch('/blubber-comments/{id}', Routes\Blubber\CommentsUpdate::class);
         $group->delete('/blubber-comments/{id}', Routes\Blubber\CommentsDelete::class);
 
-        // REL blubber-threads > mentions
+        // REL blubber-threads > participation
         $this->addRelationship(
             $group,
-            '/blubber-threads/{id}/relationships/mentions',
-            Routes\Blubber\Rel\Mentions::class
+            '/blubber-threads/{id}/relationships/participation',
+            Routes\Blubber\Rel\Participations::class
         );
 
         // REL users > blubber-default-thread

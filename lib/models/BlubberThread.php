@@ -27,13 +27,34 @@
  * @property int|null $chdate database column
  * @property int|null $mkdate database column
  * @property SimpleORMapCollection<BlubberComment> $comments has_many BlubberComment
- * @property SimpleORMapCollection<BlubberMention> $mentions has_many BlubberMention
+ * @property SimpleORMapCollection<BlubberParticipation> $participations has_many BlubberParticipation
  * @property SimpleORMapCollection<ObjectUserVisit> $visits has_many ObjectUserVisit
  * @property User $user belongs_to User
  */
 
 class BlubberThread extends SimpleORMap implements PrivacyObject
 {
+    /** @var string the private context/range type */
+    const CTX_TYPE_PRIVATE = 'private';
+
+    /** @var string the public context/range type */
+    const CTX_TYPE_PUBLIC = 'public';
+
+    /** @var string the course context/range type */
+    const CTX_TYPE_COURSE = 'course';
+
+    /** @var string the institute context/range type */
+    const CTX_TYPE_INST = 'institute';
+
+    /** @var array the list of allowed context/range types */
+    const ALLOWED_CTX_TYPES = [
+        self::CTX_TYPE_PRIVATE,
+        self::CTX_TYPE_PUBLIC,
+        self::CTX_TYPE_COURSE,
+        self::CTX_TYPE_INST,
+    ];
+
+    protected array $already_notified_user_ids = [];
     /**
      * Configures this model.
      *
@@ -49,8 +70,8 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'on_delete'  => 'delete',
             'order_by'   => 'ORDER BY mkdate ASC'
         ];
-        $config['has_many']['mentions'] = [
-            'class_name' => BlubberMention::class,
+        $config['has_many']['participations'] = [
+            'class_name' => BlubberParticipation::class,
             'on_store'   => 'store',
             'on_delete'  => 'delete',
         ];
@@ -71,41 +92,85 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     }
 
     /**
-     * Recognizes mentions in blubber as @username or @"Firstname lastname"
-     * and turns them into usual studip-links. The mentioned person is notified by
-     * sending a message to him/her as a side-effect.
+     * Checks if the Thread is of a specific type.
+     *
+     * @param string|array $types the types to check against, could be string or array of strings
+     *
+     * @return bool whether the type matches!
+     * @throws Exception when the type in not allowed.
+     */
+    public function isOfContextType(mixed $types): bool
+    {
+        // Accept single string or an array of types
+        if (is_string($types)) {
+            $types = [$types];
+        }
+
+        $types = array_values(array_filter((array) $types));
+
+        // No types provided -> invalid
+        if (empty($types)) {
+            throw new Exception('Undefined Blubber context type.');
+        }
+
+        // Check that all provided types are allowed
+        $invalid = array_diff($types, self::ALLOWED_CTX_TYPES);
+        if (!empty($invalid)) {
+            throw new Exception('Undefined Blubber context type: ' . implode(', ', $invalid));
+        }
+
+        return in_array($this->context_type, $types, true);
+    }
+
+    /**
+     * Recognizes lookups in blubber conversations as @username or @"Firstname lastname"
+     * and turns them into usual studip-links.
+     *
+     * When the room is private and the user does not belong in the conversation, only a user-link is returned.
+     * When the a user is called and is participating in that conversation, we notify him/her with special personal notification.
+     *
+     * In each case the @ will be converted to user-link if user has been found.
+     *
      * @param array $matches
      * @return string
      */
-    public function mention($matches)
+    public function atSignLookups($matches)
     {
-        $username = stripslashes(mb_substr($matches[0], 1));
-        if ($username[0] !== '"') {
-            $user = User::findByUsername($username);
+        $user_lookup = stripslashes(mb_substr($matches[0], 1));
+        $user = null;
+        if (!str_starts_with($user_lookup, '"')) {
+            $user = User::findByUsername($user_lookup);
         } else {
-            $name = mb_substr($username, 1, -1); // Strip quotes
-            $user = User::findOneBySQL("CONCAT(Vorname, ' ', Nachname) = ?", [$name]);
+            $user_fullname = mb_substr($user_lookup, 1, -1); // Strip quotes
+            $user = User::findOneBySQL("CONCAT(Vorname, ' ', Nachname) = ?", [$user_fullname]);
         }
-        if ($user
+        if (!empty($user)
             && !$this->isNew()
             && $user->getId()
             && $user->getId() !== $GLOBALS['user']->id
         ) {
-            if ($this['context_type'] === 'private') {
-                $mention = new BlubberMention();
-                $mention['thread_id'] = $this->getId();
-                $mention['user_id'] = $user->getId();
-                $mention->store();
-            } elseif ($this['context_type'] === 'public') {
+            if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)
+                || BlubberParticipation::userParticipatesIn($this->getId(), $user->getId())
+                || $GLOBALS['perm']->have_perm('admin', $user->getId())) {
+                $user_avatar = Avatar::getAvatar($GLOBALS['user']->id);
+                $notification_avatar = Icon::create('blubber');
+                if ($user_avatar->is_customized()) {
+                    $notification_avatar = $user_avatar->getURL(Avatar::MEDIUM);
+                }
                 PersonalNotifications::add(
                     $user->getId(),
                     $this->getURL(),
-                    sprintf(_('%s hat Sie in einem Blubber erwähnt.'), get_fullname()),
+                    sprintf(_('%s hat Sie in %s Chat Raum erwähnt.'), get_fullname(), $this->getName()),
                     'blubberthread_' . $this->getId(),
-                    Icon::create('blubber'),
+                    $notification_avatar,
                     true
                 );
+                // We record this notification here, in order to avoid redundancy!
+                if (!in_array($user->getId(), $this->already_notified_user_ids)) {
+                    $this->already_notified_user_ids[] = $user->getId();
+                }
             }
+
             $oldbase = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
             $url = URLHelper::getLink('dispatch.php/profile', ['username' => $user->username]);
             URLHelper::setBaseURL($oldbase);
@@ -170,9 +235,10 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
 
-        $condition = "LEFT JOIN blubber_comments
+        $condition =
+                    "LEFT JOIN blubber_comments
                         ON blubber_comments.thread_id = blubber_threads.thread_id
-                      WHERE (blubber_threads.content IS NULL OR blubber_threads.content = '')
+                    WHERE (blubber_threads.content IS NULL OR blubber_threads.content = '')
                         AND blubber_comments.comment_id IS NULL
                         AND (display_class IS NULL OR display_class = 'BlubberThread')
                         AND UNIX_TIMESTAMP() - blubber_threads.mkdate > 60 * 60";
@@ -181,21 +247,21 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         $union = new SQLUnionQuery();
         $union->setUnionAll(true);
 
-        // Public, global and mentions
+        // Public, global and participation.
         $query = new SQLQuery('blubber_threads');
         $query->where('visible_in_stream = 1');
         if ($GLOBALS['perm']->have_perm('root')) {
-            $query->where('context_type', "context_type = :context_type", [':context_type' => 'public']);
+            $query->where('context_type', "context_type = :context_type", [':context_type' => self::CTX_TYPE_PUBLIC]);
         } else {
             $query->where(
                 'context_type',
                 "context_type IN (:context_type)",
-                [':context_type' => ['public', 'course', 'institute']]
+                [':context_type' => [self::CTX_TYPE_PUBLIC, self::CTX_TYPE_COURSE, self::CTX_TYPE_INST]]
             );
 
         }
         $query->where(
-            'public/global/mentions',
+            'public/global/participations',
             implode(' OR ', [
                 "blubber_threads.thread_id = 'global'",
                 "user_id = :user_id",
@@ -210,7 +276,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         if (count($course_ids) > 0) {
             $query = new SQLQuery('blubber_threads');
             $query->where('visible_in_stream = 1');
-            $query->where('inst_type', "context_type = 'course'");
+            $query->where('inst_type', "context_type = '" . self::CTX_TYPE_COURSE . "'");
             $query->where('inst_ids', 'context_id IN (:course_ids)', [':course_ids' => $course_ids]);
             $union->add($query);
         }
@@ -220,18 +286,18 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         if (count($institute_ids) > 0) {
             $query = new SQLQuery('blubber_threads');
             $query->where('visible_in_stream = 1');
-            $query->where('inst_type', "context_type = 'institute'");
+            $query->where('inst_type', "context_type = '" . self::CTX_TYPE_INST . "'");
             $query->where('inst_ids', 'context_id IN (:institute_ids)', [':institute_ids' => $institute_ids]);
             $union->add($query);
         }
 
-        // Private mentions
+        // Private Room Participating.
         $query = new SQLQuery('blubber_threads');
-        $query->join('blubber_mentions', 'blubber_mentions', 'blubber_mentions.thread_id = blubber_threads.thread_id', 'JOIN');
-        $query->where("context_type = 'private'");
+        $query->join('blubber_participations', 'blubber_participations', 'blubber_participations.thread_id = blubber_threads.thread_id', 'JOIN');
+        $query->where("context_type = '" . self::CTX_TYPE_PRIVATE . "'");
         $query->where('visible_in_stream = 1');
-        $query->where('user', 'blubber_mentions.user_id = :user_id', [':user_id' => $user_id]);
-        $query->where('blubber_mentions.external_contact = 0');
+        $query->where('user', 'blubber_participations.user_id = :user_id', [':user_id' => $user_id]);
+        $query->where('blubber_participations.external_contact = 0');
 
         $union->add($query);
 
@@ -342,7 +408,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      */
     public static function findByInstitut($institut_id, $only_in_stream = false, string $user_id = null)
     {
-        return self::findByContext($institut_id, $only_in_stream, 'institute', $user_id);
+        return self::findByContext($institut_id, $only_in_stream, self::CTX_TYPE_INST, $user_id);
     }
 
     /**
@@ -352,7 +418,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      */
     public static function findBySeminar($seminar_id, $only_in_stream = false, string $user_id = null)
     {
-        return self::findByContext($seminar_id, $only_in_stream, 'course', $user_id);
+        return self::findByContext($seminar_id, $only_in_stream, self::CTX_TYPE_COURSE, $user_id);
     }
 
     /**
@@ -361,8 +427,12 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $context_type  optional; filter threads by `context_type`
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      */
-    public static function findByContext($context_id, $only_in_stream = false, $context_type = 'course', string $user_id = null)
-    {
+    public static function findByContext(
+        $context_id,
+        $only_in_stream = false,
+        $context_type = self::CTX_TYPE_COURSE,
+        string $user_id = null
+    ) {
         if (!BlubberThread::findOneBySQL("context_type = :type AND context_id = :context_id AND visible_in_stream = '1' AND content IS NULL AND display_class IS NULL", ['context_id' => $context_id, 'type' => $context_type])) {
             //create the default-thread for this context
             $coursethread = new BlubberThread();
@@ -419,38 +489,23 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
     public function getName()
     {
-        if ($this['context_type'] === 'public') {
+        if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)) {
             return sprintf(_('Blubber von %s'), $this->user ? $this->user->getFullName() : _('unbekannt'));
         }
 
-        if ($this['context_type'] === 'private') {
-            $query = "SELECT IFNULL(external_users.name, CONCAT(auth_user_md5.Vorname, ' ', auth_user_md5.Nachname)) AS name
-                      FROM blubber_mentions
-                      LEFT JOIN auth_user_md5
-                        ON blubber_mentions.user_id = auth_user_md5.user_id
-                           AND blubber_mentions.external_contact = 0
-                      LEFT JOIN external_users
-                        ON external_users.external_contact_id = blubber_mentions.user_id
-                           AND blubber_mentions.external_contact = 1
-                      WHERE blubber_mentions.thread_id = :thread_id
-                        AND blubber_mentions.user_id != :me
-                      ORDER BY name";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([
-                'thread_id' => $this->getId(),
-                'me'        => $GLOBALS['user']->id,
-            ]);
-            $names = $statement->fetchFirst();
-            $names = array_map(function ($name) {
-                return $name ?? _('unbekannt');
-            }, $names);
+        if ($this->isOfContextType(self::CTX_TYPE_PRIVATE)) {
+            $names = BlubberParticipation::getParticipantsNamesIn($this->getId(), $GLOBALS['user']->id);
+
+            if (empty($names)) {
+                return _('Privatraum');
+            }
 
             $names[] = _('ich');
             $names = implode(', ', $names);
             return mb_substr($names, 0, 60);
         }
 
-        if ($this['context_type'] === 'course') {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE)) {
             if ($this['content']) {
                 return mb_substr((string) Course::find($this['context_id'])->name . ': ' . $this['content'], 0, 50) . ' ...';
             } else {
@@ -462,7 +517,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             }
         }
 
-        if ($this['context_type'] === 'institute') {
+        if ($this->isOfContextType(self::CTX_TYPE_INST)) {
             if ($this['content']) {
                 return mb_substr((string) Institute::find($this['context_id'])->name . ': ' . $this['content'], 0, 50) . ' ...';
             } else {
@@ -485,7 +540,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      */
     public function getContextTemplate()
     {
-        if ($this['context_type'] === 'course') {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE)) {
             $teachers       = CourseMember::findBySQL("Seminar_id = ? AND status = 'dozent' ORDER BY position ASC", [$this['context_id']]);
             $tutors         = CourseMember::findBySQL("Seminar_id = ? AND status = 'tutor' ORDER BY position ASC", [$this['context_id']]);
             $students_count = CourseMember::countBySQL("Seminar_id = ? AND status IN ('autor', 'user') ORDER BY position ASC", [$this['context_id']]);
@@ -502,33 +557,22 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             return $template;
         }
 
-        if ($this['context_type'] === 'private') {
-            $query = "SELECT *
-                      FROM blubber_mentions
-                      LEFT JOIN auth_user_md5
-                        ON blubber_mentions.user_id = auth_user_md5.user_id
-                           AND blubber_mentions.external_contact = 0
-                      LEFT JOIN external_users
-                        ON blubber_mentions.user_id = external_users.external_contact_id
-                           AND blubber_mentions.external_contact = 1
-                      WHERE thread_id = ?
-                      ORDER BY IFNULL(external_users.name, CONCAT(auth_user_md5.Vorname, ' ', auth_user_md5.Nachname))";
-            $mentions = DBManager::get()->prepare($query);
-            $mentions->execute([$this->getId()]);
+        if ($this->isOfContextType(self::CTX_TYPE_PRIVATE)) {
+            $participants = BlubberParticipation::getOrderedParticipantsIn($this->getId());
 
             $template = $GLOBALS['template_factory']->open('blubber/private_context');
             $template->thread = $this;
-            $template->mentions = $mentions->fetchAll(PDO::FETCH_ASSOC);
+            $template->participants = $participants;
             return $template;
         }
 
-        if ($this['context_type'] === 'public') {
+        if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)) {
             $template = $GLOBALS['template_factory']->open('blubber/public_context');
             $template->thread = $this;
             return $template;
         }
 
-        if ($this['context_type'] === 'institute') {
+        if ($this->isOfContextType(self::CTX_TYPE_INST)) {
             $template = $GLOBALS['template_factory']->open('blubber/institute_context');
             $template->thread = $this;
             $template->institute = Institute::find($this['context_id']);
@@ -605,7 +649,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
     public function getURL()
     {
-        if (($this['context_type'] === "course") || ($this['context_type'] === "institute")) {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE) || $this->isOfContextType(self::CTX_TYPE_INST)) {
             return URLHelper::getURL('dispatch.php/course/messenger/course/' . $this->getId(), ['cid' => $this['context_id']]);
         }
         return URLHelper::getURL('dispatch.php/blubber/index/' . $this->getId());
@@ -677,15 +721,27 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         $notifications = [];
         foreach ($statement as $row) {
             $user_id  = $row['user_id'];
+
+            // We check if the user has already been notified via @ lookups!
+            if (in_array($user_id, $this->already_notified_user_ids)) {
+                continue;
+            }
+
             $language = $row['language'] ?? Config::get()->DEFAULT_LANGUAGE;
 
             if (!isset($notifications[$language])) {
                 setTempLanguage(false, $language);
 
+                $user_avatar = Avatar::getAvatar($GLOBALS['user']->id);
+                $notification_avatar = Icon::create('blubber')->asImagePath();
+                if ($user_avatar->is_customized()) {
+                    $notification_avatar = $user_avatar->getURL(Avatar::MEDIUM);
+                }
+
                 $notifications[$language] = PersonalNotifications::create([
                     'url'     => $this->getURL(),
-                    'text'    => sprintf(_('%s hat eine Nachricht geschrieben.'), get_fullname()),
-                    'avatar'  => Icon::create('blubber')->asImagePath(),
+                    'text'    => sprintf(_('%s hat eine Nachricht im %s Chat Raum geschrieben.'), get_fullname(), $this->getName()),
+                    'avatar'  => $notification_avatar,
                     'dialog'  => true,
                     'html_id' => "blubberthread_{$this->id}",
                 ]);
@@ -695,6 +751,9 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
             $notifications[$language]->link($user_id);
         }
+
+        // We reset the holder back!
+        $this->already_notified_user_ids = [];
     }
 
     /**
@@ -720,7 +779,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         ];
 
         // Public context: Notify all users that participated
-        if ($this->context_type === 'public') {
+        if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)) {
             $query = "SELECT DISTINCT `user_id`
                       FROM `blubber_comments`
                       WHERE `thread_id` = :thread_id
@@ -734,10 +793,10 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             return compact('query', 'parameters');
         }
 
-        // Private context: Notify all mentioned users
-        if ($this->context_type === 'private') {
+        // Private context: Notify all participated users
+        if ($this->isOfContextType(self::CTX_TYPE_PRIVATE)) {
             $query = "SELECT user_id
-                      FROM blubber_mentions
+                      FROM blubber_participations
                       WHERE thread_id = :thread_id
                         AND external_contact = 0
                         AND user_id != :user_id";
@@ -747,7 +806,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
         // Course context: Notify all members of the course except the ones that
         // turned the notifications off
-        if ($this->context_type === 'course') {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE)) {
             $query = "SELECT seminar_user.user_id
                       FROM seminar_user
                       LEFT JOIN blubber_threads_followstates ON (
@@ -765,7 +824,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         }
 
         // Institute context: Notify all members of the institute
-        if ($this->context_type === 'institute') {
+        if ($this->isOfContextType(self::CTX_TYPE_INST)) {
             $query = "SELECT user_inst.user_id
                       FROM user_inst
                       LEFT JOIN blubber_threads_followstates ON (
@@ -798,7 +857,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     public function isWritable(string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
-        if ($this['context_type'] === 'course' || $this['context_type'] === 'institute') {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE) || $this->isOfContextType(self::CTX_TYPE_INST)) {
             return $GLOBALS['perm']->have_studip_perm('tutor', $this['context_id'], $user_id);
         } else {
             return $GLOBALS['perm']->have_perm('root', $user_id) || $this['user_id'] === $user_id;
@@ -813,23 +872,16 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     public function isReadable(string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
-        if ($this['context_type'] === 'public') {
+        if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)) {
             return true;
         }
 
-        if ($this['context_type'] === 'private') {
-            $query = "SELECT 1
-                      FROM blubber_mentions
-                      WHERE thread_id = :thread_id
-                        AND user_id = :me
-                        AND external_contact = 0";
-            return (bool) DBManager::get()->fetchColumn($query, [
-                'me'        => $user_id,
-                'thread_id' => $this->getId()
-            ]);
+        if ($this->isOfContextType(self::CTX_TYPE_PRIVATE)) {
+            $is_participated = BlubberParticipation::localUserParticipatesIn($this->getId(), $user_id);
+            return $is_participated;
         }
 
-        if (in_array($this['context_type'], ['course', 'institute'])) {
+        if ($this->isOfContextType([self::CTX_TYPE_COURSE, self::CTX_TYPE_INST])) {
             return $GLOBALS['perm']->have_studip_perm('user', $this['context_id'], $user_id);
         }
 
@@ -846,38 +898,33 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
     public function getAvatar()
     {
-        if ($this['context_type'] === 'course') {
+        if ($this->isOfContextType(self::CTX_TYPE_COURSE)) {
             return CourseAvatar::getAvatar($this['context_id'])->getURL(Avatar::MEDIUM);
         }
 
-        if ($this['context_type'] === 'institute') {
+        if ($this->isOfContextType(self::CTX_TYPE_INST)) {
             return InstituteAvatar::getAvatar($this['context_id'])->getURL(Avatar::MEDIUM);
         }
 
-        if ($this['context_type'] === 'private') {
-            $query = "SELECT user_id, external_contact
-                      FROM blubber_mentions
-                      WHERE thread_id = ?";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([$this->getId()]);
-            $mentions = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if ($this->isOfContextType(self::CTX_TYPE_PRIVATE)) {
+            $participants = BlubberParticipation::getParticipantsIn($this->getId());
 
-            if (count($mentions) === 1) {
-                return Avatar::getAvatar($mentions[0]['user_id'])->getURL(Avatar::MEDIUM);
+            if (count($participants) === 1) {
+                return Avatar::getAvatar($participants[0]['user_id'])->getURL(Avatar::MEDIUM);
             }
 
-            if (count($mentions) === 2 && $mentions[0]['user_id'] === $GLOBALS['user']->id && !$mentions[0]['external_contact']) {
-                return Avatar::getAvatar($mentions[1]['user_id'])->getURL(Avatar::MEDIUM);
+            if (count($participants) === 2 && $participants[0]['user_id'] === $GLOBALS['user']->id && !$participants[0]['external_contact']) {
+                return Avatar::getAvatar($participants[1]['user_id'])->getURL(Avatar::MEDIUM);
             }
 
-            if (count($mentions) === 2 && $mentions[1]['user_id'] === $GLOBALS['user']->id && !$mentions[1]['external_contact']) {
-                return Avatar::getAvatar($mentions[0]['user_id'])->getURL(Avatar::MEDIUM);
+            if (count($participants) === 2 && $participants[1]['user_id'] === $GLOBALS['user']->id && !$participants[1]['external_contact']) {
+                return Avatar::getAvatar($participants[0]['user_id'])->getURL(Avatar::MEDIUM);
             }
 
             return Icon::create('group3')->asImagePath();
         }
 
-        if ($this['context_type'] === 'public') {
+        if ($this->isOfContextType(self::CTX_TYPE_PUBLIC)) {
             return Icon::create('globe')->asImagePath();
         }
 
@@ -1109,7 +1156,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
         // Notifications may not be disabled outside of course and institute
         // streams
-        if (!in_array($this->context_type, ['course', 'institute'])) {
+        if (!$this->isOfContextType([self::CTX_TYPE_COURSE, self::CTX_TYPE_INST])) {
             return false;
         }
 
@@ -1136,5 +1183,28 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                 $user_id
             ]
         );
+    }
+
+    public static function findPrivateThreadBetween(string $first_party, string $second_party)
+    {
+        return self::findOneBySQL(
+                "JOIN blubber_participations
+                    ON blubber_participations.thread_id = blubber_threads.thread_id
+                JOIN blubber_participations AS blubber_participations_me
+                    ON blubber_participations_me.thread_id = blubber_threads.thread_id
+                JOIN blubber_participations AS blubber_participations_friend
+                    ON blubber_participations_friend.thread_id = blubber_threads.thread_id
+                WHERE blubber_threads.context_type = 'private'
+                    AND blubber_participations_me.user_id = :first_party
+                    AND blubber_participations_friend.user_id = :second_party
+                GROUP BY blubber_threads.thread_id
+                HAVING COUNT(blubber_participations.user_id) = 2
+                ORDER BY blubber_threads.mkdate DESC
+                LIMIT 1",
+                [
+                    'first_party' => $first_party,
+                    'second_party' => $second_party,
+                ]
+            );
     }
 }

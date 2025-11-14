@@ -53,7 +53,7 @@ class BlubberComment extends SimpleORMap implements PrivacyObject
             'assoc_foreign_key' => 'external_contact_id',
         ];
 
-        $config['registered_callbacks']['before_create'][] = 'transformMentions';
+        $config['registered_callbacks']['before_create'][] = 'transformAtSigns';
         $config['registered_callbacks']['before_create'][] = 'cbAddFollowing';
         $config['registered_callbacks']['after_create'][] = 'cbCreateNotifications';
         $config['registered_callbacks']['before_delete'][] = 'cbCreateDeleteEvent';
@@ -118,7 +118,7 @@ class BlubberComment extends SimpleORMap implements PrivacyObject
         $user_id = $user_id ?? $GLOBALS['user']->id;
         return $user_id === $this['user_id']
             || $GLOBALS['perm']->have_perm('root', $user_id)
-            || ($this->thread['context_type'] === 'course' && $this->thread->isWritable($user_id));
+            || ($this->thread['context_type'] === BlubberThread::CTX_TYPE_COURSE && $this->thread->isWritable($user_id));
     }
 
     public function getOpenGraphURLs()
@@ -126,9 +126,9 @@ class BlubberComment extends SimpleORMap implements PrivacyObject
         return OpenGraph::extract($this['content']);
     }
 
-    public function transformMentions()
+    public function transformAtSigns()
     {
-        $callback = [$this->thread, 'mention'];
+        $callback = [$this->thread, 'atSignLookups'];
         $this['content'] = preg_replace_callback('/\B@("[^\n"]+"|\S+)/', $callback, $this['content']);
     }
 

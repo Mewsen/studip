@@ -17,7 +17,7 @@ class ThreadsIndex extends JsonApiController
     use TimestampTrait, FilterTrait;
 
     protected $allowedFilteringParameters = ['since', 'before', 'search', 'context-type', 'context-id'];
-    protected $allowedIncludePaths = ['author', 'comments', 'context', 'mentions'];
+    protected $allowedIncludePaths = ['author', 'comments', 'context', 'participations'];
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     /**
@@ -39,7 +39,9 @@ class ThreadsIndex extends JsonApiController
             }
         }
 
-        if (!in_array($contextType, ['all', 'public', 'private', 'course', 'institute'])) {
+        $allowedTypes = \BlubberThread::ALLOWED_CTX_TYPES;
+        $allowedTypes[] = 'all';
+        if (!in_array($contextType, $allowedTypes)) {
             throw new BadRequestException('Wrong context type.');
         }
 
@@ -74,7 +76,9 @@ class ThreadsIndex extends JsonApiController
     private function getPublicThreads(\User $observer)
     {
         return $this->paginateThreads(
-            $this->upgradeAndFilterThreads($observer, \BlubberThread::findBySQL("context_type = 'public'"))
+            $this->upgradeAndFilterThreads($observer,
+                \BlubberThread::findBySQL("context_type = ?", [\BlubberThread::CTX_TYPE_PUBLIC])
+            )
         );
     }
 
@@ -84,8 +88,8 @@ class ThreadsIndex extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $query = 'SELECT a.thread_id FROM blubber_mentions a
-                    JOIN blubber_mentions b
+        $query = 'SELECT a.thread_id FROM blubber_participations a
+                    JOIN blubber_participations b
                       ON a.thread_id = b.thread_id
                    WHERE a.user_id = ? AND b.user_id = ?
                      AND a.external_contact = 0 AND b.external_contact = 0';

@@ -1,11 +1,11 @@
 <?php
 
-use JsonApi\Routes\Blubber\Rel\Mentions;
+use JsonApi\Routes\Blubber\Rel\Participations;
 use JsonApi\Schemas\User as UsersSchema;
 
 require_once 'BlubberTestHelper.php';
 
-class BlubberMentionsRelationshipTest extends \Codeception\Test\Unit
+class BlubberParticipationsRelationshipTest extends \Codeception\Test\Unit
 {
     use BlubberTestHelper;
 
@@ -33,11 +33,11 @@ class BlubberMentionsRelationshipTest extends \Codeception\Test\Unit
         $app = $this->tester->createApp(
             $credentials,
             'get',
-            '/blubber-threads/{id}/relationships/mentions',
-            Mentions::class);
+            '/blubber-threads/{id}/relationships/participations',
+            Participations::class);
 
         $requestBuilder = $this->tester->createRequestBuilder($credentials);
-        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/mentions')->fetch();
+        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/participations')->fetch();
 
         $response = $this->tester->sendMockRequest($app, $requestBuilder->getRequest());
         $this->tester->assertTrue($response->isSuccessfulDocument([200]));
@@ -46,7 +46,7 @@ class BlubberMentionsRelationshipTest extends \Codeception\Test\Unit
         $this->tester->assertTrue($document->isResourceCollectionDocument());
 
         $resources = $document->primaryResources();
-        $this->tester->assertCount(count($thread->mentions), $resources);
+        $this->tester->assertCount(count($thread->participations), $resources);
     }
 
     public function testAddRelationship()
@@ -54,23 +54,23 @@ class BlubberMentionsRelationshipTest extends \Codeception\Test\Unit
         $credentials = $this->tester->getCredentialsForTestAutor();
 
         $thread = $this->createPrivateBlubberThreadForUser($credentials, [$credentials]);
-        $this->tester->assertCount(1, $thread->mentions);
+        $this->tester->assertCount(1, $thread->participations);
 
         $app = $this->tester->createApp(
             $credentials,
             'post',
-            '/blubber-threads/{id}/relationships/mentions',
-            Mentions::class);
+            '/blubber-threads/{id}/relationships/participations',
+            Participations::class);
 
         $requestBuilder = $this->tester->createRequestBuilder($credentials);
-        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/mentions')
+        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/participations')
                        ->create()
                        ->setJsonApiBody($this->prepareValidBody([$this->tester->getCredentialsForTestDozent()]));
 
         $response = $this->tester->sendMockRequest($app, $requestBuilder->getRequest());
 
         $this->tester->assertSame(204, $response->getStatusCode());
-        $this->tester->assertCount(2, \BlubberThread::find($thread->id)->mentions);
+        $this->tester->assertCount(2, \BlubberThread::find($thread->id)->participations);
     }
 
     public function testRemoveRelationship()
@@ -80,23 +80,23 @@ class BlubberMentionsRelationshipTest extends \Codeception\Test\Unit
         $credentials3 = $this->tester->getCredentialsForTestAdmin();
 
         $thread = $this->createPrivateBlubberThreadForUser($credentials1, [$credentials1, $credentials2, $credentials3]);
-        $this->tester->assertCount(3, $thread->mentions);
+        $this->tester->assertCount(3, $thread->participations);
 
         $app = $this->tester->createApp(
             $credentials1,
             'delete',
-            '/blubber-threads/{id}/relationships/mentions',
-            Mentions::class);
+            '/blubber-threads/{id}/relationships/participations',
+            Participations::class);
 
         $requestBuilder = $this->tester->createRequestBuilder($credentials1);
-        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/mentions')
+        $requestBuilder->setUri('/blubber-threads/'.$thread->id.'/relationships/participations')
                        ->delete()
                        ->setJsonApiBody($this->prepareValidBody([$credentials1]));
 
         $response = $this->tester->sendMockRequest($app, $requestBuilder->getRequest());
 
         $this->tester->assertSame(204, $response->getStatusCode());
-        $this->tester->assertCount(2, \BlubberThread::find($thread->id)->mentions);
+        $this->tester->assertCount(2, \BlubberThread::find($thread->id)->participations);
     }
 
 

@@ -9,7 +9,7 @@ class BlubberComment extends SchemaProvider
 {
     const TYPE = 'blubber-comments';
     const REL_AUTHOR = 'author';
-    const REL_MENTIONS = 'mentions';
+    const REL_PARTICIPATIONS = 'participations';
     const REL_THREAD = 'thread';
 
     public function getId($resource): ?string
@@ -50,7 +50,7 @@ class BlubberComment extends SchemaProvider
             return $relationships;
         }
 
-        $relationships = $this->getMentionsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_MENTIONS));
+        $relationships = $this->getParticipationsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_PARTICIPATIONS));
         $relationships = $this->getThreadRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_THREAD));
 
         return $relationships;
@@ -80,19 +80,19 @@ class BlubberComment extends SchemaProvider
         return $relationships;
     }
 
-    private function getMentionsRelationship(array $relationships, \BlubberComment $resource, $includeData)
+    private function getParticipationsRelationship(array $relationships, \BlubberComment $resource, $includeData)
     {
         if ($includeData) {
-            $relatedUsers = $resource->mentions->pluck('user');
+            $relatedUsers = $resource->participations->pluck('user');
         } else {
-            $relatedUsers = array_map(function ($mention) {
-                return \User::build(['user_id' => $mention->user_id], false);
-            }, \BlubberMention::findBySQL('thread_id = ?', [$resource->id]));
+            $relatedUsers = array_map(function ($participation) {
+                return \User::build(['user_id' => $participation->user_id], false);
+            }, \BlubberParticipation::findBySQL('thread_id = ?', [$resource->id]));
         }
 
-        $relationships[self::REL_MENTIONS] = [
+        $relationships[self::REL_PARTICIPATIONS] = [
             self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_MENTIONS),
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_PARTICIPATIONS),
             ],
             self::RELATIONSHIP_DATA => $relatedUsers,
         ];

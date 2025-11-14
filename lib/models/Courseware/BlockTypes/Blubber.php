@@ -81,7 +81,7 @@ class Blubber extends BlockType
             $user = \User::findCurrent();
             $newBlubberThread = \BlubberThread::create(
                 [
-                    'context_type' => 'course',
+                    'context_type' => \BlubberThread::CTX_TYPE_COURSE,
                     'context_id' => $rangeId,
                     'user_id' => $user->id,
                     'external_contact' => 0,

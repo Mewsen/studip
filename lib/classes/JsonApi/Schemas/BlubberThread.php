@@ -12,7 +12,7 @@ class BlubberThread extends SchemaProvider
     const REL_AUTHOR = 'author';
     const REL_COMMENTS = 'comments';
     const REL_CONTEXT = 'context';
-    const REL_MENTIONS = 'mentions';
+    const REL_PARTICIPATIONS = 'participations';
 
     public function getId($resource): ?string
     {
@@ -84,10 +84,10 @@ class BlubberThread extends SchemaProvider
             $resource,
             $this->shouldInclude($context, self::REL_CONTEXT)
         );
-        $relationships = $this->getMentionsRelationship(
+        $relationships = $this->getParticipationsRelationship(
             $relationships,
             $resource,
-            $this->shouldInclude($context, self::REL_MENTIONS)
+            $this->shouldInclude($context, self::REL_PARTICIPATIONS)
         );
 
         return $relationships;
@@ -116,17 +116,17 @@ class BlubberThread extends SchemaProvider
     }
 
     // TODO #10245
-    private function getMentionsRelationship(array $relationships, \BlubberThread $resource, $includeData)
+    private function getParticipationsRelationship(array $relationships, \BlubberThread $resource, $includeData)
     {
         if ($includeData) {
-            $relatedUsers = $resource->mentions->pluck('user');
+            $relatedUsers = $resource->participations->pluck('user');
         } else {
-            $relatedUsers = array_map(function ($mention) {
-                return \User::build(['user_id' => $mention->user_id], false);
-            }, \BlubberMention::findBySQL('thread_id = ?', [$resource->id]));
+            $relatedUsers = array_map(function ($participation) {
+                return \User::build(['user_id' => $participation->user_id], false);
+            }, \BlubberParticipation::findBySQL('thread_id = ?', [$resource->id]));
         }
 
-        $relationships[self::REL_MENTIONS] = [
+        $relationships[self::REL_PARTICIPATIONS] = [
             self::RELATIONSHIP_LINKS_SELF => true,
             self::RELATIONSHIP_LINKS => [],
             self::RELATIONSHIP_DATA => $relatedUsers,
@@ -164,7 +164,7 @@ class BlubberThread extends SchemaProvider
     {
         $related = $data = null;
 
-        if ('course' === $resource['context_type']) {
+        if (\BlubberThread::CTX_TYPE_COURSE === $resource['context_type']) {
             $course = \Course::find($resource['context_id']);
             if (!$course) {
                 throw new InternalServerError('Inconsistent data in BlubberThread.');
@@ -174,7 +174,7 @@ class BlubberThread extends SchemaProvider
             $data = $course;
         }
 
-        if ('institute' === $resource['context_type']) {
+        if (\BlubberThread::CTX_TYPE_INST === $resource['context_type']) {
             $institute = \Institute::find($resource['context_id']);
             if (!$institute) {
                 throw new InternalServerError('Inconsistent data in BlubberThread.');

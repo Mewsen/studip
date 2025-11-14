@@ -47,25 +47,11 @@ class BlubberController extends AuthenticatedController
             $this->thread->markAsRead();
         }
 
-        if (
-            empty($_SESSION['already_asked_for_avatar'])
-            && !Avatar::getAvatar($GLOBALS['user']->id)->is_customized()
-        ) {
-            $_SESSION['already_asked_for_avatar'] = true;
-            PageLayout::postInfo(
-                sprintf(
-                    _('Wollen Sie ein Avatar-Bild nutzen? %sLaden Sie jetzt ein Bild hoch%s.'),
-                    '<a href="' .
-                        URLHelper::getLink('dispatch.php/settings/avatar/') .
-                        '" >',
-                    '</a>'
-                )
-            );
-        }
         $this->buildSidebar();
 
         if (Request::isDialog()) {
             PageLayout::setTitle($this->thread->getName());
+            $this->is_compose = Request::get('compose') ?? false;
             $this->render_template('blubber/dialog');
         }
     }
@@ -79,63 +65,21 @@ class BlubberController extends AuthenticatedController
 
         PageLayout::setTitle($this->thread ? _('Blubber bearbeiten') : _('Neuer Blubber'));
 
-        if (Request::isPost() && count(Request::getArray('user_ids'))) {
-            $user_ids = array_filter(Request::getArray('user_ids'));
+        $search_user_id = Request::get('search_user_id');
 
-            if (count($user_ids) === 1) {
-                //try to redirect to an existing 2 person thread:
-                $query = "SELECT blubber_threads.thread_id
-                          FROM blubber_threads
-                          JOIN blubber_mentions
-                            ON blubber_mentions.thread_id = blubber_threads.thread_id
-                          JOIN blubber_mentions AS blubber_mentions_me
-                            ON blubber_mentions_me.thread_id = blubber_threads.thread_id
-                          JOIN blubber_mentions AS blubber_mentions_friend
-                            ON blubber_mentions_friend.thread_id = blubber_threads.thread_id
-                          WHERE blubber_threads.context_type = 'private'
-                            AND blubber_mentions_me.user_id = :me
-                            AND blubber_mentions_friend.user_id = :friend
-                          GROUP BY blubber_threads.thread_id
-                          HAVING COUNT(blubber_mentions.user_id) = 2
-                          ORDER BY blubber_threads.mkdate DESC
-                          LIMIT 1";
-                $statement = DBManager::get()->prepare($query);
-                $statement->execute([
-                    'me' => $GLOBALS['user']->id,
-                    'friend' => $user_ids[0],
-                ]);
-                $thread_id = $statement->fetchColumn();
-                if ($thread_id) {
-                    $this->redirect("blubber/index/{$thread_id}");
-                    return;
-                }
-            }
-            $blubber = new BlubberThread();
-            $blubber['context_type'] = 'private';
-            $blubber['context_id'] = 'global';
-            $blubber['user_id'] = $GLOBALS['user']->id;
-            $blubber['external_contact'] = 0;
-            $blubber['display_class'] = null;
-            $blubber['visible_in_stream'] = 1;
-            $blubber['commentable'] = 1;
-            $blubber['content'] = '';
-            $blubber->store();
+        // TODO: old behavior, make sure that it is still in use!
+        $search_user_ids = Request::getArray('user_ids') ?? [];
 
-            $query = "INSERT IGNORE INTO blubber_mentions
-                      SET thread_id = :thread_id,
-                          user_id = :user_id,
-                          external_contact = 0,
-                          mkdate = UNIX_TIMESTAMP()";
-            $insert = DBManager::get()->prepare($query);
+        if (!empty($search_user_id)) {
+            $search_user_ids[] = $search_user_id;
+        }
 
-            $user_ids[] = $GLOBALS['user']->id;
-            foreach ($user_ids as $user_id) {
-                $insert->execute([
-                    'thread_id' => $blubber->getId(),
-                    'user_id' => $user_id,
-                ]);
-            }
-            $this->relocate("blubber/index/{$blubber->getId()}");
+        if (Request::isPost() && count($search_user_ids)) {
+            $user_ids = array_filter($search_user_ids);
+
+            $this->thread = $this->createOrFindPrivateThread($GLOBALS['user']->id, $user_ids);
+            // Here we inject a compose query param into the url.
+            $this->redirect("blubber/index/{$this->thread->getId()}?compose=1");
             return;
         }
 
@@ -168,36 +112,25 @@ class BlubberController extends AuthenticatedController
             $user_ids = [$user_id];
         }
 
+        $this->thread = $this->createOrFindPrivateThread($GLOBALS['user']->id, $user_ids);
+
+        // To always support dialog rendering we should do redirect here!
+        $this->redirect($this->thread->getURL());
+    }
+
+    private function createOrFindPrivateThread(string $current_user_id, array $user_ids): BlubberThread
+    {
+        // If it is a direct message (2 persons).
         if (count($user_ids) === 1) {
-            //try to redirect to an existing 2 person thread:
-            $query = "SELECT blubber_threads.thread_id
-                      FROM blubber_threads
-                      JOIN blubber_mentions
-                        ON blubber_mentions.thread_id = blubber_threads.thread_id
-                      JOIN blubber_mentions AS blubber_mentions_me
-                        ON blubber_mentions_me.thread_id = blubber_threads.thread_id
-                      JOIN blubber_mentions AS blubber_mentions_friend
-                        ON blubber_mentions_friend.thread_id = blubber_threads.thread_id
-                      WHERE blubber_threads.context_type = 'private'
-                        AND blubber_mentions_me.user_id = :me
-                        AND blubber_mentions_friend.user_id = :friend
-                      GROUP BY blubber_threads.thread_id
-                      HAVING COUNT(blubber_mentions.user_id) = 2
-                      ORDER BY blubber_threads.mkdate DESC
-                      LIMIT 1";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([
-                'me' => $GLOBALS['user']->id,
-                'friend' => $user_ids[0],
-            ]);
-            $thread_id = $statement->fetchColumn();
-            if ($thread_id) {
-                $this->redirect("blubber/index/{$thread_id}");
-                return;
+            // We check if there is an existing chat, so that we can redirect!
+            $private_thread = BlubberThread::findPrivateThreadBetween($current_user_id, $user_ids[0]);
+            if ($private_thread) {
+                return $private_thread;
             }
         }
+
         $blubber = new BlubberThread();
-        $blubber['context_type'] = 'private';
+        $blubber['context_type'] = BlubberThread::CTX_TYPE_PRIVATE;
         $blubber['context_id'] = 'global';
         $blubber['user_id'] = $GLOBALS['user']->id;
         $blubber['external_contact'] = 0;
@@ -207,21 +140,17 @@ class BlubberController extends AuthenticatedController
         $blubber['content'] = '';
         $blubber->store();
 
-        $query = "INSERT IGNORE INTO blubber_mentions
-                  SET thread_id = :thread_id,
-                      user_id = :user_id,
-                      external_contact = 0,
-                      mkdate = UNIX_TIMESTAMP()";
-        $insert = DBManager::get()->prepare($query);
-
         $user_ids[] = $GLOBALS['user']->id;
         foreach ($user_ids as $user_id) {
-            $insert->execute([
-                'thread_id' => $blubber->getId(),
-                'user_id' => $user_id,
-            ]);
+            $participation = new BlubberParticipation();
+            $participation->thread_id = $blubber->getId();
+            $participation->user_id = $user_id;
+            $participation->external_contact = 0;
+            $participation->mkdate = time();
+            $participation->store();
         }
-        $this->redirect("blubber/index/{$blubber->getId()}");
+
+        return $blubber;
     }
 
     public function to_course_action($course_id)
@@ -230,22 +159,19 @@ class BlubberController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $condition = "context_type = 'course'
-                      AND context_id = ?
-                      AND visible_in_stream = 1
-                      AND content IS NULL";
-        $thread = BlubberThread::findOneBySQL($condition, [$course_id]);
-        if (!$thread) {
+        $threads = BlubberThread::findBySeminar($course_id, true);
+        if (empty($threads)) {
             //create the default-thread for this context
             $thread = new BlubberThread();
             $thread['user_id'] = $GLOBALS['user']->id;
             $thread['external_contact'] = 0;
-            $thread['context_type'] = 'course';
+            $thread['context_type'] = BlubberThread::CTX_TYPE_COURSE;
             $thread['context_id'] = $course_id;
             $thread['visible_in_stream'] = 1;
             $thread['commentable'] = 1;
             $thread->store();
         }
+        $thread = reset($threads);
         $this->redirect("blubber/index/{$thread->getId()}");
     }
 
@@ -261,7 +187,7 @@ class BlubberController extends AuthenticatedController
         if (
             !Request::isPost()
             || (
-                $context_type === 'course'
+                $context_type === BlubberThread::CTX_TYPE_COURSE
                 && !$GLOBALS['perm']->have_studip_perm('autor', $context)
             )
         ) {
@@ -363,7 +289,7 @@ class BlubberController extends AuthenticatedController
     public function add_member_to_private_action($thread_id)
     {
         $this->thread = BlubberThread::find($thread_id);
-        if (!$this->thread['context_type'] === 'private' || !$this->thread->isReadable()) {
+        if (!$this->thread['context_type'] === BlubberThread::CTX_TYPE_PRIVATE || !$this->thread->isReadable()) {
             throw new AccessDeniedException();
         }
         PageLayout::setTitle(_('Person hinzufügen'));
@@ -374,14 +300,12 @@ class BlubberController extends AuthenticatedController
                 'external_contact' => 0,
             ];
 
-            $blubber_mention = BlubberMention::findOneBySQL('user_id = ? AND thread_id = ?', [Request::option('user_id'), $thread_id]);
+            $blubber_participation = BlubberParticipation::findUserParticipationIn($thread_id, $data['user_id']);
 
-            if ($blubber_mention) {
-                $blubber_mention->setData($data);
-            } else {
-                $blubber_mention = BlubberMention::create($data);
+            if (empty($blubber_participation)) {
+                BlubberParticipation::create($data);
             }
-            $blubber_mention->store();
+
             $this->relocate('blubber/index/' . $thread_id);
             return;
         }
@@ -389,7 +313,7 @@ class BlubberController extends AuthenticatedController
 
     public function private_to_studygroup_action(BlubberThread $thread)
     {
-        if ($this->thread['context_type'] !== 'private' || !$this->thread->isReadable()) {
+        if ($this->thread['context_type'] !== BlubberThread::CTX_TYPE_PRIVATE || !$this->thread->isReadable()) {
             throw new AccessDeniedException();
         }
         PageLayout::setTitle(_('Studiengruppe aus Konversation erstellen'));
@@ -404,12 +328,17 @@ class BlubberController extends AuthenticatedController
                 CourseAvatar::getAvatar($course->getId())->createFromUpload('avatar');
             }
 
-            $blubber_mentions = BlubberMention::findBySQL('thread_id = ?', [$this->thread->id]);
-            foreach ($blubber_mentions as $blubber_mention) {
-                CourseMember::insertCourseMember($course->getId(), $blubber_mention->user_id, $blubber_mention->user_id === $this->thread['user_id'] ? 'dozent' : 'tutor');
+            $blubber_participations = BlubberParticipation::findBySQL('thread_id = ?', [$this->thread->id]);
+            foreach ($blubber_participations as $blubber_participation) {
+                $status = $blubber_participation->user_id === $this->thread['user_id'] ? 'dozent' : 'tutor';
+                CourseMember::insertCourseMember(
+                    $course->getId(),
+                    $blubber_participation->user_id,
+                    $status
+                );
             }
 
-            $this->thread['context_type'] = 'course';
+            $this->thread['context_type'] = BlubberThread::CTX_TYPE_COURSE;
             $this->thread['context_id'] = $course->getId();
             $this->thread['content'] = trim($this->thread['content']) ?: null;
             $this->thread->store();
@@ -429,12 +358,12 @@ class BlubberController extends AuthenticatedController
 
     public function leave_private_action(BlubberThread $thread)
     {
-        if ($this->thread['context_type'] !== 'private' || !$this->thread->isReadable()) {
+        if ($this->thread['context_type'] !== BlubberThread::CTX_TYPE_PRIVATE || !$this->thread->isReadable()) {
             throw new AccessDeniedException();
         }
         PageLayout::setTitle(_('Private Konversation verlassen'));
         if (Request::isPost()) {
-            BlubberMention::deleteBySQL("user_id = :me AND external_contact = '0' AND thread_id = :thread_id", [
+            BlubberParticipation::deleteBySQL("user_id = :me AND external_contact = '0' AND thread_id = :thread_id", [
                 'thread_id' => $this->thread->getId(),
                 'me' => $GLOBALS['user']->id,
             ]);
@@ -448,9 +377,9 @@ class BlubberController extends AuthenticatedController
                 $this->thread['content'] = '';
                 $this->thread->store();
             }
-            $count_departed = BlubberMention::countBySQL(
+            $count_departed = BlubberParticipation::countBySQL(
                 "JOIN auth_user_md5 USING (user_id)
-                 WHERE external_contact = 0 AND thread_id = :thread_id",
+                WHERE external_contact = 0 AND thread_id = :thread_id",
                 [
                     'thread_id' => $this->thread->getId(),
                 ]

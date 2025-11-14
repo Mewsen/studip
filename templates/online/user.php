@@ -39,7 +39,7 @@
 
     <td width="3%" align="center">
         <? if (class_exists('Blubber')) : ?>
-        <a href="<?= URLHelper::getLink('dispatch.php/course/streams/global', ['mention' => $tmp_online_uname]) ?>">
+        <a href="<?= URLHelper::getLink('dispatch.php/course/streams/global', ['participation' => $tmp_online_uname]) ?>">
             <?= Icon::create('blubber')->asSvg(['title' => _('Blubber diesen Nutzer an'), 'class' => 'text-bottom']) ?>
         </a>
         <? endif ?>

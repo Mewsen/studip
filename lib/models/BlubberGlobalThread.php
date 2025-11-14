@@ -17,7 +17,7 @@
  * @property int|null $chdate database column
  * @property int|null $mkdate database column
  * @property SimpleORMapCollection<BlubberComment> $comments has_many BlubberComment
- * @property SimpleORMapCollection<BlubberMention> $mentions has_many BlubberMention
+ * @property SimpleORMapCollection<BlubberParticipation> $participations has_many BlubberParticipation
  * @property SimpleORMapCollection<ObjectUserVisit> $visits has_many ObjectUserVisit
  * @property User $user belongs_to User
  */

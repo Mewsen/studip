@@ -10,7 +10,7 @@ trait BlubberTestHelper
     {
         $blubber = \BlubberThread::create(
             [
-                'context_type' => 'public',
+                'context_type' => \BlubberThread::CTX_TYPE_PUBLIC,
                 'context_id' => $credentials['id'],
                 'content' => $content,
                 'user_id' => $credentials['id'],
@@ -23,11 +23,11 @@ trait BlubberTestHelper
         return \BlubberThread::find($blubber->id);
     }
 
-    private function createPrivateBlubberThreadForUser(array $credentials, array $mentions, string $content = '')
+    private function createPrivateBlubberThreadForUser(array $credentials, array $participations, string $content = '')
     {
         $blubber = \BlubberThread::create(
             [
-                'context_type' => 'private',
+                'context_type' => \BlubberThread::CTX_TYPE_PRIVATE,
                 'context_id' => '',
                 'content' => $content,
                 'user_id' => $credentials['id'],
@@ -37,8 +37,8 @@ trait BlubberTestHelper
             ]
         );
 
-        foreach ($mentions as $mention) {
-            \BlubberMention::create(['thread_id' => $blubber->id, 'user_id' => $mention['id']]);
+        foreach ($participations as $participation) {
+            \BlubberParticipation::create(['thread_id' => $blubber->id, 'user_id' => $participation['id']]);
         }
 
         return \BlubberThread::find($blubber->id);
@@ -48,7 +48,7 @@ trait BlubberTestHelper
     {
         $blubber = \BlubberThread::create(
             [
-                'context_type' => 'course',
+                'context_type' => \BlubberThread::CTX_TYPE_COURSE,
                 'context_id' => $courseId,
                 'content' => $content,
                 'user_id' => $credentials['id'],
@@ -65,7 +65,7 @@ trait BlubberTestHelper
     {
         $blubber = \BlubberThread::create(
             [
-                'context_type' => 'institute',
+                'context_type' => \BlubberThread::CTX_TYPE_INST,
                 'context_id' => $institute->id,
                 'content' => $content,
                 'user_id' => $credentials['id'],

@@ -13,7 +13,7 @@ use JsonApi\JsonApiController;
  */
 class CommentsShow extends JsonApiController
 {
-    protected $allowedIncludePaths = ['author', 'mentions', 'thread'];
+    protected $allowedIncludePaths = ['author', 'participations', 'thread'];
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

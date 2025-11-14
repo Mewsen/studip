@@ -61,10 +61,10 @@ class BlubberThreadsCreateTest extends \Codeception\Test\Unit
         $this->tester->assertSame(UsersSchema::TYPE, $links[0]['type']);
         $this->tester->assertSame($credentials['id'], $links[0]['id']);
 
-        // check mentions relationship
-        $mentionsRel = $resourceObject->relationship('mentions');
-        $this->tester->assertTrue($mentionsRel->isToManyRelationship());
-        $this->tester->assertCount(1, $links = $mentionsRel->resourceLinks());
+        // check participations relationship
+        $participationsRel = $resourceObject->relationship('participations');
+        $this->tester->assertTrue($participationsRel->isToManyRelationship());
+        $this->tester->assertCount(1, $links = $participationsRel->resourceLinks());
 
         $this->tester->assertSame(UsersSchema::TYPE, $links[0]['type']);
         $this->tester->assertSame($credentials['id'], $links[0]['id']);

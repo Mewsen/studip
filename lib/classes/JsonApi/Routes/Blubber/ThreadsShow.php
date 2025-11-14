@@ -13,7 +13,7 @@ use JsonApi\JsonApiController;
  */
 class ThreadsShow extends JsonApiController
 {
-    protected $allowedIncludePaths = ['author', 'comments', 'context', 'mentions'];
+    protected $allowedIncludePaths = ['author', 'comments', 'context', 'participations'];
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

@@ -25,11 +25,11 @@ class ThreadsCreate extends JsonApiController
         $json = $this->validate($request);
 
         $contextType = self::arrayGet($json, 'data.attributes.context-type', '');
-        if (!in_array($contextType, ['private', 'course'])) {
+        if (!in_array($contextType, [\BlubberThread::CTX_TYPE_PRIVATE, \BlubberThread::CTX_TYPE_COURSE])) {
             throw new BadRequestException('Only blubber threads of context-type private or course can be created.');
         }
 
-        if ($contextType === 'private') {
+        if ($contextType === \BlubberThread::CTX_TYPE_PRIVATE) {
             if (!Authority::canCreatePrivateBlubberThread($user = $this->getUser($request))) {
                 throw new AuthorizationFailedException();
             }
@@ -58,8 +58,8 @@ class ThreadsCreate extends JsonApiController
             ]
         );
 
-        if ($contextType === 'private') {
-            \BlubberMention::create(['thread_id' => $thread->id, 'user_id' => $user->id]);
+        if ($contextType === \BlubberThread::CTX_TYPE_PRIVATE) {
+            \BlubberParticipation::create(['thread_id' => $thread->id, 'user_id' => $user->id]);
         }
 
         return $this->getCreatedResponse($thread);

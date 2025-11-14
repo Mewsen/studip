@@ -42,7 +42,7 @@
  * @property BlubberStatusgruppeThread $blubberthread has_one BlubberStatusgruppeThread
  * @property SimpleORMapCollection<CourseDate> $dates has_and_belongs_to_many CourseDate
  * @property mixed $children additional field
- * @property-read (Range | null) $range 
+ * @property-read (Range | null) $range
  */
 class Statusgruppen extends SimpleORMap implements PrivacyObject
 {
@@ -446,7 +446,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
     {
         if ($set && !$this->hasBlubber()) {
             BlubberStatusgruppeThread::create([
-                'context_type'      => 'course',
+                'context_type'      => BlubberThread::CTX_TYPE_COURSE,
                 'context_id'        => $this->range_id,
                 'user_id'           => User::findCurrent()->id,
                 'external_contact'  => false,

@@ -5,14 +5,14 @@
     </div>
 
     <ul class="clean members">
-        <? foreach ($mentions as $mention) : ?>
+        <? foreach ($participants as $participant) : ?>
         <li>
-            <? if ($mention['external_contact']) : ?>
+            <? if ($participant['external_contact']) : ?>
 
             <? else : ?>
-                <? $user = User::find($mention['user_id']) ?>
+                <? $user = User::find($participant['user_id']) ?>
                 <? if ($user) : ?>
-                    <? if ($user->getId() !== $GLOBALS['user']->id && count($mentions) > 2) : ?>
+                    <? if ($user->getId() !== $GLOBALS['user']->id && count($participants) > 2) : ?>
                         <a class="float_right" href="<?= URLHelper::getLink('dispatch.php/blubber/write_to/' . $user->getId()) ?>" data-dialog title="<?= _('Anblubbern') ?>">
                             <?= Icon::create('blubber')->asSvg(['class' => 'text-bottom']) ?>
                         </a>
@@ -28,7 +28,7 @@
                     <? endif ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $user['username']]) ?>">
                 <? endif ?>
-                    <?= Avatar::getAvatar($mention['user_id'])->getImageTag(Avatar::SMALL) ?>
+                    <?= Avatar::getAvatar($participant['user_id'])->getImageTag(Avatar::SMALL) ?>
 
                     <?= $user ? htmlReady($user->getFullName()) : _("unbekannt") ?>
                 <? if ($user) : ?>

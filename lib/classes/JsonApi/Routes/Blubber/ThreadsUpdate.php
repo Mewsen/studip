@@ -52,7 +52,7 @@ class ThreadsUpdate extends JsonApiController
         }
 
         if (self::arrayGet($json, 'data.attributes.content')) {
-            if ($thread['context_type'] !== 'course') {
+            if ($thread['context_type'] !== \BlubberThread::CTX_TYPE_COURSE) {
                 throw new BadRequestException('Only blubber threads of context-type course can be edited.');
             }
 

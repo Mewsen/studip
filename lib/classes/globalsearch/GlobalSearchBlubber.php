@@ -43,13 +43,13 @@ class GlobalSearchBlubber extends GlobalSearchModule implements GlobalSearchFull
                 FROM `blubber_threads`
                     LEFT JOIN `seminar_user` ON (`blubber_threads`.`context_id` = `seminar_id` AND `blubber_threads`.context_type = 'course')
                     LEFT JOIN `user_inst` ON (`blubber_threads`.`context_id` = `Institut_id` AND `blubber_threads`.context_type = 'institute')
-                    LEFT JOIN `blubber_mentions` ON (`blubber_mentions`.`thread_id` = `blubber_threads`.`thread_id`)
+                    LEFT JOIN `blubber_participations` ON (`blubber_participations`.`thread_id` = `blubber_threads`.`thread_id`)
                     LEFT JOIN `blubber_comments` ON (`blubber_comments`.`thread_id` = `blubber_threads`.`thread_id`)
                 WHERE (
                         (`blubber_threads`.context_type = 'course' AND `seminar_user`.`user_id` = {$user_id})
                         OR (`blubber_threads`.context_type = 'institute' AND `user_inst`.`user_id` = {$user_id})
                         OR `blubber_threads`.context_type = 'public'
-                        OR (`blubber_threads`.context_type = 'private' AND `blubber_mentions`.user_id = {$user_id})
+                        OR (`blubber_threads`.context_type = 'private' AND `blubber_participations`.user_id = {$user_id})
                     )
                     AND (`blubber_threads`.content LIKE {$search} OR `blubber_comments`.content LIKE {$search})
                 GROUP BY `blubber_threads`.`thread_id`
@@ -60,13 +60,13 @@ class GlobalSearchBlubber extends GlobalSearchModule implements GlobalSearchFull
                 FROM `blubber_threads`
                     LEFT JOIN `user_inst` ON (`blubber_threads`.`context_id` = `Institut_id` AND `blubber_threads`.context_type = 'institute')
                     LEFT JOIN `seminar_inst` ON (`seminar_inst`.institut_id = `user_inst`.Institut_id)
-                    LEFT JOIN `blubber_mentions` ON (`blubber_mentions`.`thread_id` = `blubber_threads`.`thread_id`)
+                    LEFT JOIN `blubber_participations` ON (`blubber_participations`.`thread_id` = `blubber_threads`.`thread_id`)
                     LEFT JOIN `blubber_comments` ON (`blubber_comments`.`thread_id` = `blubber_threads`.`thread_id`)
                 WHERE (
                         (`blubber_threads`.context_type = 'institute' AND `user_inst`.`user_id` = {$user_id})
                         OR (`blubber_threads`.context_type = 'course' AND `user_inst`.`user_id` = {$user_id})
                         OR context_type = 'public'
-                        OR (`blubber_threads`.context_type = 'private' AND `blubber_mentions`.user_id = {$user_id})
+                        OR (`blubber_threads`.context_type = 'private' AND `blubber_participations`.user_id = {$user_id})
                     )
                     AND (`blubber_threads`.content LIKE {$search} OR `blubber_comments`.content LIKE {$search})
                 GROUP BY `blubber_threads`.`thread_id`
@@ -75,11 +75,11 @@ class GlobalSearchBlubber extends GlobalSearchModule implements GlobalSearchFull
         } else { //I Am Root!
             return "SELECT SQL_CALC_FOUND_ROWS DISTINCT `blubber_threads`.`thread_id`, `blubber_comments`.`comment_id`
                 FROM `blubber_threads`
-                    LEFT JOIN `blubber_mentions` ON (`blubber_mentions`.`thread_id` = `blubber_threads`.`thread_id`)
+                    LEFT JOIN `blubber_participations` ON (`blubber_participations`.`thread_id` = `blubber_threads`.`thread_id`)
                     LEFT JOIN `blubber_comments` ON (`blubber_comments`.`thread_id` = `blubber_threads`.`thread_id`)
                 WHERE (
                         `blubber_threads`.context_type != 'private'
-                        OR `blubber_mentions`.user_id = {$user_id}
+                        OR `blubber_participations`.user_id = {$user_id}
                     )
                     AND (`blubber_threads`.content LIKE {$search} OR `blubber_comments`.content LIKE {$search})
                 GROUP BY `blubber_threads`.`thread_id`

@@ -9,7 +9,7 @@ use JsonApi\Routes\RelationshipsController;
 use JsonApi\Routes\Users\Authority as UsersAuthority;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class Mentions extends RelationshipsController
+class Participations extends RelationshipsController
 {
     protected $allowedPagingParameters = ['offset', 'limit'];
 
@@ -18,12 +18,12 @@ class Mentions extends RelationshipsController
      */
     protected function fetchRelationship(Request $request, $related)
     {
-        $mentions = $related->mentions;
-        $total = count($mentions);
+        $participations = $related->participations;
+        $total = count($participations);
         list($offset, $limit) = $this->getOffsetAndLimit();
 
         return $this->getPaginatedIdentifiersResponse(
-            $mentions->limit($offset, $limit)->pluck('user'),
+            $participations->limit($offset, $limit)->pluck('user'),
             $total,
             $this->getRelationshipLinks($related)
         );
@@ -33,9 +33,9 @@ class Mentions extends RelationshipsController
     {
         $json = $this->validate($request);
 
-        foreach ($this->validateMentions($this->getUser($request), $json) as $mention) {
-            if (!\BlubberMention::countBySQL('thread_id = ? AND user_id = ?', [$related->id, $mention->id])) {
-                \BlubberMention::create(['thread_id' => $related->id, 'user_id' => $mention->id]);
+        foreach ($this->validateParticipations($this->getUser($request), $json) as $participation) {
+            if (!\BlubberParticipation::countBySQL('thread_id = ? AND user_id = ?', [$related->id, $participation->id])) {
+                \BlubberParticipation::create(['thread_id' => $related->id, 'user_id' => $participation->id]);
             }
         }
 
@@ -45,17 +45,17 @@ class Mentions extends RelationshipsController
     protected function removeFromRelationship(Request $request, $related)
     {
         $json = $this->validate($request);
-        $mentions = $this->validateMentions($user = $this->getUser($request), $json);
+        $participations = $this->validateParticipations($user = $this->getUser($request), $json);
 
-        $notMe = array_filter($mentions, function (\User $mention) use ($user) {
-            return $mention->id !== $user->id;
+        $notMe = array_filter($participations, function (\User $participation) use ($user) {
+            return $participation->id !== $user->id;
         });
 
         if (count($notMe)) {
-            throw new AuthorizationFailedException('Users cannot remove other mentioned users.');
+            throw new AuthorizationFailedException('Users cannot remove other participated users.');
         }
 
-        $this->removeMentions($related, $mentions);
+        $this->removeParticipations($related, $participations);
 
         return $this->getCodeResponse(204);
     }
@@ -79,7 +79,7 @@ class Mentions extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, 'mentions');
+        return $schema->getRelationshipSelfLink($resource, 'participations');
     }
 
     /**
@@ -87,7 +87,7 @@ class Mentions extends RelationshipsController
      */
     protected function getRelationshipRelatedLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipRelatedLink($resource, 'mentions');
+        return $schema->getRelationshipRelatedLink($resource, 'participations');
     }
 
     protected function validateResourceDocument($json, $data)
@@ -117,29 +117,29 @@ class Mentions extends RelationshipsController
         }
     }
 
-    private function validateMentions(\User $user, $json)
+    private function validateParticipations(\User $user, $json)
     {
-        $mentions = [];
+        $participations = [];
 
-        foreach (self::arrayGet($json, 'data') as $mentionResource) {
-            if (!$mention = \User::find($mentionResource['id'])) {
+        foreach (self::arrayGet($json, 'data') as $participationResource) {
+            if (!$participation = \User::find($participationResource['id'])) {
                 throw new RecordNotFoundException();
             }
 
-            if (!UsersAuthority::canShowUser($user, $mention)) {
+            if (!UsersAuthority::canShowUser($user, $participation)) {
                 throw new RecordNotFoundException();
             }
 
-            $mentions[] = $mention;
+            $participations[] = $participation;
         }
 
-        return $mentions;
+        return $participations;
     }
 
-    private function removeMentions(\BlubberThread $thread, array $users)
+    private function removeParticipations(\BlubberThread $thread, array $users)
     {
         foreach ($users as $user) {
-            \BlubberMention::deleteBySQL('thread_id = ? AND user_id = ?', [$thread->id, $user->id]);
+            \BlubberParticipation::deleteBySQL('thread_id = ? AND user_id = ?', [$thread->id, $user->id]);
         }
     }
 }

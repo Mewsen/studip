@@ -55,7 +55,7 @@
  * @property SimpleORMapCollection<ExternPageConfig> $extern_pages_configs has_many ExternPageConfig
  * @property SimpleORMapCollection<BlubberThread> $blubber_threads has_many BlubberThread
  * @property SimpleORMapCollection<BlubberComment> $blubber_comments has_many BlubberComment
- * @property SimpleORMapCollection<BlubberMention> $blubber_mentions has_many BlubberMention
+ * @property SimpleORMapCollection<BlubberParticipation> $blubber_participations has_many BlubberParticipation
  * @property SimpleORMapCollection<StudygroupInvitation> $studygroup_invitations has_many StudygroupInvitation
  * @property UserInfo $info has_one UserInfo
  * @property UserOnline $online has_one UserOnline
@@ -221,8 +221,8 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             'class_name' => BlubberComment::class,
             'on_delete'  => 'delete',
         ];
-        $config['has_many']['blubber_mentions'] = [
-            'class_name' => BlubberMention::class,
+        $config['has_many']['blubber_participations'] = [
+            'class_name' => BlubberParticipation::class,
             'on_delete'  => 'delete',
         ];
 
@@ -1333,7 +1333,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $query = "UPDATE IGNORE blubber_comments SET user_id = ? WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
-        $query = "UPDATE IGNORE blubber_mentions SET user_id = ? WHERE user_id = ?";
+        $query = "UPDATE IGNORE blubber_participations SET user_id = ? WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
         $query = "UPDATE IGNORE blubber_threads SET user_id = ? WHERE user_id = ?";
