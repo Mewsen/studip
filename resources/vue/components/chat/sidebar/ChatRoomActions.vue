@@ -32,7 +32,7 @@ function onSearchReset() {
     align-items: center;
     gap: 10px;
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 
     .studip-search {
         flex-grow: 1;

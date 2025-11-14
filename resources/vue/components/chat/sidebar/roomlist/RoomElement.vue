@@ -1,10 +1,12 @@
 <template>
     <div class="room-element">
-        <img :src="roomAvatar" alt="Room Avatar" class="room-avatar" />
-        <div class="room-info">
-            <a :href="`/chat/rooms/${roomId}`" class="room-name">{{ roomName }}</a>
-            <div class="room-last-message">{{ roomLastMessageDate }}</div>
-        </div>
+        <button type="button" class="room-main-button" @click="navigateToRoom" title="Zum Chat-Raum wechseln">
+            <img :src="roomAvatar" alt="Room Avatar" class="room-avatar" />
+            <div class="room-info">
+                <span class="room-name">{{ roomName }}</span>
+                <div class="room-last-message">{{ roomLastMessageDate }}</div>
+            </div>
+        </button>
         <div class="room-actions" :class="{ 'has-unread': unreadCount > 0 }">
             <div class="room-unread-indicator"></div>
             <studip-context-menu :title="$gettext('Raum Optionen')" button-shape="settings" button-class="borderless">
@@ -16,12 +18,15 @@
 <script setup>
 import { computed } from 'vue';
 import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
+import { useSettingStore } from '@/vue/store/pinia/chat/chat-settings.js';
 const props = defineProps({
     room: {
         type: Object,
         required: true,
     },
 });
+
+const settingStore = useSettingStore();
 
 const roomAvatar = computed(() => {
     return props.room.avatarUrl || STUDIP.URLHelper.base_url + 'assets/images/avatars/course/nobody_small.webp';
@@ -42,6 +47,11 @@ const roomId = computed(() => {
 const unreadCount = computed(() => {
     return props.room['unread-count'] || 0;
 });
+
+const navigateToRoom = () => {
+    settingStore.setSelectedRoomById(roomId.value);
+    document.getElementById('chat-input').focus();
+};
 </script>
 <style lang="scss">
 .room-element {
@@ -58,45 +68,61 @@ const unreadCount = computed(() => {
         cursor: pointer;
     }
 
-    .room-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 15px;
-        border: 2px solid #e0e0e0;
-    }
-
-    .room-info {
+    .room-main-button {
         flex-grow: 1;
-        min-width: 0;
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        cursor: pointer;
 
-        .room-name {
-            display: block;
-            font-weight: bold;
-            color: #333333;
-            text-decoration: none;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        &:hover {
+            cursor: pointer;
         }
 
-        .room-last-message {
-            font-size: 0.85em;
-            color: #777777;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .room-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .room-info {
+            flex-grow: 1;
+            min-width: 0;
+
+            .room-name {
+                display: block;
+                font-weight: bold;
+                color: #333333;
+                text-decoration: none;
+                margin-bottom: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .room-last-message {
+                font-size: 0.85em;
+                color: #777777;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
     }
 
     .room-actions {
-        margin-left: 15px;
         flex-shrink: 0;
         position: relative;
         width: 30px;
         height: 30px;
+        z-index: 5;
 
         .context-menu {
             opacity: 0;
@@ -119,7 +145,6 @@ const unreadCount = computed(() => {
             border-radius: 50%;
             opacity: 0;
             transition: opacity 0.2s ease;
-            z-index: 10;
         }
     }
 
@@ -129,16 +154,16 @@ const unreadCount = computed(() => {
         }
     }
 
-    &:hover,
-    &:focus-within {
-        .room-actions {
-            .context-menu {
-                opacity: 1;
-                pointer-events: auto;
-            }
-            .room-unread-indicator {
-                opacity: 0;
-            }
+    .room-main-button:hover + .room-actions,
+    .room-main-button:focus + .room-actions,
+    .room-actions:hover,
+    .room-actions:focus-within {
+        .context-menu {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .room-unread-indicator {
+            opacity: 0;
         }
     }
 

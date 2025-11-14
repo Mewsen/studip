@@ -15,16 +15,7 @@ export const useRoomStore = defineStore('rooms', () => {
     }
 
     const all = computed(() => {
-        // return  [...records.value.values()];
-//dummy data for now
-        return [
-            { id: 1, name: 'Global Chat', 'last-message-date': 1762957809, 'unread-count': 0 },
-            { id: 2, name: 'Chat 123', 'last-message-date': 1762957809, 'unread-count': 0 },
-            { id: 3, name: 'Informatik A', 'last-message-date': 1762957809, 'unread-count': 0 },
-            { id: 4, name: 'Datenbanksysteme', 'last-message-date': 1762957809, 'unread-count': 0 },
-            { id: 5, name: 'Foo Bar', 'last-message-date': 1762957809, 'unread-count': 42 },
-
-        ];
+        return  [...records.value.values()];
     });
 
     function byId(id) {
@@ -55,5 +46,6 @@ export const useRoomStore = defineStore('rooms', () => {
         byId,
         fetchById,
         clearRecords,
+        storeRecord,
     };
 });
