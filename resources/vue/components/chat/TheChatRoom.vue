@@ -77,7 +77,6 @@ const textareaStyle = computed(() => {
 
     .chat-container {
         flex-grow: 1;
-        overflow: scroll;
     }
 
     .chat-input-area {

@@ -26,9 +26,29 @@ export const useRoomStore = defineStore('rooms', () => {
         inProgress.value = true;
         try {
             const { data } = await api.fetch(`blubber-threads/${id}`, {
-                params: {},
+                params: {
+                    include: 'participations',
+                },
             });
             storeRecord(data);
+        } catch (err) {
+            console.error('fetching threads', err);
+            errors.value = err;
+        }
+        inProgress.value = false;
+    }
+
+    async function fetchAll() {
+        inProgress.value = true;
+        try {
+            const { data } = await api.fetch('blubber-threads', {
+                params: {
+                    include: 'participations',
+                },
+            });
+            data.forEach((room) => {
+                storeRecord(room);
+            });
         } catch (err) {
             console.error('fetching threads', err);
             errors.value = err;
@@ -47,5 +67,6 @@ export const useRoomStore = defineStore('rooms', () => {
         fetchById,
         clearRecords,
         storeRecord,
+        fetchAll,
     };
 });

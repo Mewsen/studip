@@ -1,6 +1,6 @@
 <template>
     <header class="chat-header">
-        <h2>{{ room.name }}</h2>
+        <h2>{{ room?.name }}</h2>
         <div class="chat-header-button-group">
             <button class="button icon-button" :title="$gettext('Details anzeigen')" @click="showDetails('room')">
                 <studip-icon shape="info-circle" :size="24" />

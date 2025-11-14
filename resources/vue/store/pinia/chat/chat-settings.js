@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useRoomStore } from './chat-rooms.js';
 
@@ -9,9 +9,13 @@ export const useSettingStore = defineStore(
 
         const lastRoomId = ref(null);
         const roomFilter = ref('all');
-        const selectedRoom = ref(null);
+        const selectedRoomId = ref(null);
         const showDetailsDrawer = ref(false);
         const detailsScope = ref('room');
+
+        const selectedRoom = computed(() => {
+            return roomStore.byId(selectedRoomId.value);
+        });
 
         function setLastRoomId(id) {
             lastRoomId.value = id;
@@ -19,14 +23,8 @@ export const useSettingStore = defineStore(
         function setRoomFilter(filter) {
             roomFilter.value = filter;
         }
-        function setSelectedRoom(room) {
-            selectedRoom.value = room;
-        }
-        function setSelectedRoomById(id) {
-            const room = roomStore.byId(id);
-            if (room) {
-                selectedRoom.value = room;
-            }
+        function setSelectedRoomId(id) {
+            selectedRoomId.value = id;
         }
         function setDetailsDrawer(bool) {
             showDetailsDrawer.value = bool;
@@ -40,14 +38,15 @@ export const useSettingStore = defineStore(
             detailsScope,
             lastRoomId,
             roomFilter,
-            selectedRoom,
+            selectedRoomId,
             showDetailsDrawer,
+
+            selectedRoom,
 
             setDetailsScope,
             setLastRoomId,
             setRoomFilter,
-            setSelectedRoom,
-            setSelectedRoomById,
+            setSelectedRoomId,
             setDetailsDrawer,
         };
     }

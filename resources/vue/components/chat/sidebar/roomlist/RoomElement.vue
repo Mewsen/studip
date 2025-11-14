@@ -29,27 +29,27 @@ const props = defineProps({
 const settingStore = useSettingStore();
 
 const roomAvatar = computed(() => {
-    return props.room.avatarUrl || STUDIP.URLHelper.base_url + 'assets/images/avatars/course/nobody_small.webp';
+    return props.room?.avatarUrl || STUDIP.URLHelper.base_url + 'assets/images/avatars/course/nobody_small.webp';
 });
 
 const roomName = computed(() => {
-    return props.room.name || '---';
+    return props.room?.name || '---';
 });
 
 const roomLastMessageDate = computed(() => {
-    return props.room.lastMessage || '';
+    return props.room?.lastMessage || '';
 });
 
 const roomId = computed(() => {
-    return props.room.id;
+    return props.room?.id;
 });
 
 const unreadCount = computed(() => {
-    return props.room['unread-count'] || 0;
+    return props.room?.['unread-count'] || 0;
 });
 
 const navigateToRoom = () => {
-    settingStore.setSelectedRoomById(roomId.value);
+    settingStore.setSelectedRoomId(roomId.value);
     document.getElementById('chat-input').focus();
 };
 </script>
