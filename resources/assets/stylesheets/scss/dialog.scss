@@ -314,12 +314,8 @@ v u e  d i a l o g
 * * * * * * * * */
 
 .studip-dialog-backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: fade-out($base-color, 0.5);
+    @extend .ui-widget-overlay;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
