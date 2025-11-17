@@ -200,18 +200,17 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         }
 
         $tags = json_decode(Request::get('tags'), true);
-
         foreach ($tags as $tag) {
-            if (empty($tag['tag_id'])) {
+            if (empty($tag['id'])) {
                 $newTag = Tag::create([
                     'name' => $tag['name'],
                 ]);
 
-                $tag['tag_id'] = $newTag->id;
+                $tag['id'] = $newTag->id;
             }
 
             TagRelation::create([
-                'tag_id' => $tag['tag_id'],
+                'tag_id' => $tag['id'],
                 'range_id' => $discussion->discussion_id,
                 'range_type' => 'forum'
             ]);
