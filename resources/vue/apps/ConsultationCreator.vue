@@ -168,11 +168,7 @@
                     :reduce="option => option.id"
                     multiple
                     :clearable="true"
-                >
-                    <template #open-indicator>
-                        <span><studip-icon shape="arr_1down" :size="10" /></span>
-                    </template>
-                </StudipSelect>
+                />
             </template>
 
             <template v-if="withResponsible.groups">
@@ -186,11 +182,7 @@
                     :reduce="option => option.id"
                     multiple
                     :clearable="true"
-                >
-                    <template #open-indicator>
-                        <span><studip-icon shape="arr_1down" :size="10" /></span>
-                    </template>
-                </StudipSelect>
+                />
             </template>
 
             <template v-if="withResponsible.institutes">
@@ -204,11 +196,7 @@
                     :reduce="option => option.id"
                     multiple
                     :clearable="true"
-                >
-                    <template #open-indicator>
-                        <span><studip-icon shape="arr_1down" :size="10" /></span>
-                    </template>
-                </StudipSelect>
+                />
             </template>
         </fieldset>
 

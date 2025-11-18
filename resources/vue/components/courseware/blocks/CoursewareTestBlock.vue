@@ -78,9 +78,6 @@
                         v-model="assignment_id"
                         class="cw-vs-select"
                     >
-                        <template #open-indicator="{ attributes }">
-                            <span v-bind="attributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                        </template>
                         <template #no-options="{}">
                             {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                         </template>

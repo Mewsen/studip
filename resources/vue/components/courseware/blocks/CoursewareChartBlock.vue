@@ -30,9 +30,6 @@
                             :clearable="false"
                             label="name"
                         >
-                            <template #open-indicator="{ selectAttributes }">
-                                <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                            </template>
                             <template #selected-option="option">
                                 <span>{{ option.name }}</span>
                             </template>
@@ -74,9 +71,6 @@
                                     :clearable="false"
                                     v-model="item.color"
                                 >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                                    </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>

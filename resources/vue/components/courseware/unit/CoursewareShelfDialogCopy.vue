@@ -76,13 +76,7 @@
                             :reduce="option => option.id"
                             :getOptionLabel="option => option.attributes.title"
                             v-model="selectedRange"
-                        >
-                            <template #open-indicator="{ selectAttributes }">
-                                <span v-bind="selectAttributes"
-                                    ><studip-icon shape="arr_1down" :size="10"
-                                /></span>
-                            </template>
-                        </StudipSelect>
+                        />
                         <p v-if="loadingCourses">
                             {{$gettext('Lade Veranstaltungen…')}}
                         </p>
@@ -138,11 +132,6 @@
                     :clearable="false"
                     label="name"
                 >
-                    <template #open-indicator="{ selectAttributes }">
-                            <span v-bind="selectAttributes"
-                            ><studip-icon shape="arr_1down" :size="10"
-                            /></span>
-                    </template>
                     <template #no-options>
                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                     </template>

@@ -109,11 +109,6 @@
                                     v-model="shape.data.color"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"
-                                            ><studip-icon shape="arr_1down" :size="10"
-                                        /></span>
-                                    </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
@@ -140,11 +135,6 @@
                                     v-model="shape.data.textcolor"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"
-                                            ><studip-icon shape="arr_1down" :size="10"
-                                        /></span>
-                                    </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>

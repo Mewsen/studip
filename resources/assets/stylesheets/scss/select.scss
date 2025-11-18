@@ -87,6 +87,10 @@ form.default .studip-v-select .vs__selected {
     &__dropdown-toggle {
         max-height: fit-content;
     }
+
+    &__open-indicator {
+        color: var(--color--brand-primary);
+    }
 }
 
 .multiselect__tags {

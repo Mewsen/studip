@@ -1,29 +1,36 @@
 <template>
-    <v-select ref="select"
-              v-bind="{...$props, ...selectAttrs}"
-              :model-value="modelValue"
-              @update:modelValue="value => updateValue(value)"
-              :calculate-position="withPopper"
-              class="studip-v-select"
-              append-to-body
+    <vSelect ref="select"
+             v-bind="{...$props, ...selectAttrs}"
+             :model-value="modelValue"
+             @update:modelValue="value => updateValue(value)"
+             :calculate-position="withPopper"
+             class="studip-v-select"
+             append-to-body
     >
+        <template #open-indicator="{ attributes }">
+            <span v-bind="attributes">
+                <StudipIcon shape="arr_1down" :size="10" />
+            </span>
+        </template>
         <template v-for="(index, name) in $slots" v-slot:[name]="data">
             <slot :name="name" v-bind="data"></slot>
         </template>
-    </v-select>
+    </vSelect>
 </template>
 
 <script>
 import vSelect from 'vue-select';
 import { createPopper } from '@popperjs/core'
 import 'vue-select/dist/vue-select.css'
+import StudipIcon from '@/vue/components/StudipIcon.vue';
 
 export default {
     name: 'studip-select',
     emits: ['update:modelValue'],
     inheritAttrs: false,
     components: {
-        vSelect,
+        StudipIcon,
+        vSelect
     },
     props: {
         modelValue: [String, Number, Object, Array],
