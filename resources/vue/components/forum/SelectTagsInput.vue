@@ -1,7 +1,6 @@
 <script setup>
 import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import StudipSelect from "..//StudipSelect.vue";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
+import StudipSelect from "../StudipSelect.vue";
 </script>
 
 <template>
@@ -19,10 +18,6 @@ import StudipIcon from "@/vue/components/StudipIcon.vue";
         :closeOnSelect="false"
         v-bind="{...$props, ...$attrs}"
     >
-        <template #open-indicator>
-            <StudipIcon shape="add" :size="15" />
-        </template>
-
         <template #selected-option="{name}">
             <span>{{ name }}</span>
         </template>

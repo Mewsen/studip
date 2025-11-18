@@ -91,9 +91,6 @@
                                     :reduce="option => option.class"
                                     v-model="item.color"
                                 >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
-                                    </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
@@ -115,9 +112,6 @@
                                     :clearable="false"
                                     v-model="item.icon"
                                 >
-                                    <template #open-indicator="{ selectAttributes }">
-                                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
-                                    </template>
                                     <template #no-options>
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>

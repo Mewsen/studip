@@ -1,5 +1,4 @@
 <script setup>
-import StudipIcon from "@/vue/components/StudipIcon.vue";
 import {$gettext} from "@/assets/javascripts/lib/gettext";
 import StudipSelect from "@/vue/components/StudipSelect.vue";
 const selectedTopics = defineModel();
@@ -26,9 +25,6 @@ const selectedTopics = defineModel();
                 v-bind="attributes"
                 v-on="events"
             />
-        </template>
-        <template #open-indicator>
-            <StudipIcon shape="add" :size="15"/>
         </template>
         <template #selected-option="{name, color}">
             <div class="flex items-center">

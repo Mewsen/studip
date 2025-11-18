@@ -255,7 +255,8 @@ onMounted(async () => {
             <div>
                 <button
                     @click="isFilterVisible = !isFilterVisible"
-                    type="button" class="toggle-filter-button"
+                    type="button"
+                    class="toggle-filter-button button-base"
                     :title="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
                     :aria-label="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
                     :aria-expanded="isFilterVisible.toString()"

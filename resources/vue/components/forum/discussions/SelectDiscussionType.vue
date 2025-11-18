@@ -10,9 +10,6 @@ import StudipSelect from "@/vue/components/StudipSelect.vue";
         label="name"
         v-bind="{...$props, ...$attrs}"
     >
-        <template #open-indicator>
-            <StudipIcon shape="arr_1sort" :size="15"/>
-        </template>
         <template #selected-option="{name, icon}">
             <div class="flex items-center">
                 <StudipIcon :shape="icon" :size="18" :style="{ marginRight: '8px'}"/>

@@ -8,10 +8,6 @@
                 @input="onVueSelectInput"
                 label="name"
             >
-                <template #open-indicator>
-                    <span><studip-icon shape="arr_1down" :size="10" /></span>
-                </template>
-
                 <template #option="option">
                     <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
                     <span>{{ option.name }}</span>
