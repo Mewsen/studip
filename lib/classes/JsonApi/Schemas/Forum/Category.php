@@ -46,15 +46,16 @@ class Category extends SchemaProvider
      */
     public function getResourceMeta($resource)
     {
-        $metaData = $resource->getMetaData();
+        $metadata = $resource->getMetadata();
 
         return [
-            'topics-count' => (int) $metaData['topics_count'],
-            'discussions-count' => (int) $metaData['discussions_count'],
-            'postings-count' => (int) $metaData['postings_count'],
-            'user-read-index' => (int) $metaData['user_read_index'],
-            'users-count' => (int) $metaData['users_count'],
-            'recent-activity' => $metaData['recent_activity'] ? date('c', $metaData['recent_activity']) : '',
+            'topics-count' => (int) $metadata['topics_count'],
+            'discussions-count' => (int) $metadata['discussions_count'],
+            'postings-count' => (int) $metadata['postings_count'],
+            'unread-postings-count' => (int) $metadata['unread_postings_count'],
+            'user-read-index' => (int) $metadata['user_read_index'],
+            'users-count' => (int) $metadata['users_count'],
+            'recent-activity' => $metadata['recent_activity'] ? date('c', $metadata['recent_activity']) : '',
         ];
     }
 

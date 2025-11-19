@@ -240,7 +240,7 @@ class Discussion extends SimpleORMap
         ];
     }
 
-    public function getMetaData(int $last_visit = 0): array
+    public function getMetadata(int $last_visit = 0): array
     {
         $user_id = User::findCurrent()?->user_id;
 
@@ -249,7 +249,7 @@ class Discussion extends SimpleORMap
             $last_visit = object_get_visit($this->topic->range_id, $plugin_id, 'last', '', $user_id);
         }
 
-        return DBManager::get()->fetchOne(
+        $metadata = DBManager::get()->fetchOne(
             "SELECT
                             COUNT(`posting_id`) 'postings_count',
                             MAX(`mkdate`) 'recent_activity',
@@ -261,10 +261,16 @@ class Discussion extends SimpleORMap
                             ) 'user_read_index',
                             (
                                 SELECT
-                                    COUNT(DISTINCT fp.posting_id)
-                                FROM forum_postings fp
-                                WHERE fp.discussion_id = :discussion_id AND fp.mkdate > :last_visit
-                            ) AS 'recent_postings_count'
+                                    COUNT(DISTINCT posting_id)
+                                FROM forum_postings
+                                WHERE discussion_id = :discussion_id AND mkdate > :last_visit AND `user_id` != :user_id
+                            ) AS 'recent_postings_count',
+                            (
+                                SELECT
+                                    COUNT(DISTINCT posting_id)
+                                FROM forum_postings
+                                WHERE discussion_id = :discussion_id AND `user_id` != :user_id
+                            ) AS 'others_postings_count'
                         FROM `forum_postings` WHERE `discussion_id` = :discussion_id",
             [
                 'discussion_id' => $this->discussion_id,
@@ -272,6 +278,14 @@ class Discussion extends SimpleORMap
                 'last_visit' => $last_visit
             ]
         );
+
+        return [
+            ...$metadata,
+            'unread_postings_count' => max(
+                0,
+                $metadata['others_postings_count'] - (int) $metadata['user_read_index']
+            )
+        ];
     }
 
     public function onCreate(): void

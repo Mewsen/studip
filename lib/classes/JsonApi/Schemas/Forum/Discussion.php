@@ -53,13 +53,14 @@ class Discussion extends SchemaProvider
      */
     public function getResourceMeta($resource)
     {
-        $metaData = $resource->getMetaData();
+        $metadata = $resource->getMetadata();
 
         return [
-            'postings-count' => (int) $metaData['postings_count'],
-            'recent-postings-count' => (int) $metaData['recent_postings_count'],
-            'user-read-index' => (int) $metaData['user_read_index'],
-            'recent-activity' => $metaData['recent_activity'] ? date('c', $metaData['recent_activity']) : ''
+            'postings-count' => (int) $metadata['postings_count'],
+            'recent-postings-count' => (int) $metadata['recent_postings_count'],
+            'unread-postings-count' => (int) $metadata['unread_postings_count'],
+            'user-read-index' => (int) $metadata['user_read_index'],
+            'recent-activity' => $metadata['recent_activity'] ? date('c', $metadata['recent_activity']) : ''
         ];
     }
 

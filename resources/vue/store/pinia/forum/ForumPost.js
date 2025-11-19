@@ -5,6 +5,7 @@ export const useForumPost = defineStore(
     () => {
 
         const posts = ref([]);
+        const firstUnreadPostIndex = ref(-1);
 
         function initPosts(newPosts) {
             posts.value = newPosts;
@@ -40,14 +41,20 @@ export const useForumPost = defineStore(
             }
         }
 
+        function updateFirstUnreadPostIndex(index) {
+            firstUnreadPostIndex.value = index;
+        }
+
         return {
             posts,
+            firstUnreadPostIndex,
             initPosts,
             addPost,
             updatePost,
             removePost,
             addPostReaction,
-            removePostReaction
+            removePostReaction,
+            updateFirstUnreadPostIndex
         }
     }
 )

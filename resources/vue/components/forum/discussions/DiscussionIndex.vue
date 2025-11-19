@@ -169,14 +169,14 @@ onMounted(() => {
                                         <span class="title-with-actions_title discussion-title line-clamp-2 m-0">{{ discussion.title }}</span>
                                         <template v-if="!forumConfig.allowGuestAccess">
                                             <span
-                                                v-if="redirect !== 'recent' && discussion.meta.postings_count > discussion.meta.user_read_index"
+                                                v-if="redirect !== 'recent' && discussion.meta.unread_postings_count"
                                                 class="unread-items-badge"
                                                 role="status"
                                                 aria-live="polite"
-                                                :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
-                                                :title="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.postings_count - discussion.meta.user_read_index})"
+                                                :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.unread_postings_count})"
+                                                :title="$gettext('Sie haben %{count} ungelesene Beiträge.', {count: discussion.meta.unread_postings_count})"
                                             >
-                                                {{ discussion.meta.postings_count - discussion.meta.user_read_index }}
+                                                {{ discussion.meta.unread_postings_count }}
                                             </span>
                                             <span
                                                 v-if="redirect === 'recent' && discussion.meta.recent_postings_count"

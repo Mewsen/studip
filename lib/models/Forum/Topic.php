@@ -119,9 +119,9 @@ class Topic extends SimpleORMap
         );
     }
 
-    public function getMetaData(): array
+    public function getMetadata(): array
     {
-        return DBManager::get()->fetchOne(
+        $metadata = DBManager::get()->fetchOne(
             "SELECT
                         COUNT(DISTINCT `forum_discussions`.`discussion_id`) AS 'discussions_count',
                         COUNT(DISTINCT `forum_postings`.`posting_id`) AS 'postings_count',
@@ -135,7 +135,14 @@ class Topic extends SimpleORMap
                                 ON fpr.discussion_id = fd2.discussion_id
                                AND fpr.user_id = :user_id
                             WHERE fd2.topic_id = :topic_id
-                        ) AS 'user_read_index'
+                        ) AS 'user_read_index',
+                        (
+                            SELECT
+                                COUNT(DISTINCT fp.posting_id)
+                            FROM forum_postings fp
+                            JOIN `forum_discussions` fd USING (discussion_id)
+                            WHERE fd.topic_id = :topic_id AND fp.user_id != :user_id
+                        ) AS 'others_postings_count'
                     FROM `forum_discussions`
                     LEFT JOIN `forum_postings` USING (`discussion_id`)
                     WHERE `forum_discussions`.`topic_id` = :topic_id",
@@ -144,6 +151,14 @@ class Topic extends SimpleORMap
                 'user_id' => User::findCurrent()?->user_id
             ]
         );
+
+        return [
+            ...$metadata,
+            'unread_postings_count' => max(
+                0,
+                $metadata['others_postings_count'] - (int) $metadata['user_read_index']
+            )
+        ];
     }
 
     public function transformData(): array
