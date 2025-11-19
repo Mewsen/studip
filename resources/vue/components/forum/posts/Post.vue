@@ -139,6 +139,10 @@ onMounted(() => {
     );
 
     postObserver.observe(postRef.value);
+
+    if (!forumConfig.allowGuestAccess && isUnread.value && forumPostStore.firstUnreadPostIndex < 0) {
+        forumPostStore.updateFirstUnreadPostIndex(props.index);
+    }
 });
 
 onBeforeUnmount(() => postObserver.disconnect());

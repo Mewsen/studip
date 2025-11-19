@@ -7,18 +7,10 @@ import {$gettext} from '@/assets/javascripts/lib/gettext';
 
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
-const props = defineProps({
+defineProps({
     discussion: {
         type: Object,
         required: true,
-    },
-    posts: {
-        type: Array,
-        required: true,
-    },
-    readIndex: {
-        type: Number,
-        default: 0
     }
 });
 
@@ -26,21 +18,18 @@ const scrollerTop = ref(0);
 const isDragging = ref(false);
 const unreadScrollPosition = ref(-1);
 
-const othersPosts = computed(() => props.posts.filter(({ author }) => author?.id !== STUDIP.USER_ID));
+const posts = computed(() => forumPostStore.posts);
 const currentPostIndex = computed(() => forumPostStore.currentPostIndex);
+const firstUnreadPostIndex = computed(() => forumPostStore.firstUnreadPostIndex);
 const currentPostDate = computed(() => {
-    if (currentPostIndex.value < props.posts.length) {
-        const date = new Date(props.posts[currentPostIndex.value].mkdate);
+    if (currentPostIndex.value < posts.value.length) {
+        const date = new Date(posts.value[currentPostIndex.value].mkdate);
         return date.toLocaleString(String.locale, { month: 'long', year: 'numeric' });
     }
 
     return null;
 });
-const isNewFrom = computed(() => {
-    return unreadScrollPosition.value >= 0
-        && props.readIndex < othersPosts.value.length
-        && !forumConfig.allowGuestAccess
-});
+const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
 
 const findPostAtScroll = y => {
     const postElements = document.querySelectorAll('.post');
@@ -142,12 +131,12 @@ const handleScroll = () => {
 };
 
 const updateUnreadScrollPosition = () => {
-    if (props.readIndex === 0) {
+    if (firstUnreadPostIndex.value === 0) {
         unreadScrollPosition.value = 0;
         return;
     }
 
-    const firstUnreadPost = document.querySelector(`[data-index='${props.readIndex}']`);
+    const firstUnreadPost = document.querySelector(`[data-index='${firstUnreadPostIndex.value}']`);
     if (!firstUnreadPost) {
         return;
     }
@@ -196,7 +185,7 @@ onUnmounted(() => {
             </div>
             <Transition name="fade">
                 <div
-                    v-if="isNewFrom && currentPostIndex !== readIndex"
+                    v-if="isNewFrom && currentPostIndex !== firstUnreadPostIndex"
                     class="scroll-area__new-from"
                      :style="{
                         top: `${unreadScrollPosition}%`
@@ -204,7 +193,7 @@ onUnmounted(() => {
                     <button
                         type="button"
                         class="button-base"
-                        @click.stop="jumpToPost(null, readIndex)"
+                        @click.stop="jumpToPost(null, firstUnreadPostIndex)"
                         :title="$gettext('Zum ersten ungelesenen Beitrag')"
                     >
                         {{ $gettext('Neu ab hier') }}
@@ -230,7 +219,7 @@ onUnmounted(() => {
                         {{ currentPostDate }}
                     </time>
                     <Transition name="fade">
-                        <span v-if="isNewFrom && currentPostIndex === readIndex">
+                        <span v-if="isNewFrom && currentPostIndex === firstUnreadPostIndex">
                             &mdash; {{ $gettext('Neu ab hier') }}
                         </span>
                     </Transition>

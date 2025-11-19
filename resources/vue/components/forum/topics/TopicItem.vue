@@ -83,14 +83,14 @@ const swapTopic = event => {
                                 <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
                                     <span class="topic-title line-clamp-2">{{ topic.name }}</span>
                                     <span
-                                        v-if="!forumConfig.allowGuestAccess && topic.meta.postings_count > topic.meta.user_read_index"
+                                        v-if="!forumConfig.allowGuestAccess && topic.meta.unread_postings_count"
                                         class="unread-items-badge"
                                         role="status"
                                         aria-live="polite"
-                                        :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
-                                        :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
+                                        :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
+                                        :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                                     >
-                                    {{ topic.meta.postings_count - topic.meta.user_read_index }}
+                                    {{ topic.meta.unread_postings_count }}
                                 </span>
                                 </a>
                             </div>
@@ -191,14 +191,14 @@ const swapTopic = event => {
                             </span>
 
                             <span
-                                v-if="!forumConfig.allowGuestAccess && topic.meta.postings_count > topic.meta.user_read_index"
+                                v-if="!forumConfig.allowGuestAccess && topic.meta.unread_postings_count"
                                 class="unread-items-badge"
                                 role="status"
                                 aria-live="polite"
-                                :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
-                                :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.postings_count - topic.meta.user_read_index})"
+                                :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
+                                :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                             >
-                                {{ topic.meta.postings_count - topic.meta.user_read_index }}
+                                {{ topic.meta.unread_postings_count }}
                             </span>
                         </div>
 

@@ -269,7 +269,7 @@ onMounted(async () => {
         </div>
 
         <template #sidebar>
-            <DiscussionTimeline :discussion="discussion" :posts="posts" :readIndex="read_index" />
+            <DiscussionTimeline :discussion="discussion" />
         </template>
     </ForumApp>
 </template>
