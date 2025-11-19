@@ -70,9 +70,11 @@ $form_id = md5(uniqid());
             <div v-if="STUDIPFORM_DISPLAYVALIDATION && (STUDIPFORM_VALIDATIONNOTES.length > 0)">
                 <?= _('Folgende Angaben müssen korrigiert werden, um das Formular abschicken zu können:') ?>
                 <ul>
-                    <li v-for="note in ordererValidationNotes" :aria-describedby="note.describedby">
+                <template v-for="note in ordererValidationNotes" :key="note.label + note.description">
+                    <li v-if="note.label" :aria-describedby="note.describedby">
                         {{ note.label.trim() + ": " + note.description }}
                     </li>
+                </template>
                 </ul>
             </div>
         </article>
