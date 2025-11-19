@@ -198,7 +198,12 @@ export default {
                 return [];
             }
 
-            return this.container.relationships.blocks.data.map(({ id }) => this.blockById({ id })).filter((a) => a);
+            const blocks = this.container.relationships.blocks.data.map(({ id }) => this.blockById({ id })).filter((a) => a);
+
+            // Load only visible blocks in view-only content.
+            return this.canEdit
+                ? blocks
+                : blocks.filter(b => b.attributes.visible);
         },
         icons() {
             return this.contentIcons;

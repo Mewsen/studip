@@ -141,8 +141,10 @@ export default {
             sortedBlocks.forEach(({ id }) => unallocated.delete(id));
             let unallocatedBlocks = [...unallocated].map((id) => this.blockById({ id }));
 
-            // Load only visible blocks. That should be sufficient because the visibility already indicates permissions.
-            return sortedBlocks.concat(unallocatedBlocks).filter(block => block.attributes.visible === true);
+            // Load only visible blocks in view-only content.
+            return this.canEdit
+                ? sortedBlocks.concat(unallocatedBlocks)
+                : sortedBlocks.concat(unallocatedBlocks).filter(block => block.attributes.visible);
         },
         empty() {
             return this.blockList.length === 0;
