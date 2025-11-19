@@ -369,14 +369,15 @@ STUDIP.ready(function () {
                                     body: new URLSearchParams(params),
                                     headers: {'X-Requested-With': 'XMLHttpRequest'}
                                 }).then(response => response.json());
-                                notes.push(
-                                    ...output.map(item => ({
+                                if (output && typeof output === 'object') {
+                                    const validationErrors = Object.values(output).map(item => ({
                                         name: item.name,
                                         label: item.label,
                                         description: item.error,
                                         describedby: null
-                                    }))
-                                );
+                                    }));
+                                    notes.push(...validationErrors);
+                                }
                             }
 
                             // Resolve or reject based on present error notes
@@ -409,7 +410,7 @@ STUDIP.ready(function () {
                                 for (let k in this.STUDIPFORM_VALIDATIONNOTES) {
                                     if (this.STUDIPFORM_VALIDATIONNOTES[k].name === this.STUDIPFORM_INPUTS_ORDER[i]) {
                                         orderedNotes.push(this.STUDIPFORM_VALIDATIONNOTES[k]);
-                                        inserted.push(k);
+                                        inserted.push(Number(k));
                                     }
                                 }
                             }
