@@ -163,7 +163,7 @@
         box-sizing: border-box;
         padding: 15px;
         max-height: 60vh;
-        @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+        @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 16px);
         &::before {
             color: var(--color--attention);
         }
@@ -397,7 +397,7 @@ v u e  d i a l o g
             }
         }
         .studip-dialog-content {
-            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 16px);
             &::before {
                 color: var(--color--warning);
             }
@@ -412,7 +412,7 @@ v u e  d i a l o g
             }
         }
         .studip-dialog-content {
-            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 8px);
+            @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 16px);
             &::before {
                 color: var(--color--attention);
             }

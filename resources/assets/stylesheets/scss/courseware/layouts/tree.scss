@@ -116,7 +116,7 @@
         .cw-tree-item-edit-button {
             opacity: 0;
             padding: 0 4px;
-            vertical-align: text-bottom;
+            vertical-align: middle;
             border: none;
             background-color: transparent;
             cursor: pointer;
@@ -125,6 +125,13 @@
             &:focus {
                 opacity: 1;
             }
+        }
+
+        .cw-tree-item-info {
+           display:inline-flex;
+           position: absolute;
+           right: 8px;
+           gap: 2px; 
         }
 
         &:hover {
@@ -156,7 +163,6 @@
                 width: var(--icon-size-inline);
                 height: var(--icon-size-inline);
                 vertical-align: top;
-                float: right;
                 @include icon(after, #{$icon}, $size: $icon-size-inline);
             }
 
@@ -172,8 +178,6 @@
 
     .cw-tree-item-sequential {
         display: inline-block;
-        position: absolute;
-        right: 8px;
 
         &.cw-tree-item-sequential-complete {
             width: var(--icon-size-inline);

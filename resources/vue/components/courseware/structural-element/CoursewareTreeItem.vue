@@ -28,37 +28,40 @@
                 }"
             >
                 {{ element.attributes?.title || '–' }}
+                <span v-if="task">| {{ solverName ?? $gettext("anonym") }}</span>
                 <button v-if="canEdit" class="cw-tree-item-edit-button" @click.prevent="editingItem = true">
                     <studip-icon shape="edit" />
                 </button>
-
-                <span v-if="task">| {{ solverName ?? $gettext("anonym") }}</span>
-                <span
-                    v-if="hasReleaseOrWithdrawDate"
-                    class="cw-tree-item-flag-date"
-                    :title="visibleStartEndDate"
-                ></span>
-                <span
-                    v-if="hasWriteApproval"
-                    class="cw-tree-item-flag-write"
-                    :title="canWriteFlagTitle"
-                ></span>
-                <span v-if="hasNoReadApproval" class="cw-tree-item-flag-cant-read" :title="cantReadFlagTitle"></span>
-                <template v-if="!(userIsTeacher || userIsReviewer)  && inCourse">
-                    <span
-                        v-if="complete"
-                        class="cw-tree-item-sequential cw-tree-item-sequential-complete"
-                        :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
-                    >
-                    </span>
-                    <span
-                        v-else
-                        class="cw-tree-item-sequential cw-tree-item-sequential-percentage"
-                        :title="$gettext('Fortschritt: %{progress}%', { progress: itemProgress })"
-                    >
-                        {{ itemProgress }} %
-                    </span>
-                </template>
+                <div class="cw-tree-item-info">
+                    <template v-if="permissionScope === 'structural_element'">
+                        <span
+                            v-if="hasReleaseOrWithdrawDate"
+                            class="cw-tree-item-flag-date"
+                            :title="visibleStartEndDate"
+                        ></span>
+                        <span
+                            v-if="hasWriteApproval"
+                            class="cw-tree-item-flag-write"
+                            :title="canWriteFlagTitle"
+                        ></span>
+                        <span v-if="hasNoReadApproval" class="cw-tree-item-flag-cant-read" :title="cantReadFlagTitle"></span>
+                    </template>
+                    <template v-if="!(userIsTeacher || userIsReviewer)  && inCourse">
+                        <span
+                            v-if="complete"
+                            class="cw-tree-item-sequential cw-tree-item-sequential-complete"
+                            :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
+                        >
+                        </span>
+                        <span
+                            v-else
+                            class="cw-tree-item-sequential cw-tree-item-sequential-percentage"
+                            :title="$gettext('Fortschritt: %{progress}%', { progress: itemProgress })"
+                        >
+                            {{ itemProgress }} %
+                        </span>
+                    </template>
+                </div>
             </router-link>
         </div>
         <ol
@@ -187,6 +190,7 @@ export default {
             showRootElement: 'showRootElement',
             relatedCourseMemberships: 'course-memberships/related',
             relatedCourseStatusGroups: 'status-groups/related',
+            currentUnit: 'currentUnit',
         }),
         autorMembersCount() {
             // course-memberships are loaded in parent!
@@ -236,6 +240,9 @@ export default {
         },
         isCurrent() {
             return this.element.id === this.currentElement?.id;
+        },
+        permissionScope() {
+            return this.currentUnit?.attributes['permission-scope'];
         },
         hasReleaseOrWithdrawDate() {
             return this.element.attributes?.visible === 'period';

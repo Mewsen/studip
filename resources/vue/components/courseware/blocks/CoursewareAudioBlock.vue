@@ -63,10 +63,9 @@
                                     <hr v-else />
                                 </div>
                                 <div class="cw-audio-buttons">
-                                    <button :title="$gettext('Zurück')" :disabled="!hasPlaylist" @click="prevAudio">
+                                    <button :title="$gettext('Zurück')" :disabled="!hasPlaylist || !hasPrevious" @click="prevAudio">
                                         <studip-icon
                                             shape="arr_eol-left"
-                                            :role="hasPlaylist ? 'clickable' : 'inactive'"
                                             :size="24"
                                         />
                                     </button>
@@ -78,17 +77,15 @@
                                     >
                                         <studip-icon
                                             shape="play"
-                                            :role="emptyAudio ? 'inactive' : 'clickable'"
                                             :size="48"
                                         />
                                     </button>
                                     <button v-else :title="$gettext('Pause')" @click="pauseAudio">
                                         <studip-icon shape="pause" :size="48" />
                                     </button>
-                                    <button :title="$gettext('Weiter')" :disabled="!hasPlaylist" @click="nextAudio">
+                                    <button :title="$gettext('Weiter')" :disabled="!hasPlaylist || !hasNext" @click="nextAudio">
                                         <studip-icon
                                             shape="arr_eol-right"
-                                            :role="hasPlaylist ? 'clickable' : 'inactive'"
                                             :size="24"
                                         />
                                     </button>
@@ -564,7 +561,13 @@ export default {
 
         isOpusSupported() {
             return MediaRecorder.isTypeSupported('audio/webm;codecs=opus');
-},
+        },
+        hasNext() {
+            return this.currentPlaylistItem < this.files.length - 1
+        },
+        hasPrevious() {
+            return this.currentPlaylistItem !== 0;
+        },
     },
     async mounted() {
         this.initCurrentData();
@@ -754,10 +757,8 @@ export default {
         },
         prevAudio() {
             this.stopAudio();
-            if (this.currentPlaylistItem !== 0) {
+            if (this.hasPrevious) {
                 this.currentPlaylistItem = this.currentPlaylistItem - 1;
-            } else {
-                this.currentPlaylistItem = this.files.length - 1;
             }
             this.$nextTick(() => {
                 this.playAudio();
@@ -765,7 +766,7 @@ export default {
         },
         nextAudio() {
             this.stopAudio();
-            if (this.currentPlaylistItem < this.files.length - 1) {
+            if (this.hasNext) {
                 this.currentPlaylistItem = this.currentPlaylistItem + 1;
                 this.$nextTick(() => {
                     this.playAudio();

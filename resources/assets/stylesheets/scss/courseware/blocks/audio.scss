@@ -55,6 +55,7 @@
                 padding: 0 8px;
                 background-color: transparent;
                 border: none;
+                color: var(--color--highlight);
             }
         }
 
@@ -143,6 +144,12 @@
                         cursor: pointer;
                         border: none;
                         background: transparent;
+                        color: var(--color--highlight);
+
+                        &:disabled {
+                            color: var(--color--font-inactive);
+                            cursor: default;
+                        }
                     }
                 }
             }
@@ -170,8 +177,8 @@
                     display: block;
                     padding: 1em 0;
                     margin: 0;
-                    img {
-                        vertical-align: middle;
+                    .studip-icon {
+                        vertical-align: top;
                     }
                 }
             }
@@ -201,5 +208,6 @@
         width: 16px;
         padding: 0 8px;
         cursor: pointer;
+        color: var(--color--highlight);
     }
 }

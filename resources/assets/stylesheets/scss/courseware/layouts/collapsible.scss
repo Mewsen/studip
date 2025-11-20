@@ -4,8 +4,12 @@
     border: solid thin var(--color--content-box-border);
     margin-bottom: -1px;
 
+    a:hover {
+        text-decoration: none;
+    }
+
     .cw-collapsible-title {
-        @include icon(before, arr_1right, $align: middle, $padding: 4px);
+        @include icon(before, arr_1right, $align: top, $padding: 4px);
         background-color: var(--color--content-box-header);
         padding: 0.5em;
         margin: 0;
@@ -14,7 +18,7 @@
         cursor: pointer;
 
         &.cw-collapsible-open {
-            @include icon(before, arr_1down, $align: middle, $padding: 4px);
+            @include icon(before, arr_1down, $align: top, $padding: 4px);
 
             .cw-container-list-sort-mode {
                 margin-top: 8px;
