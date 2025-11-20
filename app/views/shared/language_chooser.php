@@ -8,7 +8,7 @@
             </option>
         <? endforeach; ?>
         </select>
-        <span class="mvv-inst-add-button"><?= Icon::create('arr_2up', 'clickable', ['title' => _('Sprache zuordnen')])->asSvg(); ?></span>
+        <span role="button" tabindex="0" class="mvv-inst-add-button"><?= Icon::create('arr_2up')->asSvg(['title' => _('Sprache zuordnen')]) ?></span>
     </div>
     <?= $addition ?>
 </div>

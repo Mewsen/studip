@@ -482,10 +482,11 @@ form.default .mvv-inst-chooser select {
     height: 20px;
     vertical-align: middle;
     display: inline-block;
+    color: var(--color--highlight);
 
-    img {
-        display: none;
+    svg {
         cursor: pointer;
+        display: none;
     }
 }
 
