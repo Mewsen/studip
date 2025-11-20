@@ -415,9 +415,9 @@ STUDIP.MVV.LanguageChooser = {
     showButtons(element) {
         const chooser = element.closest('.mvv-inst-chooser');
         const sel = chooser.find(':selected');
-        chooser.find('.mvv-inst-add-button img').fadeOut();
+        chooser.find('.mvv-inst-add-button svg').fadeOut();
         if (!sel.hasClass('mvv-inst-chooser-level')) {
-            const button = chooser.find('.mvv-inst-add-button img');
+            const button = chooser.find('.mvv-inst-add-button svg');
             button.fadeIn('fast').unbind('click');
             jQuery(button).click(function () {
                 if (sel.data('fb') === '') {
@@ -482,7 +482,7 @@ STUDIP.MVV.Content = {
                 }
             }
             const button_list = jQuery('<div ' + 'class="mvv-item-list-buttons"/>')
-                .append('<a href="#" class="mvv-item-remove"><img alt="Trash" src="'
+                .append('<a href="#" class="mvv-item-remove"><img width="20" height="20" alt="Trash" src="'
                     + STUDIP.ASSETS_URL
                     + 'images/icons/blue/trash.svg"></a>');
             button_list.appendTo(item);
