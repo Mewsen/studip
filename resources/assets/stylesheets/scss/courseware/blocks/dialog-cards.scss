@@ -92,6 +92,7 @@
         .card__face--back {
             background-color: var(--color--global-background);
             &::after {
+                color: var(--color--highlight);
                 position: absolute;
                 right: 25px;
                 bottom: 25px;
@@ -100,20 +101,25 @@
     }
 
     .cw-dialogcards-navbutton {
-        background-color: var(--color--highlight);
-        color: var(--color--highlight-contrast);
+        background-color: var(--color--highlight-contrast);
+        color: var(--color--highlight);
         width: 35px;
         height: 35px;
         border-radius: var(--border-radius-default);
-        border: none;
+        border: solid thin var(--color--highlight);
         display: block;
         z-index: 4;
         margin: auto 2px;
         padding: 0;
         cursor: pointer;
 
+        &:hover {
+            background-color: var(--color--highlight);
+            color: var(--color--highlight-contrast);
+        }
+
         &.cw-dialogcards-prev {
-            @include icon(before, arr_1left, $size: 24px, $align: middle, $padding: -2px);
+            @include icon(before, arr_1left, $size: 24px, $align: middle, $padding: 2px);
         }
 
         &.cw-dialogcards-next {
@@ -124,6 +130,7 @@
         &.cw-dialogcards-next-disabled {
             color: var(--color--button-inactive-background-contrast);
             background-color: var(--color--button-inactive-background);
+            border: none;
             cursor: not-allowed;
         }
     }

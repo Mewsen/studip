@@ -32,7 +32,7 @@ class KeyPoint extends BlockType
         return [
             'text' => 'Merksatz',
             'icon' => 'courseware',
-            'color' => 'blue',
+            'color' => 'studip-blue',
         ];
     }
 

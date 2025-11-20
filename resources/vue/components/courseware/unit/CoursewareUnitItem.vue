@@ -318,7 +318,7 @@ export default {
             if (!this.hasPermissionSettings) {
                 return false;
             }
-            let info = { icon: '', text: '', title: '' };
+            let info = { icon: 'courseware', text: '', title: '' };
             if (!this.userIsTeacher) {
                 if (this.unit.attributes.visible === 'period') {
                     info.icon = 'date';
@@ -423,7 +423,7 @@ export default {
                 return false;
             }
 
-            let info = { icon: '', text: '', title: '' };
+            let info = { icon: 'courseware', text: '', title: '' };
 
             if (!this.userIsTeacher) {
                 if (this.unit.attributes['can-edit-content']) {

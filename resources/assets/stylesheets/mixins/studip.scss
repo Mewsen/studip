@@ -121,6 +121,7 @@
             display: inline-block;
             height: icon-size($size);
             width: icon-size($size);
+            min-width: icon-size($size);
             background-color: currentColor;
             mask: url("#{$svg}") no-repeat center / contain;
             vertical-align: $align;
