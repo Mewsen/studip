@@ -187,4 +187,15 @@ class BlubberComment extends SimpleORMap implements PrivacyObject
         ");
         $statement->execute();
     }
+
+    public static function deleteUserCommentsIn(string $thread_id, string $user_id): int
+    {
+        return self::deleteBySQL(
+            "thread_id = :thread_id AND user_id = :user_id AND external_contact = '0'",
+            [
+                'thread_id' => $thread_id,
+                'user_id'   => $user_id,
+            ]
+        );
+    }
 }

@@ -5,29 +5,35 @@ namespace JsonApi\Routes\Blubber;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
+use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 
 /**
- * Displays a certain blubber thread.
+ * Deletes a PRIVATE blubber thread.
  */
-class ThreadsShow extends JsonApiController
+class ThreadsDelete extends JsonApiController
 {
-    protected $allowedIncludePaths = ['author', 'comments', 'context', 'participations', 'parent'];
-
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!$resource = \BlubberThread::find($args['id'])) {
+        $user = $this->getUser($request);
+        if (!($thread = \BlubberThread::find($args['id']))) {
             throw new RecordNotFoundException();
         }
 
-        if (!Authority::canShowBlubberThread($this->getUser($request), $resource)) {
+        if (!$thread->isOfContextType(\BlubberThread::CTX_TYPE_PRIVATE)) {
+            throw new BadRequestException('Only private blubber threads can be deleted via this endpoint.');
+        }
+
+        if (!Authority::canDeleteThread($user, $thread)) {
             throw new AuthorizationFailedException();
         }
 
-        return $this->getContentResponse($resource);
+        $thread->delete();
+
+        return $this->getCodeResponse(204);
     }
 }

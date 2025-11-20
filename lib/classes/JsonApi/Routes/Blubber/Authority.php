@@ -61,6 +61,29 @@ class Authority
         return self::canShowBlubberThread($user, $resource->thread);
     }
 
+    public static function canDeleteThread(User $user, BlubberThread $resource)
+    {
+        return $resource->user_id === $user->id; // Only the owner can delete the thread.
+    }
+
+    public static function canAddParticipantToPrivateBlubberThread(User $user, BlubberThread $resource)
+    {
+        return $resource->user_id === $user->id || $GLOBALS['perm']->have_perm('admin', $user->id); // Only owner or admin!
+    }
+
+    public static function canRemoveParticipantsFromThread(User $user, \BlubberParticipation $participation)
+    {
+        $thread = $participation->thread;
+        $isOwner = $thread->user->id === $user->id;
+        if (!$isOwner || !$GLOBALS['perm']->have_perm('admin', $user->id)) {
+            return false;
+        }
+        if ($isOwner && $participation->user->id === $user->id) {
+            return false; // The owner cannot remove himself.
+        }
+        return true; // Only owner or admin!
+    }
+
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */

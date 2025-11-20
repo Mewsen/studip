@@ -85,6 +85,17 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'assoc_foreign_key' => 'object_id',
             'on_delete'         => 'delete',
         ];
+        $config['belongs_to']['parentthread'] = [
+            'class_name'  => BlubberThread::class,
+            'foreign_key' => 'parent_id',
+        ];
+        $config['has_many']['subthreads'] = [
+            'class_name'        => BlubberThread::class,
+            'assoc_foreign_key' => 'parent_id',
+            'on_delete'         => 'delete',
+            'on_store'          => 'store',
+            'order_by'          => 'ORDER BY mkdate DESC'
+        ];
 
         $config['serialized_fields']['metadata'] = JSONArrayObject::class;
 
@@ -1195,6 +1206,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                 JOIN blubber_participations AS blubber_participations_friend
                     ON blubber_participations_friend.thread_id = blubber_threads.thread_id
                 WHERE blubber_threads.context_type = 'private'
+                    AND blubber_threads.parent_id IS NULL
                     AND blubber_participations_me.user_id = :first_party
                     AND blubber_participations_friend.user_id = :second_party
                 GROUP BY blubber_threads.thread_id
@@ -1206,5 +1218,39 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                     'second_party' => $second_party,
                 ]
             );
+    }
+
+    public function createSubThread(array $force_fields = []): ?self
+    {
+        $data = $this->toArray([
+            'context_type',
+            'context_id',
+            'external_contact',
+            'display_class',
+            'visible_in_stream',
+            'commentable',
+            'metadata',
+        ]);
+
+        $user_id = $GLOBALS['user']->id;
+        if (!empty($force_fields['user_id'])) {
+            $user_id = $force_fields['user_id'];
+        }
+
+        $data['user_id'] = $user_id;
+
+        $content = '';
+        if (!empty($force_fields['content'])) {
+            $content = $force_fields['content'];
+        }
+        $data['content'] = $content;
+
+        $data['parent_id'] = $this->getId();
+
+        $sub_thread = self::create($data);
+
+        BlubberParticipation::transferParticipantsToSubThread($sub_thread->parent_id, $sub_thread->id);
+
+        return $sub_thread ?? null;
     }
 }

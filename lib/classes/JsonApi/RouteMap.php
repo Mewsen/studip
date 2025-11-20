@@ -204,8 +204,11 @@ class RouteMap
         $group->get('/users/{id}/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'private');
         $group->get('/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'all');
         $group->get('/blubber-threads/{id}', Routes\Blubber\ThreadsShow::class);
+        $group->get('/blubber-threads/{id}/children', Routes\Blubber\SubThreadsIndex::class);
         $group->post('/blubber-threads', Routes\Blubber\ThreadsCreate::class);
+        $group->post('/blubber-sub-threads', Routes\Blubber\SubThreadsCreate::class);
         $group->patch('/blubber-threads/{id}', Routes\Blubber\ThreadsUpdate::class);
+        $group->delete('/blubber-threads/{id}', Routes\Blubber\ThreadsDelete::class);
 
         // create, read, update and delete BlubberComments
         $group->get('/blubber-threads/{id}/comments', Routes\Blubber\CommentsByThreadIndex::class);
@@ -215,6 +218,11 @@ class RouteMap
         $group->post('/blubber-comments', Routes\Blubber\CommentsCreate::class);
         $group->patch('/blubber-comments/{id}', Routes\Blubber\CommentsUpdate::class);
         $group->delete('/blubber-comments/{id}', Routes\Blubber\CommentsDelete::class);
+
+        // BlubberParticipations routes.
+        $group->get('/blubber-participations/{thread_id}', Routes\Blubber\ParticipationsIndex::class);
+        $group->post('/blubber-participations/{thread_id}', Routes\Blubber\ParticipationsCreate::class);
+        $group->delete('/blubber-participations/{id}', Routes\Blubber\ParticipationsDelete::class);
 
         // REL blubber-threads > participation
         $this->addRelationship(
@@ -228,6 +236,13 @@ class RouteMap
             $group,
             '/users/{id}/relationships/blubber-default-thread',
             Routes\Blubber\Rel\DefaultThread::class
+        );
+
+        // REL blubber-threads > parent
+        $this->addRelationship(
+            $group,
+            '/blubber-threads/{id}/relationships/parent',
+            Routes\Blubber\Rel\ParentThread::class
         );
     }
 

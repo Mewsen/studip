@@ -9,6 +9,8 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 class BlubberThread extends SchemaProvider
 {
     const TYPE = 'blubber-threads';
+    const REL_PARENT = 'parent';
+    const REL_CHILDREN = 'children';
     const REL_AUTHOR = 'author';
     const REL_COMMENTS = 'comments';
     const REL_CONTEXT = 'context';
@@ -30,6 +32,7 @@ class BlubberThread extends SchemaProvider
         }
 
         $attributes = [
+            'parent_id' => $resource['parent_id'],
             'name' => $resource->getName(),
 
             'context-type' => $resource['context_type'],
@@ -89,6 +92,31 @@ class BlubberThread extends SchemaProvider
             $resource,
             $this->shouldInclude($context, self::REL_PARTICIPATIONS)
         );
+
+        if (!empty($resource->parentthread)) {
+            $relationships[self::REL_PARENT] = [
+                self::RELATIONSHIP_LINKS_SELF => true,
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->createLinkToResource($resource->parentthread),
+                ],
+                self::RELATIONSHIP_DATA => $resource->parentthread,
+            ];
+        }
+
+        if (!empty($resource->subthreads)) {
+            $relationships[self::REL_CHILDREN] = [
+                self::RELATIONSHIP_LINKS_SELF => true,
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->getFactory()->createLink(
+                        true,
+                        $this->getSelfSubUrl($resource) . '/' . self::REL_CHILDREN,
+                        true,
+                        []
+                    ),
+                ],
+                self::RELATIONSHIP_DATA => $resource->subthreads,
+            ];
+        }
 
         return $relationships;
     }

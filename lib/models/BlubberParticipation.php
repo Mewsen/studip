@@ -121,4 +121,15 @@ class BlubberParticipation extends SimpleORMap
         return self::findBySQL('`thread_id` = ?', [$thread_id]);
     }
 
+    public static function transferParticipantsToSubThread(string $parent_id, string $sub_id)
+    {
+        $parent_participants = self::getParticipantsIn($parent_id);
+        if (!empty($parent_participants)) {
+            foreach ($parent_participants as $pp) {
+                $data = $pp->toArray(['user_id', 'external_contact']);
+                $data['thread_id'] = $sub_id;
+                self::create($data);
+            }
+        }
+    }
 }

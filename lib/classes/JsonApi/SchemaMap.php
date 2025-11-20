@@ -21,6 +21,7 @@ class SchemaMap
             \BlubberComment::class => Schemas\BlubberComment::class,
             \BlubberStatusgruppeThread::class => Schemas\BlubberStatusgruppeThread::class,
             \BlubberThread::class => Schemas\BlubberThread::class,
+            \BlubberParticipation::class => Schemas\BlubberParticipation::class,
 
             \CalendarDateAssignment::class => Schemas\CalendarDateAssignment::class,
             \Clipboard::class => Schemas\Clipboard::class,
