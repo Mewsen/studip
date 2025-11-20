@@ -19,12 +19,13 @@ class AddDummyTeacher extends Migration
             DBManager::get()->execute(
                 "INSERT INTO `auth_user_md5` (user_id, username, perms, Vorname, Nachname, visible) VALUES (:user_id, :username, :perms, :Vorname, :Nachname, :visible)",
                 [
-                    'user_id' => $user_id,
-                    'username' => 'N.N.',
-                    'perms' => 'dozent',
-                    'Vorname' => 'N.',
-                    'Nachname' => 'N.',
-                    'visible' => 'never'
+                    'user_id'        => $user_id,
+                    'username'       => 'N.N.',
+                    'perms'          => 'dozent',
+                    'Vorname'        => 'N.',
+                    'Nachname'       => 'N.',
+                    'visible'        => 'never',
+                    'validation_key' => '',
                 ]
             );
         }

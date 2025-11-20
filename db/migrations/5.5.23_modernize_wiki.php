@@ -34,7 +34,7 @@ final class ModernizeWiki extends Migration
             CREATE TABLE `wiki_versions` (
                 `version_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `page_id` int(11) unsigned NOT NULL,
-                `name` varchar(128) NOT NULL,
+                `name` varchar(255) NOT NULL,
                 `content` text DEFAULT NULL,
                 `user_id` char(32) COLLATE `latin1_bin` NOT NULL,
                 `mkdate` bigint(20) NOT NULL,
@@ -53,8 +53,8 @@ final class ModernizeWiki extends Migration
                 IF(`wiki_page_config`.`read_restricted` > 0, 'tutor', 'all'),
                 IF(`wiki_page_config`.`edit_restricted` > 0 OR (`wiki_page_config`.`edit_restricted` IS NULL AND `config_values`.`value` IS NOT NULL), 'tutor', 'all'),
                 `wiki`.`user_id`,
-                `wiki`.`chdate`,
-                IFNULL(`wiki`.`mkdate`, UNIX_TIMESTAMP())
+                COALESCE(`wiki`.`chdate`, `wiki`.`mkdate`, UNIX_TIMESTAMP()),
+                COALESCE(`wiki`.`mkdate`, UNIX_TIMESTAMP())
             FROM `wiki`
             INNER JOIN (
                 SELECT `wiki`.`range_id`, `wiki`.`keyword`, MAX(`version`) AS `version`
@@ -176,8 +176,8 @@ final class ModernizeWiki extends Migration
             DBManager::get()->exec("
                 INSERT INTO `wiki_pages` (`range_id`, `name`, `content`, `parent_id`, `read_permission`, `write_permission`, `user_id`, `chdate`, `mkdate`)
                 SELECT `superwiki_pages`.`seminar_id`,
-                    `superwiki_pages`.`name`,
-                    `superwiki_pages`.`content`,
+                    CONVERT(`superwiki_pages`.`name` USING utf8mb4),
+                    CONVERT(`superwiki_pages`.`content` USING utf8mb4),
                     NULL,
                     `superwiki_pages`.`read_permission`,
                     `superwiki_pages`.`write_permission`,
@@ -189,8 +189,8 @@ final class ModernizeWiki extends Migration
             DBManager::get()->exec("
                 INSERT INTO `wiki_versions` (`page_id`, `name`, `content`, `user_id`, `mkdate`)
                 SELECT `wiki_pages`.`page_id`,
-                       `superwiki_versions`.`name`,
-                       `superwiki_versions`.`content`,
+                       CONVERT(`superwiki_versions`.`name` USING utf8mb4),
+                       CONVERT(`superwiki_versions`.`content` USING utf8mb4),
                        `superwiki_versions`.`last_author`,
                        `superwiki_versions`.`chdate`
                 FROM `superwiki_versions`
