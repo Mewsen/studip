@@ -3895,9 +3895,11 @@ g a l l e r y  b l o c k
     display: none;
     img {
         display: block;
-        max-width: 100%;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
+        object-fit: contain;
+        object-position: center;
     }
 }
 
