@@ -1,4 +1,8 @@
 <?php
+use MassWidget\MassWidget;
+use MassWidget\MassWidgetFilter;
+use Studip\Forms\Form;
+
 /**
  * start.php - start page controller
  *
@@ -39,6 +43,8 @@ class StartController extends AuthenticatedController
      */
     public function index_action($action = false, $widgetId = null)
     {
+        $this->syncMassWidgets();
+
         $plugin_manager = PluginManager::getInstance();
         $widgets = WidgetUser::getWidgets($GLOBALS['user']->id);
         $this->columns = [[], []];
@@ -87,6 +93,22 @@ class StartController extends AuthenticatedController
 
         // Root may set initial positions
         if ($GLOBALS['perm']->have_perm('root')) {
+            $massWidgetActions = $sidebar->addWidget(new ActionsWidget());
+            $massWidgetActions->setTitle(_('Widgets für Zielgruppen'));
+
+            $massWidgetActions->addLink(
+                _('Regel hinzufügen'),
+                $this->url_for('start/masswidget_edit'),
+                Icon::create('add')
+            )->asDialog();
+
+            $massWidgetActions->addLink(
+                _('Regel-Übersicht'),
+                $this->url_for('start/masswidget_index'),
+                Icon::create('view-wall')
+            )->asDialog();
+
+
             $settings = $sidebar->addWidget(new ActionsWidget());
             $settings->setTitle(_('Einstellungen'));
             $settings->addElement(new WidgetElement(_('Standard-Startseite bearbeiten:')));
@@ -384,5 +406,294 @@ class StartController extends AuthenticatedController
         }
 
         $this->relocate('start');
+    }
+
+    public function masswidget_index_action()
+    {
+        $GLOBALS['perm']->check('root');
+
+        $this->massWidgets = MassWidget::findBySQL('1');
+    }
+
+    public function masswidget_edit_action(?MassWidget $massWidget = null)
+    {
+        $GLOBALS['perm']->check('root');
+
+        PageLayout::setTitle(_('Widget hinzufügen'));
+
+        if (Request::isPost() && !$massWidget->isNew()) {
+            CSRFProtection::verifyUnsafeRequest();
+
+            if (
+                Request::get('target') !== $massWidget->target
+                || Request::int('plugin_id') !== $massWidget->plugin_id
+            ) {
+                $massWidget->deleteUserWidgets();
+            }
+        }
+
+        // SearchType needed for course selection
+        $courseSearch = new StandardSearch('Seminar_id');
+
+        $widgets = PluginEngine::getPlugins(PortalPlugin::class);
+
+        $availableWidgets = [];
+        foreach ($widgets as $widget) {
+            $availableWidgets[$widget->getPluginId()] = htmlReady($widget->getPluginName());
+        }
+
+        $semesters = [];
+        foreach (array_reverse(Semester::getAll()) as $one) {
+            $semesters[$one->id] = $one->name;
+        }
+
+        $form = Form::fromSORM(
+            $massWidget,
+            [
+                'legend' => _('Zielgruppe'),
+                'collapsed' => false,
+                'collapsable' => false,
+                'fields' => [
+                    'target' => [
+                        'type' => 'select',
+                        'required' => true,
+                        'label' => _('Zielgruppe'),
+                        'value' => $massWidget->target ?? 'all',
+                        'options' => MassWidget::getTargets()
+                    ],
+                    'student_filters' => [
+                        'type' => 'userFilter',
+                        'label' => _('Filterauswahl'),
+                        'if' => 'target === "students"',
+                        'context' => '',
+                        'target' => 'students',
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'students') {
+                                $input->getContextObject()->filters = $this->buildMassWidgetFilters($value);
+                            }
+                        }
+                    ],
+                    'employee_filters' => [
+                        'type' => 'userFilter',
+                        'label' => _('Filterauswahl'),
+                        'if' => 'target === "employees"',
+                        'context' => '',
+                        'target' => 'employees',
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'employees') {
+                                $input->getContextObject()->filters = $this->buildMassWidgetFilters($value);
+                            }
+                        }
+                    ],
+                    'semester' => [
+                        'type' => 'select',
+                        'label' => _('Semester'),
+                        'value' => $massWidget->settings['semester'] ?? \Semester::findDefault()->id,
+                        'if' => 'target === "lecturers"',
+                        'options' => $semesters,
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'lecturers') {
+                                $input->getContextObject()->settings = ['semester' => $value];
+                            }
+                        }
+                    ],
+                    'courses' => [
+                        'type' => 'quicksearchList',
+                        'label' => _('Veranstaltungen'),
+                        'value' => json_encode($massWidget->settings?->getArrayCopy()['courses'] ?? []),
+                        'if' => 'target === "courses"',
+                        'searchtype' => $courseSearch,
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'courses') {
+                                $input->getContextObject()->settings = [];
+                                $input->getContextObject()->settings['courses'] = \Course::findAndMapMany(
+                                    function ($course) {
+                                        return ['id' => $course->id, 'name' => $course->getFullname()];
+                                    },
+                                    json_decode($value, true)
+                                );
+                            }
+                        }
+                    ],
+                    'course_perm' => [
+                        'type' => 'select',
+                        'label' => _('Rechtestufe'),
+                        'value' => $massWidget->settings['perm'] ?? 'autor',
+                        'if' => 'target === "courses"',
+                        'options' => [
+                            'dozent' => get_title_for_status('dozent', 2, 1),
+                            'tutor' => get_title_for_status('tutor', 2, 1),
+                            'autor' => get_title_for_status('autor', 2, 1),
+                            'user' => get_title_for_status('user', 2, 1),
+                        ],
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'courses') {
+                                $input->getContextObject()->settings['perm'] = $value;
+                            }
+                        }
+                    ],
+                    'manual_usernames' => [
+                        'type' => 'textarea',
+                        'label' => _('Liste von Benutzernamen (durch Zeilenumbruch getrennt)'),
+                        'if' => 'target === "usernames"',
+                        'value' => $massWidget->settings['usernames'] ?? '',
+                        'store' => function($value, $input) {
+                            if ($input->getContextObject()->target === 'usernames') {
+                                $input->getContextObject()->settings = [];
+                                $input->getContextObject()->settings['usernames'] = $value;
+                            }
+                        }
+                    ],
+                ]
+            ],
+            $this->url_for('start')
+        )->addSORM($massWidget, [
+            'legend' => _('Widget'),
+            'collapsable' => false,
+            'collapsed' => false,
+            'fields' => [
+                'author_id' => [
+                    'type' => 'hidden',
+                    'value' => User::findCurrent()->id
+                ],
+                'name' => [
+                    'type' => 'text',
+                    'required' => true,
+                    'label' => _('Name'),
+                    'value' => $massWidget->name
+                ],
+                'plugin_id' => [
+                    'type' => 'select',
+                    'required' => true,
+                    'label' => _('Widget'),
+                    'value' => $massWidget->plugin_id ?? '0',
+                    'options' => $availableWidgets
+                ],
+                'col' => [
+                    'if' => 'plugin_id > 0',
+                    'value' => $massWidget->col ?? '0',
+                    'label' => _('Spalte'),
+                    'type' => 'radio',
+                    'orientation' => 'vertical',
+                    'options' => [
+                        '0' => _('Links'),
+                        '1' => _('Rechts'),
+                    ],
+                ],
+                'row' => [
+                    'if' => 'plugin_id > 0',
+                    'value' =>  $massWidget->row ?? '0',
+                    'type' => 'radio',
+                    'label' => _('Zeile'),
+                    'orientation' => 'vertical',
+                    'default' => '0',
+                    'options' => [
+                        '0' => _('Oben'),
+                        '1' => _('Unten'),
+                    ],
+                ]
+            ]
+        ])
+        ->setSuccessMessage(_('Die Regel für das Widget wurde gespeichert.'))
+        ->autoStore();
+
+        $this->render_form($form);
+    }
+
+    public function masswidget_delete_action(MassWidget $massWidget)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $GLOBALS['perm']->check('root');
+
+        $massWidget->deleteUserWidgets()->delete();
+
+        PageLayout::postSuccess(_('Die Regel für das Widget wurde gelöscht.'));
+
+        $this->redirect($this->url_for('start'));
+    }
+
+    public function syncMassWidgets(): void
+    {
+        $massWidgets = MassWidget::findBySQL('1');
+
+        if (count($massWidgets) > 0) {
+            WidgetUser::setInitialWidgets(User::findCurrent()->id);
+        }
+
+        foreach ($massWidgets as $massWidget) {
+            $recipientIds = $massWidget->getTargetUserIds();
+
+            if (in_array(User::findCurrent()->id, $recipientIds)) {
+                $userWidget = WidgetUser::findOneBySQL(
+                    'pluginid = :plugin_id AND range_id = :user_id',
+                    ['plugin_id' => $massWidget->plugin_id, 'user_id' => User::findCurrent()->id]
+                );
+
+                if (!$userWidget) {
+                    $userWidget = new WidgetUser();
+                    $userWidget->range_id = User::findCurrent()->id;
+                    $userWidget->pluginid = $massWidget->plugin_id;
+                }
+
+                if ($userWidget->isNew() || $massWidget->chdate > $userWidget->chdate) {
+                    if ((int) $massWidget->row === 0) {
+                        $minRow = DBManager::get()->fetchColumn(
+                            "SELECT MIN(`position`) - 1 FROM `widget_user` WHERE `range_id` = ?",
+                            [User::findCurrent()->id]
+                        );
+                        $userWidget->position = $minRow;
+                    } else {
+                        $maxRow = DBManager::get()->fetchColumn(
+                            "SELECT MAX(`position`) + 1 FROM `widget_user` WHERE `range_id` = ?",
+                            [User::findCurrent()->id]
+                        );
+                        $userWidget->position = $maxRow;
+                    }
+
+                    $userWidget->is_active = 1;
+                    $userWidget->col = $massWidget->col ?? 0;
+                    $userWidget->store();
+                }
+            }
+        }
+    }
+
+    private function buildMassWidgetFilters(array $value): array
+    {
+        $filters = [];
+
+        foreach ($value as $one) {
+            $filter = new UserFilter($one['id'] ?? '');
+            $filter->fields = [];
+
+            foreach ($one['attributes']['fields'] as $field) {
+                $className = $field['attributes']['type'];
+
+                if (!is_a($className, UserFilterField::class, true)) {
+                    throw new InvalidArgumentException('Only user filters allowed');
+                }
+
+                $f = new $className();
+
+                if (!empty($field['id'])) {
+                    $f->setId($field['id']);
+                }
+
+                $f->setCompareOperator($field['attributes']['compare-operator']);
+                $f->setValue($field['attributes']['value']);
+
+                $filter->addField($f);
+            }
+
+            $filter->store();
+
+            $connection = new MassWidgetFilter();
+            $connection->filter_id = $filter->getId();
+
+            $filters[] = $connection;
+        }
+
+        return $filters;
     }
 }

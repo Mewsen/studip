@@ -1,5 +1,6 @@
 <template>
-    <studip-dialog :title="$gettext('Bedingung hinzufügen')"
+    <studip-dialog id="studip-user-filter"
+                   :title="$gettext('Filter hinzufügen')"
                    height="600"
                    width="900"
                    :confirmText="$gettext('Übernehmen')"
@@ -47,7 +48,7 @@
                 <a v-if="element.attributes.type && currentFilter.length > 1"
                    class="undecorated"
                    @click.prevent="removeField(index)"
-                   :title="$gettext('Dieses Feld löschen')"
+                   :title="$gettext('Diese Bedingung löschen')"
                    tabindex="0"
                 >
                     <studip-icon shape="trash"></studip-icon>
@@ -56,7 +57,7 @@
             <section>
                 <button class="button add"
                         @click.prevent="addField">
-                    {{ $gettext('Feld hinzufügen') }}
+                    {{ $gettext('Bedingung hinzufügen') }}
                 </button>
             </section>
         </template>
@@ -177,3 +178,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+#studip-user-filter {
+    z-index: 1002;
+}
+</style>

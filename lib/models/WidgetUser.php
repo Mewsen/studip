@@ -42,8 +42,8 @@ class WidgetUser extends SimpleORMap
     {
         if (self::countBySQL('range_id = ?', [$user_id]) === 0) {
             $stmt = DBManager::get()->prepare(
-                'INSERT INTO widget_user (pluginid, position, range_id, col)
-                 SELECT pluginid, position, :user_id, col FROM widget_default WHERE perm = :perm'
+                'INSERT INTO widget_user (pluginid, position, range_id, col, chdate)
+                 SELECT pluginid, position, :user_id, col, UNIX_TIMESTAMP() FROM widget_default WHERE perm = :perm'
             );
             $stmt->execute([
                 'user_id' => $user_id,
@@ -61,7 +61,7 @@ class WidgetUser extends SimpleORMap
      */
     public static function getWidgets($user_id): array
     {
-        $widgets = self::findBySQL('range_id = ? ORDER BY position', [$user_id]);
+        $widgets = self::findBySQL('is_active = 1 AND range_id = ? ORDER BY position', [$user_id]);
         $result = [];
 
         foreach ($widgets as $widget) {
@@ -125,6 +125,6 @@ class WidgetUser extends SimpleORMap
     {
         self::setInitialWidgets($user_id);
 
-        return self::deleteBySQL('pluginid = ? AND range_id = ?', [$plugin_id, $user_id]);
+        return DBManager::get()->execute("UPDATE widget_user SET is_active = 0 WHERE range_id = ? AND pluginid = ?", [$user_id, $plugin_id]);
     }
 }

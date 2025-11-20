@@ -33,7 +33,7 @@ class MassMailPermissionFilter extends PermissionCondition
      */
     public static function getTargets()
     {
-        return ['employees'];
+        return ['students', 'employees'];
     }
 
     /**
