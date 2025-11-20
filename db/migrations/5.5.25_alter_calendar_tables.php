@@ -23,6 +23,13 @@ class AlterCalendarTables extends Migration
             WHERE `day` <> ''"
         );
 
+        // Prevent errors if column count is null
+        $db->exec(
+            "UPDATE `calendar_dates`
+             SET `count` = 0
+             WHERE `count` IS NULL"
+        );
+
         $db->exec(
             "ALTER TABLE `calendar_dates`
             DROP COLUMN `ts`,
@@ -180,7 +187,10 @@ class AlterCalendarTables extends Migration
         $group_member_stmt = $db->prepare(
             "INSERT INTO `contact_group_items`
             (`group_id`, `user_id`, `mkdate`, `chdate`)
-            SELECT `contact_groups`.`id` AS group_id, `user_id`, `statusgruppe_user`.`mkdate` as mkdate, `statusgruppe_user`.`mkdate` AS chdate
+            SELECT `contact_groups`.`id` AS group_id,
+                   `user_id`,
+                   COALESCE(`statusgruppe_user`.`mkdate`, UNIX_TIMESTAMP()) as mkdate,
+                   COALESCE(`statusgruppe_user`.`mkdate`, UNIX_TIMESTAMP()) AS chdate
             FROM `statusgruppe_user`
             INNER JOIN `contact_groups`
             ON `statusgruppe_user`.`statusgruppe_id` = `contact_groups`.`old_group_id`
