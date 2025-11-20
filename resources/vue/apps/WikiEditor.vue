@@ -20,7 +20,7 @@
 
             <div></div>
             <label>
-                <input type="checkbox" v-model="autosave" :disabled="storingAutosave">
+                <input type="checkbox" v-model="autosave" :disabled="storingAutosave" />
                 {{ $gettext('Änderungen automatisch speichern') }}
             </label>
             <p class="last-save-date">
@@ -188,7 +188,7 @@ export default {
         },
         delegateEditMode(user_id) {
             const url = STUDIP.URLHelper.getURL(
-                `dispatch.php/course/wiki/delegate_edit_mode/${this.pageId}/${user_id}`,
+                `dispatch.php/course/wiki/delegate_edit_mode/${this.pageId}/${user_id}`
             );
             $.post(url).done(() => {
                 this.isEditing = false;
@@ -210,6 +210,7 @@ export default {
             };
 
             if (this.autosave && this.isChanged) {
+                this.content = this.editor.getData();
                 data.content = this.content;
                 this.isChanged = false;
             }
@@ -230,18 +231,18 @@ export default {
         },
         saveWikiPage() {
             this.toggleSecurityHandler(false);
+            this.content = this.editor.getData();
             this.$refs.form.submit();
-        }
+        },
     },
     mounted() {
         const textarea = this.$refs['wiki_editor'];
 
         STUDIP.wysiwyg.replace(textarea).then((editor) => {
             editor.model.document.on('change:data', () => {
-                const currentData = editor.getData();
-
-                this.isChanged = currentData !== this.content;
-                this.content = currentData;
+                if (!this.isChanged) {
+                    this.isChanged = true;
+                }
             });
 
             if (this.isEditing) {
@@ -269,7 +270,7 @@ export default {
                 this.onlineUsers = content.users;
                 this.isEditing = content.editing;
             },
-            () => this.getUpdaterData(),
+            () => this.getUpdaterData()
         );
     },
     watch: {
@@ -284,16 +285,17 @@ export default {
             const data = {
                 id,
                 type: 'config-values',
-                attributes: { value: current }
+                attributes: { value: current },
             };
 
-            STUDIP.jsonapi.withPromises()
+            STUDIP.jsonapi
+                .withPromises()
                 .patch(`config-values/${id}`, { data: { data } })
-                .then(response => {
+                .then((response) => {
                     this.autosave = response.data.attributes.value;
                     this.storingAutosave = false;
                 });
-        }
+        },
     },
 };
 </script>
