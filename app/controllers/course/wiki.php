@@ -384,6 +384,38 @@ class Course_WikiController extends AuthenticatedController
                 }
 
                 break;
+            case 'delete_pages':
+                CSRFProtection::verifyUnsafeRequest();
+
+                $success_pages = [];
+                $error_pages = [];
+                WikiPage::findEachMany(
+                    function (WikiPage $page) use (&$success_pages, &$error_pages) {
+                        if ($page->isDeletable()) {
+                            $name = $page->name;
+                            $success = $page->delete();
+                            if ($success) {
+                                $success_pages[] = $name;
+                            } else {
+                                $error_pages[] = $name;
+                            }
+                        }
+                    },
+                    Request::intArray('pages_id')
+                );
+
+                if (count($success_pages) > 0) {
+                    PageLayout::postSuccess(_('Seite(n) erfolgreich gelöscht'));
+                }
+                if (count($error_pages) > 0) {
+                    PageLayout::postError(
+                        _('Fehler beim Löschen von Seite(n): '),
+                        array_map('htmlReady', $error_pages)
+                    );
+                }
+
+                $this->relocate('course/wiki/allpages');
+                break;
             default:
                 $this->relocate('course/wiki/allpages');
         }

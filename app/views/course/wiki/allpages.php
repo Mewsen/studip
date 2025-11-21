@@ -67,11 +67,14 @@
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <select name="action" id="bulk_action" aria-label="<?= _('Aktion auswählen') ?>" required>
+                    <select name="action" id="bulk_action" aria-label="<?= _('Aktion auswählen') ?>" required
+                        onchange="$('#bulk_button').attr('data-confirm',
+                        this.value === 'delete_pages' ? '<?= _('Wollen Sie Ihre Auswahl wirklich löschen?') ?>' : null)">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="page_setting"><?= _('Seiteneinstellungen') ?></option>
+                        <option value="delete_pages"><?= _('Löschen') ?></option>
                     </select>
-                    <?= \Studip\Button::create(_('Ausführen'), 'render_form') ?>
+                    <?= \Studip\Button::create(_('Ausführen'), 'render_form', ['id' => 'bulk_button']) ?>
                 </td>
             </tr>
         </tfoot>
