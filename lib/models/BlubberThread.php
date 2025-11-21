@@ -1253,4 +1253,16 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
         return $sub_thread ?? null;
     }
+
+    public static function findByParent_id(string $parent_id): array
+    {
+        $threads = self::findBySQL(
+            "parent_id = :parent_id ORDER BY mkdate ASC",
+            ['parent_id' => $parent_id]
+        );
+
+        return !empty($threads) ? array_map(function ($thread) {
+            return self::upgradeThread($thread);
+        }, $threads) : [];
+    }
 }
