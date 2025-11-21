@@ -41,35 +41,52 @@
             </caption>
             <thead>
                 <tr class="sortable">
-                    <th :class="getSortClasses('enabled')">
-                        <button class="as-link" @click.prevent="changeOrder('enabled')">
+                    <th :class="getSortClasses('enabled')"
+                        :aria-sort="getAriaSort('enabled')"
+                        scope="col"
+                    >
+                        <button class="as-link" type="button" @click.prevent="changeOrder('enabled')">
                             {{ $gettext('Aktiv') }}
                         </button>
                     </th>
-                    <th :class="getSortClasses('name')">
-                        <button class="as-link" @click.prevent="changeOrder('name')">
+                    <th :class="getSortClasses('name')"
+                        :aria-sort="getAriaSort('name')"
+                        scope="col"
+                    >
+                        <button class="as-link" type="button" @click.prevent="changeOrder('name')">
                             {{ $gettext('Name') }}
                         </button>
                     </th>
-                    <th :class="getSortClasses('core')">
-                        <button class="as-link" @click.prevent="changeOrder('core')">
+                    <th :class="getSortClasses('core')"
+                        :aria-sort="getAriaSort('core')"
+                        scope="col"
+                    >
+                        <button class="as-link" type="button" @click.prevent="changeOrder('core')">
                             {{ $gettext('Kernplugin') }}
                         </button>
                     </th>
-                    <th :class="getSortClasses('origin')">
-                        <button class="as-link" @click.prevent="changeOrder('origin')">
+                    <th :class="getSortClasses('origin')"
+                        :aria-sort="getAriaSort('origin')"
+                        scope="col"
+                    >
+                        <button class="as-link" type="button" @click.prevent="changeOrder('origin')">
                             {{ $gettext('Origin') }}
                         </button>
                     </th>
-                    <th>{{ $gettext('Plugintypen') }}</th>
-                    <th>{{ $gettext('Version') }}</th>
-                    <th>{{ $gettext('Schema') }}</th>
-                    <th :class="getSortClasses('position')">
-                        <button class="as-link" @click.prevent="changeOrder('position')">
+                    <th scope="col">{{ $gettext('Plugintypen') }}</th>
+                    <th scope="col">{{ $gettext('Version') }}</th>
+                    <th scope="col">{{ $gettext('Schema') }}</th>
+                    <th :class="getSortClasses('position')"
+                        :aria-sort="getAriaSort('position')"
+                        scope="col"
+                    >
+                        <button class="as-link" type="button" @click.prevent="changeOrder('position')">
                             {{ $gettext('Position') }}
                         </button>
                     </th>
-                    <th class="actions">{{ $gettext('Aktionen') }}</th>
+                    <th class="actions"
+                        scope="col"
+                    >{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,7 +95,12 @@
                     :class="{ 'not-installed': !plugin.installed }"
                 >
                     <td>
-                        <input type="checkbox" :name="`enabled_${plugin.id}`" :checked="plugin.enabled" value="1">
+                        <input type="checkbox"
+                               :name="`enabled_${plugin.id}`"
+                               v-model="plugin.enabled"
+                               value="1"
+                               :aria-label="getActivationAriaLabel(plugin)"
+                        >
                     </td>
                     <td>
                         <button class="as-link" @click.prevent="selectedPlugin = plugin">
@@ -93,22 +115,29 @@
                         {{ plugin.migration_info.schema_version ?? '' }}
                         <template v-if="plugin.migration_info.pending_migrations > 0">
                             <a :href="migratePluginURL(plugin)"
-                               :title="$ngettext(
-                                   'Eine ausstehende Migration',
-                                   '%{amount} ausstehende Migrationen',
-                                   plugin.migration_info.pending_migrations,
-                                    { amount: plugin.migration_info.pending_migrations }
-                                )"
+                               :title="getMigrationLabel(plugin)"
+                               :aria-label="getMigrationLabel(plugin)"
                             >
-                                <StudipIcon shape="plugin" role="status-red" />
+                                <StudipIcon shape="plugin"
+                                            role="status-red"
+                                            aria-hidden="true"
+                                />
                             </a>
                         </template>
                     </td>
                     <td>
-                        <input type="text" :name="`position_${plugin.id}`" v-model="plugin.position" size="2">
+                        <input type="number"
+                               min="0"
+                               :name="`position_${plugin.id}`"
+                               v-model.number="plugin.position"
+                               size="2"
+                               :aria-label="$gettext('Position des Plugins %{name}', plugin)"
+                        >
                     </td>
                     <td class="actions">
-                        <StudipActionMenu :items="getActionMenuForPlugin(plugin)" />
+                        <StudipActionMenu :items="getActionMenuForPlugin(plugin)"
+                                          :context="$gettext('Plugin %{name}', plugin)"
+                        />
                     </td>
                 </tr>
             </tbody>
@@ -127,7 +156,11 @@
     <Teleport to="#sidebar">
         <SidebarWidget :title="$gettext('Filter')">
             <template #content>
-                <select v-model="filter.type" class="sidebar-selectlist">
+                <select v-model="filter.type"
+                        class="sidebar-selectlist"
+                        name="filter[type]"
+                        :aria-label="$gettext('Plugin-Typen')"
+                >
                     <option value="">
                         {{ $gettext('Alle Plugin-Typen anzeigen') }}
                     </option>
@@ -136,7 +169,11 @@
                     </option>
                 </select>
 
-                <select v-model="filter.origin" class="sidebar-selectlist">
+                <select v-model="filter.origin"
+                        class="sidebar-selectlist"
+                        name="filter[origin]"
+                        :aria-label="$gettext('Herkunft der Plugins')"
+                >
                     <option value="">
                         {{ $gettext('Nach Origin filtern') }}
                     </option>
@@ -145,23 +182,39 @@
                     </option>
                 </select>
 
-                <div>
-                    <label>
-                        <input type="radio" value="yes" v-model="filter.corePlugins">
-                        {{ $gettext('Alle Plugins anzeigen') }}
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="radio" value="no" v-model="filter.corePlugins">
-                        {{ $gettext('Kern-Plugins ausblenden') }}
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="radio" value="only" v-model="filter.corePlugins">
-                        {{ $gettext('Nur Kern-Plugins anzeigen') }}
-                    </label>
+                <div role="radiogroup"
+                     :aria-label="$gettext('Anzeige von Kern-Plugins')"
+                >
+                    <div>
+                        <label>
+                            <input type="radio"
+                                   name="filter[core]"
+                                   value="yes"
+                                   v-model="filter.corePlugins"
+                            >
+                            {{ $gettext('Alle Plugins anzeigen') }}
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio"
+                                   name="filter[core]"
+                                   value="no"
+                                   v-model="filter.corePlugins"
+                            >
+                            {{ $gettext('Kern-Plugins ausblenden') }}
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio"
+                                   name="filter[core]"
+                                   value="only"
+                                   v-model="filter.corePlugins"
+                            >
+                            {{ $gettext('Nur Kern-Plugins anzeigen') }}
+                        </label>
+                    </div>
                 </div>
             </template>
         </SidebarWidget>
@@ -197,7 +250,7 @@
 <script>
 import {mapState} from "pinia";
 import {usePluginStore} from "../store/pinia/Plugin";
-import {$ngettext} from "../../assets/javascripts/lib/gettext";
+import {$gettext, $ngettext} from "../../assets/javascripts/lib/gettext";
 import StudipMessageBox from "../components/StudipMessageBox.vue";
 import StudipLoadingSkeleton from "../components/StudipLoadingSkeleton.vue";
 
@@ -267,6 +320,7 @@ export default {
         },
     },
     methods: {
+        $gettext,
         $ngettext,
         changeOrder(by) {
             if (this.sort.by === by) {
@@ -331,8 +385,30 @@ export default {
                 'sortdesc': this.sort.by === by && this.sort.dir === 'desc'
             }
         },
+        getAriaSort(by) {
+            if (this.sort.by !== by) {
+                return 'none';
+            }
+            return this.sort.dir === 'asc' ? 'ascending' : 'descending';
+        },
         migratePluginURL(plugin) {
             return STUDIP.URLHelper.getURL(`dispatch.php/plugin/migrate/${plugin.id}`);
+        },
+        getActivationAriaLabel(plugin) {
+            return plugin.enabled
+                 ? $gettext('Plugin %{name}, aktiviert. Abwählen zum Deaktivieren.', plugin)
+                 : $gettext('Plugin %{name}, deaktiviert. Auswählen zum Aktivieren.', plugin);
+        },
+        getMigrationLabel(plugin) {
+            return $ngettext(
+                `Eine ausstehende Migration für Plugin %{name}`,
+                '%{amount} ausstehende Migrationen für Plugin %{name}',
+                plugin.migration_info.pending_migrations,
+                {
+                    amount: plugin.migration_info.pending_migrations,
+                    name: plugin.name
+                }
+            );
         }
     },
     created() {

@@ -161,7 +161,7 @@ class Admin_PluginController extends AuthenticatedController
                 continue;
             }
 
-            $enabled = Request::int('enabled_' . $plugin['id'], 0);
+            $enabled = Request::bool('enabled_' . $plugin['id'], false);
             $navpos = Request::int('position_' . $plugin['id']);
 
             $result = $plugin_manager->setPluginEnabled($plugin['id'], $enabled, $force);
