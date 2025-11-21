@@ -14,36 +14,42 @@
                :placeholder="$gettext('Was suchen Sie?')"
                role="combobox"
                aria-haspopup="listbox"
-               aria-expanded="false"
+               :aria-expanded="ariaExpanded"
                aria-controls="globalsearch-list"
                :aria-label="$gettext('Suche nach Objekten und Personen in Stud.IP')"
                @keyup.enter.prevent="doSearch()"
         >
-        <studip-icon v-if="needle.length > 0"
-                     shape="decline"
-                     tabindex="0"
-                     name="reset-search"
-                     id="globalsearch-clear"
-                     class="hidden-small-down"
-                     @click="resetSearch()"
-                     :alt="$gettext('Suche zurücksetzen')"
-        ></studip-icon>
-        <studip-icon shape="search"
-                     role="info_alt"
-                     tabindex="0"
-                     name="start-search"
-                     id="globalsearch-icon"
-                     @click.prevent="doSearch()"
-                     :alt="$gettext('Suche starten')"
-        ></studip-icon>
+        <button v-if="needle.length > 0"
+                type="button"
+                id="globalsearch-clear"
+                class="hidden-small-down as-link"
+                :aria-label="$gettext('Suche zurücksetzen')"
+                @click="resetSearch()"
+        >
+            <studip-icon v-if="needle.length > 0"
+                         shape="decline"
+                         aria-hidden="true"
+            ></studip-icon>
+        </button>
+        <button type="button"
+                id="globalsearch-icon"
+                class="as-link"
+                :aria-label="$gettext('Suche starten')"
+                @click="doSearch()"
+        >
+            <studip-icon shape="search"
+                         role="info_alt"
+            ></studip-icon>
+        </button>
+
 
         <div id="globalsearch-list"
              role="listbox">
             <button class="as-link"
+                    type="button"
                     id="globalsearch-togglehints"
-                    tabindex="0"
                     :class="{open: showHints}"
-                    @click.prevent="showHints = !showHints"
+                    @click="showHints = !showHints"
             >
                 {{ showHints ? $gettext('Tipps ausblenden') : $gettext('Tipps einblenden') }}
             </button>
@@ -68,18 +74,21 @@
                     <article v-for="(value, category) in displayedResults"
                              :key="category"
                              :id="`globalsearch-${category}`"
+                             :aria-expanded="selectedCategory === null || selectedCategory === category"
                     >
                         <header class="globalsearch-category" :data-category="category">
-                            <a href="#" @click.prevent="toggleCategory(category)">
-                                {{ value.name }}
-                            </a>
-                            <div v-if="value.more && value.fullsearch !== ''"
-                                 class="globalsearch-more-results"
+                            <button type="button"
+                                    class="as-link"
+                                    @click="toggleCategory(category)"
                             >
-                                <a :href="value.fullsearch">
-                                    {{ $gettext('alle anzeigen') }}
-                                </a>
-                            </div>
+                                {{ value.name }}
+                            </button>
+                            <a v-if="value.more && value.fullsearch !== ''"
+                               :href="value.fullsearch"
+                               class="globalsearch-more-results"
+                            >
+                                {{ $gettext('alle anzeigen') }}
+                            </a>
                         </header>
                         <a v-for="(result, index) in value.content"
                            :key="`result-${category}-${index}`"
@@ -157,6 +166,13 @@ export default {
         }
     },
     computed: {
+        ariaExpanded() {
+            return this.isVisible && (
+                this.showHints
+                || this.isSearching
+                || this.result !== null
+            );
+        },
         displayedResults() {
             let results = {};
             Object.keys(this.results).forEach((key) => {
@@ -326,3 +342,10 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+#globalsearch-searchbar {
+    > button.as-link .studip-icon {
+        vertical-align: top;
+    }
+}
+</style>

@@ -1,14 +1,19 @@
 <template>
-    <article id="globalsearch-hints" aria-live="polite">
+    <article id="globalsearch-hints">
+        <header>
+            <h2>{{ $gettext('Tipps zur Globalen Suche') }}</h2>
+        </header>
         <section>
-            <header>{{ $gettext('Hinweis:') }}</header>
+            <header>
+                <h3>{{ $gettext('Hinweis zur Suche') }}</h3>
+            </header>
             <p>
                  {{ $gettext('Die Schnellsuche findet nur Ergebnisse im aktuellen Semester.') }}
             </p>
         </section>
         <section>
             <header>
-                {{ $gettext('[STRG] + [Leertaste]') }}
+                <h3>{{ $gettext('[STRG] + [Leertaste]') }}</h3>
             </header>
             <p>
                 {{ $gettext('Tastenkombination zum Öffnen und Schließen') }}
@@ -16,7 +21,7 @@
         </section>
         <section>
             <header>
-                {{ $gettext('Platzhalter') }}
+                <h3>{{ $gettext('Platzhalter') }}</h3>
             </header>
             <p>
                 {{ $gettext('"_" ist Platzhalter für ein beliebiges Zeichen.') }}
@@ -30,7 +35,7 @@
         </section>
         <section>
             <header>
-                {{ $gettext('Klick auf Überschrift') }}
+                <h3>{{ $gettext('Klick auf Überschrift') }}</h3>
             </header>
             <p>
                 {{ $gettext('Erweitert die ausgewählte Suchkategorie, um mehr Suchergebnisse aus dieser Kategorie anzuzeigen. ' +
@@ -39,7 +44,7 @@
         </section>
         <section>
             <header>
-                {{ $gettext('Dateisuche') }}
+                <h3>{{ $gettext('Dateisuche') }}</h3>
             </header>
             <p>
                 {{ $gettext('Die Dateisuche kann über einen Schrägstrich (/) verfeinert werden. ' +
