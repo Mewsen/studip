@@ -82,8 +82,8 @@ class Score
             $logscore = 0;
         }
 
-        if ($logscore > 20) {
-            $logscore = 20;
+        if ($logscore > 21) {
+            $logscore = 21;
         }
 
         $titel = [];
@@ -106,8 +106,9 @@ class Score
         $titel[16] = [_('Idol'), _('Idol')];
         $titel[17] = [_('Guru'), _('Hohepriesterin')];
         $titel[18] = [_('Lichtgestalt'), _('Lichtgestalt')];
-        $titel[19] = [_('Halbgott'), _('Halbgöttin')];
-        $titel[20] = [_('Gott'), _('Göttin')];
+        $titel[19] = [_('Legende'), _('Legende')];
+        $titel[20] = [_('Unsterblicher'), _('Unsterbliche')];
+        $titel[21] = [_('Primum Movens'), _('Primum Movens')];
 
         return $titel[$logscore][$gender == 2 ? 1 : 0];
     }
