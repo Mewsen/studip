@@ -39,7 +39,10 @@
                 <section>
                     <table class="default">
                         <colgroup>
-                            <col style="width: 30%">
+                            <col>
+                            <col>
+                            <col>
+                            <col>
                             <col>
                         </colgroup>
                         <thead>
@@ -48,34 +51,45 @@
                             <th><?= _('Typ') ?></th>
                             <th><?= _('Beschreibung') ?></th>
                             <th><?= _('Aktueller Wert') ?></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <? foreach ($configurations as $configuration) : ?>
+                        <? foreach ($configurations as $configuration) : $field = $configuration->field; ?>
                             <tr>
-                                <td><?= htmlReady($configuration->field) ?></td>
+                                <td><?= htmlReady($field) ?></td>
                                 <td><?= htmlReady($configuration->type) ?></td>
                                 <td><?= mb_strlen($configuration->description) > 120
                                         ? htmlReady(mb_substr($configuration->description, 0, 120))
-                                            . '...' . tooltip2($configuration->description)
+                                            . '...' . tooltip2($configuration->description)['title']
                                         : htmlReady($configuration->description) ?></td>
                                 <td>
                                     <? switch ($configuration->type) {
                                         case 'string':
                                         case 'i18n':
-                                            echo htmlReady($configuration->value);
+                                            echo htmlReady(Config::get()->getValue($field));
                                             break;
                                         case 'integer':
-                                            echo (int) $configuration->value;
+                                            echo (int) Config::get()->getValue($field);
                                             break;
                                         case 'boolean':
-                                            echo $configuration->value
+                                            echo Config::get()->getValue($field)
                                                 ? Icon::create('accept', Icon::ROLE_STATUS_GREEN,
                                                     ['title' => _('TRUE')])
                                                 : Icon::create('decline', Icon::ROLE_STATUS_RED,
                                                     ['title' => _('FALSE')]);
                                             break;
                                     } ?>
+                                </td>
+                                <td>
+                                    <a href="<?= URLHelper::getLink(
+                                        'dispatch.php/admin/configuration/edit_configuration',
+                                        ['field' => $configuration->field, 'from_root_assi' => 1]) ?>"
+                                       title="<?= _('Diesen Eintrag bearbeiten') ?>?>"
+                                       data-dialog="size=auto"
+                                    >
+                                        <?= Icon::create('edit') ?>
+                                    </a>
                                 </td>
                             </tr>
                         <? endforeach ?>

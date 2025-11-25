@@ -3,6 +3,7 @@
  * @var Admin_ConfigurationController $controller
  * @var array $config
  * @var array $allconfigs
+ * @var bool $from_root_assi
  */
 ?>
 <form action="<?= $controller->link_for('admin/configuration/edit_configuration', ['field' => $config['field']]) ?>"
@@ -62,6 +63,9 @@
             </label>
         </div>
     </fieldset>
+    <? if ($from_root_assi): ?>
+        <input type="hidden" name="from_root_assi" value="1">
+    <? endif ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Übernehmen')) ?>
         <?= Studip\LinkButton::createCancel(

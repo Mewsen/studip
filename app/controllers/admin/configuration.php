@@ -101,7 +101,16 @@ class Admin_ConfigurationController extends AuthenticatedController
                     htmlReady($field)
                 ));
 
-                $this->relocate($this->action_url("configuration#field-{$field}", ['open_section' => $section]));
+                if (Request::bool('from_root_assi')) {
+                    $this->redirect(
+                        URLHelper::getURL(
+                            'dispatch.php/root_assistant',
+                            ['contentbox_open' => 'new-configurations']
+                        )
+                    );
+                } else {
+                    $this->relocate($this->action_url("configuration#field-{$field}", ['open_section' => $section]));
+                }
                 return;
             }
         }
@@ -109,6 +118,8 @@ class Admin_ConfigurationController extends AuthenticatedController
         // set variables for view
         $this->config = ConfigurationModel::getConfigInfo($field);
         $this->allconfigs = ConfigurationModel::getConfig();
+
+        $this->from_root_assi = Request::bool('from_root_assi');
 
         PageLayout::setTitle(sprintf(_('Konfigurationsparameter: %s editieren'), $this->config['field']));
     }
