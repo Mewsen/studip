@@ -21,7 +21,6 @@ echo $contentbar;
             <div class="wiki-empty-background"></div>
         <? else : ?>
             <a href="<?= $controller->new_page() ?>"
-               data-dialog
                class="wiki-empty-background"
                title="<?= _('Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite.') ?>"></a>
         <? endif ?>
@@ -30,7 +29,6 @@ echo $contentbar;
                 <div class="wiki-teaser">
             <? else : ?>
                 <a href="<?= $controller->new_page() ?>"
-                   data-dialog
                    class="wiki-teaser">
             <? endif ?>
             <?= _('Erstelle die erste Wiki-Seite') ?>
