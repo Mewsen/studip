@@ -84,7 +84,7 @@ class Course_WikiController extends AuthenticatedController
                 _('Neue Wiki-Seite anlegen'),
                 $this->new_pageURL($this->page->id),
                 Icon::create('add'),
-                ['data-dialog' => 'width=700']
+                $this->range->getConfiguration()->WIKI_STARTPAGE_ID ? ['data-dialog' => 'width=700'] : []
             );
             if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) {
                 $actions->addLink(
@@ -256,7 +256,7 @@ class Course_WikiController extends AuthenticatedController
                     ],
                     'parent_id' => [
                         'label' => _('Übergeordnete Seite im Inhaltsverzeichnis'),
-                        'type' => 'select',
+                        'type' => $this->range->getConfiguration()->WIKI_STARTPAGE_ID == $page->getId() ? 'no' : 'select',
                         'options' => $options
                     ],
                     'read_permission' => [
@@ -427,8 +427,14 @@ class Course_WikiController extends AuthenticatedController
             throw new AccessDeniedException();
         }
         CSRFProtection::verifyUnsafeRequest();
+
+        $start_page_id = Request::option('wiki_startpage_id');
+
         $this->config = $this->range->getConfiguration();
-        $this->config->store('WIKI_STARTPAGE_ID', trim(Request::option('wiki_startpage_id')));
+        $this->config->store('WIKI_STARTPAGE_ID', $start_page_id);
+        $page = WikiPage::find($start_page_id);
+        $page->parent_id = null;
+        $page->store();
         if (
             $this->config->WIKI_CREATE_PERMISSION === 'all'
             || $GLOBALS['perm']->have_studip_perm($this->config->WIKI_CREATE_PERMISSION, Context::getId())
@@ -899,69 +905,65 @@ class Course_WikiController extends AuthenticatedController
             'range_id = ? ORDER BY name',
             [$this->range->id]
         );
-        $is_start_page = count($options) <= 1;
-        if ($is_start_page) {
-            PageLayout::setTitle(_('Wiki-Startseite erstellen'));
+        if (!$this->range->getConfiguration()->WIKI_STARTPAGE_ID) {
+            $page->user_id = User::findCurrent()->getId();
+            $page->name = _('Wiki-Startseite');
+            $page->parent_id = null;
+            $page->range_id = Context::getId();
+            $page->store();
+            $this->range->getConfiguration()->store('WIKI_STARTPAGE_ID', $page->id);
+            $this->redirect($this->editURL($page));
         } else {
             PageLayout::setTitle(_('Neue Wikiseite erstellen'));
-        }
-        $this->form = \Studip\Forms\Form::fromSORM(
-            $page,
-            [
-                'legend' => _('Daten'),
-                'fields' => [
-                    'range_id' => [
-                        'type' => 'no',
-                        'mapper' => function () { return $this->range->id; }
-                    ],
-                    'user_id' => [
-                        'type' => 'no',
-                        'mapper' => function () { return User::findCurrent()->id; }
-                    ],
-                    'name' => [
-                        'required' => !$is_start_page,
-                        'label' => _('Name der Seite'),
-                        'type' => $is_start_page ? 'no' : 'text',
-                        'mapper' => function ($value) use ($is_start_page) {
-                            return $is_start_page ? 'Wiki-Startseite' : $value;
-                        },
-                        'validate' => function ($value, $input) {
-                            $name_count = WikiPage::countBySql('`name` = :name AND `range_id` = :range_id', [
-                                'name' => $value,
-                                'range_id' => $this->range->id
-                            ]);
-                            if ($name_count === 0) {
-                                return true;
-                            } else {
-                                return _('Name existiert schon.');
+            $this->form = \Studip\Forms\Form::fromSORM(
+                $page,
+                [
+                    'legend' => _('Daten'),
+                    'fields' => [
+                        'range_id' => [
+                            'type' => 'no',
+                            'mapper' => function () {
+                                return $this->range->id;
                             }
-                        }
-                    ],
-                    'parent_id' => [
-                        'label' => _('Übergeordnete Seite im Inhaltsverzeichnis'),
-                        'type' => 'select',
-                        'options' => $options
-                    ],
-                    'autocreate_links' => [
-                        'label' => _('Den Seitennamen der neuen Seite automatisch in anderen Wikiseiten verlinken.'),
-                        'type' => 'checkbox',
-                        'permission' => WikiPage::countBySql("`range_id` = ?", [$this->range->id]) > 0
+                        ],
+                        'user_id' => [
+                            'type' => 'no',
+                            'mapper' => fn() => User::findCurrent()->id,
+                        ],
+                        'name' => [
+                            'required' => true,
+                            'label' => _('Name der Seite'),
+                            'type' => 'text',
+                            'validate' => function ($value, $input) {
+                                $name_count = WikiPage::countBySql(
+                                    '`name` = :name AND `range_id` = :range_id',
+                                    [
+                                        'name' => $value,
+                                        'range_id' => $this->range->id
+                                    ]
+                                );
+
+                                if ($name_count > 0) {
+                                    return _('Name existiert schon.');
+                                }
+
+                                return true;
+                            }
+                        ],
+                        'parent_id' => [
+                            'label' => _('Übergeordnete Seite im Inhaltsverzeichnis'),
+                            'type' => 'select',
+                            'options' => $options
+                        ],
+                        'autocreate_links' => [
+                            'label' => _('Den Seitennamen der neuen Seite automatisch in anderen Wikiseiten verlinken.'),
+                            'type' => 'checkbox',
+                            'permission' => WikiPage::countByRange_id($this->range->id) > 0
+                        ]
                     ]
-                ]
-            ],
-            $this->allpagesURL()
-        )->addStoreCallback(function ($form, $values) {
-                $page = $form->getLastPart()->getContextObject();
-                $other_pages = WikiPage::countBySQL(
-                    "`range_id` = :range_id AND `page_id` != :page_id",
-                    [
-                        'page_id' => $page->id,
-                        'range_id' => $page->range_id,
-                    ]
-                );
-                if ($other_pages == 0) {
-                    $this->range->getConfiguration()->store('WIKI_STARTPAGE_ID', $page->id);
-                }
+                ],
+                $this->allpagesURL()
+            )->addStoreCallback(function ($form, $values) {
                 if (Request::bool('autocreate_links')) {
                     $pages = WikiPage::findBySQL(
                         "`range_id` = :range_id AND `content` LIKE :search",
@@ -985,13 +987,14 @@ class Course_WikiController extends AuthenticatedController
                     }
                 }
             }
-        )->setURL($this->new_pageURL($parent_id))
-         ->validate();
-        if (Request::isPost()) {
-            $this->form->store();
-            $this->redirect($this->editURL($page));
-        } else {
-            $this->render_form($this->form);
+            )->setURL($this->new_pageURL($parent_id))
+                ->validate();
+            if (Request::isPost()) {
+                $this->form->store();
+                $this->redirect($this->editURL($page));
+            } else {
+                $this->render_form($this->form);
+            }
         }
     }
 
