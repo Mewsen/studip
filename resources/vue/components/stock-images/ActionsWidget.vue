@@ -1,14 +1,18 @@
 <template>
     <SidebarWidget :title="$gettext('Aktionen')">
         <template #content>
-            <ul class="widget-list widget-links">
+            <ul class="widget-list widget-links" :aria-label="$gettext('Aktionen')">
                 <li>
-                    <studip-icon shape="upload" class="widget-action-icon" />
-                    <button @click="onUploadClick">{{ $gettext('Bild hinzufügen') }}</button>
+                    <button @click="onUploadClick">
+                        <studip-icon shape="upload" class="widget-action-icon" :inline="true" />
+                        {{ $gettext('Bild hinzufügen') }}
+                    </button>
                 </li>
                 <li>
-                    <studip-icon shape="import" class="widget-action-icon" />
-                    <button @click="onZipUploadClick">{{ $gettext('Bildersammlung importieren') }}</button>
+                    <button @click="onZipUploadClick">
+                        <studip-icon shape="import" class="widget-action-icon" :inline="true" />
+                        {{ $gettext('Bildersammlung importieren') }}
+                    </button>
                 </li>
             </ul>
         </template>
@@ -32,12 +36,3 @@ export default {
     },
 };
 </script>
-<style scoped>
-.widget-list li {
-    position: relative;
-}
-.widget-action-icon {
-    position: absolute;
-    left: -22px;
-}
-</style>

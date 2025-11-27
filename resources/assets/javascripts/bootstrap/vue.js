@@ -62,7 +62,7 @@ function parseVueAppConfig(node) {
 async function loadAppDependencies(config, store) {
     const promises = [
         import(`@/vue/apps/${config.appPath}.vue`),
-        ...initializePlugins(config),
+        initializePlugins(config),
         ...initializeVuexStores(config, store),
         ...initializePiniaStores(config),
     ];
@@ -113,9 +113,14 @@ function initializeVuexStores(config, store) {
             if (!store.hasModule(index)) {
                 store.registerModule(index, storeConfig);
             }
-            Object.entries(config.vuexStoreData[index]).forEach(([type, payload]) =>
-                store.commit(`${index}/${type}`, payload),
-            );
+            if (
+                config.vuexStoreData[index] !== undefined
+                && !Array.isArray(config.vuexStoreData[index])
+            ) {
+                Object.entries(config.vuexStoreData[index]).forEach(([type, payload]) =>
+                    store.commit(`${index}/${type}`, payload),
+                );
+            }
         }),
     );
 }
@@ -139,10 +144,13 @@ function applyPiniaStoreData(piniaStore, data) {
     });
 }
 
-function initializePlugins(config) {
-    return Object.entries(config.plugins).map(([plugin, filename]) =>
-        import(`@/vue/plugins/${filename}.js`).then((temp) => temp[plugin]),
-    );
+async function initializePlugins(config) {
+    const plugins = [];
+    Object.entries(config.plugins).map(async ([plugin, filename]) => {
+        const temp = await import(`@/vue/plugins/${filename}.js`);
+        plugins.push(temp[plugin]);
+    });
+    return plugins;
 }
 
 function addDialogButtonRemoval(component) {
