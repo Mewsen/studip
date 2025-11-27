@@ -97,7 +97,9 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
         $navigation->setImage(Icon::create('wiki', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('wiki', Icon::ROLE_INFO));
 
-        $navigation->addSubNavigation('start', new Navigation(_('Wiki-Startseite'), 'dispatch.php/course/wiki/page'));
+        $id = Context::get()->getConfiguration()->WIKI_STARTPAGE_ID;
+        $title = $id ? htmlReady(WikiPage::find($id)->name) : _('Wiki-Startseite');
+        $navigation->addSubNavigation('start', new Navigation($title, 'dispatch.php/course/wiki/page'));
         if (WikiPage::countBySQL('`range_id` = ?', [$range_id]) > 0) {
             if ($GLOBALS['perm']->have_studip_perm('user', $range_id)) {
                 $navigation->addSubNavigation('listnew', new Navigation(_('Neue Seiten'), 'dispatch.php/course/wiki/newpages'));
@@ -179,7 +181,7 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
         $rootPage = WikiPage::find($rootId) ?: $activePage;
 
         $rootToc = self::getTOCRecursive($rootPage, $activePage->page_id);
-        $rootToc->setTitle(_('Wiki-Startseite'));
+        $rootToc->setTitle(htmlReady($rootPage->name));
         $rootToc->setIcon(Icon::create('wiki'));
         return $rootToc;
     }
@@ -194,7 +196,7 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
      */
     private static function getTOCRecursive(WikiPage $page, int|null $active_page_id): TOCItem
     {
-        $toc = new TOCItem($page->isNew() ? _('Wiki-Startseite') : $page->name);
+        $toc = new TOCItem($page->name);
         $toc->setURL($page->isNew() ? URLHelper::getURL('dispatch.php/course/wiki/page') : URLHelper::getURL('dispatch.php/course/wiki/page/' . $page->id));
         $toc->setActive($page->page_id == $active_page_id);
         foreach ($page->children as $child) {
