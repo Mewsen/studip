@@ -121,6 +121,7 @@ button,
     }
 
     &.as-link {
+        font-weight: inherit;
         text-align: left;
     }
 
@@ -145,6 +146,10 @@ button,
 }
 
 label {
+    &.as-link {
+        @extend .button, .as-link;
+    }
+
     &.undecorated.icon-button {
         cursor: pointer;
         .input-hidden {

@@ -147,9 +147,9 @@ class Admin_PluginController extends AuthenticatedController
         $type = $plugin_filter != '' ? $plugin_filter : NULL;
         $plugins = $plugin_manager->getPluginInfos($type);
 
-        $force = (bool) Request::int('force');
+        $force = Request::bool('force', false);
 
-//        $this->check_ticket();
+        $this->check_ticket();
 
         // update enabled/disabled status and position if set
         $messages = [];

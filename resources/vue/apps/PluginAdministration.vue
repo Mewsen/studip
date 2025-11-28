@@ -29,7 +29,7 @@
 
     <form :action="storeURL" method="post" class="default">
         <input type="hidden" :name="csrf.name" :value="csrf.value">
-        <table class="default" id="plugin-administration-table">
+        <table class="default sortable-table" id="plugin-administration-table">
             <caption>
                 {{ $gettext('Verwaltung von Plugins') }}
                 <template v-if="sortedPlugins.length < plugins.length">
@@ -156,66 +156,45 @@
     <Teleport to="#sidebar">
         <SidebarWidget :title="$gettext('Filter')">
             <template #content>
-                <select v-model="filter.type"
-                        class="sidebar-selectlist"
-                        name="filter[type]"
-                        :aria-label="$gettext('Plugin-Typen')"
-                >
-                    <option value="">
-                        {{ $gettext('Alle Plugin-Typen anzeigen') }}
-                    </option>
-                    <option v-for="type in types" :key="type">
-                        {{ type }}
-                    </option>
-                </select>
+                <ul class="widget-options">
+                    <li>
+                        <select v-model="filter.type"
+                                class="sidebar-selectlist"
+                                name="filter[type]"
+                                :aria-label="$gettext('Plugin-Typen')"
+                        >
+                            <option value="">
+                                {{ $gettext('Alle Plugin-Typen anzeigen') }}
+                            </option>
+                            <option v-for="type in types" :key="type">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </li>
+                    <li>
+                        <select v-model="filter.origin"
+                                class="sidebar-selectlist"
+                                name="filter[origin]"
+                                :aria-label="$gettext('Herkunft der Plugins')"
+                        >
+                            <option value="">
+                                {{ $gettext('Nach Origin filtern') }}
+                            </option>
+                            <option v-for="origin in origins" :key="origin">
+                                {{ origin }}
+                            </option>
+                        </select>
+                    </li>
+                    <li>
+                        <StudipRadioButtonGroup :label="$gettext('Anzeige von Kern-Plugins')"
+                                                name="filter[core]"
+                                                v-model="filter.corePlugins"
+                                                :options="corePluginOptions"
+                        >
 
-                <select v-model="filter.origin"
-                        class="sidebar-selectlist"
-                        name="filter[origin]"
-                        :aria-label="$gettext('Herkunft der Plugins')"
-                >
-                    <option value="">
-                        {{ $gettext('Nach Origin filtern') }}
-                    </option>
-                    <option v-for="origin in origins" :key="origin">
-                        {{ origin }}
-                    </option>
-                </select>
-
-                <div role="radiogroup"
-                     :aria-label="$gettext('Anzeige von Kern-Plugins')"
-                >
-                    <div>
-                        <label>
-                            <input type="radio"
-                                   name="filter[core]"
-                                   value="yes"
-                                   v-model="filter.corePlugins"
-                            >
-                            {{ $gettext('Alle Plugins anzeigen') }}
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input type="radio"
-                                   name="filter[core]"
-                                   value="no"
-                                   v-model="filter.corePlugins"
-                            >
-                            {{ $gettext('Kern-Plugins ausblenden') }}
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input type="radio"
-                                   name="filter[core]"
-                                   value="only"
-                                   v-model="filter.corePlugins"
-                            >
-                            {{ $gettext('Nur Kern-Plugins anzeigen') }}
-                        </label>
-                    </div>
-                </div>
+                        </StudipRadioButtonGroup>
+                    </li>
+                </ul>
             </template>
         </SidebarWidget>
     </Teleport>
@@ -253,12 +232,14 @@ import {usePluginStore} from "../store/pinia/Plugin";
 import {$gettext, $ngettext} from "../../assets/javascripts/lib/gettext";
 import StudipMessageBox from "../components/StudipMessageBox.vue";
 import StudipLoadingSkeleton from "../components/StudipLoadingSkeleton.vue";
+import StudipRadioButton from "../components/StudipRadioButton.vue";
+import StudipRadioButtonGroup from "../components/StudipRadioButtonGroup.vue";
 
 const pluginStore = usePluginStore();
 
 export default {
     name: 'PluginAdministration',
-    components: {StudipLoadingSkeleton, StudipMessageBox},
+    components: {StudipRadioButtonGroup, StudipRadioButton, StudipLoadingSkeleton, StudipMessageBox},
     props: {
         configuration: Object,
     },
@@ -279,6 +260,13 @@ export default {
     },
     computed: {
         ...mapState(usePluginStore, ['getPluginById', 'origins', 'plugins', 'types', 'updateInfos']),
+        corePluginOptions() {
+            return {
+                yes: this.$gettext('Alle Plugins anzeigen'),
+                no: this.$gettext('Kern-Plugins ausblenden'),
+                only: this.$gettext('Nur Kern-Plugins anzeigen'),
+            };
+        },
         csrf() {
             return STUDIP.CSRF_TOKEN;
         },
