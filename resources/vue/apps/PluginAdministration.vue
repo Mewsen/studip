@@ -232,7 +232,6 @@ import {usePluginStore} from "../store/pinia/Plugin";
 import {$gettext, $ngettext} from "../../assets/javascripts/lib/gettext";
 import StudipMessageBox from "../components/StudipMessageBox.vue";
 import StudipLoadingSkeleton from "../components/StudipLoadingSkeleton.vue";
-import StudipRadioButton from "../components/StudipRadioButton.vue";
 import StudipRadioButtonGroup from "../components/StudipRadioButtonGroup.vue";
 
 const pluginStore = usePluginStore();
