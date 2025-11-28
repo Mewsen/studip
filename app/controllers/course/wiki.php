@@ -22,7 +22,21 @@ class Course_WikiController extends AuthenticatedController
 
         PageLayout::setTitle(Navigation::getItem('/course/wiki')->getTitle());
     }
-
+    /**
+     * Displays a wiki page with its content, navigation, and sidebar widgets.
+     * 
+     * This action handles the display of a wiki page, including setting up navigation,
+     * sidebar widgets (quicklinks, search, actions, exports), and content bar elements.
+     * If no page ID is provided, it defaults to the wiki's start page. The method also
+     * checks read permissions and configures various UI elements based on user permissions.
+     *
+     * @param string|null $page_id The ID of the wiki page to display. If null, the wiki's
+     *                             start page ID from the configuration will be used.
+     *
+     * @return void
+     *
+     * @throws AccessDeniedException If the current user does not have read permission for the page.
+     */
     public function page_action($page_id = null)
     {
         if ($page_id === null) {
@@ -46,40 +60,30 @@ class Course_WikiController extends AuthenticatedController
 
         if (!$this->page->isNew()) {
             // Table of Contents/QuickLinks
-            $widget = Sidebar::Get()->addWidget(new ListWidget());
-            $widget->setTitle(_('QuickLinks'));
             $quicklinks = WikiPage::findOneBySQL("`name` = 'toc' AND `range_id` = ?", [$this->range->id]);
             $toc_content = $quicklinks ? '<div class="wikitoc" id="00toc">' . wikiReady($quicklinks['content'], true, $this->range->id) . '</div>' : '';
             $toc_content_empty = !trim(strip_tags($toc_content));
-            if (
-                (!$quicklinks && $GLOBALS['perm']->have_studip_perm($this->range->getConfiguration()->WIKI_CREATE_PERMISSION, $this->range->id))
-                || ($quicklinks && $quicklinks->isEditable())
-            ) {
-                $extra = sprintf(
-                    '<a href="%s">%s</a>',
-                    URLHelper::getLink('dispatch.php/course/wiki/edit_toc'),
-                    $toc_content_empty
-                        ? Icon::create('add')->asSvg(['title' => _('Erstellen')])
-                        : Icon::create('edit')->asSvg(['title' => _('Bearbeiten')])
-                );
-                $widget->setExtra($extra);
-            }
-            $element = new WidgetElement($toc_content_empty ? _('Keine QuickLinks vorhanden') : $toc_content);
-            if (!$toc_content_empty) {
+            if (!$toc_content_empty && $quicklinks->isReadable()) {
+                $widget = new ListWidget();
+                $widget->setTitle(_('QuickLinks'));
+                $element = new WidgetElement($toc_content);
                 $element->icon = Icon::create('link-intern');
+                $widget->addElement($element);
+                $sidebar->addWidget($widget);
             }
-            $widget->addElement($element);
         }
 
         $this->edit_perms = $this->range->getConfiguration()->WIKI_CREATE_PERMISSION;
-        if (
-            $GLOBALS['perm']->have_studip_perm('autor', $this->range->id)
+
+        //Sidebar actions
+        $action_perms = $GLOBALS['perm']->have_studip_perm('autor', $this->range->id)
             && (
                 $this->edit_perms === 'all'
                 || $GLOBALS['perm']->have_studip_perm($this->edit_perms, $this->range->id)
-            )
-        ) {
-            $actions = new ActionsWidget();
+            );
+        $actions = new ActionsWidget();
+
+        if ($action_perms) {
             $actions->addLink(
                 _('Neue Wiki-Seite anlegen'),
                 $this->new_pageURL($this->page->id),
@@ -94,8 +98,25 @@ class Course_WikiController extends AuthenticatedController
                     ['data-dialog' => 'width=700']
                 );
             }
+        }
+
+        $quicklinks = WikiPage::findOneBySQL("`name` = 'toc' AND `range_id` = ?", [$this->range->id]);
+        if (
+            ((!$quicklinks && $GLOBALS['perm']->have_studip_perm($this->range->getConfiguration()->WIKI_CREATE_PERMISSION, $this->range->id))
+                || ($quicklinks && $quicklinks->isEditable()))
+            && $this->range->getConfiguration()->WIKI_STARTPAGE_ID
+        ) {
+            $actions->addLink(
+                $quicklinks ?
+                    _('Quicklinks bearbeiten') : _('Quicklinks anlegen'),
+                URLHelper::getLink('dispatch.php/course/wiki/edit_toc'),
+                $quicklinks ? Icon::create('edit') : Icon::create('add')
+            );
+        }
+
+        if ($action_perms) {
             $actions->addSeparator();
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) { //minimum perm tutor necessary
+            if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) {
                 $actions->addLink(
                     _('Seiten aus Veranstaltung importieren'),
                     $this->importURL(),
@@ -103,8 +124,9 @@ class Course_WikiController extends AuthenticatedController
                     ['data-dialog' => 'width=700']
                 );
             }
-            $sidebar->addWidget($actions);
         }
+
+        $sidebar->addWidget($actions);
 
         $contentbarProps = [
             'icon' => 'wiki',
