@@ -239,7 +239,7 @@ const pluginStore = usePluginStore();
 
 export default {
     name: 'PluginAdministration',
-    components: {StudipRadioButtonGroup, StudipRadioButton, StudipLoadingSkeleton, StudipMessageBox},
+    components: {StudipRadioButtonGroup, StudipLoadingSkeleton, StudipMessageBox},
     props: {
         configuration: Object,
     },
