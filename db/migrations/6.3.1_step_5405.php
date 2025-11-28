@@ -60,7 +60,6 @@ final class Step5405 extends Migration {
     {
         DBManager::get()->exec("
             DROP TABLE IF EXISTS
-                `lti_nonces`,
                 `lti_registration_configs`,
                 `lti_registrations`
         ");
