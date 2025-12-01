@@ -8,20 +8,16 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Contracts\Schema\LinkInterface;
 use Neomerx\JsonApi\Contracts\Schema\SchemaContainerInterface;
 use Neomerx\JsonApi\Schema\BaseSchema;
+use Psr\Container\ContainerInterface;
 
 abstract class SchemaProvider extends BaseSchema
 {
-    /** @var SchemaContainerInterface */
-    protected $schemaContainer;
-
-    /** @var ?\User */
-    protected $currentUser;
-
-    public function __construct(FactoryInterface $factory, SchemaContainerInterface $schemaContainer, ?\User $user)
-    {
-        $this->schemaContainer = $schemaContainer;
-        $this->currentUser = $user;
-
+    public function __construct(
+        protected FactoryInterface $factory,
+        protected SchemaContainerInterface $schemaContainer,
+        protected ?\User $currentUser,
+        protected ContainerInterface $container
+    ) {
         parent::__construct($factory);
     }
 

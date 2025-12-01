@@ -27,9 +27,7 @@ return function (ContainerBuilder $containerBuilder) {
             $schemas = [];
             $user = $container->get('studip-current-user');
             foreach ($container->get('json-api-integration-schemas') as $key => $classname) {
-                $schemas[$key] = function ($schemaContainer) use ($classname, $factory, $user) {
-                    return new $classname($factory, $schemaContainer, $user);
-                };
+                $schemas[$key] = fn ($schemaContainer) => new $classname($factory, $schemaContainer, $user, $container);
             }
 
             return $factory->createSchemaContainer($schemas);
