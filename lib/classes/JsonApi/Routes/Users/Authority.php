@@ -54,4 +54,14 @@ class Authority
 
         return true;
     }
+
+    public static function canPublishScore(User $user, User $targetedUser): bool
+    {
+        return !empty(\Config::get()->SCORE_ENABLE) && $targetedUser->id === $user->id;
+    }
+
+    public static function canUnpublishScore(User $user, User $targetedUser): bool
+    {
+        return !empty(\Config::get()->SCORE_ENABLE) && $targetedUser->id === $user->id;
+    }
 }

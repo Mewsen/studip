@@ -59,4 +59,18 @@ class ContactGroupItem extends SimpleORMap
             ]
         );
     }
+
+    /**
+     * Deletes a user from a contact group.
+     * @param int $groupId The ID of the group.
+     * @param string $userId The ID of the user to be removed from the group
+     * @return int The number of deleted rows, although it should always be 1 or 0.
+     */
+    public static function deleteItemFromGroup(int $groupId, string $userId): int
+    {
+        return self::deleteBySQL(
+            'group_id = ? AND user_id = ?',
+            [$groupId, $userId]
+        );
+    }
 }

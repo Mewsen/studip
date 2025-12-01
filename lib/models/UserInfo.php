@@ -51,10 +51,48 @@ class UserInfo extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'user_info';
+
+        $config['belongs_to']['user'] = [
+            'class_name'  => \User::class,
+            'foreign_key' => 'user_id',
+        ];
+
+        $config['additional_fields']['is_king']['get'] = 'getIsKing';
+
         $config['i18n_fields']['hobby'] = true;
         $config['i18n_fields']['lebenslauf'] = true;
         $config['i18n_fields']['schwerp'] = true;
         $config['i18n_fields']['publi'] = true;
         parent::configure($config);
+    }
+
+    public static function loadPaginatedUsersListForScores(int $limit, int $offset): array
+    {
+        $vis_query = get_vis_query('b');
+        $query =
+            "SELECT
+                SQL_CALC_FOUND_ROWS a.user_id,
+                username,
+                score,
+                geschlecht,
+                {$GLOBALS['_fullname_sql']['full']} AS fullname
+            FROM user_info AS a
+            LEFT JOIN auth_user_md5 AS b USING (user_id)
+                WHERE score > 0 AND locked = 0 AND {$vis_query}
+                ORDER BY score DESC
+                LIMIT ?, ?";
+        $result = DBManager::get()->fetchAll($query, [$offset, $limit]);
+        $total = DBManager::get()->fetchColumn("SELECT FOUND_ROWS()");
+
+        $users = [];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                $row['is_king'] = \StudipKing::is_king($row['user_id'], true);
+                $row['title'] = \Score::getTitel($row['score'], $row['geschlecht']);
+                $users[$row['user_id']] = $row;
+            }
+        }
+
+        return [$users, $total];
     }
 }

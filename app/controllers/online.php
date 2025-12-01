@@ -11,6 +11,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @since       2.5
+ * @deprecated  use JSON API Users routes instead. since 6.2
  */
 
 class OnlineController extends AuthenticatedController
@@ -23,6 +24,10 @@ class OnlineController extends AuthenticatedController
      */
     public function before_filter(&$action, &$args)
     {
+        trigger_error(
+            'Old Who is online? Mechanism is deprecated and will be removed in future versions. Please use the JSON API Users routes as well as User metadata regarding online instead.',
+            E_USER_DEPRECATED
+        );
         parent::before_filter($action, $args);
 
         PageLayout::setHelpKeyword('Basis.InteraktionWhosOnline');

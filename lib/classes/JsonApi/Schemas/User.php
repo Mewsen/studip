@@ -3,7 +3,6 @@
 namespace JsonApi\Schemas;
 
 use JsonApi\Routes\Users\Authority as UsersAuthority;
-use Neomerx\JsonApi\Contracts\Factories\FactoryInterface;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
@@ -108,7 +107,7 @@ class User extends SchemaProvider
     {
         $avatar = \Avatar::getAvatar($resource->id);
 
-        return [
+        $metadata = [
             'avatar' => [
                 'small' => $avatar->getURL(\Avatar::SMALL),
                 'medium' => $avatar->getURL(\Avatar::MEDIUM),
@@ -116,6 +115,19 @@ class User extends SchemaProvider
                 'original' => $avatar->getURL(\Avatar::NORMAL),
             ],
         ];
+
+        $metadata['vcard-download-link'] = $this->generateSelfRelatedLink($resource, 'vcard.vcf');
+        $metadata['is-online'] = $resource->getOnlineStatus();
+
+        if (\Config::get()->SCORE_ENABLE && !empty($resource->score)) {
+            $scoreData['score'] = \Score::GetMyScore($resource);
+            $scoreData['title'] = \Score::getTitel($scoreData['score'], $resource->geschlecht);
+            $scoreData['publish-link'] = $this->generateSelfRelatedLink($resource, 'publish-score');
+            $scoreData['unpublish-link'] = $this->generateSelfRelatedLink($resource, 'unpublish-score');
+            $metadata['score-data'] = $scoreData;
+        }
+
+        return $metadata;
     }
 
     /**
@@ -405,5 +417,11 @@ class User extends SchemaProvider
         ];
 
         return $relationships;
+    }
+
+    private function generateSelfRelatedLink($resource, $pathName): string
+    {
+        return $this->getRelationshipRelatedLink($resource, $pathName)
+                ->getStringRepresentation($this->container->get('json-api-integration-urlPrefix'));
     }
 }

@@ -12,14 +12,18 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property string $calendar_permissions database column
-An enum with the possible values "", "READ" and "WRITE".
-The empty string specifies that no calendar permissions are granted.
+ *      An enum with the possible values "", "READ" and "WRITE".
+ *      The empty string specifies that no calendar permissions are granted.
  * @property SimpleORMapCollection<ContactGroupItem> $groups has_many ContactGroupItem
  * @property User $owner belongs_to User
  * @property User $friend belongs_to User
  */
 class Contact extends SimpleORMap
 {
+    public const CALENDAR_PERMISSION_NONE  = '';
+    public const CALENDAR_PERMISSION_READ  = 'READ';
+    public const CALENDAR_PERMISSION_WRITE = 'WRITE';
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'contact';
@@ -40,9 +44,9 @@ class Contact extends SimpleORMap
                 return [$me];
             },
             'assoc_foreign_key' => function ($item, $params) {
-                //Nothing else here. But this has to be present
-                //so that storing a new contact works.
-             },
+                // Nothing else here. But this has to be present,
+                // so that storing a new contact works.
+            },
             'on_store'          => 'store',
             'on_delete'         => 'delete'
         ];

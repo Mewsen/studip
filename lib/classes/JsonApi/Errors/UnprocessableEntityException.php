@@ -15,7 +15,7 @@ class UnprocessableEntityException extends JsonApiException
      */
     public function __construct($detail = null, array $source = null)
     {
-        $error = new Error(null, null, null, 422, null, 'Unprocesssable Entity', $detail, $source);
+        $error = new Error(null, null, null, 422, null, 'Unprocessable Entity', $detail, $source);
         parent::__construct($error, 422);
     }
 }

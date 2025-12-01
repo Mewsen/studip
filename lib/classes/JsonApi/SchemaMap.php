@@ -30,6 +30,7 @@ class SchemaMap
             \ConsultationSlot::class => Schemas\ConsultationSlot::class,
             \ConfigValue::class => Schemas\ConfigValue::class,
             \CourseSet::class => Schemas\CourseSet::class,
+            \ContactGroup::class => Schemas\UserContactGroup::class,
             \ContentTermsOfUse::class => Schemas\ContentTermsOfUse::class,
             \Course::class => Schemas\Course::class,
             \CourseMember::class => Schemas\CourseMember::class,

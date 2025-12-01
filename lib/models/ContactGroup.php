@@ -33,11 +33,16 @@ class ContactGroup extends SimpleORMap
             'class_name'  => User::class,
             'foreign_key' => 'owner_id'
         ];
-        $config['has_many']['items'] = [
-            'class_name'        => ContactGroupItem::class,
-            'assoc_foreign_key' => 'group_id',
-            'on_store'          => 'store',
-            'on_delete'         => 'delete'
+
+        // The items are 
+        $config['has_and_belongs_to_many']['items'] = [
+            'class_name'     => User::class,
+            'thru_table'     => 'contact_group_items',
+            'thru_key'       => 'group_id',
+            'thru_assoc_key' => 'user_id',
+            'order_by'       => 'ORDER BY Nachname, Vorname',
+            'on_delete'      => 'delete',
+            'on_store'       => 'store',
         ];
         parent::configure($config);
     }

@@ -1750,4 +1750,25 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
         return $GLOBALS['perm']->have_studip_perm($permission, $for_range->id, $this->id);
     }
+
+    /**
+     * Returns whether the user is currently online.
+     *
+     * @param int $active_since_mins Number of minutes to consider a user online since their last lifesign
+     * @return bool
+     */
+    public function getOnlineStatus($active_since_mins = 1)
+    {
+        $online_visibility = get_local_visibility_by_id($this->id, 'online');
+        $is_user_visible = !in_array($this->visible, ['no', 'never']);
+
+        if (!empty($online_visibility) && $is_user_visible) {
+            $timestamp_str = $active_since_mins ? sprintf('now - %d minutes', (int) $active_since_mins) : 'now';
+            $last_active_timestampt = strtotime($timestamp_str);
+            $last_lifesign = (int) $this?->online?->last_lifesign ?? 0;
+            return $last_lifesign > $last_active_timestampt;
+        }
+
+        return false;
+    }
 }

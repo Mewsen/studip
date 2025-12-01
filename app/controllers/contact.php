@@ -12,11 +12,16 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @since       3.2
+ * @deprecated  use JSON API Contact routes instead. since 6.2
  */
 class ContactController extends AuthenticatedController
 {
     public function before_filter(&$action, &$args)
     {
+        trigger_error(
+            'Old Contact Mechanism is deprecated and will be removed in future versions. Please use the JSON API Contact routes instead.',
+            E_USER_DEPRECATED
+        );
         parent::before_filter($action, $args);
 
         // Load statusgroups
@@ -56,7 +61,7 @@ class ContactController extends AuthenticatedController
                         'user_id'  => $user_to_add->id,
                     ];
                 }
-                $imported += (bool)Contact::import($new_contact)->store();
+                $imported += (bool) Contact::import($new_contact)->store();
             }
         }
         if ($imported) {
@@ -190,13 +195,13 @@ class ContactController extends AuthenticatedController
             $users = User::findManyByUsername(Request::getArray('user'));
         }
         if ($group) {
-            $group_object = Statusgruppen::find($group);
+            $group_object = ContactGroup::find($group);
             if (!$group_object) {
                 $this->set_status(404);
                 $this->render_nothing();
                 return;
             }
-            $users = User::findMany($group_object->members->pluck('user_id'));
+            $users = User::findMany($group_object->items->pluck('user_id'));
         }
         if (empty($users)) {
             $user_object = User::findCurrent();

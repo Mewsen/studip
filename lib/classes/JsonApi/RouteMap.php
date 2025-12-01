@@ -121,6 +121,7 @@ class RouteMap
         $this->addAuthenticatedClipboardRoutes($group);
         $this->addAuthenticatedConsultationRoutes($group);
         $this->addAuthenticatedContactsRoutes($group);
+        $this->addAuthenticatedScoresRoutes($group);
         $this->addAuthenticatedCoursesRoutes($group);
 
         if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
@@ -265,10 +266,27 @@ class RouteMap
         $group->delete('/consultation-bookings/{id}', Routes\Consultations\BookingsDelete::class);
     }
 
+    private function addAuthenticatedScoresRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/scores', Routes\Scores\ScoresIndex::class);
+    }
+
     private function addAuthenticatedContactsRoutes(RouteCollectorProxy $group): void
     {
         $group->get('/users/{id}/contacts', Routes\Users\ContactsIndex::class);
+        $group->get('/users/{id}/publish-score', Routes\Users\UserScorePublish::class);
+        $group->get('/users/{id}/unpublish-score', Routes\Users\UserScoreUnpublish::class);
         $this->addRelationship($group, '/users/{id}/relationships/contacts', Routes\Users\Rel\Contacts::class);
+
+        // Contact Groups
+        $group->get('/user-contact-groups', Routes\Contacts\UserContactGroupsIndex::class);
+        $group->post('/user-contact-groups', Routes\Contacts\UserContactGroupsCreate::class);
+        $group->get('/user-contact-groups/{id}', Routes\Contacts\UserContactGroupsShow::class);
+        $group->patch('/user-contact-groups/{id}', Routes\Contacts\UserContactGroupsUpdate::class);
+        $group->delete('/user-contact-groups', Routes\Contacts\UserContactGroupsDelete::class);
+        $this->addRelationship($group, '/user-contact-groups/{id}/relationships/group-users', Routes\Contacts\Rel\ContactGroupItems::class);
+
+        $group->get('/users/{id}/vcard.vcf', Routes\Contacts\UserVCard::class);
     }
 
     private function addAuthenticatedEventsRoutes(RouteCollectorProxy $group): void

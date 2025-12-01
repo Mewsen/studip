@@ -22,6 +22,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2 or later
  * @category    Stud.IP
  * @since       2.4
+ * @deprecated  use JSON API Scores routes instead. since 6.2
  */
 
 class ScoreController extends AuthenticatedController
@@ -34,6 +35,10 @@ class ScoreController extends AuthenticatedController
      */
     public function before_filter(&$action, &$args)
     {
+        trigger_error(
+            'Old Score Mechanism is deprecated and will be removed in future versions. Please use the JSON API Score routes as well as User metadata regarding scores instead.',
+            E_USER_DEPRECATED
+        );
         // Interpret every action other than 'index', 'publish' or 'unpublish'
         // as page number
         if (!in_array($action, words('index publish unpublish'))) {
@@ -71,19 +76,11 @@ class ScoreController extends AuthenticatedController
 
         $offset = max(0, ($page - 1) * $max_per_page);
 
-        // Liste aller die mutig (oder eitel?) genug sind
-        $query = "SELECT SQL_CALC_FOUND_ROWS a.user_id,username,score,geschlecht, {$GLOBALS['_fullname_sql']['full']} AS fullname
-                  FROM user_info AS a
-                  LEFT JOIN auth_user_md5 AS b USING (user_id)
-                  WHERE score > 0 AND locked = 0 AND {$vis_query}
-                  ORDER BY score DESC
-                  LIMIT " . (int)$offset . "," . (int)$max_per_page;
-        $result = DBManager::get()->fetchAll($query);
-        $count = DBManager::get()->fetchColumn("SELECT FOUND_ROWS()");
+        [$result, $count] = UserInfo::loadPaginatedUsersListForScores($max_per_page, $offset);
 
         $persons = [];
         foreach ($result as $row) {
-            $row['is_king'] = StudipKing::is_king($row['user_id'], true);
+            $row['is_king'] = \StudipKing::is_king($row['user_id'], true);
             $persons[$row['user_id']] = $row;
         }
         $persons = Score::getScoreContent($persons);
