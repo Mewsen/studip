@@ -52,34 +52,37 @@ class CommunityNavigation extends Navigation
 
         parent::initSubNavigation();
 
-        if (Config::get()->BLUBBER_GLOBAL_MESSENGER_ACTIVATE) {
-            //Blubber messenger
-            $navigation = new Navigation(_('Blubber'), 'dispatch.php/blubber');
-            $this->addSubNavigation('blubber', $navigation);
-        }
+        // if (Config::get()->BLUBBER_GLOBAL_MESSENGER_ACTIVATE) {
+        //     //Blubber messenger
+        //     $navigation = new Navigation(_('Blubber'), 'dispatch.php/blubber');
+        //     $this->addSubNavigation('blubber', $navigation);
+        // }
 
-        // online list
-        $navigation = new Navigation(_('Wer ist online?'), 'dispatch.php/online/index');
-        $this->addSubNavigation('online', $navigation);
+        // // online list
+        // $navigation = new Navigation(_('Wer ist online?'), 'dispatch.php/online/index');
+        // $this->addSubNavigation('online', $navigation);
 
-        // contacts
-        $navigation = new Navigation(_('Kontakte'), 'dispatch.php/contact');
-        $this->addSubNavigation('contacts', $navigation);
+        // // contacts
+        // $navigation = new Navigation(_('Kontakte'), 'dispatch.php/contact');
+        // $this->addSubNavigation('contacts', $navigation);
 
-        // study groups
-        if (Config::get()->STUDYGROUPS_ENABLE) {
-            $navigation = new Navigation(_('Studiengruppen'));
-            $navigation->addSubNavigation('browse', new Navigation(_('Studiengruppensuche'), 'dispatch.php/studygroup/browse'));
-            if (Config::get()->MY_COURSES_ENABLE_STUDYGROUPS && !$GLOBALS['perm']->have_perm('admin')) {
-                $navigation->addSubNavigation('index', new Navigation(_('Meine Studiengruppen'), 'dispatch.php/my_studygroups'));
-            }
-            $this->addSubNavigation('studygroups', $navigation);
-        }
+        // // study groups
+        // if (Config::get()->STUDYGROUPS_ENABLE) {
+        //     $navigation = new Navigation(_('Studiengruppen'));
+        //     $navigation->addSubNavigation('browse', new Navigation(_('Studiengruppensuche'), 'dispatch.php/studygroup/browse'));
+        //     if (Config::get()->MY_COURSES_ENABLE_STUDYGROUPS && !$GLOBALS['perm']->have_perm('admin')) {
+        //         $navigation->addSubNavigation('index', new Navigation(_('Meine Studiengruppen'), 'dispatch.php/my_studygroups'));
+        //     }
+        //     $this->addSubNavigation('studygroups', $navigation);
+        // }
 
-        // ranking
-        if (Config::get()->SCORE_ENABLE) {
-            $navigation = new Navigation(_('Rangliste'), 'dispatch.php/score');
-            $this->addSubNavigation('score', $navigation);
-        }
+        // // ranking
+        // if (Config::get()->SCORE_ENABLE) {
+        //     $navigation = new Navigation(_('Rangliste'), 'dispatch.php/score');
+        //     $this->addSubNavigation('score', $navigation);
+        // }
+
+        $navigation = new Navigation(_('Übersicht'), 'dispatch.php/community');
+        $this->addSubNavigation('overview', $navigation);
     }
 }

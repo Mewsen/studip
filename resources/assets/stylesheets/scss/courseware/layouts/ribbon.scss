@@ -412,6 +412,14 @@ $consum_ribbon_width: calc(100% - 58px);
     }
 }
 
+.no-sidebar {
+    .cw-ribbon {
+        &.cw-ribbon-sticky {
+            width: calc(100% - 86px);
+        }
+    }
+}
+
 // Rules extracted from PHP contentbar for use in ContentBar.vue
 .contentbar-button-wrapper {
     @-moz-document url-prefix() {
