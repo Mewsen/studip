@@ -60,7 +60,7 @@
                             'class' => 'action-menu-item-icon',
                             'name'  => $action['name'],
                             'title' => $action['label'],
-                        ]) ?>
+                        ], true) ?>
                         <?= htmlReady($action['label']) ?>
                     </label>
                 <? else: ?>
