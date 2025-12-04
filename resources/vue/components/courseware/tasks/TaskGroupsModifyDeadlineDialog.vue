@@ -46,6 +46,12 @@
 import { mapActions } from 'vuex';
 import StudipDate from '../../StudipDate.vue';
 
+const endOfDay = (_date) => {
+    const date = new Date(_date);
+    date.setHours(23, 59, 59, 999);
+    return date;
+};
+
 const midnight = (_date) => {
     const date = new Date(_date);
     date.setHours(0, 0, 0, 0);
@@ -94,7 +100,7 @@ export default {
             this.setShowDialog(false);
         },
         onConfirm() {
-            const endDate = midnight(this.localEndDate);
+            const endDate = endOfDay(this.localEndDate);
             this.modifyDeadline({ taskGroup: this.taskGroup, endDate });
             this.onClose();
         },
