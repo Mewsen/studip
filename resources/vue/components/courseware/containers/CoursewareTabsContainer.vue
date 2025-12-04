@@ -33,7 +33,7 @@
                     :icon="section.icon"
                 >
                     <ul v-if="!canEdit || currentElementisLink" class="cw-container-tabs-block-list">
-                        <li v-for="block in section.blocks" :key="block.id" class="cw-block-item">
+                        <li v-for="block in section.blocks.filter(block => block.attributes.visible)" :key="block.id" class="cw-block-item">
                             <component
                                 :is="component(block)"
                                 :block="block"
