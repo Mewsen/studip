@@ -454,6 +454,7 @@ class ExternModuleTemplatePersondetails extends ExternModule {
             }
         }
 
+        $member = InstituteMember::find($row['id']);
         $content['PERSONDETAILS']['INST-NAME'] = ExternModule::ExtHtmlReady($row['Name']);
         $content['PERSONDETAILS']['INST-HREF'] = ExternModule::ExtHtmlReady(trim($row['url']));
         $content['PERSONDETAILS']['STREET'] = ExternModule::ExtHtmlReady($row['Strasse']);
@@ -464,17 +465,18 @@ class ExternModuleTemplatePersondetails extends ExternModule {
         $content['PERSONDETAILS']['EMAIL-LOCAL'] = array_shift($emails);
         $emails = explode('@', $content['PERSONDETAILS']['EMAIL']);
         $content['PERSONDETAILS']['EMAIL-DOMAIN'] = array_pop($emails);
-        $content['PERSONDETAILS']['ROOM'] = ExternModule::ExtHtmlReady($row['raum']);
-        $content['PERSONDETAILS']['PHONE'] = ExternModule::ExtHtmlReady($row['Telefon']);
-        $content['PERSONDETAILS']['FAX'] = ExternModule::ExtHtmlReady($row['Fax']);
+        $content['PERSONDETAILS']['ROOM'] = ExternModule::ExtHtmlReady($member->raum);
+        $content['PERSONDETAILS']['PHONE'] = ExternModule::ExtHtmlReady($member->telefon);
+        $content['PERSONDETAILS']['FAX'] = ExternModule::ExtHtmlReady($member->fax);
         if (Visibility::verify('homepage', $this->user_id)) {
             $content['PERSONDETAILS']['HOMEPAGE-HREF'] = ExternModule::ExtHtmlReady(trim($row['Home']));
         }
-        $content['PERSONDETAILS']['OFFICE-HOURS'] = ExternModule::ExtHtmlReady($row['sprechzeiten']);
+        $content['PERSONDETAILS']['OFFICE-HOURS'] = ExternModule::ExtHtmlReady($member->sprechzeiten);
 
         $j = 0;
         foreach($allRows as $curRow)
         {
+            $member = InstituteMember::find($curRow['id']);
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-NAME'] = ExternModule::ExtHtmlReady($curRow['Name']);
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-HREF'] = ExternModule::ExtHtmlReady(trim($curRow['url']));
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-STREET'] = ExternModule::ExtHtmlReady($curRow['Strasse']);
@@ -484,11 +486,11 @@ class ExternModuleTemplatePersondetails extends ExternModule {
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-EMAIL-LOCAL'] = array_shift($emails);
             $emails = explode('@', $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-EMAIL']);
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-EMAIL-DOMAIN'] = array_pop($emails);
-            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-ROOM'] = ExternModule::ExtHtmlReady($curRow['raum']);
-            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-PHONE'] = ExternModule::ExtHtmlReady($curRow['Telefon']);
-            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-FAX'] = ExternModule::ExtHtmlReady($curRow['Fax']);
+            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-ROOM'] = ExternModule::ExtHtmlReady($member->raum);
+            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-PHONE'] = ExternModule::ExtHtmlReady($member->telefon);
+            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-FAX'] = ExternModule::ExtHtmlReady($member->fax);
             $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-HOMEPAGE-HREF'] = ExternModule::ExtHtmlReady(trim($curRow['Home']));
-            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-OFFICE-HOURS'] = ExternModule::ExtHtmlReady($curRow['sprechzeiten']);
+            $content['PERSONDETAILS']['ALL-INST']['SINGLE-INST'][$j]['SINGLE-INST-OFFICE-HOURS'] = ExternModule::ExtHtmlReady($member->sprechzeiten);
             $j++;
         }
 

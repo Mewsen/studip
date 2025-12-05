@@ -104,7 +104,7 @@ if (!$grouping) {
         $range_ids = array_merge($range_ids, $children);
     }
 
-    $query = "SELECT DISTINCT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms,
+    $query = "SELECT DISTINCT ui.id, inst_perms,
                      Email, aum.user_id, username, aum.Nachname,
                      {$_fullname_sql[$nameformat]} AS fullname ";
     if ($query_order) {
@@ -157,7 +157,7 @@ foreach ($visible_groups as $group_id => $group) {
         }
 
         $ext_vis_query = get_ext_vis_query();
-        $query = "SELECT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms,
+        $query = "SELECT ui.id, inst_perms,
                          Email, aum.user_id, username, aum.Nachname,
                          {$_fullname_sql[$nameformat]} AS fullname 
                   FROM statusgruppe_user AS su
@@ -201,7 +201,7 @@ foreach ($visible_groups as $group_id => $group) {
         foreach ($rows as $row) {
             if ($defaultadr) {
                 $ext_vis_query = get_ext_vis_query();
-                $query = "SELECT ui.raum, ui.sprechzeiten, ui.Telefon,
+                $query = "SELECT ui.id,
                                  inst_perms, Email, aum.user_id, username,
                                  {$_fullname_sql[$nameformat]} AS fullname,
                                  aum.Nachname
@@ -218,7 +218,7 @@ foreach ($visible_groups as $group_id => $group) {
                     $row = $temp;
                 } else {
                     // No default
-                    $query = "SELECT ui.raum, ui.sprechzeiten, ui.Telefon,
+                    $query = "SELECT ui.id,
                                      inst_perms,  Email, aum.user_id, username,
                                      {$_fullname_sql[$nameformat]} AS fullname,
                                      aum.Nachname
@@ -234,15 +234,16 @@ foreach ($visible_groups as $group_id => $group) {
             }
 
             $email = get_visible_email($row['user_id']);
+            $member = InstituteMember::find($row['id']);
             $data['content'] = [
                 'Nachname'     => $this->elements['LinkIntern']->toString([
                                       'content'   => htmlReady($row['fullname']),
                                       'module'    => 'Persondetails',
                                       'link_args' => 'username=' . $row['username']
                                   ]),
-                'Telefon'      => htmlReady($row['Telefon']),
-                'sprechzeiten' => htmlReady($row['sprechzeiten']),
-                'raum'         => htmlReady($row['raum']),
+                'Telefon'      => htmlReady($member->telefon),
+                'sprechzeiten' => htmlReady($member->sprechzeiten),
+                'raum'         => htmlReady($member->raum),
                 'Email'        => $this->elements['Link']->toString([
                                       'content' => htmlReady($email),
                                       'link'    => 'mailto:' . htmlReady($email)

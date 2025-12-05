@@ -47,7 +47,7 @@ class ExternElementMainTemplatePersons extends ExternElementMain {
     function __construct($module_name, &$data_fields, &$field_names, &$config) {
         $this->attributes = [
                 'name', 'sort', 'groupsalias', 'groupsvisible', 'grouping',
-                'nameformat', 'defaultadr', 'genericdatafields'
+                'nameformat', 'language', 'defaultadr', 'genericdatafields'
         ];
         $this->real_name = _("Grundeinstellungen");
         $this->description = _("In den Grundeinstellungen können Sie allgemeine Daten des Moduls ändern.");
@@ -70,6 +70,7 @@ class ExternElementMainTemplatePersons extends ExternElementMain {
             'groupsalias' => '',
             'groupsvisible' => $groups,
             'nameformat' => '',
+            'language' => '',
         //  'nodatatext' => '',
             'defaultadr' => ''
         ];
@@ -135,6 +136,12 @@ class ExternElementMainTemplatePersons extends ExternElementMain {
         $names = [_("keine Auswahl"), _("Meyer, P."), _("Peter Meyer"), _("Meyer, Peter"),
                 _("Dr. Peter Meyer"), _("Meyer, Peter, Dr.")];
         $table = $edit_form->editOptionGeneric("nameformat", $title, $info, $values, $names);
+
+        $title = _('Sprache') . ':';
+        $info = _('Wählen Sie eine Sprache für die Datumsangaben aus.');
+        $values = ['', 'de_DE', 'en_GB'];
+        $names = [_('keine Auswahl'), _('Deutsch'), _('Englisch')];
+        $table .= $edit_form->editOptionGeneric('language', $title, $info, $values, $names);
 
         $title = _('Standard-Adresse') . ':';
         $info = _("Wenn Sie diese Option wählen, wird die Standard-Adresse ausgegeben, die jede(r) Mitarbeiter(in) bei seinen universitären Daten auswählen kann. Wählen Sie diese Option nicht, wenn immer die Adresse der Einrichtung ausgegeben werden soll.");

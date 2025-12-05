@@ -172,7 +172,7 @@ class ExternModuleTemplatePersons extends ExternModule {
         }
 
         if(!$grouping) {
-            $query = "SELECT DISTINCT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms, Email, aum.user_id, ";
+            $query = "SELECT DISTINCT ui.id, inst_perms, Email, aum.user_id, ";
             $query .= 'username, aum.Vorname, title_front, title_rear, Home, ';
             $query .= $GLOBALS['_fullname_sql'][$nameformat] . " AS fullname, aum.Nachname ";
             if ($query_order) {
@@ -211,7 +211,7 @@ class ExternModuleTemplatePersons extends ExternModule {
                 if (!$query_order) {
                     $query_order = ' ORDER BY su.position';
                 }
-                $query = 'SELECT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms, Email, aum.user_id, ';
+                $query = 'SELECT ui.id, inst_perms, Email, aum.user_id, ';
                 $query .= 'username, aum.Vorname, title_front, title_rear, Home, ';
                 $query .= $GLOBALS['_fullname_sql'][$nameformat] . " AS fullname, aum.Nachname ";
                 $query .= 'FROM statusgruppe_user su LEFT JOIN auth_user_md5 aum USING(user_id) ';
@@ -244,7 +244,7 @@ class ExternModuleTemplatePersons extends ExternModule {
                     $instituts_id = $this->config->range_id;
 
                     if ($defaultaddress) {
-                        $query = 'SELECT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms,  Email, ';
+                        $query = 'SELECT ui.id, inst_perms,  Email, ';
                         $query .= 'title_front, title_rear, Home, Institut_id, ';
                         $query .= 'aum.user_id, username, ' . $GLOBALS['_fullname_sql'][$nameformat];
                         $query .= ' AS fullname, aum.Nachname, aum.Vorname FROM auth_user_md5 aum LEFT JOIN ';
@@ -257,7 +257,7 @@ class ExternModuleTemplatePersons extends ExternModule {
                         $db_out = $statement2->fetch(PDO::FETCH_ASSOC);
                         //no default
                         if ($db_out === false) {
-                            $query = 'SELECT ui.raum, ui.sprechzeiten, ui.Telefon, inst_perms,  Email, ';
+                            $query = 'SELECT ui.id, inst_perms,  Email, ';
                             $query .= 'title_front, title_rear, Home, ';
                             $query .= 'aum.user_id, username, ' . $GLOBALS['_fullname_sql'][$nameformat];
                             $query .= ' AS fullname, aum.Nachname, aum.Vorname FROM auth_user_md5 aum LEFT JOIN ';
@@ -290,8 +290,9 @@ class ExternModuleTemplatePersons extends ExternModule {
                     $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['IMAGE-URL-MEDIUM'] = $avatar->getURL(Avatar::MEDIUM);
                     $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['IMAGE-URL-NORMAL'] = $avatar->getURL(Avatar::NORMAL);
 
-                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['PHONE'] = ExternModule::ExtHtmlReady($db_out['Telefon']);
-                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['ROOM'] = ExternModule::ExtHtmlReady($db_out['raum']);
+                    $member = InstituteMember::find($db_out['id']);
+                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['PHONE'] = ExternModule::ExtHtmlReady($member->telefon);
+                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['ROOM'] = ExternModule::ExtHtmlReady($member->raum);
                     $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['EMAIL'] = get_visible_email($row['user_id']);
                     $emails = explode('@', $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['EMAIL']);
                     $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['EMAIL-LOCAL'] = array_shift($emails);
@@ -300,7 +301,7 @@ class ExternModuleTemplatePersons extends ExternModule {
                     if ($row['Home'] && Visibility::verify('homepage', $row['user_id'])) {
                         $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['HOMEPAGE-HREF'] = ExternModule::ExtHtmlReady(trim($row['Home']));
                     }
-                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['OFFICEHOURS'] = ExternModule::ExtHtmlReady($db_out['sprechzeiten']);
+                    $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['OFFICEHOURS'] = ExternModule::ExtHtmlReady($member->sprechzeiten);
                     $content['PERSONS']['GROUP'][$i]['PERSON'][$j]['PERSON-NO'] = $j + 1;
 
                     // generic data fields
