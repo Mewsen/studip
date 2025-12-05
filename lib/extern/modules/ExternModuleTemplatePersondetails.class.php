@@ -515,7 +515,7 @@ class ExternModuleTemplatePersondetails extends ExternModule {
             $localEntries = DataFieldEntry::getDataFieldEntries([$this->user_id, $instituts_id], 'userinstrole');
             if (isset($group_id)) {
                 $roleEntries = DataFieldEntry::getDataFieldEntries([$this->user_id, $group_id], 'userinstrole');
-                $roleEntries = array_filter($roleEntries, function($val) { return $val->getValue() !== 'default_value'; });
+                $roleEntries = array_filter($roleEntries, function($val) { return $val->getValue() != 'default_value'; });
                 $localEntries = $roleEntries + $localEntries;
             }
             $k = 1;

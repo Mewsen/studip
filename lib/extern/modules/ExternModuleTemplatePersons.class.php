@@ -329,7 +329,7 @@ class ExternModuleTemplatePersons extends ExternModule {
                         $localEntries = DataFieldEntry::getDataFieldEntries([$db_out['user_id'], $instituts_id], 'userinstrole');
                         if ($grouping) {
                             $roleEntries = DataFieldEntry::getDataFieldEntries([$db_out['user_id'], $group_id], 'userinstrole');
-                            $roleEntries = array_filter($roleEntries, function($val) { return $val->getValue() !== 'default_value'; });
+                            $roleEntries = array_filter($roleEntries, function($val) { return $val->getValue() != 'default_value'; });
                             $localEntries = $roleEntries + $localEntries;
                         }
                         $k = 1;
