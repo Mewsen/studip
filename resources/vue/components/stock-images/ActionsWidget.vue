@@ -3,12 +3,16 @@
         <template #content>
             <ul class="widget-list widget-links">
                 <li>
-                    <studip-icon shape="upload" class="widget-action-icon" />
-                    <button @click="onUploadClick">{{ $gettext('Bild hinzufügen') }}</button>
+                    <button type="button" @click="onUploadClick" class="as-link">
+                        <studip-icon shape="upload" />
+                        {{ $gettext('Bild hinzufügen') }}
+                    </button>
                 </li>
                 <li>
-                    <studip-icon shape="import" class="widget-action-icon" />
-                    <button @click="onZipUploadClick">{{ $gettext('Bildersammlung importieren') }}</button>
+                    <button type="button" @click="onZipUploadClick" class="as-link">
+                        <studip-icon shape="import" />
+                        {{ $gettext('Bildersammlung importieren') }}
+                    </button>
                 </li>
             </ul>
         </template>
@@ -32,12 +36,3 @@ export default {
     },
 };
 </script>
-<style scoped>
-.widget-list li {
-    position: relative;
-}
-.widget-action-icon {
-    position: absolute;
-    left: -22px;
-}
-</style>
