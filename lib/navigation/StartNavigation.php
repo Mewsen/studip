@@ -98,6 +98,11 @@ class StartNavigation extends Navigation
                          ? Config::get()->SEM_CREATE_PERM
                          : 'dozent';
 
+        $new_course_item = new Navigation(_('Neue Veranstaltung anlegen'), 'dispatch.php/course/wizard');
+        $new_course_item->setLinkAttributes(['data-dialog' => '']);
+        $new_studygroup_item = new Navigation(_('Studiengruppe anlegen'), 'dispatch.php/course/wizard?studygroup=1');
+        $new_studygroup_item->setLinkAttributes(['data-dialog' => '']);
+
         // my courses
         if ($perm->have_perm('root')) {
             $navigation = new Navigation(_('Veranstaltungsübersicht'), 'dispatch.php/admin/courses');
@@ -110,14 +115,14 @@ class StartNavigation extends Navigation
                 $navigation->addSubNavigation('browse', new Navigation(_('Veranstaltung hinzufügen'), 'dispatch.php/search/courses'));
 
                 if ($perm->have_perm('autor') && Config::get()->STUDYGROUPS_ENABLE) {
-                    $navigation->addSubNavigation('new_studygroup', new Navigation(_('Studiengruppe anlegen'), 'dispatch.php/course/wizard?studygroup=1'));
+                    $navigation->addSubNavigation('new_studygroup', $new_studygroup_item);
                 }
             } else {
                 if ($perm->have_perm($sem_create_perm)) {
-                    $navigation->addSubNavigation('new_course', new Navigation(_('Neue Veranstaltung anlegen'), 'dispatch.php/course/wizard'));
+                    $navigation->addSubNavigation('new_course', $new_course_item);
                 }
                 if (Config::get()->STUDYGROUPS_ENABLE) {
-                    $navigation->addSubNavigation('new_studygroup', new Navigation(_('Studiengruppe anlegen'), 'dispatch.php/course/wizard?studygroup=1'));
+                    $navigation->addSubNavigation('new_studygroup', $new_studygroup_item);
                 }
 
             }
@@ -135,17 +140,17 @@ class StartNavigation extends Navigation
 
         // course administration
         if ($perm->have_perm('admin')) {
-           $navigation = new Navigation(_('Verwaltung von Veranstaltungen'), 'dispatch.php/my_courses');
+            $navigation = new Navigation(_('Verwaltung von Veranstaltungen'), 'dispatch.php/my_courses');
 
-           if ($perm->have_perm($sem_create_perm)) {
-               $navigation->addSubNavigation('new_course', new Navigation(_('Neue Veranstaltung anlegen'), 'dispatch.php/course/wizard'));
-           }
+            if ($perm->have_perm($sem_create_perm)) {
+                $navigation->addSubNavigation('new_course', $new_course_item);
+            }
 
-           if (Config::get()->STUDYGROUPS_ENABLE) {
-               $navigation->addSubNavigation('new_studygroup', new Navigation(_('Studiengruppe anlegen'), 'dispatch.php/course/wizard?studygroup=1'));
-           }
+            if (Config::get()->STUDYGROUPS_ENABLE) {
+                $navigation->addSubNavigation('new_studygroup', $new_studygroup_item);
+            }
 
-           $this->addSubNavigation('admin_course', $navigation);
+            $this->addSubNavigation('admin_course', $navigation);
        }
 
         // insitute administration
