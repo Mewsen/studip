@@ -5,7 +5,9 @@ namespace JsonApi\Routes\Files;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
+use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
+use SimpleORMap;
 
 class SubfoldersCreate extends RangeFoldersCreate
 {
@@ -25,14 +27,17 @@ class SubfoldersCreate extends RangeFoldersCreate
 
     protected function validateAndCreate(Request $request, \Folder $parent)
     {
-        $rangeType = $parent->range_type;
-        $range = $parent->$rangeType;
-
-        if (!Authority::canShowFileArea($user = $this->getUser($request), $range)) {
+        if (!Authority::canShowFolder($user = $this->getUser($request), $parent->getTypedFolder())) {
             throw new AuthorizationFailedException();
         }
 
         $json = $this->validate($request);
+
+        $rangeType = $parent->range_type;
+        if (!is_a($rangeType, SimpleORMap::class, true)) {
+            throw new BadRequestException();
+        }
+        $range = $rangeType::find($parent->range_id);
 
         return $this->validateAndCreateSubfolder($range, $user, $json, $parent);
     }
