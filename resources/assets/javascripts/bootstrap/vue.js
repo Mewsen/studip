@@ -62,7 +62,7 @@ function parseVueAppConfig(node) {
 async function loadAppDependencies(config, store) {
     const promises = [
         import(`@/vue/apps/${config.appPath}.vue`),
-        ...initializePlugins(config),
+        initializePlugins(config),
         ...initializeVuexStores(config, store),
         ...initializePiniaStores(config),
     ];
@@ -140,8 +140,10 @@ function applyPiniaStoreData(piniaStore, data) {
 }
 
 function initializePlugins(config) {
-    return Object.entries(config.plugins).map(([plugin, filename]) =>
-        import(`@/vue/plugins/${filename}.js`).then((temp) => temp[plugin]),
+    return Promise.all(
+        Object.entries(config.plugins).map(([plugin, filename]) =>
+            import(`@/vue/plugins/${filename}.js`).then((temp) => temp[plugin]),
+        ),
     );
 }
 
