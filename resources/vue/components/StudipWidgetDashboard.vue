@@ -1,17 +1,8 @@
 <template>
-    <content-bar
-        :title="title"
-        :is-content-bar="true"
-        icon="community"
-    >
+    <content-bar :title="title" :is-content-bar="true" icon="community">
         <template #buttons-right>
-            <studip-context-menu
-                :title="$gettext('Hinzufügen')"
-                button-shape="add"
-            >
-                <template #content>
-                    testing...
-                </template>
+            <studip-context-menu :title="$gettext('Hinzufügen')" button-shape="add">
+                <template #content> testing... </template>
             </studip-context-menu>
         </template>
     </content-bar>
@@ -36,23 +27,54 @@
             :w="item.w"
             :h="item.h"
             :i="item.i"
+            :tabindex="draggable ? 0 : -1"
+            @keydown="handleKeyboardLayoutChange($event, item.i)"
+            :role="draggable ? 'application' : 'region'" 
+            :aria-label="draggable ? $gettext('Widget ist verschiebbar. Benutze Pfeiltasten zum Verschieben und Shift + Pfeiltasten zum Anpassen der Größe.') : null"
         >
-            {{ item.i }}
+            <component
+                :is="getWidgetComponent(item.data.type)"
+                v-if="item.data && item.data.type && getWidgetComponent(item.data.type)"
+                :widget-id="item.i"
+                :widget-data="item.data"
+                :initial-config="item.data.config"
+                :is-editing="draggable"
+                @update-config="handleWidgetUpdate"
+                @delete-widget="handleWidgetDelete"
+            />
+
+            <div v-else class="widget-error-container">
+                Widget "{{ item.data?.type || 'UNBEKANNT' }}" konnte nicht geladen werden.
+            </div>
         </GridItem>
     </GridLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive } from 'vue';
 
-import ContentBar from "@/vue/components/ContentBar.vue";
-import StudipContextMenu from "@/vue/components/StudipContextMenu.vue";
+import ContentBar from '@/vue/components/ContentBar.vue';
+import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
 
-import { GridLayout, GridItem } from "grid-layout-plus";
-import type { Breakpoint, Layout, LayoutItem } from "grid-layout-plus";
+import { GridLayout, GridItem } from 'grid-layout-plus';
+import type { Breakpoint, LayoutItem as BaseLayoutItem } from 'grid-layout-plus';
+
+interface WidgetData {
+    type: string;
+    config: Record<string, any>;
+}
+
+interface CustomLayoutItem extends BaseLayoutItem {
+    data: WidgetData;
+}
+type Layout = CustomLayoutItem[];
+type PresetLayoutMap = Record<string, Layout>;
+type WidgetComponentMap = Record<string, any>;
 
 const props = defineProps<{
     title: string;
+    widgetComponents: WidgetComponentMap;
+    initialLayoutData: Record<string, Layout>;
 }>();
 
 const breakpoints = {
@@ -75,73 +97,14 @@ const cols = {
     xxl: 20,
 };
 
-type PresetLayoutMap = Record<string, LayoutItem[]>;
+const presetLayouts = reactive<PresetLayoutMap>(props.initialLayoutData);
 
-// Demo Data - TODO: load it from JSON:API
-const presetLayouts = reactive<PresetLayoutMap>({
-    xxs: [],
-    xs: [],
-    sm: [],
-    md: [
-        { x: 0, y: 0, w: 2, h: 2, i: "0" },
-        { x: 2, y: 0, w: 2, h: 4, i: "1" },
-        { x: 4, y: 0, w: 2, h: 5, i: "2" },
-        { x: 6, y: 0, w: 2, h: 3, i: "3" },
-        { x: 2, y: 4, w: 2, h: 3, i: "4" },
-        { x: 4, y: 5, w: 2, h: 3, i: "5" },
-        { x: 0, y: 2, w: 2, h: 5, i: "6" },
-        { x: 2, y: 7, w: 2, h: 5, i: "7" },
-        { x: 4, y: 8, w: 2, h: 5, i: "8" },
-        { x: 6, y: 3, w: 2, h: 4, i: "9" },
-        { x: 0, y: 7, w: 2, h: 4, i: "10" },
-        { x: 2, y: 19, w: 2, h: 4, i: "11" },
-        { x: 0, y: 14, w: 2, h: 5, i: "12" },
-        { x: 2, y: 14, w: 2, h: 5, i: "13" },
-        { x: 4, y: 13, w: 2, h: 4, i: "14" },
-        { x: 6, y: 7, w: 2, h: 4, i: "15" },
-        { x: 0, y: 19, w: 2, h: 5, i: "16" },
-        { x: 8, y: 0, w: 2, h: 2, i: "17" },
-        { x: 0, y: 11, w: 2, h: 3, i: "18" },
-        { x: 2, y: 12, w: 2, h: 2, i: "19" },
-    ],
-    lg: [
-        { x: 0, y: 0, w: 2, h: 2, i: "0" },
-        { x: 2, y: 0, w: 2, h: 4, i: "1" },
-        { x: 4, y: 0, w: 2, h: 5, i: "2" },
-        { x: 6, y: 0, w: 2, h: 3, i: "3" },
-        { x: 8, y: 0, w: 2, h: 3, i: "4" },
-        { x: 10, y: 0, w: 2, h: 3, i: "5" },
-        { x: 0, y: 5, w: 2, h: 5, i: "6" },
-        { x: 2, y: 5, w: 2, h: 5, i: "7" },
-        { x: 4, y: 5, w: 2, h: 5, i: "8" },
-        { x: 6, y: 4, w: 2, h: 4, i: "9" },
-        { x: 8, y: 4, w: 2, h: 4, i: "10" },
-        { x: 10, y: 4, w: 2, h: 4, i: "11" },
-        { x: 0, y: 10, w: 2, h: 5, i: "12" },
-        { x: 2, y: 10, w: 2, h: 5, i: "13" },
-        { x: 4, y: 8, w: 2, h: 4, i: "14" },
-        { x: 6, y: 8, w: 2, h: 4, i: "15" },
-        { x: 8, y: 10, w: 2, h: 5, i: "16" },
-        { x: 10, y: 4, w: 2, h: 2, i: "17" },
-        { x: 0, y: 9, w: 2, h: 3, i: "18" },
-        { x: 2, y: 6, w: 2, h: 2, i: "19" },
-    ],
-    xl: [],
-    xxl: []
-});
+function breakpointChangedEvent(newBreakpoint: Breakpoint, newLayout: Layout) {
+    console.info('BREAKPOINT CHANGED breakpoint=', newBreakpoint, ', layout: ', newLayout);
+}
 
-
-
-function breakpointChangedEvent(
-    newBreakpoint: Breakpoint,
-    newLayout: Layout
-) {
-    console.info(
-        "BREAKPOINT CHANGED breakpoint=",
-        newBreakpoint,
-        ", layout: ",
-        newLayout
-    );
+function getWidgetComponent(type: string): any {
+    return props.widgetComponents[type];
 }
 
 const generateFlowLayout = (baseLayout: Layout, newCols: number): Layout => {
@@ -158,7 +121,6 @@ const generateFlowLayout = (baseLayout: Layout, newCols: number): Layout => {
     });
 
     sortedBaseLayout.forEach((item) => {
-        
         const newW = Math.min(item.w, newCols);
 
         if (currentX + newW > newCols) {
@@ -166,7 +128,7 @@ const generateFlowLayout = (baseLayout: Layout, newCols: number): Layout => {
             currentX = 0;
             maxHInCurrentRow = 0;
         }
-        
+
         newLayout.push({
             ...item,
             x: currentX,
@@ -182,10 +144,8 @@ const generateFlowLayout = (baseLayout: Layout, newCols: number): Layout => {
     return newLayout;
 };
 
-
 function initializeResponsiveLayouts() {
-    
-    const breakpointOrder = ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"];
+    const breakpointOrder = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
     let baseLayout: Layout | null = null;
     let baseBreakpoint: string | null = null;
 
@@ -193,42 +153,38 @@ function initializeResponsiveLayouts() {
 
     for (let i = breakpointOrder.length - 1; i >= 0; i--) {
         const bpKeyString = breakpointOrder[i];
-        
+
         const bpKey = bpKeyString as BreakpointKey;
 
         if (presetLayouts[bpKey] && presetLayouts[bpKey].length > 0) {
             baseLayout = presetLayouts[bpKey];
             baseBreakpoint = bpKeyString;
-            break; 
+            break;
         }
     }
 
     if (!baseLayout || !baseBreakpoint) {
-        console.error("FEHLER: Es konnte kein definiertes Basis-Layout gefunden werden.");
+        console.error('FEHLER: Es konnte kein definiertes Basis-Layout gefunden werden.');
         return;
     }
 
     const breakpointKeys = Object.keys(cols) as BreakpointKey[];
     const baseIndex = breakpointOrder.indexOf(baseBreakpoint);
 
-
     for (const breakpointKey of breakpointKeys) {
-        
         if (presetLayouts[breakpointKey].length === 0) {
-            
             const currentBpIndex = breakpointOrder.indexOf(breakpointKey as string);
-            
-            const baseCols = cols[baseBreakpoint as BreakpointKey]; 
+
+            const baseCols = cols[baseBreakpoint as BreakpointKey];
             const targetCols = cols[breakpointKey];
 
             if (currentBpIndex >= baseIndex) {
                 if (baseCols !== targetCols) {
                     presetLayouts[breakpointKey] = generateFlowLayout(baseLayout, targetCols);
                 } else {
-                     presetLayouts[breakpointKey] = baseLayout.map(item => ({...item}));
+                    presetLayouts[breakpointKey] = baseLayout.map((item) => ({ ...item }));
                 }
-            } 
-            else {
+            } else {
                 const newCols = cols[breakpointKey];
                 const newLayout = generateFlowLayout(baseLayout, newCols);
                 presetLayouts[breakpointKey] = newLayout;
@@ -237,10 +193,51 @@ function initializeResponsiveLayouts() {
     }
 }
 
+function handleWidgetUpdate() {}
+
+function handleWidgetDelete() {}
+
 initializeResponsiveLayouts();
 
 const draggable = ref(true);
 const resizable = ref(true);
 
 const layout = ref(presetLayouts.lg);
+
+function handleKeyboardLayoutChange(event: KeyboardEvent, itemId: string) {
+    if (!draggable.value) return; 
+
+    const itemIndex = layout.value.findIndex(item => item.i === itemId);
+    if (itemIndex === -1) return;
+
+    const item = layout.value[itemIndex];
+    let changed = false;
+
+    const isArrowKey = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key);
+    if (isArrowKey) {
+        event.preventDefault(); 
+    }
+
+    if (!event.shiftKey) {
+        switch (event.key) {
+            case 'ArrowUp': item.y = Math.max(0, item.y - 1); changed = true; break;
+            case 'ArrowDown': item.y += 1; changed = true; break;
+            case 'ArrowLeft': item.x = Math.max(0, item.x - 1); changed = true; break;
+            case 'ArrowRight': item.x += 1; changed = true; break;
+        }
+    } 
+    else if (resizable.value) {
+        switch (event.key) {
+            case 'ArrowUp': item.h = Math.max(1, item.h - 1); changed = true; break;
+            case 'ArrowDown': item.h += 1; changed = true; break;
+            case 'ArrowLeft': item.w = Math.max(1, item.w - 1); changed = true; break;
+            case 'ArrowRight': item.w += 1; changed = true; break;
+        }
+    }
+
+    if (changed) {
+        layout.value = [...layout.value];
+        // todo: store it in db!
+    }
+}
 </script>
