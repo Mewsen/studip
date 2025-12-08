@@ -1,68 +1,63 @@
 <?php
-
 namespace Studip\LTI13a;
 
+use Avatar;
+use LtiToolPrivacySettings;
+use User;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
-
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 class Identity implements UserIdentityInterface
 {
-    protected \User $user;
+    protected User $user;
 
     protected array $allowed_optional_fields = [];
 
-    public function __construct(\User $user, \LtiTool $tool)
+    public function __construct(User $user, RegistrationInterface $registration)
     {
         $this->user = $user;
 
-        $privacy_settings = \LtiToolPrivacySettings::findOneBySQL(
-            '`tool_id` = :tool_id AND `user_id` = :user_id',
-            ['tool_id' => $tool->id, 'user_id' => $user->id]
+        $privacy_settings = LtiToolPrivacySettings::findOneBySQL(
+            '`registration_id` = :registration_id AND `user_id` = :user_id',
+            ['registration_id' => $registration->getIdentifier(), 'user_id' => $user->id]
         );
         if ($privacy_settings) {
             $this->allowed_optional_fields = explode(',', $privacy_settings->allowed_optional_fields);
         }
     }
 
-    #[\Override]
     public function getIdentifier(): string
     {
         return $this->user->id;
     }
 
-    #[\Override]
     public function getName(): ?string
     {
         return $this->user->getFullName();
     }
 
-    #[\Override]
     public function getEmail(): ?string
     {
         return $this->user->email;
     }
 
-    #[\Override]
     public function getGivenName(): ?string
     {
         return $this->user->vorname;
     }
 
-    #[\Override]
     public function getFamilyName(): ?string
     {
         return $this->user->nachname;
     }
 
-    #[\Override]
     public function getMiddleName(): ?string
     {
         return '';
     }
 
-    #[\Override]
     public function getLocale(): ?string
     {
         if (!in_array('lang', $this->allowed_optional_fields)) {
@@ -71,22 +66,19 @@ class Identity implements UserIdentityInterface
         return $this->user->preferred_language;
     }
 
-    #[\Override]
     public function getPicture(): ?string
     {
         if (!in_array('avatar_url', $this->allowed_optional_fields)) {
             return '';
         }
-        return \Avatar::getAvatar($this->user->id)->getURL(\Avatar::MEDIUM);
+        return Avatar::getAvatar($this->user->id)->getURL(Avatar::MEDIUM);
     }
 
-    #[\Override]
     public function getAdditionalProperties(): CollectionInterface
     {
         return [];
     }
 
-    #[\Override]
     public function normalize(): array
     {
         return [

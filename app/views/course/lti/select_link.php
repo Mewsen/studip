@@ -6,7 +6,7 @@
  */
 ?>
 <form class="default" method="post"
-      action="<?= $controller->link_for('course/lti/process_select_link/' . htmlReady($link->id ?? ''), ['tool_id' => $tool->id]) ?>">
+      action="<?= $controller->link_for('course/lti/process_select_link/' . htmlReady($link->id ?? ''), ['registration_id' => $tool->id]) ?>">
     <?= CSRFProtection::tokenTag() ?>
     <?= $this->render_partial('lti/_tool_info', ['tool' => $tool, 'deployment' => $link->deployment ?? null]) ?>
     <div data-dialog-button>

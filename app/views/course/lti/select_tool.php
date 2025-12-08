@@ -15,9 +15,9 @@
                 <? foreach ($global_tool_deployments as $deployment) : ?>
                     <option value="<?= htmlReady($deployment->id) ?>">
                         <? if ($deployment->name) : ?>
-                            <?= htmlReady(sprintf('%1$s (%2$s)', $deployment->tool->name, $deployment->name)) ?>
+                            <?= htmlReady(sprintf('%1$s (%2$s)', $deployment->registration->name, $deployment->name)) ?>
                         <? else : ?>
-                            <?= htmlReady($deployment->tool->name) ?>
+                            <?= htmlReady($deployment->registration->name) ?>
                         <? endif ?>
                     </option>
                 <? endforeach ?>

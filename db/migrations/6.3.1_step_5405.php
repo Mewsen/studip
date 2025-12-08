@@ -54,6 +54,31 @@ final class Step5405 extends Migration {
                 REFERENCES `lti_registrations` (`id`)
                 ON DELETE CASCADE;
         ");
+
+        $addConfig = DBManager::get()->prepare(
+            "INSERT INTO `config`
+            (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`)
+            VALUES
+            (:field, :value, :type, :range, :section, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), :description)"
+        );
+
+        $addConfig->execute([
+            'field'       => 'ENABLE_SHARING_COURSES_AS_LTI_TOOLS',
+            'value'       => '0',
+            'type'        => 'boolean',
+            'range'       => 'global',
+            'section'     => 'LTI',
+            'description' => 'Sollen Veranstaltungen als LTI-Tools freigegeben werden können?'
+        ]);
+
+        $addConfig->execute([
+            'field'       => 'SHARE_COURSE_AS_LTI_TOOL',
+            'value'       => '0',
+            'type'        => 'boolean',
+            'range'       => 'course',
+            'section'     => 'LTI',
+            'description' => 'Soll die Veranstaltung als LTI-Tool freigegeben werden?'
+        ]);
     }
 
     public function down()
@@ -69,5 +94,22 @@ final class Step5405 extends Migration {
             ALTER TABLE `lti_deployments` DROP FOREIGN KEY `fk_deployment_registration`;
             ALTER TABLE `lti_deployments` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL;
         ");
+
+        DBManager::get()->exec(
+            "DELETE FROM `config_values` WHERE `field` IN
+                (
+                    'ENABLE_SHARING_COURSES_AS_LTI_TOOLS',
+                    'SHARE_COURSE_AS_LTI_TOOL',
+                    'LTI_TOOL_ENTRY_POINT'
+                )"
+        );
+
+        DBManager::get()->exec(
+            "DELETE FROM `config` WHERE `field` IN
+                (
+                    'ENABLE_SHARING_COURSES_AS_LTI_TOOLS',
+                    'SHARE_COURSE_AS_LTI_TOOL'
+                )"
+        );
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Grading;
 
+use LtiResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItem;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemSubmissionReview;
+use URLHelper;
 
 /**
  * @license GPL2 or any later version
@@ -70,20 +72,20 @@ class Definition extends \SimpleORMap
         return Definition::findBySQL('course_id = ? ORDER BY position ASC, name ASC', [$course->id]);
     }
 
-    public function toLineItem() : LineItemInterface
+    public function toLtiLineItem(): LineItemInterface
     {
-        $resource_link_identifier = $this->tool ?? '';
-        $deployment_id = '';
-        if ($resource_link_identifier) {
-            $lti_resource_link = \LtiResourceLink::find($resource_link_identifier);
-            if ($lti_resource_link) {
-                $deployment_id = $lti_resource_link->deployment_id;
+        $resourceLinkIdentifier = $this->tool ?? '';
+        $deploymentId = '';
+        if ($resourceLinkIdentifier) {
+            $ltiResourceLink = LtiResourceLink::find($resourceLinkIdentifier);
+            if ($ltiResourceLink) {
+                $deploymentId = $ltiResourceLink->deployment_id;
             }
         }
 
-        $identifier = \URLHelper::getURL(sprintf(
+        $identifier = URLHelper::getURL(sprintf(
             'dispatch.php/lti/ags/line_item/%1$s/%2$s',
-            $resource_link_identifier,
+            $resourceLinkIdentifier,
             $this->id
         ));
 
@@ -91,8 +93,8 @@ class Definition extends \SimpleORMap
             PHP_FLOAT_MAX,
             $this->name,
             $identifier,
-            $deployment_id,
-            $resource_link_identifier
+            $deploymentId,
+            $resourceLinkIdentifier
         );
     }
 }

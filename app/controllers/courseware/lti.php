@@ -1,5 +1,7 @@
 <?php
 
+use Lti\Registration;
+
 class Courseware_LtiController extends AuthenticatedController
 {
 
@@ -49,18 +51,19 @@ class Courseware_LtiController extends AuthenticatedController
         $document_target = 'iframe';
 
         if ($tool_id) {
-            $tool = LtiTool::find($tool_id);
+            $tool = Registration::findTool($tool_id);
+            $toolConfigs = $tool->getConfigValues();
 
             // Prefer custom url
-            if (!$tool->allow_custom_url && !$tool->deep_linking || !$launch_url) {
-                $launch_url = $tool->launch_url;
+            if (!$toolConfigs['allow_custom_url'] && !$toolConfigs['deep_linking'] || !$toolConfigs['launch_url']) {
+                $launch_url = $toolConfigs['launch_url'];
             }
 
-            $consumer_key = $tool->consumer_key;
-            $consumer_secret = $tool->consumer_secret;
-            $send_lis_person = $tool->send_lis_person;
-            $oauth_signature_method = $tool->oauth_signature_method;
-            $custom_parameters = $tool->custom_parameters . "\n" . $custom_parameters;
+            $consumer_key = $toolConfigs['consumer_key'];
+            $consumer_secret = $toolConfigs['consumer_secret'];
+            $send_lis_person = $toolConfigs['send_lis_person'];
+            $oauth_signature_method = $toolConfigs['oauth_signature_method'];
+            $custom_parameters = $toolConfigs['custom_parameters'] . "\n" . $custom_parameters;
         } else {
             $consumer_key = trim($block_payload['consumer_key']);
             $consumer_secret = trim($block_payload['consumer_secret']);

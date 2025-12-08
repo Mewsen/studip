@@ -1,7 +1,6 @@
 <?php
 
 use Studip\LTI13a\LineItemRepository;
-use Studip\LTI13a\RegistrationManager;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\DeleteLineItemServiceServerRequestHandler;
@@ -11,6 +10,7 @@ use OAT\Library\Lti1p3Ags\Service\Score\Server\Handler\ScoreServiceServerRequest
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
 use OAT\Library\Lti1p3Core\Service\Server\LtiServiceServer;
+use Studip\LTI13a\RegistrationManager;
 
 /**
  * ags.php - LTI assignment and grade services controller
@@ -44,9 +44,8 @@ class Lti_AgsController extends StudipController
         //All the work is done by the OAT-SA library and
         //the implementation of its interfaces in Stud.IP.
         //Only the handler changes for the endpoints.
-        $reg_manager = new RegistrationManager();
         $line_item_repo = new LineItemRepository();
-        $validator = new RequestAccessTokenValidator($reg_manager);
+        $validator = new RequestAccessTokenValidator(new RegistrationManager());
         $handler = null;
         if ($action === 'line_item') {
             if (empty($args)) {

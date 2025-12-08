@@ -14,8 +14,8 @@
     $launch_url = $link->getLaunchURL();
     $unfinished_deep_linking = !empty($link->options['unfinished_deep_linking']);
     $no_consent = !LtiToolPrivacySettings::countBySql(
-        '`tool_id` = :tool_id AND `user_id` = :user_id',
-        ['tool_id' => $link->deployment->tool_id, 'user_id' => $GLOBALS['user']->id]
+        '`registration_id` = :registration_id AND `user_id` = :user_id',
+        ['registration_id' => $link->deployment->registration_id, 'user_id' => $GLOBALS['user']->id]
     );
     ?>
 
@@ -50,7 +50,7 @@
                         $show_admin_actions = $GLOBALS['perm']->have_studip_perm('tutor', $link->course_id);
                         if ($show_admin_actions) {
                             $menu->addLink(
-                                $controller->url_for('lti/tool/index/' . $link->course_id . '/' . $link->deployment->tool_id, ['link_id' => $link->id]),
+                                $controller->url_for('lti/tool/index/' . $link->course_id . '/' . $link->deployment->registration_id, ['link_id' => $link->id]),
                                 _('Konfiguration des LTI-Tools anzeigen'),
                                 Icon::create('info-circle'),
                                 ['data-dialog' => 'size=default']
@@ -63,9 +63,9 @@
                             ['data-dialog' => 'size=default']
                         );
 
-                        if ($link->deployment->tool->isEditableByUser()) {
+                        if ($link->deployment->registration->isEditableByUser()) {
                             $menu->addLink(
-                                $controller->url_for('lti/tool/edit/' . $link->course_id . '/' . $link->deployment->tool_id),
+                                $controller->url_for('lti/tool/edit/' . $link->course_id . '/' . $link->deployment->registration_id),
                                 _('LTI-Tool konfigurieren'),
                                 Icon::create('edit'),
                                 ['data-dialog' => 'size=default']
@@ -76,7 +76,7 @@
                                 sprintf(
                                     'javascript:void(STUDIP.Dialog.confirmAsPost(\'%s\', \'%s\'))',
                                     sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $link->title),
-                                    $controller->url_for('lti/tool/delete/' . $link->course_id . '/' . $link->deployment->tool_id)
+                                    $controller->url_for('lti/tool/delete/' . $link->course_id . '/' . $link->deployment->registration_id)
                                 ),
                                 _('LTI-Tool entfernen'),
                                 Icon::create('trash')
@@ -92,7 +92,7 @@
             <? if ($unfinished_deep_linking) : ?>
                 <?= Studip\LinkButton::create(
                     _('Einrichtung abschließen'),
-                    $controller->url_for('course/lti/select_link/' . $link->id, ['tool_id' => $link->deployment->tool_id]),
+                    $controller->url_for('course/lti/select_link/' . $link->id, ['registration_id' => $link->deployment->registration_id]),
                     ['target' => '_blank']
                 ) ?>
             <? elseif ($no_consent) : ?>

@@ -7,11 +7,11 @@
     <article class="studip">
         <header><h1><?= htmlReady($link->title) ?></h1></header>
         <section>
-            <? if ($link->deployment->tool->range_id === 'global') : ?>
+            <? if ($link->deployment->registration->range_id === 'global') : ?>
                 <p>
                     <?= sprintf(
                         'Dies ist eine Einbindung des LTI-Tools „%s“.',
-                        htmlReady($link->deployment->tool->name)
+                        htmlReady($link->deployment->registration->name)
                     ) ?>
                 </p>
             <? endif ?>
@@ -22,17 +22,17 @@
             <? if (!empty($url_parts['host'])) : ?>
                 <p><?= _('Domain') ?>: <?= htmlReady($url_parts['host']) ?></p>
             <? endif ?>
-            <? if ($link->deployment->tool->terms_of_use_url || $link->deployment->tool->privacy_policy_url) : ?>
+            <? if ($link->deployment->registration->terms_of_use_url || $link->deployment->registration->privacy_policy_url) : ?>
                 <p>
-                    <? if ($link->deployment->tool->terms_of_use_url) : ?>
-                        <a href="<?= htmlReady($link->deployment->tool->terms_of_use_url) ?>">
-                            <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                    <? if ($link->deployment->registration->terms_of_use_url) : ?>
+                        <a href="<?= htmlReady($link->deployment->registration->terms_of_use_url) ?>">
+                            <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
                             <?= _('Nutzungsbedingungen') ?>
                         </a>
                     <? endif ?>
-                    <? if ($link->deployment->tool->privacy_policy_url) : ?>
-                        <a href="<?= htmlReady($link->deployment->tool->privacy_policy_url) ?>">
-                            <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                    <? if ($link->deployment->registration->privacy_policy_url) : ?>
+                        <a href="<?= htmlReady($link->deployment->registration->privacy_policy_url) ?>">
+                            <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
                             <?= _('Datenschutzerklärung') ?>
                         </a>
                     <? endif ?>

@@ -44,6 +44,11 @@ class LtiToolPrivacySettings extends SimpleORMap
             'foreign_key' => 'tool_id'
         ];
 
+        $config['belongs_to']['registration'] = [
+            'class_name'  => \Lti\Registration::class,
+            'foreign_key' => 'registration_id'
+        ];
+
         parent::configure($config);
     }
 }

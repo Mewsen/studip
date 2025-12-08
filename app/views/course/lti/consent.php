@@ -19,8 +19,8 @@
             <legend><?= _('Datenschutzhinweise')  ?></legend>
             <section>
                 <p><?= htmlReady($data_protection_warning) ?></p>
-                <? if ($resource_link->deployment->tool->data_protection_notes) : ?>
-                    <p><?= formatReady($resource_link->deployment->tool->data_protection_notes) ?></p>
+                <? if ($resource_link->deployment->registration->data_protection_notes) : ?>
+                    <p><?= formatReady($resource_link->deployment->registration->data_protection_notes) ?></p>
                 <? endif ?>
             </section>
         </fieldset>

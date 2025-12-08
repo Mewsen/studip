@@ -1,7 +1,7 @@
 <form class="default" action="<?= $controller->link_for('course/lti/select_link') ?>" method="post">
     <label>
         <?= _('Auswahl des externen Tools') ?>
-        <select name="tool_id">
+        <select name="registration_id">
             <? foreach ($tools as $tool): ?>
                 <option value="<?= htmlReady($tool->id) ?>"><?= htmlReady($tool->name) ?></option>
             <? endforeach ?>

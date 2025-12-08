@@ -33,9 +33,9 @@
     </dd>
 
     <?
-    $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
+    $keyring = \Studip\LTI13a\PlatformManager::getKeyring();
     if (!$keyring) {
-        $keyring = \Studip\LTI13a\PlatformManager::generatePlatformKeyring();
+        $keyring = \Studip\LTI13a\PlatformManager::generateKeyring();
     }
     ?>
     <? if ($keyring) : ?>

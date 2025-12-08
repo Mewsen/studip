@@ -1,82 +1,46 @@
 <?php
-
 namespace Studip\LTI13a;
 
-use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use Lti\Registration;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 
 class RegistrationManager implements RegistrationRepositoryInterface
 {
-    protected ?\LtiResourceLink $link = null;
-
-    public function setResourceLink(\LtiResourceLink $link)
-    {
-        $this->link = $link;
-    }
-
-    #[\Override]
     public function find(string $identifier): ?RegistrationInterface
     {
-        //The identifier is the ID of a tool.
-        $tool = \LtiTool::find($identifier);
-        $link = null;
-        if (!$tool) {
-            //Attempt to find the tool and a resource link.
-            $id_parts = explode('_', $identifier);
-            $tool = \LtiTool::find($id_parts[0]);
-            $link = \LtiResourceLink::find($id_parts[1]);
-        }
-        if (!$tool) {
-            return null;
-        }
-        return new Registration($tool, $link);
+        return Registration::find($identifier)?->getLti1p3Registration();
     }
 
-    /**
-     * @inheritDoc
-     */
-    #[\Override]
     public function findAll(): array
     {
-        $tools = \LtiTool::findBySQL('TRUE');
-        $registrations = [];
-        foreach ($tools as $tool) {
-            $registrations[] = new Registration($tool);
-        }
-        return $registrations;
+        $registrations = Registration::findBySQL("TRUE");
+        return array_map(fn($r) => $r->getLti1p3Registration(), $registrations);
     }
 
-    #[\Override]
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
-        //Find a registration by its client-ID. The client-ID is equivalent to the tool-ID in Stud.IP.
-        if (!$clientId) {
-            //Nothing to search for.
-            return null;
-        }
-        $tool = \LtiTool::find($clientId);
-        if ($tool) {
-            return new Registration($tool, $this->link);
-        }
-        return null;
+        return Registration::findOneBySQL("`client_id` = ?", [$clientId])?->getLti1p3Registration();
     }
 
-    #[\Override]
-    public function findByPlatformIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
+    public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
-        //Only handle requests for registrations of this Stud.IP:
-        $platform_config = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
-        if ($issuer !== $platform_config->getAudience()) {
-            //Invalid issuer.
-            return null;
-        }
-        return $this->findByClientId($clientId);
+        return Registration::findOneBySQL(
+            "JOIN `lti_registration_configs` configs ON (`lti_registrations`.`id` = `configs`.`registration_id`)
+                WHERE `lti_registrations`.`role` = 'platform'
+                AND `configs`.`name` = 'issuer'
+                AND  `configs`.`value` = :issuer
+                AND `lti_registrations`.`client_id` = :client_id",
+            [
+                'issuer' => $issuer,
+                'client_id' => $clientId
+            ]
+        )?->getLti1p3Registration();
     }
 
-    #[\Override]
-    public function findByToolIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
+    public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
-        //Tool registrations are not supported at this moment.
-        return null;
+        // TODO:: check select query
+        return Registration::findOneBySQL("`client_id` = ?", [$clientId])?->getLti1p3Registration();
     }
 }

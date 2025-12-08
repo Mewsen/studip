@@ -123,19 +123,6 @@ class LtiTool extends SimpleORMap
             || ($this->range_id !== 'global' && $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id));
     }
 
-    //ToolInterface implementation
-
-    public function getToolData() : Tool
-    {
-        return new Tool(
-            $this->id,
-            $this->name,
-            $this->launch_url,
-            $this->oidc_init_url,
-            $this->launch_url,
-            $this->deep_linking_url
-        );
-    }
 
     /**
      * Retrieves the keyring of the LTI tool or generates one, if explicitly requested.

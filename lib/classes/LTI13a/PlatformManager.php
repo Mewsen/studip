@@ -2,9 +2,14 @@
 
 namespace Studip\LTI13a;
 
+use Config;
+use Keyring;
 use OAT\Library\Lti1p3Core\Platform\Platform;
+use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 use OAT\Library\Lti1p3DeepLinking\Settings\DeepLinkingSettings;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
+use URLHelper;
 
 class PlatformManager
 {
@@ -12,18 +17,18 @@ class PlatformManager
      * Generates an object containing the configuration to use this Stud.IP
      * as LTI 1.3A platform.
      *
-     * @return Platform The platform configuration.
+     * @return PlatformInterface
      */
-    public static function getPlatformConfiguration() : Platform
+    public static function getPlatformConfiguration(): PlatformInterface
     {
-        $c = \Config::get();
-
+        // TODO: Fix oidcs and token urls
+        $c = Config::get();
         return new Platform(
             $c->STUDIP_INSTALLATION_ID,
             $c->UNI_NAME_CLEAN,
             $GLOBALS['ABSOLUTE_URI_STUDIP'],
-            \URLHelper::getURL('dispatch.php/lti/auth/oidc_init', null, true),
-            \URLHelper::getURL('dispatch.php/lti/auth/oauth2_token', null, true)
+            URLHelper::getURL('dispatch.php/lti/auth/login', null, true),
+            URLHelper::getURL('dispatch.php/lti/auth/token', null, true)
         );
     }
 
@@ -39,9 +44,9 @@ class PlatformManager
      *
      * @return DeepLinkingSettings The settings for deep linking.
      */
-    public static function getDeepLinkingConfiguration(string $link_id, string $course_id = '') : DeepLinkingSettings
+    public static function getDeepLinkingConfiguration(string $link_id, string $course_id = ''): DeepLinkingSettings
     {
-        $c = \Config::get();
+        $c = Config::get();
 
         return new DeepLinkingSettings(
             self::getDeepLinkingReturnUrl($link_id, $course_id),
@@ -55,19 +60,39 @@ class PlatformManager
         );
     }
 
-    /**
-     * Returns the keyring for the platform.
-     *
-     * @return \Keyring|null The keyring for the platform or null if no such keyring exists.
-     */
-    public static function getPlatformKeyring() : ?\Keyring
+    public static function getKeyring(): ?Keyring
     {
-        return \Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
+        $keyring = Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
+        if (!$keyring) {
+            $keyring = Keyring::generate('lti13a_platform', 'global');
+        }
+
+        return $keyring;
     }
 
-    public static function generatePlatformKeyring() : \Keyring
+    public static function getPrivateKey(): KeyInterface
     {
-        return \Keyring::generate('lti13a_platform', 'global');
+        return static::getKeyring()->toKeyChain()->getPrivateKey();
+    }
+
+    public static function getPublicKey(): KeyInterface
+    {
+        return static::getKeyring()->toKeyChain()->getPublicKey();
+    }
+
+    public static function getLtiRoleClaimForStudipRole(string $role): string
+    {
+        if (in_array($role, ['dozent', 'admin', 'root'])) {
+            //Lecturer/admin
+            return 'http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor';
+        } elseif ($role === 'tutor') {
+            return 'http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor';
+        } elseif (in_array($role, ['user', 'autor'])) {
+            //Learner
+            return  'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
+        }
+        //Invalid role:
+        return '';
     }
 
     /**
@@ -80,7 +105,7 @@ class PlatformManager
      *
      * @return string The URL for returning from an LTI deep linking process.
      */
-    public static function getDeepLinkingReturnUrl(string $link_id, string $course_id = '') : string
+    public static function getDeepLinkingReturnUrl(string $link_id, string $course_id = ''): string
     {
         $params = ['link_id' => $link_id];
         if ($course_id) {
@@ -89,12 +114,7 @@ class PlatformManager
         return \URLHelper::getURL('dispatch.php/course/lti/save_link/' . $link_id, $params, true);
     }
 
-    /**
-     * Returns the URL from which the JSON web key set (JWKS) can be retrieved.
-     *
-     * @return string The JWKS URL.
-     */
-    public static function getJwksUrl() : string
+    public static function getJwksUrl(): string
     {
         return \URLHelper::getURL('dispatch.php/lti/auth/jwks');
     }

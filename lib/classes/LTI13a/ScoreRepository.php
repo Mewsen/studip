@@ -1,7 +1,7 @@
 <?php
-
 namespace Studip\LTI13a;
 
+use Grading\Instance;
 use OAT\Library\Lti1p3Ags\Model\Score\ScoreInterface;
 use OAT\Library\Lti1p3Ags\Repository\ScoreRepositoryInterface;
 
@@ -9,17 +9,17 @@ class ScoreRepository implements ScoreRepositoryInterface
 {
     public function save(ScoreInterface $score): ScoreInterface
     {
-        $user_id = $score->getUserIdentifier();
-        $definition_id = $score->getLineItemIdentifier();
+        $userId = $score->getUserIdentifier();
+        $definitionId = $score->getLineItemIdentifier();
 
-        $grade = \Grading\Instance::findOneBySQL(
+        $grade = Instance::findOneBySQL(
             '`definition_id` = :definition_id AND `user_id` = :user_id',
-            ['definition_id' => $definition_id, 'user_id' => $user_id]
+            ['definition_id' => $definitionId, 'user_id' => $userId]
         );
         if (!$grade) {
-            $grade = new \Grading\Instance();
-            $grade->definition_id = $definition_id;
-            $grade->user_id       = $user_id;
+            $grade = new Instance();
+            $grade->definition_id = $definitionId;
+            $grade->user_id       = $userId;
         }
         $grade->rawgrade = $score->getScoreGiven();
         $grade->feedback = $score->getComment();

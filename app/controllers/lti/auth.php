@@ -1,6 +1,11 @@
 <?php
 
-use OAT\Library\Lti1p3Core\Message\Payload\Builder\MessagePayloadBuilder;
+use Studip\Cache\Factory;
+use Studip\LTI13a\KeyManager;
+use Studip\LTI13a\PlatformManager;
+use Studip\LTI13a\RegistrationManager;
+use Studip\LTI13a\UserAuthenticator;
+use Studip\OAuth2\Bridge\ScopeEntity;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
@@ -11,13 +16,6 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
-use Studip\Cache\Factory;
-use Studip\LTI13a\KeyManager;
-use Studip\LTI13a\NonceGenerator;
-use Studip\LTI13a\PlatformManager;
-use Studip\LTI13a\RegistrationManager;
-use Studip\LTI13a\UserAuthenticator;
-use Studip\OAuth2\Bridge\ScopeEntity;
 
 /**
  * auth.php - LTI authentication controller
@@ -161,26 +159,20 @@ class Lti_AuthController extends StudipController
     }
 
     /**
-     * This action handles OIDC (OpenID connect) requests.
+     * OIDC login
      *
      * @return void
      */
-    public function oidc_init_action(): void
+    public function login_action(): void
     {
-        $reg_manager = new RegistrationManager();
-        $user_authenticator = new UserAuthenticator();
-        $request = $this->getPsrRequest();
-
-        $oidc_handler = new OidcAuthenticationRequestHandler(
+        $oidcLoginHandler = new OidcAuthenticationRequestHandler(
             new OidcAuthenticator(
-                $reg_manager,
-                $user_authenticator,
-                //The following is necessary due to a library bug.
-                //See: https://github.com/oat-sa/lib-lti1p3-core/issues/154
-                new MessagePayloadBuilder(new NonceGenerator(true))
+                new RegistrationManager(),
+                new UserAuthenticator()
             )
         );
-        $response = $oidc_handler->handle($request);
+
+        $response = $oidcLoginHandler->handle($this->getPsrRequest());
         $this->renderPsrResponse($response);
     }
 
@@ -191,14 +183,12 @@ class Lti_AuthController extends StudipController
      */
     public function jwks_action(): void
     {
-        $repo = new KeyChainRepository();
-        $keyring = Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
-        if ($keyring) {
-            $repo->addKeyChain($keyring->toKeyChain());
-        }
-        $handler = new JwksRequestHandler(new JwksExporter($repo));
-        $response = $handler->handle('lti13a_platform');
-        $this->renderPsrResponse($response);
+        $keyChainRepo = new KeyChainRepository();
+        $platformKeyring = PlatformManager::getKeyring();
+
+        $keyChainRepo->addKeyChain($platformKeyring->toKeyChain());
+        $handler = new JwksRequestHandler(new JwksExporter($keyChainRepo));
+        $this->renderPsrResponse($handler->handle($platformKeyring->range_id));
     }
 
     /**
@@ -206,14 +196,8 @@ class Lti_AuthController extends StudipController
      */
     public function oauth2_token_action(): void
     {
-        $keyring = Keyring::findOneByRange_id('lti13a_platform');
-        if (!$keyring) {
-            throw new \Studip\Exception(
-                'Stud.IP LTI 1.3a platform keyring cannot be found!'
-            );
-        }
-        $key_chain = $keyring->toKeyChain();
-        $response_generator = new AccessTokenResponseGenerator(
+        $platformEncryptionKey = PlatformManager::getPrivateKey()->getContent();
+        $responseGenerator = new AccessTokenResponseGenerator(
             new KeyManager(),
             new AuthorizationServerFactory(
                 new ClientRepository(new RegistrationManager()),
@@ -225,11 +209,11 @@ class Lti_AuthController extends StudipController
                         new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/score')
                     ]
                 ),
-                $key_chain->getPrivateKey()->getContent()
+                $platformEncryptionKey
             )
         );
 
-        $response = $response_generator->generate(
+        $response = $responseGenerator->generate(
             $this->getPsrRequest(),
             $this->getPsrResponse(),
             'lti13a_platform'

@@ -2,6 +2,7 @@
 
 namespace Studip\LTI13a;
 
+use LtiResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
@@ -15,20 +16,20 @@ class LineItemRepository implements LineItemRepositoryInterface
      * Converts the tool-ID and deployment-ID in the tool name used in the
      * Stud.IP grading context.
      *
-     * @param string $tool_id The Stud.IP LTI tool ID.
-     * @param string $deployment_id The Stud.IP LTI deployment ID.
+     * @param string $toolId The Stud.IP LTI tool ID.
+     * @param string $deploymentId The Stud.IP LTI deployment ID.
      * @return string The corresponding tool name used in the Stud.IP grading context.
      */
-    public static function getGradingToolName(string $tool_id, string $deployment_id) : string
+    public static function getGradingToolName(string $toolId, string $deploymentId) : string
     {
-        return sprintf('lti-%s-%s', $tool_id, $deployment_id);
+        return sprintf('lti-%s-%s', $toolId, $deploymentId);
     }
 
     /**
      * Converts the LTI line item identifier to search parameters to retrieve
      * Stud.IP grading definitions.
      *
-     * @param string $line_item_identifier The LTI line item identifier.
+     * @param string $lineItemIdentifier The LTI line item identifier.
      *
      * @return array The search parameters for searching in the Stud.IP grading context.
      *     This is an associative array with two keys:
@@ -36,32 +37,32 @@ class LineItemRepository implements LineItemRepositoryInterface
      *         'course_id'  => The Stud.IP course-ID.
      *     In case the search parameters cannot be generated, an empty array is returned.
      */
-    public static function getSearchParametersFromLineItemIdentifier(string $line_item_identifier) : array
+    public static function getSearchParametersFromLineItemIdentifier(string $lineItemIdentifier) : array
     {
         //$lineItemIdentifier contains the full URL to the line item.
         //We must extract the course-ID, tool-ID and deployment-ID
         //from the URL parameters first, before searching a grading definition.
-        $url_parts = parse_url($line_item_identifier);
+        $urlParts = parse_url($lineItemIdentifier);
         $parameters = [];
-        if (empty($url_parts['query'])) {
+        if (empty($urlParts['query'])) {
             //Nothing we can convert.
             return [];
         }
-        parse_str($url_parts['query'], $parameters);
+        parse_str($urlParts['query'], $parameters);
         if (empty($parameters)) {
             //Same as above.
             return [];
         }
 
-        $search_parameters = [
+        $searchParameters = [
             'course_id' => $parameters['cid'],
             'tool'      => self::getGradingToolName($parameters['tool_id'], $parameters['deployment_id'])
         ];
         if (!empty($parameters['definition_id'])) {
-            $search_parameters['definition_id'] = $parameters['definition_id'];
+            $searchParameters['definition_id'] = $parameters['definition_id'];
         }
 
-        return $search_parameters;
+        return $searchParameters;
     }
 
     /**
@@ -69,26 +70,26 @@ class LineItemRepository implements LineItemRepositoryInterface
      */
     public function find(string $lineItemIdentifier): ?LineItemInterface
     {
-        $search_parameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        if (!$search_parameters) {
+        $searchParameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
+        if (!$searchParameters) {
             //Nothing we can search for.
             return null;
         }
 
         $definition = null;
-        if (!empty($search_parameters['definition_id'])) {
-            $definition = Definition::find($search_parameters['definition_id']);
+        if (!empty($searchParameters['definition_id'])) {
+            $definition = Definition::find($searchParameters['definition_id']);
         } else {
             $definition = Definition::findOneBySQL(
                 "`course_id` = :course_id AND `tool` = :tool",
                 [
-                    'course_id' => $search_parameters['course_id'],
-                    'tool' => $search_parameters['tool']
+                    'course_id' => $searchParameters['course_id'],
+                    'tool' => $searchParameters['tool']
                 ]
             );
         }
         if ($definition) {
-            return $definition->toLineItem();
+            return $definition->toLtiLineItem();
         }
         return null;
     }
@@ -111,38 +112,37 @@ class LineItemRepository implements LineItemRepositoryInterface
         }
 
         //Find the LTI resource link by its ID:
-        $resource_link = \LtiResourceLink::find($resourceLinkIdentifier);
-        if (!$resource_link) {
+        $resourceLink = LtiResourceLink::find($resourceLinkIdentifier);
+        if (!$resourceLink) {
             throw new LTIException('Invalid resource link identifier.');
         }
-        $tool_id       = $resource_link->deployment->tool_id ?? null;
+        $toolId       = $resourceLink->deployment->tool_id ?? null;
 
-        $sql = '';
-        $sql_params = [];
-        if ($tool_id && $resource_link->course_id) {
-            $sql .= "`tool` = :tool AND `course_id` = :course_id";
-            $sql_params['tool']      = self::getGradingToolName($tool_id, $resource_link->deployment_id);
-            $sql_params['course_id'] = $resource_link->course_id;
+        $sqlQuery = ['', []];
+        if ($toolId && $resourceLink->course_id) {
+            $sqlQuery[0] .= "`tool` = :tool AND `course_id` = :course_id";
+            $sqlQuery[1]['tool'] = self::getGradingToolName($toolId, $resourceLink->deployment_id);
+            $sqlQuery[1]['course_id'] = $resourceLink->course_id;
         } else {
             //No tool-ID means no line item collection can be found.
             return $result;
         }
 
         if ($limit) {
-            if (empty($sql)) {
-                $sql .= "TRUE ";
+            if (empty($sqlQuery[0])) {
+                $sqlQuery[0] .= "TRUE ";
             }
-            $sql .= "LIMIT :limit ";
-            $sql_params['limit'] = $limit;
+            $sqlQuery[0] .= "LIMIT :limit ";
+            $sqlQuery[1]['limit'] = $limit;
         }
         if ($offset) {
-            $sql .= "OFFSET :offset";
-            $sql_params['offset'] = $offset;
+            $sqlQuery[0] .= "OFFSET :offset";
+            $sqlQuery[1]['offset'] = $offset;
         }
-        $definitions = Definition::findBySql($sql, $sql_params);
+        $definitions = Definition::findBySql(...$sqlQuery);
 
         foreach ($definitions as $definition) {
-            $result->add($definition->toLineItem());
+            $result->add($definition->toLtiLineItem());
         }
         return $result;
     }
@@ -152,23 +152,20 @@ class LineItemRepository implements LineItemRepositoryInterface
      */
     public function save(LineItemInterface $lineItem): LineItemInterface
     {
-        $resource_link_id = $lineItem->getResourceLinkIdentifier() ?? '';
-        $resource_link = \LtiResourceLink::find($resource_link_id);
-        if (!$resource_link) {
+        $resourceLink = LtiResourceLink::find($lineItem->getResourceLinkIdentifier());
+        if (!$resourceLink) {
             throw new LTIException('Invalid resource link identifier.');
         }
 
-        $definition            = new Definition();
-        $definition->id        = $lineItem->getIdentifier();
-        $definition->name      = $lineItem->getLabel();
-        $definition->course_id = $resource_link->course_id;
-        $definition->tool      = $resource_link->id;
-        $definition->weight    = '1.0';
-        if ($definition->store()) {
-            return $definition->toLineItem();
-        } else {
-            throw new LTIException('Could not save line item.');
-        }
+        $definition = Definition::create([
+            'id' => $lineItem->getIdentifier(),
+            'name' => $lineItem->getLabel(),
+            'course_id' => $resourceLink->course_id,
+            'tool' => $resourceLink->id,
+            'weight' => '1.0'
+        ]);
+
+        return $definition->toLtiLineItem();
     }
 
     /**
@@ -176,13 +173,11 @@ class LineItemRepository implements LineItemRepositoryInterface
      */
     public function delete(string $lineItemIdentifier): void
     {
-        $search_parameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        $definition = Definition::findOneBySQL(
+        $searchParameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
+
+        Definition::deleteBySQL(
             '`course_id` = :course_id AND `tool` = :tool',
-            $search_parameters
+            $searchParameters
         );
-        if ($definition) {
-            $definition->delete();
-        }
     }
 }

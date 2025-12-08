@@ -33,7 +33,7 @@ use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
  * @property ?LtiDeployment $deployment related object
  * @property ?Course $course related object
  */
-class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
+class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
 {
     protected static function configure($config = [])
     {
@@ -104,10 +104,11 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
 
     public function getLaunchURL()
     {
-        if (!empty($this->deployment->tool) && empty($this->deployment->tool->allow_custom_url) && empty($this->deployment->tool->deep_linking) || empty($this->launch_url)) {
-            return $this->deployment->tool->launch_url;
+        $registration = $this->deployment->registration;
+        if (!empty($registration) && empty($registration->configs->allow_custom_url) && empty($registration->configs->deep_linking) || empty($registration->configs->launch_url)) {
+            return $registration->configs->launch_url;
         }
-        return $this->launch_url;
+        return $registration->configs->launch_url;
     }
 
     //OAT library LtiResourceLinkInterface and ResourceInterface implementation:
@@ -172,7 +173,7 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
 
     public function getTitle(): ?string
     {
-        return $this->title ?? $this->deployment->tool->name ?? null;
+        return $this->title ?? $this->deployment->registration->name ?? null;
     }
 
     public function getText(): ?string
@@ -203,8 +204,8 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
     public function getCustomParameters()
     {
         $parameters = '';
-        if (!empty($this->deployment->tool)) {
-            $parameters = $this->deployment->tool->custom_parameters;
+        if (!empty($this->deployment->registration)) {
+            $parameters = $this->deployment->registration->configs->custom_parameters;
         }
         $parameters .= $this->options['custom_parameters'] ?? '';
         return $parameters;

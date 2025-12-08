@@ -22,7 +22,7 @@ class Admin_LtiController extends AuthenticatedController
 
         $GLOBALS['perm']->check('root');
 
-        Navigation::activateItem('/admin/config/lti');
+//        Navigation::activateItem('/admin/config/lti');
         PageLayout::setTitle(_('LTI-Tools'));
 
         $widget = Sidebar::get()->addWidget(new ActionsWidget());
@@ -40,11 +40,10 @@ class Admin_LtiController extends AuthenticatedController
         Helpbar::get()->addPlainText('', _('Hier können Sie LTI-Tools konfigurieren. Diese müssen den LTI-Standard in Version 1.0/1.1 oder 1.3A unterstützen.'));
     }
 
-    /**
-     * Display the list of registered LTI tools.
-     */
+
     public function index_action()
     {
+
         $this->tools = LtiTool::findAll();
     }
 }

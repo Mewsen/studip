@@ -1,8 +1,7 @@
 <?php
-
 namespace Studip\LTI13a;
 
-use OAT\Library\Lti1p3Ags\Model\Result\Result;
+use Grading\Instance;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultCollection;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultInterface;
@@ -15,8 +14,8 @@ class ResultRepository implements ResultRepositoryInterface
         ?int $limit = null,
         ?int $offset = null
     ) : ResultCollectionInterface {
-        $sql_params = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        if (!$sql_params) {
+        $sqlParams = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
+        if (!$sqlParams) {
             //Nothing we can search for:
             return new ResultCollection();
         }
@@ -26,14 +25,14 @@ class ResultRepository implements ResultRepositoryInterface
                AND gd.`tool` = :tool';
         if ($limit) {
             $sql .= 'LIMIT :limit ';
-            $sql_params['limit'] = $limit;
+            $sqlParams['limit'] = $limit;
         }
         if ($offset) {
             $sql .= 'OFFSET :offset ';
-            $sql_params['offset'] = $offset;
+            $sqlParams['offset'] = $offset;
         }
 
-        $grades = \Grading\Instance::findBySQL($sql, $sql_params);
+        $grades = Instance::findBySQL($sql, $sqlParams);
         $results = new ResultCollection();
         foreach ($grades as $grade) {
             $results->add($grade->toResult());
@@ -45,8 +44,8 @@ class ResultRepository implements ResultRepositoryInterface
         string $lineItemIdentifier,
         string $userIdentifier
     ) : ?ResultInterface {
-        $search_parameters = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        $search_parameters['user_id'] = $userIdentifier;
+        $searchParameters = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
+        $searchParameters['user_id'] = $userIdentifier;
 
         $grade = \Grading\Instance::findOneBySQL(
             'JOIN `grading_definitions` gd
@@ -54,7 +53,7 @@ class ResultRepository implements ResultRepositoryInterface
                WHERE gd.`course_id` = :course_id
                AND gd.`tool` = :tool
                AND `user_id` = :user_id',
-            $search_parameters
+            $searchParameters
         );
         if ($grade) {
             return $grade->toResult();
