@@ -103,7 +103,10 @@ function getViewportOffsetTop() {
     const topBar = document.getElementById('top-bar');
     const responsiveContentbar = document.getElementById('responsive-contentbar');
 
-    let top = topBar.clientHeight + topBar.clientTop;
+    let top = 0;
+    if (topBar) {
+        top += topBar.clientHeight + topBar.clientTop;
+    }
     if (responsiveContentbar) {
         top += responsiveContentbar?.clientHeight + responsiveContentbar.clientTop;
     }
