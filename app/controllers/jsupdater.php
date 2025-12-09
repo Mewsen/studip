@@ -330,7 +330,7 @@ class JsupdaterController extends AuthenticatedController
                     && $page->chdate >= Request::int('server_timestamp')
                 ) {
                     $data['html'] = wikiReady($page->content, true, $page->range_id, $page->id);
-                    $data['content'] = $page->content;
+                    $data['content'] = Studip\Markup::markupToHtml($page->content);
                     $data['chdate'] = date('c', $page->chdate);
                 }
 
