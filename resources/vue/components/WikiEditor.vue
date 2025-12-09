@@ -255,20 +255,20 @@ export default {
         JSUpdater.register(
             'wiki_editor_status',
             (content) => {
-                this.onlineUsers = content.users;
-                this.isEditing = content.editing;
-
                 if ('chdate' in content) {
                     this.lastSaveDate = new Date(content.chdate);
                 }
 
-                if ('content' in content) {
-                    this.html = content.content;
+                if ('html' in content) {
+                    this.html = content.html;
                 }
 
-                if (!this.isEditing && 'wysiwyg' in content) {
-                    this.editor.setData(content.wysiwyg);
+                if (!this.isEditing && 'content' in content) {
+                    this.editor.setData(content.content);
                 }
+
+                this.onlineUsers = content.users;
+                this.isEditing = content.editing;
             },
             () => this.getUpdaterData()
         )
