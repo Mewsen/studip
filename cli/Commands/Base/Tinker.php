@@ -2,6 +2,7 @@
 
 namespace Studip\Cli\Commands\Base;
 
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +31,8 @@ class Tinker extends Command
         $config->setUpdateCheck(Checker::NEVER);
         $config->setDefaultIncludes([__DIR__ . '/../../studip_cli_env.inc.php']);
         $config->addCasters([
-            SimpleCollection::class => TinkerCaster::class . '::castCollection',
+            Collection::class => TinkerCaster::class . '::castCollection',
+            SimpleCollection::class => TinkerCaster::class . '::castSimpleCollection',
             SimpleORMap::class => TinkerCaster::class . '::castModel',
         ]);
 
