@@ -270,7 +270,11 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                         if ($send_message) {
                             setTempLanguage($membership->user_id);
                             if (!$sem_preliminary) {
-                                $message = sprintf (_('Sie sind in die Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein Platz frei geworden ist. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'), $course->getName(), $course->getFormattedTurnus(true));
+                                $message = sprintf(
+                                    _('Sie sind in die Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein Platz frei geworden ist. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'),
+                                    $course->name,
+                                    implode(', ', $course->getAllDatesInSemester()->toStringArray(true))
+                                );
                             } else {
                                 $message = sprintf(
                                     _('Sie haben den Status "vorläufig akzeptiert" in der Veranstaltung **%s (%s)** erhalten, da für Sie ein Platz frei geworden ist.'),
