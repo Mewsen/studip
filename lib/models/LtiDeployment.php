@@ -58,10 +58,7 @@ class LtiDeployment extends SimpleORMap
      */
     public function getLaunchURL()
     {
-        if (empty($this->registration->config_values['launch_url'])) {
-            return $this->registration->config_values['launch_url'];
-        }
-        return $this->launch_url;
+        return $this->registration->config_values['launch_url'];
     }
 
     /**

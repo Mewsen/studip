@@ -304,7 +304,6 @@ class Course_LtiController extends StudipController
                     'cancel_login' => '1'
                 ];
 
-
                 //Build the message:
                 $this->message = $builder->buildLtiResourceLinkLaunchRequest(
                     $this->resource_link,
