@@ -1,6 +1,7 @@
 <?php
 namespace Lti;
 
+use LtiResourceLink;
 use SimpleORMap;
 
 class Deployment extends SimpleORMap
@@ -15,13 +16,23 @@ class Deployment extends SimpleORMap
             'assoc_foreign_key' => 'id',
         ];
 
+        $config['has_many']['resource_links'] = [
+            'class_name' => LtiResourceLink::class,
+            'assoc_foreign_key' => 'deployment_id',
+            'on_delete' => 'delete'
+        ];
+
         parent::configure($config);
     }
 
     public function transformData($with = []): array
     {
+        $resourceLink = $this->resource_links[0];
+
         $base = [
             ...$this->toRawArray(),
+            'range_id' => $resourceLink?->course_id,
+            'range_name' => $resourceLink?->course->getFullName(),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate)
         ];

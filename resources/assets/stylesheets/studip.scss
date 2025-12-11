@@ -1014,3 +1014,22 @@ ul.breadcrumb {
         content: "/";
     }
 }
+
+
+table {
+    .button {
+        &__table-sort {
+            @extend .button-base;
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+                color: var(--color--highlight-hover);
+            }
+        }
+    }
+}

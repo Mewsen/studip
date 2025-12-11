@@ -51,6 +51,8 @@ const deleteDeployment = id => {
 }
 
 const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${props.registration.id}`), { width: '500', height: '400'});
+
+const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${range_id}`);
 </script>
 
 <template>
@@ -70,56 +72,73 @@ const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispa
         </caption>
         <thead>
             <tr class="sortable">
-            <th
-                :class="getSortClass('name')"
-                :aria-sort="getAriaSortString('name')"
-                :aria-label="getAriaSortLabel('name', $gettext('Name'))"
-            >
-                <a
-                    href="#"
-                    @click.prevent="sortBy('name')"
-                    :title="$gettext('Nach Name sortieren')">
-                    {{ $gettext('Name') }}
-                </a>
-            </th>
-            <th
-                :class="getSortClass('purpose')"
-                :aria-sort="getAriaSortString('purpose')"
-                :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
-            >
-                <a
-                    href="#"
-                    @click.prevent="sortBy('purpose')"
-                    :title="$gettext('Nach Zweck sortieren')">
-                    {{ $gettext('Zweck') }}
-                </a>
-            </th>
-            <th
-                :class="getSortClass('deployment_id')"
-                :aria-sort="getAriaSortString('deployment_id')"
-                :aria-label="getAriaSortLabel('deployment_id', $gettext('Deployment-ID'))"
-            >
-                <a
-                    href="#"
-                    @click.prevent="sortBy('deployment_id')"
-                    :title="$gettext('Nach Deployment-ID sortieren')">
-                    {{ $gettext('Deployment-ID') }}
-                </a>
-            </th>
-            <th
-                :class="getSortClass('mkdate')"
-                :aria-sort="getAriaSortString('mkdate')"
-                :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
-            >
-                <a
-                    href="#"
-                    @click.prevent="sortBy('mkdate')"
-                    :title="$gettext('Nach Erstellt Datum sortieren')">
-                    {{ $gettext('Erstellt am') }}
-                </a>
-            </th>
-            <th class="actions">{{ $gettext('Aktionen') }}</th>
-        </tr>
+                <th
+                    :class="getSortClass('name')"
+                    :aria-sort="getAriaSortString('name')"
+                    :aria-label="getAriaSortLabel('name', $gettext('Name'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('name')"
+                        :title="$gettext('Nach Name sortieren')">
+                        {{ $gettext('Name') }}
+                    </button>
+                </th>
+                <th
+                    :class="getSortClass('purpose')"
+                    :aria-sort="getAriaSortString('purpose')"
+                    :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('purpose')"
+                        :title="$gettext('Nach Zweck sortieren')">
+                        {{ $gettext('Zweck') }}
+                    </button>
+                </th>
+                <th
+                    :class="getSortClass('deployment_id')"
+                    :aria-sort="getAriaSortString('deployment_id')"
+                    :aria-label="getAriaSortLabel('deployment_id', $gettext('Deployment-ID'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('deployment_id')"
+                        :title="$gettext('Nach Deployment-ID sortieren')">
+                        {{ $gettext('Deployment-ID') }}
+                    </button>
+                </th>
+                <th
+                    :class="getSortClass('range_name')"
+                    :aria-sort="getAriaSortString('range_name')"
+                    :aria-label="getAriaSortLabel('range_name', $gettext('Veranstaltung'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('range_name')"
+                        :title="$gettext('Nach Veranstaltung sortieren')">
+                        {{ $gettext('Veranstaltung') }}
+                    </button>
+                </th>
+                <th
+                    :class="getSortClass('mkdate')"
+                    :aria-sort="getAriaSortString('mkdate')"
+                    :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('mkdate')"
+                        :title="$gettext('Nach Erstellt Datum sortieren')">
+                        {{ $gettext('Erstellt am') }}
+                    </button>
+                </th>
+                <th class="actions">{{ $gettext('Aktionen') }}</th>
+            </tr>
         </thead>
 
         <tbody>
@@ -129,6 +148,14 @@ const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispa
             </td>
             <td>{{ deployment.purpose }}</td>
             <td>{{ deployment.deployment_id }}</td>
+            <td>
+                <a v-if="deployment.range_id !== 'global'" :href="getRangeURL(deployment.range_id)" :title="$gettext('Zur Veranstaltung')">
+                    {{ deployment.range_name }}
+                </a>
+                <template v-else>
+                    {{ deployment.range_name }}
+                </template>
+            </td>
             <td>
                 <StudipDateTime :iso="deployment.mkdate" :relative="true" />
             </td>
@@ -142,7 +169,7 @@ const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispa
         </tr>
 
         <tr v-if="deployments.length === 0">
-            <td colspan="5">
+            <td colspan="6">
                 {{ $gettext('Keine Deployments vorhanden.') }}
             </td>
         </tr>

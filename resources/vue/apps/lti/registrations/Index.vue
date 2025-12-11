@@ -99,48 +99,52 @@ const deleteRegistration = id => {
                         :aria-sort="getAriaSortString('name')"
                         :aria-label="getAriaSortLabel('name', $gettext('Name'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('name')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('name')"
                             :title="$gettext('Nach Name sortieren')">
                             {{ $gettext('Name') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         :class="getSortClass('version')"
                         :aria-sort="getAriaSortString('version')"
                         :aria-label="getAriaSortLabel('version', $gettext('Version'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('version')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('version')"
                             :title="$gettext('Nach Version sortieren')">
                             {{ $gettext('Version') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         :class="getSortClass('deployments')"
                         :aria-sort="getAriaSortString('deployments')"
                         :aria-label="getAriaSortLabel('deployments', $gettext('Anzahl der Deployments'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('deployments')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('deployments')"
                             :title="$gettext('Nach Anzahl der Deployments sortieren')">
                             {{ $gettext('Deployments') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         :class="getSortClass('range_name')"
                         :aria-sort="getAriaSortString('range_name')"
                         :aria-label="getAriaSortLabel('range_name', $gettext('Range'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('range_name')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('range_name')"
                             :title="$gettext('Nach Range sortieren')">
                             {{ $gettext('Range') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         :class="getSortClass('state')"
@@ -159,12 +163,13 @@ const deleteRegistration = id => {
                         :aria-sort="getAriaSortString('mkdate')"
                         :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('mkdate')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('mkdate')"
                             :title="$gettext('Nach Erstellt Datum sortieren')">
                             {{ $gettext('Erstellt am') }}
-                        </a>
+                        </button>
                     </th>
                     <th class="actions">{{ $gettext('Aktionen') }}</th>
                 </tr>

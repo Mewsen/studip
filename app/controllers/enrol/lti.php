@@ -1,5 +1,4 @@
 <?php
-
 use Studip\Cache\MemoryCache;
 use Studip\LTI13a\ToolManager;
 use Studip\LTI13a\RegistrationManager;
@@ -79,6 +78,7 @@ class Enrol_LtiController extends StudipController
                     'jti' => $result->getState()->getToken()->getClaims()->get('jti'),
                 ],
             ],
+            'custom' => $result->getPayload()->getCustom(),
             'successes' => [],
         ];
 
