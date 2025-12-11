@@ -92,7 +92,7 @@ class RegistrationRepository implements RegistrationInterface
                 return null;
             }
 
-            return $this->registration->keyring?->toKeyChain();
+            return $this->registration->getKeyring()?->toKeyChain();
         }
 
         return PlatformManager::getKeyring()->toKeyChain();
@@ -105,7 +105,7 @@ class RegistrationRepository implements RegistrationInterface
                 return null;
             }
 
-            return $this->registration->keyring?->toKeyChain();
+            return $this->registration->getKeyring()?->toKeyChain();
         }
 
         return ToolManager::getKeyring()?->toKeyChain();

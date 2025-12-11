@@ -16,7 +16,7 @@ class ToolManager
         return new Tool(
             $config->STUDIP_INSTALLATION_ID,
             $config->UNI_NAME_CLEAN,
-            URLHelper::getURL('dispatch.php/enrol/lti/lunch', null, true),
+            $GLOBALS['ABSOLUTE_URI_STUDIP'],
             URLHelper::getURL('dispatch.php/enrol/lti/auth_init', null, true),
             URLHelper::getURL('dispatch.php/enrol/lti/lunch', null, true),
             URLHelper::getURL('dispatch.php/enrol/lti/launch_deeplink', null, true)

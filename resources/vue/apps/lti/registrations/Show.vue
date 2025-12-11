@@ -3,7 +3,6 @@ import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import {computed} from "vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
-import CopyAbleInput from "../../../components/lti/CopyAbleInput.vue";
 
 const props = defineProps({
     registration: {

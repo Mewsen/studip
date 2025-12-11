@@ -1,5 +1,4 @@
 <?php
-
 use Studip\LTI13a\LineItemRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
@@ -11,6 +10,8 @@ use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceS
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
 use OAT\Library\Lti1p3Core\Service\Server\LtiServiceServer;
 use Studip\LTI13a\RegistrationManager;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Trails\Dispatcher;
 
 /**
  * ags.php - LTI assignment and grade services controller
@@ -21,17 +22,16 @@ use Studip\LTI13a\RegistrationManager;
  * the License, or (at your option) any later version.
  *
  * @author      Moritz Strohm
+ * @author      Murtaza Sultani
  * @date        2024
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-
-
 class Lti_AgsController extends StudipController
 {
-    use \Studip\OAuth2\NegotiatesWithPsr7;
+    use NegotiatesWithPsr7;
 
-    public function __construct(\Trails\Dispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         $this->with_session = true;
         parent::__construct($dispatcher);

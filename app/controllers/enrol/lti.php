@@ -10,12 +10,14 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Trails\Dispatcher;
 
 class Enrol_LtiController extends StudipController
 {
-    use Studip\OAuth2\NegotiatesWithPsr7;
+    use NegotiatesWithPsr7;
 
-    public function __construct(\Trails\Dispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         $action = basename(get_route());
         if ($action === 'jwks') {

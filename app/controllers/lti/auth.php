@@ -16,6 +16,8 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Trails\Dispatcher;
 
 /**
  * auth.php - LTI authentication controller
@@ -27,15 +29,15 @@ use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler
  *
  * @author      Elmar Ludwig
  * @author      Moritz Strohm
+ * @author      Murtaza Sultani
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-
 class Lti_AuthController extends StudipController
 {
-    use Studip\OAuth2\NegotiatesWithPsr7;
+    use NegotiatesWithPsr7;
 
-    public function __construct(\Trails\Dispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         $this->allow_nobody = false;
         $action = basename(get_route());
@@ -220,16 +222,5 @@ class Lti_AuthController extends StudipController
         );
 
         $this->renderPsrResponse($response);
-    }
-
-    /**
-     * Displays LTI platform data of the Stud.IP installation. The data are needed for configuring the
-     * platform on the tool side.
-     */
-    public function platform_data_action()
-    {
-        $this->platform = PlatformManager::getPlatformConfiguration();
-
-        $this->render_template('lti/_platform_data');
     }
 }
