@@ -114,7 +114,7 @@ class StudipAuthAbstract
      * always use this method to instantiate a plugin object, it will ensure that only one object of each
      * plugin will exist
      * @param string $plugin_name name of plugin, if omitted an array with all plugin objects will be returned
-     * @return   mixed   either a reference to the plugin with the passed name, or an array with references to all plugins
+     * @return null|self|self[] either a reference to the plugin with the passed name, or an array with references to all plugins
      */
     public static function getInstance($plugin_name = false)
     {
@@ -591,5 +591,16 @@ class StudipAuthAbstract
     public function __unset($offset)
     {
         unset($this->config_data[$offset]);
+    }
+
+    /**
+     * This method returns an associative array containing specific
+     * variables relevant to the current instance.
+     */
+    public function getKeptVariables(): array
+    {
+        return [
+            'auth_plugin' => $this->plugin_name,
+        ];
     }
 }

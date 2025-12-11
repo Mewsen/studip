@@ -36,6 +36,9 @@ class StudipAuthOIDC extends StudipAuthSSO
 
     public ?string $redirect_uri = null;
 
+    public $logout_redirect_uri = null;
+
+
     /**
      * @var string[]
      */
@@ -133,7 +136,18 @@ class StudipAuthOIDC extends StudipAuthSSO
     {
         $this->getClient()->signOut(
             $this->getClient()->getIdToken(),
-            null
+            $this->logout_redirect_uri
         );
+    }
+
+    public function getKeptVariables(): array
+    {
+        $variables = parent::getKeptVariables();
+
+        if ($this->oidc->getIdToken()) {
+            $variables['id_token'] = $this->oidc->getIdToken();
+        }
+
+        return $variables;
     }
 }

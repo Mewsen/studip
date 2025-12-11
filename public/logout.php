@@ -44,7 +44,8 @@ if ($auth->auth['uid'] !== 'nobody') {
 
     // Get auth plugin of user before logging out since the $auth object will
     // be modified by the logout
-    $auth_plugin = StudipAuthAbstract::getInstance($auth->auth['auth_plugin']);
+    $used_auth_plugin = $auth->auth['auth_plugin'] ?? $user->auth_plugin;
+    $auth_plugin = StudipAuthAbstract::getInstance($used_auth_plugin);
 
     //Logout aus dem Sessionmanagement
     $auth->logout();
