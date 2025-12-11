@@ -2,8 +2,9 @@
 namespace Studip\LTI13a;
 
 use Avatar;
-use LtiToolPrivacySettings;
 use User;
+use LtiToolPrivacySettings;
+use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
@@ -20,8 +21,11 @@ class Identity implements UserIdentityInterface
         $this->user = $user;
 
         $privacy_settings = LtiToolPrivacySettings::findOneBySQL(
-            '`registration_id` = :registration_id AND `user_id` = :user_id',
-            ['registration_id' => $registration->getIdentifier(), 'user_id' => $user->id]
+            "`registration_id` = :registration_id AND `user_id` = :user_id",
+            [
+                'registration_id' => $registration->getIdentifier(),
+                'user_id' => $user->id
+            ]
         );
         if ($privacy_settings) {
             $this->allowed_optional_fields = explode(',', $privacy_settings->allowed_optional_fields);
@@ -55,7 +59,7 @@ class Identity implements UserIdentityInterface
 
     public function getMiddleName(): ?string
     {
-        return '';
+        return null;
     }
 
     public function getLocale(): ?string
@@ -76,7 +80,7 @@ class Identity implements UserIdentityInterface
 
     public function getAdditionalProperties(): CollectionInterface
     {
-        return [];
+        return new Collection();
     }
 
     public function normalize(): array

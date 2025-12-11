@@ -2,12 +2,17 @@
 namespace Lti;
 
 use Keyring;
+use Range;
 use SimpleORMap;
 use stdClass;
 use Studip\LTI13a\RegistrationRepository;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use User;
 
+/**
+ * @property int $id
+ * @property bool $state
+ */
 class Registration extends SimpleORMap
 {
     protected static function configure($config = []): void
@@ -21,7 +26,21 @@ class Registration extends SimpleORMap
 
         $config['has_many']['deployments'] = [
             'class_name' => Deployment::class,
-            'assoc_foreign_key' => 'registration_id'
+            'assoc_foreign_key' => 'registration_id',
+            'order_by' => 'ORDER BY mkdate DESC',
+        ];
+
+        $config['additional_fields']['range'] = [
+            'set' => function (Registration $registration, string $field, Range | string | null $range) {
+                if ($range instanceof Range) {
+                    $registration->range_id = $range->getRangeId();
+                } else {
+                    $registration->range_id = 'global';
+                }
+            },
+            'get' => function (Registration $registration): ?Range {
+                return get_object_by_range_id($registration->range_id);
+            },
         ];
 
         $config['additional_fields']['keyring']['get'] = 'getKeyring';
@@ -124,5 +143,23 @@ class Registration extends SimpleORMap
         $user_id ??= User::findCurrent()->id;
         return $this->range_id === 'global' && $GLOBALS['perm']->have_perm('root')
             || ($this->range_id !== 'global' && $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id));
+    }
+
+    public function transformData($with = []): array
+    {
+        $base = [
+            ...$this->toRawArray(),
+            'state' => (bool) $this->state,
+            'range_name' => $this->range?->getFullName() ?? _('Global'),
+            'chdate' => date('c', $this->chdate),
+            'mkdate' => date('c', $this->mkdate),
+            ...$this->getConfigValues()
+        ];
+
+        if (in_array('deployments', $with)) {
+            $base['deployments'] = $this->deployments->transformData();
+        }
+
+        return $base;
     }
 }

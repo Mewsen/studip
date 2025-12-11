@@ -298,10 +298,10 @@ class Course_LtiController extends StudipController
 
                 //The AGS URLs need several parameters:
                 $ags_url_parameters = [
-                    'cid'           => $this->range_id,
-                    'registration_id'       => $this->resource_link->deployment->registration_id,
+                    'cid' => $this->range_id,
+                    'registration_id' => $this->resource_link->deployment->registration_id,
                     'deployment_id' => $this->resource_link->deployment_id,
-                    'cancel_login'  => '1'
+                    'cancel_login' => '1'
                 ];
 
 

@@ -17,7 +17,16 @@ defineProps({
             <StudipMessageBox type="warning">
                 {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
             </StudipMessageBox>
-            <LtiRegistrationForm :role="role" />
+            <LtiRegistrationForm :role="role">
+                <footer data-dialog-button>
+                    <button class="button accept">
+                        {{ $gettext('Speichern') }}
+                    </button>
+                    <button class="button cancel" type="button" data-dialog-close>
+                        {{ $gettext('Abbrechen') }}
+                    </button>
+                </footer>
+            </LtiRegistrationForm>
         </div>
     </div>
 </template>

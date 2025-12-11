@@ -1,0 +1,322 @@
+<?php
+require_once __DIR__ . '/AdminBaseController.php';
+
+use LTI\AdminBaseController;
+use Lti\Registration;
+use Lti\RegistrationConfig;
+use Ramsey\Uuid\Uuid;
+use Studip\LTI13a\PlatformManager;
+use Studip\LTI13a\ToolManager;
+
+class Admin_Lti_RegistrationsController extends AdminBaseController
+{
+    public function index_action(): void
+    {
+        $registrations = Registration::findBySQL(
+            "`role`= :role ORDER BY `mkdate`, `name`",
+            [
+                'role' => $this->role
+            ]
+        );
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/Index')
+                ->withProps([
+                    'role' => $this->role,
+                    'registrations' => array_map(fn ($r) => $r->transformData(['deployments']), $registrations)
+                ])
+        );
+    }
+
+    public function show_action(Registration $registration): void
+    {
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/Show')
+                ->withProps([
+                    'registration' => $registration->transformData(['deployments'])
+                ])
+        );
+    }
+
+    public function create_action(): void
+    {
+        if ($this->role === 'tool') {
+            PageLayout::setTitle(_('Neues LTI-Tool registrieren'));
+        } elseif ($this->role === 'platform') {
+            PageLayout::setTitle(_('Neues LTI-Platform registrieren'));
+        }
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/Create')
+                ->withProps([
+                    'role' => $this->role
+                ])
+        );
+    }
+
+    public function store_action(): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $registration = Registration::create([
+            'version' => Request::get('version', '1.3a'),
+            'name' => Request::get('name'),
+            'description' => Request::get('description'),
+            'state' => Request::bool('state', true),
+            'client_id' => Request::get('client_id', Uuid::uuid4()->toString()),
+            'range_id' => Context::getId() ?? 'global'
+        ]);
+
+        $this->storeRegistrationConfigs($registration->id);
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Registrierung „%s“ wurde gespeichert.'),
+                htmlReady($registration->name)
+            )
+        );
+
+        $this->redirect('admin/lti/registrations', ['role' => $registration->role]);
+    }
+
+    public function edit_action(Registration $registration): void
+    {
+        if ($this->role === 'tool') {
+            PageLayout::setTitle(_('LTI-Tool bearbeiten'));
+        } elseif ($this->role === 'platform') {
+            PageLayout::setTitle(_('LTI-Platform bearbeiten'));
+        }
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/Edit')
+                ->withProps([
+                    'registration' => $registration->transformData()
+                ])
+        );
+    }
+
+    public function update_action(Registration $registration): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $registration->setData([
+            'version' => Request::get('version', '1.3a'),
+            'name' => Request::get('name'),
+            'description' => Request::get('description'),
+            'state' => Request::bool('state', true),
+            'client_id' => Request::get('client_id', $registration->client_id)
+        ]);
+
+        $registration->store();
+
+        $this->storeRegistrationConfigs($registration->id);
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Registrierung „%s“ wurde gespeichert.'),
+                htmlReady($registration->name)
+            )
+        );
+
+        $this->redirect('admin/lti/registrations', ['role' => $registration->role]);
+    }
+
+    public function delete_action(Registration $registration): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $registrationName = $registration->name;
+        $registration->delete();
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Registrierung „%s“ wurde gelöscht.'),
+                htmlReady($registrationName)
+            )
+        );
+
+        $this->redirect('admin/lti/registrations');
+    }
+
+    public function platform_data_action(): void
+    {
+        PageLayout::setTitle(_('LTI-Platform Daten'));
+
+        $platformData = PlatformManager::getPlatformConfiguration();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/ShowPlatformData')
+                ->withProps([
+                    'platformData' => [
+                        'id' => $platformData->getIdentifier(),
+                        'name' => $platformData->getName(),
+                        'audience' => $platformData->getAudience(),
+                        'auth_login_url' => $platformData->getOidcAuthenticationUrl(),
+                        'token_url' => $platformData->getOAuth2AccessTokenUrl(),
+                        'keyset_url' => PlatformManager::getJwksUrl(),
+                        'public_key' => PlatformManager::getPublicKey()->getContent(),
+                    ]
+                ])
+        );
+    }
+
+    public function tool_data_action(): void
+    {
+        PageLayout::setTitle(_('LTI-Tool Daten'));
+
+        $toolData = ToolManager::getToolConfiguration();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/registrations/ShowToolData')
+                ->withProps([
+                    'toolData' => [
+                        'id' => $toolData->getIdentifier(),
+                        'name' => $toolData->getName(),
+                        'audience' => $toolData->getAudience(),
+                        'auth_init_url' => $toolData->getOidcInitiationUrl(),
+                        'launch_url' => $toolData->getLaunchUrl(),
+                        'deep_linking_url' => $toolData->getDeepLinkingUrl(),
+                        'keyset_url' => ToolManager::getJwksUrl(),
+                        'public_key' => ToolManager::getPublicKey()->getContent(),
+                    ]
+                ])
+        );
+    }
+
+    private function extractConfigFromRequest(): array
+    {
+        $common = [
+            [
+                'name' => 'terms_of_use_url',
+                'value' => Request::get('terms_of_use_url')
+            ],
+            [
+                'name' => 'privacy_policy_url',
+                'value' => Request::get('privacy_policy_url')
+            ],
+            [
+                'name' => 'data_protection_notes',
+                'value' => Request::get('data_protection_notes')
+            ]
+        ];
+
+        $toolCommon = [
+            ...$common,
+            [
+                'name' => 'launch_url',
+                'value' => Request::get('launch_url')
+            ],
+            [
+                'name' => 'send_lis_person',
+                'value' => Request::get('send_lis_person')
+            ],
+            [
+                'name' => 'custom_parameters',
+                'value' => Request::get('custom_parameters')
+            ],
+            [
+                'name' => 'launch_container',
+                'value' => Request::get('launch_container')
+            ]
+        ];
+
+        if (Request::get('version') === '1.3a') {
+            if (Request::get('role') === 'tool') {
+                return [
+                    ...$toolCommon,
+                    [
+                        'name' => 'auth_init_url',
+                        'value' => Request::get('auth_init_url')
+                    ],
+                    [
+                        'name' => 'deep_linking_url',
+                        'value' => Request::get('deep_linking_url')
+                    ],
+                    [
+                        'name' => 'token_url',
+                        'value' => Request::get('token_url')
+                    ],
+                    [
+                        'name' => 'key_type',
+                        'value' => Request::get('key_type')
+                    ],
+                    [
+                        'name' => 'jwks_url',
+                        'value' => Request::get('jwks_url')
+                    ],
+                    [
+                        'name' => 'jwks_key_id',
+                        'value' => Request::get('jwks_key_id')
+                    ],
+                    [
+                        'name' => 'public_key',
+                        'value' => Request::get('public_key')
+                    ]
+                ];
+            }
+
+            if (Request::get('role') === 'platform') {
+                return [
+                    ...$common,
+                    [
+                        'name' => 'issuer',
+                        'value' => Request::get('issuer')
+                    ],
+                    [
+                        'name' => 'auth_login_url',
+                        'value' => Request::get('auth_login_url')
+                    ],
+                    [
+                        'name' => 'token_url',
+                        'value' => Request::get('token_url')
+                    ],
+                    [
+                        'name' => 'key_type',
+                        'value' => Request::get('key_type')
+                    ],
+                    [
+                        'name' => 'jwks_url',
+                        'value' => Request::get('jwks_url')
+                    ],
+                    [
+                        'name' => 'public_key',
+                        'value' => Request::get('public_key')
+                    ]
+                ];
+            }
+        }
+
+        if (Request::get('version') === '1.1') {
+            return [
+                ...$toolCommon,
+                [
+                    'name' => 'consumer_key',
+                    'value' => Request::get('consumer_key')
+                ],
+                [
+                    'name' => 'consumer_secret',
+                    'value' => Request::get('consumer_secret')
+                ]
+            ];
+        }
+
+        return $toolCommon;
+    }
+
+    private function storeRegistrationConfigs($registration_id): void
+    {
+        foreach ($this->extractConfigFromRequest() as $config) {
+            if (!empty($config['value'])) {
+                RegistrationConfig::updateOrCreate(
+                    [
+                        'registration_id' => $registration_id,
+                        'name' => strtolower($config['name'])
+                    ],
+                    [
+                        'value' => $config['value']
+                    ]
+                );
+            }
+        }
+    }
+}

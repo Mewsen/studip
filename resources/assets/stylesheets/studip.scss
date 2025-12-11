@@ -114,6 +114,7 @@
 @import "scss/wiki";
 @import "scss/multi_person_search";
 @import "scss/admission";
+@import "scss/lti";
 
 // Class for DOM elements that should only be visible to Screen readers
 .sr-only {
@@ -972,3 +973,44 @@ input.allow-plaintext-toggle {
   vue Transition:fade-down --end--
 */
 
+
+.copyable-input,
+.copyable-textarea {
+    position: relative;
+    max-width: 48em;
+
+    &__button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.copyable-textarea {
+    &__button {
+        top: 6px;
+        bottom: unset;
+    }
+}
+
+ul.breadcrumb {
+    padding: 0;
+    list-style: none;
+
+    li {
+        display: inline;
+        font-size: 18px;
+    }
+
+    li+li:before {
+        padding: 0 8px;
+        content: "/";
+    }
+}

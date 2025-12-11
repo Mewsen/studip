@@ -1,0 +1,72 @@
+<script setup>
+import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {$gettext} from '../../../../assets/javascripts/lib/gettext';
+
+const CSRF = STUDIP.CSRF_TOKEN;
+
+const props = defineProps({
+    deployment: {
+        type: Object,
+        required: true
+    },
+    registrations: {
+        type: Array,
+        default: () => ([])
+    }
+});
+
+const form = reactive({
+    ...props.deployment
+});
+
+const formActionURL = computed(() => {
+    if (props.deployment.id) {
+        return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/update/${props.deployment.id}`);
+    }
+
+    return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/store`);
+});
+
+const nameInput = useTemplateRef('nameInput');
+
+onMounted(() => {
+    nameInput.value.focus();
+});
+</script>
+
+<template>
+    <form
+        class="default"
+        :action="formActionURL"
+        method="post"
+        v-bind="$attrs"
+    >
+        <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
+        <input type="hidden" name="registration_id" :value="deployment.registration_id" />
+
+        <label class="studiprequired m-0">
+            <span class="textlabel">{{ $gettext('Name') }}</span>
+            <span :title="$gettext('Name ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+            <input
+                required
+                class="max-w-full"
+                type="text"
+                name="name"
+                ref="nameInput"
+                v-model="form.name" />
+        </label>
+
+        <label class="studiprequired m-0">
+            <span class="textlabel">{{ $gettext('Deployment-ID') }}</span>
+            <span :title="$gettext('Deployment-ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+            <input
+                required
+                class="max-w-full"
+                type="text"
+                name="deployment_id"
+                v-model="form.deployment_id" />
+        </label>
+
+        <slot />
+    </form>
+</template>

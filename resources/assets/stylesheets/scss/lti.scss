@@ -1,0 +1,79 @@
+.lti {
+    .copyable-input {
+        margin-top: 3px;
+        margin-bottom: 6px;
+    }
+
+    .header {
+        display: flex;
+        background-color: var(--color--fieldset-header);
+        margin-bottom: 20px;
+
+        &__content {
+            padding: 10px 15px;
+            flex: 1 1 0%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+
+            &--with-actions {
+                .actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+            }
+
+            .go-back-link {
+                margin-top: 4px;
+            }
+
+            h2 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .styleless {
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    .status-label {
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-size: small;
+
+        &--success {
+            background-color: var(--color--green-1);
+            color: var(--white);
+        }
+
+        &--warning {
+            background-color: var(--color--yellow-1);
+        }
+    }
+
+    .button {
+        &--icon-only {
+            min-width: unset;
+            margin: 0;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &--icon-label {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+    }
+}

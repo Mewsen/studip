@@ -3,6 +3,7 @@ import {computed, onMounted, reactive, useTemplateRef} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipWysiwyg from "../../StudipWysiwyg.vue";
 import StudipTooltipIcon from "../../StudipTooltipIcon.vue";
+import StudipSwitch from "../../StudipSwitch.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -26,13 +27,13 @@ const form = reactive({
 
 const formActionURL = computed(() => {
     if (props.registration.id) {
-        return STUDIP.URLHelper.getURL(`dispatch.php/lti/registrations/update/${props.registration.id}`);
+        return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/update/${props.registration.id}`);
     }
 
-    return STUDIP.URLHelper.getURL(`dispatch.php/lti/registrations/store`);
+    return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/store`);
 });
 
-const nameInput = useTemplateRef('name-input');
+const nameInput = useTemplateRef('nameInput');
 
 onMounted(() => {
     nameInput.value.focus();
@@ -44,9 +45,11 @@ onMounted(() => {
         class="default"
         :action="formActionURL"
         method="post"
-        v-bind="{...$attrs}"
+        v-bind="$attrs"
     >
-        <input type="hidden" :name="CSRF.name" :value="CSRF.value">
+        <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
+        <input type="hidden" name="role" :value="role" />
+        <input type="hidden" name="version" :value="form.version ?? '1.3a'" />
         <fieldset>
             <legend>
                 {{ $gettext('Grunddaten') }}
@@ -59,7 +62,7 @@ onMounted(() => {
                     required
                     type="text"
                     name="name"
-                    ref="name-input"
+                    ref="nameInput"
                     v-model="form.name"
                     class="max-w-full" />
             </label>
@@ -90,6 +93,13 @@ onMounted(() => {
                 {{ $gettext('URL zur Datenschutzerklärung') }}
                 <input type="url" name="privacy_policy_url" v-model="form.privacy_policy_url" />
             </label>
+
+            <StudipSwitch
+                name="state"
+                v-model="form.state"
+                :label="$gettext('Status')"
+                :title="form.state ? $gettext('LTI-Registrierungen deaktivieren') : $gettext('LTI-Registrierungen aktivieren')"
+            />
         </fieldset>
         <fieldset v-if="role === 'tool'">
             <legend>
@@ -113,9 +123,14 @@ onMounted(() => {
 
             <template v-if="form.version === '1.3a'">
                 <label>
+                    {{ $gettext('Client ID') }}
+                    <input readonly type="text" name="client_id" v-model="form.client_id" />
+                </label>
+
+                <label>
                     {{ $gettext('Initiate login URL') }}
                     <StudipTooltipIcon
-                        :text="$gettext('Die URL, mit der der Login via OpenID Connect stattfindet.')"
+                        :text="$gettext('Die URL, über die die Login-Initiierung mittels OpenID Connect erfolgt.')"
                     />
                     <input type="url" name="auth_init_url" v-model="form.auth_init_url" />
                 </label>
@@ -135,13 +150,15 @@ onMounted(() => {
                 </label>
 
                 <template v-if="form.key_type === 'jwk_keyset'">
-                    <label>
-                        {{ $gettext('JWKS-URL') }}
+                    <label v-if="form.key_type === 'jwk_keyset'" class="studiprequired">
+                        <span class="textlabel">{{ $gettext('JWKS-URL') }}</span>
+                        <span :title="$gettext('JWKS-URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                         <StudipTooltipIcon
                             :text="$gettext('Die URL, mit der der der Austausch von JSON web keys stattfinden kann.')"
                         />
                         <input required type="url" name="jwks_url" v-model="form.jwks_url" />
                     </label>
+
                     <label>
                         {{ $gettext('Schlüssel-ID') }}
                         <StudipTooltipIcon
@@ -150,9 +167,10 @@ onMounted(() => {
                         <input type="url" name="jwks_key_id" v-model="form.jwks_key_id" />
                     </label>
                 </template>
-                <label v-else>
-                    {{ $gettext('Öffentlicher Schlüssel') }}
-                    <textarea required name="public_key" v-model="form.public_key"></textarea>
+                <label v-else class="studiprequired">
+                    <span class="textlabel">{{ $gettext('Öffentlicher Schlüssel') }}</span>
+                    <span :title="$gettext('Öffentlicher Schlüssel ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                    <textarea required name="public_key" v-model="form.public_key" rows="10"></textarea>
                 </label>
             </template>
 
@@ -201,15 +219,64 @@ onMounted(() => {
             <legend>
                 {{ $gettext('Konfiguration des LTI-Platforms') }}
             </legend>
-        </fieldset>
 
-        <footer data-dialog-button>
-            <button class="button accept">
-                {{ $gettext('Speichern') }}
-            </button>
-            <button class="button cancel" type="button" data-dialog-close>
-                {{ $gettext('Abbrechen') }}
-            </button>
-        </footer>
+            <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('Plattform-ID') }}</span>
+                <span :title="$gettext('Plattform-ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <StudipTooltipIcon
+                    :text="$gettext('Der eindeutige Identifikator der LTI-Plattform.')"
+                />
+                <input required type="url" name="issuer" v-model="form.issuer" />
+            </label>
+
+            <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('Client ID') }}</span>
+                <span :title="$gettext('Client ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <input required type="text" name="client_id" v-model="form.client_id" />
+            </label>
+
+            <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('OIDC authentication URL') }}</span>
+                <span :title="$gettext('OIDC authentication URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <StudipTooltipIcon
+                    :text="$gettext('Die URL, mit der der Login via OpenID Connect stattfindet.')"
+                />
+                <input required type="url" name="auth_login_url" v-model="form.auth_login_url" />
+            </label>
+
+            <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('Token-URL') }}</span>
+                <span :title="$gettext('Token-URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <StudipTooltipIcon
+                    :text="$gettext('Die URL, unter der das LTI-Plattform Zugriffstokens bereitstellt.')"
+                />
+                <input required type="url" name="token_url" v-model="form.token_url" />
+            </label>
+
+            <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('Schlüssel-Typ') }}</span>
+                <span :title="$gettext('Schlüssel-Typ ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <select name="key_type" v-model="form.key_type">
+                    <option value="rsa_key">{{ $gettext('RSA key') }}</option>
+                    <option value="jwk_keyset">{{ $gettext('Keyset URL') }}</option>
+                </select>
+            </label>
+
+            <label v-if="form.key_type === 'jwk_keyset'" class="studiprequired">
+                <span class="textlabel">{{ $gettext('JWKS-URL') }}</span>
+                <span :title="$gettext('JWKS-URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <StudipTooltipIcon
+                    :text="$gettext('Die URL, unter der die öffentlichen Schlüssel der LTI-Plattform verfügbar sind.')"
+                />
+                <input required type="url" name="jwks_url" v-model="form.jwks_url" />
+            </label>
+
+            <label v-else class="studiprequired">
+                <span class="textlabel">{{ $gettext('Öffentlicher Schlüssel') }}</span>
+                <span :title="$gettext('Öffentlicher Schlüssel ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <textarea required name="public_key" v-model="form.public_key" rows="10"></textarea>
+            </label>
+        </fieldset>
+        <slot />
     </form>
 </template>

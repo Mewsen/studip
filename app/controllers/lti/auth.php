@@ -229,6 +229,7 @@ class Lti_AuthController extends StudipController
     public function platform_data_action()
     {
         $this->platform = PlatformManager::getPlatformConfiguration();
+
         $this->render_template('lti/_platform_data');
     }
 }

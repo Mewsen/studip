@@ -1,10 +1,9 @@
 <script setup>
-import LtiRegistrationForm from '../../../components/lti/registrations/LtiRegistrationForm.vue';
-import StudipMessageBox from "../../../components/StudipMessageBox.vue";
+import LtiDeploymentForm from "../../../components/lti/deployments/LtiDeploymentForm.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 
 defineProps({
-    registration: {
+    deployment: {
         type: Object,
         required: true
     }
@@ -14,10 +13,7 @@ defineProps({
 <template>
     <div class="lti" style="display: flex;">
         <div style="flex: 1;">
-            <StudipMessageBox type="warning">
-                {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
-            </StudipMessageBox>
-            <LtiRegistrationForm :registration="registration" :role="registration.role">
+            <LtiDeploymentForm :deployment="deployment">
                 <footer data-dialog-button>
                     <button class="button accept">
                         {{ $gettext('Speichern') }}
@@ -26,7 +22,7 @@ defineProps({
                         {{ $gettext('Abbrechen') }}
                     </button>
                 </footer>
-            </LtiRegistrationForm>
+            </LtiDeploymentForm>
         </div>
     </div>
 </template>

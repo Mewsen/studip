@@ -21,7 +21,6 @@ class PlatformManager
      */
     public static function getPlatformConfiguration(): PlatformInterface
     {
-        // TODO: Fix oidcs and token urls
         $c = Config::get();
         return new Platform(
             $c->STUDIP_INSTALLATION_ID,
@@ -111,11 +110,11 @@ class PlatformManager
         if ($course_id) {
             $params['cid'] = $course_id;
         }
-        return \URLHelper::getURL('dispatch.php/course/lti/save_link/' . $link_id, $params, true);
+        return URLHelper::getURL('dispatch.php/course/lti/save_link/' . $link_id, $params, true);
     }
 
     public static function getJwksUrl(): string
     {
-        return \URLHelper::getURL('dispatch.php/lti/auth/jwks');
+        return URLHelper::getURL('dispatch.php/lti/auth/jwks');
     }
 }

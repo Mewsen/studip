@@ -19,6 +19,7 @@ abstract class AdminBaseController extends AuthenticatedController
         $GLOBALS['perm']->check('root');
         Navigation::activateItem('/admin/config/lti');
         PageLayout::setTitle(_('LTI-Registrierungen'));
+        $this->role = Request::get('role', 'tool');
 
         $this->buildSidebar();
     }
@@ -30,13 +31,13 @@ abstract class AdminBaseController extends AuthenticatedController
 
         $viewWidget->addLink(
             _('LTI-Tools'),
-            $this->url_for('admin/lti/tools')
-        )->setActive(str_contains(Request::path(), '/admin/lti/tools'));
+            $this->url_for('admin/lti/registrations', ['role' => 'tool']),
+        )->setActive($this->role !== 'platform');
 
         $viewWidget->addLink(
             _('LTI-Platforms'),
-            $this->url_for('admin/lti/platforms')
-        )->setActive(str_contains(Request::path(), '/admin/lti/platforms'));
+            $this->url_for('admin/lti/registrations', ['role' => 'platform'])
+        )->setActive($this->role === 'platform');
 
         Sidebar::Get()->addWidget($viewWidget);
 
@@ -44,15 +45,27 @@ abstract class AdminBaseController extends AuthenticatedController
         $actions = new ActionsWidget();
         $actions->addLink(
             _('Neues LTI-Tool registrieren'),
-            $this->url_for('lti/registration/tools/create'),
+            $this->url_for('admin/lti/registrations/create', ['role' => 'tool']),
+            Icon::create('add')
+        )->asDialog('width=900;height=650');
+
+        $actions->addLink(
+            _('Neues LTI-Platform registrieren'),
+            $this->url_for('admin/lti/registrations/create', ['role' => 'platform']),
             Icon::create('add')
         )->asDialog('width=900;height=650');
 
         $actions->addLink(
             _('Daten zur LTI-Plattform anzeigen'),
-            $this->url_for('lti/auth/platform_data'),
+            $this->url_for('admin/lti/registrations/platform_data'),
             Icon::create('info')
-        )->asDialog('width=900;height=650');
+        )->asDialog('width=900;height=700');
+
+        $actions->addLink(
+            _('Daten zur LTI-Tool anzeigen'),
+            $this->url_for('admin/lti/registrations/tool_data'),
+            Icon::create('info')
+        )->asDialog('width=900;height=700');
 
         Sidebar::get()->addWidget($actions);
     }

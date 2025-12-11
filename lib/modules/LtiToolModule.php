@@ -20,7 +20,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         parent::__construct();
 
         if ($GLOBALS['perm']->have_perm('root')) {
-            Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/tools'));
+            Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
         }
 
         NotificationCenter::on('UserDidDelete', function ($event, $user) {

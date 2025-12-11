@@ -116,7 +116,7 @@ class LineItemRepository implements LineItemRepositoryInterface
         if (!$resourceLink) {
             throw new LTIException('Invalid resource link identifier.');
         }
-        $toolId       = $resourceLink->deployment->tool_id ?? null;
+        $toolId = $resourceLink->deployment->tool_id ?? null;
 
         $sqlQuery = ['', []];
         if ($toolId && $resourceLink->course_id) {
@@ -176,7 +176,7 @@ class LineItemRepository implements LineItemRepositoryInterface
         $searchParameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
 
         Definition::deleteBySQL(
-            '`course_id` = :course_id AND `tool` = :tool',
+            "`course_id` = :course_id AND `tool` = :tool",
             $searchParameters
         );
     }
