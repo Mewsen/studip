@@ -1,0 +1,63 @@
+<?php
+
+namespace JsonApi\Schemas\DashboardWidget;
+
+use JsonApi\Schemas\SchemaProvider;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
+use Neomerx\JsonApi\Schema\Link;
+
+/**
+ * DashboardWidget's Widget Schema.
+ *
+ * @author Farbod Zamani Boroujeni <zamani@elan-ev.de>
+ * @license GPL2 or any later version
+ *
+ * @since   Stud.IP 6.3
+ */
+class Widget extends SchemaProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public const TYPE = 'dashboard-widgets';
+
+    /**
+     * @var string the container relationship flag.
+     */
+    const REL_CONTAINER = 'container';
+
+    /**
+     * @inheritdoc
+     */
+    public function getId($resource): ?string
+    {
+        return $resource->getId();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
+    {
+        return [
+            'payload' => $resource->payload->getArrayCopy(),
+            'type' => $resource->type,
+            'scope' => $resource->scope,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
+    {
+        $relationships = [];
+        $container = $resource->container;
+        $relationships[self::REL_CONTAINER] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->createLinkToResource($container),
+            ],
+        ];
+        return $relationships;
+    }
+}

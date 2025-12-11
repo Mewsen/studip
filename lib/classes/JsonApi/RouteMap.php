@@ -144,6 +144,7 @@ class RouteMap
         $this->addAuthenticatedThemesRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
+        $this->addAuthenticatedDashboardWidgetRoutes($group);
     }
 
     /**
@@ -821,6 +822,41 @@ class RouteMap
         // not a JSON:API route
         $group->get('/component-version-deep/{id}', Routes\Mvv\ComponentVersionsDeep::class);
 
+    }
+
+    /**
+     * Adds the autheticated routes of dashboard widgets.
+     *
+     * @param RouteCollectorProxy $group the autheticated route group.
+     */
+    private function addAuthenticatedDashboardWidgetRoutes(RouteCollectorProxy $group): void {
+
+        // Widget Relationship Route relative to a container.
+        $this->addRelationship($group, '/dashboard-widget-containers/{id}/relationships/widgets', Routes\DashboardWidget\Rel\Widgets::class);
+
+        // Non JSON APIs for the types and enums, if wanted?
+        $group->get('/dashboard-widgets-misc', Routes\DashboardWidget\Miscellaneous::class);
+
+        // Container Routes.
+        $group->get('/dashboard-widget-containers/{id}', Routes\DashboardWidget\ContainerShow::class);
+
+        $group->post('/dashboard-widget-containers', Routes\DashboardWidget\ContainerCreate::class);
+
+        // Widgets CRUD.
+        $group->get('/dashboard-widget-containers/{id}/widgets', Routes\DashboardWidget\ContainerWidgetsIndex::class);
+
+        $group->get('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsShow::class);
+
+        $group->post('/dashboard-widget-containers/{id}/widgets', Routes\DashboardWidget\ContainerWidgetsCreate::class);
+
+        $group->patch('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsUpdate::class);
+
+        $group->delete('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsDelete::class);
+
+        // DIRECT Widget routes.
+        $group->get('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsShow::class);
+
+        $group->patch('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsUpdate::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

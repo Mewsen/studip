@@ -103,6 +103,9 @@ class SchemaMap
             \Courseware\Unit::class => Schemas\Courseware\Unit::class,
             \Courseware\UserDataField::class => Schemas\Courseware\UserDataField::class,
             \Courseware\UserProgress::class => Schemas\Courseware\UserProgress::class,
+
+            \DashboardWidget\Container::class => Schemas\DashboardWidget\Container::class,
+            \DashboardWidget\Widget::class => Schemas\DashboardWidget\Widget::class,
         ];
     }
 }

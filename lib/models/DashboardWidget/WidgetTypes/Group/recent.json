@@ -1,0 +1,11 @@
+{
+    "title": "Payload schema of DashboardWidget\\WidgetTypes\\Group\\GroupRecentWidget",
+    "type": "object",
+    "properties": {
+
+    },
+    "required": [
+
+    ],
+    "additionalProperties": false
+}

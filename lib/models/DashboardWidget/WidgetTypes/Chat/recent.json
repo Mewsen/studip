@@ -1,0 +1,11 @@
+{
+    "title": "Payload schema of DashboardWidget\\WidgetTypes\\Chat\\ChatRecentWidget",
+    "type": "object",
+    "properties": {
+
+    },
+    "required": [
+
+    ],
+    "additionalProperties": false
+}
