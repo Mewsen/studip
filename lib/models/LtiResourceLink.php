@@ -105,10 +105,12 @@ class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
     public function getLaunchURL()
     {
         $registration = $this->deployment->registration;
-        if (!empty($registration) && empty($registration->configs->allow_custom_url) && empty($registration->configs->deep_linking) || empty($registration->configs->launch_url)) {
-            return $registration->configs->launch_url;
+        $registrationConfigs = $registration->getConfigValues();
+
+        if (!empty($registration) && empty($registrationConfigs['allow_custom_url']) && empty($registrationConfigs['deep_linking']) || empty($registrationConfigs['launch_url'])) {
+            return $registrationConfigs['launch_url'];
         }
-        return $registration->configs->launch_url;
+        return $registrationConfigs['launch_url'];
     }
 
     //OAT library LtiResourceLinkInterface and ResourceInterface implementation:
@@ -205,7 +207,7 @@ class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
     {
         $parameters = '';
         if (!empty($this->deployment->registration)) {
-            $parameters = $this->deployment->registration->configs->custom_parameters;
+            $parameters = $this->deployment->registration->config_values['custom_parameters'];
         }
         $parameters .= $this->options['custom_parameters'] ?? '';
         return $parameters;

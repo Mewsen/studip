@@ -30,21 +30,21 @@
                 <? endif ?>
             </dd>
 
-            <? if ($tool->terms_of_use_url) : ?>
+            <? if ($tool->config_values['terms_of_use_url']) : ?>
                 <dt><?= _('Nutzungsbedingungen') ?></dt>
                 <dd>
-                    <a href="<?= htmlReady($tool->terms_of_use_url) ?>">
+                    <a href="<?= htmlReady($tool->config_values['terms_of_use_url']) ?>">
                         <?= Icon::create('link-extern') ?>
-                        <?= htmlReady($tool->terms_of_use_url) ?>
+                        <?= htmlReady($tool->config_values['terms_of_use_url']) ?>
                     </a>
                 </dd>
             <? endif ?>
-            <? if ($tool->privacy_policy_url) : ?>
+            <? if ($tool->config_values['privacy_policy_url']) : ?>
                 <dt><?= _('Datenschutzerklärung') ?></dt>
                 <dd>
-                    <a href="<?= htmlReady($tool->privacy_policy_url) ?>">
+                    <a href="<?= htmlReady($tool->config_values['privacy_policy_url']) ?>">
                         <?= Icon::create('link-extern') ?>
-                        <?= htmlReady($tool->terms_of_use_url) ?>
+                        <?= htmlReady($tool->config_values['terms_of_use_url']) ?>
                     </a>
                 </dd>
             <? endif ?>

@@ -546,7 +546,7 @@ class Course_LtiController extends StudipController
             $this->render_text($message->toHtmlRedirectForm());
         } else {
             //LTI 1.0/1.1
-            $registrationConfigs = $this->registration->config_values;
+            $registrationConfigs = $this->registration->getConfigValues();
             $custom_parameters = explode("\n", $registrationConfigs['custom_parameters']);
             $content_item_return_url = $this->url_for('course/lti/save_link/' . $this->link->id);
 

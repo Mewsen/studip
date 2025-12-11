@@ -4,10 +4,8 @@ namespace Lti;
 use Keyring;
 use Range;
 use SimpleORMap;
-use stdClass;
 use Studip\LTI13a\RegistrationRepository;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
-use User;
 
 /**
  * @property int $id
@@ -54,41 +52,15 @@ class Registration extends SimpleORMap
         return self::findOneBySQL("`id` = ? AND `role`='role'", [$id]);
     }
 
-    public function __get($field)
-    {
-        if ($field !== 'configs') {
-            return parent::__get($field);
-        }
-
-        // Build a plain object with config name/value pairs
-        $configSource = new stdClass();
-        foreach (parent::__get('configs') as $config) {
-            $key = $config->name ?? null;
-
-            if ($key !== null) {
-                $configSource->{$key} = $config->value ?? null;
-            }
-        }
-
-        return new class($configSource) {
-            private $data;
-
-            public function __construct(stdClass $data)
-            {
-                $this->data = $data;
-            }
-
-            public function __get($prop)
-            {
-                return $this->data->{$prop} ?? null;
-            }
-
-            public function __isset($prop)
-            {
-                return isset($this->data->{$prop});
-            }
-        };
-    }
+//    public function __get($field)
+//    {
+//        $configValues = $this->getConfigValues();
+//        if (array_key_exists($field, $configValues)) {
+//            return $configValues[$field];
+//        }
+//
+//        return parent::__get($field);
+//    }
 
     public function getLti1p3Registration(): RegistrationInterface
     {
@@ -132,15 +104,11 @@ class Registration extends SimpleORMap
     }
 
     /**
-     * Checks whether a user may have the permissions to edit the tool.
-     *
-     * @param string $user_id The ID of the user whose edit permissions shall be checked.
-     *
-     * @return bool True, if the user may edit the tool, false otherwise.
+     * Checks whether auth user may have the permissions to edit the registration.
+     * @return bool
      */
-    public function isEditableByUser(string $user_id = null) : bool
+    public function canAuthEdit(): bool
     {
-        $user_id ??= User::findCurrent()->id;
         return $this->range_id === 'global' && $GLOBALS['perm']->have_perm('root')
             || ($this->range_id !== 'global' && $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id));
     }

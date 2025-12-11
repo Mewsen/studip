@@ -63,7 +63,7 @@
                             ['data-dialog' => 'size=default']
                         );
 
-                        if ($link->deployment->registration->isEditableByUser()) {
+                        if ($link->deployment->registration->canAuthEdit()) {
                             $menu->addLink(
                                 $controller->url_for('lti/tool/edit/' . $link->course_id . '/' . $link->deployment->registration_id),
                                 _('LTI-Tool konfigurieren'),

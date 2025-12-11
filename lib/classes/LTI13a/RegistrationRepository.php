@@ -27,13 +27,15 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getPlatform(): PlatformInterface
     {
+        $registrationConfigs = $this->registration->getConfigValues();
+
         if ($this->registration->role === 'platform') {
             return new Platform(
                 $this->registration->client_id,
                 $this->registration->name,
-                $this->registration->configs->issuer,
-                $this->registration->configs->auth_login_url,
-                $this->registration->configs->auth_token_url
+                $registrationConfigs['issuer'],
+                $registrationConfigs['auth_login_url'],
+                $registrationConfigs['auth_token_url']
             );
         }
 
@@ -42,14 +44,16 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getTool(): ToolInterface
     {
+        $registrationConfigs = $this->registration->getConfigValues();
+
         if ($this->registration->role === 'tool') {
             return new Tool(
                 $this->registration->client_id,
                 $this->registration->name,
-                $this->registration->configs->launch_url,
-                $this->registration->configs->auth_init_url,
-                $this->registration->configs->launch_url,
-                $this->registration->configs->deep_linking_url
+                $registrationConfigs['launch_url'],
+                $registrationConfigs['auth_init_url'],
+                $registrationConfigs['launch_url'],
+                $registrationConfigs['deep_linking_url']
             );
         }
 
@@ -84,7 +88,7 @@ class RegistrationRepository implements RegistrationInterface
     public function getPlatformKeyChain(): ?KeyChainInterface
     {
         if ($this->registration->role === 'platform') {
-            if ($this->registration->configs->jwks_url) {
+            if ($this->registration->config_values['jwks_url']) {
                 return null;
             }
 
@@ -97,7 +101,7 @@ class RegistrationRepository implements RegistrationInterface
     public function getToolKeyChain(): ?KeyChainInterface
     {
         if ($this->registration->role === 'tool') {
-            if ($this->registration->configs->jwks_url) {
+            if ($this->registration->config_values['jwks_url']) {
                 return null;
             }
 
@@ -109,11 +113,11 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getPlatformJwksUrl(): ?string
     {
-        return $this->registration->configs->jwks_url ?? PlatformManager::getJwksUrl();
+        return $this->registration->config_values['jwks_url'] ?? PlatformManager::getJwksUrl();
     }
 
     public function getToolJwksUrl(): ?string
     {
-        return $this->registration->configs->jwks_url ?? ToolManager::getJwksUrl();
+        return $this->registration->config_values['jwks_url'] ?? ToolManager::getJwksUrl();
     }
 }
