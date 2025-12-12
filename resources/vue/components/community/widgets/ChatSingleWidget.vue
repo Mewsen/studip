@@ -13,7 +13,7 @@
 <script setup>
 import { computed } from 'vue';
 import WidgetWrapper from '@/vue/components/widget/WidgetWrapper.vue';
-import { useCommunityOverviewStore } from '@/vue/store/pinia/community/communityOverview.js';
+import { useCommunityOverviewStore } from '@/vue/store/pinia/community/community-overview.js';
 
 const props = defineProps({
     widgetData: {

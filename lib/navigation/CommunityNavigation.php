@@ -84,5 +84,8 @@ class CommunityNavigation extends Navigation
 
         $navigation = new Navigation(_('Übersicht'), 'dispatch.php/community');
         $this->addSubNavigation('overview', $navigation);
+
+        $navigation = new Navigation(_('Interessengruppen'), 'dispatch.php/community/groups');
+        $this->addSubNavigation('groups', $navigation);
     }
 }

@@ -7,7 +7,6 @@ class CommunityController extends AuthenticatedController
         parent::before_filter($action, $args);
 
         PageLayout::setTitle(_('Community'));
-
     }
     public function index_action()
     {
@@ -18,11 +17,22 @@ class CommunityController extends AuthenticatedController
 
         $this->render_vue_app(
             Studip\VueApp::create('TheCommunityOverview')
-            ->withProps(
-                [
-                ]
-            )
+                ->withProps(
+                    []
+                )
         );
+    }
 
+    public function groups_action()
+    {
+        if (Navigation::hasItem('/community/groups')) {
+            Navigation::activateItem('/community/groups');
+        }
+        PageLayout::disableSidebar(state: true);
+
+        $this->render_vue_app(
+            Studip\VueApp::create('TheCommunityGroups')
+                ->withPlugin('CommunityGroupsPlugin', 'community-groups')
+        );
     }
 }
