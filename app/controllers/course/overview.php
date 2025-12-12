@@ -49,7 +49,7 @@ class Course_OverviewController extends AuthenticatedController
         }
 
         // Fetch news
-        $response   = $this->relayWithRedirect('news/display/' . $this->course_id);
+        $response   = $this->relayWithRedirect('news/display/' . $this->course_id . '/true');
         $this->news = $response->body;
 
         // Fetch  votes
@@ -109,7 +109,7 @@ class Course_OverviewController extends AuthenticatedController
         }
 
         $connections = StudygroupCourse::countBySql(
-            "`studygroup_id` = :cid OR `course_id` = :cid", 
+            "`studygroup_id` = :cid OR `course_id` = :cid",
             [
                 'cid' => $this->course_id
             ]

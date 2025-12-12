@@ -81,8 +81,11 @@ class NewsController extends StudipController
      *
      * @param String $range_id range id of the news to get displayed
      */
-    public function display_action($range_id)
+    public function display_action($range_id, $new_news = false)
     {
+
+        $this->mark_as_read = $new_news;
+
         if (!$range_id) {
             $this->set_status(400);
             $this->render_nothing();
@@ -164,6 +167,8 @@ class NewsController extends StudipController
         $this->nobody         = !$GLOBALS['user']->id || $GLOBALS['user']->id === 'nobody';
 
         $this->visit();
+
+        // TODO how do I set all news to read?
     }
 
     private function visit()
