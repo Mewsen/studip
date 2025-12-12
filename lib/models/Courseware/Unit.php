@@ -131,9 +131,23 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             return false;
         }
 
-        return
-            (empty($this->visible_start_date) || $this->visible_start_date <= strtotime('today'))
-            && (empty($this->visible_end_date) || $this->visible_end_date >= strtotime('today'));
+        $todayStart = strtotime('today');
+        $todayDateInt = (int) date('Ymd', $todayStart);
+
+        $isAfterStart = true;
+        if (!empty($this->visible_start_date)) {
+                $startDateInt = (int) date('Ymd', $this->visible_start_date);
+                $isAfterStart = $startDateInt <= $todayDateInt;
+        }
+
+        $isBeforeEnd = true;
+        if (!empty($this->visible_end_date)) {
+            $endDateString = date('Y-m-d', $this->visible_end_date) . ' 23:59:59';
+            $visibleEndOfDay = strtotime($endDateString);
+            $isBeforeEnd = $visibleEndOfDay >= $todayStart;
+        }
+
+        return $isAfterStart && $isBeforeEnd;
     }
 
     public function canEdit(User $user): bool
