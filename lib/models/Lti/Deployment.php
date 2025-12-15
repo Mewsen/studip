@@ -6,7 +6,7 @@ use SimpleORMap;
 
 class Deployment extends SimpleORMap
 {
-    protected static function configure($config = [])
+    protected static function configure($config = []): void
     {
         $config['db_table'] = 'lti_deployments';
 
@@ -16,9 +16,17 @@ class Deployment extends SimpleORMap
             'assoc_foreign_key' => 'id',
         ];
 
+        // TODO:: user new model class ResourceLink
         $config['has_many']['resource_links'] = [
             'class_name' => LtiResourceLink::class,
             'assoc_foreign_key' => 'deployment_id',
+            'on_delete' => 'delete'
+        ];
+
+        // TODO:: rename link_id to deployment_id
+        $config['has_many']['grades'] = [
+            'class_name' => Grade::class,
+            'assoc_foreign_key' => 'link_id',
             'on_delete' => 'delete'
         ];
 
@@ -42,5 +50,21 @@ class Deployment extends SimpleORMap
         }
 
         return $base;
+    }
+
+    /**
+     * Get the custom_parameters of this entry.
+     * TODO:: refactor this method
+     *
+     * @deprecated
+     */
+    public function getCustomParameters()
+    {
+        $parameters = '';
+        if (!empty($this->registration->config_values['custom_parameters'])) {
+            $parameters .= $this->registration->config_values['custom_parameters'] . "\n";
+        }
+        $parameters .= $this->options['custom_parameters'] ?? '';
+        return $parameters;
     }
 }

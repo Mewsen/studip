@@ -1,5 +1,6 @@
 <?php
 
+use Lti\Deployment;
 use OAT\Library\Lti1p3Core\Tool\Tool;
 
 /**
@@ -35,7 +36,7 @@ use OAT\Library\Lti1p3Core\Tool\Tool;
  * @property string $terms_of_use_url database column
  * @property string $privacy_policy_url database column
  * @property string|null $data_protection_notes database column
- * @property SimpleORMapCollection<LtiDeployment> $links has_many LtiDeployment
+ * @property SimpleORMapCollection<Deployment> $links has_many Deployment
  * @property Studip\OAuth2\Models\Client|null $oauth2_client has_one Studip\OAuth2\Models\Client
  */
 
@@ -49,8 +50,8 @@ class LtiTool extends SimpleORMap
         $config['db_table'] = 'lti_tools';
 
         $config['has_many']['deployments'] = [ //formerly: links
-            'class_name'        => LtiDeployment::class,
-            'assoc_foreign_key' => 'tool_id',
+            'class_name'        => Deployment::class,
+            'assoc_foreign_key' => 'registration_id',
             'on_delete'         => 'delete'
         ];
 

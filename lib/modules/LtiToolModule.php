@@ -1,4 +1,7 @@
 <?php
+
+use Lti\Grade;
+
 /**
  * LtiToolModule.php - LTI consumer API for Stud.IP
  *
@@ -25,7 +28,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         }
 
         NotificationCenter::on('UserDidDelete', function ($event, $user) {
-            LtiGrade::deleteBySQL('user_id = ?', [$user->id]);
+            Grade::deleteBySQL('user_id = ?', [$user->id]);
         });
 
         NotificationCenter::on('CourseDidDelete', function ($event, $course) {

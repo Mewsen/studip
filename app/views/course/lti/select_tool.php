@@ -1,8 +1,9 @@
 <?php
 /**
  * @var StudipController $controller
- * @var LtiDeployment[] $global_tool_deployments
+ * @var Lti\Deployment[] $global_tool_deployments
  */
+
 ?>
 <form class="default" method="post" action="<?= $controller->link_for('course/lti/select_tool_redirect') ?>"
       data-dialog>

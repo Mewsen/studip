@@ -1,5 +1,7 @@
 <?php
 
+use Lti\Deployment;
+use Lti\Grade;
 use Lti\Registration;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
@@ -126,7 +128,7 @@ class Course_LtiController extends StudipController
 
         //Check for error messages:
         if (Request::get('deployment_id') && (Request::submitted('lti_msg') || Request::submitted('lti_errormsg'))) {
-            $deployment = LtiDeployment::find(Request::get('deployment_id'));
+            $deployment = Deployment::find(Request::get('deployment_id'));
             if ($deployment) {
                 //Get the resource link for the deployment and display the messages:
                 $link = \LtiResourceLink::findOneBySQL(
@@ -148,7 +150,7 @@ class Course_LtiController extends StudipController
     public function select_tool_action()
     {
         //The permission check is done in the before filter.
-        $this->global_tool_deployments = LtiDeployment::findBySQL(
+        $this->global_tool_deployments = Deployment::findBySQL(
             "JOIN `lti_registrations`
             ON `lti_deployments`.`registration_id` = `lti_registrations`.`id`
             WHERE
@@ -185,7 +187,7 @@ class Course_LtiController extends StudipController
                 $this->redirect('lti/tool/add/' . $this->course->id);
             } else {
                 //Load the selected deployment and check if it can be used in the course.
-                $selected_deployment = LtiDeployment::find($selected_deployment_id);
+                $selected_deployment = Deployment::find($selected_deployment_id);
                 if (!$selected_deployment || $selected_deployment->registration->range_id !== 'global') {
                     PageLayout::postError(_('Das ausgewählte LTI-Tool kann nicht genutzt werden.'));
                     $this->redirect('course/lti/select_tool');
@@ -473,7 +475,7 @@ class Course_LtiController extends StudipController
         }
 
         //Create a deployment for deep linking:
-        $this->deployment = new LtiDeployment();
+        $this->deployment = new Deployment();
         $this->deployment->registration_id = $this->registration->id;
         $this->deployment->purpose = 'deep_linking';
         if ($this->deployment->store()) {
@@ -653,7 +655,7 @@ class Course_LtiController extends StudipController
                 // we only support selecting a single content item
                 $item = $content_items['@graph'][0];
 
-                $lti_data = new LtiDeployment();
+                $lti_data = new Deployment();
                 $lti_data->title = (string) $item['title'];
                 $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
                 $lti_data->registration_id = $registration->id;
@@ -692,11 +694,11 @@ class Course_LtiController extends StudipController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param LtiDeployment $deployment data of LTI content block
+     * @param Deployment $deployment data of LTI content block
      * @param Registration $registration
      * @return LtiLink LTI link representation
      */
-    public function getLtiLink(LtiDeployment $deployment, Registration $registration): LtiLink
+    public function getLtiLink(Deployment $deployment, Registration $registration): LtiLink
     {
         $registrationConfigs = $registration->getConfigValues();
 
@@ -836,7 +838,7 @@ class Course_LtiController extends StudipController
         $message_id = trim($header->imsx_messageIdentifier);
         $operation = $body->getName();
         $user_id = trim($body->resultRecord->sourcedGUID->sourcedId);
-        $grade = new LtiGrade([$resourceLink->id, $user_id]);
+        $grade = new Grade([$resourceLink->id, $user_id]);
 
         $this->message_id = uniqid();
         $this->message_ref = $message_id;

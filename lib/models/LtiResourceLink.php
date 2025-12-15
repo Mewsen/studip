@@ -13,6 +13,7 @@
  */
 
 
+use Lti\Deployment;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
@@ -30,7 +31,7 @@ use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
  * @property JSONArrayObject|null $options database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property ?LtiDeployment $deployment related object
+ * @property ?Deployment $deployment related object
  * @property ?Course $course related object
  */
 class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
@@ -47,7 +48,7 @@ class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
         ];
 
         $config['belongs_to']['deployment'] = [
-            'class_name'  => LtiDeployment::class,
+            'class_name'  => Deployment::class,
             'foreign_key' => 'deployment_id'
         ];
 

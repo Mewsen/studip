@@ -8,7 +8,7 @@
             <tr>
                 <th><?= _('Abschnitt') ?></th>
                 <th style="text-align: right;"><?= _('Bewertung') ?></th>
-        </tr>
+            </tr>
         </thead>
 
         <tbody>
@@ -16,7 +16,7 @@
                 <tr>
                     <td><?= htmlReady($lti_data->title) ?></td>
                     <td style="text-align: right;">
-                        <? if ($grade = LtiGrade::find([$lti_data->deployment_id, $GLOBALS['user']->id])): ?>
+                        <? if ($grade = Lti\Grade::find([$lti_data->deployment_id, User::findCurrent()->id])): ?>
                             <?= sprintf('%.0f%%', $grade->score * 100) ?>
                         <? else: ?>
                             &ndash;
