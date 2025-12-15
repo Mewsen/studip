@@ -41,8 +41,8 @@ class Widget extends SchemaProvider
     {
         return [
             'payload' => $resource->payload->getArrayCopy(),
-            'type' => $resource->type,
-            'scope' => $resource->scope,
+            'widget-type' => $resource->type,
+            'widget-scope' => $resource->scope,
         ];
     }
 
