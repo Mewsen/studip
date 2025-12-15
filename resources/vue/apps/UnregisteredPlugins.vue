@@ -29,7 +29,7 @@
             <th class="actions">{{ $gettext('Aktionen') }}</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="plugins.length">
             <tr v-for="(plugin, id) in sortedPlugins"
                 :key="id">
                 <td>{{ plugin.pluginname }}</td>
@@ -49,19 +49,20 @@
                     </form>
                 </td>
             </tr>
-
+        </tbody>
+        <tbody v-else>
+            <tr><td>{{ $gettext('Es sind keine nicht registrierten Plugins vorhanden') }}</td></tr>
         </tbody>
     </table>
 
 </template>
 <script>
 
-import StudipActionMenu from "../components/StudipActionMenu.vue";
 import StudipIcon from "../components/StudipIcon.vue";
 
 export default {
     name: 'UnregisteredPlugins',
-    components: {StudipIcon, StudipActionMenu},
+    components: {StudipIcon},
     props: {
         plugins: {
             type: Array,
