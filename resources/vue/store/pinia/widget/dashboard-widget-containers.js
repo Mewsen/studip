@@ -1,8 +1,10 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { api } from '../kitsu-api.js';
+import { useWidgetStore } from './dashboard-widgets.js';
 
 export const useContainerStore = defineStore('containerStore', () => {
+    const widgetStore = useWidgetStore();
     const container = ref(null);
     const isLoading = ref(false);
 
@@ -23,6 +25,15 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
         return false;
     });
+
+    function layoutForBreakpoint(breakpoint)  {
+        const layouts = container.value.payload;
+        if (!layouts) {
+            return {};
+        }
+
+        return layouts[breakpoint];
+    };
 
     async function fetchOrCreateContainer(context, groupId) {
         isLoading.value = true;
@@ -49,14 +60,35 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
     }
 
-    async function fetchContainer(containerId) {
+    async function fetchContainer(containerId, params = {}) {
         isLoading.value = true;
         try {
-            const response = await api.fetch('dashboard-widget-containers', containerId);
+            const response = await api.fetch(`dashboard-widget-containers/${containerId}`, {
+                params: params,
+            });
+
             container.value = response.data;
         } catch (error) {
             console.error(`Fehler beim Laden des Containers ${containerId}:`, error);
             container.value = null;
+            throw error;
+        } finally {
+            isLoading.value = false;
+        }
+    }
+
+    async function fetchContainerWidgets(containerId) {
+        isLoading.value = true;
+        widgetStore.clearRecords();
+        try {
+            const { data } = await api.get(`dashboard-widget-containers/${containerId}/dashboard-widgets`);
+            data.forEach((item) => {
+                if (item.type === 'dashboard-widgets') {
+                    widgetStore.storeRecord(item);
+                }
+            });
+        } catch (error) {
+            console.error(`Fehler beim Laden der Widgets für Container ${containerId}:`, error);
             throw error;
         } finally {
             isLoading.value = false;
@@ -78,14 +110,59 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
     }
 
+    async function addWidget(widgetType, widgetScope, payload, position, breakpoint) {
+        const containerId = container.value.id;
+
+        const newWidgetData = {
+            'widget-type': widgetType,
+            'widget-scope': widgetScope,
+            payload: payload,
+            position: position,
+            breakpoint: breakpoint,
+        };
+
+        try {
+            await api.create(
+                `dashboard-widget-containers/${containerId}/dashboard-widgets`,
+                newWidgetData
+            );
+            await fetchContainerWidgets(container.value.id);
+            await fetchContainer(container.value.id);
+        } catch (error) {
+            console.error('Fehler beim Hinzufügen des Widgets:', error);
+            throw error;
+        }
+    }
+
+    async function deleteWidget(containerId, widgetId) {
+        try {
+            await api.delete(`dashboard-widget-containers/${containerId}/dashboard-widgets`, widgetId);
+            await fetchContainerWidgets(container.value.id);
+            await fetchContainer(container.value.id);
+        } catch (error) {
+            console.error('Fehler beim Löschen des Widgets:', error);
+            throw error;
+        }
+    }
+
+    async function updateLayout() {
+        return true;
+    }
+
     return {
         container,
         isLoading,
         getContainerId,
         getLayout,
         hasLayout,
+        layoutForBreakpoint,
         fetchOrCreateContainer,
         fetchContainer,
+        fetchContainerWidgets,
         saveLayout,
+        addWidget,
+        deleteWidget,
+
+        updateLayout,
     };
 });

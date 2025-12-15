@@ -40,9 +40,11 @@ class Widget extends SchemaProvider
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
+            'container-id' => $resource->container_id,
             'payload' => $resource->payload->getArrayCopy(),
             'widget-type' => $resource->type,
             'widget-scope' => $resource->scope,
+            'widget-component' => $resource->type . '.' . $resource->scope,
         ];
     }
 

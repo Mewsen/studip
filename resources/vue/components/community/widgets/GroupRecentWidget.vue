@@ -1,5 +1,5 @@
 <template>
-    <WidgetWrapper :title="widgetTitle" v-bind="$attrs">
+    <WidgetWrapper :title="widgetTitle" :widget-data="props.widgetData" v-bind="$attrs">
         <template #content>
         </template>
 

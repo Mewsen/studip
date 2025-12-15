@@ -1,15 +1,16 @@
 <template>
     <GridLayout
+        v-if="isMiscLoaded"
         v-model:layout="layout"
+        :breakpoints="miscStore.breakpointsWidth"
+        :cols="miscStore.breakpointsCols"
         :responsive-layouts="presetLayouts"
-        :row-height="30"
+        :row-height="rowHeight"
         :is-draggable="draggable"
         :is-resizable="resizable"
-        responsive
-        :breakpoints="breakpoints"
-        :cols="cols"
+        :responsive="true"
         use-css-transforms
-        @breakpoint-changed="breakpointChangedEvent"
+        @breakpoint-changed="onBreakpointChanged"
     >
         <GridItem
             v-for="item in layout"
@@ -30,191 +31,93 @@
                     : null
             "
         >
-            <component
-                :is="getWidgetComponent(item.data.type)"
-                v-if="item.data && item.data.type && getWidgetComponent(item.data.type)"
+            <widget-renderer
                 :widget-id="item.i"
-                :widget-data="item.data"
-                :initial-config="item.data.config"
+                :widget-components="props.widgetComponents"
                 :is-editing="draggable"
-                @update-config="handleWidgetUpdate"
-                @delete-widget="handleWidgetDelete"
+                @delete-widget="onDeleteWidget"
+                @update-config="onUpdateWidget"
             />
-
-            <div v-else class="widget-error-container">
-                Widget "{{ item.data?.type || 'UNBEKANNT' }}" konnte nicht geladen werden.
-            </div>
         </GridItem>
     </GridLayout>
+    <div v-if="showLoadingError && !isMiscLoaded">
+        <p>{{ $gettext('Layout-Einstellungen konnten nicht geladen werden.') }}</p>
+    </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, type PropType } from 'vue';
-
+<script setup>
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { GridLayout, GridItem } from 'grid-layout-plus';
-import type { Breakpoint, LayoutItem as BaseLayoutItem } from 'grid-layout-plus';
 
-type BreakpointKey = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
-type BreakpointMap = Record<BreakpointKey, number>;
-interface WidgetData {
-    type: string;
-    config: Record<string, any>;
-}
-interface CustomLayoutItem extends BaseLayoutItem {
-    i: string;
-    data: WidgetData;
-}
-type Layout = CustomLayoutItem[];
-type PresetLayoutMap = Record<string, Layout>;
-type WidgetComponentMap = Record<string, any>;
+import WidgetRenderer from '@/vue/components/widget/WidgetRenderer.vue';
+
+import { useContainerStore } from '@/vue/store/pinia/widget/dashboard-widget-containers.js';
+import { useWidgetMiscStore } from '@/vue/store/pinia/widget/dashboard-widget-misc.js';
+
+const miscStore = useWidgetMiscStore();
+const containerStore = useContainerStore();
 
 const props = defineProps({
     widgetComponents: {
-        type: Object as PropType<WidgetComponentMap>,
+        type: Object,
         required: true,
     },
-    initialLayoutData: {
-        type: Object as PropType<Record<string, Layout>>,
-        default: () => ({}),
+    rowHeight: {
+        type: Number,
+        default: 60
+    }
+});
+
+const isMiscLoaded = ref(false);
+const showLoadingError = ref(false);
+const currentBreakpoint = ref(null);
+const draggable = ref(true);
+const resizable = ref(true);
+let loadingTimer = null;
+
+onBeforeMount(async () => {
+    loadingTimer = setTimeout(() => {
+        showLoadingError.value = true;
+    }, 800);
+    await miscStore.fetchMisc();
+    isMiscLoaded.value = true;
+    clearTimeout(loadingTimer);
+    showLoadingError.value = false;
+});
+
+watch(
+    () => miscStore.breakpoints,
+    (bps) => {
+        if (isMiscLoaded.value && bps && !currentBreakpoint.value) {
+            currentBreakpoint.value = bps[bps.length - 1];
+        }
     },
-    breakpointOrder: {
-        type: Array as PropType<BreakpointKey[]>,
-        default: () => ['xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs'],
+    { immediate: true }
+);
+
+const layout = computed({
+    get() {
+        if (!currentBreakpoint.value) return [];
+        return containerStore.layoutForBreakpoint(currentBreakpoint.value);
     },
-    breakpoints: {
-        type: Object as PropType<BreakpointMap>,
-        default: () => ({
-            xxs: 0,
-            xs: 400,
-            sm: 768,
-            md: 990,
-            lg: 1410, // 1440px - 15px padding
-            xl: 1890, // 1920px - 15px padding
-            xxl: 2530, // 2560 - 15px padding
-        }),
-    },
-    cols: {
-        type: Object as PropType<BreakpointMap>,
-        default: () => ({
-            xxs: 2,
-            xs: 4,
-            sm: 8,
-            md: 10,
-            lg: 12,
-            xl: 16,
-            xxl: 20,
-        }),
+    set(newLayout) {
+        containerStore.updateLayout(currentBreakpoint.value, newLayout);
     },
 });
 
-const presetLayouts = reactive<PresetLayoutMap>(props.initialLayoutData);
-
-function breakpointChangedEvent(newBreakpoint: Breakpoint, newLayout: Layout) {
-    // console.info('BREAKPOINT CHANGED breakpoint=', newBreakpoint, ', layout: ', newLayout);
+function onBreakpointChanged(bp) {
+    currentBreakpoint.value = bp;
 }
 
-function getWidgetComponent(type: string): any {
-    return props.widgetComponents[type];
+function onDeleteWidget() {
+    //todo
 }
 
-const generateFlowLayout = (baseLayout: Layout, newCols: number): Layout => {
-    let newLayout: Layout = [];
-    let currentY = 0;
-    let currentX = 0;
-    let maxHInCurrentRow = 0;
-
-    const sortedBaseLayout = [...baseLayout].sort((a, b) => {
-        if (a.y !== b.y) {
-            return a.y - b.y;
-        }
-        return a.x - b.x;
-    });
-
-    sortedBaseLayout.forEach((item) => {
-        const newW = Math.min(item.w, newCols);
-
-        if (currentX + newW > newCols) {
-            currentY += maxHInCurrentRow;
-            currentX = 0;
-            maxHInCurrentRow = 0;
-        }
-
-        newLayout.push({
-            ...item,
-            x: currentX,
-            y: currentY,
-            w: newW,
-        });
-
-        currentX += newW;
-        maxHInCurrentRow = Math.max(maxHInCurrentRow, item.h);
-    });
-
-    return newLayout;
-};
-
-function initializeResponsiveLayouts() {
-    const breakpointOrder = props.breakpointOrder;
-    const cols = props.cols;
-    let baseLayout: Layout | null = null;
-    let baseBreakpoint: BreakpointKey | null = null;
-
-    type BreakpointKey = keyof typeof cols;
-
-    for (let i = breakpointOrder.length - 1; i >= 0; i--) {
-        const bpKeyString = breakpointOrder[i];
-
-        const bpKey = bpKeyString as BreakpointKey;
-
-        if (presetLayouts[bpKey] && presetLayouts[bpKey].length > 0) {
-            baseLayout = presetLayouts[bpKey];
-            baseBreakpoint = bpKeyString;
-            break;
-        }
-    }
-
-    if (!baseLayout || !baseBreakpoint) {
-        console.error('FEHLER: Es konnte kein definiertes Basis-Layout gefunden werden.');
-        return;
-    }
-
-    const breakpointKeys = Object.keys(cols) as BreakpointKey[];
-    const baseIndex = breakpointOrder.indexOf(baseBreakpoint);
-
-    for (const breakpointKey of breakpointKeys) {
-        if (presetLayouts[breakpointKey].length === 0) {
-            const currentBpIndex = breakpointOrder.indexOf(breakpointKey as BreakpointKey);
-
-            const baseCols = cols[baseBreakpoint as BreakpointKey];
-            const targetCols = cols[breakpointKey];
-
-            if (currentBpIndex >= baseIndex) {
-                if (baseCols !== targetCols) {
-                    presetLayouts[breakpointKey] = generateFlowLayout(baseLayout, targetCols);
-                } else {
-                    presetLayouts[breakpointKey] = baseLayout.map((item) => ({ ...item }));
-                }
-            } else {
-                const newCols = cols[breakpointKey];
-                const newLayout = generateFlowLayout(baseLayout, newCols);
-                presetLayouts[breakpointKey] = newLayout;
-            }
-        }
-    }
+function onUpdateWidget() {
+    //todo
 }
 
-function handleWidgetUpdate() {}
-
-function handleWidgetDelete() {}
-
-initializeResponsiveLayouts();
-
-const draggable = ref(true);
-const resizable = ref(true);
-
-const layout = ref(presetLayouts.lg);
-
-function handleKeyboardLayoutChange(event: KeyboardEvent, itemId: string) {
+function handleKeyboardLayoutChange(event, itemId) {
     if (!draggable.value) return;
 
     const itemIndex = layout.value.findIndex((item) => item.i === itemId);

@@ -19,19 +19,11 @@
 
 <script setup>
 import StudipDialog from '@/vue/components/StudipDialog.vue';
-import { defineProps, defineEmits } from 'vue';
-
-const props = defineProps({
-    currentConfig: Object, 
-    widgetId: [String, Number],
-});
 
 const emit = defineEmits(['update-config', 'close']);
 
 function saveConfig() {
-    const configToSend = JSON.parse(JSON.stringify(props.currentConfig));
-    
-    emit('update-config', configToSend);
+    emit('update-config');
 }
 
 function handleClose() {
