@@ -698,10 +698,7 @@ class Course_LtiController extends StudipController
      */
     public function getLtiLink(LtiDeployment $deployment, Registration $registration): LtiLink
     {
-        $launch_url = $registration->config_values['launch_url'];
-        $consumer_key = $registration->config_values['consumer_key'];
-        $consumer_secret = $registration->config_values['consumer_secret'];
-        $oauth_signature_method = $registration->config_values['oauth_signature_method'];
+        $registrationConfigs = $registration->getConfigValues();
 
         $roles = $this->edit_perm ? 'Instructor' : 'Learner';
         $custom_parameters = explode("\n", $deployment->getCustomParameters());
@@ -710,26 +707,31 @@ class Course_LtiController extends StudipController
         $tc_profile_url = $this->url_for('course/lti/profile/' . $deployment->id, ['cid' => null]);
 
         // set up launch request
-        $lti_link = new LtiLink($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method);
-        $lti_link->setResource($deployment->id, $deployment->title, $description);
-        $lti_link->setUser($GLOBALS['user']->id, $roles, $registration->config_values['send_lis_person']);
-        $lti_link->setCourse($deployment->course_id);
-        $lti_link->addVariable('ToolConsumerProfile.url', $tc_profile_url);
-        $lti_link->addLaunchParameters([
+        $ltiLink = new LtiLink(
+            $registrationConfigs['launch_url'],
+            $registrationConfigs['consumer_key'],
+            $registrationConfigs['consumer_secret'],
+            $registrationConfigs['oauth_signature_method']
+        );
+        $ltiLink->setResource($deployment->id, $deployment->title, $description);
+        $ltiLink->setUser(User::findCurrent()->id, $roles, $registrationConfigs['send_lis_person']);
+        $ltiLink->setCourse($deployment->course_id);
+        $ltiLink->addVariable('ToolConsumerProfile.url', $tc_profile_url);
+        $ltiLink->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
             'launch_presentation_document_target' => $deployment->options['document_target'],
             'lis_outcome_service_url' => $lis_outcome_service_url,
-            'lis_result_sourcedid' => $GLOBALS['user']->id
+            'lis_result_sourcedid' => User::findCurrent()->id
         ]);
 
         foreach ($custom_parameters as $param) {
             if (strpos($param, '=') !== false) {
                 [$key, $value] = explode('=', $param, 2);
-                $lti_link->addCustomParameter(trim($key), trim($value));
+                $ltiLink->addCustomParameter(trim($key), trim($value));
             }
         }
 
-        return $lti_link;
+        return $ltiLink;
     }
 
     /**
@@ -819,9 +821,9 @@ class Course_LtiController extends StudipController
      */
     public function outcome_action(LtiResourceLink $resourceLink)
     {
-        $registration = $resourceLink->deployment->registration;
+        $registrationConfigs = $resourceLink->deployment->registration->getConfigValues();
 
-        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $registration->config_values['consumer_secret'], '')) {
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $registrationConfigs['consumer_secret'], '')) {
             throw new Exception('Could not verify request.');
         }
 
