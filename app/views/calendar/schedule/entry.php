@@ -14,7 +14,7 @@
             ->withProps([
                 'autofocus' => true,
                 'colours' => collect($GLOBALS['PERS_TERMIN_KAT'])->map(
-                    fn($data, $id) => ['id' => $id, 'colour' => $data['bgcolor']]
+                    fn($data, $id) => ['id' => $id, 'colour' => $data['border_color']]
                 )->values(),
                 'model-value' => $entry->colour_id,
             ]) ?>
