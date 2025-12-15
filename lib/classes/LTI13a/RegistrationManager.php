@@ -23,11 +23,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        if (!$deployment) {
-            return null;
-        }
-
-        return Registration::findByDeploymentId($deployment->id)?->toLti1p3Registration($deployment);
+        return $deployment->registration?->toLti1p3Registration($deployment);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface

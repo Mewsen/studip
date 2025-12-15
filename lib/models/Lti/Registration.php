@@ -90,57 +90,6 @@ class Registration extends SimpleORMap
         return $configValues;
     }
 
-    public static function updateOrCreate(array $attributes, array $values = []): self
-    {
-        $whereClauses = [];
-        foreach ($attributes as $key => $value) {
-            $whereClauses[] = "$key = :$key";
-        }
-
-        $record = static::findOneBySQL(implode(' AND ', $whereClauses), $attributes);
-
-        if ($record) {
-            $record->setData($values);
-            $record->store();
-            return $record;
-        }
-
-        return static::create(array_merge($attributes, $values));
-    }
-
-
-    public static function all(): array
-    {
-        return static::findBySQL("TRUE");
-    }
-
-    public static function findByDeploymentId(int $deploymentId): ?self
-    {
-        return self::findOneBySQL(
-            "JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `deployments`.`id` = :deployment_id",
-            [
-                'deployment_id' => $deploymentId
-            ]
-        );
-    }
-
-    public static function findByDeploymentIdAndIssuer(int $deploymentId, string $issuer): ?self
-    {
-        return self::findOneBySQL(
-            "JOIN `lti_registration_configs` configs ON (`lti_registrations`.`id` = `configs`.`registration_id`)
-                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `lti_registrations`.`role` = 'platform'
-                AND `configs`.`name` = 'issuer'
-                AND  `configs`.`value` = :issuer
-                AND `deployments`.`id` = :deployment_id",
-            [
-                'issuer' => $issuer,
-                'deployment_id' => $deploymentId
-            ]
-        );
-    }
-
     /**
      * Checks whether auth user may have the permissions to edit the registration.
      * @return bool
@@ -167,5 +116,26 @@ class Registration extends SimpleORMap
         }
 
         return $base;
+    }
+
+    public static function all(): array
+    {
+        return static::findBySQL("TRUE");
+    }
+
+    public static function findByDeploymentIdAndIssuer(int $deploymentId, string $issuer): ?self
+    {
+        return self::findOneBySQL(
+            "JOIN `lti_registration_configs` configs ON (`lti_registrations`.`id` = `configs`.`registration_id`)
+                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
+                WHERE `lti_registrations`.`role` = 'platform'
+                AND `configs`.`name` = 'issuer'
+                AND  `configs`.`value` = :issuer
+                AND `deployments`.`id` = :deployment_id",
+            [
+                'issuer' => $issuer,
+                'deployment_id' => $deploymentId
+            ]
+        );
     }
 }
