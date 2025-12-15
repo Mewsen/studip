@@ -342,8 +342,8 @@ class Course_LtiController extends StudipController
             //LTI 1.0/1.1
             $this->resourceLink = $resourceLink;
             $this->deployment = $deployment;
-            $ltiLink = $this->getLtiLink($this->deployment);
-            $this->launchUrl = $this->deployment->getLaunchURL();
+            $ltiLink = $this->getLtiLink($this->deployment, $registration);
+            $this->launchUrl = $registration->config_values['launch_url'];
             $this->launchData = $ltiLink->getBasicLaunchData();
             $this->signature = $ltiLink->getLaunchSignature($this->launchData);
         }
@@ -692,32 +692,32 @@ class Course_LtiController extends StudipController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param   LtiDeployment $lti_data data of LTI content block
-     *
-     * @return  LtiLink  LTI link representation
+     * @param LtiDeployment $deployment data of LTI content block
+     * @param Registration $registration
+     * @return LtiLink LTI link representation
      */
-    public function getLtiLink($lti_data)
+    public function getLtiLink(LtiDeployment $deployment, Registration $registration): LtiLink
     {
-        $launch_url = $lti_data->getLaunchURL();
-        $consumer_key = $lti_data->getConsumerKey();
-        $consumer_secret = $lti_data->getConsumerSecret();
-        $oauth_signature_method = $lti_data->getOauthSignatureMethod();
+        $launch_url = $registration->config_values['launch_url'];
+        $consumer_key = $registration->config_values['consumer_key'];
+        $consumer_secret = $registration->config_values['consumer_secret'];
+        $oauth_signature_method = $registration->config_values['oauth_signature_method'];
 
         $roles = $this->edit_perm ? 'Instructor' : 'Learner';
-        $custom_parameters = explode("\n", $lti_data->getCustomParameters());
-        $description = kill_format($lti_data->description);
-        $lis_outcome_service_url = $this->url_for('course/lti/outcome/' . $lti_data->id, ['cid' => null]);
-        $tc_profile_url = $this->url_for('course/lti/profile/' . $lti_data->id, ['cid' => null]);
+        $custom_parameters = explode("\n", $deployment->getCustomParameters());
+        $description = kill_format($deployment->description);
+        $lis_outcome_service_url = $this->url_for('course/lti/outcome/' . $deployment->id, ['cid' => null]);
+        $tc_profile_url = $this->url_for('course/lti/profile/' . $deployment->id, ['cid' => null]);
 
         // set up launch request
         $lti_link = new LtiLink($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method);
-        $lti_link->setResource($lti_data->id, $lti_data->title, $description);
-        $lti_link->setUser($GLOBALS['user']->id, $roles, $lti_data->getSendLisPerson());
-        $lti_link->setCourse($lti_data->course_id);
+        $lti_link->setResource($deployment->id, $deployment->title, $description);
+        $lti_link->setUser($GLOBALS['user']->id, $roles, $registration->config_values['send_lis_person']);
+        $lti_link->setCourse($deployment->course_id);
         $lti_link->addVariable('ToolConsumerProfile.url', $tc_profile_url);
         $lti_link->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => $lti_data->options['document_target'],
+            'launch_presentation_document_target' => $deployment->options['document_target'],
             'lis_outcome_service_url' => $lis_outcome_service_url,
             'lis_result_sourcedid' => $GLOBALS['user']->id
         ]);
@@ -815,13 +815,13 @@ class Course_LtiController extends StudipController
     /**
      * Handle outcome service callback request by the LTI tool.
      *
-     * @param   int $id    link id
+     * @param LtiResourceLink $resourceLink
      */
-    public function outcome_action($id)
+    public function outcome_action(LtiResourceLink $resourceLink)
     {
-        $lti_data = \LtiResourceLink::find($id);
+        $registration = $resourceLink->deployment->registration;
 
-        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $lti_data->deployment->getConsumerSecret(), '')) {
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $registration->config_values['consumer_secret'], '')) {
             throw new Exception('Could not verify request.');
         }
 
@@ -834,7 +834,7 @@ class Course_LtiController extends StudipController
         $message_id = trim($header->imsx_messageIdentifier);
         $operation = $body->getName();
         $user_id = trim($body->resultRecord->sourcedGUID->sourcedId);
-        $grade = new LtiGrade([$id, $user_id]);
+        $grade = new LtiGrade([$resourceLink->id, $user_id]);
 
         $this->message_id = uniqid();
         $this->message_ref = $message_id;
@@ -842,7 +842,7 @@ class Course_LtiController extends StudipController
         $this->status_code = 'success';
         $this->operation = $operation;
 
-        if (!CourseMember::exists([$lti_data->course_id, $user_id])) {
+        if (!CourseMember::exists([$resourceLink->course_id, $user_id])) {
             $this->status_severity = 'error';
             $this->status_code = 'failure';
             $this->description = 'incorrect sourcedId: ' . $user_id;

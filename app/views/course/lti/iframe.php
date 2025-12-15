@@ -2,6 +2,7 @@
 /**
  * @var StudipController $controller
  * @var ?LtiResourceLink $resourceLink
+ * @var string $launchUrl
  * @var array $launchData
  * @var string $signature
  * @var string $ltiVersion
@@ -26,7 +27,7 @@
                 <?= _('Das LTI-Tool kann nicht aufgerufen werden.') ?>
             <? endif ?>
         <? else : ?>
-            <form name="ltiLaunchForm" method="post" action="<?= htmlReady($resourceLink->deployment->getLaunchUrl()) ?>">
+            <form name="ltiLaunchForm" method="post" action="<?= htmlReady($launchUrl) ?>">
                 <? foreach ($launchData as $key => $value): ?>
                     <input type="hidden" name="<?= htmlReady($key) ?>" value="<?= htmlReady($value, false) ?>">
                 <? endforeach ?>

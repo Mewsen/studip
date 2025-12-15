@@ -46,46 +46,6 @@ class LtiDeployment extends SimpleORMap
     }
 
     /**
-     * Get the launch_url of this entry.
-     *
-     * @deprecated
-     */
-    public function getLaunchURL()
-    {
-        return $this->registration->config_values['launch_url'];
-    }
-
-    /**
-     * Get the consumer_key of this entry.
-     *
-     * @deprecated
-     */
-    public function getConsumerKey()
-    {
-        return $this->registration->config_values['consumer_key'] ?? '';
-    }
-
-    /**
-     * Get the consumer_secret of this entry.
-     *
-     * @deprecated
-     */
-    public function getConsumerSecret()
-    {
-        return $this->registration->config_values['consumer_secret'] ?? '';
-    }
-
-    /**
-     * Get the oauth_signature_method of this entry.
-     *
-     * @deprecated
-     */
-    public function getOauthSignatureMethod()
-    {
-        return $this->registration->config_values['oauth_signature_method'] ?? 'sha1';
-    }
-
-    /**
      * Get the custom_parameters of this entry.
      *
      * @deprecated
@@ -98,13 +58,5 @@ class LtiDeployment extends SimpleORMap
         }
         $parameters .= $this->options['custom_parameters'] ?? '';
         return $parameters;
-    }
-
-    /**
-     * Get the send_lis_person attribute of this entry.
-     */
-    public function getSendLisPerson()
-    {
-        return $this->registration->config_values['send_lis_person'];
     }
 }
