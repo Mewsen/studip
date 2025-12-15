@@ -832,7 +832,7 @@ class RouteMap
     private function addAuthenticatedDashboardWidgetRoutes(RouteCollectorProxy $group): void {
 
         // Widget Relationship Route relative to a container.
-        $this->addRelationship($group, '/dashboard-widget-containers/{id}/relationships/widgets', Routes\DashboardWidget\Rel\Widgets::class);
+        $this->addRelationship($group, '/dashboard-widget-containers/{id}/relationships/dashboard-widgets', Routes\DashboardWidget\Rel\Widgets::class);
 
         // Non JSON APIs for the types and enums, if wanted?
         $group->get('/dashboard-widgets-misc', Routes\DashboardWidget\Miscellaneous::class);
@@ -843,15 +843,15 @@ class RouteMap
         $group->post('/dashboard-widget-containers', Routes\DashboardWidget\ContainerCreate::class);
 
         // Widgets CRUD.
-        $group->get('/dashboard-widget-containers/{id}/widgets', Routes\DashboardWidget\ContainerWidgetsIndex::class);
+        $group->get('/dashboard-widget-containers/{id}/dashboard-widgets', Routes\DashboardWidget\ContainerWidgetsIndex::class);
 
-        $group->get('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsShow::class);
+        $group->get('/dashboard-widget-containers/{id}/dashboard-widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsShow::class);
 
-        $group->post('/dashboard-widget-containers/{id}/widgets', Routes\DashboardWidget\ContainerWidgetsCreate::class);
+        $group->post('/dashboard-widget-containers/{id}/dashboard-widgets', Routes\DashboardWidget\ContainerWidgetsCreate::class);
 
-        $group->patch('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsUpdate::class);
+        $group->patch('/dashboard-widget-containers/{id}/dashboard-widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsUpdate::class);
 
-        $group->delete('/dashboard-widget-containers/{id}/widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsDelete::class);
+        $group->delete('/dashboard-widget-containers/{id}/dashboard-widgets/{widget_id}', Routes\DashboardWidget\ContainerWidgetsDelete::class);
 
         // DIRECT Widget routes.
         $group->get('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsShow::class);
