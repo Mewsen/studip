@@ -266,90 +266,89 @@ class Course_LtiController extends StudipController
     /**
      * Display the launch form for a tool as an iframe.
      */
-    public function iframe_action(string $link_id)
+    public function iframe_action(LtiResourceLink $resourceLink): void
     {
-        $this->resource_link = LtiResourceLink::find($link_id);
-        $this->show_data_protection_info = !LtiToolPrivacySettings::countBySQL(
+        $deployment = $resourceLink->deployment;
+        $registration = $deployment->registration;
+        $dataProtectionConsent = LtiToolPrivacySettings::countBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id AND `accepted` = 1",
-            ['registration_id' => $this->resource_link->deployment->registration_id, 'user_id' => $GLOBALS['user']->id]
+            [
+                'registration_id' => $registration->id,
+                'user_id' => User::findCurrent()->id
+            ]
         );
-        if ($this->show_data_protection_info) {
-            $this->redirect('course/lti/consent/' . $this->resource_link->deployment_id, ['redirect_to_tool' => '1']);
+
+        if (!$dataProtectionConsent) {
+            $this->redirect('course/lti/consent/' . $deployment->id, ['redirect_to_tool' => '1']);
             return;
         }
 
-        if (!$this->show_data_protection_info) {
-            //Redirect to the tool.
-            $this->lti13a_mode = false;
-            $lti_version = $this->resource_link->deployment->getToolLtiVersion();
-            if ($lti_version === '1.3a') {
-                //LTI 1.3a
-                $this->lti13a_mode = true;
+        //Redirect to the tool:
+        $this->ltiVersion = $deployment->getToolLtiVersion();
+        if ($this->ltiVersion === '1.3a') {
 
-                $locale = str_replace('_', '-', $_SESSION['_language']);
-                $registration = $this->resource_link->deployment->registration;
-                $deploymentId = $this->resource_link->deployment->deployment_id;
-
-                $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deploymentId]);
-                $documentTarget = 'window';
-                if (!empty($this->resource_link->options['document_target'])) {
-                    $returnUrl = $this->resource_link->options['document_target'];
-                    $documentTarget = 'iframe';
-                }
-
-                //The AGS URLs need several parameters:
-                $agsUrlParameters = [
-                    'cid' => $this->range_id,
-                    'registration_id' => $registration->id,
-                    'deployment_id' => $deploymentId,
-                    'cancel_login' => '1'
-                ];
-
-                //Build the message:
-                $this->message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
-                    $this->resource_link,
-                    $registration->toLti1p3Registration(),
-                    $GLOBALS['user']->id,
-                    $deploymentId,
-                    [
-                        PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
-                    ],
-                    [
-                        ...$this->resource_link->getCustomLtiParameterArray(),
-                        new ContextClaim(
-                            $this->range_id,
-                            ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
-                            $this->course->veranstaltungsnummer ?? '',
-                            $this->course?->getFullName() ?? ''
-                        ),
-                        new LaunchPresentationClaim(
-                            $documentTarget,
-                            null,
-                            null,
-                            $returnUrl,
-                            $locale
-                        ),
-                        new AgsClaim(
-                            [
-                                'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
-                                'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
-                                'https://purl.imsglobal.org/spec/lti-ags/scope/score'
-                            ],
-                            $this->url_for('lti/ags/line_items', $agsUrlParameters),
-                            $this->url_for('lti/ags/line_item', $agsUrlParameters)
-                        )
-                    ]
-                );
-            } else {
-                //LTI 1.0/1.1
-                $this->deployment = $this->resource_link->deployment;
-                $lti_link = $this->getLtiLink($this->deployment);
-                $this->launch_url = $this->deployment->getLaunchURL();
-                $this->launch_data = $lti_link->getBasicLaunchData();
-                $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+            $locale = str_replace('_', '-', $_SESSION['_language']);
+            $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_id]);
+            $documentTarget = 'window';
+            if (!empty($resourceLink->options['document_target'])) {
+                $returnUrl = $resourceLink->options['document_target'];
+                $documentTarget = 'iframe';
             }
-            $this->set_layout(null);
+
+            //The AGS URLs need several parameters:
+            $agsUrlParameters = [
+                'cid' => $this->range_id,
+                'registration_id' => $registration->id,
+                'deployment_id' => $deployment->deployment_id,
+                'cancel_login' => '1'
+            ];
+
+            //Build the message:
+            $this->message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
+                $resourceLink,
+                $registration->toLti1p3Registration(),
+                $GLOBALS['user']->id,
+                $deployment->deployment_id,
+                [
+                    PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
+                ],
+                [
+                    ...$resourceLink->getCustomLtiParameterArray(),
+                    new ContextClaim(
+                        $this->range_id,
+                        ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
+                        $this->course->veranstaltungsnummer ?? '',
+                        $this->course?->getFullName() ?? ''
+                    ),
+                    new LaunchPresentationClaim(
+                        $documentTarget,
+                        null,
+                        null,
+                        $returnUrl,
+                        $locale
+                    ),
+                    new AgsClaim(
+                        [
+                            'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
+                            'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
+                            'https://purl.imsglobal.org/spec/lti-ags/scope/score'
+                        ],
+                        $this->url_for('lti/ags/line_items', $agsUrlParameters),
+                        $this->url_for('lti/ags/line_item', $agsUrlParameters)
+                    )
+                ]
+            );
+        } else {
+            //LTI 1.0/1.1
+            $this->resourceLink = $resourceLink;
+            $this->deployment = $deployment;
+            $ltiLink = $this->getLtiLink($this->deployment);
+            $this->launchUrl = $this->deployment->getLaunchURL();
+            $this->launchData = $ltiLink->getBasicLaunchData();
+            $this->signature = $ltiLink->getLaunchSignature($this->launchData);
         }
+
+        $this->set_layout(null);
     }
 
     /**
