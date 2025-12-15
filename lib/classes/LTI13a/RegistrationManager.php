@@ -15,7 +15,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
 
     public function findAll(): array
     {
-        $registrations = Registration::findBySQL("TRUE");
+        $registrations = Registration::all();
         return array_map(fn($r) => $r->toLti1p3Registration(), $registrations);
     }
 
@@ -23,49 +23,32 @@ class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        return Registration::findOneBySQL(
-            "
-                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `deployments`.`id` = :deployment_id
-            ",
-            [
-                'deployment_id' => $deployment?->id
-            ]
-        )?->toLti1p3Registration($deployment);
+        if (!$deployment) {
+            return null;
+        }
+
+        return Registration::findByDeploymentId($deployment->id)?->toLti1p3Registration($deployment);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        return Registration::findOneBySQL(
-            "JOIN `lti_registration_configs` configs ON (`lti_registrations`.`id` = `configs`.`registration_id`)
-                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `lti_registrations`.`role` = 'platform'
-                AND `configs`.`name` = 'issuer'
-                AND  `configs`.`value` = :issuer
-                AND `deployments`.`id` = :deployment_id",
-            [
-                'issuer' => $issuer,
-                'deployment_id' => $deployment?->id
-            ]
-        )?->toLti1p3Registration($deployment);
+        if (!$deployment) {
+            return null;
+        }
+
+        return Registration::findByDeploymentIdAndIssuer($deployment->id, $issuer)?->toLti1p3Registration($deployment);
     }
 
     public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
-        dd('findByToolIssuer', $issuer, $clientId);
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        // TODO:: check select query
-        return Registration::findOneBySQL(
-            "
-                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `deployments`.`id` = :deployment_id
-            ",
-            [
-                'deployment_id' => $deployment?->id
-            ]
-        )?->toLti1p3Registration($deployment);
+        if (!$deployment) {
+            return null;
+        }
+
+        return Registration::findByDeploymentIdAndIssuer($deployment->id, $issuer)?->toLti1p3Registration($deployment);
     }
 }

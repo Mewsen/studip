@@ -116,17 +116,21 @@ onMounted(() => {
             </label>
 
             <label class="studiprequired">
+                <span class="textlabel">{{ $gettext('Tool-ID') }}</span>
+                <span :title="$gettext('Tool-ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                <StudipTooltipIcon
+                    :text="$gettext('Der eindeutige Identifikator der LTI-Tool.')"
+                />
+                <input required type="url" name="issuer" v-model="form.issuer" />
+            </label>
+
+            <label class="studiprequired">
                 <span class="textlabel">{{ $gettext('Lunch URL') }}</span>
                 <span :title="$gettext('Lunch URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                 <input required type="url" name="launch_url" v-model="form.launch_url" />
             </label>
 
             <template v-if="form.version === '1.3a'">
-                <label>
-                    {{ $gettext('Client ID') }}
-                    <input readonly type="text" name="client_id" v-model="form.client_id" />
-                </label>
-
                 <label>
                     {{ $gettext('Initiate login URL') }}
                     <StudipTooltipIcon

@@ -119,6 +119,13 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
                     <p>{{ registration.launch_container }}</p>
                 </dd>
 
+                <dt>{{ $gettext('Tool-ID') }}</dt>
+                <dd>
+                    <a :href="registration.issuer" target="_blank">
+                        {{ registration.issuer }}
+                    </a>
+                </dd>
+
                 <dt>{{ $gettext('Lunch URL') }}</dt>
                 <dd>
                     <a :href="registration.launch_url" target="_blank">

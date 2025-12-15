@@ -185,6 +185,10 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
     {
         $common = [
             [
+                'name' => 'issuer',
+                'value' => Request::get('issuer')
+            ],
+            [
                 'name' => 'terms_of_use_url',
                 'value' => Request::get('terms_of_use_url')
             ],
@@ -256,10 +260,6 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             if (Request::get('role') === 'platform') {
                 return [
                     ...$common,
-                    [
-                        'name' => 'issuer',
-                        'value' => Request::get('issuer')
-                    ],
                     [
                         'name' => 'auth_login_url',
                         'value' => Request::get('auth_login_url')
