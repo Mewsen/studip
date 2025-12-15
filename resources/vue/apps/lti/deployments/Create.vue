@@ -5,7 +5,13 @@ import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 defineProps({
     deployment: {
         type: Object,
-        required: true
+        default: () => ({})
+    },
+    registration: {
+        type: Object,
+        default: () => ({
+           role: 'tool'
+        })
     }
 });
 </script>
@@ -13,7 +19,7 @@ defineProps({
 <template>
     <div class="lti" style="display: flex;">
         <div style="flex: 1;">
-            <LtiDeploymentForm :deployment="deployment">
+            <LtiDeploymentForm :deployment="deployment" :registration="registration">
                 <footer data-dialog-button>
                     <button class="button accept">
                         {{ $gettext('Speichern') }}

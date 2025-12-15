@@ -31,8 +31,8 @@ class Deployment extends SimpleORMap
 
         $base = [
             ...$this->toRawArray(),
-            'range_id' => $resourceLink?->course_id,
-            'range_name' => $resourceLink?->course->getFullName(),
+            'resource_id' => $resourceLink?->course_id,
+            'resource_name' => $resourceLink?->course->getFullName(),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate)
         ];

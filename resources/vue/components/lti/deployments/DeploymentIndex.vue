@@ -86,19 +86,6 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
-                    :class="getSortClass('purpose')"
-                    :aria-sort="getAriaSortString('purpose')"
-                    :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('purpose')"
-                        :title="$gettext('Nach Zweck sortieren')">
-                        {{ $gettext('Zweck') }}
-                    </button>
-                </th>
-                <th
                     :class="getSortClass('deployment_id')"
                     :aria-sort="getAriaSortString('deployment_id')"
                     :aria-label="getAriaSortLabel('deployment_id', $gettext('Deployment-ID'))"
@@ -112,16 +99,43 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
-                    :class="getSortClass('range_name')"
-                    :aria-sort="getAriaSortString('range_name')"
-                    :aria-label="getAriaSortLabel('range_name', $gettext('Veranstaltung'))"
+                    :class="getSortClass('client_id')"
+                    :aria-sort="getAriaSortString('client_id')"
+                    :aria-label="getAriaSortLabel('client_id', $gettext('Client-ID'))"
                 >
                     <button
                         type="button"
                         class="button__table-sort button-base"
-                        @click="sortBy('range_name')"
-                        :title="$gettext('Nach Veranstaltung sortieren')">
-                        {{ $gettext('Veranstaltung') }}
+                        @click="sortBy('client_id')"
+                        :title="$gettext('Nach Client-ID sortieren')">
+                        {{ $gettext('Client-ID') }}
+                    </button>
+                </th>
+                <th
+                    :class="getSortClass('purpose')"
+                    :aria-sort="getAriaSortString('purpose')"
+                    :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('purpose')"
+                        :title="$gettext('Nach Zweck sortieren')">
+                        {{ $gettext('Zweck') }}
+                    </button>
+                </th>
+                <th
+                    v-if="registration.role === 'tool'"
+                    :class="getSortClass('resource_name')"
+                    :aria-sort="getAriaSortString('resource_name')"
+                    :aria-label="getAriaSortLabel('resource_name', $gettext('Resource'))"
+                >
+                    <button
+                        type="button"
+                        class="button__table-sort button-base"
+                        @click="sortBy('resource_name')"
+                        :title="$gettext('Nach Name des Resource sortieren')">
+                        {{ $gettext('Resource') }}
                     </button>
                 </th>
                 <th
@@ -143,23 +157,21 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
 
         <tbody>
         <tr v-for="deployment in sortedDeployments" :key="deployment.id">
-            <td>
-                {{ deployment.name }}
-            </td>
-            <td>{{ deployment.purpose }}</td>
+            <td>{{ deployment.name }}</td>
             <td>{{ deployment.deployment_id }}</td>
-            <td>
-                <a v-if="deployment.range_id !== 'global'" :href="getRangeURL(deployment.range_id)" :title="$gettext('Zur Veranstaltung')">
-                    {{ deployment.range_name }}
+            <td>{{ deployment.client_id }}</td>
+            <td>{{ deployment.purpose }}</td>
+            <td v-if="registration.role === 'tool'">
+                <a v-if="deployment.resource_id !== 'global'" :href="getRangeURL(deployment.resource_id)" :title="$gettext('Zur Veranstaltung')">
+                    {{ deployment.resource_name }}
                 </a>
                 <template v-else>
-                    {{ deployment.range_name }}
+                    {{ deployment.resource_name }}
                 </template>
             </td>
             <td>
                 <StudipDateTime :iso="deployment.mkdate" :relative="true" />
             </td>
-
             <td class="actions">
                 <StudipActionMenu
                     :items="actionMenus"
@@ -169,7 +181,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
         </tr>
 
         <tr v-if="deployments.length === 0">
-            <td colspan="6">
+            <td colspan="7">
                 {{ $gettext('Keine Deployments vorhanden.') }}
             </td>
         </tr>
@@ -177,6 +189,6 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
     </table>
 
     <form id="lti-deployment-delete-form" method="post">
-        <input type="hidden" :name="CSRF.name" :value="CSRF.value">
+        <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
     </form>
 </template>

@@ -230,12 +230,6 @@ onMounted(() => {
             </label>
 
             <label class="studiprequired">
-                <span class="textlabel">{{ $gettext('Client ID') }}</span>
-                <span :title="$gettext('Client ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
-                <input required type="text" name="client_id" v-model="form.client_id" />
-            </label>
-
-            <label class="studiprequired">
                 <span class="textlabel">{{ $gettext('OIDC authentication URL') }}</span>
                 <span :title="$gettext('OIDC authentication URL ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                 <StudipTooltipIcon

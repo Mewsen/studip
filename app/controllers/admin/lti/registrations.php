@@ -63,7 +63,6 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'name' => Request::get('name'),
             'description' => Request::get('description'),
             'state' => Request::bool('state', true),
-            'client_id' => Request::get('client_id', Uuid::uuid4()->toString()),
             'range_id' => Context::getId() ?? 'global'
         ]);
 
@@ -103,8 +102,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'version' => Request::get('version', '1.3a'),
             'name' => Request::get('name'),
             'description' => Request::get('description'),
-            'state' => Request::bool('state', true),
-            'client_id' => Request::get('client_id', $registration->client_id)
+            'state' => Request::bool('state', true)
         ]);
 
         $registration->store();

@@ -13,11 +13,7 @@ final class Step5405 extends Migration {
                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 `name` VARCHAR(255) NOT NULL,
                 `description` TEXT NOT NULL,
-                `data_protection_notes` TEXT NOT NULL,
-                `terms_of_use_url` VARCHAR(2048) NOT NULL,
-                `privacy_policy_url` VARCHAR(2048) NOT NULL,
                 `role` ENUM('tool', 'platform') NOT NULL DEFAULT 'tool',
-                `client_id` VARCHAR(64) NOT NULL,
                 `state` TINYINT UNSIGNED NOT NULL DEFAULT 0,
                 `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
                 `mkdate` INT UNSIGNED DEFAULT NULL,
@@ -44,11 +40,30 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL;
+            ALTER TABLE `lti_deployments` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` MODIFY COLUMN `name` VARCHAR(255) AFTER `id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` MODIFY COLUMN `purpose` ENUM('general','deep_linking') NOT NULL DEFAULT 'general' AFTER `name`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` ADD COLUMN `deployment_id` VARCHAR(255) AFTER `registration_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` ADD COLUMN `client_id` VARCHAR(64) NOT NULL AFTER `deployment_id`
         ");
 
         DBManager::get()->exec("
             ALTER TABLE `lti_deployments` ADD INDEX `idx_registration_id` (`registration_id`);
+        ");
+
+        DBManager::get()->exec("
             ALTER TABLE `lti_deployments` ADD CONSTRAINT `fk_deployment_registration`
                 FOREIGN KEY (`registration_id`)
                 REFERENCES `lti_registrations` (`id`)

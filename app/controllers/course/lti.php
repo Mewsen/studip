@@ -1,5 +1,6 @@
 <?php
 
+use Lti\Registration;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
@@ -13,6 +14,8 @@ use Studip\LTI13a\PlatformManager;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface\MessagePayloadInterface;
 use Studip\LTI13a\RegistrationManager;
 use Studip\LTI13a\RegistrationRepository;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Trails\Dispatcher;
 
 /**
  * course/lti.php - LTI consumer API for Stud.IP
@@ -28,9 +31,9 @@ use Studip\LTI13a\RegistrationRepository;
 
 class Course_LtiController extends StudipController
 {
-    use Studip\OAuth2\NegotiatesWithPsr7;
+    use NegotiatesWithPsr7;
 
-    public function __construct(\Trails\Dispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher)
     {
         // these actions do not require session authentication
         $action = basename(get_route());
@@ -40,6 +43,7 @@ class Course_LtiController extends StudipController
         }
         parent::__construct($dispatcher);
     }
+
     /**
      * Callback function being called before an action is executed.
      */
@@ -78,10 +82,10 @@ class Course_LtiController extends StudipController
     {
         $this->links = [];
         if ($this->edit_perm) {
-            $this->links = \LtiResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
+            $this->links = LtiResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
         } else {
             //Only load those LTI resource links that are fully configured:
-            $this->links = \LtiResourceLink::findBySQL(
+            $this->links = LtiResourceLink::findBySQL(
                 "JOIN `lti_deployments`
                 ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
                 WHERE `lti_resource_links`.`course_id` = :course_id
@@ -98,17 +102,17 @@ class Course_LtiController extends StudipController
                 $this->url_for('course/lti/config'),
                 Icon::create('admin')
             )->asDialog('size=auto');
-            $global_tools_available = \Lti\Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
+            $global_tools_available = Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
             if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE || $global_tools_available) {
                 $widget->addLink(
                     _('LTI-Tool hinzufügen'),
                     $this->url_for('course/lti/select_tool'),
                     Icon::create('add')
-                )->asDialog('size=auto');
+                )->asDialog();
             }
 
             // TODO:: deep_linking` = 1 AND
-            $global_deep_linking_tools_exist = \Lti\Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
+            $global_deep_linking_tools_exist = Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
             if ($global_deep_linking_tools_exist) {
                 $widget->addLink(
                     _('Tool mittels LTI Deep Linking hinzufügen'),
@@ -161,7 +165,7 @@ class Course_LtiController extends StudipController
                 return;
             }
             //Redirect to the page to configure an LTI tool for the course:
-            $this->redirect('lti/tool/add/' . $this->course->id);
+            $this->redirect('admin/lti/registrations/create');
         }
 
         $this->selected_deployment_id = '';
@@ -283,14 +287,14 @@ class Course_LtiController extends StudipController
                 //LTI 1.3a
                 $this->lti13a_mode = true;
 
-                $return_url = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $this->resource_link->deployment_id]);
+                $deploymentId = $this->resource_link->deployment->deployment_id;
+
+                $return_url = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deploymentId]);
                 $document_target = 'window';
                 if (!empty($this->resource_link->options['document_target'])) {
                     $return_url = $this->resource_link->options['document_target'];
                     $document_target = 'iframe';
                 }
-
-
 
                 $locale = str_replace('_', '-', $_SESSION['_language']);
                 $registration = new RegistrationRepository($this->resource_link->deployment->registration);
@@ -300,7 +304,7 @@ class Course_LtiController extends StudipController
                 $ags_url_parameters = [
                     'cid' => $this->range_id,
                     'registration_id' => $this->resource_link->deployment->registration_id,
-                    'deployment_id' => $this->resource_link->deployment_id,
+                    'deployment_id' => $deploymentId,
                     'cancel_login' => '1'
                 ];
 
@@ -309,7 +313,7 @@ class Course_LtiController extends StudipController
                     $this->resource_link,
                     $registration,
                     $GLOBALS['user']->id,
-                    $this->resource_link->deployment_id,
+                    $deploymentId,
                     [
                         PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
                     ],

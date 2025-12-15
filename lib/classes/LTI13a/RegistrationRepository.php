@@ -1,6 +1,7 @@
 <?php
 namespace Studip\LTI13a;
 
+use Lti\Deployment;
 use Lti\Registration;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Tool\Tool;
@@ -12,8 +13,11 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 class RegistrationRepository implements RegistrationInterface
 {
     public function __construct(
-        protected Registration $registration
-    ) {}
+        protected Registration $registration,
+        protected ?Deployment $deployment = null
+    ) {
+        $this->deployment ??= $registration->getDefaultDeployment();
+    }
 
     public function getIdentifier(): string
     {
@@ -22,7 +26,7 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getClientId(): string
     {
-        return $this->registration->client_id;
+        return $this->deployment->client_id;
     }
 
     public function getPlatform(): PlatformInterface
@@ -31,7 +35,7 @@ class RegistrationRepository implements RegistrationInterface
 
         if ($this->registration->role === 'platform') {
             return new Platform(
-                $this->registration->client_id,
+                $this->deployment->client_id,
                 $this->registration->name,
                 $registrationConfigs['issuer'],
                 $registrationConfigs['auth_login_url'],
@@ -48,7 +52,7 @@ class RegistrationRepository implements RegistrationInterface
 
         if ($this->registration->role === 'tool') {
             return new Tool(
-                $this->registration->client_id,
+                $this->deployment->client_id,
                 $this->registration->name,
                 $registrationConfigs['launch_url'],
                 $registrationConfigs['auth_init_url'],
@@ -62,13 +66,13 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getDeploymentIds(): array
     {
-        return array_map(fn($d) => $d->id, $this->registration->deployments ?? []);
+        return array_map(fn($d) => $d->deployment_id, $this->registration->deployments ?? []);
     }
 
     public function hasDeploymentId(string $deploymentId): bool
     {
         foreach ($this->registration->deployments ?? [] as $d) {
-            if ($d->id === $deploymentId) {
+            if ($d->deployment_id === $deploymentId) {
                 return true;
             }
         }
@@ -78,11 +82,7 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getDefaultDeploymentId(): ?string
     {
-        if (count($this->registration->deployments) >= 1) {
-            return $this->registration->deployments[0]->id;
-        }
-
-        return null;
+        return $this->deployment->deployment_id;
     }
 
     public function getPlatformKeyChain(): ?KeyChainInterface

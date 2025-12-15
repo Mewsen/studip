@@ -18,7 +18,7 @@ class ToolManager
             $config->UNI_NAME_CLEAN,
             $GLOBALS['ABSOLUTE_URI_STUDIP'],
             URLHelper::getURL('dispatch.php/enrol/lti/auth_init', null, true),
-            URLHelper::getURL('dispatch.php/enrol/lti/lunch', null, true),
+            URLHelper::getURL('dispatch.php/enrol/lti/launch', null, true),
             URLHelper::getURL('dispatch.php/enrol/lti/launch_deeplink', null, true)
         );
     }

@@ -211,11 +211,6 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
                     </dd>
                 </template>
             </template>
-
-            <dt>{{ $gettext('Client ID') }}</dt>
-            <dd>
-                {{ registration.client_id }}
-            </dd>
         </dl>
         <br />
         <DeploymentIndex

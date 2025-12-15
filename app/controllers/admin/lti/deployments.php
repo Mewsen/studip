@@ -4,6 +4,7 @@ require_once __DIR__ . '/AdminBaseController.php';
 use LTI\AdminBaseController;
 use Lti\Deployment;
 use Lti\Registration;
+use Ramsey\Uuid\Uuid;
 
 class Admin_Lti_DeploymentsController  extends AdminBaseController
 {
@@ -32,10 +33,7 @@ class Admin_Lti_DeploymentsController  extends AdminBaseController
         $this->render_vue_app(
             Studip\VueApp::create('lti/deployments/Create')
                 ->withProps([
-                    'deployment' => [
-                        'registration_id' => Request::option('registration_id')
-                    ],
-                    'registrations' => []
+                    'registration' => Registration::find(Request::option('registration_id'))->transformData()
                 ])
         );
     }
@@ -48,6 +46,7 @@ class Admin_Lti_DeploymentsController  extends AdminBaseController
             'name' => Request::get('name'),
             'registration_id' => Request::get('registration_id'),
             'deployment_id' => Request::get('deployment_id'),
+            'client_id' => Request::get('client_id', Uuid::uuid4()->toString())
         ]);
 
         PageLayout::postSuccess(

@@ -230,7 +230,7 @@ const deleteRegistration = id => {
         </table>
 
         <form id="lti-registration-delete-form" method="post">
-            <input type="hidden" :name="CSRF.name" :value="CSRF.value">
+            <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
         </form>
     </div>
 </template>

@@ -62,9 +62,14 @@ class Registration extends SimpleORMap
 //        return parent::__get($field);
 //    }
 
-    public function getLti1p3Registration(): RegistrationInterface
+    public function toLti1p3Registration(Deployment $deployment = null): RegistrationInterface
     {
-        return new RegistrationRepository($this);
+        return new RegistrationRepository($this, $deployment);
+    }
+
+    public function getDefaultDeployment(): ?Deployment
+    {
+        return Deployment::findOneBySQL("registration_id = ? ORDER BY mkdate", [$this->id]);
     }
 
     public function getKeyring(): ?Keyring

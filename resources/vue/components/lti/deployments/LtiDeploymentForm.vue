@@ -9,6 +9,12 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    registration: {
+        type: Object,
+        default: () => ({
+            role: 'tool'
+        })
+    },
     registrations: {
         type: Array,
         default: () => ([])
@@ -42,7 +48,7 @@ onMounted(() => {
         v-bind="$attrs"
     >
         <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
-        <input type="hidden" name="registration_id" :value="deployment.registration_id" />
+        <input type="hidden" name="registration_id" :value="registration.id" />
 
         <label class="studiprequired m-0">
             <span class="textlabel">{{ $gettext('Name') }}</span>
@@ -65,6 +71,12 @@ onMounted(() => {
                 type="text"
                 name="deployment_id"
                 v-model="form.deployment_id" />
+        </label>
+
+        <label v-if="registration.role === 'platform'" class="studiprequired">
+            <span class="textlabel">{{ $gettext('Client-ID') }}</span>
+            <span :title="$gettext('Client-ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+            <input required type="text" name="client_id" v-model="form.client_id" />
         </label>
 
         <slot />

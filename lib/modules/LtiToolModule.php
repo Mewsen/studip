@@ -8,6 +8,7 @@
  * the License, or (at your option) any later version.
  *
  * @author      Elmar Ludwig
+ * @author      Murtaza Sultani <sultani@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
 class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
@@ -63,7 +64,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         $grades = LtiResourceLink::countBySQL('course_id = ?', [$course_id]);
 
-        $navigation = new Navigation(_('LTI-Tools'));
+        $navigation = new Navigation(_('LTI'));
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('link-extern', Icon::ROLE_INFO));
         $navigation->addSubNavigation('index', new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti'));
@@ -113,7 +114,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
                     0 => ['source' => 'LTI_Tool_hinzufuegen.jpg', 'title' => _('LTI-Tool hinzufügen')],
                 ]
             ],
-            'displayname' => _('LTI-Tools')
+            'displayname' => _('LTI')
         ];
     }
 }
