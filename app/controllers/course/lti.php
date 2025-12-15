@@ -284,9 +284,9 @@ class Course_LtiController extends StudipController
         }
 
         //Redirect to the tool:
-        $this->ltiVersion = $deployment->getToolLtiVersion();
-        if ($this->ltiVersion === '1.3a') {
+        $this->ltiVersion = $registration->version;
 
+        if ($this->ltiVersion === '1.3a') {
             $locale = str_replace('_', '-', $_SESSION['_language']);
             $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_id]);
             $documentTarget = 'window';

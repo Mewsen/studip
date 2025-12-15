@@ -45,12 +45,6 @@ class LtiDeployment extends SimpleORMap
         parent::configure($config);
     }
 
-    public function getToolLtiVersion() : string
-    {
-        return $this->registration->version ?? '';
-    }
-
-
     /**
      * Get the launch_url of this entry.
      *
