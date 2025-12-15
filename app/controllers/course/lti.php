@@ -268,7 +268,7 @@ class Course_LtiController extends StudipController
      */
     public function iframe_action(string $link_id)
     {
-        $this->resource_link = \LtiResourceLink::find($link_id);
+        $this->resource_link = LtiResourceLink::find($link_id);
         $this->show_data_protection_info = !LtiToolPrivacySettings::countBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id AND `accepted` = 1",
             ['registration_id' => $this->resource_link->deployment->registration_id, 'user_id' => $GLOBALS['user']->id]
@@ -278,7 +278,6 @@ class Course_LtiController extends StudipController
             return;
         }
 
-
         if (!$this->show_data_protection_info) {
             //Redirect to the tool.
             $this->lti13a_mode = false;
@@ -287,63 +286,59 @@ class Course_LtiController extends StudipController
                 //LTI 1.3a
                 $this->lti13a_mode = true;
 
+                $locale = str_replace('_', '-', $_SESSION['_language']);
+                $registration = $this->resource_link->deployment->registration;
                 $deploymentId = $this->resource_link->deployment->deployment_id;
 
-                $return_url = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deploymentId]);
-                $document_target = 'window';
+                $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deploymentId]);
+                $documentTarget = 'window';
                 if (!empty($this->resource_link->options['document_target'])) {
-                    $return_url = $this->resource_link->options['document_target'];
-                    $document_target = 'iframe';
+                    $returnUrl = $this->resource_link->options['document_target'];
+                    $documentTarget = 'iframe';
                 }
 
-                $locale = str_replace('_', '-', $_SESSION['_language']);
-                $registration = new RegistrationRepository($this->resource_link->deployment->registration);
-                $builder = new LtiResourceLinkLaunchRequestBuilder();
-
                 //The AGS URLs need several parameters:
-                $ags_url_parameters = [
+                $agsUrlParameters = [
                     'cid' => $this->range_id,
-                    'registration_id' => $this->resource_link->deployment->registration_id,
+                    'registration_id' => $registration->id,
                     'deployment_id' => $deploymentId,
                     'cancel_login' => '1'
                 ];
 
                 //Build the message:
-                $this->message = $builder->buildLtiResourceLinkLaunchRequest(
+                $this->message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
                     $this->resource_link,
-                    $registration,
+                    $registration->toLti1p3Registration(),
                     $GLOBALS['user']->id,
                     $deploymentId,
                     [
                         PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
                     ],
-                    array_merge(
-                        [
-                            new ContextClaim(
-                                $this->range_id,
-                                ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
-                                $this->course->veranstaltungsnummer ?? '',
-                                $this->course?->getFullName() ?? ''
-                            ),
-                            new LaunchPresentationClaim(
-                                $document_target,
-                                null,
-                                null,
-                                $return_url,
-                                $locale
-                            ),
-                            new AgsClaim(
-                                [
-                                    'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
-                                    'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
-                                    'https://purl.imsglobal.org/spec/lti-ags/scope/score'
-                                ],
-                                $this->url_for('lti/ags/line_items', $ags_url_parameters),
-                                $this->url_for('lti/ags/line_item', $ags_url_parameters)
-                            )
-                        ],
-                        $this->resource_link->getCustomLtiParameterArray(),
-                    )
+                    [
+                        ...$this->resource_link->getCustomLtiParameterArray(),
+                        new ContextClaim(
+                            $this->range_id,
+                            ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
+                            $this->course->veranstaltungsnummer ?? '',
+                            $this->course?->getFullName() ?? ''
+                        ),
+                        new LaunchPresentationClaim(
+                            $documentTarget,
+                            null,
+                            null,
+                            $returnUrl,
+                            $locale
+                        ),
+                        new AgsClaim(
+                            [
+                                'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
+                                'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
+                                'https://purl.imsglobal.org/spec/lti-ags/scope/score'
+                            ],
+                            $this->url_for('lti/ags/line_items', $agsUrlParameters),
+                            $this->url_for('lti/ags/line_item', $agsUrlParameters)
+                        )
+                    ]
                 );
             } else {
                 //LTI 1.0/1.1
