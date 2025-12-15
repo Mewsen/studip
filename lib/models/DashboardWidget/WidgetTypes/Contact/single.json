@@ -2,7 +2,7 @@
     "title": "Payload schema of DashboardWidget\\WidgetTypes\\Contact\\ContactSingleWidget",
     "type": "object",
     "properties": {
-        "contact_id": {
+        "contact-id": {
             "type": "string"
         }
     },

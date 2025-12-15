@@ -2,7 +2,7 @@
     "title": "Payload schema of DashboardWidget\\WidgetTypes\\Group\\GroupPinBoardWidget",
     "type": "object",
     "properties": {
-        "group_id": {
+        "group-id": {
             "type": "string"
         }
     },

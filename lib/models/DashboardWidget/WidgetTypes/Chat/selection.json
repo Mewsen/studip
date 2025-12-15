@@ -2,7 +2,7 @@
     "title": "Payload schema of DashboardWidget\\WidgetTypes\\Chat\\ChatSelectionWidget",
     "type": "object",
     "properties": {
-        "thread_ids": {
+        "thread-ids": {
             "type": "array"
         }
     },

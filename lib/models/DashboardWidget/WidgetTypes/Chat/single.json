@@ -2,7 +2,7 @@
     "title": "Payload schema of DashboardWidget\\WidgetTypes\\Chat\\ChatSingleWidget",
     "type": "object",
     "properties": {
-        "thread_id": {
+        "thread-id": {
             "type": "string"
         }
     },
