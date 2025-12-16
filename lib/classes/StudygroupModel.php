@@ -192,8 +192,7 @@ class StudygroupModel
 
         return Course::countBySQL(
             ($joins ? $joins.' WHERE ' : '') .
-            implode(' AND ', $conditions) .
-            ' GROUP BY Seminar_id ',
+            implode(' AND ', $conditions),
             $parameters
         );
     }
