@@ -4,130 +4,126 @@
  * @var Course_TopicsController $controller
  * @var array<array{next: ?CourseTopic, previous: ?CourseTopic}> $topic_links
  */
+
+use Studip\Button;
+
 ?>
 <? if (count($topics) > 0) : ?>
-<table class="default withdetails">
-    <colgroup>
-        <col width="50%">
-        <col>
-    </colgroup>
-    <thead>
-        <tr>
-            <th><?= _('Thema') ?></th>
-            <th><?= _('Termine') ?></th>
-        </tr>
-    </thead>
-    <tbody>
-    <? foreach ($topics as $key => $topic) : ?>
-        <tr class="<?= Request::get("open") === $topic->getId() ? "open" : "" ?>">
-            <td>
-                <a href="#" name="<?=$topic->getId()?>" onClick="jQuery(this).closest('tr').toggleClass('open'); return false;">
-                <? if ($topic->paper_related): ?>
-                    <?= Icon::create('glossary')->asSvg(array_merge(
-                        ['class' => 'text-top'],
-                        tooltip2(_('Thema behandelt eine Hausarbeit oder ein Referat'))
-                    )) ?>
-                <? endif; ?>
-                    <?= htmlReady($topic['title']) ?>
-                </a>
-            </td>
-            <td>
-                <ul class="clean">
-                    <? foreach ($topic->dates as $date) : ?>
-                        <li>
-                            <a href="<?= URLHelper::getLink("dispatch.php/course/dates/details/".$date->getId()) ?>" data-dialog="size=auto">
-                                <?= Icon::create('date', 'clickable')->asSvg(['class' => 'text-bottom']) ?>
-                                <?= htmlReady($date->getFullName()) ?>
-                            </a>
-                        </li>
-                    <? endforeach ?>
-                </ul>
-            </td>
-        </tr>
-        <tr class="details nohover">
-            <td colspan="2">
-                <div class="detailscontainer">
-                    <table class="default nohover">
-                        <tbody>
-                        <tr>
-                            <td><strong><?= _('Beschreibung') ?></strong></td>
-                            <td><?= formatReady($topic['description']) ?></td>
-                        </tr>
-                        <tr>
-                            <td><strong><?= _('Materialien') ?></strong></td>
-                            <td>
-                                <? $material = false ?>
-                                <ul class="clean">
-                                    <? $folder = $topic->folders->first() ?>
-                                    <? if ($documents_activated && $folder) : ?>
-                                        <li>
-                                            <a href="<?= URLHelper::getLink(
-                                                'dispatch.php/course/files/index/' . $folder->id
-                                                ) ?>">
-                                                <?= $folder->getTypedFolder()->getIcon('clickable')->asSvg(['class' => 'text-bottom']) ?>
-                                                <?= _('Dateiordner') ?>
-                                            </a>
-                                        </li>
-                                        <? $material = true ?>
-                                    <? endif ?>
-
-                                    <? if ($forum_activated && ($link_to_thread = $topic->forum_thread_url)) : ?>
-                                        <li>
-                                            <a href="<?= URLHelper::getLink($link_to_thread) ?>">
-                                                <?= Icon::create('forum', 'clickable')->asSvg(['class' => 'text-bottom']) ?>
-                                                <?= _('Thema im Forum') ?>
-                                            </a>
-                                        </li>
-                                        <? $material = true ?>
-                                    <? endif ?>
-                                </ul>
-                                <? if (!$material) : ?>
-                                    <?= _('Keine Materialien zu dem Thema vorhanden') ?>
-                                <? endif ?>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div style="text-align: center;">
-                        <? if ($GLOBALS['perm']->have_studip_perm("tutor", Context::getId())) : ?>
-                            <?= Studip\LinkButton::createEdit(
-                                _('Bearbeiten'),
-                                $controller->editURL($topic),
-                                ['data-dialog' => '']
-                            ) ?>
-
-                            <form action="<?= $controller->delete($topic) ?>" method="post" style="display: inline">
-                                <?= Studip\Button::create(
-                                    _('Löschen'),
-                                    'delete',
-                                    ['data-confirm' => _('Das Thema wirklich löschen?')]
-                                ) ?>
-                            </form>
-
-                            <? if (!$cancelled_dates_locked && $topic->dates->count()) : ?>
-                                <?= \Studip\LinkButton::create(_('Alle Termine ausfallen lassen'), URLHelper::getURL("dispatch.php/course/cancel_dates", ['issue_id' => $topic->getId()]), ['data-dialog' => '']) ?>
-                            <? endif ?>
-
-                            <span class="button-group">
-                            <? if ($topic_links[$topic->id]['previous']) : ?>
-                                <form action="<?= $controller->swap($topic, $topic_links[$topic->id]['previous']) ?>" method="post" style="display: inline;">
-                                    <?= Studip\Button::createMoveUp(_('Nach oben verschieben')) ?>
-                                </form>
-                            <? endif ?>
-                            <? if ($topic_links[$topic->id]['next']) : ?>
-                                <form action="<?= $controller->swap($topic, $topic_links[$topic->id]['next']) ?>" method="post" style="display: inline;">
-                                    <?= Studip\Button::createMoveDown(_('Nach unten verschieben')) ?>
-                                </form>
-                            <? endif ?>
-                            </span>
+    <form method="POST">
+        <?= CSRFProtection::tokenTag() ?>
+        <table class="default" id="topics_index_table">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 20px">
+                        <input
+                            type="checkbox"
+                            data-proxyfor="#topics_index_table tbody input[type=checkbox]"
+                            data-activates="#topics_index_table tfoot button"
+                            aria-label="<?= _('Alle Themen auswählen') ?>"
+                        >
+                    </th>
+                    <th scope="col"><?= _('Thema') ?></th>
+                    <th scope="col" class="responsive-hidden"><?= _('Termine') ?></th>
+                    <th scope="col"><?= _('Materialien') ?></th>
+                    <th scope="col" class="responsive-hidden"><?= _('Beschreibung') ?></th>
+                    <? if ($is_tutor = User::findCurrent()->hasPermissionLevel('tutor', Context::get())) : ?>
+                        <th scope="col" class="actions"><?= _('Aktionen') ?></th>
+                    <? endif ?>
+                </tr>
+            </thead>
+            <tbody>
+            <? foreach ($topics as $topic) : ?>
+                <tr>
+                    <td>
+                        <input type="checkbox" value="<?= htmlReady($topic->id) ?>" name="topics[]"
+                               aria-label="<?= sprintf(_('Thema %s auswählen'), htmlReady($topic->title)) ?>">
+                    </td>
+                    <td>
+                        <a
+                            href="<?= URLHelper::getLink('dispatch.php/course/topics/details/' . $topic->id) ?>"
+                            title=" <?= sprintf(_('Thema %s öffnen'), htmlReady($topic->title)) ?>"
+                            aria-label="<?= sprintf(_('Thema %s öffnen'), htmlReady($topic->title)) ?>"
+                            data-dialog="size=auto"
+                        >
+                            <?= htmlReady($topic['title']) ?>
+                        </a>
+                        <? if ($topic->paper_related): ?>
+                            <?= Icon::create('info-circle')->asSvg(array_merge(
+                                tooltip2(_('Thema behandelt eine Hausarbeit oder ein Referat'))
+                            )) ?>
                         <? endif ?>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    <? endforeach ?>
-    </tbody>
-</table>
+                    </td>
+                    <td class="responsive-hidden">
+                        <?= $this->render_partial('course/topics/_dates.php', ['topic' => $topic]) ?>
+                    </td>
+                    <td>
+                        <?= $this->render_partial('course/topics/_material.php', ['topic' => $topic]) ?>
+                    </td>
+                    <td class="responsive-hidden">
+                        <?= formatReady($topic['description']) ?>
+                    </td>
+                    <? if ($is_tutor) : ?>
+                        <td class="actions">
+                            <div>
+                                <? $move_up_label = sprintf(_('%s nach oben verschieben'), htmlReady($topic->title));
+                                if ($topic_links[$topic->id]['previous']) : ?>
+                                    <button
+                                        class="as-link"
+                                        formaction="<?= $controller->swap($topic, $topic_links[$topic->id]['previous']) ?>"
+                                        aria-label="<?= $move_up_label ?>"
+                                        title="<?= $move_up_label ?>"
+                                    >
+                                        <?= Icon::create('arr_2up') ?>
+                                    </button>
+                                <? else : ?>
+                                    <?= Icon::create('arr_2up', Icon::ROLE_INACTIVE) ?>
+                                <? endif ?>
+                                <? $move_down_label = sprintf(_('%s nach unten verschieben'), htmlReady($topic->title));
+                                if ($topic_links[$topic->id]['next']) : ?>
+                                    <button
+                                        class="as-link"
+                                        formaction="<?= $controller->swap($topic, $topic_links[$topic->id]['next']) ?>"
+                                        aria-label="<?= $move_down_label ?>"
+                                        title="<?= $move_down_label ?>"
+                                    >
+                                        <?= Icon::create('arr_2down') ?>
+                                    </button>
+                                <? else : ?>
+                                    <?= Icon::create('arr_2down', Icon::ROLE_INACTIVE) ?>
+                                <? endif ?>
+                                <?= $controller->getActionMenu($topic) ?>
+                            </div>
+                        </td>
+                    <? endif ?>
+                </tr>
+            <? endforeach ?>
+            </tbody>
+            <? if ($is_tutor) : ?>
+                <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <? if ($documents_activated) : ?>
+                            <?= Button::create(_('Dateiordner anlegen'), 'bulk_folder', [
+                                'formaction' => $controller->bulkURL('folder'),
+                                'data-confirm' => _('Sind Sie sicher, dass Sie für Ihre Auswahl je einen Dateiordner anlegen wollen?'),
+                            ]) ?>
+                        <? endif ?>
+                        <? if ($forum_activated) : ?>
+                            <?= Button::create(_('Forumsthema anlegen'), 'bulk_ftopic', [
+                                'formaction' => $controller->bulkURL('ftopic'),
+                                'data-confirm' => _('Sind Sie sicher, dass Sie für Ihre Auswahl je ein Forumsthema anlegen wollen?'),
+                            ]) ?>
+                        <? endif ?>
+                        <?= Button::create(_('Löschen'), 'bulk_delete', [
+                            'formaction' => $controller->bulkURL('delete'),
+                            'data-confirm' => _('Sind Sie sicher, dass Sie Ihre Auswahl löschen wollen?'),
+                        ]) ?>
+                    </td>
+                </tr>
+                </tfoot>
+            <? endif ?>
+        </table>
+    </form>
 <? else : ?>
     <?= MessageBox::info(_('Keine Themen vorhanden.')) ?>
 <? endif ?>

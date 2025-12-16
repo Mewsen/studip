@@ -129,7 +129,7 @@ class CourseTopic extends SimpleORMap
             $forum_topic->store();
 
             $this->forum_topics[] = $forum_topic;
-            $this->store();
+            return $this->store();
         }
         return false;
     }

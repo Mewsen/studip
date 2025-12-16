@@ -21,7 +21,10 @@ class Course_TopicsController extends AuthenticatedController
         $this->forum_activated = $course->isToolActive(CoreForum::class);
         $this->documents_activated = $course->isToolActive(CoreDocuments::class);
 
-        if ($action !== 'index' && !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
+        if (
+            !in_array($action, ['index', 'details'])
+            && !User::findCurrent()->hasPermissionLevel('tutor', Context::get())
+        ) {
             throw new AccessDeniedException();
         }
 
@@ -37,9 +40,7 @@ class Course_TopicsController extends AuthenticatedController
 
     public function delete_action(CourseTopic $topic)
     {
-        if (!Request::isPost()) {
-            throw new MethodNotAllowedException();
-        }
+        CSRFProtection::verifyUnsafeRequest();
 
         if ($topic->seminar_id && ($topic->seminar_id !== Context::getId())) {
             throw new AccessDeniedException();
@@ -102,7 +103,7 @@ class Course_TopicsController extends AuthenticatedController
         }
 
         PageLayout::postSuccess(_('Thema gespeichert.'));
-        $this->redirect($this->indexURL(['open' => $topic->id]));
+        $this->redirect($this->indexURL());
     }
 
     public function swap_action(CourseTopic $a, CourseTopic $b)
@@ -123,7 +124,7 @@ class Course_TopicsController extends AuthenticatedController
         $a->store();
         $b->store();
 
-        $this->redirect($this->indexURL(['open' => $a->id]));
+        $this->redirect($this->indexURL());
     }
 
     public function allow_public_action()
@@ -219,25 +220,62 @@ class Course_TopicsController extends AuthenticatedController
         $this->render_json($output);
     }
 
+    public function bulk_action(string $action): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        $topic_ids = Request::optionArray('topics');
+
+        [$callback, $success, $failure] = match ($action) {
+            'ftopic' => [
+                fn(CourseTopic $topic) => $topic->connectWithForumThread(),
+                _('Forumsthemen erfolgreich angelegt.'),
+                _('Fehler beim Anlegen von Forumsthemen zu:'),
+            ],
+            'folder' => [
+                fn(CourseTopic $topic) => $topic->connectWithDocumentFolder(),
+                _('Ordner erfolgreich angelegt.'),
+                _('Fehler beim Anlegen von Ordnern zu:'),
+            ],
+            'delete' => [
+                fn(CourseTopic $topic) => $topic->delete(),
+                _('Erfolgreich gelöscht.'),
+                _('Fehler beim Löschen von:'),
+            ],
+            default => throw new InvalidArgumentException('Unknown action'),
+        };
+
+        $errors = [];
+        CourseTopic::findEachMany(
+            function (CourseTopic $topic) use ($callback, &$errors) {
+                if (!$callback($topic)) {
+                    $errors[] = $topic->title;
+                }
+            },
+            $topic_ids
+        );
+        if (count($errors) === 0) {
+            PageLayout::postSuccess($success);
+        } else {
+            PageLayout::postError(
+                $failure,
+                array_map('htmlReady', $errors)
+            );
+        }
+
+        $this->redirect($this->indexURL());
+    }
+
+    public function details_action(CourseTopic $topic)
+    {
+        PageLayout::setTitle(sprintf(_('Details: %s'), htmlReady($topic->title)));
+        $this->render_template('course/topics/details');
+    }
+
     private function setupSidebar($action)
     {
         $sidebar = Sidebar::get();
 
         $actions = $sidebar->addWidget(new ActionsWidget());
-        if ($action === 'index') {
-            $actions->addLink(
-                _('Alle Themen aufklappen'),
-                $this->url_for('course/topics/show'),
-                Icon::create('arr_1down'),
-                ['onclick' => "jQuery('table.withdetails > tbody > tr:not(.details):not(.open) > :first-child a').click(); return false;"]
-            );
-            $actions->addLink(
-                _('Alle Themen zuklappen'),
-                $this->url_for('course/topics/hide'),
-                Icon::create('arr_1right'),
-                ['onclick' => "jQuery('table.withdetails > tbody > tr:not(.details).open > :first-child a').click(); return false;"]
-            );
-        }
         if ($GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             $actions->addLink(
                 _('Neues Thema erstellen'),
@@ -285,5 +323,40 @@ class Course_TopicsController extends AuthenticatedController
         }
 
         return $links;
+    }
+
+    public function getActionMenu(CourseTopic $topic): ActionMenu
+    {
+        $actions = ActionMenu::get();
+        $actions->setContext(htmlReady($topic->title));
+
+        if (User::findCurrent()->hasPermissionLevel('tutor', Context::get())) {
+            $actions->addLink(
+                $this->editURL($topic),
+                _('Bearbeiten'),
+                Icon::create('edit')
+            )->asDialog();
+            $actions->addButton(
+                'delete',
+                _('Löschen'),
+                Icon::create('trash'),
+                [
+                    'formaction' => $this->delete($topic),
+                    'data-confirm' => _('Das Thema wirklich löschen?'),
+                ]
+            );
+            if (!$this->cancelled_dates_locked && count($topic->dates) > 0) {
+                $actions->addLink(
+                    URLHelper::getURL(
+                        'dispatch.php/course/cancel_dates',
+                        ['issue_id' => $topic->id]
+                    ),
+                    _('Alle Termine ausfallen lassen'),
+                    Icon::create('date')
+                )->asDialog();
+            }
+        }
+
+        return $actions;
     }
 }
