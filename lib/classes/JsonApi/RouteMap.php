@@ -842,6 +842,8 @@ class RouteMap
 
         $group->post('/dashboard-widget-containers', Routes\DashboardWidget\ContainerCreate::class);
 
+        $group->patch('/dashboard-widget-containers/{id}', Routes\DashboardWidget\ContainerUpdate::class);
+
         // Widgets CRUD.
         $group->get('/dashboard-widget-containers/{id}/dashboard-widgets', Routes\DashboardWidget\ContainerWidgetsIndex::class);
 

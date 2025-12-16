@@ -6,8 +6,8 @@
         :cols="miscStore.breakpointsCols"
         :responsive-layouts="presetLayouts"
         :row-height="rowHeight"
-        :is-draggable="draggable"
-        :is-resizable="resizable"
+        :is-draggable="isEditable"
+        :is-resizable="isEditable"
         :responsive="true"
         use-css-transforms
         @breakpoint-changed="onBreakpointChanged"
@@ -20,11 +20,11 @@
             :w="item.w"
             :h="item.h"
             :i="item.i"
-            :tabindex="draggable ? 0 : -1"
+            :tabindex="isEditable ? 0 : -1"
             @keydown="handleKeyboardLayoutChange($event, item.i)"
-            :role="draggable ? 'application' : 'region'"
+            :role="isEditable ? 'application' : 'region'"
             :aria-label="
-                draggable
+                isEditable
                     ? $gettext(
                           'Widget ist verschiebbar. Benutze Pfeiltasten zum Verschieben und Shift + Pfeiltasten zum Anpassen der Größe.'
                       )
@@ -34,12 +34,20 @@
             <widget-renderer
                 :widget-id="item.i"
                 :widget-components="props.widgetComponents"
-                :is-editing="draggable"
+                :is-editing="isEditable"
                 @delete-widget="onDeleteWidget"
                 @update-config="onUpdateWidget"
             />
         </GridItem>
     </GridLayout>
+    <div>
+        <button v-if="!miscStore.editMode" class="button edit" @click="miscStore.setEditMode(true)">
+            {{ $gettext('Anordnung anpassen') }}
+        </button>
+        <button v-else class="button accept" @click="storeLayout">
+            {{ $gettext('Anordnung speichern') }}
+        </button>
+    </div>
     <div v-if="showLoadingError && !isMiscLoaded">
         <p>{{ $gettext('Layout-Einstellungen konnten nicht geladen werden.') }}</p>
     </div>
@@ -64,15 +72,14 @@ const props = defineProps({
     },
     rowHeight: {
         type: Number,
-        default: 60
-    }
+        default: 60,
+    },
 });
 
 const isMiscLoaded = ref(false);
 const showLoadingError = ref(false);
 const currentBreakpoint = ref(null);
-const draggable = ref(true);
-const resizable = ref(true);
+
 let loadingTimer = null;
 
 onBeforeMount(async () => {
@@ -95,14 +102,18 @@ watch(
     { immediate: true }
 );
 
-const layout = computed({
+const isEditable = computed({
     get() {
-        if (!currentBreakpoint.value) return [];
-        return containerStore.layoutForBreakpoint(currentBreakpoint.value);
+        return miscStore.editMode;
     },
-    set(newLayout) {
-        containerStore.updateLayout(currentBreakpoint.value, newLayout);
+    set(state) {
+        miscStore.setEditMode(state);
     },
+});
+
+const layout = computed(() => {
+    if (!currentBreakpoint.value) return [];
+    return containerStore.layoutForBreakpoint(currentBreakpoint.value);
 });
 
 function onBreakpointChanged(bp) {
@@ -115,6 +126,11 @@ function onDeleteWidget() {
 
 function onUpdateWidget() {
     //todo
+}
+
+function storeLayout() {
+    containerStore.updateLayout(currentBreakpoint.value);
+    miscStore.setEditMode(false);
 }
 
 function handleKeyboardLayoutChange(event, itemId) {

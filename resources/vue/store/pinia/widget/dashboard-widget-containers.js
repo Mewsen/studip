@@ -8,9 +8,9 @@ export const useContainerStore = defineStore('containerStore', () => {
     const container = ref(null);
     const isLoading = ref(false);
 
-    const getContainerId = computed(() => container.value?.id);
+    const containerId = computed(() => container.value?.id);
 
-    const getLayout = computed(() => container.value?.payload || {});
+    const layouts = computed(() => container.value?.payload || {});
 
     const hasLayout = computed(() => {
         const layouts = container.value?.payload;
@@ -26,14 +26,14 @@ export const useContainerStore = defineStore('containerStore', () => {
         return false;
     });
 
-    function layoutForBreakpoint(breakpoint)  {
+    function layoutForBreakpoint(breakpoint) {
         const layouts = container.value.payload;
         if (!layouts) {
             return {};
         }
 
         return layouts[breakpoint];
-    };
+    }
 
     async function fetchOrCreateContainer(context, groupId) {
         isLoading.value = true;
@@ -95,20 +95,20 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
     }
 
-    async function saveLayout(containerId, newLayout) {
-        try {
-            const response = await api.update('dashboard-widget-containers', {
-                id: containerId,
-                attributes: {
-                    payload: newLayout,
-                },
-            });
-            container.value = response.data;
-        } catch (error) {
-            console.error('Fehler beim Speichern des Container-Layouts:', error);
-            throw error;
-        }
-    }
+    // async function saveLayout(containerId, newLayout) {
+    //     try {
+    //         const response = await api.update('dashboard-widget-containers', {
+    //             id: containerId,
+    //             attributes: {
+    //                 payload: newLayout,
+    //             },
+    //         });
+    //         container.value = response.data;
+    //     } catch (error) {
+    //         console.error('Fehler beim Speichern des Container-Layouts:', error);
+    //         throw error;
+    //     }
+    // }
 
     async function addWidget(widgetType, widgetScope, payload, position, breakpoint) {
         const containerId = container.value.id;
@@ -122,10 +122,7 @@ export const useContainerStore = defineStore('containerStore', () => {
         };
 
         try {
-            await api.create(
-                `dashboard-widget-containers/${containerId}/dashboard-widgets`,
-                newWidgetData
-            );
+            await api.create(`dashboard-widget-containers/${containerId}/dashboard-widgets`, newWidgetData);
             await fetchContainerWidgets(container.value.id);
             await fetchContainer(container.value.id);
         } catch (error) {
@@ -145,21 +142,31 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
     }
 
-    async function updateLayout() {
-        return true;
+    async function updateLayout(breakpoint) {
+        const id = containerId.value;
+        try {
+            await api.patch('dashboard-widget-containers', {
+                id: id,
+                layout: layouts.value[breakpoint],
+                breakpoint: breakpoint,
+            });
+            await fetchContainer(id);
+        } catch (error) {
+            console.error('Fehler beim update des Layouts:', error);
+            throw error;
+        }
     }
 
     return {
         container,
         isLoading,
-        getContainerId,
-        getLayout,
+        containerId,
+        layouts,
         hasLayout,
         layoutForBreakpoint,
         fetchOrCreateContainer,
         fetchContainer,
         fetchContainerWidgets,
-        saveLayout,
         addWidget,
         deleteWidget,
 

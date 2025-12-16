@@ -7,6 +7,11 @@ export const useWidgetMiscStore = defineStore('widgetMiscStore', () => {
     const breakpoints = ref(null);
     const breakpointsWidth = ref(null);
     const breakpointsCols = ref(null);
+    const editMode = ref(false);
+
+    function setEditMode(state) {
+            editMode.value = state;
+    }
 
     async function fetchMisc() {
         try {
@@ -21,11 +26,13 @@ export const useWidgetMiscStore = defineStore('widgetMiscStore', () => {
     }
 
     return {
+        editMode,
         widgetTypes,
         breakpoints,
         breakpointsWidth,
         breakpointsCols,
 
+        setEditMode,
         fetchMisc,
     };
 });

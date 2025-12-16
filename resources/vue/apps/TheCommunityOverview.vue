@@ -42,11 +42,13 @@ import StudipProgressIndicator from '@/vue/components/StudipProgressIndicator.vu
 
 import { useCommunityOverviewStore } from '@/vue/store/pinia/community/community-overview.js';
 import { useContainerStore } from '@/vue/store/pinia/widget/dashboard-widget-containers.js';
+import { useWidgetMiscStore } from '@/vue/store/pinia/widget/dashboard-widget-misc.js';
 
 import { COMMUNITY_WIDGETS as communityWidgetRegistry } from '@/vue/components/community/widgets/widgetRegistry.js';
 
 const overviewStore = useCommunityOverviewStore();
 const containerStore = useContainerStore();
+const miscStore = useWidgetMiscStore();
 
 const isWidgetsLoaded = ref(false);
 const showLoading = ref(false);
