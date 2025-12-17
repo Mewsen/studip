@@ -11,7 +11,7 @@ use JsonApi\JsonApiController;
 
 class ModulesIndex extends JsonApiController
 {
-    protected $allowedFilteringParameters = ['q', 'institute', 'semester', 'section'];
+    protected $allowedFilteringParameters = ['q', 'institute', 'semester', 'section', 'stat'];
 
     protected $allowedPagingParameters = ['offset', 'limit'];
 
@@ -70,6 +70,12 @@ class ModulesIndex extends JsonApiController
         if (isset($filtering['semester']) && !\Semester::exists($filtering['semester'])) {
             return 'Filter `semester` must be a valid id.';
         }
+
+        // stat
+        $allowed_module_stats = array_keys($GLOBALS['MVV_MODUL']['STATUS']['values']);
+        if (isset($filtering['stat']) && !in_array($filtering['stat'], $allowed_module_stats)) {
+            return 'Filter `stat` has no valid value. Must be one of these: ' . implode(', ', $allowed_module_stats);
+        }
     }
 
     private function getModules($filtering, $offset, $limit): array
@@ -100,6 +106,9 @@ class ModulesIndex extends JsonApiController
         $join .= 'LEFT JOIN `mvv_modul_deskriptor` USING(`modul_id`) ';
         if (isset($filtering['q'])) {
             $where .= " AND (`mvv_modul_deskriptor`.`bezeichnung` LIKE CONCAT('%', :q, '%') OR `mvv_modul`.`code` LIKE CONCAT('%', :q, '%')) ";
+        }
+        if (isset($filtering['stat'])) {
+            $where .= " AND `stat` = :stat ";
         }
         $where .= ' ORDER BY `mvv_modul`.`code` ASC, `mvv_modul_deskriptor`.`bezeichnung` ASC
                     LIMIT :limit OFFSET :offset';

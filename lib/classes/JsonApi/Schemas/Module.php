@@ -52,6 +52,7 @@ class Module extends SchemaProvider
             'comment-capacity' => (string) $resource->deskriptoren->kommentar_kapazitaet,
             'comment_sws' => (string) $resource->deskriptoren->kommentar_sws,
             'type' => get_class($resource),
+            'stat' => $resource->stat,
             'status' => \Config::get()->MVV_MODUL['STATUS']['values'][$resource->stat],
         ];
     }
