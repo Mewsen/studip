@@ -29,6 +29,7 @@ class AddDashboardWidgets extends Migration
             `scope` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT 'default' COMMENT 'The variant of the widget type.',
             `payload` MEDIUMTEXT COLLATE latin1_bin NOT NULL COMMENT 'Serialized data representing the configuration of the widget',
             `mkdate` INT(11) UNSIGNED NOT NULL,
+            `chdate` INT(11) UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
             INDEX container_id (`container_id`)
         )");
