@@ -17,6 +17,7 @@ use JSONArrayObject;
  * @property string $type database column
  * @property \JSONArrayObject $payload database column
  * @property int $mkdate database column
+ * @property int $chdate database column
  * @property \DashboardWidget\Container $container belongs_to \DashboardWidget\Container
  * @property \DashboardWidget\WidgetTypes\WidgetType $widget_type additional field
  */
