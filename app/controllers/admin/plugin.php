@@ -114,7 +114,7 @@ class Admin_PluginController extends AuthenticatedController
      * Display the list of installed plugins and show all available
      * updates (if any).
      */
-    public function index_action()
+    public function index_action(): void
     {
         // Check if an activation error has been flashed from the last request
         if (isset($this->flash['activation-error'])) {
@@ -126,28 +126,13 @@ class Admin_PluginController extends AuthenticatedController
             );
         }
 
-        $plugin_manager = PluginManager::getInstance();
-
-        $plugins = $plugin_manager->getPluginInfos($this->plugin_filter);
-
-        if ($this->core_filter && $this->core_filter !== 'yes') {
-            $plugins = array_filter($plugins, function ($plugin) {
-                return ($this->core_filter === 'no' && !$plugin['core'])
-                    || ($this->core_filter === 'only' && $plugin['core']);
-            });
-        }
-
-        $this->plugins       = $plugins;
-        $this->plugin_types  = $this->plugin_admin->getPluginTypes();
-        $this->update_info   = $this->get_update_info($this->plugins);
-        $this->migrations    = $this->plugin_admin->getMigrationInfo();
-        $this->num_updates   = 0;
-
-        foreach ($this->update_info as $id => $info) {
-            if (isset($info['update']) && !$this->plugins[$id]['depends']) {
-                $this->num_updates += 1;
-            }
-        }
+        $this->render_vue_app(
+            Studip\VueApp::create('PluginAdministration')
+                ->withStore('Plugin')
+                ->withProps([
+                    'configuration' => User::findCurrent()->getConfiguration()->getValue('PLUGINADMIN_DISPLAY_SETTINGS'),
+                ])
+        );
     }
 
     /**
@@ -155,12 +140,14 @@ class Admin_PluginController extends AuthenticatedController
      */
     public function save_action()
     {
+        CSRFProtection::verifyUnsafeRequest();
+
         $plugin_manager = PluginManager::getInstance();
         $plugin_filter = Request::option('plugin_filter', '');
         $type = $plugin_filter != '' ? $plugin_filter : NULL;
         $plugins = $plugin_manager->getPluginInfos($type);
 
-        $force = (bool) Request::int('force');
+        $force = Request::bool('force', false);
 
         $this->check_ticket();
 
@@ -174,7 +161,7 @@ class Admin_PluginController extends AuthenticatedController
                 continue;
             }
 
-            $enabled = Request::int('enabled_' . $plugin['id'], 0);
+            $enabled = Request::bool('enabled_' . $plugin['id'], false);
             $navpos = Request::int('position_' . $plugin['id']);
 
             $result = $plugin_manager->setPluginEnabled($plugin['id'], $enabled, $force);
@@ -414,7 +401,7 @@ class Admin_PluginController extends AuthenticatedController
      */
     public function install_updates_action()
     {
-        $this->check_ticket();
+        CSRFProtection::verifyUnsafeRequest();
 
         $plugin_manager = PluginManager::getInstance();
         $this->flash['plugins_disabled'] = $plugin_manager->isPluginsDisabled();

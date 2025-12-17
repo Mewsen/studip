@@ -120,6 +120,11 @@ button,
         padding: 0;
     }
 
+    &.as-link {
+        font-weight: inherit;
+        text-align: left;
+    }
+
     &.as-link,
     &.undecorated[formaction] {
         @include button-base;
@@ -141,6 +146,10 @@ button,
 }
 
 label {
+    &.as-link {
+        @extend .button, .as-link;
+    }
+
     &.undecorated.icon-button {
         cursor: pointer;
         .input-hidden {
