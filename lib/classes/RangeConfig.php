@@ -37,25 +37,23 @@ class RangeConfig extends Config
     /**
      * returns cached instance for given range_id
      * creates new objects if needed
-     * @param string $range_id
-     * @return RangeConfig
+     *
+     * @param string|Range|null $range_id Range id or object (never null, we
+     *                                    need this just for compatibility with
+     *                                    Config::get())
      */
-    public static function get()
+    public static function get(string|Range|null $range_id = null): static
     {
-        if (func_num_args() === 0 || func_get_arg(0) === null) {
-            return new static(true);
+        if ($range_id === null) {
+            throw new InvalidArgumentException('No range_id given');
         }
-
-        $range_id = func_get_arg(0);
 
         if ($range_id instanceof Range) {
             $range_id = $range_id->getRangeId();
         }
 
-        if (!isset(static::$instances[$range_id])) {
-            static::$instances[$range_id] = new static($range_id);
-        }
-        return static::$instances[$range_id];
+        return static::$instances[$range_id]
+            ??= new static($range_id);
     }
 
     /**
@@ -67,7 +65,7 @@ class RangeConfig extends Config
      */
     public static function set()
     {
-        list($range_id, $my_instance) = func_get_args();
+        [$range_id, $my_instance] = func_get_args();
         self::$instances[$range_id] = $my_instance;
     }
 
