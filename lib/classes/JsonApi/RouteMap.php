@@ -130,6 +130,8 @@ class RouteMap
 
         $this->addAuthenticatedAvatarRoutes($group);
         $this->addAuthenticatedMvvRoutes($group);
+        $this->addAuthenticatedCommunityRoutes($group);
+        $this->addAuthenticatedDashboardWidgetRoutes($group);
         $this->addAuthenticatedEventsRoutes($group);
         $this->addAuthenticatedFeedbackRoutes($group);
         $this->addAuthenticatedFilesRoutes($group);
@@ -144,7 +146,7 @@ class RouteMap
         $this->addAuthenticatedThemesRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
-        $this->addAuthenticatedDashboardWidgetRoutes($group);
+        
     }
 
     /**
@@ -859,6 +861,27 @@ class RouteMap
         $group->get('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsShow::class);
 
         $group->patch('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsUpdate::class);
+    }
+
+    private function addAuthenticatedCommunityRoutess(RouteCollectorProxy $group): void {
+        // community-groups
+        $group->post('/community-groups', Routes\Community\CommunityGroupCreate::class);
+        $group->get('/community-groups/{id}', Routes\Community\CommunityGroupShow::class);
+        $group->patch('/community-groups/{id}', Routes\Community\CommunityGroupUpdate::class);
+        $group->delete('/community-groups/{id}', Routes\Community\CommunityGroupDelete::class);
+        $group->get('/users/{id}/community-groups', Routes\Community\CommunityGroupsOfUsersIndex::class);
+
+        // community-group-participants
+        $group->post('/community-group-participants', Routes\Community\CommunityGroupParticipantCreate::class);
+        $group->get('/community-group-participants/{id}', Routes\Community\CommunityGroupParticipantShow::class);
+        $group->patch('/community-group-participants/{id}', Routes\Community\CommunityGroupParticipantUpdate::class);
+        $group->delete('/community-group-participants/{id}', Routes\Community\CommunityGroupParticipantDelete::class);
+
+        // community-group-pinboard-items
+        $group->post('/community-group-pinboard-items', Routes\Community\CommunityGroupPinboardItemCreate::class);
+        $group->get('/community-group-pinboard-items/{id}', Routes\Community\CommunityGroupPinboardItemShow::class);
+        $group->patch('/community-group-pinboard-items/{id}', Routes\Community\CommunityGroupPinboardItemUpdate::class);
+        $group->delete('/community-group-pinboard-items/{id}', Routes\Community\CommunityGroupPinboardItemDelete::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

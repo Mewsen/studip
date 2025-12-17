@@ -93,6 +93,17 @@ class CommunityGroup extends \SimpleORMap
     }
 
     /**
+     * Checks if a user is a pending member of the group.
+     *
+     * @param string $user_id
+     * @return bool
+     */
+    public function isPending(string $user_id): bool
+    {
+        return $this->getParticipant($user_id)?->status === CommunityGroupParticipant::STATUS_PENDING;
+    }
+
+    /**
      * Checks if a user has moderator privileges.
      *
      * @param string $user_id
@@ -190,5 +201,26 @@ class CommunityGroup extends \SimpleORMap
         $participant->role = CommunityGroupParticipant::ROLE_FOLLOWER;
 
         return $participant->store() ? $participant : null;
+    }
+
+    /**
+     * Finds all community groups for a specific user, optionally filtered by participant status.
+     *
+     * @param string $user_id The ID of the user.
+     * @param array|string $status The status(es) to filter by (defaults to MEMBER and MODERATOR).
+     * @return CommunityGroup[] An array of CommunityGroup objects.
+     */
+    public static function findByUserId(string $user_id, $status = [CommunityGroupParticipant::STATUS_MEMBER, CommunityGroupParticipant::STATUS_MODERATOR]): array
+    {
+        return self::findAndMapBySQL(
+            function ($group) {
+                return $group;
+            },
+            "INNER JOIN community_group_participants ON (community_group_participants.group_id = community_groups.id)
+                    WHERE community_group_participants.user_id = ?
+                        AND community_group_participants.status IN (?)
+                    ORDER BY community_groups.name ASC",
+            [$user_id, (array) $status]
+        );
     }
 }

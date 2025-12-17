@@ -106,6 +106,10 @@ class SchemaMap
 
             \DashboardWidget\Container::class => Schemas\DashboardWidget\Container::class,
             \DashboardWidget\Widget::class => Schemas\DashboardWidget\Widget::class,
+            \Community\CommunityGroup::class => Schemas\Community\CommunityGroup::class,
+            \Community\CommunityGroupParticipant::class => Schemas\Community\CommunityGroupParticipant::class,
+            \Community\CommunityGroupPinboardItem::class => Schemas\Community\CommunityGroupPinboardItem::class,
         ];
     }
 }
+

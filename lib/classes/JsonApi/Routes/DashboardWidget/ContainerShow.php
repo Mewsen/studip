@@ -31,8 +31,8 @@ class ContainerShow extends JsonApiController
     public function __invoke(Request $request, Response $response, $args)
     {
         $user = $this->getUser($request);
-
-        if (!$resource = Container::find($args['id'])) {
+        $resource = Container::find($args['id']);
+        if (!$resource) {
             throw new RecordNotFoundException();
         }
 
