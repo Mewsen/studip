@@ -31,15 +31,17 @@ class Institute extends SchemaProvider
     public function getAttributes($institute, ContextInterface $context): iterable
     {
         return [
-            'name'       => (string) $institute->name,
-            'city'       => $institute->plz,
-            'street'     => $institute->strasse,
-            'phone'      => $institute->telefon,
-            'fax'        => $institute->fax,
-            'url'        => (string) $institute->url,
-            'is-faculty' => $institute->is_fak,
-            'mkdate'     => date('c', $institute->mkdate),
-            'chdate'     => date('c', $institute->chdate),
+            'name'            => (string) $institute->name,
+            'city'            => $institute->plz,
+            'street'          => $institute->strasse,
+            'phone'           => $institute->telefon,
+            'fax'             => $institute->fax,
+            'url'             => (string) $institute->url,
+            'is-faculty'      => $institute->is_fak,
+            'inst-type'       => $institute->type,
+            'inst-type-name'  => $GLOBALS['INST_TYPE'][$institute->type]['name'],
+            'mkdate'          => date('c', $institute->mkdate),
+            'chdate'          => date('c', $institute->chdate),
         ];
     }
 
