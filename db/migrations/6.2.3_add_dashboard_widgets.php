@@ -10,11 +10,10 @@ class AddDashboardWidgets extends Migration
     protected function up()
     {
         $db = DBManager::get();
-        // TODO: verify the context ENUMs
         $db->exec("CREATE TABLE IF NOT EXISTS `dashboard_widget_containers` (
             `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user\'s container in a specific context.',
             `owner_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL COMMENT 'Identifier of the user owning this container',
-            `context` ENUM('community', 'course', 'content', 'startpage', 'profile') COLLATE latin1_bin NOT NULL COMMENT 'Context in which the container is used. it could be extended in the future.',
+            `context` ENUM('community', 'course', 'content', 'start') COLLATE latin1_bin NOT NULL COMMENT 'Context in which the container is used. it could be extended in the future.',
             `context_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT 'generic' COMMENT 'Identifier of the context (e.g., course id, community id, etc.)',
             `payload` LONGTEXT COLLATE latin1_bin NOT NULL COMMENT 'Serialized data representing the layout and configuration of widgets within the container for different breakpoints.',
             `mkdate` INT(11) UNSIGNED NOT NULL,
