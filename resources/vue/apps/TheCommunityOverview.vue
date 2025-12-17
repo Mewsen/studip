@@ -1,5 +1,5 @@
 <template>
-    <content-bar :title="$gettext('Community')" :is-content-bar="true" icon="community">
+    <content-bar :title="$gettext('Netzwerk')" :is-content-bar="true" icon="community">
         <template #buttons-right>
             <studip-context-menu :title="$gettext('Hinzufügen')" button-shape="add">
                 <template #content> 

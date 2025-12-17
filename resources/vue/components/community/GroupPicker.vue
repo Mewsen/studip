@@ -1,6 +1,6 @@
 <template>
     <div class="group-picker-container">
-        <div v-if="loading" class="loading-state">Lade verfügbare Interessengruppen...</div>
+        <div v-if="loading" class="loading-state">Lade verfügbare Gemeinschaften...</div>
 
         <StudipDualListBox
             v-else

@@ -255,18 +255,11 @@ class StartNavigation extends Navigation
         $this->addSubNavigation('messaging', $navigation);
 
         // community
-        $navigation = new Navigation(_('Community'));
-        $navigation->addSubNavigation('online', new Navigation(_('Wer ist online?'), 'dispatch.php/online'));
-        $navigation->addSubNavigation('contacts', new Navigation(_('Meine Kontakte'), 'dispatch.php/contact'));
-        // study groups
-        if (Config::get()->STUDYGROUPS_ENABLE) {
-            $navigation->addSubNavigation('browse',new Navigation(_('Studiengruppen'), 'dispatch.php/studygroup/browse'));
-        }
-        // ranking
-        if (Config::get()->SCORE_ENABLE) {
-            $navigation->addSubNavigation('score', new Navigation(_('Rangliste'), 'dispatch.php/score'));
-            $this->addSubNavigation('community', $navigation);
-        }
+        $navigation = new Navigation(_('Netzwerk'), 'dispatch.php/community');
+        $navigation->addSubNavigation('groups', new Navigation(_('Gemeinschaften'), 'dispatch.php/community/groups'));
+        $navigation->addSubNavigation('contacts', new Navigation(_('Kontakte'), 'dispatch.php/contact'));
+        $navigation->addSubNavigation('chat', new Navigation(_('Chat'), 'dispatch.php/blubber'));
+        $this->addSubNavigation('community', $navigation);
 
         // calendar / home page
         if (!$perm->have_perm('admin')) {

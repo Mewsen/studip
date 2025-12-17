@@ -6,7 +6,7 @@ class CommunityController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        PageLayout::setTitle(_('Community'));
+        PageLayout::setTitle(_('Netzwerk'));
     }
     public function index_action()
     {

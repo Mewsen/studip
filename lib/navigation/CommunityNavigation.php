@@ -21,25 +21,15 @@ class CommunityNavigation extends Navigation
 {
     public function __construct()
     {
-        parent::__construct(_('Community'));
+        parent::__construct(_('Netzwerk'));
     }
 
     public function initItem()
     {
         parent::initItem();
-        $onlinetip = _('Nur Sie sind online');
-        $user_count = get_users_online_count();
+        $title = _('Netzwerk');
 
-        if ($user_count) {
-
-            if ($user_count == 1) {
-                $onlinetip = _('Außer Ihnen ist eine Person online');
-            } else {
-                $onlinetip = sprintf(_('Es sind außer Ihnen %d Personen online'), $user_count);
-            }
-        }
-
-        $this->setImage(Icon::create('community', 'navigation', ["title" => $onlinetip]));
+        $this->setImage(Icon::create('community', 'navigation', ["title" => $title]));
     }
 
     /**
@@ -52,40 +42,26 @@ class CommunityNavigation extends Navigation
 
         parent::initSubNavigation();
 
-        // if (Config::get()->BLUBBER_GLOBAL_MESSENGER_ACTIVATE) {
-        //     //Blubber messenger
-        //     $navigation = new Navigation(_('Blubber'), 'dispatch.php/blubber');
-        //     $this->addSubNavigation('blubber', $navigation);
-        // }
-
-        // // online list
-        // $navigation = new Navigation(_('Wer ist online?'), 'dispatch.php/online/index');
-        // $this->addSubNavigation('online', $navigation);
-
-        // // contacts
-        // $navigation = new Navigation(_('Kontakte'), 'dispatch.php/contact');
-        // $this->addSubNavigation('contacts', $navigation);
-
-        // // study groups
-        // if (Config::get()->STUDYGROUPS_ENABLE) {
-        //     $navigation = new Navigation(_('Studiengruppen'));
-        //     $navigation->addSubNavigation('browse', new Navigation(_('Studiengruppensuche'), 'dispatch.php/studygroup/browse'));
-        //     if (Config::get()->MY_COURSES_ENABLE_STUDYGROUPS && !$GLOBALS['perm']->have_perm('admin')) {
-        //         $navigation->addSubNavigation('index', new Navigation(_('Meine Studiengruppen'), 'dispatch.php/my_studygroups'));
-        //     }
-        //     $this->addSubNavigation('studygroups', $navigation);
-        // }
-
-        // // ranking
-        // if (Config::get()->SCORE_ENABLE) {
-        //     $navigation = new Navigation(_('Rangliste'), 'dispatch.php/score');
-        //     $this->addSubNavigation('score', $navigation);
-        // }
-
+        // overview
         $navigation = new Navigation(_('Übersicht'), 'dispatch.php/community');
         $this->addSubNavigation('overview', $navigation);
 
-        $navigation = new Navigation(_('Interessengruppen'), 'dispatch.php/community/groups');
+        // groups
+        $navigation = new Navigation(_('Gemeinschaften'), 'dispatch.php/community/groups');
         $this->addSubNavigation('groups', $navigation);
+
+        if (Config::get()->BLUBBER_GLOBAL_MESSENGER_ACTIVATE) {
+            //Blubber messenger
+            $navigation = new Navigation(_('Chat'), 'dispatch.php/blubber');
+            $this->addSubNavigation('blubber', $navigation);
+        }
+
+        // contacts
+        $navigation = new Navigation(_('Kontakte'), 'dispatch.php/contact');
+        $this->addSubNavigation('contacts', $navigation);
+
+        
+
+        
     }
 }

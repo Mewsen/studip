@@ -22,7 +22,7 @@ class StudygroupController extends AuthenticatedController
         parent::before_filter($action, $args);
 
         PageLayout::setTitle(_('Studiengruppen suchen'));
-        Navigation::activateItem('/community/studygroups/browse');
+        Navigation::activateItem('/browse/my_studygroups/all');
         PageLayout::setHelpKeyword('Basis.SuchenStudiengruppen');
 
         $this->setupSidebar();
