@@ -131,11 +131,6 @@
     color: var(--color--font-primary);
 }
 
-.ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled):hover .ck.ck-button__label,
-.ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled) .ck.ck-button__label {
-    color: var(--color--font-inverted);
-}
-
 .ck.ck-button.ck-off.ck-button_with-text:not(.ck-disabled, .ck-dropdown__button):hover .ck.ck-button__label,
 .ck.ck-button.ck-on.ck-button_with-text:not(.ck-disabled, .ck-dropdown__button) .ck.ck-button__label {
     color: var(--white);
