@@ -130,9 +130,41 @@ class Container extends \SimpleORMap
     }
 
     /**
-     * Adds/Updates a widget data including widget id and its position for a specific breakpoint into the container's payload.
+     * Adds a new widget into the payload of the container for each breakpoint,
+     * first it ensures that it does not exist anywhere!
+     * then it calculates the last position in each breakpoint based on the columns of that breakpoint and size of the widget type.
+     * at the end it exchanges the new array in the payload column!
      *
-     * When a new widget is going to be added it would also be added to every other defined breakpoints in the payload with the calculation of its next best position in each breakpoint.
+     * NOTE: This method does NOT store/save the changes!
+     *
+     * @param Widget $widget the targeted widget's record to add.
+     * @return void
+     */
+    public function addNewWidgetIntoPayload(Widget $widget): void
+    {
+        $payload = $this->payload->getArrayCopy();
+
+        // We add this to each available breakpoint.
+        foreach ($payload as $breakpoint => $layout) {
+            // We ensure the widget does not exists.
+            $payload = $this->removeExistingPayloadObjIn($payload, $breakpoint, $widget->id);
+            // We then get the last (best) position for this new widget in the breakpoint.
+            $lastPos = $this->calculateLastPosition(
+                $breakpoint,
+                $layout,
+                $widget->widget_type->getDefaultSize()
+            );
+            // Record the widget id too!
+            $lastPos['i'] = (int) $widget->id;
+            // Add the positioning data into the breakpoint.
+            $payload[$breakpoint][] = $lastPos;
+        }
+
+        $this->payload->exchangeArray($payload);
+    }
+
+    /**
+     * Updates the widget positioning data in a specific breakpoint in the payload.
      *
      * NOTE: This method does NOT store the changes!
      *
@@ -140,26 +172,18 @@ class Container extends \SimpleORMap
      * @param string $breakpoint the flag determining the targeted breakpoint.
      * @param array $position the position set of the widget for the breakpoint in the container.
      *              ['x' => int, 'y' => int, 'w' => int, 'h' => int]
-     * @param bool $isNew a flag to determine of the record is new or not, determining the add or update capability.
      * @return void
      */
-    public function addUpdateWidgetInPayload(Widget $widget, string $breakpoint, array $position, bool $isNew = true): void
+    public function updateWidgetInPayload(Widget $widget, string $breakpoint, array $position): void
     {
         $payload = $this->payload->getArrayCopy();
+        // Make sure the old record is removed!
         $payload = $this->removeExistingPayloadObjIn($payload, $breakpoint, $widget->id);
+        // Record the new positioning data.
         $payloadArr = $position;
-        $payloadArr['i'] = $widget->id;
+        $payloadArr['i'] = (int) $widget->id;
+        // Add the positioning data into the breakpoint.
         $payload[$breakpoint][] = $payloadArr;
-        // When we add a new widget, we also need to add it other breakpoints by calculating the next best position.
-        if ($isNew) {
-            foreach ($payload as $bp => $content) {
-                if ($bp === $breakpoint) {
-                    continue;
-                }
-                $lastPos = $this->calculateLastPosition($bp, $content);
-                $payload[$bp][] = $lastPos + ['i' => $widget->id];
-            }
-        }
         $this->payload->exchangeArray($payload);
     }
 
@@ -187,14 +211,15 @@ class Container extends \SimpleORMap
      * Calculates the next best position that a widget can have withing the targeted breakpoint, using the defined breakpoint's columns and teh default width & height columns ratio.
      *
      * @param string $breakpoint the targeted breakpoint
-     * @param array $currentContent the current position contents of the breakpoint containing other widgets position data.
+     * @param array $currentLayout the current position contents of the breakpoint containing other widgets position data.
      * @return array the array containing the next best position of a widget in the breakpoint.
      */
-    private function calculateLastPosition(string $breakpoint, array $currentContent): array
+    private function calculateLastPosition(string $breakpoint, array $currentLayout, array $widgetSize): array
     {
         $cols = self::BREAKPOINT_COLS[$breakpoint] ?? 12;
-        $defaultW = self::DEFAULT_COL_WIDTH_RATIO;
-        $defaultH = self::DEFAULT_COL_HEIGHT_RATIO;
+
+        $widgetWidth = isset($widgetSize['w']) ? (int) $widgetSize['w'] : self::DEFAULT_COL_WIDTH_RATIO;
+        $widgetHeight = isset($widgetSize['h']) ? (int) $widgetSize['h'] : self::DEFAULT_COL_HEIGHT_RATIO;
 
         $nextY = 0;
         while (true) {
@@ -202,16 +227,16 @@ class Container extends \SimpleORMap
                 $nextPos = [
                     'x' => $nextX,
                     'y' => $nextY,
-                    'h' => $defaultW,
-                    'w' => $defaultH
+                    'h' => $widgetHeight,
+                    'w' => $widgetWidth,
                 ];
                 $alreadyOccupied = false;
-                foreach ($currentContent as $item) {
+                foreach ($currentLayout as $item) {
                     if (
                         $nextX < ($item['x'] + $item['w']) &&
-                        $nextX + ($defaultW > $item['x']) &&
+                        $nextX + ($widgetWidth > $item['x']) &&
                         $nextY < ($item['y'] + $item['h']) &&
-                        ($nextY + $defaultH) > $item['y']
+                        ($nextY + $widgetHeight) > $item['y']
                     ) {
                         $alreadyOccupied = true;
                         break;

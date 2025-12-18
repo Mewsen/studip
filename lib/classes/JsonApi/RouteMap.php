@@ -146,7 +146,7 @@ class RouteMap
         $this->addAuthenticatedThemesRoutes($group);
         $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
-        
+
     }
 
     /**

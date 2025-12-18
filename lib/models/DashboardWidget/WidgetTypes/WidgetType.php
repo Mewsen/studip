@@ -18,6 +18,13 @@ use Opis\JsonSchema\Validator;
 abstract class WidgetType
 {
     /**
+     * Returns an array indicating the default width and height of the widget.
+     *
+     * @return array ['w' => {the default width INT}, 'h' => {the default height INT}]
+     */
+    abstract public static function getDefaultSize(): array;
+
+    /**
      * Returns a short string describing this type of widgets.
      *
      * @return string the short string describing this type

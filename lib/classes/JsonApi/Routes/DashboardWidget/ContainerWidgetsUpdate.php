@@ -61,7 +61,10 @@ class ContainerWidgetsUpdate extends JsonApiController
         $breakpoint = self::arrayGet($json, 'data.attributes.breakpoint');
         $position = self::arrayGet($json, 'data.attributes.position');
 
-        $container->addUpdateWidgetInPayload($resource, $breakpoint, $position, false);
+        // We filter out the position as to make sure it only provides needed data.
+        $filteredPosition = $this->filterPosition($position);
+
+        $container->updateWidgetInPayload($resource, $breakpoint, $filteredPosition);
 
         $container->store();
 
@@ -96,5 +99,21 @@ class ContainerWidgetsUpdate extends JsonApiController
             count(array_diff(['x', 'y', 'h', 'w'], array_keys($position))) > 0) {
             return 'Invalid `position` parameters.';
         }
+    }
+
+    /**
+     * Ensures the position data contains needed values only.
+     *
+     * @param array $position the raw position array coming from request.
+     * @return array
+     */
+    private function filterPosition(array $position): array
+    {
+        return [
+            'x' => $position['x'],
+            'y' => $position['y'],
+            'h' => $position['h'],
+            'w' => $position['w'],
+        ];
     }
 }

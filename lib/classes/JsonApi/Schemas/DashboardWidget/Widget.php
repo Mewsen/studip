@@ -24,7 +24,7 @@ class Widget extends SchemaProvider
     /**
      * @var string the container relationship flag.
      */
-    const REL_CONTAINER = 'container';
+    const REL_CONTAINER = 'dashboard-widget-containers';
 
     /**
      * @inheritdoc

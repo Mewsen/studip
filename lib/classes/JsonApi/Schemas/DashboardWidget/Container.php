@@ -30,7 +30,7 @@ class Container extends SchemaProvider
     /**
      * @var string the widgets relationship flag.
      */
-    const REL_WIDGETS = 'widgets';
+    const REL_WIDGETS = 'dashboard-widgets';
 
     /**
      * @inheritdoc

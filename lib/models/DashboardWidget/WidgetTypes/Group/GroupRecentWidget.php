@@ -55,4 +55,15 @@ class GroupRecentWidget extends GroupWidgetType
         $schemaFile = __DIR__ . "/{$scope}.json";
         return file_get_contents($schemaFile);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getDefaultSize(): array
+    {
+        return [
+            'w' => \DashboardWidget\Container::DEFAULT_COL_WIDTH_RATIO,
+            'h' => \DashboardWidget\Container::DEFAULT_COL_HEIGHT_RATIO,
+        ];
+    }
 }

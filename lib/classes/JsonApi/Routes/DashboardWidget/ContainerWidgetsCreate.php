@@ -46,8 +46,6 @@ class ContainerWidgetsCreate extends JsonApiController
         $widgetType = self::arrayGet($json, 'data.attributes.widget-type');
         $widgetScope = self::arrayGet($json, 'data.attributes.widget-scope');
         $payload = self::arrayGet($json, 'data.attributes.payload');
-        $breakpoint = self::arrayGet($json, 'data.attributes.breakpoint');
-        $position = self::arrayGet($json, 'data.attributes.position');
 
         $resource = Widget::build([
             'container_id' => $container->id,
@@ -61,7 +59,8 @@ class ContainerWidgetsCreate extends JsonApiController
         }
 
         $resource->store();
-        $container->addUpdateWidgetInPayload($resource, $breakpoint, $position, true);
+
+        $container->addNewWidgetIntoPayload($resource);
 
         $container->store();
 
@@ -88,25 +87,6 @@ class ContainerWidgetsCreate extends JsonApiController
 
         if (!self::arrayHas($json, 'data.attributes.payload')) {
             return 'Attribute \'payload\' is required.';
-        }
-
-        if (!self::arrayHas($json, 'data.attributes.breakpoint')) {
-            return 'Attribute \'breakpoint\' is required.';
-        }
-
-        $breakpoint = self::arrayGet($json, 'data.attributes.breakpoint');
-        if (!in_array($breakpoint, Container::ALL_BREAKPOINTS)) {
-            return 'Undefined `breakpoint`.';
-        }
-
-        if (!self::arrayHas($json, 'data.attributes.position')) {
-            return 'Attribute \'position\' is required.';
-        }
-
-        $position = self::arrayGet($json, 'data.attributes.position');
-        if (!is_array($position) ||
-            count(array_diff(['x', 'y', 'h', 'w'], array_keys($position))) > 0) {
-            return 'Invalid `position` parameters.';
         }
     }
 }
