@@ -4,7 +4,7 @@ final class AddCommunityGroups extends Migration
 {
     public function description()
     {
-        return '';
+        return 'Create tables for Community Groups';
     }
 
     public function up()
