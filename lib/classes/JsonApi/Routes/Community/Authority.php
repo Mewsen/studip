@@ -102,4 +102,27 @@ class Authority
 
         return $group->isMember($user->id) || $group->isModerator($user->id);
     }
+
+    public static function canShowPinboardItem(User $user, CommunityGroupPinboardItem $item, CommunityGroup $group): bool
+    {
+        return self::canShowCommunityGroup($user, $group);
+    }
+
+    public static function canUpdatePinboardItem(User $user, CommunityGroupPinboardItem $item): bool
+    {
+        return $user->id === $item->user_id;
+    }
+
+    public static function canDeletePinboardItem(User $user, CommunityGroupPinboardItem $item): bool
+    {
+        if ($user->id === $item->user_id) {
+            return true;
+        }
+
+        if ($item->group->isModerator($user->id)) {
+            return true;
+        }
+
+        return $GLOBALS['perm']->have_perm('root');
+    }
 }
