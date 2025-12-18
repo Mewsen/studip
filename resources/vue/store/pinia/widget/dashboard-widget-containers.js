@@ -95,21 +95,6 @@ export const useContainerStore = defineStore('containerStore', () => {
         }
     }
 
-    // async function saveLayout(containerId, newLayout) {
-    //     try {
-    //         const response = await api.update('dashboard-widget-containers', {
-    //             id: containerId,
-    //             attributes: {
-    //                 payload: newLayout,
-    //             },
-    //         });
-    //         container.value = response.data;
-    //     } catch (error) {
-    //         console.error('Fehler beim Speichern des Container-Layouts:', error);
-    //         throw error;
-    //     }
-    // }
-
     async function addWidget(widgetType, widgetScope, payload, position, breakpoint) {
         const containerId = container.value.id;
 
