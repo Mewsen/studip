@@ -85,17 +85,6 @@ class Container extends \SimpleORMap
         self::BREAKPOINT_XXS => 0,
     ];
 
-    /** @var array Available breakpoints size naming mapping  */
-    public const BREAKPOINT_SIZE_MAPPINGS = [
-        self::BREAKPOINT_XXL => 'desktop-large',
-        self::BREAKPOINT_XL => 'desktop',
-        self::BREAKPOINT_LG => 'desktop-small',
-        self::BREAKPOINT_MD => 'tablet',
-        self::BREAKPOINT_SM => 'smartphone',
-        self::BREAKPOINT_XS => 'smartphone-small',
-        self::BREAKPOINT_XXS => 'smartphone-tiny',
-    ];
-
     /** @var array Available breakpoints columns mapping  */
     public const BREAKPOINT_COLS = [
         self::BREAKPOINT_XXL => 20,
@@ -313,7 +302,6 @@ class Container extends \SimpleORMap
             'breakpoints' => self::ALL_BREAKPOINTS,
             'breakpoints-widths' => self::BREAKPOINT_WIDTHS,
             'breakpoints-cols' => self::BREAKPOINT_COLS,
-            'breakpoints-mapping' => self::BREAKPOINT_SIZE_MAPPINGS,
         ];
     }
 

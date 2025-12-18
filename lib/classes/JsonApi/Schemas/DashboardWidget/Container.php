@@ -53,30 +53,6 @@ class Container extends SchemaProvider
     /**
      * @inheritdoc
      */
-    public function hasResourceMeta($resource): bool
-    {
-        return false; // TODO: we turn this here off in favor of the misc endpoint. later decision should be made.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getResourceMeta($resource)
-    {
-        // TODO: We have these also in misc json api, do we need them here? or there? or what?
-        return [
-            'contexts' => DashboardContainer::ALL_CONTEXTS,
-            'breakpoints' => DashboardContainer::ALL_BREAKPOINTS,
-            'default-breakpoints' => DashboardContainer::DEFAULT_BREAKPOINTS,
-            'breakpoints-widths' => DashboardContainer::BREAKPOINT_WIDTHS,
-            'breakpoints-cols' => DashboardContainer::BREAKPOINT_COLS,
-            'breakpoints-size-mapping' => DashboardContainer::BREAKPOINT_SIZE_MAPPINGS,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
