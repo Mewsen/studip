@@ -105,7 +105,7 @@ class Authority
 
     public static function canShowPinboardItem(User $user, CommunityGroupPinboardItem $item, CommunityGroup $group): bool
     {
-        return self::canShowCommunityGroup($user, $group);
+        return self::canShowCommunityGroupParticipant($user, $group);
     }
 
     public static function canUpdatePinboardItem(User $user, CommunityGroupPinboardItem $item): bool

@@ -19,7 +19,7 @@ class CommunityGroupParticipantShow extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $group = CommunityGroup::find($participant->group_id);
+        $group = $participant->group;
         $user = $this->getUser($request);
 
         if (!Authority::canShowCommunityGroupParticipant($user, $group)) {

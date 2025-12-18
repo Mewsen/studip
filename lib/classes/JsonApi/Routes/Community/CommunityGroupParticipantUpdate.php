@@ -23,7 +23,7 @@ class CommunityGroupParticipantUpdate extends JsonApiController
         }
         $json = $this->validate($request);
 
-        $group = CommunityGroup::find($participant->group_id);
+        $group = $participant->group;
         $user = $this->getUser($request);
 
         if (!Authority::canUpdateCommunityGroupParticipant($user, $participant, $group)) {

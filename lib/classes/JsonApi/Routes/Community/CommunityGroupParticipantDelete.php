@@ -19,7 +19,7 @@ class CommunityGroupParticipantDelete extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $group = CommunityGroup::find($participant->group_id);
+        $group = $participant->group;
         $user = $this->getUser($request);
 
         if (!Authority::canDeleteCommunityGroupParticipant($user, $participant, $group)) {
