@@ -24,9 +24,9 @@ class CommunityGroupCreate extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $resource = self::createGroup($json, $user);
+        $resource = $this->createGroup($json, $user);
 
-        return $this->getContentResponse($resource);
+        return $this->getCreatedResponse($resource);
     }
 
     protected function validateResourceDocument($json, $data)

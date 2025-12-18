@@ -21,7 +21,7 @@ class CommunityGroupParticipantCreate extends JsonApiController
     {
         $json = $this->validate($request);
         $user = $this->getUser($request);
-        $group = CommunityGroup::find(self::arrayGet($json, 'data.attributes.group_id'));
+        $group = CommunityGroup::find(self::arrayGet($json, 'data.attributes.group-id'));
         if (!$group) {
             throw new RecordNotFoundException();
         }
@@ -29,9 +29,9 @@ class CommunityGroupParticipantCreate extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $resource = self::createGroupParticipant($json, $user, $group);
+        $resource = $this->createGroupParticipant($json, $user, $group);
 
-        return $this->getContentResponse($resource);
+        return $this->getCreatedResponse($resource);
     }
 
     /**
@@ -50,11 +50,11 @@ class CommunityGroupParticipantCreate extends JsonApiController
             return 'New document must not have an `id`.';
         }
 
-        if (!self::arrayHas($json, 'data.attributes.group_id')) {
-            return 'Attribute \'group_id\' is required.';
+        if (!self::arrayHas($json, 'data.attributes.group-id')) {
+            return 'Attribute \'group-id\' is required.';
         }
-        if (!self::arrayHas($json, 'data.attributes.user_id')) {
-            return 'Attribute \'user_id\' is required.';
+        if (!self::arrayHas($json, 'data.attributes.user-id')) {
+            return 'Attribute \'user-id\' is required.';
         }
     }
 
@@ -70,8 +70,8 @@ class CommunityGroupParticipantCreate extends JsonApiController
      */
     private function createGroupParticipant($json, $user, $group): ?CommunityGroupParticipant
     {
-        $group_id = self::arrayGet($json, 'data.attributes.group_id');
-        $user_id = self::arrayGet($json, 'data.attributes.user_id');
+        $group_id = self::arrayGet($json, 'data.attributes.group-id');
+        $user_id = self::arrayGet($json, 'data.attributes.user-id');
         $role = CommunityGroupParticipant::ROLE_FOLLOWER;
         $status = CommunityGroupParticipant::STATUS_PENDING;
 
@@ -79,7 +79,7 @@ class CommunityGroupParticipantCreate extends JsonApiController
             $status = CommunityGroupParticipant::STATUS_MEMBER;
         }
 
-        $participant = CommunityGroupParticipant::create([
+        $participant = CommunityGroupParticipant::ensureRecordExists([
             'group_id' => $group_id,
             'user_id' => $user_id,
             'status' => $status,
@@ -88,6 +88,4 @@ class CommunityGroupParticipantCreate extends JsonApiController
 
         return $participant;
     }
-
-
 }

@@ -59,7 +59,7 @@ class CommunityGroupUpdate extends JsonApiController
      */
     private function updateGroup($json, CommunityGroup $group): CommunityGroup
     {
-        $attributes = $json['data']['attributes'];
+        $attributes = self::arrayGet($json, 'data.attributes');
 
         // Update only if the attribute is present in the request
         if (isset($attributes['name'])) {

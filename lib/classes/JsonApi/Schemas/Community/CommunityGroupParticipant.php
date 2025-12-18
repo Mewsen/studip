@@ -8,16 +8,32 @@ use Neomerx\JsonApi\Schema\Link;
 
 class CommunityGroupParticipant extends SchemaProvider
 {
+    /**
+     * @inheritdoc
+     */
     public const TYPE = 'community-group-participants';
 
+    /**
+     * @var string the user relationship flag.
+     */
     const REL_USER = 'user';
+
+    /**
+     * @var string the group relationship flag.
+     */
     const REL_GROUP = 'group';
 
+    /**
+     * @inheritdoc
+     */
     public function getId($resource): ?string
     {
         return $resource->group_id . '_' . $resource->user_id;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
@@ -29,20 +45,23 @@ class CommunityGroupParticipant extends SchemaProvider
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [
             self::REL_USER => [
-                self::RELATIONSHIP_DATA => $resource->user,
                 self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_USER),
+                    Link::RELATED => $this->createLinkToResource($resource->user),
                 ],
+                self::RELATIONSHIP_DATA => $resource->user,
             ],
             self::REL_GROUP => [
-                self::RELATIONSHIP_DATA => $resource->group,
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_GROUP),
                 ],
+                self::RELATIONSHIP_DATA => $resource->group,
             ],
         ];
     }

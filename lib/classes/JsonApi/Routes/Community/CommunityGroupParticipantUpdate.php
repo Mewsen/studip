@@ -54,7 +54,7 @@ class CommunityGroupParticipantUpdate extends JsonApiController
 
     private function updateParticipant($json, CommunityGroupParticipant $participant): CommunityGroupParticipant
     {
-        $attributes = $json['data']['attributes'];
+        $attributes = self::arrayGet($json, 'data.attributes');
 
         if (isset($attributes['status'])) {
             $participant->status = $attributes['status'];

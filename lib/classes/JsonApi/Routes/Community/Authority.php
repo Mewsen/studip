@@ -23,6 +23,11 @@ class Authority
         return $GLOBALS['perm']->have_perm(perm: 'author');
     }
 
+    public static function canIndexUserCommunityGroups(User $requester, User $targetUser): bool
+    {
+        return $requester->id === $targetUser->id;
+    }
+
     public static function canShowCommunityGroup(User $user, CommunityGroup $group): bool
     {
         if ($GLOBALS['perm']->have_perm(perm: 'root')) {
@@ -110,12 +115,12 @@ class Authority
 
     public static function canUpdatePinboardItem(User $user, CommunityGroupPinboardItem $item): bool
     {
-        return $user->id === $item->user_id;
+        return $user->id === $item->owner->id;
     }
 
     public static function canDeletePinboardItem(User $user, CommunityGroupPinboardItem $item): bool
     {
-        if ($user->id === $item->user_id) {
+        if ($user->id === $item->owner->id) {
             return true;
         }
 

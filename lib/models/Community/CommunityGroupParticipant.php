@@ -14,7 +14,7 @@ use User;
  *
  * @property int $group_id database column
  * @property string $user_id database column
- * @property string $role database column 
+ * @property string $role database column
  * @property string $status database column
  * @property int $mkdate database column
  * @property int $chdate database column
@@ -96,5 +96,22 @@ class CommunityGroupParticipant extends \SimpleORMap
     public function isModerator(): bool
     {
         return $this->role === self::ROLE_MODERATOR;
+    }
+
+    /**
+     * Tries to find and return the record, otherwise creates and returns a new one.
+     * @param array $data the associative data array used.
+     * @return CommunityGroupParticipant the record
+     */
+    public static function ensureRecordExists(array $data): self
+    {
+        $where = array_map(fn(string $field): string => "{$field} = ?", array_keys($data));
+        $where = implode(' AND ', $where);
+        $params = array_values($data);
+        $existing = self::findOneBySQL($where, $params);
+        if (empty($existing)) {
+            return self::create($data);
+        }
+        return $existing;
     }
 }

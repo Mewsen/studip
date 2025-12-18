@@ -24,7 +24,7 @@ class CommunityGroupPinboardItemCreate extends JsonApiController
         $json = $this->validate($request);
         $user = $this->getUser($request);
 
-        $group_id = self::arrayGet($json, 'data.attributes.group_id');
+        $group_id = self::arrayGet($json, 'data.attributes.group-id');
         $group = CommunityGroup::find($group_id);
 
         if (!$group) {
@@ -37,7 +37,7 @@ class CommunityGroupPinboardItemCreate extends JsonApiController
 
         $resource = $this->createPinboardItem($json, $user, $group);
 
-        return $this->getContentResponse($resource);
+        return $this->getCreatedResponse($resource);
     }
 
     /**
@@ -49,12 +49,17 @@ class CommunityGroupPinboardItemCreate extends JsonApiController
             return 'Missing `data` member at document\'s top level.';
         }
 
-        if (!self::arrayHas($json, 'data.attributes.group_id')) {
-            return 'Attribute \'group_id\' is required.';
+        if (!self::arrayHas($json, 'data.attributes.group-id')) {
+            return 'Attribute \'group-id\' is required.';
         }
 
         if (!self::arrayHas($json, 'data.attributes.payload')) {
             return 'Attribute \'payload\' is required.';
+        }
+
+        $payload = self::arrayGet($json, 'data.attributes.payload');
+        if (!is_array($payload)) {
+            return 'Attribute \'payload\' is invalid.';
         }
 
         if (!self::arrayHas($json, 'data.attributes.item-type')) {
@@ -69,7 +74,7 @@ class CommunityGroupPinboardItemCreate extends JsonApiController
     {
         return CommunityGroupPinboardItem::create([
             'group_id' => $group->id,
-            'user_id'  => $user->id,
+            'owner_id'  => $user->id,
             'payload'  => self::arrayGet($json, 'data.attributes.payload'),
             'item_type' => self::arrayGet($json, 'data.attributes.item-type'),
             'file_ref_id' => self::arrayGet($json, 'data.attributes.file-ref-id', ''),

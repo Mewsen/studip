@@ -17,11 +17,13 @@ class CommunityGroupsOfUsersIndex extends JsonApiController
     public function __invoke(Request $request, Response $response, $args)
     {
         $user = $this->getUser($request);
-        $user_id = $args['id'];
-        if ($user->id !== $user_id) {
-             throw new AuthorizationFailedException();
+
+        $targetUser = \User::find($args['id']);
+        if (!Authority::canIndexUserCommunityGroups($user, $targetUser)) {
+            throw new AuthorizationFailedException();
         }
-        $resources = CommunityGroup::findByUserId($user_id);
+
+        $resources = CommunityGroup::findByUserId($targetUser->id);
         $total = count($resources);
         list($offset, $limit) = $this->getOffsetAndLimit();
 

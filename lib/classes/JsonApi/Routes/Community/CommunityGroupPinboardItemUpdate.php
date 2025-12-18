@@ -42,7 +42,7 @@ class CommunityGroupPinboardItemUpdate extends JsonApiController
 
     private function updateItem($json, $resource): CommunityGroupPinboardItem
     {
-        $attributes = $json['data']['attributes'];
+        $attributes = self::arrayGet($json, 'data.attributes');
 
         if (isset($attributes['payload'])) {
             $resource->payload = $attributes['payload'];
@@ -52,7 +52,6 @@ class CommunityGroupPinboardItemUpdate extends JsonApiController
             $resource->file_ref_id = $attributes['file-ref-id'];
         }
 
-        
         if ($resource->isDirty()) {
             $resource->store();
         }
