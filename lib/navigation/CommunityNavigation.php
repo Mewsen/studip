@@ -47,7 +47,7 @@ class CommunityNavigation extends Navigation
         $this->addSubNavigation('overview', $navigation);
 
         // groups
-        $navigation = new Navigation(_('Gemeinschaften'), 'dispatch.php/community/groups');
+        $navigation = new Navigation(_('Spots'), 'dispatch.php/community/groups');
         $this->addSubNavigation('groups', $navigation);
 
         if (Config::get()->BLUBBER_GLOBAL_MESSENGER_ACTIVATE) {

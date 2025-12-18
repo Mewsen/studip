@@ -1,5 +1,5 @@
 <template>
-    <h2>Übersicht Gemeinschaften</h2>
+    <h2>Übersicht Spots</h2>
     <studip-data-set-viewer
         :data="myGroups"
         :availableViews="['card', 'list', 'table']"
