@@ -3,6 +3,7 @@
 namespace JsonApi\Routes\Community;
 
 use JsonApi\Errors\AuthorizationFailedException;
+use JsonApi\Errors\ConflictException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\ValidationTrait;
@@ -24,6 +25,9 @@ class CommunityGroupParticipantCreate extends JsonApiController
         $group = CommunityGroup::find(self::arrayGet($json, 'data.attributes.group-id'));
         if (!$group) {
             throw new RecordNotFoundException();
+        }
+        if (CommunityGroupParticipant::exists([$group->id, $user->id])) {
+            throw new ConflictException(_('User is already a member of the spot.'));
         }
         if (!Authority::canCreateCommunityGroupParticipant($user, $group)) {
             throw new AuthorizationFailedException();
@@ -79,7 +83,7 @@ class CommunityGroupParticipantCreate extends JsonApiController
             $status = CommunityGroupParticipant::STATUS_MEMBER;
         }
 
-        $participant = CommunityGroupParticipant::ensureRecordExists([
+        $participant = CommunityGroupParticipant::create([
             'group_id' => $group_id,
             'user_id' => $user_id,
             'status' => $status,
