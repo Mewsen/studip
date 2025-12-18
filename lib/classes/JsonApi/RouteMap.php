@@ -863,7 +863,7 @@ class RouteMap
         $group->patch('/dashboard-widgets/{id}', Routes\DashboardWidget\WidgetsUpdate::class);
     }
 
-    private function addAuthenticatedCommunityRoutess(RouteCollectorProxy $group): void {
+    private function addAuthenticatedCommunityRoutes(RouteCollectorProxy $group): void {
         // community-groups
         $group->post('/community-groups', Routes\Community\CommunityGroupCreate::class);
         $group->get('/community-groups/{id}', Routes\Community\CommunityGroupShow::class);
