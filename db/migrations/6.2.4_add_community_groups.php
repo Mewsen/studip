@@ -11,7 +11,7 @@ final class AddCommunityGroups extends Migration
     {
         $db = DBManager::get();
         $db->exec("CREATE TABLE IF NOT EXISTS `community_groups` (
-                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `name` VARCHAR(255) NOT NULL,
                 `description` TEXT NOT NULL,
                 `creator_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
@@ -26,7 +26,7 @@ final class AddCommunityGroups extends Migration
         );
 
         $db->exec("CREATE TABLE IF NOT EXISTS `community_group_participants` (
-                `group_id` INT(11) NOT NULL,
+                `group_id` INT(11) UNSIGNED NOT NULL,
                 `user_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
                 `role` ENUM('moderator', 'follower') COLLATE latin1_bin NOT NULL,
                 `status` ENUM('member', 'pending', 'banned') COLLATE latin1_bin NOT NULL,
@@ -39,12 +39,12 @@ final class AddCommunityGroups extends Migration
         );
 
         $db->exec("CREATE TABLE IF NOT EXISTS `community_group_pinboard_items` (
-                `id` INT(11) NOT NULL AUTO_INCREMENT,
-                `group_id` INT(11) NOT NULL,
+                `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `group_id` INT(11) UNSIGNED NOT NULL,
                 `owner_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
                 `item_type` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
-                `payload` MEDIUMTEXT COLLATE latin1_bin NOT NULL,
-                `file_ref_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+                `payload` MEDIUMTEXT NOT NULL,
+                `file_ref_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
                 `position` INT(11) NOT NULL,
                 `mkdate` INT(11) UNSIGNED NOT NULL,
                 `chdate` INT(11) UNSIGNED NOT NULL,

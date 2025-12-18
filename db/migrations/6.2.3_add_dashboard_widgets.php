@@ -11,28 +11,29 @@ class AddDashboardWidgets extends Migration
     {
         $db = DBManager::get();
         $db->exec("CREATE TABLE IF NOT EXISTS `dashboard_widget_containers` (
-            `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user\'s container in a specific context.',
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user\'s container in a specific context.',
             `owner_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL COMMENT 'Identifier of the user owning this container',
-            `context` ENUM('community', 'course', 'content', 'start') COLLATE latin1_bin NOT NULL COMMENT 'Context in which the container is used. it could be extended in the future.',
+            `context` ENUM('community', 'course', 'content', 'start') NOT NULL COMMENT 'Context in which the container is used. it could be extended in the future.',
             `context_id` CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT 'generic' COMMENT 'Identifier of the context (e.g., course id, community id, etc.)',
-            `payload` LONGTEXT COLLATE latin1_bin NOT NULL COMMENT 'Serialized data representing the layout and configuration of widgets within the container for different breakpoints.',
+            `payload` LONGTEXT NOT NULL COMMENT 'Serialized data representing the layout and configuration of widgets within the container for different breakpoints.',
             `mkdate` INT(11) UNSIGNED NOT NULL,
             `chdate` INT(11) UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
-            INDEX owner_id (`owner_id`)
-        )");
+            UNIQUE KEY `user_context` (`owner_id`, `context`, `context_id`),
+            INDEX `owner_idx` (`owner_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
         $db->exec("CREATE TABLE IF NOT EXISTS `dashboard_widgets` (
-            `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the widget in a container',
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the widget in a container',
             `container_id` INT(11) UNSIGNED NOT NULL COMMENT 'Identifier of the container to which this widget belongs',
-            `type` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL COMMENT 'Type of the widget (e.g., chat, calendar, etc.)',
-            `scope` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT 'default' COMMENT 'The variant of the widget type.',
-            `payload` MEDIUMTEXT COLLATE latin1_bin NOT NULL COMMENT 'Serialized data representing the configuration of the widget',
+            `type` VARCHAR(255) NOT NULL COMMENT 'Type of the widget (e.g., chat, calendar, etc.)',
+            `scope` VARCHAR(255) NOT NULL DEFAULT 'default' COMMENT 'The variant of the widget type.',
+            `payload` MEDIUMTEXT NOT NULL COMMENT 'Serialized data representing the configuration of the widget',
             `mkdate` INT(11) UNSIGNED NOT NULL,
             `chdate` INT(11) UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
-            INDEX container_id (`container_id`)
-        )");
+            INDEX `container_idx` (`container_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     }
 
     protected function down()
