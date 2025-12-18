@@ -17,7 +17,7 @@ class CommunityGroupParticipantUpdate extends JsonApiController
 
     public function __invoke(Request $request, Response $response, $args)
     {
-        $participant = CommunityGroupParticipant::find($args['id']);
+        $participant = CommunityGroupParticipant::findByJsonApiId($args['id']);
         if (!$participant) {
             throw new RecordNotFoundException();
         }
