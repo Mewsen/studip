@@ -255,7 +255,7 @@ class StartNavigation extends Navigation
         $this->addSubNavigation('messaging', $navigation);
 
         // community
-        $navigation = new Navigation(_('Netzwerk'), 'dispatch.php/community');
+        $navigation = new Navigation(_('Community'), 'dispatch.php/community');
         $navigation->addSubNavigation('groups', new Navigation(_('Spots'), 'dispatch.php/community/groups'));
         $navigation->addSubNavigation('contacts', new Navigation(_('Kontakte'), 'dispatch.php/contact'));
         $navigation->addSubNavigation('chat', new Navigation(_('Chat'), 'dispatch.php/blubber'));

@@ -21,13 +21,13 @@ class CommunityNavigation extends Navigation
 {
     public function __construct()
     {
-        parent::__construct(_('Netzwerk'));
+        parent::__construct(_('Community'));
     }
 
     public function initItem()
     {
         parent::initItem();
-        $title = _('Netzwerk');
+        $title = _('Community');
 
         $this->setImage(Icon::create('community', 'navigation', ["title" => $title]));
     }
