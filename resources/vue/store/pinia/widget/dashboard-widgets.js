@@ -24,7 +24,7 @@ export const useWidgetStore = defineStore('widgetStore', () => {
     });
 
     function byId(id) {
-        return records.value.get(id);
+        return records.value.get(String(id)); // we need that cast for unsigned ids
     }
 
     async function fetchById(id) {
