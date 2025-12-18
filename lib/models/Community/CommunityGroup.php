@@ -210,7 +210,7 @@ class CommunityGroup extends \SimpleORMap
      * @param array|string $status The status(es) to filter by (defaults to MEMBER and MODERATOR).
      * @return CommunityGroup[] An array of CommunityGroup objects.
      */
-    public static function findByUserId(string $user_id, $status = [CommunityGroupParticipant::STATUS_MEMBER, CommunityGroupParticipant::STATUS_MODERATOR]): array
+    public static function findByUserId(string $user_id, $status = [CommunityGroupParticipant::STATUS_MEMBER]): array
     {
         return self::findAndMapBySQL(
             function ($group) {

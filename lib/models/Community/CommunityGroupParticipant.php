@@ -54,6 +54,31 @@ class CommunityGroupParticipant extends \SimpleORMap
     }
 
     /**
+     * Helper to find a participant by a concatenated JSON:API ID.
+     * Expected format: "groupid_userid"
+     * * @param string $id The concatenated ID string.
+     * @return CommunityGroupParticipant|null
+     */
+    public static function findByJsonApiId(string $id): ?self
+    {
+        $ids = explode('_', $id);
+        if (count($ids) !== 2) {
+            return null;
+        }
+
+        return self::findOneBySQL('group_id = ? AND user_id = ?', $ids);
+    }
+
+    /**
+     * Returns a unique ID string for JSON:API.
+     * * @return string
+     */
+    public function getJsonApiId(): string
+    {
+        return "{$this->group_id}_{$this->user_id}";
+    }
+
+    /**
      * Returns the full name of the participant.
      * Useful for sorting or direct display in templates.
      *

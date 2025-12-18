@@ -43,7 +43,7 @@ class CommunityGroupPinboardItem extends \SimpleORMap
             'foreign_key' => 'group_id',
         ];
 
-        $config['belongs_to']['user'] = [
+        $config['belongs_to']['owner'] = [
             'class_name' => User::class,
             'foreign_key' => 'owner_id',
         ];
