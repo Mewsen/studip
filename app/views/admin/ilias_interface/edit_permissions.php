@@ -89,4 +89,25 @@
             </section>
         <? endif ?>
     </fieldset>
+    <? if (!empty($ilias_config['workgroup_category'])) : ?>
+    <fieldset>
+        <legend>
+            <?= _('Arbeitsbereiche') ?>
+        </legend>
+        <label>
+            <span class="required"><?= _('Erforderliche Rechtestufe zum Erstellen von Arbeitsbereichen') ?></span>
+            <select name="ilias_workgroup_perm">
+                <option value="autor" <?= $ilias_config['workgroup_perm'] === 'autor' ? 'selected' : '' ?>><?= _('autor') ?></option>
+                <option value="tutor" <?= $ilias_config['workgroup_perm'] === 'tutor' ? 'selected' : '' ?>><?= _('tutor') ?></option>
+                <option value="dozent" <?= empty($ilias_config['workgroup_perm']) || $ilias_config['workgroup_perm'] === 'dozent' ? 'selected' : '' ?>><?= _('dozent') ?></option>
+                <option value="admin" <?= $ilias_config['workgroup_perm'] == 'admin' ? 'selected' : '' ?>><?= _('admin') ?></option>
+                <option value="root" <?= $ilias_config['workgroup_perm'] === 'root' ? 'selected' : '' ?>><?= _('root') ?></option>
+            </select>
+        </label>
+        <label>
+            <span class="required"><?= _('Name oder ID des Rollen-Templates für Mitglieder von Arbeitsbereichen') ?></span>
+            <input type="text" name="ilias_workgroup_role_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['workgroup_role_name'] ?? '') ?>" required>
+        </label>
+    </fieldset>
+    <? endif ?>
 </form>

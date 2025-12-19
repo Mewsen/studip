@@ -157,6 +157,9 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             'course_veranstaltungsnummer' => false,
                             'workgroup_category_name' => '',
                             'workgroup_category' => '',
+                            'workgroup_perm' => '',
+                            'workgroup_role_name' => '',
+                            'workgroup_role' => '',
                             'modules' => [],
 
                             'author_role_name' => 'Author',
@@ -401,6 +404,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     $this->ilias_configs[$index]['author_role_name'] = Request::get('ilias_author_role_name');
                     $this->ilias_configs[$index]['author_perm'] = Request::get('ilias_author_perm');
                     $this->ilias_configs[$index]['allow_change_account'] = Request::get('ilias_allow_change_account');
+                    $this->ilias_configs[$index]['workgroup_role_name'] = Request::get('ilias_workgroup_role_name');
+                    $this->ilias_configs[$index]['workgroup_perm'] = Request::get('ilias_workgroup_perm');
 
                     // remove ilias role assignment
                     if (

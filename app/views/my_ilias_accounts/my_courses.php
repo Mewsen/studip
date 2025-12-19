@@ -60,7 +60,7 @@
    </table>
 <? endforeach ?>
 <? foreach ($ilias_list as $ilias_index => $ilias) : ?>
-    <? if (!empty($workgroups_list[$ilias_index])) : ?>
+        <? if (!empty($workgroups_list[$ilias_index]) || !empty($add_workgroups_perm)) : ?>
         <br>
         <br>
         <table class="default">
@@ -100,6 +100,19 @@
                     </td>
                 </tr>
             <? endforeach ?>
+       <? else : ?>
+            <tr>
+                <td colspan="3"><?=_('Sie sind noch keinem Arbeitsbereich zugeordnet.')?></td>
+            </tr>
+       <? endif ?>
+       <? if (!empty($add_workgroups_perm[$ilias_index])) : ?>
+       <tfoot>
+            <tr>
+                <td colspan="3">
+                    <?= Studip\LinkButton::create(_('Neuen Arbeitsbereich anlegen'), $controller->url_for('my_ilias_accounts/add_workgroup/'.$ilias_index), ['data-dialog' => 'size=auto']) ?>
+                </td>
+            </tr>
+       </tfoot>
        <? endif ?>
        </table>
     <? endif ?>

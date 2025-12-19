@@ -72,11 +72,79 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
+     * Adds workgroup
+     */
+    public function add_workgroup_action($ilias_index) 
+    {
+        $this->ilias = new ConnectedIlias($ilias_index);
+        $this->ilias_workgroup_name = sprintf(_('Arbeitsbereich von %s'), User::findCurrent()->getFullName());
+
+        if (
+            empty($this->ilias->ilias_config['workgroup_perm'])
+            || !$GLOBALS['perm']->have_perm($this->ilias->ilias_config['workgroup_perm'])
+        ) {
+            throw new AccessDeniedException();
+        }
+
+        if (Request::submitted('add_workgroup')) {
+            $this->ilias_workgroup_name = trim(Request::get('ilias_workgroup_name'));
+            if (
+                empty($this->ilias_workgroup_name)
+                || mb_strlen($this->ilias_workgroup_name) < 3
+            ) {
+                PageLayout::postError(_('Der Name des Arbeitsbereichs ist zu kurz.'));
+            } elseif (
+                $this->ilias->isActive()
+                && !empty($this->ilias->ilias_config['workgroup_category'])
+                && !empty($this->ilias->ilias_config['workgroup_role'])
+            ) {
+                //create workgroup category in ILIAS
+                $object_data = [
+                    'title' => $this->ilias_workgroup_name,
+                    'description' => '',
+                    'type' => 'cat', 
+                    'owner' => $this->ilias->soap_client->lookupUser($this->ilias_config['admin']),
+                ];
+                $workgroup_cat = $this->ilias->soap_client->addObject($object_data, $this->ilias->ilias_config['workgroup_category']);
+
+                if (!empty($workgroup_cat)) {
+                    // create local role from template
+                    $role_data = [
+                        'title' => "studip_workgroup_ref_" . $workgroup_cat,
+                        'description' => sprintf(_('Arbeitsbereichsrolle für ref_id %s, angelegt von %s'), $workgroup_cat, User::findCurrent()->getFullName()),
+                    ];
+                    $role_id = $this->ilias->soap_client->addRoleFromTemplate($role_data, $workgroup_cat, $this->ilias->ilias_config['workgroup_role']);
+
+                    if (!empty($role_id)) {
+                        //add current user to new role entry
+                        $this->ilias->soap_client->addUserRoleEntry($this->ilias->user->getId(), $role_id);
+                        
+                        // delete permissions for all global roles (User, Guest, Anonymous) for this category
+                        foreach ($this->ilias->global_roles as $role) {
+                            $this->ilias->soap_client->revokePermissions($role, $workgroup_cat);
+                        }
+
+                        PageLayout::postSuccess(sprintf(_('Der Arbeitsbereich mit dem Namen "%s" wurde angelegt.'), $this->ilias_workgroup_name));
+                    } else {
+                        PageLayout::postError(sprintf(_('Die Mitglieder-Rolle für den Arbeitsbereich "%s" konnte nicht angelegt werden.'), $this->ilias_workgroup_name));
+                    }
+                } else {
+                    PageLayout::postError(sprintf(_('Der Arbeitsbereich "%s" konnte nicht angelegt werden.'), $this->ilias_workgroup_name));
+                }
+            } else {
+                PageLayout::postError(sprintf(_('Die ILIAS-Installation %s ist nicht aktiv.'), $this->ilias->ilias_config['name']));
+            }
+            $this->redirect($this->url_for('my_ilias_accounts/my_courses'));
+        }
+    }
+
+    /**
      * Sends workgroup requests to given user(s)
      */
     public function request_workgroup_member_action($ilias_index, $workgroup_id) 
     {
         $this->ilias = new ConnectedIlias($ilias_index);
+
         if ($this->ilias->isActive()) {
             $this->ilias_index = $ilias_index;
             // Get selected persons.
@@ -141,6 +209,7 @@ class MyIliasAccountsController extends AuthenticatedController
     public function accept_workgroup_request_action($ilias_index, $workgroup_id) 
     {
         $this->ilias = new ConnectedIlias($ilias_index);
+
         if ($this->ilias->isActive()) {
             $this->ilias_index = $ilias_index;
 
@@ -283,6 +352,12 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
 
                     $this->workgroups_list[$ilias_list_index] = $ilias->getUserWorkgroups($GLOBALS['perm']->have_perm('root'));
+
+                    $this->add_workgroups_perm[$ilias_list_index] = 
+                        !empty($ilias->ilias_config['workgroup_category'])
+                        && !empty($ilias->ilias_config['workgroup_role'])
+                        && !empty($ilias->ilias_config['workgroup_perm']) 
+                        && $GLOBALS['perm']->have_perm($ilias->ilias_config['workgroup_perm']);
                 }
             }
         }

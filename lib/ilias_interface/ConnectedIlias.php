@@ -147,6 +147,7 @@ class ConnectedIlias
 
         $interface_config_options = [
             'show_course_paths' => true,
+            'create_objects' => true,
         ];
 
         foreach ($interface_config_options as $option_key => $option_value) {
@@ -188,6 +189,9 @@ class ConnectedIlias
             'course_veranstaltungsnummer' => false,
             'workgroup_category_name' => '',
             'workgroup_category' => '',
+            'workgroup_perm' => '',
+            'workgroup_role_name' => '',
+            'workgroup_role' => '',
             'modules' => [],
 
             'author_role_name' => '',
@@ -422,27 +426,48 @@ class ConnectedIlias
      */
     public function getPermissionsSettingsStatus()
     {
+        $permission_error = false;
         // check role template
         if (empty($this->ilias_config['author_role_name'])) {
             $this->error[] = _("Das Rollen-Template für die persönliche Kategorie wurde noch nicht festgelegt.");
+            return false;
         } elseif (is_numeric($this->ilias_config['author_role_name'])) {
             // if an ID was entered, simply use it; else check for title
             $this->ilias_config['author_role'] = $this->ilias_config['author_role_name'];
             $this->storeSettings();
-            return true;
         } else {
             $role_template = $this->soap_client->getObjectByTitle($this->ilias_config['author_role_name'], 'rolt');
 
-            if ($role_template == false) {
-                $this->error[] = sprintf(_('Das Rollen-Template mit dem Namen „%1$s“ wurde im System %2$s nicht gefunden.'), htmlReady($this->ilias_config['author_role_name']), htmlReady($this->getName()));
-            } else if (is_array($role_template)) {
+            if (!empty($role_template) && is_array($role_template)) {
                 $this->ilias_config['author_role'] = $role_template["obj_id"];
-                $this->ilias_config['author_role_name'] = $role_template['title'];
+                $this->ilias_config['author_role_name'] = $role_template["title"];
                 $this->storeSettings();
-                return true;
+            } else {
+                $this->error[] = sprintf(_('Das Rollen-Template mit dem Namen „%1$s“ wurde im System %2$s nicht gefunden.'), htmlReady($this->ilias_config['author_role_name']), htmlReady($this->getName()));
+                return false;
             }
         }
-        return false;
+        // check workgroup role template
+        if (!empty($this->ilias_config['workgroup_category']) && empty($this->ilias_config['workgroup_role_name'])) {
+            $this->error[] = _("Das Rollen-Template für die Arbeitsgruppen wurde noch nicht festgelegt.");
+            return false;
+        } elseif (is_numeric($this->ilias_config['workgroup_role_name'])) {
+            // if an ID was entered, simply use it; else check for title
+            $this->ilias_config['workgroup_role'] = $this->ilias_config['workgroup_role_name'];
+            $this->storeSettings();
+        } else {
+            $role_template = $this->soap_client->getObjectByTitle($this->ilias_config['workgroup_role_name'], 'rolt');
+
+            if (is_array($role_template)) {
+                $this->ilias_config['workgroup_role'] = $role_template["obj_id"];
+                $this->ilias_config['workgroup_role_name'] = $role_template["title"];
+                $this->storeSettings();
+            } else {
+                $this->error[] = sprintf(_('Das Rollen-Template mit dem Namen „%1$s“ wurde im System %2$s nicht gefunden.'), htmlReady($this->ilias_config['workgroup_role_name']), htmlReady($this->getName()));
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -933,8 +958,10 @@ class ConnectedIlias
         $data = $statement->fetch(PDO::FETCH_ASSOC);
         $user_list = [];
 
-        foreach ($data as $user_data) {
-            $user_list[$data['user_id']] = trim($data['title_front'] . ' ' . $data['Vorname'] . ' ' . $data['Nachname'] . ' ' . $data['title_rear']);
+        if (is_array($data)) {
+            foreach ($data as $user_data) {
+                $user_list[$data['user_id']] = trim($data['title_front'] . ' ' . $data['Vorname'] . ' ' . $data['Nachname'] . ' ' . $data['title_rear']);
+            }
         }
 
         return $user_list;
