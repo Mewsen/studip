@@ -159,5 +159,5 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     dialogReady,
     ScrollToTop,
     Vips,
-    Vue,
+    Vue
 });

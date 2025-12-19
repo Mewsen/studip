@@ -31,6 +31,9 @@ $form_id = md5(uniqid());
      data-autosave="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
      data-url="<?= htmlReady($form->getURL()) ?>"
  <? endif; ?>
+<? if ($form->justEmitsValues()) : ?>
+     data-emit="true"
+ <? endif; ?>
 >
     <form method="post"
     <? if (!$form->isAutoStoring()) : ?>
@@ -86,15 +89,17 @@ $form_id = md5(uniqid());
             <?
             endforeach ?>
         </div>
-        <footer data-dialog-button>
-            <?= \Studip\Button::create($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
-            <? foreach ($form->getButtons() as $button): ?>
-                <?
-                $button->attributes['form'] = $form_id;
-                echo $button;
-                ?>
-            <? endforeach ?>
-            <?= \Studip\LinkButton::createCancel($form->getCancelButtonText(), Request::url()) ?>
-        </footer>
+        <? if ($form->hasButtons()) : ?>
+            <footer data-dialog-button>
+                <?= \Studip\Button::create($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
+                <? foreach ($form->getButtons() as $button): ?>
+                    <?
+                    $button->attributes['form'] = $form_id;
+                    echo $button;
+                    ?>
+                <? endforeach ?>
+                <?= \Studip\LinkButton::createCancel($form->getCancelButtonText(), Request::url()) ?>
+            </footer>
+        <? endif ?>
     </form>
 </div>

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \Studip\VueApp $app
+ * @var bool $configOnly
  */
 $data = [
     'appPath' => $app->getAppPath(),
@@ -13,6 +14,12 @@ $data = [
     'vuexStoreData' => $app->getVuexStoreData(),
 ];
 ?>
+<? if (!$configOnly) : ?>
 <div data-vue-app>
-     <script type="application/json"><?= json_encode($data) ?></script>
+    <script type="application/json">
+<? endif ?>
+        <?= json_encode($data) ?>
+<? if (!$configOnly) : ?>
+    </script>
 </div>
+<? endif;

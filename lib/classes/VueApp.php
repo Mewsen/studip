@@ -215,17 +215,17 @@ final class VueApp implements Stringable
     /**
      * Returns the template to render the vue app
      */
-    public function getTemplate(): Template
+    public function getTemplate(bool $configOnly = false): Template
     {
         $template = app(Factory::class)->open('vue-app.php');
-        $template->set_attributes(['app' => $this]);
+        $template->set_attributes(['app' => $this, 'configOnly' => $configOnly]);
         return $template;
     }
 
     /**
      * Renders the vue app
      */
-    public function render(): string
+    public function render(bool $configOnly = false): string
     {
         if (Debug\DebugBar::isActivated()) {
             $debugbar = app()->get(\DebugBar\DebugBar::class);
@@ -235,7 +235,7 @@ final class VueApp implements Stringable
 
         \NotificationCenter::postNotification('VueAppWillRender', $this);
 
-        $content = $this->getTemplate()->render();
+        $content = $this->getTemplate($configOnly)->render();
 
         \NotificationCenter::postNotification('VueAppDidRender', $this);
 
