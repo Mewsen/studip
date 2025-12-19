@@ -27,6 +27,16 @@ class FooterNavigation extends Navigation
     {
         parent::initSubNavigation();
 
+        // Permalink to this site
+        if (is_object($GLOBALS['user']) && $GLOBALS['user']->id !== 'nobody') {
+            $nav = new Navigation(_('Link zur Seite'), 'dispatch.php/short_urls/create');
+            $nav->setLinkAttributes(['id' => 'dummy-create-short-url']);
+            $this->addSubNavigation(
+                'short_url',
+                $nav
+            );
+        }
+
         // imprint
         $this->addSubNavigation('siteinfo', new Navigation(_('Impressum'), 'dispatch.php/siteinfo/show?cancel_login=1'));
 

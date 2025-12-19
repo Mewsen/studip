@@ -138,7 +138,8 @@
         "oat-sa/lib-lti1p3-deep-linking": "4.1.0",
         "lcobucci/jwt": "^4.3",
         "guzzlehttp/guzzle": "^7.9.2",
-        "phpoffice/phpword": "^1.4"
+        "phpoffice/phpword": "^1.4",
+        "sqids/sqids": "^0.5.0"
     },
     "replace": {
         "symfony/polyfill-php54": "*",

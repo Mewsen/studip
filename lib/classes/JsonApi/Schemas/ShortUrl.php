@@ -1,0 +1,61 @@
+<?php
+
+namespace JsonApi\Schemas;
+
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
+use Neomerx\JsonApi\Schema\Link;
+
+final class ShortUrl extends SchemaProvider
+{
+    public const TYPE     = 'short-urls';
+    public const REL_USER = 'user';
+
+    /**
+     * @param \Clipboard $resource
+     */
+    public function getId($resource): ?string
+    {
+        return (string)$resource->id;
+    }
+
+    /**
+     * @param \ShortUrl $resource
+     */
+    public function getAttributes($resource, ContextInterface $context): iterable
+    {
+        return [
+            'alias'  => $resource->alias,
+            'path'   => $resource->path,
+            'title'  => $resource->title,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate),
+        ];
+    }
+
+    /**
+     * @param \ShortUrl $resource
+     */
+    public function getRelationships($resource, ContextInterface $context): iterable
+    {
+        $relationships = [];
+
+        $isPrimary = $context->getPosition()->getLevel() === 0;
+        if ($isPrimary) {
+            $relationships = $this->getUserRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_USER));
+        }
+
+        return $relationships;
+    }
+
+    private function getUserRelationship(array $relationships, \ShortUrl $short_url, bool $includeData): array
+    {
+        $relationships[self::REL_USER] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->createLinkToResource($short_url->user),
+            ],
+            self::RELATIONSHIP_DATA  => $includeData ? $short_url->user : \User::build(['id' => $short_url->user_id], false),
+        ];
+
+        return $relationships;
+    }
+}

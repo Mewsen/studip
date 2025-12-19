@@ -49,7 +49,17 @@ class Course_EnrolmentController extends AuthenticatedController
                 || ($enrolment_info->getCodeword() === 'free_access' && !User::findCurrent())
             )
         ) {
-            $redirect_url = URLHelper::getUrl('dispatch.php/course/go', ['to' => $this->course_id]);
+            if (Request::int('from_short_url')) {
+                $link = ShortUrl::find(Request::int('from_short_url'));
+                if ($link) {
+                    $redirect_url = URLHelper::getUrl($link->path);
+                } else {
+                    $redirect_url = URLHelper::getUrl('dispatch.php/course/go', ['to' => $this->course_id]);
+                }
+            } else {
+                $redirect_url = URLHelper::getUrl('dispatch.php/course/go', ['to' => $this->course_id]);
+            }
+
             if (Request::isXhr()) {
                 $this->response->add_header('X-Location', $redirect_url);
                 $this->render_nothing();
@@ -252,16 +262,29 @@ class Course_EnrolmentController extends AuthenticatedController
             if (!empty($course) && $course->admission_prelim) {
                 $this->relocate(URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $this->course_id]));
             } else {
-                $this->relocate(URLHelper::getLink('dispatch.php/course/go', ['to' => $this->course_id]));
+                if (Request::int('from_short_url')) {
+                    $url = ShortUrl::find(Request::int('from_short_url'));
+
+                    if ($url) {
+                        $this->relocate(URLHelper::getUrl($url->path));
+                    }
+                } else {
+                    $this->relocate(URLHelper::getLink('dispatch.php/course/go', ['to' => $this->course->id]));
+                }
             }
         } elseif ($enrol_user) {
+
+            $params = ['apply' => 1];
+            if (Request::int('from_short_url')) {
+                $params['from_short_url'] = Request::int('from_short_url');
+            }
 
             PageLayout::postQuestion(
                 sprintf(
                     _('Wollen Sie sich zu der Veranstaltung "%s" wirklich anmelden?'),
                     htmlReady(Course::find($this->course_id)->name)
                 ),
-                $this->action_url("apply/{$this->course_id}", ['apply' => 1]),
+                $this->action_url("apply/{$this->course_id}", $params),
                 $this->action_url("apply/{$this->course_id}", ['decline' => 1])
             );
 

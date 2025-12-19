@@ -204,8 +204,6 @@ class Context
      */
     public static function set($id)
     {
-        global $perm;
-
         self::close();
         self::loadContext($id);
 
@@ -219,32 +217,47 @@ class Context
 
         URLHelper::addLinkParam('cid', $GLOBALS['SessionSeminar']);
 
-        if (self::isCourse()) {
-            $course = self::get();
+        $context = self::get();
 
+        if ($context instanceof Course) {
             // check if current user can access the object
-            if (!$perm->get_studip_perm($course['Seminar_id'])) {
-                if ($course['lesezugriff'] > 0 || !Config::get()->ENABLE_FREE_ACCESS) {
+            if (!$GLOBALS['perm']->get_studip_perm($context->id)) {
+                if ($context->lesezugriff > 0 || !Config::get()->ENABLE_FREE_ACCESS) {
                     // redirect to login page if user is not logged in
                     if (!User::findCurrent()) {
                         throw new LoginException();
                     }
 
-                    if (!$perm->get_studip_perm($course['Seminar_id'])) {
-                        throw new AccessDeniedException();
+                    if (
+                        Request::int('from_short_url')
+                        && !$GLOBALS['perm']->get_studip_perm($context->id)
+                        && !match_route('dispatch.php/course/details')
+                    ) {
+                        PageLayout::postWarning(_('Sie sind noch nicht eingetragen. Bitte prüfen Sie eventuell geltende Anmelderegeln!'));
+                        $url = URLHelper::getURL(
+                            'dispatch.php/course/details',
+                            [
+                                'sem_id' => $context->id,
+                                'from_short_url' => Request::int('from_short_url')
+                            ],
+                            true
+                        );
+                        header('Location: ' . $url);
+                        die;
                     }
                 }
             }
 
             // if the aux data is forced for this seminar forward all user that havent made an input to this site
-            if ($course['aux_lock_rule_forced']
-                && !$perm->have_studip_perm('tutor', $course['Seminar_id'])
+            if (
+                $context->aux_lock_rule_forced
+                && !$GLOBALS['perm']->have_studip_perm('tutor', $context->id)
                 && !match_route('dispatch.php/course/members/additional_input')
-                && !match_route('dispatch.php/course/change_view/*'))
-            {
+                && !match_route('dispatch.php/course/change_view/*')
+            ) {
                 $count = DatafieldEntryModel::countBySql(
                     'range_id = ? AND sec_range_id = ?',
-                    [$GLOBALS['user']->id, $course['Seminar_id']]
+                    [$GLOBALS['user']->id, $context->id]
                 );
                 if (!$count) {
                     header('Location: ' . URLHelper::getURL('dispatch.php/course/members/additional_input'));
@@ -252,20 +265,34 @@ class Context
                     die;
                 }
             }
-        } else if (self::isInstitute()) {
+        } else if ($context instanceof Institute) {
             // check if current user can access the object
             $no_access = (!Config::get()->ENABLE_FREE_ACCESS ||
                           (Config::get()->ENABLE_FREE_ACCESS == 'courses_only'))
-                       && !$perm->have_perm('user');
+                       && !$GLOBALS['perm']->have_perm('user');
+
             if ($no_access) {
                 // redirect to login page if user is not logged in
                 if (!User::findCurrent()) {
                     throw new LoginException();
                 }
 
-                if (!$perm->have_perm('user')) {
+                if (!$GLOBALS['perm']->have_perm('user')) {
                     throw new AccessDeniedException();
                 }
+            }
+
+            if (
+                !$GLOBALS['perm']->get_studip_perm($context->id)
+                && !match_route('dispatch.php/institute/overview')
+            ) {
+                PageLayout::postWarning(_('Sie sind dieser Einrichtung nicht zugeordnet!'));
+                $url = URLHelper::getURL(
+                    'dispatch.php/institute/overview',
+                    ['cid' => $context->id]
+                );
+                header('Location: ' . $url);
+                die;
             }
         }
     }

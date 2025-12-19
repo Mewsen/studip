@@ -36,6 +36,7 @@
 
     #header-links {
         flex: 0 1 auto;
+        justify-items: flex-end;
         justify-self: flex-end;
 
         > ul {

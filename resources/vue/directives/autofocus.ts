@@ -1,13 +1,13 @@
 // Shamelessly copied from https://github.com/byteboomers/vue-autofocus-directive
 
-import {DirectiveBinding} from "vue";
+import {DirectiveBinding, nextTick} from "vue";
 
 function focusElement(el: HTMLElement, binding: DirectiveBinding) : void {
     if (binding.value !== undefined && !binding.value) {
         return;
     }
 
-    el.focus()
+    nextTick().then(() => el.focus());
 }
 
 export default {

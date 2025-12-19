@@ -11,6 +11,9 @@
 <? if ($admission_form): ?>
     <form name="apply_admission" action="<?= $controller->action_link("apply/{$course_id}") ?>" method="post">
         <?= $admission_form ?>
+        <? if (Request::int('from_short_url')) : ?>
+            <input type="hidden" name="from_short_url" value="<?= Request::int('from_short_url') ?>">
+        <? endif ?>
         <div data-dialog-button>
             <?= Studip\Button::createAccept(_('OK'), 'apply', ['data-dialog' => 'size=big']) ?>
             <?= Studip\Button::createCancel(_('Abbrechen'), 'cancel') ?>

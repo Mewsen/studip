@@ -304,7 +304,7 @@ $sidebarOut: -330px;
 
     #header-links {
         > ul {
-            > li:not(#responsive-toggle-fullscreen):not(#responsive-toggle-focusmode):not(.helpbar-container) {
+            > li:not(#responsive-toggle-fullscreen):not(#responsive-toggle-focusmode):not(.helpbar-container):not(#responsive-create-shortlink) {
                 display: none;
             }
 
@@ -874,10 +874,6 @@ html:not(.responsive-display):not(.fullscreen-mode) {
                 }
             }
 
-        }
-
-        #header-links {
-            display: none;
         }
 
         #background-desktop {

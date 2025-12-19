@@ -135,5 +135,17 @@ class ContentsNavigation extends Navigation
             $help->addSubNavigation('help_content', new Navigation(_('Hilfe-Texte'), 'dispatch.php/help_content/admin_overview'));
         }
 
+        $short_urls = new Navigation(_('Kurzlinks'), 'dispatch.php/short_urls/index');
+        $short_urls->setImage(Icon::create('group'));
+        $short_urls->setDescription(_('Verwaltung Ihrer Kurzlinks'));
+
+        $sub_nav = new Navigation(
+            _('Übersicht'),
+            'dispatch.php/short_urls/index'
+        );
+        $short_urls->addSubNavigation('overview', $sub_nav);
+
+        $this->addSubNavigation('short_urls', $short_urls);
+
     }
 }

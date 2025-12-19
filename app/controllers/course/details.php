@@ -223,16 +223,22 @@ class Course_DetailsController extends AuthenticatedController
                         PageLayout::postInfo(_('Die Anmeldung ist verbindlich, Teilnehmende können sich nicht selbst austragen.'));
                     }
                 }
+
+                $params = [];
+                if (Request::int('from_short_url')) {
+                    $params['from_short_url'] = Request::int('from_short_url');
+                }
+
                 $links->addLink(
                     $abo_msg,
-                    $this->url_for("course/enrolment/apply/{$this->course->id}"),
+                    $this->url_for("course/enrolment/apply/{$this->course->id}", $params),
                     Icon::create('door-enter'),
                     ['data-dialog' => 'size=big']
                 );
 
                 $this->links[] = [
                     'label'      => $abo_msg,
-                    'url'        => $this->url_for("course/enrolment/apply/{$this->course->id}"),
+                    'url'        => $this->url_for("course/enrolment/apply/{$this->course->id}", $params),
                     'attributes' => ['data-dialog' => 'size=big'],
                 ];
 

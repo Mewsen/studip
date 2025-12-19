@@ -172,6 +172,17 @@ if ($navigation) {
                 <? endif; ?>
 
             <? endif; ?>
+
+            <li id="responsive-create-shortlink" class="hidden-small-up">
+                <a href="<?= URLHelper::getLink('dispatch.php/short_urls/create') ?>" id="responsive-create-shortlink-dummy">
+                    <?= Icon::create('share', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
+                </a>
+                <?= Studip\VueApp::create('short-urls/ShortUrlLink')
+                    ->withProps([
+                        'isInContext' => Context::isCourse() && Context::get()->hasCourseSet(),
+                        'withIcon' => true
+                    ]) ?>
+            </li>
         <? else: ?>
                 <li>
                     <form method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
