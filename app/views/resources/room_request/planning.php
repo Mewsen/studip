@@ -1,8 +1,19 @@
+<?php
+/**
+ * @var ?Resource $resource
+ * @var string $semester_name
+ * @var mixed $semester_range_start
+ * @var mixed $semester_range_end
+ * @var ?Semester $semester
+ * @var array $table_keys
+ * @var Resources_RoomRequestController $controller
+ */
+?>
 <? if (!empty($resource)): ?>
     <?
     $min_time = Config::get()->INSTITUTE_COURSE_PLAN_START_HOUR . ':00';
     $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
-    $default_date = (Request::get("semester_timerange") == 'fullsem') ? $semester->beginn : $semester->vorles_beginn;
+    $default_date = $semester_range_start;
     ?>
     <? if ($resource instanceof Room) : ?>
         <section class="studip-fullcalendar-header <?= Request::isDialog() ? 'fullcalendar-dialog' : ''; ?>"
@@ -16,14 +27,13 @@
                 <? endif ?>
                 <span id="booking-plan-header-semrow">,
                     <strong>
-                        <?= _('Semester') ?>
-                        <span id="booking-plan-header-semname"><?= htmlReady($semester->name) ?></span>
+                        <span id="booking-plan-header-semname"><?= htmlReady($semester_name) ?></span>
                     </strong>
                     <span id="booking-plan-header-semspan">
-                        <? if (Request::get("semester_timerange") == 'fullsem') : ?>
-                            <?= sprintf('(%1$s - %2$s)', date('d.m.Y', $semester->beginn), date('d.m.Y', $semester->ende)); ?>
+                        <? if ($semester_range_end === PHP_INT_MAX) : ?>
+                            (<?= sprintf('ab %1$s', date('d.m.Y', $semester_range_start)) ?>)
                         <? else : ?>
-                            <?= sprintf('(%1$s - %2$s)', date('d.m.Y', $semester->vorles_beginn), date('d.m.Y', $semester->vorles_ende)); ?>
+                            (<?= sprintf('%1$s - %2$s', date('d.m.Y', $semester_range_start), date('d.m.Y', $semester_range_end)) ?>)
                         <? endif ?>
                     </span>
                 </span>
@@ -79,7 +89,6 @@
 
                         ],
                         'semester_id'          => $semester->id,
-                        'semester_timerange'   => Request::get("semester_timerange", 'vorles'),
                         'display_requests'     => 0,
                         'display_all_requests' => !empty($display_all_requests) ? 1 : 0
                     ]

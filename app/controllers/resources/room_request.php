@@ -233,8 +233,33 @@ class Resources_RoomRequestController extends AuthenticatedController
 
         $semester_id = $this->filter['semester'];
         if ($semester_id) {
+            // Split the ID that might be suffixed at this point:
+            $id_parts = explode('_', $semester_id);
+            $semester_id = $id_parts[0];
             $semester = Semester::find($semester_id);
             if ($semester instanceof Semester) {
+                $start_ts = $semester->beginn;
+                $end_ts   = $semester->ende;
+
+                if (count($id_parts) > 1) {
+                    if ($id_parts[1] === 'lecture') {
+                        $start_ts = $semester->vorles_beginn;
+                        $end_ts   = $semester->vorles_ende;
+                    } elseif ($id_parts[1] === 'vacation') {
+                        // The time range is from the end of the lecture period of the selected semester
+                        // until the start of the lecture period of the next semester (if any).
+                        $next_semester = Semester::findByTimestamp($semester->ende + 1);
+                        if ($next_semester) {
+                            $start_ts = $semester->vorles_ende;
+                            $end_ts   = $next_semester->vorles_beginn;
+                        } else {
+                            // The time range is from the end of the selected semester until "eternity"
+                            // (or a reasonable facsimile thereof).
+                            $start_ts = $semester->vorles_ende;
+                            $end_ts   = PHP_INT_MAX;
+                        }
+                    }
+                }
                 if ($sql) {
                     $sql .= ' AND ';
                 }
@@ -257,8 +282,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                         )';
                 }
                 $sql .= ') ';
-                $sql_params['begin'] = max($semester->beginn, time());
-                $sql_params['semester_end'] = $semester->ende;
+                $sql_params['begin'] = max($start_ts, time());
+                $sql_params['semester_end'] = $end_ts;
             }
         }
         if (!empty($this->filter['course_type'])) {
@@ -2388,10 +2413,55 @@ class Resources_RoomRequestController extends AuthenticatedController
             $this->resource = $this->resource->getDerivedClassInstance();
             $this->privileged = $this->resource->userHasPermission($this->current_user, 'autor');
 
+            $this->semester_name        = '';
+            $this->semester_range_start = 0;
+            $this->semester_range_end   = 0;
             if ($this->filter['semester']) {
-                $this->semester = Semester::find($this->filter['semester']);
+                $id_parts       = explode('_', $this->filter['semester']);
+                $semester_id    = $id_parts[0];
+                $this->semester = Semester::find($semester_id);
+                if ($this->semester) {
+                    if (count($id_parts) > 1) {
+                        if ($id_parts[1] === 'lecture') {
+                            $this->semester_name        = studip_interpolate(
+                                _('Semester %{semester_name} (Vorlesungszeit)'),
+                                ['semester_name' => $this->semester->name]
+                            );
+                            $this->semester_range_start = $this->semester->vorles_beginn;
+                            $this->semester_range_end   = $this->semester->vorles_ende;
+                        } elseif ($id_parts[1] === 'vacation') {
+                            $this->semester_name        = studip_interpolate(
+                                _('Vorlesungsfrei nach %{semester_name}'),
+                                ['semester_name' => $this->semester->name]
+                            );
+                            $this->semester_range_start = $this->semester->vorles_ende;
+                            $next_semester = Semester::findByTimestamp($this->semester->ende + 1);
+                            if ($next_semester) {
+                                $this->semester_range_end = $next_semester->vorles_beginn;
+                            } else {
+                                //The selected semester is the last available semester.
+                                $this->semester_range_end = PHP_INT_MAX;
+                            }
+                        }
+                    } else {
+                        $this->semester_name        = studip_interpolate(
+                            _('Semester %{semester_name}'),
+                            ['semester_name' => $this->semester->name]
+                        );
+                        $this->semester_range_start = $this->semester->beginn;
+                        $this->semester_range_end   = $this->semester->ende;
+                    }
+                }
             } else {
                 $this->semester = Semester::findCurrent();
+                if ($this->semester) {
+                    $this->semester_name        = studip_interpolate(
+                        _('Semester %{semester_name}'),
+                        ['semester_name' => $this->semester->name]
+                    );
+                    $this->semester_range_start = $this->semester->beginn;
+                    $this->semester_range_end   = $this->semester->ende;
+                }
             }
 
             $booking_colour = ColourValue::find('Resources.BookingPlan.Booking.Bg');
@@ -2519,6 +2589,8 @@ class Resources_RoomRequestController extends AuthenticatedController
             'semester',
             'get'
         );
+        $semester_selector->makeLecturePeriodSelectable();
+        $semester_selector->makeVacationPeriodSelectable();
         $semester_selector->setSelection($this->filter['semester']);
         if ($action === 'overview') {
             $semester_selector->setRange(time(), PHP_INT_MAX);

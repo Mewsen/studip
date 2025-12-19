@@ -27,6 +27,19 @@ class SemesterSelectorWidget extends SelectWidget
      */
     protected $semester_range_end = 0;
 
+    /**
+     * @var bool Whether the lecture period in a semester can be selected
+     * separately (true) or not (false). Defaults to false.
+     */
+    protected bool $lecture_period_selectable = false;
+
+    /**
+     * @var bool Whether the vacation period after the lecturing time in a
+     * semester can be selected separately (true) or not (false).
+     * Defaults to false.
+     */
+    protected bool $vacation_period_selectable = false;
+
 
     /**
      * Overrides parent constructor by setting a default title and default
@@ -60,6 +73,22 @@ class SemesterSelectorWidget extends SelectWidget
             $this->semester_range_begin = $semester_range_begin;
             $this->semester_range_end = $semester_range_end;
         }
+    }
+
+    /**
+     * Makes the lecture period in the semester selectable separately.
+     */
+    public function makeLecturePeriodSelectable() : void
+    {
+        $this->lecture_period_selectable = true;
+    }
+
+    /**
+     * Makes the vacation period after the lecture period selectable separately.
+     */
+    public function makeVacationPeriodSelectable() : void
+    {
+        $this->vacation_period_selectable = true;
     }
 
 
@@ -98,7 +127,25 @@ class SemesterSelectorWidget extends SelectWidget
             $semesters = array_reverse(Semester::getAll());
         }
         foreach ($semesters as $semester) {
-            $element = new SelectElement($semester->id, $semester->name, $current_id && $semester->id == $current_id);
+            if ($this->vacation_period_selectable) {
+                $id_with_suffix = sprintf('%s_vacation', $semester->id);
+                $element = new SelectElement(
+                    $id_with_suffix,
+                    studip_interpolate(_('Vorlesungsfrei nach %{semester_name}'), ['semester_name' => $semester->name]),
+                    $current_id && $id_with_suffix === $current_id
+                );
+                $this->addElement($element);
+            }
+            if ($this->lecture_period_selectable) {
+                $id_with_suffix = sprintf('%s_lecture', $semester->id);
+                $element = new SelectElement(
+                    $id_with_suffix,
+                    studip_interpolate(_('%{semester_name} (Vorlesungszeit)'), ['semester_name' => $semester->name]),
+                    $current_id && $id_with_suffix === $current_id
+                );
+                $this->addElement($element);
+            }
+            $element = new SelectElement($semester->id, $semester->name, $current_id && $semester->id === $current_id);
             $this->addElement($element);
         }
 
