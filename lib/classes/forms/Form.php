@@ -24,6 +24,8 @@ class Form extends Part
     protected $cancel_button_name = '';
     protected $autoStore = false;
     protected $debugmode = false;
+    protected $emitValues = false;
+    protected $withButtons = true;
     protected $success_message = '';
 
     protected $collapsable = false;
@@ -342,6 +344,35 @@ class Form extends Part
     public function isAutoStoring()
     {
         return $this->autoStore;
+    }
+
+    /**
+     * This form doesn't submit to a URL but just emits its values on submitting via eventbus.
+     * @return bool|mixed
+     */
+    public function justEmitsValues()
+    {
+        return $this->emitValues;
+    }
+
+    /**
+     * Don't provide buttons for submitting the form -> this form will just emit its values.
+     * @return Form $this
+     */
+    public function noButtons()
+    {
+        $this->withButtons = false;
+        $this->emitValues = true;
+        return $this;
+    }
+
+    /**
+     * Does this form have a footer with buttons for submitting, cencelling etc.?
+     * @return bool|mixed
+     */
+    public function hasButtons()
+    {
+        return $this->withButtons;
     }
 
     /**

@@ -13,6 +13,7 @@ use DebugBar\DebugBar;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Studip\WizardPart;
 
 /**
  * @property StudipResponse $response
@@ -601,40 +602,19 @@ abstract class StudipController extends Trails\Controller
     }
 
     /**
-     * @param array $steps either an array of \Studip\VueApp or \Studip\Forms\Form objects
+     * @param WizardPart[] $steps array of WIzardPart steps
+     * @param bool $showAllSteps
      * @return void
      */
-    public function render_wizard(array $steps): void
+    public function render_wizard(array $steps, bool $showAllSteps = true): void
     {
-        $pattern = '/\<script type="application\/json"\>(.+)\<\/script\>/';
-        $data = [];
-
-        foreach ($steps as $step) {
-            $entry = [
-                'id' => $step['id']
-            ];
-
-            if (isset($step['name'])) {
-                $entry['name'] = $step['name'];
-            }
-
-            if (isset($step['icon'])) {
-                $entry['icon'] = $step['icon'];
-            }
-
-            $matches = [];
-            if (preg_match($pattern, $step['content']->render(), $matches)) {
-                $entry['content'] = $matches[1];
-            }
-
-            $data[] = $entry;
-        }
-
         $this->render_vue_app(
             Studip\VueApp::create('StudipWizard')
                 ->withProps([
-                    'steps' => $data
+                    'steps' => $steps,
+                    'showAllSteps' => $showAllSteps
                 ])
+                ->withStore('wizardStore', 'useWizardStore')
         );
     }
 

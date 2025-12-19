@@ -43,33 +43,6 @@
                             type="info">
             {{ $gettext('Es wurden keine Nachrichten gefunden.') }}
         </studip-message-box>
-        <teleport to="#message-views">
-            <sidebar-widget id="views-widget" class="sidebar-widget" :title="$gettext('Ansichten')">
-                <template #content>
-                    <ul class="widget-list widget-links sidebar-views"
-                        :aria-label="$gettext('Ansichten')">
-                        <li id="index" :class="{ active: 'unsent' === currentView}">
-                            <a :href="url('dispatch.php/massmail/overview')"
-                               @click.prevent="setCurrentView('unsent')">
-                                {{ $gettext('Zum Versand anstehend') }}
-                            </a>
-                        </li>
-                        <li id="index" :class="{ active: 'templates' === currentView}">
-                            <a :href="url('dispatch.php/massmail/overview')"
-                               @click.prevent="setCurrentView('templates')">
-                                {{ $gettext('Meine Vorlagen') }}
-                            </a>
-                        </li>
-                        <li id="index" :class="{ active: 'protected' === currentView}">
-                            <a :href="url('dispatch.php/massmail/overview')"
-                               @click.prevent="setCurrentView('protected')">
-                                {{ $gettext('Geschützt') }}
-                            </a>
-                        </li>
-                    </ul>
-                </template>
-            </sidebar-widget>
-        </teleport>
     </div>
 </template>
 

@@ -2,236 +2,145 @@
     <div>
         <nav class="wizard-navigation">
             <ul class="wizard-progress">
-                <li v-for="(step, index) in wizardSteps" :key="index" :class="{ active: index === currentStep }">
-                    <button :title="currentStepName"
+                <li v-for="(step, index) in visibleSteps" :key="index" :class="{ active: index === currentStep }">
+                    <button :title="step.title"
                             role="tab"
                             :aria-selected="index === currentStep"
                             aria-controls="basic"
                             tabindex="0"
                             @click.prevent="jumpToStep(index)">
-                        <studip-icon v-if="step.icon"
-                                     :shape="step.icon"
-                                     :role="index === currentStep ? 'info_alt' : 'clickable'"
-                                     :size="24"
-                                     :key="NaN"></studip-icon>
+                        <template v-if="step.icon !== ''">
+                            <studip-icon v-if="index === currentStep"
+                                         :shape="step.icon"
+                                         role="info_alt"
+                                         :size="24"></studip-icon>
+                            <studip-icon v-else
+                                         :shape="step.icon"
+                                         role="clickable"
+                                         :size="24"></studip-icon>
+                        </template>
                     </button>
                 </li>
             </ul>
         </nav>
         <h2>
-            {{ currentStepName }}
+            {{ visibleSteps[currentStep].title }}
         </h2>
-        <div ref="stepData" class="wizard-content"></div>
-        <div class="buttons">
-            <button v-if="currentStep !== 0" class="button" @click.prevent="jumpToStep(currentStep - 1)">
+        <div ref="node" data-vue-app></div>
+        <footer class="wizard-buttons">
+            <button v-if="currentStep !== 0"
+                    class="button back-button"
+                    @click.prevent="jumpToStep(currentStep - 1)"
+            >
                 &lt;&lt; {{ $gettext('Zurück') }}
             </button>
-            <button v-if="currentStep < wizardSteps.length - 1" class="button" @click.prevent="jumpToStep(currentStep + 1)">
+            <button v-if="currentStep < steps.length - 1"
+                    class="button forward-button"
+                    @click.prevent="jumpToStep(currentStep + 1)"
+            >
                 {{ $gettext('Weiter') }} &gt;&gt;
             </button>
-            <button v-if="currentStep === wizardSteps.length - 1" class="button" @click.prevent="finishWizard">
+            <button v-if="currentStep === steps.length - 1"
+                    class="button forward-button"
+                    @click.prevent="finishWizard"
+            >
                 {{ $gettext('Abschließen') }} &gt;&gt;
             </button>
-        </div>
+        </footer>
     </div>
+    <Teleport to="#wizard-sidebar">
+        <sidebar-widget id="wizard-widget"
+                        :title="$gettext('Assistent')">
+            <template #content>
+                <ul class="widget-list widget-links sidebar-views">
+                    <li v-for="(step, index) in visibleSteps"
+                        :key="index"
+                        :class="{active: index === currentStep}"
+                    >
+                        <button class="undecorated" @click.prevent="jumpToStep(index)"
+                           :title="step.title ? step.title : ($gettext('Schritt ') + (index + 1))"
+                        >
+                            {{ step.title ? step.title : ($gettext('Schritt ') + (index + 1)) }}
+                        </button>
+                    </li>
+                </ul>
+            </template>
+        </sidebar-widget>
+    </Teleport>
 </template>
 
 <script setup>
-import {onMounted, ref, computed} from 'vue';
-import {$gettext} from "../../assets/javascripts/lib/gettext";
+import {onMounted, ref} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {useWizardStore} from '@/vue/store/pinia/wizardStore';
+import SidebarWidget from '@/vue/components/SidebarWidget';
 
 const props = defineProps({
     steps: {
         type: Array,
         required: true
+    },
+    showAllSteps: {
+        type: Boolean,
+        value: true
     }
 });
 
-// Reactive version of step props
-let wizardSteps = ref(props.steps);
 // Reference to the DOM node where the included components will be mounted
-let stepData = ref(null);
+const node = ref(null);
 // Number of the current step
-let currentStep = ref(0);
-// Currently mounted app
-let currentApp = null;
+const currentStep = ref(0);
+// HTML content of current step
+let stepContent = ref('');
+let mountedInstance = null;
+
+const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
+
+const store = useWizardStore();
 
 const jumpToStep = (number) => {
+    if (!visibleSteps.value.includes(props.steps[number])) {
+        visibleSteps.value[number] = props.steps[number];
+    }
+    if (mountedInstance !== null) {
+        //mountedInstance.unmount();
+        //mountedInstance.submit(new Event('submit'));
+    }
     currentStep.value = number;
-    currentApp.unmount();
-    mountVueApp(wizardSteps.value[currentStep.value].content, stepData.value);
+    initializeContent(number);
 };
 
 const finishWizard = () => {
     alert('The wizard will rest now.');
-}
+};
 
-const currentStepName = computed(() => {
-    let name = $gettext('Schritt %{step}', {step: currentStep.value + 1});
-
-    if (wizardSteps.value[currentStep.value].name) {
-        name += ': '  + wizardSteps.value[currentStep.value].name;
+const initializeContent = async (stepNumber) => {
+    if (props.steps[stepNumber].type === 'Studip\\Forms\\Form') {
+        STUDIP.Forms.create(node.value.childNodes);
+    } else if (props.steps[stepNumber].type === 'Studip\\VueApp') {
+        STUDIP.Vue.mountApp(node.value, props.steps[stepNumber].content);
     }
-
-    return name;
-});
+    stepContent.value = props.steps[stepNumber].content;
+};
 
 onMounted(() => {
-    mountVueApp(wizardSteps.value[currentStep.value].content, stepData.value)
-        .then(() => {
-            currentApp = stepData.value.__vue_app__;
-        });
+    initializeContent(0);
+    store.initialize();
+
+    STUDIP.Vue.on('form.mounted', (instance) => {
+        mountedInstance = instance;
+    });
+    STUDIP.Vue.on('vueApp.mounted', (instance) => {
+        const internal = instance.$;
+        const component = internal.type;
+        console.log('Mounted instance', component);
+        mountedInstance = instance;
+    });
+    STUDIP.Vue.on('form.emitValues', (values) => {
+        store.setValues(currentStep.value, values);
+    });
 });
 
-async function mountVueApp(appConfig, node) {
-    const config = parseVueAppConfig(appConfig);
-    if (!config) {
-        return;
-    }
-
-    const { createApp, h, store } = await STUDIP.Vue.load();
-
-    const [appComponent, plugins] = await loadAppDependencies(config, store);
-    const app = createApp({
-        render: () =>
-            h(
-                addDialogButtonRemoval(appComponent),
-                config.props,
-                Object.fromEntries(
-                    Object.entries(config.slots).map(([slot, template]) => {
-                        return [slot, () => h({ template })];
-                    }),
-                ),
-            ),
-        ...createLifecycleHooks(),
-    });
-
-    plugins.forEach((plugin) => app.use(plugin, { store }));
-
-    app.mount(node);
-    node.__vue_app__ = app;
-
-    handleDialogClose(node, app);
-}
-
-function parseVueAppConfig(config) {
-    return Object.assign(
-        {
-            appPath: null,
-            plugins: [],
-            props: {},
-            slots: {},
-            stores: {},
-            storeData: {},
-            vuexStores: {},
-            vuexStoreData: {},
-        },
-        JSON.parse(config)
-    );
-}
-
-async function loadAppDependencies(config, store) {
-    const promises = [
-        import(`@/vue/apps/${config.appPath}.vue`),
-        ...initializePlugins(config),
-        ...initializeVuexStores(config, store),
-        ...initializePiniaStores(config),
-    ];
-
-    const [{ default: appComponent }, plugins = []] = await Promise.all(promises);
-    return [appComponent, plugins];
-}
-
-function createLifecycleHooks() {
-    return {
-        beforeCreate() {
-            STUDIP.Vue.emit('VueAppWillCreate', this);
-        },
-        created() {
-            STUDIP.Vue.emit('VueAppDidCreate', this);
-        },
-        beforeMount() {
-            STUDIP.Vue.emit('VueAppWillMount', this);
-        },
-        mounted() {
-            STUDIP.Vue.emit('VueAppDidMount', this);
-        },
-        beforeUpdate() {
-            STUDIP.Vue.emit('VueAppWillUpdate', this);
-        },
-        updated() {
-            STUDIP.Vue.emit('VueAppDidUpdate', this);
-        },
-        beforeUnmount() {
-            STUDIP.Vue.emit('VueAppWillUnmount', this);
-        },
-        unmounted() {
-            STUDIP.Vue.emit('VueAppDidUnmount', this);
-        },
-    };
-}
-
-function handleDialogClose(node, app) {
-    const dialog = node.closest('.studip-dialog');
-    if (dialog !== null) {
-        $(dialog).on('dialogclose', () => app.unmount());
-    }
-}
-
-function initializeVuexStores(config, store) {
-    return Object.entries(config.vuexStores).map(([index, name]) =>
-        import(`@/vue/store/${name}`).then(({ default: storeConfig }) => {
-            if (!store.hasModule(index)) {
-                store.registerModule(index, storeConfig);
-            }
-            Object.entries(config.vuexStoreData[index]).forEach(([type, payload]) =>
-                store.commit(`${index}/${type}`, payload),
-            );
-        }),
-    );
-}
-
-function initializePiniaStores(config) {
-    return Object.entries(config.stores).map(([name, command]) =>
-        import(`@/vue/store/pinia/${name}`).then((storeConfig) => {
-            const piniaStore = storeConfig[command]();
-            applyPiniaStoreData(piniaStore, config.storeData);
-        }),
-    );
-}
-
-function applyPiniaStoreData(piniaStore, data) {
-    Object.entries(data).forEach(([command, value]) => {
-        if (_.isFunction(piniaStore[command])) {
-            piniaStore[command](value);
-        } else {
-            piniaStore[command] = value;
-        }
-    });
-}
-
-function initializePlugins(config) {
-    return Object.entries(config.plugins).map(([plugin, filename]) =>
-        import(`@/vue/plugins/${filename}.js`).then((temp) => temp[plugin]),
-    );
-}
-
-function addDialogButtonRemoval(component) {
-    const originalMounted = component.mounted;
-    component.mounted = function (...args) {
-        if (
-            this.$el instanceof Element &&
-            this.$el.closest('.studip-dialog') &&
-            this.$el.querySelector('[data-dialog-button]')
-        ) {
-            this.$el.closest('.studip-dialog').querySelector('.ui-dialog-buttonpane')?.remove();
-        }
-        if (originalMounted) {
-            originalMounted.call(this, args);
-        }
-    };
-    return component;
-}
 </script>
 
 <style scoped lang="scss">
@@ -278,5 +187,19 @@ function addDialogButtonRemoval(component) {
 .wizard-content {
     margin-bottom: 15px;
     margin-top: 15px;
+}
+footer.wizard-buttons {
+    background-color: var(--color--content-box-header);
+    display: flex;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    .back-button {
+        margin-right: auto;
+    }
+
+    .forward-button {
+        margin-left: auto;
+    }
 }
 </style>
