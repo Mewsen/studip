@@ -8,11 +8,12 @@ export const useWidgetStore = defineStore('widgetStore', () => {
     const errors = ref(false);
 
     function storeRecord(newRecord) {
-        records.value.set(newRecord.id, newRecord);
+        const id = String(newRecord.id);
+        records.value.set(id, newRecord);
     }
 
     function removeRecord(recordId) {
-        records.value.delete(recordId);
+        records.value.delete(String(recordId));
     }
 
     function clearRecords() {
@@ -24,7 +25,7 @@ export const useWidgetStore = defineStore('widgetStore', () => {
     });
 
     function byId(id) {
-        return records.value.get(String(id)); // we need that cast for unsigned ids
+        return records.value.get(String(id));
     }
 
     async function fetchById(id) {
@@ -41,11 +42,11 @@ export const useWidgetStore = defineStore('widgetStore', () => {
 
     async function updateWidgetPayload(widgetId, newPayload) {
         try {
-            await api.patch('dashboard-widgets', {
+            const { data } = await api.patch('dashboard-widgets', {
                 id: widgetId,
                 payload: newPayload,
             });
-            fetchById(widgetId);
+            storeRecord(data);
         } catch (error) {
             console.error('Fehler beim Aktualisieren des Widget-Payloads:', error);
             throw error;
