@@ -42,7 +42,6 @@ class Widgets extends RelationshipsController
     {
         $json = $this->validate($request);
         foreach ($this->validateContainerWidgets($related, $json) as $widget) {
-            $related->removeWidgetFromPayload($widget->id);
             $widget->delete();
         }
 

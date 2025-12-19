@@ -28,8 +28,9 @@ class ContainerWidgetsDelete extends JsonApiController
     public function __invoke(Request $request, Response $response, $args)
     {
         $user = $this->getUser($request);
+        $container = $container = Container::find($args['id']);
 
-        if (!$container = Container::find($args['id'])) {
+        if (!$container) {
             throw new RecordNotFoundException();
         }
 
@@ -37,12 +38,11 @@ class ContainerWidgetsDelete extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        if (!$resource = $container->widgets->find($args['widget_id'])) {
+        $resource = $container->widgets->find($args['widget_id']);
+
+        if (!$resource) {
             throw new RecordNotFoundException();
         }
-
-        $container->removeWidgetFromPayload($resource->id);
-        $container->store();
 
         $resource->delete();
 

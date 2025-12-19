@@ -44,6 +44,13 @@ class Widget extends \SimpleORMap
             },
         ];
 
+        $config['registered_callbacks']['after_delete'][] = function ($widget) {
+            if ($widget->container) {
+                $widget->container->removeWidgetFromPayload($widget->id);
+                $widget->container->store();
+            }
+        };
+
         parent::configure($config);
     }
 }
