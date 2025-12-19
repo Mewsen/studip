@@ -45,6 +45,8 @@ class Widget extends SchemaProvider
             'widget-type' => $resource->type,
             'widget-scope' => $resource->scope,
             'widget-component' => $resource->type . '.' . $resource->scope,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate),
         ];
     }
 

@@ -46,7 +46,11 @@ class Container extends SchemaProvider
     public function getAttributes($resource, ContextInterface $context): iterable
     {
         return [
-            'payload' => $resource->payload->getArrayCopy(),
+            'context'    => $resource->context,
+            'context-id' => $resource->context_id,
+            'payload'    => $resource->payload->getArrayCopy(),
+            'mkdate'     => date('c', $resource->mkdate),
+            'chdate'     => date('c', $resource->chdate),
         ];
     }
 
