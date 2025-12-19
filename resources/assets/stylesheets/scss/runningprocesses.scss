@@ -1,0 +1,64 @@
+.running_processes {
+    .context {
+        display: flex;
+        align-items: center;
+        .course-avatar-small {
+            margin-right: 10px;
+        }
+        margin-bottom: 10px;
+        font-size: $font-size-h3;
+    }
+    ul.processes {
+        list-style: none;
+        padding-left: 35px;
+        li.running_process {
+
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+
+            img {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+
+            .process_right_side {
+                width: 100%;
+                .process_text_info {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .additionalShortInfo {
+                        padding-left: 10px;
+                        color: $light-gray-color;
+                    }
+                }
+
+                .progressbar_container {
+                    height: 5px;
+                    margin-top: 5px;
+                    .progress_bar {
+                        width: 100%;
+                        border-radius: 0px;
+                        height: 5px;
+                        border: none;
+                        background-color: $color--gray-6;
+                        .progress {
+                            background-color: $origin-base-color;
+                            &.alerted {
+                                background-color: $red;
+                            }
+                            height: 5px;
+                        }
+                    }
+
+                }
+
+
+
+            }
+        }
+    }
+}
