@@ -15,6 +15,7 @@ use JSONArrayObject;
  * @property int $id database column
  * @property int $container_id database column
  * @property string $type database column
+ * @property string $scope database column
  * @property \JSONArrayObject $payload database column
  * @property int $mkdate database column
  * @property int $chdate database column
