@@ -4,6 +4,7 @@ import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipWysiwyg from "../../StudipWysiwyg.vue";
 import StudipTooltipIcon from "../../StudipTooltipIcon.vue";
 import StudipSwitch from "../../StudipSwitch.vue";
+import {storeRegistrationURL, updateRegistrationURL} from "../helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -27,10 +28,10 @@ const form = reactive({
 
 const formActionURL = computed(() => {
     if (props.registration.id) {
-        return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/update/${props.registration.id}`);
+        return updateRegistrationURL(props.registration.id);
     }
 
-    return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/store`);
+    return storeRegistrationURL();
 });
 
 const nameInput = useTemplateRef('nameInput');
@@ -121,7 +122,7 @@ onMounted(() => {
                 <StudipTooltipIcon
                     :text="$gettext('Der eindeutige Identifikator der LTI-Tool.')"
                 />
-                <input required type="url" name="issuer" v-model="form.issuer" />
+                <input required type="url" name="audience" v-model="form.audience" />
             </label>
 
             <label class="studiprequired">
@@ -275,6 +276,15 @@ onMounted(() => {
                 <textarea required name="public_key" v-model="form.public_key" rows="10"></textarea>
             </label>
         </fieldset>
-        <slot />
+        <slot name="footer">
+            <footer data-dialog-button>
+                <button class="button accept">
+                    {{ $gettext('Speichern') }}
+                </button>
+                <button class="button cancel" type="button" data-dialog-close>
+                    {{ $gettext('Abbrechen') }}
+                </button>
+            </footer>
+        </slot>
     </form>
 </template>

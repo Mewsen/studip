@@ -13,20 +13,6 @@ use Studip\LTI13a\RegistrationManager;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
-/**
- * ags.php - LTI assignment and grade services controller
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * @author      Moritz Strohm
- * @author      Murtaza Sultani
- * @date        2024
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
- * @category    Stud.IP
- */
 class Lti_AgsController extends StudipController
 {
     use NegotiatesWithPsr7;

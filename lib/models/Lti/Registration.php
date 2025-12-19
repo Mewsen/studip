@@ -69,7 +69,7 @@ class Registration extends SimpleORMap
 
     public function getDefaultDeployment(): ?Deployment
     {
-        return Deployment::findOneBySQL("registration_id = ? ORDER BY mkdate", [$this->id]);
+        return Deployment::findOneBySQL("registration_id = ? ORDER BY id", [$this->id]);
     }
 
     public function getKeyring(): ?Keyring
@@ -121,21 +121,5 @@ class Registration extends SimpleORMap
     public static function all(): array
     {
         return static::findBySQL("TRUE");
-    }
-
-    public static function findByDeploymentIdAndIssuer(int $deploymentId, string $issuer): ?self
-    {
-        return self::findOneBySQL(
-            "JOIN `lti_registration_configs` configs ON (`lti_registrations`.`id` = `configs`.`registration_id`)
-                JOIN `lti_deployments` deployments ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `lti_registrations`.`role` = 'platform'
-                AND `configs`.`name` = 'issuer'
-                AND  `configs`.`value` = :issuer
-                AND `deployments`.`id` = :deployment_id",
-            [
-                'issuer' => $issuer,
-                'deployment_id' => $deploymentId
-            ]
-        );
     }
 }

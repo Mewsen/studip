@@ -1,0 +1,31 @@
+
+
+// Registrations URLS:
+export const showRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/show/${id}`);
+export const createRegistrationURL = (role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/create?role=${role}`);
+export const editRegistrationURL = (id, role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/edit/${id}?role=${role}`);
+export const storeRegistrationURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/store`);
+export const updateRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/update/${id}`);
+export const deleteRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/delete/${id}`);
+
+
+// Deployments URLS:
+export const addDeploymentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${registrationId}`);
+export const storeDeploymentURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/store`);
+export const updateDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/update/${id}`);
+export const deleteDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/delete/${id}`);
+
+
+// Resource Links URLS:
+export const createResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/create`);
+
+export const editResourceURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/edit/${id}`);
+
+export const storeResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/store`);
+export const updateResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/update/${id}`);
+export const deleteResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/delete/${id}`);
+
+
+// Others:
+export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
+

@@ -3,6 +3,7 @@ import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import {computed} from "vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
+import {editRegistrationURL} from "../../../components/lti/helpers/urls";
 
 const props = defineProps({
     registration: {
@@ -21,7 +22,7 @@ const pageTitle = computed(() => {
     return $gettext('Details zur LTI-Registrierung');
 });
 
-const editRegistration = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/edit/${props.registration.id}?redirect=show`), { width: '900' });
+const editRegistration = () => STUDIP.Dialog.fromURL(editRegistrationURL(props.registration.id), { width: '900' });
 
 const showPlatformData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/platform_data?registration=${props.registration.id}`), { width: '900', height: '700' });
 const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/tool_data?registration=${props.registration.id}`), { width: '900', height: '700' });

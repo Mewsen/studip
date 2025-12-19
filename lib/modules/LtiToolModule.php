@@ -70,11 +70,13 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         $navigation = new Navigation(_('LTI'));
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('link-extern', Icon::ROLE_INFO));
-        $navigation->addSubNavigation('index', new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti'));
+        $navigation->addSubNavigation('index', new Navigation(_('LTI-Ressourcen'), 'dispatch.php/course/lti'));
 
         if ($grades) {
             $navigation->addSubNavigation('grades', new Navigation(_('Ergebnisse'), 'dispatch.php/course/lti/grades'));
         }
+
+        $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
 
         return ['lti' => $navigation];
     }

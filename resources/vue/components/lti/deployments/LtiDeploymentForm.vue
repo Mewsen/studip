@@ -1,6 +1,7 @@
 <script setup>
 import {computed, onMounted, reactive, useTemplateRef} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
+import {storeDeploymentURL, updateDeploymentURL} from "../helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -27,10 +28,10 @@ const form = reactive({
 
 const formActionURL = computed(() => {
     if (props.deployment.id) {
-        return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/update/${props.deployment.id}`);
+        return updateDeploymentURL(props.deployment.id);
     }
 
-    return STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/store`);
+    return storeDeploymentURL();
 });
 
 const nameInput = useTemplateRef('nameInput');
@@ -79,6 +80,15 @@ onMounted(() => {
             <input required type="text" name="client_id" v-model="form.client_id" />
         </label>
 
-        <slot />
+        <slot name="footer">
+            <footer data-dialog-button>
+                <button class="button accept">
+                    {{ $gettext('Speichern') }}
+                </button>
+                <button class="button cancel" type="button" data-dialog-close>
+                    {{ $gettext('Abbrechen') }}
+                </button>
+            </footer>
+        </slot>
     </form>
 </template>

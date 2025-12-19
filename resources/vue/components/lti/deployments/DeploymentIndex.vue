@@ -5,6 +5,7 @@ import {computed, ref} from "vue";
 import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../StudipIcon.vue";
+import {addDeploymentURL, deleteDeploymentURL, showRangeURL} from "../helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 const props = defineProps({
@@ -46,13 +47,11 @@ const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
 
 const deleteDeployment = id => {
     const deleteForm = document.getElementById('lti-deployment-delete-form');
-    deleteForm.action = STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/delete/${id}`);
+    deleteForm.action = deleteDeploymentURL(id);
     deleteForm.submit();
 }
 
-const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${props.registration.id}`), { width: '500', height: '400'});
-
-const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${range_id}`);
+const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registration.id), { width: '500', height: '400'});
 </script>
 
 <template>
@@ -73,6 +72,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
         <thead>
             <tr class="sortable">
                 <th
+                    scope="col"
                     :class="getSortClass('name')"
                     :aria-sort="getAriaSortString('name')"
                     :aria-label="getAriaSortLabel('name', $gettext('Name'))"
@@ -86,6 +86,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('deployment_id')"
                     :aria-sort="getAriaSortString('deployment_id')"
                     :aria-label="getAriaSortLabel('deployment_id', $gettext('Deployment-ID'))"
@@ -99,6 +100,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('client_id')"
                     :aria-sort="getAriaSortString('client_id')"
                     :aria-label="getAriaSortLabel('client_id', $gettext('Client-ID'))"
@@ -112,6 +114,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('purpose')"
                     :aria-sort="getAriaSortString('purpose')"
                     :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
@@ -125,6 +128,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
+                    scope="col"
                     v-if="registration.role === 'tool'"
                     :class="getSortClass('resource_name')"
                     :aria-sort="getAriaSortString('resource_name')"
@@ -139,6 +143,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('mkdate')"
                     :aria-sort="getAriaSortString('mkdate')"
                     :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
@@ -151,7 +156,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
                         {{ $gettext('Erstellt am') }}
                     </button>
                 </th>
-                <th class="actions">{{ $gettext('Aktionen') }}</th>
+                <th scope="col" class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
             </tr>
         </thead>
 
@@ -162,7 +167,7 @@ const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/det
             <td>{{ deployment.client_id }}</td>
             <td>{{ deployment.purpose }}</td>
             <td v-if="registration.role === 'tool'">
-                <a v-if="deployment.resource_id !== 'global'" :href="getRangeURL(deployment.resource_id)" :title="$gettext('Zur Veranstaltung')">
+                <a v-if="deployment.resource_id !== 'global'" :href="showRangeURL(deployment.resource_id)" :title="$gettext('Zur Veranstaltung')">
                     {{ deployment.resource_name }}
                 </a>
                 <template v-else>

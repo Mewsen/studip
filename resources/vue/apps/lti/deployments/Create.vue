@@ -19,16 +19,7 @@ defineProps({
 <template>
     <div class="lti" style="display: flex;">
         <div style="flex: 1;">
-            <LtiDeploymentForm :deployment="deployment" :registration="registration">
-                <footer data-dialog-button>
-                    <button class="button accept">
-                        {{ $gettext('Speichern') }}
-                    </button>
-                    <button class="button cancel" type="button" data-dialog-close>
-                        {{ $gettext('Abbrechen') }}
-                    </button>
-                </footer>
-            </LtiDeploymentForm>
+            <LtiDeploymentForm :deployment="deployment" :registration="registration" />
         </div>
     </div>
 </template>

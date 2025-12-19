@@ -5,6 +5,14 @@ import {computed, ref} from "vue";
 import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../../components/StudipIcon.vue";
+import {
+    addDeploymentURL,
+    createRegistrationURL,
+    deleteRegistrationURL,
+    editRegistrationURL,
+    showRangeURL,
+    showRegistrationURL
+} from "../../../components/lti/helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -47,14 +55,12 @@ const pageTitle = computed(() => {
     return $gettext('LTI-Registrierungen');
 });
 
-const addRegistration = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/create?role=${props.role}`), { width: '900' });
+const addRegistration = () => STUDIP.Dialog.fromURL(createRegistrationURL(props.role), { width: '900' });
 
-const addDeployment = registrationId => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${registrationId}`), { width: '500', height: '400'});
+const addDeployment = registrationId => STUDIP.Dialog.fromURL(addDeploymentURL(registrationId), { width: '500', height: '400'});
 
-const getRegistrationShowURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/show/${id}?role=${props.role}`);
-const editRegistration = id => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/edit/${id}?role=${props.role}`), { width: '900' });
+const editRegistration = id => STUDIP.Dialog.fromURL(editRegistrationURL(id, props.role), { width: '900' });
 const getDeploymentsURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments?registration_id=${id}&role=${props.role}`);
-const getRangeURL = range_id => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${range_id}`);
 const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diese "%{name}" Registrierung löschen?', {name}),
     () => deleteRegistration(id),
@@ -63,7 +69,7 @@ const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
 
 const deleteRegistration = id => {
     const deleteForm = document.getElementById('lti-registration-delete-form');
-    deleteForm.action = STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/delete/${id}`);
+    deleteForm.action = deleteRegistrationURL(id);
     deleteForm.submit();
 }
 </script>
@@ -95,6 +101,7 @@ const deleteRegistration = id => {
             <thead>
                 <tr class="sortable">
                     <th
+                        scope="col"
                         :class="getSortClass('name')"
                         :aria-sort="getAriaSortString('name')"
                         :aria-label="getAriaSortLabel('name', $gettext('Name'))"
@@ -108,6 +115,7 @@ const deleteRegistration = id => {
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('version')"
                         :aria-sort="getAriaSortString('version')"
                         :aria-label="getAriaSortLabel('version', $gettext('Version'))"
@@ -121,6 +129,7 @@ const deleteRegistration = id => {
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('deployments')"
                         :aria-sort="getAriaSortString('deployments')"
                         :aria-label="getAriaSortLabel('deployments', $gettext('Anzahl der Deployments'))"
@@ -134,6 +143,7 @@ const deleteRegistration = id => {
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('range_name')"
                         :aria-sort="getAriaSortString('range_name')"
                         :aria-label="getAriaSortLabel('range_name', $gettext('Range'))"
@@ -147,6 +157,7 @@ const deleteRegistration = id => {
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('state')"
                         :aria-sort="getAriaSortString('state')"
                         :aria-label="getAriaSortLabel('state', $gettext('Status'))"
@@ -159,6 +170,7 @@ const deleteRegistration = id => {
                         </a>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('mkdate')"
                         :aria-sort="getAriaSortString('mkdate')"
                         :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
@@ -171,14 +183,14 @@ const deleteRegistration = id => {
                             {{ $gettext('Erstellt am') }}
                         </button>
                     </th>
-                    <th class="actions">{{ $gettext('Aktionen') }}</th>
+                    <th scope="col" class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="registration in sortedRegistrations" :key="registration.id">
                     <td>
                         <a
-                            :href="getRegistrationShowURL(registration.id)"
+                            :href="showRegistrationURL(registration.id)"
                             :title="$gettext('Registrierung anschauen')">
                             {{ registration.name }}
                         </a>
@@ -190,7 +202,7 @@ const deleteRegistration = id => {
                         </a>
                     </td>
                     <td>
-                        <a v-if="registration.range_id !== 'global'" :href="getRangeURL(registration.range_id)" :title="$gettext('Zur Veranstaltung')">
+                        <a v-if="registration.range_id !== 'global'" :href="showRangeURL(registration.range_id)" :title="$gettext('Zur Veranstaltung')">
                             {{ registration.range_name }}
                         </a>
                         <template v-else>
@@ -222,7 +234,7 @@ const deleteRegistration = id => {
                     </td>
                 </tr>
                 <tr v-if="registrations.length === 0">
-                    <td colspan="6">
+                    <td colspan="7">
                         {{ $gettext('Keine LTI-Registrierungen vorhanden.') }}
                     </td>
                 </tr>

@@ -34,7 +34,18 @@ class RegistrationManager implements RegistrationRepositoryInterface
             return null;
         }
 
-        return Registration::findByDeploymentIdAndIssuer($deployment->id, $issuer)?->toLti1p3Registration($deployment);
+        return Registration::findOneBySQL(
+            "JOIN `lti_registration_configs` `configs` ON (`lti_registrations`.`id` = `configs`.`registration_id`)
+                JOIN `lti_deployments` `deployments` ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
+                WHERE `lti_registrations`.`role` = 'platform'
+                AND `configs`.`name` = 'issuer'
+                AND  `configs`.`value` = :issuer
+                AND `deployments`.`id` = :deployment_id",
+            [
+                'issuer' => $issuer,
+                'deployment_id' => $deployment->id
+            ]
+        )?->toLti1p3Registration($deployment);
     }
 
     public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
@@ -45,6 +56,17 @@ class RegistrationManager implements RegistrationRepositoryInterface
             return null;
         }
 
-        return Registration::findByDeploymentIdAndIssuer($deployment->id, $issuer)?->toLti1p3Registration($deployment);
+        return Registration::findOneBySQL(
+            "JOIN `lti_registration_configs` `configs` ON (`lti_registrations`.`id` = `configs`.`registration_id`)
+                JOIN `lti_deployments` `deployments` ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
+                WHERE `lti_registrations`.`role` = 'tool'
+                AND `configs`.`name` = 'audience'
+                AND  `configs`.`value` = :audience
+                AND `deployments`.`id` = :deployment_id",
+            [
+                'audience' => $issuer,
+                'deployment_id' => $deployment->id
+            ]
+        )?->toLti1p3Registration($deployment);
     }
 }

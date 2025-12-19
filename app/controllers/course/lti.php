@@ -3,6 +3,7 @@
 use Lti\Deployment;
 use Lti\Grade;
 use Lti\Registration;
+use Lti\ResourceLink;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
@@ -13,7 +14,6 @@ use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
 use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
 use Studip\LTI13a\PlatformManager;
-use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface\MessagePayloadInterface;
 use Studip\LTI13a\RegistrationManager;
 use Studip\LTI13a\RegistrationRepository;
 use Studip\OAuth2\NegotiatesWithPsr7;
@@ -82,6 +82,8 @@ class Course_LtiController extends StudipController
      */
     public function index_action()
     {
+        Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x order 1.3a) unterstützen.'));
+
         $this->links = [];
         if ($this->edit_perm) {
             $this->links = LtiResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
@@ -104,14 +106,12 @@ class Course_LtiController extends StudipController
                 $this->url_for('course/lti/config'),
                 Icon::create('admin')
             )->asDialog('size=auto');
-            $global_tools_available = Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
-            if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE || $global_tools_available) {
-                $widget->addLink(
-                    _('LTI-Tool hinzufügen'),
-                    $this->url_for('course/lti/select_tool'),
-                    Icon::create('add')
-                )->asDialog();
-            }
+
+            $widget->addLink(
+                _('LTI-Ressource hinzufügen'),
+                $this->url_for('admin/lti/resources/create'),
+                Icon::create('add')
+            )->asDialog('width=700');
 
             // TODO:: deep_linking` = 1 AND
             $global_deep_linking_tools_exist = Registration::countBySQL("`range_id` = 'global' AND `role`='tool'") > 0;
@@ -124,27 +124,43 @@ class Course_LtiController extends StudipController
             }
         }
 
-        Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
-
         //Check for error messages:
         if (Request::get('deployment_id') && (Request::submitted('lti_msg') || Request::submitted('lti_errormsg'))) {
-            $deployment = Deployment::find(Request::get('deployment_id'));
+            $deployment = Deployment::findOneBySQL("deployment_id = ?", [Request::get('deployment_id')]);
             if ($deployment) {
                 //Get the resource link for the deployment and display the messages:
-                $link = \LtiResourceLink::findOneBySQL(
+                $resourceLink = ResourceLink::findOneBySQL(
                     "`deployment_id` = :deployment_id AND `course_id` = :course_id",
-                    ['deployment_id' => $deployment->id, 'course_id' => $this->range_id]
+                    [
+                        'deployment_id' => $deployment->id,
+                        'course_id' => $this->range_id
+                    ]
                 );
-                if ($link) {
+
+                if ($resourceLink) {
                     if (Request::get('lti_msg')) {
-                        PageLayout::postInfo(htmlReady($link->title . ': ' . Request::get('lti_msg')));
+                        PageLayout::postInfo(htmlReady($resourceLink->title . ': ' . Request::get('lti_msg')));
                     }
                     if (Request::get('lti_errormsg')) {
-                        PageLayout::postError(htmlReady($link->title . ': ' . Request::get('lti_errormsg')));
+                        PageLayout::postError(htmlReady($resourceLink->title . ': ' . Request::get('lti_errormsg')));
                     }
                 }
             }
         }
+
+        $resources = ResourceLink::findBySQL(
+            "course_id = :course_id ORDER BY `position`",
+            [
+                'course_id' => $this->range_id
+            ]
+        );
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/resources/Index')
+                ->withProps([
+                    'resources' => array_map(fn ($r) => $r->transformData(['registration']), $resources)
+                ])
+        );
     }
 
     public function select_tool_action()
@@ -194,7 +210,7 @@ class Course_LtiController extends StudipController
                     return;
                 }
                 //Link the tool in the course:
-                $link                = new \LtiResourceLink();
+                $link                = new LtiResourceLink();
                 $link->deployment_id = $selected_deployment->id;
                 $link->course_id     = $this->course->id;
                 if ($link->store()) {
@@ -211,8 +227,7 @@ class Course_LtiController extends StudipController
 
     public function consent_action(string $link_id)
     {
-
-        $this->resource_link = \LtiResourceLink::find($link_id);
+        $this->resource_link = LtiResourceLink::find($link_id);
         if (!$this->resource_link) {
             PageLayout::postError(_('Die Einbindung eines LTI-Tools ist ungültig.'));
             return;

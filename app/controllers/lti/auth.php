@@ -1,5 +1,4 @@
 <?php
-
 use Studip\Cache\Factory;
 use Studip\LTI13a\KeyManager;
 use Studip\LTI13a\PlatformManager;
@@ -19,20 +18,6 @@ use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
-/**
- * auth.php - LTI authentication controller
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * @author      Elmar Ludwig
- * @author      Moritz Strohm
- * @author      Murtaza Sultani
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
- * @category    Stud.IP
- */
 class Lti_AuthController extends StudipController
 {
     use NegotiatesWithPsr7;
@@ -41,7 +26,7 @@ class Lti_AuthController extends StudipController
     {
         $this->allow_nobody = false;
         $action = basename(get_route());
-        if (in_array($action, ['jwks', 'oauth2_token'])) {
+        if (in_array($action, ['jwks', 'token'])) {
             $this->allow_nobody = true;
             $this->with_session = $action !== 'jwks';
         }
@@ -196,7 +181,7 @@ class Lti_AuthController extends StudipController
     /**
      * Generates OAuth2 tokens for LTI tools.
      */
-    public function oauth2_token_action(): void
+    public function token_action(): void
     {
         $platformEncryptionKey = PlatformManager::getPrivateKey()->getContent();
         $responseGenerator = new AccessTokenResponseGenerator(
@@ -218,7 +203,7 @@ class Lti_AuthController extends StudipController
         $response = $responseGenerator->generate(
             $this->getPsrRequest(),
             $this->getPsrResponse(),
-            'lti13a_platform'
+            '1'
         );
 
         $this->renderPsrResponse($response);

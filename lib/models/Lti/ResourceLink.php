@@ -55,8 +55,22 @@ class ResourceLink extends SimpleORMap
         return $result;
     }
 
-    public static function findByCourseAndPosition($course_id, $position)
+    public function transformData($with = []): array
     {
-        return self::findOneBySQL('course_id = ? AND position = ?', [$course_id, $position]);
+        $base = [
+            ...$this->toRawArray(),
+            'chdate' => date('c', $this->chdate),
+            'mkdate' => date('c', $this->mkdate)
+        ];
+
+        if (in_array('deployment', $with)) {
+            $base['deployment'] = $this->deployment->transformData();
+        }
+
+        if (in_array('registration', $with)) {
+            $base['registration'] = Registration::find($this->deployment->registration_id)->transformData();
+        }
+
+        return $base;
     }
 }

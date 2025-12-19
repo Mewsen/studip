@@ -12,12 +12,24 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 {
     public function index_action(): void
     {
-        $registrations = Registration::findBySQL(
-            "`role`= :role ORDER BY `mkdate`, `name`",
+        $sqlQuery = [
+            "`role`= :role AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
             [
-                'role' => $this->role
+                'role' => $this->role,
+                'range_ids' => [$this->range_id, 'global']
             ]
-        );
+        ];
+
+        if ($GLOBALS['perm']->have_perm('root')) {
+            $sqlQuery = [
+                "`role`= :role ORDER BY `mkdate`, `name`",
+                [
+                    'role' => $this->role
+                ]
+            ];
+        }
+
+        $registrations = Registration::findBySQL(...$sqlQuery);
 
         $this->render_vue_app(
             Studip\VueApp::create('lti/registrations/Index')
@@ -63,7 +75,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'name' => Request::get('name'),
             'description' => Request::get('description'),
             'state' => Request::bool('state', true),
-            'range_id' => Context::getId() ?? 'global'
+            'range_id' => $this->range_id ?? 'global'
         ]);
 
         $this->storeRegistrationConfigs($registration->id);
@@ -185,10 +197,6 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
     {
         $common = [
             [
-                'name' => 'issuer',
-                'value' => Request::get('issuer')
-            ],
-            [
                 'name' => 'terms_of_use_url',
                 'value' => Request::get('terms_of_use_url')
             ],
@@ -204,6 +212,10 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 
         $toolCommon = [
             ...$common,
+            [
+                'name' => 'audience',
+                'value' => Request::get('audience')
+            ],
             [
                 'name' => 'launch_url',
                 'value' => Request::get('launch_url')
@@ -260,6 +272,10 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             if (Request::get('role') === 'platform') {
                 return [
                     ...$common,
+                    [
+                        'name' => 'issuer',
+                        'value' => Request::get('issuer')
+                    ],
                     [
                         'name' => 'auth_login_url',
                         'value' => Request::get('auth_login_url')

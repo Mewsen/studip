@@ -2,6 +2,7 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
+import {addDeploymentURL, showRegistrationURL} from "../../../components/lti/helpers/urls";
 
 const props = defineProps({
     deployments: {
@@ -14,9 +15,7 @@ const props = defineProps({
     }
 });
 
-const addDeployment = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${props.registration.id}`), { width: '500', height: '400'});
-
-const getRegistrationShowURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/show/${id}`);
+const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registration.id), { width: '500', height: '400'});
 </script>
 
 
@@ -26,7 +25,7 @@ const getRegistrationShowURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin
             <div class="header__content header__content--with-actions">
                 <ul class="breadcrumb">
                     <li>
-                        <a :href="getRegistrationShowURL(registration.id)" :title="$gettext('Zur Registrierung')">
+                        <a :href="showRegistrationURL(registration.id)" :title="$gettext('Zur Registrierung')">
                             {{ registration.name }}
                         </a>
                     </li>

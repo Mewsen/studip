@@ -20,7 +20,7 @@ class LineItemRepository implements LineItemRepositoryInterface
      * @param string $deploymentId The Stud.IP LTI deployment ID.
      * @return string The corresponding tool name used in the Stud.IP grading context.
      */
-    public static function getGradingToolName(string $toolId, string $deploymentId) : string
+    public static function getGradingToolName(string $toolId, string $deploymentId): string
     {
         return sprintf('lti-%s-%s', $toolId, $deploymentId);
     }
@@ -37,7 +37,7 @@ class LineItemRepository implements LineItemRepositoryInterface
      *         'course_id'  => The Stud.IP course-ID.
      *     In case the search parameters cannot be generated, an empty array is returned.
      */
-    public static function getSearchParametersFromLineItemIdentifier(string $lineItemIdentifier) : array
+    public static function getSearchParametersFromLineItemIdentifier(string $lineItemIdentifier): array
     {
         //$lineItemIdentifier contains the full URL to the line item.
         //We must extract the course-ID, tool-ID and deployment-ID

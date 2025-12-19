@@ -76,4 +76,55 @@
             gap: 10px;
         }
     }
+
+    .select-input-group {
+        margin-bottom: 10px;
+
+        label {
+            margin-bottom: 0 !important;
+        }
+    }
+
+    .tools-card-container {
+        padding: 0;
+        list-style-type: none;
+        display: grid;
+        grid-gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+
+        .studip-card {
+            color: unset;
+            text-decoration: none;
+
+            &__title {
+                color: var(--color--content-link);
+                transition: color var(--transition-duration);
+            }
+
+            &:hover {
+                .studip-card__title {
+                    color: var(--color--content-link-hover);
+                    text-decoration: underline;
+                }
+            }
+
+            &--create-tool {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-style: dashed;
+                background: transparent;
+
+                &:hover {
+                    background-color: var(--color--tile-background);
+                }
+            }
+        }
+    }
+
+    .use-utility-classes {
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+    }
 }

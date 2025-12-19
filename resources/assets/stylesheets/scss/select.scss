@@ -91,6 +91,18 @@ form.default .studip-v-select .vs__selected {
     &__open-indicator {
         color: var(--color--brand-primary);
     }
+
+    &__search {
+        padding: 0 4px !important;
+
+        &::placeholder {
+            color: var(--dark-gray-color-60) !important;
+        }
+
+        &:focus {
+            font-size: unset !important;
+        }
+    }
 }
 
 .multiselect__tags {

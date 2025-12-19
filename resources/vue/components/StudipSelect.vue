@@ -16,6 +16,7 @@
             <slot :name="name" v-bind="data"></slot>
         </template>
     </vSelect>
+    <input v-if="name" type="hidden" :name="name" :value="modelValue" />
 </template>
 
 <script>
@@ -37,6 +38,10 @@ export default {
         maxHeight: {
             type: String,
             default: '12em'
+        },
+        name: {
+            type: String,
+            required: false
         },
     },
     computed: {
