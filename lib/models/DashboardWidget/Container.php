@@ -218,23 +218,17 @@ class Container extends \SimpleORMap
     {
         $cols = self::BREAKPOINT_COLS[$breakpoint] ?? 12;
 
-        $widgetWidth = isset($widgetSize['w']) ? (int) $widgetSize['w'] : self::DEFAULT_COL_WIDTH_RATIO;
-        $widgetHeight = isset($widgetSize['h']) ? (int) $widgetSize['h'] : self::DEFAULT_COL_HEIGHT_RATIO;
+        $widgetWidth = min((int) ($widgetSize['w'] ?? self::DEFAULT_COL_WIDTH_RATIO), $cols);
+        $widgetHeight = (int) ($widgetSize['h'] ?? self::DEFAULT_COL_HEIGHT_RATIO);
 
         $nextY = 0;
-        while (true) {
+        while ($nextY < 1000) {
             for ($nextX = 0; $nextX < $cols; $nextX++) {
-                $nextPos = [
-                    'x' => $nextX,
-                    'y' => $nextY,
-                    'h' => $widgetHeight,
-                    'w' => $widgetWidth,
-                ];
                 $alreadyOccupied = false;
                 foreach ($currentLayout as $item) {
                     if (
                         $nextX < ($item['x'] + $item['w']) &&
-                        $nextX + ($widgetWidth > $item['x']) &&
+                        ($nextX + $widgetWidth) > $item['x'] &&
                         $nextY < ($item['y'] + $item['h']) &&
                         ($nextY + $widgetHeight) > $item['y']
                     ) {
@@ -244,11 +238,14 @@ class Container extends \SimpleORMap
                 }
 
                 if (!$alreadyOccupied) {
-                    return $nextPos;
+                    return ['x' => $nextX, 'y' => $nextY, 'h' => $widgetHeight, 'w' => $widgetWidth];
                 }
             }
             $nextY++;
         }
+
+        return ['x' => 0, 'y' => $nextY, 'w' => $widgetHeight, 'h' => $widgetWidth];
+
     }
 
     /**
@@ -283,12 +280,14 @@ class Container extends \SimpleORMap
      */
     public static function findByUserContext(string $userId, string $context, string $contextId): ?self
     {
-        return self::findOneBySQL('owner_id = ? AND context = ? AND context_id = ?',
-        [
-            $userId,
-            $context,
-            $contextId
-        ]);
+        return self::findOneBySQL(
+            'owner_id = ? AND context = ? AND context_id = ?',
+            [
+                $userId,
+                $context,
+                $contextId
+            ]
+        );
     }
 
     /**
