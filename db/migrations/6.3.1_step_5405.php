@@ -16,6 +16,8 @@ final class Step5405 extends Migration {
                 `role` ENUM('tool', 'platform') NOT NULL DEFAULT 'tool',
                 `state` TINYINT UNSIGNED NOT NULL DEFAULT 0,
                 `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
+                `range_id` CHAR(32) COLLATE latin1_bin NOT NULL Default 'global',
+                `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`)
@@ -60,14 +62,34 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` ADD INDEX `idx_registration_id` (`registration_id`);
+            ALTER TABLE `lti_deployments` ADD COLUMN `is_default` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `purpose`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` ADD INDEX `idx_registration_id` (`registration_id`)
         ");
 
         DBManager::get()->exec("
             ALTER TABLE `lti_deployments` ADD CONSTRAINT `fk_deployment_registration`
                 FOREIGN KEY (`registration_id`)
                 REFERENCES `lti_registrations` (`id`)
-                ON DELETE CASCADE;
+                ON DELETE CASCADE
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL AFTER `user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY AFTER `user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` MODIFY COLUMN `user_id` CHAR(32) COLLATE latin1_bin NOT NULL AFTER `id`
+        ");
+
+        DBManager::get()->exec("
+           ALTER TABLE `lti_tool_privacy_settings` ADD INDEX `idx_user_id` (`user_id`)
         ");
 
         $addConfig = DBManager::get()->prepare(

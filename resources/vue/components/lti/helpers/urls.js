@@ -21,11 +21,14 @@ export const createResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/adm
 
 export const editResourceURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/edit/${id}`);
 
+export const editResourceConsentURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/consent/${id}`);
+
 export const storeResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/store`);
 export const updateResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/update/${id}`);
 export const deleteResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/delete/${id}`);
 
 
 // Others:
+export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/iframe/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 

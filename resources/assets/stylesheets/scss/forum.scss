@@ -1052,53 +1052,6 @@ $cardMaxWidth: 350px;
         cursor: move;
     }
 
-    .studip-icons-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        padding: 15px;
-        justify-content: space-between;
-        border: 1px solid var(--light-gray-color-40);
-        max-width: calc(48em - 30px);
-        border-radius: var(--border-radius-default);
-        max-height: 300px;
-        overflow-y: scroll;
-
-        .button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            margin: 0;
-            min-width: unset;
-            cursor: pointer;
-            border: 1px solid var(--light-gray-color-20);
-            outline: 1px solid transparent;
-            background: none;
-            transition: all var(--transition-duration) ease;
-
-            &.disabled
-            {
-                opacity: 0.5;
-            }
-
-            &:hover:not(.active),
-            &:focus:not(.active)
-            {
-                opacity: 1;
-                color: var(--base-color);
-                border-color: var(--color--focus);
-                outline: 1px solid var(--color--focus);
-            }
-
-            &.active {
-                color: var(--base-color);
-                border-color: var(--base-color);
-                outline: 1px solid var(--base-color);
-            }
-        }
-    }
-
     .post-reactions-container {
         margin-top: 10px;
         display: flex;

@@ -76,6 +76,7 @@ const updateToolsOrder = async () => {
             @end="alert('Dragged!')"
             :disabled="false"
             class="tools-card-container"
+            :class="{ 'tools-card-container--fill-free-space': resourcesRef.length >= 2 }"
             handle=".drag-handle"
             tag="ul">
             <template #item="{element}">
@@ -85,16 +86,18 @@ const updateToolsOrder = async () => {
             </template>
             <template #footer>
                 <li key="footer">
-                    <div class="studip-card studip-card--create-tool">
-                        <button
-                            type="button"
-                            @click="createResource"
-                            :title="$gettext('Neuen Ressource hinzufügen')"
-                            class="button button--icon-label"
-                        >
-                            <StudipIcon shape="add" :size="20" aria-hidden="true" />
-                            <span class="label">{{ $gettext('Neuen Ressource hinzufügen') }}</span>
-                        </button>
+                    <div class="tool-card tool-card--create">
+                        <div class="studip-card">
+                            <button
+                                type="button"
+                                @click="createResource"
+                                :title="$gettext('Neuen Ressource hinzufügen')"
+                                class="button button--icon-label"
+                            >
+                                <StudipIcon shape="add" :size="20" aria-hidden="true" />
+                                <span class="label">{{ $gettext('Neuen Ressource hinzufügen') }}</span>
+                            </button>
+                        </div>
                     </div>
                 </li>
             </template>

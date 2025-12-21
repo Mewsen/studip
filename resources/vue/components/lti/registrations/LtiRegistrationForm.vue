@@ -43,7 +43,7 @@ onMounted(() => {
 
 <template>
     <form
-        class="default"
+        class="default registration-form"
         :action="formActionURL"
         method="post"
         v-bind="$attrs"
@@ -51,6 +51,7 @@ onMounted(() => {
         <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
         <input type="hidden" name="role" :value="role" />
         <input type="hidden" name="version" :value="form.version ?? '1.3a'" />
+
         <fieldset>
             <legend>
                 {{ $gettext('Grunddaten') }}
@@ -68,22 +69,27 @@ onMounted(() => {
                     class="max-w-full" />
             </label>
 
-            <label>
-                {{ $gettext('Beschreibung') }}
-                <StudipWysiwyg :required="true" v-model="form.description" name="description" />
-            </label>
+            <div class="registration-description">
+                <label for="description-input">
+                    {{ $gettext('Beschreibung') }}
+                </label>
+                <StudipWysiwyg id="description-input" :required="true" v-model="form.description" name="description" />
+            </div>
 
-            <label>
-                {{ $gettext('Datenschutzhinweise') }}
-                <StudipTooltipIcon
-                    :text="$gettext('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten werden gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)')"
-                />
+            <div class="registration-data-protection-notes">
+                <label for="data-protection-notes-input">
+                    {{ $gettext('Datenschutzhinweise') }}
+                    <StudipTooltipIcon
+                        :text="$gettext('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten werden gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)')"
+                    />
+                </label>
                 <StudipWysiwyg
+                    id="data-protection-notes-input"
                     :required="true"
                     v-model="form.data_protection_notes"
                     name="data_protection_notes"
                 />
-            </label>
+            </div>
 
             <label>
                 {{ $gettext('URL zu den Nutzungsbedingungen') }}

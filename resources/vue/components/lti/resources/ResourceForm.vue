@@ -4,6 +4,7 @@ import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipSelect from "../../../components/StudipSelect.vue";
 import StudipTooltipIcon from "../../../components/StudipTooltipIcon.vue";
 import {storeResourceURL, updateResourceURL} from "../helpers/urls";
+import StudipIcon from "../../StudipIcon.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -15,11 +16,16 @@ const props = defineProps({
     resource: {
         type: Object,
         default: () => ({})
+    },
+    icons: {
+        type: Array,
+        default: () => ([])
     }
 });
 
 const form = reactive({
     ...props.resource,
+    colorPicked: props.resource.color,
     registration: props.registrations.find(({ id }) => id === props.resource?.registration?.id)
 });
 
@@ -34,7 +40,7 @@ const formActionURL = computed(() => {
 
 <template>
     <form
-        class="default"
+        class="default resource-form use-utility-classes"
         :action="formActionURL"
         method="post"
         v-bind="$attrs"
@@ -94,10 +100,52 @@ const formActionURL = computed(() => {
                 <textarea name="custom_parameters" v-model="form.custom_parameters"></textarea>
             </label>
 
-            <label>
+            <label for="color-input">
                 {{ $gettext('Farbe') }}
-                <input type="color" name="color" v-model="form.color" />
             </label>
+            <div class="flex items-center justify-start gap-5">
+                <input id="color-input" type="color" v-model="form.color" @change="form.colorPicked = true"/>
+                <input type="hidden" name="color" :value="form.colorPicked  ? form.color : null" />
+                <button
+                    v-if="form.colorPicked"
+                    type="button"
+                    class="button-base styleless"
+                    :title="$gettext('Ausgewählte Farbe zurücksetzen')"
+                    @click="form.color = null">
+                    <StudipIcon shape="decline" :size="20"/>
+                </button>
+            </div>
+
+            <div class="icons-input-label-container">
+                <label for="studip-icons">
+                    {{ $gettext('Icon') }}
+                </label>
+                <button
+                    v-if="form.icon"
+                    type="button"
+                    class="button-base styleless"
+                    :title="$gettext('Ausgewähltes Icon zurücksetzen')"
+                    @click="form.icon = null">
+                    <StudipIcon shape="decline" :size="20"/>
+                </button>
+            </div>
+            <div id="studip-icons" class="studip-icons-input-container">
+                <input type="hidden" v-model="form.icon" name="icon" />
+
+                <template v-for="icon in icons" :key="icon">
+                    <button
+                        class="button"
+                        type="button"
+                        :title="icon"
+                        :class="{
+                            'disabled': form.icon && form.icon !== icon,
+                            'active': form.icon === icon
+                        }"
+                        @click="form.icon = icon">
+                        <StudipIcon :shape="icon" :size="35" />
+                    </button>
+                </template>
+            </div>
         </fieldset>
 
         <slot name="footer">

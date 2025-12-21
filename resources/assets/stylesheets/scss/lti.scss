@@ -78,11 +78,49 @@
     }
 
     .select-input-group {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
 
         label {
             margin-bottom: 0 !important;
         }
+    }
+
+    .registration-form {
+        .registration-description,
+        .registration-data-protection-notes {
+            margin-bottom: 12px;
+
+            label {
+                margin-bottom: 0;
+            }
+
+            .ck-editor {
+                margin-top: 4px;
+                max-width: 48em;
+            }
+        }
+    }
+
+    .resource-form {
+        .icons-input-label-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 12px;
+            margin-bottom: 4px;
+
+            label {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    button.styleless {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
     }
 
     .tools-card-container {
@@ -90,29 +128,31 @@
         list-style-type: none;
         display: grid;
         grid-gap: 15px;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
 
-        .studip-card {
-            color: unset;
-            text-decoration: none;
+        &--fill-free-space {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+    }
 
-            &__title {
-                color: var(--color--content-link);
-                transition: color var(--transition-duration);
-            }
+    .tool-card {
+        height: 100%;
+        display: flex;
+        color: unset;
+        text-decoration: none;
+        border: 1px solid var(--color--divider);
 
-            &:hover {
-                .studip-card__title {
-                    color: var(--color--content-link-hover);
-                    text-decoration: underline;
-                }
-            }
+        &__flag {
+            width: 10px;
+        }
 
-            &--create-tool {
+        &--create {
+            border-style: dashed;
+
+            .studip-card {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border-style: dashed;
                 background: transparent;
 
                 &:hover {
@@ -122,7 +162,44 @@
         }
     }
 
+    .studip-card {
+        flex: 1;
+        border: none;
+
+        &__title {
+            display: flex;
+            gap: 10px;
+            color: var(--color--content-link);
+            transition: color var(--transition-duration);
+        }
+
+        &:hover {
+            .studip-card__title {
+                color: var(--color--content-link-hover);
+                text-decoration: underline;
+            }
+        }
+    }
+
     .use-utility-classes {
+        .flex {
+            display: flex;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-start {
+            justify-content: flex-start;
+        }
+        .justify-end {
+            justify-content: flex-end;
+        }
+        .gap-2 {
+            gap: 2px;
+        }
+        .gap-5 {
+            gap: 5px;
+        }
         .mb-10 {
             margin-bottom: 10px;
         }

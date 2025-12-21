@@ -158,7 +158,7 @@ class Course_LtiController extends StudipController
         $this->render_vue_app(
             Studip\VueApp::create('lti/resources/Index')
                 ->withProps([
-                    'resources' => array_map(fn ($r) => $r->transformData(['registration']), $resources)
+                    'resources' => array_map(fn ($r) => $r->transformData(['registration', 'deployment']), $resources)
                 ])
         );
     }
@@ -225,59 +225,73 @@ class Course_LtiController extends StudipController
         }
     }
 
-    public function consent_action(string $link_id)
+    public function consent_action(ResourceLink $resourceLink): void
     {
-        $this->resource_link = LtiResourceLink::find($link_id);
-        if (!$this->resource_link) {
+        if (!$resourceLink) {
             PageLayout::postError(_('Die Einbindung eines LTI-Tools ist ungültig.'));
             return;
         }
-        $registration_id = $this->resource_link->deployment->registration_id;
 
-        $this->privacy_settings = LtiToolPrivacySettings::findOneBySQL(
+        $registrationId = $resourceLink->deployment->registration_id;
+        $privacySettings = LtiToolPrivacySettings::findOneBySQL(
             'registration_id = :registration_id AND user_id = :user_id',
-            ['registration_id' => $registration_id, 'user_id' => $GLOBALS['user']->id]
+            [
+                'registration_id' => $registrationId,
+                'user_id' => User::findCurrent()->id
+            ]
         );
-        if (!$this->privacy_settings) {
-            $this->privacy_settings = new LtiToolPrivacySettings();
-            $this->privacy_settings->registration_id = $registration_id;
-            $this->privacy_settings->user_id = $GLOBALS['user']->id;
+
+        if (!$privacySettings) {
+            $privacySettings = new LtiToolPrivacySettings();
+            $privacySettings->registration_id = $registrationId;
+            $privacySettings->user_id = User::findCurrent()->id;
         }
 
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
+
             if (Request::submitted('save')) {
                 if (!Request::get('confirmed')) {
                     PageLayout::postError(_('Ohne die aktive Zustimmung zur Weitergabe Ihrer personenbezogenen Daten können Sie das LTI-Tool nicht nutzen!'));
                     return;
                 }
+
                 //Save the privacy settings and redirect to the tool:
-                $this->privacy_settings->accepted = '1';
+                $privacySettings->accepted = 1;
 
                 //Check which optional fields are allowed to be transmitted to the tool:
-                $optional_field_list = Request::getArray('submit_optional_field', []);
-                $optional_fields = [];
-                if (array_key_exists('lang', $optional_field_list)) {
-                    $optional_fields[] = 'lang';
+                $optionalFieldList = Request::getArray('submit_optional_field');
+                $optionalFields = [];
+                if (array_key_exists('lang', $optionalFieldList)) {
+                    $optionalFields[] = 'lang';
                 }
-                if (array_key_exists('avatar_url', $optional_field_list)) {
-                    $optional_fields[] = 'avatar_url';
+                if (array_key_exists('avatar_url', $optionalFieldList)) {
+                    $optionalFields[] = 'avatar_url';
                 }
-                $this->privacy_settings->allowed_optional_fields = implode(',', $optional_fields);
+
+                $privacySettings->allowed_optional_fields = implode(',', $optionalFields);
+
                 //Store the privacy settings:
-                $this->privacy_settings->store();
+                $privacySettings->store();
+
+
+
             }
             if (Request::isDialog()) {
                 //Close the dialog:
                 $this->response->add_header('X-Dialog-Close', '1');
+                return;
             } elseif (Request::submitted('redirect_to_tool') && Request::submitted('save')) {
                 //Redirect to the tool launch action, but only after the privacy settings have been saved:
-                $this->redirect('course/lti/iframe/' . $this->resource_link->id);
+                $this->redirect('course/lti/iframe/' . $resourceLink->id);
             } else {
                 //Redirect to the LTI tool page of the course:
                 $this->redirect('course/lti/index');
             }
         }
+
+        $this->resourceLink = $resourceLink;
+        $this->privacySettings = $privacySettings;
     }
 
     /**

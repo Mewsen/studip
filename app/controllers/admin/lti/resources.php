@@ -15,7 +15,8 @@ class Admin_Lti_ResourcesController extends AdminBaseController
         $this->render_vue_app(
             Studip\VueApp::create('lti/resources/Create')
                 ->withProps([
-                    'registrations' => $this->getTransformedRegistrations()
+                    'registrations' => $this->getTransformedRegistrations(),
+                    'icons' => $this->getStudipIcons()
                 ])
         );
     }
@@ -39,8 +40,8 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
-//            'color' => Request::get('color'),
-//            'icon' => Request::get('icon')
+            'color' => Request::get('color'),
+            'icon' => Request::get('icon')
         ]);
 
         PageLayout::postSuccess(
@@ -61,7 +62,8 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             Studip\VueApp::create('lti/resources/Edit')
                 ->withProps([
                     'resource' => $resourceLink->transformData(['registration']),
-                    'registrations' => $this->getTransformedRegistrations()
+                    'registrations' => $this->getTransformedRegistrations(),
+                    'icons' => $this->getStudipIcons()
                 ])
         );
     }
@@ -74,8 +76,8 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
-//            'color' => Request::get('color'),
-//            'icon' => Request::get('icon')
+            'color' => Request::get('color'),
+            'icon' => Request::get('icon')
         ]);
 
         $resourceLink->store();
@@ -117,6 +119,24 @@ class Admin_Lti_ResourcesController extends AdminBaseController
         );
 
         return array_map(fn ($r) => $r->transformData(), $registrations);
+    }
+
+    private function getStudipIcons(): array
+    {
+        $icons = [];
+
+        foreach (scandir($GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/icons/blue') as $iconPath) {
+            if (!is_dir(
+                    $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/icons/blue/'
+                ) . $iconPath && $iconPath[0] !== '.') {
+                if (stripos($iconPath, '.svg')) {
+                    $iconPath = substr($iconPath, 0, stripos($iconPath, '.svg'));
+                }
+                $icons[] = $iconPath;
+            }
+        }
+
+        return array_unique($icons);
     }
 
 }

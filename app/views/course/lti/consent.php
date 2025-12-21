@@ -1,13 +1,14 @@
 <?php
 /**
  * @var AuthenticatedController $controller
- * @var LtiResourceLink $resource_link
- * @var LtiToolPrivacySettings $privacy_settings
+ * @var LtiResourceLink $resourceLink
+ * @var LtiToolPrivacySettings $privacySettings
  */
 ?>
-<? if ($resource_link) : ?>
-    <form class="default" method="post" <?= $privacy_settings->isNew() ? 'data-dialog="reload-on-close"' : 'data-dialog' ?>
-          action="<?= $controller->link_for('course/lti/consent/' . $resource_link->id) ?>">
+
+<? if ($resourceLink) : ?>
+    <form class="default" method="post" <?= $privacySettings->isNew() ? 'data-dialog="reload-on-close"' : 'data-dialog' ?>
+          action="<?= $controller->link_for('course/lti/consent/' . $resourceLink->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <?
         $data_protection_warning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;
@@ -19,14 +20,14 @@
             <legend><?= _('Datenschutzhinweise')  ?></legend>
             <section>
                 <p><?= htmlReady($data_protection_warning) ?></p>
-                <? if ($resource_link->deployment->registration->config_values['data_protection_notes']) : ?>
-                    <p><?= formatReady($resource_link->deployment->registration->config_values['data_protection_notes']) ?></p>
+                <? if (isset($resourceLink->deployment->registration->config_values['data_protection_notes'])) : ?>
+                    <p><?= formatReady($resourceLink->deployment->registration->config_values['data_protection_notes']) ?></p>
                 <? endif ?>
             </section>
         </fieldset>
         <fieldset>
             <?
-            $optional_field_list = explode(',', $privacy_settings->allowed_optional_fields ?? '');
+            $optional_field_list = explode(',', $privacySettings->allowed_optional_fields ?? '');
             ?>
             <legend><?= _('Die folgenden Daten werden übertragen') ?></legend>
             <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
@@ -53,7 +54,7 @@
                 <?= _('Ihr Profilbild') ?>
             </label>
         </fieldset>
-        <?= $this->render_partial('lti/_link_user_info', ['link' => $resource_link]) ?>
+        <?= $this->render_partial('lti/_link_user_info', ['link' => $resourceLink]) ?>
         <fieldset>
             <legend><?= _('Bestätigung') ?></legend>
             <label>

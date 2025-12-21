@@ -1,7 +1,8 @@
 <?
 /**
- * @var \LtiResourceLink $link
+ * @var Lti\ResourceLink $link
  */
+
 ?>
 <? if (!empty($link)) : ?>
     <article class="studip">

@@ -1,8 +1,12 @@
 <script setup>
 import ResourceForm from "../../../components/lti/resources/ResourceForm.vue";
 
-defineProps({
+const props = defineProps({
     registrations: {
+        type: Array,
+        default: () => ([])
+    },
+    icons: {
         type: Array,
         default: () => ([])
     }
@@ -12,7 +16,7 @@ defineProps({
 <template>
     <div class="lti" style="display: flex;">
         <div style="flex: 1;">
-            <ResourceForm :registrations="registrations" />
+            <ResourceForm v-bind="{...props}" />
         </div>
     </div>
 </template>

@@ -73,4 +73,15 @@ class ResourceLink extends SimpleORMap
 
         return $base;
     }
+
+    public function getLaunchURL()
+    {
+        $registration = $this->deployment->registration;
+        $registrationConfigs = $registration->getConfigValues();
+
+        if (!empty($registration) && empty($registrationConfigs['allow_custom_url']) && empty($registrationConfigs['deep_linking']) || empty($registrationConfigs['launch_url'])) {
+            return $registrationConfigs['launch_url'];
+        }
+        return $registrationConfigs['launch_url'];
+    }
 }

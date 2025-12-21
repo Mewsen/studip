@@ -4,7 +4,6 @@ require_once __DIR__ . '/AdminBaseController.php';
 use LTI\AdminBaseController;
 use Lti\Registration;
 use Lti\RegistrationConfig;
-use Ramsey\Uuid\Uuid;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\ToolManager;
 
@@ -314,7 +313,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             ];
         }
 
-        return $toolCommon;
+        return $common;
     }
 
     private function storeRegistrationConfigs($registration_id): void
