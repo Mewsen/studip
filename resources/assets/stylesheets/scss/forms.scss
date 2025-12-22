@@ -225,10 +225,6 @@ form.default {
             display: block;
             margin-top: -$gap;
         }
-
-        > :not(legend, table) {
-            max-width: calc(100% - 20px);
-        }
     }
 
     fieldset.undecorated {
