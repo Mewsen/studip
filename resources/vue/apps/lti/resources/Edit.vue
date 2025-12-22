@@ -1,5 +1,6 @@
 <script setup>
 import ResourceForm from "../../../components/lti/resources/ResourceForm.vue";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 const props = defineProps({
     resource: {
@@ -18,9 +19,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="lti" style="display: flex;">
-        <div style="flex: 1;">
-            <ResourceForm v-bind="{...props}" />
+    <LtiApp>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <ResourceForm v-bind="{...props}" />
+            </div>
         </div>
-    </div>
+    </LtiApp>
 </template>

@@ -3,6 +3,7 @@ import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
 import {addDeploymentURL, showRegistrationURL} from "../../../components/lti/helpers/urls";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 const props = defineProps({
     deployments: {
@@ -20,7 +21,7 @@ const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registr
 
 
 <template>
-    <div class="lti">
+    <LtiApp>
         <header class="header">
             <div class="header__content header__content--with-actions">
                 <ul class="breadcrumb">
@@ -46,5 +47,5 @@ const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registr
             </div>
         </header>
         <DeploymentIndex :deployments="deployments" :registration="registration" />
-    </div>
+    </LtiApp>
 </template>

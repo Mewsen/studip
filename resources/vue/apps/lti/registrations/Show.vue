@@ -4,6 +4,7 @@ import StudipIcon from "../../../components/StudipIcon.vue";
 import {computed} from "vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
 import {editRegistrationURL} from "../../../components/lti/helpers/urls";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 const props = defineProps({
     registration: {
@@ -29,7 +30,7 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
 </script>
 
 <template>
-    <div class="lti">
+    <LtiApp>
         <header class="header">
             <div class="header__content header__content--with-actions">
                 <ul class="breadcrumb">
@@ -227,5 +228,5 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
             :registration="registration"
             :withCaption="true"
         />
-    </div>
+    </LtiApp>
 </template>

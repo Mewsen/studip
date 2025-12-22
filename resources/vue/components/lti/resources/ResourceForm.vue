@@ -1,5 +1,5 @@
 <script setup>
-import {computed, reactive} from 'vue';
+import {computed, onMounted, reactive, ref, useTemplateRef} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipSelect from "../../../components/StudipSelect.vue";
 import StudipTooltipIcon from "../../../components/StudipTooltipIcon.vue";
@@ -36,6 +36,10 @@ const formActionURL = computed(() => {
 
     return storeResourceURL();
 });
+
+const nameInputRef = useTemplateRef('nameInput');
+
+onMounted(() => nameInputRef.value.focus());
 </script>
 
 <template>
@@ -56,7 +60,7 @@ const formActionURL = computed(() => {
 
         <fieldset class="undecorated">
             <div class="select-input-group">
-                <label  for="select-lti-tool-input" class="studiprequired">
+                <label for="select-lti-tool-input" class="studiprequired">
                     <span class="textlabel">{{ $gettext('LTI-Tool') }}</span>
                     <span :title="$gettext('LTI-Tool ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                 </label>
@@ -84,6 +88,7 @@ const formActionURL = computed(() => {
                     required
                     type="text"
                     name="title"
+                    ref="nameInput"
                     v-model="form.title" />
             </label>
 
@@ -111,7 +116,7 @@ const formActionURL = computed(() => {
                     type="button"
                     class="button-base styleless"
                     :title="$gettext('Ausgewählte Farbe zurücksetzen')"
-                    @click="form.color = null">
+                    @click="form.color = null; form.colorPicked = false">
                     <StudipIcon shape="decline" :size="20"/>
                 </button>
             </div>

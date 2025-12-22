@@ -13,6 +13,7 @@ import {
     showRangeURL,
     showRegistrationURL
 } from "../../../components/lti/helpers/urls";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -76,7 +77,7 @@ const deleteRegistration = id => {
 
 
 <template>
-    <div class="lti">
+    <LtiApp>
         <header class="header">
             <div class="header__content header__content--with-actions">
                 <ul class="breadcrumb">
@@ -244,5 +245,5 @@ const deleteRegistration = id => {
         <form id="lti-registration-delete-form" method="post">
             <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
         </form>
-    </div>
+    </LtiApp>
 </template>

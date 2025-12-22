@@ -317,6 +317,14 @@ class RouteMap
     {
         $group->get('/lti-tools/{id}', Routes\Lti\LtiToolsShow::class);
         $group->get('/lti-tools', Routes\Lti\LtiToolsIndex::class);
+
+        $group->group('/courses/{range_id}', function ($lti) {
+            $lti->get('/lti-configs', Routes\Lti\ConfigIndex::class);
+        });
+
+        $group->group('/lti-resources', function ($lti) {
+            $lti->patch('/sort', Routes\Lti\ResourceUpdateSort::class);
+        });
     }
 
 

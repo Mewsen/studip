@@ -2,10 +2,15 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import draggable from "vuedraggable";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import ToolCard from "../../../components/lti/resources/ToolCard.vue";
 import {createResourceURL} from "../../../components/lti/helpers/urls";
 import {getCategoryCreateURL} from "../../../components/forum/helpers/urls";
+import LtiApp from "../../../components/lti/LtiApp.vue";
+import {useLtiConfig} from "../../../store/pinia/lti/Config";
+import {debounce} from "lodash";
+
+const ltiConfig = useLtiConfig();
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -20,13 +25,13 @@ const resourcesRef = ref(props.resources);
 
 const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
 
-const updateToolsOrder = async () => {
+const updateResourcesOrder = async () => {
     try {
-        const category_ids = resourcesRef.value.map(({ id }) => id);
+        const resourceIds = resourcesRef.value.map(({ id }) => id);
 
         const data = {
             attributes: {
-                'category-ids': category_ids
+                'resource-ids': resourceIds
             },
             relationships: {
                 range: {
@@ -39,25 +44,51 @@ const updateToolsOrder = async () => {
         };
 
         await STUDIP.jsonapi.withPromises().PATCH(
-            `forum-categories/sort`,
+            `lti-resources/sort`,
             { data: { data } }
         );
     } catch (error) {
         STUDIP.Report.error(error);
     }
 }
+
+const updateOrderDebounced = debounce(updateResourcesOrder, 2000);
+const assistiveLive = ref('');
+
+const swapResource = (resourceId, step) => {
+    const index = resourcesRef.value.findIndex(({ id }) => id === resourceId);
+    const newIndex = index + step;
+
+    if (newIndex < 0 || newIndex >= resourcesRef.value.length) {
+        return;
+    }
+
+    const temp = resourcesRef.value[newIndex];
+    resourcesRef.value[newIndex] = resourcesRef.value[index];
+    resourcesRef.value[index] = temp;
+
+    nextTick(() => {
+        document.getElementById(`sort-handle-${resourceId}`)?.focus();
+        assistiveLive.value = $gettext(
+            'Aktuelle Position in der Liste: %{index} von %{length}.',
+            { index: newIndex + 1, length: resourcesRef.value.length }
+        );
+
+        updateOrderDebounced();
+    });
+}
 </script>
 
 
 <template>
-    <div class="lti">
+    <LtiApp>
         <header class="header">
             <div class="header__content header__content--with-actions">
                 <h2>
                     {{ $gettext('LTI-Ressourcen') }}
                 </h2>
 
-                <div class="actions">
+                <div v-if="ltiConfig.isModerator" class="actions">
                     <button
                         type="button"
                         class="button button--icon-only"
@@ -73,7 +104,7 @@ const updateToolsOrder = async () => {
             v-model="resourcesRef"
             item-key="id"
             :animation="200"
-            @end="alert('Dragged!')"
+            @end="updateResourcesOrder"
             :disabled="false"
             class="tools-card-container"
             :class="{ 'tools-card-container--fill-free-space': resourcesRef.length >= 2 }"
@@ -81,10 +112,10 @@ const updateToolsOrder = async () => {
             tag="ul">
             <template #item="{element}">
                 <li>
-                    <ToolCard :tool="element" />
+                    <ToolCard :tool="element" @swap="swapResource" />
                 </li>
             </template>
-            <template #footer>
+            <template v-if="ltiConfig.isModerator" #footer>
                 <li key="footer">
                     <div class="tool-card tool-card--create">
                         <div class="studip-card">
@@ -106,5 +137,5 @@ const updateToolsOrder = async () => {
         <form id="lti-resource-delete-form" method="post">
             <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
         </form>
-    </div>
+    </LtiApp>
 </template>

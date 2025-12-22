@@ -22,7 +22,7 @@ class LtiToolsShow extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        if (!Authority::canShowLtiTool($this->getUser($request), $resource)) {
+        if (!Authority::canShowLti($this->getUser($request))) {
             throw new AuthorizationFailedException();
         }
 

@@ -1,10 +1,12 @@
 <?php
 namespace LTI;
 
+use AccessDeniedException;
 use AuthenticatedController;
 use Config;
 use Context;
 use Icon;
+use LtiToolModule;
 use Navigation;
 use PageLayout;
 use Request;
@@ -18,8 +20,11 @@ abstract class AdminBaseController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        $GLOBALS['perm']->check('root');
         $this->range_id = Context::getId();
+
+        if (!LtiToolModule::isModerator($this->range_id)) {
+            throw new AccessDeniedException();
+        }
 
         if ($this->range_id) {
             Navigation::activateItem('/course/lti/registrations');

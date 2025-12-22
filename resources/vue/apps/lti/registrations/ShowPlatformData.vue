@@ -2,6 +2,7 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import CopyAbleInput from "../../../components/lti/CopyAbleInput.vue";
 import CopyAbleTextarea from "../../../components/lti/CopyAbleTextarea.vue";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 defineProps({
     platformData: {
@@ -12,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="lti">
+    <LtiApp>
         <form class="default" action="#">
             <dl>
                 <dt>{{ $gettext('Plattform-ID') }}</dt>
@@ -41,5 +42,5 @@ defineProps({
                 </dd>
             </dl>
         </form>
-    </div>
+    </LtiApp>
 </template>

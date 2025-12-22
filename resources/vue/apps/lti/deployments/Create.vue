@@ -1,6 +1,7 @@
 <script setup>
 import LtiDeploymentForm from "../../../components/lti/deployments/LtiDeploymentForm.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
+import LtiApp from "../../../components/lti/LtiApp.vue";
 
 defineProps({
     deployment: {
@@ -17,9 +18,11 @@ defineProps({
 </script>
 
 <template>
-    <div class="lti" style="display: flex;">
-        <div style="flex: 1;">
-            <LtiDeploymentForm :deployment="deployment" :registration="registration" />
+    <LtiApp>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <LtiDeploymentForm :deployment="deployment" :registration="registration" />
+            </div>
         </div>
-    </div>
+    </LtiApp>
 </template>

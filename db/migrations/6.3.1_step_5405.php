@@ -92,6 +92,12 @@ final class Step5405 extends Migration {
            ALTER TABLE `lti_tool_privacy_settings` ADD INDEX `idx_user_id` (`user_id`)
         ");
 
+        DBManager::get()->exec("
+            ALTER TABLE `lti_resource_links`
+                ADD COLUMN `color` VARCHAR(7) AFTER `options`,
+                ADD COLUMN `icon` VARCHAR(100) AFTER `color`
+        ");
+
         $addConfig = DBManager::get()->prepare(
             "INSERT INTO `config`
             (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`)

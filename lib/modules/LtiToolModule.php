@@ -76,7 +76,10 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             $navigation->addSubNavigation('grades', new Navigation(_('Ergebnisse'), 'dispatch.php/course/lti/grades'));
         }
 
-        $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
+        if (static::isModerator($course_id)) {
+            $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
+        }
+
 
         return ['lti' => $navigation];
     }
@@ -87,6 +90,16 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     public function getInfoTemplate($course_id)
     {
         return null;
+    }
+
+    public static function isAdmin($userId = null): bool
+    {
+        return $GLOBALS['perm']->have_perm('root', $userId);
+    }
+
+    public static function isModerator($courseId, $userId = null): bool
+    {
+        return self::isAdmin() || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId);
     }
 
     /**
