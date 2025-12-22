@@ -227,26 +227,28 @@
                 {{ $gettext('Namen der buchenden Personen sind öffentlich sichtbar') }}
             </label>
 
-            <label>{{ $gettext('Grund der Buchung abfragen') }}</label>
-            <div class="hgroup">
-                <label>
-                    <input type="radio" name="require-reason" value="yes"
-                           v-model="requireReason">
-                    {{ $gettext('Ja, zwingend erforderlich') }}
-                </label>
+            <section>
+                <label>{{ $gettext('Grund der Buchung abfragen') }}</label>
+                <div class="hgroup">
+                    <label>
+                        <input type="radio" name="require-reason" value="yes"
+                               v-model="requireReason">
+                        {{ $gettext('Ja, zwingend erforderlich') }}
+                    </label>
 
-                <label>
-                    <input type="radio" name="require-reason" value="optional"
-                           v-model="requireReason">
-                    {{ $gettext('Ja, optional') }}
-                </label>
+                    <label>
+                        <input type="radio" name="require-reason" value="optional"
+                               v-model="requireReason">
+                        {{ $gettext('Ja, optional') }}
+                    </label>
 
-                <label>
-                    <input type="radio" name="require-reason" value="no"
-                           v-model="requireReason">
-                    {{ $gettext('Nein') }}
-                </label>
-            </div>
+                    <label>
+                        <input type="radio" name="require-reason" value="no"
+                               v-model="requireReason">
+                        {{ $gettext('Nein') }}
+                    </label>
+                </div>
+            </section>
 
             <label>
                 {{ $gettext('Bestätigung für folgenden Text einholen') }}
