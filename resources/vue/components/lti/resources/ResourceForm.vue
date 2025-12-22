@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, ref, useTemplateRef} from 'vue';
+import {computed, onMounted, reactive, useTemplateRef} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipSelect from "../../../components/StudipSelect.vue";
 import StudipTooltipIcon from "../../../components/StudipTooltipIcon.vue";

@@ -5,7 +5,6 @@ import draggable from "vuedraggable";
 import {nextTick, ref} from "vue";
 import ToolCard from "../../../components/lti/resources/ToolCard.vue";
 import {createResourceURL} from "../../../components/lti/helpers/urls";
-import {getCategoryCreateURL} from "../../../components/forum/helpers/urls";
 import LtiApp from "../../../components/lti/LtiApp.vue";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
 import {debounce} from "lodash";
@@ -99,6 +98,8 @@ const swapResource = (resourceId, step) => {
                 </div>
             </div>
         </header>
+
+        <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
 
         <draggable
             v-model="resourcesRef"

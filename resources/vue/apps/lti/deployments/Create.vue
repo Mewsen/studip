@@ -1,6 +1,5 @@
 <script setup>
 import LtiDeploymentForm from "../../../components/lti/deployments/LtiDeploymentForm.vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import LtiApp from "../../../components/lti/LtiApp.vue";
 
 defineProps({
