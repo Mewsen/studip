@@ -29,6 +29,6 @@ export const deleteResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/adm
 
 
 // Others:
-export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/iframe/${id}`);
+export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/launch/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 

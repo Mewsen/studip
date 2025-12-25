@@ -65,7 +65,7 @@ class Course_LtiController extends StudipController
         }
 
         $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id);
-        if (!in_array($action, ['index', 'iframe', 'grades', 'consent']) && !$this->edit_perm) {
+        if (!in_array($action, ['index', 'launch', 'grades', 'consent']) && !$this->edit_perm) {
             throw new AccessDeniedException();
         }
 
@@ -290,9 +290,9 @@ class Course_LtiController extends StudipController
     }
 
     /**
-     * Display the launch form for a tool as an iframe.
+     * Display the launch form for a tool.
      */
-    public function iframe_action(LtiResourceLink $resourceLink): void
+    public function launch_action(LtiResourceLink $resourceLink): void
     {
         $deployment = $resourceLink->deployment;
         $registration = $deployment->registration;
@@ -333,7 +333,7 @@ class Course_LtiController extends StudipController
             $this->message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
                 $resourceLink,
                 $registration->toLti1p3Registration(),
-                $GLOBALS['user']->id,
+                User::findCurrent()->id,
                 $deployment->deployment_id,
                 [
                     PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))

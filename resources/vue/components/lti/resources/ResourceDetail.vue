@@ -3,7 +3,10 @@ import StudipDialog from "../../StudipDialog.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipDateTime from "../../StudipDateTime.vue";
 import {computed} from "vue";
+import {launchResourceURL} from "../helpers/urls";
+import {useLtiConfig} from "../../../store/pinia/lti/Config";
 
+const ltiConfig = useLtiConfig();
 const props = defineProps({
     resource: {
         type: Object,
@@ -15,6 +18,7 @@ const isOpen = defineModel('isOpen');
 
 const title = computed(() => props.resource.title || props.resource.registration.name);
 const description = computed(() => props.resource.description || props.resource.registration.description);
+const resourceURL = computed(() => launchResourceURL(props.resource.id));
 const configs = computed(() => {
     if (props.resource.registration.version === '1.3a') {
         return JSON.stringify({
@@ -22,6 +26,7 @@ const configs = computed(() => {
             client_id: props.resource.deployment.client_id,
             deployment_id: props.resource.deployment.deployment_id,
             custom_parameters: props.resource.custom_parameters,
+            container: props.resource.container,
             registration: {
                 id: props.resource.registration.id,
                 audience: props.resource.registration.audience,
@@ -32,7 +37,7 @@ const configs = computed(() => {
                 jwks_url: props.resource.registration.jwks_url,
                 public_key: props.resource.registration.public_key,
                 custom_parameters: props.resource.registration.custom_parameters,
-                container: props.resource.registration.container,
+                container: props.resource.registration.container
             }
         }, null, 2);
     }
@@ -67,34 +72,73 @@ const configs = computed(() => {
                         <StudipDateTime :iso="resource.mkdate" />
                     </dd>
 
-
                     <dt>{{ $gettext('Direktlink zum LTI-Tool') }}</dt>
                     <dd>
-                        <a href="#" target="_blank">
-                            TBA
+                        <a :href="resourceURL" target="_blank" :title="$gettext('Anwendung starten')">
+                            {{ resourceURL }}
                         </a>
                     </dd>
-
-                    <dt>{{ $gettext('Client-ID') }}</dt>
-                    <dd>
-                        {{ resource.deployment.client_id }}
-                    </dd>
-
-                    <dt>{{ $gettext('Deployment-ID') }}</dt>
-                    <dd>
-                        {{ resource.deployment.deployment_id }}
-                    </dd>
-
-                    <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
-                    <dd class="break-word">
-                        <p>{{ resource.custom_parameters }}</p>
-                    </dd>
-
-
                 </dl>
 
-                <pre><code class="json">{{ configs }}</code></pre>
+                <article v-if="ltiConfig.isModerator" class="studip">
+                    <header>
+                        <h1>
+                            {{ $gettext('Konfiguration') }}
+                        </h1>
+                    </header>
+                    <dl>
+                        <dt>{{ $gettext('Client-ID') }}</dt>
+                        <dd>
+                            {{ resource.deployment.client_id }}
+                        </dd>
+
+                        <dt>{{ $gettext('Deployment-ID') }}</dt>
+                        <dd>
+                            {{ resource.deployment.deployment_id }}
+                        </dd>
+
+                        <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
+                        <dd class="break-word">
+                            <p>{{ resource.custom_parameters }}</p>
+                        </dd>
+                    </dl>
+
+                    <pre v-if="ltiConfig.isAdmin"><code class="json">{{ configs }}</code></pre>
+                </article>
             </div>
         </template>
     </StudipDialog>
 </template>
+
+<style lang="scss" scoped>
+pre {
+    background-color: var(--light-gray-color-20);
+    padding: 15px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: ui-monospace;
+    line-height: 1.6;
+    border: 1px solid var(--color--content-box-border);
+}
+
+pre code {
+    display: block;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    white-space: pre;
+}
+
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background-color: var(--color--button-inactive-border);
+    border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-track {
+    background: transparent;
+}
+</style>
