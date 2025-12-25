@@ -101,11 +101,6 @@ class Course_LtiController extends StudipController
 
         if ($this->edit_perm) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
-            $widget->addLink(
-                _('Einstellungen'),
-                $this->url_for('course/lti/config'),
-                Icon::create('admin')
-            )->asDialog('size=auto');
 
             $widget->addLink(
                 _('LTI-Ressource hinzufügen'),
@@ -382,17 +377,6 @@ class Course_LtiController extends StudipController
         $this->set_layout(null);
     }
 
-    /**
-     * Edit the course settings.
-     */
-    public function config_action()
-    {
-        $course_config = CourseConfig::get($this->range_id);
-        $this->personal_data_warning = $course_config->LTI_DATA_PROTECTION_COURSE_WARNING;
-        if (empty($this->personal_data_warning)) {
-            $this->personal_data_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
-        }
-    }
 
     /**
      * Save the course settings.

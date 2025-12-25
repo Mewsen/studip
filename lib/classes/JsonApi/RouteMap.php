@@ -327,7 +327,6 @@ class RouteMap
         });
     }
 
-
     private function addAuthenticatedMassMailRoutes(RouteCollectorProxy $group): void
     {
         $group->get('/mass-mails/messages', Routes\MassMail\MassMailMessagesIndex::class);

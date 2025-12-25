@@ -40,6 +40,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
+            'launch_container' => Request::int('launch_container', 1),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
         ]);
@@ -76,6 +77,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
+            'launch_container' => Request::int('launch_container', 1),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
         ]);

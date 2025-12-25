@@ -32,6 +32,7 @@ const configs = computed(() => {
                 jwks_url: props.resource.registration.jwks_url,
                 public_key: props.resource.registration.public_key,
                 custom_parameters: props.resource.registration.custom_parameters,
+                container: props.resource.registration.container,
             }
         }, null, 2);
     }

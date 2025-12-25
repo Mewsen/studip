@@ -2,6 +2,7 @@
 namespace Lti;
 
 use Keyring;
+use Lti\Enum\ResourceLaunchContainer;
 use Range;
 use SimpleORMap;
 use Studip\LTI13a\RegistrationRepository;
@@ -102,13 +103,16 @@ class Registration extends SimpleORMap
 
     public function transformData($with = []): array
     {
+        $configs = $this->getConfigValues();
+
         $base = [
             ...$this->toRawArray(),
             'state' => (bool) $this->state,
             'range_name' => $this->range?->getFullName() ?? _('Global'),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
-            ...$this->getConfigValues()
+            ...$configs,
+            'container' => ResourceLaunchContainer::get($configs['launch_container']),
         ];
 
         if (in_array('deployments', $with)) {

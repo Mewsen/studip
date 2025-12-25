@@ -24,6 +24,7 @@ const props = defineProps({
 });
 
 const form = reactive({
+    launch_container: 1,
     ...props.resource,
     colorPicked: props.resource.color,
     registration: props.registrations.find(({ id }) => id === props.resource?.registration?.id)
@@ -103,6 +104,14 @@ onMounted(() => nameInputRef.value.focus());
                     :text="$gettext('Ein Wert pro Zeile. Dieser überschreibt den Standard-LTI-Parameter bei der LTI-Registrierung.')"
                 />
                 <textarea name="custom_parameters" v-model="form.custom_parameters"></textarea>
+            </label>
+
+            <label>
+                <span>{{ $gettext('Launch container') }}</span>
+                <select name="launch_container" v-model="form.launch_container">
+                    <option value="1">{{ $gettext('Neues Fenster') }}</option>
+                    <option value="2">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>
+                </select>
             </label>
 
             <label for="color-input">

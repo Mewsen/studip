@@ -4,6 +4,7 @@ namespace Lti;
 use Course;
 use DBManager;
 use JSONArrayObject;
+use Lti\Enum\ResourceLaunchContainer;
 use SimpleORMap;
 
 class ResourceLink extends SimpleORMap
@@ -59,6 +60,7 @@ class ResourceLink extends SimpleORMap
     {
         $base = [
             ...$this->toRawArray(),
+            'container' => ResourceLaunchContainer::get($this->launch_container),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate)
         ];

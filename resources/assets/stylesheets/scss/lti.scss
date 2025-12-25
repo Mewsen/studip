@@ -133,6 +133,10 @@
         &--fill-free-space {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
+
+        &--full-width {
+            grid-column: 1 / -1;
+        }
     }
 
     .tool-card {
@@ -160,23 +164,48 @@
                 }
             }
         }
-    }
 
-    .studip-card {
-        flex: 1;
-        border: none;
+        .studip-card {
+            flex: 1;
+            border: none;
 
-        &__title {
-            display: flex;
-            gap: 10px;
-            color: var(--color--content-link);
-            transition: color var(--transition-duration);
+            &__title {
+                display: flex;
+                gap: 10px;
+            }
         }
 
-        &:hover {
+        &:not(&--iframe) .studip-card {
+            &__title {
+                color: var(--color--content-link);
+                transition: color var(--transition-duration);
+            }
+
+            &:hover {
+                .studip-card__title {
+                    color: var(--color--content-link-hover);
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &--iframe {
+            iframe {
+                height: 75vh;
+                border-radius: 10px;
+                border: 1px solid var(--brand-color-lighter);
+                box-shadow: 0 8px 24px var(--shadow-color);
+                background-color: var(--white);
+                overflow: hidden;
+                transition: all var(--transition-duration) ease;
+            }
+
             .studip-card__title {
-                color: var(--color--content-link-hover);
-                text-decoration: underline;
+
+                .studip-icon {
+                    width: 30px !important;
+                    height: 30px !important;
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import draggable from "vuedraggable";
-import {nextTick, ref} from "vue";
+import {computed, nextTick, ref} from "vue";
 import ToolCard from "../../../components/lti/resources/ToolCard.vue";
 import {createResourceURL} from "../../../components/lti/helpers/urls";
 import LtiApp from "../../../components/lti/LtiApp.vue";
@@ -24,6 +24,7 @@ const resourcesRef = ref(props.resources);
 
 const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
 
+const isIframe = resource => resource.container.value === 2 || resource.registration.container.value === 2;
 const updateResourcesOrder = async () => {
     try {
         const resourceIds = resourcesRef.value.map(({ id }) => id);
@@ -108,11 +109,11 @@ const swapResource = (resourceId, step) => {
             @end="updateResourcesOrder"
             :disabled="false"
             class="tools-card-container"
-            :class="{ 'tools-card-container--fill-free-space': resourcesRef.length >= 2 }"
+            :class="{ 'tools-card-container--fill-free-space': resourcesRef.length >= 1 }"
             handle=".drag-handle"
             tag="ul">
             <template #item="{element}">
-                <li>
+                <li :class="{ 'tools-card-container--full-width':  isIframe(element) }">
                     <ToolCard :tool="element" @swap="swapResource" />
                 </li>
             </template>

@@ -39,6 +39,21 @@ const actionMenus = computed(() => {
     return base;
 });
 
+const resourceURL = computed(() => launchResourceURL(props.tool.id));
+const launchContainer = computed(() => props.tool.container.value || props.tool.registration.container.value);
+const isIframe = computed(() => launchContainer.value === 2);
+
+const containerAttributes = computed(() => {
+    if(isIframe.value) {
+        return {}
+    }
+
+    return {
+        title: $gettext('Anwendung starten'),
+        href: resourceURL.value,
+        target: '_blank'
+    }
+});
 const showTool = () => isResourceDetailDialogOpen.value = true;
 
 const editTool = () => STUDIP.Dialog.fromURL(editResourceURL(props.tool.id), {width: '700', height: '700'});
@@ -68,11 +83,12 @@ const swap = event => {
 </script>
 
 <template>
-    <a
-        :href="launchResourceURL(tool.id)"
-        :title="$gettext('Anwendung starten')"
+    <component
+        :is="isIframe ? 'div' : 'a'"
         class="tool-card"
-        target="_blank">
+        :class="{ 'tool-card--iframe': isIframe }"
+        v-bind="containerAttributes"
+    >
         <div  class="tool-card__flag" v-if="tool.color" :style="{ backgroundColor: tool.color}">
         </div>
         <div class="studip-card">
@@ -95,9 +111,14 @@ const swap = event => {
             </header>
 
             <div class="studip-card__body">
-                <p class="studip-card__description">
+                <p v-if="!isIframe" class="studip-card__description">
                     {{ description }}
                 </p>
+
+                <iframe
+                    v-if="isIframe"
+                    :src="resourceURL"
+                ></iframe>
             </div>
 
             <footer class="studip-card__footer">
@@ -113,6 +134,6 @@ const swap = event => {
                 </div>
             </footer>
         </div>
-    </a>
+    </component>
     <ResourceDetail :resource="tool" v-model:isOpen="isResourceDetailDialogOpen" />
 </template>
