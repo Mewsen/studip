@@ -20,25 +20,29 @@
             <?
             $url_parts = parse_url($link->getLaunchURL());
             ?>
-            <? if (!empty($url_parts['host'])) : ?>
-                <p><?= _('Domain') ?>: <?= htmlReady($url_parts['host']) ?></p>
-            <? endif ?>
-            <? if ($link->deployment->registration->config_values['terms_of_use_url'] || $link->deployment->registration->config_values['privacy_policy_url']) : ?>
-                <p>
-                    <? if ($link->deployment->registration->config_values['terms_of_use_url']) : ?>
-                        <a href="<?= htmlReady($link->deployment->registration->config_values['terms_of_use_url']) ?>">
-                            <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
-                            <?= _('Nutzungsbedingungen') ?>
-                        </a>
-                    <? endif ?>
-                    <? if ($link->deployment->registration->config_values['privacy_policy_url']) : ?>
-                        <a href="<?= htmlReady($link->deployment->registration->config_values['privacy_policy_url']) ?>">
-                            <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
-                            <?= _('Datenschutzerklärung') ?>
-                        </a>
-                    <? endif ?>
-                </p>
-            <? endif ?>
+            <ul>
+                <? if (!empty($url_parts['host'])) : ?>
+                    <li><?= _('Domain') ?>: <?= htmlReady($url_parts['host']) ?></li>
+                <? endif ?>
+                <? if ($link->deployment->registration->config_values['terms_of_use_url'] || $link->deployment->registration->config_values['privacy_policy_url']) : ?>
+                    <li>
+                        <? if ($link->deployment->registration->config_values['terms_of_use_url']) : ?>
+                            <a href="<?= htmlReady($link->deployment->registration->config_values['terms_of_use_url']) ?>">
+                                <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                                <?= _('Nutzungsbedingungen') ?>
+                            </a>
+                        <? endif ?>
+                    </li>
+                    <li>
+                        <? if ($link->deployment->registration->config_values['privacy_policy_url']) : ?>
+                            <a href="<?= htmlReady($link->deployment->registration->config_values['privacy_policy_url']) ?>">
+                                <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                                <?= _('Datenschutzerklärung') ?>
+                            </a>
+                        <? endif ?>
+                    </li>
+                <? endif ?>
+            </ul>
         </section>
     </article>
 <? endif ?>

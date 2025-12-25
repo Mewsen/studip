@@ -251,7 +251,6 @@ class Course_LtiController extends StudipController
                     return;
                 }
 
-                //Save the privacy settings and redirect to the tool:
                 $privacySettings->accepted = 1;
 
                 //Check which optional fields are allowed to be transmitted to the tool:
@@ -266,19 +265,17 @@ class Course_LtiController extends StudipController
 
                 $privacySettings->allowed_optional_fields = implode(',', $optionalFields);
 
-                //Store the privacy settings:
                 $privacySettings->store();
 
-
-
+                if (Request::get('redirect') === 'launch') {
+                    $this->redirect('course/lti/launch/' . $resourceLink->id);
+                    return;
+                }
             }
             if (Request::isDialog()) {
                 //Close the dialog:
                 $this->response->add_header('X-Dialog-Close', '1');
                 return;
-            } elseif (Request::submitted('redirect_to_tool') && Request::submitted('save')) {
-                //Redirect to the tool launch action, but only after the privacy settings have been saved:
-                $this->redirect('course/lti/iframe/' . $resourceLink->id);
             } else {
                 //Redirect to the LTI tool page of the course:
                 $this->redirect('course/lti/index');
@@ -287,6 +284,10 @@ class Course_LtiController extends StudipController
 
         $this->resourceLink = $resourceLink;
         $this->privacySettings = $privacySettings;
+
+        if (Request::int('launch_container') === 2) {
+            $this->set_layout($GLOBALS['template_factory']->open('lti/layout'));
+        }
     }
 
     /**
@@ -296,6 +297,7 @@ class Course_LtiController extends StudipController
     {
         $deployment = $resourceLink->deployment;
         $registration = $deployment->registration;
+        $registrationConfigs = $registration->getConfigValues();
         $dataProtectionConsent = LtiToolPrivacySettings::countBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id AND `accepted` = 1",
             [
@@ -304,8 +306,10 @@ class Course_LtiController extends StudipController
             ]
         );
 
+        $launchContainer = $resourceLink->launch_container ?? $registrationConfigs['launch_container'];
+
         if (!$dataProtectionConsent) {
-            $this->redirect('course/lti/consent/' . $deployment->id, ['redirect_to_tool' => '1']);
+            $this->redirect('course/lti/consent/' . $resourceLink->id, ['redirect' => 'launch', 'launch_container' => $launchContainer]);
             return;
         }
 

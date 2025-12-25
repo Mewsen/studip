@@ -7,27 +7,27 @@
 ?>
 
 <? if ($resourceLink) : ?>
-    <form class="default" method="post" <?= $privacySettings->isNew() ? 'data-dialog="reload-on-close"' : 'data-dialog' ?>
-          action="<?= $controller->link_for('course/lti/consent/' . $resourceLink->id) ?>">
+    <form class="default" method="post" action="<?= $controller->link_for('course/lti/consent/' . $resourceLink->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <?
-        $data_protection_warning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;
-        if (empty($data_protection_warning)) {
-            $data_protection_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
-        }
+            $dataProtectionWarning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;
+            if (empty($dataProtectionWarning)) {
+                $dataProtectionWarning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
+            }
         ?>
+        <input type="hidden" name="redirect" value="<?= Request::option('redirect') ?>" />
         <fieldset>
             <legend><?= _('Datenschutzhinweise')  ?></legend>
             <section>
-                <p><?= htmlReady($data_protection_warning) ?></p>
+                <p><?= htmlReady($dataProtectionWarning) ?></p>
                 <? if (isset($resourceLink->deployment->registration->config_values['data_protection_notes'])) : ?>
-                    <p><?= formatReady($resourceLink->deployment->registration->config_values['data_protection_notes']) ?></p>
+                    <?= formatReady($resourceLink->deployment->registration->config_values['data_protection_notes']) ?>
                 <? endif ?>
             </section>
         </fieldset>
         <fieldset>
             <?
-            $optional_field_list = explode(',', $privacySettings->allowed_optional_fields ?? '');
+                $optionalFieldList = explode(',', $privacySettings->allowed_optional_fields ?? '');
             ?>
             <legend><?= _('Die folgenden Daten werden übertragen') ?></legend>
             <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
@@ -45,12 +45,12 @@
             </label>
             <label>
                 <input type="checkbox" name="submit_optional_field[lang]" value="1"
-                    <?= in_array('lang', $optional_field_list) ? 'checked' : '' ?>>
+                    <?= in_array('lang', $optionalFieldList) ? 'checked' : '' ?>>
                 <?= _('Ihre in Stud.IP eingestellte Sprache') ?>
             </label>
             <label>
                 <input type="checkbox" name="submit_optional_field[avatar_url]" value="1"
-                    <?= in_array('avatar_url', $optional_field_list) ? 'checked' : '' ?>>
+                    <?= in_array('avatar_url', $optionalFieldList) ? 'checked' : '' ?>>
                 <?= _('Ihr Profilbild') ?>
             </label>
         </fieldset>

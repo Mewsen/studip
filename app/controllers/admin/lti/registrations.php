@@ -6,6 +6,7 @@ use Lti\Registration;
 use Lti\RegistrationConfig;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\ToolManager;
+use Studip\Markup;
 
 class Admin_Lti_RegistrationsController extends AdminBaseController
 {
@@ -72,7 +73,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         $registration = Registration::create([
             'version' => Request::get('version', '1.3a'),
             'name' => Request::get('name'),
-            'description' => Request::get('description'),
+            'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
             'state' => Request::bool('state', true),
             'range_id' => $this->range_id ?? 'global'
         ]);
@@ -112,7 +113,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         $registration->setData([
             'version' => Request::get('version', '1.3a'),
             'name' => Request::get('name'),
-            'description' => Request::get('description'),
+            'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
             'state' => Request::bool('state', true)
         ]);
 
@@ -205,7 +206,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             ],
             [
                 'name' => 'data_protection_notes',
-                'value' => Request::get('data_protection_notes')
+                'value' => Markup::purifyHtml(Markup::markAsHtml(Request::get('data_protection_notes')))
             ]
         ];
 
