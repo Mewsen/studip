@@ -11,7 +11,7 @@ const props = defineProps({
 
 const isOpen = defineModel({ default: false });
 const AUTH_ID = STUDIP.USER_ID;
-const vCardDownloadURL = STUDIP.URLHelper.getURL('dispatch.php/contact/vcard', {'user[]': props.user.username});
+const vCardDownloadURL = STUDIP.URLHelper.getURL(`jsonapi.php/v1/users/${props.user.id}/vcard.vcf`);
 const userProfileURL = STUDIP.URLHelper.getURL('dispatch.php/profile', {username: props.user.username});
 
 const writeMessage = () => {
