@@ -111,11 +111,6 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
             </dd>
 
             <template v-if="registration.role === 'tool'">
-                <dt>{{ $gettext('Personendaten an das LTI-Tool senden') }}</dt>
-                <dd>
-                    <p>{{ registration.send_lis_person ? $gettext('Ja') : $gettext('Nein') }}</p>
-                </dd>
-
                 <dt>{{ $gettext('Launch container') }}</dt>
                 <dd>
                     <p>{{ registration.launch_container }}</p>
@@ -170,9 +165,15 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
                     <dd>
                         {{ registration.consumer_key }}
                     </dd>
+
                     <dt>{{ $gettext('Consumer-Secret') }}</dt>
                     <dd>
                         {{ registration.consumer_secret }}
+                    </dd>
+
+                    <dt>{{ $gettext('Personendaten an das LTI-Tool senden') }}</dt>
+                    <dd>
+                        <p>{{ registration.send_lis_person ? $gettext('Ja') : $gettext('Nein') }}</p>
                     </dd>
                 </template>
 

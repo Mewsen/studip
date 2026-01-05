@@ -197,15 +197,15 @@ onMounted(() => {
                     <span :title="$gettext('Consumer-Secret ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                     <input required type="text" name="consumer_secret" v-model="form.consumer_secret" />
                 </label>
-            </template>
 
-            <label>
-                <input type="checkbox" name="send_lis_person" v-model="form.send_lis_person" />
-                {{ $gettext('Personendaten an das LTI-Tool senden') }}
-                <StudipTooltipIcon
-                    :text="$gettext('Personendaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')"
-                />
-            </label>
+                <label>
+                    <input type="checkbox" name="send_lis_person" v-model="form.send_lis_person" />
+                    {{ $gettext('Personendaten an das LTI-Tool senden') }}
+                    <StudipTooltipIcon
+                        :text="$gettext('Personendaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')"
+                    />
+                </label>
+            </template>
 
             <label>
                 {{ $gettext('Zusätzliche LTI-Parameter') }}

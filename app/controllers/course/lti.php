@@ -15,7 +15,6 @@ use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\RegistrationManager;
-use Studip\LTI13a\RegistrationRepository;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
@@ -209,7 +208,7 @@ class Course_LtiController extends StudipController
         $this->resourceLink = $resourceLink;
         $this->privacySettings = $privacySettings;
 
-        if (Request::int('launch_container') === 2) {
+        if (Request::get('launch_container') === 'iframe') {
             $this->set_layout($GLOBALS['template_factory']->open('lti/layout'));
         }
     }

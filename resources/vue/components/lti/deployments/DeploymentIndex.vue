@@ -143,14 +143,14 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
                     v-if="registration.role === 'tool'"
                     :class="getSortClass('resource_name')"
                     :aria-sort="getAriaSortString('resource_name')"
-                    :aria-label="getAriaSortLabel('resource_name', $gettext('Resource'))"
+                    :aria-label="getAriaSortLabel('resource_name', $gettext('Context'))"
                 >
                     <button
                         type="button"
                         class="button__table-sort button-base"
                         @click="sortBy('resource_name')"
-                        :title="$gettext('Nach Name des Resource sortieren')">
-                        {{ $gettext('Resource') }}
+                        :title="$gettext('Nach Name des Contexts sortieren')">
+                        {{ $gettext('Context') }}
                     </button>
                 </th>
                 <th

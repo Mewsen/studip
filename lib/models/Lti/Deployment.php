@@ -1,7 +1,6 @@
 <?php
 namespace Lti;
 
-use LtiResourceLink;
 use SimpleORMap;
 
 class Deployment extends SimpleORMap
@@ -16,9 +15,8 @@ class Deployment extends SimpleORMap
             'assoc_foreign_key' => 'id',
         ];
 
-        // TODO:: user new model class ResourceLink
         $config['has_many']['resource_links'] = [
-            'class_name' => LtiResourceLink::class,
+            'class_name' => ResourceLink::class,
             'assoc_foreign_key' => 'deployment_id',
             'on_delete' => 'delete'
         ];

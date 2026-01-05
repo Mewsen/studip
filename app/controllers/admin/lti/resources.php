@@ -44,7 +44,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
-            'launch_container' => Request::int('launch_container', 1),
+            'launch_container' => Request::get('launch_container', 'window'),
             'launch_type' => Request::get('launch_type', 'default'),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
@@ -82,7 +82,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
-            'launch_container' => Request::int('launch_container', $resourceLink->launch_container),
+            'launch_container' => Request::get('launch_container', $resourceLink->launch_container),
             'launch_type' => Request::get('launch_type', $resourceLink->launch_type),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
@@ -103,6 +103,12 @@ class Admin_Lti_ResourcesController extends AdminBaseController
     public function delete_action(ResourceLink $resourceLink): void
     {
         CSRFProtection::verifyUnsafeRequest();
+
+        $deploymentsCount = ResourceLink::countBySql("deployment_id = ?", [$resourceLink->deployment_id]);
+
+        if ($this->launch_type !== 'deep_linking' && $deploymentsCount === 1) {
+            $resourceLink->deployment->delete();
+        }
 
         $resourceTitle = $resourceLink->title;
         $resourceLink->delete();

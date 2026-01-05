@@ -3,7 +3,7 @@ import StudipDialog from "../../StudipDialog.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipDateTime from "../../StudipDateTime.vue";
 import {computed} from "vue";
-import {launchResourceURL} from "../helpers/urls";
+import {launchResourceURL, selectContentURL} from "../helpers/urls";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
 
 const ltiConfig = useLtiConfig();
@@ -18,7 +18,14 @@ const isOpen = defineModel('isOpen');
 
 const title = computed(() => props.resource.title || props.resource.registration.name);
 const description = computed(() => props.resource.description || props.resource.registration.description);
-const resourceURL = computed(() => launchResourceURL(props.resource.id));
+const resourceURL = computed(() => {
+    if (props.resource.launch_type === 'deep_linking') {
+        return selectContentURL(props.resource.id);
+    }
+
+    return launchResourceURL(props.resource.id);
+});
+
 const configs = computed(() => {
     if (props.resource.registration.version === '1.3a') {
         return JSON.stringify({
@@ -78,10 +85,12 @@ const configs = computed(() => {
                         </a>
                     </dd>
 
-                    <dt>{{ $gettext('Starttyp') }}</dt>
-                    <dd>
-                        <p>{{ resource.launch_type === 'deep_linking' ? $gettext('Inhaltsauswahl anzeigen (LTI deep linking)') : $gettext('Standard') }}</p>
-                    </dd>
+                    <template v-if="ltiConfig.isModerator">
+                        <dt>{{ $gettext('Starttyp') }}</dt>
+                        <dd>
+                            <p>{{ resource.launch_type === 'deep_linking' ? $gettext('Inhaltsauswahl anzeigen (LTI deep linking)') : $gettext('Standard') }}</p>
+                        </dd>
+                    </template>
                 </dl>
 
                 <article v-if="ltiConfig.isModerator" class="studip">

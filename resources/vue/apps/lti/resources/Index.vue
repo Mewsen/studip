@@ -2,7 +2,7 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import draggable from "vuedraggable";
-import {computed, nextTick, ref} from "vue";
+import {computed, nextTick, onMounted, ref} from "vue";
 import ToolCard from "../../../components/lti/resources/ToolCard.vue";
 import {createResourceURL} from "../../../components/lti/helpers/urls";
 import LtiApp from "../../../components/lti/LtiApp.vue";
@@ -20,14 +20,14 @@ const props = defineProps({
     }
 });
 
-const resourcesRef = ref(props.resources);
+const filteredResources = ref([]);
 
 const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
 
-const isIframe = resource => resource.container.value === 2 || resource.registration.container.value === 2;
+const isIframe = resource => resource.container.value === 'iframe' || resource.registration.container.value === 'iframe';
 const updateResourcesOrder = async () => {
     try {
-        const resourceIds = resourcesRef.value.map(({ id }) => id);
+        const resourceIds = filteredResources.value.map(({ id }) => id);
 
         const data = {
             attributes: {
@@ -56,27 +56,32 @@ const updateOrderDebounced = debounce(updateResourcesOrder, 2000);
 const assistiveLive = ref('');
 
 const swapResource = (resourceId, step) => {
-    const index = resourcesRef.value.findIndex(({ id }) => id === resourceId);
+    const index = filteredResources.value.findIndex(({ id }) => id === resourceId);
     const newIndex = index + step;
 
-    if (newIndex < 0 || newIndex >= resourcesRef.value.length) {
+    if (newIndex < 0 || newIndex >= filteredResources.value.length) {
         return;
     }
 
-    const temp = resourcesRef.value[newIndex];
-    resourcesRef.value[newIndex] = resourcesRef.value[index];
-    resourcesRef.value[index] = temp;
+    const temp = filteredResources.value[newIndex];
+    filteredResources.value[newIndex] = filteredResources.value[index];
+    filteredResources.value[index] = temp;
 
     nextTick(() => {
         document.getElementById(`sort-handle-${resourceId}`)?.focus();
         assistiveLive.value = $gettext(
             'Aktuelle Position in der Liste: %{index} von %{length}.',
-            { index: newIndex + 1, length: resourcesRef.value.length }
+            { index: newIndex + 1, length: filteredResources.value.length }
         );
 
         updateOrderDebounced();
     });
 }
+
+onMounted(() => {
+    // filteredResources.value = props.resources.filter(r => ltiConfig.isModerator || r.launch_type !== 'deep_linking');
+    filteredResources.value = props.resources;
+});
 </script>
 
 
@@ -103,18 +108,18 @@ const swapResource = (resourceId, step) => {
         <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
 
         <draggable
-            v-model="resourcesRef"
+            v-model="filteredResources"
             item-key="id"
             :animation="200"
             @end="updateResourcesOrder"
             :disabled="false"
             class="tools-card-container"
-            :class="{ 'tools-card-container--fill-free-space': resourcesRef.length >= 1 }"
+            :class="{ 'tools-card-container--fill-free-space': filteredResources.length >= 1 }"
             handle=".drag-handle"
             tag="ul">
             <template #item="{element}">
-                <li :class="{ 'tools-card-container--full-width':  isIframe(element) }">
-                    <ToolCard :tool="element" @swap="swapResource" />
+                <li :class="{ 'tools-card-container--full-width': isIframe(element) }">
+                    <ToolCard :resource="element" @swap="swapResource" />
                 </li>
             </template>
             <template v-if="ltiConfig.isModerator" #footer>

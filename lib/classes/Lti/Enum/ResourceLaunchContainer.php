@@ -9,11 +9,11 @@ enum ResourceLaunchContainer: string {
     {
         return [
             self::Window->value => [
-                'value' => (int) self::Window->value,
+                'value' => self::Window->value,
                 'label' => _('Neues Fenster')
             ],
             self::Iframe->value => [
-                'value' => (int) self::Iframe->value,
+                'value' => self::Iframe->value,
                 'label' => _('Iframe')
             ]
         ];
