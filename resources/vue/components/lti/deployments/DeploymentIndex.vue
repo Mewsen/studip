@@ -1,11 +1,11 @@
 <script setup>
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import {useSortable} from "../../../composables/useSortable";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../StudipIcon.vue";
-import {addDeploymentURL, deleteDeploymentURL, showRangeURL} from "../helpers/urls";
+import {addDeploymentURL, deleteDeploymentURL, editDeploymentURL, showRangeURL} from "../helpers/urls";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 const props = defineProps({
@@ -33,11 +33,20 @@ const {
     getAriaSortLabel
 } = useSortable(deploymentsRef);
 
-const actionMenus = computed(() => {
-    return [
-        { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
+const getActionMenus = deployment => {
+    const base = [
+        { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'}
     ];
-});
+
+    if (!deployment.is_default) {
+        return [
+            ...base,
+            { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
+        ]
+    }
+
+    return base;
+};
 
 const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diese "%{name}" Registrierung löschen?', {name}),
@@ -52,6 +61,8 @@ const deleteDeployment = id => {
 }
 
 const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registration.id), { width: '500', height: '400'});
+
+const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { width: '500', height: '400'});
 </script>
 
 <template>
@@ -179,7 +190,8 @@ const addDeployment = () => STUDIP.Dialog.fromURL(addDeploymentURL(props.registr
             </td>
             <td class="actions">
                 <StudipActionMenu
-                    :items="actionMenus"
+                    :items="getActionMenus(deployment)"
+                    @edit="editDeployment(deployment.id)"
                     @delete="showConfirmDelete(deployment.id, deployment.name)"
                 />
             </td>

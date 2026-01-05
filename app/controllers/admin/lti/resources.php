@@ -27,12 +27,16 @@ class Admin_Lti_ResourcesController extends AdminBaseController
 
         $registration = Registration::find(Request::get('registration_id'));
 
-        $deployment = Deployment::create([
-            'name' => Request::get('title', $registration->name),
-            'registration_id' => $registration->id,
-            'deployment_id' => bin2hex(random_bytes(6)),
-            'client_id' => $registration->getDefaultDeployment()->client_id
-        ]);
+        if (Request::get('launch_type') === 'deep_linking') {
+            $deployment = Deployment::create([
+                'name' => Request::get('title', $registration->name),
+                'registration_id' => $registration->id,
+                'deployment_id' => bin2hex(random_bytes(6)),
+                'client_id' => $registration->getDefaultDeployment()->client_id
+            ]);
+        } else {
+            $deployment = $registration->getDefaultDeployment();
+        }
 
         $resourceLink = ResourceLink::create([
             'deployment_id' => $deployment->id,
@@ -41,6 +45,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
             'launch_container' => Request::int('launch_container', 1),
+            'launch_type' => Request::get('launch_type', 'default'),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
         ]);
@@ -77,7 +82,8 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'title' => Request::get('title'),
             'description' => Request::get('description'),
             'custom_parameters' => Request::get('custom_parameters'),
-            'launch_container' => Request::int('launch_container', 1),
+            'launch_container' => Request::int('launch_container', $resourceLink->launch_container),
+            'launch_type' => Request::get('launch_type', $resourceLink->launch_type),
             'color' => Request::get('color'),
             'icon' => Request::get('icon')
         ]);

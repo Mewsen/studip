@@ -2,14 +2,14 @@
 namespace Lti\Enum;
 
 enum ResourceLaunchContainer: string {
-    case NewWindow = '1';
-    case Iframe = '2';
+    case Window = 'window';
+    case Iframe = 'iframe';
 
     public static function all(): array
     {
         return [
-            self::NewWindow->value => [
-                'value' => (int) self::NewWindow->value,
+            self::Window->value => [
+                'value' => (int) self::Window->value,
                 'label' => _('Neues Fenster')
             ],
             self::Iframe->value => [
@@ -19,14 +19,14 @@ enum ResourceLaunchContainer: string {
         ];
     }
 
-    public static  function get(int $value)
+    public static  function get(string $value)
     {
-        return static::all()[(string) $value] ?? static::default();
+        return static::all()[$value] ?? static::default();
     }
 
     public static function default(): array {
         return [
-            'value' => (int) self::NewWindow->value,
+            'value' => (int) self::Window->value,
             'label' => _('Neues Fenster')
         ];
     }

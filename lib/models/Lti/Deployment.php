@@ -39,6 +39,7 @@ class Deployment extends SimpleORMap
 
         $base = [
             ...$this->toRawArray(),
+            'is_default' => (bool) $this->is_default,
             'resource_id' => $resourceLink?->course_id,
             'resource_name' => $resourceLink?->course->getFullName(),
             'chdate' => date('c', $this->chdate),

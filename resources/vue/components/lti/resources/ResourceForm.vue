@@ -24,7 +24,8 @@ const props = defineProps({
 });
 
 const form = reactive({
-    launch_container: 1,
+    launch_container: 'window',
+    launch_type: 'default',
     ...props.resource,
     colorPicked: props.resource.color,
     registration: props.registrations.find(({ id }) => id === props.resource?.registration?.id)
@@ -66,21 +67,27 @@ onMounted(() => nameInputRef.value.focus());
                     <span :title="$gettext('LTI-Tool ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                 </label>
                 <StudipSelect
-                    id="select-lti-tool-input"
                     :placeholder="$gettext('Suchen order auswählen...')"
                     label="name"
                     :options="registrations"
                     v-model="form.registration"
-                    name="registration_id"
                     required
-                    :reduce="r => r.id"
                     :clearable="true"
                 >
                     <template #no-options>
                         <div>{{ $gettext('Es gibt kein LTI-Tool vorhanden.') }}</div>
                     </template>
                 </StudipSelect>
+                <input id="select-lti-tool-input" type="hidden" name="registration_id" :value="form.registration?.id" />
             </div>
+
+            <label v-if="form.registration?.deep_linking_url">
+                <span>{{ $gettext('Wie soll den Ressource gestartet werden?') }}</span>
+                <select name="launch_type" v-model="form.launch_type">
+                    <option value="default" selected>{{ $gettext('Standard') }}</option>
+                    <option value="deep_linking">{{ $gettext('Inhaltsauswahl anzeigen (LTI deep linking)') }}</option>
+                </select>
+            </label>
 
             <label class="studiprequired">
                 <span class="textlabel">{{ $gettext('Titel') }}</span>
@@ -109,8 +116,8 @@ onMounted(() => nameInputRef.value.focus());
             <label>
                 <span>{{ $gettext('Launch container') }}</span>
                 <select name="launch_container" v-model="form.launch_container">
-                    <option value="1">{{ $gettext('Neues Fenster') }}</option>
-                    <option value="2">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>
+                    <option value="window">{{ $gettext('Neues Fenster') }}</option>
+                    <option value="iframe">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>
                 </select>
             </label>
 

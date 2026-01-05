@@ -12,6 +12,7 @@ export const deleteRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php
 // Deployments URLS:
 export const addDeploymentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${registrationId}`);
 export const storeDeploymentURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/store`);
+export const editDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/edit/${id}`);
 export const updateDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/update/${id}`);
 export const deleteDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/delete/${id}`);
 
@@ -30,5 +31,6 @@ export const deleteResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/adm
 
 // Others:
 export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/launch/${id}`);
+export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/process_select_link/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 

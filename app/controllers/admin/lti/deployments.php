@@ -59,21 +59,60 @@ class Admin_Lti_DeploymentsController  extends AdminBaseController
         $this->redirect('admin/lti/deployments', ['registration_id' => $deployment->registration_id]);
     }
 
-    public function delete_action(Deployment $deployment): void
+    public function edit_action(Deployment $deployment): void
+    {
+        PageLayout::setTitle(_('LTI-Deployment bearbeiten'));
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/deployments/Edit')
+                ->withProps([
+                    'deployment' => $deployment->transformData(),
+                    'registration' => $deployment->registration->transformData()
+                ])
+        );
+    }
+
+    public function update_action(Deployment $deployment): void
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $deploymentName = $deployment->name;
-        $registrationId = $deployment->registration_id;
-        $deployment->delete();
+        $deployment->setData([
+            'name' => Request::get('name'),
+            'deployment_id' => Request::get('deployment_id'),
+            'client_id' => Request::get('client_id', $deployment->client_id)
+        ]);
 
+        $deployment->store();
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Das LTI-Deployment „%s“ wurde gespeichert.'),
+                htmlReady($deployment->name)
+            )
+        );
+
+        $this->redirect('admin/lti/deployments', ['registration_id' => $deployment->registration_id]);
+    }
+
+    public function delete_action(Deployment $deployment): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        $registrationId = $deployment->registration_id;
+        $deploymentName = $deployment->name;
+
+        if ($deployment->is_default) {
+            PageLayout::postError(_('Das Standard-Deployment konnte nicht gelöscht werden.'));
+            $this->redirect('admin/lti/deployments', ['registration_id' => $registrationId]);
+            return;
+        }
+
+        $deployment->delete();
         PageLayout::postSuccess(
             sprintf(
                 _('Die LTI-Registrierung „%s“ wurde gelöscht.'),
                 htmlReady($deploymentName)
             )
         );
-
         $this->redirect('admin/lti/deployments', ['registration_id' => $registrationId]);
     }
 }

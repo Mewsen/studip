@@ -204,23 +204,18 @@ class LtiResourceLink extends SimpleORMap implements LtiResourceLinkInterface
         );
     }
 
-    public function getCustomParameters()
+    public function getCustomParameters(): string
     {
-        $parameters = '';
-        if (!empty($this->deployment->registration)) {
-            $parameters = $this->deployment->registration->config_values['custom_parameters'];
-        }
-        $parameters .= $this->options['custom_parameters'] ?? '';
-        return $parameters;
+        return $this->custom_parameters ?? $this->deployment->registration->getConfigValues()['custom_parameters'];
     }
 
     public function getCustomLtiParameterArray() : array
     {
-        $parameter_str = $this->getCustomParameters();
-        if (empty($parameter_str)) {
+        $parameterStr = $this->getCustomParameters();
+        if (empty($parameterStr)) {
             return [];
         }
-        $parameters = explode("\n", $parameter_str);
+        $parameters = explode("\n", $parameterStr);
         $array = [];
         foreach ($parameters as $parameter) {
             $key_value_parts = explode('=', $parameter, 2);

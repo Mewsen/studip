@@ -27,6 +27,7 @@ const configs = computed(() => {
             deployment_id: props.resource.deployment.deployment_id,
             custom_parameters: props.resource.custom_parameters,
             container: props.resource.container,
+            launch_type: props.resource.launch_type,
             registration: {
                 id: props.resource.registration.id,
                 audience: props.resource.registration.audience,
@@ -63,9 +64,7 @@ const configs = computed(() => {
                     <dd>{{ title }}</dd>
 
                     <dt>{{ $gettext('Beschreibung') }}</dt>
-                    <dd class="break-word">
-                        <p>{{ description }}</p>
-                    </dd>
+                    <dd class="break-word" v-html="description"></dd>
 
                     <dt>{{ $gettext('Erstellt am') }}</dt>
                     <dd>
@@ -77,6 +76,11 @@ const configs = computed(() => {
                         <a :href="resourceURL" target="_blank" :title="$gettext('Anwendung starten')">
                             {{ resourceURL }}
                         </a>
+                    </dd>
+
+                    <dt>{{ $gettext('Starttyp') }}</dt>
+                    <dd>
+                        <p>{{ resource.launch_type === 'deep_linking' ? $gettext('Inhaltsauswahl anzeigen (LTI deep linking)') : $gettext('Standard') }}</p>
                     </dd>
                 </dl>
 
@@ -99,7 +103,7 @@ const configs = computed(() => {
 
                         <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
                         <dd class="break-word">
-                            <p>{{ resource.custom_parameters }}</p>
+                            {{ resource.custom_parameters || resource.registration.custom_parameters }}
                         </dd>
                     </dl>
 

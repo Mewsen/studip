@@ -2,7 +2,13 @@
 import {computed, ref} from "vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipActionMenu from "../../StudipActionMenu.vue";
-import {deleteResourceURL, editResourceConsentURL, editResourceURL, launchResourceURL} from "../helpers/urls";
+import {
+    deleteResourceURL,
+    editResourceConsentURL,
+    editResourceURL,
+    launchResourceURL,
+    selectContentURL
+} from "../helpers/urls";
 import ResourceDetail from "./ResourceDetail.vue";
 import StudipIcon from "../../StudipIcon.vue";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
@@ -19,7 +25,6 @@ const emit = defineEmits(['swap']);
 const isResourceDetailDialogOpen = ref(false);
 
 const title = computed(() => props.tool.title || props.tool.registration.name);
-const description = computed(() => props.tool.description || props.tool.registration.description);
 
 
 const actionMenus = computed(() => {
@@ -39,7 +44,13 @@ const actionMenus = computed(() => {
     return base;
 });
 
-const resourceURL = computed(() => launchResourceURL(props.tool.id));
+const resourceURL = computed(() => {
+    if (props.tool.launch_type === 'deep_linking') {
+        return selectContentURL(props.tool.id);
+    }
+
+    return launchResourceURL(props.tool.id);
+});
 const launchContainer = computed(() => props.tool.container.value || props.tool.registration.container.value);
 const isIframe = computed(() => launchContainer.value === 2);
 
@@ -65,7 +76,7 @@ const showConfirmDelete = () => STUDIP.Dialog.confirm(
     STUDIP.Dialog.close()
 );
 
-const deleteTool = (id) => {
+const deleteTool = id => {
     const deleteForm = document.getElementById('lti-resource-delete-form');
     deleteForm.action = deleteResourceURL(id);
     deleteForm.submit();
@@ -111,9 +122,7 @@ const swap = event => {
             </header>
 
             <div class="studip-card__body">
-                <p v-if="!isIframe" class="studip-card__description">
-                    {{ description }}
-                </p>
+                <p v-if="!isIframe" class="studip-card__description" v-html="tool.description"></p>
 
                 <iframe
                     v-if="isIframe"

@@ -70,7 +70,7 @@ class Registration extends SimpleORMap
 
     public function getDefaultDeployment(): ?Deployment
     {
-        return Deployment::findOneBySQL("registration_id = ? ORDER BY id", [$this->id]);
+        return Deployment::findOneBySQL("registration_id = ? AND is_default = 1", [$this->id]);
     }
 
     public function getKeyring(): ?Keyring

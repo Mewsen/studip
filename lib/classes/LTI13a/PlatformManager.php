@@ -35,26 +35,24 @@ class PlatformManager
      * Generates an object containing the settings for using this Stud.IP
      * as a platform that connects to an LTI tool via Deep Linking.
      *
-     * @param string $link_id The Stud.IP LTI Resource Link ID that is used to construct
+     * @param string $linkId The Stud.IP LTI Resource Link ID that is used to construct
      *     the platform return URL.
      *
-     * @param string $course_id An optional Stud.IP course for which to get
+     * @param string $courseId An optional Stud.IP course for which to get
      *     the deep linking configuration.
      *
      * @return DeepLinkingSettings The settings for deep linking.
      */
-    public static function getDeepLinkingConfiguration(string $link_id, string $course_id = ''): DeepLinkingSettings
+    public static function getDeepLinkingConfiguration(string $linkId, string $courseId = ''): DeepLinkingSettings
     {
-        $c = Config::get();
-
         return new DeepLinkingSettings(
-            self::getDeepLinkingReturnUrl($link_id, $course_id),
+            self::getDeepLinkingReturnUrl($linkId, $courseId),
             [LtiResourceLinkInterface::TYPE],
             ['window', 'iframe'],
             'text/html',
             true,
             false,
-            $c->UNI_NAME_CLEAN,
+            Config::get()->UNI_NAME_CLEAN,
             ''
         );
     }
@@ -97,20 +95,20 @@ class PlatformManager
     /**
      * Generates the URL for returning from the tool in an LTI deep linking process.
      *
-     * @param string $link_id The Stud.IP LTI Resource Link ID to append to the URL.
+     * @param string $linkId The Stud.IP LTI Resource Link ID to append to the URL.
      *
-     * @param string $course_id An optional Stud.IP course for which to generate
+     * @param string $courseId An optional Stud.IP course for which to generate
      *      the deep linking return URL.
      *
      * @return string The URL for returning from an LTI deep linking process.
      */
-    public static function getDeepLinkingReturnUrl(string $link_id, string $course_id = ''): string
+    public static function getDeepLinkingReturnUrl(string $linkId, string $courseId = ''): string
     {
-        $params = ['link_id' => $link_id];
-        if ($course_id) {
-            $params['cid'] = $course_id;
+        $params = ['link_id' => $linkId];
+        if ($courseId) {
+            $params['cid'] = $courseId;
         }
-        return URLHelper::getURL('dispatch.php/course/lti/save_link/' . $link_id, $params, true);
+        return URLHelper::getURL('dispatch.php/course/lti/save_link/' . $linkId, $params, true);
     }
 
     public static function getJwksUrl(): string
