@@ -121,8 +121,8 @@ const swap = event => {
                 ></iframe>
             </div>
 
-            <footer class="studip-card__footer">
-                <div v-if="ltiConfig.isModerator" class="drag-area">
+            <footer v-if="ltiConfig.isModerator" class="studip-card__footer">
+                <div class="drag-area">
                     <a class="drag-link"
                        tabindex="0"
                        role="option"
