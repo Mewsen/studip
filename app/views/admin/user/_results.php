@@ -64,6 +64,8 @@
                     </a>
                 <? if ($user->locked) : ?>
                     <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(tooltip2(sprintf(_('%s ist gesperrt'), htmlReady($user->getFullName())))) ?>
+                <? elseif ($user->isExpired()): ?>
+                    <?= Icon::create('lock-locked2', Icon::ROLE_INFO)->asSvg(tooltip2(sprintf(_('%s ist abgelaufen'), htmlReady($user->getFullName())))) ?>
                 <? endif ?>
                 </td>
                 <td>
