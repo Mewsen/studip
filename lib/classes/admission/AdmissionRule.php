@@ -48,15 +48,16 @@ abstract class AdmissionRule
                         StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . $row['path']);
                     }
 
-                    try {
-                        $rule = new $className();
-                        self::$rules[$className] = [
-                            'id' => $row['id'],
-                            'name' => $className::getName(),
-                            'description' => $className::getDescription(),
-                            'active' => (bool) $row['active'],
-                        ];
-                    } catch (Exception $e) {}
+                    if (!is_subclass_of($className, self::class)) {
+                        return;
+                    }
+
+                    self::$rules[$className] = [
+                        'id'          => $row['id'],
+                        'name'        => $className::getName(),
+                        'description' => $className::getDescription(),
+                        'active'      => (bool) $row['active'],
+                    ];
                 }
             );
         }
