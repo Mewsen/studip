@@ -81,10 +81,10 @@ class Course_LtiController extends StudipController
 
         $this->links = [];
         if ($this->edit_perm) {
-            $this->links = LtiResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
+            $this->links = ResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
         } else {
             //Only load those LTI resource links that are fully configured:
-            $this->links = LtiResourceLink::findBySQL(
+            $this->links = ResourceLink::findBySQL(
                 "JOIN `lti_deployments`
                 ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
                 WHERE `lti_resource_links`.`course_id` = :course_id
@@ -216,7 +216,7 @@ class Course_LtiController extends StudipController
     /**
      * Launch an LTI resource.
      */
-    public function launch_action(LtiResourceLink $resourceLink): void
+    public function launch_action(ResourceLink $resourceLink): void
     {
         $deployment = $resourceLink->deployment;
         $registration = $deployment->registration;
@@ -257,8 +257,10 @@ class Course_LtiController extends StudipController
             ];
 
             //Build the message:
+            $resourceLinkRepo = $resourceLink->toLti1p3ResourceLink();
+
             $this->message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
-                $resourceLink,
+                $resourceLinkRepo,
                 $registration->toLti1p3Registration(),
                 User::findCurrent()->id,
                 $deployment->deployment_id,
@@ -266,7 +268,7 @@ class Course_LtiController extends StudipController
                     PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
                 ],
                 [
-                    ...$resourceLink->getCustomLtiParameterArray(),
+                    ...$resourceLinkRepo->getCustomLtiParameters(),
                     new ContextClaim(
                         $this->range_id,
                         ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
@@ -450,10 +452,10 @@ class Course_LtiController extends StudipController
 
                 $lti_data->options = $options;
                 $lti_data->store();
-                $link = new \LtiResourceLink();
+                $link = new ResourceLink();
                 $link->deployment_id = $lti_data->id;
                 $link->course_id     = $this->range_id;
-                $link->position      = \LtiResourceLink::countBySQL('course_id = ?', [$this->range_id]);
+                $link->position      = ResourceLink::countBySQL('course_id = ?', [$this->range_id]);
                 $link->store();
                 PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
             }
@@ -471,7 +473,7 @@ class Course_LtiController extends StudipController
      *
      * @param   int $id    link id
      */
-    public function profile_action($id)
+    public function profile_action($id): void
     {
         $profile = [
             '@context' => ['http://purl.imsglobal.org/ctx/lti/v2/ToolConsumerProfile'],
@@ -549,9 +551,9 @@ class Course_LtiController extends StudipController
     /**
      * Handle outcome service callback request by the LTI tool.
      *
-     * @param LtiResourceLink $resourceLink
+     * @param ResourceLink $resourceLink
      */
-    public function outcome_action(LtiResourceLink $resourceLink)
+    public function outcome_action(ResourceLink $resourceLink): void
     {
         $registrationConfigs = $resourceLink->deployment->registration->getConfigValues();
 
@@ -614,14 +616,14 @@ class Course_LtiController extends StudipController
         Navigation::activateItem('/course/lti/grades');
 
         if ($this->edit_perm) {
-            $this->lti_data_array = \LtiResourceLink::findBySQL(
+            $this->lti_data_array = ResourceLink::findBySQL(
                 "`course_id` = :course_id
                 ORDER BY `position`",
                 ['course_id' => $this->range_id]
             );
         } else {
             //Only load those deployments that are fully configured:
-            $this->lti_data_array = \LtiResourceLink::findBySQL(
+            $this->lti_data_array = ResourceLink::findBySQL(
                 "`course_id` = :course_id
                 AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `position`",
@@ -656,10 +658,10 @@ class Course_LtiController extends StudipController
     public function export_grades_action()
     {
         if ($this->edit_perm) {
-            $lti_data_array = \LtiResourceLink::findByCourse_id($this->range_id, 'ORDER BY position');
+            $lti_data_array = ResourceLink::findByCourse_id($this->range_id, 'ORDER BY position');
         } else {
             //Only load those deployments that are fully configured:
-            $lti_data_array = \LtiResourceLink::findBySQL(
+            $lti_data_array = ResourceLink::findBySQL(
                 "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `position`",
                 ['course_id' => $this->range_id]

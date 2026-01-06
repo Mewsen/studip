@@ -2,7 +2,7 @@
 
 namespace Studip\LTI13a;
 
-use LtiResourceLink;
+use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
@@ -112,7 +112,7 @@ class LineItemRepository implements LineItemRepositoryInterface
         }
 
         //Find the LTI resource link by its ID:
-        $resourceLink = LtiResourceLink::find($resourceLinkIdentifier);
+        $resourceLink = ResourceLink::find($resourceLinkIdentifier);
         if (!$resourceLink) {
             throw new LTIException('Invalid resource link identifier.');
         }
@@ -152,7 +152,7 @@ class LineItemRepository implements LineItemRepositoryInterface
      */
     public function save(LineItemInterface $lineItem): LineItemInterface
     {
-        $resourceLink = LtiResourceLink::find($lineItem->getResourceLinkIdentifier());
+        $resourceLink = ResourceLink::find($lineItem->getResourceLinkIdentifier());
         if (!$resourceLink) {
             throw new LTIException('Invalid resource link identifier.');
         }

@@ -2,10 +2,9 @@
 
 namespace Grading;
 
-use LtiResourceLink;
+use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItem;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
-use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemSubmissionReview;
 use URLHelper;
 
 /**
@@ -77,7 +76,7 @@ class Definition extends \SimpleORMap
         $resourceLinkIdentifier = $this->tool ?? '';
         $deploymentId = '';
         if ($resourceLinkIdentifier) {
-            $ltiResourceLink = LtiResourceLink::find($resourceLinkIdentifier);
+            $ltiResourceLink = ResourceLink::find($resourceLinkIdentifier);
             if ($ltiResourceLink) {
                 $deploymentId = $ltiResourceLink->deployment_id;
             }

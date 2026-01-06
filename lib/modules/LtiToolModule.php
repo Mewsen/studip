@@ -1,6 +1,7 @@
 <?php
 
 use Lti\Grade;
+use Lti\ResourceLink;
 
 /**
  * LtiToolModule.php - LTI consumer API for Stud.IP
@@ -32,7 +33,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         });
 
         NotificationCenter::on('CourseDidDelete', function ($event, $course) {
-            LtiResourceLink::deleteBySQL('course_id = ?', [$course->id]);
+            ResourceLink::deleteBySQL('course_id = ?', [$course->id]);
         });
     }
 
@@ -45,7 +46,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             return null;
         }
 
-        $changed = LtiResourceLink::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
+        $changed = ResourceLink::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
 
         $icon = Icon::create('plugin', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
 
@@ -65,7 +66,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             return [];
         }
 
-        $grades = LtiResourceLink::countBySQL('course_id = ?', [$course_id]);
+        $grades = ResourceLink::countBySQL('course_id = ?', [$course_id]);
 
         $navigation = new Navigation(_('LTI'));
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));

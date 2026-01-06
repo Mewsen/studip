@@ -5,7 +5,9 @@ use Course;
 use DBManager;
 use JSONArrayObject;
 use Lti\Enum\ResourceLaunchContainer;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use SimpleORMap;
+use Studip\LTI13a\ResourceLinkRepository;
 
 class ResourceLink extends SimpleORMap
 {
@@ -32,12 +34,12 @@ class ResourceLink extends SimpleORMap
     /**
      * Calculates the position for a new LTI resource link in the course.
      */
-    public function cbCalculatePosition() : void
+    public function cbCalculatePosition(): void
     {
         $this->position = self::countByCourse_id($this->course_id);
     }
 
-    public function delete()
+    public function delete(): bool
     {
         $course_id = $this->course_id;
         $position = $this->position;
@@ -76,14 +78,28 @@ class ResourceLink extends SimpleORMap
         return $base;
     }
 
-    public function getLaunchURL()
+    public function getLaunchURL(): string
     {
         $registration = $this->deployment->registration;
         $registrationConfigs = $registration->getConfigValues();
 
-        if (!empty($registration) && empty($registrationConfigs['allow_custom_url']) && empty($registrationConfigs['deep_linking']) || empty($registrationConfigs['launch_url'])) {
+        if (empty($registrationConfigs['allow_custom_url']) && empty($registrationConfigs['deep_linking']) || empty($registrationConfigs['launch_url'])) {
             return $registrationConfigs['launch_url'];
         }
         return $registrationConfigs['launch_url'];
+    }
+
+    public function getCustomParameters(): string
+    {
+        if (!empty($this->custom_parameters)) {
+            return $this->custom_parameters;
+        }
+
+        return $this->deployment->registration->getConfigValues()['custom_parameters'];
+    }
+
+    public function toLti1p3ResourceLink(): LtiResourceLinkInterface
+    {
+        return new ResourceLinkRepository($this);
     }
 }

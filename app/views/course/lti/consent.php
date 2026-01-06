@@ -1,7 +1,7 @@
 <?php
 /**
  * @var AuthenticatedController $controller
- * @var LtiResourceLink $resourceLink
+ * @var Lti\ResourceLink $resourceLink
  * @var LtiToolPrivacySettings $privacySettings
  */
 ?>
