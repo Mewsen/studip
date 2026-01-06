@@ -334,8 +334,9 @@ class Course_TopicsController extends AuthenticatedController
             $actions->addLink(
                 $this->editURL($topic),
                 _('Bearbeiten'),
-                Icon::create('edit')
-            )->asDialog();
+                Icon::create('edit'),
+                ['data-dialog' => '']
+            );
             $actions->addButton(
                 'delete',
                 _('Löschen'),
@@ -352,8 +353,9 @@ class Course_TopicsController extends AuthenticatedController
                         ['issue_id' => $topic->id]
                     ),
                     _('Alle Termine ausfallen lassen'),
-                    Icon::create('date')
-                )->asDialog();
+                    Icon::create('date'),
+                    ['data-dialog' => '']
+                );
             }
         }
 
