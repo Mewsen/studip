@@ -18,10 +18,12 @@ defineProps({
 
 <template>
     <LtiApp>
-        <div style="display: flex;">
-            <div style="flex: 1;">
-                <LtiDeploymentForm :deployment="deployment" :registration="registration" />
-            </div>
-        </div>
+        <LtiDeploymentForm :deployment="deployment" :registration="registration" />
     </LtiApp>
 </template>
+
+<style>
+.ui-dialog-content .lti {
+    display: grid;
+}
+</style>

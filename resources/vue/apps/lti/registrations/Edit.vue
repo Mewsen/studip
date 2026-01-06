@@ -14,14 +14,10 @@ defineProps({
 
 <template>
     <LtiApp>
-        <div class="lti" style="display: flex;">
-            <div style="flex: 1;">
-                <StudipMessageBox type="warning">
-                    {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
-                </StudipMessageBox>
+        <StudipMessageBox type="warning">
+            {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
+        </StudipMessageBox>
 
-                <LtiRegistrationForm :registration="registration" :role="registration.role" />
-            </div>
-        </div>
+        <LtiRegistrationForm :registration="registration" :role="registration.role" />
     </LtiApp>
 </template>

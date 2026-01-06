@@ -22,7 +22,7 @@ const props = defineProps({
 const form = reactive({
     version: '1.3a',
     key_type: 'jwk_keyset',
-    launch_container: 1,
+    launch_container: 'window',
     ...props.registration
 });
 
@@ -220,8 +220,8 @@ onMounted(() => {
             <label>
                 <span>{{ $gettext('Default launch container') }}</span>
                 <select name="launch_container" v-model="form.launch_container">
-                    <option value="1">{{ $gettext('Neues Fenster') }}</option>
-                    <option value="2">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>
+                    <option value="window">{{ $gettext('Neues Fenster') }}</option>
+                    <option value="iframe">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>
                 </select>
             </label>
         </fieldset>

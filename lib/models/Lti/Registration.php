@@ -112,7 +112,7 @@ class Registration extends SimpleORMap
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
             ...$configs,
-            'container' => ResourceLaunchContainer::get($configs['launch_container']),
+            'container' => ResourceLaunchContainer::get($configs['launch_container'] ?? 'window'),
         ];
 
         if (in_array('deployments', $with)) {

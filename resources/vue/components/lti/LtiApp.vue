@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted} from 'vue';
-import {useLtiConfig} from '../../store/pinia/lti/Config';
+import {useLtiConfig} from '@/vue/store/pinia/lti/Config';
 
 const ltiConfig = useLtiConfig();
 const fetchConfigs = async () => {
@@ -21,10 +21,8 @@ onMounted(async () => await fetchConfigs());
 
 <template>
     <div class="lti">
-        <div class="lti__container use-utility-classes">
-            <div>
-                <slot />
-            </div>
+        <div class="use-utility-classes">
+            <slot />
         </div>
     </div>
 </template>

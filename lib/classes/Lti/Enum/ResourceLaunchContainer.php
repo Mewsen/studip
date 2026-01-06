@@ -19,12 +19,13 @@ enum ResourceLaunchContainer: string {
         ];
     }
 
-    public static  function get(string $value)
+    public static  function get(string $value): array
     {
         return static::all()[$value] ?? static::default();
     }
 
-    public static function default(): array {
+    public static function default(): array
+    {
         return [
             'value' => (int) self::Window->value,
             'label' => _('Neues Fenster')

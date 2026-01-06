@@ -14,13 +14,9 @@ defineProps({
 
 <template>
     <LtiApp>
-        <div class="lti" style="display: flex;">
-            <div style="flex: 1;">
-                <StudipMessageBox type="warning">
-                    {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
-                </StudipMessageBox>
-                <LtiRegistrationForm :role="role" />
-            </div>
-        </div>
+        <StudipMessageBox type="warning">
+            {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
+        </StudipMessageBox>
+        <LtiRegistrationForm :role="role" />
     </LtiApp>
 </template>

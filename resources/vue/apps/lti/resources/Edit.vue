@@ -20,10 +20,6 @@ const props = defineProps({
 
 <template>
     <LtiApp>
-        <div style="display: flex;">
-            <div style="flex: 1;">
-                <ResourceForm v-bind="{...props}" />
-            </div>
-        </div>
+        <ResourceForm v-bind="{...props}" />
     </LtiApp>
 </template>
