@@ -54,11 +54,11 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` ADD COLUMN `deployment_id` VARCHAR(255) AFTER `registration_id`
+            ALTER TABLE `lti_deployments` ADD COLUMN `deployment_key` VARCHAR(255) AFTER `registration_id`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` ADD COLUMN `client_id` VARCHAR(64) NOT NULL AFTER `deployment_id`
+            ALTER TABLE `lti_deployments` ADD COLUMN `client_id` VARCHAR(64) NOT NULL AFTER `deployment_key`
         ");
 
         DBManager::get()->exec("
@@ -94,7 +94,8 @@ final class Step5405 extends Migration {
 
         DBManager::get()->exec("
             ALTER TABLE `lti_resource_links`
-                ADD COLUMN `color` VARCHAR(7) AFTER `options`,
+                ADD COLUMN `launch_type` ENUM('default','deep_linking') NOT NULL DEFAULT 'default' AFTER `options`,
+                ADD COLUMN `color` VARCHAR(7) AFTER `launch_type`,
                 ADD COLUMN `icon` VARCHAR(100) AFTER `color`
         ");
 

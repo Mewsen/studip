@@ -106,7 +106,7 @@ class Course_LtiController extends StudipController
 
         //Check for error messages:
         if (Request::get('deployment_id') && (Request::submitted('lti_msg') || Request::submitted('lti_errormsg'))) {
-            $deployment = Deployment::findOneBySQL("deployment_id = ?", [Request::get('deployment_id')]);
+            $deployment = Deployment::findOneBySQL("deployment_key = ?", [Request::get('deployment_id')]);
             if ($deployment) {
                 //Get the resource link for the deployment and display the messages:
                 $resourceLink = ResourceLink::findOneBySQL(
@@ -241,7 +241,7 @@ class Course_LtiController extends StudipController
 
         if ($this->ltiVersion === '1.3a') {
             $locale = str_replace('_', '-', $_SESSION['_language']);
-            $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_id]);
+            $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_key]);
             $documentTarget = 'window';
             if (!empty($resourceLink->options['document_target'])) {
                 $returnUrl = $resourceLink->options['document_target'];
@@ -252,7 +252,7 @@ class Course_LtiController extends StudipController
             $agsUrlParameters = [
                 'cid' => $this->range_id,
                 'registration_id' => $registration->id,
-                'deployment_id' => $deployment->deployment_id,
+                'deployment_id' => $deployment->deployment_key,
                 'cancel_login' => '1'
             ];
 
@@ -263,7 +263,7 @@ class Course_LtiController extends StudipController
                 $resourceLinkRepo,
                 $registration->toLti1p3Registration(),
                 User::findCurrent()->id,
-                $deployment->deployment_id,
+                $deployment->deployment_key,
                 [
                     PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
                 ],
@@ -328,7 +328,7 @@ class Course_LtiController extends StudipController
                 $registration->toLti1p3Registration(),
                 User::findCurrent()->id,
                 null,
-                $resourceLink->deployment->deployment_id,
+                $resourceLink->deployment->deployment_key,
                 [PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))]
             );
 

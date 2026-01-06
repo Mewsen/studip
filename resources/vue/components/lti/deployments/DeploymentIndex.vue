@@ -98,14 +98,14 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
                 </th>
                 <th
                     scope="col"
-                    :class="getSortClass('deployment_id')"
-                    :aria-sort="getAriaSortString('deployment_id')"
-                    :aria-label="getAriaSortLabel('deployment_id', $gettext('Deployment-ID'))"
+                    :class="getSortClass('deployment_key')"
+                    :aria-sort="getAriaSortString('deployment_key')"
+                    :aria-label="getAriaSortLabel('deployment_key', $gettext('Deployment-ID'))"
                 >
                     <button
                         type="button"
                         class="button__table-sort button-base"
-                        @click="sortBy('deployment_id')"
+                        @click="sortBy('deployment_key')"
                         :title="$gettext('Nach Deployment-ID sortieren')">
                         {{ $gettext('Deployment-ID') }}
                     </button>
@@ -174,7 +174,7 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
         <tbody>
         <tr v-for="deployment in sortedDeployments" :key="deployment.id">
             <td>{{ deployment.name }}</td>
-            <td>{{ deployment.deployment_id }}</td>
+            <td>{{ deployment.deployment_key }}</td>
             <td>{{ deployment.client_id }}</td>
             <td>{{ deployment.purpose }}</td>
             <td v-if="registration.role === 'tool'">

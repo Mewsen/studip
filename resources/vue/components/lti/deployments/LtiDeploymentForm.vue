@@ -70,8 +70,8 @@ onMounted(() => {
                 required
                 class="max-w-full"
                 type="text"
-                name="deployment_id"
-                v-model="form.deployment_id" />
+                name="deployment_key"
+                v-model="form.deployment_key" />
         </label>
 
         <label v-if="registration.role === 'platform'" class="studiprequired">

@@ -56,7 +56,7 @@ class LineItemRepository implements LineItemRepositoryInterface
 
         $searchParameters = [
             'course_id' => $parameters['cid'],
-            'tool'      => self::getGradingToolName($parameters['tool_id'], $parameters['deployment_id'])
+            'tool' => self::getGradingToolName($parameters['tool_id'], $parameters['deployment_id'])
         ];
         if (!empty($parameters['definition_id'])) {
             $searchParameters['definition_id'] = $parameters['definition_id'];

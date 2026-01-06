@@ -31,7 +31,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             $deployment = Deployment::create([
                 'name' => Request::get('title', $registration->name),
                 'registration_id' => $registration->id,
-                'deployment_id' => bin2hex(random_bytes(6)),
+                'deployment_key' => bin2hex(random_bytes(6)),
                 'client_id' => $registration->getDefaultDeployment()->client_id
             ]);
         } else {

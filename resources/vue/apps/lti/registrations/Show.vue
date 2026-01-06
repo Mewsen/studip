@@ -113,7 +113,7 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
             <template v-if="registration.role === 'tool'">
                 <dt>{{ $gettext('Launch container') }}</dt>
                 <dd>
-                    <p>{{ registration.launch_container }}</p>
+                    <p>{{ registration.container.label }}</p>
                 </dd>
 
                 <dt>{{ $gettext('Tool-ID') }}</dt>

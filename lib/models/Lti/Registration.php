@@ -91,16 +91,6 @@ class Registration extends SimpleORMap
         return $configValues;
     }
 
-    /**
-     * Checks whether auth user may have the permissions to edit the registration.
-     * @return bool
-     */
-    public function canAuthEdit(): bool
-    {
-        return $this->range_id === 'global' && $GLOBALS['perm']->have_perm('root')
-            || ($this->range_id !== 'global' && $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id));
-    }
-
     public function transformData($with = []): array
     {
         $configs = $this->getConfigValues();

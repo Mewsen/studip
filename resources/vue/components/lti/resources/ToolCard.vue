@@ -144,7 +144,7 @@ const swap = event => {
                 <div v-if="resource.launch_type === 'deep_linking'" class="flex items-center gap-5">
                     {{ $gettext('LTI Deep Linking noch nicht fertig eingerichtet') }}
                     <StudipTooltipIcon
-                        :text="$gettext('Deployment-ID: %{id}', {id: resource.deployment.deployment_id})"
+                        :text="$gettext('Deployment-ID: %{id}', {id: resource.deployment.deployment_key})"
                     />
                 </div>
             </footer>

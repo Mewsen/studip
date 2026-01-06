@@ -104,7 +104,8 @@ class PlatformManager
      */
     public static function getDeepLinkingReturnUrl(string $linkId, string $courseId = ''): string
     {
-        $params = ['link_id' => $linkId];
+        $params = [];
+
         if ($courseId) {
             $params['cid'] = $courseId;
         }

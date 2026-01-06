@@ -45,7 +45,7 @@ class Admin_Lti_DeploymentsController  extends AdminBaseController
         $deployment = Deployment::create([
             'name' => Request::get('name'),
             'registration_id' => Request::get('registration_id'),
-            'deployment_id' => Request::get('deployment_id'),
+            'deployment_key' => Request::get('deployment_key'),
             'client_id' => Request::get('client_id', Uuid::uuid4()->toString())
         ]);
 
@@ -78,7 +78,7 @@ class Admin_Lti_DeploymentsController  extends AdminBaseController
 
         $deployment->setData([
             'name' => Request::get('name'),
-            'deployment_id' => Request::get('deployment_id'),
+            'deployment_key' => Request::get('deployment_key'),
             'client_id' => Request::get('client_id', $deployment->client_id)
         ]);
 

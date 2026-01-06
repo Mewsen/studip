@@ -31,7 +31,7 @@ const configs = computed(() => {
         return JSON.stringify({
             version: props.resource.registration.version,
             client_id: props.resource.deployment.client_id,
-            deployment_id: props.resource.deployment.deployment_id,
+            deployment_key: props.resource.deployment.deployment_key,
             custom_parameters: props.resource.custom_parameters,
             container: props.resource.container,
             launch_type: props.resource.launch_type,
@@ -107,7 +107,7 @@ const configs = computed(() => {
 
                         <dt>{{ $gettext('Deployment-ID') }}</dt>
                         <dd>
-                            {{ resource.deployment.deployment_id }}
+                            {{ resource.deployment.deployment_key }}
                         </dd>
 
                         <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>

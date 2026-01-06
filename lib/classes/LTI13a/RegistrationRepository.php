@@ -66,13 +66,13 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getDeploymentIds(): array
     {
-        return array_map(fn($d) => $d->deployment_id, $this->registration->deployments ?? []);
+        return array_map(fn($d) => $d->deployment_key, $this->registration->deployments ?? []);
     }
 
     public function hasDeploymentId(string $deploymentId): bool
     {
         foreach ($this->registration->deployments ?? [] as $d) {
-            if ($d->deployment_id === $deploymentId) {
+            if ($d->deployment_key === $deploymentId) {
                 return true;
             }
         }
@@ -82,7 +82,7 @@ class RegistrationRepository implements RegistrationInterface
 
     public function getDefaultDeploymentId(): ?string
     {
-        return $this->deployment->deployment_id;
+        return $this->deployment->deployment_key;
     }
 
     public function getPlatformKeyChain(): ?KeyChainInterface

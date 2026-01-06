@@ -1,4 +1,6 @@
 <?php
+
+use Studip\Cache\Factory;
 use Studip\Cache\MemoryCache;
 use Studip\LTI13a\ToolManager;
 use Studip\LTI13a\RegistrationManager;
@@ -53,7 +55,7 @@ class Enrol_LtiController extends StudipController
     {
         $validator = new ToolLaunchValidator(
             new RegistrationManager(),
-            new NonceRepository(new MemoryCache())
+            new NonceRepository(Factory::getCache())
         );
 
         $result = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
