@@ -79,21 +79,6 @@ class Course_LtiController extends StudipController
     {
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x order 1.3a) unterstützen.'));
 
-        $this->links = [];
-        if ($this->edit_perm) {
-            $this->links = ResourceLink::findByCourse_id($this->range_id, 'ORDER BY `position`');
-        } else {
-            //Only load those LTI resource links that are fully configured:
-            $this->links = ResourceLink::findBySQL(
-                "JOIN `lti_deployments`
-                ON `lti_deployments`.`id` = `lti_resource_links`.`deployment_id`
-                WHERE `lti_resource_links`.`course_id` = :course_id
-                AND (`lti_resource_links`.`options` IS NULL OR `lti_resource_links`.`options` NOT LIKE '%unfinished_deep_linking%')
-                ORDER BY `lti_resource_links`.`position`",
-                ['course_id' => $this->range_id]
-            );
-        }
-
         if ($this->edit_perm) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
 

@@ -7,9 +7,6 @@ use Config;
 use Context;
 use Icon;
 use LtiToolModule;
-use Navigation;
-use PageLayout;
-use Request;
 use Sidebar;
 use ActionsWidget;
 use ViewsWidget;
@@ -26,21 +23,10 @@ abstract class AdminBaseController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        if ($this->range_id) {
-            Navigation::activateItem('/course/lti/registrations');
-        } else {
-            Navigation::activateItem('/admin/config/lti');
-        }
-
-        PageLayout::setTitle(_('LTI-Registrierungen'));
-        $this->role = Request::get('role', 'tool');
-
         $this->isToolSharingEnabled = Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS;
-
-        $this->buildSidebar();
     }
 
-    protected function buildSidebar(): void
+    protected function buildRegistrationsSidebar(): void
     {
         // views:
         $viewWidget = new ViewsWidget();
@@ -91,4 +77,18 @@ abstract class AdminBaseController extends AuthenticatedController
 
         Sidebar::get()->addWidget($actions);
     }
+
+    protected function buildPublicationsSidebar(): void
+    {
+        // actions:
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            _('Neue Veröffentlichung anlegen'),
+            $this->url_for('admin/lti/publications/create'),
+            Icon::create('add')
+        )->asDialog('width=900;height=700');
+
+        Sidebar::get()->addWidget($actions);
+    }
+
 }

@@ -78,6 +78,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         }
 
         if (static::isModerator($course_id)) {
+            $navigation->addSubNavigation('publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
             $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
         }
 

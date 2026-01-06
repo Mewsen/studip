@@ -1,13 +1,13 @@
 <script setup>
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import draggable from "vuedraggable";
-import {computed, nextTick, onMounted, ref} from "vue";
-import ToolCard from "../../../components/lti/resources/ToolCard.vue";
-import {createResourceURL} from "../../../components/lti/helpers/urls";
-import LtiApp from "../../../components/lti/LtiApp.vue";
-import {useLtiConfig} from "../../../store/pinia/lti/Config";
-import {debounce} from "lodash";
+import {$gettext} from '../../../../assets/javascripts/lib/gettext';
+import StudipIcon from '../../../components/StudipIcon.vue';
+import draggable from 'vuedraggable';
+import {nextTick, onMounted, ref} from 'vue';
+import ToolCard from '../../../components/lti/resources/ToolCard.vue';
+import {createResourceURL} from '../../../components/lti/helpers/urls';
+import LtiApp from '../../../components/lti/LtiApp.vue';
+import {useLtiConfig} from '../../../store/pinia/lti/Config';
+import {debounce} from 'lodash';
 
 const ltiConfig = useLtiConfig();
 

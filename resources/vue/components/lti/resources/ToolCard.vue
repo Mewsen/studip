@@ -132,11 +132,12 @@ const swap = event => {
 
             <footer v-if="ltiConfig.isModerator" class="studip-card__footer">
                 <div class="drag-area">
-                    <a class="drag-link"
+                    <a
+                       :id="`sort-handle-${resource.id}`"
+                       class="drag-link"
                        tabindex="0"
                        role="option"
                        :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: title})"
-                       :id="`sort-handle-${resource.id}`"
                        @keydown="swap">
                         <span class="drag-handle"></span>
                     </a>

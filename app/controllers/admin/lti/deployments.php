@@ -6,7 +6,7 @@ use Lti\Deployment;
 use Lti\Registration;
 use Ramsey\Uuid\Uuid;
 
-class Admin_Lti_DeploymentsController  extends AdminBaseController
+class Admin_Lti_DeploymentsController extends AdminBaseController
 {
     public function index_action(): void
     {

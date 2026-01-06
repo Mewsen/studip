@@ -2,14 +2,33 @@
 require_once __DIR__ . '/AdminBaseController.php';
 
 use LTI\AdminBaseController;
+use Lti\Deployment;
 use Lti\Registration;
 use Lti\RegistrationConfig;
+use Ramsey\Uuid\Uuid;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\ToolManager;
 use Studip\Markup;
 
 class Admin_Lti_RegistrationsController extends AdminBaseController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if ($this->range_id) {
+            Navigation::activateItem('/course/lti/registrations');
+        } else {
+            Navigation::activateItem('/admin/config/lti');
+        }
+
+        PageLayout::setTitle(_('LTI-Registrierungen'));
+
+        $this->role = Request::get('role', 'tool');
+
+        $this->buildRegistrationsSidebar();
+    }
+
     public function index_action(): void
     {
         $sqlQuery = [
@@ -72,6 +91,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 
         $registration = Registration::create([
             'version' => Request::get('version', '1.3a'),
+            'role' => Request::get('role', 'tool'),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
             'state' => Request::bool('state', true),
@@ -79,6 +99,16 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         ]);
 
         $this->storeRegistrationConfigs($registration->id);
+
+        if ($registration->role === 'tool') {
+            Deployment::create([
+                'is_default' => 1,
+                'name' => _('Standard-Deployment'),
+                'registration_id' => $registration->id,
+                'deployment_key' => bin2hex(random_bytes(6)),
+                'client_id' => Uuid::uuid4()->toString()
+            ]);
+        }
 
         PageLayout::postSuccess(
             sprintf(
@@ -111,7 +141,8 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         $registration->setData([
-            'version' => Request::get('version', '1.3a'),
+            'version' => Request::get('version', $registration->version),
+            'role' => Request::get('role', $registration->role),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
             'state' => Request::bool('state', true)
@@ -136,6 +167,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         $registrationName = $registration->name;
+        $registrationRole = $registration->role;
         $registration->delete();
 
         PageLayout::postSuccess(
@@ -145,7 +177,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             )
         );
 
-        $this->redirect('admin/lti/registrations');
+        $this->redirect('admin/lti/registrations', ['role' => $registrationRole]);
     }
 
     public function platform_data_action(): void

@@ -42,6 +42,43 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
+            CREATE TABLE IF NOT EXISTS `lti_publications` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `name` VARCHAR(255) NOT NULL,
+                `state` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+                `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
+                `range_id` CHAR(32) COLLATE latin1_bin NOT NULL,
+                `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
+                `mkdate` INT UNSIGNED DEFAULT NULL,
+                `chdate` INT UNSIGNED DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            )
+        ");
+
+        DBManager::get()->exec("
+            CREATE TABLE IF NOT EXISTS `lti_publication_configs` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `publication_id` INT UNSIGNED NOT NULL,
+                `name` VARCHAR(100) NOT NULL,
+                `value` TEXT NOT NULL,
+                `mkdate` INT UNSIGNED DEFAULT NULL,
+                `chdate` INT UNSIGNED DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                INDEX `idx_publication_id` (`publication_id`),
+                CONSTRAINT `fk_lti_configs_publication`
+                    FOREIGN KEY (`publication_id`)
+                    REFERENCES `lti_publications` (`id`)
+                    ON DELETE CASCADE
+            )
+        ");
+
+
+//        `start_date` INT UNSIGNED DEFAULT NULL,
+//                `end_date` INT UNSIGNED DEFAULT NULL,
+//                `enrollment_duration` INT UNSIGNED DEFAULT NULL,
+//                `maximum_enrolled_users` INT UNSIGNED DEFAULT NULL,
+
+        DBManager::get()->exec("
             ALTER TABLE `lti_deployments` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL
         ");
 
