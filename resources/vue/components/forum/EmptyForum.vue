@@ -4,6 +4,10 @@ import {$gettext} from "../../../assets/javascripts/lib/gettext";
 import StudipIcon from "@/vue/components/StudipIcon.vue";
 
 const emptyForumIllustration = `${STUDIP.ASSETS_URL}images/forum/forum-keyvisual-positive.svg`;
+
+const openTour = (id) => {
+    STUDIP.Tour.init(id, 1);
+}
 </script>
 
 <template>
@@ -24,7 +28,9 @@ const emptyForumIllustration = `${STUDIP.ASSETS_URL}images/forum/forum-keyvisual
             </p>
 
             <div class="buttons-container">
-                <button type="button" class="button button--icon-label">
+                <button type="button"
+                        class="button button--icon-label"
+                        @click.prevent="openTour('ea68d2f9d7b81d01d2d3ea38a105c734')">
                     <StudipIcon shape="lightbulb" :size="20" aria-hidden="true" />
                     {{ $gettext('Tour ansehen') }}
                 </button>
