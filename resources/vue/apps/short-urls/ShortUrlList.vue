@@ -51,7 +51,7 @@
             <td>
                 <button class="as-link copy-link"
                         :title="$gettext('In die Zwischenablage kopieren')"
-                        @click.prevent="copyToClipboard(shortUrl.attributes.alias)">
+                        @click.prevent="copyToClipboard(shortUrl.meta['alias-link'])">
                     <studip-icon shape="clipboard" />
                 </button>
                 <a :href="store.getShortUrl(shortUrl.attributes.alias)" :title="$gettext('Titel des Kurzlinks')">
@@ -70,7 +70,7 @@
                     @qrcode="createQrCode(shortUrl)"
                     @edit="editShortUrl(shortUrl)"
                     @delete="store.deleteShortUrl(shortUrl.id)"
-                    @copy="copyToClipboard(shortUrl.attributes.alias)"
+                    @copy="copyToClipboard(shortUrl.meta['alias-link'])"
                 />
             </td>
         </tr>
@@ -145,13 +145,8 @@ const formatDate = (datestring) => {
         .join(' ');
 }
 
-const getAliasLink = (alias) => {
-    return STUDIP.URLHelper.getURL('dispatch.php/u/r/' + alias,  {}, true);
-}
-
-const copyToClipboard = (alias) => {
-    const shortUrl = getAliasLink(alias);
-    navigator.clipboard.writeText(shortUrl);
+const copyToClipboard = (link) => {
+    navigator.clipboard.writeText(STUDIP.URLHelper.getURL(link, {}, true));
     STUDIP.Report.success($gettext('Sie finden den Link in der Zwischenablage'));
 }
 
@@ -159,7 +154,7 @@ const copyToClipboard = (alias) => {
  * Create a QR code and trigger download as png.
  */
 const createQrCode = (shortLink) => {
-    qrUrl.value = getAliasLink(shortLink.attributes.alias);
+    qrUrl.value = STUDIP.URLHelper.getURL(shortLink.meta['alias-link'], {}, true);
     nextTick().then(() => {
         const png = qrcode.value.querySelector('canvas').toDataURL('image/png');
         const link = document.createElement('a');
@@ -179,7 +174,8 @@ const closeEditDialog = () => {
 }
 
 const save = async () => {
-    await store.storeShortUrl(currentlyEditing.value);
+    const data = await store.storeShortUrl(currentlyEditing.value);
+    copyToClipboard(data.meta['alias-link']);
     closeEditDialog();
 }
 

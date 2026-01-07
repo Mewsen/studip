@@ -21,28 +21,21 @@ export const useShortUrlsStore = defineStore('shortUrls', () => {
         return shortUrls.value.find(item => item.id === id);
     }
 
-    function storeShortUrl(shortUrl) {
+    async function storeShortUrl(shortUrl) {
         const index = shortUrls.value.findIndex(item => item.id === shortUrl.id);
+        let response = {};
 
         // Not found in store, create a new entry.
         if (index === -1) {
-            STUDIP.jsonapi.withPromises().post('short-urls', {data: {data: shortUrl}})
-                .then(response => {
-                    shortUrls.value.push(response.data)
-                    STUDIP.Report.success($gettext('Der Kurzlink wurde gespeichert.'));
-                })
-                .catch(error => STUDIP.Report.error($gettext('Fehler beim Erstellen des Kurzlinks'), error));
-
+            response = await STUDIP.jsonapi.withPromises().post('short-urls', {data: {data: shortUrl}});
+            shortUrls.value.push(response.data);
         } else {
-            STUDIP.jsonapi.withPromises().patch(`short-urls/${shortUrl.id}`, {data: {data: shortUrl}})
-                .then(response => {
-                    shortUrls.value[index] = response.data;
-                    STUDIP.Report.success($gettext('Der Kurzlink wurde gespeichert.'));
-                })
-                .catch(error => {
-                    STUDIP.Report.error($gettext('Fehler beim Speichern des Kurzlinks'), error)
-                });
+            response = await STUDIP.jsonapi.withPromises().patch(`short-urls/${shortUrl.id}`, {data: {data: shortUrl}});
+            shortUrls.value[index] = response.data;
         }
+
+        STUDIP.Report.success($gettext('Der Kurzlink wurde gespeichert.'));
+        return response.data;
     }
 
     function deleteShortUrl(id) {

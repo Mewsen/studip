@@ -52,7 +52,9 @@ function openDialog() {
 }
 
 async function save() {
-    await store.storeShortUrl(newLink.value);
+    const data = await store.storeShortUrl(newLink.value);
+
+    navigator.clipboard.writeText(STUDIP.URLHelper.getURL(data.meta['alias-link'], {}, true));
     closeDialog();
 }
 

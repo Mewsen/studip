@@ -19,6 +19,24 @@ final class ShortUrl extends SchemaProvider
     }
 
     /**
+     * @param \Forum\Category $resource
+     */
+    public function hasResourceMeta($resource): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param \Forum\Category $resource
+     */
+    public function getResourceMeta($resource)
+    {
+        return [
+            'alias-link' => \URLHelper::getLink('dispatch.php/u/r/' . $resource->alias, [], true)
+        ];
+    }
+
+    /**
      * @param \ShortUrl $resource
      */
     public function getAttributes($resource, ContextInterface $context): iterable
