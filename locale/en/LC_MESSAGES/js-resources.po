@@ -2,16 +2,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2025-07-22 08:00+0000\n"
-"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
-"oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-main-js/en/>\n"
+"PO-Revision-Date: 2026-01-09 10:38+0000\n"
+"Last-Translator: Stefan Suchi <suchi@data-quest.de>\n"
+"Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
+"main-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -895,7 +894,7 @@ msgstr "Creation of the import folder failed."
 
 #: resources/vue/components/admission/ConditionalAdmission.vue:48
 msgid "Anmeldebedingungen"
-msgstr "Conditions: "
+msgstr "Conditions:"
 
 #: resources/vue/components/admission/AdmissionRuleConfig.vue:13
 msgid "Anmelderegel bearbeiten"
