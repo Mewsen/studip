@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, provide} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useWizardStore} from '@/vue/store/pinia/wizardStore';
 import SidebarWidget from '@/vue/components/SidebarWidget';
@@ -86,13 +86,15 @@ const props = defineProps({
     }
 });
 
+provide('storedValues', { value1: 'Foo', value2: 'Bar'});
+
 // Reference to the DOM node where the included components will be mounted
 const node = ref(null);
 // Number of the current step
 const currentStep = ref(0);
 // HTML content of current step
 let stepContent = ref('');
-let mountedInstance = null;
+let mountedApp = null;
 
 const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 
@@ -102,9 +104,8 @@ const jumpToStep = (number) => {
     if (!visibleSteps.value.includes(props.steps[number])) {
         visibleSteps.value[number] = props.steps[number];
     }
-    if (mountedInstance !== null) {
-        //mountedInstance.unmount();
-        //mountedInstance.submit(new Event('submit'));
+    if (mountedApp !== null) {
+        mountedApp.unmount();
     }
     currentStep.value = number;
     initializeContent(number);
@@ -115,26 +116,25 @@ const finishWizard = () => {
 };
 
 const initializeContent = async (stepNumber) => {
+    stepContent.value = JSON.parse(props.steps[stepNumber].content);
     if (props.steps[stepNumber].type === 'Studip\\Forms\\Form') {
         STUDIP.Forms.create(node.value.childNodes);
     } else if (props.steps[stepNumber].type === 'Studip\\VueApp') {
         STUDIP.Vue.mountApp(node.value, props.steps[stepNumber].content);
     }
-    stepContent.value = props.steps[stepNumber].content;
 };
 
 onMounted(() => {
     initializeContent(0);
     store.initialize();
 
-    STUDIP.Vue.on('form.mounted', (instance) => {
-        mountedInstance = instance;
+    STUDIP.Vue.on('form.mounted', (mounted) => {
+        mountedApp = mounted.app;
     });
-    STUDIP.Vue.on('vueApp.mounted', (instance) => {
-        const internal = instance.$;
-        const component = internal.type;
-        console.log('Mounted instance', component);
-        mountedInstance = instance;
+    STUDIP.Vue.on('vueApp.mounted', (mounted) => {
+        if (mounted.config.appPath === stepContent.value.appPath) {
+            mountedApp = mounted.app;
+        }
     });
     STUDIP.Vue.on('form.emitValues', (values) => {
         store.setValues(currentStep.value, values);
