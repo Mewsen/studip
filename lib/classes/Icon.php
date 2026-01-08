@@ -249,14 +249,10 @@ class Icon implements JsonSerializable
             return self::$svg_cache[$cacheKey];
         }
 
-        $path = __DIR__ . '/../../public/assets/images/icons/' . self::roleToColor($this->role) . '/' . $this->shapeToPath($this->shape) . '.svg';
-        $roleClass = $this->role ? 'icon-role-' . $this->role : '';
-
-        $classes = trim("studip-icon $roleClass");
-        if (!empty($view_attributes['class'])) {
-            $classes .= ' ' . $view_attributes['class'];
+        $path = __DIR__ . '/../../public/assets/images/icons/' . self::roleToColor($this->role) . '/' . $this->shapeToPath() . '.svg';
+        if (!file_exists($path)) {
+            return '';
         }
-        $view_attributes['class'] = $classes;
 
         $titleTag = '';
         if (!empty($view_attributes['title'])) {
@@ -264,23 +260,21 @@ class Icon implements JsonSerializable
             unset($view_attributes['title']); // Entfernt 'title' aus den View-Attributen, da es separat hinzugefügt wird
         }
 
-        $attrString = $this->buildSvgAttributes($view_attributes);
+        $attributes = HTMLAttributes::from($view_attributes);
+        $attributes->addAttribute('class', 'studip-icon');
+        if ($this->role) {
+            $attributes->addAttribute('class', "icon-role-{$this->role}");
+        }
 
-        if (!file_exists($path)) {
-            return '';
+        if ($size !== false) {
+            $attributes->addAttribute('style', "width: {$size}px; height: {$size}px");
         }
 
         $svgContent = file_get_contents($path);
-
         $svgContent = preg_replace('/fill="(?!none)[^"]+"/', 'fill="currentColor"', $svgContent);
-
         $svgContent = preg_replace('/(width|height)="[^"]+"/', '', $svgContent);
-        if ($size !== false) {
-            $svgContent = preg_replace('/<svg([^>]+)>/', '<svg$1 style="width:' . $size . 'px;height:' . $size . 'px">', $svgContent);
-        }
-
-        $svgContent = preg_replace_callback('/<svg([^>]+)>/', function($matches) use ($attrString) {
-            return '<svg' . $matches[1] . ' ' . $attrString . '>';
+        $svgContent = preg_replace_callback('/<svg([^>]+)>/', function($matches) use ($attributes) {
+            return '<svg' . $matches[1] . ' ' . $attributes->asString() . '>';
         }, $svgContent);
 
         if (!empty($titleTag)) {
@@ -289,15 +283,6 @@ class Icon implements JsonSerializable
 
         self::$svg_cache[$cacheKey] = $svgContent;
         return $svgContent;
-    }
-
-    private function buildSvgAttributes(array $attributes): string
-    {
-        $attrString = '';
-        foreach ($attributes as $key => $value) {
-            $attrString .= sprintf(' %s="%s"', htmlspecialchars($key, ENT_QUOTES, 'UTF-8'), htmlspecialchars($value, ENT_QUOTES, 'UTF-8'));
-        }
-        return trim($attrString);
     }
 
     /**
