@@ -65,7 +65,7 @@ class Vue
 
         const instance = app.mount(node);
 
-        STUDIP.Vue.emit('vueApp.mounted', instance);
+        STUDIP.Vue.emit('vueApp.mounted', { config: config, app: app, instance: instance});
 
         this.handleDialogClose(node, app);
     }

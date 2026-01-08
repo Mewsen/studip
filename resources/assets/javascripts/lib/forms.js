@@ -249,7 +249,7 @@ const Forms = {
                         }
                     });
                     const instance = app.mount(f);
-                    STUDIP.Vue.emit('form.mounted', instance);
+                    STUDIP.Vue.emit('form.mounted', {app: app, instance: instance});
                 }
             });
         });
