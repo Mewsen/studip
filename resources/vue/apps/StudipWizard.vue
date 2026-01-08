@@ -86,8 +86,6 @@ const props = defineProps({
     }
 });
 
-provide('storedValues', { value1: 'Foo', value2: 'Bar'});
-
 // Reference to the DOM node where the included components will be mounted
 const node = ref(null);
 // Number of the current step
@@ -99,6 +97,8 @@ let mountedApp = null;
 const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 
 const store = useWizardStore();
+
+provide('storedValues', store.getData());
 
 const jumpToStep = (number) => {
     if (!visibleSteps.value.includes(props.steps[number])) {
