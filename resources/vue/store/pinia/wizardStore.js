@@ -8,8 +8,8 @@ export const useWizardStore = defineStore('wizard', () => {
         data.value = {};
     }
 
-    function getData(index) {
-        return data[index];
+    function getData(index = null) {
+        return index !== null ? data[index] : data;
     }
 
     function setData(index, value) {
