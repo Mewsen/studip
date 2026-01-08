@@ -638,9 +638,12 @@ class MvvPerm {
             }
 
             if (count($institutes)) {
-                $stmt = DBManager::get()->prepare('SELECT DISTINCT(Institut_id) '
-                        . 'FROM Institute WHERE Institut_id IN (:inst_ids) '
-                        . 'OR fakultaets_id IN (:inst_ids)');
+                $stmt = DBManager::get()->prepare('
+                    SELECT DISTINCT(`Institut_id`)
+                    FROM `Institute`
+                    WHERE `Institut_id` IN (:inst_ids)
+                        OR `fakultaets_id` IN (:inst_ids)
+                ');
                 $stmt->execute(['inst_ids' => $institutes]);
                 self::$user_role_institutes[$user_id] = $stmt->fetchAll(PDO::FETCH_COLUMN);
             } else {

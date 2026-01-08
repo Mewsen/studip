@@ -152,14 +152,13 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
     /**
      * Returns all Abschluesse assigned to a given Fach.
-     * An Abschluss is assigned to a Fach if a Studiengangteil (that holds th Fach)
+     * An Abschluss is assigned to a Fach if a Studiengangteil (that holds the Fach)
      * is assigned to a Studiengang (as the home of the Abschluss).
      *
      * @param string $fach_id The id of the fach.
-     * @return array An array of abschluss objects.
+     * @return static[] An array of abschluss objects.
      * REMOVED
      */
-    /*
     public static function findByFach($fach_id)
     {
         return self::findBySQL(
@@ -169,10 +168,11 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             WHERE `mvv_stgteil`.`fach_id` = ?
             GROUP BY `abschluss`.`abschluss_id`
             ORDER BY `abschluss`.`name`',
-            [$fach_id]
+            [
+                $fach_id
+            ]
         );
     }
-    */
 
     /**
      * Returns all Abschluesse assigned to Studiengaenge.
@@ -304,16 +304,20 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * Returns all Faecher this Abschluss is assigned to.
      *
      * @return array All Faecher this Abschluss is assigned to.
+     * REMOVED
      */
+    /*
     public function getFaecher()
     {
         return Fach::findByAbschluss($this->getId());
     }
+    */
 
     /**
-     * Returns all assigned institutes of this Abschluss.
+     * Returns all institutes implicitly assigned by study courses (responsible institute).
      *
      * @return array An array of institutes.
+     * TODO (remove)
      */
     public function getAssignedInstitutes()
     {

@@ -39,6 +39,13 @@ class Fachbereich extends ModuleManagementModelTreeItem
     {
         $config['db_table'] = 'Institute';
 
+        $config['has_and_belongs_to_many']['faecher'] = [
+            'class_name' => Fach::class,
+            'thru_table' => 'mvv_fach_inst',
+            'thru_key' => 'institut_id',
+            'thru_assoc_key' => 'fach_id'
+        ];
+
         $config['additional_fields']['count_objects']['get'] =
             function($fb) { return $fb->count_objects; };
         $config['additional_fields']['count_module']['get'] =
@@ -69,7 +76,7 @@ class Fachbereich extends ModuleManagementModelTreeItem
     /**
      * Retrieves all Fachbereiche which are implicitly related to the given
      * modules. The relation is done through the hole MVV structure. If an
-     * object has a status field, the status has to be public. Otherwise the
+     * object has a status field, the status has to be public. Otherwise, the
      * related Fachbereich will not be retrieved.
      *
      * @param array $module_ids An array of module ids.
@@ -215,7 +222,7 @@ class Fachbereich extends ModuleManagementModelTreeItem
             ];
             $replacements = [
                 $this->name,
-                static::findCached($this->fakultaets_id)->getShortName()
+                static::findCached($this->fakultaets_id)->name
             ];
             return self::formatDisplayName($template, $placeholders, $replacements);
         }
@@ -282,7 +289,9 @@ class Fachbereich extends ModuleManagementModelTreeItem
      * the display name.
      *
      * @return string The (short) name of the faculty.
+     * REMOVED
      */
+    /*
     public function getShortName()
     {
         // Gießen
@@ -290,5 +299,6 @@ class Fachbereich extends ModuleManagementModelTreeItem
 
         return $this->getDisplayName();
     }
+    */
 
 }

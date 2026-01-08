@@ -1,10 +1,17 @@
+<?php
+/**
+ * @var Abschluss $abschluss
+ * @var string[] $perm_institutes
+ * @var Fachabschluss_AbschluesseController $controller
+ */
+?>
 <td colspan="4">
     <table class="default">
         <colgroup>
             <col>
             <col style="width: 1%;">
         </colgroup>
-        <? foreach ($abschluss->getFaecher() as $fach) : ?>
+        <? foreach ($abschluss->faecher as $fach) : ?>
             <? if (count($perm_institutes) === 0
                 || count(array_intersect($perm_institutes, $fach->getFachbereiche()->pluck('institut_id')))) : ?>
                 <tr>

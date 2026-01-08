@@ -14,6 +14,7 @@ class Fachabschluss_FaecherController extends MVVController
         $this->action = $action;
     }
 
+
     /**
      * Shows all Faecher
      */
@@ -22,34 +23,52 @@ class Fachabschluss_FaecherController extends MVVController
         PageLayout::setTitle(_('Verwaltung der Fächer'));
         $this->initPageParams();
 
-        // Nur Fächer mit verantwortlichen Einrichtungen an denen der User
-        // eine Rolle hat
-        $filter = ['mvv_fach_inst.institut_id' => MvvPerm::getOwnInstitutes()];
-
-        $this->count = Fach::getCount($filter);
+        $this->count = Fach::countBySql(
+            'LEFT JOIN `mvv_fach_inst` USING (`fach_id`)
+            WHERE IF(:institute_ids, `mvv_fach_inst`.`institut_id` IN (:institute_ids), 1)',
+            [
+                'institute_ids' => MvvPerm::getOwnInstitutes()
+            ]);
 
         if ($this->count < self::$items_per_page * ($this->page - 1)) {
             $this->page = 1;
         }
-        $this->sortby = $this->sortby ?: 'name';
-        $this->order = $this->order ?: 'ASC';
-        //get data
-        $this->faecher = Fach::getAllEnriched(
-            $this->sortby,
-            $this->order,
-            self::$items_per_page,
-            self::$items_per_page * ($this->page - 1),
-            $filter
+
+        $db = DBManager::get();
+        $stmt = $db->prepare('
+            SELECT
+                `fach`.*,
+                COUNT(DISTINCT `abschluss_id`) AS `count_abschluesse`
+            FROM `fach`
+                LEFT JOIN `mvv_fach_inst` USING (`fach_id`)
+                LEFT JOIN `mvv_stgteil` USING (`fach_id`)
+                LEFT JOIN `mvv_stg_stgteil` USING (`stgteil_id`)
+                LEFT JOIN `mvv_studiengang` USING (`studiengang_id`)
+            WHERE IF(:institute_ids, `mvv_fach_inst`.`institut_id` IN (:institute_ids), 1)
+            GROUP BY `fach_id`
+            ORDER BY :sortby :order
+            LIMIT :row_count
+            OFFSET :offset'
         );
+        $stmt->bindValue(':sortby', '`' . ($this->sortby ?: 'name') . '`', StudipPDO::PARAM_COLUMN);
+        $stmt->bindValue(':order', $this->order ?: 'ASC', StudipPDO::PARAM_COLUMN);
+        $stmt->execute(
+            [
+                'institute_ids' => MvvPerm::getOwnInstitutes(),
+                'row_count' => self::$items_per_page,
+                'offset' => self::$items_per_page * ($this->page - 1)
+            ]
+        );
+        $this->faecher = $stmt->fetchAll();
+
         if (!isset($this->fach_id)) {
             $this->fach_id = null;
         }
-        if (count($this->faecher) === 0) {
+        if ($this->count === 0) {
             PageLayout::postInfo(_('Es wurden noch keine Fächer angelegt.'));
         }
 
         $this->setSidebar();
-
         $helpbar = Helpbar::get();
         $widget = new HelpbarWidget();
         $widget->addElement(new WidgetElement(_('Auf diesen Seiten können Sie Fächer verwalten und neue Fächer anlegen.').'</br>'));
@@ -157,6 +176,25 @@ class Fachabschluss_FaecherController extends MVVController
      */
     public function fachbereiche_action()
     {
+        $db = DBManager::get();
+        $stmt = $db->prepare('
+            SELECT DISTINCT `Institute`.*, 2 AS `test`
+            FROM `Institute`
+                JOIN `mvv_fach_inst` USING(`institut_id`)
+            WHERE IF(:institute_ids, `mvv_fach_inst`.`institut_id` IN (:institute_ids), 1)
+            ORDER BY :sortby :order'
+        );
+        $stmt->bindValue(':sortby', '`' . ($this->sortby ?: 'name') . '`', StudipPDO::PARAM_COLUMN);
+        $stmt->bindValue(':order', $this->order ?: 'ASC', StudipPDO::PARAM_COLUMN);
+        $stmt->execute(
+            [
+                'institute_ids' => MvvPerm::getOwnInstitutes()
+            ]
+        );
+        $this->fachbereiche = $stmt->fetchAll();
+
+
+/*
         $filter = ['mvv_fach_inst.institut_id' => MvvPerm::getOwnInstitutes()];
 
         $this->initPageParams('fachbereiche');
@@ -168,7 +206,7 @@ class Fachabschluss_FaecherController extends MVVController
             $filter
         );
         PageLayout::setTitle(_('Fächer nach Fachbereichen gruppiert'));
-
+*/
         $this->setSidebar();
 
         $helpbar = Helpbar::get();
