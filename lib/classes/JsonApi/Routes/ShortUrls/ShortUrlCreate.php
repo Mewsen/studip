@@ -55,6 +55,10 @@ final class ShortUrlCreate extends JsonApiController
             return 'No url for the short-url defined';
         }
 
+        if (!is_internal_url($json['data']['attributes']['path'])) {
+            return 'The target must not be an external URL';
+        }
+
         if (!trim(self::arrayGet($json, 'data.attributes.alias'))) {
             return 'No alias for the short-url defined';
         }
