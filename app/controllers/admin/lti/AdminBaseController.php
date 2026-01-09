@@ -9,6 +9,7 @@ use Icon;
 use LtiToolModule;
 use Sidebar;
 use ActionsWidget;
+use User;
 use ViewsWidget;
 
 abstract class AdminBaseController extends AuthenticatedController
@@ -86,7 +87,7 @@ abstract class AdminBaseController extends AuthenticatedController
             _('Neue Veröffentlichung anlegen'),
             $this->url_for('admin/lti/publications/create'),
             Icon::create('add')
-        )->asDialog('width=900;height=700');
+        )->asDialog('width=700');
 
         Sidebar::get()->addWidget($actions);
     }

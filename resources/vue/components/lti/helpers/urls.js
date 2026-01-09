@@ -1,7 +1,5 @@
-
-
 // Registrations URLS:
-export const showRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/show/${id}`);
+export const showRegistrationURL = (id, role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/show/${id}?role=${role}`);
 export const createRegistrationURL = (role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/create?role=${role}`);
 export const editRegistrationURL = (id, role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/edit/${id}?role=${role}`);
 export const storeRegistrationURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/registrations/store`);
@@ -29,8 +27,18 @@ export const updateResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/adm
 export const deleteResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/delete/${id}`);
 
 
+// Publication URLS:
+export const showPublicationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/show/${id}`);
+export const createPublicationURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/create`);
+export const editPublicationURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/edit/${id}`);
+export const storePublicationURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/store`);
+export const updatePublicationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/update/${id}`);
+export const deletePublicationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/publications/delete/${id}`);
+
+
 // Others:
 export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/launch/${id}`);
 export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/process_select_link/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 
+export const userProfileURL = username => STUDIP.URLHelper.getURL('dispatch.php/profile', {username});

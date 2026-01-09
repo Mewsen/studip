@@ -6,15 +6,18 @@ import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../../components/StudipIcon.vue";
 import {
-    createRegistrationURL,
-    deleteRegistrationURL,
-    editRegistrationURL,
-    showRangeURL,
-    showRegistrationURL
+    createPublicationURL,
+    deletePublicationURL,
+    editPublicationURL,
+    showPublicationURL,
+    showRangeURL, userProfileURL,
 } from "../../../components/lti/helpers/urls";
 import LtiApp from "../../../components/lti/LtiApp.vue";
+import CopyableCodeBlock from "../../../components/CopyableCodeBlock.vue";
+import UserAvatarDropdown from "../../../components/avatar/UserAvatarDropdown.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
+const RANGE_ID = STUDIP.URLHelper.parameters.cid;
 
 const props = defineProps({
     publications: {
@@ -35,15 +38,17 @@ const {
 
 const actionMenus = computed(() => {
     return [
+        { label: $gettext('Konfiguration anzeigen'),  icon: 'info', emit: 'show'},
         { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
         { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
     ];
 });
 
 
-const addPublication = () => STUDIP.Dialog.fromURL(createRegistrationURL(props.role), { width: '900' });
+const showPublication = id => STUDIP.Dialog.fromURL(showPublicationURL(id), { width: '700' });
+const addPublication = () => STUDIP.Dialog.fromURL(createPublicationURL(), { width: '700' });
 
-const editPublication = id => STUDIP.Dialog.fromURL(editRegistrationURL(id, props.role), { width: '900' });
+const editPublication = id => STUDIP.Dialog.fromURL(editPublicationURL(id), { width: '700' });
 const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diese "%{name}" Veröffentlichung löschen?', {name}),
     () => deletePublication(id),
@@ -52,7 +57,7 @@ const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
 
 const deletePublication = id => {
     const deleteForm = document.getElementById('lti-publication-delete-form');
-    deleteForm.action = deleteRegistrationURL(id);
+    deleteForm.action = deletePublicationURL(id);
     deleteForm.submit();
 }
 </script>
@@ -82,125 +87,166 @@ const deletePublication = id => {
 
         <table class="default">
             <thead>
-            <tr class="sortable">
-                <th
-                    scope="col"
-                    :class="getSortClass('name')"
-                    :aria-sort="getAriaSortString('name')"
-                    :aria-label="getAriaSortLabel('name', $gettext('Name'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('name')"
-                        :title="$gettext('Nach Name sortieren')">
-                        {{ $gettext('Name') }}
-                    </button>
-                </th>
-                <th
-                    scope="col"
-                    :class="getSortClass('version')"
-                    :aria-sort="getAriaSortString('version')"
-                    :aria-label="getAriaSortLabel('version', $gettext('Version'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('version')"
-                        :title="$gettext('Nach Version sortieren')">
-                        {{ $gettext('Version') }}
-                    </button>
-                </th>
-                <th
-                    scope="col"
-                    :class="getSortClass('range_name')"
-                    :aria-sort="getAriaSortString('range_name')"
-                    :aria-label="getAriaSortLabel('range_name', $gettext('Range'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('range_name')"
-                        :title="$gettext('Nach Range sortieren')">
-                        {{ $gettext('Range') }}
-                    </button>
-                </th>
-                <th
-                    scope="col"
-                    :class="getSortClass('state')"
-                    :aria-sort="getAriaSortString('state')"
-                    :aria-label="getAriaSortLabel('state', $gettext('Status'))"
-                >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('state')"
-                        :title="$gettext('Nach Status sortieren')">
-                        {{ $gettext('Status') }}
-                    </a>
-                </th>
-                <th
-                    scope="col"
-                    :class="getSortClass('mkdate')"
-                    :aria-sort="getAriaSortString('mkdate')"
-                    :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('mkdate')"
-                        :title="$gettext('Nach Erstellt Datum sortieren')">
-                        {{ $gettext('Erstellt am') }}
-                    </button>
-                </th>
-                <th scope="col" class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
-            </tr>
+                <tr class="sortable">
+                    <th
+                        :class="getSortClass('name')"
+                        :aria-sort="getAriaSortString('name')"
+                        :aria-label="getAriaSortLabel('name', $gettext('Name'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('name')"
+                            :title="$gettext('Nach Name sortieren')">
+                            {{ $gettext('Name') }}
+                        </button>
+                    </th>
+                    <th
+                        :class="getSortClass('version')"
+                        :aria-sort="getAriaSortString('version')"
+                        :aria-label="getAriaSortLabel('version', $gettext('Version'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('version')"
+                            :title="$gettext('Nach Version sortieren')">
+                            {{ $gettext('Version') }}
+                        </button>
+                    </th>
+                    <th
+                        v-if="!RANGE_ID"
+                        :class="getSortClass('range_name')"
+                        :aria-sort="getAriaSortString('range_name')"
+                        :aria-label="getAriaSortLabel('range_name', $gettext('Bereich'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('range_name')"
+                            :title="$gettext('Nach Bereich sortieren')">
+                            {{ $gettext('Bereich') }}
+                        </button>
+                    </th>
+                    <th
+                        :class="getSortClass('status')"
+                        :aria-sort="getAriaSortString('status')"
+                        :aria-label="getAriaSortLabel('status', $gettext('Status'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('state')"
+                            :title="$gettext('Nach Status sortieren')">
+                            {{ $gettext('Status') }}
+                        </button>
+                    </th>
+                    <th
+                        :class="getSortClass('members')"
+                        :aria-sort="getAriaSortString('members')"
+                        :aria-label="getAriaSortLabel('members', $gettext('Anzahl der Teilnehmenden'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('members')"
+                            :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
+                            {{ $gettext('Anzahl der Teilnehmenden') }}
+                        </button>
+                    </th>
+                    <th>
+                        {{ $gettext('Custom-Parameter') }}
+                    </th>
+                    <th
+                        :class="getSortClass('user.name')"
+                        :aria-sort="getAriaSortString('user.name')"
+                        :aria-label="getAriaSortLabel('user.name', $gettext('Erstellt von'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('user.name')"
+                            :title="$gettext('Nach Autor sortieren')">
+                            {{ $gettext('Erstellt von') }}
+                        </button>
+                    </th>
+                    <th
+                        :class="getSortClass('mkdate')"
+                        :aria-sort="getAriaSortString('mkdate')"
+                        :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
+                    >
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('mkdate')"
+                            :title="$gettext('Nach Erstellt Datum sortieren')">
+                            {{ $gettext('Erstellt am') }}
+                        </button>
+                    </th>
+                    <th class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
+                </tr>
             </thead>
             <tbody>
-            <tr v-for="publication in sortedPublications" :key="publication.id">
-                <td>
-                    <a
-                        :href="showRegistrationURL(publication.id)"
-                        :title="$gettext('Registrierung anschauen')">
-                        {{ publication.name }}
-                    </a>
-                </td>
-                <td>{{ publication.version }}</td>
-                <td>
-                    <a v-if="publication.range_id !== 'global'" :href="showRangeURL(publication.range_id)" :title="$gettext('Zur Veranstaltung')">
-                        {{ publication.range_name }}
-                    </a>
-                    <template v-else>
-                        {{ publication.range_name }}
-                    </template>
-                </td>
-                <td>
-                    <span class="status-label"
-                        :class="{
-                            'status-label--success': publication.state,
-                            'status-label--warning': !publication.state
-                        }"
-                    >
-                        {{ publication.state ? $gettext('Aktiv') : $gettext('Ausstehend') }}
-                    </span>
-                </td>
-
-                <td>
-                    <StudipDateTime :iso="publication.mkdate" :relative="true" />
-                </td>
-
-                <td class="actions">
-                    <StudipActionMenu
-                        :items="actionMenus"
-                        @edit="editPublication(publication.id)"
-                        @delete="showConfirmDelete(publication.id, publication.name)"
-                    />
-                </td>
-            </tr>
-            <tr v-if="sortedPublications.length === 0">
-                <td colspan="7">
-                    {{ $gettext('Keine LTI-Veröffentlichungen vorhanden.') }}
-                </td>
-            </tr>
+                <tr v-for="publication in sortedPublications" :key="publication.id">
+                    <td>
+                        <button
+                            type="button"
+                            class="styleless button-base"
+                            @click="showPublication(publication.id)"
+                            :title="$gettext('Konfiguration anzeigen')">
+                            {{ publication.name }}
+                        </button>
+                    </td>
+                    <td>{{ publication.version }}</td>
+                    <td v-if="!RANGE_ID">
+                        <a :href="showRangeURL(publication.range_id)" :title="$gettext('Zur Veranstaltung')">
+                            {{ publication.range_name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="status-label"
+                            :class="{
+                                'status-label--success': publication.status,
+                                'status-label--warning': !publication.status
+                            }"
+                        >
+                            {{ publication.status ? $gettext('Aktiv') : $gettext('Ausstehend') }}
+                        </span>
+                    </td>
+                    <td>
+                        {{ publication.members.length }}
+                    </td>
+                    <td>
+                        <div style="width: 400px">
+                            <CopyableCodeBlock :content="publication.custom_parameter" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="user-avatar-container">
+                            <UserAvatarDropdown :user="publication.user" />
+                            <a :href="userProfileURL(publication.user.username)" :title="$gettext('Zum Benutzerprofil')">
+                                {{ publication.user.name }}
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <StudipDateTime :iso="publication.mkdate" :relative="true" />
+                    </td>
+                    <td class="actions">
+                        <StudipActionMenu
+                            :context="publication.name"
+                            :items="actionMenus"
+                            @show="showPublication(publication.id)"
+                            @edit="editPublication(publication.id)"
+                            @delete="showConfirmDelete(publication.id, publication.name)"
+                        />
+                    </td>
+                </tr>
+                <tr v-if="sortedPublications.length === 0">
+                    <td colspan="7">
+                        {{ $gettext('Keine LTI-Veröffentlichungen vorhanden.') }}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -209,3 +255,10 @@ const deletePublication = id => {
         </form>
     </LtiApp>
 </template>
+
+<style lang="scss">
+.copyable-code-block {
+    margin: 0;
+}
+</style>
+

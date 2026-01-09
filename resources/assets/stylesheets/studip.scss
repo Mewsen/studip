@@ -973,30 +973,56 @@ input.allow-plaintext-toggle {
   vue Transition:fade-down --end--
 */
 
-
-.copyable-input,
-.copyable-textarea {
+.copyable-code-block {
     position: relative;
     max-width: 48em;
+    background-color: var(--light-gray-color-20);
+    border: 1px solid var(--light-gray-color-40);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 4px 0;
 
     &__button {
         position: absolute;
         top: 0;
         right: 0;
-        bottom: 0;
+        bottom: unset;
+        padding: 9px;
         cursor: pointer;
         background: none;
         border: none;
         display: flex;
         align-items: center;
         justify-content: center;
+        background-color: var(--light-gray-color-20);
     }
-}
 
-.copyable-textarea {
-    &__button {
-        top: 6px;
-        bottom: unset;
+    pre {
+        margin: 0;
+        padding: 6px;
+        overflow-x: auto;
+        line-height: 1.6;
+    }
+
+    pre code {
+        display: block;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        white-space: pre;
+    }
+
+    pre::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    pre::-webkit-scrollbar-thumb {
+        background-color: var(--color--button-inactive-border);
+        border-radius: 4px;
+    }
+
+    pre::-webkit-scrollbar-track {
+        background: transparent;
     }
 }
 

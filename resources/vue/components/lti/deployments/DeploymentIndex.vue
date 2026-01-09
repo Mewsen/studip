@@ -6,6 +6,7 @@ import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../StudipIcon.vue";
 import {addDeploymentURL, deleteDeploymentURL, editDeploymentURL, showRangeURL} from "../helpers/urls";
+import CopyableCodeBlock from "../../CopyableCodeBlock.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 const props = defineProps({
@@ -143,14 +144,14 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
                     v-if="registration.role === 'tool'"
                     :class="getSortClass('resource_name')"
                     :aria-sort="getAriaSortString('resource_name')"
-                    :aria-label="getAriaSortLabel('resource_name', $gettext('Context'))"
+                    :aria-label="getAriaSortLabel('resource_name', $gettext('Bereich'))"
                 >
                     <button
                         type="button"
                         class="button__table-sort button-base"
                         @click="sortBy('resource_name')"
-                        :title="$gettext('Nach Name des Contexts sortieren')">
-                        {{ $gettext('Context') }}
+                        :title="$gettext('Nach Name des Bereich sortieren')">
+                        {{ $gettext('Bereich') }}
                     </button>
                 </th>
                 <th
@@ -174,8 +175,16 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
         <tbody>
         <tr v-for="deployment in sortedDeployments" :key="deployment.id">
             <td>{{ deployment.name }}</td>
-            <td>{{ deployment.deployment_key }}</td>
-            <td>{{ deployment.client_id }}</td>
+            <td>
+                <div style="width: 150px;">
+                    <CopyableCodeBlock :content="deployment.deployment_key" />
+                </div>
+            </td>
+            <td>
+                <div style="width: 350px;">
+                    <CopyableCodeBlock :content="deployment.client_id" />
+                </div>
+            </td>
             <td>{{ deployment.purpose }}</td>
             <td v-if="registration.role === 'tool'">
                 <a v-if="deployment.resource_id !== 'global'" :href="showRangeURL(deployment.resource_id)" :title="$gettext('Zur Veranstaltung')">
@@ -190,6 +199,7 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
             </td>
             <td class="actions">
                 <StudipActionMenu
+                    :context="deployment.name"
                     :items="getActionMenus(deployment)"
                     @edit="editDeployment(deployment.id)"
                     @delete="showConfirmDelete(deployment.id, deployment.name)"
@@ -209,3 +219,9 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
         <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
     </form>
 </template>
+
+<style lang="scss">
+.copyable-code-block {
+    margin: 0;
+}
+</style>

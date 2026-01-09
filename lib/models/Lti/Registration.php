@@ -81,28 +81,32 @@ class Registration extends SimpleORMap
         );
     }
 
-    public function getConfigValues(): array
+    public function getConfigValues(bool $typeCasting = false): array
     {
-        $configValues = [];
-        foreach (parent::__get('configs') as $config) {
-            $configValues[strtolower($config->name)] = $config->value;
-        }
+        return collect(parent::__get('configs'))->mapWithKeys(function ($config) use ($typeCasting) {
+            $key = strtolower($config->name);
+            $value = $config->value;
 
-        return $configValues;
+            if ($typeCasting && $key === 'launch_container') {
+                return [
+                    $key => $value,
+                    'container' => ResourceLaunchContainer::get($value ?? 'window')
+                ];
+            }
+
+            return [$key => $value];
+        })->toArray();
     }
 
     public function transformData($with = []): array
     {
-        $configs = $this->getConfigValues();
-
         $base = [
             ...$this->toRawArray(),
             'state' => (bool) $this->state,
             'range_name' => $this->range?->getFullName() ?? _('Global'),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
-            ...$configs,
-            'container' => ResourceLaunchContainer::get($configs['launch_container'] ?? 'window'),
+            ...$this->getConfigValues(true)
         ];
 
         if (in_array('deployments', $with)) {

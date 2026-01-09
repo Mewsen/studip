@@ -1,5 +1,5 @@
 <template>
-    <span data-tooltip class="tooltip tooltip-icon" :class="cssClass" tabindex="0" :aria-label="cleanText">
+    <span data-tooltip class="tooltip tooltip-icon" :id="id" :class="cssClass" tabindex="0" :aria-label="cleanText">
         <span class="tooltip-content" v-if="isHtml" v-html="text"></span>
         <span class="tooltip-content" v-else>{{ text }}</span>
     </span>
@@ -10,6 +10,10 @@
         name: 'studip-tooltip-icon',
         props: {
             text: String,
+            id: {
+                type: String,
+                default: null
+            },
             isHtml: {
                 type: Boolean,
                 required: false,

@@ -147,14 +147,14 @@ const deleteRegistration = id => {
                         scope="col"
                         :class="getSortClass('range_name')"
                         :aria-sort="getAriaSortString('range_name')"
-                        :aria-label="getAriaSortLabel('range_name', $gettext('Range'))"
+                        :aria-label="getAriaSortLabel('range_name', $gettext('Bereich'))"
                     >
                         <button
                             type="button"
                             class="button__table-sort button-base"
                             @click="sortBy('range_name')"
-                            :title="$gettext('Nach Range sortieren')">
-                            {{ $gettext('Range') }}
+                            :title="$gettext('Nach Bereich sortieren')">
+                            {{ $gettext('Bereich') }}
                         </button>
                     </th>
                     <th
@@ -163,15 +163,15 @@ const deleteRegistration = id => {
                         :aria-sort="getAriaSortString('state')"
                         :aria-label="getAriaSortLabel('state', $gettext('Status'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('state')"
+                        <button
+                            type="button"
+                            class="button__table-sort button-base"
+                            @click="sortBy('state')"
                             :title="$gettext('Nach Status sortieren')">
                             {{ $gettext('Status') }}
-                        </a>
+                        </button>
                     </th>
                     <th
-                        scope="col"
                         :class="getSortClass('mkdate')"
                         :aria-sort="getAriaSortString('mkdate')"
                         :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
@@ -184,14 +184,14 @@ const deleteRegistration = id => {
                             {{ $gettext('Erstellt am') }}
                         </button>
                     </th>
-                    <th scope="col" class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
+                    <th class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="registration in sortedRegistrations" :key="registration.id">
                     <td>
                         <a
-                            :href="showRegistrationURL(registration.id)"
+                            :href="showRegistrationURL(registration.id, registration.role)"
                             :title="$gettext('Registrierung anschauen')">
                             {{ registration.name }}
                         </a>
@@ -227,6 +227,7 @@ const deleteRegistration = id => {
 
                     <td class="actions">
                         <StudipActionMenu
+                            :context="registration.name"
                             :items="actionMenus"
                             @edit="editRegistration(registration.id)"
                             @addDeployment="addDeployment(registration.id)"

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {computed, onMounted, reactive, ref, useTemplateRef} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipSelect from "../../../components/StudipSelect.vue";
 import StudipTooltipIcon from "../../../components/StudipTooltipIcon.vue";
@@ -31,6 +31,8 @@ const form = reactive({
     registration: props.registrations.find(({ id }) => id === props.resource?.registration?.id)
 });
 
+const errors = ref([]);
+
 const formActionURL = computed(() => {
     if (props.resource.id) {
         return updateResourceURL(props.resource.id);
@@ -40,15 +42,33 @@ const formActionURL = computed(() => {
 });
 
 const nameInputRef = useTemplateRef('nameInput');
+const resourceFormRef = useTemplateRef('resourceForm');
+
+const validateForm = () => {
+    errors.value = [];
+
+    if (!form.registration) {
+        errors.value.push({
+            key: 'registration',
+            value: $gettext('LTI-Tool ist ein Pflichtfeld')
+        });
+
+        return;
+    }
+
+    resourceFormRef.value.submit();
+}
 
 onMounted(() => nameInputRef.value.focus());
 </script>
 
 <template>
     <form
+        ref="resourceForm"
         class="default resource-form use-utility-classes"
         :action="formActionURL"
         method="post"
+        @submit.prevent="validateForm"
         v-bind="$attrs"
     >
         <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
@@ -59,6 +79,14 @@ onMounted(() => nameInputRef.value.focus());
         <legend v-else class="hide-in-dialog">
             {{ $gettext('Neuen Ressource hinzufügen') }}
         </legend>
+
+        <div v-if="errors.length" class="error" style="display: block">
+            <ul>
+                <li v-for="error in errors" :key="error.key">
+                    <p>{{ error.value }}</p>
+                </li>
+            </ul>
+        </div>
 
         <fieldset class="undecorated">
             <div class="select-input-group">
@@ -112,6 +140,12 @@ onMounted(() => nameInputRef.value.focus());
                 />
                 <textarea name="custom_parameters" v-model="form.custom_parameters"></textarea>
             </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                {{ $gettext('Konfiguration') }}
+            </legend>
 
             <label>
                 <span>{{ $gettext('Launch container') }}</span>

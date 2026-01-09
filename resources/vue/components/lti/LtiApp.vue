@@ -16,7 +16,11 @@ const fetchConfigs = async () => {
     }
 }
 
-onMounted(async () => await fetchConfigs());
+onMounted(async () => {
+    if (STUDIP.URLHelper.parameters.cid) {
+        await fetchConfigs()
+    }
+});
 </script>
 
 <template>

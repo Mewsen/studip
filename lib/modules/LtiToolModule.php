@@ -26,6 +26,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         if ($GLOBALS['perm']->have_perm('root')) {
             Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
+            Navigation::addItem('/admin/config/lti-publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
         }
 
         NotificationCenter::on('UserDidDelete', function ($event, $user) {
@@ -50,9 +51,9 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         $icon = Icon::create('plugin', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
 
-        $navigation = new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti');
+        $navigation = new Navigation(_('LTI'), 'dispatch.php/course/lti');
         $navigation->setImage($icon);
-        $navigation->setLinkAttributes(['title' => _('LTI-Tools')]);
+        $navigation->setLinkAttributes(['title' => _('LTI')]);
 
         return $navigation;
     }
@@ -96,12 +97,13 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
     public static function isAdmin($userId = null): bool
     {
-        return $GLOBALS['perm']->have_perm('root', $userId);
+        return User::findCurrent()->auth_plugin === 'standard' && $GLOBALS['perm']->have_perm('root', $userId);
     }
 
     public static function isModerator($courseId, $userId = null): bool
     {
-        return self::isAdmin() || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId);
+        return User::findCurrent()->auth_plugin === 'standard'
+        && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId));
     }
 
     /**

@@ -17,22 +17,4 @@ class RegistrationConfig extends SimpleORMap
 
         parent::configure($config);
     }
-
-    public static function updateOrCreate(array $attributes, array $values = []): self
-    {
-        $whereClauses = [];
-        foreach ($attributes as $key => $value) {
-            $whereClauses[] = "$key = :$key";
-        }
-
-        $record = static::findOneBySQL(implode(' AND ', $whereClauses), $attributes);
-
-        if ($record) {
-            $record->setData($values);
-            $record->store();
-            return $record;
-        }
-
-        return static::create(array_merge($attributes, $values));
-    }
 }

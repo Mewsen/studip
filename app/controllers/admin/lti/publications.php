@@ -3,6 +3,8 @@ require_once __DIR__ . '/AdminBaseController.php';
 
 use LTI\AdminBaseController;
 use Lti\Publication;
+use Lti\PublicationConfig;
+use Ramsey\Uuid\Uuid;
 
 class Admin_Lti_PublicationsController extends AdminBaseController
 {
@@ -10,7 +12,11 @@ class Admin_Lti_PublicationsController extends AdminBaseController
     {
         parent::before_filter($action, $args);
 
-        Navigation::activateItem('/course/lti/publications');
+        if ($this->range_id) {
+            Navigation::activateItem('/course/lti/publications');
+        } else {
+            Navigation::activateItem('/admin/config/lti-publications');
+        }
 
         $this->buildPublicationsSidebar();
     }
@@ -37,16 +43,165 @@ class Admin_Lti_PublicationsController extends AdminBaseController
         $this->render_vue_app(
             Studip\VueApp::create('lti/publications/Index')
                 ->withProps([
-                    'publications' => array_map(fn ($p) => $p->transformData(), $publications)
+                    'publications' => array_map(fn ($p) => $p->transformData(['members']), $publications)
+                ])
+        );
+    }
+
+    public function show_action(Publication $publication): void
+    {
+        PageLayout::setTitle(_('Konfiguration der LTI-Veröffentlichung anzeigen'));
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/publications/Show')
+                ->withProps([
+                    'publication' => $publication->transformData(['members'])
                 ])
         );
     }
 
     public function create_action(): void
     {
-        PageLayout::setTitle(_('Neues Deployment anlegen'));
+        PageLayout::setTitle(_('Neue Veröffentlichung anlegen'));
+
         $this->render_vue_app(
             Studip\VueApp::create('lti/publications/Create')
         );
+    }
+
+    public function store_action(): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $publication = Publication::create([
+            'name' => Request::get('name'),
+            'version' => Request::get('version', '1.3a'),
+            'status' => Request::bool('status', true),
+            'key' => Uuid::uuid4()->toString(),
+            'range_id' => $this->range_id,
+            'user_id' => User::findCurrent()->id,
+        ]);
+
+        $this->syncPublicationConfigs($publication->id);
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Veröffentlichung „%s“ wurde gespeichert.'),
+                htmlReady($publication->name)
+            )
+        );
+
+        $this->redirect('admin/lti/publications');
+    }
+
+    public function edit_action(Publication $publication): void
+    {
+        PageLayout::setTitle(_('LTI-Veröffentlichung bearbeiten'));
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/publications/Edit')
+                ->withProps([
+                    'publication' => $publication->transformData()
+                ])
+        );
+    }
+
+    public function update_action(Publication $publication): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $publication->setData([
+            'name' => Request::get('name'),
+            'version' => Request::get('version', $publication->version),
+            'status' => Request::bool('status', $publication->status)
+        ]);
+
+        $publication->store();
+
+        $this->syncPublicationConfigs($publication->id);
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Veröffentlichung „%s“ wurde gespeichert.'),
+                htmlReady($publication->name)
+            )
+        );
+
+        $this->redirect('admin/lti/publications');
+    }
+
+    public function delete_action(Publication $publication): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $publicationName = $publication->name;
+        $publication->delete();
+
+        PageLayout::postSuccess(
+            sprintf(
+                _('Die LTI-Veröffentlichung „%s“ wurde gelöscht.'),
+                htmlReady($publicationName)
+            )
+        );
+
+        $this->redirect('admin/lti/publications');
+    }
+
+    private function extractPublicationConfigsFromRequest(): array
+    {
+        return [
+            [
+                'name' => 'enrollment_deadline',
+                'value' => strtotime(Request::get('enrollment_deadline')),
+                'is_delete' => Request::bool('enrollment_deadline')
+            ],
+            [
+                'name' => 'start_date',
+                'value' => strtotime(Request::get('start_date')),
+                'is_delete' => Request::bool('start_date')
+            ],
+            [
+                'name' => 'end_date',
+                'value' => strtotime(Request::get('end_date'))
+            ],
+            [
+                'name' => 'maximum_enrolled_users',
+                'value' => Request::int('maximum_enrolled_users')
+            ],
+            [
+                'name' => 'dozent_role',
+                'value' => Request::get('dozent_role')
+            ],
+            [
+                'name' => 'autor_role',
+                'value' => Request::get('autor_role')
+            ]
+        ];
+    }
+
+    private function syncPublicationConfigs($publicationId): void
+    {
+        foreach ($this->extractPublicationConfigsFromRequest() as $config) {
+            if (empty($config['value'])) {
+                PublicationConfig::deleteBySQL(
+                    "publication_id = :publication_id AND name = :name",
+                    [
+                        'publication_id' => $publicationId,
+                        'name' => strtolower($config['name'])
+                    ]
+                );
+                continue;
+            }
+
+            PublicationConfig::updateOrCreate(
+                [
+                    'publication_id' => $publicationId,
+                    'name' => strtolower($config['name'])
+                ],
+                [
+                    'value' => $config['value']
+                ]
+            );
+        }
     }
 }

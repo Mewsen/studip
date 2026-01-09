@@ -54,7 +54,8 @@ const Dates = {
         });
     },
     stringToUnixTimestamp: date => ((new Date(date)).getTime() / 1000),
-    unixTimestampToISO: timestamp => new Date(timestamp * 1000).toISOString()
+    unixTimestampToISO: timestamp => new Date(timestamp * 1000).toISOString(),
+    isoToDatetimeLocal: iso => (new Date(iso)).toISOString().slice(0,16)
 };
 
 export default Dates;

@@ -1,7 +1,6 @@
 <script setup>
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import CopyAbleInput from "../../../components/lti/CopyAbleInput.vue";
-import CopyAbleTextarea from "../../../components/lti/CopyAbleTextarea.vue";
+import CopyableCodeBlock from "../../../components/CopyableCodeBlock.vue";
 import LtiApp from "../../../components/lti/LtiApp.vue";
 
 defineProps({
@@ -14,33 +13,32 @@ defineProps({
 
 <template>
     <LtiApp>
-        <form class="default" action="#">
-            <dl>
-                <dt>{{ $gettext('Lunch URL') }}</dt>
-                <dd>
-                    <CopyAbleInput :content="toolData.launch_url" />
-                </dd>
+        <dl>
+            <dt>{{ $gettext('Launch URL') }}</dt>
+            <dd>
+                <CopyableCodeBlock :content="toolData.launch_url" />
+            </dd>
 
-                <dt>{{ $gettext('Initiate login URL') }}</dt>
-                <dd>
-                    <CopyAbleInput :content="toolData.auth_init_url" />
-                </dd>
+            <dt>{{ $gettext('Initiate login URL') }}</dt>
+            <dd>
+                <CopyableCodeBlock :content="toolData.auth_init_url" />
+            </dd>
 
-                <dt>{{ $gettext('Deep-linking URL') }}</dt>
-                <dd>
-                    <CopyAbleInput :content="toolData.deep_linking_url" />
-                </dd>
+            <dt>{{ $gettext('Deep-linking URL') }}</dt>
+            <dd>
+                <CopyableCodeBlock :content="toolData.deep_linking_url" />
+            </dd>
 
-                <dt>{{ $gettext('JWKS URL') }}</dt>
-                <dd>
-                    <CopyAbleInput :content="toolData.keyset_url" />
-                </dd>
+            <dt>{{ $gettext('JWKS URL') }}</dt>
+            <dd>
+                <CopyableCodeBlock :content="toolData.keyset_url" />
+            </dd>
 
-                <dt>{{ $gettext('Öffentlicher Schlüssel') }}</dt>
-                <dd>
-                    <CopyAbleTextarea :content="toolData.public_key" rows="12" />
-                </dd>
-            </dl>
-        </form>
+            <dt>{{ $gettext('Öffentlicher Schlüssel') }}</dt>
+            <dd>
+                <CopyableCodeBlock :content="toolData.public_key" />
+            </dd>
+        </dl>
     </LtiApp>
 </template>
+

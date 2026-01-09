@@ -18,7 +18,6 @@
                 <?= implode(PageLayout::getMessages(QuestionBox::class)) ?>
                 <?= $content_for_layout ?>
             </div>
-
         </main>
         <!-- End main content -->
     </body>

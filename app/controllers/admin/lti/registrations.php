@@ -98,7 +98,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'range_id' => $this->range_id ?? 'global'
         ]);
 
-        $this->storeRegistrationConfigs($registration->id);
+        $this->syncRegistrationConfigs($registration->id);
 
         if ($registration->role === 'tool') {
             Deployment::create([
@@ -145,12 +145,12 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'role' => Request::get('role', $registration->role),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
-            'state' => Request::bool('state', true)
+            'state' => Request::bool('state', $registration->state)
         ]);
 
         $registration->store();
 
-        $this->storeRegistrationConfigs($registration->id);
+        $this->syncRegistrationConfigs($registration->id);
 
         PageLayout::postSuccess(
             sprintf(
@@ -225,7 +225,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         );
     }
 
-    private function extractConfigFromRequest(): array
+    private function extractRegistrationConfigsFromRequest(): array
     {
         $common = [
             [
@@ -349,20 +349,34 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         return $common;
     }
 
-    private function storeRegistrationConfigs($registration_id): void
+    private function syncRegistrationConfigs($registrationId): void
     {
-        foreach ($this->extractConfigFromRequest() as $config) {
-            if (!empty($config['value'])) {
-                RegistrationConfig::updateOrCreate(
+        foreach ($this->extractRegistrationConfigsFromRequest() as $config) {
+            if (isset($config['is_delete'])) {
+                RegistrationConfig::deleteBySQL(
+                    "registration_id = :registration_id AND name = :name",
                     [
-                        'registration_id' => $registration_id,
+                        'registration_id' => $registrationId,
                         'name' => strtolower($config['name'])
-                    ],
-                    [
-                        'value' => $config['value']
                     ]
                 );
+
+                continue;
             }
+
+            if (empty($config['value'])) {
+                continue;
+            }
+
+            RegistrationConfig::updateOrCreate(
+                [
+                    'registration_id' => $registrationId,
+                    'name' => strtolower($config['name'])
+                ],
+                [
+                    'value' => $config['value']
+                ]
+            );
         }
     }
 }

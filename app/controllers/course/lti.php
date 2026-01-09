@@ -79,7 +79,7 @@ class Course_LtiController extends StudipController
     {
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x order 1.3a) unterstützen.'));
 
-        if ($this->edit_perm) {
+        if (LtiToolModule::isModerator($this->range_id)) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
 
             $widget->addLink(

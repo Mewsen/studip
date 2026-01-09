@@ -5,6 +5,7 @@ import StudipDateTime from "../../StudipDateTime.vue";
 import {computed} from "vue";
 import {launchResourceURL, selectContentURL} from "../helpers/urls";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
+import CopyableCodeBlock from "../../CopyableCodeBlock.vue";
 
 const ltiConfig = useLtiConfig();
 const props = defineProps({
@@ -102,56 +103,23 @@ const configs = computed(() => {
                     <dl>
                         <dt>{{ $gettext('Client-ID') }}</dt>
                         <dd>
-                            {{ resource.deployment.client_id }}
+                            <CopyableCodeBlock :content="resource.deployment.client_id" />
                         </dd>
 
                         <dt>{{ $gettext('Deployment-ID') }}</dt>
                         <dd>
-                            {{ resource.deployment.deployment_key }}
+                            <CopyableCodeBlock :content="resource.deployment.deployment_key" />
                         </dd>
 
                         <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
-                        <dd class="break-word">
-                            {{ resource.custom_parameters || resource.registration.custom_parameters }}
+                        <dd>
+                            <CopyableCodeBlock :content="resource.custom_parameters || resource.registration.custom_parameters" />
                         </dd>
                     </dl>
 
-                    <pre v-if="ltiConfig.isAdmin"><code class="json">{{ configs }}</code></pre>
+                    <CopyableCodeBlock v-if="ltiConfig.isAdmin"><code class="json">{{ configs }}</code></CopyableCodeBlock>
                 </article>
             </div>
         </template>
     </StudipDialog>
 </template>
-
-<style lang="scss" scoped>
-pre {
-    background-color: var(--light-gray-color-20);
-    padding: 15px 20px;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-family: ui-monospace;
-    line-height: 1.6;
-    border: 1px solid var(--color--content-box-border);
-}
-
-pre code {
-    display: block;
-    padding: 0;
-    background: transparent;
-    color: inherit;
-    white-space: pre;
-}
-
-pre::-webkit-scrollbar {
-    height: 8px;
-}
-
-pre::-webkit-scrollbar-thumb {
-    background-color: var(--color--button-inactive-border);
-    border-radius: 4px;
-}
-
-pre::-webkit-scrollbar-track {
-    background: transparent;
-}
-</style>

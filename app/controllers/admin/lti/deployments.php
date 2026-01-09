@@ -8,6 +8,23 @@ use Ramsey\Uuid\Uuid;
 
 class Admin_Lti_DeploymentsController extends AdminBaseController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if ($this->range_id) {
+            Navigation::activateItem('/course/lti/registrations');
+        } else {
+            Navigation::activateItem('/admin/config/lti');
+        }
+
+        PageLayout::setTitle(_('LTI-Deployments'));
+
+        $this->role = Request::get('role', 'tool');
+
+        $this->buildRegistrationsSidebar();
+    }
+
     public function index_action(): void
     {
         $registration = Registration::find(Request::option('registration_id'));

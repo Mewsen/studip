@@ -15,6 +15,7 @@ const isChecked = defineModel({ default: false });
 
 <template>
     <label class="switch-input-container" :title="title ?? label">
+        <input type="hidden" :value="0" v-bind="$attrs" />
         <input
             class="input"
             type="checkbox"
@@ -23,6 +24,7 @@ const isChecked = defineModel({ default: false });
             :aria-checked="isChecked.toString()"
             :aria-label="label"
             role="switch"
+            :value="1"
             v-bind="$attrs"
         />
         <span class="switch-container">

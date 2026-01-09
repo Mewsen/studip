@@ -1,7 +1,12 @@
 <?php
 
+use Lti\Publication;
+use OAT\Library\Lti1p3Core\Exception\LtiException;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
+use Studip\Authentication\Manager as AuthenticationManager;
 use Studip\Cache\Factory;
-use Studip\Cache\MemoryCache;
+use Studip\LTI13a\PublicationValidator;
 use Studip\LTI13a\ToolManager;
 use Studip\LTI13a\RegistrationManager;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
@@ -11,21 +16,22 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
+use Studip\LTI13a\UserEnrollment;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
-class Enrol_LtiController extends StudipController
+class Enrol_LtiController extends AuthenticatedController
 {
     use NegotiatesWithPsr7;
+    protected $allow_nobody = true;
+    protected $with_session = false;
 
     public function __construct(Dispatcher $dispatcher)
     {
         $action = basename(get_route());
-        if ($action === 'jwks') {
-            $this->allow_nobody = true;
-            $this->with_session = false;
+        if (in_array($action, ['launch'])) {
+            $this->with_session = true;
         }
-
         parent::__construct($dispatcher);
     }
 
@@ -53,46 +59,67 @@ class Enrol_LtiController extends StudipController
 
     public function launch_action(): void
     {
-        $validator = new ToolLaunchValidator(
-            new RegistrationManager(),
-            new NonceRepository(Factory::getCache())
-        );
+        try {
+            $validator = new ToolLaunchValidator(
+                new RegistrationManager(),
+                new NonceRepository(Factory::getCache())
+            );
 
-        $result = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
-        if ($result->hasError()) {
-            dd($result);
+            $request = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+
+            if ($request->hasError()) {
+                throw new LtiException($request->getError());
+            }
+
+            $publication = $this->getPublication($request);
+
+            (new PublicationValidator($publication))->validateLaunch();
+
+            $user = (new UserEnrollment($request, $publication))->enroll();
+
+            auth()->setAuthenticatedUser($user);
+            Metrics::increment('core.login.succeeded');
+            sess()->regenerateId(AuthenticationManager::DEFAULT_KEPT_SESSION_VARIABLES);
+
+            $this->redirect('course/overview?cid='.$publication->range->id);
+        } catch (Throwable $exception) {
+            $this->messages = [
+                [
+                    'type' => 'error',
+                    'text' => $exception->getMessage()
+                ]
+            ];
+
+            $this->set_layout($GLOBALS['template_factory']->open('lti/layout'));
         }
-
-        $result2 = [
-            'registration' => [
-                'identifier' => $result->getRegistration()->getIdentifier(),
-            ],
-            'payload' => [
-                'version' => $result->getPayload()->getVersion(),
-                'context' => [
-                    'identifier' => $result->getPayload()->getContext()->getIdentifier(),
-                ],
-                'userIdentity' => $result->getPayload()->getUserIdentity(),
-            ],
-            'state' => [
-                'token' => $result->getState()->getToken()->toString(),
-                'claims' => [
-                    'jti' => $result->getState()->getToken()->getClaims()->get('jti'),
-                ],
-            ],
-            'custom' => $result->getPayload()->getCustom(),
-            'successes' => [],
-        ];
-
-        foreach ($result->getSuccesses() as $success) {
-            $result2['successes'][] = $success;
-        }
-
-        dd($result2);
     }
 
     public function launch_deeplink_action(): void
     {
         dd('launch_deeplink_action: ', Request::getInstance());
+    }
+
+    /**
+     * @throws LtiExceptionInterface
+     */
+    private function getPublication(LaunchValidationResultInterface $request): Publication
+    {
+        $customId = $request->getPayload()->getCustom()['id'] ?? null;
+        if (!$customId) {
+            throw new LtiException('Missing custom ID');
+        }
+
+        $publication = Publication::findOneBySQL("publication_key = ?", [$customId]);
+        if (!$publication) {
+            throw new LtiException('Invalid custom ID');
+        }
+
+        return $publication;
+    }
+
+    private function showMessages(array $messages): void
+    {
+        $this->messages = $messages;
+        $this->set_layout($GLOBALS['template_factory']->open('lti/layout'));
     }
 }

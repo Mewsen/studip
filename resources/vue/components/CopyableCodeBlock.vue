@@ -10,17 +10,21 @@ const props = defineProps({
 });
 
 const copyToClipboard = () => {
-    navigator.clipboard.writeText(props.content);
+    if (props.content) {
+        navigator.clipboard.writeText(props.content);
+    } else {
+        navigator.clipboard.writeText(document.getElementById('copyable-code-block-content').innerText.trim());
+    }
     STUDIP.Report.info($gettext('Der Inhalt wurde in die Zwischenablage kopiert.'));
 }
 </script>
 
 <template>
-    <div class="copyable-input">
-        <input type="text" class="copyable-input__field" :value="content" readonly v-bind="{...$attrs}" />
+    <div class="copyable-code-block">
+        <pre id="copyable-code-block-content"><slot><template v-if="content">{{ content }}</template></slot></pre>
         <button
             type="button"
-            class="copyable-input__button button-base"
+            class="copyable-code-block__button button-base"
             @click="copyToClipboard"
             :title="$gettext('Kopieren')"
             :aria-label="$gettext('Kopieren')"

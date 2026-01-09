@@ -5,6 +5,7 @@ import {computed} from "vue";
 import DeploymentIndex from "../../../components/lti/deployments/DeploymentIndex.vue";
 import {editRegistrationURL} from "../../../components/lti/helpers/urls";
 import LtiApp from "../../../components/lti/LtiApp.vue";
+import CopyableCodeBlock from "../../../components/CopyableCodeBlock.vue";
 
 const props = defineProps({
     registration: {
@@ -118,57 +119,47 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
 
                 <dt>{{ $gettext('Tool-ID') }}</dt>
                 <dd>
-                    <a :href="registration.issuer" target="_blank">
-                        {{ registration.issuer }}
-                    </a>
+                    <CopyableCodeBlock :content="registration.issuer" />
                 </dd>
 
-                <dt>{{ $gettext('Lunch URL') }}</dt>
+                <dt>{{ $gettext('Launch URL') }}</dt>
                 <dd>
-                    <a :href="registration.launch_url" target="_blank">
-                        {{ registration.launch_url }}
-                    </a>
+                    <CopyableCodeBlock :content="registration.launch_url" />
                 </dd>
 
                 <template v-if="registration.version === '1.3a'">
                     <dt>{{ $gettext('Initiate login URL') }}</dt>
                     <dd>
-                        <a :href="registration.auth_init_url" target="_blank">
-                            {{ registration.auth_init_url }}
-                        </a>
+                        <CopyableCodeBlock :content="registration.auth_init_url" />
                     </dd>
                     <dt>{{ $gettext('Deep-linking URL') }}</dt>
                     <dd>
-                        <a :href="registration.deep_linking_url" target="_blank">
-                            {{ registration.deep_linking_url }}
-                        </a>
+                        <CopyableCodeBlock :content="registration.deep_linking_url" />
                     </dd>
 
                     <template v-if="registration.key_type === 'jwk_keyset'">
                         <dt>{{ $gettext('JWKS-URL') }}</dt>
                         <dd>
-                            <a :href="registration.jwks_url" target="_blank">
-                                {{ registration.jwks_url }}
-                            </a>
+                            <CopyableCodeBlock :content="registration.jwks_url" />
                         </dd>
                     </template>
 
                     <template v-if="registration.key_type === 'public_key'">
                         <dt>{{ $gettext('Öffentlicher Schlüssel') }}</dt>
                         <dd>
-                            {{ registration.public_key }}
+                            <CopyableCodeBlock :content="registration.public_key" />
                         </dd>
                     </template>
                 </template>
                 <template v-if="registration.version === '1.1'">
                     <dt>{{ $gettext('Consumer-Key') }}</dt>
                     <dd>
-                        {{ registration.consumer_key }}
+                        <CopyableCodeBlock :content="registration.consumer_key" />
                     </dd>
 
                     <dt>{{ $gettext('Consumer-Secret') }}</dt>
                     <dd>
-                        {{ registration.consumer_secret }}
+                        <CopyableCodeBlock :content="registration.consumer_secret" />
                     </dd>
 
                     <dt>{{ $gettext('Personendaten an das LTI-Tool senden') }}</dt>
@@ -179,46 +170,36 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
 
                 <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
                 <dd>
-                    {{ registration.custom_parameters }}
+                    <CopyableCodeBlock :content="registration.custom_parameters" />
                 </dd>
             </template>
 
             <template v-if="registration.role === 'platform'">
                 <dt>{{ $gettext('Plattform-ID') }}</dt>
                 <dd>
-                    <a :href="registration.issuer" target="_blank">
-                        {{ registration.issuer }}
-                    </a>
+                    <CopyableCodeBlock :content="registration.issuer" />
                 </dd>
 
                 <dt>{{ $gettext('OIDC authentication URL') }}</dt>
                 <dd>
-                    <a :href="registration.auth_login_url" target="_blank">
-                        {{ registration.auth_login_url }}
-                    </a>
+                    <CopyableCodeBlock :content="registration.auth_login_url" />
                 </dd>
 
                 <dt>{{ $gettext('Token-URL') }}</dt>
                 <dd>
-                    <a :href="registration.token_url" target="_blank">
-                        {{ registration.token_url }}
-                    </a>
+                    <CopyableCodeBlock :content="registration.token_url" />
                 </dd>
 
                 <template v-if="registration.key_type === 'jwk_keyset'">
                     <dt>{{ $gettext('JWKS-URL') }}</dt>
                     <dd>
-                        <a :href="registration.jwks_url" target="_blank">
-                            {{ registration.jwks_url }}
-                        </a>
+                        <CopyableCodeBlock :content="registration.jwks_url" />
                     </dd>
                 </template>
 
                 <template v-if="registration.key_type === 'public_key'">
                     <dt>{{ $gettext('Öffentlicher Schlüssel') }}</dt>
-                    <dd>
-                        {{ registration.public_key }}
-                    </dd>
+                    <CopyableCodeBlock :content="registration.public_key" />
                 </template>
             </template>
         </dl>
@@ -230,4 +211,4 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
             :withCaption="true"
         />
     </LtiApp>
-</template>
+</template>´

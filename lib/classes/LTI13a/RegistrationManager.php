@@ -10,7 +10,10 @@ class RegistrationManager implements RegistrationRepositoryInterface
 {
     public function find(string $identifier): ?RegistrationInterface
     {
-        return Registration::find($identifier)?->toLti1p3Registration();
+        return Registration::findOneBySQL(
+            "id = ? AND state = 1",
+            [$identifier]
+        )?->toLti1p3Registration();
     }
 
     public function findAll(): array
@@ -22,6 +25,10 @@ class RegistrationManager implements RegistrationRepositoryInterface
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
+        if (!$deployment->registration->state) {
+            return null;
+        }
+
 
         return $deployment->registration?->toLti1p3Registration($deployment);
     }
@@ -30,7 +37,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        if (!$deployment) {
+        if (!$deployment->registration->state) {
             return null;
         }
 
@@ -41,7 +48,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
 
-        if (!$deployment) {
+        if (!$deployment->registration->state) {
             return null;
         }
 
