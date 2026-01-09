@@ -54,7 +54,10 @@
                         @click.prevent="copyToClipboard(shortUrl.meta['alias-link'])">
                     <studip-icon shape="clipboard" />
                 </button>
-                <a :href="store.getShortUrl(shortUrl.attributes.alias)" :title="$gettext('Titel des Kurzlinks')">
+                <a :href="shortUrl.meta['alias-link']"
+                   :title="$gettext('Titel des Kurzlinks')"
+                   target="_blank"
+                >
                     {{ shortUrl.attributes.alias }}
                 </a>
             </td>
