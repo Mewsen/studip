@@ -132,17 +132,12 @@ const actionMenuItems = [
 ];
 
 const formatDate = (datestring) => {
-    const date = new Date(datestring);
     const formatter = new Intl.DateTimeFormat(String.locale, {
         dateStyle: 'short',
         timeStyle: 'short'
     });
 
-    // We need to get rid of the comma separating date and time
-    const parts = formatter.formatToParts(date);
-    return parts.filter(p => p.type !== 'literal')
-        .map(p => p.value)
-        .join(' ');
+    return formatter.format(new Date(datestring));
 }
 
 const copyToClipboard = (link) => {
