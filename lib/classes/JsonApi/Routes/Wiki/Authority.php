@@ -29,7 +29,7 @@ class Authority
      */
     public static function canCreateWiki(\User $user, $range)
     {
-        $config = \CourseConfig::get($range->id);
+        $config = \RangeConfig::get($range->id);
         return $config->WIKI_CREATE_PERMISSION === 'all'
             || $GLOBALS['perm']->have_studip_perm($config->WIKI_CREATE_PERMISSION, $range->id);
     }
