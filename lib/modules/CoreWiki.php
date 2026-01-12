@@ -194,7 +194,7 @@ class CoreWiki extends CorePlugin implements StudipModule
      */
     public static function getTOC(WikiPage $activePage): TOCItem
     {
-        $rootId = CourseConfig::get(Context::getId())->WIKI_STARTPAGE_ID;
+        $rootId = RangeConfig::get(Context::getId())->WIKI_STARTPAGE_ID;
         $rootPage = WikiPage::find($rootId) ?: $activePage;
 
         $rootToc = self::getTOCRecursive($rootPage, $activePage->page_id);
