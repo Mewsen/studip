@@ -112,8 +112,11 @@ const configs = computed(() => {
                         </dd>
 
                         <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
-                        <dd>
-                            <CopyableCodeBlock :content="resource.custom_parameters || resource.registration.custom_parameters" />
+                        <dd >
+                            <CopyableCodeBlock
+                                v-if="resource.custom_parameters || resource.registration.custom_parameters"
+                                :content="resource.custom_parameters || resource.registration.custom_parameters"
+                            />
                         </dd>
                     </dl>
 

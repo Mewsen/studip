@@ -44,7 +44,7 @@ final class Step5405 extends Migration {
         DBManager::get()->exec("
             CREATE TABLE IF NOT EXISTS `lti_publications` (
                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                `key` VARCHAR(64) NOT NULL,
+                `publication_key` VARCHAR(64) NOT NULL,
                 `name` VARCHAR(255) NOT NULL,
                 `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
                 `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
@@ -151,7 +151,9 @@ final class Step5405 extends Migration {
 
         DBManager::get()->exec("
             ALTER TABLE `lti_resource_links`
-                ADD COLUMN `launch_type` ENUM('default','deep_linking') NOT NULL DEFAULT 'default' AFTER `options`,
+                ADD COLUMN `custom_parameters` TEXT AFTER `options`,
+                ADD COLUMN `launch_type` ENUM('default','deep_linking') NOT NULL DEFAULT 'default' AFTER `custom_parameters`,
+                ADD COLUMN `launch_container` ENUM('window','iframe') NOT NULL DEFAULT 'window' AFTER `launch_type`,
                 ADD COLUMN `color` VARCHAR(7) AFTER `launch_type`,
                 ADD COLUMN `icon` VARCHAR(100) AFTER `color`
         ");

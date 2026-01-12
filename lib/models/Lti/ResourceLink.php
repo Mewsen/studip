@@ -105,7 +105,7 @@ class ResourceLink extends SimpleORMap
         return $registrationConfigs['launch_url'];
     }
 
-    public function getCustomParameters(): string
+    public function getCustomParameters(): ?string
     {
         if (!empty($this->custom_parameters)) {
             return $this->custom_parameters;
