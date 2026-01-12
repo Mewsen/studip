@@ -77,7 +77,7 @@ class Admin_Lti_PublicationsController extends AdminBaseController
             'name' => Request::get('name'),
             'version' => Request::get('version', '1.3a'),
             'status' => Request::bool('status', true),
-            'key' => Uuid::uuid4()->toString(),
+            'publication_key' => Uuid::uuid4()->toString(),
             'range_id' => $this->range_id,
             'user_id' => User::findCurrent()->id,
         ]);
@@ -145,6 +145,18 @@ class Admin_Lti_PublicationsController extends AdminBaseController
         );
 
         $this->redirect('admin/lti/publications');
+    }
+
+    public function show_members_action(Publication $publication): void
+    {
+        PageLayout::setTitle(_('Teilnehmenden der LTI-Veröffentlichung anzeigen'));
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/publications/ShowMembers')
+                ->withProps([
+                    'publication' => $publication->transformData(['members'])
+                ])
+        );
     }
 
     private function extractPublicationConfigsFromRequest(): array

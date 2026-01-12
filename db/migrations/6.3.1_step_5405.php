@@ -14,7 +14,7 @@ final class Step5405 extends Migration {
                 `name` VARCHAR(255) NOT NULL,
                 `description` TEXT NOT NULL,
                 `role` ENUM('tool', 'platform') NOT NULL DEFAULT 'tool',
-                `state` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+                `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
                 `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
                 `range_id` CHAR(32) COLLATE latin1_bin NOT NULL Default 'global',
                 `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
@@ -46,7 +46,7 @@ final class Step5405 extends Migration {
                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 `key` VARCHAR(64) NOT NULL,
                 `name` VARCHAR(255) NOT NULL,
-                `state` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+                `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
                 `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
                 `range_id` CHAR(32) COLLATE latin1_bin NOT NULL,
                 `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
@@ -179,13 +179,46 @@ final class Step5405 extends Migration {
         DBManager::get()->exec("
             DROP TABLE IF EXISTS
                 `lti_registration_configs`,
-                `lti_registrations`
+                `lti_registrations`,
+                `lti_publications`,
+                `lti_publication_configs`,
+                `lti_publication_users`
         ");
 
         DBManager::get()->exec("
             ALTER TABLE `lti_deployments` DROP INDEX `idx_registration_id`;
             ALTER TABLE `lti_deployments` DROP FOREIGN KEY `fk_deployment_registration`;
             ALTER TABLE `lti_deployments` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL;
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments`
+                DROP COLUMN `deployment_key`,
+                DROP COLUMN `client_id`,
+                DROP COLUMN `is_default`;
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL AFTER `user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` DROP COLUMN `id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_tool_privacy_settings` DROP INDEX `idx_user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_resource_links`
+                DROP COLUMN `launch_type`,
+                DROP COLUMN `color`,
+                DROP COLUMN `icon`;
         ");
 
         DBManager::get()->exec(
