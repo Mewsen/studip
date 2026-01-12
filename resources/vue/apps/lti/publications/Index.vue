@@ -42,6 +42,7 @@ const {
 const actionMenus = computed(() => {
     return [
         { label: $gettext('Konfiguration anzeigen'),  icon: 'info', emit: 'show'},
+        { label: $gettext('Teilnehmenden anzeigen'),  icon: 'community', emit: 'showMembers'},
         { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
         { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
     ];
@@ -49,6 +50,7 @@ const actionMenus = computed(() => {
 
 
 const showPublication = id => STUDIP.Dialog.fromURL(showPublicationURL(id), { width: '700' });
+const showMembers = publication => currentPublication.value = publication;
 const addPublication = () => STUDIP.Dialog.fromURL(createPublicationURL(), { width: '700' });
 
 const editPublication = id => STUDIP.Dialog.fromURL(editPublicationURL(id), { width: '700' });
@@ -221,7 +223,7 @@ const deletePublication = id => {
                             type="button"
                             class="styleless button-base"
                             :title="$gettext('Teilnehmenden anschauen')"
-                            @click="currentPublication = publication"
+                            @click="showMembers(publication)"
                         >
                             {{ publication.members.length }}
                         </button>
@@ -247,13 +249,14 @@ const deletePublication = id => {
                             :context="publication.name"
                             :items="actionMenus"
                             @show="showPublication(publication.id)"
+                            @showMembers="showMembers(publication)"
                             @edit="editPublication(publication.id)"
                             @delete="showConfirmDelete(publication.id, publication.name)"
                         />
                     </td>
                 </tr>
                 <tr v-if="sortedPublications.length === 0">
-                    <td colspan="7">
+                    <td colspan="8">
                         {{ $gettext('Keine LTI-Veröffentlichungen vorhanden.') }}
                     </td>
                 </tr>

@@ -8,6 +8,7 @@ export const deleteRegistrationURL = id => STUDIP.URLHelper.getURL(`dispatch.php
 
 
 // Deployments URLS:
+export const deploymentsIndexURL = (registrationId, role = 'tool') => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments?registration_id=${registrationId}&role=${role}`);
 export const addDeploymentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/create?registration_id=${registrationId}`);
 export const storeDeploymentURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/store`);
 export const editDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments/edit/${id}`);

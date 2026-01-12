@@ -8,7 +8,7 @@ import StudipIcon from "../../../components/StudipIcon.vue";
 import {
     addDeploymentURL,
     createRegistrationURL,
-    deleteRegistrationURL,
+    deleteRegistrationURL, deploymentsIndexURL,
     editRegistrationURL,
     showRangeURL,
     showRegistrationURL
@@ -37,14 +37,22 @@ const {
     getAriaSortString,
     getAriaSortLabel
 } = useSortable(registrationsRef);
-
-const actionMenus = computed(() => {
-    return [
-        { label: $gettext('Neues Deployment anlegen'),  icon: 'add', emit: 'addDeployment'},
+const getActionMenus = registration => {
+    const base = [
         { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
         { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
     ];
-});
+
+    if (registration.version === '1.3a') {
+        return [
+            { label: $gettext('Neues Deployment anlegen'),  icon: 'add', emit: 'addDeployment'},
+            { label: $gettext('Deployments anzeigen'),  icon: 'spaceship', emit: 'showDeployments'},
+            ...base
+        ];
+    }
+
+    return base;
+}
 
 const pageTitle = computed(() => {
     if (props.role === 'tool') {
@@ -59,9 +67,8 @@ const pageTitle = computed(() => {
 const addRegistration = () => STUDIP.Dialog.fromURL(createRegistrationURL(props.role), { width: '900' });
 
 const addDeployment = registrationId => STUDIP.Dialog.fromURL(addDeploymentURL(registrationId), { width: '500', height: '400'});
-
+const showDeployments = registrationId => window.location.href = deploymentsIndexURL(registrationId, props.role);
 const editRegistration = id => STUDIP.Dialog.fromURL(editRegistrationURL(id, props.role), { width: '900' });
-const getDeploymentsURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/deployments?registration_id=${id}&role=${props.role}`);
 const showConfirmDelete = (id, name) => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diese "%{name}" Registrierung löschen?', {name}),
     () => deleteRegistration(id),
@@ -198,7 +205,7 @@ const deleteRegistration = id => {
                     </td>
                     <td>{{ registration.version }}</td>
                     <td>
-                        <a v-if="registration.version === '1.3a'" :href="getDeploymentsURL(registration.id)">
+                        <a v-if="registration.version === '1.3a'" :href="deploymentsIndexURL(registration.id, role)">
                             {{ registration.deployments.length }}
                         </a>
                     </td>
@@ -228,8 +235,9 @@ const deleteRegistration = id => {
                     <td class="actions">
                         <StudipActionMenu
                             :context="registration.name"
-                            :items="actionMenus"
+                            :items="getActionMenus(registration)"
                             @edit="editRegistration(registration.id)"
+                            @showDeployments="showDeployments(registration.id)"
                             @addDeployment="addDeployment(registration.id)"
                             @delete="showConfirmDelete(registration.id, registration.name)"
                         />
