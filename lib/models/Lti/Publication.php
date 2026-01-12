@@ -4,13 +4,14 @@ namespace Lti;
 use Avatar;
 use Range;
 use SimpleORMap;
+use Studip\Lti\Enum\PublicationStatus;
 use User;
 use SimpleORMapCollection;
 
 /**
  * @property string $name
  * @property string $version
- * @property int $status
+ * @property string $status
  * @property string $publication_key
  * @property array $config_values
  * @property PublicationConfig $configs
@@ -79,7 +80,7 @@ class Publication extends SimpleORMap
     {
         $base = [
             ...$this->toRawArray(),
-            'status' => (bool) $this->status,
+            'status' => PublicationStatus::get($this->status),
             'range_name' => $this->range?->getFullName(),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),

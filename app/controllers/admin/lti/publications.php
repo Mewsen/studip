@@ -5,6 +5,7 @@ use LTI\AdminBaseController;
 use Lti\Publication;
 use Lti\PublicationConfig;
 use Ramsey\Uuid\Uuid;
+use Studip\Lti\Enum\PublicationStatus;
 
 class Admin_Lti_PublicationsController extends AdminBaseController
 {
@@ -76,7 +77,7 @@ class Admin_Lti_PublicationsController extends AdminBaseController
         $publication = Publication::create([
             'name' => Request::get('name'),
             'version' => Request::get('version', '1.3a'),
-            'status' => Request::bool('status', true),
+            'status' => PublicationStatus::fromBoolean(Request::bool('status', true)),
             'publication_key' => Uuid::uuid4()->toString(),
             'range_id' => $this->range_id,
             'user_id' => User::findCurrent()->id,
@@ -113,7 +114,7 @@ class Admin_Lti_PublicationsController extends AdminBaseController
         $publication->setData([
             'name' => Request::get('name'),
             'version' => Request::get('version', $publication->version),
-            'status' => Request::bool('status', $publication->status)
+            'status' => PublicationStatus::fromBoolean(Request::bool('status', PublicationStatus::get($publication->status)['value'])),
         ]);
 
         $publication->store();

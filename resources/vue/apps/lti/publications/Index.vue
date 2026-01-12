@@ -129,14 +129,14 @@ const deletePublication = id => {
                         </button>
                     </th>
                     <th
-                        :class="getSortClass('status')"
-                        :aria-sort="getAriaSortString('status')"
-                        :aria-label="getAriaSortLabel('status', $gettext('Status'))"
+                        :class="getSortClass('status.value')"
+                        :aria-sort="getAriaSortString('status.value')"
+                        :aria-label="getAriaSortLabel('status.value', $gettext('Status'))"
                     >
                         <button
                             type="button"
                             class="button__table-sort button-base"
-                            @click="sortBy('state')"
+                            @click="sortBy('status.value')"
                             :title="$gettext('Nach Status sortieren')">
                             {{ $gettext('Status') }}
                         </button>
@@ -206,11 +206,11 @@ const deletePublication = id => {
                     <td>
                         <span class="status-label"
                             :class="{
-                                'status-label--success': publication.status,
-                                'status-label--warning': !publication.status
+                                'status-label--success': publication.status.value === 'active',
+                                'status-label--warning': publication.status.value === 'inactive'
                             }"
                         >
-                            {{ publication.status ? $gettext('Aktiv') : $gettext('Ausstehend') }}
+                            {{ publication.status.label }}
                         </span>
                     </td>
                     <td>

@@ -77,21 +77,6 @@ class PlatformManager
         return static::getKeyring()->toKeyChain()->getPublicKey();
     }
 
-    public static function getLtiRoleClaimForStudipRole(string $role): string
-    {
-        if (in_array($role, ['dozent', 'admin', 'root'])) {
-            //Lecturer/admin
-            return 'http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor';
-        } elseif ($role === 'tutor') {
-            return 'http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor';
-        } elseif (in_array($role, ['user', 'autor'])) {
-            //Learner
-            return  'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
-        }
-        //Invalid role:
-        return '';
-    }
-
     /**
      * Generates the URL for returning from the tool in an LTI deep linking process.
      *

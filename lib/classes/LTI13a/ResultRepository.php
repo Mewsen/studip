@@ -13,7 +13,8 @@ class ResultRepository implements ResultRepositoryInterface
         string $lineItemIdentifier,
         ?int $limit = null,
         ?int $offset = null
-    ) : ResultCollectionInterface {
+    ): ResultCollectionInterface
+    {
         $sqlParams = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
         if (!$sqlParams) {
             //Nothing we can search for:
@@ -43,21 +44,20 @@ class ResultRepository implements ResultRepositoryInterface
     public function findByLineItemIdentifierAndUserIdentifier(
         string $lineItemIdentifier,
         string $userIdentifier
-    ) : ?ResultInterface {
+    ): ?ResultInterface
+    {
         $searchParameters = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        $searchParameters['user_id'] = $userIdentifier;
 
-        $grade = \Grading\Instance::findOneBySQL(
+        return Instance::findOneBySQL(
             'JOIN `grading_definitions` gd
                ON (`definition_id` = gd.`id`)
                WHERE gd.`course_id` = :course_id
                AND gd.`tool` = :tool
                AND `user_id` = :user_id',
-            $searchParameters
-        );
-        if ($grade) {
-            return $grade->toResult();
-        }
-        return null;
+            [
+                ...$searchParameters,
+                'user_id' => $userIdentifier
+            ]
+        )?->toResult();
     }
 }

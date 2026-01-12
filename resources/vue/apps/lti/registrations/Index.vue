@@ -159,14 +159,14 @@ const deleteRegistration = id => {
                     </th>
                     <th
                         scope="col"
-                        :class="getSortClass('state')"
-                        :aria-sort="getAriaSortString('state')"
-                        :aria-label="getAriaSortLabel('state', $gettext('Status'))"
+                        :class="getSortClass('status.value')"
+                        :aria-sort="getAriaSortString('status.value')"
+                        :aria-label="getAriaSortLabel('status.value', $gettext('Status'))"
                     >
                         <button
                             type="button"
                             class="button__table-sort button-base"
-                            @click="sortBy('state')"
+                            @click="sortBy('status.value')"
                             :title="$gettext('Nach Status sortieren')">
                             {{ $gettext('Status') }}
                         </button>
@@ -213,11 +213,11 @@ const deleteRegistration = id => {
                     <td>
                         <span class="status-label"
                               :class="{
-                                'status-label--success': registration.state,
-                                'status-label--warning': !registration.state
+                                'status-label--success': registration.status.value === 'active',
+                                'status-label--warning': registration.status.value === 'inactive'
                               }"
                         >
-                            {{ registration.state ? $gettext('Aktiv') : $gettext('Ausstehend') }}
+                            {{ registration.status.label }}
                         </span>
                     </td>
 

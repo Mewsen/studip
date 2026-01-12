@@ -5,12 +5,13 @@ use Keyring;
 use Lti\Enum\ResourceLaunchContainer;
 use Range;
 use SimpleORMap;
+use Studip\Lti\Enum\RegistrationStatus;
 use Studip\LTI13a\RegistrationRepository;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 /**
  * @property int $id
- * @property bool $state
+ * @property string $status
  */
 class Registration extends SimpleORMap
 {
@@ -102,7 +103,7 @@ class Registration extends SimpleORMap
     {
         $base = [
             ...$this->toRawArray(),
-            'state' => (bool) $this->state,
+            'status' => RegistrationStatus::get($this->status),
             'range_name' => $this->range?->getFullName() ?? _('Global'),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),

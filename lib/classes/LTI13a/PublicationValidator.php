@@ -5,6 +5,7 @@ use Lti\Publication;
 use Lti\PublicationUser;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
+use Studip\Lti\Enum\PublicationStatus;
 
 class PublicationValidator
 {
@@ -62,7 +63,7 @@ class PublicationValidator
      */
     private function validateStatus(): self
     {
-        if ((int) $this->publication->status === 0) {
+        if ($this->publication->status !== PublicationStatus::Active->value) {
             throw new LtiException('This content is currently inactive and cannot be accessed.');
         }
 

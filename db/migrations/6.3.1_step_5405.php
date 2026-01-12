@@ -3,7 +3,7 @@
 final class Step5405 extends Migration {
     public function description()
     {
-        return 'Add Lti Registration Tables';
+        return 'Add and modify LTI Tables';
     }
 
     public function up()

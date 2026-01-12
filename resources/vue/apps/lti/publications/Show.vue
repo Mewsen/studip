@@ -36,7 +36,7 @@ defineProps({
 
             <dt>{{ $gettext('Status') }}</dt>
             <dd>
-                {{ publication.status ? $gettext('Aktiv') : $gettext('Ausstehend') }}
+                {{ publication.status.label }}
             </dd>
 
             <dt>{{ $gettext('Anzahl der Teilnehmenden') }}</dt>

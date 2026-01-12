@@ -3,6 +3,10 @@ namespace Lti;
 
 use SimpleORMap;
 
+/**
+ * @property int $id
+ * @property Registration $registration
+ */
 class Deployment extends SimpleORMap
 {
     protected static function configure($config = []): void

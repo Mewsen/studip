@@ -23,7 +23,8 @@ const form = reactive({
     version: '1.3a',
     key_type: 'jwk_keyset',
     launch_container: 'window',
-    ...props.registration
+    ...props.registration,
+    status: props.registration.status.value === 'active',
 });
 
 const formActionURL = computed(() => {
@@ -102,10 +103,10 @@ onMounted(() => {
             </label>
 
             <StudipSwitch
-                name="state"
-                v-model="form.state"
+                name="status"
+                v-model="form.status"
                 :label="$gettext('Status')"
-                :title="form.state ? $gettext('LTI-Registrierungen deaktivieren') : $gettext('LTI-Registrierungen aktivieren')"
+                :title="form.status ? $gettext('LTI-Registrierungen deaktivieren') : $gettext('LTI-Registrierungen aktivieren')"
             />
         </fieldset>
         <fieldset v-if="role === 'tool'">

@@ -103,7 +103,7 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
 
             <dt>{{ $gettext('Status') }}</dt>
             <dd>
-                {{ registration.state ? $gettext('Aktiv') : $gettext('Ausstehend') }}
+                {{ registration.status.label }}
             </dd>
 
             <dt>{{ $gettext('Version') }}</dt>

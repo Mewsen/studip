@@ -49,7 +49,7 @@ final class RoleMapper {
 
     public static function toLocal(array $ltiRoles): array
     {
-        $local = [
+        $localRole = [
             'global' => null,
             'institut' => null,
             'course' => null
@@ -57,27 +57,27 @@ final class RoleMapper {
 
         // Global roles
         if (in_array(self::LTI_SYSTEM_ADMIN, $ltiRoles, true)) {
-            $local['global'] = 'root';
+            $localRole['global'] = 'root';
         } elseif (in_array(self::LTI_USER, $ltiRoles, true)) {
-            $local['global'] = 'user';
+            $localRole['global'] = 'user';
         }
 
         // Institution roles
         if (in_array(self::LTI_INSTITUTION_ADMIN, $ltiRoles, true)) {
-            $local['institut'] = 'admin';
+            $localRole['institut'] = 'admin';
         }
 
         // Course roles
         if (in_array(self::LTI_COURSE_ADMIN, $ltiRoles, true)) {
-            $local['course'] = 'admin';
+            $localRole['course'] = 'admin';
         } elseif (in_array(self::LTI_COURSE_INSTRUCTOR, $ltiRoles, true)) {
-            $local['course'] = 'dozent';
+            $localRole['course'] = 'dozent';
         } elseif (in_array(self::LTI_COURSE_TA, $ltiRoles, true)) {
-            $local['course'] = 'tutor';
+            $localRole['course'] = 'tutor';
         } elseif (in_array(self::LTI_COURSE_LEARNER, $ltiRoles, true) || in_array(self::LTI_COURSE_OBSERVER, $ltiRoles, true)) {
-            $local['course'] = 'autor';
+            $localRole['course'] = 'autor';
         }
 
-        return $local;
+        return $localRole;
     }
 }

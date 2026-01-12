@@ -3,6 +3,7 @@
 namespace Studip\LTI13a;
 
 use Keyring;
+use Studip\KeyringException;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainFactoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
@@ -10,7 +11,7 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 class KeyChainFactory implements KeyChainFactoryInterface
 {
     /**
-     * @throws \Studip\KeyringException In case no keychain can be generated.
+     * @throws KeyringException In case no keychain can be generated.
      */
     public function create(
         string $identifier,
@@ -21,21 +22,23 @@ class KeyChainFactory implements KeyChainFactoryInterface
         string $algorithm = KeyInterface::ALG_RS256
     ): KeyChainInterface
     {
-        $keyring = null;
         if (!$publicKey && !$privateKey) {
-            $keyring = Keyring::generate($identifier, 'global', $privateKeyPassPhrase, $algorithm);
-        } else {
-            $keyring = Keyring::findOneBySQL('range_id = :id', ['id' => $identifier]);
-            if ($keyring) {
-                return $keyring->toKeyChain();
-            } else {
-                throw new \Studip\KeyringException(
-                    'Keyring not found.',
-                    \Studip\KeyringException::NOT_FOUND
-                );
-
-            }
+            return Keyring::generate(
+                $identifier,
+                'global',
+                $privateKeyPassPhrase,
+                $algorithm
+            )->toKeyChain();
         }
-        return $keyring;
+
+        $keyring = Keyring::findOneBySQL('range_id = :id', ['id' => $identifier]);
+        if (!$keyring) {
+            throw new KeyringException(
+                'Keyring not found.',
+                KeyringException::NOT_FOUND
+            );
+        }
+
+        return $keyring->toKeyChain();
     }
 }

@@ -20,15 +20,15 @@ class Identity implements UserIdentityInterface
     {
         $this->user = $user;
 
-        $privacy_settings = LtiToolPrivacySettings::findOneBySQL(
+        $privacySettings = LtiToolPrivacySettings::findOneBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id",
             [
                 'registration_id' => $registration->getIdentifier(),
                 'user_id' => $user->id
             ]
         );
-        if ($privacy_settings) {
-            $this->allowed_optional_fields = explode(',', $privacy_settings->allowed_optional_fields);
+        if ($privacySettings) {
+            $this->allowed_optional_fields = explode(',', $privacySettings->allowed_optional_fields);
         }
     }
 

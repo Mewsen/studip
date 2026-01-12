@@ -15,6 +15,7 @@ use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\RegistrationManager;
+use Studip\LTI13a\RoleMapper;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
@@ -249,9 +250,7 @@ class Course_LtiController extends StudipController
                 $registration->toLti1p3Registration(),
                 User::findCurrent()->id,
                 $deployment->deployment_key,
-                [
-                    PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))
-                ],
+                RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->range_id)),
                 [
                     ...$resourceLinkRepo->getCustomLtiParameters(),
                     new ContextClaim(
@@ -314,7 +313,7 @@ class Course_LtiController extends StudipController
                 User::findCurrent()->id,
                 null,
                 $resourceLink->deployment->deployment_key,
-                [PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->range_id))]
+                RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->range_id))
             );
 
             $this->render_text($message->toHtmlRedirectForm());

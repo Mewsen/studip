@@ -6,6 +6,7 @@ use Lti\Deployment;
 use Lti\Registration;
 use Lti\RegistrationConfig;
 use Ramsey\Uuid\Uuid;
+use Studip\Lti\Enum\RegistrationStatus;
 use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\ToolManager;
 use Studip\Markup;
@@ -94,7 +95,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'role' => Request::get('role', 'tool'),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
-            'state' => Request::bool('state', true),
+            'status' => RegistrationStatus::fromBoolean(Request::bool('status')),
             'range_id' => $this->range_id ?? 'global'
         ]);
 
@@ -145,7 +146,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             'role' => Request::get('role', $registration->role),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
-            'state' => Request::bool('state', $registration->state)
+            'status' => RegistrationStatus::fromBoolean(Request::bool('status'))
         ]);
 
         $registration->store();

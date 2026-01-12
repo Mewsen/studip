@@ -5,14 +5,19 @@ use Lti\Deployment;
 use Lti\Registration;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use Studip\Lti\Enum\PublicationStatus;
+use Studip\Lti\Enum\RegistrationStatus;
 
 class RegistrationManager implements RegistrationRepositoryInterface
 {
     public function find(string $identifier): ?RegistrationInterface
     {
         return Registration::findOneBySQL(
-            "id = ? AND state = 1",
-            [$identifier]
+            "id = :id AND status = :status",
+            [
+                'id' => $identifier,
+                'status' => RegistrationStatus::Active->value
+            ]
         )?->toLti1p3Registration();
     }
 
@@ -25,44 +30,41 @@ class RegistrationManager implements RegistrationRepositoryInterface
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
-        if (!$deployment->registration->state) {
+        $registration = $deployment->registration;
+        if (!$registration || $registration->status !== RegistrationStatus::Active->value) {
             return null;
         }
 
-
-        return $deployment->registration?->toLti1p3Registration($deployment);
+        return $registration->toLti1p3Registration($deployment);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
-
-        if (!$deployment->registration->state) {
+        $registration = $deployment->registration;
+        if (
+            !$registration
+            || $registration->status !== RegistrationStatus::Active->value
+            || $registration->getConfigValues()['issuer'] !== $issuer
+        ) {
             return null;
         }
 
-        return $deployment->registration?->toLti1p3Registration($deployment);
+        return $registration->toLti1p3Registration($deployment);
     }
 
     public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
-
-        if (!$deployment->registration->state) {
+        $registration = $deployment->registration;
+        if (
+            !$registration
+            || $registration->status !== RegistrationStatus::Active->value
+            || $registration->getConfigValues()['audience'] !== $issuer
+        ) {
             return null;
         }
 
-        return $deployment->registration?->toLti1p3Registration($deployment);
-    }
-
-    private function getRegistrationByClientId(string $clientId): ?Registration
-    {
-        return Registration::findOneBySQL(
-            "JOIN `lti_deployments` `deployments` ON (`lti_registrations`.`id` = `deployments`.`registration_id`)
-                WHERE `deployments`.`client_id` = :client_id",
-            [
-                'client_id' => $clientId
-            ]
-        );
+        return $registration->toLti1p3Registration($deployment);
     }
 }

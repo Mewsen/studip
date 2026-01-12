@@ -5,6 +5,7 @@ use LTI\AdminBaseController;
 use Lti\Deployment;
 use Lti\Registration;
 use Lti\ResourceLink;
+use Studip\Lti\Enum\RegistrationStatus;
 
 class Admin_Lti_ResourcesController extends AdminBaseController
 {
@@ -126,8 +127,9 @@ class Admin_Lti_ResourcesController extends AdminBaseController
     private function getTransformedRegistrations(): array
     {
         $registrations = Registration::findBySQL(
-            "`role`= 'tool' AND `state` = 1 AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
+            "`role`= 'tool' AND `status` = :status AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
             [
+                'status' => RegistrationStatus::Active->value,
                 'range_ids' => [$this->range_id, 'global']
             ]
         );
