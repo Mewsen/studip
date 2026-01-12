@@ -3,6 +3,14 @@ namespace Lti;
 
 use SimpleORMap;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $value
+ * @property int $mkdate
+ * @property int $chdate
+ * @property Registration $registration
+ */
 class RegistrationConfig extends SimpleORMap
 {
     protected static function configure($config = [])

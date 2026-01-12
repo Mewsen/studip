@@ -5,14 +5,23 @@ use Keyring;
 use Lti\Enum\ResourceLaunchContainer;
 use Range;
 use SimpleORMap;
+use SimpleORMapCollection;
 use Studip\Lti\Enum\RegistrationStatus;
 use Studip\LTI13a\RegistrationRepository;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 /**
  * @property int $id
- * @property Range $range
+ * @property string $name
  * @property string $status
+ * @property string $version
+ * @property int $mkdate
+ * @property int $chdate
+ * @property array $config_values
+ * @property ?Keyring $keyring
+ * @property Range $range
+ * @property SimpleORMapCollection<RegistrationConfig> $configs
+ * @property SimpleORMapCollection<Deployment> $deployments
  */
 class Registration extends SimpleORMap
 {

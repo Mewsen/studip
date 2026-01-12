@@ -5,6 +5,13 @@ use Avatar;
 use SimpleORMap;
 use User;
 
+/**
+ * @property int $id
+ * @property int $mkdate
+ * @property int $chdate
+ * @property Publication $publication
+ * @property User $user
+ */
 class PublicationUser extends SimpleORMap
 {
     protected static function configure($config = [])

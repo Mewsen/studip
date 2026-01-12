@@ -148,7 +148,7 @@ onMounted(() => nameInputRef.value.focus());
             </legend>
 
             <label>
-                <span>{{ $gettext('Launch container') }}</span>
+                <span>{{ $gettext('Container starten') }}</span>
                 <select name="launch_container" v-model="form.launch_container">
                     <option value="window">{{ $gettext('Neues Fenster') }}</option>
                     <option value="iframe">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>

@@ -5,15 +5,15 @@ use SimpleORMap;
 use User;
 
 /**
- * @property array $id alias for pk
- * @property int $registration_id database column
- * @property string $user_id database column
- * @property int $accepted database column
- * @property string $allowed_optional_fields database column
- * @property int $mkdate database column
- * @property int $chdate database column
- * @property User $user belongs_to User
- * @property Registration $registration belongs_to Registration
+ * @property array $id
+ * @property int $registration_id
+ * @property string $user_id
+ * @property int $accepted
+ * @property string $allowed_optional_fields
+ * @property int $mkdate
+ * @property int $chdate
+ * @property User $user
+ * @property Registration $registration
  */
 class RegistrationPrivacySettings extends SimpleORMap
 {

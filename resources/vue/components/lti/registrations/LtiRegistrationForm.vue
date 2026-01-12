@@ -24,7 +24,7 @@ const form = reactive({
     key_type: 'jwk_keyset',
     launch_container: 'window',
     ...props.registration,
-    status: props.registration.status.value === 'active',
+    status: props.registration.status?.value === 'active',
 });
 
 const formActionURL = computed(() => {
@@ -219,7 +219,7 @@ onMounted(() => {
         <fieldset v-if="role === 'tool'">
             <legend>{{ $gettext('Anzeigeeinstellungen') }}</legend>
             <label>
-                <span>{{ $gettext('Default launch container') }}</span>
+                <span>{{ $gettext('Standard-Container starten') }}</span>
                 <select name="launch_container" v-model="form.launch_container">
                     <option value="window">{{ $gettext('Neues Fenster') }}</option>
                     <option value="iframe">{{ $gettext('Anzeige im IFRAME auf der Seite') }}</option>

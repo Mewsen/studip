@@ -15,6 +15,8 @@ import {
 import LtiApp from "../../../components/lti/LtiApp.vue";
 import CopyableCodeBlock from "../../../components/CopyableCodeBlock.vue";
 import UserAvatarDropdown from "../../../components/avatar/UserAvatarDropdown.vue";
+import PublicationMember from "../../../components/lti/publications/PublicationMember.vue";
+import StudipDialog from "../../../components/StudipDialog.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
 const RANGE_ID = STUDIP.URLHelper.parameters.cid;
@@ -26,6 +28,7 @@ const props = defineProps({
     }
 });
 
+const currentPublication = ref(null);
 const publicationsRef = ref(props.publications);
 
 const {
@@ -214,7 +217,14 @@ const deletePublication = id => {
                         </span>
                     </td>
                     <td>
-                        {{ publication.members.length }}
+                        <button
+                            type="button"
+                            class="styleless button-base"
+                            :title="$gettext('Teilnehmenden anschauen')"
+                            @click="currentPublication = publication"
+                        >
+                            {{ publication.members.length }}
+                        </button>
                     </td>
                     <td>
                         <div style="width: 400px">
@@ -253,6 +263,20 @@ const deletePublication = id => {
         <form id="lti-publication-delete-form" method="post">
             <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
         </form>
+        <StudipDialog
+            v-if="currentPublication?.id"
+            :title="$gettext('Teilnehmenden der Veröffentlichung')"
+            :closeText="$gettext('Schließen')"
+            height="700"
+            width="600"
+            @close="currentPublication = null"
+        >
+            <template #dialogContent>
+                <div class="lti">
+                    <PublicationMember :members="currentPublication?.members" />
+                </div>
+            </template>
+        </StudipDialog>
     </LtiApp>
 </template>
 

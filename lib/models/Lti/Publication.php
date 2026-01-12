@@ -14,9 +14,11 @@ use SimpleORMapCollection;
  * @property string $status
  * @property string $publication_key
  * @property array $config_values
- * @property PublicationConfig $configs
  * @property Range $range
  * @property User $user
+ * @property int $mkdate
+ * @property int $chdate
+ * @property SimpleORMapCollection<PublicationConfig> $configs
  * @property SimpleORMapCollection<User> $members
  */
 class Publication extends SimpleORMap

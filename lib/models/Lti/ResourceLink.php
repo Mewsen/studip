@@ -9,6 +9,22 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use SimpleORMap;
 use Studip\LTI13a\ResourceLinkRepository;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property int $position
+ * @property string $icon
+ * @property string $color
+ * @property string $launch_type
+ * @property string $launch_container
+ * @property string $custom_parameters
+ * @property JSONArrayObject $options
+ * @property int $mkdate
+ * @property int $chdate
+ * @property Course $course
+ * @property Deployment $deployment
+ */
 class ResourceLink extends SimpleORMap
 {
     protected static function configure($config = [])

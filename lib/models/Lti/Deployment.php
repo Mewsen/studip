@@ -2,10 +2,20 @@
 namespace Lti;
 
 use SimpleORMap;
+use SimpleORMapCollection;
 
 /**
  * @property int $id
+ * @property string $name
+ * @property string $purpose
+ * @property bool $is_default
+ * @property string $deployment_key
+ * @property string $client_id
+ * @property int $mkdate
+ * @property int $chdate
  * @property Registration $registration
+ * @property ResourceLink $resource_links
+ * @property SimpleORMapCollection<Grade> $grades
  */
 class Deployment extends SimpleORMap
 {

@@ -19,7 +19,7 @@ const form = reactive({
     dozent_role: 'dozent',
     autor_role: 'autor',
     ...props.publication,
-    status: props.publication.status.value === 'active',
+    status: props.publication.status?.value !== 'inactive',
     enrollment_deadline: props.publication.enrollment_deadline && STUDIP.Dates.isoToDatetimeLocal(props.publication.enrollment_deadline),
     start_date: props.publication.start_date && STUDIP.Dates.isoToDatetimeLocal(props.publication.start_date),
     end_date: props.publication.end_date && STUDIP.Dates.isoToDatetimeLocal(props.publication.end_date)
