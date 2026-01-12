@@ -291,8 +291,9 @@ class ICalendarImport
                 }
 
                 // day events starts at 00:00:00 and ends at 23:59:59
-                if ($check['DAY_EVENT'])
-                    $properties['DTEND']--;
+                if ($check['DAY_EVENT']) {
+                    $properties['DTEND']->sub(new DateInterval('PT1S'));
+                }
 
                 // default: all imported events are set to private
                 if (!$properties['CLASS']
@@ -344,7 +345,7 @@ class ICalendarImport
 
         $date->begin = $properties['DTSTART']->getTimestamp();
         $date->end = $properties['DTEND']->getTimestamp();
-        $date->title = $properties['SUMMARY'];
+        $date->title = $properties['SUMMARY'] ?: _('Ohne Titel');
         $date->description = $properties['DESCRIPTION'];
         $date->access = $properties['CLASS'] ?? 'PRIVATE';
         $date->user_category = $properties['CATEGORIES'];
@@ -382,7 +383,7 @@ class ICalendarImport
         $date->month = $rrule['month'] ?? null;
         $date->repetition_type = $rrule['rtype'] ?? 'SINGLE';
         $date->number_of_dates = $rrule['count'] ?? 1;
-        $date->repetition_end = $rrule['expire'] ?? 0;
+        $date->repetition_end = $rrule['expire'] ? $rrule['expire']->getTimestamp() : 0;
     }
 
     private function unfoldLine($data)
@@ -433,7 +434,7 @@ class ICalendarImport
         if (count($parts) != 2) {
             // not a date time string but may be just a date string
             $date = $this->parseDate($date_time);
-            return DateTimeImmutable::createFromFormat('YmdHis', implode('', $date) . '000000');
+            return DateTime::createFromFormat('YmdHis', implode('', $date) . '000000');
         }
 
         $date = $this->parseDate($parts[0]);
@@ -444,7 +445,7 @@ class ICalendarImport
         } else {
             $time_zone = new DateTimeZone('Europe/Berlin');
         }
-        return DateTimeImmutable::createFromFormat(
+        return DateTime::createFromFormat(
             'YmdHis',
             implode('', $date) . $time['hour'] . $time['minute'] . $time['second'],
             $time_zone
@@ -491,7 +492,15 @@ class ICalendarImport
      */
     private function parseDuration($interval_text): DateInterval
     {
-        return new DateInterval($interval_text);
+        $interval_text = trim($interval_text);
+        $invert = 0;
+        if ($interval_text !== '' && $interval_text[0] === '-') {
+            $invert = 1;
+            $interval_text = substr($interval_text, 1);
+        }
+        $interval = new DateInterval($interval_text);
+        $interval->invert = $invert;
+        return $interval;
     }
 
     private function parsePriority($value)
