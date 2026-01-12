@@ -146,7 +146,7 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-           ALTER TABLE `lti_tool_privacy_settings` ADD INDEX `idx_user_id` (`user_id`)
+           ALTER TABLE `lti_registration_privacy_settings` ADD INDEX `idx_user_id` (`user_id`)
         ");
 
         DBManager::get()->exec("
