@@ -130,6 +130,10 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
+            ALTER TABLE `lti_registration_privacy_settings` DROP PRIMARY KEY
+        ");
+
+        DBManager::get()->exec("
             ALTER TABLE `lti_registration_privacy_settings` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL AFTER `user_id`
         ");
 
