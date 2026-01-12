@@ -43,7 +43,7 @@ $page_version = null;
 
 if (!$keyword || $keyword === 'WikiWikiWeb') {
     // Load the start page for the course:
-    $page_id = CourseConfig::get($course_id)->getValue('WIKI_STARTPAGE_ID');
+    $page_id = RangeConfig::get($course_id)->WIKI_STARTPAGE_ID;
     $load_newest_version = true;
     if ($version) {
         // Check if the requested version is the newest version.
