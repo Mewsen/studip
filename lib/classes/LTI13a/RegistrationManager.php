@@ -8,7 +8,7 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use Studip\Lti\Enum\PublicationStatus;
 use Studip\Lti\Enum\RegistrationStatus;
 
-class RegistrationManager implements RegistrationRepositoryInterface
+final class RegistrationManager implements RegistrationRepositoryInterface
 {
     public function find(string $identifier): ?RegistrationInterface
     {

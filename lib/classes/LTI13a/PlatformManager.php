@@ -11,7 +11,7 @@ use OAT\Library\Lti1p3DeepLinking\Settings\DeepLinkingSettings;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use URLHelper;
 
-class PlatformManager
+final class PlatformManager
 {
     /**
      * Generates an object containing the configuration to use this Stud.IP

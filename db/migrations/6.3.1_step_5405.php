@@ -126,15 +126,19 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL AFTER `user_id`
+            ALTER TABLE `lti_tool_privacy_settings` RENAME TO `lti_registration_privacy_settings`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY AFTER `user_id`
+            ALTER TABLE `lti_registration_privacy_settings` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL AFTER `user_id`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` MODIFY COLUMN `user_id` CHAR(32) COLLATE latin1_bin NOT NULL AFTER `id`
+            ALTER TABLE `lti_registration_privacy_settings` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY AFTER `user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registration_privacy_settings` MODIFY COLUMN `user_id` CHAR(32) COLLATE latin1_bin NOT NULL AFTER `id`
         ");
 
         DBManager::get()->exec("
@@ -203,15 +207,19 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL AFTER `user_id`
+            ALTER TABLE `lti_registration_privacy_settings` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL AFTER `user_id`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` DROP COLUMN `id`
+            ALTER TABLE `lti_registration_privacy_settings` DROP COLUMN `id`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_tool_privacy_settings` DROP INDEX `idx_user_id`
+            ALTER TABLE `lti_registration_privacy_settings` DROP INDEX `idx_user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registration_privacy_settings` RENAME TO `lti_tool_privacy_settings`
         ");
 
         DBManager::get()->exec("

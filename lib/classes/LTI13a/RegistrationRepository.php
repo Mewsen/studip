@@ -10,7 +10,7 @@ use OAT\Library\Lti1p3Core\Tool\ToolInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 
-class RegistrationRepository implements RegistrationInterface
+final class RegistrationRepository implements RegistrationInterface
 {
     public function __construct(
         protected Registration $registration,

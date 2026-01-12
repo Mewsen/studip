@@ -9,7 +9,7 @@ use Lti\Publication;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 
-class UserEnrollment
+final class UserEnrollment
 {
     protected UserIdentityInterface $userIdentity;
     protected Range $range;

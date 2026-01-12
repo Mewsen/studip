@@ -4,7 +4,7 @@ namespace Studip\LTI13a;
 final class RoleMapper {
     // Global
     const LTI_SYSTEM_ADMIN = 'http://purl.imsglobal.org/vocab/lis/v2/system/person#Administrator';
-    const LTI_USER = 'http://purl.imsglobal.org/vocab/lis/v2/system/person#User';
+    const LTI_SYSTEM_USER = 'http://purl.imsglobal.org/vocab/lis/v2/system/person#User';
 
     // Institution
     const LTI_INSTITUTION_ADMIN = 'http://purl.imsglobal.org/vocab/lis/v2/institution/person#Administrator';
@@ -58,7 +58,7 @@ final class RoleMapper {
         // Global roles
         if (in_array(self::LTI_SYSTEM_ADMIN, $ltiRoles, true)) {
             $localRole['global'] = 'root';
-        } elseif (in_array(self::LTI_USER, $ltiRoles, true)) {
+        } elseif (in_array(self::LTI_SYSTEM_USER, $ltiRoles, true)) {
             $localRole['global'] = 'user';
         }
 

@@ -2,25 +2,23 @@
 namespace Studip\LTI13a;
 
 use Avatar;
+use Lti\RegistrationPrivacySettings;
 use User;
-use LtiToolPrivacySettings;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
-class Identity implements UserIdentityInterface
+final class Identity implements UserIdentityInterface
 {
-    protected User $user;
+    protected array $optionalFields = [];
 
-    protected array $allowed_optional_fields = [];
-
-    public function __construct(User $user, RegistrationInterface $registration)
-    {
-        $this->user = $user;
-
-        $privacySettings = LtiToolPrivacySettings::findOneBySQL(
+    public function __construct(
+        protected User $user,
+        RegistrationInterface $registration
+    ) {
+        $privacySettings = RegistrationPrivacySettings::findOneBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id",
             [
                 'registration_id' => $registration->getIdentifier(),
@@ -28,7 +26,7 @@ class Identity implements UserIdentityInterface
             ]
         );
         if ($privacySettings) {
-            $this->allowed_optional_fields = explode(',', $privacySettings->allowed_optional_fields);
+            $this->optionalFields = explode(',', $privacySettings->allowed_optional_fields);
         }
     }
 
@@ -64,7 +62,7 @@ class Identity implements UserIdentityInterface
 
     public function getLocale(): ?string
     {
-        if (!in_array('lang', $this->allowed_optional_fields)) {
+        if (!in_array('lang', $this->optionalFields)) {
             return '';
         }
         return $this->user->preferred_language;
@@ -72,7 +70,7 @@ class Identity implements UserIdentityInterface
 
     public function getPicture(): ?string
     {
-        if (!in_array('avatar_url', $this->allowed_optional_fields)) {
+        if (!in_array('avatar_url', $this->optionalFields)) {
             return '';
         }
         return Avatar::getAvatar($this->user->id)->getURL(Avatar::MEDIUM);

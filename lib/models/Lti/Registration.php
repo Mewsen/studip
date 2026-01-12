@@ -11,6 +11,7 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 /**
  * @property int $id
+ * @property Range $range
  * @property string $status
  */
 class Registration extends SimpleORMap

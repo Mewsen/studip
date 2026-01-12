@@ -7,7 +7,7 @@ use OAT\Library\Lti1p3Ags\Model\Result\ResultCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultInterface;
 use OAT\Library\Lti1p3Ags\Repository\ResultRepositoryInterface;
 
-class ResultRepository implements ResultRepositoryInterface
+final class ResultRepository implements ResultRepositoryInterface
 {
     public function findCollectionByLineItemIdentifier(
         string $lineItemIdentifier,

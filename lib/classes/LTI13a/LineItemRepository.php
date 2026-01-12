@@ -10,7 +10,7 @@ use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
 use Studip\LTIException;
 use Grading\Definition;
 
-class LineItemRepository implements LineItemRepositoryInterface
+final class LineItemRepository implements LineItemRepositoryInterface
 {
     /**
      * Converts the tool-ID and deployment-ID in the tool name used in the

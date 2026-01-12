@@ -2,7 +2,7 @@
 /**
  * @var AuthenticatedController $controller
  * @var Lti\ResourceLink $resourceLink
- * @var LtiToolPrivacySettings $privacySettings
+ * @var Lti\RegistrationPrivacySettings $privacySettings
  */
 ?>
 

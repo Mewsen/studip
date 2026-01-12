@@ -8,7 +8,7 @@ use OAT\Library\Lti1p3Core\Tool\Tool;
 use OAT\Library\Lti1p3Core\Tool\ToolInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 
-class ToolManager
+final class ToolManager
 {
     public static function getToolConfiguration(): ToolInterface
     {

@@ -5,7 +5,7 @@ use Keyring;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 
-class KeyManager implements KeyChainRepositoryInterface
+final class KeyManager implements KeyChainRepositoryInterface
 {
     public function find(string $identifier): ?KeyChainInterface
     {

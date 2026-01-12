@@ -7,12 +7,17 @@ use User;
 
 class Authority
 {
-    public static function canShowLti(User $user, ?Range $range = null): bool
+    public static function canShowRegistration(Range $range, ?User $user): bool
     {
-        return $range?->isAccessibleToUser($user->user_id);
+        return $range->isAccessibleToUser($user?->user_id);
     }
 
-    public static function canIndexLtiTools(User $user): bool
+    public static function canShowLti(User $user, ?Range $range = null): bool
+    {
+        return (bool) $range?->isAccessibleToUser($user->user_id);
+    }
+
+    public static function canIndexLtiRegistrations(User $user): bool
     {
         return static::canShowLti($user);
     }

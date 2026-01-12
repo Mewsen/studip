@@ -3,6 +3,7 @@
 use Lti\Deployment;
 use Lti\Grade;
 use Lti\Registration;
+use Lti\RegistrationPrivacySettings;
 use Lti\ResourceLink;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
@@ -137,7 +138,7 @@ class Course_LtiController extends StudipController
         }
 
         $registrationId = $resourceLink->deployment->registration_id;
-        $privacySettings = LtiToolPrivacySettings::findOneBySQL(
+        $privacySettings = RegistrationPrivacySettings::findOneBySQL(
             'registration_id = :registration_id AND user_id = :user_id',
             [
                 'registration_id' => $registrationId,
@@ -146,7 +147,7 @@ class Course_LtiController extends StudipController
         );
 
         if (!$privacySettings) {
-            $privacySettings = new LtiToolPrivacySettings();
+            $privacySettings = new RegistrationPrivacySettings();
             $privacySettings->registration_id = $registrationId;
             $privacySettings->user_id = User::findCurrent()->id;
         }
@@ -207,7 +208,7 @@ class Course_LtiController extends StudipController
         $deployment = $resourceLink->deployment;
         $registration = $deployment->registration;
         $registrationConfigs = $registration->getConfigValues();
-        $dataProtectionConsent = LtiToolPrivacySettings::countBySQL(
+        $dataProtectionConsent = RegistrationPrivacySettings::countBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id AND `accepted` = 1",
             [
                 'registration_id' => $registration->id,

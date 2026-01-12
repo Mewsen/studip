@@ -7,7 +7,7 @@ use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use Studip\Lti\Enum\PublicationStatus;
 
-class PublicationValidator
+final class PublicationValidator
 {
     protected array $publicationConfigs;
 

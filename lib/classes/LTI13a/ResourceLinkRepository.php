@@ -6,7 +6,7 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
 
-class ResourceLinkRepository implements LtiResourceLinkInterface
+final class ResourceLinkRepository implements LtiResourceLinkInterface
 {
     public function __construct(
         protected ResourceLink $resourceLink

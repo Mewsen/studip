@@ -8,7 +8,7 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainFactoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 
-class KeyChainFactory implements KeyChainFactoryInterface
+final class KeyChainFactory implements KeyChainFactoryInterface
 {
     /**
      * @throws KeyringException In case no keychain can be generated.

@@ -7,7 +7,7 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResultInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 
-class UserAuthenticator implements UserAuthenticatorInterface
+final class UserAuthenticator implements UserAuthenticatorInterface
 {
     public function authenticate(RegistrationInterface $registration, string $loginHint): UserAuthenticationResultInterface
     {

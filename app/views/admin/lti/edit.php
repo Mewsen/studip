@@ -1,7 +1,6 @@
 <?php
 /**
  * @var Admin_LtiController $controller
- * @var LtiTool $tool
  * @var \OAT\Library\Lti1p3Core\Platform\Platform $platform
  */
 ?>
