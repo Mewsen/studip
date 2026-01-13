@@ -151,6 +151,7 @@ module.exports = {
             'jquery-ui/widgets/droppable': 'jquery-ui/ui/widgets/droppable',
             'jquery-ui/widgets/resizable': 'jquery-ui/ui/widgets/resizable',
             '@': path.resolve(__dirname, 'resources'),
+            '@studip-ui': path.resolve(__dirname, 'packages/studip-ui/src'),
         },
         extensions: ['.ts', '.vue', '.js'],
         fallback: {

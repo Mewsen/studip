@@ -1,0 +1,148 @@
+@use './_colors.scss' as colors;
+@use './_spacing.scss' as spacing;
+@use './_typography.scss' as typography;
+
+
+:root {
+    // Farben
+
+    --color--black: #{colors.$color--black};
+    --color--blue-1: #{colors.$color--blue-1};
+    --color--blue-2: #{colors.$color--blue-2};
+    --color--gray-1: #{colors.$color--gray-1};
+    --color--gray-2: #{colors.$color--gray-2};
+    --color--gray-3: #{colors.$color--gray-3};
+    --color--gray-4: #{colors.$color--gray-4};
+    --color--gray-5: #{colors.$color--gray-5};
+    --color--gray-6: #{colors.$color--gray-6};
+    --color--gray-7: #{colors.$color--gray-7};
+    --color--green-1: #{colors.$color--green-1};
+    --color--green-2: #{colors.$color--green-2};
+    --color--red-1: #{colors.$color--red-1};
+    --color--red-2: #{colors.$color--red-2};
+    --color--white: #{colors.$color--white};
+    --color--yellow-1: #{colors.$color--yellow-1};
+    --color--yellow-2: #{colors.$color--yellow-2};
+
+    --color--global-background: #{colors.$color--global-background};
+
+    --color--brand-primary: #{colors.$color--brand-primary};
+    --color--brand-primary-contrast: #{colors.$color--brand-primary-contrast};
+    --color--brand-secondary: #{colors.$color--brand-secondary};
+    --color--brand-secondary-contrast: #{colors.$color--brand-secondary-contrast};
+
+    --color--highlight: #{colors.$color--highlight};
+    --color--highlight-hover: #{colors.$color--highlight-hover};
+    --color--highlight-contrast: #{colors.$color--highlight-contrast};
+
+    --color--sidebar-item: #{colors.$color--sidebar-item};
+    --color--sidebar-item-hover: #{colors.$color--sidebar-item-hover};
+
+    --color--content-link: #{colors.$color--content-link};
+    --color--content-link-hover: #{colors.$color--content-link-hover};
+
+    --color--font-primary: #{colors.$color--font-primary};
+    --color--font-secondary: #{colors.$color--font-secondary};
+    --color--font-inactive: #{colors.$color--font-inactive};
+    --color--font-inverted: #{colors.$color--font-inverted};
+
+    --color--main-navigation-background: #{colors.$color--main-navigation-background};
+    --color--main-navigation-border: #{colors.$color--main-navigation-border};
+    --color--main-navigation-item: #{colors.$color--main-navigation-item};
+    --color--main-navigation-item-inactive: #{colors.$color--main-navigation-item-inactive};
+
+    --color--sidebar-marker-active: #{colors.$color--sidebar-marker-active};
+    --color--sidebar-marker-active-navigation: #{colors.$color--sidebar-marker-active-navigation};
+    --color--sidebar-marker-active-view: #{colors.$color--sidebar-marker-active-view};
+    --color--sidebar-marker-focus: #{colors.$color--sidebar-marker-focus};
+    --color--sidebar-marker-hover: #{colors.$color--sidebar-marker-hover};
+    --color--sidebar-active: #{colors.$color--sidebar-active};
+    --color--sidebar-focus: #{colors.$color--sidebar-focus};
+    --color--sidebar-hover: #{colors.$color--sidebar-hover};
+    --color--sidebar-divider: #{colors.$color--sidebar-divider};
+
+    --color--action-menu-border: #{colors.$color--action-menu-border};
+    --color--action-menu-divider: #{colors.$color--action-menu-divider};
+    --color--action-menu-hover: #{colors.$color--action-menu-hover};
+    --color--action-menu-marker-hover: #{colors.$color--action-menu-marker-hover};
+    --color--action-menu-shadow: #{colors.$color--action-menu-shadow};
+
+    --color--dialog-overlay: #{colors.$color--dialog-overlay};
+
+    --color--tile-border-focus: #{colors.$color--tile-border-focus};
+    --color--tile-border-hover: #{colors.$color--tile-border-hover};
+    --color--tile-border: #{colors.$color--tile-border};
+    --color--tile-background: #{colors.$color--tile-background};
+    --color--tile-background-active: #{colors.$color--tile-background-active};
+    --color--tile-background-focus: #{colors.$color--tile-background-focus};
+    --color--tile-background-hover: #{colors.$color--tile-background-hover};
+    --color--tile-marker-inactive: #{colors.$color--tile-marker-inactive};
+    --color--tile-marker-active: #{colors.$color--tile-marker-active};
+    --color--tile-marker-attention: #{colors.$color--tile-marker-attention};
+    --color--tile-title-background: #{colors.$color--tile-title-background};
+
+    --color--scrollbar-thumb: #{colors.$color--scrollbar-thumb};
+
+    --color--content-bar-background: #{colors.$color--content-bar-background};
+
+    --color--content-box-border: #{colors.$color--content-box-border};
+    --color--content-box-header: #{colors.$color--content-box-header};
+    --color--content-box-background: #{colors.$color--content-box-background};
+
+    --color--table-header: #{colors.$color--table-header};
+    --color--table-border: #{colors.$color--table-border};
+    --color--table-focus: #{colors.$color--table-focus};
+    --color--table-hover: #{colors.$color--table-hover};
+
+    --color--fieldset-border: #{colors.$color--fieldset-border};
+    --color--fieldset-header: #{colors.$color--fieldset-header};
+
+    --color--tabs-marker-hover: #{colors.$color--tabs-marker-hover};
+    --color--tabs-marker-active: #{colors.$color--tabs-marker-active};
+
+    --color--button-inactive-background: #{colors.$color--button-inactive-background};
+    --color--button-inactive-background-contrast: #{colors.$color--button-inactive-background-contrast};
+    --color--button-inactive-border: #{colors.$color--button-inactive-border};
+
+    --color--radiobuttonset-background: #{colors.$color--radiobuttonset-background};
+    --color--radiobuttonset-background-selected: #{colors.$color--radiobuttonset-background-selected};
+    --color--radiobuttonset-border: #{colors.$color--radiobuttonset-border};
+
+    --color--input-field-border: #{colors.$color--input-field-border};
+    --color--input-field-background: #{colors.$color--input-field-background};
+
+    --color--divider: #{colors.$color--divider};
+    --color--line: #{colors.$color--line};
+
+    --color--shadow: #{colors.$color--shadow};
+    --color--focus: #{colors.$color--focus};
+
+    --color--warning: #{colors.$color--warning};
+    --color--warning-secondary: #{colors.$color--warning-secondary};
+    --color--warning-contrast: #{colors.$color--warning-contrast};
+    --color--warning-secondary-contrast: #{colors.$color--warning-secondary-contrast};
+
+    --color--attention: #{colors.$color--attention};
+    --color--attention-secondary: #{colors.$color--attention-secondary};
+    --color--attention-contrast: #{colors.$color--attention-contrast};
+    --color--attention-secondary-contrast: #{colors.$color--attention-secondary-contrast};
+
+    --color--good: #{colors.$color--good};
+    --color--good-secondary: #{colors.$color--good-secondary};
+    --color--good-contrast: #{colors.$color--good-contrast};
+    --color--good-secondary-contrast: #{colors.$color--good-secondary-contrast};
+
+    --color--info: #{colors.$color--info};
+    --color--info-secondary: #{colors.$color--info-secondary};
+    --color--info-contrast: #{colors.$color--info-contrast};
+    --color--info-secondary-contrast: #{colors.$color--info-secondary-contrast};
+
+    --color--image-placeholder-background: #{colors.$color--image-placeholder-background};
+    --color--image-placeholder-icon: #{colors.$color--image-placeholder-icon};
+
+    --color--header-inverted: #{colors.$color-header-inverted};
+
+    // Abstände
+
+    // Schriften
+}
