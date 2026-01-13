@@ -26,7 +26,10 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         if ($GLOBALS['perm']->have_perm('root')) {
             Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
-            Navigation::addItem('/admin/config/lti-publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+
+            if (static::isToolSharingEnabled()) {
+                Navigation::addItem('/admin/config/lti-publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+            }
         }
 
         NotificationCenter::on('UserDidDelete', function ($event, $user) {
@@ -79,7 +82,10 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         }
 
         if (static::isModerator($course_id)) {
-            $navigation->addSubNavigation('publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+            if (static::isToolSharingEnabled()) {
+                $navigation->addSubNavigation('publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+            }
+
             $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
         }
 
@@ -93,6 +99,11 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     public function getInfoTemplate($course_id)
     {
         return null;
+    }
+
+    public static function isToolSharingEnabled(): bool
+    {
+        return (bool) Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS;
     }
 
     public static function isAdmin($userId = null): bool

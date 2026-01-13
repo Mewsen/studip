@@ -24,6 +24,7 @@ class ConfigIndex extends JsonApiController
         }
 
         return $this->getMetaResponse([
+            'is-tool-sharing-enabled' => LtiToolModule::isToolSharingEnabled(),
             'is-admin' => LtiToolModule::isAdmin($user->id),
             'is-moderator' => LtiToolModule::isModerator($range->id, $user->id)
         ]);

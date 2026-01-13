@@ -13,6 +13,10 @@ class Admin_Lti_PublicationsController extends AdminBaseController
     {
         parent::before_filter($action, $args);
 
+        if (!$this->isToolSharingEnabled) {
+            throw new AccessDeniedException();
+        }
+
         if ($this->range_id) {
             Navigation::activateItem('/course/lti/publications');
         } else {

@@ -14,6 +14,8 @@ use ViewsWidget;
 
 abstract class AdminBaseController extends AuthenticatedController
 {
+    protected $range_id = null;
+    protected $isToolSharingEnabled = false;
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -24,7 +26,7 @@ abstract class AdminBaseController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->isToolSharingEnabled = Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS;
+        $this->isToolSharingEnabled = LtiToolModule::isToolSharingEnabled();
     }
 
     protected function buildRegistrationsSidebar(): void
@@ -81,15 +83,17 @@ abstract class AdminBaseController extends AuthenticatedController
 
     protected function buildPublicationsSidebar(): void
     {
-        // actions:
-        $actions = new ActionsWidget();
-        $actions->addLink(
-            _('Neue Veröffentlichung anlegen'),
-            $this->url_for('admin/lti/publications/create'),
-            Icon::create('add')
-        )->asDialog('width=700');
+        if($this->isToolSharingEnabled) {
+            // actions:
+            $actions = new ActionsWidget();
+            $actions->addLink(
+                _('Neue Veröffentlichung anlegen'),
+                $this->url_for('admin/lti/publications/create'),
+                Icon::create('add')
+            )->asDialog('width=700');
 
-        Sidebar::get()->addWidget($actions);
+            Sidebar::get()->addWidget($actions);
+        }
     }
 
 }
