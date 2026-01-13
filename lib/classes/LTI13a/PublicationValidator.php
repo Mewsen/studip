@@ -75,7 +75,7 @@ final class PublicationValidator
      */
     private function validateEnrollmentDeadline(): self
     {
-        $enrollmentDeadline = (int) $this->publicationConfigs['enrollment_deadline'];
+        $enrollmentDeadline = (int) ($this->publicationConfigs['enrollment_deadline'] ?? 0);
 
         if (!$enrollmentDeadline) {
             return $this;
@@ -93,7 +93,7 @@ final class PublicationValidator
      */
     private function validateStartDate(): self
     {
-        $startDate = (int) $this->publicationConfigs['start_date'];
+        $startDate = (int) ($this->publicationConfigs['start_date'] ?? 0);
 
         if (!$startDate) {
             return $this;
@@ -113,7 +113,7 @@ final class PublicationValidator
      */
     private function validateEndDate(): self
     {
-        $endDate = (int) $this->publicationConfigs['end_date'];
+        $endDate = (int) ($this->publicationConfigs['end_date'] ?? 0);
 
         if (!$endDate) {
             return $this;

@@ -2,6 +2,8 @@
 namespace Studip\LTI13a;
 
 use Lti\PublicationUser;
+use OAT\Library\Lti1p3Core\Exception\LtiException;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use User;
 use Range;
 use CourseMember;
@@ -30,16 +32,24 @@ final class UserEnrollment
         return $user;
     }
 
+    /**
+     * @throws LtiExceptionInterface
+     *
+     */
     private function syncUser(): User
     {
+
         $user = User::findOneBySQL(
             "email = :email AND auth_plugin = 'LTI13a'",
             ['email' => $this->userIdentity->getEmail()]
         );
 
         if (!$user) {
-            $user = new User();
+            if (!$this->userIdentity->getGivenName() || !$this->userIdentity->getFamilyName()) {
+                throw new LtiException('Failed to enroll user: Missing name information.');
+            }
 
+            $user = new User();
             $username = 'lti13a.'.str_replace('@', '_', $this->userIdentity->getEmail());
             $user->setData([
                 'username' => strtolower($username),
@@ -49,8 +59,8 @@ final class UserEnrollment
         }
 
         $user->setData([
-            'Vorname' => $this->userIdentity->getGivenName(),
-            'Nachname' => $this->userIdentity->getFamilyName(),
+            'Vorname' => $this->userIdentity->getGivenName() ?? $user->Vorname,
+            'Nachname' => $this->userIdentity->getFamilyName() ?? $user->Nachname,
             'perms' => $this->resolveLocalContextRole()
         ]);
         $user->store();
