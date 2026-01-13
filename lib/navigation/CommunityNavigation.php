@@ -57,9 +57,11 @@ class CommunityNavigation extends Navigation
         }
 
         // contacts
-        $navigation = new Navigation(_('Kontakte'), 'dispatch.php/contact');
-        $this->addSubNavigation('contacts', $navigation);
+        $navigation = new Navigation(_('Kontakte (ALT)'), 'dispatch.php/contact');
+        $this->addSubNavigation('contacts_old', $navigation);
 
+        $navigation = new Navigation(_('Kontakte'), 'dispatch.php/community/contacts');
+        $this->addSubNavigation('contacts', $navigation);
         
 
         

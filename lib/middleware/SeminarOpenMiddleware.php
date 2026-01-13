@@ -46,7 +46,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
                 $jump_page = 'dispatch.php/calendar/schedule';
                 break;
             case 4:
-                $jump_page = 'dispatch.php/contact';
+                $jump_page = 'dispatch.php/community';
                 break;
             case 5:
                 $jump_page = 'dispatch.php/calendar/calendar';

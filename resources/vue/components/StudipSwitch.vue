@@ -1,155 +1,122 @@
+<template>
+    <label class="studip-switch" :class="{ 'is-disabled': disabled }">
+        <input
+            v-bind="$attrs"
+            type="checkbox"
+            role="switch"
+            class="studip-switch__input"
+            :checked="isChecked"
+            :disabled="disabled"
+            @change="isChecked = $event.target.checked"
+        />
+        <span class="studip-switch__slider">
+            <span class="studip-switch__knob">
+                <studip-icon :shape="isChecked ? activeIcon : inactiveIcon" :size="12" :role="null" />
+            </span>
+        </span>
+        <span class="studip-switch__text">{{ label }}</span>
+    </label>
+</template>
+
 <script setup>
-defineProps({
-    label: {
-        type: String,
-        required: true,
-    }
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+
+const props = defineProps({
+    label: { type: String, required: true },
+    disabled: { type: Boolean, default: false },
+    activeIcon: { type: String, default: 'accept' },
+    inactiveIcon: { type: String, default: 'decline' },
 });
 
 const isChecked = defineModel({ default: false });
 </script>
 
-<template>
-    <label class="switch-input-container" :title="label">
-        <input
-            v-bind="$attrs"
-            class="input"
-            type="checkbox"
-            :checked="isChecked"
-            @change="isChecked = $event.target.checked"
-            :aria-checked="isChecked.toString()"
-            :aria-label="label"
-            role="switch"
-        />
-        <span class="switch-container">
-            <span class="switch"></span>
-        </span>
-        <span class="label">{{ label }}</span>
-    </label>
-</template>
-
-<style scoped>
-.switch-input-container {
+<style scoped lang="scss">
+.studip-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    display: flex !important;
-    align-items: center;
-}
+    user-select: none;
+    padding: 4px 0;
 
-.label {
-    margin-left: 12px;
-    color: #1a202c;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    &__input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
 
-/* Visually hide the checkbox input */
-.input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-}
+        &:focus-visible + .studip-switch__slider {
+            outline: 2px solid var(--color--focus);
+        }
+    }
 
-.switch-container {
-    --studip-switch-container-width: 40px;
-    --studip-switch-size: calc(var(--studip-switch-container-width) / 2);
-    display: flex;
-    align-items: center;
-    position: relative;
-    height: var(--studip-switch-size);
-    flex-basis: var(--studip-switch-container-width);
-    border-radius: var(--studip-switch-size);
-    background-color: var(--dark-gray-color-15);
-    flex-shrink: 0;
-    transition: background-color 0.25s ease-in-out;
-}
+    &__slider {
+        --switch-width: 40px;
+        --switch-height: 20px;
 
-.switch-container .switch {
-    content: "";
-    position: absolute;
-    height: calc(var(--studip-switch-size) - 4px);
-    width: calc(var(--studip-switch-size) - 4px);
-    border-radius: 9999px;
-    background-color: white;
-    border: 2px solid var(--dark-gray-color-15);
-    transition: transform 0.375s ease-in-out;
-}
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: var(--switch-width);
+        height: var(--switch-height);
+        background-color: var(--dark-gray-color-15);
+        border-radius: var(--switch-height);
+        transition: background-color 0.2s ease-in-out;
+        flex-shrink: 0;
 
-.switch::before {
-    content: '';
-    height: 10px;
-    width: 2px;
-    position: absolute;
-    top: calc(50% - 5px);
-    left: calc(50% - 1px);
-    transform: rotate(45deg);
-    background: var(--color--font-inactive);
-    border-radius: 5px;
-}
+        .studip-switch__input:checked + & {
+            background-color: var(--green-80);
+        }
+    }
 
-.switch::after {
-    content: '';
-    height: 2px;
-    width: 10px;
-    position: absolute;
-    top: calc(50% - 1px);
-    left: calc(50% - 5px);
-    transform: rotate(45deg);
-    background: var(--color--font-inactive);
-    border-radius: 5px;
-}
+    &__knob {
+        position: absolute;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background-color: white;
+        border-radius: 50%;
 
-/* Styles when checked */
-.input:checked + .switch-container {
-    background-color: var(--green-80);
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-.input:checked + .switch-container .switch {
-    border-color: var(--green-80);
-    transform: translateX(calc(var(--studip-switch-container-width) - var(--studip-switch-size)));
-}
+        transition: transform 0.2s ease-in-out;
 
-.input:checked + .switch-container .switch::before {
-    position: absolute;
-    top: calc(50%);
-    left: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    background: var(--green);
-}
+        .studip-switch__input:checked + .studip-switch__slider & {
+            transform: translateX(20px);
+        }
 
-.input:checked + .switch-container .switch::after {
-    height: 6px;
-    width: 2px;
-    position: absolute;
-    top: calc(55%);
-    left: calc(23%);
-    transform: translateY(-50%) rotate(-40deg);
-    background: var(--green);
-}
+        :deep(.studip-icon) {
+            display: block;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
 
-/* Focus states */
-.input:focus + .switch-container .switch {
-    border-color: var(--dark-gray-color-60);
-}
+            img {
+                display: block;
+            }
+        }
+    }
 
-.input:focus:checked + .switch-container .switch {
-    border-color: var(--green);
-}
+    &__text {
+        color: var(--color--font-primary);
+        font-size: 0.95rem;
+    }
 
-/* Disabled styles */
-.input:disabled + .switch-container {
-    cursor: not-allowed;
-    background-color: var(--dark-gray-color-15);
-}
+    &.is-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
 
-.input:disabled + .switch-container .switch {
-    background-color: var(--dark-gray-color-40);
-    border-color: var(--dark-gray-color-45);
+        .studip-switch__slider {
+            background-color: var(--dark-gray-color-15) !important;
+        }
+    }
 }
 </style>

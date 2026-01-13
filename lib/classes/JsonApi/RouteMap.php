@@ -286,6 +286,7 @@ class RouteMap
         $group->post('/user-contact-groups', Routes\Contacts\UserContactGroupsCreate::class);
         $group->get('/user-contact-groups/{id}', Routes\Contacts\UserContactGroupsShow::class);
         $group->patch('/user-contact-groups/{id}', Routes\Contacts\UserContactGroupsUpdate::class);
+        $group->delete('/user-contact-groups/{id}', Routes\Contacts\ContactGroupsDelete::class);
         $group->delete('/user-contact-groups', Routes\Contacts\UserContactGroupsDelete::class);
         $this->addRelationship($group, '/user-contact-groups/{id}/relationships/group-users', Routes\Contacts\Rel\ContactGroupItems::class);
 

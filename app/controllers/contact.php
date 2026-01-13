@@ -73,7 +73,7 @@ class ContactController extends AuthenticatedController
         $this->filter = $filter;
 
         // Deal with navigation
-        Navigation::activateItem('community/contacts');
+        Navigation::activateItem('community/contacts_old');
 
         // Edit CSS for quicknavigation
         PageLayout::addStyle('div.letterlist span {color: #c3c8cc;}');

@@ -94,8 +94,8 @@ class Calendar_CalendarController extends AuthenticatedController
                 ['data-dialog' => 'size=auto']
             );
             $actions->addLink(
-                _('Gruppen verwalten'),
-                $this->url_for('contact/index'),
+                _('Kontakte verwalten'),
+                $this->url_for('community/contacts'),
                 Icon::create('group2')
             );
         }

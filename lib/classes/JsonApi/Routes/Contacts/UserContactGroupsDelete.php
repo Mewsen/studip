@@ -37,7 +37,7 @@ class UserContactGroupsDelete extends JsonApiController
             }
 
             if (!Authority::canDeleteGroups($user, $group)) {
-                throw new RecordNotFoundException();
+                throw new AuthorizationFailedException();
             }
 
             $userContactGroups[$group->id] = $group;

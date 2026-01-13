@@ -29,6 +29,12 @@
         color: var(--color--highlight-contrast);
     }
 
+    &:focus-visible {
+        outline: 2px solid var(--color--focus);
+        border-radius: var(--border-radius-default);
+        z-index: 8;
+    }
+
     &.disabled,
     &[disabled] {
         box-shadow: none;

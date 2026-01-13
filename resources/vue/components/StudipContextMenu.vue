@@ -4,6 +4,7 @@
             type="button"
             class="button context-menu__button"
             :class="buttonClass"
+            :title="title"
             :aria-expanded="isOpen.toString()"
             aria-haspopup="true"
             @click="toggle"
@@ -19,11 +20,13 @@
             role="menu"
             :aria-label="title || 'Dropdown-Menü'"
             @keydown="handleKeyDown"
-            tabindex="0"
+            tabindex="-1"
         >
             <div v-if="title" class="context-menu__menu-title" role="presentation">{{ title }}</div>
 
-            <slot name="content" />
+            <div class="context-menu__entries">
+                <slot name="content" />
+            </div>
         </div>
 
         <transition name="menu-drawer">
@@ -32,17 +35,18 @@
                 <div class="context-menu__menu-drawer-panel" role="menu">
                     <div v-if="title" class="context-menu__menu-title">
                         <span>{{ title }}</span>
-                        <button @click="close">
+                        <button @click="close" class="context-menu__close-drawer">
                             <StudipIcon shape="decline" :size="20" />
                         </button>
                     </div>
-                    <slot name="content" />
+                    <div class="context-menu__entries">
+                        <slot name="content" />
+                    </div>
                 </div>
             </div>
         </transition>
     </div>
 </template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import StudipIcon from '@/vue/components/StudipIcon.vue';
@@ -96,6 +100,27 @@ function checkResponsiveClass() {
     }
 }
 
+const getFocusableElements = () => {
+    if (!menuWrapper.value) return [];
+
+    const selectors = [
+        '.context-menu__entry:is(button, a):not([disabled])',
+        '.context-menu__entry input:not([disabled])',
+        '.context-menu__entry select:not([disabled])',
+    ].join(',');
+
+    const allElements = Array.from(menuWrapper.value.querySelectorAll(selectors));
+
+    return allElements.filter((el) => {
+        if (el.type === 'radio' && el.name) {
+            const group = allElements.filter((i) => i.name === el.name);
+            const checked = group.find((i) => i.checked);
+            return checked ? el === checked : el === group[0];
+        }
+        return true;
+    });
+};
+
 watch(isOpen, (open) => {
     if (open && !hasAdjusted.value) {
         nextTick(() => {
@@ -103,8 +128,12 @@ watch(isOpen, (open) => {
                 adjustPosition();
                 hasAdjusted.value = true;
 
-                const panel = menuWrapper.value.querySelector('.context-menu__panel');
-                if (panel) panel.focus();
+                const elements = getFocusableElements();
+                if (elements.length > 0) {
+                    elements[0].focus();
+                } else {
+                    menuWrapper.value?.querySelector('.context-menu__panel')?.focus();
+                }
             });
         });
     }
@@ -119,21 +148,22 @@ function handleClickOutside(event) {
 function handleKeyDown(event) {
     if (!isOpen.value) return;
 
-    const focusableSelectors = '.context-menu__entry:not([disabled])';
-    const focusableElements = menuWrapper.value.querySelectorAll(focusableSelectors);
-    if (focusableElements.length === 0) return;
+    const elements = getFocusableElements();
+    if (elements.length === 0) return;
 
-    const firstEl = focusableElements[0];
-    const lastEl = focusableElements[focusableElements.length - 1];
+    const firstEl = elements[0];
+    const lastEl = elements[elements.length - 1];
     const activeEl = document.activeElement;
 
     if (event.key === 'Tab') {
         if (event.shiftKey) {
-            if (activeEl === firstEl) {
+            // Shift + Tab
+            if (activeEl === firstEl || activeEl === menuWrapper.value.querySelector('.context-menu__panel')) {
                 event.preventDefault();
                 lastEl.focus();
             }
         } else {
+            // Tab
             if (activeEl === lastEl) {
                 event.preventDefault();
                 firstEl.focus();
@@ -142,7 +172,6 @@ function handleKeyDown(event) {
     } else if (event.key === 'Escape' || event.key === 'Esc') {
         event.preventDefault();
         close();
-        // Fokus zurück auf Button:
         const button = menuWrapper.value.querySelector('.context-menu__button');
         if (button) button.focus();
     }
@@ -176,12 +205,12 @@ defineExpose({ close, isOpen });
         min-width: unset;
         padding: 5px;
         margin: 0;
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 4px;
 
-        &:hover>img {
-            filter: brightness(100);
+        .studip-icon {
+            vertical-align: bottom;
         }
     }
 
@@ -207,28 +236,51 @@ defineExpose({ close, isOpen });
         }
     }
 
-    a#{&}__entry,
-    button#{&}__entry {
-        background: none;
-        border: none;
-        width: 100%;
-        padding: 0.75rem 1rem;
-        text-align: left;
-        cursor: pointer;
-        transition: background-color 0.2s;
+    &__entry {
         display: block;
-        pointer-events: unset;
+        width: 100%;
+        box-sizing: border-box;
         text-decoration: none;
         color: inherit;
-        box-sizing: border-box;
+        padding: 0;
 
-        &:hover {
-            background-color: #f0f0f0;
+        &--interactive {
+            cursor: pointer;
+            &:hover {
+                background-color: var(--color--gray-lightest, #f0f0f0);
+            }
         }
 
-        &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        button:not(.context-menu__button),
+        a:not(.context-menu__button) {
+            background: none;
+            border: none;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            cursor: pointer;
+            display: block;
+            color: inherit;
+            font: inherit;
+
+            &:hover {
+                background-color: var(--color--gray-lightest, #f0f0f0);
+            }
+        }
+    }
+
+    &__entry-texts {
+        input[type='text'] {
+            margin: 4px 0;
+            padding: 4px 8px;
+            border: 1px solid var(--color--gray-light);
+            border-radius: 3px;
+            font-size: 0.9rem;
+
+            &:focus {
+                outline: 2px solid var(--color--focus);
+                border-color: transparent;
+            }
         }
     }
 
