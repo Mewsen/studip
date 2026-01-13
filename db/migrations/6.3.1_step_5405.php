@@ -154,7 +154,7 @@ final class Step5405 extends Migration {
                 ADD COLUMN `custom_parameters` TEXT AFTER `options`,
                 ADD COLUMN `launch_type` ENUM('default','deep_linking') NOT NULL DEFAULT 'default' AFTER `custom_parameters`,
                 ADD COLUMN `launch_container` ENUM('window','iframe') NOT NULL DEFAULT 'window' AFTER `launch_type`,
-                ADD COLUMN `color` VARCHAR(7) AFTER `launch_type`,
+                ADD COLUMN `color` VARCHAR(7) AFTER `launch_container`,
                 ADD COLUMN `icon` VARCHAR(100) AFTER `color`
         ");
 
