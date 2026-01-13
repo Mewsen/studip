@@ -2412,7 +2412,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         return $this->Seminar_id;
     }
 
-    public function isRangeAccessible(string $user_id = null): bool
+    public function isRangeAccessible(?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         return $GLOBALS['perm']->have_studip_perm('autor', $this->Seminar_id, $user_id);
@@ -2572,7 +2572,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     /**
      * @inheritDoc
      */
-    public function isCalendarWritable(string $user_id = null): bool
+    public function isCalendarWritable(?string $user_id = null): bool
     {
         if ($user_id === null) {
             $user_id = User::findCurrent()->id;

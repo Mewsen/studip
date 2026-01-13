@@ -63,8 +63,8 @@ final class Model extends Command
         string $name,
         InputInterface $input,
         OutputInterface $output,
-        string $dbTable = null,
-        string $namespace = null,
+        ?string $dbTable = null,
+        ?string $namespace = null,
     ): string
     {
         if (!$dbTable) {

@@ -26,7 +26,7 @@ class Context
      * @param array $bindings symbol table
      * @param Context|null $parent parent context (or NULL)
      */
-    public function __construct(array $bindings, Context $parent = null)
+    public function __construct(array $bindings, ?Context $parent = null)
     {
         $this->bindings = $bindings;
         $this->parent   = $parent;

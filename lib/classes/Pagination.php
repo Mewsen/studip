@@ -157,7 +157,7 @@ class Pagination
      *                           parameters)
      * @return string html
      */
-    public function asLinks(Closure $link_for = null)
+    public function asLinks(?Closure $link_for = null)
     {
         if ($this->getPageCount() <= 1) {
             return '&nbsp;';

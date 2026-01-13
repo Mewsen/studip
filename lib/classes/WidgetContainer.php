@@ -166,7 +166,7 @@ abstract class WidgetContainer
      * @param string|null $widget_class
      * @return int
      */
-    public function countWidgets(string $widget_class = null): int
+    public function countWidgets(?string $widget_class = null): int
     {
         $widgets = $this->widgets;
         if ($widget_class !== null) {

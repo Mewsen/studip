@@ -416,7 +416,7 @@ class StudipMail
      * @param email_message_class|null $transporter
      * @return bool
      */
-    public function send(email_message_class $transporter = null)
+    public function send(?email_message_class $transporter = null)
     {
         if ($transporter === null) {
             $transporter = self::$transporter;

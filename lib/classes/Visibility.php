@@ -650,7 +650,7 @@ class Visibility
      *
      * @return bool
      */
-    public static function allowExtendedSettings(\User $user = null): bool
+    public static function allowExtendedSettings(?\User $user = null): bool
     {
         $user = $user ?? User::findCurrent();
 
@@ -698,7 +698,7 @@ class Visibility
      *
      * @return bool
      */
-    public static function isFieldHideableForUser(string $field, User $user = null): bool
+    public static function isFieldHideableForUser(string $field, ?User $user = null): bool
     {
         $user = $user ?? User::findCurrent();
 

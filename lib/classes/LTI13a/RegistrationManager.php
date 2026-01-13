@@ -62,7 +62,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
     }
 
     #[\Override]
-    public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
+    public function findByPlatformIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
     {
         //Only handle requests for registrations of this Stud.IP:
         $platform_config = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
@@ -74,7 +74,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
     }
 
     #[\Override]
-    public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
+    public function findByToolIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
     {
         //Tool registrations are not supported at this moment.
         return null;

@@ -26,7 +26,7 @@ class Oer_MymaterialController extends AuthenticatedController
         $this->buildSidebar();
     }
 
-    public function edit_action(OERMaterial $material = null)
+    public function edit_action(?OERMaterial $material = null)
     {
         PageLayout::setTitle($material->isNew() ? _('Neues Material hochladen') : _('Material bearbeiten'));
         if ($material->id && !$material->isMine() && !$GLOBALS['perm']->have_perm('root')) {

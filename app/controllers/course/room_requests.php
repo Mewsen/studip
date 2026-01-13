@@ -698,7 +698,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         }
     }
 
-    private function clearSession(string $key = null): void
+    private function clearSession(?string $key = null): void
     {
         if (!isset($this->request_id)) {
             throw new RuntimeException('Request ID not set.');

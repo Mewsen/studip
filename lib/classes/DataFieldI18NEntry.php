@@ -26,7 +26,7 @@ abstract class DataFieldI18NEntry extends DataFieldEntry
      *                        range id)
      * @param mixed     $value     Value
      */
-    public function __construct(DataField $datafield = null, $rangeID = '', $value = null)
+    public function __construct(?DataField $datafield = null, $rangeID = '', $value = null)
     {
         $this->model = $datafield;
 

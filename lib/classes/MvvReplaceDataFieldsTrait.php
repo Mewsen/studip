@@ -31,7 +31,7 @@ trait MvvReplaceDataFieldsTrait
      */
     public function getReplacedValue(
         string $field,
-        string $abschnitt_id = null
+        ?string $abschnitt_id = null
     ): string
     {
         $abschnitt_id = $abschnitt_id ?? $this->replace_df_abschnitt_id;

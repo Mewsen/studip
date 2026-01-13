@@ -554,7 +554,7 @@ class Instance
      * @return array all the (optionally formatted) blocks grouped by the IDs of the structural element containing
      *                  that block.
      */
-    public function findAllBlocksGroupedByStructuralElementId(callable $formatter = null): array
+    public function findAllBlocksGroupedByStructuralElementId(?callable $formatter = null): array
     {
         if (!$formatter) {
             $formatter = function ($row) {

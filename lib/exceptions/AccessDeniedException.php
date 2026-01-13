@@ -19,7 +19,7 @@ class AccessDeniedException extends Exception
      * @param integer   $code     Exception code
      * @param Exception $previous Previous exception (optional)
      */
-    public function __construct($message = '', $code = 0, Exception $previous = null)
+    public function __construct($message = '', $code = 0, ?Exception $previous = null)
     {
         if (func_num_args() === 0) {
             $message = _('Sie haben nicht die Berechtigung, diese Aktion '

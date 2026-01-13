@@ -39,11 +39,11 @@ class QueryChecker
 
     public function __construct(
         bool $allowUnrecognized = true,
-        array $includePaths = null,
-        array $fieldSetTypes = null,
-        array $sortParameters = null,
-        array $pagingParameters = null,
-        array $filteringParameters = null
+        ?array $includePaths = null,
+        ?array $fieldSetTypes = null,
+        ?array $sortParameters = null,
+        ?array $pagingParameters = null,
+        ?array $filteringParameters = null
     ) {
         $this->includePaths = $includePaths;
         $this->allowUnrecognized = $allowUnrecognized;
@@ -145,7 +145,7 @@ class QueryChecker
         }
     }
 
-    private function getInvalidKeys(iterable $toCheck = null, iterable $allowed = null): array
+    private function getInvalidKeys(?iterable $toCheck = null, ?iterable $allowed = null): array
     {
         if (null === $toCheck || null === $allowed) {
             return [];
@@ -157,7 +157,7 @@ class QueryChecker
         ));
     }
 
-    private function getInvalidValues(iterable $toCheck = null, iterable $allowed = null): array
+    private function getInvalidValues(?iterable $toCheck = null, ?iterable $allowed = null): array
     {
         if (null === $toCheck || null === $allowed) {
             return [];
@@ -174,7 +174,7 @@ class QueryChecker
         return is_array($input) ? $input : iterator_to_array($input);
     }
 
-    private function flip(array $array = null): ?array
+    private function flip(?array $array = null): ?array
     {
         return $array === null ? null : array_flip($array);
     }
@@ -182,7 +182,7 @@ class QueryChecker
     /**
      * Check input fields against allowed.
      */
-    private function getInvalidFields(iterable $fields = null): iterable
+    private function getInvalidFields(?iterable $fields = null): iterable
     {
         if ($this->fieldSetTypes !== null && $fields !== null) {
             foreach ($fields as $type => $requestedFields) {

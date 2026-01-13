@@ -230,7 +230,7 @@ class CoursewareCronjob extends CronJob
      * @return bool|int|number
      * @throws Exception
      */
-    private function sendCertificate(Courseware\Unit $unit, string $user_id, int $progress, int $timestamp, string $image = null)
+    private function sendCertificate(Courseware\Unit $unit, string $user_id, int $progress, int $timestamp, ?string $image = null)
     {
         $user = User::find($user_id);
         $course = Course::find($unit->range_id);

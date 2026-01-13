@@ -186,12 +186,12 @@ class OERReview extends BlubberThread
         return URLHelper::getURL('dispatch.php/oer/market/discussion/' . $this->getId());
     }
 
-    public function isReadable(string $user_id = null)
+    public function isReadable(?string $user_id = null)
     {
         return true;
     }
 
-    public function isCommentable(string $user_id = null)
+    public function isCommentable(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         return $GLOBALS['perm']->have_perm('autor', $user_id);

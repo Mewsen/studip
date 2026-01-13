@@ -166,14 +166,14 @@ class Admin_LoginStyleController extends AuthenticatedController
         $this->faq_entries = LoginFaq::findBySql('1');
     }
 
-    public function edit_faq_action(LoginFaq $entry = null)
+    public function edit_faq_action(?LoginFaq $entry = null)
     {
         PageLayout::setTitle(
             $entry->isNew() ? _('Hinweistext hinzufügen') : _('Hinweistext bearbeiten')
         );
     }
 
-    public function store_faq_action(LoginFaq $entry = null)
+    public function store_faq_action(?LoginFaq $entry = null)
     {
         CSRFProtection::verifyUnsafeRequest();
 

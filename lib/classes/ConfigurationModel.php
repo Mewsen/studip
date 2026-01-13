@@ -34,7 +34,7 @@ class ConfigurationModel
      * @param string $limit_to Limit entries to certain range type
      * @return array()
      */
-    public static function searchConfiguration(Range $range = null)
+    public static function searchConfiguration(?Range $range = null)
     {
         $config = Config::get();
         $allconfigs = [];

@@ -18,7 +18,7 @@ class Storage
      *
      * @param Assets\AssetFactory $factory The factory
      */
-    public static function setFactory(AssetFactory $factory = null)
+    public static function setFactory(?AssetFactory $factory = null)
     {
         $old_factory = self::$default_factory;
         self::$default_factory = $factory;

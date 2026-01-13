@@ -53,14 +53,14 @@ class Course_TopicsController extends AuthenticatedController
         $this->redirect('course/topics');
     }
 
-    public function edit_action(CourseTopic $topic = null)
+    public function edit_action(?CourseTopic $topic = null)
     {
         PageLayout::setTitle($topic->isNew() ? _('Neues Thema erstellen') : sprintf(_('Bearbeiten: %s'), $topic->title));
 
         $this->dates = CourseDate::findBySeminar_id(Context::getId());
     }
 
-    public function store_action(CourseTopic $topic = null)
+    public function store_action(?CourseTopic $topic = null)
     {
         if (!Request::isPost()) {
             throw new MethodNotAllowedException();

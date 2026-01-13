@@ -41,7 +41,7 @@ trait FilesTestHelper
         );
     }
 
-    protected function prepareValidFileRefBody($name, $description, $license, \FileType $filetype = null)
+    protected function prepareValidFileRefBody($name, $description, $license, ?\FileType $filetype = null)
     {
         $json = [
             'data' => [

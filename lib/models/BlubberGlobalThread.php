@@ -23,7 +23,7 @@
  */
 class BlubberGlobalThread extends BlubberThread
 {
-    public function isReadable(string $user_id = null)
+    public function isReadable(?string $user_id = null)
     {
         return true;
     }

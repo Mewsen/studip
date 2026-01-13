@@ -378,7 +378,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
         return $this->foldertype->range_id;
     }
 
-    public function isRangeAccessible(string $user_id = null): bool
+    public function isRangeAccessible(?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
 

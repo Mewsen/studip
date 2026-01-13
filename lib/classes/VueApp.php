@@ -197,7 +197,7 @@ final class VueApp implements Stringable
      *
      * You may specify a different filename for the plugin.
      */
-    public function withPlugin(string $plugin, string $filename = null): VueApp
+    public function withPlugin(string $plugin, ?string $filename = null): VueApp
     {
         $clone = clone $this;
         $clone->plugins[$plugin] = $filename ?? $plugin;

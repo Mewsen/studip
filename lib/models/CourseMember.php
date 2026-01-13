@@ -203,7 +203,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      * @param string $vorname
      * @return array
      */
-    public static function getMemberByIdentification(string $course_id, string $nachname, string $vorname = null): array
+    public static function getMemberByIdentification(string $course_id, string $nachname, ?string $vorname = null): array
     {
         return DBManager::get()->fetchAll("SELECT
                     auth_user_md5.user_id,

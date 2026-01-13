@@ -263,7 +263,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
      * @param int|null $pause_duration Duration of the pause
      * @return ConsultationSlot[]
      */
-    public function createSlots($duration, int $pause_time = null, int $pause_duration = null): array
+    public function createSlots($duration, ?int $pause_time = null, ?int $pause_duration = null): array
     {
         $slots = [];
         $accumulated_durations = 0;

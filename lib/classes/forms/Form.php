@@ -502,7 +502,7 @@ class Form extends Part
      * @return string
      * @throws \Flexi\TemplateNotFoundException
      */
-    public function render(string|Template $layout = null)
+    public function render(string|Template|null $layout = null)
     {
         \NotificationCenter::postNotification('FormWillRender', $this);
         if (\Request::isDialog()) {

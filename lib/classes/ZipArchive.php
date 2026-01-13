@@ -166,7 +166,7 @@ class ZipArchive extends \ZipArchive
      */
     public function addFile(
         string $filepath,
-        string $entryname = null,
+        ?string $entryname = null,
         int $start = 0,
         int $length = 0,
         int $flags = self::FL_OVERWRITE

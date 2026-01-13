@@ -88,7 +88,7 @@ class Admin_BannerController extends AuthenticatedController
      *
      * @param Banner $banner Banner object
      */
-    public function edit_action(Banner $banner = null)
+    public function edit_action(?Banner $banner = null)
     {
         if ($banner->isNew()) {
             PageLayout::setTitle(_('Neues Banner anlegen'));

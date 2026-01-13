@@ -16,7 +16,7 @@ class Exception extends \Exception
      * @param string|null $reason  a human readable presentation of the status code
      * @param array       $headers a hash of additional headers to be set in the response
      */
-    public function __construct(int $status = 500, string $reason = null, array $headers = [])
+    public function __construct(int $status = 500, ?string $reason = null, array $headers = [])
     {
         parent::__construct(
             $reason ?? Response::get_reason($status),

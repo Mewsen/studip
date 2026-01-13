@@ -444,7 +444,7 @@ class SimpleCollection extends StudipArrayObject
      * @param ?integer $limit limit number of found records
      * @return SimpleCollection<T> containing filtered elements
      */
-    public function filter(callable $func = null, $limit = null)
+    public function filter(?callable $func = null, $limit = null)
     {
         $results = [];
         $found = 0;
@@ -529,7 +529,7 @@ class SimpleCollection extends StudipArrayObject
      * @param ?callable $group_func closure to aggregate grouped entries
      * @return array assoc array
      */
-    public function toGroupedArray($group_by = 'id', $only_these_fields = null, callable $group_func = null)
+    public function toGroupedArray($group_by = 'id', $only_these_fields = null, ?callable $group_func = null)
     {
         $result = [];
         if (is_string($only_these_fields)) {

@@ -588,7 +588,7 @@ class Course_WikiController extends AuthenticatedController
         }
     }
 
-    public function edit_action(WikiPage $page = null)
+    public function edit_action(?WikiPage $page = null)
     {
         $this->validateWikiPage($page, $this->range, true);
 

@@ -56,7 +56,7 @@ class Admin_SpecificationController extends AuthenticatedController
      * Edit or create a rule
      * @property AuxLockRule $rule
      */
-    public function edit_action(AuxLockRule $rule = null)
+    public function edit_action(?AuxLockRule $rule = null)
     {
         $rule->name = Request::i18n('name', $rule->name);
         $rule->description = Request::i18n('description', $rule->description);
@@ -90,7 +90,7 @@ class Admin_SpecificationController extends AuthenticatedController
      * Store or edit Rule
      * @param string $id
      */
-    public function store_action(AuxLockRule $rule = null)
+    public function store_action(?AuxLockRule $rule = null)
     {
         CSRFProtection::verifyUnsafeRequest();
 

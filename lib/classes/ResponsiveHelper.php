@@ -90,7 +90,7 @@ class ResponsiveHelper
      *
      * @return array
      */
-    public static function getNavigationObject(string $stored_hash = null): array
+    public static function getNavigationObject(?string $stored_hash = null): array
     {
         [$navigation, $activated] = self::getNavigationArray();
         $hash = md5(json_encode($navigation));
@@ -113,7 +113,7 @@ class ResponsiveHelper
      * @param String|null $cid       Optional context ID
      * @return Array containing the children (+ grandchildren...)
      */
-    protected static function getChildren(Navigation $navigation, $path, &$activated = [], string $cid = null)
+    protected static function getChildren(Navigation $navigation, $path, &$activated = [], ?string $cid = null)
     {
         $children = [];
 

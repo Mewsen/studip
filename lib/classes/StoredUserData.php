@@ -55,7 +55,7 @@ class StoredUserData
      * @param array       $value Array containing the rows
      * @param SimpleORMap $context Optional context
      */
-    public function addTabularData($name, $key, array $value, SimpleORMap $context = null)
+    public function addTabularData($name, $key, array $value, ?SimpleORMap $context = null)
     {
         if ($value) {
             $this->addData('tabular', compact('name', 'key', 'value'), $context);
@@ -69,7 +69,7 @@ class StoredUserData
      * @param FileRef     $fileref
      * @param SimpleORMap $context Optional context
      */
-    public function addFileRef(FileRef $fileref, SimpleORMap $context = null)
+    public function addFileRef(FileRef $fileref, ?SimpleORMap $context = null)
     {
         $filetype = $fileref->getFileType();
 
@@ -92,7 +92,7 @@ class StoredUserData
      * @param string      $path File path
      * @param SimpleORMap $context Optional context
      */
-    public function addFileAtPath($name, $path, SimpleORMap $context = null)
+    public function addFileAtPath($name, $path, ?SimpleORMap $context = null)
     {
         $this->addData('file', compact('name', 'path'), $context);
     }
@@ -105,7 +105,7 @@ class StoredUserData
      * @param string      $contents File contents (text or binary)
      * @param SimpleORMap $context Optional context
      */
-    public function addFileWithContents($name, $contents, SimpleORMap $context = null)
+    public function addFileWithContents($name, $contents, ?SimpleORMap $context = null)
     {
         $this->addData('file', compact('name', 'contents'), $context);
     }
@@ -117,7 +117,7 @@ class StoredUserData
      * @param SimpleORMap $context Optional context
      * @return array
      */
-    public function getFileData(SimpleORMap $context = null)
+    public function getFileData(?SimpleORMap $context = null)
     {
         return $this->getData('file', $context);
     }
@@ -129,7 +129,7 @@ class StoredUserData
      * @param SimpleORMap $context Optional context
      * @return array
      */
-    public function getTabularData(SimpleORMap $context = null)
+    public function getTabularData(?SimpleORMap $context = null)
     {
         return $this->getData('tabular', $context);
     }
@@ -142,7 +142,7 @@ class StoredUserData
      * @param mixed       $data
      * @param SimpleORMap $context Optional context
      */
-    protected function addData($type, $data, SimpleORMap $context = null)
+    protected function addData($type, $data, ?SimpleORMap $context = null)
     {
         if (!isset($this->data[$type])) {
             throw new InvalidArgumentException('Invalid data type');
@@ -159,7 +159,7 @@ class StoredUserData
      * @param SimpleORMap $context Optional context
      * @return array
      */
-    protected function getData($type, SimpleORMap $context = null)
+    protected function getData($type, ?SimpleORMap $context = null)
     {
         if (!isset($this->data[$type])) {
             throw new InvalidArgumentException('Invalid data type');

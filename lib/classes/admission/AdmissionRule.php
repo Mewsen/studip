@@ -75,7 +75,7 @@ abstract class AdmissionRule
     /**
      * @param class-string<static> $name
      */
-    public static function getRule(string $name, string $id = null): ?AdmissionRule
+    public static function getRule(string $name, ?string $id = null): ?AdmissionRule
     {
         $rules = self::getAvailableAdmissionRules();
         if (!array_key_exists($name, $rules)) {

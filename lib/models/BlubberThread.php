@@ -166,7 +166,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function findMyGlobalThreads($limit = 51, $since = null, $olderthan = null, string $user_id = null, $search = null)
+    public static function findMyGlobalThreads($limit = 51, $since = null, $olderthan = null, ?string $user_id = null, $search = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
 
@@ -274,7 +274,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $search     optional; filters the threads by a search string
      * @return array
      */
-    protected static function getOrderedThreads($thread_ids, $limit = 51, $since = null, $olderthan = null, string $user_id = null, $search = null)
+    protected static function getOrderedThreads($thread_ids, $limit = 51, $since = null, $olderthan = null, ?string $user_id = null, $search = null)
     {
         $query = SQLQuery::table('blubber_threads')->join(
             'blubber_comments',
@@ -340,7 +340,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $only_in_stream  optional; filter threads by `visible_in_stream`
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      */
-    public static function findByInstitut($institut_id, $only_in_stream = false, string $user_id = null)
+    public static function findByInstitut($institut_id, $only_in_stream = false, ?string $user_id = null)
     {
         return self::findByContext($institut_id, $only_in_stream, 'institute', $user_id);
     }
@@ -350,7 +350,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $only_in_stream  optional; filter threads by `visible_in_stream`
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      */
-    public static function findBySeminar($seminar_id, $only_in_stream = false, string $user_id = null)
+    public static function findBySeminar($seminar_id, $only_in_stream = false, ?string $user_id = null)
     {
         return self::findByContext($seminar_id, $only_in_stream, 'course', $user_id);
     }
@@ -361,7 +361,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $context_type  optional; filter threads by `context_type`
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      */
-    public static function findByContext($context_id, $only_in_stream = false, $context_type = 'course', string $user_id = null)
+    public static function findByContext($context_id, $only_in_stream = false, $context_type = 'course', ?string $user_id = null)
     {
         if (!BlubberThread::findOneBySQL("context_type = :type AND context_id = :context_id AND visible_in_stream = '1' AND content IS NULL AND display_class IS NULL", ['context_id' => $context_id, 'type' => $context_type])) {
             //create the default-thread for this context
@@ -616,7 +616,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getLastVisit(string $user_id = null)
+    public function getLastVisit(?string $user_id = null)
     {
         return object_get_visit(
             $this->id,
@@ -632,7 +632,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @param string|null $user_id
      */
-    public function setLastVisit(string $user_id = null): void
+    public function setLastVisit(?string $user_id = null): void
     {
         object_set_visit(
             $this->id,
@@ -795,7 +795,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function isWritable(string $user_id = null)
+    public function isWritable(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         if ($this['context_type'] === 'course' || $this['context_type'] === 'institute') {
@@ -810,7 +810,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function isReadable(string $user_id = null)
+    public function isReadable(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         if ($this['context_type'] === 'public') {
@@ -839,7 +839,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     /**
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      */
-    public function isCommentable(string $user_id = null)
+    public function isCommentable(?string $user_id = null)
     {
         return $this->isReadable($user_id) && $this['commentable'];
     }
@@ -956,7 +956,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function markAsRead(string $user_id = null)
+    public function markAsRead(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
 
@@ -1023,7 +1023,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected static function getMyBlubberCourses(string $user_id = null)
+    protected static function getMyBlubberCourses(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         if ($GLOBALS['perm']->have_perm('admin', $user_id)) {
@@ -1069,7 +1069,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected static function getMyBlubberInstitutes(string $user_id = null)
+    protected static function getMyBlubberInstitutes(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         if ($GLOBALS['perm']->have_perm('root', $user_id)) {
@@ -1100,7 +1100,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      *
      * @return bool
      */
-    public function mayDisableNotifications(string $user_id = null): bool
+    public function mayDisableNotifications(?string $user_id = null): bool
     {
         // Notifications may always be disabled for global blubber stream
         if ($this->id === 'global') {
@@ -1125,7 +1125,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      * @param string $user_id  optional; use this ID instead of $GLOBALS['user']->id
      *
      */
-    public function countUnseenComments(string $user_id = null): int
+    public function countUnseenComments(?string $user_id = null): int
     {
         $user_id = $user_id ?? User::findCurrent();
         return \BlubberComment::countBySQL(

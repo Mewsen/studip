@@ -109,7 +109,7 @@ abstract class Template
      * @return string A string representing the rendered presentation.
      * @throws TemplateNotFoundException
      */
-    public function render(array $attributes = [], string|Template $layout = null): string
+    public function render(array $attributes = [], string|Template|null $layout = null): string
     {
         if (isset($layout)) {
             $this->set_layout($layout);

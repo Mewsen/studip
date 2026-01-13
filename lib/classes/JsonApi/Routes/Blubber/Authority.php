@@ -49,7 +49,7 @@ class Authority
         return self::userIsAuthor($user) && $resource->isWritable($user->id);
     }
 
-    public static function canIndexComments(User $user, BlubberThread $resource = null)
+    public static function canIndexComments(User $user, ?BlubberThread $resource = null)
     {
         return isset($resource)
             ? self::canShowBlubberThread($user, $resource)

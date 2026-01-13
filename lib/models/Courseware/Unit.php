@@ -206,7 +206,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         User $user,
         string $rangeId,
         string $rangeType,
-        array $modified = null,
+        ?array $modified = null,
         bool $duplicate = false
     ): Unit {
         $sourceUnitElement = $this->structural_element;
@@ -364,7 +364,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         return 'course/courseware/' . '?cid=' . $this->range_id;
     }
 
-    public function isRangeAccessible(string $user_id = null): bool
+    public function isRangeAccessible(?string $user_id = null): bool
     {
         $user = \User::find($user_id);
         if ($user) {

@@ -37,7 +37,7 @@ class LinksWidget extends ListWidget
         return $element;
     }
 
-    public function addLinkFromHTML($html, Icon $icon = null)
+    public function addLinkFromHTML($html, ?Icon $icon = null)
     {
         $this->addElement(LinkElement::fromHTML($html, $icon));
     }

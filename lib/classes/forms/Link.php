@@ -11,7 +11,7 @@ class Link extends Part
     protected $icon;
     protected $attributes = [];
 
-    public function __construct(string $url, string $label, \Icon $icon = null)
+    public function __construct(string $url, string $label, ?\Icon $icon = null)
     {
         $this->url = $url;
         $this->label = $label;
@@ -67,7 +67,7 @@ class Link extends Part
      * @param \Icon $icon
      * @return $this
      */
-    public function setIcon(\Icon $icon = null): Link
+    public function setIcon(?\Icon $icon = null): Link
     {
         $this->icon = $icon;
         return $this;

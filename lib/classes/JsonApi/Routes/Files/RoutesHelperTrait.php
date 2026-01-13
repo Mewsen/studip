@@ -38,7 +38,7 @@ trait RoutesHelperTrait
         }
     }
 
-    protected function validateFileRefResourceObject($json, \FileRef $fileRef = null)
+    protected function validateFileRefResourceObject($json, ?\FileRef $fileRef = null)
     {
         if (!self::array_has($json, 'data')) {
             return 'Missing `data` member at document´s top level.';
@@ -83,7 +83,7 @@ trait RoutesHelperTrait
         }
     }
 
-    protected function validateFolderAttributes($json, \FolderType $folder = null, $needsParent = false)
+    protected function validateFolderAttributes($json, ?\FolderType $folder = null, $needsParent = false)
     {
         // Attributes needed to create a new folder
         if (!$folder) {
@@ -113,7 +113,7 @@ trait RoutesHelperTrait
         }
     }
 
-    protected function validateFolderResourceObject($json, \FolderType $folder = null, $needsParent = false)
+    protected function validateFolderResourceObject($json, ?\FolderType $folder = null, $needsParent = false)
     {
         if ($err = $this->validateResourceIdentifier($json, FolderSchema::TYPE, null === $folder)) {
             return $err;

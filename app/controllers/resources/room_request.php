@@ -2517,7 +2517,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         );
     }
 
-    public function filter_action(string $key, string $value = null): void
+    public function filter_action(string $key, ?string $value = null): void
     {
         $config_filters = [
             'semester'  => 'MY_COURSES_SELECTED_CYCLE',

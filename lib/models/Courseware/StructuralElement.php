@@ -227,7 +227,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         return self::getCourseware('', '', $root_id);
     }
 
-    private static function getCourseware(string $rangeId, string $rangeType, string $root_id = null): ?StructuralElement
+    private static function getCourseware(string $rangeId, string $rangeType, ?string $root_id = null): ?StructuralElement
     {
         if ($root_id) {
             $result = self::find($root_id);
@@ -448,7 +448,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
     /**
      * @param \User|\Seminar_User $user
      */
-    public function hasEditingPermission(User $user, Unit $unit = null): bool
+    public function hasEditingPermission(User $user, ?Unit $unit = null): bool
     {
         if (!isset($unit)) {
             $unit = $this->findUnit();
@@ -742,7 +742,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
      *
      * @return StructuralElement[] a list of all descendants
      */
-    public function findDescendants(User $user = null)
+    public function findDescendants(?User $user = null)
     {
         $descendants = [];
         foreach ($this->children as $child) {
@@ -1295,7 +1295,7 @@ SQL;
         return 'course/courseware/courseware/' . $unit->id . '?cid=' . $this->range_id . '#/structural_element/' . $this->id;
     }
 
-    public function isRangeAccessible(string $user_id = null): bool
+    public function isRangeAccessible(?string $user_id = null): bool
     {
         $user =  \User::find($user_id);
         if ($user) {

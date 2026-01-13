@@ -51,5 +51,5 @@ interface FeedbackRange
      * @param string $user_id    optional; use this ID instead of $GLOBALS['user']->id
      * @return bool range object accessebility
      */
-    public function isRangeAccessible(string $user_id = null): bool;
+    public function isRangeAccessible(?string $user_id = null): bool;
 }

@@ -31,7 +31,7 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         );
     }
 
-    public function edit_action(DiscussionType $discussion_type = null)
+    public function edit_action(?DiscussionType $discussion_type = null)
     {
         if ($discussion_type->isNew()) {
             PageLayout::setTitle(_('Neuen Diskussionstyp anlegen'));
@@ -61,7 +61,7 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         );
     }
 
-    public function save_action(DiscussionType $discussion_type = null)
+    public function save_action(?DiscussionType $discussion_type = null)
     {
         CSRFProtection::verifyUnsafeRequest();
 

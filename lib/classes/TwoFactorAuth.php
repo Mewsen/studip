@@ -40,7 +40,7 @@ final class TwoFactorAuth
      * @param  User|null $user User to check (optional, defaults to current user)
      * @return boolean
      */
-    public static function isEnabledForUser(User $user = null): bool
+    public static function isEnabledForUser(?User $user = null): bool
     {
         if ($user === null) {
             $user = User::findCurrent();

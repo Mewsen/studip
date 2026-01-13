@@ -80,7 +80,7 @@ class SimpleORMapCollection extends SimpleCollection
      * @param ?array           $options relationship options
      * @param SimpleORMap|null $record  related record
      */
-    public function __construct(Closure $finder = null, array $options = null, SimpleORMap $record = null)
+    public function __construct(?Closure $finder = null, ?array $options = null, ?SimpleORMap $record = null)
     {
         $this->relation_options = $options;
         $this->related_record = $record;
@@ -195,7 +195,7 @@ class SimpleORMapCollection extends SimpleCollection
      * @param ?callable $group_func closure to aggregate grouped entries
      * @return array assoc array
      */
-    public function toGroupedArray($group_by = 'id', $only_these_fields = null, callable $group_func = null)
+    public function toGroupedArray($group_by = 'id', $only_these_fields = null, ?callable $group_func = null)
     {
         $result = [];
         foreach ($this as $record) {

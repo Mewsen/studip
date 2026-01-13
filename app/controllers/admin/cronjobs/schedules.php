@@ -122,7 +122,7 @@ class Admin_Cronjobs_SchedulesController extends AuthenticatedController
      *
      * @param String $id   Id of the schedule in question (null to create)
      */
-    public function edit_action(CronjobSchedule $schedule = null)
+    public function edit_action(?CronjobSchedule $schedule = null)
     {
         if (Request::submitted('store')) {
             $parameters = Request::getArray('parameters');

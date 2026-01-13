@@ -121,8 +121,8 @@ class MessageCreate extends JsonApiController
         array $recipients,
         string $subject,
         string $body,
-        array $tags = null,
-        string $answerTo = null
+        ?array $tags = null,
+        ?string $answerTo = null
     ) {
         $messageBody = \Studip\Markup::purifyHtml($body);
 

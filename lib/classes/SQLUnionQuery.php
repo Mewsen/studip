@@ -66,7 +66,7 @@ class SQLUnionQuery
     /**
      * Fetches all rows from the combined query
      */
-    public function fetchAll(callable $callable = null): array
+    public function fetchAll(?callable $callable = null): array
     {
         return DBManager::get()->fetchAll(
             $this->getQuery(),

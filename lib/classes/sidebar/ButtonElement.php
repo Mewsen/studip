@@ -6,7 +6,7 @@ class ButtonElement extends WidgetElement implements ArrayAccess
     public $label;
     public $icon = null;
 
-    public function __construct(string $label, \Icon $icon = null, array $attributes = [])
+    public function __construct(string $label, ?\Icon $icon = null, array $attributes = [])
     {
         parent::__construct();
 

@@ -125,7 +125,7 @@ class ActionMenu implements Stringable
      * @param mixed              $before     Optional index to insert this link before the link with given index.
      * @return static instance to allow chaining
      */
-    public function addLink($url, $label = "", Icon $icon = null, array $attributes = [], $index = null, $before = null)
+    public function addLink($url, $label = "", ?Icon $icon = null, array $attributes = [], $index = null, $before = null)
     {
         if ($this->checkCondition()) {
             if ($url instanceof StudipLink) {
@@ -194,7 +194,7 @@ class ActionMenu implements Stringable
      * @param array  $attributes Optional attributes to add to the <a> tag
      * @return static instance to allow chaining
      */
-    public function addButton($name, $label, Icon $icon = null, array $attributes = [])
+    public function addButton($name, $label, ?Icon $icon = null, array $attributes = [])
     {
         if ($this->checkCondition()) {
             $this->actions[] = [

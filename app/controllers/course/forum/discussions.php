@@ -114,7 +114,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         );
     }
 
-    public function edit_action(Discussion $discussion = null)
+    public function edit_action(?Discussion $discussion = null)
     {
         if ($discussion->isNew()) {
             PageLayout::setTitle(_('Neue Diskussion starten'));

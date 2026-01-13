@@ -919,7 +919,7 @@ class Consultation_AdminController extends ConsultationController
         }
     }
 
-    private function getDateAndTime(string $index, string $index_time = null)
+    private function getDateAndTime(string $index, ?string $index_time = null)
     {
         if ($index_time === null) {
             $index_time = $index;

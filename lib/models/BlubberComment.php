@@ -113,7 +113,7 @@ class BlubberComment extends SimpleORMap implements PrivacyObject
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function isWritable(string $user_id = null)
+    public function isWritable(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         return $user_id === $this['user_id']

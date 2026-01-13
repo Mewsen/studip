@@ -353,7 +353,7 @@ class ConsultationSlot extends SimpleORMap
     /**
      * Returns whether the given user may create a booking for this slot.
      */
-    public function userMayCreateBookingForSlot(\User $user = null): bool
+    public function userMayCreateBookingForSlot(?\User $user = null): bool
     {
         $user = $user ?? User::findCurrent();
 

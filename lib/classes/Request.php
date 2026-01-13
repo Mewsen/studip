@@ -199,7 +199,7 @@ class Request implements ArrayAccess, IteratorAggregate
      *
      * @return I18NString  parameter value as string (if set), else NULL
      */
-    public static function i18n(string $param, $default = null, Callable $op = null)
+    public static function i18n(string $param, $default = null, ?Callable $op = null)
     {
         $value = self::get($param, $default instanceof I18NString ? $default->original() : $default);
 

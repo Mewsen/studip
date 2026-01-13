@@ -704,7 +704,7 @@ class Resource extends SimpleORMap implements StudipItem
      */
     public function createBooking(
         User $user,
-        string $range_id = null,
+        ?string $range_id = null,
         array $time_ranges = [],
         ?DateInterval $repetition_interval = null,
         int $repetition_amount = 0,
@@ -1763,7 +1763,7 @@ class Resource extends SimpleORMap implements StudipItem
      *         (property-ID) => (error message or empty string)
      *     ]
      */
-    public function setPropertiesById(array $properties, User $user = null)
+    public function setPropertiesById(array $properties, ?User $user = null)
     {
         $failed_properties = [];
 

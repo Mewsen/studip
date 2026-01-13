@@ -116,7 +116,7 @@ class LtiTool extends SimpleORMap
      *
      * @return bool True, if the user may edit the tool, false otherwise.
      */
-    public function isEditableByUser(string $user_id = null) : bool
+    public function isEditableByUser(?string $user_id = null) : bool
     {
         $user_id ??= User::findCurrent()->id;
         return $this->range_id === 'global' && $GLOBALS['perm']->have_perm('root')

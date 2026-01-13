@@ -47,7 +47,7 @@ use Negotiation\AcceptHeader;
 * @return       string  preferred user language, given in "en_GB"-style
 *
 */
-function get_accepted_languages(Psr\Http\Message\RequestInterface $request = null) {
+function get_accepted_languages(?Psr\Http\Message\RequestInterface $request = null) {
     $accepted_languages = null;
     if ($request === null) {
         $accepted_languages = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null;

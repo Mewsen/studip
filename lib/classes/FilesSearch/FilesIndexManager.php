@@ -51,7 +51,7 @@ class FilesIndexManager
      *
      * @return int the number of seconds the indexing took
      */
-    public static function sqlIndex(\FileRef $fileRef = null, array $options = [])
+    public static function sqlIndex(?\FileRef $fileRef = null, array $options = [])
     {
         if (isset($options['verbose'])) {
             self::$verbose = $options['verbose'];
@@ -189,7 +189,7 @@ class FilesIndexManager
      * @param FileRef $fileRef optional; if the index should be
      *                         created for this FileRef only
      */
-    private static function createIndex($sql, $params, \FileRef $fileRef = null)
+    private static function createIndex($sql, $params, ?\FileRef $fileRef = null)
     {
         $table = isset($fileRef) ? 'files_search_index' : 'files_search_index_temp';
         $query = sprintf('INSERT INTO %s (file_ref_id, text, relevance) %s', $table, $sql);
@@ -240,7 +240,7 @@ class FilesIndexManager
      * @param FileRef $fileRef optional; if the attributes should be
      *                         filled for this FileRef only
      */
-    private static function fillAttributes(\FileRef $fileRef = null)
+    private static function fillAttributes(?\FileRef $fileRef = null)
     {
         if (isset($fileRef)) {
             $table = 'files_search_attributes';
@@ -282,7 +282,7 @@ class FilesIndexManager
         DBManager::get()->execute($query, $where['params']);
     }
 
-    private static function fillIndex(\FileRef $fileRef = null)
+    private static function fillIndex(?\FileRef $fileRef = null)
     {
         if (isset($fileRef)) {
             $whereCondition = 'WHERE file_refs.id = :filerefid';

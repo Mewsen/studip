@@ -7,6 +7,10 @@
             "php": "8.1"
         }
     },
+    "scripts": {
+        "rector-dryrun": "rector process --dry-run",
+        "rector": "rector process"
+    },
     "autoload": {
         "psr-4": {
             "Assets\\": "lib/classes/assets",
@@ -78,7 +82,8 @@
         "codeception/specify": "2.0.0",
         "zorac/phpstan-php-di": "1.0.1",
         "phpstan/phpdoc-parser": "2.1.0",
-        "php-debugbar/php-debugbar": "2.1.6"
+        "php-debugbar/php-debugbar": "2.1.6",
+        "rector/rector": "2.0.14"
     },
     "require": {
         "php": "^8.1",

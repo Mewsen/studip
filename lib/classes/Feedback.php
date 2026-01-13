@@ -35,7 +35,7 @@ class Feedback
      *
      * @return boolean
      */
-    public static function isActivated(string $course_id = null): bool
+    public static function isActivated(?string $course_id = null): bool
     {
         $course_id          = $course_id ?? Context::getId();
         $plugin_manager     = PluginManager::getInstance();
@@ -54,7 +54,7 @@ class Feedback
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function hasAdminPerm($course_id, string $user_id = null): bool
+    public static function hasAdminPerm($course_id, ?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         $admin_perm_level =  CourseConfig::get($course_id)->FEEDBACK_ADMIN_PERM;
@@ -73,7 +73,7 @@ class Feedback
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function hasCreatePerm($course_id, string $user_id = null): bool
+    public static function hasCreatePerm($course_id, ?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         $create_perm_level =  CourseConfig::get($course_id)->FEEDBACK_CREATE_PERM;
@@ -91,7 +91,7 @@ class Feedback
      *
      * @return boolean
      */
-    public static function hasRangeAccess($range_id, $range_type, string $user_id = null): bool
+    public static function hasRangeAccess($range_id, $range_type, ?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         $range = $range_type::find($range_id);

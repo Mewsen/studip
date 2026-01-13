@@ -91,7 +91,7 @@ class Filter
      *
      * @return Filter return `$this` for chaining
      */
-    public function setSemester(\Semester $semester = null)
+    public function setSemester(?\Semester $semester = null)
     {
         $this->semester = $semester;
 

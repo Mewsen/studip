@@ -1671,7 +1671,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
     /**
      * @inheritDoc
      */
-    public function isCalendarWritable(string $user_id = null): bool
+    public function isCalendarWritable(?string $user_id = null): bool
     {
         if ($user_id === null) {
             $user_id = self::findCurrent()->id;

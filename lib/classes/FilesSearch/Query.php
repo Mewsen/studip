@@ -33,7 +33,7 @@ class Query
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function __construct(\User $user = null)
+    public function __construct(?\User $user = null)
     {
         $this->user = isset($user) ? $user : $GLOBALS['user'];
         $this->error = false;

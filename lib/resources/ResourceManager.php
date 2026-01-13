@@ -845,7 +845,7 @@ class ResourceManager
      * This method does the mapping from the old resource management permissions
      * to the new resource management permissions.
      */
-    public static function getGlobalResourcePermission(User $user = null)
+    public static function getGlobalResourcePermission(?User $user = null)
     {
         if (!$user) {
             return '';
@@ -890,7 +890,7 @@ class ResourceManager
      *     If this is not set the current timestamp will be used.
      */
     public static function userHasResourcePermissions(
-        User $user = null,
+        ?User $user = null,
         $level = 'admin',
         $time = null
     )
@@ -1077,7 +1077,7 @@ class ResourceManager
      *     false otherwise.
      */
     public static function userHasGlobalPermission(
-        User $user = null,
+        ?User $user = null,
         $requested_permission = 'user'
     )
     {

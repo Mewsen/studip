@@ -19,7 +19,7 @@ class DataFieldSelectboxMultipleEntry extends DataFieldSelectboxEntry
      * @param String    $rangeID   Range id
      * @param mixed     $value     Value
      */
-    public function __construct(DataField $datafield = null, $rangeID = '', $value = null)
+    public function __construct(?DataField $datafield = null, $rangeID = '', $value = null)
     {
         parent::__construct($datafield, $rangeID, $value);
 

@@ -129,7 +129,7 @@ class PeerReviewProcess extends \SimpleORMap
         return (bool) $this->configuration['automaticPairing'];
     }
 
-    public function getCurrentState(int $date = null): string
+    public function getCurrentState(?int $date = null): string
     {
         if (is_null($date)) {
             $date = time();

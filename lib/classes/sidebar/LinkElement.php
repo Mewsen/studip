@@ -15,7 +15,7 @@ class LinkElement extends WidgetElement implements ArrayAccess
      * @return LinkElement Link element from parsed html
      * @throws Exception if html can not be parsed
      */
-    public static function fromHTML($html, \Icon $icon = null)
+    public static function fromHTML($html, ?\Icon $icon = null)
     {
         $matched = preg_match('~(<a(?P<attributes>(?:\s+\w+=".*?")+)>\s*(?P<label>.*?)\s*</a>)~s', $html, $match);
         if (!$matched) {
@@ -72,7 +72,7 @@ class LinkElement extends WidgetElement implements ArrayAccess
      * @param Icon $icon       Icon for the link
      * @param array  $attributes HTML-attributes for the a-tag in an associative array.
      */
-    public function __construct($label, $url, \Icon $icon = null, $attributes = [])
+    public function __construct($label, $url, ?\Icon $icon = null, $attributes = [])
     {
         parent::__construct();
 

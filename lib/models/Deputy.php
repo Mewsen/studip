@@ -199,7 +199,7 @@ class Deputy extends SimpleORMap
      * @param string|null $range_id ID of a course or person
      * @return SimpleCollection An array containing all deputies.
      */
-    public static function findDeputies(string $range_id = null)
+    public static function findDeputies(?string $range_id = null)
     {
         if(is_null($range_id)) {
             $range_id = $GLOBALS['user']->id;
@@ -215,7 +215,7 @@ class Deputy extends SimpleORMap
      * @param string|null $user_id the user to check
      * @return SimpleCollection An array of the given person's bosses.
      */
-    public static function findDeputyBosses(string $user_id = null)
+    public static function findDeputyBosses(?string $user_id = null)
     {
         if(is_null($user_id)) {
             $user_id = $GLOBALS['user']->id;
@@ -234,7 +234,7 @@ class Deputy extends SimpleORMap
      * @param string|null $user_id
      * @return SimpleCollection
      */
-    public static function findDeputyCourses(string $user_id = null)
+    public static function findDeputyCourses(?string $user_id = null)
     {
         if(is_null($user_id)) {
             $user_id = $GLOBALS['user']->id;

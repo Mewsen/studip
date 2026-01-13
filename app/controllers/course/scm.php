@@ -134,7 +134,7 @@ class Course_ScmController extends AuthenticatedController
      * @param mixed $id Id of the page to edit; a new page will be created if
      *                  this parameter is omitted.
      */
-    public function edit_action(StudipScmEntry $scm = null)
+    public function edit_action(?StudipScmEntry $scm = null)
     {
         if (Request::submitted('submit')) {
             CSRFProtection::verifyUnsafeRequest();

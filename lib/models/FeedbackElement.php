@@ -60,7 +60,7 @@ class FeedbackElement extends SimpleORMap
      *
      * @return bool
      */
-    public function isFeedbackable(string $user_id = null): bool
+    public function isFeedbackable(?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         $feedbackable = false;
@@ -80,7 +80,7 @@ class FeedbackElement extends SimpleORMap
      *
      * @return bool
      */
-    public function isOwner(string $user_id = null): bool
+    public function isOwner(?string $user_id = null): bool
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
         $ownership = false;
@@ -96,7 +96,7 @@ class FeedbackElement extends SimpleORMap
      *
      * @return FeedbackEntry|null
      */
-    public function getOwnEntry(string $user_id = null)
+    public function getOwnEntry(?string $user_id = null)
     {
         $user_id = $user_id ?? $GLOBALS['user']->id;
 
