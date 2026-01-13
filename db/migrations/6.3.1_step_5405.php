@@ -53,7 +53,7 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `idx_key` (`key`)
+                INDEX `idx_key` (`publication_key`)
             )
         ");
 
