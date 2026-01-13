@@ -38,7 +38,7 @@ final class RegistrationManager implements RegistrationRepositoryInterface
         return $registration->toLti1p3Registration($deployment);
     }
 
-    public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
+    public function findByPlatformIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
         $registration = $deployment->registration;
@@ -53,7 +53,7 @@ final class RegistrationManager implements RegistrationRepositoryInterface
         return $registration->toLti1p3Registration($deployment);
     }
 
-    public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
+    public function findByToolIssuer(string $issuer, ?string $clientId = null): ?RegistrationInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
         $registration = $deployment->registration;
