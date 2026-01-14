@@ -51,7 +51,7 @@
             </tr>
         </tbody>
         <tbody v-else>
-            <tr><td>{{ $gettext('Es sind keine nicht registrierten Plugins vorhanden') }}</td></tr>
+            <tr><td colspan="5">{{ $gettext('Es sind keine nicht registrierten Plugins vorhanden') }}</td></tr>
         </tbody>
     </table>
 
