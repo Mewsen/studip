@@ -1,7 +1,13 @@
 <template>
     <h2>Kontakte</h2>
-    <studip-data-set-viewer :data="contacts" :available-views="['card', 'list']" :view-components="contactViews">
-        <template #header-left>
+    <studip-data-set-viewer
+        v-model:selection-mode="bulkModeActive"
+        :data="contacts"
+        :available-views="['card', 'list']"
+        :view-components="contactViews"
+        @selection-change="currentSelection = $event"
+    >
+        <template #header-left="{ selectAll, countSelection }">
             <studip-context-menu :title="$gettext('Gruppe auswählen')" button-shape="group2">
                 <template #content>
                     <studip-context-menu-entry>
@@ -19,13 +25,14 @@
                 </template>
             </studip-context-menu>
             <studip-button-group
+                v-model="bulkModeActive"
                 collapsible
                 :toggle-label="$gettext('Mehrfachauswahl')"
                 :active-label="$gettext('Auswahl abbrechen')"
             >
-                <button class="button">{{ $gettext('Alles auswählen') }}</button>
-                <button class="button">{{ $gettext('Nachricht senden') }}</button>
-                <button class="button">{{ $gettext('E-Mail senden') }}</button>
+                <button class="button" @click="selectAll">{{ $gettext('Alles auswählen') }}</button>
+                <button class="button" :disabled="currentSelection.length === 0">{{ $gettext('Nachricht senden') }}</button>
+                <button class="button" :disabled="currentSelection.length === 0">{{ $gettext('E-Mail senden') }}</button>
             </studip-button-group>
         </template>
 
@@ -44,22 +51,41 @@
                         </studip-context-menu-entry>
                     </template>
                 </studip-context-menu>
-                <studip-context-menu :title="$gettext('Einstellungen')" button-shape="settings">
-                    <template #content></template>
+                <studip-context-menu
+                    v-if="isSpecificGroupSelected"
+                    :title="$gettext('Einstellungen')"
+                    button-shape="settings"
+                >
+                    <template #content>
+                        <studip-context-menu-entry
+                            :label="$gettext('Gruppe bearbeiten')"
+                            :description="$gettext('Ändere hier den Namen und andere Einstellungen')"
+                            icon="edit"
+                            is-clickable
+                            @click="console.log('click edit contact group')"
+                        />
+                        <studip-context-menu-entry
+                            :label="$gettext('Gruppe löschen')"
+                            :description="$gettext('Lösche diese Gruppe, deine Kontakte bleiben erhalten.')"
+                            icon="trash"
+                            is-clickable
+                            @click="console.log('click remove contact group')"
+                        />
+                    </template>
                 </studip-context-menu>
 
                 <studip-context-menu :title="$gettext('Hinzufügen')" button-shape="add">
                     <template #content>
                         <studip-context-menu-entry
-                            label="Kontakt hinzufügen"
-                            description="Suche dir jemand nettes und füge ihn hinzu"
+                            :label="$gettext('Kontakt hinzufügen')"
+                            :description="$gettext('Suche dir jemand nettes und füge ihn hinzu')"
                             icon="add"
                             is-clickable
                             @click="console.log('click add contact')"
                         />
                         <studip-context-menu-entry
-                            label="Gruppe erstellen"
-                            description="Erstellt eine Gruppe ;)"
+                            :label="$gettext('Gruppe erstellen')"
+                            :description="$gettext('Erstellt eine Gruppe ;)')"
                             icon="add"
                             is-clickable
                             @click="console.log('click add contact-group')"
@@ -85,8 +111,8 @@ import ContactCardView from '@/vue/components/community/contacts/ContactCardView
 import ContactListView from '@/vue/components/community/contacts/ContactListView.vue';
 
 const contactViews = {
-    // card: ContactCardView,
-    // list: ContactListView
+    card: ContactCardView,
+    list: ContactListView,
 };
 
 const contactStore = useContactStore();
@@ -101,6 +127,14 @@ const contactGroups = computed(() => {
 });
 
 const selectedGroup = ref('all');
+
+const bulkModeActive = ref(false);
+
+const currentSelection = ref([]);
+
+const isSpecificGroupSelected = computed(() => {
+    return selectedGroup.value !== 'all';
+});
 
 onMounted(async () => {
     const userId = STUDIP.USER_ID;

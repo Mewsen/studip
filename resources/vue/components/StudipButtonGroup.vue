@@ -12,7 +12,7 @@
             :class="{ active: isExpanded }"
             :aria-expanded="isExpanded"
             :aria-controls="contentId"
-            @click="isExpanded = !isExpanded"
+            @click="toggleExpanded"
         >
             {{ currentLabel }}
         </button>
@@ -26,6 +26,10 @@
 <script setup>
 import { computed, ref, onMounted, watch, nextTick } from 'vue';
 const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false
+    },
     collapsible: {
         type: Boolean,
         default: false,
@@ -43,10 +47,34 @@ const props = defineProps({
         default: false,
     },
 });
-const isExpanded = ref(false);
-const effectiveExpanded = computed(() => {
-    return props.collapsible ? isExpanded.value : true;
+
+const emit = defineEmits(['update:modelValue']);
+
+const internalExpanded = ref(props.modelValue);
+
+watch(() => props.modelValue, (newVal) => {
+    internalExpanded.value = newVal;
 });
+
+const toggleExpanded = () => {
+    internalExpanded.value = !internalExpanded.value;
+    emit('update:modelValue', internalExpanded.value);
+};
+
+const isExpanded = computed(() => {
+    return props.collapsible ? internalExpanded.value : true;
+});
+
+const effectiveExpanded = computed(() => isExpanded.value);
+
+// const isExpanded = computed({
+//     get: () => (props.collapsible ? props.modelValue : true),
+//     set: (value) => emit('update:modelValue', value)
+// });
+
+// const effectiveExpanded = computed(() => {
+//     return props.collapsible ? isExpanded.value : true;
+// });
 const currentLabel = computed(() => {
     return isExpanded.value && props.activeLabel ? props.activeLabel : props.toggleLabel;
 });

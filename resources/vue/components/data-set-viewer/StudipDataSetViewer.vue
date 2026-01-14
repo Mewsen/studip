@@ -2,17 +2,15 @@
     <div class="data-set-viewer">
         <header class="viewer-header">
             <div class="header-left">
-                <slot name="header-left">
-                    </slot>
+                <slot name="header-left" v-bind="slotApi"> </slot>
             </div>
 
             <div class="header-center">
-                <slot name="header-center">
-                    </slot>
+                <slot name="header-center" v-bind="slotApi"> </slot>
             </div>
 
             <div class="header-right">
-                <slot name="header-right"></slot>
+                <slot name="header-right" v-bind="slotApi"></slot>
                 <studip-button-group radiogroup v-if="availableViews.length > 1">
                     <button
                         v-for="viewType in availableViews"
@@ -22,8 +20,8 @@
                         :title="formatViewName(viewType)"
                         @click="activeView = viewType"
                     >
-                        <studip-icon 
-                            :shape="getIconShape(viewType)" 
+                        <studip-icon
+                            :shape="getIconShape(viewType)"
                             :role="activeView === viewType ? 'info' : 'clickable'"
                             :size="16"
                         />
@@ -42,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, ref } from 'vue';
+import { computed, getCurrentInstance, provide, ref, watch } from 'vue';
 import CardView from './CardView.vue';
 import ListView from './ListView.vue';
 import TableView from './TableView.vue';
@@ -65,9 +63,15 @@ const props = defineProps({
     },
     viewComponents: {
         type: Object,
-        default: () => ({})
-    }
+        default: () => ({}),
+    },
+    selectionMode: {
+        type: Boolean,
+        default: false,
+    },
 });
+
+const emit = defineEmits(['update:selection-mode', 'selection-change']);
 
 const { proxy } = getCurrentInstance();
 
@@ -77,7 +81,7 @@ const getIconShape = (viewType) => {
     const shapeMap = {
         table: 'billboard', // TODO: we need a view-table icon
         card: 'view-wall',
-        list: 'view-list'
+        list: 'view-list',
     };
     return shapeMap[viewType] || 'view-list';
 };
@@ -89,13 +93,20 @@ const viewComponentMap = {
 };
 
 const formatViewName = (name) => {
-    const mapping = { 
-        table: proxy.$gettext('Tabellenansicht'), 
-        card: proxy.$gettext('Kacheln'), 
-        list: proxy.$gettext('Listenansicht') 
+    const mapping = {
+        table: proxy.$gettext('Tabellenansicht'),
+        card: proxy.$gettext('Kacheln'),
+        list: proxy.$gettext('Listenansicht'),
     };
     return mapping[name] || name;
 };
+
+const slotApi = computed(() => ({
+    selectAll,
+    deselectAll,
+    countSelection: selectedIds.value.length,
+    isSelectionMode: props.selectionMode,
+}));
 
 const activeViewComponent = computed(() => {
     if (props.viewComponents[activeView.value]) {
@@ -106,8 +117,35 @@ const activeViewComponent = computed(() => {
 });
 
 const commonProps = computed(() => ({
-    titleKey: props.titleKey
+    titleKey: props.titleKey,
 }));
+
+const selectedIds = ref([]);
+const selectAll = () => {
+    selectedIds.value = props.data.map(item => item.id);
+};
+
+const deselectAll = () => {
+    selectedIds.value = [];
+};
+
+provide('selectionContext', {
+    isSelectionMode: computed(() => props.selectionMode),
+    selectedIds: computed(() => selectedIds.value),
+    toggleItem: (id) => {
+        const index = selectedIds.value.indexOf(id);
+        if (index > -1) selectedIds.value.splice(index, 1);
+        else selectedIds.value.push(id);
+    },
+    selectAll,
+    deselectAll
+});
+watch(() => props.selectionMode, (newVal) => {
+    if (!newVal) selectedIds.value = [];
+});
+watch(selectedIds, (newSelection) => {
+    emit('selection-change', [...newSelection]);
+}, { deep: true });
 </script>
 <style scoped>
 .viewer-header {
@@ -120,7 +158,8 @@ const commonProps = computed(() => ({
     gap: 15px;
 }
 
-.header-left, .header-right {
+.header-left,
+.header-right {
     display: flex;
     align-items: center;
     gap: 10px;

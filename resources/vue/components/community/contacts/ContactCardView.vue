@@ -1,8 +1,20 @@
 <template>
     <div class="contact-card-grid">
-        <div v-for="contact in data" :key="contact.id" class="contact-card">
+        <div v-for="contact in data" 
+             :key="contact.id" 
+             class="contact-card"
+             :class="{ 'is-selected': isItemSelected(contact.id) }"
+        >
+            <div v-if="isSelectionMode" class="contact-card__checkbox">
+                <input 
+                    type="checkbox" 
+                    :checked="isItemSelected(contact.id)" 
+                    @change="toggleItem(contact.id)" 
+                />
+            </div>
+
             <div class="contact-avatar">
-                <img :src="contact.meta.avatar.medium" alt="">
+                <img :src="contact.meta.avatar.medium" alt="" />
             </div>
             <div class="contact-info">
                 <div class="contact-name">{{ contact['formatted-name'] }}</div>
@@ -16,7 +28,17 @@
 </template>
 
 <script setup>
+import { inject } from 'vue';
+
 defineProps(['data', 'headers']);
+
+// Wir holen uns alles aus dem Context
+const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
+
+// Hilfsfunktion um zu prüfen, ob eine ID in der Liste ist
+const isItemSelected = (id) => {
+    return selectedIds.value.includes(id);
+};
 </script>
 
 <style scoped lang="scss">
@@ -33,6 +55,8 @@ defineProps(['data', 'headers']);
     display: flex;
     align-items: center;
     gap: 12px;
-    &:hover { border-color: var(--color--highlight); }
+    &:hover {
+        border-color: var(--color--highlight);
+    }
 }
 </style>
