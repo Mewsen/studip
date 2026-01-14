@@ -20,7 +20,9 @@ final class Step5405 extends Migration {
                 `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
-                PRIMARY KEY (`id`)
+                PRIMARY KEY (`id`),
+                KEY `idx_lti_registrations_range_id` (`range_id`),
+                KEY `idx_lti_registrations_user_id` (`user_id`)
             )
         ");
 
@@ -33,8 +35,8 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `idx_registration_id` (`registration_id`),
-                CONSTRAINT `fk_lti_configs_registration`
+                KEY `idx_lti_reg_configs_registration_id` (`registration_id`),
+                CONSTRAINT `fk_lti_reg_configs_registration`
                     FOREIGN KEY (`registration_id`)
                     REFERENCES `lti_registrations` (`id`)
                     ON DELETE CASCADE
@@ -53,7 +55,9 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `idx_publication_key` (`publication_key`)
+                KEY `idx_lti_publications_key` (`publication_key`),
+                KEY `idx_lti_publications_range_id` (`range_id`),
+                KEY `idx_lti_publications_user_id` (`user_id`)
             )
         ");
 
@@ -66,8 +70,8 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `idx_publication_id` (`publication_id`),
-                CONSTRAINT `fk_lti_publication_configs`
+                KEY `idx_lti_pub_users_publication_id` (`publication_id`),
+                CONSTRAINT `fk_lti_pub_users_publication`
                     FOREIGN KEY (`publication_id`)
                     REFERENCES `lti_publications` (`id`)
                     ON DELETE CASCADE
@@ -82,10 +86,14 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `idx_publication_id` (`publication_id`),
-                CONSTRAINT `fk_lti_publication_users`
+                KEY `idx_lti_pub_users_publication_id` (`publication_id`),
+                CONSTRAINT `fk_lti_pub_users_publication`
                     FOREIGN KEY (`publication_id`)
                     REFERENCES `lti_publications` (`id`)
+                    ON DELETE CASCADE,
+                CONSTRAINT `fk_lti_pub_users_user`
+                    FOREIGN KEY (`user_id`)
+                    REFERENCES `auth_user_md5` (`user_id`)
                     ON DELETE CASCADE
             )
         ");
@@ -115,11 +123,11 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` ADD INDEX `idx_registration_id` (`registration_id`)
+            ALTER TABLE `lti_deployments` ADD KEY `idx_lti_deployments_registration_id` (`registration_id`)
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` ADD CONSTRAINT `fk_deployment_registration`
+            ALTER TABLE `lti_deployments` ADD CONSTRAINT `fk_lti_deployments_registration`
                 FOREIGN KEY (`registration_id`)
                 REFERENCES `lti_registrations` (`id`)
                 ON DELETE CASCADE
@@ -190,15 +198,21 @@ final class Step5405 extends Migration {
             DROP TABLE IF EXISTS
                 `lti_registration_configs`,
                 `lti_registrations`,
-                `lti_publications`,
                 `lti_publication_configs`,
-                `lti_publication_users`
+                `lti_publication_users`,
+                `lti_publications`
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_deployments` DROP INDEX `idx_registration_id`;
-            ALTER TABLE `lti_deployments` DROP FOREIGN KEY `fk_deployment_registration`;
-            ALTER TABLE `lti_deployments` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL;
+            ALTER TABLE `lti_deployments` DROP KEY `idx_lti_deployments_registration_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` DROP FOREIGN KEY `fk_lti_deployments_registration`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_deployments` CHANGE `registration_id` `tool_id` INT UNSIGNED NOT NULL
         ");
 
         DBManager::get()->exec("

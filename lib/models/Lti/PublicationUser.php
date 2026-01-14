@@ -39,12 +39,12 @@ class PublicationUser extends SimpleORMap
             ...$this->toRawArray(),
             'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
-            'user' => [
+            'user' => $this->user ? [
                 'id'         => $this->user->id,
                 'name'       => $this->user->getFullName(),
                 'username'   => $this->user->username,
                 'avatar_url' => Avatar::getAvatar($this->user->id)->getURL(Avatar::MEDIUM)
-            ]
+            ] : []
         ];
     }
 }

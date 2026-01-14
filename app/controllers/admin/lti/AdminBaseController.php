@@ -16,6 +16,7 @@ abstract class AdminBaseController extends AuthenticatedController
 {
     protected $range_id = null;
     protected $isToolSharingEnabled = false;
+
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
