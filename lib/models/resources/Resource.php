@@ -93,6 +93,13 @@ class Resource extends SimpleORMap implements StudipItem
             'foreign_key' => 'parent_id'
         ];
 
+        $config['has_and_belongs_to_many']['separable_room'] = [
+            'class_name'        => SeparableRoom::class,
+            'thru_table'        => 'separable_room_parts',
+            'thru_key'          => 'room_id',
+            'thru_assoc_key'    => 'separable_room_id'
+        ];
+
         $config['i18n_fields']['description'] = true;
 
         $config['additional_fields']['class_name']        = ['category', 'class_name'];

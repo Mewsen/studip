@@ -259,7 +259,7 @@ class ExternPageTimetable extends ExternPage
             'TYPE'        => $GLOBALS['TERMIN_TYP'][$date->date_typ]['name'],
             'LECTURERS'   => $this->getLecturers($date),
             'TOPICS'      => $this->getTopics($date),
-            'BOOKED_ROOM' => $this->getBookedRoomData($date)
+            'BOOKED_ROOMS' => $this->getBookedRoomData($date)
         ];
         return $date_content;
     }
@@ -312,11 +312,18 @@ class ExternPageTimetable extends ExternPage
 
     private function getBookedRoomData(CourseDate $date): array
     {
-        if ($date->room_booking) {
-            return [
-                'NAME' => $date->room_booking->resource->name,
-                'ID'   => $date->room_booking->resource->id
-            ];
+        if ($date->room_bookings) {
+            $booking_data = [];
+            foreach ($date->room_bookings as $booking) {
+                $booking_data[] = [
+                    'NAME' => $booking->resource->name ?? '',
+                    'ID'   => $booking->resource->id ?? ''
+                ];
+            }
+            uasort($booking_data, function($a, $b) {
+                return strnatcmp($a['NAME'], $b['NAME']);
+            });
+            return $booking_data;
         }
         return [];
     }

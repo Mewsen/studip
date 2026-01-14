@@ -200,18 +200,22 @@ function vorbesprechung(string $seminar_id, string $type = 'standard'): false|st
 
     $termin = new CourseDate($termin_id);
     $ret = (string) $termin;
-    if (!empty($termin->room_booking->resource)) {
+    if (!empty($termin->room_bookings)) {
         $ret .= ', '._("Ort:").' ';
         switch ($type) {
             case 'export':
-                $ret .= $termin->room_booking->resource->name;
+                $ret .= $termin->getRoomNames();
                 break;
 
             case 'standard':
-            default:
-                $ret .= '<a href="' . $termin->room_booking->resource->getActionLink('show') . '" data-dialog>'
-                    . htmlReady($termin->room_booking->resource->name) . '</a>';
+            default: {
+                $rooms = $termin->getRooms();
+                foreach ($rooms as $room) {
+                    $ret .= '<a href="' . $room->getActionLink('show') . '" data-dialog>'
+                        . htmlReady($room->name) . '</a>';
+                }
                 break;
+            }
         }
     }
     return $ret;

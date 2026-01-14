@@ -1288,9 +1288,9 @@ class Resources_RoomRequestController extends AuthenticatedController
             foreach ($this->request_time_intervals as $metadate_id => $data) {
                 if ($data['metadate'] instanceof SeminarCycleDate && !$this->expand_metadates) {
                     $all_dates_same_room = true;
-                    // check, if ALL dates are booked for the same room
+                    //Check if all dates are booked for the same room:
                     foreach ($data['intervals'] as $interval) {
-                        if ($interval['booked_room'] != $selected_room->id) {
+                        if (!in_array($selected_room->id, $interval['booked_rooms'])) {
                             $all_dates_same_room = false;
                             break;
                         }
@@ -1567,7 +1567,12 @@ class Resources_RoomRequestController extends AuthenticatedController
                         return;
                     }
 
-                    if (!$course_date->room_booking || $course_date->room_booking->resource_id !== $room_id) {
+                    $room_ids = [];
+                    foreach ($course_date->room_bookings as $booking) {
+                        $room_ids[] = $booking->resource_id;
+                    }
+
+                    if (empty($room_ids) || !in_array($room_id, $room_ids)) {
                         try {
                             $booking = $room->createBooking(
                                 $this->current_user,
@@ -1623,7 +1628,11 @@ class Resources_RoomRequestController extends AuthenticatedController
                     if ($metadate->dates) {
                         $overlap_messages = [];
                         foreach ($metadate->dates as $date) {
-                            if (!$date->room_booking || $date->room_booking->resource_id != $room_id) {
+                            $room_ids = [];
+                            foreach ($date->room_bookings as $booking) {
+                                $room_ids[] = $booking->resource_id;
+                            }
+                            if (empty($room_ids) || !in_array($room_id, $room_ids)) {
                                 try {
                                     $booking = $room->createBooking(
                                         $this->current_user,

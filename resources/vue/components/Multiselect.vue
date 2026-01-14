@@ -7,7 +7,10 @@
         v-bind="$attrs"
     >
         <template v-slot:no-options>
-            {{ $gettext('Keine Auswahlmöglichkeiten') }}
+            {{ this.no_options_text }}
+        </template>
+        <template #open-indicator="{ selectAttributes }">
+            <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
         </template>
     </v-select>
 </template>
@@ -15,9 +18,12 @@
 <script>
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css'
+import {$gettext} from "../../assets/javascripts/lib/gettext";
+import StudipIcon from "./StudipIcon.vue";
 export default {
     name: 'multiselect',
     components: {
+        StudipIcon,
         vSelect,
     },
     emits: ['update:model-value'],
@@ -36,6 +42,11 @@ export default {
         options: {
             type: Object,
             required: true
+        },
+        no_options_text: {
+            type: String,
+            required: false,
+            default: $gettext('Keine Auswahlmöglichkeiten')
         }
     },
     data () {

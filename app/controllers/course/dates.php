@@ -442,7 +442,7 @@ class Course_DatesController extends AuthenticatedController
                     'start'           => $singledate->date,
                     'related_persons' => $singledate->dozenten,
                     'groups'          => $singledate->statusgruppen,
-                    'room'            => (string) ($singledate->getRoom() ?? $singledate->raum),
+                    'room'            => $singledate->getRoomNames(),
                     'type'            => $GLOBALS['TERMIN_TYP'][$singledate->date_typ]['name'],
                 ];
             } elseif ($singledate instanceof CourseExDate && $singledate->content) {
@@ -545,8 +545,9 @@ class Course_DatesController extends AuthenticatedController
                 })
             );
 
-            $room = $date->getRoom();
-            if ($room) {
+            $rooms = $date->getRooms();
+            if (!empty($rooms)) {
+                $room = reset($rooms);
                 $row[] = $room->name;
                 $row[] = $room->description;
                 $row[] = $room->seats;

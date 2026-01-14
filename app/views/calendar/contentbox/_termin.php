@@ -20,7 +20,7 @@
             <? if ($termin instanceof CalendarDateAssignment): ?>
                 <?= $termin->getLocation() ? _('Raum') . ': ' . formatLinks($termin->getLocation()) : '' ?>
             <? else: ?>
-                <?= $termin->getRoomName() ? _('Raum') . ': ' . formatLinks($termin->getRoomName()) : '' ?>
+                <?= $termin->getRoomNames() ? _('Raum') . ': ' . formatLinks($termin->getRoomNames()) : '' ?>
             <? endif; ?>
             </span>
             <? if ($admin && $isProfile && $termin->getObjectClass() === 'CalendarDateAssignment') : ?>

@@ -4,14 +4,16 @@
  * @var string $cycle_id
  * @var array $linkAttributes
  * @var array $checked_dates
- * @var array $selectable_rooms
  * @var QuickSearch $room_search
- * @var array $only_bookable_rooms
  * @var array $teachers
  * @var array $gruppen
+ * @var array $time_ranges
+ * @var bool $allow_multiple_room_bookings
  * @var int $preparation_time
+ * @var int $subsequent_time
  * @var int $max_preparation_time
  * @var string[] $selected_lecturer_ids
+ * @var string[] $selected_room_ids
  */
 ?>
 <form method="post" action="<?= $controller->link_for('course/timesrooms/saveStack/' . $cycle_id, $linkAttributes ?? []) ?>"
@@ -20,80 +22,19 @@
     <input type="hidden" name="method" value="edit">
     <input type="hidden" name="checked_dates" value="<?= implode(',', $checked_dates) ?>">
 
-    <fieldset>
-        <legend><?= _('Raumangaben') ?></legend>
-        <? if (Config::get()->RESOURCES_ENABLE && (!empty($room_search) || !empty($selectable_rooms))): ?>
-            <section>
-                <label>
-                    <input type="radio" name="action" value="room" id="room" data-activates="input.preparation-time[name='preparation_time']">
-                    <?= _('Raum direkt buchen') ?>
-                </label>
-                <? if (!empty($room_search)) : ?>
-                    <label>
-                        <?= _('Raumsuche') ?>
-                        <span class="flex-row"></span>
-                        <?= $room_search
-                            ->setAttributes(['onFocus' => "jQuery('input[type=radio][name=action][value=room]').prop('checked', true)"])
-                            ->setMinLength(2)
-                            ->render() ?>
-                        <? if (!$only_bookable_rooms) : ?>
-                            <?= $this->render_partial('course/timesrooms/_bookable_rooms_icon.php') ?>
-                        <? endif ?>
-                    </label>
-                <? else : ?>
-                    <label>
-                        <?= _('Raum auswählen') ?>
-                        <span class="flex-row">
-                                <select name="room_id" onFocus="jQuery('input[type=radio][name=action][value=room]').prop('checked', 'checked')">
-                                    <option value="0"><?= _('Auswählen') ?></option>
-                                    <? foreach ($selectable_rooms as $room): ?>
-                                        <option value="<?= htmlReady($room->id)?>"
-                                            <?= $room->id === $selected_room_id ? 'selected' : '' ?>>
-                                            <?= htmlReady($room->name) ?>
-                                        </option>
-                                    <? endforeach ?>
-                                </select>
-                                <? if (!$only_bookable_rooms) : ?>
-                                    <?= $this->render_partial('course/timesrooms/_bookable_rooms_icon.php') ?>
-                                <? endif ?>
-                           </span>
-                    </label>
-                <? endif ?>
-                <label>
-                    <?= _('Rüstzeit (in Minuten)') ?>
-                    <input type="number" name="preparation_time"
-                           class="preparation-time"
-                           value="<?= htmlReady($preparation_time) ?>"
-                           min="0" max="<?= htmlReady($max_preparation_time) ?>">
-                </label>
-            </section>
-            <? $placerholder = _('Freie Ortsangabe (keine Raumbuchung)') ?>
-        <? else : ?>
-            <? $placerholder = _('Freie Ortsangabe') ?>
-        <? endif ?>
-        <section>
-            <label>
-                <input type="radio" name="action" value="freetext" data-deactivates="input.preparation-time[name='preparation_time']">
-                <?= $placerholder ?>
-            </label>
-            <label>
-                <input type="text" name="freeRoomText" value="<?= htmlReady($selected_room_name) ?>"
-                       placeholder="<?= $placerholder ?>"
-                       onFocus="jQuery('input[type=radio][name=action][value=freetext]').prop('checked', 'checked')">
-            </label>
-        </section>
-        <? if (Config::get()->RESOURCES_ENABLE) : ?>
-            <label>
-                <input type="radio" name="action" value="noroom" data-deactivates="input.preparation-time[name='preparation_time']">
-                <?= _('Kein Raum') ?>
-            </label>
-        <? endif ?>
-
-        <label>
-            <input type="radio" name="action" value="nochange" checked="checked" data-deactivates="input.preparation-time[name='preparation_time']">
-            <?= _('Keine Änderungen an den Raumangaben vornehmen') ?>
-        </label>
-    </fieldset>
+    <section id="room-fieldset">
+        <course-date-room-fieldset
+            :time_ranges="<?= htmlReady(json_encode($time_ranges)) ?>"
+            :course_date_ids="<?= htmlReady(json_encode($checked_dates)) ?>"
+            :room_management_enabled="<?= Config::get()->RESOURCES_ENABLE ? 'true' : 'false' ?>"
+            :allow_multiple_room_bookings="<?= $allow_multiple_room_bookings ? 'true' : 'false' ?>"
+            :initial_preparation_time="<?= $preparation_time ?>"
+            :initial_subsequent_time="<?= $subsequent_time ?>"
+            :max_preparation_time="<?= $max_preparation_time ?>"
+            :selected_rooms="<?= htmlReady(json_encode($selected_room_ids ?? [])) ?>"
+            :show_nochange_option="true"
+        ></course-date-room-fieldset>
+    </section>
 
     <fieldset class="collapsed">
         <legend><?= _('Terminangaben') ?></legend>
@@ -122,7 +63,7 @@
         <label>
             <?= _('Aktion auswählen') ?>
             <select name="related_persons_action" id="related_persons_action">
-                <option value=""><?= _('Bitte wählen') ?></option>
+                <option value=""><?= _('-- Keine Änderung --') ?></option>
                 <option value="add"><?= _('Lehrende hinzufügen') ?></option>
                 <option value="delete"><?= _('Lehrende entfernen') ?></option>
             </select>
@@ -148,7 +89,7 @@
             <label>
                 <?= _('Aktion auswählen') ?>
                 <select name="related_groups_action" id="related_groups_action">
-                    <option value=""><?= _('Bitte wählen') ?></option>
+                    <option value=""><?= _('-- Keine Änderung --') ?></option>
                     <option value="add"><?= _('Gruppen hinzufügen') ?></option>
                     <option value="delete"><?= _('Gruppen entfernen') ?></option>
                 </select>
@@ -177,3 +118,10 @@
         <? endif ?>
     </footer>
 </form>
+<script>
+    STUDIP.Vue.load().then(({createApp}) => {
+        STUDIP.editStackRoomFieldset = createApp({
+            el: "#room-fieldset"
+        });
+    });
+</script>

@@ -29,7 +29,7 @@
  * @property User $author belongs_to User
  * @property Course $course belongs_to Course
  * @property SeminarCycleDate|null $cycle belongs_to SeminarCycleDate
- * @property ResourceBooking $room_booking has_one ResourceBooking
+ * @property ResourceBooking[] $room_bookings has_many ResourceBooking
  * @property SimpleORMapCollection<CourseTopic> $topics has_and_belongs_to_many CourseTopic
  * @property SimpleORMapCollection<Statusgruppen> $statusgruppen has_and_belongs_to_many Statusgruppen
  * @property SimpleORMapCollection<User> $dozenten has_and_belongs_to_many User
@@ -89,7 +89,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             'class_name'  => SeminarCycleDate::class,
             'foreign_key' => 'metadate_id'
         ];
-        $config['has_one']['room_booking'] = [
+        $config['has_many']['room_bookings'] = [
             'class_name'        => ResourceBooking::class,
             'foreign_key'       => 'termin_id',
             'assoc_foreign_key' => 'range_id',
@@ -225,25 +225,49 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
      *
      * @return String containing the room name
      */
-    public function getRoomName()
+    public function getRoomNames()
     {
-        if (Config::get()->RESOURCES_ENABLE && isset($this->room_booking->resource)) {
-            return $this->getRoom()->name;
+        if (Config::get()->RESOURCES_ENABLE) {
+            $room_names = [];
+            foreach ($this->getRooms() as $room) {
+                $room_names[] = $room->getFullName();
+            }
+            if (!empty($room_names)) {
+                return implode(', ', $room_names);
+            }
         }
+        //The room management is disabled or there are no room bookings for this course date.
+        //Maybe a freetext room name exists.
         return $this->raum ?? '';
     }
 
     /**
-     * Returns the assigned room for this date as an object.
+     * Returns the assigned rooms for this date as objects.
      *
-     * @return Resource Either the object or null if no room is assigned
+     * @return Room[] Either the room objects or an empty array if no rooms are assigned.
      */
-    public function getRoom()
+    public function getRooms() : array
     {
-        if (Config::get()->RESOURCES_ENABLE && !empty($this->room_booking->resource)) {
-           return $this->room_booking->resource->getDerivedClassInstance();
+        if (Config::get()->RESOURCES_ENABLE) {
+            $rooms = [];
+            foreach ($this->room_bookings as $booking) {
+                $room = $booking->resource->getDerivedClassInstance();
+                if ($room instanceof Room) {
+                    $rooms[] = $room;
+                }
+            }
+            uasort($rooms, function ($a, $b) {
+                if ($a->name < $b->name) {
+                    return -1;
+                } elseif ($a->name > $b->name) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            return $rooms;
         }
-        return null;
+        return [];
     }
 
     /**
@@ -271,32 +295,21 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         $this->raum = '';
         $this->store();
 
-        //If there is already a room assigned, "change" the booking.
-        //Otherwise, create a new one.
-        if ($this->room_booking instanceof ResourceBooking) {
-            $this->room_booking->begin            = $this->date;
-            $this->room_booking->end              = $this->end_time;
-            $this->room_booking->resource_id      = $room->id;
-            $this->room_booking->preparation_time = $preparation_time * 60;
-            $this->room_booking->subsequent_time  = $subsequent_time * 60;
-            $this->room_booking->store();
-        } else {
-            $room->createBooking(
-                User::findCurrent(),
-                $this->id,
-                [['begin' => $this->date, 'end' => $this->end_time]],
-                null,
-                0,
-                null,
-                $preparation_time * 60,
-                '',
-                '',
-                ResourceBooking::TYPE_NORMAL,
-                false,
-                '',
-                $subsequent_time * 60
-            );
-        }
+        $room->createBooking(
+            User::findCurrent(),
+            $this->id,
+            [['begin' => $this->date, 'end' => $this->end_time]],
+            null,
+            0,
+            null,
+            $preparation_time,
+            '',
+            '',
+            ResourceBooking::TYPE_NORMAL,
+            false,
+            '',
+            $subsequent_time
+        );
 
         return true;
     }
@@ -354,13 +367,15 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         }
 
         if (in_array($format, ['include-room', 'long-include-room'])) {
-            $room = $this->getRoom();
-            if ($room) {
-                $string = sprintf('%s <a href="%s" target="_blank">%s</a>',
-                    $string,
-                    $room->getActionURL('booking_plan'),
-                    htmlReady($room->name)
-                );
+            $rooms = $this->getRooms();
+            if ($rooms) {
+                foreach ($rooms as $room) {
+                    $string = sprintf('%s <a href="%s" target="_blank">%s</a>',
+                        $string,
+                        $room->getActionURL('booking_plan'),
+                        htmlReady($room->name)
+                    );
+                }
             } elseif ($this->raum) {
                 //Use the freetext room name:
                 $string .= ' ' . $this->raum;
@@ -402,10 +417,18 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
 
         $ex_date = new CourseExDate();
         $ex_date->setData($date);
-        if ($room = $this->getRoom()) {
-            $ex_date['resource_id'] = $room->getId();
-        }
         $ex_date->setId($ex_date->getNewId());
+        if ($rooms = $this->getRooms()) {
+            $db = DBManager::get();
+            $stmt = $db->prepare(
+                "INSERT INTO `ex_termin_rooms` (`ex_termin_id`, `room_id`, `mkdate`, `chdate`)
+                VALUES (:date_id, :room_id, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
+            );
+            foreach ($rooms as $room) {
+                $stmt->execute(['date_id' => $ex_date->id, 'room_id' => $room->id]);
+            }
+        }
+
 
         if ($ex_date->store()) {
             //Update some (but not all) relations to the date so that they
@@ -441,7 +464,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     public function store()
     {
         // load room-booking, if any
-        $this->room_booking;
+        $this->room_bookings;
 
         $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/'. $this->range_id);
@@ -489,8 +512,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             $warnings[] = _('Diesem Termin ist ein Thema zugeordnet.');
         }
 
-        if (Config::get()->RESOURCES_ENABLE && $this->getRoom()) {
-            $warnings[] = _('Dieser Termin hat eine Raumbuchung, welche mit dem Termin gelöscht wird.');
+        if (Config::get()->RESOURCES_ENABLE && $this->getRooms()) {
+            $warnings[] = _('Dieser Termin hat Raumbuchungen, die mit dem Termin gelöscht werden.');
         }
 
         return $warnings;
@@ -628,7 +651,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
 
     public function getLocation(): string
     {
-        return $this->getRoomName();
+        return $this->getRoomNames();
     }
 
     public function getUniqueId(): string

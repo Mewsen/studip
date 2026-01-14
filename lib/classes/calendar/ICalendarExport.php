@@ -147,7 +147,7 @@ class ICalendarExport
         return [
             'SUMMARY'       => $summary,
             'DESCRIPTION'   => $description,
-            'LOCATION'      => $date->getRoomName(),
+            'LOCATION'      => $date->getRoomNames(),
             'CATEGORIES'    => $categories,
             'LAST-MODIFIED' => $date->chdate,
             'CREATED'       => $date->mkdate,

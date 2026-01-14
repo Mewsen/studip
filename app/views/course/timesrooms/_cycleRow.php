@@ -18,7 +18,7 @@ $is_exTermin = $termin instanceof CourseExDate;
     </td>
 <? endif ?>
 
-    <td class="<?= $termin->getRoom() !== null ? 'green' : 'red' ?>">
+    <td class="<?= !empty($termin->getRooms()) ? 'green' : 'red' ?>">
     <? if ($is_exTermin) : ?>
         <span class="is_ex_termin">
             <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
@@ -26,7 +26,7 @@ $is_exTermin = $termin instanceof CourseExDate;
     <? elseif ($locked): ?>
         <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
     <? else: ?>
-        <a data-dialog
+        <a data-dialog="size=600"
            href="<?= $controller->url_for('course/timesrooms/editDate/' . $termin->termin_id, $linkAttributes) ?>">
             <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
         </a>
@@ -65,17 +65,18 @@ $is_exTermin = $termin instanceof CourseExDate;
         <?= tooltipIcon($termin->content) ?>
     <? elseif ($name = SemesterHoliday::isHoliday($termin->date, false) && $is_exTermin): ?>
         <?= $room_holiday ?>
-    <? elseif ($room = $termin->getRoom()) : ?>
-        <a href="<?= $room->getActionLink(
-                 'booking_plan',
-                 [
-                     'defaultDate' => date('Y-m-d', $termin->date)
-                 ]
-                 ) ?>" data-dialog="size=big">
-            <?= htmlReady($room->getFullName()) ?>
-        </a>
+    <? elseif ($rooms = $termin->getRooms()) : ?>
+        <? foreach ($rooms as $room) : ?>
+            <span class="no-break">
+                <a href="<?= $room->getActionLink('booking_plan', ['defaultDate' => date('Y-m-d', $termin->date)]) ?>"
+                   data-dialog="size=big">
+                    <?= Icon::create('link-intern')->asImg(16, ['class' => 'text-bottom']) ?>
+                    <?= htmlReady($room->getFullName()) ?>
+                </a>
+            </span>
+        <? endforeach ?>
         <?= $room_holiday ?: '' ?>
-    <? elseif ($freeTextRoom = $termin->getRoomName()) : ?>
+    <? elseif ($freeTextRoom = $termin->getRoomNames()) : ?>
         <?= sprintf('(%s)', formatLinks($freeTextRoom)) ?>
     <? else : ?>
         <?= _('Keine Raumangabe') ?>
@@ -124,7 +125,7 @@ $is_exTermin = $termin instanceof CourseExDate;
             $controller->url_for('course/timesrooms/editDate/' . $termin->id, $linkAttributes),
             _('Termin bearbeiten'),
             Icon::create('edit'),
-            ['data-dialog' => '']
+            ['data-dialog' => 'width=430;height=720']
         ) ?>
         <? if (!$termin->metadate_id): ?>
             <? $actionMenu->addLink(

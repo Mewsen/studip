@@ -16,10 +16,21 @@
         </thead>
         <tbody>
             <? foreach ($rooms as $room): ?>
+                <?
+                $room_tooltip = null;
+                $separable_room = SeparableRoom::findByRoomPart($room);
+                if ($separable_room) {
+                    $room_tooltip = studip_interpolate(
+                        _('Dieser Raum gehört zum teilbaren Raum %{room_name}.'),
+                        ['room_name' => $separable_room->name]
+                    );
+                }
+                ?>
                 <?= $this->render_partial(
                     'resources/_common/_room_tr.php',
                     [
                         'room' => $room,
+                        'room_tooltip' => $room_tooltip,
                         'show_global_admin_actions' => $show_global_admin_actions,
                         'show_admin_actions' => $room->userHasPermission(
                             $user,

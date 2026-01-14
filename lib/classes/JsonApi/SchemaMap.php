@@ -3,6 +3,7 @@
 namespace JsonApi;
 
 use JsonApi\Schemas\ShortUrl;
+use JsonApi\Schemas\Room;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -104,7 +105,6 @@ class SchemaMap
             \Courseware\Unit::class => Schemas\Courseware\Unit::class,
             \Courseware\UserDataField::class => Schemas\Courseware\UserDataField::class,
             \Courseware\UserProgress::class => Schemas\Courseware\UserProgress::class,
-            \ShortUrl::class => Schemas\ShortUrl::class,
         ];
     }
 }

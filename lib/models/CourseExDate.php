@@ -97,7 +97,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
      *
      * @return String that is always empty
      */
-    public function getRoomName()
+    public function getRoomNames()
     {
         return '';
     }
@@ -107,9 +107,9 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
      *
      * @return null. always. canceled dates need no room.
      */
-    public function getRoom()
+    public function getRooms()
     {
-        return null;
+        return [];
     }
 
     /**
@@ -339,7 +339,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
 
     public function getLocation(): string
     {
-        return $this->getRoomName();
+        return $this->getRoomNames();
     }
 
     public function getUniqueId(): string

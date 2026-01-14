@@ -40,75 +40,74 @@ class Course_BlockAppointmentsController extends AuthenticatedController
     }
 
 
-    protected function setAvailableRooms()
-    {
-        $this->room_search = null;
-        $this->selectable_rooms = [];
-        if (Config::get()->RESOURCES_ENABLE) {
-            //Check for how many rooms the user has booking permissions.
-            //In case these permissions exist for more than 50 rooms
-            //show a quick search. Otherwise show a select field
-            //with the list of rooms.
-
-            $current_user = User::findCurrent();
-            $current_user_is_resource_admin = ResourceManager::userHasGlobalPermission(
-                $current_user,
-                'admin'
-            );
-
-            $rooms_with_booking_permissions = 0;
-            if ($current_user_is_resource_admin) {
-                $rooms_with_booking_permissions = Room::countAll();
-            } else {
-                $user_rooms = RoomManager::getUserRooms($current_user);
-                foreach ($user_rooms as $room) {
-                    if ($room->userHasBookingRights($current_user)) {
-                        $rooms_with_booking_permissions++;
-                        $this->selectable_rooms[] = $room;
-                    }
-                }
-            }
-
-            if ($rooms_with_booking_permissions > 50) {
-                $room_search_type = new RoomSearch();
-                $room_search_type->setAcceptedPermissionLevels(
-                    ['autor', 'tutor', 'admin']
-                );
-                $room_search_type->setAdditionalDisplayProperties(
-                    ['seats']
-                );
-                $this->room_search = new QuickSearch(
-                    'room_id',
-                    $room_search_type
-                );
-            } else {
-                if (ResourceManager::userHasGlobalPermission($current_user, 'admin')) {
-                    $this->selectable_rooms = Room::findAll();
-                }
-            }
-        }
-    }
-
-
     /**
      * Display the block appointments
      */
     public function index_action()
     {
-        if (!Request::isXhr() && Navigation::hasItem('/course/admin/timesrooms')) {
+        if (Navigation::hasItem('/course/admin/timesrooms')) {
             Navigation::activateItem('/course/admin/timesrooms');
         }
+        PageLayout::setTitle(_('Neuen Blocktermin anlegen'));
+
         $this->linkAttributes   = ['fromDialog' => Request::int('fromDialog') ? 1 : 0];
         $this->start_ts         = strtotime('this monday');
         $this->request          = $this->flash['request'] ?? $_SESSION['block_appointments'] ?? [];
-        $this->confirm_many     = isset($this->flash['confirm_many']) ? $this->flash['confirm_many'] : false;
-        $this->lecturers = CourseMember::findByCourseAndStatus(
+        $this->lecturers        = CourseMember::findByCourseAndStatus(
             $this->course_id,
             'dozent'
         );
-        if (Config::get()->RESOURCES_ENABLE) {
-            $this->setAvailableRooms();
+        $this->start                 = null;
+        $this->end                   = null;
+        $this->date_types = [];
+        foreach ($GLOBALS['TERMIN_TYP'] as $id => $data) {
+            $this->date_types[] = [
+                'id'   => $id,
+                'name' => $data['name']
+            ];
         }
+        $this->available_lecturers = [];
+        $course                    = Course::find($this->course_id);
+        $lecturers                 = $course->getMembersWithStatus('dozent');
+        foreach ($lecturers as $lecturer) {
+            $this->available_lecturers[$lecturer->user_id] = $lecturer->getUserFullname();
+        }
+        $this->selected_lecturer_ids = [];
+        $this->selected_date_type    = 0;
+        $this->dow                   = ['all'];
+        $this->preparation_time      = 0;
+        $this->subsequent_time       = 0;
+
+        if ($this->request instanceof Request) {
+            $this->start                 = $this->request->getDateTime('start_date', 'd.m.Y', 'start_time', 'H:i');
+            $this->end                   = $this->request->getDateTime('end_date', 'd.m.Y', 'end_time', 'H:i');
+            $this->selected_lecturer_ids = $this->request->getArray('lecturers');
+            $this->selected_date_type    = $this->request->int('date_type');
+            $this->dow                   = $this->request->getArray('dow');
+            $this->preparation_time      = $this->request->int('preparation_time', 0);
+            $this->subsequent_time       = $this->request->int('subsequent_time', 0);
+        } elseif (is_array($this->request)) {
+            $this->start              = $this->request['start'] ?? null;
+            $this->end                = $this->request['end'] ?? null;
+            $this->selected_date_type = $this->request['date_type'] ?? 0;
+            $this->dow                = $this->request['dow'] ?? ['all'];
+            $this->preparation_time   = $this->request['preparation_time'] ?? 0;
+            $this->subsequent_time    = $this->request['subsequent_time'] ?? 0;
+        }
+        if (!$this->start || !$this->end) {
+            //Provide some default values:
+            $this->start = new DateTime();
+            $this->start = $this->start->add(new DateInterval('PT1H'));
+            $this->start->setTime(intval($this->start->format('H')), 0, 0);
+            $this->end = clone $this->start;
+            $this->end = $this->end->add(new DateInterval('PT30M'));
+        }
+
+        $this->allow_multiple_room_bookings = ResourceManager::userHasGlobalPermission(
+            User::findCurrent(),
+            Config::get()->ROOM_PERMISSIONS_FOR_MULTIPLE_BOOKINGS_PER_COURSE_DATE
+        );
+        $this->max_preparation_time = intval(Config::get()->RESOURCES_MAX_PREPARATION_TIME) ?? 999;
     }
 
     /**
@@ -120,57 +119,48 @@ class Course_BlockAppointmentsController extends AuthenticatedController
     {
         $errors = [];
 
-        $start_day = strtotime(Request::get('block_appointments_start_day'));
-        $end_day = strtotime(Request::get('block_appointments_end_day'));
-        $start_time = null;
-        $end_time = null;
-        if (!($start_day && $end_day && $start_day <= $end_day)) {
+        $start = Request::getDateTime('start_date', 'd.m.Y', 'start_time', 'H:i');
+        $end   = Request::getDateTime('end_date', 'd.m.Y', 'end_time', 'H:i');
+        if (!$start || !$end || $start >= $end) {
             $errors[] = _('Bitte geben Sie korrekte Werte für Start- und Enddatum an!');
-        } else {
-            $start_time = strtotime(Request::get('block_appointments_start_time'), $start_day);
-            $end_time = strtotime(Request::get('block_appointments_end_time'), $end_day);
-
-            if (!($start_time && $end_time && (strtotime(Request::get('block_appointments_start_time')) < strtotime(Request::get('block_appointments_end_time'))))) {
-                $errors[] = _('Bitte geben Sie korrekte Werte für Start- und Endzeit an!');
-            }
         }
 
-        //Calculate the duration if a minimum booking time is set:
-        if (Config::get()->RESOURCES_MIN_BOOKING_TIME) {
-            $fake_start_time = strtotime(Request::get('block_appointments_start_time'), $start_day);
-            $fake_end_time = strtotime(Request::get('block_appointments_end_time'), $start_day);
-            $duration = $fake_end_time - $fake_start_time;
+        $room_choice      = Request::get('room');
+        $preparation_time = 0;
+        $subsequent_time  = 0;
+        $room_name = '';
+        if ($room_choice === 'room' && Config::get()->RESOURCES_MIN_BOOKING_TIME) {
+            //Calculate the duration if a minimum booking time is set
+            //and one or more rooms shall be booked:
+            $fake_start_time = clone $start;
+            $fake_end_time = clone $start;
+            $fake_end_time->setTime(intval($end->format('H')), intval($end->format('i')), 0);
+            $duration = $fake_end_time->getTimestamp() - $fake_start_time->getTimestamp();
             if ($duration < Config::get()->RESOURCES_MIN_BOOKING_TIME * 60) {
                 $errors[] = sprintf(
                     ngettext(
-                        'Die minimale Dauer eines Termins von einer Minute wurde unterschritten.',
-                        'Die minimale Dauer eines Termins von %u Minuten wurde unterschritten.',
+                        'Die minimale Dauer einer Raumbuchung von einer Minute wurde unterschritten.',
+                        'Die minimale Dauer einer Raumbuchung von %u Minuten wurde unterschritten.',
                         Config::get()->RESOURCES_MIN_BOOKING_TIME
                     ),
                     Config::get()->RESOURCES_MIN_BOOKING_TIME
                 );
             }
+            $preparation_time = Request::int('preparation_time', 0);
+            $subsequent_time  = Request::int('subsequent_time', 0);
+        } elseif ($room_choice === 'freetext') {
+            $room_name = Request::get('room_name');
         }
 
-        $termin_typ     = Request::int('block_appointments_termin_typ', 0);
-        $free_room_text = Request::get('block_appointments_room_text');
-        $date_count     = Request::int('block_appointments_date_count');
-        $days           = Request::getArray('block_appointments_days');
-        $lecturer_ids   = Request::getArray('lecturers');
-
-        $lecturers = User::findBySql(
-            "INNER JOIN seminar_user USING (user_id)
-             WHERE seminar_id = :course_id
-               AND seminar_user.user_id IN (:lecturer_ids)
-               AND seminar_user.status = 'dozent'",
-            [
-                'course_id'    => $this->course_id,
-                'lecturer_ids' => $lecturer_ids,
-            ]
-        );
-
-        if (!is_array($days)) {
+        $date_type  = Request::int('date_type', 0);
+        $dow        = Request::getArray('dow');
+        if (empty($dow)) {
             $errors[] = _('Bitte wählen Sie mindestens einen Tag aus!');
+        }
+
+        $date_count = Request::int('date_count');
+        if ($date_count < 1) {
+            $errors[] = _('Bitte setzen Sie die Menge der zu erstellenden Termine mindestens auf 1.');
         }
 
         if (count($errors)) {
@@ -180,87 +170,124 @@ class Course_BlockAppointmentsController extends AuthenticatedController
             return;
         }
 
+        $lecturer_ids = Request::getArray('assigned_lecturers');
+        $lecturers = [];
+        if ($lecturer_ids) {
+            $lecturers = User::findBySql(
+                "INNER JOIN seminar_user USING (user_id)
+                 WHERE seminar_id = :course_id
+                 AND seminar_user.user_id IN (:lecturer_ids)
+                 AND seminar_user.status = 'dozent'",
+                [
+                    'course_id' => $this->course_id,
+                    'lecturer_ids' => $lecturer_ids,
+                ]
+            );
+        }
+
+        if (in_array('all', $dow)) {
+            $dow = ['1', '2', '3', '4', '5', '6', '7'];
+        } elseif (in_array('mon_fri', $dow)) {
+            $dow = ['1', '2', '3', '4', '5'];
+        }
+
         $dates = [];
-        /*
-         * Recalculate end hour of last day to first day, so we don't run
-         * into problems with daylight saving time which would add or
-         * remove an hour.
-         */
-        $delta = (strtotime(Request::get('block_appointments_start_day') . ' ' .
-            Request::get('block_appointments_end_time')) - $start_time) % (24 * 60 * 60);
-        $last_day = strtotime(Request::get('block_appointments_start_time'), $end_day);
-
-        if (in_array('everyday', $days)) {
-            $days = range(1, 7);
-        }
-        if (in_array('weekdays', $days)) {
-            $days = range(1, 5);
-        }
-
-        $t = $start_time;
-        while ($t <= $last_day) {
-            if (in_array(date('N', $t), $days)) {
-                for ($i = 1; $i <= $date_count; $i++) {
-                    $date = new CourseDate();
-                    $date->range_id = $course_id;
-                    $date->date_typ = $termin_typ;
-                    $date->raum = $free_room_text;
-                    $date->date = $t;
-                    $date->end_time = $t + $delta;
+        $t     = clone $start;
+        $i     = 1;
+        while ($t < $end && $i <= $date_count) {
+            if (in_array($t->format('N'), $dow)) {
+                $date_end = clone $t;
+                $date_end->setTime(intval($end->format('H')), intval($end->format('i')), 0);
+                $date = new CourseDate();
+                $date->range_id = $course_id;
+                $date->date_typ = $date_type;
+                $date->raum     = $room_name;
+                $date->date     = $t->getTimestamp();
+                $date->end_time = $date_end->getTimestamp();
+                if ($lecturers) {
                     $date->dozenten = $lecturers;
-                    $dates[] = $date;
                 }
+                $dates[] = $date;
+                $i++;
             }
-            $t = strtotime('+1 day', $t);
+            $t = $t->add(new DateInterval('P1D'));
         }
 
-        if (count($dates) > 100 && !Request::int('confirmed')) {
-            $this->flash['request'] = Request::getInstance();
-            $this->flash['confirm_many'] = count($dates);
-            $this->redirect('course/block_appointments/index');
-            return;
-        } elseif (count($dates)) {
-            if (Request::submitted('preview')) {
-                //TODO
+        //Store the last used values in the session as default values.
+        $_SESSION['block_appointments'] = [
+            'start'      => $start,
+            'end'        => $end,
+            'date_type'  => $date_type,
+            'room_name'  => $room_name,
+            'date_count' => $date_count,
+            'dow'        => $dow
+        ];
+        $partially_booked_dates = [];
+        $dates_created = array_filter(array_map(function ($d) use ($room_choice, $preparation_time, $subsequent_time, &$partially_booked_dates) {
+            $result = $d->store();
+            $room_ids = [];
+            if ($room_choice === 'room') {
+                $room_ids = Request::getArray('room_ids');
             }
-
-            if (Request::submitted('save')) {
-                // store last used values in session as defaults
-                $_SESSION['block_appointments'] = [
-                    'block_appointments_start_day'  => date('d.m.Y', $start_day),
-                    'block_appointments_end_day'    => date('d.m.Y', $end_day),
-                    'block_appointments_start_time' => date('H:i', $start_time),
-                    'block_appointments_end_time'   => date('H:i', $end_time),
-                    'block_appointments_termin_typ' => $termin_typ,
-                    'block_appointments_room_text'  => $free_room_text,
-                    'block_appointments_date_count' => $date_count,
-                    'block_appointments_days'       => $days
-                ];
-                $dates_created = array_filter(array_map(function ($d) use ($free_room_text) {
-                    if (!Request::get('room_id')) {
-                        $d->raum = $free_room_text;
-                        $result = $d->store();
-                    } else {
-                        $result = $d->store();
-                        $room = Resource::find(Request::option('room_id'))?->getDerivedClassInstance();
-                        $d->bookRoom($room);
-                    }
-                    return $result ? $d->getFullName() : null;
-                }, $dates));
-                if ($date_count > 1) {
-                    $dates_created = array_count_values($dates_created);
-                    $dates_created = array_map(function ($k, $v) {
-                        return $k . ' (' . $v . 'x)';
-                    }, array_keys($dates_created), array_values($dates_created));
+            //Process the room-IDs: If a separable room is selected, set all its room parts as room-IDs.
+            //Remove the prefix in all other cases.
+            $processed_room_ids = [];
+            foreach ($room_ids as $room_id) {
+                $id_parts = explode('-', $room_id);
+                if (count($id_parts) !== 2) {
+                    //Invalid ID.
+                    continue;
                 }
-                PageLayout::postSuccess(_('Folgende Termine wurden erstellt:'), $dates_created);
 
+                if ($id_parts[0] === 'separable_room') {
+                    //A separable room was selected.
+                    $separable_room = SeparableRoom::find($id_parts[1]);
+                    if ($separable_room) {
+                        foreach ($separable_room->parts as $part) {
+                            $processed_room_ids[] = $part->room_id;
+                        }
+                    }
+                } elseif ($id_parts[0] === 'room') {
+                    //An ordinary room.
+                    $processed_room_ids[] = $id_parts[1];
+                }
             }
-        } else {
-            $this->flash['request'] = Request::getInstance();
-            PageLayout::postError(_('Keiner der ausgewählten Tage liegt in dem angegebenen Zeitraum!'));
-            $this->redirect('course/block_appointments/index');
-            return;
+            $room_ids = $processed_room_ids;
+            if ($room_ids) {
+                $resources = Resource::findMany($room_ids);
+                $rooms = [];
+                foreach ($resources as $resource) {
+                    $rooms[] = $resource->getDerivedClassInstance();
+                }
+                $booking_failures = 0;
+                foreach ($rooms as $room) {
+                    try {
+                        $r = $d->bookRoom($room, $preparation_time * 60, $subsequent_time * 60);
+                        if (!$r) {
+                            $booking_failures++;
+                        }
+                    } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
+                        $booking_failures++;
+                    }
+                }
+                if ($result && $booking_failures) {
+                    //Not all selected rooms for the date could be booked:
+                    $partially_booked_dates[] = $d->getFullName();
+                }
+            }
+
+            return $result ? $d->getFullName() : null;
+        }, $dates));
+
+        if ($date_count > 1) {
+            $dates_created = array_count_values($dates_created);
+            $dates_created = array_map(function ($k, $v) {
+                return $k . ' (' . $v . 'x)';
+            }, array_keys($dates_created), array_values($dates_created));
+        }
+        PageLayout::postSuccess(_('Folgende Termine wurden erstellt:'), $dates_created);
+        if (!empty($partially_booked_dates)) {
+            PageLayout::postWarning(_('Für folgende Termine konnten nicht alle ausgewählten Räume gebucht werden:'), $partially_booked_dates);
         }
 
         if (Request::int('fromDialog')) {

@@ -1997,7 +1997,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         }
         $dates->uasort(function($a, $b) {
             return $a->date - $b->date
-                ?: strnatcasecmp($a->getRoomName(), $b->getRoomName());
+                ?: strnatcasecmp($a->getRoomNames(), $b->getRoomNames());
         });
         return $dates;
     }

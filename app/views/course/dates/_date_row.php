@@ -54,11 +54,16 @@ $dialog_url = $show_raumzeit
     </td>
 <? endif ?>
     <td>
-        <? $room = $date->getRoom(); ?>
-        <? if ($room): ?>
-            <a href="<?= $room->getActionLink('show') ?>" data-dialog>
-                <?= htmlReady($room->name) ?>
-            </a>
+        <? $rooms = $date->getRooms(); ?>
+        <? if ($rooms): ?>
+            <? foreach ($rooms as $room) : ?>
+                <span class="no-break">
+                    <a href="<?= $room->getActionLink('show') ?>" data-dialog>
+                        <?= Icon::create('link-intern')->asImg(16, ['class' => 'text-bottom']) ?>
+                        <?= htmlReady($room->name) ?>
+                    </a>
+                </span>
+            <? endforeach ?>
         <? else: ?>
             <?= htmlReady($date->raum) ?>
         <? endif ?>

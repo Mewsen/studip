@@ -539,17 +539,19 @@ class SeminarCycleDate extends SimpleORMap
             $date->date = mktime(date('G', strtotime($this->start_time)), date('i', strtotime($this->start_time)), 0, date('m', $tos), date('d', $tos), date('Y', $tos)) + $day * 24 * 60 * 60;
             $date->end_time = mktime(date('G', strtotime($this->end_time)), date('i', strtotime($this->end_time)), 0, date('m', $toe), date('d', $toe), date('Y', $toe)) + $day * 24 * 60 * 60;
 
-            if ($date instanceof CourseDate && !is_null($date->room_booking)) {
+            if ($date instanceof CourseDate && !empty($date->room_bookings)) {
                 //Check if the time range of the date has decreased and did not exceed the
-                //boundaries of the existing room booking. In that case, the room booking is shortened.
-                if ($date->date < $tos || $date->end_time > $toe) {
-                    //The room booking must be deleted.
-                    $date->room_booking->delete();
-                } else {
-                    //The room booking must be shortened.
-                    $date->room_booking->begin = $date->date;
-                    $date->room_booking->end = $date->end_time;
-                    $date->room_booking->store();
+                //boundaries of the existing room booking. In that case, the room bookings are shortened.
+                foreach ($date->room_bookings as $room_booking) {
+                    if ($date->date < $tos || $date->end_time > $toe) {
+                        //The room booking must be deleted.
+                        $room_booking->delete();
+                    } else {
+                        //The room booking must be shortened.
+                        $room_booking->begin = $date->date;
+                        $room_booking->end = $date->end_time;
+                        $room_booking->store();
+                    }
                 }
             }
 
@@ -1037,7 +1039,7 @@ class SeminarCycleDate extends SimpleORMap
         $booked_c = 0;
 
         foreach ($this->dates as $course_date) {
-            if ($course_date->room_booking) {
+            if (count($course_date->room_bookings)) {
                 $booked_c++;
             }
         }
@@ -1088,7 +1090,7 @@ class SeminarCycleDate extends SimpleORMap
             //List the dates that have no room booking:
             $unbooked_dates = [];
             foreach ($this->dates as $course_date) {
-                if (!$course_date->room_booking) {
+                if (empty($course_date->room_bookings)) {
                     $unbooked_dates[] = $course_date;
                 }
             }

@@ -9,6 +9,7 @@ use JsonApi\Routes\Consultations\SlotCreationCount;
 use JsonApi\Routes\Holidays\HolidaysShow;
 use JsonApi\Routes\Vacations\VacationsShow;
 use Slim\Routing\RouteCollectorProxy;
+use Studip\JsonApi\Routes\AvailableRooms;
 
 /**
  * Diese Klasse ist die JSON-API-Routemap, in der alle Routen
@@ -115,6 +116,8 @@ class RouteMap
         $group->patch('/config-values/{id}', Routes\ConfigValues\ConfigValuesUpdate::class);
 
         $group->get('/status-groups/{id}', Routes\StatusgroupShow::class);
+
+        $group->get('/available-rooms', AvailableRooms::class);
 
         $this->addAuthenticatedAdmissionRoutes($group);
         $this->addAuthenticatedBlubberRoutes($group);

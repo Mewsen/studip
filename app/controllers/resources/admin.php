@@ -1034,6 +1034,45 @@ class Resources_AdminController extends AuthenticatedController
     }
 
 
+    public function edit_separable_room_action($separable_room_id)
+    {
+        PageLayout::setTitle(_('Teilbaren Raum bearbeiten'));
+        $this->separable_room = SeparableRoom::find($separable_room_id);
+        if (!$this->separable_room) {
+            PageLayout::postError(_('Der teilbare Raum wurde nicht gefunden.'));
+        }
+    }
+
+
+    public function save_separable_room_action($separable_room_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $this->separable_room = SeparableRoom::find($separable_room_id);
+        if (!$this->separable_room) {
+            PageLayout::postError(_('Der teilbare Raum wurde nicht gefunden.'));
+            $this->relocate('resources/admin/separable_rooms');
+            return;
+        }
+
+        $this->separable_room->name        = Request::get('name', '');
+        $this->separable_room->description = Request::get('description', '');
+        if (!$this->separable_room->name) {
+            PageLayout::postError(_('Der Name des teilbaren Raumes darf nicht leer sein!'));
+            $this->relocate('resources/admin/separable_rooms');
+            return;
+        }
+
+        $success = $this->separable_room->store() !== false;
+        if ($success) {
+            PageLayout::postSuccess(_('Die Änderungen wurden gespeichert.'));
+        } else {
+            PageLayout::postError(_('Die Änderungen konnten nicht gespeichert werden.'));
+        }
+        $this->relocate('resources/admin/separable_rooms');
+    }
+
+
     public function configuration_action()
     {
         if (Navigation::hasItem('/resources/admin/configuration')) {

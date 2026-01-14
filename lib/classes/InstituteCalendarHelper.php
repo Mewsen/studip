@@ -438,7 +438,7 @@ class InstituteCalendarHelper
 
                 $next_single_date = CourseDate::getNextDateByMetadate($cycle_date->metadate_id);
                 if ($next_single_date) {
-                    $room_name = $next_single_date->getRoomName() ?: _('ohne Raumangabe');
+                    $room_name = $next_single_date->getRoomNames() ?: _('ohne Raumangabe');
                 }
 
                 $fields = [
@@ -618,9 +618,11 @@ class InstituteCalendarHelper
 
         $rooms = [];
         foreach ($cycle_date->getAllDates() as $course_date) {
-            $room = $course_date->getRoom();
-            if ($room) {
-                $rooms[$room->id] = $room->name;
+            $course_date_rooms = $course_date->getRooms();
+            if ($course_date_rooms) {
+                foreach ($course_date_rooms as $room) {
+                    $rooms[$room->id] = $room->name;
+                }
             }
         }
         if ($rooms) {

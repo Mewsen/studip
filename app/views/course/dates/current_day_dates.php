@@ -16,11 +16,13 @@
                     <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
                 </td>
                 <td>
-                    <? $room = $date->getRoom(); ?>
-                    <? if ($room): ?>
-                        <a href="<?= $room->getActionLink('show') ?>" data-dialog>
-                            <?= htmlReady($room->name) ?>
-                        </a>
+                    <? $rooms = $date->getRooms(); ?>
+                    <? if ($rooms): ?>
+                        <? foreach ($rooms as $room) : ?>
+                            <a href="<?= $room->getActionLink('show') ?>" data-dialog>
+                                <?= htmlReady($room->name) ?>
+                            </a>
+                        <? endforeach ?>
                     <? else: ?>
                         <?= htmlReady($date->raum) ?>
                     <? endif ?>

@@ -90,7 +90,7 @@
                     )) ?>
                 <? endif ?>
                 <? $stats = 0; array_walk($data['intervals'], function($item, $key, $room_id) use (&$stats) {
-                    if ($item['booked_room'] === $room_id) {
+                    if (in_array($room_id, $item['booked_rooms'])) {
                         $stats++;
                     }
                 }, $room->id) ?>
@@ -111,12 +111,12 @@
                 $room_radio_name = 'selected_rooms[' . $range_index . ']';
                 ?>
                 <td>
-                    <? if ($available || (!empty($interval['booked_room']) && $interval['booked_room'] == $room->id)): ?>
+                    <? if ($available || (!empty($interval['booked_rooms']) && in_array($room->id, $interval['booked_rooms']))): ?>
                         <input type="radio" name="<?= htmlReady($room_radio_name) ?>"
                                class="text-bottom radio-<?= htmlReady($room->id) ?>"
                                value="<?= htmlReady($room->id) ?>"
                                <?= (!empty($selected_rooms[$range_index]) && $selected_rooms[$range_index] === $room->id
-                                     || (!empty($interval['booked_room']) && $interval['booked_room'] === $room->id))
+                                     || (!empty($interval['booked_rooms']) && in_array($room->id, $interval['booked_rooms'])))
                                  ? 'checked="checked"'
                                  : ''?>>
                         <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'text-bottom']) ?>

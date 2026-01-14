@@ -527,6 +527,10 @@ class RoomManager
      *     partially available in those time ranges (false).
      *     Defaults to true.
      *
+     * @param string[] $excluded_booking_ids The IDs of bookings that shall be
+     *     excluded when checking the availability of rooms in the specified
+     *     time ranges.
+     *
      * @return array
      */
     public static function findRooms(
@@ -538,7 +542,8 @@ class RoomManager
         $order_by = null,
         $only_requestable_rooms = true,
         $excluded_room_ids = [],
-        $only_fully_available = true
+        $only_fully_available = true,
+        $excluded_booking_ids = []
     )
     {
         $sql = "INNER JOIN resource_categories rc
@@ -649,7 +654,7 @@ class RoomManager
                         $end = new DateTime();
                         $end->setTimestamp($time_range['end']);
                     }
-                    if ($room->isAvailable($begin, $end)) {
+                    if ($room->isAvailable($begin, $end, $excluded_booking_ids)) {
                         if (!$only_fully_available) {
                             $room_is_available = true;
                             break;

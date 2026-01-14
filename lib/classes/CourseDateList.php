@@ -204,12 +204,12 @@ class CourseDateList implements Stringable
                 }
             }
             foreach ($this->single_dates as $date) {
-                $room_name = $date->getRoomName();
-                if ($room_name) {
-                    if (!array_key_exists($room_name, $grouped_dates)) {
-                        $grouped_dates[$room_name] = new CourseDateList();
+                $room_names = $date->getRoomNames();
+                if ($room_names) {
+                    if (!array_key_exists($room_names, $grouped_dates)) {
+                        $grouped_dates[$room_names] = new CourseDateList();
                     }
-                    $grouped_dates[$room_name]->addSingleDate($date);
+                    $grouped_dates[$room_names]->addSingleDate($date);
                 } else {
                     if (!array_key_exists(_('Ohne Raum'), $grouped_dates)) {
                         $grouped_dates[_('Ohne Raum')] = new CourseDateList();
@@ -269,16 +269,16 @@ class CourseDateList implements Stringable
         foreach ($this->single_dates as $single_date) {
             $date_line = $single_date->getFullName($with_room_names ? 'long-include-room' : 'long');
             if ($group_by_rooms) {
-                $room_name = _('Kein Raum');
-                if ($single_date->room_booking) {
-                    $room_name = $single_date->room_booking->room_name;
+                $room_names = _('Kein Raum');
+                if ($single_date->room_bookingn) {
+                    $room_names = $single_date->getRoomNames();
                 } elseif ($single_date->raum) {
-                    $room_name = $single_date->raum;
+                    $room_names = $single_date->raum;
                 }
-                if (!isset($output[$room_name])) {
-                    $output[$room_name] = [];
+                if (!isset($output[$room_names])) {
+                    $output[$room_names] = [];
                 }
-                $output[$room_name][] = $date_line;
+                $output[$room_names][] = $date_line;
             } else {
                 $output[] = $date_line;
             }

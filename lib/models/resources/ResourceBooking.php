@@ -435,24 +435,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
         $this->deleteOverlappingReservations();
 
-        if (parent::store()) {
-            //Check if the booking is bound to a course date.
-            //If this is the case, check for existing bookings
-            //and delete them, so that there is only one booking
-            //for a course date:
-            $course_date_exists = CourseDate::exists($this->range_id);
-            if ($course_date_exists) {
-                self::deleteBySql(
-                    'range_id = :range_id AND id <> :this_id',
-                    [
-                        'this_id' => $this->id,
-                        'range_id' => $this->range_id
-                    ]
-                );
-            }
-            return true;
-        }
-        return false;
+        return parent::store();
     }
 
 

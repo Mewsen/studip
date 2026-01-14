@@ -983,11 +983,17 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     ];
                 }
 
-                $date = CourseDate::find($appointment->appointment_id);
+                $date         = CourseDate::find($appointment->appointment_id);
+                $booked_rooms = [];
+                $booking_ids  = [];
+                foreach ($date->room_bookings as $booking) {
+                    $booked_rooms[] = $booking->resource_id;
+                    $booking_ids[]  = $booking->id;
+                }
                 $interval['range']                 = 'CourseDate';
                 $interval['range_id']              = $appointment->appointment_id;
-                $interval['booked_room']           = $date->room_booking->resource_id ?? '';
-                $interval['booking_id']            = $date->room_booking->id ?? '';
+                $interval['booked_rooms']          = $booked_rooms;
+                $interval['booking_ids']           = $booking_ids;
                 $time_intervals['']['intervals'][] = $interval;
             }
 
@@ -1012,11 +1018,17 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 ];
             }
 
-            $date = CourseDate::find($this->termin_id);
-            $interval['range']       = 'CourseDate';
-            $interval['range_id']    = $this->termin_id;
-            $interval['booked_room'] = $date->room_booking->resource_id ?? null;
-            $interval['booking_id']  = $date->room_booking->id ?? null;
+            $date         = CourseDate::find($this->termin_id);
+            $booked_rooms = [];
+            $booking_ids  = [];
+            foreach ($date->room_bookings as $booking) {
+                $booked_rooms[] = $booking->resource_id;
+                $booking_ids[]  = $booking->id;
+            }
+            $interval['range']        = 'CourseDate';
+            $interval['range_id']     = $this->termin_id;
+            $interval['booked_rooms'] = $booked_rooms;
+            $interval['booking_ids']  = $booking_ids;
 
             if (!empty($interval)) {
                 return [
@@ -1050,10 +1062,16 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                         'end'   => $date->end_time
                     ];
                 }
+                $booked_rooms = [];
+                $booking_ids  = [];
+                foreach ($date->room_bookings as $booking) {
+                    $booked_rooms[] = $booking->resource_id;
+                    $booking_ids[]  = $booking->id;
+                }
                 $interval['range']                                 = 'CourseDate';
                 $interval['range_id']                              = $date->id;
-                $interval['booked_room']                           = $date->room_booking->resource_id ?? null;
-                $interval['booking_id']                            = $date->room_booking->id ?? null;
+                $interval['booked_rooms']                          = $booked_rooms;
+                $interval['booking_ids']                           = $booking_ids;
                 $time_intervals[$this->metadate_id]['intervals'][] = $interval;
             }
             return $time_intervals;
@@ -1081,10 +1099,16 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                                     'end'   => $date->end_time
                                 ];
                             }
+                            $booked_rooms = [];
+                            $booking_ids  = [];
+                            foreach ($date->room_bookings as $booking) {
+                                $booked_rooms[] = $booking->resource_id;
+                                $booking_ids[]  = $booking->id;
+                            }
                             $interval['range'] = CourseDate::class;
-                            $interval['range_id'] = $date->id;
-                            $interval['booked_room'] = $date->room_booking->resource_id ?? null;
-                            $interval['booking_id'] = $date->room_booking->id ?? null;
+                            $interval['range_id']     = $date->id;
+                            $interval['booked_rooms'] = $booked_rooms;
+                            $interval['booking_ids']  = $booking_ids;
                             $time_intervals[$cycle->id]['intervals'][] = $interval;
                         }
                     }
@@ -1114,10 +1138,17 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                             'end'   => $date->end_time
                         ];
                     }
+
+                    $booked_rooms = [];
+                    $booking_ids  = [];
+                    foreach ($date->room_bookings as $booking) {
+                        $booked_rooms[] = $booking->resource_id;
+                        $booking_ids[]  = $booking->id;
+                    }
                     $interval['range']                 = 'CourseDate';
                     $interval['range_id']              = $date->id;
-                    $interval['booked_room']           = $date->room_booking->resource_id ?? null;
-                    $interval['booking_id']            = $date->room_booking->id ?? null;
+                    $interval['booked_rooms']          = $booked_rooms;
+                    $interval['booking_ids']           = $booking_ids;
                     $time_intervals['']['intervals'][] = $interval;
                 }
 
@@ -1141,8 +1172,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     'end'   => $this->end
                 ];
             }
-            $interval['range']    = 'User';
-            $interval['range_id'] = $this->user_id;
+            $interval['range']        = 'User';
+            $interval['range_id']     = $this->user_id;
+            $interval['booked_rooms'] = [];
+            $interval['booking_ids']  = [];
 
             return [
                 '' => [
@@ -1209,11 +1242,16 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 }
                 if ($with_range) {
                     $date = CourseDate::find($appointment->appointment_id);
-
-                    $interval['range']       = ResourceRequestAppointment::class;
-                    $interval['range_id']    = $appointment->appointment_id;
-                    $interval['booked_room'] = $date->room_booking->resource_id ?? null;
-                    $interval['booking_id']  = $date->room_booking->id ?? null;
+                    $booked_rooms = [];
+                    $booking_ids  = [];
+                    foreach ($date->room_bookings as $booking) {
+                        $booked_rooms[] = $booking->resource_id;
+                        $booking_ids[]  = $booking->id;
+                    }
+                    $interval['range']        = ResourceRequestAppointment::class;
+                    $interval['range_id']     = $appointment->appointment_id;
+                    $interval['booked_rooms'] = $booked_rooms;
+                    $interval['booking_ids']  = $booking_ids;
 
                 }
                 $time_intervals[] = $interval;
@@ -1235,10 +1273,18 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 ];
             }
             if ($with_range) {
-                $interval['range']       = CourseDate::class;
-                $interval['range_id']    = $this->termin_id;
-                $interval['booked_room'] = $this->date->room_booking->resource_id ?? null;
-                $interval['booking_id']  = $this->date->room_booking->id ?? null;
+                if ($this->date->room_bookings) {
+                    $booked_rooms = [];
+                    $booking_ids  = [];
+                    foreach ($this->date->room_bookings as $booking) {
+                        $booked_rooms[] = $booking->resource_id;
+                        $booking_ids[]  = $booking->id;
+                    }
+                }
+                $interval['range']        = CourseDate::class;
+                $interval['range_id']     = $this->termin_id;
+                $interval['booked_rooms'] = $booked_rooms;
+                $interval['booking_ids']  = $booking_ids;
             }
             return [$interval];
         } elseif ($this->metadate_id) {
@@ -1259,10 +1305,19 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     ];
                 }
                 if ($with_range) {
-                    $interval['range']       = CourseDate::class;
-                    $interval['range_id']    = $date->id;
-                    $interval['booked_room'] = $date->room_booking->resource_id ?? null;
-                    $interval['booking_id']  = $date->room_booking->id ?? null;
+                    if ($this->date->room_bookings) {
+                        $booked_rooms = [];
+                        $booking_ids  = [];
+                        foreach ($this->date->room_bookings as $booking) {
+                            $booked_rooms[] = $booking->resource_id;
+                            $booking_ids[]  = $booking->id;
+                        }
+                    }
+
+                    $interval['range']        = CourseDate::class;
+                    $interval['range_id']     = $date->id;
+                    $interval['booked_rooms'] = $booked_rooms;
+                    $interval['booking_ids']  = $booking_ids;
                 }
                 $time_intervals[] = $interval;
             }
@@ -1286,10 +1341,19 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                         ];
                     }
                     if ($with_range) {
-                        $interval['range']       = CourseDate::class;
-                        $interval['range_id']    = $date->id;
-                        $interval['booked_room'] = $date->room_booking->resource_id ?? null;
-                        $interval['booking_id']  = $date->room_booking->id ?? null;
+                        if ($this->date->room_bookings) {
+                            $booked_rooms = [];
+                            $booking_ids  = [];
+                            foreach ($this->date->room_bookings as $booking) {
+                                $booked_rooms[] = $booking->resource_id;
+                                $booking_ids[]  = $booking->id;
+                            }
+                        }
+
+                        $interval['range']        = CourseDate::class;
+                        $interval['range_id']     = $date->id;
+                        $interval['booked_rooms'] = $booked_rooms;
+                        $interval['booking_ids']  = $booking_ids;
                     }
                     $time_intervals[] = $interval;
                 }
@@ -1333,11 +1397,14 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
 
             if ($interval['range'] === 'CourseDate') {
                 $date = call_user_func([$interval['range'], 'find'], $interval['range_id']);
-                if ($date->room_booking) {
-                    $room_obj = Room::find($date->room_booking->resource_id);
-                    if ($room_obj) {
-                        $room = $room_obj->name;
+                if ($date->room_bookings) {
+                    $room_names = [];
+                    foreach ($date->room_bookings as $room_booking) {
+                        if (!empty($room_booking->resource)) {
+                            $room_names[] = $room_booking->resource->name;
+                        }
                     }
+                    $room = implode(', ', $room_names);
                 }
             }
 

@@ -3,6 +3,7 @@ import { defineAsyncComponent } from 'vue';
 const BaseComponents = {
     CaptchaInput: defineAsyncComponent(() => import('./components/form_inputs/CaptchaInput.vue')),
     CalendarPermissionsTable: defineAsyncComponent(() => import('./components/form_inputs/CalendarPermissionsTable.vue')),
+    CourseDateRoomFieldset: defineAsyncComponent(() => import('./components/CourseDateRoomFieldset.vue')),
     DateListInput: defineAsyncComponent(() => import('./components/form_inputs/DateListInput.vue')),
     Datepicker: defineAsyncComponent(() => import('./components/Datepicker.vue')),
     Datetimepicker: defineAsyncComponent(() => import('./components/Datetimepicker.vue')),

@@ -353,7 +353,7 @@
                                             <input type="radio" name="<?= htmlReady($room_radio_name) ?>"
                                                    class="radio-null text-bottom"
                                                    value=""
-                                                <?= empty($selected_rooms[$range_index]) && empty($interval['booked_room'])
+                                                <?= empty($selected_rooms[$range_index]) && empty($interval['booked_rooms'])
                                                     ? 'checked="checked"'
                                                     : '' ?>>
                                         </td>

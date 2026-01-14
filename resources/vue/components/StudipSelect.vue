@@ -110,3 +110,8 @@ export default {
     }
 };
 </script>
+<style>
+.studip-v-select .vs__dropdown-toggle {
+    max-height: fit-content;
+}
+</style>

@@ -2,256 +2,46 @@
 /**
  * @var Course_TimesroomsController $controller
  * @var CourseDate $date
- * @var Room[] $selectable_rooms
- * @var QuickSearch|null $room_search
- * @var bool $only_bookable_rooms
  * @var int $preparation_time
+ * @var int $subsequent_time
  * @var int $max_preparation_time
- * @var CourseMember[] $teachers
- * @var User[] $assigned_teachers
- * @var Statusgruppen[] $groups
- * @var Statusgruppen[] $assigned_groups
+ * @var array $selected_room_ids
+ * @var array $available_lecturers
+ * @var array $available_groups
+ * @var array $assigned_lecturers
+ * @var array $assigned_groups
+ * @var bool $allow_multiple_room_bookings
  */
 ?>
-<form action="<?= $controller->link_for('course/timesrooms/saveDate/' . $date->termin_id) ?>"
-      method="post" class="default collapsable" <?= Request::int('fromDialog') ? 'data-dialog="size=big"' : '' ?>>
+<form class="default" method="post"
+      action="<?= $controller->link_for('course/timesrooms/saveDate/' . $date->termin_id) ?>">
     <?= CSRFProtection::tokenTag() ?>
-    <fieldset style="margin-top: 1ex">
-        <legend><?= _('Zeitangaben') ?></legend>
-        <label id="course_type" class=col-6>
-            <?= _('Art') ?>
-            <select name="course_type" id="course_type" class="size-s">
-                <? foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
-                    <option value="<?= $id ?>"
-                        <?= $date->date_typ == $id ? 'selected' : '' ?>>
-                        <?= htmlReady($value['name']) ?>
-                    </option>
-                <? endforeach ?>
-            </select>
-        </label>
-        <label class="col-2">
-            <?= _('Datum') ?>
-            <input class="has-date-picker size-s" type="text" name="date" required
-                   value="<?= $date->date ? strftime('%d.%m.%Y', $date->date) : '' ?>">
-        </label>
-        <label class="col-2">
-            <?= _('Startzeit') ?>
-            <input class="studip-timepicker size-s" type="text" name="start_time" required placeholder="HH:mm"
-                   value="<?= $date->date ? strftime('%H:%M', $date->date) : '' ?>">
-        </label>
-        <label class="col-2">
-            <?= _('Endzeit') ?>
-            <input class="studip-timepicker size-s" type="text" name="end_time" required placeholder="HH:mm"
-                   value="<?= $date->end_time ? strftime('%H:%M', $date->end_time) : '' ?>">
-        </label>
-    </fieldset>
-    <fieldset>
-        <legend><?= _('Raumangaben') ?></legend>
-        <? if (Config::get()->RESOURCES_ENABLE
-               && ($selectable_rooms || $room_search)): ?>
-            <label>
-                <input style="display: inline;" type="radio" name="room" value="room"
-                       id="room" <? if ($date->room_booking) echo 'checked'; ?>
-                       data-activates="input.preparation-time[name='preparation_time'],input.preparation-time[name='subsequent_time']">
-                <?= _('Raum direkt buchen') ?>
-                <span class="flex-row">
-                    <? if ($room_search && !$only_bookable_rooms): ?>
-                        <?= $room_search
-                            ->setAttributes(['onFocus' => "jQuery('input[type=radio][name=room][value=room]').prop('checked', 'checked')"])
-                            ->setMinLength(2)
-                            ->render() ?>
-                    <? else: ?>
-                        <? $selected_room_id = $date->room_booking->resource_id ?? ''; ?>
-                        <select name="room_id" onFocus="jQuery('input[type=radio][name=room][value=room]').prop('checked', 'checked')">
-                            <? foreach ($selectable_rooms as $room): ?>
-                                <option value="<?= htmlReady($room->id) ?>"
-                                    <?= $selected_room_id == $room->id
-                                      ? 'selected="selected"'
-                                      : '' ?>>
-                                    <?= htmlReady($room->name) ?>
-                                    <? if ($room->seats > 1) : ?>
-                                        <?= sprintf(_('(%d Sitzplätze)'), $room->seats) ?>
-                                    <? endif ?>
-                                </option>
-                            <? endforeach ?>
-                        </select>
-                    <? endif ?>
-                    <? if (!$only_bookable_rooms) : ?>
-                        <a href="<?= $controller->url_for(
-                                 'course/timesrooms/editDate/' . $date->termin_id,
-                                 ['only_bookable_rooms' => '1']
-                                 ) ?>" <?= Request::isDialog() ? 'data-dialog="size=normal"' : '' ?>
-                           title="<?= _('Nur buchbare Räume anzeigen') ?>">
-                            <?= Icon::create('room-request')->asSvg([
-                                'class' => 'text-bottom',
-                                'style' => 'margin-left: 0.2em; margin-top: 0.6em;',
-                            ]) ?>
-                        </a>
-                    <? endif ?>
-                </span>
-            </label>
-            <section class="indented">
-                <label class="col-2">
-                    <?= _('Rüstzeit vor dem Termin (in Minuten)') ?>
-                    <input type="number" name="preparation_time"
-                           class="preparation-time"
-                           value="<?= htmlReady($preparation_time) ?>"
-                           min="0" max="<?= htmlReady($max_preparation_time) ?>">
-                </label>
-                <label class="col-2">
-                    <?= _('Rüstzeit nach dem Termin (in Minuten)') ?>
-                    <input type="number" name="subsequent_time"
-                           class="preparation-time"
-                           value="<?= htmlReady($subsequent_time) ?>"
-                           min="0" max="<?= htmlReady($max_preparation_time) ?>">
-                </label>
-            </section>
-        <? endif ?>
-        <label class="horizontal">
-            <input type="radio" name="room" value="freetext" <?= $date->raum ? 'checked' : '' ?>
-                   data-deactivates="input.preparation-time[name='preparation_time'],input.preparation-time[name='subsequent_time']">
-            <?= _('Freie Ortsangabe (keine Raumbuchung)') ?>
-            <input type="text"
-                   name="freeRoomText_sd"
-                   placeholder="<?= _('Freie Ortsangabe (keine Raumbuchung)') ?>"
-                   value="<?= $date->raum ? htmlReady($date->raum) : '' ?>">
-        </label>
-
-        <label>
-            <input type="radio" name="room" value="noroom"
-                   <?= (!empty($date->room_booking->resource_id) || !empty($date->raum) ? '' : 'checked') ?>
-                   data-deactivates="input.preparation-time[name='preparation_time'],input.preparation-time[name='subsequent_time']">
-            <span style="display: inline-block;"><?= _('Kein Raum') ?></span>
-        </label>
-        <label>
-            <input type="radio" name="room" value="nochange" checked="checked"
-                   data-deactivates="input.preparation-time[name='preparation_time'],input.preparation-time[name='subsequent_time']">
-            <?= _('Keine Änderungen an den Raumangaben vornehmen') ?>
-            <? if ($date->room_booking) :?>
-                <?=sprintf(_('(gebucht: %s)'), htmlReady($date->room_booking->room_name))?>
-            <? endif ?>
-        </label>
-
-    </fieldset>
-
-<? if (count($teachers) > 1): ?>
-    <fieldset class="collapsed">
-        <legend><?= _('Durchführende Lehrende') ?></legend>
-
-        <div class="studip-selection" data-attribute-name="assigned_teachers">
-            <section class="studip-selection-selected">
-                <p><strong><?= _('Zugewiesene Lehrende') ?></strong></p>
-                <ul>
-                <? foreach ($assigned_teachers as $teacher): ?>
-                    <li data-selection-id="<?= htmlReady($teacher->user_id) ?>">
-                        <input type="hidden" name="assigned_teachers[]"
-                               value="<?= htmlReady($teacher->user_id) ?>">
-
-                        <span class="studip-selection-image">
-                            <?= Avatar::getAvatar($teacher->user_id)->getImageTag(Avatar::SMALL) ?>
-                        </span>
-                        <span class="studip-selection-label">
-                            <?= htmlReady($teacher->getFullName()) ?>
-                        </span>
-                    </li>
-                <? endforeach ?>
-                    <li class="empty-placeholder">
-                        <?= _('Kein spezieller Lehrender zugewiesen') ?>
-                    </li>
-                </ul>
-            </section>
-
-            <section class="studip-selection-selectable">
-                <p><strong><?= _('Lehrende der Veranstaltung') ?></strong></p>
-                <ul>
-                <? foreach ($teachers as $teacher): ?>
-                    <? if (!$assigned_teachers->find($teacher->user_id)): ?>
-                        <li data-selection-id="<?= htmlReady($teacher->user_id) ?>" >
-                            <span class="studip-selection-image">
-                                <?= Avatar::getAvatar($teacher->user_id)->getImageTag(Avatar::SMALL) ?>
-                            </span>
-                            <span class="studip-selection-label">
-                                <?= htmlReady($teacher->getUserFullname()) ?>
-                            </span>
-                        </li>
-                    <? endif ?>
-                <? endforeach ?>
-                    <li class="empty-placeholder">
-                        <?= sprintf(
-                                _('Ihre Auswahl entspricht dem Zustand "%s" und wird beim Speichern zurückgesetzt'),
-                                _('Kein spezieller Lehrender zugewiesen')
-                        ) ?>
-                    </li>
-                </ul>
-            </section>
-        </div>
-    </fieldset>
-<? endif ?>
-
-<? if (count($groups) > 0): ?>
-    <fieldset class="collapsed">
-        <legend><?= _('Beteiligte Gruppen') ?></legend>
-
-        <div class="studip-selection" data-attribute-name="assigned-groups">
-            <section class="studip-selection-selected">
-                <p><strong><?= _('Zugewiesene Gruppen') ?></strong></p>
-                <ul>
-                    <? foreach ($assigned_groups as $group) : ?>
-                        <li data-selection-id="<?= htmlReady($group->id) ?>">
-                            <input type="hidden" name="assigned-groups[]"
-                                   value="<?= htmlReady($group->id) ?>">
-
-                            <span class="studip-selection-label">
-                                <?= htmlReady($group->name) ?>
-                            </span>
-                        </li>
-                    <? endforeach ?>
-                    <li class="empty-placeholder">
-                        <?= _('Keine spezielle Gruppe zugewiesen') ?>
-                    </li>
-                </ul>
-            </section>
-
-            <section class="studip-selection-selectable">
-                <p><strong><?= _('Gruppen der Veranstaltung') ?></strong></p>
-                <ul>
-                    <? foreach ($groups as $group): ?>
-                        <? if (!$assigned_groups->find($group->id)): ?>
-                            <li data-selection-id="<?= htmlReady($group->id) ?>" >
-                                <span class="studip-selection-label">
-                                    <?= htmlReady($group->name) ?>
-                                </span>
-                            </li>
-                        <? endif ?>
-                    <? endforeach ?>
-                    <li class="empty-placeholder">
-                        <?= _('Alle Gruppen wurden dem Termin zugewiesen') ?>
-                    </li>
-                </ul>
-            </section>
-        </div>
-    </fieldset>
-<? endif ?>
-<? if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) : ?>
-    <fieldset>
-        <legend><?= _('Teilnehmende') ?></legend>
-        <label>
-            <?=_('Anzahl der Teilnehmenden')?>
-            <input type="number" min="0" name="number_of_participants" value="<?= htmlReady($date->number_of_participants) ?>">
-        </label>
-    </fieldset>
-<? endif ?>
-
+    <?= Studip\VueApp::create('CourseDateFormContent')
+        ->withProps([
+            'course_date'                  => $date->toRawArray(['termin_id', 'date', 'end_time', 'date_typ', 'raum', 'number_of_participants', 'content']),
+            'initial_preparation_time'     => $preparation_time,
+            'initial_subsequent_time'      => $subsequent_time,
+            'max_preparation_time'         => $max_preparation_time,
+            'date_types'                   => $date_types ?? [],
+            'room_management_enabled'      => Config::get()->RESOURCES_ENABLE,
+            'selected_rooms'               => $selected_room_ids ?? [],
+            'available_lecturers'          => $available_lecturers ?? [],
+            'available_groups'             => $available_groups ?? [],
+            'selected_lecturers'           => $assigned_lecturers,
+            'selected_groups'              => $assigned_groups,
+            'allow_multiple_room_bookings' => $allow_multiple_room_bookings
+        ]) ?>
     <footer data-dialog-button>
-        <?= Studip\Button::createAccept(_('Speichern'), 'save_dates') ?>
-        <? if (Request::int('fromDialog')) : ?>
+        <?= \Studip\Button::createAccept(_('Speichern'), 'save') ?>
+        <? if (Request::bool('fromDialog')) : ?>
             <?= Studip\LinkButton::create(
                 _('Zurück zur Übersicht'),
                 $controller->url_for(
                     'course/timesrooms',
                     ['fromDialog' => 1, 'contentbox_open' => $date->metadate_id]
                 ),
-              ['data-dialog' => 'size=big']) ?>
+                ['data-dialog' => 'size=big']) ?>
         <? endif ?>
+        <?= \Studip\Button::createCancel(_('Abbrechen'), 'abort') ?>
     </footer>
 </form>

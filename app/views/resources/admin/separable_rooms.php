@@ -68,6 +68,10 @@
                             <td><?= htmlReady($separable_room->name) ?></td>
                             <td></td>
                             <td class="actions">
+                                <a href="<?= $controller->link_for('resources/admin/edit_separable_room/' . $separable_room->id) ?>"
+                                   data-dialog="size=auto">
+                                    <?= Icon::create('edit')->asImg(['class' => 'text-bottom', 'aria-label' => _('Bearbeiten')]) ?>
+                                </a>
                                 <?= Icon::create('trash')->asInput(
                                     [
                                         'name' => 'delete_separable_room['
