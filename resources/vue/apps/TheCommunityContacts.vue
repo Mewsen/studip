@@ -52,10 +52,13 @@
                         <studip-context-menu-entry>
                             <studip-switch :label="$gettext('Kontakt ist online')" v-model="filters.onlyOnline" />
                         </studip-context-menu-entry>
-                        <studip-context-menu-entry>
+                         <studip-context-menu-entry>
                             <label>
-                                {{ $gettext('Suche') }}
-                                <input type="text" :placeholder="$gettext('Suchen...')" v-model.trim="filters.search" />
+                                <span class="sr-only">{{ $gettext('Suche') }}</span>
+                                <studip-search-input
+                                    v-model="filters.search"
+                                    :placeholder="$gettext('Name oder Username...')"
+                                />
                             </label>
                         </studip-context-menu-entry>
                     </template>
@@ -154,6 +157,7 @@ import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
 import StudipContextMenuEntry from '@/vue/components/StudipContextMenuEntry.vue';
 import StudipSwitch from '@/vue/components/StudipSwitch.vue';
 import StudipDataSetViewer from '@/vue/components/data-set-viewer/StudipDataSetViewer.vue';
+import StudipSearchInput from '@/vue/components/StudipSearchInput.vue';
 import { useContactStore } from '@/vue/store/pinia/contact/contacts';
 import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
