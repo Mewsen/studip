@@ -2,7 +2,7 @@
     <h2 class="community-header">{{ title }}</h2>
     <studip-data-set-viewer
         v-model:selection-mode="bulkModeActive"
-        :data="contacts"
+        :data="filteredContacts"
         :available-views="['card', 'list']"
         :view-components="contactViews"
         @selection-change="currentSelection = $event"
@@ -39,11 +39,7 @@
                 >
                     {{ $gettext('Nachricht senden') }}
                 </a>
-                <a
-                    class="as-button"
-                    :class="{ disabled: !hasSelection }"
-                    :href="hasSelection ? bulkMailUrl : null"
-                >
+                <a class="as-button" :class="{ disabled: !hasSelection }" :href="hasSelection ? bulkMailUrl : null">
                     {{ $gettext('E-Mail senden') }}
                 </a>
             </studip-button-group>
@@ -54,12 +50,12 @@
                 <studip-context-menu :title="$gettext('Filter')" button-shape="filter">
                     <template #content>
                         <studip-context-menu-entry>
-                            <studip-switch :label="$gettext('Kontakt ist online')" />
+                            <studip-switch :label="$gettext('Kontakt ist online')" v-model="filters.onlyOnline" />
                         </studip-context-menu-entry>
                         <studip-context-menu-entry>
                             <label>
                                 {{ $gettext('Suche') }}
-                                <input type="text" :placeholder="$gettext('Suchen...')" />
+                                <input type="text" :placeholder="$gettext('Suchen...')" v-model.trim="filters.search" />
                             </label>
                         </studip-context-menu-entry>
                     </template>
@@ -91,15 +87,20 @@
                     <template #content>
                         <studip-context-menu-entry
                             :label="$gettext('Kontakt hinzufügen')"
-                            :description="$gettext('Suche dir jemand nettes und füge ihn hinzu')"
-                            icon="add"
+                            :description="$gettext('Erstellt aus einem Stud.IP Nutzer einen Kontakt')"
                             is-clickable
                             @click="console.log('click add contact')"
                         />
                         <studip-context-menu-entry
                             :label="$gettext('Gruppe erstellen')"
-                            :description="$gettext('Erstellt eine Gruppe ;)')"
-                            icon="add"
+                            :description="$gettext('Mit Gruppen können Kontakte organisiert werden')"
+                            is-clickable
+                            @click="console.log('click add contact-group')"
+                        />
+                        <studip-context-menu-entry
+                            v-if="isSpecificGroupSelected"
+                            :label="$gettext('Kontakt zu Gruppe hinzufügen')"
+                            :description="$gettext('Fügt der ausgewählten Gruppe einen Kontakt hinzu')"
                             is-clickable
                             @click="console.log('click add contact-group')"
                         />
@@ -107,11 +108,47 @@
                 </studip-context-menu>
             </div>
         </template>
+        <template #empty-state>
+            <div class="empty-state-container">
+                <studip-icon :shape="filters.search ? 'search' : filters.onlyOnline ? 'spaceship' : 'ufo'" :size="60" />
+
+                <h3 v-if="filters.search">
+                    {{ $gettext('Keine Treffer für Ihre Suche') }}
+                </h3>
+                <h3 v-else-if="filters.onlyOnline">
+                    {{ $gettext('Aktuell ist niemand aus dieser Auswahl online') }}
+                </h3>
+                <h3 v-else-if="isSpecificGroupSelected">
+                    {{ $gettext('Diese Gruppe ist noch leer') }}
+                </h3>
+                <h3 v-else>
+                    {{ $gettext('Sie haben noch keine Kontakte') }}
+                </h3>
+
+                <div class="empty-state-actions">
+                    <button
+                        v-if="filters.onlyOnline && !filters.search"
+                        class="button"
+                        @click="filters.onlyOnline = false"
+                    >
+                        {{ $gettext('Online-Filter aufheben') }}
+                    </button>
+
+                    <button v-if="filters.search" class="button" @click="filters.search = ''">
+                        {{ $gettext('Suche zurücksetzen') }}
+                    </button>
+
+                    <button class="button add" @click="console.log('add contact')">
+                        {{ $gettext('Kontakt hinzufügen') }}
+                    </button>
+                </div>
+            </div>
+        </template>
     </studip-data-set-viewer>
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, ref, onMounted } from 'vue';
+import { computed, getCurrentInstance, ref, onMounted, watch } from 'vue';
 import StudipButtonGroup from '@/vue/components/StudipButtonGroup.vue';
 import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
 import StudipContextMenuEntry from '@/vue/components/StudipContextMenuEntry.vue';
@@ -122,7 +159,6 @@ import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
 import ContactCardView from '@/vue/components/community/contacts/ContactCardView.vue';
 import ContactListView from '@/vue/components/community/contacts/ContactListView.vue';
-import { forEach } from 'lodash';
 
 const { proxy } = getCurrentInstance();
 
@@ -134,8 +170,34 @@ const contactViews = {
 const contactStore = useContactStore();
 const contactGroupStore = useContactGroupStore();
 
-const contacts = computed(() => {
-    return contactStore.all ?? [];
+const filters = ref({
+    onlyOnline: false,
+    search: '',
+});
+
+const filteredContacts = computed(() => {
+    let result = contactStore.all ?? [];
+
+    if (selectedGroup.value !== 'all') {
+        result = result.filter((c) => c.group_ids?.has(String(selectedGroup.value)));
+    }
+
+    if (filters.value.onlyOnline) {
+        result = result.filter((c) => c.meta?.['is-online'] === true);
+    }
+
+    if (filters.value.search.trim() !== '') {
+        const query = filters.value.search.toLowerCase();
+        result = result.filter((c) => {
+            return (
+                c['formatted-name']?.toLowerCase().includes(query) ||
+                c.username?.toLowerCase().includes(query) ||
+                c.email?.toLowerCase().includes(query)
+            );
+        });
+    }
+
+    return result;
 });
 
 const contactGroups = computed(() => {
@@ -196,12 +258,29 @@ const title = computed(() => {
     }
 });
 
+const openAddContactDialog = () => {
+    console.log('We need a dialog!');
+};
+
 onMounted(async () => {
     const userId = STUDIP.USER_ID;
 
     await contactStore.fetchAll(userId);
     await contactGroupStore.fetchAll();
 });
+
+watch(
+    selectedGroup,
+    async (newGroupId) => {
+        if (newGroupId === 'all') return;
+
+        const group = contactGroupStore.byId(newGroupId);
+        if (group && !group.members_loaded) {
+            await contactGroupStore.fetchGroupMembers(newGroupId);
+        }
+    },
+    { immediate: true }
+);
 </script>
 <style lang="scss">
 .community-header {

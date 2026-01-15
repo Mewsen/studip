@@ -32,10 +32,10 @@ export const useContactStore = defineStore('contactStore', () => {
         isLoading.value = true;
         try {
             const { data } = await api.fetch(`users/${ownerId}/contacts`, {
-            params: {
-                'page[limit]': 10000
-            }
-        });
+                params: {
+                    'page[limit]': 10000,
+                },
+            });
             data.forEach((contact) => {
                 storeRecord(contact);
             });
@@ -73,6 +73,16 @@ export const useContactStore = defineStore('contactStore', () => {
         }
     }
 
+    function assignGroupToContact(contactId, groupId) {
+        const contact = records.value.get(String(contactId));
+        if (contact) {
+            if (!contact.group_ids) {
+                contact.group_ids = new Set();
+            }
+            contact.group_ids.add(String(groupId));
+        }
+    }
+
     return {
         records,
         removeRecord,
@@ -85,5 +95,6 @@ export const useContactStore = defineStore('contactStore', () => {
         fetchAll,
         addContact,
         removeContact,
+        assignGroupToContact,
     };
 });

@@ -30,11 +30,23 @@
             </div>
         </header>
         <div class="data-view-content">
-            <component :is="activeViewComponent" :data="data" v-bind="commonProps">
-                <template v-for="(_, name) in $slots" #[name]="slotProps">
-                    <slot :name="name" v-bind="slotProps" />
-                </template>
-            </component>
+            <template v-if="data.length > 0">
+                <component :is="activeViewComponent" :data="data" v-bind="commonProps">
+                    <template v-for="(_, name) in $slots" #[name]="slotProps">
+                        <slot :name="name" v-bind="slotProps" />
+                    </template>
+                </component>
+            </template>
+            <template v-else>
+                <div class="data-set-empty-state">
+                    <slot name="empty-state">
+                        <div class="default-empty-message">
+                            <studip-icon shape="info" :size="48" />
+                            <p>{{ $gettext('Keine Einträge gefunden.') }}</p>
+                        </div>
+                    </slot>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -122,7 +134,7 @@ const commonProps = computed(() => ({
 
 const selectedIds = ref([]);
 const selectAll = () => {
-    selectedIds.value = props.data.map(item => item.id);
+    selectedIds.value = props.data.map((item) => item.id);
 };
 
 const deselectAll = () => {
@@ -138,14 +150,21 @@ provide('selectionContext', {
         else selectedIds.value.push(id);
     },
     selectAll,
-    deselectAll
+    deselectAll,
 });
-watch(() => props.selectionMode, (newVal) => {
-    if (!newVal) selectedIds.value = [];
-});
-watch(selectedIds, (newSelection) => {
-    emit('selection-change', [...newSelection]);
-}, { deep: true });
+watch(
+    () => props.selectionMode,
+    (newVal) => {
+        if (!newVal) selectedIds.value = [];
+    }
+);
+watch(
+    selectedIds,
+    (newSelection) => {
+        emit('selection-change', [...newSelection]);
+    },
+    { deep: true }
+);
 </script>
 <style scoped>
 .viewer-header {
@@ -193,5 +212,35 @@ watch(selectedIds, (newSelection) => {
     padding: 4px 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.empty-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--color--gray);
+
+    .studip-icon {
+        margin-bottom: 20px;
+        opacity: 0.3;
+    }
+
+    h3 {
+        margin: 0 0 10px 0;
+        color: var(--color--base);
+    }
+
+    p {
+        margin: 0 0 20px 0;
+        max-width: 400px;
+    }
+
+    .empty-state-actions {
+        display: flex;
+        gap: 10px;
+    }
 }
 </style>
