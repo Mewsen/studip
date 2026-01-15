@@ -15,7 +15,7 @@ abstract class Exercise extends SimpleORMap
      * The unpacked value from the "task" column in the SORM instance.
      * This is an array, but type hinting does not work due to SORM
      * writing the JSON string into this property on restore().
-     */ 
+     */
     public $task = [];
 
     /**
@@ -706,10 +706,10 @@ abstract class Exercise extends SimpleORMap
      * Return a normalized version of a float (and optionally a unit)
      *
      * @param string $string string to be normalized
-     * @param string $unit   will contain the unit text
+     * @param string|null $unit   will contain the unit text
      * @return float The normalized value
      */
-    protected function normalizeFloat(string $string, string &$unit): float
+    protected function normalizeFloat(string $string, ?string &$unit = null): float
     {
         static $si_scale = [
             'T' => 12,
