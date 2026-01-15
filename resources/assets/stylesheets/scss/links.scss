@@ -1,11 +1,19 @@
 /* --- Links ---------------------------------------------------------------- */
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
     color: var(--color--content-link);
     text-decoration: none;
 
-    &.index     { color: var(--color--font-secondary); }
-    &.printhead { color: var(--black); }
-    &.tree      { color: var(--black); }
+    &.index {
+        color: var(--color--font-secondary);
+    }
+    &.printhead {
+        color: var(--black);
+    }
+    &.tree {
+        color: var(--black);
+    }
     &.toolbar {
         color: var(--brand-color-lighter);
         font-size: 9px;
@@ -18,13 +26,17 @@ a[disabled] {
     pointer-events: none;
 }
 
-a:hover, a:active, a:hover.index, a:active.index, a:hover.tree {
+a:hover,
+a:active,
+a:hover.index,
+a:active.index,
+a:hover.tree {
     color: var(--color--content-link-hover);
     text-decoration: underline;
 }
 
 a:has(svg:only-child) {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 a:hover.toolbar {
@@ -56,5 +68,17 @@ a.styleless {
     &:active,
     &:active {
         color: unset;
+    }
+}
+
+a.as-button {
+    @include button();
+    margin: 0;
+
+    &.disabled {
+        color: var(--color--font-inactive);
+        background: var(--color--button-inactive-background);
+        border: 1px solid var(--color--button-inactive-border);
+        cursor: not-allowed;
     }
 }

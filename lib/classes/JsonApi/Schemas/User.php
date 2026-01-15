@@ -69,6 +69,7 @@ class User extends SchemaProvider
 
         $fields = [
             ['phone', 'privatnr', 'private_phone'],
+            ['cell', 'privatcell', 'private_cell'],
             ['homepage', 'Home', 'homepage'],
             ['address', 'privadr', 'privadr'],
         ];

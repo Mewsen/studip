@@ -152,9 +152,9 @@ watch(selectedIds, (newSelection) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #eee;
+    padding: 10px 0 20px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--color--divider);
     gap: 15px;
 }
 

@@ -28,7 +28,7 @@ import { computed, ref, onMounted, watch, nextTick } from 'vue';
 const props = defineProps({
     modelValue: {
         type: Boolean,
-        default: false
+        default: false,
     },
     collapsible: {
         type: Boolean,
@@ -52,9 +52,12 @@ const emit = defineEmits(['update:modelValue']);
 
 const internalExpanded = ref(props.modelValue);
 
-watch(() => props.modelValue, (newVal) => {
-    internalExpanded.value = newVal;
-});
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        internalExpanded.value = newVal;
+    }
+);
 
 const toggleExpanded = () => {
     internalExpanded.value = !internalExpanded.value;
@@ -67,14 +70,6 @@ const isExpanded = computed(() => {
 
 const effectiveExpanded = computed(() => isExpanded.value);
 
-// const isExpanded = computed({
-//     get: () => (props.collapsible ? props.modelValue : true),
-//     set: (value) => emit('update:modelValue', value)
-// });
-
-// const effectiveExpanded = computed(() => {
-//     return props.collapsible ? isExpanded.value : true;
-// });
 const currentLabel = computed(() => {
     return isExpanded.value && props.activeLabel ? props.activeLabel : props.toggleLabel;
 });
@@ -193,17 +188,28 @@ const handleKeydown = (event) => {
     }
 
     > button.button,
+    > .as-button,
     > .grouped-buttons-content > button.button,
+    > .grouped-buttons-content > .as-button,
     > .context-menu > button.button {
         margin: 0;
         border-radius: 0;
         position: relative;
         z-index: 1;
 
-        &:hover,
-        &:active,
-        &.is-active {
+        &:not(.disabled):not([disabled]) {
             z-index: 2;
+
+            &:hover,
+            &:focus,
+            &:active {
+                z-index: 4;
+            }
+        }
+        &.disabled,
+        &[disabled] {
+            z-index: 0;
+            pointer-events: none;
         }
 
         &:focus-visible {
@@ -233,11 +239,19 @@ const handleKeydown = (event) => {
     }
 
     .button + .button,
+    .button + .as-button,
+    .as-button + .button,
+    .as-button + .as-button,
     .button + .context-menu,
+    .as-button + .context-menu,
     .context-menu + .button,
+    .context-menu + .as-button,
     .context-menu + .context-menu,
     .button + .grouped-buttons-content .button,
-    .grouped-buttons-content .button + .button {
+    .grouped-buttons-content .button + .button,
+    .grouped-buttons-content .as-button + .as-button,
+    .grouped-buttons-content .button + .as-button,
+    .grouped-buttons-content .as-button + .button {
         margin-left: -1px !important;
     }
 
@@ -249,8 +263,10 @@ const handleKeydown = (event) => {
     }
 
     > .button:first-child,
+    > .as-button:first-child,
     > .context-menu:first-child .context-menu__button,
     > .grouped-buttons-content:first-child > .button:first-child,
+    > .grouped-buttons-content:first-child > .as-button:first-child,
     > .grouped-buttons-content:first-child > .context-menu:first-child .context-menu__button {
         border-top-left-radius: var(--border-radius-default);
         border-bottom-left-radius: var(--border-radius-default);
@@ -264,8 +280,10 @@ const handleKeydown = (event) => {
     &.is-expanded,
     &:not(.is-collapsible) {
         .grouped-buttons-content .button:last-child,
+        .grouped-buttons-content .as-button:last-child,
         .grouped-buttons-content .context-menu:last-child .context-menu__button,
         > .button:last-child,
+        > .as-button:last-child,
         > .context-menu:last-child .context-menu__button {
             border-top-right-radius: var(--border-radius-default);
             border-bottom-right-radius: var(--border-radius-default);
@@ -290,9 +308,7 @@ const handleKeydown = (event) => {
         opacity: 1;
         pointer-events: auto;
         transform: translateX(0);
-        transition: 
-            max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            opacity 0.2s linear,
+        transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s linear,
             transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -303,11 +319,8 @@ const handleKeydown = (event) => {
             transform: translateX(-10px);
             pointer-events: none;
             visibility: hidden;
-            transition: 
-                max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.2s linear,
-                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0s 0.3s;
+            transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s linear,
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
         }
     }
 }

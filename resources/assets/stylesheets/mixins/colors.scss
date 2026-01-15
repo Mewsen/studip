@@ -290,14 +290,17 @@ $color--dialog-overlay: $color--gray-1;
 $color--tile-border-focus: $color--gray-4;
 $color--tile-border-hover: $color--gray-4;
 $color--tile-border: $color--gray-5;
+$color--tile-border-selected: $color--green-1;
 $color--tile-background: $color--gray-7;
 $color--tile-background-active: $color--gray-6;
 $color--tile-background-focus: $color--gray-6;
 $color--tile-background-hover: $color--gray-6;
+$color--tile-background-selected: $color--green-2;
 $color--tile-marker-inactive: $color--gray-4;
 $color--tile-marker-active: $color--green-1;
 $color--tile-marker-attention: $color--yellow-1;
 $color--tile-title-background: $color--gray-6;
+
 
 $color--scrollbar-thumb: $color--gray-5;
 
@@ -354,6 +357,9 @@ $color--info: $color--blue-2;
 $color--info-secondary: $color--blue-3;
 $color--info-contrast: $color--font-inverted;
 $color--info-secondary-contrast: $color--font-primary;
+
+$color--inactive: $color--gray-4;
+$color--inactive-secondary: $color--gray-5;
 
 $color--image-placeholder-background: $color--gray-6;
 $color--image-placeholder-icon: $color--gray-4;

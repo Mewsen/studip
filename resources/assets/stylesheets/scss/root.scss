@@ -176,13 +176,15 @@
 
     --color--dialog-overlay: #{$color--dialog-overlay};
 
+    --color--tile-border: #{$color--tile-border};
     --color--tile-border-focus: #{$color--tile-border-focus};
     --color--tile-border-hover: #{$color--tile-border-hover};
-    --color--tile-border: #{$color--tile-border};
+    --color--tile-border-selected: #{$color--tile-border-selected};
     --color--tile-background: #{$color--tile-background};
     --color--tile-background-active: #{$color--tile-background-active};
     --color--tile-background-focus: #{$color--tile-background-focus};
     --color--tile-background-hover: #{$color--tile-background-hover};
+    --color--tile-background-selected: #{$color--tile-background-selected};
     --color--tile-marker-inactive: #{$color--tile-marker-inactive};
     --color--tile-marker-active: #{$color--tile-marker-active};
     --color--tile-marker-attention: #{$color--tile-marker-attention};
@@ -243,6 +245,9 @@
     --color--info-secondary: #{$color--info-secondary};
     --color--info-contrast: #{$color--info-contrast};
     --color--info-secondary-contrast: #{$color--info-secondary-contrast};
+
+    --color--inactive: #{$color--inactive};
+    --color--inactive-secondary: #{$color--inactive-secondary};
 
     --color--image-placeholder-background: #{$color--image-placeholder-background};
     --color--image-placeholder-icon: #{$color--image-placeholder-icon};

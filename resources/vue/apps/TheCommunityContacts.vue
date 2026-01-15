@@ -1,5 +1,5 @@
 <template>
-    <h2>Kontakte</h2>
+    <h2 class="community-header">{{ title }}</h2>
     <studip-data-set-viewer
         v-model:selection-mode="bulkModeActive"
         :data="contacts"
@@ -31,8 +31,21 @@
                 :active-label="$gettext('Auswahl abbrechen')"
             >
                 <button class="button" @click="selectAll">{{ $gettext('Alles auswählen') }}</button>
-                <button class="button" :disabled="currentSelection.length === 0">{{ $gettext('Nachricht senden') }}</button>
-                <button class="button" :disabled="currentSelection.length === 0">{{ $gettext('E-Mail senden') }}</button>
+                <a
+                    class="as-button"
+                    :class="{ disabled: !hasSelection }"
+                    :data-dialog="hasSelection ? 'width=720;height=760' : null"
+                    :href="hasSelection ? bulkMessageUrl : null"
+                >
+                    {{ $gettext('Nachricht senden') }}
+                </a>
+                <a
+                    class="as-button"
+                    :class="{ disabled: !hasSelection }"
+                    :href="hasSelection ? bulkMailUrl : null"
+                >
+                    {{ $gettext('E-Mail senden') }}
+                </a>
             </studip-button-group>
         </template>
 
@@ -98,7 +111,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, getCurrentInstance, ref, onMounted } from 'vue';
 import StudipButtonGroup from '@/vue/components/StudipButtonGroup.vue';
 import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
 import StudipContextMenuEntry from '@/vue/components/StudipContextMenuEntry.vue';
@@ -109,6 +122,9 @@ import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
 import ContactCardView from '@/vue/components/community/contacts/ContactCardView.vue';
 import ContactListView from '@/vue/components/community/contacts/ContactListView.vue';
+import { forEach } from 'lodash';
+
+const { proxy } = getCurrentInstance();
 
 const contactViews = {
     card: ContactCardView,
@@ -132,8 +148,52 @@ const bulkModeActive = ref(false);
 
 const currentSelection = ref([]);
 
+const hasSelection = computed(() => {
+    return currentSelection.value.length > 0;
+});
+
 const isSpecificGroupSelected = computed(() => {
     return selectedGroup.value !== 'all';
+});
+
+const selectedContacts = computed(() => {
+    return currentSelection.value.map((id) => contactStore.byId(id)).filter(Boolean);
+});
+
+const bulkMessageUrl = computed(() => {
+    if (!bulkModeActive.value || selectedContacts.value.length === 0) {
+        return '#';
+    }
+    const params = new URLSearchParams();
+
+    selectedContacts.value.forEach((contact, index) => {
+        params.append(`rec_uname[${index}]`, contact.username);
+    });
+
+    return `${STUDIP.URLHelper.base_url}dispatch.php/messages/write?${params.toString()}`;
+});
+
+const bulkMailUrl = computed(() => {
+    if (!bulkModeActive.value || selectedContacts.value.length === 0) {
+        return '#';
+    }
+
+    const emails = selectedContacts.value
+        .map((c) => c.email)
+        .filter(Boolean)
+        .join(',');
+
+    return `mailto:${emails}`;
+});
+
+const title = computed(() => {
+    if (!isSpecificGroupSelected.value) {
+        return proxy.$gettext('Alle Kontakte');
+    } else {
+        const group = contactGroupStore.byId(selectedGroup.value);
+
+        return group.name;
+    }
 });
 
 onMounted(async () => {
@@ -143,3 +203,8 @@ onMounted(async () => {
     await contactGroupStore.fetchAll();
 });
 </script>
+<style lang="scss">
+.community-header {
+    margin-top: 0;
+}
+</style>
