@@ -45,6 +45,18 @@ export const useCommunityOverviewStore = defineStore('communityOverview', () => 
         });
     }
 
+    function openContactInDrawer(contactId) {
+        const ContactComponent = expandedViewsRegistry['contact'];
+        if (!ContactComponent) {
+            console.error('ContactExpandedView in Registry nicht gefunden!');
+            return;
+        }
+
+        openDrawer(ContactComponent, {
+            contactId: contactId,
+        });
+    }
+
     return {
         isDrawerOpen,
         drawerComponent,
@@ -55,5 +67,6 @@ export const useCommunityOverviewStore = defineStore('communityOverview', () => 
         closeDrawer,
 
         openChatInDrawer,
+        openContactInDrawer,
     };
 });

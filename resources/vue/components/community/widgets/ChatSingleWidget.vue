@@ -1,7 +1,17 @@
 <template>
     <WidgetWrapper :title="widgetTitle" :widget-data="props.widgetData" v-bind="$attrs" @update-config="handleConfigUpdate">
         <template #content>
-            One single chat: {{ threadId }}
+            <p>Chat with Name</p>
+            <div class="blubber_thread">
+                <div class="scrollable_area">
+                    <ol class="comments">
+                        <li class="talk-bubble-wrapper">
+                            <div class="talk-bubble-avatar"></div>
+                            <div class="talk-bubble"></div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
             <button @click="showChat">show the chat</button>
         </template>
 
@@ -50,3 +60,8 @@ function handleConfigUpdate() {
     widgetStore.updateWidgetPayload(props.widgetData.id, formPayload.value);
 }
 </script>
+<style lang="scss" scoped>
+    .blubber_thread {
+        margin-bottom: 10px;
+    }
+</style>
