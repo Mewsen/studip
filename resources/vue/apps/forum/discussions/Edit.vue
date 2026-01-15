@@ -1,26 +1,28 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from "vue";
-import SelectTopicInput from "@/vue/components/forum/topics/SelectTopicInput.vue";
-import SelectDiscussionType from "@/vue/components/forum/discussions/SelectDiscussionType.vue";
-import SelectTagsInput from "@/vue/components/forum/SelectTagsInput.vue";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import StudipWysiwyg from "../../../components/StudipWysiwyg.vue";
-import StudipSwitch from "../../../components/StudipSwitch.vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import SelectTopicInput from '@/vue/components/forum/topics/SelectTopicInput.vue';
+import SelectDiscussionType from '@/vue/components/forum/discussions/SelectDiscussionType.vue';
+import SelectTagsInput from '@/vue/components/forum/SelectTagsInput.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipWysiwyg from '@/vue/components/StudipWysiwyg.vue';
+import StudipSwitch from '@/vue/components/StudipSwitch.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
+
 const CSRF = STUDIP.CSRF_TOKEN;
 
 const props = defineProps({
     discussion: {
         type: Object,
+        default: () => ({})
     },
     topics: {
         type: Array,
         required: true
     },
-    discussion_types: {
+    discussionTypes: {
         type: Array,
         required: true
     },
@@ -35,7 +37,7 @@ const discussionForm = reactive({
     closed_at: Boolean(props.discussion.closed_at),
     sticky: Boolean(props.discussion.sticky),
     topic: props.topics.find(({ topic_id }) => topic_id === props.discussion.topic_id),
-    type: props.discussion_types.find(({ type_id }) => type_id === parseInt(props.discussion.type_id))
+    type: props.discussionTypes.find(({ type_id }) => type_id === parseInt(props.discussion.type_id))
 });
 
 const formActionURL = computed(() => {
@@ -55,7 +57,7 @@ const availableTags = computed(() => {
     return props.tags;
 });
 
-const titleInput = useTemplateRef('title-input');
+const titleInput = useTemplateRef('titleInput');
 
 onMounted(() => {
     titleInput.value.focus();
@@ -86,7 +88,7 @@ onMounted(() => {
                             required
                             type="text"
                             name="title"
-                            ref="title-input"
+                            ref="titleInput"
                             v-model="discussionForm.title"
                             class="max-w-full" />
                     </label>
@@ -137,7 +139,7 @@ onMounted(() => {
                         </label>
                         <SelectDiscussionType
                             id="select-discussion-type"
-                            :options="discussion_types"
+                            :options="discussionTypes"
                             v-model="discussionForm.type"
                         />
                         <input v-if="discussionForm.type" type="hidden" name="type_id" :value="discussionForm.type.type_id">

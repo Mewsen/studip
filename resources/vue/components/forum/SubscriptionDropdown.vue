@@ -1,14 +1,14 @@
 <script setup>
-import {computed, ref} from "vue";
-import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import Dropdown from "../Dropdown.vue";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import {SubscriptionNotificationType} from "@/vue/components/forum/enums/SubscriptionNotificationType";
-import {deserializeJSONAPIResponse} from "../../../assets/javascripts/lib/jsonapiUtils";
+import {computed, ref} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import Dropdown from '@/vue/components/Dropdown.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {SubscriptionNotificationType} from '@/vue/components/forum/enums/SubscriptionNotificationType';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
 
 const emit = defineEmits(['updated', 'deleted']);
 const props = defineProps({
-    user_subscription: {
+    userSubscription: {
         type: Object,
         required: true
     },
@@ -16,14 +16,18 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    title: {
+    type: {
         type: String,
-        default: $gettext('Diskussion abonnieren')
+        default: $gettext('Diskussion')
+    },
+    context: {
+        type: String,
+        default: ''
     }
 });
 
 const isOpen = ref(false);
-const subscription = ref(props.user_subscription);
+const subscription = ref(props.userSubscription);
 const isLoading = ref(false);
 
 const subscriptionButtonLabel = computed(() =>  {
@@ -56,12 +60,15 @@ const subscriptionButtonIcon = computed(() =>  {
     return 'subscription-all';
 });
 
-const getSubscriptionJSONAPIObject = (notification_type = 'all') => ({
+const title = computed(() => $gettext('%{type} abonnieren', {type: props.type }));
+const computedContext = computed(() => props.context || props.subject.name || props.subject.title);
+
+const getSubscriptionJSONAPIObject = (notificationType = 'all') => ({
     data: {
         id: subscription.value?.id,
         type: 'forum-subscriptions',
         attributes: {
-            'notification-type': notification_type
+            'notification-type': notificationType
         },
         relationships: {
             subject: {
@@ -101,14 +108,14 @@ const unSubscribe = async () => {
     }
 }
 
-const subscribe = async (notification_type = 'all') => {
+const subscribe = async (notificationType = 'all') => {
     try {
         isLoading.value = false;
 
         const response = await STUDIP.jsonapi.withPromises().POST(
             'forum-subscriptions',
             {
-                data: getSubscriptionJSONAPIObject(notification_type)
+                data: getSubscriptionJSONAPIObject(notificationType)
             }
         );
 
@@ -130,10 +137,12 @@ const subscribe = async (notification_type = 'all') => {
         <template #trigger>
             <button
                 type="button"
-                :title="title"
                 class="button subscription-button"
                 :class="subscriptionButtonLabel ? 'button--icon-label' : 'button--icon-only'"
-                :aria-pressed="isOpen"
+                :title="$gettext(`${type} abonnieren (Menü öffnen)`)"
+                :aria-label="$gettext('Menü zum Abonnieren für „%{ context }“ öffnen)', { context: computedContext ?? type })"
+                aria-haspopup="menu"
+                :aria-expanded="isOpen"
                 @click="isOpen = !isOpen"
             >
                 <span v-if="subscriptionButtonLabel">

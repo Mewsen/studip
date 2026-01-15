@@ -1,12 +1,12 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import DiscussionIndex from "@/vue/components/forum/discussions/DiscussionIndex.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
+import {onMounted, ref} from 'vue';
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import DiscussionIndex from '@/vue/components/forum/discussions/DiscussionIndex.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
 
 const props = defineProps({
-    last_visit: {
+    lastVisit: {
         type: Number,
         required: true
     }
@@ -25,7 +25,7 @@ const fetchDiscussions = async (_, offset = 0) => {
                 data: {
                     include: 'category,discussion-type,members,tags,user&fields[users]=id',
                     filter: {
-                        'last-visit': props.last_visit
+                        'last-visit': props.lastVisit
                     },
                     page: { offset }
                 }
@@ -38,7 +38,7 @@ const fetchDiscussions = async (_, offset = 0) => {
             links: response.links
         };
 
-        discussions.value = await deserializeJSONAPIResponse(response)
+        discussions.value = await deserializeJSONAPIResponse(response);
     } catch (error) {
         STUDIP.Report.error(error);
     } finally {

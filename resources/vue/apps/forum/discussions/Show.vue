@@ -26,11 +26,11 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    auth_user: {
+    authUser: {
         type: Object,
         required: true,
     },
-    read_index: {
+    readIndex: {
         type: Number,
         required: true,
         default: 0
@@ -123,9 +123,13 @@ onMounted(async () => {
         if (urlHash === 'new-post') {
             postCreateForm.value = true;
         }
-        document.getElementById(urlHash)?.scrollIntoView();
-    } else if (props.read_index < posts.value.length) {
-        document.querySelectorAll(".post")[props.read_index].scrollIntoView();
+        jumpTo(document.getElementById(urlHash))
+    } else if (props.readIndex < posts.value.length) {
+        if (props.readIndex === 0) {
+            jumpTo(document.getElementById('discussion_start'));
+        } else {
+            jumpTo(document.querySelector(`[data-index='${props.readIndex}']`));
+        }
     }
 
     if (props.search_keyword !== "") {
@@ -195,11 +199,12 @@ onMounted(async () => {
                         </button>
                         <SubscriptionDropdown
                             v-if="!discussion.closed_at"
+                            :context="discussion.title"
                             :subject="{
                                 id: discussion.discussion_id,
                                 type: 'forum-discussions'
                             }"
-                            :user_subscription="auth_user.subscription"
+                            :userSubscription="authUser.subscription"
                         />
                     </template>
                 </div>
@@ -207,7 +212,7 @@ onMounted(async () => {
         </header>
         <div class="discussion">
             <template v-if="posts[0]">
-                <Post :post="posts[0]" :auth_user="auth_user" :discussion="discussion" :is_unread="read_index === 0" />
+                <Post :post="posts[0]" :authUser="authUser" :discussion="discussion" :readIndex="readIndex" />
             </template>
             <div v-else class="discussion__body">
                 <Loader v-if="isLoading" />
@@ -219,7 +224,7 @@ onMounted(async () => {
             <DiscussionFooter
                 :discussion="discussion"
                 :posts="posts"
-                :read_index="read_index"
+                :readIndex="readIndex"
                 v-model:postCreateForm="postCreateForm"
             />
             <hr />
@@ -228,9 +233,10 @@ onMounted(async () => {
             <template v-for="(post, index) in posts.slice(1)" :key="post.id">
                 <Post
                     :post="post"
-                    :auth_user="auth_user"
+                    :authUser="authUser"
                     :discussion="discussion"
-                    :is_unread="read_index < index + 2"
+                    :index="index + 1"
+                    :readIndex="readIndex"
                 />
                 <hr v-if="index < posts.slice(1).length - 1" class="divider"/>
             </template>
@@ -247,8 +253,8 @@ onMounted(async () => {
         <div id="new-post" class="post-form-container">
             <PostCreateForm
                 v-if="postCreateForm && !discussion.closed_at"
-                :discussion_id="discussion.discussion_id"
-                :auth_user="auth_user"
+                :discussionId="discussion.discussion_id"
+                :authUser="authUser"
                 @canceled="postCreateForm = false"
                 @created="addPost"
             />

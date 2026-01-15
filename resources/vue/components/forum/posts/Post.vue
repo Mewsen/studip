@@ -1,18 +1,17 @@
 <script setup>
-import {computed, ref, useTemplateRef} from "vue";
-import PostEditForm from "./PostEditForm.vue";
-import PostCreateForm from "./PostCreateForm.vue";
-import PostContent from "@/vue/components/forum/posts/PostContent.vue";
-import PostReactions from "./PostReactions.vue";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import {getDiscussionURL} from "@/vue/components/forum/helpers/urls";
-import StudipDateTime from "@/vue/components/StudipDateTime.vue";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import LinksPreview from "@/vue/components/LinksPreview.vue";
-import UserAvatarDropdown from "../UserAvatarDropdown.vue";
-import {userProfileURL} from "../helpers/urls";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed, ref, useTemplateRef} from 'vue';
+import PostEditForm from '@/vue/components/forum/posts/PostEditForm.vue';
+import PostCreateForm from '@/vue/components/forum/posts/PostCreateForm.vue';
+import PostContent from '@/vue/components/forum/posts/PostContent.vue';
+import PostReactions from '@/vue/components/forum/posts/PostReactions.vue';
+import {getDiscussionURL, userProfileURL} from '@/vue/components/forum/helpers/urls';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import LinksPreview from '@/vue/components/LinksPreview.vue';
+import UserAvatarDropdown from '@/vue/components/forum/UserAvatarDropdown.vue';
+import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
 const forumDiscussionPost = useForumPost();
@@ -25,7 +24,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    auth_user: {
+    authUser: {
         type: Object,
         required: true
     },
@@ -58,6 +57,7 @@ const editPost = () => {
         return;
     }
 
+    document.getElementById(`post_${props.post.id}`)?.scrollIntoView({ behavior: 'smooth' });
     showPostEditForm.value = true;
 }
 
@@ -85,18 +85,19 @@ const addPost = () => {
     showPostCreateForm.value = false;
 }
 
-const addReply = post => {
+const addReply = () => {
+    document.getElementById(`create_form_${props.post.id}`)?.scrollIntoView({ behavior: 'smooth' });
     showPostCreateForm.value = true;
-    selectedText.value = post.content;
+    selectedText.value = props.post.content;
 }
 
-const forwardPost = post => {
+const forwardPost = () => {
     let messageBoyd = `
         ${$gettext('Die Sender:in dieser Nachricht möchte Sie auf den folgenden Beitrag aufmerksam machen: ')}
         <br />
         <br />
         ${$gettext('Link zum Beitrag: ')}
-        <a href="${getDiscussionURL(props.discussion.discussion_id) + '#post_' + post.id}">
+        <a href="${getDiscussionURL(props.discussion.discussion_id) + '#post_' + props.post.id}">
             ${props.discussion.title}
         </a>
     `;
@@ -116,7 +117,7 @@ const removePostHighlight = id => {
         console.error("Element not found!");
         return;
     }
-    element.classList.remove('--highlight');
+    element.classList.remove('post--highlight');
 }
 </script>
 
@@ -184,7 +185,7 @@ const removePostHighlight = id => {
                     <StudipDateTime v-else :iso="post.mkdate" :relative="true" />
                 </div>
                 <template v-if="showPostEditForm">
-                    <PostEditForm :post="post" :auth_user="auth_user" class="mt-10" @canceled="showPostEditForm = false" @updated="showPostEditForm = false"/>
+                    <PostEditForm :post="post" :authUser="authUser" class="mt-10" @canceled="showPostEditForm = false" @updated="showPostEditForm = false" />
                 </template>
                 <template v-else>
                     <div class="post__text">
@@ -229,9 +230,8 @@ const removePostHighlight = id => {
                     <div></div>
                     <div class="inline-flex items-center gap-40">
                         <div v-if="!forumConfig.allowGuestAccess" class="inline-flex items-center gap-10">
-                            <a
+                            <button
                                 v-if="canEditPost"
-                                :href="`#post_${post.id}`"
                                 @click="editPost"
                                 type="button"
                                 class="button button--icon-only"
@@ -242,7 +242,7 @@ const removePostHighlight = id => {
                                 :aria-label="$gettext('Beitrag bearbeiten')"
                             >
                                 <StudipIcon shape="edit" :size="20" aria-hidden="true" />
-                            </a>
+                            </button>
                             <button
                                 v-if="canDeletePost"
                                 @click="deletePost"
@@ -252,13 +252,17 @@ const removePostHighlight = id => {
                             >
                                 <StudipIcon shape="trash" :size="20" aria-hidden="true" />
                             </button>
-                            <button type="button" @click="forwardPost(post)" class="button button--icon-only" :title="$gettext('Beitrag weiterleiten')" :aria-label="$gettext('Beitrag weiterleiten')">
+                            <button
+                                type="button"
+                                @click="forwardPost"
+                                class="button button--icon-only"
+                                :title="$gettext('Beitrag weiterleiten')"
+                                :aria-label="$gettext('Beitrag weiterleiten')">
                                 <StudipIcon shape="export" :size="20" aria-hidden="true" />
                             </button>
-                            <a
+                            <button
                                 v-if="!discussion.closed_at"
-                                :href="`#create_form_${post.id}`"
-                                @click="addReply(post)"
+                                @click="addReply"
                                 type="button"
                                 class="button button--icon-only"
                                 :class="{
@@ -268,7 +272,7 @@ const removePostHighlight = id => {
                                 :aria-label="$gettext('Zitieren und Antworten')"
                             >
                                 <StudipIcon shape="quote" :size="20" aria-hidden="true" />
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -277,9 +281,9 @@ const removePostHighlight = id => {
     </div>
     <div v-if="showPostCreateForm && !discussion.closed_at" :id="`create_form_${post.id}`" class="post-form-container" style="scroll-margin-top: 200px;">
         <PostCreateForm
-            :parent_id="post.id"
-            :discussion_id="props.discussion.discussion_id"
-            :auth_user="auth_user"
+            :parentId="post.id"
+            :discussionId="props.discussion.discussion_id"
+            :authUser="authUser"
             v-model:quote="selectedText"
             @canceled="showPostCreateForm = false; selectedText = ''"
             @created="addPost"

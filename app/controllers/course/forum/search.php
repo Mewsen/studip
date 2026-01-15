@@ -5,14 +5,14 @@ use Forum\DTO\Tag as TagDTO;
 
 class Course_Forum_SearchController extends Forum\BaseController
 {
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         parent::before_filter($action, $args);
 
         Navigation::activateItem('course/forum');
     }
 
-    public function index_action()
+    public function index_action(): void
     {
         $topics = DBManager::get()->fetchAll(
             "SELECT
@@ -43,9 +43,9 @@ class Course_Forum_SearchController extends Forum\BaseController
                 ->withProps([
                     'filter' => $this->getForumFilter(),
                     'topics' => $topics,
-                    'discussion_types' => $discussion_types,
+                    'discussionTypes' => $discussion_types,
                     'tags' => $tags,
-                    'course_members' => $course_members,
+                    'courseMembers' => $course_members,
                 ])
         );
     }

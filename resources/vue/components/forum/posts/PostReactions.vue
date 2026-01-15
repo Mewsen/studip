@@ -1,15 +1,15 @@
 <script setup>
-import {computed, reactive, ref, useTemplateRef} from "vue";
-import {REACTION_ICONS} from "./reactions";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import {numberFormatter} from "../../../../assets/javascripts/lib/number_formatter";
-import useDetectOutsideClick from "../../../composables/useDetectOutsideClick";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipIcon from "../../StudipIcon.vue";
-import PostReactionShow from "./PostReactionShow.vue";
-import StudipDialog from "../../StudipDialog.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed, reactive, ref, useTemplateRef} from 'vue';
+import {REACTION_ICONS} from './reactions';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {numberFormatter} from '@/assets/javascripts/lib/number_formatter';
+import useDetectOutsideClick from '@/vue/composables/useDetectOutsideClick';
+import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import PostReactionShow from '@/vue/components/forum/posts/PostReactionShow.vue';
+import StudipDialog from '@/vue/components/StudipDialog.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
 const forumDiscussionPost = useForumPost();
@@ -126,7 +126,7 @@ const reactionShowDialog = reactive({
                     type="button"
                     class="post-reaction button-base"
                     :class="{
-                        '--active': findUserReaction(emoji, reaction)
+                        'post-reaction--active': findUserReaction(emoji, reaction)
                     }"
                     :title="findUserReaction(emoji, reaction)  ? $gettext('Reaktion zurücknehmen') : $gettext('Reaktion hinzufügen')"
                     :aria-label="findUserReaction(emoji, reaction) ? $gettext('Reaktion zurücknehmen') : $gettext('Reaktion hinzufügen')"
@@ -164,7 +164,7 @@ const reactionShowDialog = reactive({
                         <button
                             type="button"
                             :class="{
-                                '--active': findUserReaction(emoji.value)
+                                'post-reaction--active': findUserReaction(emoji.value)
                             }"
                             :title="$gettext('Auf diesen Beitrag reagieren')"
                             :aria-label="$gettext('Auf diesen Beitrag mit %{emojiName} reagieren', { emojiName: emoji.value })"

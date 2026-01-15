@@ -4,7 +4,7 @@ use Forum\Category;
 
 class Course_Forum_CategoriesController extends Forum\BaseController
 {
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         parent::before_filter($action, $args);
 
@@ -15,19 +15,17 @@ class Course_Forum_CategoriesController extends Forum\BaseController
         }
     }
 
-    public function index_action()
+    public function index_action(): void
     {
         $this->render_vue_app(
             Studip\VueApp::create('forum/categories/Index')
         );
     }
 
-    public function show_action($category_id)
+    public function show_action(Category $category): void
     {
-        $category = Category::find($category_id);
-
         if (!$category) {
-            throw new AccessDeniedException();
+            throw new NotFoundException();
         }
 
         PageLayout::setTitle($category->name);
@@ -45,7 +43,7 @@ class Course_Forum_CategoriesController extends Forum\BaseController
         );
     }
 
-    public function edit_action($category_id = null)
+    public function edit_action($category_id = null): void
     {
         if (!$this->is_moderator) {
             throw new AccessDeniedException();
@@ -71,7 +69,7 @@ class Course_Forum_CategoriesController extends Forum\BaseController
         );
     }
 
-    public function save_action($category_id = null)
+    public function save_action($category_id = null): void
     {
         if (!$this->is_moderator) {
             throw new AccessDeniedException();
@@ -100,16 +98,16 @@ class Course_Forum_CategoriesController extends Forum\BaseController
         $this->relocate('course/forum/categories');
     }
 
-    public function delete_action($category_id)
+    public function delete_action(Category $category): void
     {
+        CSRFProtection::verifyUnsafeRequest();
+
         if (!$this->is_moderator) {
             throw new AccessDeniedException();
         }
 
-        $category = Category::findOneBySQL("range_id = ? AND category_id = ?", [$this->range_id, $category_id]);
-
         if (!$category) {
-            throw new AccessDeniedException();
+            throw new NotFoundException();
         }
 
         $category->delete();

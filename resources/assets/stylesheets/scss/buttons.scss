@@ -113,6 +113,11 @@ button,
         border: 0;
     }
 
+    &.styleless {
+        padding: 0;
+        margin: 0;
+    }
+
     &.as-link,
     &.undecorated {
         cursor: pointer;

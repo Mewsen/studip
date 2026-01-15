@@ -1,15 +1,18 @@
 <script setup>
-import draggable from "vuedraggable";
-import {nextTick, ref, toRef} from "vue";
-import CreateTopic from "./CreateTopic.vue";
-import TopicItem from "./TopicItem.vue";
-import Loader from "../Loader.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import EmptyForum from "../EmptyForum.vue";
-import CategoryItem from "../categories/CategoryItem.vue";
-import {useSortable} from "../../../composables/useSortable";
-import {debounce} from "lodash";
+import {debounce} from 'lodash';
+import draggable from 'vuedraggable';
+import {nextTick, ref, toRef} from 'vue';
+import CreateTopic from './CreateTopic.vue';
+import TopicItem from './TopicItem.vue';
+import Loader from '../Loader.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import EmptyForum from '../EmptyForum.vue';
+import CategoryItem from '../categories/CategoryItem.vue';
+import {useSortable} from '@/vue/composables/useSortable';
+import StudipDialog from '@/vue/components/StudipDialog.vue';
+import ShowTopic from "./ShowTopic.vue";
+import ShowCategory from "../categories/ShowCategory.vue";
 
 const forumConfig = useForumConfig();
 
@@ -31,6 +34,8 @@ const props = defineProps({
     }
 });
 
+const currentTopic = ref(null);
+const currentCategory = ref(null);
 const topicsRef = toRef(props, 'topics');
 
 const {
@@ -94,6 +99,9 @@ const swapItem = (itemId, step) => {
         updateOrderDebounced();
     });
 }
+
+const showTopicDialog = topic => currentTopic.value = topic;
+const showCategoryDialog = category => currentCategory.value = category;
 </script>
 
 <template>
@@ -118,13 +126,23 @@ const swapItem = (itemId, step) => {
                     tag="ul">
                     <template #item="{element}">
                         <li>
-                            <CategoryItem v-if="element.category" :category="element.category" @swapCategory="swapItem" />
-                            <TopicItem v-else :topic="element" @swapTopic="swapItem" />
+                            <CategoryItem
+                                v-if="element.category"
+                                :category="element.category"
+                                @swapCategory="swapItem"
+                                @showCategory="showCategoryDialog(element)"
+                            />
+                            <TopicItem
+                                v-else
+                                :topic="element"
+                                @swapTopic="swapItem"
+                                @showTopic="showTopicDialog(element)"
+                            />
                         </li>
                     </template>
                     <template v-if="forumConfig.isModerator" #footer>
                         <li key="footer">
-                            <div class="topic-card --new-topic">
+                            <div class="topic-card topic-card--new-topic">
                                 <CreateTopic
                                     class="--with-label"
                                     :category_id="categoryId"
@@ -135,7 +153,7 @@ const swapItem = (itemId, step) => {
                     </template>
                 </draggable>
                 <div v-else-if="forumConfig.isModerator" class="topic-cards-container">
-                    <div class="topic-card --new-topic">
+                    <div class="topic-card topic-card--new-topic">
                         <CreateTopic
                             :category_id="categoryId"
                             class="--with-label"
@@ -144,7 +162,7 @@ const swapItem = (itemId, step) => {
                     </div>
                 </div>
             </div>
-            <table v-else class="default forum-table --topics-index">
+            <table v-else class="default forum-table forum-table--topics-index">
                 <colgroup>
                     <col>
                     <col style="width: 15%;">
@@ -160,60 +178,65 @@ const swapItem = (itemId, step) => {
                             :aria-sort="getAriaSortString('name')"
                             :aria-label="getAriaSortLabel('name', $gettext('Name'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('name')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('name')"
                                 :title="$gettext('Nach Name sortieren')">
                                 {{ $gettext('Name') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.discussions_count')"
                             :aria-sort="getAriaSortString('meta.discussions_count')"
                             :aria-label="getAriaSortLabel('meta.discussions_count', $gettext('Anzahl der Diskussionen'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.discussions_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.discussions_count')"
                                 :title="$gettext('Nach Anzahl der Diskussionen sortieren')">
                                 {{ $gettext('Diskussionen') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.users_count')"
                             :aria-sort="getAriaSortString('meta.users_count')"
                             :aria-label="getAriaSortLabel('meta.users_count', $gettext('Anzahl der Teilnehmenden'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.users_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.users_count')"
                                 :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
                                 {{ $gettext('Teilnehmende') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.postings_count')"
                             :aria-sort="getAriaSortString('meta.postings_count')"
                             :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.postings_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.postings_count')"
                                 :title="$gettext('Nach Anzahl der Beiträge sortieren')">
                                 {{ $gettext('Beiträge') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.recent_activity')"
                             :aria-sort="getAriaSortString('meta.recent_activity')"
                             :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.recent_activity')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.recent_activity')"
                                 :title="$gettext('Nach letzter Aktivität sortieren')">
                                 {{ $gettext('Letzte Aktivität') }}
-                            </a>
+                            </button>
                         </th>
                         <th></th>
                     </tr>
@@ -226,11 +249,22 @@ const swapItem = (itemId, step) => {
                     @end="updateTopicsOrder"
                     :disabled="!forumConfig.isModerator"
                     handle=".drag-handle"
-                    role="listbox"
                     tag="tbody">
                     <template #item="{element}">
-                        <CategoryItem v-if="element.category" :category="element.category" render-type="tr" @swapCategory="swapItem" />
-                        <TopicItem v-else :topic="element" render-type="tr" @swapTopic="swapItem" />
+                        <CategoryItem
+                            v-if="element.category"
+                            renderType="tr"
+                            :category="element.category"
+                            @swapCategory="swapItem"
+                            @showCategory="showCategoryDialog(element)"
+                        />
+                        <TopicItem
+                            v-else
+                            renderType="tr"
+                            :topic="element"
+                            @swapTopic="swapItem"
+                            @showTopic="showTopicDialog(element)"
+                        />
                     </template>
                 </draggable>
                 <tbody v-else>
@@ -255,6 +289,36 @@ const swapItem = (itemId, step) => {
                 </tfoot>
             </table>
             <slot name="pagination" />
+
+            <StudipDialog
+                v-if="currentTopic?.id"
+                :title="$gettext('Detaillierte Information')"
+                :closeText="$gettext('Schließen')"
+                height="700"
+                width="600"
+                @close="currentTopic = null"
+            >
+                <template #dialogContent>
+                    <div class="forum">
+                        <ShowTopic :topic="currentTopic" />
+                    </div>
+                </template>
+            </StudipDialog>
+
+            <StudipDialog
+                v-if="currentCategory?.id"
+                :title="$gettext('Detaillierte Information')"
+                :closeText="$gettext('Schließen')"
+                height="700"
+                width="600"
+                @close="currentCategory = null"
+            >
+                <template #dialogContent>
+                    <div class="forum">
+                        <ShowCategory :category="currentCategory" />
+                    </div>
+                </template>
+            </StudipDialog>
         </template>
         <EmptyForum v-else-if="showEmptyForumLayout" />
     </template>

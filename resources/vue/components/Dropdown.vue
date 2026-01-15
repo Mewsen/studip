@@ -3,6 +3,7 @@ import {nextTick, onBeforeUnmount, ref, useTemplateRef, watch} from "vue";
 import { createPopper } from '@popperjs/core';
 import useDetectOutsideClick from "../composables/useDetectOutsideClick";
 import StudipIcon from "./StudipIcon.vue";
+import {$gettext} from "../../assets/javascripts/lib/gettext";
 
 defineProps({
     title: {
@@ -78,7 +79,8 @@ onBeforeUnmount(() => {
                     type="button"
                     v-if="withCloseButton"
                     @click="isOpen = false"
-                    class="dropdown__close-button">
+                    :title="$gettext('Menü schließen')"
+                    class="dropdown__close-button button-base">
                     <StudipIcon shape="decline" :size="20" />
                 </button>
                 <div v-if="title" class="dropdown__header">

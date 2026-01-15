@@ -1,16 +1,16 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import { default as CreateDiscussion } from "@/vue/components/forum/discussions/Create.vue";
-import DiscussionIndex from "@/vue/components/forum/discussions/DiscussionIndex.vue";
-import {getCategoryURL} from "@/vue/components/forum/helpers/urls";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import StudipDateTime from "../../../components/StudipDateTime.vue";
-import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {onMounted, ref} from 'vue';
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import { default as CreateDiscussion } from '@/vue/components/forum/discussions/Create.vue';
+import DiscussionIndex from '@/vue/components/forum/discussions/DiscussionIndex.vue';
+import {getCategoryURL} from '@/vue/components/forum/helpers/urls';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import SubscriptionDropdown from '@/vue/components/forum/SubscriptionDropdown.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
 const props = defineProps({
@@ -26,7 +26,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    user_subscription: {
+    userSubscription: {
         type: Object
     },
 });
@@ -81,16 +81,19 @@ onMounted(async () => {
                     </ul>
 
                     <div class="mt-10 inline-flex gap-20 items-center">
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" :aria-label="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
+                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
                             <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
+                            <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden am Thema') }}:</span>
                             <small>{{ metadata.users_count }}</small>
                         </span>
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
+                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
                             <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true"/>
+                            <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                             <small>{{ metadata.postings_count }}</small>
                         </span>
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
+                        <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" role="group">
                             <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
+                            <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
                             <StudipDateTime v-if="metadata.recent_activity" :iso="metadata.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </span>
@@ -100,12 +103,13 @@ onMounted(async () => {
                 <div v-if="!forumConfig.allowGuestAccess" class="actions">
                     <CreateDiscussion :topic_id="topic.topic_id" />
                     <SubscriptionDropdown
-                        :title="$gettext('Thema abonnieren')"
+                        :type="$gettext('Thema')"
+                        :context="topic.name"
                         :subject="{
                             id: topic.topic_id,
                             type: 'forum-topics'
                         }"
-                        :user_subscription="user_subscription"
+                        :userSubscription="userSubscription"
                     />
                 </div>
             </div>

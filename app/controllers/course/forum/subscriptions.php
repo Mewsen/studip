@@ -2,7 +2,7 @@
 
 class Course_Forum_SubscriptionsController extends Forum\BaseController
 {
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         parent::before_filter($action, $args);
 
@@ -13,7 +13,7 @@ class Course_Forum_SubscriptionsController extends Forum\BaseController
         Navigation::activateItem('course/forum/subscriptions');
     }
 
-    public function index_action()
+    public function index_action(): void
     {
         $this->render_vue_app(
             Studip\VueApp::create('forum/subscriptions/Index')

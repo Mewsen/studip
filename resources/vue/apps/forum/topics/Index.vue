@@ -1,15 +1,15 @@
 <script setup>
-import CreateTopic from "@/vue/components/forum/topics/CreateTopic.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import TopicsIndex from "@/vue/components/forum/topics/TopicsIndex.vue";
-import {computed, onMounted, ref} from "vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import {topicTransformer} from "../../../components/forum/helpers/transformers";
-import EmptyForum from "../../../components/forum/EmptyForum.vue";
+import {computed, onMounted, ref} from 'vue';
+import CreateTopic from '@/vue/components/forum/topics/CreateTopic.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import TopicsIndex from '@/vue/components/forum/topics/TopicsIndex.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import {topicTransformer} from '@/vue/components/forum/helpers/transformers';
+import EmptyForum from '@/vue/components/forum/EmptyForum.vue';
 
 const forumConfig = useForumConfig();
 

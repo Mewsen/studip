@@ -1,18 +1,19 @@
 <script setup>
-import {computed, nextTick, onMounted, ref} from "vue";
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import draggable from "vuedraggable";
-import { default as CreateCategory } from "@/vue/components/forum/categories/Create.vue";
-import CategoryItem from "@/vue/components/forum/categories/CategoryItem.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import {useSortable} from "../../../composables/useSortable";
 import {debounce} from 'lodash';
+import Draggable from 'vuedraggable';
+import {computed, nextTick, onMounted, ref} from 'vue';
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import { default as CreateCategory } from '@/vue/components/forum/categories/Create.vue';
+import CategoryItem from '@/vue/components/forum/categories/CategoryItem.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import {useSortable} from '@/vue/composables/useSortable';
 
 const forumConfig = useForumConfig();
+const currentCategory = ref(null);
 const categories = ref([]);
 const pagination = ref({});
 
@@ -55,11 +56,11 @@ const fetchCategories = async (_, offset = 0) => {
 
 const updateCategoriesOrder = async () => {
     try {
-        const category_ids = sortedCategories.value.map(({ id }) => id);
+        const categoryIds = sortedCategories.value.map(({ id }) => id);
 
         const data = {
             attributes: {
-                'category-ids': category_ids
+                'category-ids': categoryIds
             },
             relationships: {
                 range: {
@@ -109,6 +110,8 @@ const swapCategory = (categoryId, step) => {
         updateOrderDebounced();
     });
 }
+
+const showCategoryDialog = category => currentCategory.value = category;
 </script>
 
 <template>
@@ -159,12 +162,16 @@ const swapCategory = (categoryId, step) => {
                     tag="ul">
                     <template #item="{element}">
                         <li>
-                            <CategoryItem :category="element" @swapCategory="swapCategory" />
+                            <CategoryItem
+                                :category="element"
+                                @swapCategory="swapCategory"
+                                @showCategory="showCategoryDialog(element)"
+                            />
                         </li>
                     </template>
                     <template v-if="forumConfig.isModerator" #footer>
                         <li key="footer">
-                            <div class="topic-card --new-topic">
+                            <div class="topic-card topic-card--new-topic">
                                 <CreateCategory
                                     class="--with-label"
                                     :label="$gettext('Neue Kategorie anlegen')"
@@ -174,7 +181,7 @@ const swapCategory = (categoryId, step) => {
                     </template>
                 </draggable>
                 <div v-else-if="forumConfig.isModerator" class="topic-cards-container">
-                    <div class="topic-card --new-topic">
+                    <div class="topic-card topic-card--new-topic">
                         <CreateCategory
                             class="--with-label"
                             :label="$gettext('Neue Kategorie anlegen')"
@@ -182,7 +189,7 @@ const swapCategory = (categoryId, step) => {
                     </div>
                 </div>
             </div>
-            <table v-else class="default forum-table --topics-index">
+            <table v-else class="default forum-table forum-table--topics-index">
                 <colgroup>
                     <col>
                     <col style="width: 15%;">
@@ -198,76 +205,87 @@ const swapCategory = (categoryId, step) => {
                             :aria-sort="getAriaSortString('name')"
                             :aria-label="getAriaSortLabel('name', $gettext('Name'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('name')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('name')"
                                 :title="$gettext('Nach Name sortieren')">
                                 {{ $gettext('Name') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.discussions_count')"
                             :aria-sort="getAriaSortString('meta.discussions_count')"
                             :aria-label="getAriaSortLabel('meta.discussions_count', $gettext('Anzahl der Diskussionen'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.discussions_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.discussions_count')"
                                 :title="$gettext('Nach Anzahl der Diskussionen sortieren')">
                                 {{ $gettext('Diskussionen') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.users_count')"
                             :aria-sort="getAriaSortString('meta.users_count')"
                             :aria-label="getAriaSortLabel('meta.users_count', $gettext('Anzahl der Teilnehmenden'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.users_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.users_count')"
                                 :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
                                 {{ $gettext('Teilnehmende') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.postings_count')"
                             :aria-sort="getAriaSortString('meta.postings_count')"
                             :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
                         >
-                            <a
-                                href="#"
-                                @click.prevent="sortBy('meta.postings_count')"
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('meta.postings_count')"
                                 :title="$gettext('Nach Anzahl der Beiträge sortieren')">
                                 {{ $gettext('Beiträge') }}
-                            </a>
+                            </button>
                         </th>
                         <th
                             :class="getSortClass('meta.recent_activity')"
                             :aria-sort="getAriaSortString('meta.recent_activity')"
                             :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
                         >
-                            <a
-                                href="#"
+                            <button
+                                type="button"
+                                class="as-link"
                                 @click.prevent="sortBy('meta.recent_activity')"
                                 :title="$gettext('Nach letzter Aktivität sortieren')">
                                 {{ $gettext('Letzte Aktivität') }}
-                            </a>
+                            </button>
                         </th>
                         <th></th>
                     </tr>
                 </thead>
-                <draggable
+                <Draggable
+                    v-if="sortedCategories.length"
                     v-model="sortedCategories"
                     item-key="category_id"
                     :animation="200"
-                    v-if="sortedCategories.length"
                     @end="updateCategoriesOrder"
                     :disabled="!forumConfig.isModerator"
+                    handle=".drag-handle"
                     tag="tbody">
                     <template #item="{element}">
-                        <CategoryItem :category="element" render-type="tr" @swapCategory="swapCategory" />
+                        <CategoryItem
+                            renderType="tr"
+                            :category="element"
+                            @swapCategory="swapCategory"
+                            @showCategory="showCategoryDialog(element)"
+                        />
                     </template>
-                </draggable>
+                </Draggable>
                 <tbody v-else>
                     <tr>
                         <td colspan="6">

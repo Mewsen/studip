@@ -1,5 +1,5 @@
-$card-min-width: 250px;
-$card-max-width: 300px;
+$cardMinWidth: 300px;
+$cardMaxWidth: 350px;
 
 .forum {
     hr {
@@ -10,9 +10,9 @@ $card-max-width: 300px;
     }
 
     .forum-table {
-        &.--discussions-index,
-        &.--subscription-index,
-        &.--topics-index {
+        &--discussions-index,
+        &--subscription-index,
+        &--topics-index {
             .details-xs {
                 display: none;
                 margin-top: 5px;
@@ -56,7 +56,7 @@ $card-max-width: 300px;
             }
 
         }
-        &.--subscription-index {
+        &--subscription-index {
             .subscription-button {
                 background-color: transparent;
                 border-color: transparent;
@@ -179,15 +179,13 @@ $card-max-width: 300px;
         }
     }
 
+    table tr.sortable th button {
+        font-weight: bold;
+    }
+
     .header {
         display: flex;
         background-color: var(--color--fieldset-header);
-
-        &.--sticky-top {
-            position: sticky;
-            top: 50px;
-            z-index: 10;
-        }
 
         .flag {
             width: 10px;
@@ -374,11 +372,11 @@ $card-max-width: 300px;
         padding: 0;
         list-style-type: none;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax($card-min-width, $card-max-width));
+        grid-template-columns: repeat(auto-fit, minmax($cardMinWidth, $cardMaxWidth));
         grid-gap: 15px;
 
         &.--fill-free-space {
-            grid-template-columns: repeat(auto-fit, minmax($card-min-width, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax($cardMinWidth, 1fr));
         }
 
         .card-group {
@@ -409,7 +407,7 @@ $card-max-width: 300px;
             width: 10px;
         }
 
-        &.--new-topic {
+        &--new-topic {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -465,8 +463,8 @@ $card-max-width: 300px;
             background-color: var(--color--tile-background-hover);
         }
 
-        &.--with-hover-style:hover,
-        &.--with-hover-style:focus {
+        &--with-hover-style:hover,
+        &--with-hover-style:focus {
             outline-color: var(--forum-topic-card-hover-border-color);
             outline-style: solid;
             border-color: var(--forum-topic-card-hover-border-color);
@@ -481,7 +479,7 @@ $card-max-width: 300px;
         display: flex;
         transition: background-color 1s ease;
 
-        &.--highlight {
+        &--highlight {
             background-color: var(--content-color-10);
         }
 
@@ -1070,7 +1068,7 @@ $card-max-width: 300px;
             gap: 5px;
             cursor: pointer;
 
-            &.--active {
+            &--active {
                 background-color: var(--base-color-20);
                 border-color: var(--base-color-60);
             }
@@ -1597,9 +1595,9 @@ $card-max-width: 300px;
         }
 
         .forum-table {
-            &.--discussions-index,
-            &.--subscription-index,
-            &.--topics-index {
+            &--discussions-index,
+            &--subscription-index,
+            &--topics-index {
                 th:not(:first-child),
                 td:not(:first-child),
                 col:not(:first-child) {

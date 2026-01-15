@@ -1,18 +1,18 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import DiscussionIndex from "@/vue/components/forum/discussions/DiscussionIndex.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import { default as CreateDiscussion } from "@/vue/components/forum/discussions/Create.vue";
-import StudipDateTime from "../../../components/StudipDateTime.vue";
-import StudipIcon from "../../../components/StudipIcon.vue";
+import {onMounted, ref} from 'vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import DiscussionIndex from '@/vue/components/forum/discussions/DiscussionIndex.vue';
+import { default as CreateDiscussion } from '@/vue/components/forum/discussions/Create.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
 
 defineProps({
     metadata: {
         type: Object,
-        required: true,
+        required: true
     }
 });
 
@@ -60,16 +60,19 @@ onMounted(async () => {
                     </h2>
 
                     <div class="mt-10 inline-flex gap-20 items-center">
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden')" :aria-label="$gettext('Anzahl der Teilnehmenden')" role="group">
+                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden')" role="group">
                             <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
+                            <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden') }}:</span>
                             <small>{{ metadata.users_count }}</small>
                         </span>
-                            <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
+                            <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
                             <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true"/>
+                            <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                             <small>{{ metadata.postings_count }}</small>
                         </span>
-                            <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
+                            <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" role="group">
                             <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
+                            <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
                             <StudipDateTime v-if="metadata.recent_activity" :iso="metadata.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </span>

@@ -6,7 +6,7 @@ use Forum\Topic;
 
 class Course_Forum_TopicsController extends Forum\BaseController
 {
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         parent::before_filter($action, $args);
 
@@ -15,19 +15,17 @@ class Course_Forum_TopicsController extends Forum\BaseController
         Navigation::activateItem('course/forum/topics');
     }
 
-    public function index_action()
+    public function index_action(): void
     {
         $this->render_vue_app(
             Studip\VueApp::create('forum/topics/Index')
         );
     }
 
-    public function show_action($topic_id)
+    public function show_action(Topic $topic): void
     {
-        $topic = Topic::find($topic_id);
-
         if (!$topic) {
-            throw new AccessDeniedException();
+            throw new NotFoundException();
         }
 
         PageLayout::setTitle($topic->name);
@@ -49,7 +47,7 @@ class Course_Forum_TopicsController extends Forum\BaseController
                 ->withProps([
                     'topic' => $topic->transformData(),
                     'category' => $topic->category ? $topic->category->transformData() : [],
-                    'user_subscription' => $user_subscription ? $user_subscription->toRawArray() : [],
+                    'userSubscription' => $user_subscription ? $user_subscription->toRawArray() : [],
                     'metadata' => [
                         'postings_count' => (int) $topic->metadata['postings_count'],
                         'users_count' => (int) $topic->metadata['users_count'],
@@ -59,7 +57,7 @@ class Course_Forum_TopicsController extends Forum\BaseController
         );
     }
 
-    public function edit_action($topic_id = null)
+    public function edit_action($topic_id = null): void
     {
         if (!$this->is_moderator) {
             throw new AccessDeniedException();
@@ -92,7 +90,7 @@ class Course_Forum_TopicsController extends Forum\BaseController
         );
     }
 
-    public function save_action($topic_id = null)
+    public function save_action($topic_id = null): void
     {
         if (!$this->is_moderator) {
             throw new AccessDeniedException();
@@ -138,15 +136,15 @@ class Course_Forum_TopicsController extends Forum\BaseController
         $this->relocate('course/forum/topics/show/' . $topic->topic_id);
     }
 
-    public function delete_action($topic_id)
+    public function delete_action(Topic $topic): void
     {
-        if (!$this->is_moderator) {
-            throw new AccessDeniedException();
-        }
-
-        $topic = Topic::getCourseTopic($this->range_id, $topic_id);
+        CSRFProtection::verifyUnsafeRequest();
 
         if (!$topic) {
+            throw new NotFoundException();
+        }
+
+        if (!$this->is_moderator) {
             throw new AccessDeniedException();
         }
 

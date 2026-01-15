@@ -19,7 +19,7 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    read_index: {
+    readIndex: {
         type: Number,
         default: -1
     }
@@ -27,8 +27,13 @@ const props = defineProps({
 
 const recentActivity = computed(() => props.posts.at(-1)?.mkdate ?? props.discussion.mkdate);
 const hasUnreadPost = computed(() => {
-    return props.read_index === 0 && props.posts.length > 1 && props.posts[1].author.id !== STUDIP.USER_ID;
+    return props.readIndex === 0 && props.posts.length > 1 && props.posts[1].author.id !== STUDIP.USER_ID;
 });
+
+const addPost = () => {
+    document.getElementById(`new-post`)?.scrollIntoView({ behavior: 'smooth' });
+    postCreateForm.value = true;
+}
 </script>
 
 <template>
@@ -55,21 +60,20 @@ const hasUnreadPost = computed(() => {
                 </div>
             </div>
             <ForumMembers :members="discussion.members" :limit="5" size="35px" />
-            <a
+            <button
                 v-if="!forumConfig.allowGuestAccess && !discussion.closed_at"
-                href="#new-post"
+                type="button"
                 class="button button--icon-label"
-                role="button"
+                @click="addPost"
                 :title="$gettext('Antworten')"
                 :aria-label="$gettext('Antworten')"
                 :class="{
                     'disabled': postCreateForm
                 }"
-                @click="postCreateForm = true"
             >
                 <StudipIcon shape="reply" :size="20" aria-hidden="true" />
                 {{ $gettext('Antworten') }}
-            </a>
+            </button>
         </div>
     </div>
 </template>

@@ -1,7 +1,8 @@
 <script setup>
-import {onMounted} from "vue";
-import {useForumConfig} from "../../store/pinia/forum/ForumConfig";
+import {onMounted} from 'vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
+const CSRF = STUDIP.CSRF_TOKEN;
 const forumConfig = useForumConfig();
 const fetchConfigs = async () => {
     try {
@@ -40,5 +41,9 @@ onMounted(async () => {
                 <slot name="sidebar" />
             </div>
         </div>
+
+        <form id="forum-delete-form" method="post">
+            <input type="hidden" :name="CSRF.name" :value="CSRF.value" />
+        </form>
     </div>
 </template>
