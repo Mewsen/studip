@@ -1,30 +1,30 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import StudipSwitch from "@/vue/components/StudipSwitch.vue";
-import StudipWysiwyg from "@/vue/components/StudipWysiwyg.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import {userProfileURL} from "../helpers/urls";
+import {onMounted, onUnmounted, ref} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipSwitch from '@/vue/components/StudipSwitch.vue';
+import StudipWysiwyg from '@/vue/components/StudipWysiwyg.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import {userProfileURL} from '@/vue/components/forum/helpers/urls';
 
 const forumConfig = useForumConfig();
 const forumDiscussionPost = useForumPost();
 const emit = defineEmits(['canceled', 'created', 'update:quote']);
 const props = defineProps({
-    discussion_id: {
+    discussionId: {
         type: String,
         required: true,
     },
-    auth_user: {
+    authUser: {
         type: Object,
-        required: true,
+        required: true
     },
     quote: {
         type: String,
     },
-    parent_id: {
+    parentId: {
         type: String,
     }
 });
@@ -77,13 +77,13 @@ const getPostJSONAPIObject = () => ({
             discussion: {
                 data: {
                     type: 'forum-discussions',
-                    id: props.discussion_id
+                    id: props.discussionId
                 }
             },
             posting: {
                 data: {
                     type: 'forum-postings',
-                    id: props.parent_id
+                    id: props.parentId
                 }
             }
         }
@@ -118,14 +118,14 @@ const storePost = async () => {
     <form @submit.prevent="storePost" class="default post-form forum-quote">
         <div class="post-form__author">
             <a
-                :href="userProfileURL(auth_user.username)"
+                :href="userProfileURL(authUser.username)"
                 class="post-form__author-image profile-image-container"
                 :title="$gettext('Zum Profil')"
-                :aria-label="$gettext('Zum Profil von %{name}', { name: auth_user.name })"
+                :aria-label="$gettext('Zum Profil von %{name}', { name: authUser.name })"
             >
-                <img :src="auth_user.avatar_url" :alt="auth_user.name" />
+                <img :src="authUser.avatar_url" :alt="authUser.name" />
             </a>
-            <p class="post-form__author-name">{{ auth_user.name }}</p>
+            <p class="post-form__author-name">{{ authUser.name }}</p>
         </div>
         <StudipWysiwyg :required="true" v-model="content" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
@@ -139,7 +139,7 @@ const storePost = async () => {
                 :title="$gettext('Speichern')"
                 :aria-label="$gettext('Speichern')"
             >
-                <StudipIcon shape="reply" :size="20" aria-hidden="true" />
+                <StudipIcon shape="accept" :size="20" aria-hidden="true" />
                 {{ $gettext('Speichern') }}
             </button>
             <button

@@ -1,13 +1,14 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from "vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipSelect from "../../../components/StudipSelect.vue";
+import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import StudipSelect from '@/vue/components/StudipSelect.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
 const props = defineProps({
     topic: {
         type: Object,
+        default: () => ({})
     },
     categories: {
         type: Array,
@@ -61,7 +62,8 @@ onMounted(() => {
                             name="name"
                             ref="name-input"
                             v-model="topicForm.name"
-                            class="max-w-full" />
+                            class="max-w-full"
+                        />
                     </label>
                 </section>
 

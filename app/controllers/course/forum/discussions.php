@@ -12,7 +12,7 @@ use Forum\Topic;
 
 class Course_Forum_DiscussionsController extends Forum\BaseController
 {
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         parent::before_filter($action, $args);
 
@@ -23,8 +23,8 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         }
     }
 
-    public function index_action() {
-
+    public function index_action(): void
+    {
         $metadata = DBManager::get()->fetchOne(
             "SELECT
               COUNT(posting_id) as 'postings_count',
@@ -48,12 +48,10 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         );
     }
 
-    public function show_action($discussion_id)
+    public function show_action(Discussion $discussion): void
     {
-        $discussion = Discussion::find($discussion_id);
-
         if (!$discussion) {
-            throw new AccessDeniedException();
+            throw new NotFoundException();
         }
 
         PageLayout::setTitle($discussion->title);
@@ -98,7 +96,7 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Show')
                 ->withProps([
-                    'auth_user' => $auth_user,
+                    'authUser' => $auth_user,
                     'discussion' => [
                         ...$discussion->transformData(),
                         'topic' => $discussion->topic->toRawArray(),
@@ -107,14 +105,14 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
                         'type' => !empty($discussion->discussion_type) ? $discussion->discussion_type->toRawArray() : []
                     ],
                     'category' => $category ? $category->toRawArray() : [],
-                    'read_index' => (int) ($posting_read ? $posting_read->read_index : 0),
+                    'readIndex' => (int) ($posting_read ? $posting_read->read_index : 0),
                     'redirect' => Request::option('redirect'),
-                    'search_keyword' => Request::get('q', $_SESSION['forum'][$this->range_id]['search_filter']['keyword'] ?? '')
+                    'searchKeyword' => Request::get('q', $_SESSION['forum'][$this->range_id]['search_filter']['keyword'] ?? '')
                 ])
         );
     }
 
-    public function edit_action(?Discussion $discussion = null)
+    public function edit_action(?Discussion $discussion = null): void
     {
         if ($discussion->isNew()) {
             PageLayout::setTitle(_('Neue Diskussion starten'));
@@ -134,9 +132,9 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
             ['range_id' => $this->range_id]
         );
 
-        $all_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), TagDTO::getForumTags());
-        $discussion_tags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
-        $discussion_types = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getAll());
+        $allTags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), TagDTO::getForumTags());
+        $discussionTags = array_map(fn(TagDTO $tag) => $tag->toRawArray(), $discussion->tags);
+        $discussionTypes = array_map(fn(DiscussionType $discussion_type) => $discussion_type->toRawArray(), DiscussionType::getAll());
 
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions/Edit')
@@ -144,16 +142,16 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
                     'discussion' => [
                         ...$discussion->transformData(),
                         'topic_id' => !empty($discussion->topic_id) ? $discussion->topic_id : Request::option('topic_id'),
-                        'tags' => $discussion_tags
+                        'tags' => $discussionTags
                     ],
                     'topics' => $topics,
-                    'tags' => $all_tags,
-                    'discussion_types' => $discussion_types
+                    'tags' => $allTags,
+                    'discussionTypes' => $discussionTypes
                 ])
         );
     }
 
-    public function save_action($discussion_id = null)
+    public function save_action($discussion_id = null): void
     {
         CSRFProtection::verifyUnsafeRequest();
 
@@ -223,12 +221,12 @@ class Course_Forum_DiscussionsController extends Forum\BaseController
         );
     }
 
-    public function delete_action($discussion_id)
+    public function delete_action(Discussion $discussion): void
     {
-        $discussion = Discussion::find($discussion_id);
+        CSRFProtection::verifyUnsafeRequest();
 
         if (!$discussion) {
-            throw new AccessDeniedException();
+            throw new NotFoundException();
         }
 
         if (!$this->is_moderator && $discussion->user_id !== $this->user_id) {

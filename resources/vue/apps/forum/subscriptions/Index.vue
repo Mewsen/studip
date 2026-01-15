@@ -1,23 +1,23 @@
 <script setup>
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import {onMounted, ref} from "vue";
-import {getDiscussionURL, getTopicURL} from "@/vue/components/forum/helpers/urls";
-import {useSortable} from "../../../composables/useSortable";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import StudipDateTime from "../../../components/StudipDateTime.vue";
-import SubscriptionDropdown from "@/vue/components/forum/SubscriptionDropdown.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import {subscriptionTransformer} from "../../../components/forum/helpers/transformers";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import Loader from "../../../components/forum/Loader.vue";
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import {onMounted, ref} from 'vue';
+import {getDiscussionURL, getTopicURL} from '@/vue/components/forum/helpers/urls';
+import {useSortable} from '@/vue/composables/useSortable';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import SubscriptionDropdown from '@/vue/components/forum/SubscriptionDropdown.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import {subscriptionTransformer} from '@/vue/components/forum/helpers/transformers';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import Loader from '@/vue/components/forum/Loader.vue';
 
 const subscriptions = ref([]);
 const pagination = ref({});
 const isLoading = ref(false);
 
-const removeSubscription = subscription_id => {
-    subscriptions.value = subscriptions.value.filter(({ id }) => id !== subscription_id);
+const removeSubscription = subscriptionId => {
+    subscriptions.value = subscriptions.value.filter(({ id }) => id !== subscriptionId);
 }
 
 const getSubjectLabel = type => {
@@ -34,9 +34,9 @@ const getSubjectLabel = type => {
 const getSubscriptionDropdownTitle = type => {
     switch (type) {
         case 'forum-discussions':
-            return $gettext('Diskussion abonnieren');
+            return $gettext('Diskussion');
         case 'forum-topics':
-            return $gettext('Thema abonnieren');
+            return $gettext('Thema');
         default:
             return $gettext('Abonnieren');
     }
@@ -59,7 +59,7 @@ const fetchSubscribedDiscussions = async (_, offset = 0) => {
             links: response.links
         };
 
-        const data = await deserializeJSONAPIResponse(response)
+        const data = await deserializeJSONAPIResponse(response);
 
         subscriptions.value = data.map(subscriptionTransformer);
     } catch (error) {
@@ -91,14 +91,10 @@ onMounted(async () => {
                         {{ $gettext('Abonnements') }}
                     </h2>
                 </div>
-
-                <div class="actions">
-
-                </div>
             </div>
         </header>
         <div class="py-10">
-            <table class="default forum-table --subscription-index">
+            <table class="default forum-table forum-table--subscription-index">
                 <colgroup>
                     <col>
                     <col style="width: 5%">
@@ -113,12 +109,13 @@ onMounted(async () => {
                         :aria-sort="getAriaSortString('subject.name')"
                         :aria-label="getAriaSortLabel('subject.name', $gettext('Thema Name'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('subject.name')"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="sortBy('subject.name')"
                             :title="$gettext('Nach Thema Name sortieren')">
                             {{ $gettext('Thema') }}
-                        </a>
+                        </button>
                     </th>
                     <th></th>
                     <th
@@ -126,24 +123,26 @@ onMounted(async () => {
                         :aria-sort="getAriaSortString('subject.type')"
                         :aria-label="getAriaSortLabel('subject.type', $gettext('Typ'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('subject.type')"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="sortBy('subject.type')"
                             :title="$gettext('Nach Typ sortieren')">
                             {{ $gettext('Typ') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         :class="getSortClass('mkdate')"
                         :aria-sort="getAriaSortString('mkdate')"
                         :aria-label="getAriaSortLabel('mkdate', $gettext('Abonniert datum'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('mkdate')"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="sortBy('mkdate')"
                             :title="$gettext('Nach Abonniert am sortieren')">
                             {{ $gettext('Abonniert am') }}
-                        </a>
+                        </button>
                     </th>
                     <th
                         class="actions"
@@ -151,12 +150,13 @@ onMounted(async () => {
                         :aria-sort="getAriaSortString('notification_type')"
                         :aria-label="getAriaSortLabel('notification_type', $gettext('Typ des Abonnements'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('notification_type')"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="sortBy('notification_type')"
                             :title="$gettext('Nach Typ des Abonnements sortieren')">
                             {{ $gettext('Typ des Abonnements') }}
-                        </a>
+                        </button>
                     </th>
                 </tr>
                 </thead>
@@ -181,10 +181,10 @@ onMounted(async () => {
 
                                 <div class="title-with-actions__actions-xs">
                                     <SubscriptionDropdown
-                                        :title="getSubscriptionDropdownTitle(subscription.subject.type)"
+                                        :type="getSubscriptionDropdownTitle(subscription.subject.type)"
                                         :subject="subscription.subject"
                                         :subject_id="subscription.subject_id"
-                                        :user_subscription="subscription"
+                                        :userSubscription="subscription"
                                         @deleted="removeSubscription(subscription.id)"
                                     />
                                 </div>
@@ -197,7 +197,8 @@ onMounted(async () => {
                             :title="$gettext('Diskussion ist geschlossen')"
                             shape="lock-locked2"
                             :size="20"
-                            role="inactive" />
+                            role="inactive"
+                        />
                     </td>
                     <td>
                         {{ getSubjectLabel(subscription.subject.type) }}
@@ -208,9 +209,9 @@ onMounted(async () => {
                     <td class="actions">
                         <div class="inline-flex">
                             <SubscriptionDropdown
-                                :title="getSubscriptionDropdownTitle(subscription.subject.type)"
+                                :type="getSubscriptionDropdownTitle(subscription.subject.type)"
                                 :subject="subscription.subject"
-                                :user_subscription="subscription"
+                                :userSubscription="subscription"
                                 @deleted="removeSubscription(subscription.id)"
                             />
                         </div>

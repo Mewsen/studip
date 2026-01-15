@@ -1,7 +1,7 @@
 <script setup>
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import StudipSelect from "@/vue/components/StudipSelect.vue";
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipSelect from '@/vue/components/StudipSelect.vue';
 </script>
 
 <template>

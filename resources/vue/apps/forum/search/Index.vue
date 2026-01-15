@@ -1,18 +1,18 @@
 <script setup>
-import ForumApp from "@/vue/components/forum/ForumApp.vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import {computed, onMounted, reactive, ref} from "vue";
-import SelectTopicInput from "@/vue/components/forum/topics/SelectTopicInput.vue";
-import SelectTagsInput from "@/vue/components/forum/SelectTagsInput.vue";
-import SelectDiscussionType from "@/vue/components/forum/discussions/SelectDiscussionType.vue";
-import {getTopicURL} from "@/vue/components/forum/helpers/urls";
-import SelectUserInput from "@/vue/components/forum/SelectUserInput.vue";
-import DiscussionIndex from "@/vue/components/forum/discussions/DiscussionIndex.vue";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import StudipSelect from "../../../components/StudipSelect.vue";
-import {highlightText, removeHighlight} from "@/vue/components/forum/helpers";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
+import ForumApp from '@/vue/components/forum/ForumApp.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {computed, onMounted, reactive, ref} from 'vue';
+import SelectTopicInput from '@/vue/components/forum/topics/SelectTopicInput.vue';
+import SelectTagsInput from '@/vue/components/forum/SelectTagsInput.vue';
+import SelectDiscussionType from '@/vue/components/forum/discussions/SelectDiscussionType.vue';
+import {getTopicURL} from '@/vue/components/forum/helpers/urls';
+import SelectUserInput from '@/vue/components/forum/SelectUserInput.vue';
+import DiscussionIndex from '@/vue/components/forum/discussions/DiscussionIndex.vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipSelect from '@/vue/components/StudipSelect.vue';
+import {highlightText, removeHighlight} from '@/vue/components/forum/helpers';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
 
 const discussionStatuses = [
     {
@@ -40,7 +40,7 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    discussion_types: {
+    discussionTypes: {
         type: Array,
         required: true
     },
@@ -48,7 +48,7 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    course_members: {
+    courseMembers: {
         type: Array,
         required: true
     }
@@ -66,8 +66,8 @@ const searchForm = reactive({
     ...(props.filter.status && { status: discussionStatuses.find(status => status.value === props.filter.status) }),
     ...(props.filter.topic_ids && { topics: props.topics.filter(({ topic_id }) => props.filter.topic_ids.includes(topic_id)) }),
     ...(props.filter.tag_ids && { tags: props.tags.filter(({ id }) => props.filter.tag_ids.includes(id.toString())) }),
-    ...(props.filter.type_ids && { types: props.discussion_types.filter(({ type_id }) => props.filter.type_ids.includes(type_id.toString())) }),
-    ...(props.filter.user_ids && { authors: props.course_members.filter(({ user_id }) => props.filter.user_ids.includes(user_id)) }),
+    ...(props.filter.type_ids && { types: props.discussionTypes.filter(({ type_id }) => props.filter.type_ids.includes(type_id.toString())) }),
+    ...(props.filter.user_ids && { authors: props.courseMembers.filter(({ user_id }) => props.filter.user_ids.includes(user_id)) }),
 });
 
 const availableTags = computed(() => {
@@ -91,10 +91,10 @@ const availableTopics = computed(() => {
 const availableTypes = computed(() => {
     if (searchForm.types && searchForm.types.length > 0) {
         const selectedTypesId = searchForm.types.map(({ type_id }) => type_id);
-        return props.discussion_types.filter(({ type_id }) => selectedTypesId.indexOf(type_id) < 0);
+        return props.discussionTypes.filter(({ type_id }) => selectedTypesId.indexOf(type_id) < 0);
     }
 
-    return props.discussion_types;
+    return props.discussionTypes;
 });
 
 const resetSearchForm = () => {
@@ -174,7 +174,7 @@ onMounted(async () => {
         await fetchDiscussions();
     }
 
-    if(searchForm.keyword.length > 1 && discussions.value.length) {
+    if (searchForm.keyword?.length > 1 && discussions.value.length) {
         highlightText(searchForm.keyword, '.discussion-title');
 
         // remove highlights
@@ -258,7 +258,6 @@ onMounted(async () => {
                     type="button"
                     class="toggle-filter-button button-base"
                     :title="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
-                    :aria-label="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
                     :aria-expanded="isFilterVisible.toString()"
                 >
                     {{ $gettext('Erweiterte Filter') }}
@@ -318,8 +317,8 @@ onMounted(async () => {
                         </StudipSelect>
                     </div>
                     <div class="date-inputs-container">
-                        <input type="date" v-model="searchForm.begin" :placeholder="$gettext('Von')" :aria-label="$gettext('Von')" autocomplete="off" />
-                        <input type="date" v-model="searchForm.end" :placeholder="$gettext('Bis')" :aria-label="$gettext('Bis')" autocomplete="off" />
+                        <input type="date" v-model="searchForm.begin" :placeholder="$gettext('Von')" autocomplete="off" />
+                        <input type="date" v-model="searchForm.end" :placeholder="$gettext('Bis')" autocomplete="off" />
                     </div>
                     <div>
                         <label for="select-user-input" class="sr-only">
@@ -327,7 +326,7 @@ onMounted(async () => {
                         </label>
                         <SelectUserInput
                             id="select-user-input"
-                            :options="course_members"
+                            :options="courseMembers"
                             multiple
                             v-model="searchForm.authors"
                         />

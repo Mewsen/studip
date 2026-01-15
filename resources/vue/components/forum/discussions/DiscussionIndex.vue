@@ -1,15 +1,15 @@
 <script setup>
+import {onMounted, toRef} from 'vue';
 import {getDiscussionURL, getSearchURL} from "../helpers/urls";
-import {numberFormatter} from "../../../../assets/javascripts/lib/number_formatter";
-import ForumMembers from "../ForumMembers.vue";
-import {useSortable} from "../../../composables/useSortable";
-import {onMounted, toRef} from "vue";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import StudipDateTime from "@/vue/components/StudipDateTime.vue";
-import StudipActionMenu from "@/vue/components/StudipActionMenu.vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import Loader from "../Loader.vue";
+import {numberFormatter} from '@/assets/javascripts/lib/number_formatter';
+import ForumMembers from '@/vue/components/forum/ForumMembers.vue';
+import {useSortable} from '@/vue/composables/useSortable';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipDateTime from '@/vue/components/StudipDateTime.vue';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import Loader from '../Loader.vue';
 
 const forumConfig = useForumConfig();
 const props = defineProps({
@@ -59,13 +59,17 @@ const editDiscussion = id => STUDIP.Dialog.fromURL(
     }
 );
 
-const deleteDiscussion = id => STUDIP.Dialog.confirm(
+const showConfirmDelete = id => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diese Diskussion löschen? Damit werden auch alle Beiträge gelöscht!'),
-    () => {
-        window.location = STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussions/delete/${id}`);
-    },
+    () => deleteDiscussion(id),
     STUDIP.Dialog.close()
 );
+
+const deleteDiscussion = id => {
+    const deleteForm = document.getElementById('forum-delete-form');
+    deleteForm.action = STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussions/delete/${id}`);
+    deleteForm.submit();
+}
 
 onMounted(() => {
     sortBy('meta.recent_activity', 'desc');
@@ -73,7 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <table class="default forum-table --discussions-index">
+    <table class="default forum-table forum-table--discussions-index">
         <colgroup>
             <col>
             <col style="width: 15%;">
@@ -90,60 +94,65 @@ onMounted(() => {
                     :aria-sort="getAriaSortString('title')"
                     :aria-label="getAriaSortLabel('title', $gettext('Diskussionstitel'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('title')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('title')"
                         :title="$gettext('Nach Diskussionstitel sortieren')">
                         {{ $gettext('Diskussion') }}
-                    </a>
+                    </button>
                 </th>
                 <th
                     :class="getSortClass('members')"
                     :aria-sort="getAriaSortString('members')"
                     :aria-label="getAriaSortLabel('members', $gettext('Anzahl der Teilnehmenden'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('members')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('members')"
                         :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
                         {{ $gettext('Teilnehmende') }}
-                    </a>
+                    </button>
                 </th>
                 <th
                     :class="getSortClass('meta.postings_count')"
                     :aria-sort="getAriaSortString('meta.postings_count')"
                     :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('meta.postings_count')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('meta.postings_count')"
                         :title="$gettext('Nach Anzahl der Beiträge sortieren')">
                         {{ $gettext('Beiträge') }}
-                    </a>
+                    </button>
                 </th>
                 <th
                     :class="getSortClass('view_count')"
                     :aria-sort="getAriaSortString('view_count')"
                     :aria-label="getAriaSortLabel('view_count', $gettext('Anzahl der Aufrufe'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('view_count')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('view_count')"
                         :title="$gettext('Nach Anzahl der Aufrufe sortieren')">
                         {{ $gettext('Aufrufe') }}
-                    </a>
+                    </button>
                 </th>
                 <th
                     :class="getSortClass('meta.recent_activity')"
                     :aria-sort="getAriaSortString('meta.recent_activity')"
                     :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('meta.recent_activity')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('meta.recent_activity')"
                         :title="$gettext('Nach letzter Aktivität sortieren')">
                         {{ $gettext('Letzte Aktivität') }}
-                    </a>
+                    </button>
                 </th>
                 <th></th>
                 <th v-if="withActions"></th>
@@ -194,9 +203,10 @@ onMounted(() => {
                                 <div class="title-with-actions__actions-xs">
                                     <StudipActionMenu
                                         v-if="withActions"
+                                        :context="discussion.title"
                                         :items="getActionMenusItems(discussion)"
                                         @edit="editDiscussion(discussion.id)"
-                                        @delete="deleteDiscussion(discussion.id)"
+                                        @delete="showConfirmDelete(discussion.id)"
                                     />
                                 </div>
                             </div>
@@ -287,9 +297,10 @@ onMounted(() => {
                     </td>
                     <td v-if="withActions" class="actions">
                         <StudipActionMenu
+                            :context="discussion.title"
                             :items="getActionMenusItems(discussion)"
                             @edit="editDiscussion(discussion.id)"
-                            @delete="deleteDiscussion(discussion.id)"
+                            @delete="showConfirmDelete(discussion.id)"
                         />
                     </td>
                 </tr>

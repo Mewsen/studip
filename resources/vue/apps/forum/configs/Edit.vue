@@ -1,6 +1,6 @@
 <script setup>
-import {reactive} from "vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
+import {reactive} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -10,7 +10,7 @@ const props = defineProps({
     }
 });
 
-const formState = reactive({
+const form = reactive({
     ...props.config
 });
 
@@ -32,7 +32,7 @@ const formActionURL = STUDIP.URLHelper.getURL(`dispatch.php/course/forum/configs
             <section>
                 <label>
                     {{ $gettext('Wer darf das Forum moderieren?') }}
-                    <select name="moderator" v-model="formState.moderator">
+                    <select name="moderator" v-model="form.moderator">
                         <option value="all">
                             {{ $gettext('Alle Teilnehmenden der Veranstaltung') }}
                         </option>
@@ -51,7 +51,7 @@ const formActionURL = STUDIP.URLHelper.getURL(`dispatch.php/course/forum/configs
                         type="checkbox"
                         :aria-label="$gettext('Kategorien ausblenden')"
                         name="categories_navigation"
-                        v-model="formState.categories_navigation"
+                        v-model="form.categories_navigation"
                         value="1"
                     />
                     <span>

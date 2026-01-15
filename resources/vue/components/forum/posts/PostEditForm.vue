@@ -1,24 +1,24 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
-import {useForumPost} from "../../../store/pinia/forum/ForumPost";
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import StudipSwitch from "@/vue/components/StudipSwitch.vue";
-import StudipWysiwyg from "@/vue/components/StudipWysiwyg.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
+import {onMounted, onUnmounted, ref} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
+import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import StudipSwitch from '@/vue/components/StudipSwitch.vue';
+import StudipWysiwyg from '@/vue/components/StudipWysiwyg.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
 
 const forumDiscussionPost = useForumPost();
 const forumConfig = useForumConfig();
 const emit = defineEmits(['canceled', 'updated']);
 const props = defineProps({
-    auth_user: {
+    authUser: {
         type: Object,
-        required: true,
+        required: true
     },
     post: {
         type: Object,
-        required: true,
+        required: true
     }
 });
 
@@ -93,7 +93,7 @@ onUnmounted(() => {
                 :value="$gettext('Speichern')"
                 :title="$gettext('Speichern')"
             >
-                <StudipIcon shape="reply" :size="20" aria-hidden="true" />
+                <StudipIcon shape="accept" :size="20" aria-hidden="true" />
                 {{ $gettext('Speichern') }}
             </button>
             <button

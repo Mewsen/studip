@@ -1,5 +1,5 @@
 <script setup>
-import {onDeactivated, onMounted, useTemplateRef, watch} from "vue";
+import {onDeactivated, onMounted, useTemplateRef, watch} from 'vue';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({

@@ -1,6 +1,6 @@
 <script setup>
-import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import StudipSelect from "../StudipSelect.vue";
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipSelect from '@/vue/components/StudipSelect.vue';
 </script>
 
 <template>

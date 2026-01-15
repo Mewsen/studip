@@ -1,10 +1,11 @@
 
 <script setup>
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import {computed} from "vue";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed} from 'vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
+
 const props = defineProps({
     category_id: {
         type: String,
@@ -22,20 +23,27 @@ const topicCreateURL = computed(() => {
 
     return STUDIP.URLHelper.getURL('dispatch.php/course/forum/topics/edit');
 });
+
+const addTopic = () => {
+    STUDIP.Dialog.fromURL(
+        topicCreateURL.value,
+        {
+            width: '700'
+        }
+    );
+}
 </script>
 
 <template>
-    <a
+    <button
         v-if="forumConfig.isModerator"
-        :href="topicCreateURL"
-        data-dialog="width=700"
-        :title="$gettext('Neues Thema anlegen')"
-        :aria-label="$gettext('Neues Thema anlegen')"
+        type="button"
         class="button button--icon-only"
+        @click="addTopic"
+        :title="$gettext('Neues Thema anlegen')"
         :class="label ? 'button--icon-label' : 'button--icon-only'"
-        role="button"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />
         <span v-if="label" class="label">{{ label }}</span>
-    </a>
+    </button>
 </template>

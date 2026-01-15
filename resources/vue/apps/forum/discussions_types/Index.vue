@@ -1,13 +1,13 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
-import StudipIcon from "../../../components/StudipIcon.vue";
-import {useSortable} from "../../../composables/useSortable";
-import {getDiscussionTypeEditURL} from "../../../components/forum/helpers/urls";
-import StudipActionMenu from "../../../components/StudipActionMenu.vue";
-import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
-import StudipPagination from "../../../components/StudipPagination.vue";
-import Loader from "../../../components/forum/Loader.vue";
+import {onMounted, ref} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {useSortable} from '@/vue/composables/useSortable';
+import {getDiscussionTypeEditURL} from '@/vue/components/forum/helpers/urls';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
+import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
+import StudipPagination from '@/vue/components/StudipPagination.vue';
+import Loader from '@/vue/components/forum/Loader.vue';
 
 const discussionTypes = ref([]);
 const pagination = ref({});
@@ -43,8 +43,18 @@ const fetchDiscussionTypes = async (_, offset = 0) => {
     }
 }
 
-const editType = type => STUDIP.Dialog.fromURL(
-    getDiscussionTypeEditURL(type.id),
+const addType = () => {
+    STUDIP.Dialog.fromURL(
+        getDiscussionTypeEditURL(),
+        {
+            width: '700',
+            height: '650'
+        }
+    );
+}
+
+const editType = id => STUDIP.Dialog.fromURL(
+    getDiscussionTypeEditURL(id),
     {
         width: '700',
         height: '650'
@@ -85,9 +95,14 @@ onMounted(() => {
             <caption>
                 {{ $gettext('Diskussionstypen') }}
                 <span class="actions">
-                    <a :href="getDiscussionTypeEditURL()" data-dialog="width=700;height=650" :title="$gettext('Neue Diskussionstyp anlegen')">
+                    <button
+                        type="button"
+                        class="button button--icon-only"
+                        @click="addType"
+                        :title="$gettext('Neuen Diskussionstyp anlegen')"
+                    >
                         <StudipIcon shape="add" aria-hidden="true" />
-                    </a>
+                    </button>
                 </span>
             </caption>
 
@@ -105,12 +120,13 @@ onMounted(() => {
                         :aria-sort="getAriaSortString('name')"
                         :aria-label="getAriaSortLabel('name', $gettext('Name'))"
                     >
-                        <a
-                            href="#"
-                            @click.prevent="sortBy('name')"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="sortBy('name')"
                             :title="$gettext('Nach Name sortieren')">
                             {{ $gettext('Name') }}
-                        </a>
+                        </button>
                     </th>
 
                     <th>{{ $gettext('Aktionen') }}</th>
@@ -122,19 +138,21 @@ onMounted(() => {
                         <StudipIcon :shape="type.icon" role="info" :size="24" aria-hidden="true" />
                     </td>
                     <td>
-                        <a
-                            :href="getDiscussionTypeEditURL(type.id)"
-                            data-dialog="width=700;height=650"
+                        <button
+                            type="button"
+                            class="as-link"
+                            @click="editType(type.id)"
                             :title="$gettext('Diskussionstyp bearbeiten')"
                         >
                             {{ type.name }}
-                        </a>
+                        </button>
                     </td>
 
                     <td class="actions">
                         <StudipActionMenu
+                            :context="type.name"
                             :items="actionMenusItems"
-                            @edit="editType(type)"
+                            @edit="editType(type.id)"
                             @delete="deleteType(type)"
                         />
                     </td>

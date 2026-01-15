@@ -24,16 +24,16 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         Sidebar::Get()->addWidget($actions);
     }
 
-    public function index_action()
+    public function index_action(): void
     {
         $this->render_vue_app(
             Studip\VueApp::create('forum/discussions_types/Index')
         );
     }
 
-    public function edit_action(?DiscussionType $discussion_type = null)
+    public function edit_action(?DiscussionType $discussionType = null): void
     {
-        if ($discussion_type->isNew()) {
+        if ($discussionType->isNew()) {
             PageLayout::setTitle(_('Neuen Diskussionstyp anlegen'));
         } else {
             PageLayout::setTitle(_('Diskussionstyp bearbeiten'));
@@ -56,21 +56,21 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
             Studip\VueApp::create('forum/discussions_types/Edit')
                 ->withProps([
                     'icons' => array_unique($icons),
-                    'discussionType' => $discussion_type->transformData()
+                    'discussionType' => $discussionType->transformData()
                 ])
         );
     }
 
-    public function save_action(?DiscussionType $discussion_type = null)
+    public function save_action(?DiscussionType $discussionType = null): void
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $discussion_type->name = Request::get('name');
-        $discussion_type->icon = Request::get('icon');
+        $discussionType->name = Request::get('name');
+        $discussionType->icon = Request::get('icon');
 
-        $discussion_type->store();
+        $discussionType->store();
 
-        PageLayout::postSuccess(sprintf(_('Der Diskussionstyp „%s“ wurde gespeichert.'), $discussion_type->name));
+        PageLayout::postSuccess(sprintf(_('Der Diskussionstyp „%s“ wurde gespeichert.'), $discussionType->name));
 
         $this->relocate('course/forum/discussion_types/index');
     }

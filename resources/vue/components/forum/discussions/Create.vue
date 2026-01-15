@@ -1,9 +1,9 @@
 
 <script setup>
-import StudipIcon from "@/vue/components/StudipIcon.vue";
-import {computed} from "vue";
-import {$gettext} from "@/assets/javascripts/lib/gettext";
-import {useForumConfig} from "../../../store/pinia/forum/ForumConfig";
+import {computed} from 'vue';
+import StudipIcon from '@/vue/components/StudipIcon.vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
+import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 
 const forumConfig = useForumConfig();
 const props = defineProps({
@@ -15,16 +15,26 @@ const props = defineProps({
 const discussionCreateURL = computed(() => {
     return STUDIP.URLHelper.getURL(`dispatch.php/course/forum/discussions/edit?topic_id=${props.topic_id}`);
 });
+
+const addDiscussion = () => {
+    STUDIP.Dialog.fromURL(
+        discussionCreateURL.value,
+        {
+            width: '900',
+            height: '750'
+        }
+    );
+}
 </script>
 
 <template>
-    <a
+    <button
         v-if="!forumConfig.allowGuestAccess"
-        :href="discussionCreateURL"
+        type="button"
+        @click="addDiscussion"
         :title="$gettext('Neue Diskussion starten')"
-        data-dialog="width=900;height=750"
-        role="button"
-        class="button button--icon-only">
+        class="button button--icon-only"
+    >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />
-    </a>
+    </button>
 </template>

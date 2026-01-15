@@ -17,7 +17,7 @@ abstract class BaseController extends StudipController
     protected $is_admin = false;
     protected $is_moderator = false;
 
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
         object_set_visit_module('forum');
 
@@ -49,9 +49,8 @@ abstract class BaseController extends StudipController
             $actions->addLink(
                 _('Forum verwalten'),
                 $this->url_for('course/forum/configs/edit'),
-                Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Forum verwalten')]),
-                ['data-dialog' => 'width=500;height=350']
-            );
+                Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Forum verwalten')])
+            )->asDialog('width=500;height=350');
         }
 
         Sidebar::Get()->addWidget($actions);

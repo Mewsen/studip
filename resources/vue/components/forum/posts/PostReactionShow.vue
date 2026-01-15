@@ -54,24 +54,26 @@ onMounted(() => {
                     :aria-sort="getAriaSortString('user.formatted_name')"
                     :aria-label="getAriaSortLabel('user.formatted_name', $gettext('Name'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('user.formatted_name')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('user.formatted_name')"
                         :title="$gettext('Nach Name sortieren')">
                         {{ $gettext('Name') }}
-                    </a>
+                    </button>
                 </th>
                 <th
                     :class="getSortClass('mkdate')"
                     :aria-sort="getAriaSortString('mkdate')"
                     :aria-label="getAriaSortLabel('mkdate', $gettext('Datum'))"
                 >
-                    <a
-                        href="#"
-                        @click.prevent="sortBy('mkdate')"
+                    <button
+                        type="button"
+                        class="as-link"
+                        @click="sortBy('mkdate')"
                         :title="$gettext('Nach Datum sortieren')">
                         {{ $gettext('Datum') }}
-                    </a>
+                    </button>
                 </th>
             </tr>
         </thead>

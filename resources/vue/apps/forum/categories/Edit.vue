@@ -1,6 +1,6 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from "vue";
-import {$gettext} from "../../../../assets/javascripts/lib/gettext";
+import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {$gettext} from '@/assets/javascripts/lib/gettext';
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
@@ -10,7 +10,7 @@ const props = defineProps({
     }
 });
 
-const categoryForm = reactive({
+const form = reactive({
     ...props.category
 });
 
@@ -22,7 +22,7 @@ const formActionURL = computed(() => {
     return STUDIP.URLHelper.getURL(`dispatch.php/course/forum/categories/save`);
 });
 
-const nameInput = useTemplateRef('name-input');
+const nameInput = useTemplateRef('nameInput');
 
 onMounted(() => {
     nameInput.value.focus();
@@ -53,8 +53,8 @@ onMounted(() => {
                             required
                             type="text"
                             name="name"
-                            ref="name-input"
-                            v-model="categoryForm.name"
+                            ref="nameInput"
+                            v-model="form.name"
                             class="max-w-full" />
                     </label>
                 </section>
@@ -62,7 +62,7 @@ onMounted(() => {
                 <section>
                     <label>
                         {{ $gettext('Beschreibung') }}
-                        <textarea rows="5" name="description" v-model="categoryForm.description"></textarea>
+                        <textarea rows="5" name="description" v-model="form.description"></textarea>
                     </label>
                 </section>
 
@@ -74,7 +74,7 @@ onMounted(() => {
                         <input
                             type="color"
                             name="color"
-                            v-model="categoryForm.color" />
+                            v-model="form.color" />
                     </label>
                 </section>
             </fieldset>
