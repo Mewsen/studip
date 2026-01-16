@@ -7,9 +7,15 @@ use Studip\VueApp;
 
 final class VueCollector extends DataCollector implements Renderable
 {
+    private static int $totalApps = 0;
+
+    private int $id;
+
     public function __construct(
         private readonly VueApp $app
     ) {
+        $this->id = self::$totalApps++;
+
         $this->useHtmlVarDumper(false);
     }
 
@@ -55,7 +61,7 @@ final class VueCollector extends DataCollector implements Renderable
 
     public function getName()
     {
-        return '[Vue]' . basename($this->app->getAppPath());
+        return '[Vue#' . $this->id . ']' . basename($this->app->getAppPath());
     }
 
     /**
