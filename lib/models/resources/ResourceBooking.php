@@ -1715,12 +1715,15 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
 
         $booking_api_urls = [];
-        $booking_view_urls = [
-            'show' => \URLHelper::getURL(
-                'dispatch.php/resources/booking/index/'
-                . $this->id
-            ),
-        ];
+        $booking_view_urls = [];
+        if ($user instanceof User) {
+            $booking_view_urls[] = [
+                'show' => \URLHelper::getURL(
+                    'dispatch.php/resources/booking/index/'
+                    . $this->id
+                ),
+            ];
+        }
         if ($booking_is_editable) {
             $booking_view_urls['edit'] = \URLHelper::getURL(
                 'dispatch.php/resources/booking/edit/'

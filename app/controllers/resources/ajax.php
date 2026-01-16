@@ -12,8 +12,13 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
 
+
+require_once(__DIR__ . '/BookingPlanDataHelper.php');
+
 class Resources_AjaxController extends AuthenticatedController
 {
+    use BookingPlanDataHelper;
+
     public function toggle_marked_action($request_id)
     {
         $request = ResourceRequest::find($request_id);
@@ -308,170 +313,7 @@ class Resources_AjaxController extends AuthenticatedController
 
     public function get_booking_plan_action($resource_id)
     {
-        $resource = Resource::find($resource_id);
-        if (!$resource) {
-            throw new Exception('Resource object not found!');
-        }
-
-        $resource = $resource->getDerivedClassInstance();
-
-        $current_user  = User::findCurrent();
-        $nobody_access = true;
-
-        if ($current_user instanceof User) {
-            $nobody_access = false;
-            if (!$resource->bookingPlanVisibleForUser($current_user)) {
-                throw new AccessDeniedException();
-            }
-        } else if ($resource instanceof Room) {
-            if (!$resource->bookingPlanVisibleForUser($current_user)) {
-                throw new AccessDeniedException();
-            }
-        }
-
-        $display_requests = $current_user && Request::bool('display_requests');
-        $display_all_requests = Request::bool('display_all_requests');
-
-        $begin_date = Request::get('start');
-        $end_date   = Request::get('end');
-        if (!$begin_date || !$end_date) {
-            //No time range specified.
-            throw new Exception('The parameters "start" and "end" are missing!');
-        }
-
-        $begin = DateTime::createFromFormat(DateTime::RFC3339, $begin_date);
-        $end   = DateTime::createFromFormat(DateTime::RFC3339, $end_date);
-
-        if (!($begin instanceof DateTime) || !($end instanceof DateTime)) {
-            $begin = new DateTime();
-            $end   = new DateTime();
-            //Assume the local timezone and use the Y-m-d format:
-            $date_regex = '/[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/';
-            if (preg_match($date_regex, $begin_date)) {
-                //$begin is specified in the date format YYYY-MM-DD:
-                $begin_str = explode('-', $begin_date);
-                $begin->setDate(
-                    intval($begin_str[0]),
-                    intval($begin_str[1]),
-                    intval($begin_str[2])
-                );
-                $begin->setTime(0, 0, 0);
-            } else {
-                $begin->setTimestamp($begin_date);
-            }
-            //Now we do the same for $end_timestamp:
-            if (preg_match($date_regex, $end_date)) {
-                //$begin is specified in the date formay YYYY-MM-DD:
-                $end_str = explode('-', $end_date);
-                $end->setDate(
-                    intval($end_str[0]),
-                    intval($end_str[1]),
-                    intval($end_str[2])
-                );
-                $end->setTime(23, 59, 59);
-            } else {
-                $end->setTimestamp($end_date);
-            }
-        }
-
-        //Get parameters:
-        $booking_types = [];
-        if (!$nobody_access) {
-            $booking_types = explode(',', Request::get('booking_types'));
-        }
-
-        $begin_timestamp = $begin->getTimestamp();
-        $end_timestamp   = $end->getTimestamp();
-
-        //Get the event data sources:
-        $bookings = ResourceBooking::findByResourceAndTimeRanges(
-            $resource,
-            [
-                [
-                    'begin' => $begin_timestamp,
-                    'end'   => $end_timestamp
-                ]
-            ],
-            $booking_types
-        );
-        $requests = [];
-        if ($display_all_requests) {
-            $requests = ResourceRequest::findByResourceAndTimeRanges(
-                $resource,
-                [
-                    [
-                        'begin' => $begin_timestamp,
-                        'end'   => $end_timestamp
-                    ]
-                ],
-                0
-            );
-        } else if ($display_requests) {
-            //Get the users own request only:
-            $requests = ResourceRequest::findByResourceAndTimeRanges(
-                $resource,
-                [
-                    [
-                        'begin' => $begin_timestamp,
-                        'end'   => $end_timestamp
-                    ]
-                ],
-                0,
-                [],
-                'user_id = :user_id',
-                ['user_id' => $current_user->id]
-            );
-        }
-
-        $objects    = array_merge($bookings, $requests);
-        $event_data = Studip\Fullcalendar::createData($objects, $begin_timestamp, $end_timestamp);
-
-        if ($nobody_access) {
-            //For nobody users, the code stops here since
-            //nobody users are not allowed to include additional objects.
-            $this->render_json($event_data);
-            return;
-        }
-
-        //Check if there are additional objects to be displayed:
-        $additional_objects        = Request::getArray('additional_objects');
-        $additional_object_colours = Request::getArray('additional_object_colours');
-        if ($additional_objects) {
-            foreach ($additional_objects as $object_class => $object_ids) {
-                if (
-                    !is_a($object_class, SimpleORMap::class, true)
-                    || !is_a($object_class, Studip\Calendar\EventSource::class, true)
-                ) {
-                    continue;
-                }
-
-                $special_colours = [];
-                if ($additional_object_colours[$object_class]) {
-                    $special_colours = $additional_object_colours[$object_class];
-                }
-
-                $additional_objects = $object_class::findMany($object_ids);
-                foreach ($additional_objects as $additional_object) {
-                    $event_data = $additional_object->getFilteredEventData(
-                        $current_user->id,
-                        null,
-                        null,
-                        $begin,
-                        $end
-                    );
-
-                    if ($special_colours) {
-                        foreach ($event_data as $data) {
-                            $data->text_colour       = $special_colours['fg'];
-                            $data->background_colour = $special_colours['bg'];
-                            $data->editable          = false;
-                            $event_data[]            = $data->toFullcalendarEvent();
-                        }
-                    }
-                }
-            }
-        }
-        $this->render_json($event_data);
+        $this->renderBookingPlanData($resource_id);
     }
 
     public function get_clipboard_booking_plan_action($clipboard_id)
@@ -852,41 +694,6 @@ class Resources_AjaxController extends AuthenticatedController
             $this->set_status(500);
             $this->render_text($e->getMessage());
         }
-    }
-
-    public function semester_week_action($timestamp)
-    {
-        $semester = \Semester::findByTimestamp($timestamp);
-        if (!$semester) {
-            $this->notFound('No semester found for given timestamp');
-            return;
-        }
-
-        $timestamp = strtotime('today', $timestamp);
-        $week_begin_timestamp = strtotime('monday this week', $semester->vorles_beginn);
-        $end_date = $semester->vorles_ende;
-
-        $i = 0;
-        $result = [
-            'semester_name' => (string)$semester->name,
-            'week_number' => sprintf(_('KW %u'), date('W', $timestamp)),
-            'current_day' => strftime('%x', $timestamp)
-        ];
-        while ($week_begin_timestamp < $end_date) {
-            $next_week_timestamp = strtotime('+1 week', $week_begin_timestamp);
-            if ($week_begin_timestamp <= $timestamp && $timestamp < $next_week_timestamp) {
-                $result['sem_week'] = sprintf(
-                    _('%u. Vorlesungswoche (ab %s)'),
-                    $i + 1,
-                    strftime('%x', $week_begin_timestamp));
-                break;
-            }
-            $i += 1;
-
-            $week_begin_timestamp = $next_week_timestamp;
-        }
-
-        $this->render_json($result);
     }
 
     private function notFound(string $message = ''): void

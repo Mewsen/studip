@@ -787,7 +787,7 @@ class Fullcalendar
                 }
 
                 $.getJSON(
-                    STUDIP.URLHelper.getURL(`dispatch.php/resources/ajax/semester_week/${timestamp}`)
+                    STUDIP.URLHelper.getURL(`dispatch.php/resources/anonymous_ajax/semester_week/${timestamp}`)
                 ).done((data) => {
                     if (data) {
                         $('#booking-plan-header-semname').text(data.semester_name);

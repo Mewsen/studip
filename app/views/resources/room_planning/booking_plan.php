@@ -76,7 +76,9 @@
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(
-                        'dispatch.php/resources/ajax/get_booking_plan/' . $resource->id
+                        $GLOBALS['user']->id === 'nobody'
+                            ? 'dispatch.php/resources/anonymous_ajax/get_booking_plan/' . $resource->id
+                            : 'dispatch.php/resources/ajax/get_booking_plan/' . $resource->id
                     ),
                     'method' => 'GET',
                     'extraParams' => [
