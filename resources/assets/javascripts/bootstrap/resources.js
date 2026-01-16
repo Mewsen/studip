@@ -134,29 +134,6 @@ STUDIP.ready(function () {
     );
 
     //Event handlers for the individual booking plan print view:
-    jQuery('#sidebar .colour-selector').draggable(
-        {
-            cursorAt: {
-                left: 28, top: 15
-            },
-            appendTo: 'body',
-            helper: function () {
-                var dragged_item = jQuery(
-                    '<div class="dragged-colour"></div>'
-                );
-                jQuery(dragged_item).css(
-                    {
-                        backgroundColor: jQuery(this).css('background-color'),
-                        width: jQuery(this).css('width'),
-                        height: jQuery(this).css('height'),
-                        zIndex: 1000
-                    }
-                );
-                return dragged_item;
-            },
-            revert: true
-        }
-    );
 
     jQuery(document).on(
         'click',
@@ -173,35 +150,6 @@ STUDIP.ready(function () {
             jQuery(event.target).parent().css(
                 'background-color',
                 jQuery(event.target).val()
-            );
-        }
-    );
-
-    jQuery(document).on(
-        'dragenter',
-        '.individual-booking-plan .appointment-booking-plan',
-        function (event) {
-            jQuery(event.target).css('opacity', '0.7');
-        }
-    );
-
-    jQuery(document).on(
-        'dragleave',
-        '.individual-booking-plan .appointment-booking-plan',
-        function (event) {
-            jQuery(event.target).css('opacity', '1.0');
-        }
-    );
-
-    jQuery(document).on(
-        'dragend',
-        '.dragged-colour',
-        function (event) {
-            jQuery(event.target).css(
-                {
-                    'top': '0px',
-                    'left': '0px'
-                }
             );
         }
     );
@@ -442,24 +390,6 @@ STUDIP.ready(function () {
     );
 
     jQuery(document).on(
-        'click',
-        '.fc-button',
-        function () {
-            if ($(this).hasClass('fc-dayGridMonth-button')) {
-                updateViewURL('dayGridMonth')
-            } else if ($(this).hasClass('fc-timeGridWeek-button')) {
-                updateViewURL('timeGridWeek')
-            } else if ($(this).hasClass('fc-timeGridDay-button')) {
-                updateViewURL('timeGridDay')
-            } else if ($(this).hasClass('fc-today-button')
-                || $(this).hasClass('fc-prev-button')
-                || $(this).hasClass('fc-next-button')) {
-                STUDIP.Fullcalendar.updateDateURL();
-            }
-        }
-    );
-
-    jQuery(document).on(
         'blur',
         '.hasDatepicker',
         function () {
@@ -553,137 +483,12 @@ STUDIP.ready(function () {
         });
     }
 
-    function updateViewURL(defaultView) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('defaultView', defaultView);
-
-        // Push current view url to history
-        history.pushState({}, null, url.toString());
-
-        // Set links accordingly
-        url.searchParams.delete('allday');
-        $('.booking-plan-std_view').attr('href', url.toString());
-
-        url.searchParams.set('allday', 1);
-        $('.booking-plan-allday_view').attr('href', url.toString());
-    }
-
-
-    jQuery('#booking-plan-jmpdate').datepicker(
-        {
-            dateFormat: 'dd.mm.yy',
-            onClose: STUDIP.Fullcalendar.submitDatePicker
-        }
-    );
     jQuery('.resource-booking-time-fields input[type="date"]').datepicker(
         {
             dateFormat: 'yy-mm-dd'
         }
     );
 
-    jQuery('.resource-plan[data-resources-fullcalendar="1"]').each(function () {
-        STUDIP.loadChunk('fullcalendar').then(() => {
-            //Get the default date from the sessionStorage, if it is set
-            //and no date is specified in the url.
-            let use_session_date = true;
-            let url_param_string = window.location.search;
-            if (url_param_string) {
-                let url_params = new URLSearchParams(url_param_string);
-                if (url_params.get('defaultDate')) {
-                    use_session_date = false;
-                }
-            }
-            if (this.calendar === undefined) {
-                if (jQuery(this).hasClass('semester-plan')) {
-                    STUDIP.Fullcalendar.createSemesterCalendarFromNode(
-                        this,
-                        {
-                            loading: function (isLoading) {
-                                if (!isLoading) {
-                                    let h = jQuery('section.studip-fullcalendar-header');
-                                    if (h) {
-                                        jQuery(h).removeClass('invisible');
-                                        jQuery(h).insertBefore(this);
-                                    }
-                                }
-                            }
-                        }
-                    );
-                } else {
-                    let config = {
-                        studip_functions: {
-                            drop_event:
-                            STUDIP.Resources.dropEventInRoomGroupBookingPlan,
-                            resize_event:
-                            STUDIP.Resources.resizeEventInRoomGroupBookingPlan
-                        },
-                        loading: function (isLoading) {
-                            if (!isLoading) {
-                                let h = jQuery('section.studip-fullcalendar-header');
-                                if (h) {
-                                    jQuery(h).removeClass('invisible');
-                                    jQuery(h).insertBefore(this);
-                                }
-                            }
-                        }
-                    };
-                    if (use_session_date) {
-                        let session_date_string = sessionStorage.getItem('booking_plan_date');
-                        if (session_date_string) {
-                            config.defaultDate = session_date_string;
-                        }
-                    }
-                    STUDIP.Fullcalendar.createFromNode(this, config);
-                }
-            }
-        });
-    });
-
-    //Check if an individual booking plan is to be displayed:
-    jQuery('.individual-booking-plan[data-resources-fullcalendar="1"]').each(function () {
-        STUDIP.loadChunk('fullcalendar').then(() => {
-            STUDIP.Fullcalendar.createFromNode(
-                this,
-                {
-                    eventPositioned: function (info) {
-                        jQuery(info.el).droppable({
-                            drop: function (event, ui_element) {
-                                event.preventDefault();
-
-                                let booking_plan_entry = event.target;
-                                let new_background_colour = jQuery(
-                                    ui_element.helper
-                                ).css('background-color');
-
-                                jQuery(booking_plan_entry).css(
-                                    'background-color',
-                                    new_background_colour
-                                );
-                                jQuery(booking_plan_entry).css(
-                                    'border-color',
-                                    new_background_colour
-                                );
-
-                                jQuery(booking_plan_entry).find('dl').css({
-                                    backgroundColor: new_background_colour,
-                                    borderColor: new_background_colour
-                                });
-                                jQuery(booking_plan_entry).find('dt').css(
-                                    'background-color',
-                                    new_background_colour
-                                );
-                            }
-                        });
-                        let h = jQuery('section.studip-fullcalendar-header').clone();
-                        if (h) {
-                            jQuery(h).removeClass('invisible');
-                            jQuery(h).insertBefore(this);
-                        }
-                    }
-                }
-            );
-        });
-    });
 
     jQuery(document).on(
         'click',

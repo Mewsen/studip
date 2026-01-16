@@ -3,6 +3,32 @@ namespace Studip;
 
 class Fullcalendar
 {
+    /**
+     * The standard month view for Stud.IP calendars.
+     */
+    const VIEW_MONTH = 'dayGridMonth';
+
+    /**
+     * The standard week view for Stud.IP calendars.
+     */
+    const VIEW_WEEK = 'timeGridWeek';
+
+    /**
+     * The standard day view for Stud.IP calendars.
+     */
+    const VIEW_DAY = 'timeGridDay';
+
+    /**
+     * The standard week view for Stud.IP group calendars.
+     */
+    const GROUP_WEEK = 'resourceTimelineWeek';
+
+    /**
+     * The standard day view for Stud.IP group calendars.
+     */
+    const GROUP_DAY = 'resourceTimelineDay';
+
+
     protected $title;
 
     /**
@@ -58,9 +84,9 @@ class Fullcalendar
     public function setDefaultView(?string $view): void
     {
         if ($view === null) {
-            unset($this->config['defaultView']);
+            unset($this->config['initialView']);
         } else {
-            $this->config['defaultView'] = $view;
+            $this->config['initialView'] = $view;
         }
     }
 
@@ -78,16 +104,56 @@ class Fullcalendar
         $factory = new \Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
         $template = $factory->open('studip-fullcalendar.php');
         $real_data_name = sprintf('data-%s', $this->data_name);
-        return $template->render(
-            [
-                'title' => $this->title,
-                'config' => $this->config,
-                'attributes' => array_merge(
-                    $this->attributes,
-                    [$real_data_name => '1']
-                )
-            ]
+
+        //Move the Stud.IP parts of the configuration out of the
+        //fullcalendar configuration:
+        $fullcalendar_config = $this->config;
+        $template_params     = [
+            'title'                          => $this->title,
+            'dialogSize'                     => 'auto',
+            'actionUrls'                     => [],
+            'displayHolidays'                => true,
+            'displayVacations'               => true,
+            'externalDroppableContainerId'   => '',
+            'externalDroppableEventSelector' => '',
+            'eventColourPicker'              => false
+        ];
+        if (!empty($this->attributes['class'])) {
+            $template_params['extraClasses'] = $this->attributes['class'];
+            unset($this->attributes['class']);
+        } else {
+            $template_params['extraClasses'] = '';
+        }
+        $template_params['attributes'] = array_merge(
+                $this->attributes,
+                [$real_data_name => '1']
         );
+        if (array_key_exists('studip_urls', $fullcalendar_config)
+            && is_array($fullcalendar_config['studip_urls'])
+        ) {
+            $template_params['actionUrls'] = $fullcalendar_config['studip_urls'];
+            unset($fullcalendar_config['studip_urls']);
+        }
+
+        $studip_config_map = [
+            'dialog_size' => 'dialogSize',
+            'display_holidays' => 'displayHolidays',
+            'display_vacations' => 'displayVacations',
+            'external_droppable_container_id' => 'externalDroppableContainerId',
+            'external_droppable_event_selector' => 'externalDroppableEventSelector',
+            'event_colour_picker' => 'eventColourPicker',
+        ];
+
+        foreach ($studip_config_map as $config_key => $param_key) {
+            if (array_key_exists($config_key, $fullcalendar_config)) {
+                $template_params[$param_key] = $fullcalendar_config[$config_key];
+                unset($fullcalendar_config[$config_key]);
+            }
+        }
+
+        $template_params['config'] = $fullcalendar_config;
+
+        return $template->render($template_params);
     }
 
     /**

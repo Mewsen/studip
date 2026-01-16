@@ -5,7 +5,7 @@
  */
 ?>
 <? if ($semester) : ?>
-    <h1>
+    <h1 class="print-hidden">
         <?= studip_interpolate(
             _('Stundenplan %{semester}'),
             ['semester' => $semester->name]

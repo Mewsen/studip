@@ -223,9 +223,26 @@ class Calendar_DateController extends AuthenticatedController
         $owner = $this->getCalendarOwner($range_and_id);
 
         $this->date = new CalendarDate();
-        if (Request::submitted('begin') && Request::submitted('end')) {
-            $this->date->begin = Request::get('begin');
-            $this->date->end = Request::get('end');
+        if (Request::submitted('start') && Request::submitted('end')) {
+            $tz_date = new DateTime();
+            $start = Request::getDateTime('start', DateTimeInterface::RFC3339_EXTENDED);
+            $end   = Request::getDateTime('end', DateTimeInterface::RFC3339_EXTENDED);
+            //The date might be in UTC instead of the default time zone, so it has to be converted:
+            $start->setTimezone($tz_date->getTimezone());
+            $end->setTimezone($tz_date->getTimezone());
+            if ($start === false || $end === false) {
+                throw new InvalidArgumentException(_('Ungültiges Datumsformat'));
+            }
+            if (Request::get('all_day')) {
+                $start->setTime(0, 0, 0);
+                //Special case for the end timestamp:
+                //In Fullcalendar, all-day events end on the next day while in Stud.IP
+                //they end on 23:59:59 on the same day.
+                $end->setTime(0, 0, 0);
+                $end = $end->sub(new DateInterval('PT1S'));
+            }
+            $this->date->begin = $start->getTimestamp();
+            $this->date->end   = $end->getTimestamp();
             $this->date->repetition_end = $this->date->end;
         } elseif (Request::submitted('begin_str') && Request::submitted('end_str')) {
             //Assume the textual format d.m.Y H:i:
@@ -646,11 +663,32 @@ class Calendar_DateController extends AuthenticatedController
             );
         }
 
-        $this->begin = Request::getDateTime('begin', \DateTime::RFC3339);
-        $this->end   = Request::getDateTime('end', \DateTime::RFC3339);
+        $tz_date = new DateTime();
+        $this->begin = Request::getDateTime('start', \DateTime::RFC3339_EXTENDED);
+        $this->end   = Request::getDateTime('end', \DateTime::RFC3339_EXTENDED);
+        if ($this->begin) {
+            $this->begin->setTimezone($tz_date->getTimezone());
+        }
+        if (Request::get('all_day') && $this->begin) {
+            if (!$this->end) {
+                //Set the end to the end of the day the event starts:
+                $this->end = clone $this->begin;
+                $this->end = $this->end->add(new DateInterval('P1D'));
+                $this->end->setTime(0,0,0);
+            }
+            //At this point, there should be an end date.
+            //If it is on 0:00:00 in the local time zone, we need to get to
+            //the last second of the day before so that the event is
+            //detected as all-day event.
+            $this->end->setTimezone($tz_date->getTimezone());
+            if ($this->end->format('His') == 0) {
+                $this->end = $this->end->sub(new DateInterval('PT1S'));
+            }
+        }
         if (!$this->begin || !$this->end) {
             throw new InvalidArgumentException();
         }
+        $this->end->setTimezone($tz_date->getTimezone());
 
         //In case the moved event is a repetition event, we must know the original date from where
         //it was moved from to correctly move the whole date series:

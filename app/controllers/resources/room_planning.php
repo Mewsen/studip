@@ -265,11 +265,13 @@ class Resources_RoomPlanningController extends AuthenticatedController
             $sidebar->addWidget($options);
         }
 
-        $sidebar->addWidget(new TemplateWidget(
-            _('Datum'),
-            $this->get_template_factory()->open('resources/room_planning/_sidebar_date_selection.php'),
-            ['date' => $this->date]
-        ));
+        $date_selector = new DateSelectWidget();
+        $date_selector->setCalendarControl(true);
+        $default_date = Request::getDateTime('defaultDate');
+        if ($default_date) {
+            $date_selector->setDate($default_date);
+        }
+        $sidebar->addWidget($date_selector);
 
         $actions = new ActionsWidget();
         if ($GLOBALS['user']->id && $GLOBALS['user']->id !== 'nobody') {

@@ -47,13 +47,6 @@ export const loadChunk = function (chunk, { silent = false } = {}) {
             ).then(({ default: Chartist }) => Chartist);
             break;
 
-        case 'fullcalendar':
-            promise = import(
-                /* webpackChunkName: "fullcalendar" */
-                './chunks/fullcalendar'
-            );
-            break;
-
         case 'tablesorter':
             promise = import(
                 /* webpackChunkName: "tablesorter" */

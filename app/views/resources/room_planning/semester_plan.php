@@ -87,19 +87,24 @@
             'editable' => true,
             'selectable' => isset($fullcalendar_studip_urls['add']),
             'studip_urls' => $fullcalendar_studip_urls,
-            'minTime' => $min_time,
-            'maxTime' => $max_time,
+            'slotMinTime' => $min_time,
+            'slotMaxTime' => $max_time,
             'allDaySlot' => false,
-            'columnHeaderFormat' => ['weekday'=> 'short'],
-            'header' => [
+            'dayHeaderFormat' => ['weekday'=> 'short'],
+            'headerToolbar' => [
                 'left' => '',
                 'right' => ''
             ],
-            'defaultView' =>
-                in_array(Request::get('defaultView'), ['dayGridMonth','timeGridWeek','timeGridDay'])
-                ? Request::get('defaultView')
-                : 'timeGridWeek',
-            'defaultDate' => ((Request::get('semester_timerange') === 'fullsem') ? date('Y-m-d', $semester->beginn) : date('Y-m-d', $semester->vorles_beginn)),
+            'views' => [
+                \Studip\Fullcalendar::VIEW_WEEK => [
+                    'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true]
+                ],
+            ],
+            'initialView' => \Studip\Fullcalendar::VIEW_WEEK,
+            'initialDate' => ((Request::get('semester_timerange') === 'fullsem') ? date('Y-m-d', $semester->beginn) : date('Y-m-d', $semester->vorles_beginn)),
+            'display_holidays'  => false,
+            'display_vacations' => false,
+            'weekNumbers'       => false,
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(

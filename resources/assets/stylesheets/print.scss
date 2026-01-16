@@ -1,8 +1,6 @@
 @import "mixins";
 @import "scss/breakpoints";
 @import "scss/visibility";
-@import "scss/fullcalendar-print";
-@import "scss/resources-print";
 
 
 /*******************************************************************************
@@ -223,4 +221,8 @@ a.link-extern {
     > .course-semester {
         font-style: oblique;
     }
+}
+
+.print-hidden {
+    display: none;
 }

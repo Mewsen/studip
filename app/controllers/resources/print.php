@@ -52,12 +52,17 @@ class Resources_PrintController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->timestamp = Request::get('timestamp', time());
-
-        $this->date = new DateTime();
-        $this->date->setTimestamp($this->timestamp);
+        $this->semester = Semester::find(Request::get('semester_id'));
+        if (!$this->semester) {
+            $this->semester = Semester::findCurrent();
+        }
 
         $sidebar = Sidebar::get();
+        $sidebar->addWidget(
+            new SemesterSelectorWidget(
+                $this->url_for('resources/print/individual_booking_plan/' . $resource_id),
+            )
+        );
 
         $views = new ViewsWidget();
         if ($GLOBALS['user']->id && ($GLOBALS['user']->id != 'nobody')) {

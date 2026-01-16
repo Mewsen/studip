@@ -7,7 +7,7 @@
     } ?>
 <section class="individual-booking-plan">
     <?= \Studip\Fullcalendar::create(
-        _('Belegungsplan'),
+        _('Individueller Belegungsdruck'),
         [
             'eventSources' => [
                 [
@@ -21,20 +21,25 @@
                             ResourceBooking::TYPE_RESERVATION,
                             ResourceBooking::TYPE_LOCK,
                         ],
+                        'semester_id' => $semester->id,
+                        'semester_timerange' => Request::get('semester_timerange', 'vorles'),
                     ]
                 ]
             ],
-            'minTime' => ($min_time),
-            'maxTime' => ($max_time),
+            'slotMinTime' => ($min_time),
+            'slotMaxTime' => ($max_time),
+            'headerToolbar' => [
+                'start' => '',
+                'center' => '',
+                'end' => ''
+            ],
             'allDaySlot' => false,
-            'defaultView' =>
-                in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
-                ? Request::get("defaultView")
-                : 'timeGridWeek',
-            'defaultDate' => Request::get("defaultDate"),
-            'editable' => false
-        ],
-        ['class' => 'individual-booking-plan'],
-        'resources-fullcalendar'
+            'initialView' => \Studip\Fullcalendar::VIEW_WEEK,
+            'initialDate' => ((Request::get('semester_timerange') === 'fullsem') ? date('Y-m-d', $semester->beginn) : date('Y-m-d', $semester->vorles_beginn)),
+            'display_holidays' => false,
+            'display_vacations' => false,
+            'editable' => false,
+            'event_colour_picker' => true
+        ]
     ) ?>
 </section>

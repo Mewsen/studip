@@ -45,34 +45,40 @@
     <?= \Studip\Fullcalendar::create(
         _('Belegungsplan'),
         [
-            'editable' => true,
-            'selectable' => !empty($fullcalendar_studip_urls['add']),
+            'editable'    => true,
+            'selectable'  => !empty($fullcalendar_studip_urls['add']),
             'studip_urls' => $fullcalendar_studip_urls,
-            'minTime' => $min_time,
-            'maxTime' => $max_time,
-            'allDaySlot' => false,
-            'header' => [
-                'left' => 'dayGridMonth,timeGridWeek,timeGridDay',
-                'right' => 'prev,next'
+            'slotMinTime' => $min_time,
+            'slotMaxTime' => $max_time,
+            'allDaySlot'  => false,
+            'headerToolbar' => [
+                'start' => implode(
+                    ',',
+                    [\Studip\Fullcalendar::VIEW_MONTH, \Studip\Fullcalendar::VIEW_WEEK, \Studip\Fullcalendar::VIEW_DAY]
+                ),
+                'end' => 'prev,next'
             ],
             'weekNumbers' => true,
             'views' => [
-                'dayGridMonth' => [
+                \Studip\Fullcalendar::VIEW_MONTH => [
                     'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
                     'displayEventEnd' => true
                 ],
-                'timeGridWeek' => [
-                  'columnHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
+                \Studip\Fullcalendar::VIEW_WEEK => [
+                    'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true]
                 ],
-                'timeGridDay' => [
-                    'columnHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ]
-                  ]
+                \Studip\Fullcalendar::VIEW_DAY => [
+                    'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true]
+                ]
             ],
-            'defaultView' =>
-                in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
+            'initialView' =>
+                in_array(
+                    Request::get("defaultView"),
+                    [\Studip\Fullcalendar::VIEW_MONTH, \Studip\Fullcalendar::VIEW_WEEK, \Studip\Fullcalendar::VIEW_DAY]
+                )
                 ? Request::get("defaultView")
-                : 'timeGridWeek',
-            'defaultDate' => $date->format('Y-m-d'),
+                : \Studip\Fullcalendar::VIEW_WEEK,
+            'initialDate' => $date->format('Y-m-d'),
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(

@@ -312,7 +312,10 @@ class ScheduleEntry extends SimpleORMap implements Event
             [
                 'show' => URLHelper::getURL('dispatch.php/calendar/schedule/entry/' . $this->id)
             ],
-            [],
+            [
+                'resize' => URLHelper::getURL('dispatch.php/calendar/schedule/move_entry/' . $this->id),
+                'move'   => URLHelper::getURL('dispatch.php/calendar/schedule/move_entry/' . $this->id)
+            ],
             '',
             $GLOBALS['PERS_TERMIN_KAT'][$this->colour_id]['border_color'] ?? '#000000',
             $this->isAllDayEvent()

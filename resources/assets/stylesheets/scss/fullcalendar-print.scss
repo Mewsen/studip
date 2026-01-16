@@ -1,115 +1,74 @@
+/*
+ * Fullcalendar rules for printing calendars.
+ */
+@media print {
 
-a.fc-event {
-    border-radius: 0;
-    color: var(--black);
+    .fc {
+        /* Disable page breaks inside the calendar: */
+        page-break-inside: avoid;
 
-    .fc-time {
-        text-decoration: underline;
-        color: var(--black);
-    }
-}
-
-div.fc-toolbar {
-    display: none;
-}
-
-/* the "now" indicator: */
-.fc-now-indicator.fc-now-indicator-line,
-.fc-now-indicator.fc-now-indicator-arrow {
-    display: none;
-}
-
-/* adjust height: */
-.fc-resourceTimelineDay-view {
-    .fc-widget-header{
-        .fc-scroller {
-            height: 40px !important;
-            .fc-content > table{
-                height: 26px !important;
-            }
-        }
-    }
-}
-.fc-resourceTimelineWeek-view {
-    .fc-widget-header{
-        .fc-scroller {
-            height: 60px !important;
-            .fc-content > table{
-                height: 26px !important;
-            }
-        }
-    }
-}
-.fc-scroller.fc-time-grid-container {
-    height: auto !important;
-    min-height: 0 !important;
-}
-
-/* disable page break for calendar: */
-div.fc-view-container {
-    page-break-inside: avoid;
-}
-
-/* a potential existing map key: */
-.map-key-list {
-    display: none;
-}
-
-.studip-fullcalendar-header {
-    &.fullcalendar-dialog{
-        display: block;
-        width: 100%;
-        margin-top: 2em;
-        margin-right: 0;
-    }
-}
-
-.fullcalendar-dialogwidget-container {
-    display:none !important;
-}
-
-div.fc-timeGrid-view th.fc-axis, td.fc-axis {
-    display: table-cell !important;
-}
-
-div.fc-slats, div.fc-time-grid hr {
-    display: block !important;
-}
-
-section.fc th, section.fc td, section.fc hr, section.fc thead, section.fc tbody, .fc-row {
-    background: none !important;
-}
-
-div.fc-content-skeleton {
-    & table {
-        height: 100% !important;
-    }
-    height: 100%;
-}
-
-div.fc-time-grid a.fc-event {
-    position: absolute !important;
-    margin: 0 0 1px 0 !important;
-
-    img {
-        filter: brightness(0);
-    }
-}
-
-a.fc-timeline-event {
-    img {
-        filter: brightness(0);
-    }
-}
-
-.fc-slats table tr {
-    line-height: 22px;
-}
-
-.fc-resource-area {
-    .fc-cell-content {
-        a > img {
+        /*
+         * Hide the buttons:
+         */
+        .fc-button-group {
             display: none;
         }
+
+        /*
+         * Hide the now indicator:
+         */
+        .fc-timegrid .fc-timegrid-now-indicator-container {
+            display: none;
+        }
+
+        /*
+         * In case the calendar is smaller than the page width,
+         * it shall not look like there is some content missing on the right side:
+         */
+        .fc-scrollgrid {
+            width: unset;
+            max-width: 100%;
+        }
+
+        /*
+         * Make sure that events are printed in black and white
+         * when their colours are not set explicitly:
+         */
+        .fc-event-main, .fc-v-event {
+            background-color: $white;
+            border-color: $black;
+
+            /*
+             * Set the text colour for event content to black:
+             */
+            .event-content {
+                color: $black;
+            }
+
+
+            /*
+             * Position icons with the text and make them black:
+             */
+            .icons {
+                display: inline-block;
+                vertical-align: top;
+                color: $black;
+            }
+        }
+
+        /*
+         * Do not colour the current day in case someone wants to print
+         * with backgrounds:
+         */
+        .fc-timegrid-col.fc-day-today {
+            background-color: unset;
+        }
+    }
+
+    /*
+     * Hide a potential existing map key list:
+     */
+    .map-key-list {
+        display: none;
     }
 }

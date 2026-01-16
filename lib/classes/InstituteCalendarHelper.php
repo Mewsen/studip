@@ -190,7 +190,7 @@ class InstituteCalendarHelper
             }
             $event_colors[$event_id][$institut_id] = $color;
             $df[0]->content = serialize($event_colors);
-            return $df[0]->store();
+            return $df[0]->store() !== false;
         }
         return false;
     }
@@ -395,7 +395,7 @@ class InstituteCalendarHelper
                 $end_time[0] += 2;
                 $end_time = implode(':', $end_time);
 
-                $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event');
+                $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event/' . $cycle_date->id);
                 $name = $course->getFullName('number-name');
 
                 if ($start_time != $cycle_date['start_time'] && $end_time != $cycle_date['end_time']) {
@@ -451,7 +451,7 @@ class InstituteCalendarHelper
                 $events[] = [
                     'resourceId'       => $resource_column,
                     'id'               => $cycle_date->id,
-                    'title'            => empty($fields) ? $name : '',
+                    'title'            => '',
                     'start'            => $start,
                     'end'              => $end,
                     'textColor'        => $textcolor,
@@ -462,14 +462,23 @@ class InstituteCalendarHelper
                     'durationEditable' => $is_duration_editable,
                     'resourceEditable' => true,
                     'studip_api_urls'  => ['move' => $move_url],
-                    'studip_view_urls' => ['edit' => URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)],
+                    'studip_view_urls' => [
+                        'show' =>URLHelper::getURL('dispatch.php/course/details/index/' . $cycle_date->seminar_id)
+                    ],
                     'metadate_id'      => $cycle_date->metadate_id,
                     'course_id'        => $cycle_date->seminar_id,
                     'tooltip'          => self::getCycleInfos($course, $cycle_date),
                     'icon'             => $is_start_editable ? '' : 'lock-locked',
                     'conform'          => $conform,
                     // custom props (event.extendedProps)
-                    'content_fields'   => $fields,
+                    'title-lines'      => $fields,
+                    'action-icons'     => [
+                        [
+                            'url'       => URLHelper::getURL('dispatch.php/admin/courseplanning/pick_color/' . $cycle_date->id . '/index'),
+                            'icon_name' => 'group4',
+                            'label'     => _('Farbe wählen')
+                        ]
+                    ]
                 ];
             }
         }, array_keys($courses));
@@ -535,7 +544,7 @@ class InstituteCalendarHelper
         $event_columns = self::getCourseEventcolumns($course);
         $event_colors = self::getCourseEventcolors($course);
 
-        $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event');
+        $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event/' . $cycle_date->id);
         $name = $course->getFullName('number-name');
 
         if ($start_time != $cycle_date['start_time'] && $end_time != $cycle_date['end_time']) {
@@ -574,6 +583,13 @@ class InstituteCalendarHelper
             }
         }
 
+        $fields = [
+            'course_number' => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_COURSE_NUMBER_VISIBLE ? ($course->veranstaltungsnummer ?: _('(keine VA-Nummer)')) : null,
+            'course_name'   => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_COURSE_NAME_VISIBLE ? $course->getFullName('name') : null,
+            'lecturers'     => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_LECTURERS_VISIBLE ? self::getLecturers($course) : null,
+            'room'          => UserConfig::get($GLOBALS['user']->id)->TIMETABLE_ROOMS_VISIBLE  ? '' : null
+        ];
+
         return [
             'resourceId'       => $resource_column,
             'id'               => $cycle_date->id,
@@ -592,7 +608,16 @@ class InstituteCalendarHelper
             'metadate_id'      => $cycle_date->metadate_id,
             'course_id'        => $cycle_date->seminar_id,
             'tooltip'          => self::getCycleInfos($course, $cycle_date),
-            'icon'             => $is_start_editable ? '' : 'lock-locked'
+            'icon'             => $is_start_editable ? '' : 'lock-locked',
+            // custom props (event.extendedProps)
+            'title-lines'      => $fields,
+            'action-icons'     => [
+                [
+                    'url'       => URLHelper::getURL('dispatch.php/admin/courseplanning/pick_color/' . $cycle_date->id . '/index'),
+                    'icon_name' => 'group4',
+                    'label'     => _('Farbe wählen')
+                ]
+            ]
         ];
     }
 
@@ -638,8 +663,8 @@ class InstituteCalendarHelper
                     if (!$GLOBALS['MVV_MODUL']['STATUS']['values'][$modul->stat]['public']) {
                         return false;
                     }
-                    $modul_start = Semester::find($modul->start)->beginn ?: 0;
-                    $modul_end = Semester::find($modul->end)->ende ?: PHP_INT_MAX;
+                    $modul_start = Semester::find($modul->start)->beginn ?? 0;
+                    $modul_end = Semester::find($modul->end)->ende ?? PHP_INT_MAX;
                     return $modul_end >= $course->start_semester->beginn
                         && (
                             $course->isOpenEnded()
@@ -718,7 +743,7 @@ class InstituteCalendarHelper
         return $info_string;
     }
 
-    private static function getLecturers(Course $course): array
+    private static function getLecturers(Course $course): string
     {
         $dozenten = [];
         $lecturers = '';

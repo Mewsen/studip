@@ -902,11 +902,21 @@ class Resources_BookingController extends AuthenticatedController
         $this->max_preparation_time = Config::get()->RESOURCES_MAX_PREPARATION_TIME;
 
         if ($mode == 'add') {
-            //In case a begin and end time are already given
+            //In case a start and end time are already given
             //use those values instead:
-            if (Request::submitted('begin') && Request::submitted('end')) {
-                $this->begin->setTimestamp(Request::get('begin'));
-                $this->end->setTimestamp(Request::get('end'));
+            if ((Request::submitted('begin') || Request::submitted('start')) && Request::submitted('end')) {
+                if (Request::submitted('start')) {
+                    $this->begin = Request::getDateTime('start', DateTimeInterface::RFC3339_EXTENDED);
+                    $this->end   = Request::getDateTime('end', DateTimeInterface::RFC3339_EXTENDED);
+                    //The date might be in UTC instead of the default time zone, so it has to be converted:
+                    $this->begin->setTimezone(new DateTimeZone('Europe/Berlin'));
+                    $this->end->setTimezone(new DateTimeZone('Europe/Berlin'));
+                } else {
+                    //For backwards compatibility: Handle the timestamp in the old "begin" parameter.
+                    //To be removed with Stud.IP 7.0.
+                    $this->begin->setTimestamp(Request::get('begin'));
+                    $this->end->setTimestamp(Request::get('end'));
+                }
                 if (Request::get('semester_id')) {
                     $this->booking_style = 'repeat';
                     $this->repetition_style = 'weekly';
@@ -1493,7 +1503,7 @@ class Resources_BookingController extends AuthenticatedController
     public function add_action($resource_id = null, $booking_type = null)
     {
         if (!$resource_id) {
-            $resource_id = Request::option('ressource_id');
+            $resource_id = Request::option('resource_id');
         }
         $resource_ids = Request::getArray('resource_ids');
 

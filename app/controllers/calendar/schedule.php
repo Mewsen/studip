@@ -160,8 +160,8 @@ class Calendar_ScheduleController extends AuthenticatedController
         //The range is not necessary a full week: If fullcalendar starts in the day
         //view (like in the mobile view), the start of the range may lie in the middle
         //of the week.
-        $begin = Request::getDateTime('start', \DateTime::RFC3339);
-        $end = Request::getDateTime('end', \DateTime::RFC3339);
+        $begin = Request::getDateTime('start', \DateTimeInterface::RFC3339);
+        $end   = Request::getDateTime('end', \DateTimeInterface::RFC3339);
         if (!($begin instanceof \DateTime) || !($end instanceof \DateTime)) {
             //No time range specified.
             throw new InvalidArgumentException('Invalid parameters!');
@@ -335,12 +335,60 @@ class Calendar_ScheduleController extends AuthenticatedController
         $weekly_dates = ScheduleEntry::findByUser_id($GLOBALS['user']->id);
         foreach ($weekly_dates as $date) {
             $event_data = $date->toEventData($GLOBALS['user']->id);
-            //Disable fullcalendar drag & drop actions:
-            $event_data->editable = false;
             $result[] = $event_data->toFullcalendarEvent();
         }
 
         $this->render_json($result);
+    }
+
+    /**
+     * Handles moving an entry in the calendar.
+     *
+     * @param string $entry_id
+     *
+     * @return void
+     */
+    public function move_entry_action(string $entry_id)
+    {
+        if (!$entry_id) {
+            $this->response->set_status(400, 'No entry-ID provided.');
+            $this->render_nothing();
+            return;
+        }
+        $entry = ScheduleEntry::find($entry_id);
+        if (!$entry) {
+            $this->response->set_status(404, 'Entry not found.');
+            $this->render_nothing();
+            return;
+        }
+        //Check if the current user owns this entry:
+        if ($entry->user_id !== $GLOBALS['user']->id) {
+            throw new AccessDeniedException();
+        }
+
+        $start = Request::getDateTime('start', DateTimeInterface::RFC3339_EXTENDED);
+        $end   = Request::getDateTime('end', DateTimeInterface::RFC3339_EXTENDED);
+
+        if (!$start || !$end) {
+            $this->response->set_status(400, 'Invalid date format.');
+            $this->render_nothing();
+            return;
+        }
+
+        $start->setTimezone(new DateTimeZone('Europe/Berlin'));
+        $end->setTimezone(new DateTimeZone('Europe/Berlin'));
+
+        $entry->start_time = $start->format('Hi');
+        $entry->end_time   = $end->format('Hi');
+        $entry->dow        = $start->format('N');
+        if (!$entry->store()) {
+            $this->response->set_status(500, 'Cannot store entry.');
+            $this->render_nothing();
+            return;
+        }
+
+        $entry_event = $entry->toEventData($GLOBALS['user']->id);
+        $this->render_json($entry_event->toFullcalendarEvent());
     }
 
     /**
@@ -360,18 +408,23 @@ class Calendar_ScheduleController extends AuthenticatedController
                 //Provide good default values:
                 $this->entry->colour_id = 1;
                 if (Request::submitted('start')) {
-                    //String format
-                    $this->entry->dow = Request::int('dow',date('N'));
-                    $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
-                    $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
-                } elseif (Request::submitted('begin')) {
-                    //Fullcalendar: Timestamps
-                    $begin = Request::get('begin');
-                    $end   = Request::get('end');
-                    if ($begin && $end) {
-                        $this->entry->dow = intval(date('N', $begin));
-                        $this->entry->setFormattedStart(date('H:i', $begin));
-                        $this->entry->setFormattedEnd(date('H:i', $end));
+                    //Fullcalendar provides date and time in RFC3339_EXTENDED format.
+                    $start = Request::getDateTime('start', \DateTimeInterface::RFC3339_EXTENDED);
+                    $end   = Request::getDateTime('end', \DateTimeInterface::RFC3339_EXTENDED);
+                    if ($start) {
+                        //Correct the timezone first before setting start and end time.
+                        $local_datetime = new DateTime();
+                        $start->setTimezone($local_datetime->getTimezone());
+                        $this->entry->dow = $start->format('N');
+                        $this->entry->start_time = $start->format('Hi');
+                        if ($end) {
+                            $end->setTimezone($local_datetime->getTimezone());
+                            $this->entry->end_time = $end->format('Hi');
+                        } else {
+                            $end = clone $start;
+                            $end = $end->add(new DateInterval('PT1H'));
+                            $this->entry->end_time = $end->format('Hi');
+                        }
                     }
                 } else {
                     $begin = time() + 3600;

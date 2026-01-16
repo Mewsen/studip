@@ -25,16 +25,16 @@ $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
     'maxTime' => $max_time,
     'allDaySlot' => false,
     'nowIndicator' => false,
-    'header' => [
-        'left' => '',
-        'right' => ''
+    'headerToolbar' => [
+        'start' => '',
+        'end'   => ''
     ],
     'slotDuration' => '01:00:00',
     'slotLabelInterval' => '01:00',
     'slotLabelFormat' => ['hour' => '2-digit', 'minute' => '2-digit'],
     'timeZone' => 'UTC',
     'defaultDate' => $cal_date->format('Y-m-d'),
-    'defaultView' => 'resourceTimeGridDay',
+    'defaultView' => \Studip\Fullcalendar::GROUP_DAY,
     'eventSources' => [compact('events')],
     'slotEventOverlap' => false,
     'displayEventTime' => false,

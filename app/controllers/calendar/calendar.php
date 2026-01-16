@@ -347,17 +347,17 @@ class Calendar_CalendarController extends AuthenticatedController
 
         //Map calendar settings to fullcalendar settings:
 
-        $default_view = 'timeGridWeek';
+        $default_view = \Studip\Fullcalendar::VIEW_WEEK;
         if ($timeline_view) {
-            $default_view = 'resourceTimelineWeek';
+            $default_view = \Studip\Fullcalendar::GROUP_WEEK;
             if ($calendar_settings['view'] === 'day') {
-                $default_view = 'resourceTimelineDay';
+                $default_view = \Studip\Fullcalendar::GROUP_DAY;
             }
         } elseif (!empty($calendar_settings['view'])) {
             if ($calendar_settings['view'] === 'day') {
-                $default_view = 'timeGridDay';
+                $default_view = \Studip\Fullcalendar::VIEW_DAY;
             } elseif ($calendar_settings['view'] === 'month') {
-                $default_view = 'dayGridMonth';
+                $default_view = \Studip\Fullcalendar::VIEW_MONTH;
             }
         }
 
@@ -373,59 +373,68 @@ class Calendar_CalendarController extends AuthenticatedController
             $data_url_params['timeline_view'] = '1';
         }
 
+        $available_views = [];
+        if ($timeline_view) {
+            $available_views = [
+                \Studip\Fullcalendar::GROUP_WEEK,
+                \Studip\Fullcalendar::GROUP_DAY
+            ];
+        } else {
+            $available_views = [
+                \Studip\Fullcalendar::VIEW_MONTH,
+                \Studip\Fullcalendar::VIEW_WEEK,
+                \Studip\Fullcalendar::VIEW_DAY
+            ];
+        }
+
         $this->fullcalendar = Studip\Fullcalendar::create(
             _('Kalender'),
             [
-                'editable'    => $write_permissions,
-                'selectable'  => $write_permissions,
-                'studip_urls' => $fullcalendar_studip_urls,
-                'dialog_size' => 'auto',
-                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
-                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
-                'defaultDate' => $default_date->format('Y-m-d'),
-                'allDaySlot'  => true,
-                'allDayText'  => '',
-                'header'      => [
-                    'left'   => (
-                        $timeline_view
-                            ? 'resourceTimelineWeek,resourceTimelineDay'
-                            : 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
-                    ),
+                'editable'      => $write_permissions,
+                'selectable'    => $write_permissions,
+                'studip_urls'   => $fullcalendar_studip_urls,
+                'slotMinTime'   => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
+                'slotMaxTime'   => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
+                'initialDate'   => $default_date->format('Y-m-d'),
+                'allDaySlot'    => true,
+                'allDayText'    => '',
+                'headerToolbar' => [
+                    'start'   => implode(',', $available_views),
                     'center'  => 'title',
-                    'right'  => 'prev,today,next'
+                    'end'     => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views' => [
-                    'dayGridMonth' => [
+                    \Studip\Fullcalendar::VIEW_MONTH => [
                         'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
                         'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
                         'displayEventEnd' => true
                     ],
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['week']
+                    \Studip\Fullcalendar::VIEW_WEEK => [
+                        'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'weekends'        => $calendar_settings['type_week'] === 'LONG',
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['week']
                     ],
-                    'timeGridDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['day']
+                    \Studip\Fullcalendar::VIEW_DAY => [
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['day']
                     ],
-                    'resourceTimelineWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'slotDuration'       => $slot_durations['week_group']
+                    \Studip\Fullcalendar::GROUP_WEEK => [
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'weekends'        => $calendar_settings['type_week'] === 'LONG',
+                        'slotDuration'    => $slot_durations['week_group']
                     ],
-                    'resourceTimelineDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
-                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
-                        'slotDuration'       => $slot_durations['day_group']
+                    \Studip\Fullcalendar::GROUP_DAY => [
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
+                        'slotDuration'    => $slot_durations['day_group']
                     ]
                 ],
-                'defaultView' => $default_view,
-                'timeGridEventMinHeight' => 20,
+                'initialView' => $default_view,
+                'eventMinHeight' => 20,
                 'eventSources' => [
                     [
                         'url' => $this->url_for(
@@ -436,12 +445,11 @@ class Calendar_CalendarController extends AuthenticatedController
                             ),
                             $data_url_params
                         ),
-                        'method' => 'GET',
-                        'extraParams' => []
+                        'method' => 'GET'
                     ]
                 ],
-                'resources' => $calendar_resources,
-                'resourceLabelText' => $calendar_group_title
+                'resources'                 => $calendar_resources,
+                'resourceAreaHeaderContent' => $calendar_group_title
             ]
         );
     }
@@ -504,6 +512,13 @@ class Calendar_CalendarController extends AuthenticatedController
             $fullcalendar_studip_urls['add'] = $this->url_for('calendar/date/add/course_' . $course->id);
         }
 
+        $available_views = [
+            'dayGridYear',
+            \Studip\Fullcalendar::VIEW_MONTH,
+            \Studip\Fullcalendar::VIEW_WEEK,
+            \Studip\Fullcalendar::VIEW_DAY
+        ];
+
         $this->fullcalendar = Studip\Fullcalendar::create(
             _('Veranstaltungskalender'),
             [
@@ -514,31 +529,31 @@ class Calendar_CalendarController extends AuthenticatedController
                 'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
                 'allDaySlot'  => true,
                 'allDayText'  => '',
-                'header'      => [
-                    'left'    => 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay',
-                    'center'  => 'title',
-                    'right'   => 'prev,today,next'
+                'headerToolbar' => [
+                    'start'  => implode(',', $available_views),
+                    'center' => 'title',
+                    'end'    => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views'       => [
-                    'dayGridMonth' => [
+                    \Studip\Fullcalendar::VIEW_MONTH => [
                         'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
                         'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
                         'displayEventEnd' => true
                     ],
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
+                    \Studip\Fullcalendar::VIEW_WEEK  => [
+                        'dayHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['week']
                     ],
-                    'timeGridDay'  => [
-                        'columnHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
+                    \Studip\Fullcalendar::VIEW_DAY   => [
+                        'dayHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['day']
                     ]
                 ],
-                'defaultView'            => 'timeGridWeek',
+                'initialView'            => \Studip\Fullcalendar::VIEW_WEEK,
                 'timeGridEventMinHeight' => 20,
                 'eventSources'           => [
                     [

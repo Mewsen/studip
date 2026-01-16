@@ -62,19 +62,19 @@
             'editable'           => true,
             'selectable'         => isset($fullcalendar_studip_urls['add']),
             'studip_urls'        => $fullcalendar_studip_urls ?? [],
-            'minTime'            => ($min_time),
-            'maxTime'            => ($max_time),
+            'slotMinTime'        => $min_time,
+            'slotMaxTime'        => $max_time,
             'allDaySlot'         => false,
-            'columnHeaderFormat' => ['weekday' => 'short'],
-            'header'             => [
+            'dayHeaderFormat' => ['weekday' => 'short'],
+            'headerToolbar'      => [
                 'left'  => '',
                 'right' => ''
             ],
-            'defaultView'        =>
-                in_array(Request::get("defaultView"), ['dayGridMonth', 'timeGridWeek', 'timeGridDay'])
-                    ? Request::get("defaultView")
-                    : 'timeGridWeek',
-            'defaultDate'        => date('Y-m-d', $default_date),
+            'initialView'        => \Studip\Fullcalendar::VIEW_WEEK,
+            'initialDate'        => date('Y-m-d', $default_date),
+            'display_holidays'   => false,
+            'display_vacations'  => false,
+            'weekNumbers'        => false,
             'eventSources'       => [
                 [
                     'url'         => URLHelper::getURL(

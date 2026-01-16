@@ -67,9 +67,9 @@ class Admin_CourseplanningController extends AuthenticatedController
         $sidebar = Sidebar::get();
         $actions = $sidebar->addWidget(new ActionsWidget());
         $actions->addLink(
-            _('Veranstaltungs-Stundenplan PDF'),
-            'javascript:STUDIP.Fullcalendar.downloadPDF();',
-            Icon::create('file-pdf')
+            _('Drucken'),
+            'javascript:void(window.print());',
+            Icon::create('print')
         );
 
         Sidebar::get()->getWidget('actions')->addLink(
@@ -341,29 +341,23 @@ class Admin_CourseplanningController extends AuthenticatedController
         $this->non_conform_dates = $non_rasters;
     }
 
-    public function add_event_action()
+    public function add_event_action($course_id)
     {
-        $course_id = Request::option('course_id');
-        $begin = Request::get('begin');
-        $end = Request::get('end');
-        $success = false;
+        $start       = Request::getDateTime('start', DateTimeInterface::RFC3339_EXTENDED);
+        $end         = Request::getDateTime('end', DateTimeInterface::RFC3339_EXTENDED);
+        $success     = false;
         $cycle_start = null;
-        $cycle_end = null;
+        $cycle_end   = null;
+        $course      = Course::find($course_id);
 
-        if ($course_id && $this->semester) {
-            $begin_date = new DateTime($begin);
-            $end_date = new DateTime($end);
-            $begin_date->setTimezone(new DateTimeZone('UTC'));
-            $end_date->setTimezone(new DateTimeZone('UTC'));
-
-            $course = Course::find($course_id);
-
-            if (count($course->semesters) > 1) { // course over more than one semester
+        if ($course && $this->semester && $start && $end) {
+            if (count($course->semesters) > 1) {
+                //The course spans over more than one semester.
                 $start_weeks = $course->start_semester->getStartWeeks($course->end_semester);
 
-                $sem_weeks        = $this->semester->getStartWeeks();
+                $sem_weeks       = $this->semester->getStartWeeks();
                 $sem_weeks_start = explode(' Semesterwoche ', $sem_weeks[0]);
-                $sem_weeks_end = explode(' Semesterwoche ', end($sem_weeks));
+                $sem_weeks_end   = explode(' Semesterwoche ', end($sem_weeks));
 
                 foreach ($start_weeks as $week_num => $week_text) {
                     if ($cycle_start && $cycle_end) break;
@@ -378,14 +372,14 @@ class Admin_CourseplanningController extends AuthenticatedController
 
             $cycle              = new SeminarCycleDate();
             $cycle->seminar_id  = $course_id;
-            $cycle->weekday     = $begin_date->format('w');
+            $cycle->weekday     = $start->format('w');
             $cycle->description = '';
             $cycle->sws         = floatVal(0.0);
             $cycle->cycle       = 0;
-            $cycle->week_offset = $cycle_start?$cycle_start:0;
-            $cycle->end_offset  = $cycle_end?$cycle_end:intVal(count($this->semester->getStartWeeks()) -1);
-            $cycle->start_time  = $begin_date->format('H:i:s');
-            $cycle->end_time    = $end_date->format('H:i:s');
+            $cycle->week_offset = $cycle_start ? $cycle_start : 0;
+            $cycle->end_offset  = $cycle_end ? $cycle_end : intval(count($this->semester->getStartWeeks()) -1);
+            $cycle->start_time  = $start->format('H:i:s');
+            $cycle->end_time    = $end->format('H:i:s');
             $success = $cycle->store();
         }
 
@@ -402,24 +396,36 @@ class Admin_CourseplanningController extends AuthenticatedController
         }
 
         $this->render_nothing();
-        return;
     }
 
     public function pick_color_action($metadate_id, $from_action, $weekday = null)
     {
         PageLayout::setTitle(_('Farbwähler'));
 
+        $this->available_colours = [
+            'yellow'      => '#ffbd33',
+            'orange'      => '#f26e00',
+            'red'         => '#d60000',
+            'violet'      => '#b02e7c',
+            'dark-violet' => '#682c8b',
+            'green'       => '#6ead10',
+            'dark-green'  => '#008512',
+            'petrol'      => '#0E817B',
+            'brown'       => '#a85d45'
+        ];
+
         $cdate = SeminarCycleDate::find($metadate_id);
         if ($cdate) {
             $course = Course::find($cdate->Seminar_id);
             $semtype = $course->getSemType();
 
-            if (Request::submitted('save') && Request::submitted('event_color')) {
-                if (Request::get('event_color_semtype')) {
+            if (Request::submitted('save') && Request::submitted('event_colour')) {
+                $selected_colour_index = Request::get('event_colour');
+                if (Request::get('event_colour_semtype')) {
                     if (InstituteCalendarHelper::setSemtypeEventcolor(
                         Course::find($cdate->seminar_id),
                         $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT,
-                        Request::get('event_color')
+                        $this->available_colours[$selected_colour_index] ?? '',
                     )) {
                         PageLayout::postSuccess(sprintf(
                             _('Die Farbe wurde allen VA des Typs %s zugewiesen.'),
@@ -433,7 +439,7 @@ class Admin_CourseplanningController extends AuthenticatedController
                         Course::find($cdate->seminar_id),
                         $metadate_id,
                         $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT,
-                        Request::get('event_color')
+                        $this->available_colours[$selected_colour_index] ?? ''
                     )) {
                         PageLayout::postSuccess(_('Die Farbe wurde der VA zugewiesen.'));
                     } else {
@@ -447,7 +453,7 @@ class Admin_CourseplanningController extends AuthenticatedController
 
             $course_colors = InstituteCalendarHelper::getCourseEventcolors($course);
             if (array_key_exists($metadate_id, $course_colors)) {
-                $this->color = $course_colors[$metadate_id][$GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT];
+                $this->color = $course_colors[$metadate_id][$GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT] ?? '';
             } else {
                 $this->color = '#28497c';
             }
@@ -459,31 +465,26 @@ class Admin_CourseplanningController extends AuthenticatedController
         $this->weekday     = $weekday;
     }
 
-    public function move_event_action()
+    public function move_event_action($cycle_date_id)
     {
-        $metadate_id = Request::option('cycle_id');
-        $begin = Request::get('begin');
-        $end = Request::get('end');
+        $start = Request::getDateTime('start', DateTimeInterface::RFC3339_EXTENDED);
+        $end   = Request::getDateTime('end', DateTimeInterface::RFC3339_EXTENDED);
         $success = false;
 
-        $cdate = SeminarCycleDate::find($metadate_id);
+        $cdate = SeminarCycleDate::find($cycle_date_id);
         if ($cdate) {
             if (Request::submitted('resource_id')) {
                 InstituteCalendarHelper::setCourseEventcolumn(
                     Course::find($cdate->seminar_id),
-                    $metadate_id,
+                    $cycle_date_id,
                     $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT,
                     Request::get('resource_id', '0')
                 );
             }
 
-            $begin_date = new DateTime($begin);
-            $end_date = new DateTime($end);
-            $begin_date->setTimezone(new DateTimeZone('UTC'));
-            $end_date->setTimezone(new DateTimeZone('UTC'));
-            $weekday = $begin_date->format('w');
-            $cdate->start_time = $begin_date->format('H:i:s');
-            $cdate->end_time = $end_date->format('H:i:s');
+            $weekday           = $start->format('w');
+            $cdate->start_time = $start->format('H:i:s');
+            $cdate->end_time = $end->format('H:i:s');
             $cdate->weekday = $weekday;
             $success = $cdate->store();
         }

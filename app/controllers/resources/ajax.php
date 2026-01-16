@@ -756,7 +756,7 @@ class Resources_AjaxController extends AuthenticatedController
         $resource_id = Request::get('resource_id');
         $interval_id = Request::get('interval_id');
 
-        $begin = $this->convertDatetime(Request::get('begin'));
+        $begin = $this->convertDatetime(Request::get('start'));
         $end = $this->convertDatetime(Request::get('end'));
 
         //Check if a specific interval has been moved:
@@ -842,7 +842,7 @@ class Resources_AjaxController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $request->begin = $this->convertDatetime(Request::get('begin'));
+        $request->begin = $this->convertDatetime(Request::get('start'));
         $request->end = $this->convertDatetime(Request::get('end'));
 
         try {
@@ -913,7 +913,7 @@ class Resources_AjaxController extends AuthenticatedController
             return null;
         }
 
-        return DateTime::createFromFormat(DateTime::RFC3339, $input)
+        return DateTime::createFromFormat(DateTime::RFC3339_EXTENDED, $input)
             ?? DateTime::createFromFormat(
                    'Y-m-d\TH:i:s',
                    $input,

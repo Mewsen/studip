@@ -11,11 +11,11 @@
         'minTime' => ($min_time),
         'maxTime' => ($max_time),
         'allDaySlot' => false,
-        'defaultView' =>
-            in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
+        'initialView' =>
+            in_array(Request::get("defaultView"), [\Studip\Fullcalendar::VIEW_MONTH, \Studip\Fullcalendar::VIEW_WEEK, \Studip\Fullcalendar::VIEW_DAY])
             ? Request::get("defaultView")
-            : 'timeGridWeek',
-        'defaultDate' => Request::get("defaultDate"),
+            : \Studip\Fullcalendar::VIEW_WEEK,
+        'initialDate' => Request::get("defaultDate"),
         'eventSources' => [
             [
                 'url' => URLHelper::getLink(

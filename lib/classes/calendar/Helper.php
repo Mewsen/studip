@@ -159,15 +159,15 @@ class Helper
         }
 
         $available_views = [
-            'timeGridWeek' => [
-                'columnHeaderFormat' => ['weekday' => 'short'],
+            \Studip\Fullcalendar::VIEW_WEEK => [
+                'dayHeaderFormat' => ['weekday' => 'short'],
                 'slotDuration'       => $slot_duration
             ]
         ];
         if (!in_array(date('N'), $hidden_days)) {
             //The current day is visible: Allow a day view:
-            $available_views['timeGridDay'] = [
-                'columnHeaderFormat' => ['weekday' => 'short'],
+            $available_views[\Studip\Fullcalendar::VIEW_DAY] = [
+                'dayHeaderFormat' => ['weekday' => 'short'],
                 'slotDuration'       => $slot_duration
             ];
         }
@@ -175,27 +175,28 @@ class Helper
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
             [
-                'editable'    => true,
-                'selectable'  => true,
-                'dialog_size' => 'auto',
-                'minTime'     => $schedule_settings['start_time'] ?? '08:00',
-                'maxTime'     => $schedule_settings['end_time'] ?? '20:00',
-                'allDaySlot'  => false,
-                'header'      => [
-                    'left' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
-                    'right' => 'prev,today,next'
+                'editable'      => true,
+                'selectable'    => true,
+                'dialog_size'   => 'auto',
+                'slotMinTime'   => $schedule_settings['start_time'] ?? '08:00',
+                'slotMaxTime'   => $schedule_settings['end_time'] ?? '20:00',
+                'allDaySlot'    => false,
+                'headerToolbar' => [
+                    'start' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
+                    'end'   => 'prev,today,next'
                 ],
                 'views' => $available_views,
-                'columnHeaderFormat' => ['weekday' => 'short'],
-                'defaultView' => 'timeGridWeek',
-                'defaultDate' => date('Y-m-d'),
+                'dayHeaderFormat' => ['weekday' => 'short'],
+                'initialView' => \Studip\Fullcalendar::VIEW_WEEK,
+                'initialDate' => date('Y-m-d'),
                 'slotLabelFormat' => [
                     'hour'           => 'numeric',
                     'minute'         => '2-digit',
                     'omitZeroMinute' => false
                 ],
-                'weekends'   => true,
-                'hiddenDays' => $fullcalendar_hidden_days,
+                'weekends'    => true,
+                'weekNumbers' => false,
+                'hiddenDays'  => $fullcalendar_hidden_days,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
@@ -230,12 +231,12 @@ class Helper
         $calendar_settings = $calendar_owner->getConfiguration()->CALENDAR_SETTINGS ?? [];
 
         //Map calendar settings to fullcalendar settings:
-        $default_view = 'timeGridWeek';
+        $default_view = \Studip\Fullcalendar::VIEW_WEEK;
         if (!empty($calendar_settings['view'])) {
             if ($calendar_settings['view'] === 'day') {
-                $default_view = 'timeGridDay';
+                $default_view = \Studip\Fullcalendar::VIEW_DAY;
             } elseif ($calendar_settings['view'] === 'month') {
-                $default_view = 'dayGridMonth';
+                $default_view = \Studip\Fullcalendar::VIEW_MONTH;
             }
         }
 
@@ -259,29 +260,32 @@ class Helper
                 'allDaySlot'  => true,
                 'allDayText'  => '',
                 'header'      => [
-                    'left'   => 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay',
+                    'left'   => implode(
+                        ',',
+                        [\Studip\Fullcalendar::VIEW_MONTH, \Studip\Fullcalendar::VIEW_WEEK, \Studip\Fullcalendar::VIEW_DAY]
+                    ),
                     'right'  => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views' => [
-                    'dayGridMonth' => [
+                    \Studip\Fullcalendar::VIEW_MONTH => [
                         'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
                         'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
                         'displayEventEnd' => true
                     ],
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    \Studip\Fullcalendar::VIEW_WEEK => [
+                        'dayHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['week']
                     ],
-                    'timeGridDay' => [
-                        'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                    \Studip\Fullcalendar::VIEW_DAY => [
+                        'dayHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
                         'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['day']
                     ]
                 ],
-                'defaultView' => $default_view,
+                'initialView' => $default_view,
                 'eventSources' => [
                     [
                         'url' => \URLHelper::getURL(

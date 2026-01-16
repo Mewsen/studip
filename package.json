@@ -30,13 +30,12 @@
         "@babel/register": "^7.25.9",
         "@ckeditor/ckeditor5-vue": "^5.1.0",
         "@eslint/js": "^9.16.0",
-        "@fullcalendar/core": "^4.3.1",
-        "@fullcalendar/daygrid": "^4.3.0",
-        "@fullcalendar/interaction": "^4.3.0",
-        "@fullcalendar/resource-common": "^4.3.1",
-        "@fullcalendar/resource-timegrid": "^4.3.0",
-        "@fullcalendar/resource-timeline": "^4.3.0",
-        "@fullcalendar/timegrid": "^4.3.0",
+        "@fullcalendar/core": "^6.1.19",
+        "@fullcalendar/daygrid": "^6.1.19",
+        "@fullcalendar/interaction": "^6.1.19",
+        "@fullcalendar/resource-timegrid": "^6.1.19",
+        "@fullcalendar/resource-timeline": "^6.1.19",
+        "@fullcalendar/timegrid": "^6.1.19",
         "@isaul32/ckeditor5-math": "43.2.x",
         "@playwright/test": "^1.33.0",
         "@popperjs/core": "^2.11.2",
@@ -159,6 +158,8 @@
         "output": "./.reports/eslint-report.xml"
     },
     "dependencies": {
+        "@fullcalendar/resource": "^6.1.19",
+        "@fullcalendar/vue3": "^6.1.19",
         "@vojtechlanka/vue-tags-input": "^3.1.1",
         "jsonapi-serializer": "^3.6.9"
     }

@@ -1,0 +1,341 @@
+@import "buttons";
+@import "variables";
+
+.fc {
+    .fc-toolbar.fc-header-toolbar {
+        margin-bottom: 0.5em;
+
+        /* Make sure that all the elements of the header stay inside the area of the calendar: */
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    /* Styles for the buttons above the calendar: */
+    .fc-button-group {
+
+        height: 30px;
+
+        .fc-button.fc-button-primary {
+            @include button;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0;
+
+            &.fc-button-active {
+                @extend .active;
+            }
+
+            /* Remove the default gray "aura" around a focused button. */
+            &:focus {
+                box-shadow: var(--brand-color-dark) 0 0 0 1px;
+            }
+
+            /* The last button on the right shall align with the calendar border: */
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            /* A button with an icon as content. */
+            .fc-icon {
+                /* Unset rules that are set in the fullcalendar default stylesheet: */
+                line-height: unset;
+                height: unset;
+            }
+        }
+    }
+
+    /* Styles for header columns (dates or days of the week) */
+
+    /* Column header text shall not be displayed as link: */
+    @mixin calendar-header-column-content {
+        a {
+            color: var(--text-color);
+
+            /* overwrite the default Stud.IP style for links: */
+            &:visited, &:active, &:hover {
+                text-decoration: none;
+                color: var(--text-color);
+            }
+        }
+    }
+
+    /* Grid view header columns: */
+    table.fc-col-header thead {
+        background-color: var(--table-header-color);
+
+        .fc-col-header-cell, .fc-timegrid-axis {
+            @include calendar-header-column-content;
+        }
+    }
+
+    /* Timeline view header columns: */
+    .fc-resource-timeline table.fc-scrollgrid-sync-table th {
+        background-color: var(--table-header-color);
+
+        .fc-timeline-slot-frame {
+            @include calendar-header-column-content;
+        }
+    }
+
+    .fc-timegrid {
+
+        /*
+         There shall be no lines with empty labels for the minor time divisions
+         like half hours in a calendar where only the full hours have labels.
+        */
+        .fc-timegrid-slot-label.fc-timegrid-slot-minor {
+            border-top-style: none;
+        }
+
+        /* The "now indicator" shall have an orange colour: */
+        .fc-timegrid-now-indicator-arrow {
+            border-color: var(--orange);
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+        }
+        .fc-timegrid-now-indicator-line {
+            border-color: var(--orange);
+        }
+    }
+
+    .fc-daygrid, .fc-timegrid {
+        /*
+         Disable the short day of week by default:
+        */
+        .fc-col-header-cell {
+            .dow {
+                display: block;
+            }
+
+            .dow-short {
+                display: none;
+            }
+        }
+    }
+
+    /* Display the week number at the top of the cell in the top left corner: */
+    &.fc-liquid-hack div.fc-timegrid-axis-frame-liquid {
+        position: unset;
+        a.fc-timegrid-axis-cushion {
+            padding: 2px 4px;
+        }
+    }
+
+
+    /* Styles for regular calendar events: */
+    a.fc-event,
+    td.fc-event {
+        /* no round corners for events: */
+        border-radius: 0;
+
+        /* extra thick border on the left side:*/
+        border-left-width: 8px;
+
+        /* Hide overflowing text: */
+        overflow: hidden;
+
+        /* Remove the default minus character for short events: */
+        .fc-timegrid-event-short .fc-event-time:after {
+            content: "";
+        }
+
+        /* The time or location in an event. */
+        .fc-event-time, .fc-event-location {
+            opacity: 70%;
+        }
+
+        /* The content shall span over the whole height of the event,
+           even if it doesn't need all the space. */
+        .event-content {
+            height: 100%;
+        }
+
+        /* The title of an event: */
+        .fc-event-title {
+            overflow-wrap: break-word;
+        }
+
+        /* The icons inside an event: */
+        .fc-event-title-container {
+
+            .action-icons {
+                position: absolute;
+                right: 0;
+
+                button {
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+                }
+            }
+
+            .icons .studip-icon {
+                width: $font-size-base;
+                height: $font-size-base;
+            }
+        }
+    }
+}
+
+/*
+ * Special rules for the responsive view.
+ */
+html.responsive-display .fc {
+    .fc-toolbar.fc-header-toolbar {
+        flex-direction: column;
+
+        .fc-toolbar-chunk {
+            width: 100%;
+
+            &:not(:last-child) {
+                margin-bottom: $line-height-computed - $font-size-base;
+            }
+        }
+    }
+
+    .fc-timegrid:not(.fc-timeGridDay-view) {
+        /*
+         Use extra lines for the day of week, day and month and the year
+         in the week view:
+        */
+        .fc-day {
+            .dow, .year {
+                display: block;
+            }
+        }
+    }
+
+    /*
+     Disable the long day of week for the month and the week view:
+    */
+    .fc-daygrid, .fc-timegrid:not(.fc-timeGridDay-view) {
+        .fc-col-header-cell {
+            .dow {
+                display: none;
+            }
+
+            .dow-short {
+                display: block;
+            }
+        }
+    }
+}
+
+/*
+ * Special rules for calendars that display holidays:
+ */
+.fc.with-holidays {
+    .fc-timegrid {
+        /*
+         * Header cells in time grid views shall have a fixed size to avoid jumping between
+         * weeks with and without holidays. The latter shall also be displayed in normal font weight
+         * and with a smaller font. All of this shall only happen when the calendar displays holidays.
+         */
+        .fc-col-header-cell {
+            height: 2.85em;
+
+            .day {
+                /* The year may move into the next line of text in case that there is
+                 * not enough space for displaying the date in one line.
+                 */
+                .year {
+                    display: inline-block;
+                }
+
+                /* In case the day of week is too long, it shall be broken into the next line to prevent overflow. */
+                .dow {
+                    word-break: break-all;
+                }
+
+                /*
+                 * Holiday names are displayed a bit smaller. The name also must not overflow.
+                 * Instead, words shall be broken.
+                 */
+                .holiday {
+                    font-weight: normal;
+                    font-size: 0.75em;
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+}
+
+/* Special styles: */
+
+/* Events that are displayed in a Fullcalendar
+ * that is diplayed inside a Stud.IP contentbox need to have
+ * a padding of 0 to prevent them from being unnecessary empty.
+ */
+section.contentbox .fc .fc-event-main section
+{
+    padding: 0;
+}
+
+/* The institute plan has larger cells than normal calendars: */
+div.fc.institute-plan {
+    .fc-timegrid-slot {
+        height: 100px;
+    }
+}
+
+/*
+ * The room management uses special headers that shall look like
+ * table captions:
+ */
+.studip-fullcalendar-header {
+    background-color: transparent;
+    color: var(--base-gray);
+    font-size: 1.4em;
+    text-align: left;
+
+    &.fullcalendar-dialog{
+        width: calc(100% - 550px);
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: 275px;
+    }
+}
+
+
+/*
+ * Special rules for the colour picker in the course planning view
+ * (admin/coursplanning/index):
+ */
+#event-colour-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 16px;
+    width: 200px;
+    height: 204px;
+    margin: 10px 0 10px calc(50% - 100px);
+
+    input {
+        opacity: 0;
+        position: absolute;
+
+        + label {
+            cursor: pointer;
+
+            &::before {
+                background-repeat: no-repeat;
+                content: ' ';
+                display: inline-block;
+                margin: 0 1px 1px 1px;
+                vertical-align: text-top;
+                background-image: none;
+                background-size: 100%;
+            }
+        }
+
+        &:checked + label {
+            @include icon(before, checkbox-checked, $size: 90%);
+            &::before {
+                background-color: var(--color--font-inverted);
+            }
+        }
+    }
+}
+
+
+@import "fullcalendar-print";

@@ -83,10 +83,13 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
         $sidebar->addWidget($views);
 
-        $sidebar->addWidget(new TemplateWidget(
-            _('Datum'),
-            $this->get_template_factory()->open('resources/room_planning/_sidebar_date_selection.php')
-        ));
+        $date_selector = new DateSelectWidget();
+        $date_selector->setCalendarControl(true);
+        $default_date = Request::getDateTime('defaultDate');
+        if ($default_date) {
+            $date_selector->setDate($default_date);
+        }
+        $sidebar->addWidget($date_selector);
 
         $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
         if (!empty($clipboards)) {
@@ -133,7 +136,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
         foreach ($rooms as $room) {
             $this->scheduler_resources[] = [
                 'id'          => $room->id,
-                'parent_name' => $room->building->name,
                 'title'       => $room->name
             ];
         }

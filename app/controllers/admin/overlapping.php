@@ -362,7 +362,7 @@ class Admin_OverlappingController extends AuthenticatedController
 
         $selection_id = $selection_id ?: $_SESSION['MVV_OVL_SELECTION_ID'] ?? null;
 
-        $this->fullcalendar = Studip\Fullcalendar::create(
+        $this->fullcalendar = \Studip\Fullcalendar::create(
             _('Kalender'),
             [
                 'editable'    => false,
@@ -374,20 +374,20 @@ class Admin_OverlappingController extends AuthenticatedController
                 'defaultDate' => date('Y-m-d', $this->selected_semester->vorles_beginn),
                 'allDaySlot'  => false,
                 'allDayText'  => '',
-                'header'      => [
-                    'left'    => false,
-                    'center'  => $this->selected_semester->name,
-                    'right'   => false,
+                'headerToolbar' => [
+                    'start'  => false,
+                    'center' => $this->selected_semester->name,
+                    'end'    => false,
                 ],
                 'weekNumbers' => false,
                 'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short', 'omitCommas' => true],
+                    \Studip\Fullcalendar::VIEW_WEEK => [
+                        'dayHeaderFormat' => ['weekday' => 'short', 'omitCommas' => true],
                         'weekends'           => true,
                         'slotDuration'       => '00:30:00'
                     ],
                 ],
-                'defaultView' => 'timeGridWeek',
+                'initialView' => \Studip\Fullcalendar::VIEW_WEEK,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [

@@ -50,19 +50,19 @@ class Institute_ScheduleController extends AuthenticatedController
                 'minTime'    => '08:00',
                 'maxTime'    => '20:00',
                 'allDaySlot' => false,
-                'header'     => [
-                    'left'  => '',
-                    'right' => ''
+                'headerToolbar' => [
+                    'start' => '',
+                    'end'   => ''
                 ],
                 'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long'],
+                    \Studip\Fullcalendar::VIEW_WEEK => [
+                        'dayHeaderFormat' => ['weekday' => 'long'],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
                         'slotDuration'       => $week_slot_duration
                     ]
                 ],
-                'defaultView' => 'timeGridWeek',
-                'defaultDate' => date('Y-m-d'),
+                'initialView' => \Studip\Fullcalendar::VIEW_WEEK,
+                'initialDate' => date('Y-m-d'),
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [

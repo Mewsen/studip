@@ -116,7 +116,7 @@ class EventData
             'studip_range_id' => $this->range_id,
             'studip_view_urls' => $this->view_urls,
             'studip_api_urls' => $this->api_urls,
-            'icon' => $this->icon
+            'icons' => $this->icon ? explode(',', $this->icon) : [] //Backwards compatibility in case only one icon is set.
         ] + ($this->group_id ? ['groupId' => $this->group_id] : []);
     }
 }

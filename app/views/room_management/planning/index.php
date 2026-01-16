@@ -37,22 +37,20 @@
             'editable' => true,
             'selectable' => $all_rooms_booking_rights,
             'studip_urls' => $fullcalendar_studip_urls,
-            'minTime' => ($min_time),
-            'maxTime' => ($max_time),
+            'slotMinTime' => $min_time,
+            'slotMaxTime' => $max_time,
             'allDaySlot' => false,
-            'header' => [
-                'left' => '',//'resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay',
-                'right' => 'prev,next'
+            'headerToolbar' => [
+                'start' => '',
+                'center' => 'title',
+                'end' => 'prev,next'
             ],
             'slotLabelFormat' => [
                 ['hour'=> '2-digit',
                  'hour12' => false]
             ],
-            'defaultView' =>
-                in_array(Request::get("defaultView"), ['resourceTimelineMonth', 'resourceTimelineWeek', 'resourceTimelineDay'])
-                         ? Request::get("defaultView")
-                         : 'resourceTimelineDay',
-            'defaultDate' => Request::get("defaultDate"),
+            'initialView' => \Studip\Fullcalendar::GROUP_DAY,
+            'initialDate' => Request::get("defaultDate"),
             'eventSources' => [
                 [
                     'url' => URLHelper::getLink(
