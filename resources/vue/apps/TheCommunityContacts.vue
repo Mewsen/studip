@@ -94,7 +94,6 @@
                             is-clickable
                             @click="openAddContactDialog"
                         />
-                        <studip-context-menu-entry> </studip-context-menu-entry>
                         <studip-context-menu-entry
                             :label="$gettext('Gruppe erstellen')"
                             :description="$gettext('Mit Gruppen können Kontakte organisiert werden')"
@@ -106,7 +105,7 @@
                             :label="$gettext('Kontakt zu Gruppe hinzufügen')"
                             :description="$gettext('Fügt der ausgewählten Gruppe einen Kontakt hinzu')"
                             is-clickable
-                            @click="console.log('click add contact-group')"
+                            @click="openAddContactToContactGroupDialog"
                         />
                     </template>
                 </studip-context-menu>
@@ -210,6 +209,51 @@
     </studip-dialog>
 
     <studip-dialog
+        v-if="showAddContactToContactGroupDialog"
+        :title="$gettext('Kontakte zur Gruppe hinzufügen')"
+        :confirmText="$gettext('Hinzufügen')"
+        confirmClass="add"
+        :closeText="$gettext('Abbrechen')"
+        closeClass="cancel"
+        @close="closeAddContactToContactGroupDialog"
+        @confirm="addContactToContactGroup"
+        height="600"
+        width="750"
+    >
+        <template #dialogContent>
+            <studip-dual-list-box
+                v-model="addToGroupIds"
+                :available-items="allAvailableContacts"
+                id-key="id"
+                label-key="username"
+                :available-title="$gettext('Verfügbare Kontakte')"
+                :selected-title="$gettext('In dieser Gruppe')"
+                :sortable="false"
+            >
+                <template #available-item="{ item }">
+                    <div class="mps-user-tile">
+                        <img :src="item.meta.avatar.small" class="avatar-small" :alt="item['formatted-name']" />
+                        <div class="item-info">
+                            <span class="name">{{ item['formatted-name'] }}</span>
+                            <span class="details">{{ item.perm }} ({{ item.username }})</span>
+                        </div>
+                    </div>
+                </template>
+
+                <template #selected-item="{ item }">
+                    <div class="mps-user-tile">
+                        <img :src="item.meta.avatar.small" class="avatar-small" :alt="item['formatted-name']" />
+                        <div class="user-info">
+                            <span class="name">{{ item['formatted-name'] }}</span>
+                            <span class="details">{{ item.perm }} ({{ item.username }})</span>
+                        </div>
+                    </div>
+                </template>
+            </studip-dual-list-box>
+        </template>
+    </studip-dialog>
+
+    <studip-dialog
         v-if="showDeleteContactGroupDialog"
         :question="$gettext('Möchten Sie die Gruppe %{groupName} unwiderruflich löschen?', { groupName: title })"
         :title="$gettext('Gruppe löschen')"
@@ -222,14 +266,17 @@
 
 <script setup>
 import { computed, getCurrentInstance, ref, onMounted, watch } from 'vue';
+
 import StudipButtonGroup from '@/vue/components/StudipButtonGroup.vue';
 import StudipContextMenu from '@/vue/components/StudipContextMenu.vue';
 import StudipContextMenuEntry from '@/vue/components/StudipContextMenuEntry.vue';
-import StudipSwitch from '@/vue/components/StudipSwitch.vue';
 import StudipDataSetViewer from '@/vue/components/data-set-viewer/StudipDataSetViewer.vue';
-import StudipSearchInput from '@/vue/components/StudipSearchInput.vue';
 import StudipDialog from '@/vue/components/StudipDialog.vue';
-import StudipMultiPersonSearch from '@/vue/components/StudipMultiPersonSearchNew.vue';
+import StudipDualListBox from '@/vue/components/StudipDualListBox.vue';
+import StudipMultiPersonSearch from '@/vue/components/StudipMultiPersonSearch.vue';
+import StudipSearchInput from '@/vue/components/StudipSearchInput.vue';
+import StudipSwitch from '@/vue/components/StudipSwitch.vue';
+
 import { useContactStore } from '@/vue/store/pinia/contact/contacts';
 import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
@@ -238,17 +285,40 @@ import ContactListView from '@/vue/components/community/contacts/ContactListView
 
 const { proxy } = getCurrentInstance();
 
+const contactStore = useContactStore();
+const contactGroupStore = useContactGroupStore();
+
 const contactViews = {
     card: ContactCardView,
     list: ContactListView,
 };
 
-const contactStore = useContactStore();
-const contactGroupStore = useContactGroupStore();
-
+const addToGroupIds = ref([]);
+const allAvailableContacts = ref([]);
+const bulkModeActive = ref(false);
+const currentSelection = ref([]);
+const editGroupName = ref('');
 const filters = ref({
     onlyOnline: false,
     search: '',
+});
+const newGroupName = ref('');
+const selectedUsers = ref([]);
+const showAddContactDialog = ref(false);
+const showAddContactGroupDialog = ref(false);
+const showEditContactGroupDialog = ref(false);
+const showDeleteContactGroupDialog = ref(false);
+const showAddContactToContactGroupDialog = ref(false);
+
+const availableContacts = computed(() => {
+    return contactStore.all
+        .filter(contact => {
+            return !contact.group_ids || !contact.group_ids.has(contactGroupStore.selectedGroupId);
+        })
+});
+
+const userId = computed(() => {
+    return STUDIP.USER_ID;
 });
 
 const filteredContacts = computed(() => {
@@ -280,18 +350,17 @@ const contactGroups = computed(() => {
     return contactGroupStore.all ?? [];
 });
 
-const selectedGroup = ref('all');
-
-const bulkModeActive = ref(false);
-
-const currentSelection = ref([]);
+const selectedGroup = computed({
+    get: () => contactGroupStore.selectedGroupId,
+    set: (val) => contactGroupStore.selectGroup(val),
+});
 
 const hasSelection = computed(() => {
     return currentSelection.value.length > 0;
 });
 
 const isSpecificGroupSelected = computed(() => {
-    return selectedGroup.value !== 'all';
+    return contactGroupStore.selectedGroupId !== 'all';
 });
 
 const selectedContacts = computed(() => {
@@ -325,27 +394,28 @@ const bulkMailUrl = computed(() => {
 });
 
 const title = computed(() => {
-    if (!isSpecificGroupSelected.value) {
-        return proxy.$gettext('Alle Kontakte');
-    } else {
-        const group = contactGroupStore.byId(selectedGroup.value);
-
-        return group?.name || '';
-    }
+    return contactGroupStore.selectedGroup?.name || proxy.$gettext('Alle Kontakte');
 });
 
-const selectedUsers = ref([]);
-const newGroupName = ref('');
-const editGroupName = ref('');
-const showAddContactDialog = ref(false);
-const showAddContactGroupDialog = ref(false);
-const showEditContactGroupDialog = ref(false);
-const showDeleteContactGroupDialog = ref(false);
 const excludedIds = computed(() => {
     const ids = contactStore.all.map((c) => c.id);
     ids.push(STUDIP.USER_ID);
     return ids;
 });
+
+watch(
+    selectedGroup,
+    async (newGroupId) => {
+        if (newGroupId === 'all') return;
+
+        const group = contactGroupStore.byId(newGroupId);
+        if (group && !group.members_loaded) {
+            await contactGroupStore.fetchGroupMembers(newGroupId);
+        }
+    },
+    { immediate: true },
+);
+
 const openAddContactDialog = () => {
     selectedUsers.value = [];
     showAddContactDialog.value = true;
@@ -354,8 +424,8 @@ const closeAddContactDialog = () => {
     showAddContactDialog.value = false;
 };
 
-const addSelectionToContacts = () => {
-    contactStore.addContacts(selectedUsers.value);
+const addSelectionToContacts = async () => {
+    await contactStore.addContacts(userId.value, selectedUsers.value);
     closeAddContactDialog();
 };
 
@@ -438,27 +508,28 @@ const closeDeleteContactGroupDialog = () => {
     showDeleteContactGroupDialog.value = false;
 };
 
-const userId = computed(() => {
-    return STUDIP.USER_ID;
-});
+const openAddContactToContactGroupDialog = () => {
+    showAddContactToContactGroupDialog.value = true;
+    allAvailableContacts.value = [];
+    allAvailableContacts.value = [...availableContacts.value];
+};
+
+const closeAddContactToContactGroupDialog = () => {
+    showAddContactToContactGroupDialog.value = false;
+    addToGroupIds.value = [];
+};
+
+const addContactToContactGroup = async () => {
+    showAddContactToContactGroupDialog.value = false;
+    const resp = await contactGroupStore.addMultipleUsersToGroup(selectedGroup.value, addToGroupIds.value);
+    addToGroupIds.value = [];
+};
 
 onMounted(async () => {
     await contactStore.fetchAll(userId.value);
     await contactGroupStore.fetchAll();
 });
 
-watch(
-    selectedGroup,
-    async (newGroupId) => {
-        if (newGroupId === 'all') return;
-
-        const group = contactGroupStore.byId(newGroupId);
-        if (group && !group.members_loaded) {
-            await contactGroupStore.fetchGroupMembers(newGroupId);
-        }
-    },
-    { immediate: true }
-);
 </script>
 <style lang="scss">
 .community-header {

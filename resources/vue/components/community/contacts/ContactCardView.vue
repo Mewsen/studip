@@ -17,17 +17,10 @@
             </div>
             <div class="contact-card__menu">
                 <studip-action-menu
-                    :items="[
-                        {
-                            label: $gettext('vCard herunterladen'),
-                            icon: 'vcard',
-                            type: 'link',
-                            url: contact.meta['vcard-download-link']
-                        },
-                        { label: this.$gettext('Kontakt löschen'), icon: 'trash', emit: 'delete' },
-                    ]"
+                    :items="getMenuItems(contact)"
                     :collapse-at="0"
                     @delete="openDeleteDialog(contact)"
+                    @delete-from-group="openDeleteContactFromContactGroupDialog(contact)"
                 />
             </div>
             <div class="contact-card__body">
@@ -100,17 +93,61 @@
         @confirm="executeDelete"
         @close="closeDeleteDialog"
     />
+
+    <studip-dialog
+        v-if="showDeleteContactFromContactGroupDialog"
+        :question="
+            $gettext('Möchten Sie den Kontakt aus der Gruppe %{groupName} unwiderruflich löschen?', {
+                groupName: title,
+            })
+        "
+        :title="$gettext('Kontakt aus Gruppe löschen')"
+        height="200"
+        width="420"
+        @confirm="removeContactFromContactGroup"
+        @close="closeDeleteContactFromContactGroupDialog"
+    />
 </template>
 
 <script setup>
-import { computed, inject, ref } from 'vue';
+import { computed, getCurrentInstance, inject, ref } from 'vue';
 import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
 import { useContactStore } from '@/vue/store/pinia/contact/contacts';
+import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
 defineProps(['data', 'headers']);
 const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
 
 const contactStore = useContactStore();
+const contactGroupStore = useContactGroupStore();
+
+const { proxy } = getCurrentInstance();
+
+const getMenuItems = (contact) => {
+    const menuItems = [];
+    menuItems.push({
+        label: proxy.$gettext('vCard herunterladen'),
+        icon: 'vcard',
+        type: 'link',
+        url: contact.meta['vcard-download-link'],
+    });
+    if (canRemove.value) {
+        menuItems.push({
+            label: proxy.$gettext('Kontakt aus Gruppe löschen'),
+            icon: 'trash',
+            emit: 'deleteFromGroup'
+        });
+    }
+
+    menuItems.push({
+        label: proxy.$gettext('Kontakt löschen'),
+        icon: 'trash',
+        emit: 'delete',
+    });
+
+    return menuItems;
+};
+
 const isItemSelected = (id) => {
     return selectedIds.value.includes(id);
 };
@@ -153,6 +190,26 @@ const openDeleteDialog = (contact) => {
 const closeDeleteDialog = () => {
     showDeleteDialog.value = false;
     contactMarkedForDelete.value = null;
+};
+
+const showDeleteContactFromContactGroupDialog = ref(false);
+const canRemove = computed(() => contactGroupStore.selectedGroupId !== 'all');
+const contactMarkedForDeleteFromGroup = ref(null);
+
+const openDeleteContactFromContactGroupDialog = (contact) => {
+    showDeleteContactFromContactGroupDialog.value = true;
+    contactMarkedForDeleteFromGroup.value = contact;
+};
+
+const removeContactFromContactGroup = async () => {
+    showDeleteContactFromContactGroupDialog.value = false;
+    const userId = contactMarkedForDeleteFromGroup.value.id;
+    await contactGroupStore.removeUserFromGroup(contactGroupStore.selectedGroupId, userId);
+};
+
+const closeDeleteContactFromContactGroupDialog = () => {
+    showDeleteContactFromContactGroupDialog.value = false;
+    contactMarkedForDeleteFromGroup.value = null;
 };
 </script>
 

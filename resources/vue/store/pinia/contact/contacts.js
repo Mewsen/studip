@@ -1,11 +1,14 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { api } from '../kitsu-api.js';
+import { useContactGroupStore } from './contact-groups.js';
 
 export const useContactStore = defineStore('contactStore', () => {
     const records = ref(new Map());
     const isLoading = ref(false);
     const errors = ref(false);
+
+    const contactGroupStore = useContactGroupStore();
 
     function storeRecord(newRecord) {
         const id = String(newRecord.id);
@@ -57,6 +60,11 @@ export const useContactStore = defineStore('contactStore', () => {
             await api.axios.post(`users/${ownerId}/relationships/contacts`, { data: payload });
             clearRecords();
             await fetchAll(ownerId);
+            const groupId = contactGroupStore.selectedGroupId;
+            if (groupId && groupId !== 'all') {
+                await contactGroupStore.addMultipleUsersToGroup(groupId, newContactIds);
+            }
+
             return true;
         } catch (err) {
             console.error('Fehler beim Hinzufügen der Kontakte:', err);
@@ -90,6 +98,13 @@ export const useContactStore = defineStore('contactStore', () => {
         }
     }
 
+    function removeGroupFromContact(contactId, groupId) {
+        const contact = records.value.get(String(contactId));
+        if (contact && contact.group_ids) {
+            contact.group_ids.delete(String(groupId));
+        }
+    }
+
     return {
         records,
         removeRecord,
@@ -103,5 +118,6 @@ export const useContactStore = defineStore('contactStore', () => {
         addContacts,
         removeContact,
         assignGroupToContact,
+        removeGroupFromContact,
     };
 });
