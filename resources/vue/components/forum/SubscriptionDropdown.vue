@@ -155,6 +155,7 @@ const subscribe = async (notificationType = 'all') => {
         <template #items>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     class="button-base"
                     :class="{
@@ -175,6 +176,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     class="button-base"
                     :class="{
@@ -195,6 +197,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     class="button-base"
                     :class="{
@@ -215,6 +218,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     class="button-base"
                     :disabled="!subscription?.notification_type"

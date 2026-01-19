@@ -52,6 +52,8 @@ const isModerator = role => role === 'moderator';
                         @click="showAllMembers = !showAllMembers"
                         :title="$gettext('Alle Teilnehmende anzeigen')"
                         :aria-label="$gettext('Alle Teilnehmende anzeigen')"
+                        aria-haspopup="menu"
+                        :aria-expanded="showAllMembers"
                     >
                         <span class="remained-users__count" :style="{ width: size, height: size }">
                             +{{ remainedMembersCount }}
@@ -78,6 +80,8 @@ const isModerator = role => role === 'moderator';
                                             @click="activeUserAvatar = user.id"
                                             :title="$gettext('Aufklappen')"
                                             :aria-label="$gettext('Aufklappen')"
+                                            :aria-expanded="activeUserAvatar === user.id"
+                                            :aria-controls="'user-avatar-' + user.id"
                                             class="show-avatar button-base">
                                             <StudipIcon shape="arr_1down" :size="15" aria-hidden="true" />
                                         </button>
@@ -91,7 +95,8 @@ const isModerator = role => role === 'moderator';
                                         class="hide-avatar button-base">
                                         <StudipIcon shape="arr_1up" :size="15" aria-hidden="true" />
                                     </button>
-                                    <UserAvatar v-if="activeUserAvatar === user.id" :user="user" />
+
+                                    <UserAvatar v-if="activeUserAvatar === user.id" :id="'user-avatar-' + user.id" :user="user" />
                                 </li>
                             </ul>
                         </div>
@@ -122,10 +127,12 @@ const isModerator = role => role === 'moderator';
                                             @click="activeUserAvatar = ''"
                                             :title="$gettext('Zuklappen')"
                                             :aria-label="$gettext('Zuklappen')"
+                                            :aria-expanded="activeUserAvatar === user.id"
+                                            :aria-controls="'user-avatar-' + user.id"
                                             class="hide-avatar button-base">
                                             <StudipIcon shape="arr_1up" :size="15" aria-hidden="true" />
                                         </button>
-                                        <UserAvatar v-if="activeUserAvatar === user.id" :user="user" />
+                                        <UserAvatar v-if="activeUserAvatar === user.id" :id="'user-avatar-' + user.id" :user="user" />
                                     </li>
                                 </ul>
                             </div>

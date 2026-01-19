@@ -41,7 +41,7 @@ const openBlubberChat = () => {
 }
 </script>
 <template>
-    <div class="user-avatar">
+    <div class="user-avatar" v-bind="$attrs">
         <div class="user-avatar__header">
             <img class="user-profile" :src="user.avatar_url" :alt="user.name" />
             <div class="user-info">
@@ -50,9 +50,10 @@ const openBlubberChat = () => {
             </div>
         </div>
         <hr />
-        <ul class="user-avatar__actions">
+        <ul class="user-avatar__actions" role="menu">
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     v-if="user.id !== AUTH_ID"
                     @click="openBlubberChat"
@@ -66,6 +67,7 @@ const openBlubberChat = () => {
             </li>
             <li>
                 <a
+                    role="menuitem"
                     class="action-item"
                     :href="userProfileURL"
                     :title="$gettext('Zum Profil von %{name}', { name: user.name })"
@@ -77,6 +79,7 @@ const openBlubberChat = () => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     v-if="user.id !== AUTH_ID"
                     class="action-item button-base"
@@ -90,6 +93,7 @@ const openBlubberChat = () => {
             </li>
             <li>
                 <a
+                    role="menuitem"
                     class="action-item"
                     :href="vCardDownloadURL"
                     :title="$gettext('vCard herunterladen')"
