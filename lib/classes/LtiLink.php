@@ -141,7 +141,7 @@ class LtiLink
      * @param string $role            roles of this user (defaults to 'Learner')
      * @param bool   $send_lis_person  include additional user information
      */
-    public function setUser(string $userId, string $role = 'Learner', $sendLisPerson = false): void
+    public function setUser(string $userId, string $role = 'Learner', bool $sendLisPerson = false): void
     {
         $user = User::find($userId);
         $avatar = Avatar::getAvatar($user->id);
