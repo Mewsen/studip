@@ -137,12 +137,13 @@ class LtiLink
      * is used to set up the user and LIS person parameters and variables.
      * If send_lis_person is true, the user's name and e-mail is included.
      *
-     * @param User $user
+     * @param $user_id
      * @param string $role            roles of this user (defaults to 'Learner')
      * @param bool   $send_lis_person  include additional user information
      */
-    public function setUser(User $user, string $role = 'Learner', $sendLisPerson = false): void
+    public function setUser(string $user_id, string $role = 'Learner', $sendLisPerson = false): void
     {
+        $user = User::find($user_id);
         $avatar = Avatar::getAvatar($user->id);
         $this->addVariable('User.id', $user->id);
         $this->addLaunchParameter('user_id', $user->id);

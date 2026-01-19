@@ -547,7 +547,7 @@ class Course_LtiController extends StudipController
 
             // set up ContentItemSelectionRequest
             $lti_link = new LtiLink($this->tool->launch_url, $this->tool->consumer_key, $this->tool->consumer_secret, $this->tool->oauth_signature_method);
-            $lti_link->setUser(User::findCurrent(), 'Instructor', $this->tool->send_lis_person);
+            $lti_link->setUser(User::findCurrent()->id, 'Instructor', $this->tool->send_lis_person);
             $lti_link->setCourse($this->course_id);
             $lti_link->addLaunchParameters([
                 'lti_message_type' => 'ContentItemSelectionRequest',
@@ -717,7 +717,7 @@ class Course_LtiController extends StudipController
         );
 
         $ltiLink->setResource($ltiDeployment->id, $resourceLink->title, kill_format($resourceLink->description));
-        $ltiLink->setUser($authUser, $ltiRole, $ltiDeployment->getSendLisPerson());
+        $ltiLink->setUser($authUser->id, $ltiRole, $ltiDeployment->getSendLisPerson());
         $ltiLink->setCourse($resourceLink->course_id);
         $ltiLink->addVariable('ToolConsumerProfile.url', $tcProfileUrl);
         $ltiLink->addLaunchParameters([
