@@ -38,7 +38,6 @@ final class UserEnrollment
      */
     private function syncUser(): User
     {
-
         $user = User::findOneBySQL(
             "email = :email AND auth_plugin = 'LTI13a'",
             ['email' => $this->userIdentity->getEmail()]
@@ -108,8 +107,8 @@ final class UserEnrollment
         $publicationConfigs = $this->publication->getConfigValues();
 
         return match ($localRole['course']) {
-            'dozent' => $publicationConfigs['dozent_role'] ?? 'dozent',
-            'autor'  => $publicationConfigs['autor_role'] ?? 'autor',
+            'dozent' => $publicationConfigs['instructor_role'] ?? 'dozent',
+            'autor'  => $publicationConfigs['instructor_role'] ?? 'autor',
             default  => $localRole['course'] ?? 'user'
         };
     }

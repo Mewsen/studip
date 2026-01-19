@@ -59,6 +59,19 @@ class Enrol_LtiController extends AuthenticatedController
 
     public function launch_action(): void
     {
+        $validator = new ToolLaunchValidator(
+            new RegistrationManager(),
+            new NonceRepository(Factory::getCache())
+        );
+
+        $request = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+
+        if ($request->hasError()) {
+            dd($request->getError());
+        }
+
+        dd(Request::getInstance());
+
         try {
             $validator = new ToolLaunchValidator(
                 new RegistrationManager(),

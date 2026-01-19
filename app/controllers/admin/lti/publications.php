@@ -169,13 +169,11 @@ class Admin_Lti_PublicationsController extends AdminBaseController
         return [
             [
                 'name' => 'enrollment_deadline',
-                'value' => strtotime(Request::get('enrollment_deadline')),
-                'is_delete' => Request::bool('enrollment_deadline')
+                'value' => strtotime(Request::get('enrollment_deadline'))
             ],
             [
                 'name' => 'start_date',
-                'value' => strtotime(Request::get('start_date')),
-                'is_delete' => Request::bool('start_date')
+                'value' => strtotime(Request::get('start_date'))
             ],
             [
                 'name' => 'end_date',
@@ -186,12 +184,20 @@ class Admin_Lti_PublicationsController extends AdminBaseController
                 'value' => Request::int('maximum_enrolled_users')
             ],
             [
-                'name' => 'dozent_role',
-                'value' => Request::get('dozent_role')
+                'name' => 'instructor_role',
+                'value' => Request::get('instructor_role', 'dozent')
             ],
             [
-                'name' => 'autor_role',
-                'value' => Request::get('autor_role')
+                'name' => 'student_role',
+                'value' => Request::get('student_role', 'autor')
+            ],
+            [
+                'name' => 'provisioning_mode_instructor',
+                'value' => Request::int('provisioning_mode_instructor', 2)
+            ],
+            [
+                'name' => 'provisioning_mode_student',
+                'value' => Request::int('provisioning_mode_student', 1)
             ]
         ];
     }

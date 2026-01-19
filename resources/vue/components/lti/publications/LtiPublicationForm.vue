@@ -16,13 +16,15 @@ const props = defineProps({
 
 const form = reactive({
     version: '1.3a',
-    dozent_role: 'dozent',
-    autor_role: 'autor',
+    instructor_role: 'dozent',
+    student_role: 'autor',
     ...props.publication,
     status: props.publication.status?.value !== 'inactive',
     enrollment_deadline: props.publication.enrollment_deadline && STUDIP.Dates.isoToDatetimeLocal(props.publication.enrollment_deadline),
     start_date: props.publication.start_date && STUDIP.Dates.isoToDatetimeLocal(props.publication.start_date),
-    end_date: props.publication.end_date && STUDIP.Dates.isoToDatetimeLocal(props.publication.end_date)
+    end_date: props.publication.end_date && STUDIP.Dates.isoToDatetimeLocal(props.publication.end_date),
+    provisioning_mode_instructor: props.publication.provisioning_mode_instructor?.value ?? 2,
+    provisioning_mode_student: props.publication.provisioning_mode_student?.value ?? 1,
 });
 
 const formActionURL = computed(() => {
@@ -32,6 +34,24 @@ const formActionURL = computed(() => {
 
     return storePublicationURL();
 });
+
+const provisioningModeHelpeTextHTML = `
+${$gettext('Diese Einstellung legt fest, wie Konten beim ersten Start verwaltet werden. Verschiedene Modi werden unterstützt:')}
+<ul>
+    <li>
+        <b>${$gettext('Nur neue Konten (automatisch)')}</b>
+        <p>${$gettext('Für Nutzende, die die Plattform zum ersten Mal verwenden, wird automatisch ein Konto erstellt. Dies ist die Standardeinstellung für Studierende.')}</p>
+    </li>
+    <li>
+        <b>${$gettext('Bestehende und neue Konten (Abfrage)')}</b>
+        <p>${$gettext('Die Nutzenden können wählen, wie sie vorgehen möchten. Sie können ein bestehendes Konto verknüpfen oder ein neues Konto erstellen lassen. Dies ist die flexibelste Option und die Standardeinstellung für Lehrende.')}</p>
+    </li>
+    <li>
+        <b>${$gettext('Nur bestehende Konten (Abfrage)')}</b>
+        <p>${$gettext('Die Nutzenden werden aufgefordert, ein bestehendes Konto zu verknüpfen und können ohne diese Verknüpfung nicht auf die Ressourcen des Tools zugreifen.')}</p>
+    </li>
+</ul>
+`;
 
 const nameInput = useTemplateRef('nameInput');
 
@@ -151,7 +171,7 @@ onMounted(() => {
 
             <label>
                 {{ $gettext('Rolle der Lehrende') }}
-                <select name="dozent_role" v-model="form.dozent_role">
+                <select name="instructor_role" v-model="form.instructor_role">
                     <option value="dozent">{{ $gettext('Dozent') }}</option>
                     <option value="tutor">{{ $gettext('Tutor') }}</option>
                     <option value="autor">{{ $gettext('Autor') }}</option>
@@ -160,9 +180,45 @@ onMounted(() => {
 
             <label>
                 {{ $gettext('Rolle der Studierende') }}
-                <select name="autor_role" v-model="form.autor_role">
+                <select name="student_role" v-model="form.student_role">
                     <option value="autor">{{ $gettext('Autor') }}</option>
                     <option value="user">{{ $gettext('User') }}</option>
+                </select>
+            </label>
+
+            <label>
+                {{ $gettext('Bereitstellungsmodus beim ersten Start durch die Lehrende') }}
+                <StudipTooltipIcon
+                    id="provisioning-mode-instructor-help"
+                    :text="provisioningModeHelpeTextHTML"
+                    :isHtml="true"
+                />
+                <select
+                    name="provisioning_mode_instructor"
+                    v-model="form.provisioning_mode_instructor"
+                    aria-describedby="provisioning-mode-instructor-help"
+                >
+                    <option value="1">{{ $gettext('Nur neue Konten (automatisch)') }}</option>
+                    <option value="2">{{ $gettext('Bestehende und neue Konten (Abfrage)') }}</option>
+                    <option value="3">{{ $gettext('Nur bestehende Konten (Abfrage)') }}</option>
+                </select>
+            </label>
+
+            <label>
+                {{ $gettext('Bereitstellungsmodus beim ersten Start durch die Studierende') }}
+                <StudipTooltipIcon
+                    id="provisioning-mode-student-help"
+                    :text="provisioningModeHelpeTextHTML"
+                    :isHtml="true"
+                />
+                <select
+                    name="provisioning_mode_student"
+                    v-model="form.provisioning_mode_student"
+                    aria-describedby="provisioning-mode-student-help"
+                >
+                    <option value="1">{{ $gettext('Nur neue Konten (automatisch)') }}</option>
+                    <option value="2">{{ $gettext('Bestehende und neue Konten (Abfrage)') }}</option>
+                    <option value="3">{{ $gettext('Nur bestehende Konten (Abfrage)') }}</option>
                 </select>
             </label>
         </fieldset>

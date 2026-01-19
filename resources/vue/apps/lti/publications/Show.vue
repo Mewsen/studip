@@ -108,12 +108,22 @@ defineProps({
 
                 <dt>{{ $gettext('Rolle der Lehrende') }}</dt>
                 <dd>
-                    {{ publication.dozent_role }}
+                    {{ publication.instructor_role }}
                 </dd>
 
                 <dt>{{ $gettext('Rolle der Studierende') }}</dt>
                 <dd>
-                    {{ publication.autor_role }}
+                    {{ publication.student_role }}
+                </dd>
+
+                <dt>{{ $gettext('Bereitstellungsmodus beim ersten Start durch die Lehrende') }}</dt>
+                <dd>
+                    {{ publication.provisioning_mode_instructor.label }}
+                </dd>
+
+                <dt>{{ $gettext('Bereitstellungsmodus beim ersten Start durch die Studierende') }}</dt>
+                <dd>
+                    {{ publication.provisioning_mode_student.label }}
                 </dd>
             </dl>
         </article>
