@@ -14,6 +14,7 @@ use Studip\LTI13a\PlatformManager;
 use Studip\LTI13a\Registration;
 use Studip\LTI13a\RegistrationManager;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface\MessagePayloadInterface;
+use LtiResourceLink as LtiResourceLinkModel;
 
 /**
  * course/lti.php - LTI consumer API for Stud.IP
@@ -274,12 +275,10 @@ class Course_LtiController extends StudipController
 
         if (!$this->show_data_protection_info) {
             //Redirect to the tool.
-            $this->lti13a_mode = false;
-            $lti_version = $this->resource_link->deployment->getToolLtiVersion();
-            if ($lti_version === '1.3a') {
-                //LTI 1.3a
-                $this->lti13a_mode = true;
+            $this->version = $this->resource_link->deployment->getToolLtiVersion();
 
+            //LTI 1.3a
+            if ($this->version === '1.3a') {
                 $return_url = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $this->resource_link->deployment_id]);
                 $document_target = 'window';
                 if (!empty($this->resource_link->options['document_target'])) {
@@ -336,14 +335,17 @@ class Course_LtiController extends StudipController
                         $this->resource_link->getCustomLtiParameterArray(),
                     )
                 );
-            } else {
-                //LTI 1.0/1.1
+            }
+
+            //LTI 1.0/1.1
+            if ($this->version === '1.1') {
                 $this->deployment = $this->resource_link->deployment;
-                $lti_link = $this->getLtiLink($this->deployment);
+                $lti_link = $this->getLtiLink($this->deployment, $this->resource_link);
                 $this->launch_url = $this->deployment->getLaunchURL();
                 $this->launch_data = $lti_link->getBasicLaunchData();
                 $this->signature = $lti_link->getLaunchSignature($this->launch_data);
             }
+
             $this->set_layout(null);
         }
     }
@@ -544,7 +546,7 @@ class Course_LtiController extends StudipController
 
             // set up ContentItemSelectionRequest
             $lti_link = new LtiLink($this->tool->launch_url, $this->tool->consumer_key, $this->tool->consumer_secret, $this->tool->oauth_signature_method);
-            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $this->tool->send_lis_person);
+            $lti_link->setUser(User::findCurrent(), 'Instructor', $this->tool->send_lis_person);
             $lti_link->setCourse($this->course_id);
             $lti_link->addLaunchParameters([
                 'lti_message_type' => 'ContentItemSelectionRequest',
@@ -691,44 +693,47 @@ class Course_LtiController extends StudipController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param   LtiDeployment $lti_data data of LTI content block
+     * @param LtiDeployment $ltiDeployment data of LTI content block
+     * @param LtiResourceLinkModel $resourceLink
      *
-     * @return  LtiLink  LTI link representation
+     * @return LtiLink  LTI link representation
      */
-    public function getLtiLink($lti_data)
+    public function getLtiLink(LtiDeployment $ltiDeployment, LtiResourceLinkModel $resourceLink): LtiLink
     {
-        $launch_url = $lti_data->getLaunchURL();
-        $consumer_key = $lti_data->getConsumerKey();
-        $consumer_secret = $lti_data->getConsumerSecret();
-        $oauth_signature_method = $lti_data->getOauthSignatureMethod();
+        $authUser = User::findCurrent();
+        $ltiRole = $this->edit_perm ? 'Instructor' : 'Learner';
 
-        $roles = $this->edit_perm ? 'Instructor' : 'Learner';
-        $custom_parameters = explode("\n", $lti_data->getCustomParameters());
-        $description = kill_format($lti_data->description);
-        $lis_outcome_service_url = $this->url_for('course/lti/outcome/' . $lti_data->id, ['cid' => null]);
-        $tc_profile_url = $this->url_for('course/lti/profile/' . $lti_data->id, ['cid' => null]);
+        $customParameters = explode("\n", $ltiDeployment->getCustomParameters());
+        $lisOutcomeServiceUrl = $this->url_for('course/lti/outcome/' . $ltiDeployment->id, ['cid' => null]);
+        $tcProfileUrl = $this->url_for('course/lti/profile/' . $ltiDeployment->id, ['cid' => null]);
 
         // set up launch request
-        $lti_link = new LtiLink($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method);
-        $lti_link->setResource($lti_data->id, $lti_data->title, $description);
-        $lti_link->setUser($GLOBALS['user']->id, $roles, $lti_data->getSendLisPerson());
-        $lti_link->setCourse($lti_data->course_id);
-        $lti_link->addVariable('ToolConsumerProfile.url', $tc_profile_url);
-        $lti_link->addLaunchParameters([
+        $ltiLink = new LtiLink(
+            $ltiDeployment->getLaunchURL(),
+            $ltiDeployment->getConsumerKey(),
+            $ltiDeployment->getConsumerSecret(),
+            $ltiDeployment->getOauthSignatureMethod()
+        );
+
+        $ltiLink->setResource($ltiDeployment->id, $resourceLink->title, kill_format($resourceLink->description));
+        $ltiLink->setUser($authUser, $ltiRole, $ltiDeployment->getSendLisPerson());
+        $ltiLink->setCourse($resourceLink->course_id);
+        $ltiLink->addVariable('ToolConsumerProfile.url', $tcProfileUrl);
+        $ltiLink->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => $lti_data->options['document_target'],
-            'lis_outcome_service_url' => $lis_outcome_service_url,
-            'lis_result_sourcedid' => $GLOBALS['user']->id
+            'launch_presentation_document_target' => $resourceLink->options['document_target'],
+            'lis_outcome_service_url' => $lisOutcomeServiceUrl,
+            'lis_result_sourcedid' => $authUser->id
         ]);
 
-        foreach ($custom_parameters as $param) {
+        foreach ($customParameters as $param) {
             if (strpos($param, '=') !== false) {
                 [$key, $value] = explode('=', $param, 2);
-                $lti_link->addCustomParameter(trim($key), trim($value));
+                $ltiLink->addCustomParameter(trim($key), trim($value));
             }
         }
 
-        return $lti_link;
+        return $ltiLink;
     }
 
     /**
