@@ -162,6 +162,11 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
                         <CopyableCodeBlock :content="registration.consumer_secret" />
                     </dd>
 
+                    <dt>{{ $gettext('OAuth Signatur Methode des LTI-Tools') }}</dt>
+                    <dd>
+                        <CopyableCodeBlock :content="registration.oauth_signature_method" />
+                    </dd>
+
                     <dt>{{ $gettext('Personendaten an das LTI-Tool senden') }}</dt>
                     <dd>
                         <p>{{ registration.send_lis_person ? $gettext('Ja') : $gettext('Nein') }}</p>
@@ -169,7 +174,7 @@ const showToolData = () => STUDIP.Dialog.fromURL(STUDIP.URLHelper.getURL(`dispat
                 </template>
 
                 <dt>{{ $gettext('Zusätzliche LTI-Parameter') }}</dt>
-                <dd>
+                <dd v-if="registration.custom_parameters">
                     <CopyableCodeBlock :content="registration.custom_parameters" />
                 </dd>
             </template>

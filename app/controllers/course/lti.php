@@ -224,9 +224,9 @@ class Course_LtiController extends StudipController
         }
 
         //Redirect to the tool:
-        $this->ltiVersion = $registration->version;
+        $this->version = $registration->version;
 
-        if ($this->ltiVersion === '1.3a') {
+        if ($this->version === '1.3a') {
             $locale = str_replace('_', '-', $_SESSION['_language']);
             $returnUrl = URLHelper::getURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_key]);
             $documentTarget = 'window';
@@ -278,11 +278,13 @@ class Course_LtiController extends StudipController
                     )
                 ]
             );
-        } else {
-            //LTI 1.0/1.1
+        }
+
+        //LTI 1.0/1.1
+        if ($this->version === '1.1') {
             $this->resourceLink = $resourceLink;
             $this->deployment = $deployment;
-            $ltiLink = $this->getLtiLink($this->deployment, $registration);
+            $ltiLink = $this->getLtiLink($this->deployment, $registration, $resourceLink);
             $this->launchUrl = $registration->config_values['launch_url'];
             $this->launchData = $ltiLink->getBasicLaunchData();
             $this->signature = $ltiLink->getLaunchSignature($this->launchData);
@@ -326,7 +328,7 @@ class Course_LtiController extends StudipController
 
             // set up ContentItemSelectionRequest
             $lti_link = new LtiLink($registrationConfigs['launch_url'], $registrationConfigs['consumer_key'], $registrationConfigs['consumer_secret'], $registrationConfigs['oauth_signature_method']);
-            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $registrationConfigs['send_lis_person']);
+            $lti_link->setUser(User::findCurrent()->id, 'Instructor', $registrationConfigs['send_lis_person']);
             $lti_link->setCourse($this->range_id);
             $lti_link->addLaunchParameters([
                 'lti_message_type' => 'ContentItemSelectionRequest',
@@ -685,17 +687,16 @@ class Course_LtiController extends StudipController
      *
      * @param Deployment $deployment data of LTI content block
      * @param Registration $registration
+     * @param ResourceLink $resourceLink
      * @return LtiLink LTI link representation
      */
-    protected function getLtiLink(Deployment $deployment, Registration $registration): LtiLink
+    protected function getLtiLink(Deployment $deployment, Registration $registration, ResourceLink $resourceLink): LtiLink
     {
         $registrationConfigs = $registration->getConfigValues();
-
-        $roles = $this->edit_perm ? 'Instructor' : 'Learner';
-        $custom_parameters = explode("\n", $deployment->getCustomParameters());
-        $description = kill_format($deployment->description);
-        $lis_outcome_service_url = $this->url_for('course/lti/outcome/' . $deployment->id, ['cid' => null]);
-        $tc_profile_url = $this->url_for('course/lti/profile/' . $deployment->id, ['cid' => null]);
+        $role = $this->edit_perm ? 'Instructor' : 'Learner';
+        $customParameters = explode("\n", $deployment->getCustomParameters());
+        $lisOutcomeServiceUrl = $this->url_for('course/lti/outcome/' . $deployment->id, ['cid' => null]);
+        $tcProfileUrl = $this->url_for('course/lti/profile/' . $deployment->id, ['cid' => null]);
 
         // set up launch request
         $ltiLink = new LtiLink(
@@ -704,18 +705,18 @@ class Course_LtiController extends StudipController
             $registrationConfigs['consumer_secret'],
             $registrationConfigs['oauth_signature_method']
         );
-        $ltiLink->setResource($deployment->id, $deployment->title, $description);
-        $ltiLink->setUser(User::findCurrent()->id, $roles, $registrationConfigs['send_lis_person']);
-        $ltiLink->setCourse($deployment->course_id);
-        $ltiLink->addVariable('ToolConsumerProfile.url', $tc_profile_url);
+        $ltiLink->setResource($resourceLink->id, $resourceLink->title, kill_format($resourceLink->description));
+        $ltiLink->setUser(User::findCurrent()->id, $role, $registrationConfigs['send_lis_person']);
+        $ltiLink->setCourse($resourceLink->course_id);
+        $ltiLink->addVariable('ToolConsumerProfile.url', $tcProfileUrl);
         $ltiLink->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => $deployment->options['document_target'],
-            'lis_outcome_service_url' => $lis_outcome_service_url,
+            'launch_presentation_document_target' => $resourceLink->options['document_target'],
+            'lis_outcome_service_url' => $lisOutcomeServiceUrl,
             'lis_result_sourcedid' => User::findCurrent()->id
         ]);
 
-        foreach ($custom_parameters as $param) {
+        foreach ($customParameters as $param) {
             if (strpos($param, '=') !== false) {
                 [$key, $value] = explode('=', $param, 2);
                 $ltiLink->addCustomParameter(trim($key), trim($value));

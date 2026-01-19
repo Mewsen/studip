@@ -343,6 +343,10 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
                 [
                     'name' => 'consumer_secret',
                     'value' => Request::get('consumer_secret')
+                ],
+                [
+                    'name' => 'oauth_signature_method',
+                    'value' => Request::get('oauth_signature_method', 'sha1')
                 ]
             ];
         }
@@ -353,7 +357,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
     private function syncRegistrationConfigs($registrationId): void
     {
         foreach ($this->extractRegistrationConfigsFromRequest() as $config) {
-            if (isset($config['is_delete'])) {
+            if (!Request::bool($config['name'])) {
                 RegistrationConfig::deleteBySQL(
                     "registration_id = :registration_id AND name = :name",
                     [

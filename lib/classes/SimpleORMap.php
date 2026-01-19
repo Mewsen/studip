@@ -2597,6 +2597,9 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             return $record;
         }
 
-        return static::create(array_merge($attributes, $values));
+        return static::create([
+            ...$attributes,
+            ...$values
+        ]);
     }
 }

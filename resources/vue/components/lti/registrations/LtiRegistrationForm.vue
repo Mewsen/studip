@@ -23,7 +23,9 @@ const form = reactive({
     version: '1.3a',
     key_type: 'jwk_keyset',
     launch_container: 'window',
+    oauth_signature_method: 'sha1',
     ...props.registration,
+    send_lis_person: Boolean(props.registration.send_lis_person),
     status: props.registration.status?.value === 'active',
 });
 
@@ -127,7 +129,7 @@ onMounted(() => {
                 <span class="textlabel">{{ $gettext('Tool-ID') }}</span>
                 <span :title="$gettext('Tool-ID ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                 <StudipTooltipIcon
-                    :text="$gettext('Der eindeutige Identifikator der LTI-Tool.')"
+                    :text="$gettext('Der eindeutige Identifikator der LTI-Tool. z.B: die Tool-URL')"
                 />
                 <input required type="url" name="audience" v-model="form.audience" />
             </label>
@@ -197,6 +199,15 @@ onMounted(() => {
                     <span class="textlabel">{{ $gettext('Consumer-Secret') }}</span>
                     <span :title="$gettext('Consumer-Secret ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                     <input required type="text" name="consumer_secret" v-model="form.consumer_secret" />
+                </label>
+
+                <label class="studiprequired">
+                    <span class="textlabel">{{ $gettext('OAuth Signatur Methode des LTI-Tools') }}</span>
+                    <span :title="$gettext('OAuth Signatur Methode des LTI-Tools ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                    <select name="oauth_signature_method" v-model="form.oauth_signature_method">
+                        <option value="sha1">HMAC-SHA1</option>
+                        <option value="sha256">HMAC-SHA256</option>
+                    </select>
                 </label>
 
                 <label>

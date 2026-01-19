@@ -24,42 +24,35 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
  */
 class LtiLink
 {
-    // launch URL and credentials
-    protected $launch_url;
-    protected $consumer_key;
-    protected $consumer_secret;
-    protected $signature_method;
-
     // launch parameters and variables
-    protected $parameters = [];
-    protected $variables = [];
+    protected array $parameters = [];
+    protected array $variables = [];
 
     /**
      * Iniialize a new LtiLink instance with the given URL and credentials.
      *
-     * @param string $launch_url       launch URL of external LTI tool
-     * @param string $consumer_key     consumer key of the LTI link
-     * @param string $consumer_secret  consumer secret of the LTI link
-     * @param string $signature_method signature method to use (optional)
+     * @param string $launchUrl       launch URL of external LTI tool
+     * @param string $consumerKey     consumer key of the LTI link
+     * @param string $consumerSecret  consumer secret of the LTI link
+     * @param string $signatureMethod signature method to use (optional)
      */
-    public function __construct($launch_url, $consumer_key, $consumer_secret, $signature_method = 'sha1')
-    {
-        $this->launch_url = $launch_url;
-        $this->consumer_key = $consumer_key;
-        $this->consumer_secret = $consumer_secret;
-        $this->signature_method = $signature_method;
-
+    public function __construct(
+        protected string $launchUrl,
+        protected string $consumerKey,
+        protected string $consumerSecret,
+        protected string $signatureMethod = 'sha1'
+    ) {
         // Basic LTI uses OAuth to sign requests
         // OAuth Core 1.0 spec: http://oauth.net/core/1.0/
         $this->addLaunchParameters([
             'lti_version' => 'LTI-1p0',
             'lti_message_type' => 'basic-lti-launch-request',
-            'oauth_consumer_key' => $this->consumer_key,
+            'oauth_consumer_key' => $consumerKey,
             'oauth_callback' => 'about:blank',
             'oauth_version' => '1.0',
             'oauth_nonce' => uniqid('lti', true),
             'oauth_timestamp' => time(),
-            'oauth_signature_method' => 'HMAC-' . strtoupper($this->signature_method),
+            'oauth_signature_method' => 'HMAC-' . strtoupper($signatureMethod),
             'tool_consumer_info_product_family_code' => 'studip',
             'tool_consumer_info_version' => $GLOBALS['SOFTWARE_VERSION'],
             'tool_consumer_instance_guid' => Config::get()->STUDIP_INSTALLATION_ID,
@@ -74,16 +67,16 @@ class LtiLink
      * Set the LMS resource associated with this LTI link. This is required
      * for an LTI launch request.
      *
-     * @param string $resource_id      id of associated resource
-     * @param string $resource_title   title of associated resource
-     * @param string $resource_description description of associated resource
+     * @param string $id      id of associated resource
+     * @param string $title   title of associated resource
+     * @param string $description description of associated resource
      */
-    public function setResource($resource_id, $resource_title, $resource_description = null)
+    public function setResource($id, string $title, string $description = null): void
     {
         $this->addVariables([
-            'ResourceLink.id' => $resource_id,
-            'ResourceLink.title' => $resource_title,
-            'ResourceLink.description' => $resource_description,
+            'ResourceLink.id' => $id,
+            'ResourceLink.title' => $title,
+            'ResourceLink.description' => $description,
         ]);
 
         $this->addLaunchParameters([
@@ -97,14 +90,14 @@ class LtiLink
      * Set the Stud.IP course associated with this LTI link. The course data
      * is used to set up the context and course parameters and variables.
      *
-     * @param string $course_id        id of associated course
+     * @param string $courseId id of associated course
      */
-    public function setCourse($course_id)
+    public function setCourse(string $courseId): void
     {
-        $course = Course::find($course_id);
+        $course = Course::find($courseId);
 
-        $this->addVariable('Context.id', $course_id);
-        $this->addLaunchParameter('context_id', $course_id);
+        $this->addVariable('Context.id', $courseId);
+        $this->addLaunchParameter('context_id', $courseId);
 
         if ($course) {
             $this->addVariables([
@@ -137,12 +130,13 @@ class LtiLink
      * is used to set up the user and LIS person parameters and variables.
      * If send_lis_person is true, the user's name and e-mail is included.
      *
-     * @param User $user
-     * @param string $role            roles of this user (defaults to 'Learner')
-     * @param bool   $send_lis_person  include additional user information
+     * @param User $userId
+     * @param string $role roles of this user (defaults to 'Learner')
+     * @param bool $sendLisPerson  include additional user information
      */
-    public function setUser(User $user, string $role = 'Learner', $sendLisPerson = false): void
+    public function setUser(string $userId, string $role = 'Learner', bool $sendLisPerson = false): void
     {
+        $user = User::find($userId);
         $avatar = Avatar::getAvatar($user->id);
         $this->addVariable('User.id', $user->id);
         $this->addLaunchParameter('user_id', $user->id);
@@ -178,7 +172,7 @@ class LtiLink
      * @param string $name      parameter name
      * @param string $value     value (use NULL to unset)
      */
-    public function addLaunchParameter($name, $value)
+    public function addLaunchParameter($name, $value): void
     {
         if (isset($value)) {
             $this->parameters[$name] = (string) $value;
@@ -192,7 +186,7 @@ class LtiLink
      *
      * @param array $params    list of launch parameters
      */
-    public function addLaunchParameters($params)
+    public function addLaunchParameters($params): void
     {
         foreach ($params as $key => $value) {
             $this->addLaunchParameter($key, $value);
@@ -207,7 +201,7 @@ class LtiLink
      * @param string $name      parameter name
      * @param string $value     value (may contain variables)
      */
-    public function addCustomParameter($name, $value)
+    public function addCustomParameter($name, $value): void
     {
         $name = strtolower(preg_replace('/\W/', '_', $name));
         $value = preg_replace_callback('/\$([\w.]*\w)/', function($matches) {
@@ -222,7 +216,7 @@ class LtiLink
      *
      * @param array $params    list of custom parameters
      */
-    public function addCustomParameters($params)
+    public function addCustomParameters($params): void
     {
         foreach ($params as $key => $value) {
             $this->addCustomParameter($key, $value);
@@ -235,7 +229,7 @@ class LtiLink
      * @param string $name      variable name
      * @param string $value     value (use NULL to unset)
      */
-    public function addVariable($name, $value)
+    public function addVariable($name, $value): void
     {
         if (isset($value)) {
             $this->variables[$name] = $value;
@@ -249,7 +243,7 @@ class LtiLink
      *
      * @param array $variables list of substitution variables
      */
-    public function addVariables($variables)
+    public function addVariables($variables): void
     {
         foreach ($variables as $key => $value) {
             $this->addVariable($key, $value);
@@ -259,9 +253,9 @@ class LtiLink
     /**
      * Get the substitution variables defined for this LTI link.
      *
-     * @return array   list of substitution variables
+     * @return array list of substitution variables
      */
-    public function getVariables()
+    public function getVariables(): array
     {
         return $this->variables;
     }
@@ -271,9 +265,9 @@ class LtiLink
      *
      * @return string  launch URL of external LTI tool
      */
-    public function getLaunchURL()
+    public function getLaunchURL(): string
     {
-        return $this->launch_url;
+        return $this->launchUrl;
     }
 
     /**
@@ -281,7 +275,7 @@ class LtiLink
      *
      * @return array   launch parameters (UTF-8 encoded)
      */
-    public function getBasicLaunchData()
+    public function getBasicLaunchData(): array
     {
         return $this->parameters;
     }
@@ -289,38 +283,38 @@ class LtiLink
     /**
      * Sign a launch request including the given launch parameters.
      *
-     * @param array $launch_params      array of launch parameters
+     * @param array $launchParams array of launch parameters
      *
-     * @return string   launch signature
+     * @return string launch signature
      */
-    public function getLaunchSignature($launch_params)
+    public function getLaunchSignature($launchParams): string
     {
-        $launch_url = $this->launch_url;
+        $launchUrl = $this->launchUrl;
 
-        if (strpos($launch_url, '#') !== false) {
-            $launch_url = explode('#', $launch_url)[0];
+        if (strpos($launchUrl, '#') !== false) {
+            $launchUrl = explode('#', $launchUrl)[0];
         }
 
-        if (strpos($launch_url, '?') !== false) {
-            list($launch_url, $query) = explode('?', $launch_url);
+        if (strpos($launchUrl, '?') !== false) {
+            list($launchUrl, $query) = explode('?', $launchUrl);
         }
 
         if (isset($query)) {
             parse_str($query, $query_params);
-            $launch_params += $query_params;
+            $launchParams += $query_params;
         }
 
         // posted form data will always use CR LF
-        $launch_params = preg_replace("/\r?\n/", "\r\n", $launch_params);
+        $launchParams = preg_replace("/\r?\n/", "\r\n", $launchParams);
 
         $requestFactory = app(ServerRequestFactoryInterface::class);
-        $request = $requestFactory->createServerRequest('POST', $launch_url);
+        $request = $requestFactory->createServerRequest('POST', $launchUrl);
 
         return Studip\OAuth1::signRequest(
-            $request->withQueryParams($launch_params),
-            $this->consumer_secret,
+            $request->withQueryParams($launchParams),
+            $this->consumerSecret,
             '',
-            $this->signature_method
+            $this->signatureMethod
         );
     }
 }

@@ -205,7 +205,7 @@ const deleteRegistration = id => {
                     </td>
                     <td>{{ registration.version }}</td>
                     <td>
-                        <a v-if="registration.version === '1.3a'" :href="deploymentsIndexURL(registration.id, role)">
+                        <a :href="deploymentsIndexURL(registration.id, role)">
                             {{ registration.deployments.length }}
                         </a>
                     </td>

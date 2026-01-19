@@ -3,6 +3,7 @@ namespace Lti;
 
 use Keyring;
 use Lti\Enum\ResourceLaunchContainer;
+use Ramsey\Uuid\Uuid;
 use Range;
 use SimpleORMap;
 use SimpleORMapCollection;
@@ -79,9 +80,19 @@ class Registration extends SimpleORMap
         return new RegistrationRepository($this, $deployment);
     }
 
-    public function getDefaultDeployment(): ?Deployment
+    public function getDefaultDeployment(): Deployment
     {
-        return Deployment::findOneBySQL("registration_id = ? AND is_default = 1", [$this->id]);
+        return Deployment::firstOrCreate(
+            [
+                'is_default' => 1,
+                'registration_id' => $this->id
+            ],
+            [
+                'name' => _('Standard-Deployment'),
+                'deployment_key' => bin2hex(random_bytes(6)),
+                'client_id' => Uuid::uuid4()->toString()
+            ]
+        );
     }
 
     public function getKeyring(): ?Keyring
