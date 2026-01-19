@@ -60,8 +60,8 @@ onBeforeUnmount(() => {
         v-bind="$attrs"
         ref="dropdown"
         class="dropdown"
-        aria-haspopup="true"
-        :aria-expanded="isOpen.toString()"
+        aria-haspopup="menu"
+        :aria-expanded="isOpen"
     >
         <div ref="trigger">
             <slot name="trigger">
@@ -73,7 +73,7 @@ onBeforeUnmount(() => {
                 v-if="isOpen"
                 ref="dropdownContent"
                 class="dropdown__content"
-                aria-labelledby="dropdown-title"
+                :aria-labelledby="title ? 'dropdown-title' : null"
             >
                 <button
                     type="button"

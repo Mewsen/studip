@@ -155,6 +155,7 @@ const subscribe = async (notificationType = 'all') => {
         <template #items>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.All
@@ -174,6 +175,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.RepliesOnly
@@ -193,6 +195,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     :class="{
                         'active': subscription?.notification_type === SubscriptionNotificationType.None
@@ -212,6 +215,7 @@ const subscribe = async (notificationType = 'all') => {
             </li>
             <li>
                 <button
+                    role="menuitem"
                     type="button"
                     :disabled="!subscription?.notification_type"
                     @click="unSubscribe"

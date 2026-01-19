@@ -14,7 +14,7 @@ defineProps({
     },
     label: {
         type: String,
-        default: ''
+        default: null
     }
 });
 
@@ -24,22 +24,24 @@ const isOpen = defineModel({ default: false });
     <Dropdown class="user-avatar-dropdown" v-model="isOpen">
         <template #trigger>
             <button
-                class="user-avatar-dropdown__preview"
+                type="button"
+                class="user-avatar-dropdown__preview button-base"
                 @click="isOpen = !isOpen"
                 v-bind="$attrs"
                 :class="{
                     'active': isOpen
                 }"
-                :title="label ?? user.name"
-                :aria-label="label ?? $gettext('vCard')"
-                :aria-pressed="isOpen"
+                :title="label ?? $gettext('Avatar-Menü öffnen')"
+                :aria-label="$gettext('Avatar-Menü für „%{ context }“ öffnen', { context: user.name })"
+                aria-haspopup="menu"
+                :aria-expanded="isOpen"
             >
                 <img class="user-profile" :src="user.avatar_url" :style="{ width: size, height: size }" :alt="user.name" />
             </button>
         </template>
 
         <template #content>
-            <UserAvatar :user="user" v-model="isOpen" />
+            <UserAvatar :user="user" v-model="isOpen" :id="'user-avatar-' + user.id" />
         </template>
     </Dropdown>
 </template>
