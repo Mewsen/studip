@@ -138,8 +138,8 @@ class LtiLink
      * If send_lis_person is true, the user's name and e-mail is included.
      *
      * @param $userId
-     * @param string $role            roles of this user (defaults to 'Learner')
-     * @param bool   $send_lis_person  include additional user information
+     * @param string $role roles of this user (defaults to 'Learner')
+     * @param bool $sendLisPerson  include additional user information
      */
     public function setUser(string $userId, string $role = 'Learner', bool $sendLisPerson = false): void
     {
