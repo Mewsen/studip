@@ -47,27 +47,63 @@ export const useContactGroupStore = defineStore('contactGroupStore', () => {
         isLoading.value = false;
     }
 
-    async function addContactGroup(ownerId, newGroupData) {
+    async function fetchById(contactGroupId) {
+    try {
+        const { data } = await api.get(`user-contact-groups/${contactGroupId}`);
+        storeRecord(data);
+        return data;
+    } catch (err) {
+        console.error(`Fehler beim Laden der Kontakt-Gruppe ${contactGroupId}:`, err);
+        throw err;
+    }
+}
+
+    async function addContactGroup(newGroupName) {
+        let state = false;
         try {
-            const { data } = await api.axios.post(`user-contact-groups`, {
-                data: newGroupData,
+            const { data } = await api.post(`user-contact-groups`, {
+                name: newGroupName,
             });
-            console.log(data);
             storeRecord(data);
+            state = true;
         } catch (err) {
             console.error('Fehler beim Hinzufügen der Kontakt-Gruppe:', err);
             throw err;
         }
+
+        return state;
     }
 
+    async function updateContactGroup(contactGroupId, updatedName) {
+    let state = false;
+    try {
+        const { data } = await api.patch(`user-contact-groups`, {
+            type: 'contact-groups',
+            id: contactGroupId,
+            name: updatedName,
+        });
+        storeRecord(data);
+        state = true;
+    } catch (err) {
+        console.error(`Fehler beim Updaten der Kontakt-Gruppe ${contactGroupId}:`, err);
+        throw err;
+    }
+
+    return state;
+}
+
     async function removeContactGroup(contactGroupId) {
+        let state = false;
         try {
             await api.axios.delete(`user-contact-groups/${contactGroupId}`);
             removeRecord(contactGroupId);
+            state = true;
         } catch (err) {
             console.error('Fehler beim Löschen der Kontakt-Gruppe:', err);
             throw err;
         }
+
+        return state;
     }
 
     async function fetchGroupMembers(groupId) {
@@ -96,8 +132,10 @@ export const useContactGroupStore = defineStore('contactGroupStore', () => {
         all,
         byId,
         fetchAll,
+        fetchById,
         addContactGroup,
         removeContactGroup,
+        updateContactGroup,
         fetchGroupMembers,
     };
 });

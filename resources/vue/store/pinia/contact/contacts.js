@@ -46,16 +46,23 @@ export const useContactStore = defineStore('contactStore', () => {
         isLoading.value = false;
     }
 
-    async function addContact(ownerId, newContactId) {
+    async function addContacts(ownerId, newContactIds) {
+        isLoading.value = true;
         try {
-            const { data } = await api.axios.post(`users/${ownerId}/relationships/contacts`, {
-                data: [{ type: 'users', id: newContactId }],
-            });
-            console.log(data);
-            storeRecord(data);
+            const payload = newContactIds.map((id) => ({
+                type: 'users',
+                id: id,
+            }));
+
+            await api.axios.post(`users/${ownerId}/relationships/contacts`, { data: payload });
+            clearRecords();
+            await fetchAll(ownerId);
+            return true;
         } catch (err) {
-            console.error('Fehler beim Hinzufügen der Kontakt-Beziehung:', err);
+            console.error('Fehler beim Hinzufügen der Kontakte:', err);
             throw err;
+        } finally {
+            isLoading.value = false;
         }
     }
 
@@ -93,7 +100,7 @@ export const useContactStore = defineStore('contactStore', () => {
         all,
         byId,
         fetchAll,
-        addContact,
+        addContacts,
         removeContact,
         assignGroupToContact,
     };

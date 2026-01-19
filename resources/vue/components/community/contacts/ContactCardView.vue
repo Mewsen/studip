@@ -15,7 +15,21 @@
                     @change="toggleItem(contact.id)"
                 />
             </div>
-
+            <div class="contact-card__menu">
+                <studip-action-menu
+                    :items="[
+                        {
+                            label: $gettext('vCard herunterladen'),
+                            icon: 'vcard',
+                            type: 'link',
+                            url: contact.meta['vcard-download-link']
+                        },
+                        { label: this.$gettext('Kontakt löschen'), icon: 'trash', emit: 'delete' },
+                    ]"
+                    :collapse-at="0"
+                    @delete="openDeleteDialog(contact)"
+                />
+            </div>
             <div class="contact-card__body">
                 <div class="contact-card__avatar">
                     <img :src="contact.meta.avatar.medium" :alt="contact['formatted-name']" />
@@ -47,12 +61,6 @@
                             <studip-icon shape="cellphone" :size="14" />
                             <span>{{ contact.cell }}</span>
                         </div>
-                        <div class="meta-item">
-                            <a :href="contact.meta['vcard-download-link']">
-                                <studip-icon shape="vcard" :size="14" />
-                                {{ $gettext('vCard herunterladen') }}
-                            </a>
-                        </div>
                     </div>
 
                     <div class="contact-card__actions">
@@ -62,7 +70,7 @@
                             class="as-button icon-only"
                             :title="$gettext('Nachricht schreiben')"
                         >
-                            <studip-icon shape="mail" role="clickable" />
+                            <studip-icon shape="mail" />
                         </a>
                         <a
                             data-dialog="width=900;height=700"
@@ -70,33 +78,45 @@
                             class="as-button icon-only"
                             :title="$gettext('Chat starten')"
                         >
-                            <studip-icon shape="chat" role="clickable" />
+                            <studip-icon shape="chat" />
                         </a>
                         <a
                             v-if="(contact.cell || contact.phone) && canCall"
                             :href="`tel:${contact.cell || contact.phone}`"
                             class="as-button icon-only"
                         >
-                            <studip-icon :shape="contact.cell ? 'cellphone' : 'phone'" role="clickable" />
+                            <studip-icon :shape="contact.cell ? 'cellphone' : 'phone'" />
                         </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <studip-dialog
+        v-if="showDeleteDialog"
+        :title="$gettext('Kontakt löschen')"
+        :question="$gettext('Möchten Sie den Kontakt wirklich löschen?')"
+        height="200"
+        @confirm="executeDelete"
+        @close="closeDeleteDialog"
+    />
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
+import { useContactStore } from '@/vue/store/pinia/contact/contacts';
 
 defineProps(['data', 'headers']);
-
 const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
 
+const contactStore = useContactStore();
 const isItemSelected = (id) => {
     return selectedIds.value.includes(id);
 };
-
+const userId = computed(() => {
+    return STUDIP.USER_ID;
+});
 const canCall = computed(() => {
     const isTouchInput = window.matchMedia('(pointer: coarse)').matches;
 
@@ -115,6 +135,24 @@ const getMessageUrl = (contact) => {
 
 const getChatUrl = (contact) => {
     return `${STUDIP.URLHelper.base_url}dispatch.php/blubber/write_to/${contact.id}`;
+};
+
+const showDeleteDialog = ref(false);
+const contactMarkedForDelete = ref(null);
+
+const executeDelete = async () => {
+    showDeleteDialog.value = false;
+    await contactStore.removeContact(userId.value, contactMarkedForDelete.value.id);
+    contactMarkedForDelete.value = null;
+};
+
+const openDeleteDialog = (contact) => {
+    showDeleteDialog.value = true;
+    contactMarkedForDelete.value = contact;
+};
+const closeDeleteDialog = () => {
+    showDeleteDialog.value = false;
+    contactMarkedForDelete.value = null;
 };
 </script>
 
@@ -140,6 +178,17 @@ const getChatUrl = (contact) => {
     &.is-selected {
         border-color: var(--color--tile-border-selected);
         background-color: var(--color--tile-background-selected);
+    }
+
+    &__menu {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 11;
+
+        :deep(.action-menu) {
+            display: inline-block;
+        }
     }
 
     &__body {
@@ -189,6 +238,8 @@ const getChatUrl = (contact) => {
 
     &__header {
         margin-bottom: 8px;
+        padding-right: 24px;
+
         .contact-name {
             margin: 0;
             font-size: 1.1em;
@@ -206,7 +257,7 @@ const getChatUrl = (contact) => {
 
     &__meta {
         flex-grow: 1;
-        min-height: 5rem;
+        min-height: 3rem;
 
         .meta-item {
             display: flex;

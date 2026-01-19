@@ -298,7 +298,8 @@ class MultipersonsearchController extends AuthenticatedController
                 'nachname' => $user->nachname,
                 'vorname' => $user->vorname,
                 'username' => $user->username,
-                'formatted-name' => trim($user->getFullName())
+                'formatted-name' => trim($user->getFullName()),
+                'perm' => $user->perms
             ];
         }
         $this->render_json($output);

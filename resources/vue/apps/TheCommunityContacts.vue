@@ -52,7 +52,7 @@
                         <studip-context-menu-entry>
                             <studip-switch :label="$gettext('Kontakt ist online')" v-model="filters.onlyOnline" />
                         </studip-context-menu-entry>
-                         <studip-context-menu-entry>
+                        <studip-context-menu-entry>
                             <label>
                                 <span class="sr-only">{{ $gettext('Suche') }}</span>
                                 <studip-search-input
@@ -74,14 +74,14 @@
                             :description="$gettext('Ändere hier den Namen und andere Einstellungen')"
                             icon="edit"
                             is-clickable
-                            @click="console.log('click edit contact group')"
+                            @click="openEditContactGroupDialog"
                         />
                         <studip-context-menu-entry
                             :label="$gettext('Gruppe löschen')"
                             :description="$gettext('Lösche diese Gruppe, deine Kontakte bleiben erhalten.')"
                             icon="trash"
                             is-clickable
-                            @click="console.log('click remove contact group')"
+                            @click="openDeleteContactGroupDialog"
                         />
                     </template>
                 </studip-context-menu>
@@ -92,13 +92,14 @@
                             :label="$gettext('Kontakt hinzufügen')"
                             :description="$gettext('Erstellt aus einem Stud.IP Nutzer einen Kontakt')"
                             is-clickable
-                            @click="console.log('click add contact')"
+                            @click="openAddContactDialog"
                         />
+                        <studip-context-menu-entry> </studip-context-menu-entry>
                         <studip-context-menu-entry
                             :label="$gettext('Gruppe erstellen')"
                             :description="$gettext('Mit Gruppen können Kontakte organisiert werden')"
                             is-clickable
-                            @click="console.log('click add contact-group')"
+                            @click="openAddContactGroupDialog"
                         />
                         <studip-context-menu-entry
                             v-if="isSpecificGroupSelected"
@@ -148,6 +149,75 @@
             </div>
         </template>
     </studip-data-set-viewer>
+    <studip-dialog
+        v-if="showAddContactDialog"
+        :title="$gettext('Kontakt hinzufügen')"
+        :confirmText="$gettext('Hinzufügen')"
+        confirmClass="add"
+        :closeText="$gettext('Abbrechen')"
+        closeClass="cancel"
+        @close="closeAddContactDialog"
+        @confirm="addSelectionToContacts"
+        height="600"
+        width="750"
+    >
+        <template #dialogContent>
+            <studip-multi-person-search v-model="selectedUsers" :exclude="excludedIds" search-context="contacts" />
+        </template>
+    </studip-dialog>
+    <studip-dialog
+        v-if="showAddContactGroupDialog"
+        :title="$gettext('Kontaktgruppe hinzufügen')"
+        :confirmText="$gettext('Hinzufügen')"
+        confirmClass="add"
+        :closeText="$gettext('Abbrechen')"
+        closeClass="cancel"
+        @close="closeAddContactGroupDialog"
+        @confirm="addContactGroup"
+        height="240"
+        width="400"
+    >
+        <template #dialogContent>
+            <form class="default">
+                <label>
+                    <span class="required">{{ $gettext('Gruppenname') }}</span>
+                    <input type="text" v-model="newGroupName" required />
+                </label>
+            </form>
+        </template>
+    </studip-dialog>
+
+    <studip-dialog
+        v-if="showEditContactGroupDialog"
+        :title="$gettext('Kontaktgruppe bearbeiten')"
+        :confirmText="$gettext('Speichern')"
+        confirmClass="accept"
+        :closeText="$gettext('Abbrechen')"
+        closeClass="cancel"
+        @close="closeEditContactGroupDialog"
+        @confirm="updateContactGroup"
+        height="240"
+        width="400"
+    >
+        <template #dialogContent>
+            <form class="default">
+                <label>
+                    <span class="required">{{ $gettext('Gruppenname') }}</span>
+                    <input type="text" v-model="editGroupName" required />
+                </label>
+            </form>
+        </template>
+    </studip-dialog>
+
+    <studip-dialog
+        v-if="showDeleteContactGroupDialog"
+        :question="$gettext('Möchten Sie die Gruppe %{groupName} unwiderruflich löschen?', { groupName: title })"
+        :title="$gettext('Gruppe löschen')"
+        height="200"
+        width="420"
+        @confirm="removeContactGroup"
+        @close="closeDeleteContactGroupDialog"
+    />
 </template>
 
 <script setup>
@@ -158,6 +228,8 @@ import StudipContextMenuEntry from '@/vue/components/StudipContextMenuEntry.vue'
 import StudipSwitch from '@/vue/components/StudipSwitch.vue';
 import StudipDataSetViewer from '@/vue/components/data-set-viewer/StudipDataSetViewer.vue';
 import StudipSearchInput from '@/vue/components/StudipSearchInput.vue';
+import StudipDialog from '@/vue/components/StudipDialog.vue';
+import StudipMultiPersonSearch from '@/vue/components/StudipMultiPersonSearchNew.vue';
 import { useContactStore } from '@/vue/store/pinia/contact/contacts';
 import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
 
@@ -258,18 +330,120 @@ const title = computed(() => {
     } else {
         const group = contactGroupStore.byId(selectedGroup.value);
 
-        return group.name;
+        return group?.name || '';
     }
 });
 
+const selectedUsers = ref([]);
+const newGroupName = ref('');
+const editGroupName = ref('');
+const showAddContactDialog = ref(false);
+const showAddContactGroupDialog = ref(false);
+const showEditContactGroupDialog = ref(false);
+const showDeleteContactGroupDialog = ref(false);
+const excludedIds = computed(() => {
+    const ids = contactStore.all.map((c) => c.id);
+    ids.push(STUDIP.USER_ID);
+    return ids;
+});
 const openAddContactDialog = () => {
-    console.log('We need a dialog!');
+    selectedUsers.value = [];
+    showAddContactDialog.value = true;
+};
+const closeAddContactDialog = () => {
+    showAddContactDialog.value = false;
 };
 
-onMounted(async () => {
-    const userId = STUDIP.USER_ID;
+const addSelectionToContacts = () => {
+    contactStore.addContacts(selectedUsers.value);
+    closeAddContactDialog();
+};
 
-    await contactStore.fetchAll(userId);
+const openAddContactGroupDialog = () => {
+    showAddContactGroupDialog.value = true;
+};
+
+const addContactGroup = async () => {
+    if (newGroupName.value === '') {
+        STUDIP.eventBus.emit('push-system-notification', {
+            type: 'warning',
+            message: proxy.$gettext('Wählen Sie bitte einen Gruppennamen.'),
+        });
+        return false;
+    }
+    showAddContactGroupDialog.value = false;
+    const added = await contactGroupStore.addContactGroup(newGroupName.value);
+    newGroupName.value = '';
+    const type = added ? 'success' : 'error';
+    const message = added
+        ? proxy.$gettext('Gruppe wurde erfolgreich hinzugefügt.')
+        : proxy.$gettext('Gruppe konnte nicht erstellt werden.');
+
+    STUDIP.eventBus.emit('push-system-notification', { type, message });
+};
+
+const closeAddContactGroupDialog = () => {
+    showAddContactGroupDialog.value = false;
+    newGroupName.value = '';
+};
+
+const openEditContactGroupDialog = () => {
+    showEditContactGroupDialog.value = true;
+    editGroupName.value = title.value;
+};
+
+const updateContactGroup = async () => {
+    if (editGroupName.value === '') {
+        STUDIP.eventBus.emit('push-system-notification', {
+            type: 'warning',
+            message: proxy.$gettext('Wählen Sie bitte einen Gruppennamen.'),
+        });
+        return false;
+    }
+
+    showEditContactGroupDialog.value = false;
+    const updated = await contactGroupStore.updateContactGroup(selectedGroup.value, editGroupName.value);
+    editGroupName.value = '';
+    const type = updated ? 'success' : 'error';
+    const message = updated
+        ? proxy.$gettext('Gruppe wurde erfolgreich aktualisiert.')
+        : proxy.$gettext('Gruppe konnte nicht aktualisiert werden.');
+
+    STUDIP.eventBus.emit('push-system-notification', { type, message });
+};
+
+const closeEditContactGroupDialog = () => {
+    showEditContactGroupDialog.value = false;
+    editGroupName.value = '';
+};
+
+const openDeleteContactGroupDialog = () => {
+    showDeleteContactGroupDialog.value = true;
+};
+
+const removeContactGroup = async () => {
+    closeDeleteContactGroupDialog();
+    const deleted = await contactGroupStore.removeContactGroup(selectedGroup.value);
+
+    const type = deleted ? 'success' : 'error';
+    const message = deleted
+        ? proxy.$gettext('Gruppe wurde erfolgreich gelöscht.')
+        : proxy.$gettext('Gruppe konnte nicht gelöscht werden.');
+
+    STUDIP.eventBus.emit('push-system-notification', { type, message });
+    selectedGroup.value = 'all';
+};
+
+const closeDeleteContactGroupDialog = () => {
+    showDeleteContactGroupDialog.value = false;
+};
+
+const userId = computed(() => {
+    return STUDIP.USER_ID;
+});
+
+onMounted(async () => {
+    await contactStore.fetchAll(userId.value);
     await contactGroupStore.fetchAll();
 });
 
