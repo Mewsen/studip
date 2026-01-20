@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, onUnmounted, ref, useTemplateRef} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
 import StudipDateTime from '@/vue/components/StudipDateTime.vue';
 import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
 import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
