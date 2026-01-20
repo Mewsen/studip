@@ -114,7 +114,7 @@ const performSearch = async () => {
 onUnmounted(() => debouncedSearch.cancel());
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .mps-user-tile {
     display: flex;
     align-items: center;

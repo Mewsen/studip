@@ -76,21 +76,23 @@
 
 <script setup>
 import { computed, inject } from 'vue';
+import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
+import { useContactActions } from '@/vue/composables/useContactActions';
+
 const props = defineProps(['data']);
+const { canCall, getProfileUrl, getMessageUrl, getChatUrl } = useContactActions();
 const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
+const contactGroupStore = useContactGroupStore();
+
+const menuItemsForContact = (contact) => {
+    return getMenuItems(contact, {
+        gettext: proxy.$gettext,
+        canRemoveFromGroup: contactGroupStore.selectedGroupId !== 'all'
+    });
+};
+
 const isItemSelected = (id) => selectedIds.value.includes(id);
 
-const canCall = computed(() => {
-    return window.matchMedia('(pointer: coarse)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-});
-
-const getProfileUrl = (contact) => STUDIP.URLHelper.base_url + 'dispatch.php/profile?username=' + contact.username;
-const getMessageUrl = (contact) => {
-    return `${STUDIP.URLHelper.base_url}dispatch.php/messages/write?rec_uname=${contact.username}`;
-};
-const getChatUrl = (contact) => {
-    return `${STUDIP.URLHelper.base_url}dispatch.php/blubber/write_to/${contact.id}`;
-};
 </script>
 
 <style lang="scss">

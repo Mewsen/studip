@@ -20,7 +20,7 @@
                     :items="getMenuItems(contact)"
                     :collapse-at="0"
                     @delete="openDeleteDialog(contact)"
-                    @delete-from-group="openDeleteContactFromContactGroupDialog(contact)"
+                    @delete-from-group="openRemoveFromGroupDialog(contact)"
                 />
             </div>
             <div class="contact-card__body">
@@ -86,130 +86,41 @@
         </div>
     </div>
     <studip-dialog
-        v-if="showDeleteDialog"
-        :title="$gettext('Kontakt löschen')"
-        :question="$gettext('Möchten Sie den Kontakt wirklich löschen?')"
-        height="200"
-        @confirm="executeDelete"
-        @close="closeDeleteDialog"
-    />
-
-    <studip-dialog
-        v-if="showDeleteContactFromContactGroupDialog"
-        :question="
-            $gettext('Möchten Sie den Kontakt aus der Gruppe %{groupName} unwiderruflich löschen?', {
-                groupName: title,
-            })
-        "
-        :title="$gettext('Kontakt aus Gruppe löschen')"
-        height="200"
-        width="420"
-        @confirm="removeContactFromContactGroup"
-        @close="closeDeleteContactFromContactGroupDialog"
+        v-if="isConfirmDialogOpen"
+        :title="confirmConfig.title"
+        :question="confirmConfig.question"
+        :height="confirmConfig.height"
+        :width="confirmConfig.width"
+        @confirm="handleConfirmAction"
+        @close="isConfirmDialogOpen = false"
     />
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, inject, ref } from 'vue';
+import { getCurrentInstance, inject } from 'vue';
 import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
-import { useContactStore } from '@/vue/store/pinia/contact/contacts';
-import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
+import { useContactActions } from '@/vue/composables/useContactActions';
 
-defineProps(['data', 'headers']);
-const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
-
-const contactStore = useContactStore();
-const contactGroupStore = useContactGroupStore();
+defineProps(['data']);
 
 const { proxy } = getCurrentInstance();
-
-const getMenuItems = (contact) => {
-    const menuItems = [];
-    menuItems.push({
-        label: proxy.$gettext('vCard herunterladen'),
-        icon: 'vcard',
-        type: 'link',
-        url: contact.meta['vcard-download-link'],
-    });
-    if (canRemove.value) {
-        menuItems.push({
-            label: proxy.$gettext('Kontakt aus Gruppe löschen'),
-            icon: 'trash',
-            emit: 'deleteFromGroup'
-        });
-    }
-
-    menuItems.push({
-        label: proxy.$gettext('Kontakt löschen'),
-        icon: 'trash',
-        emit: 'delete',
-    });
-
-    return menuItems;
-};
+const {
+    isConfirmDialogOpen,
+    isProcessing,
+    confirmConfig,
+    handleConfirmAction,
+    openDeleteDialog,
+    openRemoveFromGroupDialog,
+    getProfileUrl,
+    getMessageUrl,
+    getChatUrl,
+    canCall,
+    getMenuItems,
+} = useContactActions(proxy.$gettext);
+const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
 
 const isItemSelected = (id) => {
     return selectedIds.value.includes(id);
-};
-const userId = computed(() => {
-    return STUDIP.USER_ID;
-});
-const canCall = computed(() => {
-    const isTouchInput = window.matchMedia('(pointer: coarse)').matches;
-
-    const isMobileOS = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    return isTouchInput || isMobileOS;
-});
-
-const getProfileUrl = (contact) => {
-    return STUDIP.URLHelper.base_url + 'dispatch.php/profile?username=' + contact.username;
-};
-
-const getMessageUrl = (contact) => {
-    return `${STUDIP.URLHelper.base_url}dispatch.php/messages/write?rec_uname=${contact.username}`;
-};
-
-const getChatUrl = (contact) => {
-    return `${STUDIP.URLHelper.base_url}dispatch.php/blubber/write_to/${contact.id}`;
-};
-
-const showDeleteDialog = ref(false);
-const contactMarkedForDelete = ref(null);
-
-const executeDelete = async () => {
-    showDeleteDialog.value = false;
-    await contactStore.removeContact(userId.value, contactMarkedForDelete.value.id);
-    contactMarkedForDelete.value = null;
-};
-
-const openDeleteDialog = (contact) => {
-    showDeleteDialog.value = true;
-    contactMarkedForDelete.value = contact;
-};
-const closeDeleteDialog = () => {
-    showDeleteDialog.value = false;
-    contactMarkedForDelete.value = null;
-};
-
-const showDeleteContactFromContactGroupDialog = ref(false);
-const canRemove = computed(() => contactGroupStore.selectedGroupId !== 'all');
-const contactMarkedForDeleteFromGroup = ref(null);
-
-const openDeleteContactFromContactGroupDialog = (contact) => {
-    showDeleteContactFromContactGroupDialog.value = true;
-    contactMarkedForDeleteFromGroup.value = contact;
-};
-
-const removeContactFromContactGroup = async () => {
-    showDeleteContactFromContactGroupDialog.value = false;
-    const userId = contactMarkedForDeleteFromGroup.value.id;
-    await contactGroupStore.removeUserFromGroup(contactGroupStore.selectedGroupId, userId);
-};
-
-const closeDeleteContactFromContactGroupDialog = () => {
-    showDeleteContactFromContactGroupDialog.value = false;
-    contactMarkedForDeleteFromGroup.value = null;
 };
 </script>
 
