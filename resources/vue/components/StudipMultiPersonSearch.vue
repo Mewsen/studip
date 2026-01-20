@@ -68,7 +68,16 @@ import { ref, watch, onUnmounted, computed } from 'vue';
 import StudipDualListBox from './StudipDualListBox.vue';
 import StudipSearchInput from './StudipSearchInput.vue';
 import { useLoadingBuffer } from '@/vue/composables/useLoadingBuffer.js';
-import debounce from 'lodash/debounce';
+
+const createDebounce = (fn, delay) => {
+    let timeoutId;
+    const debounced = (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+    };
+    debounced.cancel = () => clearTimeout(timeoutId);
+    return debounced;
+};
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -78,7 +87,6 @@ const props = defineProps({
     exclude: { type: Array, default: () => [] },
 });
 
-const debouncedSearch = debounce(performSearch, 300);
 const { showLoading, runWithLoading } = useLoadingBuffer(500);
 
 const searchTerm = ref('');
@@ -88,28 +96,37 @@ const selectedUsers = computed({
     set: (val) => emit('update:modelValue', val),
 });
 
-watch(searchTerm, debouncedSearch);
 
-const performSearch = async () => {
-    const query = searchTerm.value.trim();
-    if (query.length < 3) {
+
+const performSearch = async (query) => {
+    const trimmedQuery = query?.trim() || '';
+    if (trimmedQuery.length < 3) {
         searchResults.value = [];
         return;
     }
+
     await runWithLoading(async () => {
         try {
             const url = STUDIP.URLHelper.getURL(
                 `dispatch.php/multipersonsearch/ajax_search_vue/${props.searchContext}`,
-                { s: query }
+                { s: trimmedQuery }
             );
             const response = await fetch(url);
             const data = await response.json();
-            searchResults.value = data.filter((item) => item.id !== '--' && !props.exclude.includes(item.id));
+            searchResults.value = data.filter((item) => 
+                item.id !== '--' && !props.exclude.includes(item.id)
+            );
         } catch (e) {
             console.error('MPS Search failed', e);
         }
     });
 };
+
+const debouncedSearch = createDebounce(performSearch, 300);
+
+watch(searchTerm, (newValue) => {
+    debouncedSearch(newValue);
+});
 
 onUnmounted(() => debouncedSearch.cancel());
 </script>

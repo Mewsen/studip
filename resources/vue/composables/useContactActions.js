@@ -31,6 +31,22 @@ export function useContactActions(gettext) {
         isConfirmDialogOpen.value = true;
     };
 
+    const openDeleteGroupDialog = () => {
+        const selectedGroup = contactGroupStore.selectedGroup;
+        confirmConfig.value = {
+            title: gettext('Kontaktgruppe löschen'),
+            question: gettext('Möchten Sie die Gruppe %{groupName} unwiderruflich löschen?', { groupName: selectedGroup.name }),
+            action: async () => {
+                const deleted = await contactGroupStore.removeContactGroup(selectedGroup.id);
+                notify(deleted, gettext('Gruppe wurde erfolgreich gelöscht.'), gettext('Fehler beim Löschen.'));
+                contactGroupStore.selectGroup('all');
+            },
+            width: '420',
+            height: '200',
+        };
+        isConfirmDialogOpen.value = true;
+    };
+
     const openRemoveFromGroupDialog = (contact) => {
         const groupName = contactGroupStore.selectGroup.name;
         confirmConfig.value = {
@@ -66,6 +82,13 @@ export function useContactActions(gettext) {
 
     const getChatUrl = (contact) => `${STUDIP.URLHelper.base_url}dispatch.php/blubber/write_to/${contact.id}`;
 
+    const notify = (success, successMsg, errorMsg) => {
+        STUDIP.eventBus.emit('push-system-notification', {
+            type: success ? 'success' : 'error',
+            message: success ? successMsg : errorMsg
+        });
+    };
+
     const getMenuItems = (contact) => {
         const menuItems = [
             {
@@ -98,6 +121,7 @@ export function useContactActions(gettext) {
         isProcessing,
         confirmConfig,
         openDeleteDialog,
+        openDeleteGroupDialog,
         openRemoveFromGroupDialog,
         handleConfirmAction,
         canCall,

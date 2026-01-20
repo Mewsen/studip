@@ -52,7 +52,7 @@ const miscStore = useWidgetMiscStore();
 const isWidgetsLoaded = ref(false);
 const hasLayout = computed(() => containerStore.hasLayout);
 
-const { showLoading, runWithLoading } = useLoadingBuffer(800);
+const { showLoading, runWithLoading } = useLoadingBuffer();
 
 onMounted(async () => {
     overviewStore.setDrawerAttachTarget();

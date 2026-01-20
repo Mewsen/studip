@@ -38,10 +38,6 @@
                         <studip-icon :shape="contact.cell ? 'cellphone' : 'phone'" :size="12" />
                         <span>{{ contact.cell || contact.phone }}</span>
                     </div>
-                    <a :href="contact.meta['vcard-download-link']" class="meta-item vcard-link" @click.stop>
-                        <studip-icon shape="vcard" :size="12" />
-                        <span>{{ $gettext('vCard herunterladen') }}</span>
-                    </a>
                 </div>
             </div>
 
@@ -69,30 +65,49 @@
                 >
                     <studip-icon :shape="contact.cell ? 'cellphone' : 'phone'" />
                 </a>
+                <studip-action-menu
+                    :items="getMenuItems(contact)"
+                    :collapse-at="0"
+                    @delete="openDeleteDialog(contact)"
+                    @delete-from-group="openRemoveFromGroupDialog(contact)"
+                />
             </div>
         </li>
     </ul>
+    <studip-dialog
+        v-if="isConfirmDialogOpen"
+        :title="confirmConfig.title"
+        :question="confirmConfig.question"
+        :height="confirmConfig.height"
+        :width="confirmConfig.width"
+        @confirm="handleConfirmAction"
+        @close="isConfirmDialogOpen = false"
+    />
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
-import { useContactGroupStore } from '@/vue/store/pinia/contact/contact-groups';
+import { getCurrentInstance, inject } from 'vue';
+import StudipActionMenu from '@/vue/components/StudipActionMenu.vue';
 import { useContactActions } from '@/vue/composables/useContactActions';
 
 const props = defineProps(['data']);
-const { canCall, getProfileUrl, getMessageUrl, getChatUrl } = useContactActions();
-const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
-const contactGroupStore = useContactGroupStore();
 
-const menuItemsForContact = (contact) => {
-    return getMenuItems(contact, {
-        gettext: proxy.$gettext,
-        canRemoveFromGroup: contactGroupStore.selectedGroupId !== 'all'
-    });
-};
+const { proxy } = getCurrentInstance();
+const {
+    isConfirmDialogOpen,
+    confirmConfig,
+    handleConfirmAction,
+    openDeleteDialog,
+    openRemoveFromGroupDialog,
+    getProfileUrl,
+    getMessageUrl,
+    getChatUrl,
+    canCall,
+    getMenuItems,
+} = useContactActions(proxy.$gettext);
+const { isSelectionMode, selectedIds, toggleItem } = inject('selectionContext');
 
 const isItemSelected = (id) => selectedIds.value.includes(id);
-
 </script>
 
 <style lang="scss">
@@ -109,7 +124,9 @@ const isItemSelected = (id) => selectedIds.value.includes(id);
     padding: 10px 15px;
     background: var(--color--global-background);
     gap: 15px;
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition:
+        transform 0.1s,
+        box-shadow 0.1s;
 
     &:not(:last-child) {
         border-bottom: 1px solid var(--color--tile-border);
@@ -163,17 +180,12 @@ const isItemSelected = (id) => selectedIds.value.includes(id);
             gap: 8px;
 
             .contact-name {
-                font-size: 1.05rem;
-                font-weight: 600;
-                color: var(--color--base);
-                text-decoration: none;
-                &:hover {
-                    color: var(--color--link-hover);
-                }
+                font-size: 1.15em;
             }
+
             .contact-username {
-                font-size: 0.85rem;
-                color: var(--color--gray);
+                font-size: 0.75rem;
+                color: var(--color--font-secondary);
             }
         }
 
@@ -187,15 +199,11 @@ const isItemSelected = (id) => selectedIds.value.includes(id);
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                font-size: 0.85rem;
-                color: var(--color--base-light);
+                font-size: 0.75rem;
+                color: var(--color--font-secondary);
 
-                &.vcard-link {
-                    color: var(--color--brand-blue);
-                    text-decoration: none;
-                    &:hover {
-                        text-decoration: underline;
-                    }
+                .studip-icon {
+                    line-height: 0.75rem;
                 }
             }
         }
@@ -221,6 +229,13 @@ const isItemSelected = (id) => selectedIds.value.includes(id);
 
         a.icon-only .studip-icon {
             vertical-align: text-top;
+        }
+
+        .action-menu:not(.is-open) {
+            border: solid thin var(--color--highlight);
+            border-radius: var(--border-radius-default);
+            background-color: var(--color--global-background);
+            padding: 5px;
         }
     }
 }

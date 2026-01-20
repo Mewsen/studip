@@ -106,7 +106,6 @@ defineProps(['data']);
 const { proxy } = getCurrentInstance();
 const {
     isConfirmDialogOpen,
-    isProcessing,
     confirmConfig,
     handleConfirmAction,
     openDeleteDialog,
