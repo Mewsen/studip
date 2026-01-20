@@ -17,7 +17,8 @@ class AddDummyTeacher extends Migration
         } else {
             $user_id = '2afaa0dce05f0b12a7318075e52879e2';
             DBManager::get()->execute(
-                "INSERT INTO `auth_user_md5` (user_id, username, perms, Vorname, Nachname, visible) VALUES (:user_id, :username, :perms, :Vorname, :Nachname, :visible)",
+                "INSERT INTO `auth_user_md5` (user_id, username, perms, Vorname, Nachname, visible)
+                 VALUES (:user_id, :username, :perms, :Vorname, :Nachname, :visible)",
                 [
                     'user_id'        => $user_id,
                     'username'       => 'N.N.',
@@ -25,7 +26,6 @@ class AddDummyTeacher extends Migration
                     'Vorname'        => 'N.',
                     'Nachname'       => 'N.',
                     'visible'        => 'never',
-                    'validation_key' => '',
                 ]
             );
         }
