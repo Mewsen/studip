@@ -28,13 +28,17 @@ const resourceURL = computed(() => {
 });
 
 const configs = computed(() => {
+    const common = {
+        version: props.resource.registration.version,
+        client_id: props.resource.deployment.client_id,
+        deployment_key: props.resource.deployment.deployment_key,
+        custom_parameters: props.resource.custom_parameters,
+        container: props.resource.container
+    };
+
     if (props.resource.registration.version === '1.3a') {
         return JSON.stringify({
-            version: props.resource.registration.version,
-            client_id: props.resource.deployment.client_id,
-            deployment_key: props.resource.deployment.deployment_key,
-            custom_parameters: props.resource.custom_parameters,
-            container: props.resource.container,
+            ...common,
             launch_type: props.resource.launch_type,
             registration: {
                 id: props.resource.registration.id,
@@ -45,7 +49,24 @@ const configs = computed(() => {
                 key_type: props.resource.registration.key_type,
                 jwks_url: props.resource.registration.jwks_url,
                 public_key: props.resource.registration.public_key,
-                custom_parameters: props.resource.registration.custom_parameters,
+                custom_parameters: props.resource.registration.custom_parameters ?? '',
+                container: props.resource.registration.container
+            }
+        }, null, 2);
+    }
+
+    if (props.resource.registration.version === '1.1') {
+        return JSON.stringify({
+            ...common,
+            registration: {
+                id: props.resource.registration.id,
+                audience: props.resource.registration.audience,
+                launch_url: props.resource.registration.launch_url,
+                consumer_key: props.resource.registration.consumer_key,
+                consumer_secret: props.resource.registration.consumer_secret,
+                send_lis_person: props.resource.registration.send_lis_person,
+                oauth_signature_method: props.resource.registration.oauth_signature_method,
+                custom_parameters: props.resource.registration.custom_parameters ?? '',
                 container: props.resource.registration.container
             }
         }, null, 2);

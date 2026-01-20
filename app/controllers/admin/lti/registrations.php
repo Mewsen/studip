@@ -255,7 +255,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             ],
             [
                 'name' => 'send_lis_person',
-                'value' => Request::get('send_lis_person')
+                'value' => Request::bool('send_lis_person')
             ],
             [
                 'name' => 'custom_parameters',
