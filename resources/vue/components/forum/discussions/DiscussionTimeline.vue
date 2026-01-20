@@ -260,6 +260,7 @@ onUnmounted(() => {
                 class="button-base"
                 @click="jumpToPost(null, posts.length -1)"
                 :title="$gettext('Zum letzten Beitrag')"
+                :aria-label="$gettext('Zum letzten Beitrag')"
             >
                 <StudipDateTime v-if="posts.length > 0" :iso="posts[posts.length -1].mkdate" :relative="true" />
                 <StudipDateTime v-else :iso="discussion.mkdate" :relative="true" />
