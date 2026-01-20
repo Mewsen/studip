@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref, useTemplateRef} from 'vue';
 import StudipDateTime from '@/vue/components/StudipDateTime.vue';
 import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
 import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
@@ -30,6 +30,12 @@ const currentPostDate = computed(() => {
     return null;
 });
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
+const postProgressText = computed(() => {
+    return $gettext('Aktuell: Beitrag %{current} von %{total}', {
+        current: currentPostIndex.value + 1,
+        total: posts.value.length
+    })
+});
 
 const findPostAtScroll = y => {
     const postElements = document.querySelectorAll('.post');
@@ -50,11 +56,13 @@ const jumpToPost = (targetPost, index = 0) => {
     }
 
     if (parseInt(targetPost?.dataset.index) === 0) {
+        forumPostStore.updateCurrentPostIndex(0);
         document.getElementById('discussion_start').scrollIntoView({ behavior: 'instant' });
         return;
     }
 
     targetPost?.scrollIntoView({ behavior: 'instant' });
+    targetPost?.focus();
 }
 
 const jumpTo = e => {
@@ -76,7 +84,7 @@ const jumpTo = e => {
 
 const startDrag = e => {
     isDragging.value = true;
-    let scrollPosition = 0;
+    let scrollPosition = -1;
     let targetPost = null;
 
     const contentContainer = document.documentElement;
@@ -97,14 +105,22 @@ const startDrag = e => {
     };
 
     const onDrop = () => {
+        if (scrollPosition < 0) {
+            resetDrag();
+            return;
+        }
+
         if (targetPost) {
             jumpToPost(targetPost);
         } else {
             contentContainer.scrollTop = scrollPosition;
         }
 
-        isDragging.value = false;
+        resetDrag();
+    };
 
+    const resetDrag = () => {
+        isDragging.value = false;
         document.removeEventListener('mousemove', onDrag);
         document.removeEventListener('mouseup', onDrop);
     };
@@ -160,18 +176,25 @@ onUnmounted(() => {
 
 <template>
     <div class="discussion-timeline">
+        <span aria-live="assertive" class="sr-only">{{ postProgressText }}</span>
+
         <div class="discussion-timeline__start">
             <button
                 type="button"
                 class="button-base"
                 @click="jumpToPost(null, 0)"
                 :title="$gettext('Zum ersten Beitrag')"
+                :aria-label="$gettext('Zum ersten Beitrag')"
             >
                 <StudipDateTime :iso="discussion.mkdate" :relative="true" />
             </button>
         </div>
-        <div id="scroll-area" class="scroll-area" @click="jumpTo">
-            <div class="scroll-area__track">
+        <div
+            id="scroll-area"
+            class="scroll-area"
+            @click="jumpTo"
+        >
+            <div class="scroll-area__track" aria-hidden="true">
                 <Transition name="fade">
                     <div
                         v-if="isNewFrom"
@@ -195,6 +218,7 @@ onUnmounted(() => {
                         class="button-base"
                         @click.stop="jumpToPost(null, firstUnreadPostIndex)"
                         :title="$gettext('Zum ersten ungelesenen Beitrag')"
+                        aria-live="polite"
                     >
                         {{ $gettext('Neu ab hier') }}
                     </button>
@@ -204,6 +228,8 @@ onUnmounted(() => {
                 type="button"
                 id="scroller"
                 class="scroll-area__scroller"
+                aria-hidden="true"
+                tabindex="-1"
                 :style="{
                     top: `${scrollerTop}%`,
                     transform: `translateY(-${scrollerTop}%)`,
@@ -212,10 +238,12 @@ onUnmounted(() => {
                 @mousedown.prevent="startDrag"
                 @click.stop
             >
-                <span class="scroll-area__scroll-marker"></span>
+                <span class="scroll-area__scroll-marker" aria-hidden="true"></span>
                 <span class="scroll-area__info">
                     {{ currentPostIndex + 1 }}/{{ posts.length }} <br />
-                    <time v-if="currentPostDate" :datetime="currentPostDate">
+                    <time
+                        v-if="currentPostDate" :datetime="currentPostDate"
+                        :aria-label="`${$gettext('Beitragsdatum')}: ${currentPostDate}`">
                         {{ currentPostDate }}
                     </time>
                     <Transition name="fade">
