@@ -95,24 +95,41 @@ onMounted(() => {
 
                     <div class="discussion-badges-container">
                         <div v-if="discussionForm.topic" class="badge">
-                            <span :style="{ backgroundColor: discussionForm.topic.color ?? '#EDEDED', height: '12px', width: '12px'}"></span>
+                            <span :style="{ backgroundColor: discussionForm.topic.color ?? '#EDEDED', height: '12px', width: '12px'}" aria-hidden="true"></span>
                             <span>{{ discussionForm.topic.name }}</span>
-                            <button @click="discussionForm.topic = null" class="action">
-                                <StudipIcon shape="decline" :size="15" />
+                            <button
+                                type="button"
+                                class="action button-base"
+                                @click="discussionForm.topics = discussionForm.topics.filter(t => t.topic_id !== topic.topic_id)"
+                                :title="$gettext('Entfernen')"
+                                :aria-label="$gettext('Ausgewähltes Thema entfernen')"
+                            >
+                                <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                             </button>
                         </div>
                         <div v-if="discussionForm.type" class="badge">
-                            <StudipIcon :shape="discussionForm.type.icon" :size="15" />
+                            <StudipIcon :shape="discussionForm.type.icon" :size="15" aria-hidden="true" />
                             <span>{{ discussionForm.type.name }}</span>
-                            <button @click="discussionForm.type = null" class="action">
-                                <StudipIcon shape="decline" :size="15" />
+                            <button
+                                class="action button-base"
+                                @click="discussionForm.type = null"
+                                :title="$gettext('Entfernen')"
+                                :aria-label="$gettext('Ausgewählten Diskussionstyp entfernen')"
+                            >
+                                <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                             </button>
                         </div>
                         <template v-for="tag in discussionForm.tags" :key="tag">
                             <div class="badge">
                                 <span>{{ '#'+tag.name }}</span>
-                                <button @click="discussionForm.tags = discussionForm.tags.filter(t => t.name !== tag.name)" class="action">
-                                    <StudipIcon shape="decline" :size="15" />
+                                <button
+                                    type="button"
+                                    class="action button-base"
+                                    @click="discussionForm.tags = discussionForm.tags.filter(t => t.name !== tag.name)"
+                                    :title="$gettext('Entfernen')"
+                                    :aria-label="$gettext('Ausgewähltes Schlagwort entfernen')"
+                                >
+                                    <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                                 </button>
                             </div>
                         </template>

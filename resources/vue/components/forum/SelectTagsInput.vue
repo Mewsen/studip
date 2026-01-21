@@ -16,7 +16,7 @@ import StudipSelect from '@/vue/components/StudipSelect.vue';
             return { name: tag };
         }"
         :closeOnSelect="false"
-        v-bind="{...$props, ...$attrs}"
+        v-bind="$attrs"
     >
         <template #selected-option="{name}">
             <span>{{ name }}</span>

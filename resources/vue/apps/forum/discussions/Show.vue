@@ -157,22 +157,31 @@ onMounted(async () => {
 <template>
     <ForumApp id="discussion_start">
         <header class="header">
-            <div v-if="category.color" class="flag" :style="{ backgroundColor: category.color}"></div>
+            <div v-if="category.color" class="flag" :style="{ backgroundColor: category.color}" aria-hidden="true"></div>
             <div class="header__content header__content--with-actions items-start">
                 <div class="flex items-start gap-10">
-                    <a :href="goBackURL" :title="$gettext('Zum Thema')" class="go-back-link">
-                        <StudipIcon shape="arr_1left" :size="20" />
+                    <a
+                        class="go-back-link"
+                        :href="goBackURL"
+                        :title="$gettext('Zum Thema')"
+                        :aria-label="$gettext('Zum Thema')"
+                    >
+                        <StudipIcon shape="arr_1left" :size="20" aria-hidden="true" />
                     </a>
                     <div>
                         <ul class="breadcrumb">
                             <li>
-                                <a :href="getTopicURL(discussion.topic_id)" :title="$gettext('Zum Thema')">
+                                <a
+                                    :href="getTopicURL(discussion.topic_id)"
+                                    :title="$gettext('Zum Thema')"
+                                    :aria-label="$gettext('Zum Thema: %{name}', { name: discussion.topic.name})"
+                                >
                                     {{ discussion.topic.name }}
                                 </a>
                             </li>
                             <li>
                                 <div class="inline-flex items-start gap-5">
-                                    <StudipIcon class="mt-1" v-if="discussion.sticky" role="info" shape="pin" :size="20" />
+                                    <StudipIcon class="mt-1" v-if="discussion.sticky" role="info" shape="pin" :size="20" aria-hidden="true" />
                                     {{ discussion.title }}
                                 </div>
                             </li>
@@ -180,7 +189,7 @@ onMounted(async () => {
 
                         <ul class="mt-10 tags-container">
                             <li v-if="discussion.type.name" class="tags-container__tag">
-                                <StudipIcon role="info" :shape="discussion.type.icon" :size="15" :title="discussion.type.name"/>
+                                <StudipIcon role="info" :shape="discussion.type.icon" :size="15" :title="discussion.type.name" aria-hidden="true" />
                             </li>
                             <template v-for="tag in discussion.tags" :key="tag.id">
                                 <li class="tags-container__tag">
@@ -193,6 +202,7 @@ onMounted(async () => {
 
                 <div class="actions">
                     <div
+                        role="status"
                         v-if="discussion.closed_at"
                         :title="$gettext('Diskussion ist geschlossen')"
                         class="discussion-closed">
@@ -200,11 +210,18 @@ onMounted(async () => {
                             {{ $gettext('Geschlossen:') }}
                             <StudipDateTime :iso="discussion.closed_at" :relative="true" />
                         </em>
-                        <StudipIcon shape="lock-locked2" :size="20" role="inactive" />
+                        <StudipIcon shape="lock-locked2" :size="20" role="inactive" aria-hidden="true" />
                     </div>
                     <template v-if="!forumConfig.allowGuestAccess">
-                        <button v-if="canEditDiscussion" @click="editDiscussion(discussion.discussion_id)" type="button" :title="$gettext('Diskussion bearbeiten')" class="button button--icon-only">
-                            <StudipIcon shape="edit" :size="20" />
+                        <button
+                            type="button"
+                            class="button button--icon-only"
+                            v-if="canEditDiscussion"
+                            @click="editDiscussion(discussion.discussion_id)"
+                            :title="$gettext('Bearbeiten bearbeiten')"
+                            :aria-label="$gettext('Diskussion %{title} bearbeiten', { title: discussion.title })"
+                        >
+                            <StudipIcon shape="edit" :size="20" aria-hidden="true" />
                         </button>
                         <SubscriptionDropdown
                             v-if="!discussion.closed_at"

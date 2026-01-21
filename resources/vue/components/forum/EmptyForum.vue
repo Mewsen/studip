@@ -39,7 +39,6 @@ const addDiscussion = () => {
                     type="button"
                     class="button button--icon-label"
                     @click="openTour('ea68d2f9d7b81d01d2d3ea38a105c734')"
-                    :title="$gettext('Tour ansehen')"
                 >
                     <StudipIcon shape="lightbulb" :size="20" aria-hidden="true" />
                     {{ $gettext('Tour ansehen') }}
@@ -48,7 +47,6 @@ const addDiscussion = () => {
                     type="button"
                     class="button button--icon-label"
                     @click="addDiscussion"
-                    :title="$gettext('Eine Diskussion starten')"
                 >
                     <StudipIcon shape="add" :size="20" aria-hidden="true" />
                     {{ $gettext('Eine Diskussion starten') }}

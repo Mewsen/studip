@@ -81,17 +81,19 @@ onUnmounted(() => {
 
 <template>
     <form @submit.prevent="updatePost" class="default post-form forum-quote">
-        <StudipWysiwyg required="required" v-model="content" />
+        <label :for="`post-content-${post.id}`">
+            <span class="sr-only">{{ $gettext('Inhalt') }}</span>
+        </label>
+        <StudipWysiwyg :id="`post-content-${post.id}`" required="required" v-model="content" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>
         <div class="post-form__footer">
             <button
                 type="submit"
-                :disabled="isLoading || !content"
                 class="button button--icon-label"
+                :disabled="isLoading || !content"
                 :value="$gettext('Speichern')"
-                :title="$gettext('Speichern')"
             >
                 <StudipIcon shape="accept" :size="20" aria-hidden="true" />
                 {{ $gettext('Speichern') }}
@@ -99,7 +101,6 @@ onUnmounted(() => {
             <button
                 type="button"
                 class="button button--icon-label"
-                :title="$gettext('Abbrechen')"
                 @click="$emit('canceled')"
             >
                 <StudipIcon shape="decline" :size="20" aria-hidden="true"/>

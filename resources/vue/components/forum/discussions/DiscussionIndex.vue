@@ -90,6 +90,7 @@ onMounted(() => {
         <thead>
             <tr class="sortable">
                 <th
+                    scope="col"
                     :class="getSortClass('title')"
                     :aria-sort="getAriaSortString('title')"
                     :aria-label="getAriaSortLabel('title', $gettext('Diskussionstitel'))"
@@ -103,6 +104,7 @@ onMounted(() => {
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('members')"
                     :aria-sort="getAriaSortString('members')"
                     :aria-label="getAriaSortLabel('members', $gettext('Anzahl der Teilnehmenden'))"
@@ -116,6 +118,7 @@ onMounted(() => {
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('meta.postings_count')"
                     :aria-sort="getAriaSortString('meta.postings_count')"
                     :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
@@ -129,6 +132,7 @@ onMounted(() => {
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('view_count')"
                     :aria-sort="getAriaSortString('view_count')"
                     :aria-label="getAriaSortLabel('view_count', $gettext('Anzahl der Aufrufe'))"
@@ -142,6 +146,7 @@ onMounted(() => {
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('meta.recent_activity')"
                     :aria-sort="getAriaSortString('meta.recent_activity')"
                     :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
@@ -154,8 +159,12 @@ onMounted(() => {
                         {{ $gettext('Letzte Aktivität') }}
                     </button>
                 </th>
-                <th></th>
-                <th v-if="withActions"></th>
+                <th scope="col">
+                    <span class="sr-only">{{ $gettext('Status') }}</span>
+                </th>
+                <th scope="col" v-if="withActions">
+                    <span class="sr-only">{{ $gettext('Aktionen') }}</span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -236,32 +245,37 @@ onMounted(() => {
                             <dl>
                                 <dt>{{ $gettext('Aufrufe') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
-                                    <StudipIcon shape="block-eyecatcher" :size="15" role="info" />
+                                    <StudipIcon shape="block-eyecatcher" :size="15" role="info" aria-hidden="true" />
                                     {{ numberFormatter(discussion.view_count, 1) }}
                                 </dd>
 
                                 <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
-                                    <StudipIcon shape="reply" :size="15" role="info" />
+                                    <StudipIcon shape="reply" :size="15" role="info" aria-hidden="true" />
                                     {{ discussion.meta.postings_count }}
                                 </dd>
 
                                 <dt>{{ $gettext('Letzte Aktivität') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
-                                    <StudipIcon shape="activity" :size="15" role="info" />
+                                    <StudipIcon shape="activity" :size="15" role="info" aria-hidden="true" />
                                     <StudipDateTime :iso="discussion.meta.recent_activity" :relative="true" />
                                 </dd>
 
                                 <dt>{{ $gettext('Ist geschlossen') }}</dt>
                                 <dd
-                                    v-if="discussion.closed_at"
                                     class="inline-flex gap-5 items-center"
                                 >
                                     <StudipIcon
+                                        v-if="discussion.closed_at"
                                         :title="$gettext('Diskussion ist geschlossen')"
                                         shape="lock-locked2"
                                         :size="15"
-                                        role="inactive" />
+                                        role="inactive"
+                                        aria-hidden="true"
+                                    />
+                                    <span class="sr-only">
+                                        {{ discussion.closed_at ? $gettext('Diskussion ist geschlossen') : $gettext('Diskussion ist offen') }}
+                                    </span>
                                 </dd>
                             </dl>
 
@@ -293,7 +307,12 @@ onMounted(() => {
                             :title="$gettext('Diskussion ist geschlossen')"
                             shape="lock-locked2"
                             :size="20"
+                            aria-hidden="true"
                             role="inactive" />
+
+                        <span role="status" class="sr-only">
+                            {{ discussion.closed_at ? $gettext('Diskussion ist geschlossen') : $gettext('Diskussion ist offen') }}
+                        </span>
                     </td>
                     <td v-if="withActions" class="actions">
                         <StudipActionMenu

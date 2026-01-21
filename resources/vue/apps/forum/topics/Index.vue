@@ -65,20 +65,24 @@ onMounted(async () => {
                     <div class="actions">
                         <CreateTopic />
                         <button
+                            type="button"
+                            class="button button--icon-only"
                             v-if="forumConfig.tileLayout"
                             @click="forumConfig.toggleForumLayout();"
                             :title="$gettext('Tabellarische Ansicht')"
-                            type="button"
-                            class="button button--icon-only">
-                            <StudipIcon shape="view-list" :size="20" />
+                            :aria-label="$gettext('Tabellarische Ansicht')"
+                        >
+                            <StudipIcon shape="view-list" :size="20" aria-hidden="true" />
                         </button>
                         <button
                             v-else
+                            type="button"
+                            class="button button--icon-only"
                             @click="forumConfig.toggleForumLayout();"
                             :title="$gettext('Kachelansicht')"
-                            type="button"
-                            class="button button--icon-only">
-                            <StudipIcon shape="view-wall" :size="20" />
+                            :aria-label="$gettext('Kachelansicht')"
+                        >
+                            <StudipIcon shape="view-wall" :size="20" aria-hidden="true" />
                         </button>
                         <div aria-live="polite" class="sr-only" role="status">{{ toggleLayoutMessage }}</div>
                     </div>

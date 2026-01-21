@@ -60,19 +60,35 @@ onMounted(async () => {
                     </h2>
 
                     <div class="mt-10 inline-flex gap-20 items-center">
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden')" role="group">
+                        <span
+                            role="group"
+                            class="inline-flex gap-5 items-center"
+                            :title="$gettext('Anzahl der Teilnehmenden')"
+                            :aria-label="$gettext('Anzahl der Teilnehmenden')"
+                        >
                             <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
                             <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden') }}:</span>
                             <small>{{ metadata.users_count }}</small>
                         </span>
-                            <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
-                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true"/>
+
+                        <span
+                            role="group"
+                            class="inline-flex gap-5 items-center"
+                            :title="$gettext('Anzahl der Beiträge')"
+                            :aria-label="$gettext('Anzahl der Beiträge')"
+                        >
+                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
                             <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                             <small>{{ metadata.postings_count }}</small>
                         </span>
-                            <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" role="group">
+
+                        <span
+                            role="group"
+                            class="inline-flex gap-5 items-center"
+                            :title="$gettext('Letzte Aktivität')"
+                            :aria-label="$gettext('Letzte Aktivität')"
+                        >
                             <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
-                            <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
                             <StudipDateTime v-if="metadata.recent_activity" :iso="metadata.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </span>

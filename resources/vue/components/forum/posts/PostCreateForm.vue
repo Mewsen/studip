@@ -118,8 +118,8 @@ const storePost = async () => {
     <form @submit.prevent="storePost" class="default post-form forum-quote">
         <div class="post-form__author">
             <a
-                :href="userProfileURL(authUser.username)"
                 class="post-form__author-image profile-image-container"
+                :href="userProfileURL(authUser.username)"
                 :title="$gettext('Zum Profil')"
                 :aria-label="$gettext('Zum Profil von %{name}', { name: authUser.name })"
             >
@@ -127,7 +127,10 @@ const storePost = async () => {
             </a>
             <p class="post-form__author-name">{{ authUser.name }}</p>
         </div>
-        <StudipWysiwyg :required="true" v-model="content" />
+        <label for="post-content">
+            <span class="sr-only">{{ $gettext('Inhalt') }}</span>
+        </label>
+        <StudipWysiwyg id="post-content" :required="true" v-model="content" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>
@@ -136,8 +139,6 @@ const storePost = async () => {
                 type="submit"
                 :disabled="isLoading || !content"
                 class="button button--icon-label"
-                :title="$gettext('Speichern')"
-                :aria-label="$gettext('Speichern')"
             >
                 <StudipIcon shape="accept" :size="20" aria-hidden="true" />
                 {{ $gettext('Speichern') }}
@@ -145,11 +146,9 @@ const storePost = async () => {
             <button
                 type="button"
                 class="button button--icon-label"
-                :title="$gettext('Abbrechen')"
-                :aria-label="$gettext('Abbrechen')"
                 @click="$emit('canceled')"
             >
-                <StudipIcon shape="decline" :size="20" aria-hidden="true"/>
+                <StudipIcon shape="decline" :size="20" aria-hidden="true" />
                 {{ $gettext('Abbrechen') }}
             </button>
         </div>

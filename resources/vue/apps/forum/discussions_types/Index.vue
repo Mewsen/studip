@@ -100,6 +100,7 @@ onMounted(() => {
                         class="button button--icon-only"
                         @click="addType"
                         :title="$gettext('Neuen Diskussionstyp anlegen')"
+                        :aria-label="$gettext('Neuen Diskussionstyp anlegen')"
                     >
                         <StudipIcon shape="add" aria-hidden="true" />
                     </button>
@@ -114,8 +115,9 @@ onMounted(() => {
 
             <thead>
                 <tr class="sortable">
-                    <th>{{ $gettext('Icon') }}</th>
+                    <th scope="col">{{ $gettext('Icon') }}</th>
                     <th
+                        scope="col"
                         :class="getSortClass('name')"
                         :aria-sort="getAriaSortString('name')"
                         :aria-label="getAriaSortLabel('name', $gettext('Name'))"
@@ -124,12 +126,14 @@ onMounted(() => {
                             type="button"
                             class="as-link"
                             @click="sortBy('name')"
-                            :title="$gettext('Nach Name sortieren')">
+                            :title="$gettext('Nach Name sortieren')"
+                            :aria-label="$gettext('Nach Name sortieren')"
+                        >
                             {{ $gettext('Name') }}
                         </button>
                     </th>
 
-                    <th>{{ $gettext('Aktionen') }}</th>
+                    <th scope="col">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -143,6 +147,7 @@ onMounted(() => {
                             class="as-link"
                             @click="editType(type.id)"
                             :title="$gettext('Diskussionstyp bearbeiten')"
+                            :aria-label="$gettext('Diskussionstyp bearbeiten')"
                         >
                             {{ type.name }}
                         </button>

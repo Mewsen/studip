@@ -26,11 +26,12 @@ const addCategory = () => {
 
 <template>
     <button
-        v-if="forumConfig.isModerator"
         type="button"
         class="button"
+        v-if="forumConfig.isModerator"
         @click="addCategory"
         :title="$gettext('Neue Kategorie anlegen')"
+        :aria-label="$gettext('Neue Kategorie anlegen')"
         :class="label ? 'button--icon-label' : 'button--icon-only'"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />

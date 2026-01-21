@@ -16,7 +16,7 @@ const selectedTopics = defineModel();
 
             return { name: topic };
         }"
-        v-bind="{...$props, ...$attrs}"
+        v-bind="$attrs"
     >
         <template #search="{attributes, events}">
             <input
@@ -28,13 +28,13 @@ const selectedTopics = defineModel();
         </template>
         <template #selected-option="{name, color}">
             <div class="flex items-center">
-                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}" aria-hidden="true"></span>
                 <span class="line-clamp-1 flex-1">{{ name }}</span>
             </div>
         </template>
         <template #option="{name, color}">
             <div :style="{ display: 'flex', alignItems: 'center' }">
-                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}" aria-hidden="true"></span>
                 <span :style="{ flex: '1'}" class="line-clamp-1">{{ name }}</span>
             </div>
         </template>
