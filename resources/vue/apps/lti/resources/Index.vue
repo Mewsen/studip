@@ -8,26 +8,30 @@ import {createResourceURL} from '../../../components/lti/helpers/urls';
 import LtiApp from '../../../components/lti/LtiApp.vue';
 import {useLtiConfig} from '../../../store/pinia/lti/Config';
 import {debounce} from 'lodash';
+import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
+import StudipPagination from "../../../components/StudipPagination.vue";
+import ResourceDetail from "../../../components/lti/resources/ResourceDetail.vue";
 
 const ltiConfig = useLtiConfig();
 
 const CSRF = STUDIP.CSRF_TOKEN;
 
-const props = defineProps({
-    resources: {
-        type: Array,
-        default: () => ([])
-    }
-});
-
-const filteredResources = ref(props.resources);
+const resources = ref([]);
+const currentResource = ref(null);
+const isLoading = ref(false);
+const pagination = ref({});
 
 const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
 
-const isIframe = resource => resource.container.value === 'iframe' || resource.registration.container.value === 'iframe';
+const showResourceDialog = resource => currentResource.value = resource;
+
+const isIframe = resource => {
+    const launchContainer = resource.launch_container || resource.registration.meta.configs.launch_container;
+    return launchContainer === 'iframe';
+};
 const updateResourcesOrder = async () => {
     try {
-        const resourceIds = filteredResources.value.map(({ id }) => id);
+        const resourceIds = resources.value.map(({ id }) => id);
 
         const data = {
             attributes: {
@@ -56,30 +60,59 @@ const updateOrderDebounced = debounce(updateResourcesOrder, 2000);
 const assistiveLive = ref('');
 
 const swapResource = (resourceId, step) => {
-    const index = filteredResources.value.findIndex(({ id }) => id === resourceId);
+    const index = resources.value.findIndex(({ id }) => id === resourceId);
     const newIndex = index + step;
 
-    if (newIndex < 0 || newIndex >= filteredResources.value.length) {
+    if (newIndex < 0 || newIndex >= resources.value.length) {
         return;
     }
 
-    const temp = filteredResources.value[newIndex];
-    filteredResources.value[newIndex] = filteredResources.value[index];
-    filteredResources.value[index] = temp;
+    const temp = resources.value[newIndex];
+    resources.value[newIndex] = resources.value[index];
+    resources.value[index] = temp;
 
     nextTick(() => {
         document.getElementById(`sort-handle-${resourceId}`)?.focus();
         assistiveLive.value = $gettext(
             'Aktuelle Position in der Liste: %{index} von %{length}.',
-            { index: newIndex + 1, length: filteredResources.value.length }
+            { index: newIndex + 1, length: resources.value.length }
         );
 
         updateOrderDebounced();
     });
 }
 
-onMounted(() => {
-    // filteredResources.value = props.resources.filter(r => ltiConfig.isModerator || r.launch_type !== 'deep_linking');
+const fetchResources = async (_, offset = 0) => {
+    try {
+        isLoading.value = true;
+
+        const response = await STUDIP.jsonapi.withPromises().GET(
+            `courses/${STUDIP.URLHelper.parameters.cid}/lti-resources`,
+            {
+                data: { include: 'registration,deployment', page: { offset } }
+            }
+        );
+
+        pagination.value = {
+            ...response.meta.page,
+            currentPage: response.meta.page.offset / response.meta.page.limit,
+            links: response.links
+        };
+
+        resources.value = await deserializeJSONAPIResponse(response);
+
+        console.log(resources.value);
+    } catch (error) {
+        STUDIP.Report.error(error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+onMounted(async () => {
+    // resources.value = props.resources.filter(r => ltiConfig.isModerator || r.launch_type !== 'deep_linking');
+
+    await fetchResources();
 });
 </script>
 
@@ -107,18 +140,22 @@ onMounted(() => {
         <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
 
         <draggable
-            v-model="filteredResources"
+            v-model="resources"
             item-key="id"
             :animation="200"
             @end="updateResourcesOrder"
             :disabled="false"
             class="tools-card-container"
-            :class="{ 'tools-card-container--fill-free-space': filteredResources.length >= 1 }"
+            :class="{ 'tools-card-container--fill-free-space': resources.length >= 1 }"
             handle=".drag-handle"
             tag="ul">
             <template #item="{element}">
                 <li :class="{ 'tools-card-container--full-width': isIframe(element) }">
-                    <ToolCard :resource="element" @swap="swapResource" />
+                    <ToolCard
+                        :resource="element"
+                        @swap="swapResource"
+                        @showResource="showResourceDialog(element)"
+                    />
                 </li>
             </template>
             <template v-if="ltiConfig.isModerator" #footer>
@@ -128,7 +165,6 @@ onMounted(() => {
                             <button
                                 type="button"
                                 @click="createResource"
-                                :title="$gettext('Neuen Ressource hinzufügen')"
                                 class="button button--icon-label"
                             >
                                 <StudipIcon shape="add" :size="20" aria-hidden="true" />
@@ -139,6 +175,27 @@ onMounted(() => {
                 </li>
             </template>
         </draggable>
+        <StudipPagination
+            v-if="pagination.total > pagination.limit"
+            :currentPage="pagination.currentPage"
+            :totalItems="pagination.total"
+            :itemsPerPage="pagination.limit"
+            @pageUpdated="fetchResources" />
+
+        <StudipDialog
+            v-if="currentResource?.id"
+            :title="$gettext('Detaillierte Information')"
+            :closeText="$gettext('Schließen')"
+            height="700"
+            width="600"
+            @close="currentResource = null"
+        >
+            <template #dialogContent>
+                <div class="lti">
+                    <ResourceDetail :resource="currentResource" />
+                </div>
+            </template>
+        </StudipDialog>
 
         <form id="lti-resource-delete-form" method="post">
             <input type="hidden" :name="CSRF.name" :value="CSRF.value" />

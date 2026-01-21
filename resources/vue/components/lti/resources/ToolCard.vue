@@ -9,7 +9,6 @@ import {
     launchResourceURL,
     selectContentURL
 } from "../helpers/urls";
-import ResourceDetail from "./ResourceDetail.vue";
 import StudipIcon from "../../StudipIcon.vue";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
 import StudipTooltipIcon from "../../StudipTooltipIcon.vue";
@@ -21,9 +20,7 @@ const props= defineProps({
         required: true
     }
 });
-const emit = defineEmits(['swap']);
-
-const isResourceDetailDialogOpen = ref(false);
+const emit = defineEmits(['swap', 'showResource']);
 
 const title = computed(() => props.resource.title || props.resource.registration.name);
 
@@ -51,7 +48,7 @@ const resourceURL = computed(() => {
 
     return launchResourceURL(props.resource.id);
 });
-const launchContainer = computed(() => props.resource.container.value || props.resource.registration.container.value);
+const launchContainer = computed(() => props.resource.launch_container || props.resource.registration.meta.configs.launch_container);
 const isIframe = computed(() => launchContainer.value === 'iframe');
 
 const containerAttributes = computed(() => {
@@ -65,8 +62,6 @@ const containerAttributes = computed(() => {
         target: '_blank'
     }
 });
-const showTool = () => isResourceDetailDialogOpen.value = true;
-
 const editTool = () => STUDIP.Dialog.fromURL(editResourceURL(props.resource.id), {width: '700', height: '700'});
 const editConsent = () => STUDIP.Dialog.fromURL(editResourceConsentURL(props.resource.id), {width: '700', height: '700'});
 
@@ -113,7 +108,7 @@ const swap = event => {
                     <StudipActionMenu
                         :context="title"
                         :items="actionMenus"
-                        @show="showTool"
+                        @show="emit('showResource', resource.id)"
                         @edit="editTool"
                         @editConsent="editConsent"
                         @delete="showConfirmDelete"
@@ -127,6 +122,7 @@ const swap = event => {
                 <iframe
                     v-if="isIframe"
                     :src="resourceURL"
+                    loading="lazy"
                 ></iframe>
             </div>
 
@@ -151,5 +147,4 @@ const swap = event => {
             </footer>
         </div>
     </component>
-    <ResourceDetail :resource="resource" v-model:isOpen="isResourceDetailDialogOpen" />
 </template>

@@ -256,8 +256,6 @@ export default {
                 };
             } else {
                 // Found requested item at current level.
-                console.log('navigation', navigation);
-                console.log('path', path);
                 if (navigation[path]) {
                     return navigation[path];
                 } else {

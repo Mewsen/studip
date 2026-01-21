@@ -66,10 +66,7 @@ class Course_LtiController extends StudipController
             throw new AccessDeniedException();
         }
 
-        if (
-            !in_array($action, ['admin', 'grades'])
-            && Navigation::hasItem('/course/lti/index')
-        ) {
+        if (Navigation::hasItem('/course/lti/index')) {
             Navigation::activateItem('/course/lti/index');
         }
     }
@@ -115,18 +112,8 @@ class Course_LtiController extends StudipController
             }
         }
 
-        $resources = ResourceLink::findBySQL(
-            "course_id = :course_id ORDER BY `position`",
-            [
-                'course_id' => $this->range_id
-            ]
-        );
-
         $this->render_vue_app(
             Studip\VueApp::create('lti/resources/Index')
-                ->withProps([
-                    'resources' => array_map(fn ($r) => $r->transformData(['registration', 'deployment']), $resources)
-                ])
         );
     }
 
