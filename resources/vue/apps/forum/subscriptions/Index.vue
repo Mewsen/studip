@@ -104,61 +104,75 @@ onMounted(async () => {
                 </colgroup>
                 <thead>
                     <tr class="sortable">
-                    <th
-                        :class="getSortClass('subject.name')"
-                        :aria-sort="getAriaSortString('subject.name')"
-                        :aria-label="getAriaSortLabel('subject.name', $gettext('Thema Name'))"
-                    >
-                        <button
-                            type="button"
-                            class="as-link"
-                            @click="sortBy('subject.name')"
-                            :title="$gettext('Nach Thema Name sortieren')">
-                            {{ $gettext('Thema') }}
-                        </button>
-                    </th>
-                    <th></th>
-                    <th
-                        :class="getSortClass('subject.type')"
-                        :aria-sort="getAriaSortString('subject.type')"
-                        :aria-label="getAriaSortLabel('subject.type', $gettext('Typ'))"
-                    >
-                        <button
-                            type="button"
-                            class="as-link"
-                            @click="sortBy('subject.type')"
-                            :title="$gettext('Nach Typ sortieren')">
-                            {{ $gettext('Typ') }}
-                        </button>
-                    </th>
-                    <th
-                        :class="getSortClass('mkdate')"
-                        :aria-sort="getAriaSortString('mkdate')"
-                        :aria-label="getAriaSortLabel('mkdate', $gettext('Abonniert datum'))"
-                    >
-                        <button
-                            type="button"
-                            class="as-link"
-                            @click="sortBy('mkdate')"
-                            :title="$gettext('Nach Abonniert am sortieren')">
-                            {{ $gettext('Abonniert am') }}
-                        </button>
-                    </th>
-                    <th
-                        class="actions"
-                        :class="getSortClass('notification_type')"
-                        :aria-sort="getAriaSortString('notification_type')"
-                        :aria-label="getAriaSortLabel('notification_type', $gettext('Typ des Abonnements'))"
-                    >
-                        <button
-                            type="button"
-                            class="as-link"
-                            @click="sortBy('notification_type')"
-                            :title="$gettext('Nach Typ des Abonnements sortieren')">
-                            {{ $gettext('Typ des Abonnements') }}
-                        </button>
-                    </th>
-                </tr>
+                        <th
+                            scope="col"
+                            :class="getSortClass('subject.name')"
+                            :aria-sort="getAriaSortString('subject.name')"
+                            :aria-label="getAriaSortLabel('subject.name', $gettext('Thema Name'))"
+                        >
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('subject.name')"
+                                :title="$gettext('Nach Name des Thema sortieren')"
+                                :aria-label="$gettext('Nach Name des Thema sortieren')"
+                            >
+                                {{ $gettext('Thema') }}
+                            </button>
+                        </th>
+                        <th scope="col">
+                            <span class="sr-only">{{ $gettext('Status der Diskussion') }}</span>
+                        </th>
+                        <th
+                            scope="col"
+                            :class="getSortClass('subject.type')"
+                            :aria-sort="getAriaSortString('subject.type')"
+                            :aria-label="getAriaSortLabel('subject.type', $gettext('Typ'))"
+                        >
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('subject.type')"
+                                :title="$gettext('Nach Typ sortieren')"
+                                :aria-label="$gettext('Nach Typ sortieren')"
+                            >
+                                {{ $gettext('Typ') }}
+                            </button>
+                        </th>
+                        <th
+                            scope="col"
+                            :class="getSortClass('mkdate')"
+                            :aria-sort="getAriaSortString('mkdate')"
+                            :aria-label="getAriaSortLabel('mkdate', $gettext('Abonniert datum'))"
+                        >
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('mkdate')"
+                                :title="$gettext('Nach Abonniert am sortieren')"
+                                :aria-label="$gettext('Nach Abonniert am sortieren')"
+                            >
+                                {{ $gettext('Abonniert am') }}
+                            </button>
+                        </th>
+                        <th
+                            scope="col"
+                            class="actions"
+                            :class="getSortClass('notification_type')"
+                            :aria-sort="getAriaSortString('notification_type')"
+                            :aria-label="getAriaSortLabel('notification_type', $gettext('Typ des Abonnements'))"
+                        >
+                            <button
+                                type="button"
+                                class="as-link"
+                                @click="sortBy('notification_type')"
+                                :title="$gettext('Nach Typ des Abonnements sortieren')"
+                                :aria-label="$gettext('Nach Typ des Abonnements sortieren')"
+                            >
+                                {{ $gettext('Typ des Abonnements') }}
+                            </button>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr v-if="isLoading" >
@@ -167,56 +181,63 @@ onMounted(async () => {
                         </td>
                     </tr>
                     <tr v-else v-for="subscription in sortedData" :key="subscription.id">
-                    <td>
-                        <div class="table-row-overview">
-                            <div class="title-with-actions">
-                                <div class="title-with-actions__content">
-                                    <a v-if="subscription.subject.type === 'forum-topics'" :href="getTopicURL(subscription.subject.id)" :title="$gettext('Zum Thema')">
-                                        <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.name }}</span>
-                                    </a>
-                                    <a v-else-if="subscription.subject.type === 'forum-discussions'" :href="getDiscussionURL(subscription.subject.id)" :title="$gettext('Zur Diskussion')">
-                                        <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.title }}</span>
-                                    </a>
-                                </div>
+                        <td>
+                            <div class="table-row-overview">
+                                <div class="title-with-actions">
+                                    <div class="title-with-actions__content">
+                                        <a v-if="subscription.subject.type === 'forum-topics'" :href="getTopicURL(subscription.subject.id)" :title="$gettext('Zum Thema')">
+                                            <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.name }}</span>
+                                        </a>
+                                        <a v-else-if="subscription.subject.type === 'forum-discussions'" :href="getDiscussionURL(subscription.subject.id)" :title="$gettext('Zur Diskussion')">
+                                            <span class="subscription-title as-link line-clamp-2">{{ subscription.subject.title }}</span>
+                                        </a>
+                                    </div>
 
-                                <div class="title-with-actions__actions-xs">
-                                    <SubscriptionDropdown
-                                        :type="getSubscriptionDropdownTitle(subscription.subject.type)"
-                                        :subject="subscription.subject"
-                                        :subject_id="subscription.subject_id"
-                                        :userSubscription="subscription"
-                                        @deleted="removeSubscription(subscription.id)"
-                                    />
+                                    <div class="title-with-actions__actions-xs">
+                                        <SubscriptionDropdown
+                                            :type="getSubscriptionDropdownTitle(subscription.subject.type)"
+                                            :subject="subscription.subject"
+                                            :subject_id="subscription.subject_id"
+                                            :userSubscription="subscription"
+                                            @deleted="removeSubscription(subscription.id)"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <StudipIcon
-                            v-if="subscription.subject.type === 'forum-discussions' && subscription.subject.closed_at"
-                            :title="$gettext('Diskussion ist geschlossen')"
-                            shape="lock-locked2"
-                            :size="20"
-                            role="inactive"
-                        />
-                    </td>
-                    <td>
-                        {{ getSubjectLabel(subscription.subject.type) }}
-                    </td>
-                    <td>
-                        <StudipDateTime :iso="subscription.mkdate" :relative="true" />
-                    </td>
-                    <td class="actions">
-                        <div class="inline-flex">
-                            <SubscriptionDropdown
-                                :type="getSubscriptionDropdownTitle(subscription.subject.type)"
-                                :subject="subscription.subject"
-                                :userSubscription="subscription"
-                                @deleted="removeSubscription(subscription.id)"
-                            />
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <template v-if="subscription.subject.type === 'forum-discussions'">
+
+                                <StudipIcon
+                                    v-if="subscription.subject.closed_at"
+                                    :title="$gettext('Diskussion ist geschlossen')"
+                                    shape="lock-locked2"
+                                    :size="20"
+                                    role="inactive"
+                                    aria-hidden="true"
+                                />
+                                <span role="status" class="sr-only">
+                                    {{ subscription.subject.closed_at ? $gettext('Diskussion ist geschlossen') : $gettext('Diskussion ist offen') }}
+                                </span>
+                            </template>
+                        </td>
+                        <td>
+                            {{ getSubjectLabel(subscription.subject.type) }}
+                        </td>
+                        <td>
+                            <StudipDateTime :iso="subscription.mkdate" :relative="true" />
+                        </td>
+                        <td class="actions">
+                            <div class="inline-flex">
+                                <SubscriptionDropdown
+                                    :type="getSubscriptionDropdownTitle(subscription.subject.type)"
+                                    :subject="subscription.subject"
+                                    :userSubscription="subscription"
+                                    @deleted="removeSubscription(subscription.id)"
+                                />
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
                 <tfoot v-if="pagination.total > pagination.limit">
                     <tr>

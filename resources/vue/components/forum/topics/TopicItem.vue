@@ -75,6 +75,7 @@ const swapTopic = event => {
                             class="drag-link styleless"
                             @keydown="swapTopic"
                             :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
+                            :aria-label="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
                         >
                             <span class="drag-handle"></span>
                         </button>
@@ -83,18 +84,23 @@ const swapTopic = event => {
                         <div class="flex-1">
                             <div class="title-with-actions">
                                 <div class="title-with-actions__content">
-                                    <a class="title-with-actions__link" :href="getTopicURL(topic.id)" :title="$gettext('Zum Thema')">
+                                    <a
+                                        class="title-with-actions__link"
+                                        :href="getTopicURL(topic.id)"
+                                        :title="$gettext('Zum Thema')"
+                                        :aria-label="$gettext('Zum Thema: %{name}', {name: topic.name})"
+                                    >
                                         <span class="topic-title line-clamp-2">{{ topic.name }}</span>
                                         <span
                                             v-if="!forumConfig.allowGuestAccess && topic.meta.unread_postings_count"
                                             class="unread-items-badge"
                                             role="status"
                                             aria-live="polite"
-                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                                             :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
+                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                                         >
-                                    {{ topic.meta.unread_postings_count }}
-                                </span>
+                                        {{ topic.meta.unread_postings_count }}
+                                        </span>
                                     </a>
                                 </div>
 
@@ -120,7 +126,7 @@ const swapTopic = event => {
                     <dl>
                         <dt>{{ $gettext('Anzahl der Teilnehmenden am Thema') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="community2" role="info"  :size="15" aria-hidden="true"/>
+                            <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
                             {{ topic.meta.users_count }}
                         </dd>
                     </dl>
@@ -128,19 +134,19 @@ const swapTopic = event => {
                     <dl>
                         <dt>{{ $gettext('Anzahl der Diskussionen') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="forum" role="info"  :size="15" aria-hidden="true"/>
+                            <StudipIcon shape="forum" role="info" :size="15" aria-hidden="true" />
                             {{ topic.meta.discussions_count }}
                         </dd>
 
                         <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="reply" role="info"  :size="15" aria-hidden="true"/>
+                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
                             {{ topic.meta.postings_count }}
                         </dd>
 
                         <dt>{{ $gettext('Letzte Aktivität') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="activity" role="info"  :size="15" aria-hidden="true"/>
+                            <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
                             <StudipDateTime v-if="topic.meta.recent_activity" :iso="topic.meta.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </dd>
@@ -148,30 +154,44 @@ const swapTopic = event => {
                 </div>
                 <!--mobile display: end-->
             </td>
-            <td class="nowrap" :title="$gettext('Anzahl der Diskussionen')" :aria-label="$gettext('Anzahl der Diskussionen')">
-                {{ topic.meta.discussions_count }} {{ $gettext('Diskussionen') }}
+            <td class="nowrap">
+                <span :title="$gettext('Anzahl der Diskussionen')" :aria-label="$gettext('Anzahl der Diskussionen')">
+                    {{ topic.meta.discussions_count }} {{ $gettext('Diskussionen') }}
+                </span>
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
-                <StudipIcon shape="community2" role="info"  :size="20" aria-hidden="true" />
-                <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden am Thema') }}:</span>
-                <span>{{ topic.meta.users_count }}</span>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center"
+                    :title="$gettext('Anzahl der Teilnehmenden am Thema')"
+                >
+                    <StudipIcon shape="community2" role="info" :size="20" aria-hidden="true" />
+                    <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden am Thema') }}:</span>
+                    <span>{{ topic.meta.users_count }}</span>
+                </span>
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
-                <StudipIcon shape="reply" role="info"  :size="20" aria-hidden="true" />
-                <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
-                <span>{{ topic.meta.postings_count }}</span>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center"
+                    :title="$gettext('Anzahl der Beiträge')"
+                >
+                    <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
+                    <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
+                    <span>{{ topic.meta.postings_count }}</span>
+                </span>
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center nowrap" :title="$gettext('Letzte Aktivität')" role="group">
-                <StudipIcon shape="activity" role="info" :size="20" aria-hidden="true"/>
-                <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
-                <StudipDateTime v-if="topic.meta.recent_activity" :iso="topic.meta.recent_activity" :relative="true" />
-                <template v-else>{{ $gettext('Keine Aktivität') }}</template>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center nowrap"
+                    :title="$gettext('Letzte Aktivität')"
+                >
+                    <StudipIcon shape="activity" role="info" :size="20" aria-hidden="true"/>
+                    <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
+                    <StudipDateTime v-if="topic.meta.recent_activity" :iso="topic.meta.recent_activity" :relative="true" />
+                    <template v-else>{{ $gettext('Keine Aktivität') }}</template>
+                </span>
             </td>
             <td class="actions">
                 <StudipActionMenu
@@ -196,10 +216,9 @@ const swapTopic = event => {
                     <div class="topic-card__body">
                         <div class="flex space-between">
                             <div class="flex items-start gap-10">
-                            <span class="topic-card__title topic-title line-clamp-2">
-                                {{ topic.name }}
-                            </span>
-
+                                <span class="topic-card__title topic-title line-clamp-2">
+                                    {{ topic.name }}
+                                </span>
                                 <span
                                     v-if="!forumConfig.allowGuestAccess && topic.meta.unread_postings_count"
                                     class="unread-items-badge"
@@ -208,8 +227,8 @@ const swapTopic = event => {
                                     :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                                     :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: topic.meta.unread_postings_count})"
                                 >
-                                {{ topic.meta.unread_postings_count }}
-                            </span>
+                                    {{ topic.meta.unread_postings_count }}
+                                </span>
                             </div>
 
                             <div class="actions">
@@ -234,31 +253,34 @@ const swapTopic = event => {
                                 class="drag-link styleless"
                                 @keydown="swapTopic"
                                 :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
+                                :aria-label="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: topic.name})"
                             >
                                 <span class="drag-handle"></span>
                             </button>
                         </div>
                         <div class="topic-card__footer">
-                        <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
-                            <StudipIcon shape="community2" role="info"  :size="15" aria-hidden="true" />
-                            <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden am Thema') }}:</span>
-                            <small>{{ topic.meta.users_count }}</small>
-                        </span>
+                            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden am Thema')" role="group">
+                                <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
+                                <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden am Thema') }}:</span>
+                                <small>{{ topic.meta.users_count }}</small>
+                            </span>
+
                             <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
-                            <StudipIcon shape="reply" role="info"  :size="15" aria-hidden="true" />
-                            <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
-                            <small>{{ topic.meta.postings_count }}</small>
-                        </span>
+                                <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                                <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
+                                <small>{{ topic.meta.postings_count }}</small>
+                            </span>
+
                             <span class="inline-flex gap-10 items-center" :title="$gettext('Letzte Aktivität')" role="group">
-                            <StudipIcon shape="activity" role="info"  :size="15" aria-hidden="true" />
-                            <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
-                            <small v-if="topic.meta.recent_activity">
-                                <StudipDateTime :iso="topic.meta.recent_activity" :relative="true" />
-                            </small>
-                            <small v-else>
-                                {{ $gettext('Keine Aktivität') }}
-                            </small>
-                        </span>
+                                <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
+                                <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
+                                <small v-if="topic.meta.recent_activity">
+                                    <StudipDateTime :iso="topic.meta.recent_activity" :relative="true" />
+                                </small>
+                                <small v-else>
+                                    {{ $gettext('Keine Aktivität') }}
+                                </small>
+                            </span>
                         </div>
                     </div>
                 </div>

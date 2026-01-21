@@ -48,8 +48,11 @@ onMounted(() => {
         </colgroup>
         <thead>
             <tr class="sortable">
-                <th></th>
+                <th scope="col">
+                    <span class="sr-only">{{ $gettext('Benutzer') }}</span>
+                </th>
                 <th
+                    scope="col"
                     :class="getSortClass('user.formatted_name')"
                     :aria-sort="getAriaSortString('user.formatted_name')"
                     :aria-label="getAriaSortLabel('user.formatted_name', $gettext('Name'))"
@@ -58,11 +61,14 @@ onMounted(() => {
                         type="button"
                         class="as-link"
                         @click="sortBy('user.formatted_name')"
-                        :title="$gettext('Nach Name sortieren')">
+                        :title="$gettext('Nach Name sortieren')"
+                        :aria-label="$gettext('Nach Name sortieren')"
+                    >
                         {{ $gettext('Name') }}
                     </button>
                 </th>
                 <th
+                    scope="col"
                     :class="getSortClass('mkdate')"
                     :aria-sort="getAriaSortString('mkdate')"
                     :aria-label="getAriaSortLabel('mkdate', $gettext('Datum'))"
@@ -71,7 +77,9 @@ onMounted(() => {
                         type="button"
                         class="as-link"
                         @click="sortBy('mkdate')"
-                        :title="$gettext('Nach Datum sortieren')">
+                        :title="$gettext('Nach Datum sortieren')"
+                        :aria-label="$gettext('Nach Datum sortieren')"
+                    >
                         {{ $gettext('Datum') }}
                     </button>
                 </th>

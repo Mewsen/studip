@@ -11,6 +11,8 @@ import StudipIcon from '@/vue/components/StudipIcon.vue';
 import {deserializeJSONAPIResponse} from '@/assets/javascripts/lib/jsonapiUtils';
 import StudipPagination from '@/vue/components/StudipPagination.vue';
 import {useSortable} from '@/vue/composables/useSortable';
+import ShowCategory from "@/vue/components/forum/categories/ShowCategory.vue";
+import StudipDialog from "@/vue/components/StudipDialog.vue";
 
 const forumConfig = useForumConfig();
 const currentCategory = ref(null);
@@ -201,6 +203,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                 <thead>
                     <tr class="sortable">
                         <th
+                            scope="col"
                             :class="getSortClass('name')"
                             :aria-sort="getAriaSortString('name')"
                             :aria-label="getAriaSortLabel('name', $gettext('Name'))"
@@ -214,6 +217,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.discussions_count')"
                             :aria-sort="getAriaSortString('meta.discussions_count')"
                             :aria-label="getAriaSortLabel('meta.discussions_count', $gettext('Anzahl der Diskussionen'))"
@@ -227,6 +231,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.users_count')"
                             :aria-sort="getAriaSortString('meta.users_count')"
                             :aria-label="getAriaSortLabel('meta.users_count', $gettext('Anzahl der Teilnehmenden'))"
@@ -240,6 +245,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.postings_count')"
                             :aria-sort="getAriaSortString('meta.postings_count')"
                             :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
@@ -253,6 +259,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.recent_activity')"
                             :aria-sort="getAriaSortString('meta.recent_activity')"
                             :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
@@ -265,7 +272,9 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 {{ $gettext('Letzte Aktivität') }}
                             </button>
                         </th>
-                        <th></th>
+                        <th scope="col">
+                            <span class="sr-only">{{ $gettext('Aktionen') }}</span>
+                        </th>
                     </tr>
                 </thead>
                 <Draggable
@@ -313,5 +322,20 @@ const showCategoryDialog = category => currentCategory.value = category;
                 :itemsPerPage="pagination.limit"
                 @pageUpdated="fetchCategories" />
         </div>
+
+        <StudipDialog
+            v-if="currentCategory?.id"
+            :title="$gettext('Detaillierte Information')"
+            :closeText="$gettext('Schließen')"
+            height="700"
+            width="600"
+            @close="currentCategory = null"
+        >
+            <template #dialogContent>
+                <div class="forum">
+                    <ShowCategory :category="currentCategory" />
+                </div>
+            </template>
+        </StudipDialog>
     </ForumApp>
 </template>

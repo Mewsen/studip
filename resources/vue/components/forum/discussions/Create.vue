@@ -29,11 +29,12 @@ const addDiscussion = () => {
 
 <template>
     <button
-        v-if="!forumConfig.allowGuestAccess"
         type="button"
+        class="button button--icon-only"
+        v-if="!forumConfig.allowGuestAccess"
         @click="addDiscussion"
         :title="$gettext('Neue Diskussion starten')"
-        class="button button--icon-only"
+        :aria-label="$gettext('Neue Diskussion starten')"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />
     </button>

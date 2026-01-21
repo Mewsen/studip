@@ -76,11 +76,11 @@ onMounted(() => {
 
                 <section>
                     <input type="hidden" name="category" :value="JSON.stringify(topicForm.category)">
-                    <label for="category_input">
+                    <label for="category-input">
                         {{ $gettext('Kategorie') }}
                     </label>
                     <StudipSelect
-                        id="category_input"
+                        id="category-input"
                         label="name"
                         :options="categories"
                         v-model="topicForm.category"
@@ -95,13 +95,13 @@ onMounted(() => {
                     >
                         <template #selected-option="{name, color}">
                             <div class="flex items-center">
-                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}" aria-hidden="true"></span>
                                 <span class="line-clamp-1 flex-1">{{name}}</span>
                             </div>
                         </template>
                         <template #option="{name, color}">
                             <div :style="{ display: 'flex', alignItems: 'center' }">
-                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}"></span>
+                                <span v-if="color" :style="{ backgroundColor: color, height: '14px', width: '14px', marginRight: '8px'}" aria-hidden="true"></span>
                                 <span :style="{ flex: '1'}" class="line-clamp-1">{{name}}</span>
                             </div>
                         </template>

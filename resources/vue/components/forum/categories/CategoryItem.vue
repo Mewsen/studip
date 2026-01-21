@@ -75,7 +75,7 @@ const swapCategory = event => {
                             class="drag-link styleless"
                             @keydown="swapCategory"
                             :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: category.name})"
-
+                            :aria-label="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: category.name})"
                         >
                             <span class="drag-handle"></span>
                         </button>
@@ -88,18 +88,20 @@ const swapCategory = event => {
                                     <a
                                         class="title-with-actions__link"
                                         :href="getCategoryURL(category.id)"
-                                        :title="$gettext('Zur Kategorie')">
+                                        :title="$gettext('Zur Kategorie')"
+                                        :aria-label="$gettext('Zur Kategorie: %{name}', {name: category.name})"
+                                    >
                                         <span class="category-title line-clamp-2">{{ category.name }}</span>
                                         <span
                                             v-if="!forumConfig.allowGuestAccess && category.meta.unread_postings_count"
                                             class="unread-items-badge"
                                             role="status"
                                             aria-live="polite"
-                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
                                             :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
+                                            :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
                                         >
-                                    {{ category.meta.unread_postings_count }}
-                                </span>
+                                            {{ category.meta.unread_postings_count }}
+                                        </span>
                                     </a>
                                 </div>
 
@@ -125,7 +127,7 @@ const swapCategory = event => {
                     <dl>
                         <dt>{{ $gettext('Anzahl der Teilnehmenden in der Kategorie') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="community2" role="info" :size="15" />
+                            <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
                             {{ category.meta.users_count }}
                         </dd>
                     </dl>
@@ -133,19 +135,19 @@ const swapCategory = event => {
                     <dl>
                         <dt>{{ $gettext('Anzahl der Diskussionen') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="forum" role="info" :size="15" />
+                            <StudipIcon shape="forum" role="info" :size="15" aria-hidden="true" />
                             {{ category.meta.discussions_count }}
                         </dd>
 
                         <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="reply" role="info" :size="15" />
+                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
                             {{ category.meta.postings_count }}
                         </dd>
 
                         <dt>{{ $gettext('Letzte Aktivität') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="activity" role="info" :size="15" />
+                            <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
                             <StudipDateTime v-if="category.meta.recent_activity" :iso="category.meta.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </dd>
@@ -157,23 +159,38 @@ const swapCategory = event => {
                 {{ category.meta.discussions_count }} {{ $gettext('Diskussion') }}
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden in der Kategorie')" :aria-label="$gettext('Anzahl der Teilnehmenden in der Kategorie')" role="group">
-                <StudipIcon shape="community2" role="info" :size="20" aria-hidden="true" />
-                <span>{{ category.meta.users_count }}</span>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center"
+                    :title="$gettext('Anzahl der Teilnehmenden in der Kategorie')"
+                    :aria-label="$gettext('Anzahl der Teilnehmenden in der Kategorie')"
+                >
+                    <StudipIcon shape="community2" role="info" :size="20" aria-hidden="true" />
+                    <span>{{ category.meta.users_count }}</span>
+                </span>
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
-                <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
-                <span>{{ category.meta.postings_count }}</span>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center"
+                    :title="$gettext('Anzahl der Beiträge')"
+                    :aria-label="$gettext('Anzahl der Beiträge')"
+                >
+                    <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
+                    <span>{{ category.meta.postings_count }}</span>
+                </span>
             </td>
             <td>
-            <span class="inline-flex gap-10 items-center nowrap" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
-                <StudipIcon shape="activity" role="info" :size="20" aria-hidden="true"/>
-                <StudipDateTime v-if="category.meta.recent_activity" :iso="category.meta.recent_activity" :relative="true" />
-                <template v-else>{{ $gettext('Keine Aktivität') }}</template>
-            </span>
+                <span
+                    role="group"
+                    class="inline-flex gap-10 items-center nowrap"
+                    :title="$gettext('Letzte Aktivität')"
+                    :aria-label="$gettext('Letzte Aktivität')"
+                >
+                    <StudipIcon shape="activity" role="info" :size="20" aria-hidden="true"/>
+                    <StudipDateTime v-if="category.meta.recent_activity" :iso="category.meta.recent_activity" :relative="true" />
+                    <template v-else>{{ $gettext('Keine Aktivität') }}</template>
+                </span>
             </td>
             <td class="actions">
                 <StudipActionMenu
@@ -212,15 +229,15 @@ const swapCategory = event => {
                             </span>
 
                                 <span
-                                    v-if="!forumConfig.allowGuestAccess && category.meta.unread_postings_count"
-                                    class="unread-items-badge"
                                     role="status"
                                     aria-live="polite"
-                                    :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
+                                    class="unread-items-badge"
+                                    v-if="!forumConfig.allowGuestAccess && category.meta.unread_postings_count"
                                     :title="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
+                                    :aria-label="$gettext('Sie haben %{count} ungelesene Beiträge', {count: category.meta.unread_postings_count})"
                                 >
-                                {{ category.meta.unread_postings_count }}
-                            </span>
+                                    {{ category.meta.unread_postings_count }}
+                                </span>
                             </div>
                             <div class="actions">
                                 <StudipActionMenu
@@ -240,30 +257,44 @@ const swapCategory = event => {
                         <div v-if="forumConfig.isModerator" class="drag-area">
                             <button
                                 type="button"
-                                :id="`sort-handle-${category.id}`"
                                 class="drag-link styleless"
+                                :id="`sort-handle-${category.id}`"
                                 @keydown="swapCategory"
                                 :title="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: category.name})"
+                                :aria-label="$gettext('Sortierelement für Element %{name}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {name: category.name})"
                             >
                                 <span class="drag-handle"></span>
                             </button>
                         </div>
                         <div class="topic-card__footer">
-                        <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Teilnehmenden in der Kategorie')" :aria-label="$gettext('Anzahl der Teilnehmenden in der Kategorie')" role="group">
-                            <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true"/>
-                            <small>{{ category.meta.users_count }}</small>
-                        </span>
-                            <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" :aria-label="$gettext('Anzahl der Beiträge')" role="group">
-                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true"/>
-                            <small>{{ category.meta.postings_count }}</small>
-                        </span>
-                            <span class="inline-flex gap-10 items-center" :title="$gettext('Letzte Aktivität')" :aria-label="$gettext('Letzte Aktivität')" role="group">
-                            <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true"/>
-                            <small v-if="category.meta.recent_activity">
-                                <StudipDateTime :iso="category.meta.recent_activity" :relative="true" />
-                            </small>
-                            <small v-else>{{ $gettext('Keine Aktivität') }}</small>
-                        </span>
+                            <span
+                                class="inline-flex gap-10 items-center"
+                                :title="$gettext('Anzahl der Teilnehmenden in der Kategorie')"
+                                :aria-label="$gettext('Anzahl der Teilnehmenden in der Kategorie')"
+                            >
+                                <StudipIcon shape="community2" role="info" :size="15" aria-hidden="true" />
+                                <small>{{ category.meta.users_count }}</small>
+                            </span>
+                            <span
+                                class="inline-flex gap-10 items-center"
+                                :title="$gettext('Anzahl der Beiträge')"
+                                :aria-label="$gettext('Anzahl der Beiträge')"
+                            >
+                                <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                                <small>{{ category.meta.postings_count }}</small>
+                            </span>
+                            <span
+                                role="group"
+                                class="inline-flex gap-10 items-center"
+                                :title="$gettext('Letzte Aktivität')"
+                                :aria-label="$gettext('Letzte Aktivität')"
+                            >
+                                <StudipIcon shape="activity" role="info" :size="15" aria-hidden="true" />
+                                <small v-if="category.meta.recent_activity">
+                                    <StudipDateTime :iso="category.meta.recent_activity" :relative="true" />
+                                </small>
+                                <small v-else>{{ $gettext('Keine Aktivität') }}</small>
+                            </span>
                         </div>
                     </div>
                 </div>

@@ -72,19 +72,33 @@ onMounted(async () => {
                         {{ category.name }}
                     </h2>
                     <div class="mt-10 inline-flex gap-20 items-center">
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Teilnehmenden an der Diskussion')" role="group">
+                        <span
+                            class="inline-flex gap-5 items-center"
+                            role="group"
+                            :title="$gettext('Anzahl der Teilnehmenden an der Diskussion')"
+                            :aria-label="$gettext('Anzahl der Teilnehmenden an der Diskussion')"
+                        >
                             <StudipIcon shape="community2" :size="15" role="info" aria-hidden="true" />
                             <span class="sr-only">{{ $gettext('Anzahl der Teilnehmenden an der Diskussion') }}:</span>
                             <small>{{ metadata.users_count }}</small>
                         </span>
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
+                        <span
+                            role="group"
+                            class="inline-flex gap-5 items-center"
+                            :title="$gettext('Anzahl der Beiträge')"
+                            :aria-label="$gettext('Anzahl der Beiträge')"
+                        >
                             <StudipIcon shape="reply" :size="15" role="info" aria-hidden="true" />
                             <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                             <small>{{ metadata.postings_count }}</small>
                         </span>
-                        <span class="inline-flex gap-5 items-center" :title="$gettext('Letzte Aktivität')" role="group">
+                        <span
+                            role="group"
+                            class="inline-flex gap-5 items-center"
+                            :title="$gettext('Letzte Aktivität')"
+                            :aria-label="$gettext('Letzte Aktivität')"
+                        >
                             <StudipIcon shape="activity" :size="15" role="info" aria-hidden="true" />
-                            <span class="sr-only">{{ $gettext('Letzte Aktivität') }}:</span>
                             <StudipDateTime v-if="metadata.recent_activity" :iso="metadata.recent_activity" :relative="true" />
                             <template v-else>{{ $gettext('Keine Aktivität') }}</template>
                         </span>
@@ -94,20 +108,24 @@ onMounted(async () => {
                 <div class="actions">
                     <CreateTopic :category_id="category.category_id" />
                     <button
+                        type="button"
+                        class="button button--icon-only"
                         v-if="forumConfig.tileLayout"
                         @click="forumConfig.toggleForumLayout()"
-                        type="button"
                         :title="$gettext('Tabellarische Ansicht')"
-                        class="button button--icon-only">
-                        <StudipIcon shape="view-list" :size="20" />
+                        :aria-label="$gettext('Tabellarische Ansicht')"
+                    >
+                        <StudipIcon shape="view-list" :size="20" aria-hidden="true" />
                     </button>
                     <button
                         v-else
-                        @click="forumConfig.toggleForumLayout()"
                         type="button"
+                        class="button button--icon-only"
+                        @click="forumConfig.toggleForumLayout()"
                         :title="$gettext('Kachelansicht')"
-                        class="button button--icon-only">
-                        <StudipIcon shape="view-wall" :size="20" />
+                        :aria-label="$gettext('Kachelansicht')"
+                    >
+                        <StudipIcon shape="view-wall" :size="20" aria-hidden="true" />
                     </button>
                     <div aria-live="polite" class="sr-only" role="status">{{ toggleLayoutMessage }}</div>
                 </div>

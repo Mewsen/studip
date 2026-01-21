@@ -192,58 +192,103 @@ onMounted(async () => {
             <h1>{{ $gettext('Suche') }}</h1>
             <div class="search-controls">
                 <div class="search-input-container">
-                    <input name="q" type="text" v-model="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
+                    <label for="search-field" class="sr-only">
+                        {{ $gettext('Suchfeld') }}
+                    </label>
+                    <input id="search-field" name="q" type="text" v-model="searchForm.keyword" :placeholder="$gettext('Diskussionen oder Beiträge')"/>
                 </div>
                 <button
                     type="submit"
                     class="button button--icon-label"
                     :title="$gettext('Suchen')"
+                    :aria-label="$gettext('Suchen')"
                 >
                     <StudipIcon shape="search" :size="20" aria-hidden="true" />
                     {{ $gettext('Suchen') }}
                 </button>
-                <button @click="resetSearchForm" type="button" class="button button--icon-only" :title="$gettext('Zurücksetzen')">
-                    <StudipIcon shape="decline" :size="20" />
+                <button
+                    type="button"
+                    class="button button--icon-only"
+                    @click="resetSearchForm"
+                    :title="$gettext('Zurücksetzen')"
+                    :aria-label="$gettext('Zurücksetzen')"
+                >
+                    <StudipIcon shape="decline" :size="20" aria-hidden="true" />
                 </button>
             </div>
 
             <div class="filter-summary-container">
                 <template v-for="topic in searchForm.topics" :key="topic.topic_id">
                     <div class="badge">
-                        <a :href="getTopicURL(topic.topic_id)" :title="$gettext('Zum Thema')" target="_blank" class="flex gap-5 items-center">
-                            <span :style="{ backgroundColor: topic.color ?? '#EDEDED', height: '14px', width: '14px'}"></span>
+                        <a
+                            target="_blank"
+                            class="flex gap-5 items-center"
+                            :href="getTopicURL(topic.topic_id)"
+                            :title="$gettext('Zum Thema')"
+                            :aria-label="$gettext('Zum Thema: %{name}', { name: topic.name })"
+                        >
+                            <span :style="{ backgroundColor: topic.color ?? '#EDEDED', height: '14px', width: '14px'}" aria-hidden="true"></span>
                             {{ topic.name }}
                         </a>
-                        <button @click="searchForm.topics = searchForm.topics.filter(t => t.topic_id !== topic.topic_id)" class="action">
-                            <StudipIcon shape="decline" :size="15" />
+                        <button
+                            type="button"
+                            class="action button-base"
+                            @click="searchForm.topics = searchForm.topics.filter(t => t.topic_id !== topic.topic_id)"
+                            :title="$gettext('Entfernen')"
+                            :aria-label="$gettext('Ausgewähltes Thema entfernen')"
+                        >
+                            <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                         </button>
                     </div>
                 </template>
                 <template v-for="type in searchForm.types" :key="type.type_id">
                     <div class="badge" :title="type.name">
-                        <StudipIcon :shape="type.icon" :size="15" />
+                        <StudipIcon :shape="type.icon" :size="15" aria-hidden="true" />
                         <span>{{ type.name }}</span>
-                        <button @click="searchForm.types = searchForm.types.filter(t => t.type_id !== type.type_id)" class="action">
-                            <StudipIcon shape="decline" :size="15" />
+                        <button
+                            class="action button-base"
+                            @click="searchForm.types = searchForm.types.filter(t => t.type_id !== type.type_id)"
+                            :title="$gettext('Entfernen')"
+                            :aria-label="$gettext('Ausgewählten Diskussionstyp entfernen')"
+                        >
+                            <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                         </button>
                     </div>
                 </template>
                 <template v-for="tag in searchForm.tags" :key="tag">
                     <div class="badge" :title="tag.name">
                         <span>{{ '#'+tag.name }}</span>
-                        <button @click="searchForm.tags = searchForm.tags.filter(t => t.name !== tag.name)" class="action">
-                            <StudipIcon shape="decline" :size="15" />
+                        <button
+                            type="button"
+                            class="action button-base"
+                            @click="searchForm.tags = searchForm.tags.filter(t => t.name !== tag.name)"
+                            :title="$gettext('Entfernen')"
+                            :aria-label="$gettext('Ausgewähltes Schlagwort entfernen')"
+                        >
+                            <StudipIcon shape="decline" :size="15" aria-hidden="true" />
                         </button>
                     </div>
                 </template>
 
                 <template v-for="user in searchForm.authors" :key="user.user_id">
                     <div class="badge">
-                        <a :href="user.profile_url" target="_blank" :title="$gettext('Zum Nutzer Profile')" class="flex gap-5 items-center">
+                        <a
+                            target="_blank"
+                            class="flex gap-5 items-center"
+                            :href="user.profile_url"
+                            :title="$gettext('Zum Nutzer Profile')"
+                            :aria-label="$gettext('Zum Nutzer Profile von %{name}', { name: user.name })"
+                        >
                             <img width="15px" height="15px" :src="user.avatar_url" :alt="user.name" />
                             {{ user.name }}
                         </a>
-                        <button @click="searchForm.authors = searchForm.authors.filter(u => u.name !== user.name)" class="action">
+                        <button
+                            type="button"
+                            class="action button-base"
+                            @click="searchForm.authors = searchForm.authors.filter(u => u.name !== user.name)"
+                            :title="$gettext('Entfernen')"
+                            :aria-label="$gettext('Ausgewählte Autor/-in entfernen')"
+                        >
                             <StudipIcon shape="decline" :size="15" />
                         </button>
                     </div>
@@ -254,15 +299,16 @@ onMounted(async () => {
 
             <div>
                 <button
-                    @click="isFilterVisible = !isFilterVisible"
                     type="button"
                     class="toggle-filter-button button-base"
+                    @click="isFilterVisible = !isFilterVisible"
                     :title="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
+                    :aria-label="isFilterVisible ? $gettext('Erweiterte Filter zuklappen') : $gettext('Erweiterte Filter aufklappen')"
                     :aria-expanded="isFilterVisible.toString()"
                 >
                     {{ $gettext('Erweiterte Filter') }}
-                    <StudipIcon v-if="isFilterVisible" shape="arr_1up" :size="20" />
-                    <StudipIcon v-else shape="arr_1down"  :size="20" />
+                    <StudipIcon v-if="isFilterVisible" shape="arr_1up" :size="20" aria-hidden="true" />
+                    <StudipIcon v-else shape="arr_1down" :size="20" aria-hidden="true" />
                 </button>
                 <div v-if="isFilterVisible" class="filter-controls">
                     <div>

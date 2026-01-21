@@ -124,6 +124,7 @@ const removePostHighlight = id => {
 <template>
     <div :id="`post_${post.id}`" class="post" @click="removePostHighlight(`post_${post.id}`)">
         <div v-if="!forumConfig.allowGuestAccess && isUnread" class="post__unread">
+            <span class="sr-only">{{ $gettext('Ungelesen') }}</span>
         </div>
         <div class="post__body">
             <div class="post__author">

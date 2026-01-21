@@ -146,7 +146,7 @@ const reactionShowDialog = reactive({
                     :aria-label="$gettext('Reagieren')"
                     :aria-pressed="showReactions"
                     @click="showReactions = !showReactions">
-                    <StudipIcon shape="add-reaction" class="add-reaction-icon" :size="18" />
+                    <StudipIcon shape="add-reaction" class="add-reaction-icon" :size="18" aria-hidden="true" />
                 </button>
                 <button
                     v-if="transformedReactions.length"
@@ -170,7 +170,7 @@ const reactionShowDialog = reactive({
                             :aria-label="$gettext('Auf diesen Beitrag mit %{emojiName} reagieren', { emojiName: emoji.value })"
                             @click="toggleReaction(emoji.value)"
                         >
-                            <span class="emoji-icon" v-html="emoji.icon"></span>
+                            <span class="emoji-icon" v-html="emoji.icon" aria-hidden="true"></span>
                         </button>
                     </template>
                 </div>

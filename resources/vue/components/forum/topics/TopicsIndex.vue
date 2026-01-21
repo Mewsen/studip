@@ -174,6 +174,7 @@ const showCategoryDialog = category => currentCategory.value = category;
                 <thead>
                     <tr class="sortable">
                         <th
+                            scope="col"
                             :class="getSortClass('name')"
                             :aria-sort="getAriaSortString('name')"
                             :aria-label="getAriaSortLabel('name', $gettext('Name'))"
@@ -182,11 +183,14 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('name')"
-                                :title="$gettext('Nach Name sortieren')">
+                                :title="$gettext('Nach Name sortieren')"
+                                :aria-label="$gettext('Nach Name sortieren')"
+                            >
                                 {{ $gettext('Name') }}
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.discussions_count')"
                             :aria-sort="getAriaSortString('meta.discussions_count')"
                             :aria-label="getAriaSortLabel('meta.discussions_count', $gettext('Anzahl der Diskussionen'))"
@@ -195,11 +199,14 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('meta.discussions_count')"
-                                :title="$gettext('Nach Anzahl der Diskussionen sortieren')">
+                                :title="$gettext('Nach Anzahl der Diskussionen sortieren')"
+                                :aria-label="$gettext('Nach Anzahl der Diskussionen sortieren')"
+                            >
                                 {{ $gettext('Diskussionen') }}
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.users_count')"
                             :aria-sort="getAriaSortString('meta.users_count')"
                             :aria-label="getAriaSortLabel('meta.users_count', $gettext('Anzahl der Teilnehmenden'))"
@@ -208,11 +215,14 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('meta.users_count')"
-                                :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
+                                :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')"
+                                :aria-label="$gettext('Nach Anzahl der Teilnehmenden sortieren')"
+                            >
                                 {{ $gettext('Teilnehmende') }}
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.postings_count')"
                             :aria-sort="getAriaSortString('meta.postings_count')"
                             :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
@@ -221,11 +231,14 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('meta.postings_count')"
-                                :title="$gettext('Nach Anzahl der Beiträge sortieren')">
+                                :title="$gettext('Nach Anzahl der Beiträge sortieren')"
+                                :aria-label="$gettext('Nach Anzahl der Beiträge sortieren')"
+                            >
                                 {{ $gettext('Beiträge') }}
                             </button>
                         </th>
                         <th
+                            scope="col"
                             :class="getSortClass('meta.recent_activity')"
                             :aria-sort="getAriaSortString('meta.recent_activity')"
                             :aria-label="getAriaSortLabel('meta.recent_activity', $gettext('Letzte Aktivität'))"
@@ -234,11 +247,15 @@ const showCategoryDialog = category => currentCategory.value = category;
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('meta.recent_activity')"
-                                :title="$gettext('Nach letzter Aktivität sortieren')">
+                                :title="$gettext('Nach letzter Aktivität sortieren')"
+                                :aria-label="$gettext('Nach letzter Aktivität sortieren')"
+                            >
                                 {{ $gettext('Letzte Aktivität') }}
                             </button>
                         </th>
-                        <th></th>
+                        <th scope="col">
+                            <span class="sr-only">{{ $gettext('Aktionen') }}</span>
+                        </th>
                     </tr>
                 </thead>
                 <draggable

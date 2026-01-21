@@ -36,11 +36,12 @@ const addTopic = () => {
 
 <template>
     <button
-        v-if="forumConfig.isModerator"
         type="button"
         class="button button--icon-only"
+        v-if="forumConfig.isModerator"
         @click="addTopic"
         :title="$gettext('Neues Thema anlegen')"
+        :aria-label="$gettext('Neues Thema anlegen')"
         :class="label ? 'button--icon-label' : 'button--icon-only'"
     >
         <StudipIcon shape="add" :size="20" aria-hidden="true" />
