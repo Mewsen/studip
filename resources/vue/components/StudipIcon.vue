@@ -1,9 +1,8 @@
 <template>
-    <label v-if="name" class="icon-button undecorated">
-        <input type="submit" hidden v-bind="attrs">
+    <button v-if="name" type="submit" class="icon-button as-link" v-bind="attrs">
         <IconContent v-bind="iconAttrs" />
         <span v-if="text">{{ text }}</span>
-    </label>
+    </button>
 
     <IconContent v-else v-bind="allAttrs" />
 </template>
