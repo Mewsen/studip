@@ -45,16 +45,22 @@
     }
 
     // Selected and selectable lists
-    .studip-selection-image img {
-        transition: opacity var(--transition-duration);
+    .studip-selection-image {
+        img {
+            transition: opacity var(--transition-duration);
+        }
+
+        display: inline-block;
+        vertical-align: top;
+        width: $avatar-small;
     }
 
     .studip-selection-selected .studip-selection-label {
-        @include icon(before, radiobutton-checked, $align: bottom);
+        @include icon(before, radiobutton-checked, $padding: 5px, $align: top);
     }
 
     .studip-selection-selectable .studip-selection-label {
-        @include icon(before, radiobutton-unchecked, $align: bottom);
+        @include icon(before, radiobutton-unchecked, $padding: 5px, $align: top);
     }
 
     .studip-selection-image + .studip-selection-label {
@@ -64,16 +70,14 @@
     }
 
     .studip-selection-selected li:hover {
-        .studip-selection-image,
         .studip-selection-label {
-            @include icon(before, remove-circle-full, $align: bottom);
+            @include icon(before, remove-circle-full, $padding: 5px, $align: top);
         }
     }
 
     .studip-selection-selectable li:hover {
-        .studip-selection-image,
         .studip-selection-label {
-            @include icon(before, add-circle-full, $align: bottom);
+            @include icon(before, add-circle-full, $padding: 5px, $align: top);
         }
     }
 
@@ -81,6 +85,7 @@
     .studip-selection-selectable {
         flex: 1 1 300px;
         padding-top: 0;
+        position: relative;
 
         h2 {
             margin-top: 0;
@@ -91,6 +96,7 @@
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
+                position: absolute;
 
                 img {
                     opacity: 0;
