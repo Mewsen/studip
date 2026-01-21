@@ -340,7 +340,7 @@ class Studiengaenge_VersionenController extends SharedVersionController
         $filter_template = $template_factory->render('shared/filter',
             [
                 'semester'          => $semesters,
-                'selected_semester' => $semesters->findOneBy('beginn', $this->filter['start_sem.beginn'])->id,
+                'selected_semester' => $semesters->findOneBy('beginn', $this->filter['start_sem.beginn'])->id ?? null,
                 'status'            => $status_results,
                 'selected_status'   => $this->filter['mvv_stgteilversion.stat'] ?? '',
                 'status_array'      => $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'],
