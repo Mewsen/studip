@@ -2358,7 +2358,7 @@ class Vips_SolutionsController extends AuthenticatedController
             }
 
             uasort($solvers, function($a, $b) {
-                return strcoll($a['name'], $b['name']);
+                return strcoll($a['name'] ?? '', $b['name'] ?? '');
             });
         }
 
