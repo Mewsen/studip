@@ -17,7 +17,8 @@ class RegistrationIndex extends JsonApiController
         'role'
     ];
     protected $allowedIncludePaths = [
-        RegistrationSchema::REL_RANGE
+        RegistrationSchema::REL_RANGE,
+        RegistrationSchema::REL_DEPLOYMENTS
     ];
 
     public function __invoke(Request $request, Response $response, $args): Response

@@ -79,9 +79,9 @@ class Publication extends SchemaProvider
         return $relationships;
     }
 
-    private function addMembersRelationship(array $relationships, PublicationModel $publication, bool $withUsers = false): array
+    private function addMembersRelationship(array $relationships, PublicationModel $publication, bool $withMemebers = false): array
     {
-        if ($withUsers) {
+        if ($withMemebers) {
             $relationships[self::REL_MEMBERS] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->getRelationshipRelatedLink($publication, self::REL_MEMBERS)

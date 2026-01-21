@@ -13,6 +13,7 @@ class Registration extends SchemaProvider
 {
     const TYPE = 'lti-registration';
     const REL_RANGE = 'range';
+    const REL_DEPLOYMENTS = 'deployments';
 
     /**
      * @param RegistrationModel $resource
@@ -81,6 +82,7 @@ class Registration extends SchemaProvider
         $relationships = [];
 
         $relationships = $this->addRangeRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_RANGE));
+        $relationships = $this->addDeploymentsRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_DEPLOYMENTS));
 
         return $relationships;
     }
@@ -93,6 +95,20 @@ class Registration extends SchemaProvider
                     Link::RELATED => $this->createLinkToResource($registration->range)
                 ],
                 self::RELATIONSHIP_DATA => $registration->range
+            ];
+        }
+
+        return $relationships;
+    }
+
+    private function addDeploymentsRelationship(array $relationships, RegistrationModel $registration, bool $withDepyloments = false): array
+    {
+        if ($withDepyloments) {
+            $relationships[self::REL_DEPLOYMENTS] = [
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->getRelationshipRelatedLink($registration, self::REL_DEPLOYMENTS)
+                ],
+                self::RELATIONSHIP_DATA => $registration->deployments
             ];
         }
 

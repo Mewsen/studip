@@ -13,7 +13,8 @@ use JsonApi\Schemas\Lti\Registration as RegistrationSchema;
 class RegistrationShow extends JsonApiController
 {
     protected $allowedIncludePaths = [
-        RegistrationSchema::REL_RANGE
+        RegistrationSchema::REL_RANGE,
+        RegistrationSchema::REL_DEPLOYMENTS
     ];
 
     public function __invoke(Request $request, Response $response, $args): Response
