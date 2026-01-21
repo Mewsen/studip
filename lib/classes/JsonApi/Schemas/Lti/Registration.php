@@ -11,7 +11,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class Registration extends SchemaProvider
 {
-    const TYPE = 'lti-registrations';
+    const TYPE = 'lti-registration';
     const REL_RANGE = 'range';
 
     /**
@@ -85,14 +85,14 @@ class Registration extends SchemaProvider
         return $relationships;
     }
 
-    private function addRangeRelationship(array $relationships, RegistrationModel $registration, bool $withRange = false)
+    private function addRangeRelationship(array $relationships, RegistrationModel $registration, bool $withRange = false): array
     {
         if ($withRange && $registration->range) {
             $relationships[self::REL_RANGE] = [
                 self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->createLinkToResource($registration->range),
+                    Link::RELATED => $this->createLinkToResource($registration->range)
                 ],
-                self::RELATIONSHIP_DATA => $registration->range,
+                self::RELATIONSHIP_DATA => $registration->range
             ];
         }
 

@@ -3,19 +3,17 @@ namespace LTI;
 
 use AccessDeniedException;
 use AuthenticatedController;
-use Config;
 use Context;
 use Icon;
 use LtiToolModule;
 use Sidebar;
 use ActionsWidget;
-use User;
 use ViewsWidget;
 
 abstract class AdminBaseController extends AuthenticatedController
 {
-    protected $range_id = null;
-    protected $isToolSharingEnabled = false;
+    protected ?string $range_id = null;
+    protected bool $isToolSharingEnabled = false;
 
     public function before_filter(&$action, &$args)
     {

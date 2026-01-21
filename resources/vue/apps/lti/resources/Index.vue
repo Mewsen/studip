@@ -20,7 +20,7 @@ const props = defineProps({
     }
 });
 
-const filteredResources = ref([]);
+const filteredResources = ref(props.resources);
 
 const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
 
@@ -80,7 +80,6 @@ const swapResource = (resourceId, step) => {
 
 onMounted(() => {
     // filteredResources.value = props.resources.filter(r => ltiConfig.isModerator || r.launch_type !== 'deep_linking');
-    filteredResources.value = props.resources;
 });
 </script>
 

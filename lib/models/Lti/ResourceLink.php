@@ -24,6 +24,7 @@ use Studip\LTI13a\ResourceLinkRepository;
  * @property int $chdate
  * @property Course $course
  * @property Deployment $deployment
+ * @property Registration $registration
  */
 class ResourceLink extends SimpleORMap
 {
@@ -37,10 +38,13 @@ class ResourceLink extends SimpleORMap
             'class_name'  => Course::class,
             'foreign_key' => 'course_id'
         ];
+
         $config['belongs_to']['deployment'] = [
             'class_name'  => Deployment::class,
             'foreign_key' => 'deployment_id'
         ];
+
+        $config['additional_fields']['registration']['get'] = 'getRegistration';
 
         $config['registered_callbacks']['before_create'] = ['cbCalculatePosition'];
 
@@ -117,5 +121,10 @@ class ResourceLink extends SimpleORMap
     public function toLti1p3ResourceLink(): LtiResourceLinkInterface
     {
         return new ResourceLinkRepository($this);
+    }
+
+    public function getRegistration(): Registration
+    {
+        return $this->deployment->registration;
     }
 }

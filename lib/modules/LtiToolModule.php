@@ -64,15 +64,15 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation($course_id): array
     {
         if ($GLOBALS['user']->id === 'nobody') {
-            return [];
+            return ['lti' => null];
         }
 
         $grades = ResourceLink::countBySQL('course_id = ?', [$course_id]);
 
-        $navigation = new Navigation(_('LTI'));
+        $navigation = new Navigation(_('LTI'), 'dispatch.php/course/lti');
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('link-extern', Icon::ROLE_INFO));
         $navigation->addSubNavigation('index', new Navigation(_('LTI-Ressourcen'), 'dispatch.php/course/lti'));
@@ -113,8 +113,9 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
     public static function isModerator($courseId, $userId = null): bool
     {
-        return User::findCurrent()->auth_plugin === 'standard'
-        && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId));
+        return
+            User::findCurrent()->auth_plugin === 'standard'
+            && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId));
     }
 
     /**
@@ -122,9 +123,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
      */
     public function exportUserData(StoredUserData $storage)
     {
-        $db = DBManager::get();
-
-        $data = $db->fetchAll('SELECT * FROM lti_grade WHERE user_id = ?', [$storage->user_id]);
+        $data = DBManager::get()->fetchAll("SELECT * FROM `lti_grade` WHERE `user_id` = ?", [$storage->user_id]);
         $storage->addTabularData(_('LTI-Ergebnisse'), 'lti_grade', $data);
     }
 

@@ -16,7 +16,7 @@ class RegistrationShow extends JsonApiController
         RegistrationSchema::REL_RANGE
     ];
 
-    public function __invoke(Request $request, Response $response, $args)
+    public function __invoke(Request $request, Response $response, $args): Response
     {
         if (!$registration = Registration::find($args['id'])) {
             throw new RecordNotFoundException();

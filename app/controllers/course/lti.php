@@ -77,7 +77,7 @@ class Course_LtiController extends StudipController
     /**
      * Display the list of LTI content blocks.
      */
-    public function index_action()
+    public function index_action(): void
     {
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x order 1.3a) unterstützen.'));
 

@@ -318,6 +318,8 @@ class RouteMap
         $group->group('/courses/{range_id}', function ($lti) {
             $lti->get('/lti-configs', Routes\Lti\ConfigIndex::class);
             $lti->get('/lti-registrations', Routes\Lti\RegistrationIndex::class);
+            $lti->get('/lti-resources', Routes\Lti\ResourceIndex::class);
+            $lti->get('/lti-publications', Routes\Lti\PublicationIndex::class);
         });
 
         $group->get('/lti-registrations', Routes\Lti\RegistrationIndex::class);
