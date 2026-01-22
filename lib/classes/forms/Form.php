@@ -24,7 +24,7 @@ class Form extends Part
     protected $cancel_button_name = '';
     protected $autoStore = false;
     protected $debugmode = false;
-    protected $emitValues = false;
+    protected $useStore = false;
     protected $withButtons = true;
     protected $success_message = '';
 
@@ -347,22 +347,33 @@ class Form extends Part
     }
 
     /**
-     * This form doesn't submit to a URL but just emits its values on submitting via eventbus.
-     * @return bool|mixed
+     * Set whether this form uses a Pinia store instead of submitting to a URL.
+     * @param bool $value
+     * @return $this
      */
-    public function justEmitsValues()
+    public function useStore(bool $value = true)
     {
-        return $this->emitValues;
+        $this->useStore = $value;
+        return $this;
     }
 
     /**
-     * Don't provide buttons for submitting the form -> this form will just emit its values.
+     * This form doesn't call a URL but writes its values to the formStore on submit.
+     * @return bool|mixed
+     */
+    public function usesStore()
+    {
+        return $this->useStore;
+    }
+
+    /**
+     * Don't provide buttons for submitting the form -> this form will use the pinia store for submitting its values..
      * @return Form $this
      */
     public function noButtons()
     {
         $this->withButtons = false;
-        $this->emitValues = true;
+        $this->useStore = true;
         return $this;
     }
 
