@@ -116,7 +116,7 @@ class CoreWiki extends CorePlugin implements StudipModule
         $navigation->setImage(Icon::create('wiki', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('wiki', Icon::ROLE_INFO));
 
-        $id = Context::get()->getConfiguration()->WIKI_STARTPAGE_ID;
+        $id = Context::get() ? Context::get()->getConfiguration()->WIKI_STARTPAGE_ID : false;
         $title = $id ? htmlReady(WikiPage::find($id)->name) : _('Wiki-Startseite');
         $navigation->addSubNavigation('start', new Navigation($title, 'dispatch.php/course/wiki/page'));
         if (WikiPage::countBySQL('`range_id` = ?', [$range_id]) > 0) {
