@@ -19,6 +19,7 @@ use Stringable,
 final class WizardPart implements Stringable, JsonSerializable
 {
 
+    private string $id;
     private string $type;
     private Form|VueApp $content;
     private string $title;
@@ -27,17 +28,23 @@ final class WizardPart implements Stringable, JsonSerializable
     /**
      * Creates a vue app with the given relative path to the app component.
      */
-    public static function create(Form|VueApp $content, string $title = '', string $iconShape = ''): WizardPart
+    public static function create(string $id, Form|VueApp $content, string $title = '', string $iconShape = ''): WizardPart
     {
-        return new static($content, $title, $iconShape);
+        return new static($id, $content, $title, $iconShape);
     }
 
-    public function __construct(Form|VueApp $content, string $title = '', string $iconShape = '')
+    public function __construct(string $id, Form|VueApp $content, string $title = '', string $iconShape = '')
     {
+        $this->id = $id;
         $this->type = get_class($content);
         $this->content = $content;
         $this->title = $title;
         $this->iconShape = $iconShape;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getType(): string
@@ -48,6 +55,16 @@ final class WizardPart implements Stringable, JsonSerializable
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getContent() {
+        return $this->content;
+    }
+
+    public function setId(string $id): WizardPart
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function setTitle(string $title): WizardPart

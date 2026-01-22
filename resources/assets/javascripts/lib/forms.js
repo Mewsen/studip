@@ -5,6 +5,7 @@
 import Report from "./report";
 import {$gettext} from "./gettext";
 import Dialog from "./dialog";
+import {useFormsStore} from '@/vue/store/pinia/formsStore';
 
 const Forms = {
     initialized: false,
@@ -78,6 +79,8 @@ const Forms = {
                             params.STUDIPFORM_INPUTS_ORDER = [];
                             params.STUDIPFORM_SELECTEDLANGUAGES = {};
                             params.STUDIPFORM_EMIT_VALUES = f.dataset.emit;
+                            params.STUDIPFORM_USE_STORE = f.dataset.useStore === 'true';
+                            params.STUDIPFORM_FORM_ID = f.dataset.formId;
                             for (let i in JSON.parse(f.dataset.inputs)) {
                                 params.STUDIPFORM_INPUTS_ORDER.push(i);
                             }
@@ -94,10 +97,11 @@ const Forms = {
                                 // validation:
                                 this.validate()
                                     .then(() => {
-                                        if (this.STUDIPFORM_EMIT_VALUES) {
-                                            STUDIP.eventBus.emit('form.emitValues', this.getFormValues());
+                                        if (this.STUDIPFORM_USE_STORE) {
+                                            const store = useFormsStore();
+                                            store.initialize();
+                                            store.setData(this.STUDIPFORM_FORM_ID, this.getFormValues());
                                         } else {
-                                            console.log('After validating');
                                             if (this.STUDIPFORM_AUTOSAVEURL) {
                                                 let params = this.getFormValues();
                                                 params.STUDIPFORM_AUTOSTORE = 1;
@@ -175,12 +179,13 @@ const Forms = {
                                     });
 
                                 // Optional server validation
-                                if (this.STUDIPFORM_SERVERVALIDATION) {
+                                if (this.STUDIPFORM_SERVERVALIDATION && !this.STUDIPFORM_USE_STORE) {
                                     let params = this.getFormValues();
                                     if (this.STUDIPFORM_AUTOSAVEURL) {
                                         params.STUDIPFORM_AUTOSTORE = 1;
                                     }
                                     params.STUDIPFORM_SERVERVALIDATION = 1;
+                                    params.STUDIPFORM_FORM_ID = this.STUDIPFORM_FORM_ID;
 
                                     const output = await fetch(this.STUDIPFORM_VALIDATION_URL, {
                                         method: 'POST',
@@ -246,6 +251,12 @@ const Forms = {
                                     })
                                 }
                             }
+
+                            STUDIP.Vue.on('form.submit', id => {
+                                if (this.$data.STUDIPFORM_FORM_ID === id) {
+                                    this.submit(new Event('submit'));
+                                }
+                            });
                         }
                     });
                     const instance = app.mount(f);

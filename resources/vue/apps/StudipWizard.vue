@@ -26,7 +26,8 @@
         <h2>
             {{ visibleSteps[currentStep].title }}
         </h2>
-        <div ref="node" data-vue-app></div>
+        <div v-if="currentStepType === 'app'" ref="node" data-vue-app></div>
+        <div v-if="currentStepType === 'form'" ref="node" v-html="stepContent"></div>
         <footer class="wizard-buttons">
             <button v-if="currentStep !== 0"
                     class="button back-button"
@@ -70,9 +71,10 @@
 </template>
 
 <script setup>
-import {onMounted, ref, provide} from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useWizardStore} from '@/vue/store/pinia/wizardStore';
+import {useFormsStore} from '@/vue/store/pinia/formsStore';
 import SidebarWidget from '@/vue/components/SidebarWidget';
 
 const props = defineProps({
@@ -93,22 +95,27 @@ const currentStep = ref(0);
 // HTML content of current step
 let stepContent = ref('');
 let mountedApp = null;
+const currentStepType = ref(null);
 
 const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 
 const store = useWizardStore();
-
-provide('storedValues', store.getData());
+const formsStore = useFormsStore();
 
 const jumpToStep = (number) => {
-    if (!visibleSteps.value.includes(props.steps[number])) {
+
+    if (currentStepType.value === 'form') {
+        STUDIP.Vue.emit('form.submit', 'userdata');
+    }
+
+    /*if (!visibleSteps.value.includes(props.steps[number])) {
         visibleSteps.value[number] = props.steps[number];
     }
     if (mountedApp !== null) {
         mountedApp.unmount();
     }
     currentStep.value = number;
-    initializeContent(number);
+    initializeContent(number);*/
 };
 
 const finishWizard = () => {
@@ -116,17 +123,23 @@ const finishWizard = () => {
 };
 
 const initializeContent = async (stepNumber) => {
-    stepContent.value = JSON.parse(props.steps[stepNumber].content);
     if (props.steps[stepNumber].type === 'Studip\\Forms\\Form') {
-        STUDIP.Forms.create(node.value.childNodes);
+        currentStepType.value = 'form';
+        stepContent.value = props.steps[stepNumber].content;
+        nextTick(() => {
+            STUDIP.Forms.create(node.value.childNodes);
+        });
     } else if (props.steps[stepNumber].type === 'Studip\\VueApp') {
-        STUDIP.Vue.mountApp(node.value, props.steps[stepNumber].content);
+        currentStepType.value = 'app';
+        stepContent.value = JSON.parse(props.steps[stepNumber].content);
+        nextTick(() => {
+            STUDIP.Vue.mountApp(node.value, props.steps[stepNumber].content);
+        });
     }
 };
 
 onMounted(() => {
     initializeContent(0);
-    store.initialize();
 
     STUDIP.Vue.on('form.mounted', (mounted) => {
         mountedApp = mounted.app;
@@ -136,9 +149,8 @@ onMounted(() => {
             mountedApp = mounted.app;
         }
     });
-    STUDIP.Vue.on('form.emitValues', (values) => {
-        store.setValues(currentStep.value, values);
-    });
+    STUDIP.Report.info('Info');
+    STUDIP.Report.warning('Warning');
 });
 
 </script>

@@ -27,12 +27,13 @@ $form_id = md5(uniqid());
      data-required="<?= htmlReady(json_encode($required_inputs)) ?>"
      data-server_validation="<?= $server_validation ? 1 : 0 ?>"
      data-validation_url="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
+     data-form-id="<?= htmlReady($form->getId()) ?>"
 <? if ($form->isAutoStoring()) : ?>
      data-autosave="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
      data-url="<?= htmlReady($form->getURL()) ?>"
  <? endif; ?>
-<? if ($form->justEmitsValues()) : ?>
-     data-emit="true"
+ <? if ($form->usesStore()) : ?>
+     data-use-store="true"
  <? endif; ?>
 >
     <form method="post"
