@@ -622,8 +622,8 @@ class InstituteCalendarHelper
                     if (!$GLOBALS['MVV_MODUL']['STATUS']['values'][$modul->stat]['public']) {
                         return false;
                     }
-                    $modul_start = Semester::find($modul->start)->beginn ?: 0;
-                    $modul_end = Semester::find($modul->end)->ende ?: PHP_INT_MAX;
+                    $modul_start = Semester::find($modul->start)->beginn ?? 0;
+                    $modul_end = Semester::find($modul->end)->ende ?? PHP_INT_MAX;
                     return $modul_end >= $course->start_semester->beginn
                         && (
                             $course->isOpenEnded()
