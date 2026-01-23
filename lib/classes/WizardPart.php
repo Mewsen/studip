@@ -87,6 +87,7 @@ final class WizardPart implements Stringable, JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
             'title' => $this->title,
             'icon' => $this->iconShape,
