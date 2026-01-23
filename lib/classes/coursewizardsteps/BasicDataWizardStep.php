@@ -23,23 +23,67 @@ class BasicDataWizardStep implements CourseWizardStep
      * @param Array $values Pre-set values
      * @param int $stepnumber which number has the current step in the wizard?
      * @param String $temp_id temporary ID for wizard workflow
-     * @return String a Flexi template for getting needed data.
+     * @return Studip\Forms\Form a form object.
      */
     public function getStepTemplate($values, $stepnumber, $temp_id)
     {
-        // Load template from step template directory.
-        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
-        if (!empty($values[__CLASS__]['studygroup'])) {
-            $tpl = $factory->open('studygroups/index');
-            $values[__CLASS__]['lecturers'][$GLOBALS['user']->id] = 1;
-        } else {
-            $tpl = $factory->open('basicdata/index');
-        }
-        if ($this->setupTemplateAttributes($tpl, $values, $stepnumber, $temp_id)) {
-            return $tpl->render();
-        }
+        $types = array_map(fn ($type) => ['id' => $type['id'], 'name' => $type['name']], SemType::getTypes());
+        $semesters = array_reverse(Semester::getAll());
+        $institutes = Institute::getMyInstitutes();
 
-        return '';
+        $form = Studip\Forms\Form::fromSORM(
+            new Course(),
+            [
+                'legend' => _('Grunddaten'),
+                'fields' => [
+                    'status' => [
+                        'type' => 'select',
+                        'label' => _('Typ'),
+                        'options' => array_combine(
+                            array_column($types, 'id'),
+                            array_column($types, 'name')
+                        ),
+                        'required' => true
+                    ],
+                    'start_semester' => [
+                        'type' => 'select',
+                        'label' => _('Semester'),
+                        'value' => Semester::findDefault()->id,
+                        'options' => array_combine(
+                            array_map(fn ($semester) => $semester->id, $semesters),
+                            array_map(fn ($semester) => $semester->name, $semesters)
+                        ),
+                        'required' => true
+                    ],
+                    'name' => [
+                        'type' => 'text',
+                        'label' => _('Veranstaltungstitel'),
+                        'required' => true,
+                        'maxlength' => '255'
+                    ],
+                    'veranstaltungsnummer' => [
+                        'type' => 'text',
+                        'label' => _('Veranstaltungsnummer')
+                    ],
+                    'beschreibung' => [
+                        'type' => 'i18n_textarea',
+                        'label' => _('Beschreibung')
+                    ],
+                    'institut_id' => [
+                        'type' => 'select',
+                        'label' => _('Heimateinrichtung'),
+                        'required' => true,
+                        'value' => current($institutes)['Institut_id'],
+                        'options' => array_combine(
+                            array_column($institutes, 'Institut_id'),
+                            array_column($institutes, 'Name')
+                        )
+                    ]
+                ]
+            ]
+        );
+
+        return $form;
     }
 
     protected function setupTemplateAttributes($tpl, $values, $stepnumber, $temp_id)
@@ -59,7 +103,7 @@ class BasicDataWizardStep implements CourseWizardStep
                 }
                 // Pre-set institute for studygroup assignment.
                 $values['institute'] = Config::get()->STUDYGROUP_DEFAULT_INST;
-            // Normal course.
+                // Normal course.
             } else {
                 if (!$class['course_creation_forbidden'] && !$class['studygroup_mode']) {
                     $typestruct[$class['name']][] = $type;
@@ -702,7 +746,7 @@ class BasicDataWizardStep implements CourseWizardStep
 
                     $values[$index] = new I18NString($values[$index], $values[$index . '_i18n'] ?? []);
 
-                // Current index is not set (yet), create an empty I18NString
+                    // Current index is not set (yet), create an empty I18NString
                 } else {
 
                     $values[$index] = new I18NString('', $translations);

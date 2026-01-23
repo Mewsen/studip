@@ -26,37 +26,8 @@ class Course_WizardController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        if ($GLOBALS['user']->perms === 'user') {
-            throw new AccessDeniedException();
-        }
+        $GLOBALS['perm']->check('dozent');
 
-        $this->dialog = Request::isXhr();
-        $this->studygroup = Request::bool('studygroup', $this->flash['studygroup'] ?? false);
-
-        // Feels a bit hacky
-        $this->is_copy = isset($_SESSION['coursewizard'][$args[1] ?? '']['source_id']);
-
-        if (!$this->studygroup) {
-            if ($this->is_copy) {
-                PageLayout::setTitle(_('Veranstaltung kopieren'));
-            } else {
-                PageLayout::setTitle(_('Neue Veranstaltung anlegen'));
-            }
-
-            $navigation = new Navigation(_('Neue Veranstaltung anlegen'), 'dispatch.php/course/wizard');
-            Navigation::addItem('/browse/my_courses/new_course', $navigation);
-            Navigation::activateItem('/browse/my_courses/new_course');
-        } else {
-            $this->flash['studygroup'] = true;
-
-            PageLayout::setTitle(_('Neue Studiengruppe anlegen'));
-
-            $navigation = new Navigation(_('Neue Studiengruppe anlegen'), 'dispatch.php/course/wizard?studygroup=1');
-            Navigation::addItem('/browse/my_courses/new_course', $navigation);
-            Navigation::activateItem('/browse/my_courses/new_course');
-        }
-
-        $this->steps = CourseWizardStepRegistry::findBySQL("`enabled`=1 ORDER BY `number`");
     }
 
     /**
@@ -64,7 +35,20 @@ class Course_WizardController extends AuthenticatedController
      */
     public function index_action()
     {
-        $this->redirect('course/wizard/step/0' . ($this->studygroup ? '?studygroup=1&stgteil_id='.Request::option('stgteil_id') : ''));
+        $steps = CourseWizardStepRegistry::findBySQL("`enabled` = 1 ORDER BY `number`");
+
+        $parts = [];
+
+        foreach ($steps as $step) {
+            $instance = new $step->classname();
+            $template = $instance->getStepTemplate([], 0, '');
+            if ($template instanceof \Studip\Forms\Form) {
+                $template->noButtons()->useStore()->setId($step->classname);
+                $parts[] = \Studip\WizardPart::create($step->classname, $template, $step->name);
+            }
+        }
+
+        $this->render_wizard($parts);
     }
 
     /**
