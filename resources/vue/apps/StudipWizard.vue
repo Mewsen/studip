@@ -49,25 +49,6 @@
             </button>
         </footer>
     </div>
-    <Teleport to="#wizard-sidebar">
-        <sidebar-widget id="wizard-widget"
-                        :title="$gettext('Assistent')">
-            <template #content>
-                <ul class="widget-list widget-links sidebar-views">
-                    <li v-for="(step, index) in visibleSteps"
-                        :key="index"
-                        :class="{active: index === currentStep}"
-                    >
-                        <button class="undecorated" @click.prevent="jumpToStep(index)"
-                           :title="step.title ? step.title : ($gettext('Schritt ') + (index + 1))"
-                        >
-                            {{ step.title ? step.title : ($gettext('Schritt ') + (index + 1)) }}
-                        </button>
-                    </li>
-                </ul>
-            </template>
-        </sidebar-widget>
-    </Teleport>
 </template>
 
 <script setup>
@@ -75,7 +56,6 @@ import {nextTick, onMounted, ref} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useWizardStore} from '@/vue/store/pinia/wizardStore';
 import {useFormsStore} from '@/vue/store/pinia/formsStore';
-import SidebarWidget from '@/vue/components/SidebarWidget';
 
 const props = defineProps({
     steps: {
@@ -102,24 +82,28 @@ const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 const store = useWizardStore();
 const formsStore = useFormsStore();
 
-const jumpToStep = (number) => {
-
+const checkValidity = () => {
     if (currentStepType.value === 'form') {
-        STUDIP.Vue.emit('form.submit', 'userdata');
+        STUDIP.Vue.emit('form.submit', currentStep.value.id);
+    }
+};
+
+const jumpToStep = (number) => {
+    checkValidity();
+
+    if (mountedApp !== null) {
+        mountedApp.unmount();
     }
 
     /*if (!visibleSteps.value.includes(props.steps[number])) {
         visibleSteps.value[number] = props.steps[number];
-    }
-    if (mountedApp !== null) {
-        mountedApp.unmount();
     }
     currentStep.value = number;
     initializeContent(number);*/
 };
 
 const finishWizard = () => {
-    alert('The wizard will rest now.');
+    checkValidity();
 };
 
 const initializeContent = async (stepNumber) => {
