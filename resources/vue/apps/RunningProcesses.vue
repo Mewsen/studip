@@ -12,8 +12,8 @@
                                   :style="'background-image: url(' + context.avatar + ')'"></span>
                             {{ context.name }}
                         </a>
-                        <ul class="processes">
-                            <li v-for="process in getProcessesForContext(context)" :key="process.id" class="running_process">
+                        <div class="processes">
+                            <div v-for="process in getProcessesForContext(context)" :key="process.id" class="running_process">
 
                                 <a :href="process.url"
                                    :data-dialog="process.dialog ? 'size=auto' : null">
@@ -38,15 +38,19 @@
                                         </div>
                                     </div>
                                     <div class="progressbar_container">
-                                        <div class="progress_bar">
+                                        <div class="progress_bar"
+                                             role="progressbar"
+                                             :aria-valuenow="Math.floor(((currentTime / 1000) - process.begin) / (process.end - process.begin) * 100)"
+                                             aria-valuemax="100"
+                                             aria-valuemin="0">
                                             <div :class="process.end - (currentTime / 1000) <= 86400 ? 'progress alerted' : 'progress'"
                                                  :style="'width: ' + getProcessPercentage(process) + '%;'"></div>
                                         </div>
                                     </div>
                                 </div>
 
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </section>
@@ -58,6 +62,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { $ngettext } from "../../assets/javascripts/lib/gettext";
 import { getRemainingTime as calculateRemainingTime } from "../utils/getRemainingTime";
+import { datetime } from "../../assets/javascripts/lib/datetime";
 
 const props = defineProps({
     contexts: {
@@ -114,7 +119,7 @@ function getRemainingTime(process) {
 }
 
 function getDatetimeInfo(process) {
-    return STUDIP.DateTime.getStudipDate(new Date(process.end * 1000));
+    return datetime.getStudipDate(new Date(process.end * 1000));
 }
 
 onMounted(() => {

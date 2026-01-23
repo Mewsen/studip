@@ -8,10 +8,10 @@
         margin-bottom: 10px;
         font-size: $font-size-h3;
     }
-    ul.processes {
+    .processes {
         list-style: none;
         padding-left: 35px;
-        li.running_process {
+        .running_process {
 
             display: flex;
             align-items: center;
