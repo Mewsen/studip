@@ -253,7 +253,7 @@ const Forms = {
                             }
 
                             STUDIP.Vue.on('form.submit', id => {
-                                if (this.$data.STUDIPFORM_FORM_ID === id) {
+                                if (this.STUDIPFORM_FORM_ID === id) {
                                     this.submit(new Event('submit'));
                                 }
                             });

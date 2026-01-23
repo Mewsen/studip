@@ -84,7 +84,7 @@ const formsStore = useFormsStore();
 
 const checkValidity = () => {
     if (currentStepType.value === 'form') {
-        STUDIP.Vue.emit('form.submit', currentStep.value.id);
+        STUDIP.Vue.emit('form.submit', props.steps[currentStep.value].id);
     }
 };
 
