@@ -69,13 +69,15 @@
         </div>
 
         <form class="default" v-if="Object.keys(editableColors).length > 0 && !isDisabled" @submit.prevent>
-            <fieldset class="color-entry new-color-entry collapsable collapsed" >
+            <fieldset class="color-entry new-color-entry collapsable collapsed">
                 <legend>{{ $gettext('Benutzerdefinierte Farbe') }}</legend>
-                <label>{{ $gettext('Farbgruppe') }}
+                <label>
+                    {{ $gettext('Farbgruppe') }}
                     <input type="text" v-model="newCustomKey" />
                 </label>
-                <label>{{ $gettext('Farbwert') }}
-                    <ColorPicker v-model="newCustomValue" :with-color="true"/>
+                <label>
+                    {{ $gettext('Farbwert') }}
+                    <ColorPicker v-model="newCustomValue" :with-color="true" />
                 </label>
                 <button
                     class="button add"
@@ -95,7 +97,7 @@
             $gettext(
                 'Möchten Sie das Theme %{ ThemeTitle } wirklich löschen?',
                 { ThemeTitle: props.theme.attributes.name },
-                true
+                true,
             )
         "
         height="200"
@@ -129,14 +131,12 @@ const editableColors = ref({});
 const originalColors = ref({});
 const editableName = ref('');
 const originalName = ref('');
-const editingName = ref(false);
 
 const editableType = ref('');
 const originalType = ref('');
 
 const editableDescription = ref('');
 const originalDescription = ref('');
-const editingDescription = ref(false);
 
 const showDeleteDialog = ref(false);
 
@@ -183,9 +183,11 @@ const addCustomColor = () => {
 
     if (!key || !value || keyExists.value) return;
 
+    const categories = props.theme.meta.colorKeyCategories || {};
     const targetGroup =
-        Object.entries(props.theme.meta.colorKeyCategories || {}).find(([keys]) => key in keys)?.[0] ||
-        'custom';
+        Object.entries(categories).find(([, keys]) => {
+            return Array.isArray(keys) ? keys.includes(key) : key in keys;
+        })?.[0] ?? 'custom';
 
     if (!editableColors.value[targetGroup]) {
         editableColors.value[targetGroup] = {};
@@ -198,45 +200,55 @@ const addCustomColor = () => {
 };
 
 const deleteColor = (groupName, key) => {
-    if (isDisabled.value) return;
+    if (isDisabled.value || !editableColors.value[groupName]) return;
 
-    if (editableColors.value[groupName]) {
-        delete editableColors.value[groupName][key];
+    const updatedGroup = { ...editableColors.value[groupName] };
+    delete updatedGroup[key];
 
-        if (Object.keys(editableColors.value[groupName]).length === 0) {
-            delete editableColors.value[groupName];
-        }
+    if (Object.keys(updatedGroup).length === 0) {
+        const updatedColors = { ...editableColors.value };
+        delete updatedColors[groupName];
+        editableColors.value = updatedColors;
+    } else {
+        editableColors.value[groupName] = updatedGroup;
     }
 };
 
 const resetColors = () => {
     const themeColors = props.theme.attributes.values || {};
-    const defaultColorKeys = props.theme.meta.colorKeyCategories || {};
-    editableColors.value = {};
+    const categories = props.theme.meta.colorKeyCategories || {};
+    const newEditableColors = {};
 
-    Object.keys(defaultColorKeys).forEach((groupName) => {
-        editableColors.value[groupName] = Object.keys(defaultColorKeys[groupName]).reduce((acc, key) => {
-            acc[key] = themeColors[key] || defaultColorKeys[groupName][key];
-            return acc;
-        }, {});
+    const systemKeys = new Set();
+
+    Object.entries(categories).forEach(([groupName, keys]) => {
+        newEditableColors[groupName] = {};
+
+        const keyList = Array.isArray(keys) ? keys : Object.keys(keys);
+
+        keyList.forEach((key) => {
+            systemKeys.add(key);
+            newEditableColors[groupName][key] = themeColors[key] || (Array.isArray(keys) ? '#FFFFFF' : keys[key]);
+        });
     });
 
-    Object.keys(themeColors).forEach((key) => {
-        if (!Object.values(editableColors.value).some((group) => key in group)) {
-            editableColors.value['custom'] = editableColors.value['custom'] || {};
-            editableColors.value['custom'][key] = themeColors[key];
+    Object.entries(themeColors).forEach(([key, value]) => {
+        if (!systemKeys.has(key)) {
+            if (!newEditableColors['custom']) {
+                newEditableColors['custom'] = {};
+            }
+            newEditableColors['custom'][key] = value;
         }
     });
 
-    originalColors.value = JSON.stringify(editableColors.value);
+    editableColors.value = newEditableColors;
+
+    originalColors.value = JSON.stringify(newEditableColors);
+
     editableName.value = props.theme.attributes.name;
     originalName.value = props.theme.attributes.name;
-    editableType.value = props.theme.attributes.type;
-    originalType.value = props.theme.attributes.type;
     editableDescription.value = props.theme.attributes.description || '';
     originalDescription.value = props.theme.attributes.description || '';
-    editingName.value = false;
-    editingDescription.value = false;
 };
 
 const storeChanges = async () => {
