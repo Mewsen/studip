@@ -63,7 +63,7 @@ $max_time = Config::get()->INSTITUTE_COURSE_PLAN_END_HOUR . ':00';
                 ]
             ];
             ?>
-            <td class="draggable-course" data-event="<?= htmlReady(json_encode($event_object)) ?>">
+            <td class="draggable-course drag-handle" data-event="<?= htmlReady(json_encode($event_object)) ?>">
                 <?= htmlReady($cname) ?>
             </td>
         </tr>
