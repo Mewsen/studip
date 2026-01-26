@@ -42,7 +42,7 @@
                                     <div class="progressbar_container">
                                         <div class="progress_bar"
                                              role="progressbar"
-                                             :aria-valuenow="Math.floor(((currentTime / 1000) - process.begin) / (process.end - process.begin) * 100)"
+                                             :aria-valuenow="getProcessPercentage(process)"
                                              aria-valuemax="100"
                                              aria-valuemin="0">
                                             <div :class="process.end - (currentTime / 1000) <= 86400 ? 'progress alerted' : 'progress'"
