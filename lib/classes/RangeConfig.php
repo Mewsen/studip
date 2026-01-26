@@ -15,8 +15,15 @@
  * @category    Stud.IP
 */
 
-class RangeConfig extends Config
+abstract class RangeConfig extends Config
 {
+    private static array $range_mapping = [
+        'sem'  => CourseConfig::class,
+        'user' => UserConfig::class,
+        'fak'  => InstituteConfig::class,
+        'inst' => InstituteConfig::class,
+    ];
+
     /**
      * range type
      */
@@ -24,9 +31,9 @@ class RangeConfig extends Config
 
     /**
      * cache of created RangeConfig instances
-     * @var array
+     * @var array<string, static>
      */
-    protected static $instances = [];
+    private static array $instances = [];
 
     /**
      * range_id
@@ -42,7 +49,7 @@ class RangeConfig extends Config
      *                                    need this just for compatibility with
      *                                    Config::get())
      */
-    public static function get(string|Range|null $range_id = null): static
+    public static function get(string|Range|null $range_id = null): RangeConfig
     {
         if ($range_id === null) {
             throw new InvalidArgumentException('No range_id given');
@@ -52,8 +59,28 @@ class RangeConfig extends Config
             $range_id = $range_id->getRangeId();
         }
 
-        return static::$instances[$range_id]
-            ??= new static($range_id);
+        $type = get_object_type($range_id, array_keys(self::$range_mapping));
+        if (self::class === static::class) {
+            // Detect correct class for range
+            if (!$type) {
+                throw new InvalidArgumentException('Invalid range_id given');
+            }
+
+            $class_name = self::$range_mapping[$type];
+        } else {
+            // Prevent type mismatches (allow non existing ids)
+            if (
+                $type
+                && !in_array($type, array_keys(self::$range_mapping, static::class))
+            ) {
+                throw new InvalidArgumentException('Invalid range_id given');
+            }
+
+            $class_name = static::class;
+        }
+
+        return self::$instances[$range_id]
+            ??= new $class_name($range_id);
     }
 
     /**
