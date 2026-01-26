@@ -16,6 +16,8 @@
                             <div v-for="process in getProcessesForContext(context)" :key="process.id" class="running_process">
 
                                 <a :href="process.url"
+                                   aria-hidden="true"
+                                   tabindex="-1"
                                    :data-dialog="process.dialog ? 'size=auto' : null">
                                     <img :src="process.icon" aria-hidden="true">
                                 </a>
