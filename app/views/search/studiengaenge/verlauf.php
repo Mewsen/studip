@@ -58,7 +58,7 @@
                             <? if (!$displayedAbschnittName) : ?>
                                 <? $displayedAbschnittName = true ?>
                                 <td rowspan="<?= $abschnitt['rowspan'] ?: 1 ?>">
-                                    <?= htmlReady($abschnitt['name']) ?><br/><?= $abschnitt['creditPoints'] ? $abschnitt['creditPoints'] . ' ' . _('CP') : '' ?>
+                                    <?= htmlReady($abschnitt['name']) ?><br/><?= $abschnitt['creditPoints'] ? ' ' . $abschnitt['creditPoints'] . ' ' . _('CP') : '' ?>
                                     <? if (trim($abschnitt['kommentar'])) : ?>
                                         <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
                                             <?= Icon::create('item', Icon::ROLE_CLICKABLE, ['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>

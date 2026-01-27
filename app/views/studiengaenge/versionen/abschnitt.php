@@ -21,8 +21,8 @@ $perm = MvvPerm::get($abschnitt)
             <?= MvvI18N::textarea('kommentar', $abschnitt->kommentar, ['class' => 'add_toolbar resizable ui-resizable'])->checkPermission($abschnitt) ?>
             <label><?= _('Kreditpunkte') ?>
                 <input <?= $perm->disable('kp') ?>
-                        type="text" name="kp" id="kp"
-                        value="<?= htmlReady($abschnitt->kp) ?>" size="5" maxlength="10">
+                        type="number" step="0.01" name="kp" id="kp"
+                        value="<?= htmlReady($abschnitt->kp) ?>" max="999" min="0">
             </label>
             <label><?= _('Zwischenüberschrift') ?>
                 <?= MvvI18N::input('ueberschrift', $abschnitt->ueberschrift, ['maxlength' => '254'])->checkPermission($abschnitt) ?>
