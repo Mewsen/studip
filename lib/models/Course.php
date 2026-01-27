@@ -2700,7 +2700,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $this->id,
             [
                 ...$properties,
-                'url' => Urlhelper::getLink('dispatch.php/enroll/lti/launch'),
+                'url' => URLHelper::getLink('dispatch.php/enroll/lti/launch'),
                 'title' => $this->getFullName(),
                 'text' => $this->beschreibung,
                 'icon' => $this->getItemAvatarURL(),

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipActionMenu from "../../StudipActionMenu.vue";
 import {
