@@ -9,8 +9,13 @@
     <caption>
         <?= _('Zielgruppen') ?>
         <span class="actions">
-            <a href="<?= $controller->masswidget_edit() ?>" data-dialog title="<?= _('Neue Regel hinzufügen') ?>">
-                <?= Icon::create('add') ?>
+            <a
+                href="<?= $controller->masswidget_edit() ?>"
+                data-dialog
+                title="<?= _('Neue Regel hinzufügen') ?>"
+                aria-label="<?= _('Neue Regel hinzufügen') ?>"
+            >
+                <?= Icon::create('add', Icon::DEFAULT_ROLE, ['aria-hidden' => 'true']) ?>
             </a>
         </span>
     </caption>
@@ -25,11 +30,11 @@
 
     <thead>
         <tr>
-            <th data-sort="name"><?= _('Name') ?></th>
-            <th data-sort="htmldata"><?= _('Widget') ?></th>
-            <th data-sort="htmldata"><?= _('Erstellt von') ?></th>
-            <th data-sort="target"><?= _('Zielgruppe') ?></th>
-            <th class="actions"><?= _('Aktionen') ?></th>
+            <th scope="col" data-sort="name"><?= _('Name') ?></th>
+            <th scope="col" data-sort="htmldata"><?= _('Widget') ?></th>
+            <th scope="col" data-sort="htmldata"><?= _('Erstellt von') ?></th>
+            <th scope="col" data-sort="target"><?= _('Zielgruppe') ?></th>
+            <th scope="col" class="actions"><?= _('Aktionen') ?></th>
         </tr>
     </thead>
 
@@ -51,6 +56,7 @@
             <td class="actions">
                <?=
                    ActionMenu::get()
+                       ->setContext(htmlReady($massWidget->name))
                        ->addLink(
                            $controller->masswidget_editURL($massWidget),
                            _('Bearbeiten'),
