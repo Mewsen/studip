@@ -68,7 +68,7 @@
                             <tr class="header-row">
                                 <? $displayed_abschnitt_name = true ?>
                                 <th class="toggle-indicator" colspan="2">
-                                    <a class="toggler" href="#"><?= htmlReady($abschnitt['name']) ?><?= $abschnitt['credit_points'] ? $abschnitt['credit_points'] . ' ' . _('CP') : '' ?></a>
+                                    <a class="toggler" href="#"><?= htmlReady($abschnitt['name']) ?><?= $abschnitt['credit_points'] ? ' ' . $abschnitt['credit_points'] . ' ' . _('CP') : '' ?></a>
                                 </th>
                                 <th>
                                     <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
