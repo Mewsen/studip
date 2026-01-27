@@ -111,6 +111,14 @@
                 display: none;
             }
         }
+
+        /*
+         Display the week number a bit smaller so that is doesn't overlap the day number on
+         small screens in portrait orientation:
+         */
+        .fc-daygrid-week-number {
+            font-size: $font-size-tiny;
+        }
     }
 
     /* Display the week number at the top of the cell in the top left corner: */
