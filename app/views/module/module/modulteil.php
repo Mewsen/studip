@@ -211,16 +211,13 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
 
         <label>
             <?= _('Kreditpunkte') ?>
+            <? if ($def_lang) : ?>
+                <input <?= $perm->disable('kp') ?>
+                        type="number" name="kp" step="0.01" id="kp" value="<?= htmlReady($modulteil->kp) ?>" max="99" min="0">
+            <? else : ?>
+                <?= $modulteil->kp ? htmlReady($modulteil->kp) : _('keine Angabe') ?>
+            <? endif; ?>
         </label>
-        <? if ($def_lang) : ?>
-            <input <?= $perm->disable('kp') ?>
-                    type="text" name="kp" id="kp" value="<?= htmlReady($modulteil->kp) ?>" maxlength="10">
-        <? else : ?>
-            <?= $modulteil->kp ? htmlReady($modulteil->kp) : _('keine Angabe') ?>
-        <? endif; ?>
-
-
-
     </fieldset>
 
 
