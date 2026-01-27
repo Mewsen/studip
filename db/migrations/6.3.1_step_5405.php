@@ -70,8 +70,8 @@ final class Step5405 extends Migration {
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                KEY `idx_lti_pub_users_publication_id` (`publication_id`),
-                CONSTRAINT `fk_lti_pub_users_publication`
+                KEY `idx_lti_pub_configs_publication_id` (`publication_id`),
+                CONSTRAINT `fk_lti_pub_configs_publication`
                     FOREIGN KEY (`publication_id`)
                     REFERENCES `lti_publications` (`id`)
                     ON DELETE CASCADE
