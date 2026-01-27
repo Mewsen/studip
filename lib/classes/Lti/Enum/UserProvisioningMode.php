@@ -1,7 +1,7 @@
 <?php
 namespace Lti\Enum;
 
-enum PublicationProvisioningMode: int {
+enum UserProvisioningMode: int {
     case NewAccountsOnly = 1;
     case ExistingAndNewAccounts = 2;
     case ExistingAccountsOnly = 3;

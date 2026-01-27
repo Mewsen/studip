@@ -39,7 +39,7 @@ final class RegistrationRepository implements RegistrationInterface
                 $this->registration->name,
                 $registrationConfigs['issuer'],
                 $registrationConfigs['auth_login_url'],
-                $registrationConfigs['auth_token_url']
+                $registrationConfigs['token_url']
             );
         }
 

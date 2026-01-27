@@ -39,6 +39,7 @@ class ActivityObserver
 
         //Notifications for ScheduleProvider (Course)
         \NotificationCenter::addObserver('\Studip\Activity\ScheduleProvider', 'postActivity','CourseDidChangeSchedule');
+        \NotificationCenter::addObserver('\Studip\Activity\EnrollUserFromLtiLaunch', 'enroll','Authenticated');
 
 
         // Notifications for CoursewareProvider

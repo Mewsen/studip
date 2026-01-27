@@ -94,101 +94,122 @@ const deletePublication = id => {
             <thead>
                 <tr class="sortable">
                     <th
+                        scope="col"
                         :class="getSortClass('name')"
                         :aria-sort="getAriaSortString('name')"
                         :aria-label="getAriaSortLabel('name', $gettext('Name'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('name')"
-                            :title="$gettext('Nach Name sortieren')">
+                            :title="$gettext('Nach Name sortieren')"
+                            :aria-label="$gettext('Nach Name sortieren')"
+                        >
                             {{ $gettext('Name') }}
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('version')"
                         :aria-sort="getAriaSortString('version')"
                         :aria-label="getAriaSortLabel('version', $gettext('Version'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('version')"
-                            :title="$gettext('Nach Version sortieren')">
+                            :title="$gettext('Nach Version sortieren')"
+                            :aria-label="$gettext('Nach Version sortieren')"
+                        >
                             {{ $gettext('Version') }}
                         </button>
                     </th>
                     <th
                         v-if="!RANGE_ID"
+                        scope="col"
                         :class="getSortClass('range_name')"
                         :aria-sort="getAriaSortString('range_name')"
                         :aria-label="getAriaSortLabel('range_name', $gettext('Bereich'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('range_name')"
-                            :title="$gettext('Nach Bereich sortieren')">
+                            :title="$gettext('Nach Bereich sortieren')"
+                            :aria-label="$gettext('Nach Bereich sortieren')"
+                        >
                             {{ $gettext('Bereich') }}
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('status.value')"
                         :aria-sort="getAriaSortString('status.value')"
                         :aria-label="getAriaSortLabel('status.value', $gettext('Status'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('status.value')"
-                            :title="$gettext('Nach Status sortieren')">
+                            :title="$gettext('Nach Status sortieren')"
+                            :aria-label="$gettext('Nach Status sortieren')"
+                        >
                             {{ $gettext('Status') }}
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('members')"
                         :aria-sort="getAriaSortString('members')"
                         :aria-label="getAriaSortLabel('members', $gettext('Anzahl der Teilnehmenden'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('members')"
-                            :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')">
+                            :title="$gettext('Nach Anzahl der Teilnehmenden sortieren')"
+                            :aria-label="$gettext('Nach Anzahl der Teilnehmenden sortieren')"
+                        >
                             {{ $gettext('Anzahl der Teilnehmenden') }}
                         </button>
                     </th>
-                    <th>
+                    <th scope="col">
                         {{ $gettext('Custom-Parameter') }}
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('user.name')"
                         :aria-sort="getAriaSortString('user.name')"
                         :aria-label="getAriaSortLabel('user.name', $gettext('Erstellt von'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('user.name')"
-                            :title="$gettext('Nach Autor sortieren')">
+                            :title="$gettext('Nach Autor/in sortieren')"
+                            :aria-label="$gettext('Nach Autor/in sortieren')"
+                        >
                             {{ $gettext('Erstellt von') }}
                         </button>
                     </th>
                     <th
+                        scope="col"
                         :class="getSortClass('mkdate')"
                         :aria-sort="getAriaSortString('mkdate')"
                         :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('mkdate')"
-                            :title="$gettext('Nach Erstellt Datum sortieren')">
+                            :title="$gettext('Nach Erstellt Datum sortieren')"
+                            :aria-label="$gettext('Nach Erstellt Datum sortieren')"
+                        >
                             {{ $gettext('Erstellt am') }}
                         </button>
                     </th>
-                    <th class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
+                    <th scope="col" class="actions" style="width: 20px">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -196,15 +217,21 @@ const deletePublication = id => {
                     <td>
                         <button
                             type="button"
-                            class="styleless button-base"
+                            class="as-link"
                             @click="showPublication(publication.id)"
-                            :title="$gettext('Konfiguration anzeigen')">
+                            :title="$gettext('Konfiguration anzeigen')"
+                            :aria-label="$gettext('Konfiguration anzeigen')"
+                        >
                             {{ publication.name }}
                         </button>
                     </td>
                     <td>{{ publication.version }}</td>
                     <td v-if="!RANGE_ID">
-                        <a :href="showRangeURL(publication.range_id)" :title="$gettext('Zur Veranstaltung')">
+                        <a
+                            :href="showRangeURL(publication.range_id)"
+                            :title="$gettext('Zur Veranstaltung')"
+                            :aria-label="$gettext('Zur Veranstaltung')"
+                        >
                             {{ publication.range_name }}
                         </a>
                     </td>
@@ -223,6 +250,7 @@ const deletePublication = id => {
                             type="button"
                             class="styleless button-base"
                             :title="$gettext('Teilnehmenden anschauen')"
+                            :aria-label="$gettext('Teilnehmenden anschauen')"
                             @click="showMembers(publication)"
                         >
                             {{ publication.members.length }}
@@ -236,7 +264,11 @@ const deletePublication = id => {
                     <td>
                         <div class="user-avatar-container">
                             <UserAvatarDropdown :user="publication.user" />
-                            <a :href="userProfileURL(publication.user.username)" :title="$gettext('Zum Benutzerprofil')">
+                            <a
+                                :href="userProfileURL(publication.user.username)"
+                                :title="$gettext('Zum Benutzerprofil')"
+                                :aria-label="$gettext('Zum Benutzerprofil')"
+                            >
                                 {{ publication.user.name }}
                             </a>
                         </div>

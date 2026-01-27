@@ -5,6 +5,7 @@ use Course;
 use DBManager;
 use JSONArrayObject;
 use Lti\Enum\ResourceLaunchContainer;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use SimpleORMap;
 use Studip\LTI13a\ResourceLinkRepository;
@@ -121,6 +122,55 @@ class ResourceLink extends SimpleORMap
     public function toLti1p3ResourceLink(): LtiResourceLinkInterface
     {
         return new ResourceLinkRepository($this);
+    }
+
+    public function toLti1p3aResourceLink(string $registrationName): LtiResourceLink
+    {
+        $coursePublication = Publication::firstOrCreate(
+            [
+                'range_id' => $this->id
+            ],
+            [
+                'name' => sprintf(_('Erstellt durch LTI-DeepLinking für: %s'), $registrationName),
+                'version' => '1.3a',
+                'status' => PublicationStatus::Active->value,
+                'publication_key' => Uuid::uuid4()->toString(),
+                'user_id' => User::findCurrent()->id
+            ]
+        );
+
+        $properties = [];
+
+        $semester = $this->getCourseSemester();
+        if($semester) {
+            $properties['available'] = [
+                'startDateTime' => date('c', $semester?->beginn),
+                'endDateTime' => date('c', $semester?->end)
+            ];
+        }
+
+        if (true) {
+            $properties['lineItem'] = [
+                'label' => 'Quiz 1',
+                'scoreMaximum' => 100,
+                'resourceId' => 'quiz-1',
+                'tag' => 'quiz'
+            ];
+        }
+
+        return new LtiResourceLink(
+            $this->id,
+            [
+                ...$properties,
+                'url' => $this->getLaunchURL(),
+                'title' => $this->get(),
+                'text' => $this->beschreibung,
+                'icon' => $this->getItemAvatarURL(),
+                'custom' => [
+                    'id' => $coursePublication->publication_key
+                ]
+            ]
+        );
     }
 
     public function getRegistration(): Registration

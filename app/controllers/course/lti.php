@@ -240,7 +240,9 @@ class Course_LtiController extends StudipController
                 $deployment->deployment_key,
                 RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->range_id)),
                 [
-                    ...$resourceLinkRepo->getCustomLtiParameters(),
+                    [
+                        'https://purl.imsglobal.org/spec/lti/claim/custom' => $resourceLinkRepo->getCustom()
+                    ],
                     new ContextClaim(
                         $this->range_id,
                         ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
@@ -371,15 +373,15 @@ class Course_LtiController extends StudipController
             $links = $ltiResources->getByType(LtiResourceLinkInterface::TYPE);
             if (count($links) > 0) {
                 foreach ($links as $link) {
-                    $custom_parameters = '';
+                    $customParameters = '';
                     foreach ($link->getCustom() as $key => $value) {
-                        $custom_parameters .= $key . '=' . $value . "\n";
+                        $customParameters .= $key . '=' . $value . "\n";
                     }
 
                     ResourceLink::create([
                         'title' => $link->getTitle(),
                         'launch_url' => $link->getUrl(),
-                        'custom_parameters' => $custom_parameters,
+                        'custom_parameters' => $customParameters,
                         'launch_container' => $link->getProperties()->get('presentation')['documentTarget'] ?? $resourceLink->launch_container,
                         'deployment_id' => $resourceLink->deployment_id,
                         'course_id' => $resourceLink->course_id,

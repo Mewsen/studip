@@ -1,4 +1,10 @@
 <?php
+
+use Lti\Publication;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
+use Ramsey\Uuid\Uuid;
+use Studip\Lti\Enum\PublicationStatus;
+
 /**
  * Course.php
  * model class for table seminare
@@ -2653,5 +2659,55 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         }
 
         return $result;
+    }
+
+    public function getCourseSemester(): ?Semester
+    {
+        return Semester::findOneBySQL(
+            "Join semester_courses using(semester_id) WHERE semester_courses.course_id = :course_id",
+            [
+                'course_id' => $this->id
+            ]
+        );
+    }
+
+    public function toLti1p3ResourceLink(string $registrationName): LtiResourceLink
+    {
+        $coursePublication = Publication::firstOrCreate(
+            [
+                'range_id' => $this->id,
+                'name' => sprintf(_('Erstellt durch LTI-DeepLinking für: %s'), $registrationName)
+            ],
+            [
+                'version' => '1.3a',
+                'status' => PublicationStatus::Active->value,
+                'publication_key' => Uuid::uuid4()->toString(),
+                'user_id' => User::findCurrent()->id
+            ]
+        );
+
+        $properties = [];
+
+        $semester = $this->getCourseSemester();
+        if($semester) {
+            $properties['available'] = [
+                'startDateTime' => date('c', $semester?->beginn),
+                'endDateTime' => date('c', $semester?->end)
+            ];
+        }
+
+        return new LtiResourceLink(
+            $this->id,
+            [
+                ...$properties,
+                'url' => Urlhelper::getLink('dispatch.php/enroll/lti/launch'),
+                'title' => $this->getFullName(),
+                'text' => $this->beschreibung,
+                'icon' => $this->getItemAvatarURL(),
+                'custom' => [
+                    'id' => $coursePublication->publication_key
+                ]
+            ]
+        );
     }
 }

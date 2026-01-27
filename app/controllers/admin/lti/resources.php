@@ -89,6 +89,13 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             'icon' => Request::get('icon')
         ]);
 
+        if (Request::get('registration_id')) {
+            $deploymentId = Registration::find(Request::get('registration_id'))?->getDefaultDeployment()->id;
+            $resourceLink->setData([
+                'deployment_id' => $deploymentId ?? $resourceLink->deployment_id
+            ]);
+        }
+
         $resourceLink->store();
 
         PageLayout::postSuccess(

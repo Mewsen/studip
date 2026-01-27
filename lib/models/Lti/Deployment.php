@@ -80,22 +80,4 @@ class Deployment extends SimpleORMap
         $parameters .= $this->options['custom_parameters'] ?? '';
         return $parameters;
     }
-
-    public static function firstOrCreate(array $attributes, array $values = []): self
-    {
-        $whereClauses = [];
-        foreach ($attributes as $key => $value) {
-            $whereClauses[] = "$key = :$key";
-        }
-
-        $record = static::findOneBySQL(implode(' AND ', $whereClauses), $attributes);
-        if ($record) {
-            return $record;
-        }
-
-        return static::create([
-            ...$attributes,
-            ...$values
-        ]);
-    }
 }

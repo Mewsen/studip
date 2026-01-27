@@ -116,7 +116,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('name')"
                             :title="$gettext('Nach Name sortieren')">
                             {{ $gettext('Name') }}
@@ -130,7 +130,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('version')"
                             :title="$gettext('Nach Version sortieren')">
                             {{ $gettext('Version') }}
@@ -144,7 +144,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('deployments')"
                             :title="$gettext('Nach Anzahl der Deployments sortieren')">
                             {{ $gettext('Deployments') }}
@@ -158,7 +158,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('range_name')"
                             :title="$gettext('Nach Bereich sortieren')">
                             {{ $gettext('Bereich') }}
@@ -172,7 +172,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('status.value')"
                             :title="$gettext('Nach Status sortieren')">
                             {{ $gettext('Status') }}
@@ -185,7 +185,7 @@ const deleteRegistration = id => {
                     >
                         <button
                             type="button"
-                            class="button__table-sort button-base"
+                            class="as-link"
                             @click="sortBy('mkdate')"
                             :title="$gettext('Nach Erstellt Datum sortieren')">
                             {{ $gettext('Erstellt am') }}

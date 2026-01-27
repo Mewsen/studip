@@ -87,6 +87,7 @@ class LoginController extends AuthenticatedController
                     );
                     Metrics::increment('core.login.succeeded');
                     sess()->regenerateId(\Studip\Authentication\Manager::DEFAULT_KEPT_SESSION_VARIABLES);
+                    NotificationCenter::postNotification('Authenticated', $check_auth['user'], ['callback_id' => Request::get('callback_id')]);
                     $this->redirect('start/index');
                     return;
                 }

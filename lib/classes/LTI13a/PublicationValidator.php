@@ -5,16 +5,25 @@ use Lti\Publication;
 use Lti\PublicationUser;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
+use Semester;
 use Studip\Lti\Enum\PublicationStatus;
 
 final class PublicationValidator
 {
     protected array $publicationConfigs;
+    private ?Semester $semester;
 
     public function __construct(
         protected Publication $publication
     ) {
         $this->publicationConfigs = $publication->getConfigValues();
+        $this->semester = Semester::findOneBySQL(
+            "Join semester_courses using(semester_id)
+                    WHERE semester_courses.course_id = :course_id",
+            [
+                'course_id' => $publication->range->id
+            ]
+        );
     }
 
     /**
@@ -24,8 +33,8 @@ final class PublicationValidator
     {
         $this
             ->validateStatus()
-            ->validateEndDate()
-            ->validateStartDate();
+            ->validateStartDate()
+            ->validateEndDate();
 
         return $this->publication;
     }
@@ -50,10 +59,10 @@ final class PublicationValidator
     {
         $this
             ->validateStatus()
-            ->validateEndDate()
+            ->validateEnrollmentDeadline()
+            ->validateEnrollmentCapacity()
             ->validateStartDate()
-            ->validateEndDate()
-            ->validateStartDate();
+            ->validateEndDate();
 
         return $this->publication;
     }
@@ -93,7 +102,7 @@ final class PublicationValidator
      */
     private function validateStartDate(): self
     {
-        $startDate = (int) ($this->publicationConfigs['start_date'] ?? 0);
+        $startDate = (int) ($this->publicationConfigs['start_date'] ?? $this->semester?->beginn);
 
         if (!$startDate) {
             return $this;
@@ -113,7 +122,7 @@ final class PublicationValidator
      */
     private function validateEndDate(): self
     {
-        $endDate = (int) ($this->publicationConfigs['end_date'] ?? 0);
+        $endDate = (int) ($this->publicationConfigs['end_date'] ?? $this->semester?->end);
 
         if (!$endDate) {
             return $this;

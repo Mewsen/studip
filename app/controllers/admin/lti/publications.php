@@ -37,7 +37,7 @@ class Admin_Lti_PublicationsController extends AdminBaseController
             ]
         ];
 
-        if ($GLOBALS['perm']->have_perm('root')) {
+        if ($GLOBALS['perm']->have_perm('root') && !$this->range_id) {
             $sqlQuery = [
                 "TRUE ORDER BY `mkdate`, `name`"
             ];

@@ -11,6 +11,7 @@ import {debounce} from 'lodash';
 import {deserializeJSONAPIResponse} from "../../../../assets/javascripts/lib/jsonapiUtils";
 import StudipPagination from "../../../components/StudipPagination.vue";
 import ResourceDetail from "../../../components/lti/resources/ResourceDetail.vue";
+import StudipDialog from "../../../components/StudipDialog.vue";
 
 const ltiConfig = useLtiConfig();
 

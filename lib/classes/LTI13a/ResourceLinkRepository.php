@@ -12,7 +12,6 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
         protected ResourceLink $resourceLink
     ) {}
 
-
     public function getType(): string
     {
         return 'ltiResourceLink';
@@ -25,14 +24,6 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
 
     public function getIcon(): ?array
     {
-        // TODO: return icon URL
-        return [
-            $this->resourceLink->icon
-        ];
-    }
-
-    public function getThumbnail(): ?array
-    {
         if ($this->resourceLink->course) {
             return [
                 $this->resourceLink->course->getItemAvatarURL()
@@ -42,33 +33,47 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
         return null;
     }
 
-    public function getIframe(): ?array
+    public function getThumbnail(): ?array
     {
-        //Not supported.
         return null;
     }
 
-    public function getCustom(): ?array
+    public function getIframe(): ?array
     {
-        //Not supported.
         return null;
+    }
+
+    public function getCustom(): array
+    {
+        $parameterStr = $this->resourceLink->getCustomParameters();
+        if (trim($parameterStr) === '') {
+            return [];
+        }
+
+        $custom = [];
+        foreach (explode("\n", $parameterStr) as $line) {
+            [$key, $value] = array_map('trim', explode('=', $line, 2) + [null, null]);
+
+            if ($key !== null && $value !== null) {
+                $custom[$key] = $value;
+            }
+        }
+
+        return $custom;
     }
 
     public function getLineItem(): ?array
     {
-        // TODO: Implement getLineItem() method.
         return null;
     }
 
     public function getAvailability(): ?array
     {
-        // TODO: Implement getAvailability() method.
         return null;
     }
 
     public function getSubmission(): ?array
     {
-        // TODO: Implement getSubmission() method.
         return null;
     }
 
@@ -92,7 +97,14 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
         $collection = new Collection();
         $collection->add([
             'url' => $this->getUrl(),
-            'title' => $this->getTitle()
+            'title' => $this->getTitle(),
+            'text' => $this->getText(),
+            'icon' => $this->getIcon(),
+            'thumbnail' => $this->getThumbnail(),
+            'submission' => $this->getSubmission(),
+            'lineItem' => $this->getLineItem(),
+            'iframe' => $this->getIframe(),
+            'custom' => $this->getCustom(),
         ]);
 
         return $collection;
@@ -104,26 +116,5 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
             ...$this->getProperties()->all(),
             'type' => $this->getType()
         ]);
-    }
-
-    public function getCustomLtiParameters(): array
-    {
-        $parameterStr = $this->resourceLink->getCustomParameters();
-        if (trim($parameterStr) === '') {
-            return [];
-        }
-
-        $custom = [];
-        foreach (explode("\n", $parameterStr) as $line) {
-            [$key, $value] = array_map('trim', explode('=', $line, 2) + [null, null]);
-
-            if ($key !== null && $value !== null) {
-                $custom[$key] = $value;
-            }
-        }
-
-        return [
-            'https://purl.imsglobal.org/spec/lti/claim/custom' => $custom
-        ];
     }
 }

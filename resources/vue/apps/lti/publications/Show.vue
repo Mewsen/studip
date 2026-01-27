@@ -118,12 +118,12 @@ defineProps({
 
                 <dt>{{ $gettext('Bereitstellungsmodus beim ersten Start durch die Lehrende') }}</dt>
                 <dd>
-                    {{ publication.provisioning_mode_instructor.label }}
+                    {{ publication.provisioning_mode_instructor?.label }}
                 </dd>
 
                 <dt>{{ $gettext('Bereitstellungsmodus beim ersten Start durch die Studierende') }}</dt>
                 <dd>
-                    {{ publication.provisioning_mode_student.label }}
+                    {{ publication.provisioning_mode_student?.label }}
                 </dd>
             </dl>
         </article>

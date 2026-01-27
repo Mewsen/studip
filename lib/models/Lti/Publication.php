@@ -2,7 +2,7 @@
 namespace Lti;
 
 use Avatar;
-use Lti\Enum\PublicationProvisioningMode;
+use Lti\Enum\UserProvisioningMode;
 use Range;
 use SimpleORMap;
 use Studip\Lti\Enum\PublicationStatus;
@@ -74,7 +74,7 @@ class Publication extends SimpleORMap
             } else if ($value && $typeCasting && in_array($key, $numberFields, true)) {
                 $value = (int) $value;
             } else if (in_array($key, ['provisioning_mode_instructor', 'provisioning_mode_student']) && $typeCasting) {
-                $value = PublicationProvisioningMode::get($value);
+                $value = UserProvisioningMode::get($value);
             }
 
             return [$key => $value];

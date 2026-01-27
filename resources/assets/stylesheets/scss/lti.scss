@@ -232,5 +232,81 @@
         .mb-10 {
             margin-bottom: 10px;
         }
+        .w-full {
+            width: 100%;
+        }
+    }
+
+    .messages-container {
+        padding: 0;
+        list-style-type: none;
+    }
+}
+
+#lti {
+    #current-page-structure {
+        display: none;
+    }
+
+    #content-wrapper #content {
+        width: 100%;
+        max-width: 1152px;
+        margin: 0 auto;
+    }
+
+    .provisioning-modes {
+        margin-top: 30px;
+
+        .studip-card-container {
+            padding: 0;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .studip-card {
+            &__title {
+                font-size: 20px;
+            }
+
+            &__subtitle {
+                font-size: 18px;
+            }
+
+            &__body {
+                margin-top: 20px;
+                align-items: center;
+
+                .studip-icon {
+                    width: 50px !important;
+                    height: 50px !important;
+                }
+            }
+
+            &__footer {
+                form {
+                    width: 100%;
+                }
+
+                .button {
+                    margin: 0;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        #responsive-contentbar {
+            display: none;
+        }
+        #content-wrapper {
+            margin-top: 0;
+        }
+
+        .provisioning-modes {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     }
 }

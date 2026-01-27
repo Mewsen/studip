@@ -1,46 +1,84 @@
 <?php
 namespace Studip\LTI13a;
 
-use Lti\PublicationUser;
-use OAT\Library\Lti1p3Core\Exception\LtiException;
-use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
+use Course;
 use User;
+use Metrics;
 use Range;
 use CourseMember;
 use Lti\Publication;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
+use Lti\PublicationUser;
+use OAT\Library\Lti1p3Core\Exception\LtiException;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
+use Studip\Authentication\Manager as AuthenticationManager;
 
 final class UserEnrollment
 {
-    protected UserIdentityInterface $userIdentity;
-    protected Range $range;
+    private Range $range;
+    private ?User $user;
+    private ?UserIdentityInterface $userIdentity;
+
+    private ?CourseMember $courseMember;
     public function __construct(
-        protected LaunchValidationResultInterface $request,
-        protected Publication $publication
+        protected Publication $publication,
+        protected array $localRoles,
+        protected string $registrationId
     ) {
         $this->range = $publication->range;
-        $this->userIdentity = $request->getPayload()->getUserIdentity();
-    }
-
-    public function enroll(): User
-    {
-        $user = $this->syncUser();
-
-        $this->syncCourseMember($user);
-
-        return $user;
     }
 
     /**
      * @throws LtiExceptionInterface
-     *
      */
-    private function syncUser(): User
+    public function enroll(UserIdentityInterface $userIdentity): self
     {
-        $user = User::findOneBySQL(
-            "email = :email AND auth_plugin = 'LTI13a'",
-            ['email' => $this->userIdentity->getEmail()]
+        $this
+            ->setUserIdentity($userIdentity)
+            ->syncUser()
+            ->syncRangeMember();
+
+        return $this;
+    }
+
+    /**
+     * @throws LtiExceptionInterface
+     */
+    public function authenticate(?User $user = null): self
+    {
+        $user ??= $this->user;
+
+        if (!$user) {
+            throw new LtiException('Authentication failed: no user could be identified.');
+        }
+
+        auth()->setAuthenticatedUser($user);
+        Metrics::increment('core.login.succeeded');
+        sess()->regenerateId(AuthenticationManager::DEFAULT_KEPT_SESSION_VARIABLES);
+
+        return $this;
+    }
+
+    /**
+     * @throws LtiExceptionInterface
+     */
+    public function syncUser(?User $user = null): self
+    {
+        if (!$this->userIdentity) {
+            return $this;
+        }
+
+        $user ??= User::findOneBySQL(
+            "JOIN lti_publication_users USING(user_id)
+                    WHERE email = :email
+                    AND auth_plugin = 'LTI13a'
+                    AND lti_publication_users.registration_id = :registration_id
+                    AND lti_publication_users.external_user_id = :external_user_id",
+            [
+                'email' => $this->userIdentity->getEmail(),
+                'external_user_id' => $this->userIdentity->getIdentifier(),
+                'registration_id' => $this->registrationId
+            ]
         );
 
         if (!$user) {
@@ -49,7 +87,7 @@ final class UserEnrollment
             }
 
             $user = new User();
-            $username = 'lti13a.'.str_replace('@', '_', $this->userIdentity->getEmail());
+            $username = $this->userIdentity->getIdentifier() . '_' . $this->registrationId . '_' . bin2hex(random_bytes(6));
             $user->setData([
                 'username' => strtolower($username),
                 'Email' => $this->userIdentity->getEmail(),
@@ -60,56 +98,77 @@ final class UserEnrollment
         $user->setData([
             'Vorname' => $this->userIdentity->getGivenName() ?? $user->Vorname,
             'Nachname' => $this->userIdentity->getFamilyName() ?? $user->Nachname,
-            'perms' => $this->resolveLocalContextRole()
+            'perms' => $user->auth_plugin === 'standard' ? $user->perms : $this->resolveLocalContextRole()
         ]);
+
         $user->store();
+        $this->setUser($user);
 
-        PublicationUser::updateOrCreate([
-            'publication_id' => $this->publication->id,
-            'user_id' => $user->id
-        ]);
-
-        return $user;
+        return $this;
     }
 
-    private function syncCourseMember(User $user): CourseMember
+    public function syncRangeMember(?User $user = null): self
     {
-        $courseMember = CourseMember::findOneBySQL(
-            "Seminar_id = :seminar_id AND user_id = :user_id",
-            [
-                'seminar_id' => $this->range->id,
-                'user_id' => $user->id
-            ]
-        );
+        $user ??= $this->user;
 
-        if (!$courseMember) {
-            (new PublicationValidator($this->publication))->validateEnrollment();
+        if ($user && $this->range instanceof Course) {
+            $this->courseMember = $this->range->addMember($user, $this->resolveLocalContextRole(), false);
+            $this->courseMember->comment = _('Eingeschrieben über LTI13a.');
+            $this->courseMember->store();
 
-            $courseMember = new CourseMember();
-            $courseMember->setData([
-                'seminar_id' => $this->range->id,
+            PublicationUser::updateOrCreate([
                 'user_id' => $user->id,
-                'comment' => _('Eingeschrieben über LTI13a.')
+                'external_user_id' => $this->userIdentity->getIdentifier(),
+                'external_email' => $this->userIdentity->getEmail(),
+                'publication_id' => $this->publication->id,
+                'registration_id' => $this->registrationId
             ]);
         }
 
-        $courseMember->setData([
-            'status' => $this->resolveLocalContextRole()
-        ]);
-        $courseMember->store();
-
-        return $courseMember;
+        return $this;
     }
 
-    private function resolveLocalContextRole(): string
+    public function resolveLocalContextRole(): string
     {
-        $localRole = RoleMapper::toLocal($this->request->getPayload()->getRoles());
         $publicationConfigs = $this->publication->getConfigValues();
 
-        return match ($localRole['course']) {
+        return match ($this->localRoles['course']) {
             'dozent' => $publicationConfigs['instructor_role'] ?? 'dozent',
             'autor'  => $publicationConfigs['instructor_role'] ?? 'autor',
-            default  => $localRole['course'] ?? 'user'
+            default  => $this->localRoles['course'] ?? 'user'
         };
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getUserIdentity(): ?UserIdentityInterface
+    {
+        return $this->userIdentity;
+    }
+
+    public function setUserIdentity(UserIdentityInterface $userIdentity): self
+    {
+        $this->userIdentity = $userIdentity;
+        return $this;
+    }
+
+    public function getCourseMember(): ?CourseMember
+    {
+        return $this->courseMember;
+    }
+
+    public function setCourseMember(CourseMember $courseMember): self
+    {
+        $this->courseMember = $courseMember;
+        return $this;
     }
 }

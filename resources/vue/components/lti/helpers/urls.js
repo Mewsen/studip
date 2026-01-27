@@ -19,9 +19,9 @@ export const deleteDeploymentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/a
 // Resource Links URLS:
 export const createResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/create`);
 
-export const editResourceURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/edit/${id}`);
+export const editResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/edit/${id}`);
 
-export const editResourceConsentURL = (id) => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/consent/${id}`);
+export const editResourceConsentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/consent/${registrationId}`);
 
 export const storeResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/store`);
 export const updateResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/update/${id}`);
