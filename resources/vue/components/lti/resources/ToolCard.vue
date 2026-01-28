@@ -11,7 +11,6 @@ import {
 } from "../helpers/urls";
 import StudipIcon from "../../StudipIcon.vue";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
-import StudipTooltipIcon from "../../StudipTooltipIcon.vue";
 
 const ltiConfig = useLtiConfig();
 const props= defineProps({
