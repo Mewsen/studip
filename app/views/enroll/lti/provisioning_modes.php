@@ -1,29 +1,18 @@
 <?php
+use Lti\Enum\UserProvisioningMode;
+
 /**
  * @var Enroll_LtiController $controller
  * @var int $provisioningMode
  * @var string $callbackId
  */
-
-use Lti\Enum\UserProvisioningMode;
-
 ?>
 
-<?php
-/**
- * @var array $messages
- */
-?>
-
-<?= $this->render_partial('enroll/lti/_messages', ['messages' => $messages ?? []]); ?>
-
-<? if(empty($messages)): ?>
 <div class="provisioning-modes">
     <h1><?= _('Willkommen!') ?></h1>
     <?= MessageBox::info(_('Es sieht so aus, als wäre dies Ihr erstes Mal hier. Bitte wählen Sie eine der folgenden Kontooptionen aus.')) ?>
     <br />
     <ul class="studip-card-container">
-
         <li class="studip-card">
             <header class="studip-card__header">
                 <p class="studip-card__title">
@@ -71,4 +60,3 @@ use Lti\Enum\UserProvisioningMode;
         <? endif ?>
     </ul>
 </div>
-<? endif ?>

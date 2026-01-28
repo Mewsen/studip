@@ -2692,7 +2692,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         if($semester) {
             $properties['available'] = [
                 'startDateTime' => date('c', $semester?->beginn),
-                'endDateTime' => date('c', $semester?->end)
+                'endDateTime' => date('c', $semester?->ende)
             ];
         }
 

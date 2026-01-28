@@ -1,7 +1,7 @@
 <?php
 /**
- * @var array $messages
+ * @var array $errors
  */
 ?>
 
-<?= $this->render_partial('enroll/lti/_messages', ['messages' => $messages ?? []]); ?>
+<?= $this->render_partial('enroll/lti/_errors', ['errors' => $errors ?? []]); ?>

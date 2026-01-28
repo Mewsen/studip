@@ -2582,7 +2582,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
          self::$mariadb_column_default_fix = $state;
      }
 
-    public static function firstOrCreate(array $attributes, array $values = []): self
+    public static function firstOrCreate(array $attributes, array $values = []): static
     {
         $whereClauses = [];
         foreach ($attributes as $key => $value) {
@@ -2600,7 +2600,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         ]);
     }
 
-    public static function updateOrCreate(array $attributes, array $values = []): self
+    public static function updateOrCreate(array $attributes, array $values = []): static
     {
         $whereClauses = [];
         foreach ($attributes as $key => $value) {

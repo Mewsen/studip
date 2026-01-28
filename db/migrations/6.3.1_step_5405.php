@@ -99,6 +99,30 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
+            CREATE TABLE IF NOT EXISTS `lti_user_identity_mappings` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
+                `registration_id` INT UNSIGNED DEFAULT NULL,
+                `external_user_id` VARCHAR(255) NOT NULL,
+                `external_email` VARCHAR(255),
+                `context` ENUM('deep-link','resource-link') NOT NULL DEFAULT 'resource-link',
+                `mkdate` INT UNSIGNED DEFAULT NULL,
+                `chdate` INT UNSIGNED DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `idx_lti_user_identity_mappings_registration_id` (`registration_id`),
+                KEY `idx_lti_user_identity_mappings_user_id` (`user_id`),
+                CONSTRAINT `fk_lti_user_identity_mappings_registration`
+                    FOREIGN KEY (`registration_id`)
+                    REFERENCES `lti_registrations` (`id`)
+                    ON DELETE SET NULL,
+                CONSTRAINT `fk_lti_user_identity_mappings_user`
+                    FOREIGN KEY (`user_id`)
+                    REFERENCES `auth_user_md5` (`user_id`)
+                    ON DELETE CASCADE
+            )
+        ");
+
+        DBManager::get()->exec("
             ALTER TABLE `lti_deployments` CHANGE `tool_id` `registration_id` INT UNSIGNED NOT NULL
         ");
 
@@ -196,6 +220,7 @@ final class Step5405 extends Migration {
     {
         DBManager::get()->exec("
             DROP TABLE IF EXISTS
+                `lti_user_identity_mappings`,
                 `lti_registration_configs`,
                 `lti_registrations`,
                 `lti_publication_configs`,

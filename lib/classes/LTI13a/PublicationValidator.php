@@ -122,7 +122,7 @@ final class PublicationValidator
      */
     private function validateEndDate(): self
     {
-        $endDate = (int) ($this->publicationConfigs['end_date'] ?? $this->semester?->end);
+        $endDate = (int) ($this->publicationConfigs['end_date'] ?? $this->semester?->ende);
 
         if (!$endDate) {
             return $this;

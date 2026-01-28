@@ -2,39 +2,40 @@
 namespace Studip\LTI13a;
 
 use Course;
+use Lti\Enum\UserIdentityMappingContext;
 use User;
 use Metrics;
 use Range;
 use CourseMember;
 use Lti\Publication;
+use Lti\UserIdentityMapping;
 use Lti\PublicationUser;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use Studip\Authentication\Manager as AuthenticationManager;
 
-final class UserEnrollment
+final class UserManager
 {
+    private Publication $publication;
+    private array $localRoles;
+
+    private string $registrationId;
     private Range $range;
     private ?User $user;
     private ?UserIdentityInterface $userIdentity;
 
     private ?CourseMember $courseMember;
-    public function __construct(
-        protected Publication $publication,
-        protected array $localRoles,
-        protected string $registrationId
-    ) {
-        $this->range = $publication->range;
-    }
 
     /**
      * @throws LtiExceptionInterface
      */
-    public function enroll(UserIdentityInterface $userIdentity): self
+    public function enroll(Publication $publication, array $localRoles, string $registrationId): self
     {
         $this
-            ->setUserIdentity($userIdentity)
+            ->setPublication($publication)
+            ->setLocalRoles($localRoles)
+            ->setRegistrationId($registrationId)
             ->syncUser()
             ->syncRangeMember();
 
@@ -116,14 +117,26 @@ final class UserEnrollment
             $this->courseMember->comment = _('Eingeschrieben über LTI13a.');
             $this->courseMember->store();
 
-            PublicationUser::updateOrCreate([
+            PublicationUser::firstOrCreate([
                 'user_id' => $user->id,
-                'external_user_id' => $this->userIdentity->getIdentifier(),
-                'external_email' => $this->userIdentity->getEmail(),
-                'publication_id' => $this->publication->id,
-                'registration_id' => $this->registrationId
+                'publication_id' => $this->publication->id
             ]);
+
+            $this->setUser($user)->syncUserIdentityMapping();
         }
+
+        return $this;
+    }
+
+    public function syncUserIdentityMapping(?string $context = null): self
+    {
+        UserIdentityMapping::updateOrCreate([
+            'registration_id' => $this->registrationId,
+            'user_id' => $this->user->id,
+            'external_user_id' => $this->userIdentity->getIdentifier(),
+            'external_email' => $this->userIdentity->getEmail(),
+            'context' => $context ?? UserIdentityMappingContext::ResourceLink->value
+        ]);
 
         return $this;
     }
@@ -137,6 +150,43 @@ final class UserEnrollment
             'autor'  => $publicationConfigs['instructor_role'] ?? 'autor',
             default  => $this->localRoles['course'] ?? 'user'
         };
+    }
+
+    public function getPublication(): Publication
+    {
+        return $this->publication;
+    }
+
+    public function setPublication(Publication $publication): self
+    {
+        $this->publication = $publication;
+        $this->range = $publication->range;
+
+        return $this;
+    }
+
+    public function getLocalRoles(): array
+    {
+        return $this->localRoles;
+    }
+
+    public function setLocalRoles(array $localRoles): self
+    {
+        $this->localRoles = $localRoles;
+
+        return $this;
+    }
+
+    public function getRegistrationId(): string
+    {
+        return $this->registrationId;
+    }
+
+    public function setRegistrationId(string $registrationId): self
+    {
+        $this->registrationId = $registrationId;
+
+        return $this;
     }
 
     public function getUser(): ?User
