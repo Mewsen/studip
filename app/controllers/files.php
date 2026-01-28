@@ -57,17 +57,17 @@ class FilesController extends AuthenticatedController
     /**
      * Helper method for filling the sidebar with actions.
      */
-    private function buildSidebar(FolderType $folder, $view = true)
+    private function buildSidebar(FolderType $folder, $view = true, $active_plugin_id = null)
     {
         $sidebar = Sidebar::get();
 
-        $sources = new LinksWidget();
+        $sources = new ViewsWidget();
         $sources->setTitle(_("Dateiquellen"));
         $sources->addLink(
             _("Stud.IP-Dateien"),
             $this->url_for("files/index"),
             Icon::create('files')
-        );
+        )->setActive(!$active_plugin_id);
         foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) {
             if ($plugin->isPersonalFileArea()) {
                 $subnav = $plugin->getFileSelectNavigation();
@@ -75,11 +75,13 @@ class FilesController extends AuthenticatedController
                     $subnav->getTitle(),
                     URLHelper::getURL("dispatch.php/files/system/".$plugin->getPluginId()),
                     $subnav->getImage()
-                );
+                )->setActive($plugin->getPluginId() == $active_plugin_id);
             }
         }
-        $sidebar->addWidget($sources);
 
+        if (count($sources->getElements()) > 1) {
+            $sidebar->addWidget($sources);
+        }
 
         $actions = new ActionsWidget();
 
@@ -685,7 +687,7 @@ class FilesController extends AuthenticatedController
                 _('Ordner nicht gefunden!')
             );
         } else {
-            $this->buildSidebar($this->topFolder, false);
+            $this->buildSidebar($this->topFolder, false, $plugin_id);
         }
         $this->render_action('index');
     }
