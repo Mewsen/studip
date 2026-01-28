@@ -2,8 +2,8 @@
 namespace Lti\Enum;
 
 enum UserIdentityMappingContext: string {
-    case DeepLink = 'deep-link';
-    case ResourceLink = 'resource-link';
+    case DeepLink = 'deep_linking';
+    case ResourceLink = 'resource_link';
 
     public static function all(): array
     {

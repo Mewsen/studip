@@ -255,8 +255,15 @@ class Enroll_LtiController extends AuthenticatedController
 
     private function resolveProvisioningMode(LaunchValidationResultInterface $request, Publication $publication): void
     {
-        $authUser = User::findCurrent();
-        if ($authUser) {
+        $userIdentityMapping = UserIdentityMapping::findOneBySQL(
+            "user_id = :user_id AND context = :context",
+            [
+                'user_id' => User::findCurrent()->id,
+                'context' => UserIdentityMappingContext::ResourceLink->value
+            ]
+        );
+
+        if ($userIdentityMapping) {
             $this->redirect('course/overview?cid='.$publication->range->id);
             return;
         }
@@ -265,7 +272,7 @@ class Enroll_LtiController extends AuthenticatedController
         $localRoles = RoleMapper::toLocal($payload->getRoles());
         $userManager = new UserManager();
 
-        $userIdentity = UserIdentityMapping::findOneBySQL(
+        $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "context = :context AND external_email = :external_email AND external_user_id = :external_user_id AND registration_id = :registration_id",
             [
                 'context' => UserIdentityMappingContext::ResourceLink->value,
@@ -275,10 +282,10 @@ class Enroll_LtiController extends AuthenticatedController
             ]
         );
 
-        if ($userIdentity) {
+        if ($userIdentityMapping) {
             $userManager
                 ->setUserIdentity($payload->getUserIdentity())
-                ->setUser($userIdentity->user)
+                ->setUser($userIdentityMapping->user)
                 ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
                 ->authenticate();
 
@@ -333,15 +340,22 @@ class Enroll_LtiController extends AuthenticatedController
             'expires_at' => time() + 1800
         ];
 
-        $authUser = User::findCurrent();
-        if ($authUser) {
+        $userIdentityMapping = UserIdentityMapping::findOneBySQL(
+            "user_id = :user_id AND context = :context",
+            [
+                'user_id' => User::findCurrent()->id,
+                'context' => UserIdentityMappingContext::DeepLink->value
+            ]
+        );
+
+        if ($userIdentityMapping) {
             $this->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);
             return;
         }
 
         $payload = $request->getPayload();
 
-        $userIdentity = UserIdentityMapping::findOneBySQL(
+        $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "context = :context AND external_email = :external_email AND external_user_id = :external_user_id AND registration_id = :registration_id",
             [
                 'context' => UserIdentityMappingContext::DeepLink->value,
@@ -351,9 +365,9 @@ class Enroll_LtiController extends AuthenticatedController
             ]
         );
 
-        if ($userIdentity) {
+        if ($userIdentityMapping) {
             (new UserManager())
-                ->setUser($userIdentity->user)
+                ->setUser($userIdentityMapping->user)
                 ->authenticate();
 
             $this->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);

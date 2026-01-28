@@ -2,17 +2,17 @@
 namespace Studip\LTI13a;
 
 use Course;
-use Lti\Enum\UserIdentityMappingContext;
 use User;
 use Metrics;
 use Range;
 use CourseMember;
 use Lti\Publication;
-use Lti\UserIdentityMapping;
 use Lti\PublicationUser;
+use Lti\UserIdentityMapping;
+use Lti\Enum\UserIdentityMappingContext;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
-use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use Studip\Authentication\Manager as AuthenticationManager;
 
 final class UserManager
@@ -22,10 +22,10 @@ final class UserManager
 
     private string $registrationId;
     private Range $range;
-    private ?User $user;
-    private ?UserIdentityInterface $userIdentity;
+    private ?User $user = null;
+    private ?UserIdentityInterface $userIdentity = null;
 
-    private ?CourseMember $courseMember;
+    private ?CourseMember $courseMember = null;
 
     /**
      * @throws LtiExceptionInterface
@@ -47,7 +47,7 @@ final class UserManager
      */
     public function authenticate(?User $user = null): self
     {
-        $user ??= $this->user;
+        $user ??= $this->getUser();
 
         if (!$user) {
             throw new LtiException('Authentication failed: no user could be identified.');
@@ -69,31 +69,34 @@ final class UserManager
             return $this;
         }
 
-        $user ??= User::findOneBySQL(
-            "JOIN lti_publication_users USING(user_id)
-                    WHERE email = :email
-                    AND auth_plugin = 'LTI13a'
-                    AND lti_publication_users.registration_id = :registration_id
-                    AND lti_publication_users.external_user_id = :external_user_id",
-            [
-                'email' => $this->userIdentity->getEmail(),
-                'external_user_id' => $this->userIdentity->getIdentifier(),
-                'registration_id' => $this->registrationId
-            ]
-        );
+        $user ??= $this->getUser();
 
         if (!$user) {
             if (!$this->userIdentity->getGivenName() || !$this->userIdentity->getFamilyName()) {
                 throw new LtiException('Failed to enroll user: Missing name information.');
             }
 
-            $user = new User();
-            $username = $this->userIdentity->getIdentifier() . '_' . $this->registrationId . '_' . bin2hex(random_bytes(6));
-            $user->setData([
-                'username' => strtolower($username),
-                'Email' => $this->userIdentity->getEmail(),
-                'auth_plugin' => 'LTI13a'
-            ]);
+            $userIdentityMapping = UserIdentityMapping::findOneBySQL(
+                "context = :context AND external_email = :external_email AND external_user_id = :external_user_id AND registration_id = :registration_id",
+                [
+                    'context' => UserIdentityMappingContext::ResourceLink->value,
+                    'external_email' => $this->userIdentity->getEmail(),
+                    'external_user_id' => $this->userIdentity->getIdentifier(),
+                    'registration_id' => $this->registrationId
+                ]
+            );
+
+            if ($userIdentityMapping) {
+                $user = $userIdentityMapping->user;
+            } else {
+                $user = new User();
+                $username = $this->userIdentity->getIdentifier() . '_' . $this->registrationId . '_' . bin2hex(random_bytes(6));
+                $user->setData([
+                    'username' => strtolower($username),
+                    'Email' => $this->userIdentity->getEmail(),
+                    'auth_plugin' => 'LTI13a'
+                ]);
+            }
         }
 
         $user->setData([
@@ -110,7 +113,7 @@ final class UserManager
 
     public function syncRangeMember(?User $user = null): self
     {
-        $user ??= $this->user;
+        $user ??= $this->getUser();
 
         if ($user && $this->range instanceof Course) {
             $this->courseMember = $this->range->addMember($user, $this->resolveLocalContextRole(), false);

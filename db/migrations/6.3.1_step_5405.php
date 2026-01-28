@@ -105,7 +105,7 @@ final class Step5405 extends Migration {
                 `registration_id` INT UNSIGNED DEFAULT NULL,
                 `external_user_id` VARCHAR(255) NOT NULL,
                 `external_email` VARCHAR(255),
-                `context` ENUM('deep-link','resource-link') NOT NULL DEFAULT 'resource-link',
+                `context` ENUM('deep_linking','resource_link') NOT NULL DEFAULT 'resource_link',
                 `mkdate` INT UNSIGNED DEFAULT NULL,
                 `chdate` INT UNSIGNED DEFAULT NULL,
                 PRIMARY KEY (`id`),
