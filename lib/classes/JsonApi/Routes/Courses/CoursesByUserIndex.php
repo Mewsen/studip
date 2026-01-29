@@ -35,7 +35,7 @@ class CoursesByUserIndex extends JsonApiController
 
     protected $allowedPagingParameters = ['offset', 'limit'];
 
-    protected $allowedFilteringParameters = ['semester'];
+    protected $allowedFilteringParameters = ['permission', 'semester'];
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -58,7 +58,8 @@ class CoursesByUserIndex extends JsonApiController
 
         $courses = $this->findCoursesByUser(
             $user,
-            $this->getSemesterFilter()
+            $this->getSemesterFilter(),
+            $this->getPermissionFilter()
         );
         [$offset, $limit] = $this->getOffsetAndLimit();
 
@@ -79,6 +80,13 @@ class CoursesByUserIndex extends JsonApiController
         ) {
             return 'Invalid "semester".';
         }
+
+        if (
+            !empty($filtering['permission'])
+            && !in_array($filtering['permission'], ['user', 'autor', 'tutor', 'dozent'])
+        ) {
+            return 'Invalid "permission".';
+        }
     }
 
     private function getSemesterFilter(): ?Semester
@@ -92,6 +100,13 @@ class CoursesByUserIndex extends JsonApiController
         return Semester::find($filtering['semester']);
     }
 
+    private function getPermissionFilter(): ?string
+    {
+        $filtering = $this->getQueryParameters()->getFilteringParameters();
+
+        return $filtering['permission'] ?? null;
+    }
+
 
     /**
      * @param User $user
@@ -99,8 +114,15 @@ class CoursesByUserIndex extends JsonApiController
      *
      * @return Course[]
      */
-    private function findCoursesByUser(User $user, ?Semester $semester): array
+    private function findCoursesByUser(User $user, ?Semester $semester, ?string $permission): array
     {
+        $memberships = $user->course_memberships;
+        if ($permission) {
+            $memberships = $memberships->filter(function (\CourseMember $membership) use ($permission): bool {
+                return $membership->status === $permission;
+            });
+        }
+
         $courses = Course::findBySQL(
             'LEFT JOIN `semester_courses`
             ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
@@ -108,7 +130,7 @@ class CoursesByUserIndex extends JsonApiController
             WHERE
             `seminare`.`seminar_id` IN ( :course_ids )
             ORDER BY `semester_data`.`beginn`, `seminare`.`name`',
-            ['course_ids' => $user->course_memberships->pluck('seminar_id')]
+            [':course_ids' => $memberships->pluck('seminar_id')]
         );
 
         if ($semester) {
