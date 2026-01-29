@@ -16,9 +16,9 @@ class Admin_TreeController extends AuthenticatedController
             Studip\VueApp::create('tree/StudipTree')
                 ->withProps([
                     'breadcrumb-icon'              => 'institute',
-                    'create-url'                   => $this->createURL(),
-                    'delete-url'                   => $this->deleteURL(),
-                    'edit-url'                     => $this->editURL(),
+                    'create-url'                   => URLHelper::getURL('dispatch.php/admin/tree/create', [], true),
+                    'delete-url'                   => URLHelper::getURL('dispatch.php/admin/tree/delete', [], true),
+                    'edit-url'                     => URLHelper::getURL('dispatch.php/admin/tree/edit', [], true),
                     'editable'                     => true,
                     'semester'                     => $this->semester,
                     'show-structure-as-navigation' => true,
@@ -46,9 +46,9 @@ class Admin_TreeController extends AuthenticatedController
             Studip\VueApp::create('tree/StudipTree')
                 ->withProps([
                     'breadcrumb-icon'              => 'literature',
-                    'create-url'                   => $this->createURL(),
-                    'delete-url'                   => $this->deleteURL(),
-                    'edit-url'                     => $this->editURL(),
+                    'create-url'                   => URLHelper::getURL('dispatch.php/admin/tree/create', [], true),
+                    'delete-url'                   => URLHelper::getURL('dispatch.php/admin/tree/delete', [], true),
+                    'edit-url'                     => URLHelper::getURL('dispatch.php/admin/tree/edit', [], true),
                     'editable'                     => true,
                     'semester'                     => $this->semester,
                     'show-structure-as-navigation' => true,
