@@ -176,8 +176,6 @@ onUnmounted(() => {
 
 <template>
     <div class="discussion-timeline">
-        <span aria-live="assertive" class="sr-only">{{ postProgressText }}</span>
-
         <div class="discussion-timeline__start">
             <button
                 type="button"
@@ -189,9 +187,34 @@ onUnmounted(() => {
                 <StudipDateTime :iso="discussion.mkdate" :relative="true" />
             </button>
         </div>
+        <nav class="navigation-area sr-only" :aria-label="$gettext('Beitragsnavigation')">
+            <span aria-live="assertive">{{ postProgressText }}</span>
+            <button
+                v-if="isNewFrom && currentPostIndex !== firstUnreadPostIndex"
+                type="button"
+                @click="jumpToPost(null, firstUnreadPostIndex)"
+            >
+                {{ $gettext('Zum ersten ungelesenen Beitrag') }}
+            </button>
+            <button
+                type="button"
+                :disabled="currentPostIndex < 1"
+                @click="jumpToPost(null, currentPostIndex - 1)"
+            >
+                {{ $gettext('Zum vorherigen Beitrag') }}
+            </button>
+            <button
+                type="button"
+                :disabled="currentPostIndex >= posts.length - 1"
+                @click="jumpToPost(null, currentPostIndex + 1)"
+            >
+                {{ $gettext('Zum nächsten Beitrag') }}
+            </button>
+        </nav>
         <div
             id="scroll-area"
             class="scroll-area"
+            aria-hidden="true"
             @click="jumpTo"
         >
             <div class="scroll-area__track" aria-hidden="true">
