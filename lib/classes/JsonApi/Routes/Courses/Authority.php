@@ -54,6 +54,7 @@ class Authority
 
     public static function canIndexMembershipsOfUser(User $observer, User $user)
     {
-        return $observer->id === $user->id;
+        return $observer->id === $user->id
+            || $GLOBALS['perm']->have_perm('root', $observer->id);
     }
 }
