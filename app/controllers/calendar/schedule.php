@@ -239,8 +239,8 @@ class Calendar_ScheduleController extends AuthenticatedController
                 //The requested time range may not start on monday (which is the case when
                 //the schedule starts with the day view in the responsive view).
                 //Therefore, the cycle date may need to be shifted.
-                //$date_dow_offset for the cycle date is the day of week of the cycle date minus the start of the
-                //requested time range. The latter is reduced by one to get only the difference from Monday.
+                //$date_dow_offset for the cycle date is the day of week of the cycle date
+                //minus the start of the requested time range.
                 $date_dow_offset -= (int)$begin->format('N');
                 if ($date_dow_offset > 0) {
                     //The fake time range of the cycle date has to be shifted:
