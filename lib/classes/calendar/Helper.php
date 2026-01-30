@@ -162,15 +162,17 @@ class Helper
             'timeGridWeek' => [
                 'columnHeaderFormat' => ['weekday' => 'short'],
                 'slotDuration'       => $slot_duration
+            ],
+            //The day view can be made visible regardless whether the current day
+            //is in the list of hidden days or not. In case, the current day is hidden,
+            //Fullcalendar automatically picks the next visible day in the list
+            //of visible days. If the last visible day lays behind the current day,
+            //the first visible day is picked.
+            'timeGridDay' => [
+                'cloumnHeaderFormat' => ['weekday' => 'short'],
+                'slotDuration'       => $slot_duration
             ]
         ];
-        if (!in_array(date('N'), $hidden_days)) {
-            //The current day is visible: Allow a day view:
-            $available_views['timeGridDay'] = [
-                'columnHeaderFormat' => ['weekday' => 'short'],
-                'slotDuration'       => $slot_duration
-            ];
-        }
 
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
