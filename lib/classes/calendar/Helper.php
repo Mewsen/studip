@@ -174,6 +174,23 @@ class Helper
             ]
         ];
 
+        //Calculate the valid range for the schedule. This should be the current week.
+        //All dates are converted to fit into it.
+        //Together with the "hiddenDays" property, only those days that shall be visible
+        //can be browsed in the day view.
+        $valid_start = new \DateTime();
+        if ($valid_start->format('N') !== '1') {
+            //Make sure to start on monday:
+            $dow = (int) $valid_start->format('N');
+            $dow--;
+            $interval = new \DateInterval(sprintf('P%uD', $dow));
+            $valid_start = $valid_start->sub($interval);
+        }
+        $valid_start->setTime(0, 0, 0);
+        $valid_end = clone $valid_start;
+        $valid_end = $valid_end->add(new \DateInterval('P1W'));
+        //The end date is exclusive, so it must lie on the next day.
+
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
             [
@@ -197,7 +214,11 @@ class Helper
                     'omitZeroMinute' => false
                 ],
                 'weekends'   => true,
-                'hiddenDays' => $fullcalendar_hidden_days,
+                'validRange' => [
+                    'start' => $valid_start->format('Y-m-d'),
+                    'end'   => $valid_end->format('Y-m-d')
+                ],
+                'hiddenDays'  => $fullcalendar_hidden_days,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
