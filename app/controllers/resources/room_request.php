@@ -2528,6 +2528,11 @@ class Resources_RoomRequestController extends AuthenticatedController
 
     public function filter_action(string $key, ?string $value = null): void
     {
+        $config_filters = [
+            'semester'  => 'MY_COURSES_SELECTED_CYCLE',
+            'institute' => 'MY_INSTITUTES_DEFAULT',
+        ];
+
         if ($key === 'from_request') {
             $key = $value;
             $value = Request::option($key);
@@ -2537,7 +2542,12 @@ class Resources_RoomRequestController extends AuthenticatedController
             $value = null;
         }
 
-        if ($value === null && isset($_SESSION[__CLASS__]['filter'][$key])) {
+        if (isset($config_filters[$key])) {
+            User::findCurrent()->getConfiguration()->store(
+                $config_filters[$key],
+                $value
+            );
+        } elseif ($value === null && isset($_SESSION[__CLASS__]['filter'][$key])) {
             unset($_SESSION[__CLASS__]['filter'][$key]);
         } else {
             $_SESSION[__CLASS__]['filter'][$key] = $value;
