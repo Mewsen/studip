@@ -1,13 +1,13 @@
 <?php
 /**
- * @var AuthenticatedController $controller
+ * @var Lti_ConsentController $controller
  * @var Lti\ResourceLink $resourceLink
  * @var Lti\RegistrationPrivacySettings $privacySettings
  */
 ?>
 
 <? if ($resourceLink) : ?>
-    <form class="default" method="post" action="<?= $controller->link_for('course/lti/consent/' . $resourceLink->id) ?>">
+    <form class="default" method="post" action="<?= $controller->link_for('lti/consent/edit/' . $resourceLink->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <?
             $dataProtectionWarning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;

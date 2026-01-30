@@ -13,6 +13,7 @@ use ViewsWidget;
 abstract class AdminBaseController extends AuthenticatedController
 {
     protected ?string $range_id = null;
+    protected bool $isModerator = false;
     protected bool $isToolSharingEnabled = false;
 
     public function before_filter(&$action, &$args)
@@ -20,8 +21,9 @@ abstract class AdminBaseController extends AuthenticatedController
         parent::before_filter($action, $args);
 
         $this->range_id = Context::getId();
+        $this->isModerator = LtiToolModule::isModerator($this->range_id);
 
-        if (!LtiToolModule::isModerator($this->range_id)) {
+        if (!$this->isModerator) {
             throw new AccessDeniedException();
         }
 

@@ -40,7 +40,7 @@ onMounted(() => {
                 >
                     <button
                         type="button"
-                        class="styleless button-base"
+                        class="as-link"
                         @click="sortBy('user.name')"
                         :title="$gettext('Nach Name sortieren')">
                         {{ $gettext('Name') }}
@@ -53,7 +53,7 @@ onMounted(() => {
                 >
                     <button
                         type="button"
-                        class="styleless button-base"
+                        class="as-link"
                         @click="sortBy('mkdate')"
                         :title="$gettext('Nach Einschreibedatum sortieren')">
                         {{ $gettext('Einschreibedatum') }}

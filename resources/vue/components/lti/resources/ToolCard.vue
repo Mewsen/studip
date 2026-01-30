@@ -6,8 +6,7 @@ import {
     deleteResourceURL,
     editResourceConsentURL,
     editResourceURL,
-    launchResourceURL,
-    selectContentURL
+    launchResourceURL
 } from "../helpers/urls";
 import StudipIcon from "../../StudipIcon.vue";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
@@ -40,13 +39,8 @@ const actionMenus = computed(() => {
     return base;
 });
 
-const resourceURL = computed(() => {
-    if (props.resource.launch_type === 'deep_linking') {
-        return selectContentURL(props.resource.id);
-    }
+const resourceURL = computed(() => launchResourceURL(props.resource.id, props.resource.registration.version));
 
-    return launchResourceURL(props.resource.id);
-});
 const launchContainer = computed(() => props.resource.launch_container || props.resource.registration.meta.configs.launch_container);
 const isIframe = computed(() => launchContainer.value === 'iframe');
 
@@ -55,8 +49,19 @@ const containerAttributes = computed(() => {
         return {}
     }
 
+    if (props.resource.registration.status === 'inactive') {
+        const title =  $gettext('Die LTI-Registrierung „%{name}“ ist deaktiviert.', { name: props.resource.registration.name });
+        return {
+            title,
+            ariaLabel: title,
+            href: '#'
+        }
+    }
+
+    const title = $gettext('Anwendung starten');
     return {
-        title: props.resource.launch_type === 'deep_linking' ? $gettext('Inhalts auswählen') : $gettext('Anwendung starten'),
+        title,
+        ariaLabel: title,
         href: resourceURL.value,
         target: '_blank'
     }
@@ -94,7 +99,7 @@ const swap = event => {
         :class="{ 'tool-card--iframe': isIframe }"
         v-bind="containerAttributes"
     >
-        <div  class="tool-card__flag" v-if="resource.color" :style="{ backgroundColor: resource.color}">
+        <div class="tool-card__flag" v-if="resource.color" :style="{ backgroundColor: resource.color}">
         </div>
         <div class="studip-card">
             <header class="studip-card__header">
@@ -122,6 +127,7 @@ const swap = event => {
                     v-if="isIframe"
                     :src="resourceURL"
                     loading="lazy"
+                    class="lti-content"
                 ></iframe>
             </div>
 
@@ -137,8 +143,9 @@ const swap = event => {
                         <span class="drag-handle"></span>
                     </a>
                 </div>
-                <div v-if="resource.launch_type === 'deep_linking'">
-                    {{ $gettext('LTI Deep Linking noch nicht fertig eingerichtet') }}
+                <div v-if="resource.registration.status === 'inactive'" class="flex items-center gap-5" style="color: var(--color--warning)">
+                    <StudipIcon shape="exclaim-circle" :size="20" aria-hidden="true" />
+                    {{ $gettext('Deaktiviert') }}
                 </div>
             </footer>
         </div>

@@ -21,7 +21,7 @@ export const createResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/adm
 
 export const editResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/edit/${id}`);
 
-export const editResourceConsentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/consent/${registrationId}`);
+export const editResourceConsentURL = registrationId => STUDIP.URLHelper.getURL(`dispatch.php/lti/consent/edit/${registrationId}`);
 
 export const storeResourceURL = () => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/store`);
 export const updateResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/admin/lti/resources/update/${id}`);
@@ -38,8 +38,17 @@ export const deletePublicationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/
 
 
 // Others:
-export const launchResourceURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/launch/${id}`);
-export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/course/lti/process_select_link/${id}`);
+export const launchResourceURL = (id, version = '1.1') => {
+    switch (version) {
+        case '1.1':
+            return STUDIP.URLHelper.getURL(`dispatch.php/lti/11/index/launch/${id}`);
+        case '1.3a':
+            return STUDIP.URLHelper.getURL(`dispatch.php/lti/13a/index/launch/${id}`);
+    }
+
+    console.error(`Unknown LTI version ${version}`);
+};
+export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/lti/13a/index/select_contents/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 
 export const userProfileURL = username => STUDIP.URLHelper.getURL('dispatch.php/profile', {username});

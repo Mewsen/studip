@@ -19,3 +19,9 @@ const props = defineProps({
         <ResourceForm v-bind="{...props}" />
     </LtiApp>
 </template>
+
+<style>
+.ui-dialog-content .lti {
+    display: grid;
+}
+</style>

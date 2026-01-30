@@ -2,7 +2,7 @@
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import StudipDateTime from "../../StudipDateTime.vue";
 import {computed} from "vue";
-import {launchResourceURL, selectContentURL} from "../helpers/urls";
+import {launchResourceURL} from "../helpers/urls";
 import {useLtiConfig} from "../../../store/pinia/lti/Config";
 import CopyableCodeBlock from "../../CopyableCodeBlock.vue";
 
@@ -17,13 +17,7 @@ const props = defineProps({
 
 const title = computed(() => props.resource.title || props.resource.registration.name);
 const description = computed(() => props.resource.description || props.resource.registration.description);
-const resourceURL = computed(() => {
-    if (props.resource.launch_type === 'deep_linking') {
-        return selectContentURL(props.resource.id);
-    }
-
-    return launchResourceURL(props.resource.id);
-});
+const resourceURL = computed(() => launchResourceURL(props.resource.id, props.resource.registration.version));
 
 const configs = computed(() => {
     const common = {

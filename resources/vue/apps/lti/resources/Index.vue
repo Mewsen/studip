@@ -22,7 +22,7 @@ const currentResource = ref(null);
 const isLoading = ref(false);
 const pagination = ref({});
 
-const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '700'});
+const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: '700', height: '750'});
 
 const showResourceDialog = resource => currentResource.value = resource;
 

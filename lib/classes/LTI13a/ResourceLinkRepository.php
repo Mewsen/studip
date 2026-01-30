@@ -45,16 +45,22 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
 
     public function getCustom(): array
     {
-        $parameterStr = $this->resourceLink->getCustomParameters();
-        if (trim($parameterStr) === '') {
+        $parameterStr = trim($this->resourceLink->getCustomParameters());
+        if ($parameterStr === '') {
             return [];
         }
 
         $custom = [];
         foreach (explode("\n", $parameterStr) as $line) {
-            [$key, $value] = array_map('trim', explode('=', $line, 2) + [null, null]);
+            $line = trim($line);
 
-            if ($key !== null && $value !== null) {
+            if ($line === '' || !str_contains($line, '=')) {
+                continue;
+            }
+
+            [$key, $value] = array_map('trim', explode('=', $line, 2));
+
+            if ($key !== '' && $value !== '') {
                 $custom[$key] = $value;
             }
         }

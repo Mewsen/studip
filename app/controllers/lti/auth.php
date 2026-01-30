@@ -145,11 +145,6 @@ class Lti_AuthController extends StudipController
         $this->render_template('course/lti/iframe');
     }
 
-    /**
-     * OIDC login
-     *
-     * @return void
-     */
     public function login_action(): void
     {
         $oidcLoginHandler = new OidcAuthenticationRequestHandler(

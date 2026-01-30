@@ -111,11 +111,11 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         return User::findCurrent()->auth_plugin === 'standard' && $GLOBALS['perm']->have_perm('root', $userId);
     }
 
-    public static function isModerator($courseId, $userId = null): bool
+    public static function isModerator($contextId, $userId = null): bool
     {
         return
             User::findCurrent()->auth_plugin === 'standard'
-            && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId));
+            && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $contextId, $userId));
     }
 
     /**

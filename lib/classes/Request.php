@@ -444,15 +444,21 @@ class Request implements ArrayAccess, IteratorAggregate
      *
      * @param string $param    parameter name
      *
-     * @return array  parameter value as array (if set), else an empty array
+     * @return array | null  parameter value as array (if set), else an empty array
      */
-    public static function getArray($param)
+    public static function getArray($param, $index = -1)
     {
         $request = self::getInstance();
 
-        return (isset($request[$param]) && is_array($request[$param]))
-            ? $request[$param]
-            : [];
+        if (!isset($request[$param]) || !is_array($request[$param])) {
+            return [];
+        }
+
+        if ($index >= 0) {
+            return $request[$param][$index] ?? null;
+        }
+
+        return $request[$param];
     }
 
     /**

@@ -31,22 +31,11 @@ final class PlatformManager
         );
     }
 
-    /**
-     * Generates an object containing the settings for using this Stud.IP
-     * as a platform that connects to an LTI tool via Deep Linking.
-     *
-     * @param string $linkId The Stud.IP LTI Resource Link ID that is used to construct
-     *     the platform return URL.
-     *
-     * @param string $courseId An optional Stud.IP course for which to get
-     *     the deep linking configuration.
-     *
-     * @return DeepLinkingSettings The settings for deep linking.
-     */
-    public static function getDeepLinkingConfiguration(string $linkId, string $courseId = ''): DeepLinkingSettings
+
+    public static function getDeepLinkingConfiguration(): DeepLinkingSettings
     {
         return new DeepLinkingSettings(
-            self::getDeepLinkingReturnUrl($linkId, $courseId),
+            URLHelper::getURL('dispatch.php/lti/13a/index/store_contents'),
             [LtiResourceLinkInterface::TYPE],
             ['window', 'iframe'],
             'text/html',
@@ -77,16 +66,6 @@ final class PlatformManager
         return static::getKeyring()->toKeyChain()->getPublicKey();
     }
 
-    /**
-     * Generates the URL for returning from the tool in an LTI deep linking process.
-     *
-     * @param string $linkId The Stud.IP LTI Resource Link ID to append to the URL.
-     *
-     * @param string $courseId An optional Stud.IP course for which to generate
-     *      the deep linking return URL.
-     *
-     * @return string The URL for returning from an LTI deep linking process.
-     */
     public static function getDeepLinkingReturnUrl(string $linkId, string $courseId = ''): string
     {
         $params = [];
@@ -94,7 +73,7 @@ final class PlatformManager
         if ($courseId) {
             $params['cid'] = $courseId;
         }
-        return URLHelper::getURL('dispatch.php/course/lti/save_link/' . $linkId, $params, true);
+        return URLHelper::getURL('dispatch.php/lti/13/store_content/' . $linkId, $params, true);
     }
 
     public static function getJwksUrl(): string

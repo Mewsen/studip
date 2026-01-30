@@ -25,7 +25,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 
         PageLayout::setTitle(_('LTI-Registrierungen'));
 
-        $this->role = Request::get('role', 'tool');
+        $this->ltiRole = Request::get('role', 'tool');
 
         $this->buildRegistrationsSidebar();
     }
@@ -35,16 +35,16 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         $sqlQuery = [
             "`role`= :role AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
             [
-                'role' => $this->role,
+                'role' => $this->ltiRole,
                 'range_ids' => [$this->range_id, 'global']
             ]
         ];
 
-        if ($GLOBALS['perm']->have_perm('root')) {
+        if ($GLOBALS['perm']->have_perm('root') && !$this->range_id) {
             $sqlQuery = [
                 "`role`= :role ORDER BY `mkdate`, `name`",
                 [
-                    'role' => $this->role
+                    'role' => $this->ltiRole
                 ]
             ];
         }
@@ -54,7 +54,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         $this->render_vue_app(
             Studip\VueApp::create('lti/registrations/Index')
                 ->withProps([
-                    'role' => $this->role,
+                    'role' => $this->ltiRole,
                     'registrations' => array_map(fn ($r) => $r->transformData(['deployments']), $registrations)
                 ])
         );
@@ -72,16 +72,16 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 
     public function create_action(): void
     {
-        if ($this->role === 'tool') {
+        if ($this->ltiRole === 'tool') {
             PageLayout::setTitle(_('Neues LTI-Tool registrieren'));
-        } elseif ($this->role === 'platform') {
+        } elseif ($this->ltiRole === 'platform') {
             PageLayout::setTitle(_('Neues LTI-Platform registrieren'));
         }
 
         $this->render_vue_app(
             Studip\VueApp::create('lti/registrations/Create')
                 ->withProps([
-                    'role' => $this->role
+                    'role' => $this->ltiRole
                 ])
         );
     }
@@ -123,9 +123,9 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
 
     public function edit_action(Registration $registration): void
     {
-        if ($this->role === 'tool') {
+        if ($this->ltiRole === 'tool') {
             PageLayout::setTitle(_('LTI-Tool bearbeiten'));
-        } elseif ($this->role === 'platform') {
+        } elseif ($this->ltiRole === 'platform') {
             PageLayout::setTitle(_('LTI-Platform bearbeiten'));
         }
 

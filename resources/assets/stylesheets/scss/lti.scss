@@ -4,6 +4,10 @@
         margin-bottom: 6px;
     }
 
+    table.default th button.as-link{
+        font-weight: bold;
+    }
+
     .header {
         display: flex;
         background-color: var(--color--fieldset-header);
@@ -77,6 +81,15 @@
         }
     }
 
+    iframe.lti-content {
+        border-radius: 10px;
+        border: 1px solid var(--brand-color-lighter);
+        box-shadow: 0 8px 24px var(--shadow-color);
+        background-color: var(--white);
+        overflow: hidden;
+        transition: all var(--transition-duration) ease;
+    }
+
     .select-input-group {
         margin-bottom: 12px;
 
@@ -112,6 +125,45 @@
 
             label {
                 margin-bottom: 0;
+            }
+        }
+
+        &__select-content-button {
+            margin-top: 0;
+        }
+
+        legend {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+
+            button {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .collapsed {
+            padding-bottom: 0;
+            padding-top: 0;
+
+            legend {
+                margin-bottom: 0;
+            }
+        }
+
+        &__iframe-container {
+            margin: 0 !important;
+            padding: 0 !important;
+
+            iframe {
+                height: 400px;
+                width: 100%;
+                border: 1px solid var(--light-gray-color-40);
+                border-radius: var(--border-radius-default);
             }
         }
     }
@@ -192,12 +244,6 @@
         &--iframe {
             iframe {
                 height: 60vh;
-                border-radius: 10px;
-                border: 1px solid var(--brand-color-lighter);
-                box-shadow: 0 8px 24px var(--shadow-color);
-                background-color: var(--white);
-                overflow: hidden;
-                transition: all var(--transition-duration) ease;
             }
 
             .studip-card__title {
@@ -218,19 +264,22 @@
             align-items: center;
         }
         .justify-start {
-            justify-content: flex-start;
+            justify-content: start;
         }
         .justify-end {
-            justify-content: flex-end;
+            justify-content: end;
         }
-        .gap-2 {
-            gap: 2px;
+        .space-between {
+            justify-content: space-between;
         }
         .gap-5 {
             gap: 5px;
         }
         .gap-10 {
             gap: 10px;
+        }
+        .m-0 {
+            margin: 0;
         }
         .mb-10 {
             margin-bottom: 10px;

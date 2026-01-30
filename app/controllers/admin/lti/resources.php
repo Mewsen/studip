@@ -9,9 +9,35 @@ use Studip\Lti\Enum\RegistrationStatus;
 
 class Admin_Lti_ResourcesController extends AdminBaseController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if (Navigation::hasItem('/course/lti/index')) {
+            Navigation::activateItem('/course/lti/index');
+        }
+
+        $widget = Sidebar::get()->addWidget(new ActionsWidget());
+
+        $widget->addLink(
+            _('LTI-Ressource hinzufügen'),
+            $this->url_for('admin/lti/resources/create'),
+            Icon::create('add')
+        );
+    }
+
+    public function index_action(): void
+    {
+        PageLayout::setTitle(_('LTI-Ressourcen'));
+
+        $this->render_vue_app(
+            Studip\VueApp::create('lti/resources/Index')
+        );
+    }
+
     public function create_action()
     {
-        PageLayout::setTitle(_('LTI-Resource hinzufügen'));
+        PageLayout::setTitle(_('LTI-Ressource hinzufügen'));
 
         $this->render_vue_app(
             Studip\VueApp::create('lti/resources/Create')
@@ -26,25 +52,19 @@ class Admin_Lti_ResourcesController extends AdminBaseController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $registration = Registration::find(Request::get('registration_id'));
+        $deploymentId = Registration::find(Request::get('registration_id'))?->getDefaultDeployment()->id;
 
-        $resourceLink = ResourceLink::create([
-            'deployment_id' => $registration->getDefaultDeployment()->id,
-            'course_id' => $this->range_id,
-            'title' => Request::get('title'),
-            'description' => Request::get('description'),
-            'custom_parameters' => Request::get('custom_parameters'),
-            'launch_container' => Request::get('launch_container', 'window'),
-            'launch_type' => Request::get('launch_type', 'default'),
-            'color' => Request::get('color'),
-            'icon' => Request::get('icon')
-        ]);
+        foreach ($this->extractResourcesFromRequest() as $resource) {
+            ResourceLink::create([
+                ...$resource,
+                'deployment_id' => $deploymentId,
+                'course_id' => $this->range_id
+            ]);
+        }
 
         PageLayout::postSuccess(
-            sprintf(
-                _('Der LTI-Ressource „%s“ wurde hinzugefügt.'),
-                htmlReady($resourceLink->title)
-            )
+            _('Folgende LTI-Ressourcen wurden hinzugefügt.'),
+            Request::getArray('title')
         );
 
         $this->redirect('course/lti');
@@ -58,7 +78,7 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             Studip\VueApp::create('lti/resources/Edit')
                 ->withProps([
                     'resource' => $resourceLink->transformData(['registration']),
-                    'registrations' => $this->getTransformedRegistrations(),
+                    'registrations' => $this->getTransformedRegistrations(RegistrationStatus::all()),
                     'icons' => $this->getStudipIcons()
                 ])
         );
@@ -68,30 +88,35 @@ class Admin_Lti_ResourcesController extends AdminBaseController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $resourceLink->setData([
-            'title' => Request::get('title'),
-            'description' => Request::get('description'),
-            'custom_parameters' => Request::get('custom_parameters'),
-            'launch_container' => Request::get('launch_container', $resourceLink->launch_container),
-            'launch_type' => Request::get('launch_type', $resourceLink->launch_type),
-            'color' => Request::get('color'),
-            'icon' => Request::get('icon')
-        ]);
-
+        $deploymentId = null;
         if (Request::get('registration_id')) {
             $deploymentId = Registration::find(Request::get('registration_id'))?->getDefaultDeployment()->id;
-            $resourceLink->setData([
-                'deployment_id' => $deploymentId ?? $resourceLink->deployment_id
-            ]);
         }
 
-        $resourceLink->store();
+        $resourcesArray = $this->extractResourcesFromRequest();
+        if (count($resourcesArray) === 1) {
+            $resourceLink->setData([
+                ...$resourcesArray[0],
+                'deployment_id' => $deploymentId ?? $resourceLink->deployment_id
+            ]);
+
+            $resourceLink->store();
+        } else {
+            foreach ($resourcesArray as $resource) {
+                ResourceLink::create([
+                    ...$resource,
+                    'position' => $resourceLink->position,
+                    'course_id' => $resourceLink->course_id,
+                    'deployment_id' => $deploymentId ?? $resourceLink->deployment_id
+                ]);
+            }
+
+            $resourceLink->delete();
+        }
 
         PageLayout::postSuccess(
-            sprintf(
-                _('Der LTI-Ressource „%s“ wurde gespeichert.'),
-                htmlReady($resourceLink->title)
-            )
+            _('Folgende LTI-Ressourcen wurden gespeichert.'),
+            Request::getArray('title')
         );
 
         $this->redirect('course/lti');
@@ -120,12 +145,15 @@ class Admin_Lti_ResourcesController extends AdminBaseController
         $this->redirect('course/lti');
     }
 
-    private function getTransformedRegistrations(): array
+    private function getTransformedRegistrations(array $status = []): array
     {
         $registrations = Registration::findBySQL(
-            "`role`= 'tool' AND `status` = :status AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
+            "`role`= 'tool' AND `status` IN (:status) AND `range_id` IN (:range_ids) ORDER BY `mkdate`, `name`",
             [
-                'status' => RegistrationStatus::Active->value,
+                'status' => [
+                    ...$status,
+                    RegistrationStatus::Active->value
+                ],
                 'range_ids' => [$this->range_id, 'global']
             ]
         );
@@ -149,6 +177,26 @@ class Admin_Lti_ResourcesController extends AdminBaseController
         }
 
         return array_unique($icons);
+    }
+
+    private function extractResourcesFromRequest(): array
+    {
+        $resources = [];
+
+        for ($index = 0; $index < count(Request::getArray('resource_id')); $index++) {
+            $resources[] = [
+                'resource_id' => Request::getArray('resource_id', $index),
+                'title' => Request::getArray('title', $index),
+                'description' => Request::getArray('description', $index),
+                'custom_parameters' => Request::getArray('custom_parameters', $index),
+                'launch_url' => Request::getArray('launch_url', $index),
+                'launch_container' => Request::getArray('launch_container', $index) ?? 'window',
+                'color' => Request::getArray('color', $index) ?? null,
+                'icon' => Request::getArray('icon', $index) ?? null
+            ];
+        }
+
+        return $resources;
     }
 
 }
