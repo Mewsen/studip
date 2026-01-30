@@ -19,6 +19,10 @@
             <input type="checkbox" v-model.number="val_clone.randomize" true-value="1" false-value="0">
             {{ $gettext('Antworten den Teilnehmenden zufällig präsentieren') }}
         </label>
+        <label>
+            <input type="checkbox" v-model.number="val_clone.freetextfield" true-value="1" false-value="0">
+            {{ $gettext('Feld für Freitextantwort') }}
+        </label>
 
     </div>
 </template>
@@ -37,6 +41,7 @@ export default {
             description: '',
             mandatory: '0',
             multiplechoice: '1',
+            freetextfield: '0',
             options: ['', '', '', ''],
             randomize: '0',
         });
