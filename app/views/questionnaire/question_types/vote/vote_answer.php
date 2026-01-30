@@ -1,3 +1,4 @@
+<!-- TODO vue app! -->
 <?php
 /**
  * @var QuestionnaireQuestion $vote
@@ -43,5 +44,33 @@ $responseData = $response['answerdata'] ? $response['answerdata']->getArrayCopy(
                 </label>
             </li>
         <? endforeach ?>
+
+
+        <? if (isset($vote->questiondata['freetextfield'])) : ?>
+        <li>
+            <label>
+                <? if ($vote->questiondata['multiplechoice']) : ?>
+
+                    <input type="checkbox"
+                           name="answers[<?= $vote->getId() ?>][answerdata][answers][<?= $index +1 ?>]"
+                           value="<?= $index +1 ?>"
+                        <?= isset($responseData['answers']) && in_array($index, (array) $responseData['answers']) ? 'checked' : '' ?>>
+
+                <? else : ?>
+
+                    <input type="radio"
+                           name="answers[<?= $vote->getId() ?>][answerdata][answers]"
+                           value="<?= $index  +1 ?>"
+                        <?= isset($responseData['answers']) && $index == $responseData['answers'] ? 'checked' : '' ?>>
+                <? endif ?>
+
+
+                <?= _('Sonstiges') . ':' ?>
+                <textarea name=""><?= htmlReady($answerdata['text'] ?? '') ?></textarea>
+
+        </li>
+        <? endif ?>
     </ul>
+
+
 </div>
