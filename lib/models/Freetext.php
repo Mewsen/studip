@@ -19,6 +19,11 @@ require_once 'lib/classes/QuestionType.php';
  */
 class Freetext extends QuestionnaireQuestion implements QuestionType
 {
+    public static function isDesignElement()
+    {
+        return false;
+    }
+
     /**
      * Returns the Icon-object to this QuestionType.
      * @param bool $active: true if Icon should be clickable, false for black info-icon.

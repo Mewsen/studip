@@ -16,6 +16,13 @@
  */
 class Headline extends QuestionnaireQuestion implements QuestionType
 {
+
+    public static function isDesignElement()
+    {
+        return true;
+    }
+
+
     public static function getIcon(bool $active = false) : Icon
     {
         return Icon::create(static::getIconShape(), $active ? 'clickable' : 'info');

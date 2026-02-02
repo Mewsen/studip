@@ -7,7 +7,7 @@
  * here, the QuestionType object also knows about the data-attribute from QuestionnaireQuestion
  * and what the Questionnaire-object is by calling $this->questionnaire.
  */
-interface QuestionType {
+interface QuestionElements {
 
     /**
      * Returns a specific icon for this type of question. Note this is not bound to the
@@ -38,12 +38,6 @@ interface QuestionType {
      * @return Array
      */
     static public function getEditingComponent();
-
-    /**
-     *
-     */
-
-    static public function isDesignElement();
 
     /**
      * Usually the $questiondata is already in the correct format. But for some question types

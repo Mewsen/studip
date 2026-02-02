@@ -1,5 +1,8 @@
 <template>
-    <div></div>
+    <div><label>
+        {{ $gettext('Fügt eine horizontale Trennlinie ein.') }}
+        </label>
+    </div>
 </template>
 
 <script>
