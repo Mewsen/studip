@@ -1,10 +1,5 @@
 <template>
-    <div class="vote_edit">
-        <label>
-            {{ $gettext('Überschrift') }}
-            <input type="text" v-model="val_clone.description">
-        </label>
-    </div>
+
 </template>
 
 <script>
@@ -12,12 +7,11 @@ import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
 import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 export default {
-    name: 'headline-edit',
+    name: 'divider-edit',
     extends: QuestionnaireComponent,
     components: {StudipWysiwyg},
     created() {
         this.setDefaultValues({
-            description: ''
         });
     },
     mounted() {

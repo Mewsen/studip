@@ -14,7 +14,7 @@
  * @property SimpleORMapCollection<QuestionnaireAnswer> $answers has_many QuestionnaireAnswer
  * @property Questionnaire $questionnaire belongs_to Questionnaire
  */
-class Headline extends QuestionnaireQuestion implements QuestionType
+class BlankLine extends QuestionnaireQuestion implements QuestionType
 {
     public static function getIcon(bool $active = false) : Icon
     {
@@ -28,26 +28,26 @@ class Headline extends QuestionnaireQuestion implements QuestionType
     public static function getIconShape()
     {
         // TODO we need an icon
-        return 'question-text';
+        return 'bullet-dot';
     }
 
     public static function getName()
     {
-        return _('Überschrift');
+        return _('Leerzeile');
     }
 
 
     public function getDisplayTemplate()
     {
         $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
-        $template = $factory->open('questionnaire/question_types/designelements/headline');
+        $template = $factory->open('questionnaire/question_types/designelements/blank_line');
         $template->set_attribute('vote', $this);
         return $template;
     }
 
     static public function getEditingComponent()
     {
-        return ['HeadlineEdit', ''];
+        return ['BlankLineEdit', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)
@@ -71,7 +71,7 @@ class Headline extends QuestionnaireQuestion implements QuestionType
     public function getResultTemplate($only_user_ids = null)
     {
         $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
-        $template = $factory->open('questionnaire/question_types/designelements/headline');
+        $template = $factory->open('questionnaire/question_types/designelements/blank_line');
         $template->set_attribute('vote', $this);
         return $template;
     }

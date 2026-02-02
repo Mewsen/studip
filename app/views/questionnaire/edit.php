@@ -50,4 +50,5 @@ $questionnaire_data = [
             'question-types' => $questiontypes,
             'range-id'       => Request::get('range_id'),
             'range-type'     => Request::get('range_type'),
+            'data-secure'   => true,
         ]) ?>
