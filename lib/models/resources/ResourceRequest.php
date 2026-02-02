@@ -2011,54 +2011,72 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function sendNewRequestMail()
     {
         //First we must get all users who have admin permissions in the
-        //resource management system. Depending wheter a resource_id is set
-        //for this resource request either all admins of a resource or
+        //resource management system. Depending on whether a resource_id is set
+        //for this resource request, either all authors, tutors and admins of a resource or
         //all admins of the resource management system must be informed.
+        //Those users that do not wish to receive mails about new requests
+        //from the resource management are filtered out.
 
-        $now         = time();
+        $db               = DBManager::get();
+        $no_mail_user_ids = $db->query(
+            "SELECT DISTINCT `range_id` FROM `config_values`
+            WHERE `field` = 'RESOURCES_DISABLE_MAIL_ON_NEW_REQUEST'
+            AND value = '1'"
+        )->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        $now = time();
         if ($this->resource_id) {
             //The resource-ID is set for this request:
-            //Get all admins of the resource and the resource management system.
-            $admin_users = User::findBySql(
-                "user_id IN (
-                    SELECT user_id FROM resource_permissions
-                    WHERE (
-                        resource_id = :resource_id
-                        OR resource_id = 'global'
+            //Get all authors, tutors and admins of the resource
+            //and all admins of the resource management system.
+            $users = User::findBySql(
+                "`user_id` IN (
+                    SELECT `user_id` FROM `resource_permissions`
+                    WHERE
+                    `user_id` NOT IN ( :no_mail_user_ids )
+                    AND (
+                        `resource_id` = :resource_id AND `perms` IN ('autor', 'tutor', 'admin')
+                        OR (`resource_id` = 'global' AND `perms` = 'admin')
                     )
-                    AND perms = 'admin'
                     UNION
-                    SELECT user_id FROM resource_temporary_permissions
-                    WHERE resource_id = :resource_id
-                    AND perms = 'admin'
-                    AND begin <= :now AND end >= :now
+                    SELECT `user_id` FROM `resource_temporary_permissions`
+                    WHERE
+                    `user_id` NOT IN ( :no_mail_user_ids )
+                    AND (`resource_id` = :resource_id AND `perms` IN ('autor', 'tutor', 'admin'))
+                    AND `begin` <= :now AND `end` >= :now
                 )",
                 [
-                    'resource_id' => $this->resource_id,
-                    'now'         => $now
+                    'resource_id'      => $this->resource_id,
+                    'now'              => $now,
+                    'no_mail_user_ids' => $no_mail_user_ids ?? []
                 ]
             );
         } else {
             //Get all admins of the resource management system.
-            $admin_users = User::findBySql(
-                "user_id IN (
-                    SELECT user_id FROM resource_permissions
-                    WHERE resource_id = 'global'
-                    AND perms = 'admin'
+            $users = User::findBySql(
+                "`user_id` IN (
+                    SELECT `user_id` FROM resource_permissions
+                    WHERE
+                    `user_id` NOT IN ( :no_mail_user_ids )
+                    AND `resource_id` = 'global'
+                    AND `perms` = 'admin'
                     UNION
-                    SELECT user_id FROM resource_temporary_permissions
-                    WHERE resource_id = 'global'
-                    AND perms = 'admin'
-                    AND begin <= :now AND end >= :now
-                    GROUP BY user_id
+                    SELECT `user_id` FROM `resource_temporary_permissions`
+                    WHERE
+                    `user_id` NOT IN ( :no_mail_user_ids )
+                    AND `resource_id` = 'global'
+                    AND `perms` = 'admin'
+                    AND `begin` <= :now AND `end` >= :now
+                    GROUP BY `user_id`
                 )",
                 [
-                    'now' => $now
+                    'now'              => $now,
+                    'no_mail_user_ids' => $no_mail_user_ids ?? []
                 ]
             );
         }
 
-        if (!$admin_users) {
+        if (!$users) {
             return;
         }
 
@@ -2066,7 +2084,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
 
-        foreach ($admin_users as $user) {
+        foreach ($users as $user) {
             $user_lang_path = getUserLanguagePath($user->id);
 
             $template = $factory->open(

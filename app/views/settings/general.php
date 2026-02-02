@@ -111,6 +111,15 @@ $start_pages = [
                     _('Wenn diese Einstellung aktiviert ist, wird die Buchung erst dann verschoben, wenn die Sicherheitsabfrage mit „Ja“ beantwortet wurde.')
                 ) ?>
             </label>
+            <label>
+                <input type="checkbox" name="resources_disable_mail_on_new_request"
+                       value="1"
+                       <?= $config->RESOURCES_DISABLE_MAIL_ON_NEW_REQUEST ? 'checked' : '' ?>>
+                <?= _('Benachrichtigungen über neue Raumanfragen ausschalten') ?>
+                <?= tooltipIcon(
+                    _('Wenn diese Einstellung aktiviert ist, erhalten Sie keine Nachrichten mehr über neue Raumanfragen.')
+                ) ?>
+            </label>
         </fieldset>
     <? endif ?>
 
