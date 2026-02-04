@@ -27,7 +27,7 @@
                     </td>
                     <? foreach ($lti_data_array as $lti_data): ?>
                         <td style="text-align: right;">
-                            <? if ($grade = $lti_data->deployment->grades->findOneBy('user_id', $member->user_id)): ?>
+                            <? if ($grade = $lti_data->grades->findOneBy('user_id', $member->user_id)): ?>
                                 <?= sprintf('%.0f%%', $grade->score * 100) ?>
                             <? else: ?>
                                 &ndash;
