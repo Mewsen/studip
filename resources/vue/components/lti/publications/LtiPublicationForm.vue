@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {computed, reactive} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import {storePublicationURL, updatePublicationURL} from '../helpers/urls';
 import StudipSwitch from "../../StudipSwitch.vue";
@@ -52,12 +52,6 @@ ${$gettext('Diese Einstellung legt fest, wie Konten beim ersten Start verwaltet 
     </li>
 </ul>
 `;
-
-const nameInput = useTemplateRef('nameInput');
-
-onMounted(() => {
-    nameInput.value.focus();
-});
 </script>
 
 <template>
@@ -77,7 +71,6 @@ onMounted(() => {
                     required
                     type="text"
                     name="name"
-                    ref="nameInput"
                     v-model="form.name" />
             </label>
 

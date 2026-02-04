@@ -126,12 +126,6 @@ class Admin_Lti_ResourcesController extends AdminBaseController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $deploymentsCount = ResourceLink::countBySql("deployment_id = ?", [$resourceLink->deployment_id]);
-
-        if ($this->launch_type !== 'deep_linking' && $deploymentsCount === 1 && !$resourceLink->deployment->is_default) {
-            $resourceLink->deployment->delete();
-        }
-
         $resourceTitle = $resourceLink->title;
         $resourceLink->delete();
 

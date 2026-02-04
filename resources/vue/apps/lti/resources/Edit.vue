@@ -1,6 +1,7 @@
 <script setup>
 import ResourceForm from "../../../components/lti/resources/ResourceForm.vue";
 import LtiApp from "../../../components/lti/LtiApp.vue";
+import {FocusTrap} from "focus-trap-vue";
 
 const props = defineProps({
     resource: {
@@ -20,7 +21,9 @@ const props = defineProps({
 
 <template>
     <LtiApp>
-        <ResourceForm v-bind="{...props}" />
+        <FocusTrap>
+            <ResourceForm v-bind="{...props}" />
+        </FocusTrap>
     </LtiApp>
 </template>
 

@@ -126,8 +126,8 @@ class Registration extends SimpleORMap
             ...$this->toRawArray(),
             'status' => RegistrationStatus::get($this->status),
             'range_name' => $this->range?->getFullName() ?? _('Global'),
-            'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate),
             ...$this->getConfigValues(true)
         ];
 

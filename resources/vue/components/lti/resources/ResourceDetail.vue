@@ -31,7 +31,6 @@ const configs = computed(() => {
     if (props.resource.registration.version === '1.3a') {
         return JSON.stringify({
             ...common,
-            launch_type: props.resource.launch_type,
             registration: {
                 id: props.resource.registration.id,
                 audience: props.resource.registration.meta.configs.audience,
@@ -88,13 +87,6 @@ const configs = computed(() => {
                     {{ resourceURL }}
                 </a>
             </dd>
-
-            <template v-if="ltiConfig.isModerator">
-                <dt>{{ $gettext('Starttyp') }}</dt>
-                <dd>
-                    <p>{{ resource.launch_type === 'deep_linking' ? $gettext('Inhaltsauswahl anzeigen (LTI deep linking)') : $gettext('Standard') }}</p>
-                </dd>
-            </template>
         </dl>
 
         <article v-if="ltiConfig.isModerator" class="studip">

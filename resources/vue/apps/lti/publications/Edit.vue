@@ -1,6 +1,7 @@
 <script setup>
 import LtiApp from "../../../components/lti/LtiApp.vue";
 import LtiPublicationForm from "../../../components/lti/publications/LtiPublicationForm.vue";
+import {FocusTrap} from "focus-trap-vue";
 
 defineProps({
     publication: {
@@ -12,7 +13,9 @@ defineProps({
 
 <template>
     <LtiApp>
-        <LtiPublicationForm :publication="publication" />
+        <FocusTrap>
+            <LtiPublicationForm :publication="publication" />
+        </FocusTrap>
     </LtiApp>
 </template>
 

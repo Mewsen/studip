@@ -47,8 +47,8 @@ class Deployment extends SimpleORMap
             'is_default' => (bool) $this->is_default,
             'resource_id' => $resourceLink?->course_id,
             'resource_name' => $resourceLink?->course->getFullName(),
-            'chdate' => date('c', $this->chdate),
-            'mkdate' => date('c', $this->mkdate)
+            'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate)
         ];
 
         if (in_array('registration', $with)) {

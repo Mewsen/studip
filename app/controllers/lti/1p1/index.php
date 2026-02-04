@@ -18,7 +18,6 @@ final class Lti_1p1_IndexController extends AuthenticatedController
         $action = basename(get_route());
         if (in_array($action, ['profile', 'outcome'])) {
             $this->with_session = false;
-
         }
 
         parent::__construct($dispatcher);
@@ -313,7 +312,7 @@ final class Lti_1p1_IndexController extends AuthenticatedController
         $ltiLink->addVariable('ToolConsumerProfile.url', $tcProfileUrl);
         $ltiLink->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => $resourceLink->options['document_target'],
+            'launch_presentation_document_target' => $resourceLink->options['document_target'] ?? 'window',
             'lis_outcome_service_url' => $lisOutcomeServiceUrl,
             'lis_result_sourcedid' => User::findCurrent()->id
         ]);

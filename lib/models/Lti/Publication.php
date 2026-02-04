@@ -87,8 +87,8 @@ class Publication extends SimpleORMap
             ...$this->toRawArray(),
             'status' => PublicationStatus::get($this->status),
             'range_name' => $this->range?->getFullName(),
-            'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate),
             'custom_parameter' => 'id='. $this->publication_key,
             'user' => [
                 'id'         => $this->user->id,

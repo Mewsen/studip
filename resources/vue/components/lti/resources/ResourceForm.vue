@@ -114,10 +114,6 @@ const handleLtiMessage = event => {
 
 onMounted(() => {
     window.addEventListener('message', handleLtiMessage);
-
-    nextTick(() => {
-        document.getElementById('resource-title-0')?.focus();
-    });
 });
 
 onBeforeUnmount(() => {

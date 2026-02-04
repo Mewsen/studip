@@ -27,7 +27,6 @@ class Deployment extends SchemaProvider
     {
         return [
             'name' => $resource->name,
-            'purpose' => $resource->purpose,
             'is-default' => (bool) $resource->is_default,
             'deployment-key' => $resource->deployment_key,
             'client-id' => $resource->client_id,

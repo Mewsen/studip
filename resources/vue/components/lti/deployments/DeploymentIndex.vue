@@ -5,7 +5,7 @@ import {ref} from "vue";
 import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../StudipIcon.vue";
-import {addDeploymentURL, deleteDeploymentURL, editDeploymentURL, showRangeURL} from "../helpers/urls";
+import {addDeploymentURL, deleteDeploymentURL, editDeploymentURL} from "../helpers/urls";
 import CopyableCodeBlock from "../../CopyableCodeBlock.vue";
 
 const CSRF = STUDIP.CSRF_TOKEN;
@@ -127,35 +127,6 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
                 </th>
                 <th
                     scope="col"
-                    :class="getSortClass('purpose')"
-                    :aria-sort="getAriaSortString('purpose')"
-                    :aria-label="getAriaSortLabel('purpose', $gettext('Zweck'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('purpose')"
-                        :title="$gettext('Nach Zweck sortieren')">
-                        {{ $gettext('Zweck') }}
-                    </button>
-                </th>
-                <th
-                    scope="col"
-                    v-if="registration.role === 'tool'"
-                    :class="getSortClass('resource_name')"
-                    :aria-sort="getAriaSortString('resource_name')"
-                    :aria-label="getAriaSortLabel('resource_name', $gettext('Bereich'))"
-                >
-                    <button
-                        type="button"
-                        class="button__table-sort button-base"
-                        @click="sortBy('resource_name')"
-                        :title="$gettext('Nach Name des Bereich sortieren')">
-                        {{ $gettext('Bereich') }}
-                    </button>
-                </th>
-                <th
-                    scope="col"
                     :class="getSortClass('mkdate')"
                     :aria-sort="getAriaSortString('mkdate')"
                     :aria-label="getAriaSortLabel('mkdate', $gettext('Erstellt am'))"
@@ -185,15 +156,7 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
                     <CopyableCodeBlock :content="deployment.client_id" />
                 </div>
             </td>
-            <td>{{ deployment.purpose }}</td>
-            <td v-if="registration.role === 'tool'">
-                <a v-if="deployment.resource_id !== 'global'" :href="showRangeURL(deployment.resource_id)" :title="$gettext('Zur Veranstaltung')">
-                    {{ deployment.resource_name }}
-                </a>
-                <template v-else>
-                    {{ deployment.resource_name }}
-                </template>
-            </td>
+
             <td>
                 <StudipDateTime :iso="deployment.mkdate" :relative="true" />
             </td>
@@ -208,7 +171,7 @@ const editDeployment = id => STUDIP.Dialog.fromURL(editDeploymentURL(id), { widt
         </tr>
 
         <tr v-if="deployments.length === 0">
-            <td colspan="7">
+            <td colspan="5">
                 {{ $gettext('Keine Deployments vorhanden.') }}
             </td>
         </tr>

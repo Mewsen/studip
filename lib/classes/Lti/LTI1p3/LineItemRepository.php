@@ -5,9 +5,9 @@ use Grading\Definition;
 use Studip\LTIException;
 use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
-use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
 use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
+use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 
 final class LineItemRepository implements LineItemRepositoryInterface
 {

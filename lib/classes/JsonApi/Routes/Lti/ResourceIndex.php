@@ -14,7 +14,7 @@ class ResourceIndex extends JsonApiController
 {
     protected $allowedPagingParameters = ['offset', 'limit'];
     protected $allowedFilteringParameters = [
-        'launch-types'
+        'launch-container'
     ];
 
     protected $allowedIncludePaths = [
@@ -55,9 +55,9 @@ class ResourceIndex extends JsonApiController
             ]
         ];
 
-        if (isset($filtering['launch-type'])) {
-            $baseQuery[0] .= " AND `launch_type` IN (:launch_types)";
-            $baseQuery[1]['launch_types'] = explode(',', $filtering['launch-types']);
+        if (isset($filtering['launch-container'])) {
+            $baseQuery[0] .= " AND `launch_container` IN (:launch_containers)";
+            $baseQuery[1]['launch_containers'] = explode(',', $filtering['launch-container']);
         }
 
         return $baseQuery;

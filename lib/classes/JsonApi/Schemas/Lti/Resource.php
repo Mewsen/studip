@@ -37,7 +37,6 @@ class Resource extends SchemaProvider
             'options' => $resource->options,
             'custom-parameters' => $resource->custom_parameters,
             'launch-container' => $resource->launch_container,
-            'launch-type' => $resource->launch_type,
             'mkdate' => date('c', $resource->mkdate),
             'chdate' => date('c', $resource->chdate)
         ];

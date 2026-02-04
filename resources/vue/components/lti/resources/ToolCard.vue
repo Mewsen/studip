@@ -42,7 +42,7 @@ const actionMenus = computed(() => {
 const resourceURL = computed(() => launchResourceURL(props.resource.id, props.resource.registration.version));
 
 const launchContainer = computed(() => props.resource.launch_container || props.resource.registration.meta.configs.launch_container);
-const isIframe = computed(() => launchContainer.value === 'iframe');
+const isIframe = computed(() => launchContainer.value === 'iframe' && props.resource.registration.status !== 'inactive');
 
 const containerAttributes = computed(() => {
     if(isIframe.value) {

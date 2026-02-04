@@ -28,7 +28,7 @@ const showResourceDialog = resource => currentResource.value = resource;
 
 const isIframe = resource => {
     const launchContainer = resource.launch_container || resource.registration.meta.configs.launch_container;
-    return launchContainer === 'iframe';
+    return launchContainer === 'iframe' && resource.registration.status !== 'inactive';
 };
 const updateResourcesOrder = async () => {
     try {
@@ -111,8 +111,6 @@ const fetchResources = async (_, offset = 0) => {
 }
 
 onMounted(async () => {
-    // resources.value = props.resources.filter(r => ltiConfig.isModerator || r.launch_type !== 'deep_linking');
-
     await fetchResources();
 });
 </script>

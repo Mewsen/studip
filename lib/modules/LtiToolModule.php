@@ -6,16 +6,11 @@ use Lti\ResourceLink;
 /**
  * LtiToolModule.php - LTI consumer API for Stud.IP
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
  * @author      Elmar Ludwig
  * @author      Murtaza Sultani <sultani@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
-class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
+final class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
 {
     /**
      * Initialize the LtiToolModule.
@@ -27,7 +22,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         if ($GLOBALS['perm']->have_perm('root')) {
             Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
 
-            if (static::isToolSharingEnabled()) {
+            if (self::isToolSharingEnabled()) {
                 Navigation::addItem('/admin/config/lti-publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
             }
         }
@@ -44,7 +39,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation($course_id, $last_visit, $user_id): ?Navigation
     {
         if ($user_id === 'nobody') {
             return null;
@@ -81,8 +76,8 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             $navigation->addSubNavigation('grades', new Navigation(_('Ergebnisse'), 'dispatch.php/course/lti/grades'));
         }
 
-        if (static::isModerator($course_id)) {
-            if (static::isToolSharingEnabled()) {
+        if (self::isModerator($course_id)) {
+            if (self::isToolSharingEnabled()) {
                 $navigation->addSubNavigation('publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
             }
 
@@ -121,7 +116,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function exportUserData(StoredUserData $storage)
+    public function exportUserData(StoredUserData $storage): void
     {
         $data = DBManager::get()->fetchAll("SELECT * FROM `lti_grade` WHERE `user_id` = ?", [$storage->user_id]);
         $storage->addTabularData(_('LTI-Ergebnisse'), 'lti_grade', $data);
@@ -130,7 +125,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Anbindung von LTI-Tools'),

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {computed, reactive} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import {storeDeploymentURL, updateDeploymentURL} from "../helpers/urls";
 
@@ -33,12 +33,6 @@ const formActionURL = computed(() => {
 
     return storeDeploymentURL();
 });
-
-const nameInput = useTemplateRef('nameInput');
-
-onMounted(() => {
-    nameInput.value.focus();
-});
 </script>
 
 <template>
@@ -56,10 +50,8 @@ onMounted(() => {
             <span :title="$gettext('Name ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
             <input
                 required
-                class="max-w-full"
                 type="text"
                 name="name"
-                ref="nameInput"
                 v-model="form.name" />
         </label>
 

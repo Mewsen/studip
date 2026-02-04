@@ -16,7 +16,6 @@ use Studip\Lti\LTI1p3\ResourceLinkRepository;
  * @property int $position
  * @property string $icon
  * @property string $color
- * @property string $launch_type
  * @property string $launch_container
  * @property string $custom_parameters
  * @property JSONArrayObject $options
@@ -89,8 +88,8 @@ class ResourceLink extends SimpleORMap
         $base = [
             ...$this->toRawArray(),
             'container' => ResourceLaunchContainer::get($this->launch_container),
-            'chdate' => date('c', $this->chdate),
-            'mkdate' => date('c', $this->mkdate)
+            'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate)
         ];
 
         if (in_array('deployment', $with)) {
@@ -121,7 +120,7 @@ class ResourceLink extends SimpleORMap
             return $this->custom_parameters;
         }
 
-        return $this->deployment->registration->getConfigValues()['custom_parameters'];
+        return $this->deployment->registration->getConfigValues()['custom_parameters'] ?? null;
     }
 
     public function toLti1p3ResourceLink(): LtiResourceLinkInterface

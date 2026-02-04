@@ -2,7 +2,7 @@
 use OAT\Library\Lti1p3Core\Resource\ResourceCollectionInterface;
 
 /**
- * @var Lti_13a_IndexController $controller
+ * @var Lti_1p3_IndexController $controller
  * @var ResourceCollectionInterface $ltiResources
  */
 ?>

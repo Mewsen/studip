@@ -8,6 +8,8 @@ final class Lti_ConsentController extends AuthenticatedController
 {
     public function edit_action(ResourceLink $resourceLink): void
     {
+        PageLayout::disableSidebar();
+
         $registration = $resourceLink->deployment->registration;
         $privacySettings = RegistrationPrivacySettings::findOneBySQL(
             'registration_id = :registration_id AND user_id = :user_id',

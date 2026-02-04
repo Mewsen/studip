@@ -1,6 +1,7 @@
 <script setup>
 import LtiDeploymentForm from "../../../components/lti/deployments/LtiDeploymentForm.vue";
 import LtiApp from "../../../components/lti/LtiApp.vue";
+import {FocusTrap} from "focus-trap-vue";
 
 defineProps({
     deployment: {
@@ -18,7 +19,9 @@ defineProps({
 
 <template>
     <LtiApp>
-        <LtiDeploymentForm :deployment="deployment" :registration="registration" />
+        <FocusTrap>
+            <LtiDeploymentForm :deployment="deployment" :registration="registration" />
+        </FocusTrap>
     </LtiApp>
 </template>
 

@@ -37,8 +37,8 @@ class PublicationUser extends SimpleORMap
     {
         return [
             ...$this->toRawArray(),
-            'chdate' => date('c', $this->chdate),
             'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate),
             'user' => $this->user ? [
                 'id'         => $this->user->id,
                 'name'       => $this->user->getFullName(),
