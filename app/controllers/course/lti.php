@@ -150,9 +150,11 @@ class Course_LtiController extends StudipController
             ON `lti_deployments`.`tool_id` = `lti_tools`.`id`
             WHERE
             `lti_deployments`.`purpose` = 'general'
-            AND `lti_tools`.`lti_version` = '1.3a'
-            AND `lti_tools`.`range_id` = 'global'
-            ORDER BY `lti_tools`.`name` ASC"
+            AND `lti_tools`.`range_id` IN (:range_ids)
+            ORDER BY `lti_tools`.`name` ASC",
+            [
+                'range_ids' => ['global', $this->course_id]
+            ]
         );
 
         if (!$this->global_tool_deployments) {
