@@ -142,9 +142,12 @@
                         <? if (mb_strlen($gruppe->alttext) > 0): ?>
                             <?= formatReady($gruppe->alttext) ?>
                         <? endif; ?>
-                        <? if (count($gruppe->courses)) : ?>
+                        <? $courses = $gruppe->courses->filter(
+                            fn(\Course $course) => $course->isInSemester($semester)
+                        ) ?>
+                        <? if (count($courses)) : ?>
                         <ul>
-                        <? foreach ($gruppe->courses as $course): ?>
+                        <? foreach ($courses as $course): ?>
                             <li>
                                 <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $course->id]) ?>">
                                 <?= htmlReady(($course->veranstaltungsnummer ? $course->veranstaltungsnummer . ' - ' : '') . $course->name) ?>
