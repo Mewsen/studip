@@ -1,5 +1,5 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Config;
 use Keyring;
@@ -35,12 +35,12 @@ final class ToolManager
 
     public static function getPrivateKey(): KeyInterface
     {
-        return static::getKeyring()->toKeyChain()->getPrivateKey();
+        return self::getKeyring()->toKeyChain()->getPrivateKey();
     }
 
     public static function getPublicKey(): KeyInterface
     {
-        return static::getKeyring()->toKeyChain()->getPublicKey();
+        return self::getKeyring()->toKeyChain()->getPublicKey();
     }
 
     public static function getJwksUrl(): string

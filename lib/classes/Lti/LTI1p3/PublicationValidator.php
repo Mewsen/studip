@@ -1,12 +1,12 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
+use Semester;
 use Lti\Publication;
 use Lti\PublicationUser;
+use Studip\Lti\Enum\PublicationStatus;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
-use Semester;
-use Studip\Lti\Enum\PublicationStatus;
 
 final class PublicationValidator
 {

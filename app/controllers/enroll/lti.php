@@ -1,31 +1,31 @@
 <?php
 
+use Studip\Lti\Enum\UserIdentityMappingContext;
+use Studip\Lti\Enum\UserProvisioningMode;
 use Lti\Publication;
 use Lti\Registration;
-use Ramsey\Uuid\Uuid;
-use Trails\Dispatcher;
-use Studip\Cache\Factory;
 use Lti\UserIdentityMapping;
-use Studip\LTI13a\RoleMapper;
-use Studip\LTI13a\ToolManager;
-use Studip\LTI13a\UserManager;
-use Lti\Enum\UserProvisioningMode;
-use Studip\OAuth2\NegotiatesWithPsr7;
-use Studip\LTI13a\RegistrationManager;
-use Studip\LTI13a\PublicationValidator;
-use Lti\Enum\UserIdentityMappingContext;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
-use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Resource\ResourceCollection;
-use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
-use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchResponseBuilder;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
+use Ramsey\Uuid\Uuid;
+use Studip\Cache\Factory;
+use Studip\Lti\LTI1p3\PublicationValidator;
+use Studip\Lti\LTI1p3\RegistrationManager;
+use Studip\Lti\LTI1p3\RoleMapper;
+use Studip\Lti\LTI1p3\ToolManager;
+use Studip\Lti\LTI1p3\UserManager;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Trails\Dispatcher;
 
 class Enroll_LtiController extends AuthenticatedController
 {
@@ -40,7 +40,7 @@ class Enroll_LtiController extends AuthenticatedController
             $this->with_session = false;
         }
 
-        if (in_array($action, ['select_contents', 'deeplink_callback'])) {
+        if (in_array($action, ['select_contents', 'deeplink_callback', 'reset_account_mapping', 'create_new_account'])) {
             $this->allow_nobody = false;
         }
 
@@ -129,6 +129,8 @@ class Enroll_LtiController extends AuthenticatedController
     public function select_contents_action(): void
     {
         PageLayout::setTitle(_('Inhalt auswählen'));
+        PageLayout::disableHeader();
+        PageLayout::disableFooter();
 
         $this->callbackId = Request::get('callback_id');
 
@@ -169,27 +171,29 @@ class Enroll_LtiController extends AuthenticatedController
         }
 
         $registration = Registration::find($callbackData['registration_id']);
-
         $resourceCollection = new ResourceCollection();
-        foreach (Request::getArray('courses_id') as $courseId) {
-            $course = Course::find($courseId);
-
+        foreach ($this->extractCoursesFromRequest() as $c) {
+            $course = Course::find($c['id']);
             if ($course === null) {
                 continue;
             }
 
-            $resourceCollection->add($course->toLti1p3ResourceLink($registration->name));
+            $resourceCollection->add(
+                $course->toLti1p3ResourceLink($registration->name, $c['with_grading'])
+            );
         }
 
         $deepLinkingSettingsClaim = $callbackData['settings_claim'];
 
-        $this->message = (new DeepLinkingLaunchResponseBuilder())->buildDeepLinkingLaunchResponse(
+        $message = (new DeepLinkingLaunchResponseBuilder())->buildDeepLinkingLaunchResponse(
             $resourceCollection,
             $registration->toLti1p3Registration(),
             $deepLinkingSettingsClaim->getDeepLinkingReturnUrl(),
             $registration->getDefaultDeployment()->deployment_key,
             $deepLinkingSettingsClaim->getData()
         );
+
+        $this->render_text($message->toHtmlRedirectForm());
     }
 
     public function provisioning_modes_action(): void
@@ -255,6 +259,7 @@ class Enroll_LtiController extends AuthenticatedController
 
     private function resolveProvisioningMode(LaunchValidationResultInterface $request, Publication $publication): void
     {
+        $userLocale = $request->getPayload()->getLaunchPresentation()->getLocale();
         $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "user_id = :user_id AND context = :context",
             [
@@ -264,7 +269,9 @@ class Enroll_LtiController extends AuthenticatedController
         );
 
         if ($userIdentityMapping) {
-            $this->redirect('course/overview?cid='.$publication->range->id);
+            $this
+                ->storeUserLocale($userIdentityMapping->user, $userLocale)
+                ->redirect('course/overview?cid='.$publication->range->id);
             return;
         }
 
@@ -289,7 +296,10 @@ class Enroll_LtiController extends AuthenticatedController
                 ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
                 ->authenticate();
 
-            $this->redirect('course/overview?cid='.$publication->range->id);
+
+            $this
+                ->storeUserLocale($userIdentityMapping->user, $userLocale)
+                ->redirect('course/overview?cid='.$publication->range->id);
             return;
         }
 
@@ -307,7 +317,9 @@ class Enroll_LtiController extends AuthenticatedController
                 ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
                 ->authenticate();
 
-            $this->redirect('course/overview?cid='.$publication->range->id);
+            $this
+                ->storeUserLocale($userIdentityMapping->user, $userLocale)
+                ->redirect('course/overview?cid='.$publication->range->id);
             return;
         }
 
@@ -329,6 +341,8 @@ class Enroll_LtiController extends AuthenticatedController
 
     private function resolveDeeplinkProvisioningMode(LaunchValidationResultInterface $request): void
     {
+        $userLocale = $request->getPayload()->getLaunchPresentation()->getLocale();
+
         $callbackId = Uuid::uuid4()->toString();
         $_SESSION['callbacks'][$callbackId] = [
             'user_identity' => $request->getPayload()->getUserIdentity(),
@@ -349,7 +363,9 @@ class Enroll_LtiController extends AuthenticatedController
         );
 
         if ($userIdentityMapping) {
-            $this->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);
+            $this
+                ->storeUserLocale($userIdentityMapping->user, $userLocale)
+                ->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);
             return;
         }
 
@@ -370,7 +386,9 @@ class Enroll_LtiController extends AuthenticatedController
                 ->setUser($userIdentityMapping->user)
                 ->authenticate();
 
-            $this->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);
+            $this
+                ->storeUserLocale($userIdentityMapping->user, $userLocale)
+                ->redirect('enroll/lti/select_contents?callback_id=' . $callbackId);
             return;
         }
 
@@ -402,5 +420,29 @@ class Enroll_LtiController extends AuthenticatedController
         }
 
         return $callbackData;
+    }
+
+    private function storeUserLocale(User $user, string $locale): self
+    {
+        if (str_starts_with($locale, 'en')) {
+            $_SESSION['_language'] = 'en_GB';
+            $user->preferred_language = 'en_GB';
+            $user->store();
+        }
+
+        return $this;
+    }
+
+    private function extractCoursesFromRequest(): array
+    {
+        $courses = [];
+        for ($index = 0; $index < count(Request::getArray('courses_id')); $index++) {
+            $courses[] = [
+                'id' => Request::getArray('courses_id', $index),
+                'with_grading' => (bool) Request::getArray('with_gradings', $index)
+            ];
+        }
+
+        return $courses;
     }
 }

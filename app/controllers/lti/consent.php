@@ -2,8 +2,9 @@
 
 use Lti\ResourceLink;
 use Lti\RegistrationPrivacySettings;
+use Studip\Lti\Enum\LtiVersion;
 
-class Lti_ConsentController extends AuthenticatedController
+final class Lti_ConsentController extends AuthenticatedController
 {
     public function edit_action(ResourceLink $resourceLink): void
     {
@@ -48,12 +49,12 @@ class Lti_ConsentController extends AuthenticatedController
                 $privacySettings->store();
 
                 if (Request::get('redirect') === 'launch') {
-                    if ($registration->version == '1.3a') {
-                        $this->redirect('lti/13a/index/launch/' . $resourceLink->id);
+                    if ($registration->version == LtiVersion::Lti1p3a->value) {
+                        $this->redirect('lti/1p3/index/launch/' . $resourceLink->id);
                     }
 
-                    if ($registration->version == '1.1') {
-                        $this->redirect('lti/11/index/launch/' . $resourceLink->id);
+                    if ($registration->version == LtiVersion::Lti1P1->value) {
+                        $this->redirect('lti/1p1/index/launch/' . $resourceLink->id);
                     }
 
                     return;

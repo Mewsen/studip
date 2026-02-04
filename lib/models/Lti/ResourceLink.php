@@ -4,11 +4,10 @@ namespace Lti;
 use Course;
 use DBManager;
 use JSONArrayObject;
-use Lti\Enum\ResourceLaunchContainer;
-use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
+use Studip\Lti\Enum\ResourceLaunchContainer;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use SimpleORMap;
-use Studip\LTI13a\ResourceLinkRepository;
+use Studip\Lti\LTI1p3\ResourceLinkRepository;
 
 /**
  * @property int $id
@@ -43,6 +42,12 @@ class ResourceLink extends SimpleORMap
         $config['belongs_to']['deployment'] = [
             'class_name'  => Deployment::class,
             'foreign_key' => 'deployment_id'
+        ];
+
+        $config['has_many']['grades'] = [
+            'class_name' => Grade::class,
+            'assoc_foreign_key' => 'link_id',
+            'on_delete' => 'delete'
         ];
 
         $config['additional_fields']['registration']['get'] = 'getRegistration';

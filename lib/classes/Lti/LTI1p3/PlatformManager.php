@@ -1,15 +1,14 @@
 <?php
-
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Config;
 use Keyring;
+use URLHelper;
 use OAT\Library\Lti1p3Core\Platform\Platform;
-use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
+use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use OAT\Library\Lti1p3DeepLinking\Settings\DeepLinkingSettings;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
-use URLHelper;
 
 final class PlatformManager
 {
@@ -35,7 +34,7 @@ final class PlatformManager
     public static function getDeepLinkingConfiguration(): DeepLinkingSettings
     {
         return new DeepLinkingSettings(
-            URLHelper::getURL('dispatch.php/lti/13a/index/store_contents'),
+            URLHelper::getURL('dispatch.php/lti/1p3/index/store_contents'),
             [LtiResourceLinkInterface::TYPE],
             ['window', 'iframe'],
             'text/html',
@@ -58,12 +57,12 @@ final class PlatformManager
 
     public static function getPrivateKey(): KeyInterface
     {
-        return static::getKeyring()->toKeyChain()->getPrivateKey();
+        return self::getKeyring()->toKeyChain()->getPrivateKey();
     }
 
     public static function getPublicKey(): KeyInterface
     {
-        return static::getKeyring()->toKeyChain()->getPublicKey();
+        return self::getKeyring()->toKeyChain()->getPublicKey();
     }
 
     public static function getDeepLinkingReturnUrl(string $linkId, string $courseId = ''): string

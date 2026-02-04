@@ -1,10 +1,10 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Lti\ResourceLink;
-use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 
 final class ResourceLinkRepository implements LtiResourceLinkInterface
 {

@@ -1,6 +1,7 @@
 <?php
 
 use Lti\Publication;
+use Lti\PublicationConfig;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use Ramsey\Uuid\Uuid;
 use Studip\Lti\Enum\PublicationStatus;
@@ -2671,7 +2672,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         );
     }
 
-    public function toLti1p3ResourceLink(string $registrationName): LtiResourceLink
+    public function toLti1p3ResourceLink(string $registrationName, bool $withGrading = false): LtiResourceLink
     {
         $coursePublication = Publication::firstOrCreate(
             [
@@ -2688,11 +2689,23 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $properties = [];
 
+        $publicationConfigs = $coursePublication->getConfigValues();
         $semester = $this->getCourseSemester();
-        if($semester) {
+
+        $startDate = $publicationConfigs['start_date'] ?? ($semester?->beginn ?? null);
+        $endDate = $publicationConfigs['end_date'] ?? ($semester?->ende ?? null);
+        if ($startDate || $endDate) {
             $properties['available'] = [
-                'startDateTime' => date('c', $semester?->beginn),
-                'endDateTime' => date('c', $semester?->ende)
+                'startDateTime' => $startDate ? date('c', $startDate) : null,
+                'endDateTime'   => $endDate ? date('c', $endDate) : null,
+            ];
+        }
+
+        if ($withGrading) {
+            $scoreMaximum = DBManager::get()->fetchColumn("SELECT SUM(`weight`) FROM `grading_definitions` WHERE `course_id` = ?", [$this->id]);
+
+            $properties['lineItem'] = [
+                'scoreMaximum' => $scoreMaximum
             ];
         }
 

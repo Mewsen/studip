@@ -1,12 +1,12 @@
 <?php
 
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Keyring;
 use Studip\KeyringException;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainFactoryInterface;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainFactoryInterface;
 
 final class KeyChainFactory implements KeyChainFactoryInterface
 {

@@ -1,15 +1,15 @@
 <?php
 
-use Lti\Deployment;
+use Lti\Grade;
 use Lti\Registration;
 use Lti\ResourceLink;
-use Lti\RegistrationPrivacySettings;
-use Studip\Lti\Enum\RegistrationStatus;
-use Studip\Lti\Trait\RegistrationValidationTrait;
 use Trails\Dispatcher;
+use Studip\OAuth2\NegotiatesWithPsr7;
+use Studip\Lti\Trait\RegistrationValidationTrait;
 
-final class Lti_11_IndexController extends AuthenticatedController
+final class Lti_1p1_IndexController extends AuthenticatedController
 {
+    use NegotiatesWithPsr7;
     use RegistrationValidationTrait;
     protected COURSE | Institute $context;
 
@@ -28,8 +28,11 @@ final class Lti_11_IndexController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        $this->context = Context::get();
+        if (in_array($action, ['profile', 'outcome'])) {
+            return;
+        }
 
+        $this->context = Context::get();
         $this->isModerator = LtiToolModule::isModerator($this->context->id);
 
         PageLayout::disableSidebar();
@@ -40,16 +43,12 @@ final class Lti_11_IndexController extends AuthenticatedController
 
     public function launch_action(ResourceLink $resourceLink): void
     {
-        $deployment = $resourceLink->deployment;
-        $registration = $deployment->registration;
-
-        if (!$this->validateRegistrationStatus($registration) || !$this->validateUserConsent($registration)) {
+        if (!$this->validateRegistrationStatus($resourceLink) || !$this->validateUserConsent($resourceLink)) {
             return;
         }
 
-        $this->resourceLink = $resourceLink;
-        $this->deployment = $deployment;
-        $ltiLink = $this->getLtiLink($this->deployment, $registration, $resourceLink);
+        $registration = $resourceLink->deployment->registration;
+        $ltiLink = $this->getLtiLink($resourceLink, $registration);
         $this->launchUrl = $registration->config_values['launch_url'];
         $this->launchData = $ltiLink->getBasicLaunchData();
         $this->signature = $ltiLink->getLaunchSignature($this->launchData);
@@ -66,12 +65,12 @@ final class Lti_11_IndexController extends AuthenticatedController
         $registration = $resourceLink->deployment->registration;
         $registrationConfigs = $registration->getConfigValues();
         $custom_parameters = explode("\n", $registrationConfigs['custom_parameters']);
-        $content_item_return_url = $this->url_for('lti/11/index/save_link/' . $this->link->id);
+        $content_item_return_url = $this->url_for('lti/1p1/index/save_link/' . $this->link->id);
 
         // set up ContentItemSelectionRequest
         $lti_link = new LtiLink($registrationConfigs['launch_url'], $registrationConfigs['consumer_key'], $registrationConfigs['consumer_secret'], $registrationConfigs['oauth_signature_method']);
-        $lti_link->setUser(User::findCurrent()->id, 'Instructor', $registrationConfigs['send_lis_person']);
-        $lti_link->setCourse($this->range_id);
+        $lti_link->setUser(User::findCurrent(), 'Instructor', $registrationConfigs['send_lis_person']);
+        $lti_link->setCourse($this->context->id);
         $lti_link->addLaunchParameters([
             'lti_message_type' => 'ContentItemSelectionRequest',
             'accept_media_types' => 'application/vnd.ims.lti.v1.ltilink',
@@ -117,10 +116,10 @@ final class Lti_11_IndexController extends AuthenticatedController
             // we only support selecting a single content item
             $item = $content_items['@graph'][0];
 
-            $lti_data = new Deployment();
+            $lti_data = new ResourceLink();
             $lti_data->title = (string) $item['title'];
             $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
-            $lti_data->registration_id = $registration->id;
+            $lti_data->deployment_id = $registration->getDefaultDeployment()->id;
             $lti_data->launch_url = (string) ($item['url'] ?? '');
             $options = [];
             if (is_array($item['custom'])) {
@@ -137,11 +136,7 @@ final class Lti_11_IndexController extends AuthenticatedController
 
             $lti_data->options = $options;
             $lti_data->store();
-            $link = new ResourceLink();
-            $link->deployment_id = $lti_data->id;
-            $link->course_id     = $this->range_id;
-            $link->position      = ResourceLink::countBySQL('course_id = ?', [$this->range_id]);
-            $link->store();
+
             PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
         }
 
@@ -154,10 +149,8 @@ final class Lti_11_IndexController extends AuthenticatedController
 
     /**
      * Return the LTI consumer profile in standard JSON format.
-     *
-     * @param   int $id    link id
      */
-    public function profile_action($id): void
+    public function profile_action(ResourceLink $resourceLink): void
     {
         $profile = [
             '@context' => ['http://purl.imsglobal.org/ctx/lti/v2/ToolConsumerProfile'],
@@ -222,7 +215,7 @@ final class Lti_11_IndexController extends AuthenticatedController
             'service_offered' => [
                 '@type' => 'RestService',
                 '@id' => 'tcp:Outcomes.LTI1',
-                'endpoint' => $this->url_for('lti/11/index/outcome/' . $id),
+                'endpoint' => URLHelper::getLink('dispatch.php/lti/1p1/index/outcome/' . $resourceLink->id),
                 'format' => ['application/vnd.ims.lti.v1.outcome+xml'],
                 'action' => ['POST']
             ]
@@ -295,18 +288,17 @@ final class Lti_11_IndexController extends AuthenticatedController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param Deployment $deployment data of LTI content block
-     * @param Registration $registration
      * @param ResourceLink $resourceLink
+     * @param Registration $registration
      * @return LtiLink LTI link representation
      */
-    private function getLtiLink(Deployment $deployment, Registration $registration, ResourceLink $resourceLink): LtiLink
+    private function getLtiLink(ResourceLink $resourceLink, Registration $registration): LtiLink
     {
         $registrationConfigs = $registration->getConfigValues();
         $role = $this->isModerator ? 'Instructor' : 'Learner';
-        $customParameters = explode("\n", $deployment->getCustomParameters());
-        $lisOutcomeServiceUrl = $this->url_for('lti/11/index/outcome/' . $deployment->id, ['cid' => null]);
-        $tcProfileUrl = $this->url_for('lti/11/index/profile/' . $deployment->id, ['cid' => null]);
+        $customParameters = explode("\n", $resourceLink->getCustomParameters());
+        $lisOutcomeServiceUrl = $this->url_for('lti/1p1/index/outcome/' . $resourceLink->id, ['cid' => null]);
+        $tcProfileUrl = $this->url_for('lti/1p1/index/profile/' . $resourceLink->id, ['cid' => null]);
 
         // set up launch request
         $ltiLink = new LtiLink(
@@ -316,7 +308,7 @@ final class Lti_11_IndexController extends AuthenticatedController
             $registrationConfigs['oauth_signature_method']
         );
         $ltiLink->setResource($resourceLink->id, $resourceLink->title, kill_format($resourceLink->description));
-        $ltiLink->setUser(User::findCurrent()->id, $role, $registrationConfigs['send_lis_person']);
+        $ltiLink->setUser(User::findCurrent(), $role, $registrationConfigs['send_lis_person']);
         $ltiLink->setCourse($resourceLink->course_id);
         $ltiLink->addVariable('ToolConsumerProfile.url', $tcProfileUrl);
         $ltiLink->addLaunchParameters([

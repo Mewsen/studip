@@ -1,5 +1,5 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Keyring;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;

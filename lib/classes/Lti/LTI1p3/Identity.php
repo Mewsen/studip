@@ -1,14 +1,14 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
+use User;
 use Avatar;
 use Lti\RegistrationPrivacySettings;
-use User;
-use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
-use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
-use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
+use OAT\Library\Lti1p3Core\Util\Collection\Collection;
+use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
 
 final class Identity implements UserIdentityInterface
 {

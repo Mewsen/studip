@@ -1,10 +1,5 @@
 <?php
-use Studip\Cache\Factory;
-use Studip\LTI13a\KeyManager;
-use Studip\LTI13a\PlatformManager;
-use Studip\LTI13a\RegistrationManager;
-use Studip\LTI13a\UserAuthenticator;
-use Studip\OAuth2\Bridge\ScopeEntity;
+
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
@@ -15,6 +10,12 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
+use Studip\Cache\Factory;
+use Studip\Lti\LTI1p3\KeyManager;
+use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\LTI1p3\RegistrationManager;
+use Studip\Lti\LTI1p3\UserAuthenticator;
+use Studip\OAuth2\Bridge\ScopeEntity;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 

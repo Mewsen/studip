@@ -1,5 +1,5 @@
 <?php
-use Lti\Enum\UserProvisioningMode;
+use Studip\Lti\Enum\UserProvisioningMode;
 
 /**
  * @var Enroll_LtiController $controller

@@ -1,14 +1,14 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Lti\Deployment;
 use Lti\Registration;
-use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Tool\Tool;
-use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Tool\ToolInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 final class RegistrationRepository implements RegistrationInterface
 {

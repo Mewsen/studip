@@ -1,12 +1,11 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Lti\Deployment;
 use Lti\Registration;
+use Studip\Lti\Enum\RegistrationStatus;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
-use Studip\Lti\Enum\PublicationStatus;
-use Studip\Lti\Enum\RegistrationStatus;
 
 final class RegistrationManager implements RegistrationRepositoryInterface
 {

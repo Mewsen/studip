@@ -1,7 +1,4 @@
 <?php
-use Lti\UserIdentityMapping;
-use Lti\Enum\UserIdentityMappingContext;
-
 /**
  * @var Enroll_LtiController $controller
  * @var ?SimpleORMapCollection<Course> $courses
@@ -20,46 +17,40 @@ use Lti\Enum\UserIdentityMappingContext;
                 <input type="hidden" name="callback_id" value="<?= $callbackId ?>" />
                 <table class="default sortable-table">
                     <caption><?= _('Veröffentlichte Inhalte') ?></caption>
-                    <colgroup>
-                        <col style="width: 10%" />
-                        <col />
-                    </colgroup>
                     <thead>
-
                         <tr class="sortable">
-                            <th scope="col" data-sort="false">
-                                <input
-                                    aria-label="<?= _('Inhalt auswählen') ?>"
-                                    type="checkbox"
-                                    name="all_courses_id"
-                                    value="1"
-                                    data-proxyfor=":checkbox[name^=courses]"
-                                >
-                            </th>
                             <th scope="col" data-sort="text"><?= _('Name') ?></th>
+                            <th scope="col"><?= _('Zum GradeBook hinzufügen') ?></th>
                         </tr>
-
                     </thead>
                     <tbody>
                         <? foreach ($courses as $course) : ?>
                         <tr>
-                            <td>
+
+                            <td data-text="<?= htmlReady($course->getFullName()) ?>">
                                 <input
-                                    aria-label="<?= sprintf(_('Inhalt "%s" auswählen'), htmlReady($course->getFullName())) ?>"
+                                    aria-label="<?= sprintf(_('"%s" auswählen'), htmlReady($course->getFullName())) ?>"
                                     type="checkbox"
                                     name="courses_id[]"
                                     value="<?= $course->id ?>"
                                 />
-                            </td>
-                            <td data-text="<?= htmlReady($course->getFullName()) ?>">
                                 <?= htmlReady($course->getFullName()) ?>
+                            </td>
+
+                            <td>
+                                <input
+                                    aria-label="<?= _('Zum GradeBook hinzufügen') ?>"
+                                    type="checkbox"
+                                    name="with_gradings[]"
+                                    value="<?= $course->id ?>"
+                                />
                             </td>
                         </tr>
                         <? endforeach ?>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="3">
                                 <button type="submit" class="button add">
                                     <?= _('Ausgewählte Inhalte hinzufügen') ?>
                                 </button>

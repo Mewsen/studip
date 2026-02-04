@@ -94,6 +94,7 @@ const handleLtiMessage = event => {
     }
 
     contentSelectionIframe.value = false;
+    console.log(event.data.ltiResources);
 
     const resourceCount = event.data.ltiResources.length;
     formState.resources = event.data.ltiResources.map(r => ({

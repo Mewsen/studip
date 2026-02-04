@@ -1,5 +1,5 @@
 <?php
-namespace Lti\Enum;
+namespace Studip\Lti\Enum;
 
 enum ResourceLaunchContainer: string {
     case Window = 'window';
@@ -19,9 +19,9 @@ enum ResourceLaunchContainer: string {
         ];
     }
 
-    public static  function get(string $value): array
+    public static function get(string $value): array
     {
-        return static::all()[$value] ?? static::default();
+        return self::all()[$value] ?? self::default();
     }
 
     public static function default(): array

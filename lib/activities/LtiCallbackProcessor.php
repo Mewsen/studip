@@ -1,10 +1,10 @@
 <?php
 namespace Studip\Activity;
 
-use Lti\Enum\UserIdentityMappingContext;
-use User;
+use Studip\Lti\Enum\UserIdentityMappingContext;
 use Lti\Publication;
-use Studip\LTI13a\UserManager;
+use Studip\Lti\LTI1p3\UserManager;
+use User;
 
 final class LtiCallbackProcessor
 {
@@ -24,9 +24,7 @@ final class LtiCallbackProcessor
             case 'enroll_user':
                 $publication = Publication::find($ltiCallbackData['publication_id']);
 
-                $userManager
-                    ->enroll($publication, $ltiCallbackData['local_roles'], $ltiCallbackData['registration_id'])
-                    ->syncRangeMember();
+                $userManager->enroll($publication, $ltiCallbackData['local_roles'], $ltiCallbackData['registration_id']);
                 break;
             case 'deeplink_callback':
                 $userManager

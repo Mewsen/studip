@@ -2,7 +2,7 @@
 namespace Lti;
 
 use Avatar;
-use Lti\Enum\UserProvisioningMode;
+use Studip\Lti\Enum\UserProvisioningMode;
 use Range;
 use SimpleORMap;
 use Studip\Lti\Enum\PublicationStatus;

@@ -66,8 +66,8 @@ const containerAttributes = computed(() => {
         target: '_blank'
     }
 });
-const editTool = () => STUDIP.Dialog.fromURL(editResourceURL(props.resource.id), {width: '700', height: '700'});
-const editConsent = () => STUDIP.Dialog.fromURL(editResourceConsentURL(props.resource.id), {width: '700', height: '700'});
+const editTool = () => STUDIP.Dialog.fromURL(editResourceURL(props.resource.id), {width: '700', height: '750'});
+const editConsent = () => STUDIP.Dialog.fromURL(editResourceConsentURL(props.resource.id), {width: '700', height: '750'});
 
 const showConfirmDelete = () => STUDIP.Dialog.confirm(
     $gettext('Wollen Sie diesen LTI-Ressource "%{name}" wirklich entfernen?', {name: title.value}),

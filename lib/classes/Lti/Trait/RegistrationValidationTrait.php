@@ -3,13 +3,14 @@ namespace Studip\Lti\Trait;
 
 use User;
 use PageLayout;
-use Lti\Registration;
+use Lti\ResourceLink;
 use Lti\RegistrationPrivacySettings;
 use Studip\Lti\Enum\RegistrationStatus;
 
 trait RegistrationValidationTrait {
-    public function validateRegistrationStatus(Registration $registration): bool
+    public function validateRegistrationStatus(ResourceLink $resourceLink): bool
     {
+        $registration = $resourceLink->deployment->registration;
         if ($registration->status === RegistrationStatus::Inactive->value) {
             PageLayout::postError(sprintf(
                 _('Die LTI-Registrierung „%s“ ist deaktiviert.'),
@@ -22,8 +23,9 @@ trait RegistrationValidationTrait {
         return true;
     }
 
-    public function validateUserConsent(Registration $registration): bool
+    public function validateUserConsent(ResourceLink $resourceLink): bool
     {
+        $registration = $resourceLink->deployment->registration;
         $registrationConfigs = $registration->getConfigValues();
         $dataProtectionConsent = RegistrationPrivacySettings::countBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id AND `accepted` = 1",

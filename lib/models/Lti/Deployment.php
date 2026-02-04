@@ -35,13 +35,6 @@ class Deployment extends SimpleORMap
             'on_delete' => 'delete'
         ];
 
-        // TODO:: rename link_id to deployment_id
-        $config['has_many']['grades'] = [
-            'class_name' => Grade::class,
-            'assoc_foreign_key' => 'link_id',
-            'on_delete' => 'delete'
-        ];
-
         parent::configure($config);
     }
 

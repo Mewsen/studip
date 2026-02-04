@@ -1,14 +1,13 @@
 <?php
+namespace Studip\Lti\LTI1p3;
 
-namespace Studip\LTI13a;
-
+use Grading\Definition;
+use Studip\LTIException;
 use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
 use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
-use Studip\LTIException;
-use Grading\Definition;
 
 final class LineItemRepository implements LineItemRepositoryInterface
 {

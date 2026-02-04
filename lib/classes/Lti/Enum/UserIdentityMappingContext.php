@@ -1,5 +1,5 @@
 <?php
-namespace Lti\Enum;
+namespace Studip\Lti\Enum;
 
 enum UserIdentityMappingContext: string {
     case DeepLink = 'deep_linking';
@@ -19,9 +19,9 @@ enum UserIdentityMappingContext: string {
         ];
     }
 
-    public static  function get(string $value): array
+    public static function get(string $value): array
     {
-        return static::all()[$value] ?? static::default();
+        return self::all()[$value] ?? self::default();
     }
 
     public static function default(): array

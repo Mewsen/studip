@@ -2,24 +2,22 @@
 
 use Lti\Registration;
 use Lti\ResourceLink;
-use Studip\Cache\Factory;
-use Studip\Lti\Enum\RegistrationStatus;
-use Studip\Lti\Trait\RegistrationValidationTrait;
-use Studip\LTI13a\RoleMapper;
-use Studip\LTI13a\PlatformManager;
-use Lti\RegistrationPrivacySettings;
-use Studip\OAuth2\NegotiatesWithPsr7;
-use Studip\LTI13a\RegistrationManager;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
-use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
-use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
+use Studip\Cache\Factory;
+use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\LTI1p3\RegistrationManager;
+use Studip\Lti\LTI1p3\RoleMapper;
+use Studip\Lti\Trait\RegistrationValidationTrait;
+use Studip\OAuth2\NegotiatesWithPsr7;
 
-final class Lti_13a_IndexController extends AuthenticatedController
+final class Lti_1p3_IndexController extends AuthenticatedController
 {
     use NegotiatesWithPsr7;
     use RegistrationValidationTrait;
@@ -32,18 +30,19 @@ final class Lti_13a_IndexController extends AuthenticatedController
         $this->context = Context::get();
 
         PageLayout::disableSidebar();
+        PageLayout::disableHeader();
+        PageLayout::disableFooter();
         PageLayout::setBodyElementId('lti');
     }
 
     public function launch_action(ResourceLink $resourceLink): void
     {
-        $deployment = $resourceLink->deployment;
-        $registration = $deployment->registration;
-
-        if (!$this->validateRegistrationStatus($registration) || !$this->validateUserConsent($registration)) {
+        if (!$this->validateRegistrationStatus($resourceLink) || !$this->validateUserConsent($resourceLink)) {
             return;
         }
 
+        $deployment = $resourceLink->deployment;
+        $registration = $deployment->registration;
         $registrationConfigs = $registration->getConfigValues();
         $launchContainer = $resourceLink->launch_container ?? $registrationConfigs['launch_container'];
 
@@ -55,7 +54,6 @@ final class Lti_13a_IndexController extends AuthenticatedController
             'cancel_login' => '1'
         ];
 
-        //Build the message:
         $resourceLinkRepo = $resourceLink->toLti1p3ResourceLink();
 
         $message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
@@ -76,7 +74,7 @@ final class Lti_13a_IndexController extends AuthenticatedController
                     $launchContainer,
                     null,
                     null,
-                    URLHelper::getURL('dispatch.php/course/lti', ['deployment_id' => $deployment->deployment_key]),
+                    URLHelper::getURL('dispatch.php/course/lti', ['resource_link_id' => $resourceLink->id]),
                     str_replace('_', '-', $_SESSION['_language'])
                 ),
                 new AgsClaim(
@@ -124,15 +122,15 @@ final class Lti_13a_IndexController extends AuthenticatedController
             new NonceRepository(Factory::getCache())
         );
 
-        $result = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
-        if ($result->hasError()) {
-            PageLayout::postError($result->getError());
+        $request = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
+        if ($request->hasError()) {
+            PageLayout::postError($request->getError());
             $this->redirect('course/lti');
             return;
         }
 
         $this->ltiResources = (new ResourceCollectionFactory())->createFromClaim(
-            $result->getPayload()->getDeepLinkingContentItems()
+            $request->getPayload()->getDeepLinkingContentItems()
         );
 
         $this->set_layout(null);

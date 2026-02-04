@@ -1,5 +1,5 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
 use Grading\Instance;
 use OAT\Library\Lti1p3Ags\Model\Score\ScoreInterface;

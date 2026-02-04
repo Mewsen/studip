@@ -1,15 +1,15 @@
 <?php
-namespace Studip\LTI13a;
+namespace Studip\Lti\LTI1p3;
 
-use Course;
-use User;
-use Metrics;
 use Range;
+use Course;
+use Metrics;
 use CourseMember;
+use User;
 use Lti\Publication;
 use Lti\PublicationUser;
 use Lti\UserIdentityMapping;
-use Lti\Enum\UserIdentityMappingContext;
+use Studip\Lti\Enum\UserIdentityMappingContext;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
@@ -24,8 +24,6 @@ final class UserManager
     private Range $range;
     private ?User $user = null;
     private ?UserIdentityInterface $userIdentity = null;
-
-    private ?CourseMember $courseMember = null;
 
     /**
      * @throws LtiExceptionInterface
@@ -99,14 +97,17 @@ final class UserManager
             }
         }
 
-        $user->setData([
-            'Vorname' => $this->userIdentity->getGivenName() ?? $user->Vorname,
-            'Nachname' => $this->userIdentity->getFamilyName() ?? $user->Nachname,
-            'perms' => $user->auth_plugin === 'standard' ? $user->perms : $this->resolveLocalContextRole()
-        ]);
+        if ($user->auth_plugin === 'LTI13a') {
+            $user->setData([
+                'Vorname' => $this->userIdentity->getGivenName() ?? $user->Vorname,
+                'Nachname' => $this->userIdentity->getFamilyName() ?? $user->Nachname,
+                'perms' => $this->resolveLocalContextRole()
+            ]);
+        }
 
         $user->store();
-        $this->setUser($user);
+
+        $this->setUser($user)->syncUserIdentityMapping();
 
         return $this;
     }
@@ -116,16 +117,25 @@ final class UserManager
         $user ??= $this->getUser();
 
         if ($user && $this->range instanceof Course) {
-            $this->courseMember = $this->range->addMember($user, $this->resolveLocalContextRole(), false);
-            $this->courseMember->comment = _('Eingeschrieben über LTI13a.');
-            $this->courseMember->store();
+            $courseMember = CourseMember::findOneBySQL("user_id = :user_id AND Seminar_id = :range_id",
+                [
+                    'user_id' => $user->id,
+                    'range_id' => $this->range->id
+                ]
+            );
+
+            if (!$courseMember) {
+                $courseMember = $this->range->addMember($user, $this->resolveLocalContextRole(), false);
+                $courseMember->comment = _('Eingeschrieben über LTI13a.');
+            }
+
+            $courseMember->status = $this->resolveLocalContextRole();
+            $courseMember->store();
 
             PublicationUser::firstOrCreate([
                 'user_id' => $user->id,
                 'publication_id' => $this->publication->id
             ]);
-
-            $this->setUser($user)->syncUserIdentityMapping();
         }
 
         return $this;
@@ -211,17 +221,6 @@ final class UserManager
     public function setUserIdentity(UserIdentityInterface $userIdentity): self
     {
         $this->userIdentity = $userIdentity;
-        return $this;
-    }
-
-    public function getCourseMember(): ?CourseMember
-    {
-        return $this->courseMember;
-    }
-
-    public function setCourseMember(CourseMember $courseMember): self
-    {
-        $this->courseMember = $courseMember;
         return $this;
     }
 }

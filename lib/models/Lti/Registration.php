@@ -2,14 +2,14 @@
 namespace Lti;
 
 use Keyring;
-use Lti\Enum\ResourceLaunchContainer;
+use Studip\Lti\Enum\ResourceLaunchContainer;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use Ramsey\Uuid\Uuid;
 use Range;
 use SimpleORMap;
 use SimpleORMapCollection;
 use Studip\Lti\Enum\RegistrationStatus;
-use Studip\LTI13a\RegistrationRepository;
-use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use Studip\Lti\LTI1p3\RegistrationRepository;
 
 /**
  * @property int $id
@@ -140,6 +140,6 @@ class Registration extends SimpleORMap
 
     public static function all(): array
     {
-        return static::findBySQL("TRUE");
+        return self::findBySQL("TRUE");
     }
 }

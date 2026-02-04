@@ -1,5 +1,5 @@
 <?php
-namespace Lti\Enum;
+namespace Studip\Lti\Enum;
 
 enum UserProvisioningMode: int {
     case NewAccountsOnly = 1;
@@ -24,9 +24,9 @@ enum UserProvisioningMode: int {
         ];
     }
 
-    public static  function get(int $value): array
+    public static function get(int $value): array
     {
-        return static::all()[strval($value)] ?? static::default();
+        return self::all()[strval($value)] ?? self::default();
     }
 
     public static function default(string $role = 'autor'): array

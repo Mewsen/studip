@@ -6,9 +6,10 @@ use Lti\Deployment;
 use Lti\Registration;
 use Lti\RegistrationConfig;
 use Ramsey\Uuid\Uuid;
+use Studip\Lti\Enum\LtiVersion;
 use Studip\Lti\Enum\RegistrationStatus;
-use Studip\LTI13a\PlatformManager;
-use Studip\LTI13a\ToolManager;
+use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\LTI1p3\ToolManager;
 use Studip\Markup;
 
 class Admin_Lti_RegistrationsController extends AdminBaseController
@@ -91,7 +92,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
         CSRFProtection::verifyUnsafeRequest();
 
         $registration = Registration::create([
-            'version' => Request::get('version', '1.3a'),
+            'version' => Request::get('version', LtiVersion::Lti1p3a->value),
             'role' => Request::get('role', 'tool'),
             'name' => Request::get('name'),
             'description' => Markup::purifyHtml(Markup::markAsHtml(Request::get('description'))),
@@ -267,7 +268,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             ]
         ];
 
-        if (Request::get('version') === '1.3a') {
+        if (Request::get('version') === LtiVersion::Lti1p3a->value) {
             if (Request::get('role') === 'tool') {
                 return [
                     ...$toolCommon,
@@ -333,7 +334,7 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
             }
         }
 
-        if (Request::get('version') === '1.1') {
+        if (Request::get('version') === LtiVersion::Lti1P1->value) {
             return [
                 ...$toolCommon,
                 [

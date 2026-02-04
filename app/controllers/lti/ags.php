@@ -1,15 +1,16 @@
 <?php
-use Studip\LTI13a\LineItemRepository;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
-use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
+
+use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\DeleteLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\GetLineItemServiceServerRequestHandler;
+use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
+use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\Result\Server\Handler\ResultServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\Score\Server\Handler\ScoreServiceServerRequestHandler;
-use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
-use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
 use OAT\Library\Lti1p3Core\Service\Server\LtiServiceServer;
-use Studip\LTI13a\RegistrationManager;
+use Studip\Lti\LTI1p3\LineItemRepository;
+use Studip\Lti\LTI1p3\RegistrationManager;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Trails\Dispatcher;
 
@@ -46,9 +47,9 @@ class Lti_AgsController extends StudipController
                     $handler = new GetLineItemServiceServerRequestHandler($line_item_repo);
                 }
             } elseif ($args[0] === 'results') {
-                $handler = new ResultServiceServerRequestHandler($line_item_repo, new Studip\LTI13a\ResultRepository());
+                $handler = new ResultServiceServerRequestHandler($line_item_repo, new \Studip\Lti\LTI1p3\ResultRepository());
             } elseif ($args[0] === 'scores') {
-                $handler = new ScoreServiceServerRequestHandler($line_item_repo,new \Studip\LTI13a\ScoreRepository());
+                $handler = new ScoreServiceServerRequestHandler($line_item_repo,new \Studip\Lti\LTI1p3\ScoreRepository());
             }
         } elseif ($action === 'line_items') {
             if (Request::isPost()) {

@@ -41,14 +41,14 @@ export const deletePublicationURL = id => STUDIP.URLHelper.getURL(`dispatch.php/
 export const launchResourceURL = (id, version = '1.1') => {
     switch (version) {
         case '1.1':
-            return STUDIP.URLHelper.getURL(`dispatch.php/lti/11/index/launch/${id}`);
+            return STUDIP.URLHelper.getURL(`dispatch.php/lti/1p1/index/launch/${id}`);
         case '1.3a':
-            return STUDIP.URLHelper.getURL(`dispatch.php/lti/13a/index/launch/${id}`);
+            return STUDIP.URLHelper.getURL(`dispatch.php/lti/1p3/index/launch/${id}`);
     }
 
     console.error(`Unknown LTI version ${version}`);
 };
-export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/lti/13a/index/select_contents/${id}`);
+export const selectContentURL = id => STUDIP.URLHelper.getURL(`dispatch.php/lti/1p3/index/select_contents/${id}`);
 export const showRangeURL = rangeId => STUDIP.URLHelper.getURL(`dispatch.php/course/details/index/${rangeId}`);
 
 export const userProfileURL = username => STUDIP.URLHelper.getURL('dispatch.php/profile', {username});
