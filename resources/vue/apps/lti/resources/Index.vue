@@ -112,6 +112,9 @@ const fetchResources = async (_, offset = 0) => {
 
 onMounted(async () => {
     await fetchResources();
+
+    // Only for local development should be removed before merge
+    STUDIP.Cookie.set('responsive-navigation-hash', null)
 });
 </script>
 

@@ -487,7 +487,6 @@ export default {
 
             // Navigation object was sent, store in cache
             cache.set('navigation', navigation.navigation);
-            console.log('set cache: ', navigation.navigation)
             STUDIP.Cookie.set('responsive-navigation-hash', navigation.hash);
 
             return navigation.navigation;
