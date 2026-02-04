@@ -95,7 +95,7 @@ class ResponsiveHelper
         [$navigation, $activated] = self::getNavigationArray();
         $hash = md5(json_encode($navigation));
 
-        $response = compact('activated');
+        $response = compact('navigation','activated');
         if ($stored_hash !== $hash) {
             $response = array_merge($response, compact('navigation', 'hash'));
         }
