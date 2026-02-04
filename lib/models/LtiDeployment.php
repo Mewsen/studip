@@ -32,14 +32,10 @@ class LtiDeployment extends SimpleORMap
             'class_name'  => LtiTool::class,
             'foreign_key' => 'tool_id'
         ];
+
         $config['has_many']['resource_links'] = [
             'class_name'        => LtiResourceLink::class,
             'assoc_foreign_key' => 'deployment_id',
-            'on_delete'         => 'delete'
-        ];
-        $config['has_many']['grades'] = [
-            'class_name'        => LtiGrade::class,
-            'assoc_foreign_key' => 'link_id',
             'on_delete'         => 'delete'
         ];
 

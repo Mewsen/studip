@@ -45,9 +45,16 @@ class LtiResourceLink extends \SimpleORMap implements LtiResourceLinkInterface
             'class_name'  => Course::class,
             'foreign_key' => 'course_id'
         ];
+
         $config['belongs_to']['deployment'] = [
             'class_name'  => LtiDeployment::class,
             'foreign_key' => 'deployment_id'
+        ];
+
+        $config['has_many']['grades'] = [
+            'class_name'        => LtiGrade::class,
+            'assoc_foreign_key' => 'link_id',
+            'on_delete'         => 'delete'
         ];
 
         $config['registered_callbacks']['before_create'] = ['cbCalculatePosition'];
