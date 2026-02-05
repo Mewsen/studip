@@ -211,7 +211,7 @@ export default {
             return this.block?.attributes?.payload?.custom_parameters;
         },
         iframeUrl() {
-            return this.urlHelper.getURL('dispatch.php/courseware/lti/iframe/' + this.block.id);
+            return this.urlHelper.getURL('dispatch.php/courseware/lti/launch/' + this.block.id);
         },
     },
     async mounted() {

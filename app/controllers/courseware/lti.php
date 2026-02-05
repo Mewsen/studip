@@ -8,25 +8,23 @@ class Courseware_LtiController extends AuthenticatedController
     /**
      * Display the launch form for a tool as an iframe in a courseware LTI block.
      *
-     * @param   int $block_id    courseware block id
+     * @param int $blockId courseware block id
      */
-    public function iframe_action($block_id)
+    public function launch_action(int $blockId): void
     {
-        $cw_block = \Courseware\Block::find($block_id);
-        if (!$cw_block->container->structural_element->canRead(User::findCurrent())) {
+        $cwBlock = \Courseware\Block::find($blockId);
+        if (!$cwBlock->container->structural_element->canRead(User::findCurrent())) {
             throw new AccessDeniedException();
         }
 
-        $cw_block = \Courseware\Block::find($block_id);
+        $ltiLink = $this->getLtiLink($cwBlock);
 
-        $lti_link = $this->getLtiLink($cw_block);
-
-        $this->launch_url  = $lti_link->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature   = $lti_link->getLaunchSignature($this->launch_data);
+        $this->launchUrl  = $ltiLink->getLaunchURL();
+        $this->launchData = $ltiLink->getBasicLaunchData();
+        $this->signature   = $ltiLink->getLaunchSignature($this->launchData);
 
         $this->set_layout(null);
-        $this->render_template('course/lti/iframe');
+        $this->render_template('lti/1p1/index/launch');
     }
 
     /**
@@ -55,7 +53,7 @@ class Courseware_LtiController extends AuthenticatedController
             $toolConfigs = $tool->getConfigValues();
 
             // Prefer custom url
-            if (!$toolConfigs['allow_custom_url'] && !$toolConfigs['deep_linking'] || !$toolConfigs['launch_url']) {
+            if (empty($toolConfigs['allow_custom_url'])) {
                 $launch_url = $toolConfigs['launch_url'];
             }
 
@@ -63,7 +61,7 @@ class Courseware_LtiController extends AuthenticatedController
             $consumer_secret = $toolConfigs['consumer_secret'];
             $send_lis_person = $toolConfigs['send_lis_person'];
             $oauth_signature_method = $toolConfigs['oauth_signature_method'];
-            $custom_parameters = $toolConfigs['custom_parameters'] . "\n" . $custom_parameters;
+            $custom_parameters = $toolConfigs['custom_parameters'] ?? '' . "\n" . $custom_parameters;
         } else {
             $consumer_key = trim($block_payload['consumer_key']);
             $consumer_secret = trim($block_payload['consumer_secret']);
@@ -79,9 +77,11 @@ class Courseware_LtiController extends AuthenticatedController
             $roles = $range_id === $GLOBALS['user']->id ? 'Instructor' : 'Learner';
         }
 
+        $resourceDescription = $tool ? kill_format($tool->description) : '';
+
         // Create LTI Link for setting up launch request
         $lti_link = new LtiLink($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method);
-        $lti_link->setResource($id, $title);
+        $lti_link->setResource($id, $title, $resourceDescription);
         $lti_link->setUser(User::findCurrent(), $roles, $send_lis_person);
         $lti_link->setCourse($range_id);
         $lti_link->addLaunchParameters([
