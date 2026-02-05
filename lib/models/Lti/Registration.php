@@ -62,7 +62,7 @@ class Registration extends SimpleORMap
 
     public static function findTool(int $id): ?self
     {
-        return self::findOneBySQL("`id` = ? AND `role`='role'", [$id]);
+        return self::findOneBySQL("`id` = ? AND `role`='tool'", [$id]);
     }
 
 //    public function __get($field)

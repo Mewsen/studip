@@ -9,7 +9,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class Resource extends SchemaProvider
 {
-    const TYPE = 'lti-resource';
+    const TYPE = 'lti-resources';
     const REL_RANGE = 'range';
     const REL_REGISTRATION = 'registration';
     const REL_DEPLOYMENT = 'deployment';

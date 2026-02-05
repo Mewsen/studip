@@ -9,7 +9,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class Deployment extends SchemaProvider
 {
-    const TYPE = 'lti-deployment';
+    const TYPE = 'lti-deployments';
     const REL_REGISTRATION = 'registration';
 
     /**

@@ -9,7 +9,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class Publication extends SchemaProvider
 {
-    const TYPE = 'lti-publication';
+    const TYPE = 'lti-publications';
     const REL_RANGE = 'range';
     const REL_USER = 'user';
     const REL_MEMBERS = 'members';

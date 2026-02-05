@@ -11,7 +11,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class Registration extends SchemaProvider
 {
-    const TYPE = 'lti-registration';
+    const TYPE = 'lti-registrations';
     const REL_RANGE = 'range';
     const REL_DEPLOYMENTS = 'deployments';
 

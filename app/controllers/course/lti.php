@@ -1,6 +1,4 @@
 <?php
-
-use Lti\Deployment;
 use Lti\ResourceLink;
 
 /**
@@ -28,10 +26,6 @@ class Course_LtiController extends StudipController
         $this->course = Course::find($this->range_id);
 
         $this->isModerator = LtiToolModule::isModerator($this->range_id);
-
-        if (Navigation::hasItem('/course/lti/index')) {
-            Navigation::activateItem('/course/lti/index');
-        }
     }
 
     /**
@@ -39,6 +33,10 @@ class Course_LtiController extends StudipController
      */
     public function index_action(): void
     {
+        if (Navigation::hasItem('/course/lti/index')) {
+            Navigation::activateItem('/course/lti/index');
+        }
+
         PageLayout::setTitle(_('LTI-Ressourcen'));
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x order 1.3a) unterstützen.'));
 
@@ -82,7 +80,9 @@ class Course_LtiController extends StudipController
      */
     public function grades_action(): void
     {
-        Navigation::activateItem('/course/lti/grades');
+        if (Navigation::hasItem('/course/lti/grades')) {
+            Navigation::activateItem('/course/lti/grades');
+        }
 
         $this->lti_data_array = ResourceLink::findBySQL(
             "`course_id` = :course_id ORDER BY `position`",
