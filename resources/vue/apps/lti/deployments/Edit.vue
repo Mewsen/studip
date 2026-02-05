@@ -18,11 +18,11 @@ defineProps({
 </script>
 
 <template>
-    <LtiApp>
-        <FocusTrap>
+    <FocusTrap>
+        <LtiApp>
             <LtiDeploymentForm :deployment="deployment" :registration="registration" />
-        </FocusTrap>
-    </LtiApp>
+        </LtiApp>
+    </FocusTrap>
 </template>
 
 <style>

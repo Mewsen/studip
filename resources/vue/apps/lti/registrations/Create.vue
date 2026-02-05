@@ -3,6 +3,7 @@ import LtiRegistrationForm from '../../../components/lti/registrations/LtiRegist
 import StudipMessageBox from "../../../components/StudipMessageBox.vue";
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import LtiApp from "../../../components/lti/LtiApp.vue";
+import {FocusTrap} from "focus-trap-vue";
 
 defineProps({
     role: {
@@ -13,10 +14,12 @@ defineProps({
 </script>
 
 <template>
-    <LtiApp>
-        <StudipMessageBox type="warning">
-            {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
-        </StudipMessageBox>
-        <LtiRegistrationForm :role="role" />
-    </LtiApp>
+    <FocusTrap>
+        <LtiApp>
+            <StudipMessageBox type="warning">
+                {{ $gettext('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!') }}
+            </StudipMessageBox>
+            <LtiRegistrationForm :role="role" />
+        </LtiApp>
+    </FocusTrap>
 </template>

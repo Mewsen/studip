@@ -1,7 +1,6 @@
 <?php
 
 use Lti\Grade;
-use Lti\Registration;
 use Lti\ResourceLink;
 use Trails\Dispatcher;
 use Studip\OAuth2\NegotiatesWithPsr7;
@@ -46,9 +45,8 @@ final class Lti_1p1_IndexController extends AuthenticatedController
             return;
         }
 
-        $registration = $resourceLink->deployment->registration;
-        $ltiLink = $this->getLtiLink($resourceLink, $registration);
-        $this->launchUrl = $registration->config_values['launch_url'];
+        $ltiLink = $this->getLtiLink($resourceLink);
+        $this->launchUrl = $ltiLink->getLaunchURL();
         $this->launchData = $ltiLink->getBasicLaunchData();
         $this->signature = $ltiLink->getLaunchSignature($this->launchData);
 
@@ -61,13 +59,18 @@ final class Lti_1p1_IndexController extends AuthenticatedController
      */
     public function process_select_link_action(ResourceLink $resourceLink): void
     {
-        $registration = $resourceLink->deployment->registration;
-        $registrationConfigs = $registration->getConfigValues();
+        $registrationConfigs = $resourceLink->deployment->registration->getConfigValues();
         $custom_parameters = explode("\n", $registrationConfigs['custom_parameters']);
-        $content_item_return_url = $this->url_for('lti/1p1/index/save_link/' . $this->link->id);
+        $content_item_return_url = $this->url_for('lti/1p1/index/save_link/' . $resourceLink->id);
 
         // set up ContentItemSelectionRequest
-        $lti_link = new LtiLink($registrationConfigs['launch_url'], $registrationConfigs['consumer_key'], $registrationConfigs['consumer_secret'], $registrationConfigs['oauth_signature_method']);
+        $lti_link = new LtiLink(
+            $registrationConfigs['launch_url'],
+            $registrationConfigs['consumer_key'],
+            $registrationConfigs['consumer_secret'],
+            $registrationConfigs['oauth_signature_method']
+        );
+
         $lti_link->setUser(User::findCurrent(), 'Instructor', $registrationConfigs['send_lis_person']);
         $lti_link->setCourse($this->context->id);
         $lti_link->addLaunchParameters([
@@ -101,13 +104,14 @@ final class Lti_1p1_IndexController extends AuthenticatedController
     public function save_link_action(ResourceLink $resourceLink): void
     {
         $registration = $resourceLink->deployment->registration;
+        $registrationConfigs = $registration->getConfigValues();
 
         $lti_msg = Request::get('lti_msg');
         $lti_errormsg = Request::get('lti_errormsg');
         $content_items = Request::get('content_items');
         $content_items = json_decode($content_items, true);
 
-        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $registration->config_vakues['consumer_secret'], '')) {
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $registrationConfigs['consumer_secret'], '')) {
             throw new Exception('Could not verify request.');
         }
 
@@ -288,17 +292,16 @@ final class Lti_1p1_IndexController extends AuthenticatedController
      * Return an LtiLink object for the configured LTI content block.
      *
      * @param ResourceLink $resourceLink
-     * @param Registration $registration
      * @return LtiLink LTI link representation
      */
-    private function getLtiLink(ResourceLink $resourceLink, Registration $registration): LtiLink
+    private function getLtiLink(ResourceLink $resourceLink): LtiLink
     {
-        $registrationConfigs = $registration->getConfigValues();
         $role = $this->isModerator ? 'Instructor' : 'Learner';
         $customParameters = explode("\n", $resourceLink->getCustomParameters());
         $lisOutcomeServiceUrl = $this->url_for('lti/1p1/index/outcome/' . $resourceLink->id, ['cid' => null]);
         $tcProfileUrl = $this->url_for('lti/1p1/index/profile/' . $resourceLink->id, ['cid' => null]);
 
+        $registrationConfigs = $resourceLink->deployment->registration->getConfigValues();
         // set up launch request
         $ltiLink = new LtiLink(
             $registrationConfigs['launch_url'],

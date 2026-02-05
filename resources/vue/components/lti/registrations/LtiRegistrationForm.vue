@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, useTemplateRef} from 'vue';
+import {computed, reactive} from 'vue';
 import {$gettext} from '../../../../assets/javascripts/lib/gettext';
 import StudipWysiwyg from "../../StudipWysiwyg.vue";
 import StudipTooltipIcon from "../../StudipTooltipIcon.vue";
@@ -36,12 +36,6 @@ const formActionURL = computed(() => {
 
     return storeRegistrationURL();
 });
-
-const nameInput = useTemplateRef('nameInput');
-
-onMounted(() => {
-    nameInput.value.focus();
-});
 </script>
 
 <template>
@@ -67,7 +61,6 @@ onMounted(() => {
                     required
                     type="text"
                     name="name"
-                    ref="nameInput"
                     v-model="form.name"
                     class="max-w-full" />
             </label>

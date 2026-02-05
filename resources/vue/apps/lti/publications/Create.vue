@@ -5,11 +5,11 @@ import {FocusTrap} from "focus-trap-vue";
 </script>
 
 <template>
-    <LtiApp>
-        <FocusTrap>
+    <FocusTrap>
+        <LtiApp>
             <LtiPublicationForm />
-        </FocusTrap>
-    </LtiApp>
+        </LtiApp>
+    </FocusTrap>
 </template>
 
 <style>

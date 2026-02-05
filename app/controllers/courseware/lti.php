@@ -20,9 +20,9 @@ class Courseware_LtiController extends AuthenticatedController
 
         $ltiLink = $this->getLtiLink($cwBlock);
 
-        $this->launchUrl  = $ltiLink->getLaunchURL();
+        $this->launchUrl = $ltiLink->getLaunchURL();
         $this->launchData = $ltiLink->getBasicLaunchData();
-        $this->signature   = $ltiLink->getLaunchSignature($this->launchData);
+        $this->signature = $ltiLink->getLaunchSignature($this->launchData);
 
         $this->set_layout(null);
         $this->render_template('lti/1p1/index/launch');

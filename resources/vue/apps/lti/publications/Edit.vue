@@ -12,11 +12,11 @@ defineProps({
 </script>
 
 <template>
-    <LtiApp>
-        <FocusTrap>
+    <FocusTrap>
+        <LtiApp>
             <LtiPublicationForm :publication="publication" />
-        </FocusTrap>
-    </LtiApp>
+        </LtiApp>
+    </FocusTrap>
 </template>
 
 <style>

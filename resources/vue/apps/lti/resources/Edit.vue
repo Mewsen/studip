@@ -20,11 +20,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <LtiApp>
-        <FocusTrap>
+    <FocusTrap>
+        <LtiApp>
             <ResourceForm v-bind="{...props}" />
-        </FocusTrap>
-    </LtiApp>
+        </LtiApp>
+    </FocusTrap>
 </template>
 
 <style>

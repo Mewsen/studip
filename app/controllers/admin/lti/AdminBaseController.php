@@ -38,13 +38,13 @@ abstract class AdminBaseController extends AuthenticatedController
         $viewWidget->addLink(
             _('LTI-Tools'),
             $this->url_for('admin/lti/registrations', ['role' => 'tool']),
-        )->setActive($this->role !== 'platform');
+        )->setActive($this->ltiRole !== 'platform');
 
         if ($this->isToolSharingEnabled) {
             $viewWidget->addLink(
                 _('LTI-Platforms'),
                 $this->url_for('admin/lti/registrations', ['role' => 'platform'])
-            )->setActive($this->role === 'platform');
+            )->setActive($this->ltiRole === 'platform');
         }
 
         Sidebar::Get()->addWidget($viewWidget);
