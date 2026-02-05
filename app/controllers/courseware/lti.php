@@ -1,6 +1,8 @@
 <?php
 
+use Courseware\Block;
 use Lti\Registration;
+use Studip\LTIException;
 
 class Courseware_LtiController extends AuthenticatedController
 {
@@ -8,11 +10,10 @@ class Courseware_LtiController extends AuthenticatedController
     /**
      * Display the launch form for a tool as an iframe in a courseware LTI block.
      *
-     * @param int $blockId courseware block id
+     * @param Block $cwBlock courseware block
      */
-    public function launch_action(int $blockId): void
+    public function launch_action(Block $cwBlock): void
     {
-        $cwBlock = \Courseware\Block::find($blockId);
         if (!$cwBlock->container->structural_element->canRead(User::findCurrent())) {
             throw new AccessDeniedException();
         }
@@ -30,11 +31,11 @@ class Courseware_LtiController extends AuthenticatedController
     /**
      * Return an LtiLink object for the passed courseware LTI block.
      *
-     * @param   \Courseware\Block $cw_block courseware LTI block
+     * @param Block $cw_block courseware LTI block
      *
-     * @return  LtiLink  LTI link representation
+     * @return LtiLink LTI link representation
      */
-    public function getLtiLink($cw_block)
+    public function getLtiLink(Block $cw_block): LtiLink
     {
         $block_payload = json_decode($cw_block->payload, true);
 
@@ -50,6 +51,9 @@ class Courseware_LtiController extends AuthenticatedController
 
         if ($tool_id) {
             $tool = Registration::findTool($tool_id);
+            if ($tool->version !== '1.1') {
+                throw new LTIException('Only LTI 1.1 tools are currently supported.');
+            }
             $toolConfigs = $tool->getConfigValues();
 
             // Prefer custom url
