@@ -93,9 +93,9 @@ class Manager
                 }
             }
             if (!$user) {
-                if ($this->nobody && !Request::get('again')) {
+                if ($this->nobody && !Request::get('again') || match_route('dispatch.php/login')) {
                     $this->setAuthenticatedUser(User::build(['user_id' => 'nobody', 'perms' => null]));
-                } elseif (!match_route('dispatch.php/login')) {
+                } else {
                     return false;
                 }
             }
