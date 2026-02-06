@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     <? if ($course['studip_object']) : ?>
-                        <a href="<?= URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course['studip_object']]) ?>">
+                        <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $course['studip_object']]) ?>">
                             <?= Icon::create('seminar')->asSvg(['title' => Course::find($course['studip_object'])->Name]) ?>
                         </a>
                     <? endif ?>
