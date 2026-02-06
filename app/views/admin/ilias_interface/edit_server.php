@@ -60,6 +60,7 @@
                 <input type="text" name="ilias_version" size="8" maxlength="8" value="<?=htmlReady($ilias_config['version']) ?>" required>
             <? endif ?>
         </label>
+        <? if (!empty($ilias_config['version']) && !empty($ilias_clients)) : ?>
         <label>
             <span class="required">  <?= _('Name des ILIAS-Mandanten') ?></span>
             <? if (isset($ilias_clients) && count($ilias_clients) == 1) : ?>
@@ -75,9 +76,10 @@
                 <input type="text" name="ilias_client" size="50" maxlength="255" value="<?= $ilias_config['client'] ?>" required>
             <? endif ?>
         </label>
+        <? endif ?>
         <label>
             <span><?= _('Externe Authentifizierung') ?></span>
-            <? if ($ldap_options) : ?>
+            <? if (!empty($ldap_options)) : ?>
                 <select name="ilias_ldap_enable">
                 <?=$ldap_options;?>
                 </select><br>

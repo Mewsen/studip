@@ -193,9 +193,9 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                         }
                         // find new unique index
                         $index = 'ilias'.ConnectedIlias::getIntVersion($this->ilias_version);
-                        if (is_array($this->ilias_configs[$index]) || is_array($this->existing_indices[$index])) {
+                        if (!empty($this->ilias_configs[$index]) || !empty($this->existing_indices[$index])) {
                             $i = 1;
-                            while (is_array($this->ilias_configs[$index.'-'.$i]) || is_array($this->existing_indices[$index.'-'.$i])) {
+                            while (!empty($this->ilias_configs[$index.'-'.$i]) || !empty($this->existing_indices[$index.'-'.$i])) {
                                 $i++;
                             }
                             $index = $index.'-'.$i;
@@ -232,7 +232,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                 if ($info['version']) {
                     $this->ilias_version = $info['version'];
                     $this->ilias_version_date = $info['version_date'];
-                    $this->ilias_clients = $info['clients'];
+                    $this->ilias_clients = $info['clients'] ?? [];
                 } else {
                     PageLayout::postInfo(_('ILIAS-Version und Clients konnten nicht automatisch erkannt werden.'));
                 }

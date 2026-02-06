@@ -18,6 +18,7 @@ parameters:
         - lib/ilias_interface/studip_referrer_7x.php
         - lib/ilias_interface/studip_referrer_8x.php
         - lib/ilias_interface/studip_referrer_9x.php
+        - lib/ilias_interface/studip_referrer_10x.php
     tmpDir: .caches
     ignoreErrors:
         -
