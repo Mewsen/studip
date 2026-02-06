@@ -260,6 +260,9 @@ class Course_IliasInterfaceController extends AuthenticatedController
         }
 
         // get active ILIAS installations
+        $this->ilias = null;
+        $this->ilias_index = '';
+        $this->ilias_modules = [];
         $this->ilias_list = [];
         $this->mode = $mode;
         $this->keep_dialog = false;
@@ -296,7 +299,6 @@ class Course_IliasInterfaceController extends AuthenticatedController
             }
             $this->ilias = $this->ilias_list[$index];
             $this->ilias_index = $index;
-            $this->ilias_modules = [];
             $object_connections = new IliasObjectConnections($this->seminar_id);
             $course_modules = $object_connections->getConnections();
 
