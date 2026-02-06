@@ -87,7 +87,7 @@ class ConnectedIlias
         // init soap client
         $this->soap_client = new IliasSoap(
             $this->index,
-            $this->ilias_config['url'] . '/webservice/soap/server.php?wsdl',
+            $this->ilias_config['url'] . ($this->ilias_int_version >= 100000 ? '/soap/server.php?wsdl' : '/webservice/soap/server.php?wsdl'),
             $this->ilias_config['client'],
             $this->ilias_int_version,
             $this->ilias_config['admin'],
@@ -239,15 +239,16 @@ class ConnectedIlias
 
         // check if url exists
         $check = @get_headers($url . '/login.php?cmd=force_login', false, $stream_context);
-        if (strpos($check[0], '200') === false) {
+        if (empty($check[0]) || strpos($check[0], '200') === false) {
             return $info;
         } else {
             $info['url'] = $url;
         }
 
+        // check connection to ILIAS 10
         $soap_client = new IliasSoap(
             'new',
-            $url . '/webservice/soap/server.php?wsdl',
+            $url . '/soap/server.php?wsdl',
             '',
             '',
             '',
@@ -259,6 +260,23 @@ class ConnectedIlias
         $soap_client->setCachingStatus(false);
         if ($client_info = $soap_client->getInstallationInfoXML()) {
             $info = array_merge($info, $client_info);
+        } else {
+            // check connection to ILIAS 9 or below
+            $soap_client = new IliasSoap(
+                'new',
+                $url . '/webservice/soap/server.php?wsdl',
+                '',
+                '',
+                '',
+                '',
+               1,
+                3
+            );
+
+            $soap_client->setCachingStatus(false);
+            if ($client_info = $soap_client->getInstallationInfoXML()) {
+                $info = array_merge($info, $client_info);
+            }
         }
         return $info;
     }
@@ -317,15 +335,15 @@ class ConnectedIlias
         }
 
         // check if url exists
-        $stream_context = get_default_http_stream_context($this->ilias_config['url']);
+        $stream_context = get_default_http_stream_context($this->ilias_config['url'].'/');
         stream_context_set_option(
             $stream_context,
             'http',
             'timeout',
             $this->ilias_config['http_request_timeout']
         );
-        $check = @get_headers($this->ilias_config['url'] . '/webservice/soap/server.php', false, $stream_context);
-        if (strpos($check[0], '200') === false) {
+        $check = @get_headers($this->ilias_config['url'] . ($this->ilias_int_version >= 100000 ? '/soap/server.php?wsdl' : '/webservice/soap/server.php?wsdl'), false, $stream_context);
+        if (empty($check[0]) || strpos($check[0], '200') === false) {
             $this->error[] = sprintf(_('Die URL "%s" ist nicht erreichbar.'), $this->ilias_config['url']);
             return false;
         }
@@ -1716,7 +1734,7 @@ class ConnectedIlias
     */
     public function getTargetFile()
     {
-        return $this->ilias_config['url'].'studip_referrer.php';
+        return $this->ilias_config['url'].'/studip_referrer.php';
     }
 
     /**
