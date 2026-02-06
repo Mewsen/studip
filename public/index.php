@@ -19,5 +19,5 @@
 
 require '../lib/bootstrap.php';
 
-header('Location: ' . URLHelper::getURL('dispatch.php/start'));
+header('Location: ' . URLHelper::getURL('dispatch.php/login', $_GET));
 
