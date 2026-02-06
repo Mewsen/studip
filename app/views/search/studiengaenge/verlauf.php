@@ -15,7 +15,7 @@
 </div>
 <? if (!empty($stg_teil)) : ?>
     <? $max_fachsemester = count($fach_sem_data) ? max($fach_sem_data) : 0 ?>
-    <table class="mvv-modul-details default collapsable">
+    <table class="default collapsable">
         <caption>
             <?= htmlReady($stg_teil->getDisplayName()) ?>
     <? if (!empty($studiengang) && !empty($stg_teil_bez)) : ?>
@@ -65,15 +65,17 @@
                     <? $displayed_module_name = false ?>
                     <? foreach ($modul['modulTeile'] as $modulTeil_id => $modulTeil): ?>
                         <? if (!$displayed_abschnitt_name) : ?>
-                            <tr class="header-row">
+                            <tr class="table_header header-row">
                                 <? $displayed_abschnitt_name = true ?>
                                 <th class="toggle-indicator" colspan="2">
                                     <a class="toggler" href="#"><?= htmlReady($abschnitt['name']) ?><?= $abschnitt['credit_points'] ? ' ' . $abschnitt['credit_points'] . ' ' . _('CP') : '' ?></a>
                                 </th>
-                                <th>
-                                    <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
-                                        <?= Icon::create('info-circle')->asSvg(['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
-                                    </a>
+                                <th class="dont-hide">
+                                    <? if (trim($abschnitt['kommentar'])) : ?>
+                                        <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
+                                            <?= Icon::create('info-circle', ['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
+                                        </a>
+                                    <? endif ?>
                                 </th>
                                 <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
                                     <th><span><?= $i ?><span></th>
