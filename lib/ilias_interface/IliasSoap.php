@@ -138,13 +138,13 @@ class IliasSoap extends StudipSoapClient
         } else {
             $result = $this->_call($method, $params);
             // if Session is expired, re-login and try again
-            if ($method !== 'login' && $this->soap_client->fault && in_array(mb_strtolower($this->faultstring), ['session not valid', 'session invalid', 'session idled'])) {
+            if ($method !== 'login' && !empty($this->soap_client->fault) && in_array(mb_strtolower($this->faultstring), ['session not valid', 'session invalid', 'session idled'])) {
                 $caching_status = $this->caching_active;
                 $this->caching_active = false;
                 $params["sid"] = $this->getSID();
                 $result = $this->_call($method, $params);
                 $this->caching_active = $caching_status;
-            } elseif (! $this->soap_client->fault) {
+            } elseif (empty($this->soap_client->fault)) {
                 $this->soap_cache[$cache_index] = $result;
                 if ($this->caching_active == true) {
                     $this->saveCacheData();
@@ -1122,7 +1122,7 @@ class IliasSoap extends StudipSoapClient
 <TimeLimitMessage>0</TimeLimitMessage>
 <ApproveDate>".$user_data["approve_date"]."</ApproveDate>
 <AgreeDate>".$user_data["agree_date"]."</AgreeDate>";
-        if (($user_data["user_skin"] != "") OR ($user_data["user_style"] != "")) {
+        if (!empty($user_data['user_skin']) || !empty($user_data['user_style'])) {
             $usr_xml .= "<Look Skin=\"".$user_data["user_skin"]."\" Style=\"".$user_data["user_style"]."\"/>";
         }
         $usr_xml .= "<AuthMode type=\"".$user_data["auth_mode"]."\"/>
@@ -1273,6 +1273,7 @@ class IliasSoap extends StudipSoapClient
      */
     function getInstallationInfoXML()
     {
+        $data = [];
         $this->clearCache();
         $param = [
         ];
