@@ -530,6 +530,12 @@ class Admin_CoursesController extends AuthenticatedController
             'institut_id'    => 'MY_INSTITUTES_DEFAULT',
         ];
 
+        if (!empty($filters['semester_id'])) {
+            $this->semester = Semester::find($filters['semester_id']);
+        } else {
+            $this->semester = null;
+        }
+
         if (!empty($filters['institut_id'])) {
             $config->store(
                 'MY_INSTITUTES_INCLUDE_CHILDREN',
@@ -644,6 +650,7 @@ class Admin_CoursesController extends AuthenticatedController
         if (in_array('room_time', $activated_fields)) {
             $seminar = new Seminar($course);
             $d['room_time'] = $seminar->getDatesHTML([
+                'semester_id' => $this->semester ? $this->semester->id : null,
                 'show_room'   => true,
             ]) ?: _('nicht angegeben');
         }
