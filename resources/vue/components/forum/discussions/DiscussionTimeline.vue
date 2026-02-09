@@ -163,7 +163,10 @@ const updateUnreadScrollPosition = () => {
     unreadScrollPosition.value = Math.min(Math.max((elementTop / scrollableHeight) * 100, 0), 90);
 };
 
-const onRangeInput = event => jumpToPost(null, Number(event.target.value));
+const onRangeInput = event => {
+    const index = Number(event.target.value) - 1;
+    jumpToPost(null, index);
+}
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll);
@@ -202,15 +205,15 @@ onUnmounted(() => {
 
             <input
                 type="range"
-                min="0"
-                :max="posts.length - 1"
+                min="1"
+                :max="posts.length"
                 step="1"
-                :value="currentPostIndex"
+                :value="currentPostIndex + 1"
                 @change="onRangeInput"
                 :aria-label="$gettext('Mit Schieberegler durch Beiträge navigieren')"
-                :aria-valuemin="0"
-                :aria-valuemax="posts.length - 1"
-                :aria-valuenow="currentPostIndex"
+                :aria-valuemin="1"
+                :aria-valuemax="posts.length"
+                :aria-valuenow="currentPostIndex + 1"
             />
         </nav>
         <div
