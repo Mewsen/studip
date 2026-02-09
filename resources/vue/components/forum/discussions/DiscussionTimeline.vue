@@ -163,6 +163,8 @@ const updateUnreadScrollPosition = () => {
     unreadScrollPosition.value = Math.min(Math.max((elementTop / scrollableHeight) * 100, 0), 90);
 };
 
+const onRangeInput = event => jumpToPost(null, Number(event.target.value));
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll);
     STUDIP.eventBus.on('forum:jumpToPost', updateUnreadScrollPosition);
@@ -189,6 +191,7 @@ onUnmounted(() => {
         </div>
         <nav class="navigation-area sr-only" :aria-label="$gettext('Beitragsnavigation')">
             <span aria-live="assertive">{{ postProgressText }}</span>
+
             <button
                 v-if="isNewFrom && currentPostIndex !== firstUnreadPostIndex"
                 type="button"
@@ -196,20 +199,18 @@ onUnmounted(() => {
             >
                 {{ $gettext('Zum ersten ungelesenen Beitrag') }}
             </button>
-            <button
-                type="button"
-                :disabled="currentPostIndex < 1"
-                @click="jumpToPost(null, currentPostIndex - 1)"
-            >
-                {{ $gettext('Zum vorherigen Beitrag') }}
-            </button>
-            <button
-                type="button"
-                :disabled="currentPostIndex >= posts.length - 1"
-                @click="jumpToPost(null, currentPostIndex + 1)"
-            >
-                {{ $gettext('Zum nächsten Beitrag') }}
-            </button>
+
+            <input
+                type="range"
+                min="0"
+                :max="posts.length - 1"
+                step="1"
+                @change="onRangeInput"
+                :aria-label="$gettext('Mit Schieberegler durch Beiträge navigieren')"
+                :aria-valuemin="0"
+                :aria-valuemax="posts.length - 1"
+                :aria-valuenow="currentPostIndex"
+            />
         </nav>
         <div
             id="scroll-area"
