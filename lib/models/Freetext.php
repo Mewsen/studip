@@ -60,6 +60,11 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
         return ['FreetextEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['FreetextAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

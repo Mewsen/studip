@@ -54,6 +54,11 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
         return ['RangescaleEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['RangescaleAnswer', ''];
+    }
+
     public function getDisplayTemplate()
     {
         $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));

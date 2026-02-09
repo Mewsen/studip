@@ -45,6 +45,11 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         return ['VoteEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['VoteAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(
@@ -67,17 +72,22 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         $answer = $this->getMyAnswer();
 
         $answers = Request::getArray('answers');
+        $freetext_answer = $answers[$this->getId()]['answerdata']['freetext'];
+
         $userAnswer = null;
         if (array_key_exists($this->getId(), $answers)) {
             $userAnswer = $answers[$this->getId()]['answerdata']['answers'];
             if (is_array($userAnswer)) {
+                $userAnswer = array_values($userAnswer);
+
                 $userAnswer = array_map('intval', $userAnswer);
             }
             else {
                 $userAnswer = (int) $userAnswer;
             }
         }
-        $answer->setData(['answerData' => ['answers' => $userAnswer ] ]);
+        $answer->setData(['answerData' => ['answers' => $userAnswer, 'freetext' => $freetext_answer ] ]);
+
         return $answer;
     }
 

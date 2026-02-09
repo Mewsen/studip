@@ -40,6 +40,13 @@ interface QuestionType {
     static public function getEditingComponent();
 
     /**
+     * Returns an array with two parts: First one is the name of the component for editing the question. Second
+     * one is the import path of the component. Plugins can use this to get their component imported.
+     * @return Array
+     */
+    static public function getAnsweringComponent();
+
+    /**
      *
      */
 

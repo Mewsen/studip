@@ -45,6 +45,11 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
         return ['LikertEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['LikertAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

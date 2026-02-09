@@ -50,6 +50,11 @@ class QuestionnaireAutomatedData extends QuestionnaireQuestion implements Questi
         }
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['AutomatedDataAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         return $questiondata;

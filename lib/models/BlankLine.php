@@ -55,6 +55,11 @@ class BlankLine extends QuestionnaireQuestion implements QuestionType
         return ['BlankLineEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['BlankLineAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

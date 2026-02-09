@@ -55,6 +55,11 @@ class Divider extends QuestionnaireQuestion implements QuestionType
         return ['DividerEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['DividerAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

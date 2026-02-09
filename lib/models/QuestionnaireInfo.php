@@ -45,6 +45,11 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
         return ['QuestionnaireInfoEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['QuestionnaireInfoAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

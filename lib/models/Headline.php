@@ -57,6 +57,11 @@ class Headline extends QuestionnaireQuestion implements QuestionType
         return ['HeadlineEdit', ''];
     }
 
+    static public function getAnsweringComponent()
+    {
+        return ['HeadlineAnswer', ''];
+    }
+
     public function beforeStoringQuestiondata($questiondata)
     {
         $questiondata['description'] = \Studip\Markup::markAsHtml(

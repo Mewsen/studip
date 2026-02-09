@@ -40,12 +40,12 @@ $responseData = $response['answerdata'] ? $response['answerdata']->getArrayCopy(
                     <? endif ?>
 
                     <?= htmlReady($answers[$index]) ?>
-
                 </label>
             </li>
         <? endforeach ?>
 
-
+        <!-- if there is a free text field ... -->
+        <!-- TODO Freitextfeld aktivieren, wenn checkbox angeklickt ist -->
         <? if (isset($vote->questiondata['freetextfield'])) : ?>
         <li>
             <label>
@@ -54,23 +54,23 @@ $responseData = $response['answerdata'] ? $response['answerdata']->getArrayCopy(
                     <input type="checkbox"
                            name="answers[<?= $vote->getId() ?>][answerdata][answers][<?= $index +1 ?>]"
                            value="<?= $index +1 ?>"
-                        <?= isset($responseData['answers']) && in_array($index, (array) $responseData['answers']) ? 'checked' : '' ?>>
+                        <?= isset($responseData['answers']) && in_array($index +1, (array) $responseData['answers']) ? 'checked' : '' ?>>
 
                 <? else : ?>
 
                     <input type="radio"
                            name="answers[<?= $vote->getId() ?>][answerdata][answers]"
-                           value="<?= $index  +1 ?>"
+                           value="<?= $index +1 ?>"
                         <?= isset($responseData['answers']) && $index == $responseData['answers'] ? 'checked' : '' ?>>
                 <? endif ?>
 
 
                 <?= _('Sonstiges') . ':' ?>
-                <textarea name=""><?= htmlReady($answerdata['text'] ?? '') ?></textarea>
-
+                <textarea name="answers[<?= $vote->getId() ?>][answerdata][freetext]"><?= htmlReady($responseData['freetext'] ?? '') ?></textarea>
+            </label>
         </li>
         <? endif ?>
-    </ul>
 
+    </ul>
 
 </div>
