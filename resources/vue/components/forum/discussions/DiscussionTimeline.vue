@@ -205,6 +205,7 @@ onUnmounted(() => {
                 min="0"
                 :max="posts.length - 1"
                 step="1"
+                :value="currentPostIndex"
                 @change="onRangeInput"
                 :aria-label="$gettext('Mit Schieberegler durch Beiträge navigieren')"
                 :aria-valuemin="0"
