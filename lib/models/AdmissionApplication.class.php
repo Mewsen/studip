@@ -247,7 +247,12 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
             $position = 1;
             foreach ($admission_users as $admission) {
                 $admission->position = $position;
-                if ($admission->store() && Config::get()->NOTIFY_ON_WAITLIST_ADVANCE && $send_message) {
+                if (
+                    $admission->store()
+                    && Config::get()->getValue('NOTIFY_ON_WAITLIST_ADVANCE')
+                    && $send_message
+                    && !$course->hasEnded()
+                ) {
                     $username = $admission->user->username;
                     setTempLanguage($admission->user_id);
                     $message = sprintf(_('Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft worden. Sie stehen zur Zeit auf Position %s.'),
