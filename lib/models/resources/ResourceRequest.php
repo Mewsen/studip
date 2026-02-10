@@ -862,7 +862,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function getEndDate()
     {
         $end_date = new DateTime();
-        if (count($this->appointments) > 0) {
+        if (
+            count($this->appointments) > 0
+            && isset($this->appointments->last()->appointment->end_time)
+        ) {
             $end_date->setTimestamp($this->appointments->last()->appointment->end_time);
             return $end_date;
         }
@@ -878,7 +881,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 return null;
             }
 
-            $end_date->setTimestamp($this->cycle->dates->last()->end_time);
+            $end_date->setTimestamp($date->end_time);
             return $end_date;
         }
 
@@ -888,7 +891,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 return null;
             }
 
-            $end_date->setTimestamp($this->course->dates->last()->end_time);
+            $end_date->setTimestamp($date->end_time);
             return $end_date;
         }
 
