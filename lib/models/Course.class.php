@@ -443,7 +443,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      * @returns Semester|null Either the last semester of the course
      *     or null, if no semester could be found.
      */
-    public function getEndSemester()
+    public function getEndSemester(): ?Semester
     {
         if (count($this->semesters) > 0) {
             return $this->semesters->last();
@@ -491,6 +491,16 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         } else {
             return true;
         }
+    }
+
+    /**
+     * Returns whether the course has ended, meaning it is not open ended and
+     * all semesters the course takes place in are in the past.
+     */
+    public function hasEnded(): bool
+    {
+        return !$this->isOpenEnded()
+            && $this->getEndSemester()->isPast();
     }
 
     public function getTeachers()
