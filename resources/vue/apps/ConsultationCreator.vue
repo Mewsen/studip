@@ -289,9 +289,14 @@
 import StudipTooltipIcon from '@/vue/components/StudipTooltipIcon.vue';
 import Datepicker from '@/vue/components/Datepicker.vue';
 
-import moment from 'moment';
 import StudipSelect from '@/vue/components/StudipSelect.vue';
 import Timepicker from '@/vue/components/Timepicker.vue';
+
+function addWeeks(weeks, date = new Date()) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + weeks * 7);
+    return result;
+}
 
 export default {
     name: 'ConsultationCreator',
@@ -331,7 +336,7 @@ export default {
             consecutive: false,
             dayOfWeek: (new Date()).getDay(),
             duration: 15,
-            endDate: moment().add(4, 'weeks').toDate(),
+            endDate: addWeeks(4),
             endTime: '09:00',
             errors: [],
             interval: 1,
@@ -351,7 +356,7 @@ export default {
             size: 1,
 
             slotCount: null,
-            startDate: moment().add(1, 'weeks').toDate(),
+            startDate: addWeeks(1),
             startTime: '08:00',
         };
     },
@@ -418,24 +423,24 @@ export default {
                 event.preventDefault();
             }
         },
-        compareDates(date0, date1, operator = '=', precision = 'day') {
-            const mapping = {
-                '<': 'isBefore',
-                '<=': 'isSameOrBefore',
-                '=': 'isSame',
-                '>=': 'isSameOrAfter',
-                '>': 'isAfter',
-            };
+        compareDates(date0, date1, operator = '=') {
+            const t0 = (new Date(date0)).setHours(0, 0, 0, 0);
+            const t1 = (new Date(date1)).setHours(0, 0, 0, 0);
 
-            if (mapping[operator] === undefined) {
-                throw new Error(`Unsupported operator '${operator}'`);
+            switch (operator) {
+                case '<':
+                    return t0 < t1;
+                case '<=':
+                    return t0 <= t1;
+                case '=':
+                    return t0 === t1;
+                case '>=':
+                    return t0 >= t1;
+                case '>':
+                    return t0 > t1;
+                default:
+                    throw new Error(`Unsupported operator '${operator}'`);
             }
-
-            const compareDate0 = moment(date0);
-            const compareDate1 = moment(date1);
-
-            const method = mapping[operator];
-            return compareDate0[method](compareDate1, precision);
         },
         validateInputs(event) {
             const errors = [];
