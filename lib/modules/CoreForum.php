@@ -25,7 +25,7 @@ class CoreForum extends CorePlugin implements StudipModuleExtended
             new Navigation(_('Themenübersicht'), 'dispatch.php/course/forum/topics')
         );
 
-        if (!CourseConfig::get($course_id)->FORUM_HIDE_CATEGORIES_NAVIGATION) {
+        if (!RangeConfig::get($course_id)->getValue('FORUM_HIDE_CATEGORIES_NAVIGATION')) {
             $navigation->addSubNavigation(
                 'categories',
                 new Navigation(_('Kategorien'), 'dispatch.php/course/forum/categories')
@@ -86,16 +86,22 @@ class CoreForum extends CorePlugin implements StudipModuleExtended
         return null;
     }
 
-    public static function isAdmin($course_id): bool
+    public static function isAdmin($range_id): bool
     {
-        return $GLOBALS['perm']->have_perm('root') || $GLOBALS['perm']->have_studip_perm('dozent', $course_id);
+        return $GLOBALS['perm']->have_perm('root')
+            || $GLOBALS['perm']->have_studip_perm('dozent', $range_id);
     }
 
-    public static function isModerator($course_id): bool
+    public static function isModerator($range_id): bool
     {
-        return self::isAdmin($course_id) ||
-            CourseConfig::get($course_id)->FORUM_MODERATION_PERMISSION === $GLOBALS['perm']->get_studip_perm($course_id) ||
-            CourseConfig::get($course_id)->FORUM_MODERATION_PERMISSION === 'all';
+        if (self::isAdmin($range_id)) {
+            return true;
+        }
+
+        $moderation_permission = RangeConfig::get($range_id)->getValue('FORUM_MODERATION_PERMISSION');
+
+        return $moderation_permission === 'all'
+            || $GLOBALS['perm']->have_studip_perm($moderation_permission, $range_id);
     }
 
 
@@ -123,9 +129,9 @@ class CoreForum extends CorePlugin implements StudipModuleExtended
         ];
     }
 
-    public static function deleteCourseContents($course_id): void
+    public static function deleteCourseContents($range_id): void
     {
-        \Forum\Category::deleteBySQL("range_id = ?", [$course_id]);
-        \Forum\Topic::deleteBySQL("range_id = ?", [$course_id]);
+        \Forum\Category::deleteBySQL("range_id = ?", [$range_id]);
+        \Forum\Topic::deleteBySQL("range_id = ?", [$range_id]);
     }
 }
