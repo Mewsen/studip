@@ -383,9 +383,13 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     $this->ilias_configs[$index]['category_to_desktop'] = Request::get('ilias_category_to_desktop');
                     $this->ilias_configs[$index]['workgroup_category_name'] = Request::get('ilias_workgroup_category_name');
 
-                    foreach ($this->modules_available as $module_index => $module_name) {
-                        if (Request::get('ilias_modules_'.$module_index)) {
-                            $this->ilias_configs[$index]['modules'][$module_index] = $module_name;
+                    if (!empty($this->ilias_interface_config['create_objects'])) {
+                        foreach ($this->modules_available as $module_index => $module_name) {
+                            if (Request::get('ilias_modules_'.$module_index)) {
+                                $this->ilias_configs[$index]['modules'][$module_index] = $module_name;
+                            } else {
+                                unset($this->ilias_configs[$index]['modules'][$module_index]);
+                            }
                         }
                     }
 

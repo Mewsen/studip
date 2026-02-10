@@ -4,9 +4,9 @@
     <table class="default">
         <caption>
             <?= sprintf(_('Meine Lernobjekte in %s'), $ilias->getName()) ?>
-            <? if (!empty($ilias_interface_config['create_objects'])) : ?>
+            <? if (!empty($ilias->ilias_interface_config['create_objects'] && !empty($ilias->ilias_interface_config['create_category']))) : ?>
                 <span class="actions">
-                    <a href="<?= $controller->url_for('my_ilias_accounts/add_object/'.$ilias_index) ?>" data-dialog="size=auto">
+                    <a href="<?= $controller->url_for('my_ilias_accounts/add_object/'.$ilias_index) ?>" data-dialog="size=auto" title="<?=_('Neues Lernobjekt anlegen')?>">
                         <?= Icon::create('add', Icon::ROLE_CLICKABLE, tooltip2(_('Neues Lernobjekt anlegen'))) ?>
                     </a>
                 </span>

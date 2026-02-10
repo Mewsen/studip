@@ -567,7 +567,7 @@ class MyIliasAccountsController extends AuthenticatedController
             $this->ilias = new ConnectedIlias($index);
             $token = $this->ilias->user->getToken();
             $session_id = $this->ilias->soap_client->loginUser($this->ilias->user->getUsername(), $token);
-            if ($this->ilias->ilias_config['category_create_on_add_module'] && $GLOBALS['perm']->have_perm($this->ilias->ilias_config['author_perm']) && ($target == 'new') && ! $module_id) {
+            if (!empty($this->ilias->ilias_interface_config['create_category']) && !empty($this->ilias->ilias_config['category_create_on_add_module']) && $GLOBALS['perm']->have_perm($this->ilias->ilias_config['author_perm']) && ($target == 'new') && ! $module_id) {
                 $this->ilias->newUserCategory();
                 $module_id = $this->ilias->user->category;
             }

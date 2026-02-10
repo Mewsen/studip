@@ -112,7 +112,7 @@ class ConnectedIlias
                 NotificationCenter::addObserver($this, "updateUser", "UserDidUpdate");
             }
             // create user category if user has ILIAS author permission
-            if ($GLOBALS['perm']->have_perm($this->ilias_config['author_perm']) && ! $this->ilias_config['category_create_on_add_module'] && ! $this->user->getCategory()) {
+            if ($GLOBALS['perm']->have_perm($this->ilias_config['author_perm']) && !empty($this->ilias_interface_config['create_category']) && empty($this->ilias_config['category_create_on_add_module']) && ! $this->user->getCategory()) {
                 $this->soap_client->setCachingStatus(false);
                 $this->soap_client->clearCache();
                 $this->newUserCategory();
@@ -148,6 +148,7 @@ class ConnectedIlias
         $interface_config_options = [
             'show_course_paths' => true,
             'create_objects' => true,
+            'create_category' => true,
         ];
 
         foreach ($interface_config_options as $option_key => $option_value) {
@@ -722,7 +723,7 @@ class ConnectedIlias
      */
     public function newUserCategory()
     {
-        if (!$this->user->isConnected()) {
+        if (!$this->user->isConnected() || !$this->ilias_interface_config['create_category']) {
             return false;
         }
         $this->soap_client->setCachingStatus(false);
@@ -836,7 +837,7 @@ class ConnectedIlias
      * returns all active module types for current ILIAS installation
      * @access public
      */
-    public static function getsupportedModuleTypes()
+    public static function getSupportedModuleTypes()
     {
         return [
 //                        'cat'  => _('Kategorie'),
