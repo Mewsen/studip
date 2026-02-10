@@ -383,6 +383,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     foreach ($this->modules_available as $module_index => $module_name) {
                         if (Request::get('ilias_modules_'.$module_index)) {
                             $this->ilias_configs[$index]['modules'][$module_index] = $module_name;
+                        } else {
+                            unset($this->ilias_configs[$index]['modules'][$module_index]);
                         }
                     }
 
