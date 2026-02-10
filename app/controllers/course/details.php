@@ -203,6 +203,10 @@ class Course_DetailsController extends AuthenticatedController
 
             $sidebar = Sidebar::Get();
 
+            if (!Course::findCurrent()) {
+                $sidebar->setContextAvatar(CourseAvatar::getAvatar($this->course->id));
+            }
+
             if ($GLOBALS['SessionSeminar'] === $this->course->id) {
                 Navigation::activateItem('/course/main/details');
             } else {
