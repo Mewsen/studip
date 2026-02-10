@@ -29,8 +29,9 @@ class LogoutController extends AuthenticatedController
             return;
         }
 
-        if ($GLOBALS['user']->id !== 'nobody') {
-            $my_messaging_settings = $GLOBALS['user']->cfg->MESSAGING_SETTINGS;
+        $user = User::findCurrent();
+        if ($user) {
+            $my_messaging_settings = $user->getConfiguration()->getValue('MESSAGING_SETTINGS');
 
             //Wenn Option dafuer gewaehlt, alle ungelsesenen Nachrichten als gelesen speichern
             if (!empty($my_messaging_settings['logout_markreaded'])) {
@@ -38,15 +39,17 @@ class LogoutController extends AuthenticatedController
             }
 
             $_language = $_SESSION['_language'];
-            $contrast = UserConfig::get($GLOBALS['user']->id)->USER_HIGH_CONTRAST;
+            $contrast = $user->getConfiguration()->getValue('USER_HIGH_CONTRAST');
 
             // Get auth plugin of user before logging out since the $auth object will
             // be modified by the logout
-            $auth_plugin = StudipAuthAbstract::getInstance($GLOBALS['user']->auth_plugin);
+            $used_auth_plugin = auth()->getSessionVariable('auth_plugin') ?? $user->auth_plugin;
+            $auth_plugin = StudipAuthAbstract::getInstance($used_auth_plugin);
 
             sess()->destroy();
+
             //Session changed zuruecksetzen
-            $timeout=(time()-(15 * 60));
+            $timeout = strtotime('-15 minutes');
             $GLOBALS['user']->set_last_action($timeout);
 
             // Perform logout from auth plugin (if possible)

@@ -108,6 +108,8 @@ class StudipAuthAbstract
 
     private $config_data = [];
 
+    private array $kept_variables = [];
+
     /**
      * static method to instantiate and retrieve a reference to an object (singleton)
      *
@@ -327,12 +329,22 @@ class StudipAuthAbstract
         //get configuration array set in local inc
         if (empty($config)) {
             $this->plugin_name = strtolower(substr(get_class($this), 10));
-            $config = $GLOBALS['STUDIP_AUTH_CONFIG_' . strtoupper($this->plugin_name)];
+            $config = $GLOBALS['STUDIP_AUTH_CONFIG_' . strtoupper($this->plugin_name)] ?? [];
         }
         //assign each key in the config array as a member of the plugin object
         foreach ($config as $key => $value) {
             $this->$key = $value;
         }
+
+        // Store variables in this instance
+        // This is needed for the logout where we cannot obtain these variables
+        // from the session since it is destroyed before the auth's logout is
+        // called
+        $this->kept_variables = array_diff_key(
+            $_SESSION['auth'] ?? [],
+            $this->getKeptVariables()
+
+        );
     }
 
     /**
@@ -591,5 +603,25 @@ class StudipAuthAbstract
     public function __unset($offset)
     {
         unset($this->config_data[$offset]);
+    }
+
+    /**
+     * This method returns an associative array containing specific
+     * variables relevant to the current instance.
+     */
+    public function getKeptVariables(): array
+    {
+        return [
+            'auth_plugin' => $this->plugin_name,
+        ];
+    }
+
+    /**
+     * Returns a variable that was previously kept. Returns null if no content
+     * could be found.
+     */
+    public function getKeptVariable(string $key): mixed
+    {
+        return $this->kept_variables[$key] ?? null;
     }
 }

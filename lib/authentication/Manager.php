@@ -52,7 +52,6 @@ class Manager
         $this->nobody = $allow_nobody;
     }
 
-
     public function start(): bool
     {
         $this->auth =& $_SESSION['auth'];
@@ -81,7 +80,7 @@ class Manager
                         }
                         Metrics::increment('core.sso_login.succeeded');
 
-                        $this->setAuthenticatedUser($user);
+                        $this->setAuthenticatedUser($user, $authplugin->getKeptVariables());
                         sess()->regenerateId(self::DEFAULT_KEPT_SESSION_VARIABLES);
                     } else {
                         PageLayout::postMessage(
@@ -122,7 +121,7 @@ class Manager
 
         //check if the user got kicked meanwhile, or if user is locked out
         $user = null;
-        if (!empty($this->auth['uid']) && $this->auth['uid'] != 'nobody') {
+        if (!empty($this->auth['uid']) && $this->auth['uid'] !== 'nobody') {
             if (isset($GLOBALS['user']) && $GLOBALS['user']->id === $this->auth['uid']) {
                 $user = User::findCurrent();
             } else {
@@ -141,9 +140,20 @@ class Manager
         return $this->auth['uid'] ?? false;
     }
 
-    public function setAuthenticatedUser(User $user): void
+    /**
+     * Sets the authenticated user and initializes global user and permission
+     * objects.
+     *
+     * @param User  $user       The user object representing the authenticated user.
+     * @param array $additional Additional key-value data to store in the authentication context.
+     */
+    public function setAuthenticatedUser(User $user, array $additional = []): void
     {
         $this->auth['uid'] = $user->id;
+
+        foreach ($additional as $key => $value) {
+            $this->auth[$key] = $value;
+        }
 
         $GLOBALS['user'] = new Seminar_User($user);
         $GLOBALS['perm'] = new Seminar_Perm();
@@ -178,5 +188,16 @@ class Manager
             ->addRecipient($to)
             ->setBodyText($mailbody ?? '')
             ->send();
+    }
+
+    /**
+     * Retrieves a session variable from the authentication context by its name.
+     *
+     * @param string $name The name of the session variable to retrieve
+     * @return mixed The value of the session variable, or null if it does not exist.
+     */
+    public function getSessionVariable(string $name): mixed
+    {
+        return $this->auth[$name] ?? null;
     }
 }

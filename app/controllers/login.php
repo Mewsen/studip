@@ -81,7 +81,10 @@ class LoginController extends AuthenticatedController
                     $this->redirect('login/activate_email', ['uid' => $uid]);
                     return;
                 } else {
-                    auth()->setAuthenticatedUser($check_auth['user']);
+                    auth()->setAuthenticatedUser(
+                        $check_auth['user'],
+                        ['auth_plugin' => 'standard']
+                    );
                     Metrics::increment('core.login.succeeded');
                     sess()->regenerateId(\Studip\Authentication\Manager::DEFAULT_KEPT_SESSION_VARIABLES);
                     $this->redirect('start/index');
