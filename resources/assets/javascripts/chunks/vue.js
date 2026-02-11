@@ -2,7 +2,7 @@ import { createApp as vueCreateApp, h } from 'vue';
 import { createStore as vuexCreateStore } from 'vuex';
 import { createPinia } from 'pinia';
 import eventBus from '../lib/event-bus';
-import gettext, { addTranslation, addTranslations } from '../lib/gettext';
+import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
 import BaseComponents from '../../../vue/base-components.js';
 import BaseDirectives from "../../../vue/base-directives.js";
@@ -94,4 +94,4 @@ function registerGlobalDirectives(app) {
     }
 }
 
-export { createApp, h, eventBus, store, pinia, httpClient, addTranslation, addTranslations };
+export { createApp, h, eventBus, store, pinia, httpClient };
