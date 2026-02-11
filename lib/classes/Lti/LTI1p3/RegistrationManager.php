@@ -41,6 +41,7 @@ final class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
         $registration = $deployment->registration;
+
         if (
             !$registration
             || $registration->status !== RegistrationStatus::Active->value

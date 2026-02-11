@@ -1,13 +1,13 @@
 <?php
 namespace Lti;
 
-use Avatar;
-use Studip\Lti\Enum\UserProvisioningMode;
-use Range;
-use SimpleORMap;
-use Studip\Lti\Enum\PublicationStatus;
 use User;
+use Range;
+use Avatar;
+use SimpleORMap;
 use SimpleORMapCollection;
+use Studip\Lti\Enum\PublicationStatus;
+use Studip\Lti\Enum\UserProvisioningMode;
 
 /**
  * @property string $name

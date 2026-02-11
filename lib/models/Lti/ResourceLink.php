@@ -3,11 +3,11 @@ namespace Lti;
 
 use Course;
 use DBManager;
+use SimpleORMap;
 use JSONArrayObject;
 use Studip\Lti\Enum\ResourceLaunchContainer;
-use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
-use SimpleORMap;
 use Studip\Lti\LTI1p3\ResourceLinkRepository;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 
 /**
  * @property int $id

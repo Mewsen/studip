@@ -175,7 +175,7 @@ class Lti_AuthController extends StudipController
     }
 
     /**
-     * Generates OAuth2 tokens for LTI tools.
+     * Generates OAuth2 tokens.
      */
     public function token_action(): void
     {

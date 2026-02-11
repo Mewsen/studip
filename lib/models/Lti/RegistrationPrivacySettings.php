@@ -1,8 +1,8 @@
 <?php
 namespace Lti;
 
-use SimpleORMap;
 use User;
+use SimpleORMap;
 
 /**
  * @property array $id

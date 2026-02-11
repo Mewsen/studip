@@ -1,31 +1,31 @@
 <?php
 
-use Studip\Lti\Enum\UserIdentityMappingContext;
-use Studip\Lti\Enum\UserProvisioningMode;
+use Lti\Deployment;
 use Lti\Publication;
-use Lti\Registration;
-use Lti\UserIdentityMapping;
-use OAT\Library\Lti1p3Core\Exception\LtiException;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
-use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use OAT\Library\Lti1p3Core\Resource\ResourceCollection;
-use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
-use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
-use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
-use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
-use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchResponseBuilder;
+use Trails\Dispatcher;
 use Ramsey\Uuid\Uuid;
 use Studip\Cache\Factory;
-use Studip\Lti\LTI1p3\PublicationValidator;
-use Studip\Lti\LTI1p3\RegistrationManager;
+use Lti\UserIdentityMapping;
 use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\Lti\LTI1p3\ToolManager;
 use Studip\Lti\LTI1p3\UserManager;
 use Studip\OAuth2\NegotiatesWithPsr7;
-use Trails\Dispatcher;
+use Studip\Lti\Enum\UserProvisioningMode;
+use Studip\Lti\LTI1p3\PublicationValidator;
+use Studip\Lti\LTI1p3\RegistrationManager;
+use Studip\Lti\Enum\UserIdentityMappingContext;
+use OAT\Library\Lti1p3Core\Exception\LtiException;
+use OAT\Library\Lti1p3Core\Resource\ResourceCollection;
+use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
+use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
+use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
+use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
+use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchResponseBuilder;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
 
 class Enroll_LtiController extends AuthenticatedController
 {
@@ -40,7 +40,7 @@ class Enroll_LtiController extends AuthenticatedController
             $this->with_session = false;
         }
 
-        if (in_array($action, ['select_contents', 'deeplink_callback', 'reset_account_mapping', 'create_new_account'])) {
+        if (in_array($action, ['select_contents', 'deeplink_callback', 'reset_account_mapping'])) {
             $this->allow_nobody = false;
         }
 
@@ -119,6 +119,7 @@ class Enroll_LtiController extends AuthenticatedController
         }
 
         $localRoles = RoleMapper::toLocal($request->getPayload()->getRoles());
+
         if(!in_array($localRoles['course'], ['dozent', 'tutor'])) {
             throw new AccessDeniedException();
         }
@@ -170,7 +171,9 @@ class Enroll_LtiController extends AuthenticatedController
             return;
         }
 
-        $registration = Registration::find($callbackData['registration_id']);
+        $deployment = Deployment::findOneBySQL("deployment_key = ?", [$callbackData['deployment_key']]);
+        $registration = $deployment->registration;
+
         $resourceCollection = new ResourceCollection();
         foreach ($this->extractCoursesFromRequest() as $c) {
             $course = Course::find($c['id']);
@@ -187,9 +190,9 @@ class Enroll_LtiController extends AuthenticatedController
 
         $message = (new DeepLinkingLaunchResponseBuilder())->buildDeepLinkingLaunchResponse(
             $resourceCollection,
-            $registration->toLti1p3Registration(),
+            $registration->toLti1p3Registration($deployment),
             $deepLinkingSettingsClaim->getDeepLinkingReturnUrl(),
-            $registration->getDefaultDeployment()->deployment_key,
+            $deployment->deployment_key,
             $deepLinkingSettingsClaim->getData()
         );
 
@@ -259,11 +262,11 @@ class Enroll_LtiController extends AuthenticatedController
 
     private function resolveProvisioningMode(LaunchValidationResultInterface $request, Publication $publication): void
     {
-        $userLocale = $request->getPayload()->getLaunchPresentation()->getLocale();
+        $userLocale = $request->getPayload()->getLaunchPresentation()?->getLocale();
         $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "user_id = :user_id AND context = :context",
             [
-                'user_id' => User::findCurrent()->id,
+                'user_id' => User::findCurrent()?->id,
                 'context' => UserIdentityMappingContext::ResourceLink->value
             ]
         );
@@ -274,6 +277,7 @@ class Enroll_LtiController extends AuthenticatedController
                 ->redirect('course/overview?cid='.$publication->range->id);
             return;
         }
+
 
         $payload = $request->getPayload();
         $localRoles = RoleMapper::toLocal($payload->getRoles());
@@ -295,7 +299,6 @@ class Enroll_LtiController extends AuthenticatedController
                 ->setUser($userIdentityMapping->user)
                 ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
                 ->authenticate();
-
 
             $this
                 ->storeUserLocale($userIdentityMapping->user, $userLocale)
@@ -326,6 +329,7 @@ class Enroll_LtiController extends AuthenticatedController
         $callbackId = Uuid::uuid4()->toString();
         $_SESSION['callbacks'][$callbackId] = [
             'user_identity' => $payload->getUserIdentity(),
+            'deployment_key' => $request->getPayload()->getDeploymentId(),
             'registration_id' => $request->getRegistration()->getIdentifier(),
             'publication_id' => $publication->id,
             'local_roles' => $localRoles,
@@ -341,11 +345,12 @@ class Enroll_LtiController extends AuthenticatedController
 
     private function resolveDeeplinkProvisioningMode(LaunchValidationResultInterface $request): void
     {
-        $userLocale = $request->getPayload()->getLaunchPresentation()->getLocale();
+        $userLocale = $request->getPayload()->getLaunchPresentation()?->getLocale();
 
         $callbackId = Uuid::uuid4()->toString();
         $_SESSION['callbacks'][$callbackId] = [
             'user_identity' => $request->getPayload()->getUserIdentity(),
+            'deployment_key' => $request->getPayload()->getDeploymentId(),
             'registration_id' => $request->getRegistration()->getIdentifier(),
             'settings_claim' => $request->getPayload()->getDeepLinkingSettings(),
             'provisioning_mode' => UserProvisioningMode::ExistingAccountsOnly->value,
@@ -422,9 +427,9 @@ class Enroll_LtiController extends AuthenticatedController
         return $callbackData;
     }
 
-    private function storeUserLocale(User $user, string $locale): self
+    private function storeUserLocale(User $user, ?string $locale): self
     {
-        if (str_starts_with($locale, 'en')) {
+        if ($locale && str_starts_with($locale, 'en')) {
             $_SESSION['_language'] = 'en_GB';
             $user->preferred_language = 'en_GB';
             $user->store();

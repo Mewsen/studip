@@ -1,15 +1,15 @@
 <?php
 namespace Lti;
 
-use Keyring;
-use Studip\Lti\Enum\ResourceLaunchContainer;
-use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
-use Ramsey\Uuid\Uuid;
 use Range;
+use Keyring;
 use SimpleORMap;
+use Ramsey\Uuid\Uuid;
 use SimpleORMapCollection;
 use Studip\Lti\Enum\RegistrationStatus;
+use Studip\Lti\Enum\ResourceLaunchContainer;
 use Studip\Lti\LTI1p3\RegistrationRepository;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 /**
  * @property int $id
@@ -65,17 +65,7 @@ class Registration extends SimpleORMap
         return self::findOneBySQL("`id` = ? AND `role`='tool'", [$id]);
     }
 
-//    public function __get($field)
-//    {
-//        $configValues = $this->getConfigValues();
-//        if (array_key_exists($field, $configValues)) {
-//            return $configValues[$field];
-//        }
-//
-//        return parent::__get($field);
-//    }
-
-    public function toLti1p3Registration(Deployment $deployment = null): RegistrationInterface
+    public function toLti1p3Registration(?Deployment $deployment = null): RegistrationInterface
     {
         return new RegistrationRepository($this, $deployment);
     }

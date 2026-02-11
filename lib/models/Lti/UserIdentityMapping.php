@@ -1,9 +1,9 @@
 <?php
 namespace Lti;
 
+use User;
 use Avatar;
 use SimpleORMap;
-use User;
 
 /**
  * @property int $id

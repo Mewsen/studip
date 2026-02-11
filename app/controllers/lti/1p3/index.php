@@ -2,20 +2,20 @@
 
 use Lti\Registration;
 use Lti\ResourceLink;
-use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
-use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
-use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
 use Studip\Cache\Factory;
+use Studip\Lti\LTI1p3\RoleMapper;
+use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
 use Studip\Lti\LTI1p3\RegistrationManager;
-use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\Lti\Trait\RegistrationValidationTrait;
-use Studip\OAuth2\NegotiatesWithPsr7;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
+use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
+use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
 
 final class Lti_1p3_IndexController extends AuthenticatedController
 {
@@ -102,12 +102,11 @@ final class Lti_1p3_IndexController extends AuthenticatedController
             return;
         }
 
-        $builder = new DeepLinkingLaunchRequestBuilder();
-        $message = $builder->buildDeepLinkingLaunchRequest(
+        $message = (new DeepLinkingLaunchRequestBuilder())->buildDeepLinkingLaunchRequest(
             PlatformManager::getDeepLinkingConfiguration(),
             $registration->toLti1p3Registration(),
             User::findCurrent()->id,
-            null,
+            $registrationConfigs['deep_linking_url'],
             $registration->getDefaultDeployment()->deployment_key,
             RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->context->id))
         );

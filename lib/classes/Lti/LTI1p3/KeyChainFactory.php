@@ -1,5 +1,4 @@
 <?php
-
 namespace Studip\Lti\LTI1p3;
 
 use Keyring;

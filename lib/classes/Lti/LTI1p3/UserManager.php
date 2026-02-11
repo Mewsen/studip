@@ -70,8 +70,8 @@ final class UserManager
         $user ??= $this->getUser();
 
         if (!$user) {
-            if (!$this->userIdentity->getGivenName() || !$this->userIdentity->getFamilyName()) {
-                throw new LtiException('Failed to enroll user: Missing name information.');
+            if (!$this->userIdentity->getEmail()) {
+                throw new LtiException('Failed to enroll user: Missing email address.');
             }
 
             $userIdentityMapping = UserIdentityMapping::findOneBySQL(
@@ -99,8 +99,8 @@ final class UserManager
 
         if ($user->auth_plugin === 'LTI13a') {
             $user->setData([
-                'Vorname' => $this->userIdentity->getGivenName() ?? $user->Vorname,
-                'Nachname' => $this->userIdentity->getFamilyName() ?? $user->Nachname,
+                'Vorname' => $this->userIdentity->getGivenName() ?? $user?->Vorname ?? 'Anonym',
+                'Nachname' => $this->userIdentity->getFamilyName() ?? $user?->Nachname ?? 'Anonym',
                 'perms' => $this->resolveLocalContextRole()
             ]);
         }

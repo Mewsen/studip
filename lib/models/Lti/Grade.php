@@ -1,8 +1,8 @@
 <?php
 namespace Lti;
 
-use SimpleORMap;
 use User;
+use SimpleORMap;
 
 /**
  * NOTE: LtiGrade is only for the LTI 1.0/1.1 interface.
