@@ -18,11 +18,15 @@ require_once dirname(__FILE__) . '/studiengaenge.php';
 
 class Search_StgtableController extends Search_StudiengaengeController
 {
+    public function __construct(Trails\Dispatcher $dispatcher)
+    {
+        $this->allow_nobody = Config::get()->getValue('COURSE_SEARCH_IS_VISIBLE_NOBODY');
+
+        parent::__construct($dispatcher);
+    }
 
     public function before_filter(&$action, &$args)
     {
-        $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
-
         MVVController::before_filter($action, $args);
 
         // set navigation
