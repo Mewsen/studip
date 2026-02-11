@@ -88,11 +88,11 @@ final class RegistrationRepository implements RegistrationInterface
     public function getPlatformKeyChain(): ?KeyChainInterface
     {
         if ($this->registration->role === 'platform') {
-            if ($this->registration->config_values['jwks_url']) {
+            if ($this->registration->getJwksURL()) {
                 return null;
             }
 
-            return $this->registration->getKeyring()?->toKeyChain();
+            return $this->registration->getKeyChain();
         }
 
         return PlatformManager::getKeyring()->toKeyChain();
@@ -101,14 +101,14 @@ final class RegistrationRepository implements RegistrationInterface
     public function getToolKeyChain(): ?KeyChainInterface
     {
         if ($this->registration->role === 'tool') {
-            if ($this->registration->config_values['jwks_url']) {
+            if ($this->registration->getJwksURL()) {
                 return null;
             }
 
-            return $this->registration->getKeyring()?->toKeyChain();
+            return $this->registration->getKeyChain();
         }
 
-        return ToolManager::getKeyring()?->toKeyChain();
+        return ToolManager::getKeyring()->toKeyChain();
     }
 
     public function getPlatformJwksUrl(): ?string

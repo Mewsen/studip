@@ -25,6 +25,7 @@ final class Identity implements UserIdentityInterface
                 'user_id' => $user->id
             ]
         );
+
         if ($privacySettings) {
             $this->optionalFields = explode(',', $privacySettings->allowed_optional_fields);
         }

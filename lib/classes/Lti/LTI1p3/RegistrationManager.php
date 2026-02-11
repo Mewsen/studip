@@ -41,11 +41,11 @@ final class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
         $registration = $deployment->registration;
+        $registrationIssuer = $registration->getConfigValues()['issuer'] ?? null;
 
         if (
-            !$registration
-            || $registration->status !== RegistrationStatus::Active->value
-            || $registration->getConfigValues()['issuer'] !== $issuer
+            $registration->status !== RegistrationStatus::Active->value
+            || !in_array($issuer, [$registrationIssuer, PlatformManager::getPlatformConfiguration()->getAudience()])
         ) {
             return null;
         }
@@ -57,10 +57,11 @@ final class RegistrationManager implements RegistrationRepositoryInterface
     {
         $deployment = Deployment::findOneBySQL("`client_id` = ?", [$clientId]);
         $registration = $deployment->registration;
+        $registrationAudience = $registration->getConfigValues()['audience'] ?? null;
+
         if (
-            !$registration
-            || $registration->status !== RegistrationStatus::Active->value
-            || $registration->getConfigValues()['audience'] !== $issuer
+            $registration->status !== RegistrationStatus::Active->value
+            || !in_array($issuer, [$registrationAudience, ToolManager::getToolConfiguration()->getAudience()])
         ) {
             return null;
         }

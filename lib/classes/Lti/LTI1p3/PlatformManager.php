@@ -24,9 +24,9 @@ final class PlatformManager
         return new Platform(
             $c->STUDIP_INSTALLATION_ID,
             $c->UNI_NAME_CLEAN,
-            $GLOBALS['ABSOLUTE_URI_STUDIP'],
-            URLHelper::getURL('dispatch.php/lti/auth/login', null, true),
-            URLHelper::getURL('dispatch.php/lti/auth/token', null, true)
+            rtrim($GLOBALS['ABSOLUTE_URI_STUDIP'], '/'),
+            URLHelper::getURL('dispatch.php/lti/1p3/auth/login', null, true),
+            URLHelper::getURL('dispatch.php/lti/1p3/auth/token', null, true)
         );
     }
 
@@ -72,11 +72,11 @@ final class PlatformManager
         if ($courseId) {
             $params['cid'] = $courseId;
         }
-        return URLHelper::getURL('dispatch.php/lti/13/store_content/' . $linkId, $params, true);
+        return URLHelper::getURL('dispatch.php/lti/1p3/index/store_content/' . $linkId, $params, true);
     }
 
     public static function getJwksUrl(): string
     {
-        return URLHelper::getURL('dispatch.php/lti/auth/jwks');
+        return URLHelper::getURL('dispatch.php/lti/1p3/auth/jwks', null, true);
     }
 }

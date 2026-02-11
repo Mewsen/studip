@@ -99,8 +99,11 @@ const handleLtiMessage = event => {
     const resourceCount = event.data.ltiResources.length;
     formState.resources = event.data.ltiResources.map(r => ({
         ...r,
+        launch_url: r.url,
+        description: r.text,
+        icon: r.icon?.url,
+        custom_parameters: r.custom ? objectToKeyValueString(r.custom) : null,
         launch_container: 'window',
-        custom_parameters: objectToKeyValueString(r.custom),
         colorPicked: false,
         isCollapsed: resourceCount > 1,
         isConfigurationCollapsed: true
@@ -108,7 +111,7 @@ const handleLtiMessage = event => {
 
     STUDIP.Report.success(
         $gettext('%{count} LTI-Ressourcen wurden ausgewählt.', {count: formState.resources.length}),
-        formState.resources.map(r => r.title)
+        formState.resources.map(({ title }) => title)
     );
 }
 

@@ -16,7 +16,7 @@ final class ToolManager
         return new Tool(
             $config->STUDIP_INSTALLATION_ID,
             $config->UNI_NAME_CLEAN,
-            $GLOBALS['ABSOLUTE_URI_STUDIP'],
+            rtrim($GLOBALS['ABSOLUTE_URI_STUDIP'], '/'),
             URLHelper::getURL('dispatch.php/enroll/lti/auth_init', null, true),
             URLHelper::getURL('dispatch.php/enroll/lti/launch', null, true),
             URLHelper::getURL('dispatch.php/enroll/lti/launch_deeplink', null, true)
@@ -45,6 +45,6 @@ final class ToolManager
 
     public static function getJwksUrl(): string
     {
-        return URLHelper::getURL('dispatch.php/enroll/lti/jwks');
+        return URLHelper::getURL('dispatch.php/enroll/lti/jwks', null, true);
     }
 }

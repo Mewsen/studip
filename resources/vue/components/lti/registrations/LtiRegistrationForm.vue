@@ -171,7 +171,7 @@ const formActionURL = computed(() => {
                         <StudipTooltipIcon
                             :text="$gettext('Die ID des Schlüssels, der über die JWKS-URL geladen werden soll.')"
                         />
-                        <input type="url" name="jwks_key_id" v-model="form.jwks_key_id" />
+                        <input type="text" name="jwks_key_id" v-model="form.jwks_key_id" />
                     </label>
                 </template>
                 <label v-else class="studiprequired">

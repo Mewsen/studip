@@ -1,6 +1,9 @@
 <?php
 namespace Lti;
 
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use Range;
 use Keyring;
 use SimpleORMap;
@@ -85,11 +88,23 @@ class Registration extends SimpleORMap
         );
     }
 
-    public function getKeyring(): ?Keyring
+    public function getJwksURL(): ?string
     {
-        return Keyring::findOneBySQL(
-            "`range_type` = 'lti_registration' AND `range_id` = ?",
-            [$this->id]
+        return $this->getConfigValues()['jwks_url'] ?? null;
+    }
+
+    public function getKeyChain(): ?KeyChainInterface
+    {
+        $configs = $this->getConfigValues();
+        if (!$configs['public_key']) {
+            return null;
+        }
+
+        return new KeyChain(
+            $configs['jwks_key_id'],
+            $this->name,
+            new Key($configs['public_key']),
+            null
         );
     }
 

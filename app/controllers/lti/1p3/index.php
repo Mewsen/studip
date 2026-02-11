@@ -4,6 +4,7 @@ use Lti\Registration;
 use Lti\ResourceLink;
 use Studip\Cache\Factory;
 use Studip\Lti\LTI1p3\RoleMapper;
+use Studip\LTIException;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
 use Studip\Lti\LTI1p3\RegistrationManager;
@@ -16,12 +17,23 @@ use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
+use Trails\Dispatcher;
 
 final class Lti_1p3_IndexController extends AuthenticatedController
 {
     use NegotiatesWithPsr7;
     use RegistrationValidationTrait;
-    protected COURSE | Institute $context;
+    protected COURSE | Institute | null $context;
+
+    public function __construct(Dispatcher $dispatcher)
+    {
+        if (basename(get_route()) === 'store_contents') {
+            $this->allow_nobody = true;
+            $this->with_session = false;
+        }
+
+        parent::__construct($dispatcher);
+    }
 
     public function before_filter(&$action, &$args)
     {
@@ -123,9 +135,7 @@ final class Lti_1p3_IndexController extends AuthenticatedController
 
         $request = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
         if ($request->hasError()) {
-            PageLayout::postError($request->getError());
-            $this->redirect('course/lti');
-            return;
+            throw new LtiException($request->getError());
         }
 
         $this->ltiResources = (new ResourceCollectionFactory())->createFromClaim(
