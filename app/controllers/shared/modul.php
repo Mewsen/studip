@@ -15,12 +15,11 @@
 
 class Shared_ModulController extends AuthenticatedController
 {
-
-    public function before_filter(&$action, &$args)
+    public function __construct(Trails\Dispatcher $dispatcher)
     {
-        $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
+        $this->allow_nobody = Config::get()->getValue('COURSE_SEARCH_IS_VISIBLE_NOBODY');
 
-        parent::before_filter($action, $args);
+        parent::__construct($dispatcher);
     }
 
     public function overview_action($modul_id, $semester_id = null)

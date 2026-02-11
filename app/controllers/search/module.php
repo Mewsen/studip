@@ -19,10 +19,15 @@ class Search_ModuleController extends MVVController
 {
     private $drill_down_filter = [];
 
+    public function __construct(Trails\Dispatcher $dispatcher)
+    {
+        $this->allow_nobody = Config::get()->getValue('COURSE_SEARCH_IS_VISIBLE_NOBODY');
+
+        parent::__construct($dispatcher);
+    }
+
     public function before_filter(&$action, &$args)
     {
-        $this->allow_nobody = Config::get()->COURSE_SEARCH_IS_VISIBLE_NOBODY;
-
         parent::before_filter($action, $args);
 
         $this->drill_down_type = Request::option('type');
