@@ -441,6 +441,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         if (count($this->semesters) > 0) {
             return $this->semesters->last();
         }
+        return null;
     }
 
     /**
