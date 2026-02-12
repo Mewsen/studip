@@ -1927,10 +1927,17 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
             SeminarCycleDate::findEachBySQL(
                 function ($date) use ($collection) {
-                    $collection->addCycleDate($date);
+                    $collection->addRegularDate($date);
                 },
-                "`start_time` >= :beginning AND `end_time` <= :end
-                    AND `seminar_id` = :course_id",
+                "`metadate_id` IN (
+                    SELECT `metadate_id`
+                    FROM `termine`
+                    WHERE `range_id` = :course_id
+                      AND `termine`.`date` <= :end
+                      AND `termine`.`end_time` >= :beginning
+                      AND `metadate_id` IS NOT NULL
+                      AND `metadate_id` != ''
+                 )",
                 [
                     'course_id' => $this->id,
                     'beginning' => $beginning,
