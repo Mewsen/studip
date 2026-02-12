@@ -102,7 +102,7 @@ class StudipAuthLTI extends StudipAuthSSO implements UserAuthenticatorInterface
         $course_id = Request::option('sem_id');
 
         if ($user && $course_id) {
-            header('Location: ' . URLHelper::getURL('dispatch.php/lti/index/' . $course_id));
+            header('Location: ' . URLHelper::getURL('dispatch.php/lti/1p1/auth/index/' . $course_id));
         }
 
         return $user;

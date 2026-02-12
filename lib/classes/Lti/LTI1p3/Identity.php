@@ -33,7 +33,7 @@ final class Identity implements UserIdentityInterface
 
     public function getIdentifier(): string
     {
-        return $this->user->id;
+        return $this->user->username;
     }
 
     public function getName(): ?string
@@ -66,7 +66,7 @@ final class Identity implements UserIdentityInterface
         if (!in_array('lang', $this->optionalFields)) {
             return '';
         }
-        return $this->user->preferred_language;
+        return explode('_', $this->user->preferred_language)[0];
     }
 
     public function getPicture(): ?string

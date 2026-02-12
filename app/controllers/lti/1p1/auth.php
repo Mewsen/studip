@@ -2,26 +2,24 @@
 
 use Studip\OAuth2\NegotiatesWithPsr7;
 
-class Lti_AuthController extends StudipController
+class Lti_1p1_AuthController extends AuthenticatedController
 {
     use NegotiatesWithPsr7;
 
     /**
      * Callback function being called before an action is executed.
      */
-    public function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args): void
     {
-        if (in_array($action, ['index', 'content_item', 'link_content_item'])) {
-            // enforce LTI SSO login
-            Request::set('sso', 'lti');
-        }
+        // enforce LTI SSO login
+        Request::set('sso', 'lti');
         parent::before_filter($action, $args);
     }
 
     /**
      * Redirect to enrolment action for the given course, if needed.
      */
-    public function index_action($course_id = null)
+    public function index_action($course_id = null): void
     {
         $course_id = Request::option('custom_cid', $course_id);
         $course_id = Request::option('custom_course', $course_id);
@@ -34,7 +32,7 @@ class Lti_AuthController extends StudipController
                 'document_targets' => Request::get('accept_presentation_document_targets'),
                 'data' => Request::get('data')
             ];
-            $this->redirect('lti/content_item');
+            $this->redirect('lti/1p1/auth/content_item');
         } else if ($course_id) {
             $this->redirect('course/enrolment/apply/' . $course_id);
         } else {
@@ -45,10 +43,13 @@ class Lti_AuthController extends StudipController
     /**
      * Select course for ContentItemSelectionRequest message.
      */
-    public function content_item_action()
+    public function content_item_action(): void
     {
         PageLayout::setTitle(_('Veranstaltung verknüpfen'));
-        Navigation::activateItem('/browse/my_courses/content_item');
+
+        if (Navigation::hasItem('/browse/my_courses/content_item')) {
+            Navigation::activateItem('/browse/my_courses/content_item');
+        }
 
         $this->document_targets = $_SESSION['ContentItemSelection']['document_targets'];
         $this->target_labels = [
@@ -72,9 +73,10 @@ class Lti_AuthController extends StudipController
     /**
      * Return the selected content item to the LTI consumer.
      */
-    public function link_content_item_action()
+    public function link_content_item_action(): void
     {
         CSRFProtection::verifyUnsafeRequest();
+
         $course_id = Request::option('course_id');
         $target = Request::option('target');
         $course = Course::find($course_id);
@@ -112,9 +114,11 @@ class Lti_AuthController extends StudipController
             'data' => $data
         ]);
 
-        $this->launch_url = $lti_link->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature = $lti_link->getLaunchSignature($this->launch_data);
-        $this->render_template('course/lti/iframe');
+        $this->launchUrl = $lti_link->getLaunchURL();
+        $this->launchData = $lti_link->getBasicLaunchData();
+        $this->signature = $lti_link->getLaunchSignature($this->launchData);
+
+        $this->set_layout(null);
+        $this->render_template('lti/1p1/index/launch');
     }
 }

@@ -13,6 +13,7 @@ final class ToolManager
     public static function getToolConfiguration(): ToolInterface
     {
         $config = Config::get();
+
         return new Tool(
             $config->STUDIP_INSTALLATION_ID,
             $config->UNI_NAME_CLEAN,

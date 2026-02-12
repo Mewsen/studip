@@ -14,7 +14,7 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
 
     public function getType(): string
     {
-        return 'ltiResourceLink';
+        return self::TYPE;
     }
 
     public function getUrl(): ?string

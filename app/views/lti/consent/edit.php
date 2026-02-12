@@ -54,7 +54,7 @@
                 <?= _('Ihr Profilbild') ?>
             </label>
         </fieldset>
-        <?= $this->render_partial('lti/_link_user_info', ['link' => $resourceLink]) ?>
+        <?= $this->render_partial('lti/consent/_link_user_info', ['link' => $resourceLink]) ?>
         <fieldset>
             <legend><?= _('Bestätigung') ?></legend>
             <label>

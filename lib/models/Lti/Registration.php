@@ -1,9 +1,6 @@
 <?php
 namespace Lti;
 
-use OAT\Library\Lti1p3Core\Security\Key\Key;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use Range;
 use Keyring;
 use SimpleORMap;
@@ -12,6 +9,9 @@ use SimpleORMapCollection;
 use Studip\Lti\Enum\RegistrationStatus;
 use Studip\Lti\Enum\ResourceLaunchContainer;
 use Studip\Lti\LTI1p3\RegistrationRepository;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 /**
@@ -22,7 +22,8 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
  * @property int $mkdate
  * @property int $chdate
  * @property array $config_values
- * @property ?Keyring $keyring
+ * @property ?string $jwks_url
+ * @property ?KeyChainInterface $keyChain
  * @property Range $range
  * @property SimpleORMapCollection<RegistrationConfig> $configs
  * @property SimpleORMapCollection<Deployment> $deployments
@@ -57,7 +58,8 @@ class Registration extends SimpleORMap
             },
         ];
 
-        $config['additional_fields']['keyring']['get'] = 'getKeyring';
+        $config['additional_fields']['jwks_url']['get'] = 'getJwksURL';
+        $config['additional_fields']['keyChain']['get'] = 'getKeyChain';
         $config['additional_fields']['config_values']['get'] = 'getConfigValues';
 
         parent::configure($config);
@@ -95,15 +97,15 @@ class Registration extends SimpleORMap
 
     public function getKeyChain(): ?KeyChainInterface
     {
-        $configs = $this->getConfigValues();
-        if (!$configs['public_key']) {
+        $publicKey = $this->getConfigValues()['public_key'];
+        if (!$publicKey) {
             return null;
         }
 
         return new KeyChain(
-            $configs['jwks_key_id'],
+            $this->id,
             $this->name,
-            new Key($configs['public_key']),
+            new Key($publicKey),
             null
         );
     }

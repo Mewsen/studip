@@ -1,8 +1,8 @@
 <?php
 
 use Lti\ResourceLink;
-use Lti\RegistrationPrivacySettings;
 use Studip\Lti\Enum\LtiVersion;
+use Lti\RegistrationPrivacySettings;
 
 final class Lti_ConsentController extends AuthenticatedController
 {

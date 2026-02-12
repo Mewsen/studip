@@ -3,6 +3,11 @@ namespace Studip\Lti\LTI1p3;
 
 use Config;
 use Keyring;
+use OAT\Library\Lti1p3Core\Resource\File\FileInterface;
+use OAT\Library\Lti1p3Core\Resource\HtmlFragment\HtmlFragmentInterface;
+use OAT\Library\Lti1p3Core\Resource\Image\ImageInterface;
+use OAT\Library\Lti1p3Core\Resource\Link\LinkInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use URLHelper;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
@@ -20,10 +25,11 @@ final class PlatformManager
      */
     public static function getPlatformConfiguration(): PlatformInterface
     {
-        $c = Config::get();
+        $config = Config::get();
+
         return new Platform(
-            $c->STUDIP_INSTALLATION_ID,
-            $c->UNI_NAME_CLEAN,
+            $config->STUDIP_INSTALLATION_ID,
+            $config->UNI_NAME_CLEAN,
             rtrim($GLOBALS['ABSOLUTE_URI_STUDIP'], '/'),
             URLHelper::getURL('dispatch.php/lti/1p3/auth/login', null, true),
             URLHelper::getURL('dispatch.php/lti/1p3/auth/token', null, true)
@@ -36,12 +42,11 @@ final class PlatformManager
         return new DeepLinkingSettings(
             URLHelper::getURL('dispatch.php/lti/1p3/index/store_contents'),
             [LtiResourceLinkInterface::TYPE],
-            ['window', 'iframe'],
+            ['window', 'iframe', 'embed'],
             'text/html',
             true,
             false,
-            Config::get()->UNI_NAME_CLEAN,
-            ''
+            Config::get()->UNI_NAME_CLEAN
         );
     }
 

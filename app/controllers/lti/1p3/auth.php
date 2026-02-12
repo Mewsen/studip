@@ -1,6 +1,5 @@
 <?php
 
-use Trails\Dispatcher;
 use Studip\Cache\Factory;
 use Studip\Lti\LTI1p3\KeyManager;
 use Studip\OAuth2\Bridge\ScopeEntity;
@@ -24,17 +23,6 @@ class Lti_1p3_AuthController extends AuthenticatedController
     protected $allow_nobody = true;
     protected $with_session = false;
     use NegotiatesWithPsr7;
-
-    public function __construct(Dispatcher $dispatcher)
-    {
-        $action = basename(get_route());
-        if ($action === 'token') {
-            $this->allow_nobody = false;
-            $this->with_session = true;
-        }
-
-        parent::__construct($dispatcher);
-    }
 
     public function login_action(): void
     {

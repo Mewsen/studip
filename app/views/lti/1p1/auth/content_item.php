@@ -1,4 +1,4 @@
-<form class="default" action="<?= $controller->link_for('lti/link_content_item') ?>" method="POST">
+<form class="default" action="<?= $controller->link_for('lti/1p1/auth/link_content_item') ?>" method="POST">
     <?= CSRFProtection::tokenTag() ?>
 
     <fieldset>
