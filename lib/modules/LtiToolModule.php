@@ -4,7 +4,7 @@ use Lti\Grade;
 use Lti\ResourceLink;
 
 /**
- * LtiToolModule.php - LTI consumer API for Stud.IP
+ * LtiToolModule.php - LTI consumer and provider API for Stud.IP
  *
  * @author      Elmar Ludwig
  * @author      Murtaza Sultani <sultani@data-quest.de>
