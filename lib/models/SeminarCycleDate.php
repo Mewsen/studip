@@ -214,7 +214,7 @@ class SeminarCycleDate extends SimpleORMap
      *
      * @returns string The formatted string.
      */
-    public function toString(string $format = 'short') : string
+    public function toString(string $format = 'short', bool $as_html = true) : string
     {
         if (!in_array($format, ['short', 'long', 'long-start', 'full'])) {
             //Invalid format:
@@ -245,18 +245,20 @@ class SeminarCycleDate extends SimpleORMap
                 $text = _('%{weekday}, %{beginning} - %{end}, %{interval}');
                 $room = $this->getMostBookedRoom();
 
-                if ($room) {
+                if (!$room) {
+                    //Use the freetext room name:
+                    $room = $this->getMostUsedFreetextRoomName();
+                    if ($room) {
+                        $parameters['room_name'] = $room;
+                    }
+                } elseif ($as_html) {
                     $parameters['room_name'] = sprintf(
                         '<a href="%1$s" data-dialog="size=auto">%2$s</a>',
                         $room->getActionLink(),
                         htmlReady($room->name)
                     );
                 } else {
-                    //Use the freetext room name:
-                    $room = $this->getMostUsedFreetextRoomName();
-                    if ($room) {
-                        $parameters['room_name'] = $room;
-                    }
+                    $parameters['room_name'] = $room->name;
                 }
                 $first_date = $this->getFirstDate();
                 if ($first_date) {

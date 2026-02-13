@@ -173,7 +173,7 @@ class AdminCourseFilter
      * Also saves the settings in the session.
      * Note that a notification AdminCourseFilterWillQuery will be posted, before the result is computed.
      * Plugins may register at this event to fully alter this AdminCourseFilter-object and so the resultset.
-     * @return array associative array with seminar_ids as keys and seminar-data-arrays as values.
+     * @return Course[]
      */
     public function getCourses()
     {
