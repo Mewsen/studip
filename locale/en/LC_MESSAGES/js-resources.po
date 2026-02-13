@@ -5,8 +5,8 @@ msgstr ""
 "PO-Revision-Date: 2025-07-22 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-5-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-5-5-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -380,8 +380,8 @@ msgstr "2nd subtitle"
 #: resources/vue/components/feedback/FeedbackElementUpdate.vue:36
 #: resources/vue/components/feedback/FeedbackEntryCreate.vue:51
 #: resources/vue/components/file-chooser/FileChooserDialog.vue:26
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:52
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:98
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:55
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:138
 #: resources/vue/components/stock-images/UploadDialog.vue:18
 msgid "Abbrechen"
 msgstr "Cancel"
@@ -1767,7 +1767,7 @@ msgstr "LTI tool consumer key"
 msgid "Consumer-Secret des LTI-Tools"
 msgstr "LTI tool consumer secret"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:151
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:152
 msgid "Contextmenü"
 msgstr "Context menu"
 
@@ -1879,8 +1879,9 @@ msgstr "The bookmark has been set."
 #: resources/vue/components/courseware/blocks/CoursewareDocumentBlock.vue:377
 #: resources/vue/components/courseware/blocks/CoursewareDownloadBlock.vue:93
 #: resources/vue/components/courseware/blocks/CoursewareDownloadBlock.vue:111
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:105
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:106
 #: resources/vue/components/courseware/layouts/CoursewareFileChooser.vue:4
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:85
 msgid "Datei"
 msgstr "File"
 
@@ -1906,7 +1907,7 @@ msgstr "Edit file"
 
 #: resources/vue/components/StudipFileChooser.vue:64
 #: resources/vue/components/file-chooser/FileChooserDialog.vue:71
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:84
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:87
 msgid "Datei auswählen"
 msgstr "Select file"
 
@@ -1915,8 +1916,7 @@ msgstr "Select file"
 msgid "Datei herunterladen"
 msgstr "Download file"
 
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:65
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:81
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:68
 msgid "Datei hinzufügen"
 msgstr "Add file"
 
@@ -1924,7 +1924,7 @@ msgstr "Add file"
 #: resources/assets/javascripts/lib/files.js:146
 #: resources/vue/components/blubber/Composer.vue:51
 #: resources/vue/components/courseware/blocks/CoursewareFolderBlock.vue:132
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:92
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:132
 msgid "Datei hochladen"
 msgstr "Upload file"
 
@@ -1938,7 +1938,7 @@ msgstr "The file is too big or it doesn't have an allowed extension."
 
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:73
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:122
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:87
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:88
 msgid "Dateibereich"
 msgstr "File area"
 
@@ -2718,7 +2718,7 @@ msgstr "Reminders"
 msgid "Erinnerungsnachrichten an alle Teilnehmenden schicken"
 msgstr "Write reminders to all participants"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:155
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:156
 msgid "Erlauben"
 msgstr "Allow"
 
@@ -2898,6 +2898,7 @@ msgstr "No selection available"
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogCopy.vue:297
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogImport.vue:123
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogTopics.vue:142
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:113
 msgid "Es steht keine Auswahl zur Verfügung."
 msgstr "No selection is available."
 
@@ -3015,6 +3016,10 @@ msgstr "Export of the learning material: %{title}"
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogExport.vue:42
 msgid "Export läuft, bitte haben sie einen Moment Geduld..."
 msgstr "Export is in progress, please be patient for a moment..."
+
+#: resources/assets/javascripts/lib/questionnaire.js:436
+msgid "Export läuft..."
+msgstr ""
 
 #: resources/vue/components/courseware/blocks/CoursewareBlockExportOptions.vue:2
 msgid "Export Optionen"
@@ -3506,7 +3511,7 @@ msgstr "Green"
 #: resources/vue/components/courseware/blocks/CoursewareCanvasBlock.vue:178
 #: resources/vue/components/courseware/blocks/CoursewareIframeBlock.vue:97
 #: resources/vue/components/courseware/blocks/CoursewareLtiBlock.vue:77
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:65
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:66
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:273
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:3
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:83
@@ -4010,7 +4015,7 @@ msgstr "Information about the text block"
 msgid "Informationen zum Verweissensitive-Grafik-Block"
 msgstr "Information about the image map block"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:53
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:54
 msgid "Informationen zum Video-Block"
 msgstr "Information about the video block"
 
@@ -4103,7 +4108,7 @@ msgstr "yes"
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:298
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:323
 #: resources/vue/components/courseware/blocks/CoursewareIframeBlock.vue:153
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:145
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:146
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:79
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:94
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:105
@@ -4736,6 +4741,10 @@ msgstr "Select licence"
 msgid "Lizenz der Plattform"
 msgstr "Platform license"
 
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:95
+msgid "Lizenzauswahl"
+msgstr "License selection"
+
 #: resources/vue/components/courseware/blocks/CoursewareFolderBlock.vue:143
 msgid "Lizenzauswahl abbrechen"
 msgstr "Cancel license selection"
@@ -5224,7 +5233,7 @@ msgstr "no"
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:299
 #: resources/vue/components/courseware/blocks/CoursewareGalleryBlock.vue:324
 #: resources/vue/components/courseware/blocks/CoursewareIframeBlock.vue:152
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:144
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:145
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:78
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:93
 #: resources/vue/components/courseware/unit/CoursewareUnitItemDialogSettings.vue:104
@@ -5484,7 +5493,7 @@ msgstr "Open folder %{foldername}"
 msgid "Ordner %{name} auswählen"
 msgstr "Select folder %{name}"
 
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:46
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:49
 msgid "Ordner anlegen"
 msgstr "Create folder"
 
@@ -5501,8 +5510,7 @@ msgstr "Select folder"
 msgid "Ordner enthält keine Audio-Dateien"
 msgstr "Folder does not contain audio files"
 
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:27
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:35
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:28
 msgid "Ordner hinzufügen"
 msgstr "Add folder"
 
@@ -5518,7 +5526,8 @@ msgstr "Fold folder"
 msgid "Ordner-Filter"
 msgstr "Folder filter"
 
-#: resources/vue/components/file-chooser/FileChooserToolbar.vue:40
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:37
+#: resources/vue/components/file-chooser/FileChooserToolbar.vue:42
 msgid "Ordnername"
 msgstr "Folder name"
 
@@ -5643,7 +5652,7 @@ msgstr "Square"
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:69
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:118
 #: resources/vue/components/courseware/blocks/CoursewareEmbedBlock.vue:119
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:83
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:84
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogCopy.vue:21
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogCopy.vue:47
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogCopy.vue:19
@@ -5942,7 +5951,7 @@ msgstr "Page orientation"
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:132
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:133
 msgid "Seitenverhältnis"
 msgstr "Aspect ratio"
 
@@ -6635,7 +6644,7 @@ msgstr "Type"
 #: resources/vue/components/courseware/blocks/CoursewareEmbedBlock.vue:110
 #: resources/vue/components/courseware/blocks/CoursewareFolderBlock.vue:224
 #: resources/vue/components/courseware/blocks/CoursewareTableOfContentsBlock.vue:151
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:74
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:75
 msgid "Überschrift"
 msgstr "Header"
 
@@ -6745,7 +6754,7 @@ msgstr "Subtitle"
 #: resources/vue/components/courseware/blocks/CoursewareEmbedBlock.vue:134
 #: resources/vue/components/courseware/blocks/CoursewareIframeBlock.vue:115
 #: resources/vue/components/courseware/blocks/CoursewareLinkBlock.vue:91
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:94
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:95
 msgid "URL"
 msgstr "URL"
 
@@ -6835,7 +6844,7 @@ msgstr "enlarged"
 msgid "verheiratet"
 msgstr "married"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:156
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:157
 msgid "Verhindern"
 msgstr "Prevent"
 
@@ -6931,11 +6940,11 @@ msgstr "Show directory as a list"
 msgid "Verzeichnis als Tabelle anzeigen"
 msgstr "Show directory as a table"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:124
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:125
 msgid "Video Einstellungen"
 msgstr "Video settings"
 
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:140
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:141
 msgid "Video startet automatisch"
 msgstr "Video starts automatically"
 
@@ -7242,7 +7251,7 @@ msgstr "When in the month shall the repetition take place?"
 #: resources/vue/components/courseware/blocks/CoursewareAudioBlock.vue:495
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:74
 #: resources/vue/components/courseware/blocks/CoursewareBeforeAfterBlock.vue:123
-#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:88
+#: resources/vue/components/courseware/blocks/CoursewareVideoBlock.vue:89
 msgid "Web-Adresse"
 msgstr "Web address"
 
