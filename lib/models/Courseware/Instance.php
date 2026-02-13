@@ -513,11 +513,14 @@ class Instance
 
     public function findAllStructuralElements(): array
     {
-        $sql = 'SELECT se.*
-                FROM cw_structural_elements se
-                WHERE se.range_id = ? AND se.range_type = ?';
+        // Recursively get all structural elements belonging to this root
+        $sql = $this->recursiveGetStructuralElementsQuery(
+            "SELECT *
+             FROM structural_tree st"
+        );
+
         $statement = \DBManager::get()->prepare($sql);
-        $statement->execute([$this->root['range_id'], $this->root['range_type']]);
+        $statement->execute(['root' => $this->root['id']]);
 
         $data = [];
         foreach ($statement as $key => $row) {
@@ -529,13 +532,22 @@ class Instance
 
     public function findAllBlocks(): array
     {
-        $sql = 'SELECT b.*
-                FROM cw_structural_elements se
-                JOIN cw_containers c ON se.id = c.structural_element_id
-                JOIN cw_blocks b ON c.id = b.container_id
-                WHERE se.range_id = ? AND se.range_type = ?';
+        /*
+         * This SQL builds a recursive structure with the whole structural
+         * element tree underneath the given root element and then fetches
+         * all blocks belonging to these elements.
+         */
+        $sql = $this->recursiveGetStructuralElementsQuery(
+            "SELECT DISTINCT b.`id`
+             FROM structural_tree st
+             JOIN `cw_containers` c
+                 ON c.`structural_element_id` = st.`id`
+             JOIN `cw_blocks` b
+                 ON b.`container_id` = st.`id`"
+        );
+
         $statement = \DBManager::get()->prepare($sql);
-        $statement->execute([$this->root['range_id'], $this->root['range_type']]);
+        $statement->execute(['root' => $this->root['id']]);
 
         $data = [];
         foreach ($statement as $key => $row) {
@@ -562,14 +574,22 @@ class Instance
             };
         }
 
-        $sql = 'SELECT se.id AS structural_element_id, b.*
-                FROM cw_structural_elements se
-                JOIN cw_containers c ON se.id = c.structural_element_id
-                JOIN cw_blocks b ON c.id = b.container_id
-                WHERE se.range_id = ? AND se.range_type = ?';
+        /*
+         * This SQL builds a recursive structure with the whole structural
+         * element tree underneath the given root element and then fetches
+         * all blocks belonging to these elements.
+         */
+        $sql = $this->recursiveGetStructuralElementsQuery(
+            "SELECT DISTINCT st.`id`, b.*
+             FROM structural_tree st
+             JOIN `cw_containers` c
+                 ON c.`structural_element_id` = st.`id`
+             JOIN `cw_blocks` b
+                 ON b.`container_id` = st.`id`"
+        );
 
         $statement = \DBManager::get()->prepare($sql);
-        $statement->execute([$this->root['range_id'], $this->root['range_type']]);
+        $statement->execute(['root' => $this->root['id']]);
 
         $data = [];
         foreach ($statement as $row) {
@@ -585,7 +605,7 @@ class Instance
         return $data;
     }
 
-   /* 
+   /*
     *
     *  LINKED UNITS
     *
@@ -616,6 +636,27 @@ class Instance
         if (!$this->isValidLinkedUnits($units)) {
             throw new \InvalidArgumentException('Invalid linked units for courseware.');
         }
+    }
+
+    /**
+     * Provides an SQL snippet to recursively build all child nodes of the
+     * current root element.
+     * @return string
+     */
+    private function recursiveGetStructuralElementsQuery(string $query): string
+    {
+        return "WITH RECURSIVE structural_tree AS (
+                SELECT *
+                FROM `cw_structural_elements`
+                WHERE `id` = :root
+
+                UNION ALL
+
+                SELECT e.*
+                FROM `cw_structural_elements` e
+                JOIN `structural_tree` st
+                    ON e.`parent_id` = st.`id`
+            ) {$query}";
     }
 
 }
