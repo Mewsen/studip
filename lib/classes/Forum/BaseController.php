@@ -30,6 +30,13 @@ abstract class BaseController extends StudipController
         }
 
         $this->buildSidebar();
+
+        \Helpbar::Get()->addPlainText('', _('Neue Diskussionen starten Sie per Plus-Symbol, Antworten und Zitieren '
+            . 'sind direkt möglich. Abonnements und Suche helfen, den Überblick zu behalten. Diskussionen lassen '
+            . 'sich übersichtlich nach Themen und Kategorien ordnen, neueste Beiträge finden Sie dort in der Spalte '
+            . 'Letzte Aktivität.'));
+        \PageLayout::setHelpKeyword('Basis.Forum3');
+
         parent::before_filter($action, $args);
     }
 
