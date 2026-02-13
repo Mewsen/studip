@@ -41,9 +41,7 @@ class CourseNavigation extends Navigation
 
         parent::__construct($coursetext, $courselink);
 
-        if (User::findCurrent()) {
-            $this->setImage(Icon::create('seminar', Icon::ROLE_NAVIGATION, ['title' => $courseinfo]));
-        }
+        $this->setImage(Icon::create('seminar', Icon::ROLE_NAVIGATION, ['title' => $courseinfo]));
     }
 
     /**
