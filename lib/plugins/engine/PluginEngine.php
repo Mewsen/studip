@@ -43,6 +43,7 @@ class PluginEngine
         self::getPlugins(HomepagePlugin::class);
 
         $context_id = Context::getId();
+
         // load course plugins
         if ($context_id) {
             $modules = self::getPlugins(StudipModule::class, $context_id);
@@ -51,14 +52,7 @@ class PluginEngine
             foreach ($modules as $module) {
                 $tabs = $module->getTabNavigation($context_id);
 
-                if (!$tabs || !$navigation) {
-                    continue;
-                }
-
-                $has_perm = $GLOBALS['perm']->get_studip_perm($context_id);
-                $is_core = $module instanceof CoreOverview;
-
-                if ($has_perm || (!$has_perm && $is_core)) {
+                if ($navigation && $tabs) {
                     $navigation->addToolNavigation($module->getPluginId(), $tabs);
                 }
             }
