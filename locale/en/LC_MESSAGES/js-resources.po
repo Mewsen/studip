@@ -5,8 +5,8 @@ msgstr ""
 "PO-Revision-Date: 2025-07-22 08:00+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-4-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-5-4-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -58,7 +58,7 @@ msgid_plural "%{ count } Benachrichtigungen"
 msgstr[0] "%{ count } notification"
 msgstr[1] "%{ count } notifications"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:136
+#: resources/vue/components/tree/StudipTreeTable.vue:135
 msgid "%{ count } Unterebenen"
 msgstr "%{ count } sub-layers"
 
@@ -252,7 +252,7 @@ msgstr[1] "%{length} comments"
 msgid "%{myValue} von %{max}"
 msgstr "%{myValue} of %{max}"
 
-#: resources/vue/components/tree/StudipTreeList.vue:88
+#: resources/vue/components/tree/StudipTreeList.vue:87
 msgid "%{name} bearbeiten"
 msgstr "Edit %{name}"
 
@@ -725,13 +725,13 @@ msgstr "Allow audio recordings"
 msgid "Audiodatei:"
 msgstr "Audio file:"
 
-#: resources/vue/components/tree/StudipTreeList.vue:148
-#: resources/vue/components/tree/StudipTreeTable.vue:93
+#: resources/vue/components/tree/StudipTreeList.vue:147
+#: resources/vue/components/tree/StudipTreeTable.vue:92
 msgid "Auf dieser Ebene existieren keine weiteren Unterebenen."
 msgstr "No further sub-levels exist below this level."
 
-#: resources/vue/components/tree/StudipTreeList.vue:151
-#: resources/vue/components/tree/StudipTreeTable.vue:103
+#: resources/vue/components/tree/StudipTreeList.vue:150
+#: resources/vue/components/tree/StudipTreeTable.vue:102
 msgid "Auf dieser Ebene sind keine Veranstaltungen zugeordnet."
 msgstr "No courses are assigned on this layer."
 
@@ -981,7 +981,7 @@ msgstr "Error occurred during the request."
 msgid "Beim Hochladen der Bilddatei ist ein Fehler aufgetretten."
 msgstr "An error occurred while uploading the image file."
 
-#: resources/vue/components/courseware/IndexApp.vue:53
+#: resources/vue/components/courseware/IndexApp.vue:54
 #: resources/vue/components/courseware/PublicApp.vue:43
 msgid "Beim Laden der Seite ist ein Fehler aufgetreten."
 msgstr "An error occurred while loading the page."
@@ -1447,7 +1447,7 @@ msgstr "LTI tool consumer key"
 msgid "Consumer-Secret des LTI-Tools"
 msgstr "LTI tool consumer secret"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:148
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:149
 msgid "Contextmenü"
 msgstr "Context menu"
 
@@ -1545,7 +1545,7 @@ msgstr "Password and re-typed password don't match!"
 #: resources/vue/components/courseware/CoursewareDownloadBlock.vue:93
 #: resources/vue/components/courseware/CoursewareDownloadBlock.vue:111
 #: resources/vue/components/courseware/CoursewareFileChooser.vue:4
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:105
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:106
 msgid "Datei"
 msgstr "File"
 
@@ -1587,7 +1587,7 @@ msgstr "The file is too big or it doesn't have an allowed extension."
 
 #: resources/vue/components/courseware/CoursewareBeforeAfterBlock.vue:73
 #: resources/vue/components/courseware/CoursewareBeforeAfterBlock.vue:119
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:87
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:88
 msgid "Dateibereich"
 msgstr "File area"
 
@@ -1863,7 +1863,7 @@ msgstr ""
 "The page could not be created. You do not have the necessary write "
 "permissions."
 
-#: resources/vue/components/courseware/IndexApp.vue:49
+#: resources/vue/components/courseware/IndexApp.vue:50
 #: resources/vue/components/courseware/PublicApp.vue:39
 msgid "Die Seite konnte nicht gefunden werden."
 msgstr "The page could not be found."
@@ -1953,7 +1953,7 @@ msgid "Diese Seite kann von Teilnehmenden nicht gesehen werden"
 msgstr "This page cannot be seen by participants"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:243
-#: resources/vue/components/courseware/IndexApp.vue:51
+#: resources/vue/components/courseware/IndexApp.vue:52
 #: resources/vue/components/courseware/PublicApp.vue:41
 msgid "Diese Seite steht Ihnen leider nicht zur Verfügung."
 msgstr "This page is unfortunately not available for you."
@@ -2067,7 +2067,7 @@ msgstr "Search document"
 msgid "Donnerstag"
 msgstr "Thursday"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:301
+#: resources/vue/components/tree/StudipTreeTable.vue:298
 msgid "Download des Ergebnisses"
 msgstr "Download result"
 
@@ -2112,7 +2112,7 @@ msgstr "Duplicate"
 msgid "Editierberechtigung für Tutor/-innen"
 msgstr "Editing permission for tutors"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:46
+#: resources/vue/components/tree/TreeSearchResult.vue:45
 msgid "Ein Eintrag für den Begriff \"%{searchterm}\" gefunden"
 msgid_plural "%{count} Einträge für den Begriff \"%{searchterm}\" gefunden"
 msgstr[0] "One entry found for the term \"%{searchterm}\""
@@ -2296,7 +2296,7 @@ msgstr "Reminders"
 msgid "Erinnerungsnachrichten an alle Teilnehmenden schicken"
 msgstr "Write reminders to all participants"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:152
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:153
 msgid "Erlauben"
 msgstr "Allow"
 
@@ -2312,6 +2312,11 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogAdd.vue:48
 msgid "Erscheinung"
 msgstr "Appearance"
+
+#: resources/vue/components/courseware/IndexApp.vue:120
+#, fuzzy
+msgid "Erste Seite aufrufen"
+msgstr "Invalid page call"
 
 #: resources/vue/mixins/courseware/export.js:42
 msgid "Erstelle Zip-Archiv"
@@ -2499,7 +2504,7 @@ msgstr "No content has been added yet."
 msgid "Es wurden keine Aktivitäten gefunden."
 msgstr "No activities have been found."
 
-#: resources/vue/components/tree/TreeSearchResult.vue:108
+#: resources/vue/components/tree/TreeSearchResult.vue:105
 msgid "Es wurden keine Ergebnisse zu Ihrem Suchbegriff \"%{term}\" gefunden."
 msgstr "No results could be found for your search term \"%{term}\"."
 
@@ -2566,6 +2571,10 @@ msgstr "Export of the learning material: %{title}"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:1122
 msgid "Export läuft, bitte haben sie einen Moment Geduld..."
 msgstr "Export is in progress, please be patient for a moment..."
+
+#: resources/assets/javascripts/lib/questionnaire.js:436
+msgid "Export läuft..."
+msgstr ""
 
 #: resources/vue/components/courseware/CoursewareBlockExportOptions.vue:2
 msgid "Export Optionen"
@@ -3025,7 +3034,7 @@ msgstr "Green"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:287
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:3
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:72
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:65
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:66
 msgid "Grunddaten"
 msgstr "Basic details"
 
@@ -3405,9 +3414,9 @@ msgid "Infobox vor Download"
 msgstr "Info box before download"
 
 #: resources/vue/components/StudipDialog.vue:114
-#: resources/vue/components/tree/StudipTreeList.vue:194
-#: resources/vue/components/tree/StudipTreeTable.vue:160
-#: resources/vue/components/tree/TreeSearchResult.vue:55
+#: resources/vue/components/tree/StudipTreeList.vue:193
+#: resources/vue/components/tree/StudipTreeTable.vue:159
+#: resources/vue/components/tree/TreeSearchResult.vue:54
 msgid "Information"
 msgstr "Information"
 
@@ -3523,7 +3532,7 @@ msgstr "Information about the text block"
 msgid "Informationen zum Verweissensitive-Grafik-Block"
 msgstr "Information about the image map block"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:53
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:54
 msgid "Informationen zum Video-Block"
 msgstr "Information about the video block"
 
@@ -3620,7 +3629,7 @@ msgstr "yes"
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:316
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:153
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:86
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:142
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:143
 msgid "Ja"
 msgstr "Yes"
 
@@ -3888,7 +3897,7 @@ msgstr "Loading settings…"
 msgid "Lade Kommentare..."
 msgstr "Load comments..."
 
-#: resources/vue/components/courseware/IndexApp.vue:107
+#: resources/vue/components/courseware/IndexApp.vue:109
 #: resources/vue/components/courseware/PublicApp.vue:26
 msgid "Lade Lernmaterial..."
 msgstr "Loading learning material..."
@@ -4502,9 +4511,9 @@ msgstr "Next content element"
 #: resources/vue/components/courseware/CoursewareStructuralElementPermissions.vue:109
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:303
 #: resources/vue/components/stock-images/ImagesList.vue:48
-#: resources/vue/components/tree/StudipTreeList.vue:193
-#: resources/vue/components/tree/StudipTreeTable.vue:159
-#: resources/vue/components/tree/TreeSearchResult.vue:54
+#: resources/vue/components/tree/StudipTreeList.vue:192
+#: resources/vue/components/tree/StudipTreeTable.vue:158
+#: resources/vue/components/tree/TreeSearchResult.vue:53
 msgid "Name"
 msgstr "Name"
 
@@ -4596,7 +4605,7 @@ msgstr "no"
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:317
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:152
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:85
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:141
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:142
 msgid "Nein"
 msgstr "No"
 
@@ -4959,7 +4968,7 @@ msgstr "Square"
 #: resources/vue/components/courseware/CoursewareShelfDialogCopy.vue:41
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:21
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:47
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:83
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:84
 msgid "Quelle"
 msgstr "Resource"
 
@@ -5219,7 +5228,7 @@ msgstr "Page orientation"
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:129
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:130
 msgid "Seitenverhältnis"
 msgstr "Aspect ratio"
 
@@ -5480,8 +5489,8 @@ msgstr ""
 "Sorting element for %{label} %{option}. Press the up or down arrow key to "
 "move this element inside the list."
 
-#: resources/vue/components/tree/StudipTreeList.vue:129
-#: resources/vue/components/tree/StudipTreeTable.vue:185
+#: resources/vue/components/tree/StudipTreeList.vue:128
+#: resources/vue/components/tree/StudipTreeTable.vue:184
 msgid ""
 "Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben "
 "oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
@@ -5855,7 +5864,7 @@ msgstr "Turquoise"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:61
 #: resources/vue/components/courseware/CoursewareDefaultContainer.vue:124
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:134
-#: resources/vue/components/tree/StudipTreeTable.vue:158
+#: resources/vue/components/tree/StudipTreeTable.vue:157
 msgid "Typ"
 msgstr "Type"
 
@@ -5870,7 +5879,7 @@ msgstr "Type"
 #: resources/vue/components/courseware/CoursewareEmbedBlock.vue:110
 #: resources/vue/components/courseware/CoursewareFolderBlock.vue:220
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:150
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:74
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:75
 msgid "Überschrift"
 msgstr "Header"
 
@@ -5936,13 +5945,13 @@ msgstr "Invisible for users without write permissions"
 msgid "unsichtbar setzen"
 msgstr "set invisible"
 
-#: resources/vue/components/tree/StudipTreeTable.vue:197
-#: resources/vue/components/tree/StudipTreeTable.vue:211
+#: resources/vue/components/tree/StudipTreeTable.vue:196
+#: resources/vue/components/tree/StudipTreeTable.vue:210
 #: resources/vue/components/tree/TreeNodeTile.vue:12
 msgid "Unterebene %{ node } öffnen"
 msgstr "Open sub-layer %{ node }"
 
-#: resources/vue/components/tree/StudipTreeList.vue:108
+#: resources/vue/components/tree/StudipTreeList.vue:107
 msgid "Unterebenen"
 msgstr "Sub-layers"
 
@@ -5980,7 +5989,7 @@ msgstr "Subtitle"
 #: resources/vue/components/courseware/CoursewareEmbedBlock.vue:134
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:115
 #: resources/vue/components/courseware/CoursewareLinkBlock.vue:91
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:94
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:95
 msgid "URL"
 msgstr "URL"
 
@@ -6026,25 +6035,25 @@ msgstr "Find course"
 
 #: resources/vue/components/AdminCourses.vue:44
 #: resources/vue/components/AdminCourses.vue:55
-#: resources/vue/components/tree/StudipTreeList.vue:177
+#: resources/vue/components/tree/StudipTreeList.vue:176
 msgid "Veranstaltungen"
 msgstr "Courses"
 
+#: resources/vue/components/tree/StudipTreeList.vue:159
 #: resources/vue/components/tree/StudipTreeList.vue:160
-#: resources/vue/components/tree/StudipTreeList.vue:161
+#: resources/vue/components/tree/StudipTreeTable.vue:111
 #: resources/vue/components/tree/StudipTreeTable.vue:112
-#: resources/vue/components/tree/StudipTreeTable.vue:113
 msgid "Veranstaltungen auf dieser Ebene anzeigen"
 msgstr "Display all courses on this level"
 
+#: resources/vue/components/tree/StudipTreeList.vue:168
 #: resources/vue/components/tree/StudipTreeList.vue:169
-#: resources/vue/components/tree/StudipTreeList.vue:170
+#: resources/vue/components/tree/StudipTreeTable.vue:125
 #: resources/vue/components/tree/StudipTreeTable.vue:126
-#: resources/vue/components/tree/StudipTreeTable.vue:127
 msgid "Veranstaltungen auf Unterebenen anzeigen"
 msgstr "Show courses on sub-layers"
 
-#: resources/vue/components/tree/StudipTreeList.vue:265
+#: resources/vue/components/tree/StudipTreeList.vue:262
 msgid "Veranstaltungen exportieren"
 msgstr "Export courses"
 
@@ -6070,7 +6079,7 @@ msgstr "enlarged"
 msgid "verheiratet"
 msgstr "married"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:153
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:154
 msgid "Verhindern"
 msgstr "Prevent"
 
@@ -6157,11 +6166,11 @@ msgstr "Show directory as a table"
 msgid "Video"
 msgstr "Video"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:121
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:122
 msgid "Video Einstellungen"
 msgstr "Video settings"
 
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:137
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:138
 msgid "Video startet automatisch"
 msgstr "Video starts automatically"
 
@@ -6448,7 +6457,7 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:231
 #: resources/vue/components/courseware/CoursewareBeforeAfterBlock.vue:74
 #: resources/vue/components/courseware/CoursewareBeforeAfterBlock.vue:120
-#: resources/vue/components/courseware/CoursewareVideoBlock.vue:88
+#: resources/vue/components/courseware/CoursewareVideoBlock.vue:89
 msgid "Web-Adresse"
 msgstr "Web address"
 
@@ -6712,12 +6721,12 @@ msgstr "Change assignment"
 msgid "zur nächsten Karte"
 msgstr "to the next card"
 
-#: resources/vue/components/tree/StudipTreeList.vue:208
-#: resources/vue/components/tree/StudipTreeTable.vue:246
+#: resources/vue/components/tree/StudipTreeList.vue:207
+#: resources/vue/components/tree/StudipTreeTable.vue:243
 msgid "Zur Veranstaltung %{ title }"
 msgstr "To the course %{ title }"
 
-#: resources/vue/components/tree/TreeSearchResult.vue:75
+#: resources/vue/components/tree/TreeSearchResult.vue:72
 msgid "Zur Veranstaltung %{title}"
 msgstr "To the course %{title}"
 
