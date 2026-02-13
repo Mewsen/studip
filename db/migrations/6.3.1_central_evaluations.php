@@ -69,6 +69,42 @@ class CentralEvaluations extends Migration
             INSERT INTO `roles` (`rolename`, `system`)
             VALUES ('Zentrale Evaluationsadministration', 'n');
         ");
+
+        DBManager::get()->exec("INSERT INTO plugins (pluginclassname, pluginname, plugintype, enabled, navigationpos)
+            VALUES ('EvaluationModule', 'Evaluation', 'CorePlugin,StudipModule', 'yes', 1)
+        ");
+
+        $statement = DBManager::get()->prepare("
+            INSERT INTO roles_plugins (roleid, pluginid)
+            SELECT roleid, ?
+            FROM roles
+            WHERE `system` = 'y'
+        ");
+        $plugin_id = DBManager::get()->lastInsertId();
+        $statement->execute([$plugin_id]);
+
+        $get_sem_classes = DBManager::get()->prepare("
+            SELECT *
+            FROM `sem_classes`
+        ");
+        $get_sem_classes->execute();
+        $update_modules = DBManager::get()->prepare("
+            UPDATE `sem_classes` SET `modules` = :modules WHERE `id` = :sem_class
+        ");
+        while ($row = $get_sem_classes->fetch(PDO::FETCH_ASSOC)) {
+            $json = json_decode($row['modules'], true);
+            //evaluations are always sticky - either they are always active or always inactive
+            $json['CoreEvaluation'] = [
+                'activated' => $row['studygroup_mode'] ? 1 : 0,
+                'sticky' => 1
+            ];
+
+            $update_modules->execute([
+                'sem_class' => $row['id'],
+                'modules' => json_encode($json)
+            ]);
+        }
+
         RolePersistence::expireRolesCache();
     }
 
