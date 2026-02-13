@@ -65,11 +65,18 @@ class CentralEvaluations extends Migration
             ADD KEY `template_question_id` (`template_question_id`)
         ");
 
-
+        DBManager::get()->exec("
+            INSERT INTO `roles` (`rolename`, `system`)
+            VALUES ('Zentrale Evaluationsadministration', 'n');
+        ");
+        RolePersistence::expireRolesCache();
     }
 
     protected function down()
     {
+        DBManager::get()->execute("
+            DELETE FROM `roles` WHERE `rolename` = 'Zentrale Evaluationsadministration' AND `system` = 'n'
+        ");
         DBManager::get()->exec("
             ALTER TABLE `questionnaire`
             DROP COLUMN `is_template`,
@@ -89,6 +96,6 @@ class CentralEvaluations extends Migration
             DROP COLUMN `template_question_id`
         ");
 
-
+        RolePersistence::expireRolesCache();
     }
 }
