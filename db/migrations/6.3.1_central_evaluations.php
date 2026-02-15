@@ -114,7 +114,7 @@ class CentralEvaluations extends Migration
             DELETE FROM `roles` WHERE `rolename` = 'Zentrale Evaluationsadministration' AND `system` = 'n'
         ");
         DBManager::get()->exec("
-            ALTER TABLE `questionnaire`
+            ALTER TABLE `questionnaires`
             DROP COLUMN `is_template`,
             DROP COLUMN `template_is_enabled`,
             DROP COLUMN `template_id`
