@@ -15,6 +15,7 @@ use Studip\LTI13a\Registration;
 use Studip\LTI13a\RegistrationManager;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface\MessagePayloadInterface;
 use LtiResourceLink as LtiResourceLinkModel;
+use Studip\LTI13a\RoleMapper;
 
 /**
  * course/lti.php - LTI consumer API for Stud.IP
@@ -306,9 +307,7 @@ class Course_LtiController extends StudipController
                     $registration,
                     $GLOBALS['user']->id,
                     $this->resource_link->deployment_id,
-                    [
-                        PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))
-                    ],
+                    RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->course_id)),
                     array_merge(
                         [
                             new ContextClaim(
@@ -538,7 +537,7 @@ class Course_LtiController extends StudipController
                 $GLOBALS['user']->id,
                 null,
                 $this->link->deployment_id,
-                [PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))]
+                RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->course_id))
             );
             $this->render_text($message->toHtmlRedirectForm());
         } else {
