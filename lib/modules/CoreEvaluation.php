@@ -44,7 +44,7 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
     public function getMetadata()
     {
         return [
-            'summary' => _('Lehrveranstaltungsevaluationen'),
+            'summary' => _('Lehrveranstaltungs-Evaluationen'),
             'description' => _(''),
             'displayname' => _('Evaluation'),
             'category' => _('Lehr- und Lernorganisation'),
