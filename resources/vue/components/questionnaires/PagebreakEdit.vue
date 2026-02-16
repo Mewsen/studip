@@ -1,15 +1,14 @@
 <template>
     <div><label>
-        {{ $gettext('Fügt eine horizontale Trennlinie ein.') }}
-        </label>
-    </div>
+        {{ $gettext('Fügt einen Seitenumbruch ein.') }}
+    </label></div>
 </template>
 
 <script>
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
 
 export default {
-    name: 'divider-edit',
+    name: 'pagebreak-edit',
     extends: QuestionnaireComponent,
     created() {
         this.setDefaultValues({

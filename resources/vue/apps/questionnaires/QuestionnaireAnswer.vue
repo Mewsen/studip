@@ -1,36 +1,73 @@
 <template>
-    Hallo, ich bin ein Template!
+    <form action="#"
+          method="post"
+          enctype="multipart/form-data"
+          class="questionnaire"
+          @submit.prevent="submit()"
+          :data-dialog="asDialog ? true : null"
+          :data-secure="activateFormSecure"
+    >
 
-    {{ questionnaireData.title }}
+        <div class="questionnaire_answer">
+            <article v-for="question in questionnaireData.questions">
+                {{ question.questiontype }}
+                <QuestionnaireInfoView v-if="question.questiontype == 'Infromation'" />
+                <HeadlineView v-if="question.questiontype == 'Headline'" :question="question" />
+                <DividerView v-if="question.questiontype == 'Divider'" />
+                <BlankLineView v-if="question.questiontype == 'BlankLine'" />
+                <PagebreakView v-if="question.questiontype == 'Pagebreak'" />
 
+                <!-- TODO alle anderen Fragetypen rendern -->
+                <VoteAnswer v-if="question.questiontype == 'Vote'" :question="question"/>
+                <FreetextAnswer v-if="question.questiontype == 'Freetext'" :question="question"/>
+                <RangescaleAnswer v-if="question.questiontype == 'Rangescale'" :question="question"/>
+                <LikertAnswer v-if="question.questiontype == 'Likert'" :question="question"/>
+                <AutomatedDataAnswer v-if="question.questiontype == 'AutomatedData'" :question="question"/>
+            </article>
 
-    <div class="questionnaire_answer">
-        <article v-for="question in questionnaireData.questions">
-        {{ question.component }}
+        </div>
 
-            {{ question.questiontype }}
+        <div class="terms">
+            <span v-if="questionnaireData.anonymous == 1 ">{{ $gettext('Die Teilnahme ist anonym.') }}</span>
+            <span v-else>{{ $gettext('Die Teilnahme ist nicht anonym.') }}</span>
+            <span v-if="questionnaireData.editanswers == 1 ">{{ $gettext('Sie können Ihre Antworten nachträglich ändern.') }}</span>
+            <!-- TODO funktioniert noch nicht mit Enddatum -->
+            <span v-if="questionnaireData.stopdate">{{ $gettext('Sie können den Fragebogen beantworten bis zum %{date} um %{time} Uhr.', {date:getFormattedDate, time:getFormattedTime}) }}</span>
+        </div>
 
-        </article>
-
-    </div>
-
-    {{ questionnaireData.anonymous }}
-
-    <div class="terms">
-        <span v-if="questionnaireData.anonymous == 1 ">{{ $gettext('Die Teilnahme ist anonym.') }}</span>
-        <span v-else>{{ $gettext('Die Teilnahme ist nicht anonym.') }}</span>
-    </div>
+    </form>
 </template>
 
-<script >
+<script setup>
 import {$gettext} from "../../../assets/javascripts/lib/gettext";
+import {computed} from "vue";
 
-export default {
-    name: 'questionnaireanswer',
-    methods: {$gettext},
+/* Import Design Element views */
+import QuestionnaireInfoView from '../../components/questionnaires/QuestionnaireInfoView.vue';
+import HeadlineView from '../../components/questionnaires/HeadlineView.vue';
+import DividerView from '../../components/questionnaires/DividerView.vue';
+import BlankLineView from '../../components/questionnaires/BlankLineView.vue';
+import PagebreakView from '../../components/questionnaires/PagebreakView.vue';
 
-    props: {
-        questionnaireData: Object,
+/* Import Question Views */
+import VoteAnswer from '../../components/questionnaires/VoteAnswer.vue';
+import FreetextAnswer from '../../components/questionnaires/FreetextAnswer.vue';
+import RangescaleAnswer from '../../components/questionnaires/RangescaleAnswer.vue';
+import LikertAnswer from '../../components/questionnaires/LikertAnswer.vue';
+import AutomatedDataAnswer from '../../components/questionnaires/AutomatedDataAnswer.vue';
+
+const props = defineProps({
+    questionnaireData: Object
+})
+
+const getFormattedDate = computed(() => {
+        return new Date(this.questionnaireData.stopdate * 1000).toLocaleDateString(document.documentElement.lang, { day: '2-digit', month: '2-digit', year: 'numeric' })
     }
-}
+)
+
+const getFormattedTime = computed(() => {
+    return new Date(this.questionnaireData.stopdate * 1000).toLocaleTimeString(document.documentElement.lang, {hour: '2-digit', minute: '2-digit'})
+    }
+)
+
 </script>

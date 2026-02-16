@@ -282,6 +282,7 @@ $width: 270px;
 .questionnaire_edit,
 .questionnaire_answer,
 .questionnaire_results {
+    flex-grow: 1 !important;
     .option-cell {
         text-align: center;
     }

@@ -11,14 +11,6 @@ export default {
     created() {
         this.setDefaultValues({
         });
-    },
-    mounted() {
-        this.checkValidity();
-    },
-    methods: {
-        checkValidity() {
-
-        }
     }
 }
 </script>

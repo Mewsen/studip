@@ -17,14 +17,6 @@ export default {
         this.setDefaultValues({
             description: ''
         });
-    },
-    mounted() {
-        this.checkValidity();
-    },
-    methods: {
-        checkValidity() {
-
-        }
     }
 }
 </script>
