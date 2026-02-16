@@ -256,15 +256,28 @@ class QuestionnaireController extends AuthenticatedController
     public function delete_action($questionnaire_id)
     {
         $this->questionnaire = new Questionnaire($questionnaire_id);
+        $is_template = $this->questionnaire->is_template;
         if (!$this->questionnaire->isEditable()) {
-            throw new AccessDeniedException(_('Der Fragebogen ist nicht bearbeitbar.'));
+            if(!$is_template) {
+                throw new AccessDeniedException(_('Der Fragebogen ist nicht bearbeitbar.'));
+            } else {
+                throw new AccessDeniedException(_('Die Vorlage ist nicht bearbeitbar.'));
+            }
         }
         $this->questionnaire->delete();
-        PageLayout::postSuccess(_('Der Fragebogen wurde gelöscht.'));
+        if(!$is_template) {
+            PageLayout::postSuccess(_('Der Fragebogen wurde gelöscht.'));
+        } else {
+            PageLayout::postSuccess(_('Die Vorlage wurde gelöscht.'));
+        }
         if (Request::get("redirect")) {
             $this->redirect(Request::get("redirect"));
         } else {
-            $this->redirect("questionnaire/overview");
+            if(!$is_template) {
+                $this->redirect("questionnaire/overview");
+            } else {
+                $this->redirect("evaluation/pool");
+            }
         }
     }
 
