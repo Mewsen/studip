@@ -106,6 +106,28 @@ class CentralEvaluations extends Migration
             ]);
         }
 
+        //activate evaluation tool for existing courses
+        $max_pos = (int)DBManager::get()->fetchColumn("
+            SELECT max(position) FROM studip_eval.tools_activated where range_type = 'course'
+        ");
+        $sql = "
+            INSERT INTO `tools_activated`
+            VALUES(:range_id, :range_type, :plugin_id, :position, :metadata, :mkdate, :chdate)
+        ";
+        $update_courses = DBManager::get()->prepare("SELECT * FROM `seminare`"); //TODO where not study group
+        $update_courses->execute();
+        while ($row = $update_courses->fetch(PDO::FETCH_ASSOC)) {
+            DBManager::get()->execute($sql, [
+                'range_id' => $row['Seminar_id'],
+                'range_type' => 'course',
+                'plugin_id' => $plugin_id,
+                'position' => $max_pos + 1,
+                'metadata' => null,
+                'mkdate' => time(),
+                'chdate' => time()
+            ]);
+        }
+
         RolePersistence::expireRolesCache();
     }
 
