@@ -30,7 +30,12 @@ use Studip\Button;
                         <td>
                             <input type="checkbox" name="q[]" value="<?= htmlReady($template->id) ?>">
                         </td>
-                        <td><?= htmlReady($template->title) ?></td>
+                        <td>
+                            <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"
+                               data-dialog="size=big">
+                                <?= htmlReady($template->title) ?>
+                            </a>
+                        </td>
                         <td data-text="<?= (int) $template['chdate'] ?>">
                             <?= date('d.m.Y H:i', $template['chdate']) ?>
                         </td>
