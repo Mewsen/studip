@@ -109,9 +109,9 @@ class QuestionnaireController extends AuthenticatedController
             }
         } else {
             if (!$this->questionnaire->is_template) {
-                PageLayout::setTitle(_("Fragebogen bearbeiten: ").$this->questionnaire['title']);
+                PageLayout::setTitle(_("Fragebogen bearbeiten: ") . $this->questionnaire['title']);
             } else {
-                PageLayout::setTitle(_("Vorlage bearbeiten: ").$this->questionnaire['title']);
+                PageLayout::setTitle(_("Vorlage bearbeiten: ") . $this->questionnaire['title']);
             }
         }
         if (!$this->questionnaire->isEditable()) {
