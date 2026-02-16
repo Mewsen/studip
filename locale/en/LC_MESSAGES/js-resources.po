@@ -2,15 +2,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2026-01-09 10:38+0000\n"
-"Last-Translator: Stefan Suchi <suchi@data-quest.de>\n"
+"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
 "main-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -9415,7 +9416,7 @@ msgstr "Target learning material"
 
 #: resources/vue/components/massmail/MassMailMessagesList.vue:40
 msgid "Zielgruppe"
-msgstr "target group"
+msgstr "Target group"
 
 #: resources/vue/components/courseware/tasks/CoursewareTasksDialogDistribute.vue:66
 msgid "Zielseite"
