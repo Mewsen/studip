@@ -111,6 +111,24 @@ class CentralEvaluations extends Migration
 
     protected function down()
     {
+        $get_sem_classes = DBManager::get()->prepare("
+            SELECT *
+            FROM `sem_classes`
+        ");
+        $get_sem_classes->execute();
+        $update_modules = DBManager::get()->prepare("
+            UPDATE `sem_classes` SET `modules` = :modules WHERE `id` = :sem_class
+        ");
+        while ($row = $get_sem_classes->fetch(PDO::FETCH_ASSOC)) {
+            $json = json_decode($row['modules'], true);
+            unset($json['CoreEvaluation']);
+
+            $update_modules->execute([
+                'sem_class' => $row['id'],
+                'modules' => json_encode($json)
+            ]);
+        }
+
         $plugin_id = DBManager::get()->fetchColumn("
             SELECT `pluginid` from `plugins` WHERE `pluginclassname` = 'CoreEvaluation'
         ");
