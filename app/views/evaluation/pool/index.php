@@ -20,6 +20,7 @@ use Studip\Button;
                 </th>
                 <th data-sort="text"><?= _('Titel') ?></th>
                 <th data-sort="digit"><?= _('Datum') ?></th>
+                <th data-sort="text"><?= _('Status') ?></th>
                 <th class="actions"><?= _('Aktionen') ?></th>
             </tr>
         </thead>
@@ -38,6 +39,9 @@ use Studip\Button;
                         </td>
                         <td data-text="<?= (int) $template['chdate'] ?>">
                             <?= date('d.m.Y H:i', $template['chdate']) ?>
+                        </td>
+                        <td>
+                            <?= $template->template_is_enabled ? _('Freigegeben') : _('Gesperrt') ?>
                         </td>
                         <td class="actions">
                             <? if (!$template->isEditable()) : ?>
@@ -60,12 +64,11 @@ use Studip\Button;
                                     _('Kopieren'),
                                     Icon::create('clipboard')
                                 );
-                            $menu->addLink(
-                                $controller->url_for('' . $template->id), //TODO
-                                _('Freigeben'),
-                                Icon::create('lock-unlocked'),
-                                ['data-dialog' => '']
-                            );
+                                $menu->addLink(
+                                    $controller->url_for('evaluation/pool/template_enable/' . $template->id),
+                                    $template->template_is_enabled ? _('Sperren') : _('Freigeben'),
+                                    Icon::create($template->template_is_enabled ? 'lock-locked' : 'lock-unlocked')
+                                );
                                 echo $menu->render();
                             ?>
                         </td>
@@ -73,7 +76,7 @@ use Studip\Button;
                 <?php endforeach ?>
             <?php else : ?>
             <tr>
-                <td colspan="4" style="text-align: center">
+                <td colspan="5" style="text-align: center">
                     <?= _('Sie haben noch keine Vorlagen erstellt.') ?>
                 </td>
             </tr>
@@ -81,7 +84,7 @@ use Studip\Button;
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 <?= Button::create(_("Löschen"), "bulkdelete", ['data-confirm' => _("Wirklich löschen?")]) ?>
             </td>
         </tr>
