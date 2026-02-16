@@ -72,7 +72,7 @@ class CentralEvaluations extends Migration
         ");
 
         DBManager::get()->exec("INSERT INTO plugins (pluginclassname, pluginname, plugintype, enabled, navigationpos)
-            VALUES ('EvaluationModule', 'Evaluation', 'CorePlugin,StudipModule', 'yes', 1)
+            VALUES ('CoreEvaluation', 'Evaluation', 'CorePlugin,StudipModule', 'yes', 1)
         ");
 
         $statement = DBManager::get()->prepare("
