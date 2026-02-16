@@ -155,6 +155,20 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isEditable()
     {
+        $current_user = User::findCurrent();
+        if($this->is_template) {
+            if(PluginManager::getInstance()->getPlugin(CoreEvaluation::class) &&
+                isset($current_user) &&
+                ($current_user->hasPermissionLevel('root') ||
+                    $current_user->hasRole('Zentraler Evaluationsadmin'))) {
+
+                    return !count(QuestionnaireEvalAssignment::findBySQL("
+                        `startdate` <= UNIX_TIMESTAMP() AND `template_id` = ?
+                    ", [$this->id]));
+            }
+            return false;
+        }
+
         if ($this->isNew() || ($this['user_id'] === $GLOBALS['user']->id) || $GLOBALS['perm']->have_perm("root")) {
             return true;
         } else {
@@ -226,11 +240,6 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
     public function isRunning()
     {
         return $this->isStarted() && !$this->isStopped();
-    }
-
-    public function templateHasRunning(): bool
-    {
-        return false; //TODO
     }
 
     public function resultsVisible()

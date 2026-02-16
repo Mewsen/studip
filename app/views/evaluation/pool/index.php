@@ -35,7 +35,7 @@ use Studip\Button;
                             <?= date('d.m.Y H:i', $template['chdate']) ?>
                         </td>
                         <td class="actions">
-                            <? if ($template->templateHasRunning()) : ?>
+                            <? if (!$template->isEditable()) : ?>
                                 <?= Icon::create('edit', Icon::ROLE_INACTIVE)->asSvg(
                                     ['title' => _('Mindestens eine Evaluation dieser Vorlage ist gestartet.
                                      Sie kann nicht mehr bearbeitet werden.')]
