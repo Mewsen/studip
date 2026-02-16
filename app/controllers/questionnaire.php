@@ -100,8 +100,11 @@ class QuestionnaireController extends AuthenticatedController
         }
         $this->questionnaire = new Questionnaire($questionnaire_id);
         if ($this->questionnaire->isNew()) {
-            PageLayout::setTitle(_("Neuer Fragebogen"));
-            //TODO "Neue Vorlage"
+            if (!(Request::get('range_type') === 'pool')) {
+                PageLayout::setTitle(_("Neuer Fragebogen"));
+            } else {
+                PageLayout::setTitle(_("Neue Vorlage"));
+            }
         } else {
             if (!$this->questionnaire->is_template) {
                 PageLayout::setTitle(_("Fragebogen bearbeiten: ").$this->questionnaire['title']);
