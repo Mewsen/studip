@@ -96,7 +96,7 @@ class CentralEvaluations extends Migration
             $json = json_decode($row['modules'], true);
             //evaluations are always sticky - either they are always active or always inactive
             $json['CoreEvaluation'] = [
-                'activated' => $row['studygroup_mode'] ? 1 : 0,
+                'activated' => $row['studygroup_mode'] ? 0 : 1,
                 'sticky' => 1
             ];
 
