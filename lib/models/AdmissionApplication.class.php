@@ -252,7 +252,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                     $admission->store()
                     && Config::get()->getValue('NOTIFY_ON_WAITLIST_ADVANCE')
                     && $send_message
-                    && !$course->hasEnded()
+                    && !$seminar->hasEnded()
                 ) {
                     $username = $admission->user->username;
                     setTempLanguage($admission->user_id);
