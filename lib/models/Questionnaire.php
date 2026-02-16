@@ -6,6 +6,7 @@
  * @property string $title database column
  * @property string|null $description database column
  * @property string $user_id database column
+ * @property int $is_template database column
  * @property int|null $startdate database column
  * @property int|null $stopdate database column
  * @property int $visible database column
@@ -225,6 +226,11 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
     public function isRunning()
     {
         return $this->isStarted() && !$this->isStopped();
+    }
+
+    public function templateHasRunning(): bool
+    {
+        return false; //TODO
     }
 
     public function resultsVisible()
