@@ -33,7 +33,9 @@ class QuestionnaireController extends AuthenticatedController
         if (!$GLOBALS['perm']->have_perm('autor')) {
             throw new AccessDeniedException('Only for logged in users.');
         }
-        $this->questionnaires = Questionnaire::findBySQL("user_id = ? AND is_template = 0 ORDER BY chdate DESC", [$GLOBALS['user']->id]);
+        $this->questionnaires = Questionnaire::findBySQL(
+            "user_id = ? AND is_template = 0 AND template_id IS NULL ORDER BY chdate DESC",
+            [$GLOBALS['user']->id]);
         foreach ($this->questionnaires as $questionnaire) {
             if (!$questionnaire['visible'] && $questionnaire->isRunning()) {
                 $questionnaire->start();
