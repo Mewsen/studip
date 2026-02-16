@@ -113,7 +113,7 @@ class QuestionnaireController extends AuthenticatedController
             }
         }
         if (!$this->questionnaire->isEditable()) {
-            if (!(Request::get('range_type') === 'pool')) {
+            if (!($this->questionnaire->is_template)) {
                 throw new AccessDeniedException(_('Fragebogen ist nicht bearbeitbar.'));
             } else {
                 throw new AccessDeniedException(_('Vorlage ist nicht bearbeitbar.'));
