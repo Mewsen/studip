@@ -506,12 +506,6 @@ class Course_RoomRequestsController extends AuthenticatedController
             );
         }
 
-        // no min number of seats
-        if (empty($_SESSION[$request_id]['selected_properties']['seats']) || $_SESSION[$request_id]['selected_properties']['seats'] < 1) {
-            PageLayout::postError(_('Die Mindestanzahl der Sitzplätze muss größer als 0 sein!'));
-            $this->redirect('course/room_requests/request_find_available_properties/' . $request_id . '/1/category');
-        }
-
         $this->request_id = $request_id;
         $this->step = 3;
 
@@ -539,6 +533,16 @@ class Course_RoomRequestsController extends AuthenticatedController
                 $this->selected_properties[$property->name] = $property->state;
             }
             $this->toSession('selected_properties', $this->selected_properties);
+        }
+
+        // no min number of seats
+        if (
+            empty($this->selected_properties['seats'])
+            || $this->selected_properties['seats'] < 1
+        ) {
+            PageLayout::postError(_('Die Mindestanzahl der Sitzplätze muss größer als 0 sein!'));
+            $this->redirect('course/room_requests/request_find_available_properties/' . $request_id . '/1/category');
+            return;
         }
 
         $this->preparation_time = $this->request->preparation_time / 60;
