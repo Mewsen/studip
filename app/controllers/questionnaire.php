@@ -113,7 +113,11 @@ class QuestionnaireController extends AuthenticatedController
             }
         }
         if (!$this->questionnaire->isEditable()) {
-            throw new AccessDeniedException(_('Fragebogen ist nicht bearbeitbar.'));
+            if (!(Request::get('range_type') === 'pool')) {
+                throw new AccessDeniedException(_('Fragebogen ist nicht bearbeitbar.'));
+            } else {
+                throw new AccessDeniedException(_('Vorlage ist nicht bearbeitbar.'));
+            }
         }
         if ($this->questionnaire->isRunning() && $this->questionnaire->countAnswers() > 0) {
             $this->render_text(
