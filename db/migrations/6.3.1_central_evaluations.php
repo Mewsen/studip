@@ -111,7 +111,19 @@ class CentralEvaluations extends Migration
 
     protected function down()
     {
-        DBManager::get()->execute("
+        $plugin_id = DBManager::get()->fetchColumn("
+            SELECT `pluginid` from `plugins` WHERE `pluginclassname` = 'CoreEvaluation'
+        ");
+        $roles_plugins_statement = DBManager::get()->prepare("
+            DELETE FROM `roles_plugins` WHERE pluginid = ?
+        ");
+        $roles_plugins_statement->execute([$plugin_id]);
+
+        DBManager::get()->exec("
+            DELETE FROM `plugins` WHERE `pluginclassname` = 'CoreEvaluation'
+        ");
+
+        DBManager::get()->exec("
             DELETE FROM `roles`
             WHERE (`rolename` = 'Zentraler Evaluationsadmin' OR `rolename` = 'Einrichtungsbezogener Evaluationsadmin')
                 AND `system` = 'n'
