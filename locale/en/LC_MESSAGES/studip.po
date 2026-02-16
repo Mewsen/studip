@@ -20,8 +20,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-01-09 10:38+0000\n"
-"Last-Translator: Stefan Suchi <suchi@data-quest.de>\n"
+"PO-Revision-Date: 2026-02-17 10:39+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-6-"
 "1/en/>\n"
 "Language: en\n"
@@ -29,16 +30,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
 msgstr "Stud.IP (system)"
 
 #: app/controllers/news.php:44
-#, fuzzy
 msgid "Stud.IP (login)"
-msgstr "Stud.IP version"
+msgstr "Stud.IP (Login)"
 
 #: app/controllers/news.php:48 app/controllers/news.php:591
 #: app/controllers/search/courses.php:57 app/controllers/activityfeed.php:88
@@ -435,9 +435,8 @@ msgid "System"
 msgstr "System"
 
 #: app/controllers/news.php:585
-#, fuzzy
 msgid "Loginseite"
-msgstr "Date page"
+msgstr "Login page"
 
 #: app/controllers/courseware_controller.php:82
 #: app/controllers/contents/courseware.php:50
@@ -532,9 +531,9 @@ msgid "Aktionen"
 msgstr "Actions"
 
 #: app/controllers/root_assistant.php:13
-#, fuzzy, php-format
+#, php-format
 msgid "Änderungen seit der Stud.IP-Version %s"
-msgstr "Changes of this version"
+msgstr "Changes since Stud.IP version %s"
 
 #: app/controllers/blubber.php:11 app/controllers/course/messenger.php:10
 #: app/controllers/course/messenger.php:25 app/controllers/activityfeed.php:38
@@ -579,9 +578,9 @@ msgid "Studiengruppe aus Konversation erstellen"
 msgstr "Create studygroup from Conversation"
 
 #: app/controllers/blubber.php:425
-#, fuzzy, php-format
+#, php-format
 msgid "Studiengruppe \"%s\" wurde angelegt."
-msgstr "The studygroup '%s' has been created."
+msgstr "The study group '%s' has been created."
 
 #: app/controllers/blubber.php:435
 msgid "Private Konversation verlassen"
@@ -644,9 +643,8 @@ msgid "Neue Standardvertretung festlegen"
 msgstr "Add new substitute"
 
 #: app/controllers/settings/deputies.php:107
-#, fuzzy
 msgid "Suche wurde nicht korrekt abgeschickt."
-msgstr "Message sent."
+msgstr "Search not submitted correctly."
 
 #: app/controllers/settings/deputies.php:134
 msgid "Die gewünschte Operation konnte nicht ausgeführt werden."
@@ -685,7 +683,6 @@ msgid "Ihre Einstellungen wurden erfolgreich gespeichert."
 msgstr "Your settings have been saved successfully."
 
 #: app/controllers/settings/messaging.php:102
-#, fuzzy
 msgid ""
 "Durch das Zurücksetzen werden die persönliche Messaging-Einstellungen auf "
 "die Startwerte zurückgesetzt und die persönlichen Nachrichtenordner "
@@ -694,7 +691,9 @@ msgid ""
 "Nachrichten werden nicht entfernt."
 msgstr ""
 "Reset restores default values for the messaging settings and removes "
-"personal message folders. No messages will be deleted."
+"personal message folders. \n"
+"\n"
+"No messages will be deleted."
 
 #: app/controllers/settings/messaging.php:111
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
@@ -806,7 +805,6 @@ msgid "Sie dürfen dieses Profil nicht bearbeiten"
 msgstr "You must not edit this profile"
 
 #: app/controllers/settings/settings.php:51
-#, fuzzy
 msgid ""
 "Wahrscheinlich ist Ihre Session abgelaufen. Bitte nutzen Sie in diesem Fall "
 "den folgenden Link, um zurück zur Anmeldung zu gelangen.\n"
@@ -985,9 +983,8 @@ msgid ""
 msgstr "The visibility settings of profile elements have not been saved!"
 
 #: app/controllers/settings/avatar.php:15
-#, fuzzy
 msgid "Profilbild anpassen"
-msgstr "Change profile picture"
+msgstr "Modify profile picture"
 
 #: app/controllers/settings/password.php:38 app/views/settings/password.php:8
 #: lib/navigation/ProfileNavigation.php:77
@@ -1049,7 +1046,6 @@ msgstr "Customise calender settings"
 
 #: app/controllers/settings/calendar.php:62
 #: app/controllers/calendar/schedule.php:710
-#, fuzzy
 msgid "Die Startuhrzeit muss vor der Enduhrzeit liegen."
 msgstr "The start time must be earlier than the end time."
 
@@ -1256,9 +1252,8 @@ msgid "Filter"
 msgstr "Filter"
 
 #: app/controllers/massmail/settings.php:24
-#, fuzzy
 msgid "Einstellungen für den Nachrichtenversand an Zielgruppen"
-msgstr "Customise message system settings"
+msgstr "Settings for sending messages to target groups"
 
 #: app/controllers/massmail/settings.php:33
 #: app/controllers/admin/install.php:25 app/views/admin/install/install.php:33
@@ -1296,28 +1291,24 @@ msgid "Achtung: Kein Versand"
 msgstr "Note that documents are not sent by post!"
 
 #: app/controllers/massmail/settings.php:63
-#, fuzzy
 msgid "Der automatische Versand ist nicht aktiviert!"
-msgstr "The calendar has not been activated."
+msgstr "Automatic dispatch is not enabled!"
 
 #: app/controllers/massmail/settings.php:71
 msgid "Abstand des Versands anstehender Nachrichten in Minuten"
-msgstr ""
+msgstr "Interval between sending pending messages in minutes"
 
 #: app/controllers/massmail/permissions.php:24
-#, fuzzy
 msgid "Berechtigungen für den Nachrichtenversand an Zielgruppen"
-msgstr "Set permissions for the entire room group"
+msgstr "Permissions for sending messages to target groups"
 
 #: app/controllers/massmail/permissions.php:35
-#, fuzzy
 msgid "Neue Berechtigung vergeben"
-msgstr "Edit permission"
+msgstr "Assign new permission"
 
 #: app/controllers/massmail/permissions.php:58
-#, fuzzy
 msgid "Berechtigung erstellen"
-msgstr "Edit permission"
+msgstr "Create permission"
 
 #: app/controllers/massmail/permissions.php:59
 #: app/views/resources/admin/user_permissions.php:132
@@ -1354,39 +1345,32 @@ msgid "Einrichtung"
 msgstr "Institute"
 
 #: app/controllers/massmail/permissions.php:91
-#, fuzzy
 msgid "Benötigte Rechte"
-msgstr "required status"
+msgstr "Required permissions"
 
 #: app/controllers/massmail/permissions.php:102
-#, fuzzy
 msgid "Erlaubte Abschlüsse"
-msgstr "Degrees"
+msgstr "Allowed degrees"
 
 #: app/controllers/massmail/permissions.php:109
-#, fuzzy
 msgid "Erlaubte Fächer"
-msgstr "Allowed characters:"
+msgstr "Allowed subjects"
 
 #: app/controllers/massmail/permissions.php:116
-#, fuzzy
 msgid "Erlaubte Einrichtungen (außer den eigenen)"
-msgstr "all institutes except faculties"
+msgstr "Allowed institutes (except own)"
 
 #: app/controllers/massmail/permissions.php:163
-#, fuzzy
 msgid "Die Berechtigung wurde gelöscht."
-msgstr "%u permission has been deleted."
+msgstr "The permission has been deleted."
 
 #: app/controllers/massmail/permissions.php:165
-#, fuzzy
 msgid "Die Berechtigung konnte nicht gelöscht werden."
-msgstr "The institute could not be deleted."
+msgstr "The permission could not be deleted."
 
 #: app/controllers/massmail/permissions.php:168
-#, fuzzy
 msgid "Die Berechtigung wurde nicht gefunden."
-msgstr "The date could not be found!"
+msgstr "The permission could not be found."
 
 #: app/controllers/massmail/overview.php:25 app/controllers/privacy.php:436
 #: app/controllers/activityfeed.php:65 app/controllers/messages.php:24
@@ -1401,15 +1385,13 @@ msgstr "Messages"
 
 #: app/controllers/massmail/quick.php:26
 #: app/controllers/massmail/message.php:18
-#, fuzzy
 msgid "Nachricht an Zielgruppe schreiben"
-msgstr "Write message to students"
+msgstr "Write message to target group"
 
 #: app/controllers/massmail/quick.php:55
 #: app/controllers/massmail/message.php:139
-#, fuzzy
 msgid "Berechtigungsebene wählen"
-msgstr "Select all permissions"
+msgstr "Select permission level"
 
 #: app/controllers/massmail/quick.php:70
 #: app/controllers/massmail/message.php:169 app/controllers/messages.php:149
@@ -1427,29 +1409,25 @@ msgid "Nachricht"
 msgstr "Message"
 
 #: app/controllers/massmail/message.php:41
-#, fuzzy
 msgid "Zielgruppe"
-msgstr "Study group"
+msgstr "Target group"
 
 #: app/controllers/massmail/message.php:47
 #: app/controllers/massmail/message.php:78
-#, fuzzy
 msgid "Auswahlfilter"
-msgstr "Selection question"
+msgstr "Selection filter"
 
 #: app/controllers/massmail/message.php:109
-#, fuzzy
 msgid "Semester wählen"
 msgstr "Select semester"
 
 #: app/controllers/massmail/message.php:121
-#, fuzzy
 msgid "Veranstaltungen wählen"
-msgstr "Select course"
+msgstr "Select courses"
 
 #: app/controllers/massmail/message.php:156
 msgid "Liste von Benutzernamen, durch Zeilenumbruch getrennt"
-msgstr ""
+msgstr "List of user names, separated by a line break"
 
 #: app/controllers/massmail/message.php:190
 #: app/views/vips/sheets/edit_exercise.php:127
@@ -1458,74 +1436,64 @@ msgid "Weitere Einstellungen"
 msgstr "Further settings"
 
 #: app/controllers/massmail/message.php:200
-#, fuzzy
 msgid "Dateianhänge auswählen"
-msgstr "Select data field"
+msgstr "Select file attachments"
 
 #: app/controllers/massmail/message.php:212
-#, fuzzy
 msgid "CSV mit Teilnahmecodes auswählen"
-msgstr "Select new participation status"
+msgstr "Select CSV with participation codes"
 
 #: app/controllers/massmail/message.php:224
-#, fuzzy
 msgid "Zu einem späteren Zeitpunkt senden"
-msgstr "Make available for the OER Campus at a later date."
+msgstr "Send later"
 
 #: app/controllers/massmail/message.php:234
-#, fuzzy
 msgid "Von meiner Kennung verschicken"
-msgstr "Move into another group"
+msgstr "Send from my ID"
 
 #: app/controllers/massmail/message.php:235
-#, fuzzy
 msgid "Eine andere Person eintragen"
-msgstr "Create a new version"
+msgstr "Enter another person"
 
 #: app/controllers/massmail/message.php:236
 msgid "Anonym, mit \"Stud.IP\" als Absender"
-msgstr ""
+msgstr "Anonymous, with \"Stud.IP\" as sender"
 
 #: app/controllers/massmail/message.php:246
-#, fuzzy
 msgid "Absender:in wählen"
-msgstr "Select other room"
+msgstr "Select sender"
 
 #: app/controllers/massmail/message.php:259
 msgid "Liste von Benutzernamen, die die Nachricht nicht erhalten sollen"
-msgstr ""
+msgstr "List of user names that should not receive the message"
 
 #: app/controllers/massmail/message.php:264
 msgid "Liste von Benutzernamen, die die Nachricht als Kopie erhalten sollen"
-msgstr ""
+msgstr "List of usernames that should receive a copy of the message"
 
 #: app/controllers/massmail/message.php:269
-#, fuzzy
 msgid "Besondere Kennzeichnung"
-msgstr "Notation"
+msgstr "Special markers"
 
 #: app/controllers/massmail/message.php:274
-#, fuzzy
 msgid "Keine besondere Kennzeichnung"
-msgstr "Female appellation"
+msgstr "No special markers"
 
 #: app/controllers/massmail/message.php:275
 msgid "Nicht verschicken, sondern als Vorlage speichern"
-msgstr ""
+msgstr "Do not send but store as template"
 
 #: app/controllers/massmail/message.php:276
 msgid "Auch nach dem Versand dauerhaft speichern"
-msgstr ""
+msgstr "Save permanently even after dispatch"
 
 #: app/controllers/massmail/message.php:339
-#, fuzzy
 msgid "Die Nachricht wurde gelöscht."
-msgstr "%u messages deleted"
+msgstr "The message has been deleted."
 
 #: app/controllers/massmail/message.php:341
-#, fuzzy
 msgid "Die Nachricht konnte nicht gelöscht werden."
-msgstr "Message could not be deleted."
+msgstr "The message could not be deleted."
 
 #: app/controllers/web_migrate.php:30
 msgid "Stud.IP Web-Migrator"
@@ -1653,13 +1621,12 @@ msgid "Falscher Bestätigungscode."
 msgstr "Invalid confirmation code."
 
 #: app/controllers/login.php:153
-#, fuzzy
 msgid ""
 "Sie können sich einloggen und sich den Bestätigungscode neu oder an eine "
 "andere E-Mail-Adresse schicken lassen."
 msgstr ""
-"You may %slogin%s and request the confirmation code to be newly generated or "
-"to be send to a different e-mail address."
+"You may log in and request the confirmation code to be newly generated or to "
+"be sent to a different email address."
 
 #: app/controllers/login.php:171
 msgid ""
@@ -1899,9 +1866,8 @@ msgid "Als CSV-Datei exportieren"
 msgstr "Export as CSV file"
 
 #: app/controllers/course/dates.php:107
-#, fuzzy
 msgid "Laufende Termine"
-msgstr "cancelled dates"
+msgstr "Ongoing dates"
 
 #: app/controllers/course/dates.php:133 app/controllers/vips/solutions.php:962
 #: app/views/module/module/modul.php:530 app/views/admin/lti/index.php:29
@@ -1914,9 +1880,8 @@ msgid "Zeiten und Räume bearbeiten"
 msgstr "Edit times and rooms"
 
 #: app/controllers/course/dates.php:161
-#, fuzzy
 msgid "Die Anzahl der Teilnehmenden wurde gespeichert."
-msgstr "Selection saved."
+msgstr "The number of participants has been saved."
 
 #: app/controllers/course/dates.php:243
 msgid "Bitte geben Sie ein korretes Datum an!"
@@ -2207,22 +2172,21 @@ msgid "Teilnehmende"
 msgstr "Participants "
 
 #: app/controllers/course/dates.php:649 app/controllers/file.php:1931
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Für den Termin am %s existiert bereits ein Sitzungsordner. Möchten Sie "
 "trotzdem einen weiteren Sitzungsordner erstellen?"
 msgstr ""
-"There is already a session folder for the date %s. Do you nonetheless want "
-"to create another session folder?"
+"A session folder for the date %s already exists. Create another session "
+"folder anyway?"
 
 #: app/controllers/course/dates.php:658
-#, fuzzy
 msgid ""
 "Für die folgenden Termine gibt es bereits Sitzungsordner. Möchten Sie "
 "trotzdem weitere Sitzungsordner erstellen?"
 msgstr ""
-"There are already session folders for the following dates. Do you "
-"nonetheless want to create more session folders?"
+"Session folders for the following dates already exist. Create additional "
+"session folders anyway?"
 
 #: app/controllers/course/dates.php:671
 #, php-format
@@ -5150,7 +5114,7 @@ msgstr "The lock rule has been successfully reset!"
 
 #: app/controllers/course/courseware.php:104
 msgid "Courseware: Peer-Review-Prozesse"
-msgstr ""
+msgstr "Courseware: Peer review processes"
 
 #: app/controllers/course/courseware.php:108
 msgid "Courseware: Aufgaben"
@@ -5273,6 +5237,8 @@ msgid ""
 "Ihr Vorschlag, die Studiengruppe „%1$s“ mit der Veranstaltung „%2$s“ zu "
 "verknüpfen, wurde angenommen."
 msgstr ""
+"Your suggestion to link the study group %1$s with the course %2$s has been "
+"accepted."
 
 #: app/controllers/course/connectedstudygroups.php:81
 #: lib/classes/StudygroupModel.php:633
@@ -5294,6 +5260,8 @@ msgid ""
 "„%2$s“ zu verknüpfen. Sie können den Vorschlag unter folgendem Link annehmen "
 "oder ablehnen:"
 msgstr ""
+"It has been suggested that you link the course %1$s with your study group "
+"%2$s, You can accept or reject the proposal under the following link:"
 
 #: app/controllers/course/connectedstudygroups.php:126
 #, fuzzy
@@ -5323,6 +5291,8 @@ msgid ""
 "Ihr Vorschlag, die Studiengruppe „%1$s“ mit der Veranstaltung „%2$s“ zu "
 "verknüpfen, wurde leider abgewiesen."
 msgstr ""
+"Your suggestion to link the study group %1$s with the course %2$s has been "
+"rejected."
 
 #: app/controllers/course/connectedstudygroups.php:287
 #: app/controllers/course/connectedcourses.php:207
@@ -5957,12 +5927,14 @@ msgid ""
 "Der Raum %{room_name} wird an dem Termin %{date} bereits durch die "
 "Veranstaltung %{course_name} belegt."
 msgstr ""
+"The room %{room_name} is already occupied by the course %{course_name} on "
+"the date %{date}."
 
 #: app/controllers/course/timesrooms.php:591
 #: app/controllers/course/timesrooms.php:1178
 msgid ""
 "Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt."
-msgstr ""
+msgstr "The room %{room_name} is already occupied on the date %{date}."
 
 #: app/controllers/course/timesrooms.php:605
 #: app/controllers/course/timesrooms.php:1188
@@ -6465,6 +6437,8 @@ msgid ""
 "Es sind keine globalen LTI-Tools konfiguriert, die in dieser Veranstaltung "
 "eingebunden werden können."
 msgstr ""
+"There are no global LTI tools configured that can be embedded for this "
+"course."
 
 #: app/controllers/course/lti.php:172
 #, fuzzy
@@ -6491,6 +6465,8 @@ msgid ""
 "Ohne die aktive Zustimmung zur Weitergabe Ihrer personenbezogenen Daten "
 "können Sie das LTI-Tool nicht nutzen!"
 msgstr ""
+"You cannot use the LTI tool without actively agreeing to the transfer of "
+"your personal data!"
 
 #: app/controllers/course/lti.php:418
 msgid "Der Abschnitt wurde gelöscht."
@@ -6526,13 +6502,14 @@ msgstr "The selected semester could not be found!"
 #: app/controllers/course/lti.php:465 app/controllers/course/lti.php:504
 #: app/controllers/course/lti.php:587
 msgid "Das ausgewählte LTI-Tool unterstützt kein Deep Linking."
-msgstr ""
+msgstr "The selected LTI tool does not support deep linking."
 
 #: app/controllers/course/lti.php:534
 msgid ""
 "Bitte tragen Sie die Daten zur Einbindung im LTI-Tool ein bevor sie "
 "fortfahren."
 msgstr ""
+"Please enter the data for integration into the LTI tool before continuing."
 
 #: app/controllers/course/lti.php:681
 msgid "Der Link wurde als neuer Abschnitt hinzugefügt."
@@ -8871,7 +8848,7 @@ msgstr "Comparison view"
 #: app/views/module/module/module.php:110
 #: app/views/module/module/module.php:111
 msgid "Originalsprache ändern"
-msgstr ""
+msgstr "Change original language"
 
 #: app/controllers/module/module.php:1517
 msgid ""
@@ -9708,11 +9685,11 @@ msgstr "Current booking plan"
 
 #: app/controllers/resources/room_planning.php:380
 msgid "QR-Code zur Eingabe der Anzahl"
-msgstr ""
+msgstr "QR code for entering the number"
 
 #: app/controllers/resources/room_planning.php:388
 msgid "Zur Eingabe der Anzahl"
-msgstr ""
+msgstr "For entering the number"
 
 #: app/controllers/resources/room_planning.php:445
 #: app/controllers/resources/room_planning.php:773
@@ -12367,12 +12344,12 @@ msgstr "ILIAS content settings have been saved."
 #: app/controllers/admin/ilias_interface.php:411
 #, php-format
 msgid "ILIAS-Rollenzuweisung der Stud.IP-Rechtestufe %s wurde entfernt."
-msgstr ""
+msgstr "ILIAS role assignment for Stud.IP permission level %s has been removed."
 
 #: app/controllers/admin/ilias_interface.php:438
 #, php-format
 msgid "ILIAS-Rolle %s wird Stud.IP-Rechtestufe %s zugewiesen."
-msgstr ""
+msgstr "ILIAS role %s is assigned Stud.IP permission level %s."
 
 #: app/controllers/admin/ilias_interface.php:440
 #, fuzzy
@@ -14431,7 +14408,7 @@ msgstr "Edit step"
 
 #: app/controllers/admin/tags.php:41
 msgid "Schlagwörter sollen keine Großbuchstaben entahlten"
-msgstr ""
+msgstr "Keywords should not contain capital letters."
 
 #: app/controllers/admin/tags.php:45
 msgid ""
