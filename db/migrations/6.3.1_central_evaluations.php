@@ -108,7 +108,7 @@ class CentralEvaluations extends Migration
 
         //activate evaluation tool for existing courses
         $max_pos = (int)DBManager::get()->fetchColumn("
-            SELECT max(position) FROM studip_eval.tools_activated where range_type = 'course'
+            SELECT max(position) FROM tools_activated where range_type = 'course'
         ");
         $sql = "
             INSERT INTO `tools_activated`
