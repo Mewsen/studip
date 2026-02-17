@@ -37,8 +37,8 @@ use Studip\Button;
                                 <?= htmlReady($template->title) ?>
                             </a>
                         </td>
-                        <td data-text="<?= (int) $template['chdate'] ?>">
-                            <?= date('d.m.Y H:i', $template['chdate']) ?>
+                        <td data-text="<?= (int) $template->chdate ?>">
+                            <?= date('d.m.Y H:i', $template->chdate) ?>
                         </td>
                         <td>
                             <?= $template->template_is_enabled ? _('Freigegeben') : _('Gesperrt') ?>
@@ -75,11 +75,11 @@ use Studip\Button;
                     </tr>
                 <?php endforeach ?>
             <?php else : ?>
-            <tr>
-                <td colspan="5" style="text-align: center">
-                    <?= _('Sie haben noch keine Vorlagen erstellt.') ?>
-                </td>
-            </tr>
+                <tr>
+                    <td colspan="5" style="text-align: center">
+                        <?= _('Sie haben noch keine Vorlagen erstellt.') ?>
+                    </td>
+                </tr>
             <? endif ?>
         </tbody>
         <tfoot>
