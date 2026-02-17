@@ -112,6 +112,7 @@ class CentralEvaluations extends Migration
         ");
         $sql = "
             INSERT INTO `tools_activated`
+                (`range_id`, `range_type`, `plugin_id`, `position`, `metadata`, `mkdate`, `chdate`)
             VALUES(:range_id, :range_type, :plugin_id, :position, :metadata, :mkdate, :chdate)
         ";
         $update_courses = DBManager::get()->prepare("SELECT * FROM `seminare`"); //TODO where not study group
