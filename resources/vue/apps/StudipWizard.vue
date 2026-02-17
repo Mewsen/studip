@@ -19,6 +19,11 @@
                                          role="clickable"
                                          :size="24"></studip-icon>
                         </template>
+                        <template v-else>
+                            <div class="step-number">
+                                {{ index + 1 }}
+                            </div>
+                        </template>
                     </button>
                 </li>
             </ul>
