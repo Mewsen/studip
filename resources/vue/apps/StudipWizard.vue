@@ -28,6 +28,7 @@
         </h2>
         <div v-if="currentStepType === 'app'" ref="node" data-vue-app></div>
         <div v-if="currentStepType === 'form'" ref="node" v-html="stepContent"></div>
+        <component v-if="currentStepType === 'vue'" ref="node" :is="stepContent"></component>
         <footer class="wizard-buttons">
             <button v-if="currentStep !== 0"
                     class="button back-button"
@@ -54,8 +55,8 @@
 <script setup>
 import {nextTick, onMounted, ref} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
-import {useWizardStore} from '@/vue/store/pinia/wizardStore';
-import {useFormsStore} from '@/vue/store/pinia/formsStore';
+
+import StockImages from './StockImages';
 
 const props = defineProps({
     steps: {
@@ -79,9 +80,6 @@ const currentStepType = ref(null);
 
 const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 
-const store = useWizardStore();
-const formsStore = useFormsStore();
-
 const checkValidity = () => {
     if (currentStepType.value === 'form') {
         STUDIP.Vue.emit('form.submit', props.steps[currentStep.value].id);
@@ -95,11 +93,11 @@ const jumpToStep = (number) => {
         mountedApp.unmount();
     }
 
-    /*if (!visibleSteps.value.includes(props.steps[number])) {
+    if (!visibleSteps.value.includes(props.steps[number])) {
         visibleSteps.value[number] = props.steps[number];
     }
     currentStep.value = number;
-    initializeContent(number);*/
+    initializeContent(number);
 };
 
 const finishWizard = () => {
@@ -119,6 +117,9 @@ const initializeContent = async (stepNumber) => {
         nextTick(() => {
             STUDIP.Vue.mountApp(node.value, props.steps[stepNumber].content);
         });
+    } else if (props.steps[stepNumber].type === 'Vue') {
+        currentStepType.value = 'vue';
+        stepContent.value = props.steps[stepNumber].content;
     }
 };
 
@@ -133,8 +134,14 @@ onMounted(() => {
             mountedApp = mounted.app;
         }
     });
-    STUDIP.Report.info('Info');
-    STUDIP.Report.warning('Warning');
+
+    visibleSteps.value.push({
+        type: 'Vue',
+        id: 'stock-images',
+        title: 'Stock Images',
+        content: StockImages,
+        icon: 'block-gallery'
+    });
 });
 
 </script>
