@@ -3,8 +3,9 @@ require_once __DIR__ . '/AdminBaseController.php';
 
 use LTI\AdminBaseController;
 use Lti\Publication;
-use Lti\PublicationConfig;
+use Lti\Config as LtiConfig;
 use Ramsey\Uuid\Uuid;
+use Studip\Lti\Enum\ConfigurableType;
 use Studip\Lti\Enum\LtiVersion;
 use Studip\Lti\Enum\PublicationStatus;
 
@@ -207,19 +208,21 @@ class Admin_Lti_PublicationsController extends AdminBaseController
     {
         foreach ($this->extractPublicationConfigsFromRequest() as $config) {
             if (empty($config['value'])) {
-                PublicationConfig::deleteBySQL(
-                    "publication_id = :publication_id AND name = :name",
+                LtiConfig::deleteBySQL(
+                    "configurable_id = :configurable_id AND configurable_type = :configurable_type AND name = :name",
                     [
-                        'publication_id' => $publicationId,
+                        'configurable_id' => $publicationId,
+                        'configurable_type' => ConfigurableType::Publication->value,
                         'name' => strtolower($config['name'])
                     ]
                 );
                 continue;
             }
 
-            PublicationConfig::updateOrCreate(
+            LtiConfig::updateOrCreate(
                 [
-                    'publication_id' => $publicationId,
+                    'configurable_id' => $publicationId,
+                    'configurable_type' => ConfigurableType::Publication->value,
                     'name' => strtolower($config['name'])
                 ],
                 [

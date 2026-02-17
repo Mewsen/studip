@@ -1,10 +1,9 @@
 <?php
 
 use Lti\Publication;
-use Lti\PublicationConfig;
-use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use Ramsey\Uuid\Uuid;
 use Studip\Lti\Enum\PublicationStatus;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 
 /**
  * Course.php

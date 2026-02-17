@@ -2,14 +2,14 @@
 
 use Lti\Registration;
 use Lti\ResourceLink;
+use Trails\Dispatcher;
 use Studip\Cache\Factory;
-use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\LTIException;
+use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
 use Studip\Lti\LTI1p3\RegistrationManager;
 use Studip\Lti\Trait\RegistrationValidationTrait;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
 use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
@@ -17,7 +17,6 @@ use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
-use Trails\Dispatcher;
 
 final class Lti_1p3_IndexController extends AuthenticatedController
 {
@@ -58,14 +57,6 @@ final class Lti_1p3_IndexController extends AuthenticatedController
         $registrationConfigs = $registration->getConfigValues();
         $launchContainer = $resourceLink->launch_container ?? $registrationConfigs['launch_container'];
 
-        //The AGS URLs need several parameters:
-        $agsUrlParameters = [
-            'cid' => $this->context->getId(),
-            'registration_id' => $registration->id,
-            'deployment_id' => $deployment->deployment_key,
-            'cancel_login' => '1'
-        ];
-
         $resourceLinkRepo = $resourceLink->toLti1p3ResourceLink();
 
         $message = (new LtiResourceLinkLaunchRequestBuilder())->buildLtiResourceLinkLaunchRequest(
@@ -87,17 +78,9 @@ final class Lti_1p3_IndexController extends AuthenticatedController
                     null,
                     null,
                     URLHelper::getURL('dispatch.php/course/lti', ['resource_link_id' => $resourceLink->id]),
-                    str_replace('_', '-', $_SESSION['_language'])
+                    explode('_', $_SESSION['_language'])[0]
                 ),
-                new AgsClaim(
-                    [
-                        'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
-                        'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
-                        'https://purl.imsglobal.org/spec/lti-ags/scope/score'
-                    ],
-                    $this->url_for('lti/ags/line_items', $agsUrlParameters),
-                    $this->url_for('lti/ags/line_item', $agsUrlParameters)
-                )
+                $resourceLinkRepo->getAgsClaim()
             ]
         );
 

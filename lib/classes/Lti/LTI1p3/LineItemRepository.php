@@ -1,41 +1,21 @@
 <?php
 namespace Studip\Lti\LTI1p3;
 
+use Lti\ResourceLink;
 use Grading\Definition;
 use Studip\LTIException;
-use Lti\ResourceLink;
-use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
+use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollection;
 use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemCollectionInterface;
 
 final class LineItemRepository implements LineItemRepositoryInterface
 {
-    /**
-     * Converts the tool-ID and deployment-ID in the tool name used in the
-     * Stud.IP grading context.
-     *
-     * @param string $toolId The Stud.IP LTI tool ID.
-     * @param string $deploymentId The Stud.IP LTI deployment ID.
-     * @return string The corresponding tool name used in the Stud.IP grading context.
-     */
     public static function getGradingToolName(string $toolId, string $deploymentId): string
     {
         return sprintf('lti-%s-%s', $toolId, $deploymentId);
     }
 
-    /**
-     * Converts the LTI line item identifier to search parameters to retrieve
-     * Stud.IP grading definitions.
-     *
-     * @param string $lineItemIdentifier The LTI line item identifier.
-     *
-     * @return array The search parameters for searching in the Stud.IP grading context.
-     *     This is an associative array with two keys:
-     *         'tool'       => The identifier of the tool in the Stud.IP grading context.
-     *         'course_id'  => The Stud.IP course-ID.
-     *     In case the search parameters cannot be generated, an empty array is returned.
-     */
     public static function getSearchParametersFromLineItemIdentifier(string $lineItemIdentifier): array
     {
         //$lineItemIdentifier contains the full URL to the line item.
@@ -64,9 +44,6 @@ final class LineItemRepository implements LineItemRepositoryInterface
         return $searchParameters;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function find(string $lineItemIdentifier): ?LineItemInterface
     {
         $searchParameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
@@ -88,14 +65,11 @@ final class LineItemRepository implements LineItemRepositoryInterface
             );
         }
         if ($definition) {
-            return $definition->toLtiLineItem();
+            return $definition->toLti1p3LineItem();
         }
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function findCollection(
         ?string $resourceIdentifier = null,
         ?string $resourceLinkIdentifier = null,
@@ -141,14 +115,11 @@ final class LineItemRepository implements LineItemRepositoryInterface
         $definitions = Definition::findBySql(...$sqlQuery);
 
         foreach ($definitions as $definition) {
-            $result->add($definition->toLtiLineItem());
+            $result->add($definition->toLti1p3LineItem());
         }
         return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function save(LineItemInterface $lineItem): LineItemInterface
     {
         $resourceLink = ResourceLink::find($lineItem->getResourceLinkIdentifier());
@@ -164,12 +135,9 @@ final class LineItemRepository implements LineItemRepositoryInterface
             'weight' => '1.0'
         ]);
 
-        return $definition->toLtiLineItem();
+        return $definition->toLti1p3LineItem();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete(string $lineItemIdentifier): void
     {
         $searchParameters = self::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);

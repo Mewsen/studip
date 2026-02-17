@@ -27,7 +27,7 @@ enum ResourceLaunchContainer: string {
     public static function default(): array
     {
         return [
-            'value' => (int) self::Window->value,
+            'value' => self::Window->value,
             'label' => _('Neues Fenster')
         ];
     }

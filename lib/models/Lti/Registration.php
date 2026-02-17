@@ -25,7 +25,7 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
  * @property ?string $jwks_url
  * @property ?KeyChainInterface $keyChain
  * @property Range $range
- * @property SimpleORMapCollection<RegistrationConfig> $configs
+ * @property SimpleORMapCollection<Config> $configs
  * @property SimpleORMapCollection<Deployment> $deployments
  */
 class Registration extends SimpleORMap
@@ -35,8 +35,8 @@ class Registration extends SimpleORMap
         $config['db_table'] = 'lti_registrations';
 
         $config['has_many']['configs'] = [
-            'class_name' => RegistrationConfig::class,
-            'assoc_foreign_key' => 'registration_id'
+            'class_name' => Config::class,
+            'assoc_foreign_key' => 'configurable_id'
         ];
 
         $config['has_many']['deployments'] = [

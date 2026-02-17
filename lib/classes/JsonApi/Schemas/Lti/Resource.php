@@ -31,14 +31,35 @@ class Resource extends SchemaProvider
             'title' => $resource->title,
             'description' => $resource->description,
             'position' => (int) $resource->position,
-            'color' => $resource->color,
-            'icon' => $resource->icon,
             'launch-url' => $resource->launch_url,
             'options' => $resource->options,
             'custom-parameters' => $resource->custom_parameters,
-            'launch-container' => $resource->launch_container,
             'mkdate' => date('c', $resource->mkdate),
             'chdate' => date('c', $resource->chdate)
+        ];
+    }
+
+    /**
+     * @param ResourceLink $resource
+     */
+    public function hasResourceMeta($resource): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param ResourceLink $resource
+     */
+    public function getResourceMeta($resource): array
+    {
+        $configs = $resource->getConfigValues(true);
+        $transformedConfigs = array_combine(
+            array_map(fn ($key) => str_replace('_', '-', $key), array_keys($configs)),
+            $configs
+        );
+
+        return [
+            'configs' => $transformedConfigs
         ];
     }
 

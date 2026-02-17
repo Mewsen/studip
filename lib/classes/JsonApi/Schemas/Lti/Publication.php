@@ -40,6 +40,30 @@ class Publication extends SchemaProvider
     /**
      * @param PublicationModel $resource
      */
+    public function hasResourceMeta($resource): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param PublicationModel $resource
+     */
+    public function getResourceMeta($resource): array
+    {
+        $configs = $resource->getConfigValues(true);
+        $transformedConfigs = array_combine(
+            array_map(fn ($key) => str_replace('_', '-', $key), array_keys($configs)),
+            $configs
+        );
+
+        return [
+            'configs' => $transformedConfigs
+        ];
+    }
+
+    /**
+     * @param PublicationModel $resource
+     */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];

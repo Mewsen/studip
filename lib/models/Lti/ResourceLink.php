@@ -5,6 +5,7 @@ use Course;
 use DBManager;
 use SimpleORMap;
 use JSONArrayObject;
+use SimpleORMapCollection;
 use Studip\Lti\Enum\ResourceLaunchContainer;
 use Studip\Lti\LTI1p3\ResourceLinkRepository;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
@@ -14,9 +15,6 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
  * @property string $title
  * @property string $description
  * @property int $position
- * @property string $icon
- * @property string $color
- * @property string $launch_container
  * @property string $custom_parameters
  * @property JSONArrayObject $options
  * @property int $mkdate
@@ -24,6 +22,7 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
  * @property Course $course
  * @property Deployment $deployment
  * @property Registration $registration
+ * @property SimpleORMapCollection<Config> $configs
  */
 class ResourceLink extends SimpleORMap
 {
@@ -48,6 +47,13 @@ class ResourceLink extends SimpleORMap
             'assoc_foreign_key' => 'link_id',
             'on_delete' => 'delete'
         ];
+
+        $config['has_many']['configs'] = [
+            'class_name' => Config::class,
+            'assoc_foreign_key' => 'configurable_id'
+        ];
+
+        $config['additional_fields']['config_values']['get'] = 'getConfigValues';
 
         $config['additional_fields']['registration']['get'] = 'getRegistration';
 
@@ -87,9 +93,9 @@ class ResourceLink extends SimpleORMap
     {
         $base = [
             ...$this->toRawArray(),
-            'container' => ResourceLaunchContainer::get($this->launch_container),
             'mkdate' => date('c', $this->mkdate),
-            'chdate' => date('c', $this->chdate)
+            'chdate' => date('c', $this->chdate),
+            ...$this->getConfigValues(true)
         ];
 
         if (in_array('deployment', $with)) {
@@ -131,5 +137,22 @@ class ResourceLink extends SimpleORMap
     public function getRegistration(): Registration
     {
         return $this->deployment->registration;
+    }
+
+    public function getConfigValues(bool $typeCasting = false): array
+    {
+        return collect(parent::__get('configs'))->mapWithKeys(function ($config) use ($typeCasting) {
+            $key = strtolower($config->name);
+            $value = $config->value;
+
+            if ($typeCasting && $key === 'launch_container') {
+                return [
+                    $key => $value,
+                    'container' => ResourceLaunchContainer::get($value ?? 'window')
+                ];
+            }
+
+            return [$key => $value];
+        })->toArray();
     }
 }

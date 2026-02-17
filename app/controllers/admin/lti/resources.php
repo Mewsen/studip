@@ -2,10 +2,12 @@
 require_once __DIR__ . '/AdminBaseController.php';
 
 use LTI\AdminBaseController;
-use Lti\Deployment;
+use Lti\Config as LtiConfig;
 use Lti\Registration;
 use Lti\ResourceLink;
+use Studip\Lti\Enum\ConfigurableType;
 use Studip\Lti\Enum\RegistrationStatus;
+use Studip\Lti\Enum\ResourceLaunchContainer;
 
 class Admin_Lti_ResourcesController extends AdminBaseController
 {
@@ -55,11 +57,13 @@ class Admin_Lti_ResourcesController extends AdminBaseController
         $deploymentId = Registration::find(Request::get('registration_id'))?->getDefaultDeployment()->id;
 
         foreach ($this->extractResourcesFromRequest() as $resource) {
-            ResourceLink::create([
+            $resourceModel = ResourceLink::create([
                 ...$resource,
                 'deployment_id' => $deploymentId,
                 'course_id' => $this->range_id
             ]);
+
+            $this->syncResourceConfigs($resourceModel->id, $resource['configs']);
         }
 
         PageLayout::postSuccess(
@@ -101,14 +105,18 @@ class Admin_Lti_ResourcesController extends AdminBaseController
             ]);
 
             $resourceLink->store();
+
+            $this->syncResourceConfigs($resourceLink->id, $resourcesArray[0]['configs']);
         } else {
             foreach ($resourcesArray as $resource) {
-                ResourceLink::create([
+                $resourceModel = ResourceLink::create([
                     ...$resource,
                     'position' => $resourceLink->position,
                     'course_id' => $resourceLink->course_id,
                     'deployment_id' => $deploymentId ?? $resourceLink->deployment_id
                 ]);
+
+                $this->syncResourceConfigs($resourceModel->id, $resource['configs']);
             }
 
             $resourceLink->delete();
@@ -182,15 +190,47 @@ class Admin_Lti_ResourcesController extends AdminBaseController
                 'resource_id' => Request::getArray('resource_id', $index),
                 'title' => Request::getArray('title', $index),
                 'description' => Request::getArray('description', $index),
-                'custom_parameters' => Request::getArray('custom_parameters', $index),
                 'launch_url' => Request::getArray('launch_url', $index),
-                'launch_container' => Request::getArray('launch_container', $index) ?? 'window',
-                'color' => Request::getArray('color', $index) ?? null,
-                'icon' => Request::getArray('icon', $index) ?? null
+                'custom_parameters' => Request::getArray('custom_parameters', $index),
+                'configs' => [
+                    'color' => Request::getArray('color', $index) ?? null,
+                    'icon' => Request::getArray('icon', $index) ?? null,
+                    'grade_synchronization' => Request::getArray('grade_synchronization', $index) ?? null,
+                    'launch_container' => Request::getArray('launch_container', $index) ?? ResourceLaunchContainer::Window->value,
+                ]
             ];
         }
 
         return $resources;
+    }
+
+    private function syncResourceConfigs(int $resourceId, array $configs): void
+    {
+        foreach ($configs as $key => $value) {
+            if (empty($value)) {
+                LtiConfig::deleteBySQL(
+                    "configurable_id = :configurable_id AND configurable_type = :configurable_type AND name = :name",
+                    [
+                        'configurable_id' => $resourceId,
+                        'configurable_type' => ConfigurableType::ResourceLink->value,
+                        'name' => strtolower($key)
+                    ]
+                );
+
+                continue;
+            }
+
+            LtiConfig::updateOrCreate(
+                [
+                    'configurable_id' => $resourceId,
+                    'configurable_type' => ConfigurableType::ResourceLink->value,
+                    'name' => strtolower($key)
+                ],
+                [
+                    'value' => $value
+                ]
+            );
+        }
     }
 
 }

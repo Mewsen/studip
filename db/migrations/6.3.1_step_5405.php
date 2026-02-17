@@ -27,23 +27,6 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            CREATE TABLE IF NOT EXISTS `lti_registration_configs` (
-                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                `registration_id` INT UNSIGNED NOT NULL,
-                `name` VARCHAR(100) NOT NULL,
-                `value` TEXT NOT NULL,
-                `mkdate` INT UNSIGNED DEFAULT NULL,
-                `chdate` INT UNSIGNED DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                KEY `idx_lti_reg_configs_registration_id` (`registration_id`),
-                CONSTRAINT `fk_lti_reg_configs_registration`
-                    FOREIGN KEY (`registration_id`)
-                    REFERENCES `lti_registrations` (`id`)
-                    ON DELETE CASCADE
-            )
-        ");
-
-        DBManager::get()->exec("
             CREATE TABLE IF NOT EXISTS `lti_publications` (
                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 `publication_key` VARCHAR(64) NOT NULL,
@@ -58,23 +41,6 @@ final class Step5405 extends Migration {
                 KEY `idx_lti_publications_key` (`publication_key`),
                 KEY `idx_lti_publications_range_id` (`range_id`),
                 KEY `idx_lti_publications_user_id` (`user_id`)
-            )
-        ");
-
-        DBManager::get()->exec("
-            CREATE TABLE IF NOT EXISTS `lti_publication_configs` (
-                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                `publication_id` INT UNSIGNED NOT NULL,
-                `name` VARCHAR(100) NOT NULL,
-                `value` TEXT NOT NULL,
-                `mkdate` INT UNSIGNED DEFAULT NULL,
-                `chdate` INT UNSIGNED DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                KEY `idx_lti_pub_configs_publication_id` (`publication_id`),
-                CONSTRAINT `fk_lti_pub_configs_publication`
-                    FOREIGN KEY (`publication_id`)
-                    REFERENCES `lti_publications` (`id`)
-                    ON DELETE CASCADE
             )
         ");
 
@@ -182,11 +148,21 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_resource_links`
-                ADD COLUMN `custom_parameters` TEXT AFTER `options`,
-                ADD COLUMN `launch_container` ENUM('window','iframe') NOT NULL DEFAULT 'window' AFTER `custom_parameters`,
-                ADD COLUMN `color` VARCHAR(7) AFTER `launch_container`,
-                ADD COLUMN `icon` VARCHAR(100) AFTER `color`
+            ALTER TABLE `lti_resource_links` ADD COLUMN `custom_parameters` TEXT AFTER `options`
+        ");
+
+        DBManager::get()->exec("
+            CREATE TABLE IF NOT EXISTS `lti_configs` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `configurable_id` INT UNSIGNED NOT NULL,
+                `configurable_type` ENUM('registration','publication', 'resource_link') NOT NULL DEFAULT 'registration',
+                `name` VARCHAR(100) NOT NULL,
+                `value` TEXT NOT NULL,
+                `mkdate` INT UNSIGNED DEFAULT NULL,
+                `chdate` INT UNSIGNED DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `idx_lti_configs_configurable_id` (`configurable_id`)
+            )
         ");
 
         $addConfig = DBManager::get()->prepare(
@@ -219,10 +195,9 @@ final class Step5405 extends Migration {
     {
         DBManager::get()->exec("
             DROP TABLE IF EXISTS
+                `lti_configs`,
                 `lti_user_identity_mappings`,
-                `lti_registration_configs`,
                 `lti_registrations`,
-                `lti_publication_configs`,
                 `lti_publication_users`,
                 `lti_publications`
         ");

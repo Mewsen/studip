@@ -30,7 +30,7 @@ trait StatusHelpers {
     public static function default(): array
     {
         return [
-            'value' => (int) self::Inactive->value,
+            'value' => self::Inactive->value,
             'label' => _('Inaktiv')
         ];
     }

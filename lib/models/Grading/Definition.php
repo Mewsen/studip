@@ -71,7 +71,7 @@ class Definition extends \SimpleORMap
         return Definition::findBySQL('course_id = ? ORDER BY position ASC, name ASC', [$course->id]);
     }
 
-    public function toLtiLineItem(): LineItemInterface
+    public function toLti1p3LineItem(): LineItemInterface
     {
         $resourceLinkIdentifier = $this->tool ?? '';
         $deploymentId = '';
@@ -83,7 +83,7 @@ class Definition extends \SimpleORMap
         }
 
         $identifier = URLHelper::getURL(sprintf(
-            'dispatch.php/lti/ags/line_item/%1$s/%2$s',
+            'dispatch.php/lti/1p3/ags/server/line_item/%1$s/%2$s',
             $resourceLinkIdentifier,
             $this->id
         ));

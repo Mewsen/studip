@@ -1,16 +1,17 @@
 <?php
 require_once __DIR__ . '/AdminBaseController.php';
 
-use LTI\AdminBaseController;
 use Lti\Deployment;
-use Lti\Registration;
-use Lti\RegistrationConfig;
-use Ramsey\Uuid\Uuid;
-use Studip\Lti\Enum\LtiVersion;
-use Studip\Lti\Enum\RegistrationStatus;
-use Studip\Lti\LTI1p3\PlatformManager;
-use Studip\Lti\LTI1p3\ToolManager;
 use Studip\Markup;
+use Lti\Registration;
+use Ramsey\Uuid\Uuid;
+use LTI\AdminBaseController;
+use Lti\Config as LtiConfig;
+use Studip\Lti\Enum\LtiVersion;
+use Studip\Lti\LTI1p3\ToolManager;
+use Studip\Lti\Enum\ConfigurableType;
+use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\Enum\RegistrationStatus;
 
 class Admin_Lti_RegistrationsController extends AdminBaseController
 {
@@ -359,10 +360,11 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
     {
         foreach ($this->extractRegistrationConfigsFromRequest() as $config) {
             if (!Request::bool($config['name'])) {
-                RegistrationConfig::deleteBySQL(
-                    "registration_id = :registration_id AND name = :name",
+                LtiConfig::deleteBySQL(
+                    "configurable_id = :configurable_id AND configurable_type = :configurable_type AND name = :name",
                     [
-                        'registration_id' => $registrationId,
+                        'configurable_id' => $registrationId,
+                        'configurable_type' => ConfigurableType::Registration->value,
                         'name' => strtolower($config['name'])
                     ]
                 );
@@ -374,9 +376,10 @@ class Admin_Lti_RegistrationsController extends AdminBaseController
                 continue;
             }
 
-            RegistrationConfig::updateOrCreate(
+            LtiConfig::updateOrCreate(
                 [
-                    'registration_id' => $registrationId,
+                    'configurable_id' => $registrationId,
+                    'configurable_type' => ConfigurableType::Registration->value,
                     'name' => strtolower($config['name'])
                 ],
                 [

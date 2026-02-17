@@ -51,26 +51,27 @@ class Registration extends SchemaProvider
     /**
      * @param RegistrationModel $resource
      */
-    public function getResourceMeta($resource)
+    public function getResourceMeta($resource): array
     {
-        $configs = array_combine(
-            array_map(fn ($key) => str_replace('_', '-', $key), array_keys($resource->getConfigValues())),
-            $resource->getConfigValues()
+        $configs = $resource->getConfigValues();
+        $transformedConfigs = array_combine(
+            array_map(fn ($key) => str_replace('_', '-', $key), array_keys($configs)),
+            $configs
         );
 
         foreach (['allow-custom-url', 'deep-linking', 'send-lis-person'] as $key) {
-            if (array_key_exists($key, $configs)) {
-                $configs[$key] = (bool) $configs[$key];
+            if (array_key_exists($key, $transformedConfigs)) {
+                $transformedConfigs[$key] = (bool) $transformedConfigs[$key];
             }
         }
 
-        if (array_key_exists('data-protection-notes', $configs)) {
-            $configs['data-protection-notes'] = Markup::markupToHtml($resource->description);
-            $configs['data-protection-notes-html'] = formatReady($resource->description);
+        if (array_key_exists('data-protection-notes', $transformedConfigs)) {
+            $transformedConfigs['data-protection-notes'] = Markup::markupToHtml($resource->description);
+            $transformedConfigs['data-protection-notes-html'] = formatReady($resource->description);
         }
 
         return [
-            'configs' => $configs
+            'configs' => $transformedConfigs
         ];
     }
 

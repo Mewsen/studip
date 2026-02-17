@@ -27,6 +27,7 @@ const props = defineProps({
 const formState = reactive({
     registration: props.registrations.find(({ id }) => id === props.resource?.registration?.id),
     resources: [{
+        grade_synchronization: 0,
         launch_container: 'window',
         colorPicked: props.resource.color,
         isCollapsed: false,
@@ -103,6 +104,7 @@ const handleLtiMessage = event => {
         description: r.text,
         icon: r.icon?.url,
         custom_parameters: r.custom ? objectToKeyValueString(r.custom) : null,
+        grade_synchronization: 0,
         launch_container: 'window',
         colorPicked: false,
         isCollapsed: resourceCount > 1,
@@ -122,6 +124,24 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener('message', handleLtiMessage);
 });
+
+const agsSyncHelpeTextHTML = `
+    ${$gettext('Ob die IMS LTI Assignment and Grade Services verwendet werden sollen, um Noten zu synchronisieren, anstatt des Basic-Outcomes.')}
+    <ul>
+        <li>
+            <b>${$gettext('Diesen Dienst nicht verwenden')}</b>
+            <p>${$gettext('Die Funktionen und Konfiguration von Basic Outcomes werden verwendet.')}</p>
+        </li>
+        <li>
+            <b>${$gettext('Nur Grade-Synchronisierung')}</b>
+            <p>${$gettext('Der Dienst trägt die Noten in eine bereits vorhandene Spalte im Gradebook ein, kann jedoch keine neue Leistung definieren.')}</p>
+        </li>
+        <li>
+            <b>${$gettext('Grade-Synchronisierung und verwaltung')}</b>
+            <p>${$gettext('Der Dienst kann Leistung im Gradebook definieren und bearbeiten sowie die Noten verwalten.')}</p>
+        </li>
+    </ul>
+`;
 </script>
 
 <template>
@@ -289,6 +309,17 @@ onBeforeUnmount(() => {
                 </button>
 
                 <section v-show="!resource.isConfigurationCollapsed">
+
+                    <label v-if="formState.registration?.version === '1.3a'">
+                        <span>{{ $gettext('Grade-Synchronization') }}</span>
+                        <StudipTooltipIcon :text="agsSyncHelpeTextHTML" :isHtml="true" />
+                        <select name="grade_synchronization[]" v-model="resource.grade_synchronization">
+                            <option value="0">{{ $gettext('Diesen Dienst nicht verwenden') }}</option>
+                            <option value="1">{{ $gettext('Nur Grade-Synchronisierung') }}</option>
+                            <option value="2">{{ $gettext('Grade-Synchronisierung und verwaltung') }}</option>
+                        </select>
+                    </label>
+
                     <label>
                         <span>{{ $gettext('Container starten') }}</span>
                         <select name="launch_container[]" v-model="resource.launch_container">

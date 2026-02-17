@@ -27,7 +27,7 @@ enum UserIdentityMappingContext: string {
     public static function default(): array
     {
         return [
-            'value' => (int) self::ResourceLink->value,
+            'value' => self::ResourceLink->value,
             'label' => _('LTI-Ressource')
         ];
     }

@@ -41,7 +41,7 @@ const actionMenus = computed(() => {
 
 const resourceURL = computed(() => launchResourceURL(props.resource.id, props.resource.registration.version));
 
-const launchContainer = computed(() => props.resource.launch_container || props.resource.registration.meta.configs.launch_container);
+const launchContainer = computed(() => props.resource.meta.configs.launch_container || props.resource.registration.meta.configs.launch_container);
 const isIframe = computed(() => launchContainer.value === 'iframe' && props.resource.registration.status !== 'inactive');
 
 const containerAttributes = computed(() => {
@@ -99,12 +99,12 @@ const swap = event => {
         :class="{ 'tool-card--iframe': isIframe }"
         v-bind="containerAttributes"
     >
-        <div class="tool-card__flag" v-if="resource.color" :style="{ backgroundColor: resource.color}">
+        <div class="tool-card__flag" v-if="resource.meta.configs.color" :style="{ backgroundColor: resource.meta.configs.color}">
         </div>
         <div class="studip-card">
             <header class="studip-card__header">
                 <p class="studip-card__title">
-                    <StudipIcon v-if="resource.icon" :shape="resource.icon" :size="60" />
+                    <StudipIcon v-if="resource.meta.configs.icon" :shape="resource.meta.configs.icon" :size="60" />
                     {{ title }}
                 </p>
 

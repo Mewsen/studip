@@ -35,7 +35,7 @@ const formActionURL = computed(() => {
     return storePublicationURL();
 });
 
-const provisioningModeHelpeTextHTML = `
+const provisioningModeHelperTextHTML = `
 ${$gettext('Diese Einstellung legt fest, wie Konten beim ersten Start verwaltet werden. Verschiedene Modi werden unterstützt:')}
 <ul>
     <li>
@@ -183,7 +183,7 @@ ${$gettext('Diese Einstellung legt fest, wie Konten beim ersten Start verwaltet 
                 {{ $gettext('Bereitstellungsmodus beim ersten Start durch die Lehrende') }}
                 <StudipTooltipIcon
                     id="provisioning-mode-instructor-help"
-                    :text="provisioningModeHelpeTextHTML"
+                    :text="provisioningModeHelperTextHTML"
                     :isHtml="true"
                 />
                 <select
@@ -201,7 +201,7 @@ ${$gettext('Diese Einstellung legt fest, wie Konten beim ersten Start verwaltet 
                 {{ $gettext('Bereitstellungsmodus beim ersten Start durch die Studierende') }}
                 <StudipTooltipIcon
                     id="provisioning-mode-student-help"
-                    :text="provisioningModeHelpeTextHTML"
+                    :text="provisioningModeHelperTextHTML"
                     :isHtml="true"
                 />
                 <select

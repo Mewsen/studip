@@ -19,7 +19,7 @@ use Studip\Lti\Enum\UserProvisioningMode;
  * @property User $user
  * @property int $mkdate
  * @property int $chdate
- * @property SimpleORMapCollection<PublicationConfig> $configs
+ * @property SimpleORMapCollection<Config> $configs
  * @property SimpleORMapCollection<User> $members
  */
 class Publication extends SimpleORMap
@@ -46,8 +46,8 @@ class Publication extends SimpleORMap
         ];
 
         $config['has_many']['configs'] = [
-            'class_name' => PublicationConfig::class,
-            'assoc_foreign_key' => 'publication_id'
+            'class_name' => Config::class,
+            'assoc_foreign_key' => 'configurable_id'
         ];
 
         $config['has_many']['members'] = [

@@ -9,12 +9,10 @@ use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
 use OAT\Library\Lti1p3Core\Service\Server\Handler\LtiServiceServerRequestHandlerInterface;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\GetLineItemServiceServerRequestHandler;
-use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
-use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\DeleteLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
 
-class Lti_1p3_Ags_ServerController extends AuthenticatedController
+class Lti_1p3_Ags_LineItemController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;
@@ -29,7 +27,7 @@ class Lti_1p3_Ags_ServerController extends AuthenticatedController
         $this->lineItemRepo = new LineItemRepository();
     }
 
-    public function line_item_action(): void
+    public function index_action(): void
     {
         $requestHandler = match (Request::method()) {
             'PUT' => new UpdateLineItemServiceServerRequestHandler($this->lineItemRepo),
@@ -41,15 +39,8 @@ class Lti_1p3_Ags_ServerController extends AuthenticatedController
         $this->renderAgsResponse($requestHandler);
     }
 
-    public function line_items_action(): void
+    public function results_action(): void
     {
-        $requestHandler = match (Request::method()) {
-            'POST' => new CreateLineItemServiceServerRequestHandler($this->lineItemRepo),
-            'GET' => new ListLineItemsServiceServerRequestHandler($this->lineItemRepo),
-            default => throw new MethodNotAllowedException()
-        };
-
-        $this->renderAgsResponse($requestHandler);
     }
 
     private function renderAgsResponse(

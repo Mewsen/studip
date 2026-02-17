@@ -27,7 +27,7 @@ const createResource = () => STUDIP.Dialog.fromURL(createResourceURL(), {width: 
 const showResourceDialog = resource => currentResource.value = resource;
 
 const isIframe = resource => {
-    const launchContainer = resource.launch_container || resource.registration.meta.configs.launch_container;
+    const launchContainer = resource.meta.configs.launch_container || resource.registration.meta.configs.launch_container;
     return launchContainer === 'iframe' && resource.registration.status !== 'inactive';
 };
 const updateResourcesOrder = async () => {
