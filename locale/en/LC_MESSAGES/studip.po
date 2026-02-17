@@ -12,7 +12,7 @@
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
 # Moritz Strohm <strohm@data-quest.de>, 2023, 2024.
-# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025, 2026.
 # Ron Lucke <lucke@elan-ev.de>, 2023.
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2025.
 #
@@ -23,16 +23,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:10+0200\n"
-"PO-Revision-Date: 2025-08-19 13:00+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-3/en/>\n"
+"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-5-"
+"3/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -639,9 +640,8 @@ msgid "Neue Standardvertretung festlegen"
 msgstr "Add new substitute"
 
 #: app/controllers/settings/deputies.php:107
-#, fuzzy
 msgid "Suche wurde nicht korrekt abgeschickt."
-msgstr "Message sent."
+msgstr "Search not submitted correctly."
 
 #: app/controllers/settings/deputies.php:134
 msgid "Die gewünschte Operation konnte nicht ausgeführt werden."
@@ -679,7 +679,6 @@ msgid "Ihre Einstellungen wurden erfolgreich gespeichert."
 msgstr "Your settings have been saved successfully."
 
 #: app/controllers/settings/messaging.php:102
-#, fuzzy
 msgid ""
 "Durch das Zurücksetzen werden die persönliche Messaging-Einstellungen auf "
 "die Startwerte zurückgesetzt und die persönlichen Nachrichtenordner "
@@ -819,11 +818,11 @@ msgid ""
 "nicht bearbeiten dürfen, sein. Nutzen Sie den folgenden Link, um zurück auf "
 "die Startseite zu gelangen."
 msgstr ""
-"Probably your session has expired. In this case, please use the following "
-"link to return to the login page.\n"
+"Probably your session has expired. In this case, please use the link below "
+"to return to the login page.\n"
 "\n"
 "Another possible cause is an attempt to access user data you are not allowed "
-"to edit. Use the following link to return to the start page."
+"to edit. Use the link below to return to the start page."
 
 #: app/controllers/settings/settings.php:75 app/controllers/tfa.php:30
 #: app/controllers/consultation/admin.php:41
@@ -1903,22 +1902,21 @@ msgid "Sitzplätze"
 msgstr "Seats"
 
 #: app/controllers/course/dates.php:611 app/controllers/file.php:1931
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Für den Termin am %s existiert bereits ein Sitzungsordner. Möchten Sie "
 "trotzdem einen weiteren Sitzungsordner erstellen?"
 msgstr ""
-"There is already a session folder for the date %s. Do you nonetheless want "
-"to create another session folder?"
+"A session folder for the date %s already exists. Create another session "
+"folder anyway?"
 
 #: app/controllers/course/dates.php:620
-#, fuzzy
 msgid ""
 "Für die folgenden Termine gibt es bereits Sitzungsordner. Möchten Sie "
 "trotzdem weitere Sitzungsordner erstellen?"
 msgstr ""
-"There are already session folders for the following dates. Do you "
-"nonetheless want to create more session folders?"
+"Session folders for the following dates already exist. Create additional "
+"session folders anyway?"
 
 #: app/controllers/course/dates.php:633
 #, php-format
