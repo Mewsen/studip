@@ -174,6 +174,11 @@ onMounted(() => {
 
         &.active button {
             background-color: var(--color--highlight);
+
+            .step-number {
+                font-weight: 700;
+                color: var(--color--font-inverted);
+            }
         }
 
         &:not(:last-of-type)::before {
