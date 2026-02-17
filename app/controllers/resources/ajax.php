@@ -14,13 +14,15 @@
 
 class Resources_AjaxController extends AuthenticatedController
 {
-    public function __construct(\Trails\Dispatcher $dispatcher)
+    protected $allow_nobody = true;
+
+    public function before_filter(&$action, &$args)
     {
-        $action = explode('/', Request::pathInfo())[3];
+        if ($action !== 'get_booking_plan') {
+            throw new LoginException();
+        }
 
-        $this->allow_nobody = $action === 'get_booking_plan';
-
-        parent::__construct($dispatcher);
+        parent::before_filter($action, $args);
     }
 
     public function toggle_marked_action($request_id)
