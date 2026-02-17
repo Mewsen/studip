@@ -198,16 +198,15 @@ onMounted(() => {
 }
 footer.wizard-buttons {
     background-color: var(--color--content-box-header);
-    display: flex;
     padding-left: 15px;
     padding-right: 15px;
 
-    .back-button {
-        margin-right: auto;
-    }
-
     .forward-button {
-        margin-left: auto;
+        margin-left: 15px;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
     }
 }
 </style>
