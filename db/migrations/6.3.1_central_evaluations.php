@@ -115,7 +115,11 @@ class CentralEvaluations extends Migration
                 (`range_id`, `range_type`, `plugin_id`, `position`, `metadata`, `mkdate`, `chdate`)
             VALUES(:range_id, :range_type, :plugin_id, :position, :metadata, :mkdate, :chdate)
         ";
-        $update_courses = DBManager::get()->prepare("SELECT * FROM `seminare`"); //TODO where not study group
+        $update_courses = DBManager::get()->prepare("
+            SELECT * FROM `seminare`
+            INNER JOIN `sem_classes` ON `sem_classes`.`id` = `seminare`.`status`
+            WHERE `sem_classes`.`studygroup_mode` = 0
+        ");
         $update_courses->execute();
         while ($row = $update_courses->fetch(PDO::FETCH_ASSOC)) {
             DBManager::get()->execute($sql, [
