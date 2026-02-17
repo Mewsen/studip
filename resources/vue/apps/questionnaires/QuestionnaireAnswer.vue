@@ -2,7 +2,7 @@
     <form action="#"
           method="post"
           enctype="multipart/form-data"
-          class="questionnaire"
+          class="questionnaire default"
           @submit.prevent="submit()"
           :data-dialog="asDialog ? true : null"
           :data-secure="activateFormSecure"
@@ -11,18 +11,17 @@
         <div class="questionnaire_answer">
             <article v-for="question in questionnaireData.questions">
                 {{ question.questiontype }}
-                <QuestionnaireInfoView v-if="question.questiontype == 'Infromation'" />
+                <QuestionnaireInfoView v-if="question.questiontype == 'QuestionnaireInfo'" :question="question" />
                 <HeadlineView v-if="question.questiontype == 'Headline'" :question="question" />
                 <DividerView v-if="question.questiontype == 'Divider'" />
                 <BlankLineView v-if="question.questiontype == 'BlankLine'" />
                 <PagebreakView v-if="question.questiontype == 'Pagebreak'" />
 
-                <!-- TODO alle anderen Fragetypen rendern -->
                 <VoteAnswer v-if="question.questiontype == 'Vote'" :question="question"/>
                 <FreetextAnswer v-if="question.questiontype == 'Freetext'" :question="question"/>
                 <RangescaleAnswer v-if="question.questiontype == 'Rangescale'" :question="question"/>
-                <LikertAnswer v-if="question.questiontype == 'Likert'" :question="question"/>
-                <AutomatedDataAnswer v-if="question.questiontype == 'AutomatedData'" :question="question"/>
+                <LikertAnswer v-if="question.questiontype == 'LikertScale'" :question="question"/>
+                <AutomatedDataAnswer v-if="question.questiontype == 'QuestionnaireAutomatedData'" :question="question"/>
             </article>
 
         </div>
@@ -31,7 +30,6 @@
             <span v-if="questionnaireData.anonymous == 1 ">{{ $gettext('Die Teilnahme ist anonym.') }}</span>
             <span v-else>{{ $gettext('Die Teilnahme ist nicht anonym.') }}</span>
             <span v-if="questionnaireData.editanswers == 1 ">{{ $gettext('Sie können Ihre Antworten nachträglich ändern.') }}</span>
-            <!-- TODO funktioniert noch nicht mit Enddatum -->
             <span v-if="questionnaireData.stopdate">{{ $gettext('Sie können den Fragebogen beantworten bis zum %{date} um %{time} Uhr.', {date:getFormattedDate, time:getFormattedTime}) }}</span>
         </div>
 
@@ -39,8 +37,8 @@
 </template>
 
 <script setup>
-import {$gettext} from "../../../assets/javascripts/lib/gettext";
-import {computed} from "vue";
+import { $gettext } from "../../../assets/javascripts/lib/gettext";
+import { computed } from "vue";
 
 /* Import Design Element views */
 import QuestionnaireInfoView from '../../components/questionnaires/QuestionnaireInfoView.vue';
@@ -61,13 +59,23 @@ const props = defineProps({
 })
 
 const getFormattedDate = computed(() => {
-        return new Date(this.questionnaireData.stopdate * 1000).toLocaleDateString(document.documentElement.lang, { day: '2-digit', month: '2-digit', year: 'numeric' })
-    }
-)
+    if (!props.questionnaireData?.stopdate) return ''
+
+    return new Date(props.questionnaireData.stopdate * 1000)
+        .toLocaleDateString(document.documentElement.lang, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        })
+})
 
 const getFormattedTime = computed(() => {
-    return new Date(this.questionnaireData.stopdate * 1000).toLocaleTimeString(document.documentElement.lang, {hour: '2-digit', minute: '2-digit'})
-    }
-)
+    if (!props.questionnaireData?.stopdate) return ''
 
+    return new Date(props.questionnaireData.stopdate * 1000)
+        .toLocaleTimeString(document.documentElement.lang, {
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+})
 </script>
