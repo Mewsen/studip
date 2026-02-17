@@ -22,7 +22,25 @@ use Studip\Button;
         </tr>
         </thead>
         <tbody>
-
+        <?php if (count($controller->evaluations)) : ?>
+            <?php foreach ($controller->evaluations as $evaluation) : ?>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="q[]" value="<?= htmlReady($evaluation->id) ?>">
+                    </td>
+                    <td><?= htmlReady($evaluation->title) ?></td>
+                    <td data-text="<?= (int) $evaluation->chdate?>">
+                        <?= date('d.m.Y H:i', $evaluation->chdate) ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        <?php else : ?>
+            <tr>
+                <td colspan="3" style="text-align: center">
+                    <?= _('Es stehen keine Evaluationen zur Verfügung.') ?>
+                </td>
+            </tr>
+        <? endif ?>
         </tbody>
         <tfoot>
         <tr>

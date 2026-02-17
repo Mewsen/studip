@@ -20,7 +20,9 @@ class Evaluation_ArchiveController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($list);
 
-        $this->evaluations = Questionnaire::findBySQL('1'); //TODO
+        $this->evaluations = Questionnaire::findBySQL("
+            `template_id` IS NOT NULL
+        "); //TODO
     }
 
     public function set_action()
