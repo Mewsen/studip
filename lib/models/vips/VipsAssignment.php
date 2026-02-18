@@ -943,7 +943,7 @@ class VipsAssignment extends SimpleORMap
      */
     public function getArchivedGroupSolutions(string $group_id, int $exercise_id): array
     {
-        return VipsSolution::findBySQL(
+        $solutions = VipsSolution::findBySQL(
             'JOIN etask_group_members USING(user_id)
              WHERE task_id   = ?
                AND assignment_id = ?
@@ -953,6 +953,8 @@ class VipsAssignment extends SimpleORMap
              ORDER BY id DESC',
             [$exercise_id, $this->id, $group_id, $this->end, $this->end]
         );
+
+        return array_slice($solutions, 1);
     }
 
     /**
@@ -964,10 +966,12 @@ class VipsAssignment extends SimpleORMap
      */
     public function getArchivedUserSolutions(string $user_id, int $exercise_id): array
     {
-        return VipsSolution::findBySQL(
+        $solutions = VipsSolution::findBySQL(
             'task_id = ? AND assignment_id = ? AND user_id = ? ORDER BY id DESC',
             [$exercise_id, $this->id, $user_id]
         );
+
+        return array_slice($solutions, 1);
     }
 
     /**
