@@ -37,6 +37,15 @@ class Evaluation_ArchiveController extends AuthenticatedController
     public function bulk_action($action)
     {
         CSRFProtection::verifyUnsafeRequest();
-        //TODO (both eval & assign)
+        switch ($action) {
+            case 'delete':
+                $assignments = Request::optionArray('assignments');
+                //TODO
+                break;
+            case 'export':
+                //TODO
+                break;
+        }
+        $this->redirect('evaluation/archive');
     }
 }

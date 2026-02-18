@@ -28,9 +28,9 @@ use Studip\Button;
             <?php foreach ($controller->eval_assignments as $assignment) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="q[]" value="<?= htmlReady($assignment->id) ?>">
+                        <input type="checkbox" name="assignments[]" value="<?= htmlReady($assignment->id) ?>">
                     <td>
-                        <?= htmlReady($assignment->questionnaire->title) /*TODO link to statistic*/ ?>
+                        <?= htmlReady($assignment->questionnaire->title ?? '') /*TODO link to statistic*/ ?>
                     </td>
                     </td>
                     <td>
