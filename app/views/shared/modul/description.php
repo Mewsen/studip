@@ -15,7 +15,7 @@
             href="<?= $controller->action_link('description/' . $modul->id . '/',
                 [
                     'display_language' => $language,
-                    'abschnitt_id' => $abschnitt_modul->abschnitt_id,
+                    'abschnitt_id' => empty($abschnitt_modul) ? '' : $abschnitt_modul->abschnitt_id,
                 ]) ?>">
             <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
         </a>

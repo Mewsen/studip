@@ -27,7 +27,7 @@
             <? $modulteil_deskriptor = $modulteil->getDeskriptor();
             // Für die Kenntlichmachung der Modulteile in Listen die Nummer des
             // Modulteils und den ausgewählten Namen verwenden.
-            // Ist keine Nummer vorhanden, dann Durchnummerieren und Standard-
+            // Ist keine Nummer vorhanden, dann durchnummerieren und Standard-
             // Bezeichnung verwenden.
             if (trim($modulteil->nummer)) {
                 $num_bezeichnung = $GLOBALS['MVV_MODULTEIL']['NUM_BEZEICHNUNG']['values'][$modulteil->num_bezeichnung]['name'];

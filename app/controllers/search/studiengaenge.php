@@ -269,11 +269,11 @@ class Search_StudiengaengeController extends MVVController
                         continue;
                     }
 
-                    $start_sem = Semester::find($abschnitt_modul->modul->start);
-                    $end_sem = Semester::find($abschnitt_modul->modul->end);
+                    $start_sem_begin = $abschnitt_modul->modul->start_semester->beginn ?? 0;
+                    $end_sem_end = $abschnitt_modul->modul->end_semester->ende ?? PHP_INT_MAX;
                     if (
-                        ($start_sem && $start_sem->beginn > $this->active_sem->beginn)
-                        || ($end_sem && $this->active_sem->ende > $end_sem->ende)) {
+                        ($start_sem_begin > $this->active_sem->beginn)
+                        || ($this->active_sem->ende > $end_sem_end)) {
                        continue;
                     }
 
