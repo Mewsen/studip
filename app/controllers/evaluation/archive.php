@@ -11,18 +11,19 @@ class Evaluation_ArchiveController extends AuthenticatedController
             $this->url_for('evaluation/archive/set'),
             'sem_select'
         );
+        $selected_sem = $_SESSION['evaluation_archive_sem'] ?? Semester::findCurrent()->id;
         foreach ($semesters as $semester) {
             $list->addElement(new SelectElement(
                 $semester->id,
                 htmlReady($semester->name),
-                $semester->id === $_SESSION['evaluation_archive_sem']
+                $semester->id === $selected_sem
             ));
         }
         Sidebar::Get()->addWidget($list);
 
         $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL(
             "`semester_id` = ?",
-            [$_SESSION['evaluation_archive_sem']]);
+            [$selected_sem]);
     }
 
     public function set_action()
