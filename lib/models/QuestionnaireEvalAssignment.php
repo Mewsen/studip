@@ -8,7 +8,7 @@
  */
 class QuestionnaireEvalAssignment extends SimpleORMap
 {
-    protected static function configure($config = [])
+    protected static function configure($config = []): void
     {
         $config['db_table'] = 'questionnaire_eval_assignments';
 
