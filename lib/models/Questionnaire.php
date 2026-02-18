@@ -198,6 +198,10 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isCopyable()
     {
+        if ($this->is_template) {
+            return User::findCurrent()->hasPermissionLevel('root') ||
+                User::findCurrent()->hasRole('Zentraler Evaluationsadmin');
+        }
         return ($this->copyable && $GLOBALS['perm']->have_perm('autor') && $this->isViewable()) || $this->isEditable();
     }
 
