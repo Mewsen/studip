@@ -65,7 +65,7 @@ final class Lti_1p3_IndexController extends AuthenticatedController
             User::findCurrent()->id,
             $deployment->deployment_key,
             RoleMapper::fromLocal($GLOBALS['perm']->get_studip_perm($this->context->getId())),
-            [
+            array_filter([
                 'https://purl.imsglobal.org/spec/lti/claim/custom' => $resourceLinkRepo->getCustom(),
                 new ContextClaim(
                     $this->context->getId(),
@@ -81,7 +81,7 @@ final class Lti_1p3_IndexController extends AuthenticatedController
                     explode('_', $_SESSION['_language'])[0]
                 ),
                 $resourceLinkRepo->getAgsClaim()
-            ]
+            ], fn ($claim) => $claim !== null)
         );
 
         $this->render_text($message->toHtmlRedirectForm());

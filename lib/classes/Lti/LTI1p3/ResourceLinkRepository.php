@@ -127,7 +127,7 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
         ]);
     }
 
-    public function getAgsClaim(): AgsClaim
+    public function getAgsClaim(): ?AgsClaim
     {
         $lineItemsContainerUrl = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_items', ['resource_link_id' => $this->resourceLink->id], true);
         $lineItemURL = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_item', ['resource_link_id' => $this->resourceLink->id], true);
@@ -153,11 +153,7 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
                 $lineItemURL
             ),
 
-            default => new AgsClaim(
-                [''],
-                null,
-                null
-            )
+            default => null
         };
     }
 }
