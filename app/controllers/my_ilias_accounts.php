@@ -234,7 +234,7 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
-     * Shows ilias courses for active user
+     * Shows ilias courses and workgroups for active user
      */
     public function my_courses_action()
     {
@@ -286,7 +286,7 @@ class MyIliasAccountsController extends AuthenticatedController
 
         $widget = new ActionsWidget();
         foreach ($this->ilias_list as $ilias_list_index => $ilias) {
-            if ($GLOBALS['perm']->have_perm('autor')) {
+            if (User::findCurrent()->hasPermissionLevel('autor')) {
                 $widget->addLink(
                     sprintf(_('Zur %s-Startseite'), $ilias->getName()),
                     $this->url_for('my_ilias_accounts/redirect/' . $ilias_list_index . '/login'),
@@ -337,7 +337,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
                 }
 
-                if ($ilias->ilias_config['workgroup_category']) {
+                if ($ilias->ilias_config['workgroup_category'] && User::findCurrent()->hasPermissionLevel('tutor')) {
                     // Prepare search object for MultiPersonSearch.
                     if (empty($this->add_member_search)) {
                         $this->add_member_search = new PermissionSearch(
@@ -351,13 +351,13 @@ class MyIliasAccountsController extends AuthenticatedController
                         );
                     }
 
-                    $this->workgroups_list[$ilias_list_index] = $ilias->getUserWorkgroups($GLOBALS['perm']->have_perm('root'));
+                    $this->workgroups_list[$ilias_list_index] = $ilias->getUserWorkgroups(User::findCurrent()->hasPermissionLevel('root'));
 
                     $this->add_workgroups_perm[$ilias_list_index] = 
                         !empty($ilias->ilias_config['workgroup_category'])
                         && !empty($ilias->ilias_config['workgroup_role'])
                         && !empty($ilias->ilias_config['workgroup_perm']) 
-                        && $GLOBALS['perm']->have_perm($ilias->ilias_config['workgroup_perm']);
+                        && User::findCurrent()->hasPermissionLevel($ilias->ilias_config['workgroup_perm']);
                 }
             }
         }
