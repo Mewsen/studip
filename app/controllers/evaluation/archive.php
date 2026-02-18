@@ -5,7 +5,7 @@ class Evaluation_ArchiveController extends AuthenticatedController
     {
         Navigation::activateItem('/evaluation/archive');
 
-        $semesters = Semester::getAll();
+        $semesters = array_reverse(Semester::getAll());
         $list = new SelectWidget(
             _('Semester'),
             $this->url_for('evaluation/archive/set'),
@@ -20,7 +20,9 @@ class Evaluation_ArchiveController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($list);
 
-        $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL("1"); //TODO?
+        $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL(
+            "`semester_id` = ?",
+            [$_SESSION['evaluation_archive_sem']]);
     }
 
     public function set_action()
