@@ -90,19 +90,19 @@ class Resources_MessagesController extends AuthenticatedController
 
             //First validation:
 
-            if (empty($this->room_ids)) {
+            if (!in_array($this->room_selection, ['search', 'clipboard'])) {
+                PageLayout::postError(
+                    _('Die Raumauswahl ist ungültig!')
+                );
+                return;
+            }
+
+            if ($this->room_selection === 'search' && empty($this->room_ids)) {
                 if (empty($old_room_id_list)) {
                     PageLayout::postError(_('Sie haben keinen Raum ausgewählt.'));
                 } else {
                     PageLayout::postError(_('Sie haben an den ausgewählten Räumen nicht die erforderlichen Berechtigungen, um eine Rundmail zu senden.'));
                 }
-                return;
-            }
-
-            if (!in_array($this->room_selection, ['search', 'clipboard'])) {
-                PageLayout::postError(
-                    _('Die Raumauswahl ist ungültig!')
-                );
                 return;
             }
 
@@ -172,19 +172,33 @@ class Resources_MessagesController extends AuthenticatedController
 
             //First we collect all room-IDs, if they are not already there
             //from the search selection method:
+            $permission_error = false;
             if ($this->room_selection == 'clipboard') {
                 $selected_clipboard = Clipboard::find($this->clipboard_id);
 
                 if ($selected_clipboard) {
-                    $this->room_ids = $selected_clipboard->getAllRangeIds('Room');
+                    $clipboard_room_ids = $selected_clipboard->getAllRangeIds('Room');
+                    $this->room_ids  = [];
+                    foreach ($clipboard_room_ids as $clipboard_room_id) {
+                        $clipboard_room = Room::find($clipboard_room_id);
+                        if ($clipboard_room && $clipboard_room->userHasPermission($this->current_user)) {
+                            $this->room_ids[] = $clipboard_room_id;
+                        } else {
+                            $permission_error = true;
+                        }
+                    }
                 }
             }
 
             //If we haven't found any rooms here we must stop:
             if (!$this->room_ids) {
-                PageLayout::postError(
-                    _('Es konnte keine Raumliste erstellt werden!')
-                );
+                if ($permission_error) {
+                    PageLayout::postError(_('Sie haben an den ausgewählten Räumen nicht die erforderlichen Berechtigungen, um eine Rundmail zu senden.'));
+                } else {
+                    PageLayout::postError(
+                        _('Es konnte keine Raumliste erstellt werden!')
+                    );
+                }
                 return;
             }
 
