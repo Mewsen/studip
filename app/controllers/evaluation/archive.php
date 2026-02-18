@@ -20,9 +20,7 @@ class Evaluation_ArchiveController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($list);
 
-        $this->evaluations = Questionnaire::findBySQL("
-            `template_id` IS NOT NULL
-        "); //TODO
+        $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL("1"); //TODO?
     }
 
     public function set_action()
@@ -36,6 +34,6 @@ class Evaluation_ArchiveController extends AuthenticatedController
     public function bulk_action($action)
     {
         CSRFProtection::verifyUnsafeRequest();
-        //TODO
+        //TODO (both eval & assign)
     }
 }

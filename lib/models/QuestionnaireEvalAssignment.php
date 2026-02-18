@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @property JSONArrayObject course_metadata database column
+ * @property null|int $startdate database column
+ * @property null|int $stopdate database column
+ * @property Questionnaire $questionnaire belongs_to QuestionnaireEvalAssignment
+ */
 class QuestionnaireEvalAssignment extends SimpleORMap
 {
     protected static function configure($config = [])

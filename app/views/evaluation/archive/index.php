@@ -18,25 +18,35 @@ use Studip\Button;
                        data-activates="#evaluation_table tfoot button">
             </th>
             <th data-sort="text"><?= _('Titel') ?></th>
-            <th data-sort="digit"><?= _('Datum') ?></th>
+            <th data-sort="text"><?= _('Veranstaltung') ?></th>
+            <th data-sort="digit"><?= _('Start') ?></th>
+            <th data-sort="digit"><?= _('Ende') ?></th>
         </tr>
         </thead>
         <tbody>
-        <?php if (count($controller->evaluations)) : ?>
-            <?php foreach ($controller->evaluations as $evaluation) : ?>
+        <?php if (count($controller->eval_assignments)) : ?>
+            <?php foreach ($controller->eval_assignments as $assignment) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="q[]" value="<?= htmlReady($evaluation->id) ?>">
+                        <input type="checkbox" name="q[]" value="<?= htmlReady($assignment->id) ?>">
+                    <td>
+                        <?= htmlReady($assignment->questionnaire->title) /*TODO link to statistic*/ ?>
                     </td>
-                    <td><?= htmlReady($evaluation->title) ?></td>
-                    <td data-text="<?= (int) $evaluation->chdate?>">
-                        <?= date('d.m.Y H:i', $evaluation->chdate) ?>
+                    </td>
+                    <td>
+                        <?= htmlReady($assignment->course_metadata) /*TODO course name*/ ?>
+                    </td>
+                    <td data-text="<?= (int) $assignment->startdate?>">
+                        <?= date('d.m.Y H:i', $assignment->startdate) ?>
+                    </td>
+                    <td data-text="<?= (int) $assignment->stopdate?>">
+                        <?= date('d.m.Y H:i', $assignment->stopdate) ?>
                     </td>
                 </tr>
             <?php endforeach ?>
         <?php else : ?>
             <tr>
-                <td colspan="3" style="text-align: center">
+                <td colspan="5" style="text-align: center">
                     <?= _('Es stehen keine Evaluationen zur Verfügung.') ?>
                 </td>
             </tr>
@@ -44,7 +54,7 @@ use Studip\Button;
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="3">
+            <td colspan="5">
                 <?= Button::create(_("Löschen"), "bulkdelete", [
                     'formaction' => $controller->bulk('delete'),
                     'data-confirm' => _("Wirklich löschen?")
