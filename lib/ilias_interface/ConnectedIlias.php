@@ -76,6 +76,7 @@ class ConnectedIlias
                         "root" => "admin"
         ];
         $this->user_operations = [self::OPERATION_VISIBLE, self::OPERATION_READ];
+        $this->user_roles = [];
         $this->operations = [];
         $this->course_modules = [];
         $this->user_modules = [];
@@ -1526,7 +1527,10 @@ class ConnectedIlias
     public function getUserRoles(): array
     {
         if (empty($this->user_roles)) {
-            $this->user_roles = $this->soap_client->getUserRoles($this->user->getId());
+            $roles = $this->soap_client->getUserRoles($this->user->getId());
+            if ($roles !== false) {
+                $this->user_roles = $roles;
+            }
         }
         return $this->user_roles;
     }
