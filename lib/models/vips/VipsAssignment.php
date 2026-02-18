@@ -950,7 +950,7 @@ class VipsAssignment extends SimpleORMap
                AND group_id      = ?
                AND start         < ?
                AND (end          > ? OR end IS NULL)
-             ORDER BY mkdate DESC',
+             ORDER BY id DESC',
             [$exercise_id, $this->id, $group_id, $this->end, $this->end]
         );
     }
@@ -965,7 +965,7 @@ class VipsAssignment extends SimpleORMap
     public function getArchivedUserSolutions(string $user_id, int $exercise_id): array
     {
         return VipsSolution::findBySQL(
-            'task_id = ? AND assignment_id = ? AND user_id = ? ORDER BY mkdate DESC',
+            'task_id = ? AND assignment_id = ? AND user_id = ? ORDER BY id DESC',
             [$exercise_id, $this->id, $user_id]
         );
     }
@@ -1000,7 +1000,7 @@ class VipsAssignment extends SimpleORMap
                AND group_id      = ?
                AND start         < ?
                AND (end          > ? OR end IS NULL)
-             ORDER BY mkdate DESC',
+             ORDER BY id DESC',
             [$exercise_id, $this->id, $group_id, $this->end, $this->end]
         );
     }
@@ -1013,7 +1013,7 @@ class VipsAssignment extends SimpleORMap
     public function getUserSolution(string $user_id, int $exercise_id): ?VipsSolution
     {
         return VipsSolution::findOneBySQL(
-            'task_id = ? AND assignment_id = ? AND user_id = ? ORDER BY mkdate DESC',
+            'task_id = ? AND assignment_id = ? AND user_id = ? ORDER BY id DESC',
             [$exercise_id, $this->id, $user_id]
         );
     }
@@ -1117,7 +1117,7 @@ class VipsAssignment extends SimpleORMap
             $user_ids = [$user_id];
         }
 
-        $solutions = $this->solutions->findBy('user_id', $user_ids)->orderBy('mkdate');
+        $solutions = $this->solutions->findBy('user_id', $user_ids)->orderBy('id');
         $points = [];
 
         foreach ($solutions as $solution) {
