@@ -807,7 +807,7 @@ class Admin_CourseplanningController extends AuthenticatedController
                 $seminars[$course->id]['tools'] = $tools;
                 $seminars[$course->id]['visitdate'] = $visit_data[$course->id][0]['visitdate'];
                 $seminars[$course->id]['last_visitdate'] = $visit_data[$course->id][0]['last_visitdate'];
-                $seminars[$course->id]['sem_class'] = $sem_types[$course->status]->getClass();
+                $seminars[$course->id]['sem_class'] = $sem_types[$course->status]->getSemClass();
                 $seminars[$course->id]['navigation'] = MyRealmModel::getAdditionalNavigations(
                     $course->id,
                     $seminars[$course->id],

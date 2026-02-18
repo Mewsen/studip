@@ -50,8 +50,8 @@ class Admin_SemClassesController extends AuthenticatedController
                 $id = DBManager::get()->lastInsertId();
                 if (Request::get("add_like")) {
                     $sem_class = clone $GLOBALS['SEM_CLASS'][Request::get("add_like")];
-                    $sem_class->set('name', Request::get("add_name"));
-                    $sem_class->set('id', $id);
+                    $sem_class->name = Request::get("add_name");
+                    $sem_class->id = $id;
                     $sem_class->store();
                 }
                 $this->redirect(URLHelper::getURL($this->url_for('admin/sem_classes/details'), ['id' => $id]));
@@ -100,33 +100,33 @@ class Admin_SemClassesController extends AuthenticatedController
         $sem_class = $GLOBALS['SEM_CLASS'][Request::int("sem_class_id")];
         $old_data_sem_class = clone $sem_class;
 
-        $sem_class->setModules(Request::getArray("modules"));
-        $sem_class->set('name', Request::get("sem_class_name"));
-        $sem_class->set('description', Request::get("sem_class_description"));
-        $sem_class->set('title_dozent', Request::get("title_dozent") ? Request::get("title_dozent") : null);
-        $sem_class->set('title_dozent_plural', Request::get("title_dozent_plural") ? Request::get("title_dozent_plural") : null);
-        $sem_class->set('title_tutor', Request::get("title_tutor") ? Request::get("title_tutor") : null);
-        $sem_class->set('title_tutor_plural', Request::get("title_tutor_plural") ? Request::get("title_tutor_plural") : null);
-        $sem_class->set('title_autor', Request::get("title_autor") ? Request::get("title_autor") : null);
-        $sem_class->set('title_autor_plural', Request::get("title_autor_plural") ? Request::get("title_autor_plural") : null);
-        $sem_class->set('studygroup_mode', Request::int("studygroup_mode"));
-        $sem_class->set('only_inst_user', Request::int("only_inst_user"));
-        $sem_class->set('default_read_level', Request::int("default_read_level"));
-        $sem_class->set('default_write_level', Request::int("default_write_level"));
-        $sem_class->set('bereiche', Request::int("bereiche"));
-        $sem_class->set('module', Request::int("module"));
-        $sem_class->set('show_browse', Request::int("show_browse"));
-        $sem_class->set('visible', Request::int("visible"));
-        $sem_class->set('course_creation_forbidden', Request::int("course_creation_forbidden"));
-        $sem_class->set('create_description', Request::get("create_description"));
-        $sem_class->set('admission_prelim_default', Request::int("admission_prelim_default"));
-        $sem_class->set('admission_type_default', Request::int("admission_type_default"));
-        $sem_class->set('show_raumzeit', Request::int("show_raumzeit"));
-        $sem_class->set('is_group', Request::int("is_group"));
-        $sem_class->set('unlimited_forbidden', Request::bool('unlimited_forbidden'));
-        $sem_class->set('admission_turnout_mandatory', Request::bool('admission_turnout_mandatory'));
+        $sem_class->modules = Request::getArray("modules");
+        $sem_class->name = Request::get("sem_class_name");
+        $sem_class->description = Request::get("sem_class_description");
+        $sem_class->title_dozent = Request::get("title_dozent") ? Request::get("title_dozent") : null;
+        $sem_class->title_dozent_plural = Request::get("title_dozent_plural") ? Request::get("title_dozent_plural") : null;
+        $sem_class->title_tutor = Request::get("title_tutor") ? Request::get("title_tutor") : null;
+        $sem_class->title_tutor_plural = Request::get("title_tutor_plural") ? Request::get("title_tutor_plural") : null;
+        $sem_class->title_autor = Request::get("title_autor") ? Request::get("title_autor") : null;
+        $sem_class->title_autor_plural = Request::get("title_autor_plural") ? Request::get("title_autor_plural") : null;
+        $sem_class->studygroup_mode = Request::int("studygroup_mode");
+        $sem_class->only_inst_user = Request::int("only_inst_user");
+        $sem_class->default_read_level = Request::int("default_read_level");
+        $sem_class->default_write_level = Request::int("default_write_level");
+        $sem_class->bereiche = Request::int("bereiche");
+        $sem_class->module = Request::int("module");
+        $sem_class->show_browse = Request::int("show_browse");
+        $sem_class->visible = Request::int("visible");
+        $sem_class->course_creation_forbidden = Request::int("course_creation_forbidden");
+        $sem_class->create_description = Request::get("create_description");
+        $sem_class->admission_prelim_default = Request::int("admission_prelim_default");
+        $sem_class->admission_type_default = Request::int("admission_type_default");
+        $sem_class->show_raumzeit = Request::int("show_raumzeit");
+        $sem_class->is_group = Request::int("is_group");
+        $sem_class->unlimited_forbidden = Request::bool('unlimited_forbidden');
+        $sem_class->admission_turnout_mandatory = Request::bool('admission_turnout_mandatory');
         $sem_class->store();
-        foreach (array_keys($sem_class->getModules()) as $module_name) {
+        foreach ($sem_class->modules as $module_name => $module) {
             if ($sem_class->isModuleMandatory($module_name) && !$old_data_sem_class->isModuleMandatory($module_name)) {
                 $sem_class->activateModuleInCourses($module_name);
             }
@@ -169,7 +169,7 @@ class Admin_SemClassesController extends AuthenticatedController
     public function rename_sem_type_action() {
         $sem_type = $GLOBALS['SEM_TYPE'][Request::get("sem_type")];
         if ($sem_type) {
-            $sem_type->set('name', Request::get("name"));
+            $sem_type->name = Request::get("name");
             $sem_type->store();
         }
         $this->render_nothing();

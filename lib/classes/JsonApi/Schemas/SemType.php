@@ -31,7 +31,7 @@ class SemType extends SchemaProvider
         $relationships = [];
 
         // SemClass
-        $related = $resource->getClass();
+        $related = $resource->getSemClass();
         $relationships[self::REL_SEM_CLASS] = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->createLinkToResource($related)
