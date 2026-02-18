@@ -74,7 +74,7 @@ class MyIliasAccountsController extends AuthenticatedController
     /**
      * Sends workgroup requests to given user(s)
      */
-    public function request_workgroup_member_action($ilias_index, $workgroup_id) 
+    public function request_workgroup_member_action($ilias_index, $workgroup_id)
     {
         $this->ilias = new ConnectedIlias($ilias_index);
         if ($this->ilias->isActive()) {
@@ -91,19 +91,19 @@ class MyIliasAccountsController extends AuthenticatedController
                     $user = new IliasUser($this->ilias_index, $this->ilias_int_version, $user_id);
                     if (!$user->isConnected()) {
                         PageLayout::postInfo(sprintf(
-                            _('%s wurde übersprungen, da kein ILIAS-Account verknüpft ist.'), 
+                            _('%s wurde übersprungen, da kein ILIAS-Account verknüpft ist.'),
                             htmlReady($user->getName())
                         ));
                     } elseif (!empty($workgroup['members'][$user_id])) {
                         PageLayout::postInfo(sprintf(
-                            _('%s wurde übersprungen, da bereits Mitglied des Arbeitsbereichs.'), 
+                            _('%s wurde übersprungen, da bereits Mitglied des Arbeitsbereichs.'),
                             htmlReady($user->getName())
                         ));
                     } else {
                         $message_title = sprintf(_('Mitgliedschaftsanfrage für ILIAS-Arbeitsbereich "%s"'), $workgroup['title']);
                         $message_body = sprintf(_('Sie haben eine Mitgliedschafts-Anfrage für den ILIAS-Arbeitsbereich "%s" erhalten.'), $workgroup['title'])."\n\n";
-                        $message_body .= _('Um dem Arbeitsbereich beizutreten, klicken Sie bitte auf den folgenden Link:')."\n\n"; 
-                        $message_body .= '['. _('ILIAS-Arbeitsbereich hinzufügen') . ']' . $this->url_for('my_ilias_accounts/accept_workgroup_request', $this->ilias_index, $workgroup_id)."\n\n"; 
+                        $message_body .= _('Um dem Arbeitsbereich beizutreten, klicken Sie bitte auf den folgenden Link:')."\n\n";
+                        $message_body .= '['. _('ILIAS-Arbeitsbereich hinzufügen') . ']' . $this->url_for('my_ilias_accounts/accept_workgroup_request', $this->ilias_index, $workgroup_id)."\n\n";
                         $message_body .= _('Diese Anfrage ist für eine Woche ab Erhalt der Nachricht gültig.');
 
                         $recipients = [$user->studip_login];
@@ -138,7 +138,7 @@ class MyIliasAccountsController extends AuthenticatedController
     /**
      * Accepts workgroup request for current user
      */
-    public function accept_workgroup_request_action($ilias_index, $workgroup_id) 
+    public function accept_workgroup_request_action($ilias_index, $workgroup_id)
     {
         $this->ilias = new ConnectedIlias($ilias_index);
         if ($this->ilias->isActive()) {
@@ -165,7 +165,7 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
-     * Shows ilias courses for active user
+     * Shows ilias courses and workgroups for active user
      */
     public function my_courses_action()
     {
@@ -181,7 +181,7 @@ class MyIliasAccountsController extends AuthenticatedController
         $this->add_member_search = null;
         $this->courses_list = [];
         $this->workgroups_list = [];
-    
+
         // set up connected ilias classes
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
@@ -217,7 +217,7 @@ class MyIliasAccountsController extends AuthenticatedController
 
         $widget = new ActionsWidget();
         foreach ($this->ilias_list as $ilias_list_index => $ilias) {
-            if ($GLOBALS['perm']->have_perm('autor')) {
+            if (User::findCurrent()->hasPermissionLevel('autor')) {
                 $widget->addLink(
                     sprintf(_('Zur %s-Startseite'), $ilias->getName()),
                     $this->url_for('my_ilias_accounts/redirect/' . $ilias_list_index . '/login'),
@@ -268,7 +268,7 @@ class MyIliasAccountsController extends AuthenticatedController
                     }
                 }
 
-                if ($ilias->ilias_config['workgroup_category']) {
+                if ($ilias->ilias_config['workgroup_category'] && User::findCurrent()->hasPermissionLevel('tutor')) {
                     // Prepare search object for MultiPersonSearch.
                     if (empty($this->add_member_search)) {
                         $this->add_member_search = new PermissionSearch(

@@ -17,22 +17,37 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
         parent::__construct();
         if (Config::get()->ILIAS_INTERFACE_ENABLE) {
             $ilias_interface_config = Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS;
-            if (Seminar_Perm::get()->have_perm('root')) {
+            $workgroups = false;
+            $learning_objects = false;
+            foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
+                if ($ilias_config['is_active']) {
+                    if (!empty($ilias_config['workgroup_category']) && User::findCurrent()->hasPermissionLevel('tutor')) {
+                        $workgroups = true;
+                    }
+                    if (!empty($ilias_interface_config['create_objects'])
+                        && !empty($ilias_interface_config['create_category'])
+                        && User::findCurrent()->hasPermissionLevel($ilias_config['author_perm'])) {
+                        $learning_objects = true;
+                    }
+                }
+            }
+
+            if (User::findCurrent()->hasPermissionLevel('root')) {
                 Navigation::addItem('/admin/config/ilias_interface',
                     new Navigation(_('ILIAS-Schnittstelle'), 'dispatch.php/admin/ilias_interface'));
             }
-            if (Seminar_Perm::get()->have_perm('tutor') || Seminar_Perm::get()->have_perm('autor')) {
+            if (User::findCurrent()->hasPermissionLevel('autor')) {
                 $ilias = new Navigation(_('ILIAS'), 'dispatch.php/my_ilias_accounts/my_courses');
                 $ilias->setImage(Icon::create('ilias'));
                 $ilias->setDescription(_('Schnittstelle zu ILIAS'));
                 $ilias->addSubNavigation(
                     'my_courses',
-                    new Navigation(_('Meine Kurse'), 'dispatch.php/my_ilias_accounts/my_courses')
+                    new Navigation($workgroups ? _('Meine Kurse und Arbeitsbereiche') : _('Meine Kurse'), 'dispatch.php/my_ilias_accounts/my_courses')
                 );
-                if (Seminar_Perm::get()->have_perm('root') || !empty($ilias_interface_config['show_tools_page'])) {
+                if (User::findCurrent()->hasPermissionLevel('root') || !empty($ilias_interface_config['show_tools_page'])) {
                     $ilias->addSubNavigation(
                         'my_accounts',
-                        new Navigation(_('Meine Lernobjekte und Accounts'), 'dispatch.php/my_ilias_accounts')
+                        new Navigation($learning_objects ? _('Meine Lernobjekte und Accounts') : _('Meine Accounts'), 'dispatch.php/my_ilias_accounts')
                     );
                 }
                 Navigation::addItem('/contents/my_ilias_accounts', $ilias);
