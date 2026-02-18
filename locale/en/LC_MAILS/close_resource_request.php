@@ -1,4 +1,14 @@
-A request <?= $request->course instanceof Course
+<?php
+/**
+ * @var ResourceRequest $request
+ * @var string $lecturer_names
+ * @var string $booked_rooms
+ * @var SeminarCycleDate[] $metadates
+ * @var CourseDate[]|SeminarCycleDate[] $single_dates
+ * @var ResourceBookingException[] $booked_time_intervals
+ */
+?>
+A request <?= $request->course
             ? 'for the course [' .$request->course->getFullName('number-name') . ']' . $request->course->getItemURL()
             : '' ?> has been processed.
 
@@ -17,7 +27,7 @@ Booked rooms: <?= $booked_rooms ?>
 Request type: <?= $request->getTypeString() ?>
 
 
-The following time ranges have been booked<?= $request->course->isToolActive('CoreSchedule')
+The following time ranges have been booked<?= $request->course?->isToolActive(CoreSchedule::class)
                ? ' and added to [Schedule]' . str_replace( 'details/index', 'dates', $request->course->getItemURL())
                : '' ?>:
 <? foreach ($metadates as $metadate) : ?>
