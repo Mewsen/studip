@@ -268,7 +268,7 @@ class Search_StudiengaengeController extends MVVController
                     if (!$abschnitt_modul->modul || !$abschnitt_modul->modul->hasPublicStatus()) {
                         continue;
                     }
-
+                    $abschnitt_modul->modul->setReplaceDfAbschnitt($abschnitt);
                     $start_sem_begin = $abschnitt_modul->modul->start_semester->beginn ?? 0;
                     $end_sem_end = $abschnitt_modul->modul->end_semester->ende ?? PHP_INT_MAX;
                     if (
