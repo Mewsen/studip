@@ -32,10 +32,14 @@ use Studip\Button;
                             <input type="checkbox" name="q[]" value="<?= htmlReady($template->id) ?>">
                         </td>
                         <td>
-                            <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"
-                               data-dialog="size=big">
+                            <?php if ($template->isEditable()) : ?>
+                                <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"
+                                   data-dialog="size=big">
+                                    <?= htmlReady($template->title) ?>
+                                </a>
+                            <?php else : ?>
                                 <?= htmlReady($template->title) ?>
-                            </a>
+                            <?php endif ?>
                         </td>
                         <td data-text="<?= (int) $template->chdate ?>">
                             <?= date('d.m.Y H:i', $template->chdate) ?>
