@@ -2449,7 +2449,7 @@ class Vips_SolutionsController extends AuthenticatedController
                       seminar_user.status IS NULL OR
                       seminar_user.status NOT IN ('dozent', 'tutor')
                   )
-                ORDER BY etask_responses.mkdate DESC";
+                ORDER BY etask_responses.id DESC";
         $result = $db->prepare($sql);
         $result->execute([$course_id, $assignment_id]);
 
