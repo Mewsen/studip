@@ -1,4 +1,14 @@
-Eine Anfrage <?= $request->course instanceof Course
+<?php
+/**
+ * @var ResourceRequest $request
+ * @var string $lecturer_names
+ * @var string $booked_rooms
+ * @var SeminarCycleDate[] $metadates
+ * @var CourseDate[]|SeminarCycleDate[] $single_dates
+ * @var ResourceBookingException[] $booked_time_intervals
+ */
+?>
+Eine Anfrage <?= $request->course
                ? 'für die Veranstaltung [' .$request->course->getFullName('number-name') . ']' . $request->course->getItemURL()
                : '' ?> wurde bearbeitet.
 
@@ -18,7 +28,7 @@ Gebuchte Räume: <?= $booked_rooms ?>
 Art der Anfrage: <?= $request->getTypeString() ?>
 
 
-Die folgenden Zeiträume wurden gebucht<?= $request->course->isToolActive('CoreSchedule')
+Die folgenden Zeiträume wurden gebucht<?= $request->course?->isToolActive(CoreSchedule::class)
                ? ' und im [Ablaufplan]' . str_replace( 'details/index', 'dates', $request->course->getItemURL()) . ' eingetragen'
                : '' ?>:
 <? foreach ($metadates as $metadate) : ?>
