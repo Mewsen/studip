@@ -420,7 +420,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
             $begin,
             $end,
             $this->getTitle(),
-            [],
+            ['cancelled-course-date'],
             '#000000',
             '#aaaaaa',
             $this->isWritable($user_id),
