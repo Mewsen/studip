@@ -418,17 +418,6 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         $ex_date = new CourseExDate();
         $ex_date->setData($date);
         $ex_date->setId($ex_date->getNewId());
-        if ($rooms = $this->getRooms()) {
-            $db = DBManager::get();
-            $stmt = $db->prepare(
-                "INSERT INTO `ex_termin_rooms` (`ex_termin_id`, `room_id`, `mkdate`, `chdate`)
-                VALUES (:date_id, :room_id, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
-            );
-            foreach ($rooms as $room) {
-                $stmt->execute(['date_id' => $ex_date->id, 'room_id' => $room->id]);
-            }
-        }
-
 
         if ($ex_date->store()) {
             //Update some (but not all) relations to the date so that they
