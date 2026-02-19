@@ -20,4 +20,10 @@ class QuestionnaireEvalAssignment extends SimpleORMap
 
         parent::configure($config);
     }
+
+    public function delete(): bool
+    {
+        return $this->questionnaire->delete() && parent::delete();
+    }
+
 }

@@ -40,7 +40,14 @@ class Evaluation_ArchiveController extends AuthenticatedController
         switch ($action) {
             case 'delete':
                 $assignments = Request::optionArray('assignments');
-                //TODO
+                foreach ($assignments as $assignment_id) {
+                    $assignment = QuestionnaireEvalAssignment::find($assignment_id);
+                    if ($assignment->delete()) {
+                        PageLayout::postSuccess(_('Evaluation erfolgreich gelöscht.'));
+                    } else {
+                        PageLayout::postError(_('Es ist ein Fehler aufgetreten.'));
+                    }
+                }
                 break;
             case 'export':
                 //TODO
