@@ -7,6 +7,10 @@
  */
 class QuestionnaireEvalCentralProfile extends SimpleORMap
 {
+    public const RESULT_VISIBILITY_OPTIONS =
+        ['never' => 'nie', 'afterending' => 'nach Ende', 'afterparticipation' => 'nach Teilnahme'];
+    public const RESULT_VISIBLE_FOR_OPTIONS = ['autor','tutor','dozent'];
+
     protected static function configure($config = []): void
     {
         $config['db_table'] = 'questionnaire_eval_central_profiles';

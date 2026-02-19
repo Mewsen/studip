@@ -54,6 +54,44 @@ class Evaluation_ProfilesController extends AuthenticatedController
                     'mapper'  => function($value) {
                         return implode(',', $value);
                     }
+                ],
+                'startdate' => [
+                    'label'    => _('Start'),
+                    'required' => true,
+                    'type'     => 'datetimepicker',
+                    'value'    => time() //TODO sem
+                ],
+                'stopdate' => [
+                    'label'    => _('Ende'),
+                    'required' => true,
+                    'type'     => 'datetimepicker',
+                    'value'    => time() //TODO sem
+                ],
+                'anonymous' => [
+                    'label' => _('Anonyme Teilnahme'),
+                    'type'  => 'checkbox',
+                    'value' => true
+                ],
+                'editanswers' => [
+                    'label' => _('Antworten revidierbar'),
+                    'type'  => 'checkbox',
+                    'value' => false
+                ],
+                'resultvisibility' => [
+                    'label' => _('Zeitpunkt der Ergebnis-Einsicht'),
+                    'type' => 'select',
+                    'options' => QuestionnaireEvalCentralProfile::RESULT_VISIBILITY_OPTIONS,
+                    'value' => 'never'
+                ],
+                'result_visible_for' => [
+                    'label' => _('Ergebnis-Einsicht für (Evaluations-Admins immer)'),
+                    'type' => 'select',
+                    'options' => QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS
+                ],
+                'minimum_responses' => [
+                    'label' => _('Mindestrücklauf'),
+                    'type' => 'number',
+                    'value' => 8
                 ]
             ]
         ], $this->url_for('evaluation/profiles')
