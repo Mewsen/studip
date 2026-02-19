@@ -25,20 +25,35 @@ final class WizardPart implements Stringable, JsonSerializable
     private string $title;
     private string $iconShape;
 
+    private string $description;
+
     /**
      * Creates a vue app with the given relative path to the app component.
      */
-    public static function create(string $id, Form|VueApp $content, string $title = '', string $iconShape = ''): WizardPart
+    public static function create(
+        string $id,
+        Form|VueApp $content,
+        string $title = '',
+        string $description = '',
+        string $iconShape = ''
+    ): WizardPart
     {
-        return new static($id, $content, $title, $iconShape);
+        return new static($id, $content, $title, $description, $iconShape);
     }
 
-    public function __construct(string $id, Form|VueApp $content, string $title = '', string $iconShape = '')
+    public function __construct(
+        string $id,
+        Form|VueApp $content,
+        string $title = '',
+        string $description = '',
+        string $iconShape = ''
+    )
     {
         $this->id = $id;
         $this->type = get_class($content);
         $this->content = $content;
         $this->title = $title;
+        $this->description = $description;
         $this->iconShape = $iconShape;
     }
 
@@ -57,6 +72,11 @@ final class WizardPart implements Stringable, JsonSerializable
         return $this->title;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function getContent() {
         return $this->content;
     }
@@ -70,6 +90,12 @@ final class WizardPart implements Stringable, JsonSerializable
     public function setTitle(string $title): WizardPart
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function setDescription(string $description): WizardPart
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -90,6 +116,7 @@ final class WizardPart implements Stringable, JsonSerializable
             'id' => $this->id,
             'type' => $this->type,
             'title' => $this->title,
+            'description' => $this->description,
             'icon' => $this->iconShape,
             'content' => $this->render()
         ];

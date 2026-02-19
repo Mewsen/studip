@@ -55,6 +55,37 @@
             </button>
         </footer>
     </div>
+    <teleport to="#wizard-widget">
+        <sidebar-widget :title="$gettext('Assistent')" class="sidebar-navigation">
+            <template #content>
+                <ul class="widget-list widget-links sidebar-navigation">
+                    <li
+                        v-for="(step, index) in visibleSteps"
+                        :key="index"
+                        :class="{ active: index === currentStep }"
+                    >
+                        <a @click="jumpToStep(index)">
+                            <template v-if="step.icon !== ''">
+                                <studip-icon :shape="step.icon"
+                                             role="clickable"
+                                             :size="24"></studip-icon>
+                            </template>
+                            <template v-else>
+                                {{ index + 1 }}.
+                            </template>
+                            {{ step.title }}
+                        </a>
+                        <div
+                            v-if="index === currentStep && step.description !== ''"
+                            class="wizard-part-description"
+                        >
+                            {{ step.description }}
+                        </div>
+                    </li>
+                </ul>
+            </template>
+        </sidebar-widget>
+    </teleport>
 </template>
 
 <script setup>
@@ -62,6 +93,7 @@ import {nextTick, onMounted, ref} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 
 import StockImages from './StockImages';
+import SidebarWidget from "../components/SidebarWidget.vue";
 
 const props = defineProps({
     steps: {
@@ -143,7 +175,7 @@ onMounted(() => {
     visibleSteps.value.push({
         type: 'Vue',
         id: 'stock-images',
-        title: 'Stock Images',
+        title: 'Bilderpool',
         content: StockImages,
         icon: 'block-gallery'
     });
@@ -213,5 +245,8 @@ footer.wizard-buttons {
             margin-left: 0;
         }
     }
+}
+ul.widget-list > li > .wizard-part-description {
+    padding: 4px 0 4px 8px;
 }
 </style>
