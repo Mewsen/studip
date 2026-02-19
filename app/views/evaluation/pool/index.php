@@ -87,11 +87,11 @@ use Studip\Button;
             <? endif ?>
         </tbody>
         <tfoot>
-        <tr>
-            <td colspan="5">
-                <?= Button::create(_("Löschen"), "bulkdelete", ['data-confirm' => _("Wirklich löschen?")]) ?>
-            </td>
-        </tr>
+            <tr>
+                <td colspan="5">
+                    <?= Button::create(_("Löschen"), "bulkdelete", ['data-confirm' => _("Wirklich löschen?")]) ?>
+                </td>
+            </tr>
         </tfoot>
     </table>
 </form>

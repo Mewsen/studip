@@ -2,6 +2,7 @@
 /**
  * @property Semester $semester belongs_to QuestionnaireEvalCentralProfile
  * @property Questionnaire $template belongs_to QuestionnaireEvalCentralProfile
+ * @property int $semester_id database column
  * @property string $optional_templates database column
  */
 class QuestionnaireEvalCentralProfile extends SimpleORMap

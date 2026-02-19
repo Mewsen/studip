@@ -53,17 +53,17 @@ use Studip\Button;
         <? endif ?>
         </tbody>
         <tfoot>
-        <tr>
-            <td colspan="5">
-                <?= Button::create(_("Löschen"), "bulkdelete", [
-                    'formaction' => $controller->bulk('delete'),
-                    'data-confirm' => _("Wirklich löschen?")
-                ]) ?>
-                <?= Button::create(_("Exportieren"), "bulkexport", [
-                    'formaction' => $controller->bulk('export')
-                ]) ?>
-            </td>
-        </tr>
+            <tr>
+                <td colspan="5">
+                    <?= Button::create(_("Löschen"), "bulkdelete", [
+                        'formaction' => $controller->bulk('delete'),
+                        'data-confirm' => _("Wirklich löschen?")
+                    ]) ?>
+                    <?= Button::create(_("Exportieren"), "bulkexport", [
+                        'formaction' => $controller->bulk('export')
+                    ]) ?>
+                </td>
+            </tr>
         </tfoot>
     </table>
 </form>
