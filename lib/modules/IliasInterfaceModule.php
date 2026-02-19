@@ -20,7 +20,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
             $workgroups = false;
             $learning_objects = false;
             foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-                if ($ilias_config['is_active']) {
+                if (!empty($ilias_config['is_active'])) {
                     if (!empty($ilias_config['workgroup_category']) && User::findCurrent()->hasPermissionLevel('tutor')) {
                         $workgroups = true;
                     }

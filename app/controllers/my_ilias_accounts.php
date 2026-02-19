@@ -50,7 +50,7 @@ class MyIliasAccountsController extends AuthenticatedController
 
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-            if ($ilias_config['is_active']) {
+            if (!empty($ilias_config['is_active'])) {
                 $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
                 $this->ilias_list[$ilias_index]->checkUser();
                 $this->ilias_list[$ilias_index]->soap_client->clearCache();
@@ -254,7 +254,7 @@ class MyIliasAccountsController extends AuthenticatedController
         // set up connected ilias classes
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-            if ($ilias_config['is_active']) {
+            if (!empty($ilias_config['is_active'])) {
                 $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
                 $this->ilias_list[$ilias_index]->checkUser();
                 $this->ilias_list[$ilias_index]->soap_client->clearCache();
@@ -442,7 +442,7 @@ class MyIliasAccountsController extends AuthenticatedController
     public function new_account_action($index)
     {
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
-        if ($ilias_configs[$index]['is_active']) {
+        if (!empty($ilias_configs[$index]['is_active'])) {
             $this->ilias = new ConnectedIlias($index);
             $this->ilias_index = $index;
         }
@@ -455,7 +455,7 @@ class MyIliasAccountsController extends AuthenticatedController
     public function change_account_action($index, $mode)
     {
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
-        if ($ilias_configs[$index]['is_active']) {
+        if (!empty($ilias_configs[$index]['is_active'])) {
             $this->ilias = new ConnectedIlias($index);
             $this->ilias_index = $index;
             switch ($mode) {
@@ -505,7 +505,7 @@ class MyIliasAccountsController extends AuthenticatedController
         }
 
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
-        if ($ilias_configs[$index]['is_active']) {
+        if (!empty($ilias_configs[$index]['is_active'])) {
             $this->ilias = new ConnectedIlias($index);
             $this->ilias_index = $index;
             $this->ilias_login = '';
@@ -563,7 +563,7 @@ class MyIliasAccountsController extends AuthenticatedController
     public function redirect_action($index, $target, $module_id = '', $module_type = '')
     {
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
-        if ($ilias_configs[$index]['is_active']) {
+        if (!empty($ilias_configs[$index]['is_active'])) {
             $this->ilias = new ConnectedIlias($index);
             $token = $this->ilias->user->getToken();
             $session_id = $this->ilias->soap_client->loginUser($this->ilias->user->getUsername(), $token);

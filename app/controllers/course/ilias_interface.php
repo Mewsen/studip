@@ -67,7 +67,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
         $this->ilias_list = [];
         $module_count = 0;
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-            if ($ilias_config['is_active']) {
+            if (!empty($ilias_config['is_active'])) {
                 $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
                 if ($GLOBALS['perm']->have_perm($this->ilias_list[$ilias_index]->ilias_config['author_perm'])) {
                     $this->author_permission = true;
@@ -267,7 +267,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
         $this->mode = $mode;
         $this->keep_dialog = false;
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-            if ($ilias_config['is_active']) {
+            if (!empty($ilias_config['is_active'])) {
                 $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
                 $last_ilias_index = $ilias_index;
                 if (Request::get('ilias_index') == $ilias_index) {
@@ -421,7 +421,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
         // get active ILIAS installations
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
-            if ($ilias_config['is_active'] && IliasObjectConnections::getConnectionModuleId($this->seminar_id, "crs", $ilias_index)) {
+            if (!empty($ilias_config['is_active']) && IliasObjectConnections::getConnectionModuleId($this->seminar_id, "crs", $ilias_index)) {
                 $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
                 $last_ilias_index = $ilias_index;
                 if (Request::get('ilias_index') == $ilias_index) {

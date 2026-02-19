@@ -125,48 +125,12 @@ class Admin_IliasInterfaceController extends AuthenticatedController
         $this->ilias_version = '';
         $this->ilias_version_date = '';
         $this->ilias_clients = [];
+
+        // default values
+        $ilias = new ConnectedIlias($index);
+        $this->ilias_config = $ilias->ilias_config;
+
         if ($index === 'new') {
-            // default values
-            $this->ilias_config = [
-                            'is_active' => false,
-                            'name' => '',
-                            'version' => '',
-                            'url' => _('https://<URL zur ILIAS-Installation>'),
-                            'http_connection_timeout' => 1,
-                            'http_request_timeout' => 3,
-                            'client' => '',
-                            'ldap_enable' => '',
-                            'reconnect_accounts' => false,
-                            'no_account_updates' => false,
-                            'admin' => 'ilias_soap_admin',
-                            'admin_pw' => '',
-
-                            'root_category_name' => '',
-                            'root_category' => '',
-                            'user_prefix' => 'studip_',
-                            'delete_ilias_users' => '',
-                            'delete_ilias_courses' => '',
-                            'user_data_category' => '',
-                            'matriculation' => '',
-                            'allow_change_account' => false,
-                            'category_create_on_add_module' => false,
-                            'category_to_desktop' => false,
-                            'cat_semester' => '',
-                            'cat_faculty' => '',
-                            'course_semester' => '',
-                            'course_veranstaltungsnummer' => false,
-                            'workgroup_category_name' => '',
-                            'workgroup_category' => '',
-                            'workgroup_perm' => '',
-                            'workgroup_role_name' => '',
-                            'workgroup_role' => '',
-                            'modules' => [],
-
-                            'author_role_name' => 'Author',
-                            'author_role' => '',
-                            'author_perm' => 'tutor',
-                            'additional_roles' => []
-            ];
 
             // fetch existing indicies from previously connected ILIAS installations
             $this->existing_indices = ConnectedIlias::getExistingIndices();
@@ -306,6 +270,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         if (Request::submittedSome('submit', 'add_additional_role', 'remove_additional_role')) {
+            $connected_ilias = new ConnectedIlias($index);
+            $this->ilias_configs[$index] = $connected_ilias->ilias_config;
             // set basic server settings
             if (Request::getInstance()->offsetExists('ilias_name')) {
                 $this->ilias_configs[$index]['name'] = Request::get('ilias_name');

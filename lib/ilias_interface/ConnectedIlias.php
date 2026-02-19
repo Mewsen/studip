@@ -198,11 +198,17 @@ class ConnectedIlias
 
             'author_role_name' => '',
             'author_role' => '',
-            'author_perm' => ''
+            'author_perm' => 'tutor',
+            'additional_roles' => []
         ];
-        foreach ($config_options as $option_key => $option_value) {
-            if (!array_key_exists($option_key, $ilias_configs[$this->index])) {
-                $ilias_configs[$this->index][$option_key] = $option_value;
+
+        if (empty($ilias_configs[$this->index])) {
+            $ilias_configs[$this->index] = $config_options;
+        } else {
+            foreach ($config_options as $option_key => $option_value) {
+                if (!array_key_exists($option_key, $ilias_configs[$this->index])) {
+                    $ilias_configs[$this->index][$option_key] = $option_value;
+                }
             }
         }
 
