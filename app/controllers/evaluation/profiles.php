@@ -43,9 +43,12 @@ class Evaluation_ProfilesController extends AuthenticatedController
                     'options'  => $template_array
                 ],
                 'optional_templates' => [
-                    'label'   => _('Alternative Fragebögen'),
+                    'label'   => _('Alternative Vorlagen'),
                     'type'    => 'multiselect',
-                    'options' => $template_array
+                    'options' => $template_array,
+                    'mapper'  => function($value) {
+                        return implode(',', $value);
+                    }
                 ]
             ]
         ], $this->url_for('evaluation/profiles')

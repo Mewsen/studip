@@ -10,6 +10,7 @@
         <tr>
             <th><?= _('Semester') ?></th>
             <th><?= _('Vorlage') ?></th>
+            <th><?= _('Alternative Vorlagen') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -17,6 +18,11 @@
             <tr>
                 <td><?= htmlReady($profile->semester->name) ?></td>
                 <td><?= htmlReady($profile->template->title) ?></td>
+                <td>
+                    <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>
+                        <?= htmlReady($opt_template->title) ?></br>
+                    <?php endforeach ?>
+                </td>
             </tr>
         <?php endforeach ?>
     </tbody>
