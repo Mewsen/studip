@@ -94,6 +94,7 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
             'module_name',
             'semester_validity'
         ];
+        $this->modul->setReplaceDfAbschnitt($this->abschnitt);
         $replacements = [
             trim($this->modulcode) ?: trim($this->modul->code),
            trim($this->bezeichnung) ?: trim($this->modul->getDeskriptor()->bezeichnung),

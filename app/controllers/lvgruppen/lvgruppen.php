@@ -176,7 +176,7 @@ class Lvgruppen_LvgruppenController extends MVVController
 
         $this->trail_classes = [
             'Modulteil',
-            'Modul',
+            'StgteilabschnittModul',
             'StgteilAbschnitt',
             'StgteilVersion',
             'Studiengang',
