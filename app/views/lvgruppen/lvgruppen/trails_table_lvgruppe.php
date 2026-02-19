@@ -9,7 +9,7 @@
     <tr>
         <? foreach (array_reverse($trail_classes) as $trail_class) : ?>
             <? if (isset($trail[$trail_class])) : ?>
-                <? if (in_array($trail_class, ['StgteilabschnittModul'])) : ?>
+                <? if ($trail_class === 'StgteilabschnittModul') : ?>
                     <? $trail['Modulteil']->setReplaceDfAbschnitt($trail[$trail_class]->abschnitt) ?>
                 <? endif; ?>
             <td style="vertical-align: top;">
