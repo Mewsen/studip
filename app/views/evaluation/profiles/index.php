@@ -9,7 +9,7 @@ use Studip\Button;
 
 <form action="<?= $controller->link_for("evaluation/profiles/bulkdelete") ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
-    <table class="default" id="eval_profiles_table">
+    <table class="default sortable-table" id="eval_profiles_table">
         <caption><?= _('Evaluationsprofile') ?></caption>
         <thead>
             <tr>
@@ -18,9 +18,9 @@ use Studip\Button;
                            data-proxyfor="#eval_profiles_table > tbody input[type=checkbox]"
                            data-activates="#eval_profiles_table tfoot button">
                 </th>
-                <th><?= _('Semester') ?></th>
-                <th><?= _('Vorlage') ?></th>
-                <th><?= _('Alternative Vorlagen') ?></th>
+                <th data-sort="digit"><?= _('Semester') ?></th>
+                <th data-sort="text"><?= _('Vorlage') ?></th>
+                <th data-sort="text"><?= _('Alternative Vorlagen') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@ use Studip\Button;
                         <td>
                             <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
                         </td>
-                        <td><?= htmlReady($profile->semester->name) ?></td>
+                        <td data-text="<?= (int)$profile->semester->beginn ?>"><?= htmlReady($profile->semester->name) ?></td>
                         <td><?= htmlReady($profile->template->title) ?></td>
                         <td>
                             <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>

@@ -4,7 +4,11 @@ class Evaluation_ProfilesController extends AuthenticatedController
     public function index_action(): void
     {
         Navigation::activateItem('/evaluation/profiles');
-        $this->profiles = QuestionnaireEvalCentralProfile::findBySQL("1");
+        $this->profiles = QuestionnaireEvalCentralProfile::findBySQL(
+            "INNER JOIN `semester_data`
+            USING (`semester_id`)
+            ORDER BY `semester_data`.`beginn` DESC"
+        );
     }
 
     public function edit_action(): void
