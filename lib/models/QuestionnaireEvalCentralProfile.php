@@ -28,4 +28,14 @@ class QuestionnaireEvalCentralProfile extends SimpleORMap
 
         parent::configure($config);
     }
+
+    public static function getTranslatedVisibilityOptions(bool $is_for = false): array
+    {
+        return array_map(
+            function ($option) {
+                return _($option);
+            },
+            $is_for ? self::RESULT_VISIBLE_FOR_OPTIONS : self::RESULT_VISIBILITY_OPTIONS
+        );
+    }
 }

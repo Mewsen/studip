@@ -80,13 +80,13 @@ class Evaluation_ProfilesController extends AuthenticatedController
                 'resultvisibility' => [
                     'label' => _('Zeitpunkt der Ergebnis-Einsicht'),
                     'type' => 'select',
-                    'options' => QuestionnaireEvalCentralProfile::RESULT_VISIBILITY_OPTIONS,
+                    'options' => QuestionnaireEvalCentralProfile::getTranslatedVisibilityOptions(),
                     'value' => 'never'
                 ],
                 'result_visible_for' => [
                     'label' => _('Ergebnis-Einsicht für (Evaluations-Admins immer)'),
                     'type' => 'select',
-                    'options' => QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS
+                    'options' => QuestionnaireEvalCentralProfile::getTranslatedVisibilityOptions(true)
                 ],
                 'minimum_responses' => [
                     'label' => _('Mindestrücklauf'),
