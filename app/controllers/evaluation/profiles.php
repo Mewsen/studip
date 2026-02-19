@@ -63,6 +63,7 @@ class Evaluation_ProfilesController extends AuthenticatedController
 
     public function bulkdelete_action(): void
     {
+        CSRFProtection::verifyUnsafeRequest();
         $profiles = QuestionnaireEvalCentralProfile::findMany(Request::optionArray('profiles'));
         foreach ($profiles as $profile) {
             $profile->delete();
