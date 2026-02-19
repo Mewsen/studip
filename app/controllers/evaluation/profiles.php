@@ -56,4 +56,13 @@ class Evaluation_ProfilesController extends AuthenticatedController
         )->setSuccessMessage(_('Erfolgreich gespeichert.'))->autoStore();
         $this->render_form($form);
     }
+
+    public function bulkdelete_action(): void
+    {
+        $profiles = QuestionnaireEvalCentralProfile::findMany(Request::optionArray('profiles'));
+        foreach ($profiles as $profile) {
+            $profile->delete();
+        }
+        $this->redirect('evaluation/profiles');
+    }
 }
