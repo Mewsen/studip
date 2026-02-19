@@ -733,7 +733,11 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             'seminar_id = :course_id AND user_id = :user_id',
             ['course_id' => $this->range_id, 'user_id' => $user_id]
         );
-        $class_names = [];
+        $class_names = ['course-date'];
+        if ($this->date_typ) {
+            $class_names[] = 'course-date-type-' . $this->date_typ;
+        }
+
         if ($membership) {
             $class_names[] = 'course-color-' . $membership->gruppe;
         }
