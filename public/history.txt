@@ -1,4 +1,21 @@
-__??.??.2025 V 6.0__
+__27.02.2026 V 6.1__
+- Systemweit: Color-Themes-System
+
+- Veranstaltungen: Annotation von PDF-Dateien
+- Veranstaltungen: Forum in Version 3
+
+- Mein Arbeitsplats: ILIAS-Arbeitsbereiche werden angezeigt und lassen sich verwalten
+- MVV: Erweiterung um studiengangspezifische Informationen
+
+- Courseware: Standortspezisches Anbieten von Blöcken
+
+- Raumverwaltung: Rüstzeiten nach einer Raumbuchung
+- Raumverwaltung: Belegungsplan zeigt alle Anfragen
+
+- Unter der Haube: Verwaiste Konfigurationseinstellungen entfernt
+- Unter der Haube: Aktualisierungen von Bibliotheken und Frameworks
+
+__26.08.2025 V 6.0__
 - System: Nachrichtenversand und Serienmails an ad hoc definierbare Zielgruppen (wie vormals beim „Garuda“-Plugin) ist jetzt im Kernsystem.
 - System: Studiengruppen wurde um nützliche Funktionen erweitert und können an Lehrveranstaltungen gekoppelt werden
 - System: Assistent für Roots nach Updates
