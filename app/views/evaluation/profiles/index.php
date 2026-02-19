@@ -24,20 +24,28 @@ use Studip\Button;
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($controller->profiles as $profile) : ?>
+            <?php if (count($controller->profiles)) : ?>
+                <?php foreach ($controller->profiles as $profile) : ?>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
+                        </td>
+                        <td><?= htmlReady($profile->semester->name) ?></td>
+                        <td><?= htmlReady($profile->template->title) ?></td>
+                        <td>
+                            <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>
+                                <?= htmlReady($opt_template->title) ?></br>
+                            <?php endforeach ?>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else : ?>
                 <tr>
-                    <td>
-                        <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
-                    </td>
-                    <td><?= htmlReady($profile->semester->name) ?></td>
-                    <td><?= htmlReady($profile->template->title) ?></td>
-                    <td>
-                        <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>
-                            <?= htmlReady($opt_template->title) ?></br>
-                        <?php endforeach ?>
+                    <td colspan="4" style="text-align: center">
+                        <?= _('Sie haben noch keine Profile erstellt.') ?>
                     </td>
                 </tr>
-            <?php endforeach ?>
+            <?php endif ?>
         </tbody>
         <tfoot>
             <tr>
