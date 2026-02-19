@@ -8,11 +8,17 @@
     <caption><?= _('Evaluationsprofile') ?></caption>
     <thead>
         <tr>
-
+            <th><?= _('Semester') ?></th>
+            <th><?= _('Vorlage') ?></th>
         </tr>
     </thead>
     <tbody>
-
+        <?php foreach ($controller->profiles as $profile) : ?>
+            <tr>
+                <td><?= htmlReady($profile->semester->name) ?></td>
+                <td><?= htmlReady($profile->template->title) ?></td>
+            </tr>
+        <?php endforeach ?>
     </tbody>
 </table>
 
