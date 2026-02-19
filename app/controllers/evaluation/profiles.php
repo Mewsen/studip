@@ -24,7 +24,8 @@ class Evaluation_ProfilesController extends AuthenticatedController
             function($row) use (&$semesters) {
                 $semesters[$row['semester_id']] = $row['name'];
             },
-            "`semester_id` NOT IN (SELECT `semester_id` FROM `questionnaire_eval_central_profiles`)"
+            "`semester_id` NOT IN (SELECT `semester_id` FROM `questionnaire_eval_central_profiles`)
+                ORDER BY `beginn` desc"
         );
 
         $form = \Studip\Forms\Form::fromSORM($profile, [
