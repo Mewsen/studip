@@ -1,4 +1,4 @@
-# Stud.IP v6.1
+# Stud.IP v6.2
 
 **dd.mm.jjjj**
 
