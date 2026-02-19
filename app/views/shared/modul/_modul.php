@@ -35,11 +35,11 @@ $deskriptor = $modul->getDeskriptor($display_language ?? null);
     <tbody>
         <tr>
             <td><strong><?= _('Modulbezeichnung') ?></strong></td>
-            <td data-mvv-field="mvv_modul.bezeichnung"><?= htmlReady($title ?: $deskriptor->bezeichnung) ?></td>
+            <td data-mvv-field="mvv_modul.bezeichnung"><?= htmlReady(!empty($title) ? $title : $deskriptor->bezeichnung) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Modulcode') ?></strong></td>
-            <td data-mvv-field="mvv_modul.code"><?= htmlReady($code ?: $modul->code) ?></td>
+            <td data-mvv-field="mvv_modul.code"><?= htmlReady(!empty($code) ? $code : $modul->code) ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Semester der erstmaligen Durchführung') ?></strong></td>
