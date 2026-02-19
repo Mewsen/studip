@@ -557,6 +557,7 @@ abstract class SharedVersionController extends MVVController
     {
         $this->assignment = StgteilabschnittModul::find($abschnitt_modul_id);
         $this->modul = $this->assignment->modul;
+        $this->modul->setReplaceDfAbschnitt($this->assignment->abschnitt);
         $this->abschnitt_id = $this->assignment->abschnitt_id;
         if ($this->assignment) {
             if (Request::isXhr()) {
