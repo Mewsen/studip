@@ -35,18 +35,16 @@ class FixOverwrittenResourceBookings extends Migration
                     'begin'      => $interval['begin'],
                     'end'        => $interval['end']
                 ]);
-                $interval_exists = (int)$check_exists_stmt->fetchColumn();
-                if ($interval_exists !== 1) {
+                $interval_exists = (bool)$ check_exists_stmt->fetchColumn();
+                if (!$interval_exists) {
                     //Create the interval:
-                    $create_exception_stmt->execute(
-                        [
-                            'interval_id' => md5(uniqid('5.4.23_fix_overwritten_resource_bookings')),
-                            'resource_id' => $booking->resource_id,
-                            'booking_id'  => $booking->id,
-                            'begin'       => $interval['begin'],
-                            'end'         => $interval['end']
-                        ]
-                    );
+                    $create_exception_stmt->execute([
+                        'interval_id' => md5(uniqid('5.4.23_fix_overwritten_resource_bookings')),
+                        'resource_id' => $booking->resource_id,
+                        'booking_id'  => $booking->id,
+                        'begin'       => $interval['begin'],
+                        'end'         => $interval['end']
+                    ]);
                 }
             }
         };
@@ -60,6 +58,5 @@ class FixOverwrittenResourceBookings extends Migration
     protected function down()
     {
         //You don't want to make data inconsistent again, don't you?
-        parent::down();
     }
 }

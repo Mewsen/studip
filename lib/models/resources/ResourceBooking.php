@@ -833,7 +833,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                             $affected_bookings[$interval->booking_id] = $interval->booking;
                         }
                         //Mark the interval as not taking place (create an exception).
-                        $interval->takes_place = 0;
+                        $interval->takes_place = false;
                         $deleted_c += $interval->store();
                     }
 
@@ -866,7 +866,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                         $affected_bookings[$interval->booking_id] = $interval->booking;
                     }
                     //Mark the interval as not taking place (create an exception).
-                    $interval->takes_place = 0;
+                    $interval->takes_place = false;
                     $deleted_c += $interval->store();
                 }
 
