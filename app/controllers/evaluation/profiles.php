@@ -11,41 +11,47 @@ class Evaluation_ProfilesController extends AuthenticatedController
         );
     }
 
-    public function edit_action(): void
+    public function edit_action(string $id = null): void
     {
-        $profile = new QuestionnaireEvalCentralProfile();
+        if ($id) {
+            $profile = QuestionnaireEvalCentralProfile::find($id);
+            $semesters = [$profile->semester_id => $profile->semester->name];
+        } else {
+            $profile = new QuestionnaireEvalCentralProfile();
+            $semesters = [];
+            Semester::findEachBySQL(
+                function($row) use (&$semesters) {
+                    $semesters[$row['semester_id']] = $row['name'];
+                },
+                "`semester_id` NOT IN (SELECT `semester_id` FROM `questionnaire_eval_central_profiles`)
+                ORDER BY `beginn` desc"
+            );
+        }
 
         $template_array = [];
         Questionnaire::findEachBySQL(
-          function($row) use (&$template_array) {
-              $template_array[$row['questionnaire_id']] = $row['title'];
-          },
-          "`is_template` = 1"
-        );
-
-        $semesters = [];
-        Semester::findEachBySQL(
-            function($row) use (&$semesters) {
-                $semesters[$row['semester_id']] = $row['name'];
+            function($row) use (&$template_array) {
+                $template_array[$row['questionnaire_id']] = $row['title'];
             },
-            "`semester_id` NOT IN (SELECT `semester_id` FROM `questionnaire_eval_central_profiles`)
-                ORDER BY `beginn` desc"
+            "`is_template` = 1"
         );
 
         $form = \Studip\Forms\Form::fromSORM($profile, [
-            'legend' => 'Profil anlegen',
+            'legend' => $id ? htmlReady($profile->semester->name) . _(' bearbeiten') : _('Profil anlegen'),
             'fields' => [
                 'semester_id' => [
                     'label'    => _('Semester'),
                     'required' => true,
                     'type'     => 'select',
-                    'options'  => $semesters
+                    'options'  => $semesters,
+                    'value'    => $profile->semester_id ?? null
                 ],
                 'template_id' => [
                     'label'    => _('Vorlage'),
                     'required' => true,
                     'type'     => 'select',
-                    'options'  => $template_array
+                    'options'  => $template_array,
+                    'value'    => $profile->template_id ?? null
                 ],
                 'optional_templates' => [
                     'label'   => _('Alternative Vorlagen'),
@@ -53,51 +59,59 @@ class Evaluation_ProfilesController extends AuthenticatedController
                     'options' => $template_array,
                     'mapper'  => function($value) {
                         return implode(',', $value);
-                    }
+                    },
+                    'value'   => $id && $profile->optional_templates ?
+                        explode(',', $profile->optional_templates) : null
                 ],
                 'startdate' => [
                     'label'    => _('Start'),
                     'name'     => 'startdate',
                     'required' => true,
                     'type'     => 'datetimepicker',
-                    'value'    => time() //TODO sem
+                    'value'    => $id ? $profile->startdate : time() //TODO sem
                 ],
                 'stopdate' => [
                     'label'    => _('Ende'),
                     'required' => true,
                     'type'     => 'datetimepicker',
-                    'value'    => time(), //TODO sem
+                    'value'    => $id ? $profile->stopdate : time(), //TODO sem
                     'mindate'  => 'startdate'
                 ],
                 'anonymous' => [
                     'label' => _('Anonyme Teilnahme'),
                     'type'  => 'checkbox',
-                    'value' => true
+                    'value' => $id ? $profile->anonymous : true
                 ],
                 'editanswers' => [
                     'label' => _('Antworten revidierbar'),
                     'type'  => 'checkbox',
-                    'value' => false
+                    'value' => $id ? $profile->editanswers : false
                 ],
                 'resultvisibility' => [
-                    'label' => _('Zeitpunkt der Ergebnis-Einsicht'),
-                    'type' => 'select',
+                    'label'   => _('Zeitpunkt der Ergebnis-Einsicht'),
+                    'type'    => 'select',
                     'options' => QuestionnaireEvalCentralProfile::getTranslatedVisibilityOptions(),
-                    'value' => 'never'
+                    'value'   => $id ? $profile->resultvisibility : 'never'
                 ],
                 'result_visible_for' => [
-                    'label' => _('Ergebnis-Einsicht für (Evaluations-Admins immer)'),
-                    'type' => 'select',
-                    'options' => QuestionnaireEvalCentralProfile::getTranslatedVisibilityOptions(true)
+                    'label'   => _('Ergebnis-Einsicht für (Evaluations-Admins immer)'),
+                    'type'    => 'select',
+                    'options' => QuestionnaireEvalCentralProfile::getTranslatedVisibilityOptions(true),
+                    'value'   => $id ? $profile->result_visible_for : null
                 ],
                 'minimum_responses' => [
                     'label' => _('Mindestrücklauf'),
-                    'type' => 'number',
-                    'value' => 8
+                    'type'  => 'number',
+                    'value' => $id ? $profile->minimum_responses : 8,
+                    'min'   => 0
                 ]
             ]
         ], $this->url_for('evaluation/profiles')
         )->setSuccessMessage(_('Erfolgreich gespeichert.'))->autoStore();
+
+        PageLayout::setTitle($id ?
+            _('Vorlage ') . $profile->semester->name . _(' bearbeiten') :
+            _('Profil anlegen'));
         $this->render_form($form);
     }
 

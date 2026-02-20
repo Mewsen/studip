@@ -38,7 +38,10 @@ use Studip\Button;
                             <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
                         </td>
                         <td data-text="<?= $profile->semester->beginn ?>">
-                            <?= htmlReady($profile->semester->name) ?>
+                            <a href="<?= $controller->link_for("evaluation/profiles/edit/" . $profile->semester_id) ?>"
+                                data-dialog>
+                                <?= htmlReady($profile->semester->name) ?>
+                            </a>
                         </td>
                         <td><?= htmlReady($profile->template->title) ?></td>
                         <td>
@@ -86,9 +89,9 @@ use Studip\Button;
 <?php
 $actions = new ActionsWidget();
 $actions->addLink(
-    _('Profil erstellen'),
+    _('Profil anlegen'),
     $controller->url_for('evaluation/profiles/edit'),
     Icon::create('add'),
-    ['data-dialog' => 'size=big']
+    ['data-dialog' => '']
 );
 Sidebar::Get()->addWidget($actions);
