@@ -10,7 +10,7 @@ class FixOverwrittenResourceBookings extends Migration
 
     protected function up()
     {
-        $db = DBmanager::get();
+        $db = DBManager::get();
         $check_exists_stmt = $db->prepare(
             "SELECT 1
                  FROM `resource_booking_intervals`
