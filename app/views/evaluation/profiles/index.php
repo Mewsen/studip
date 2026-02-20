@@ -90,8 +90,8 @@ use Studip\Button;
 $actions = new ActionsWidget();
 $actions->addLink(
     _('Profil anlegen'),
-    $controller->url_for('evaluation/profiles/edit'),
+    $controller->url_for('evaluation/profiles/preedit'),
     Icon::create('add'),
-    ['data-dialog' => '']
+    ['data-dialog' => 'size=auto']
 );
 Sidebar::Get()->addWidget($actions);
