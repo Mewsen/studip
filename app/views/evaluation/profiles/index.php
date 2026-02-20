@@ -21,6 +21,13 @@ use Studip\Button;
                 <th data-sort="digit"><?= _('Semester') ?></th>
                 <th data-sort="text"><?= _('Vorlage') ?></th>
                 <th data-sort="text"><?= _('Alternative Vorlagen') ?></th>
+                <th data-sort="digit"><?= _('Start') ?></th>
+                <th data-sort="digit"><?= _('Ende') ?></th>
+                <th data-sort="text"><?= _('Anonym') ?></th>
+                <th data-sort="text"><?= _('Revidierbar') ?></th>
+                <th data-sort="text"><?= _('Zeitpunkt Einsicht') ?></th>
+                <th data-sort="text"><?= _('Einsicht für') ?></th>
+                <th data-sort="digit"><?= _('Mindestrücklauf') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -30,18 +37,37 @@ use Studip\Button;
                         <td>
                             <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
                         </td>
-                        <td data-text="<?= (int)$profile->semester->beginn ?>"><?= htmlReady($profile->semester->name) ?></td>
+                        <td data-text="<?= $profile->semester->beginn ?>">
+                            <?= htmlReady($profile->semester->name) ?>
+                        </td>
                         <td><?= htmlReady($profile->template->title) ?></td>
                         <td>
                             <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>
                                 <?= htmlReady($opt_template->title) ?></br>
                             <?php endforeach ?>
                         </td>
+                        <td data-text="<?= $profile->startdate ?>">
+                            <?= (new DateTime())->setTimestamp($profile->startdate)->format('d.m.Y H:i') ?>
+                        </td>
+                        <td data-text="<?= $profile->stopdate ?>">
+                            <?= (new DateTime())->setTimestamp($profile->stopdate)->format('d.m.Y H:i') ?>
+                        </td>
+                        <td><?= $profile->anonymous ? _('Ja') : _('Nein') ?></td>
+                        <td><?= $profile->editanswers ? _('Ja') : _('Nein') ?></td>
+                        <td><?= _(QuestionnaireEvalCentralProfile::RESULT_VISIBILITY_OPTIONS[$profile->resultvisibility]) ?></td>
+                        <td>
+                            <?=
+                                $profile->result_visible_for ?
+                                _(QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS[$profile->result_visible_for]) :
+                                _('Admins')
+                            ?>
+                        </td>
+                        <td><?= $profile->minimum_responses ?></td>
                     </tr>
                 <?php endforeach ?>
             <?php else : ?>
                 <tr>
-                    <td colspan="4" style="text-align: center">
+                    <td colspan="11" style="text-align: center">
                         <?= _('Sie haben noch keine Profile erstellt.') ?>
                     </td>
                 </tr>
@@ -49,7 +75,7 @@ use Studip\Button;
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4">
+                <td colspan="11">
                     <?= Button::create(_("Löschen"), "bulkdelete", ['data-confirm' => _("Wirklich löschen?")]) ?>
                 </td>
             </tr>

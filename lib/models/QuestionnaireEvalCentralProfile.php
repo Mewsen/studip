@@ -4,6 +4,13 @@
  * @property Questionnaire $template belongs_to QuestionnaireEvalCentralProfile
  * @property int $semester_id database column
  * @property string $optional_templates database column
+ * @property int $startdate database column
+ * @property int $stopdate database column
+ * @property bool $anonymous database column
+ * @property bool $editanswers database column
+ * @property string $resultvisibility database column
+ * @property null|string $result_visible_for database column
+ * @property int $minimum_responses database column
  */
 class QuestionnaireEvalCentralProfile extends SimpleORMap
 {
