@@ -757,7 +757,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function deleteIfNoInterval()
     {
         $intervals = ResourceBookingInterval::countBySql(
-            "`booking_id` = :id AND `takes_place` = '1'",
+            "`booking_id` = :id AND `takes_place` = 1",
             [
                 'id' => $this->id
             ]
