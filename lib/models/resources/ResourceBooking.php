@@ -757,12 +757,12 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function deleteIfNoInterval()
     {
         $intervals = ResourceBookingInterval::countBySql(
-            'booking_id = :id',
+            "`booking_id` = :id AND `takes_place` = '1'",
             [
                 'id' => $this->id
             ]
         );
-        if ($intervals == 0) {
+        if ($intervals === 0) {
             return $this->delete();
         }
 
@@ -832,7 +832,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                         if ($interval->booking instanceof ResourceBooking) {
                             $affected_bookings[$interval->booking_id] = $interval->booking;
                         }
-                        $deleted_c += $interval->delete();
+                        //Mark the interval as not taking place (create an exception).
+                        $interval->takes_place = 0;
+                        $deleted_c += $interval->store();
                     }
 
                     foreach ($affected_bookings as $booking) {
@@ -863,7 +865,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                     if ($interval->booking instanceof ResourceBooking) {
                         $affected_bookings[$interval->booking_id] = $interval->booking;
                     }
-                    $deleted_c += $interval->delete();
+                    //Mark the interval as not taking place (create an exception).
+                    $interval->takes_place = 0;
+                    $deleted_c += $interval->store();
                 }
 
                 foreach ($affected_bookings as $booking) {
