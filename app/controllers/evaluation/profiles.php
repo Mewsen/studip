@@ -109,9 +109,8 @@ class Evaluation_ProfilesController extends AuthenticatedController
         ], $this->url_for('evaluation/profiles')
         )->setSuccessMessage(_('Erfolgreich gespeichert.'))->autoStore();
 
-        PageLayout::setTitle($id ?
-            _('Vorlage ') . $profile->semester->name . _(' bearbeiten') :
-            _('Profil anlegen'));
+        PageLayout::setTitle(
+            $id ? _('Profil bearbeiten: ') . htmlReady($profile->semester->name) : _('Neues Profil'));
         $this->render_form($form);
     }
 
