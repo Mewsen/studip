@@ -408,6 +408,12 @@ export default defineComponent({
             }
         },
         handleCalendarRangeUpdate: function(arg: DatesSetArg) : void {
+            //Update the defaultDate URL parameter first:
+            const url = new URL(window.location.href);
+            url.searchParams.set('defaultDate', datetime.getISODate(arg.start));
+            //Set the new defaultDate URL parameter without reloading the page:
+            window.history.replaceState(null, '', url.toString());
+
             if (this.displayHolidays || this.displayVacations) {
                 //Make sure that all holidays and vacations are loaded for the range.
                 //NOTE: This works only for views that span over a maximum of two years
