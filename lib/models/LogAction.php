@@ -36,7 +36,13 @@ class LogAction extends SimpleORMap
 
         $config['has_many']['events'] = [
             'class_name' => LogEvent::class,
-            'on_delete'  => 'delete',
+            'on_delete'  => function (LogAction $action) {
+                // Direct db query to avoid memory issues
+                return DBManager::get()->execute(
+                    'DELETE FROM `log_events` WHERE `action_id` = ?',
+                    [$action->id]
+                );
+            },
         ];
 
         parent::configure($config);
