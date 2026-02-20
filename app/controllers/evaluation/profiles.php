@@ -57,6 +57,7 @@ class Evaluation_ProfilesController extends AuthenticatedController
                 ],
                 'startdate' => [
                     'label'    => _('Start'),
+                    'name'     => 'startdate',
                     'required' => true,
                     'type'     => 'datetimepicker',
                     'value'    => time() //TODO sem
@@ -65,7 +66,8 @@ class Evaluation_ProfilesController extends AuthenticatedController
                     'label'    => _('Ende'),
                     'required' => true,
                     'type'     => 'datetimepicker',
-                    'value'    => time() //TODO sem
+                    'value'    => time(), //TODO sem
+                    'mindate'  => 'startdate'
                 ],
                 'anonymous' => [
                     'label' => _('Anonyme Teilnahme'),
