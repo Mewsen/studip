@@ -349,6 +349,15 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         if (!$entry->isNew()) {
             throw new InvalidArgumentException("config $field already exists");
         }
+
+        if (isset($data['value'])) {
+            $data['value'] = $this->convertForDatabase(
+                $data['type'] ?? 'string',
+                $data['value'],
+                $field
+            );
+        }
+
         $entry->setData($data);
         $ret = $entry->store() ? $entry : null;
         if ($ret) {
