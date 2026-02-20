@@ -35,7 +35,7 @@ class FixOverwrittenResourceBookings extends Migration
                     'begin'      => $interval['begin'],
                     'end'        => $interval['end']
                 ]);
-                $interval_exists = (bool)$ check_exists_stmt->fetchColumn();
+                $interval_exists = (bool) $check_exists_stmt->fetchColumn();
                 if (!$interval_exists) {
                     //Create the interval:
                     $create_exception_stmt->execute([
