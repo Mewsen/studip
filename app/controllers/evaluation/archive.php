@@ -22,7 +22,7 @@ class Evaluation_ArchiveController extends AuthenticatedController
         Sidebar::Get()->addWidget($list);
 
         $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL(
-            "`semester_id` = ?",
+            "`semester_id` = ? AND `questionnaire_id` IS NOT NULL AND `applied` = 1",
             [$selected_sem]);
     }
 
