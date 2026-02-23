@@ -172,6 +172,10 @@ class QuestionnaireController extends AuthenticatedController
         $this->questionnaire['stopdate'] = is_numeric($questionnaire_data['stopdate'])
             ? $questionnaire_data['stopdate']
             : null;
+        $this->questionnaire['is_template'] = $questionnaire_data['is_template'] ?? 0;
+        if(!$this->questionnaire->template_is_enabled && $this->questionnaire->is_template) {
+            $this->questionnaire['template_is_enabled'] = 0;
+        }
 
         $this->questionnaire['user_id'] = User::findCurrent()->id;
         $questions_data = json_decode(Request::get('questions_data'), true);

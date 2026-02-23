@@ -33,7 +33,8 @@ use Studip\Button;
                         </td>
                         <td>
                             <?php if ($template->isEditable()) : ?>
-                                <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"
+                                <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id,
+                                    ['range_type' => 'pool']) ?>"
                                    data-dialog="size=big">
                                     <?= htmlReady($template->title) ?>
                                 </a>
