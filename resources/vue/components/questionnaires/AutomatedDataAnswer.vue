@@ -6,11 +6,12 @@
 
 </style>
 
-<script>
-export default {
-    name: 'AutomatedDataAnswer',
-    props: {
-        question: Array
-    },
-};
+<script setup>
+const props = defineProps({
+    question: {
+        type: Object,
+        required: true
+    }
+})
+
 </script>

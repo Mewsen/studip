@@ -2,13 +2,13 @@
     <strong><p v-html="question.questiondata.description"></p></strong>
 </template>
 
-<script>
-export default {
-    name: 'HeadlineView',
-    props: {
-        question: Array
-    },
-};
+<script setup>
+const props = defineProps({
+    question: {
+        type: Object,
+        required: true
+    }
+})
 
 
 </script>

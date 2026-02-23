@@ -8,20 +8,20 @@
           :data-secure="activateFormSecure"
     >
 
-        <div class="questionnaire_answer">
-            <article v-for="question in questionnaireData.questions">
-                {{ question.questiontype }}
-                <QuestionnaireInfoView v-if="question.questiontype == 'QuestionnaireInfo'" :question="question" />
-                <HeadlineView v-if="question.questiontype == 'Headline'" :question="question" />
-                <DividerView v-if="question.questiontype == 'Divider'" />
-                <BlankLineView v-if="question.questiontype == 'BlankLine'" />
-                <PagebreakView v-if="question.questiontype == 'Pagebreak'" />
+        <div class="questionnaire_answer" v-for="(data, index) in questionnaireData.questions" :key="index">
+            Seite {{ data.page }}:
+            <article v-for="element in data">
 
-                <VoteAnswer v-if="question.questiontype == 'Vote'" :question="question"/>
-                <FreetextAnswer v-if="question.questiontype == 'Freetext'" :question="question"/>
-                <RangescaleAnswer v-if="question.questiontype == 'Rangescale'" :question="question"/>
-                <LikertAnswer v-if="question.questiontype == 'LikertScale'" :question="question"/>
-                <AutomatedDataAnswer v-if="question.questiontype == 'QuestionnaireAutomatedData'" :question="question"/>
+                <QuestionnaireInfoView v-if="element.questiontype == 'QuestionnaireInfo'" :question="element" />
+                <HeadlineView v-if="element.questiontype == 'Headline'" :question="element" />
+                <DividerView v-if="element.questiontype == 'Divider'" />
+                <BlankLineView v-if="element.questiontype == 'BlankLine'" />
+
+                <VoteAnswer v-if="element.questiontype == 'Vote'" :question="element"/>
+                <FreetextAnswer v-if="element.questiontype == 'Freetext'" :question="element"/>
+                <RangescaleAnswer v-if="element.questiontype == 'Rangescale'" :question="element"/>
+                <LikertAnswer v-if="element.questiontype == 'LikertScale'" :question="element"/>
+                <AutomatedDataAnswer v-if="element.questiontype == 'QuestionnaireAutomatedData'" :question="element"/>
             </article>
 
         </div>

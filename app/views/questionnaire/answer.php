@@ -44,7 +44,33 @@ $questionnaire_data = [
     'stopdate'         => $questionnaire->stopdate,
     'title'            => $questionnaire->title,
 ];
+
+$grouped = collect();
+$current = collect();
+$page = 1;
+
+foreach ($questionnaire_data['questions'] as $question) {
+    $current->push($question);
+    $current['page'] = $page;
+
+    if ($question['questiontype'] === 'Pagebreak') {
+        $grouped->push($current);
+        $current = collect();
+        $page++;
+    }
+}
+
+if ($current->isNotEmpty()) {
+    $grouped->push($current);
+}
+
+$questionnaire_data['questions'] = $grouped->values();
+
+
 ?>
+
+
+
 <?= Studip\VueApp::create('questionnaires/QuestionnaireAnswer')
     ->withProps(['questionnaireData' => $questionnaire_data]) ?>
 
