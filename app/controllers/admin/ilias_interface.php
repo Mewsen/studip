@@ -271,7 +271,6 @@ class Admin_IliasInterfaceController extends AuthenticatedController
 
         $connected_ilias = new ConnectedIlias($index);
         $this->ilias_config = $connected_ilias->ilias_config;
-        $this->global_roles = $connected_ilias->soap_client->getRoles('global', -1);
     }
 
     /**
