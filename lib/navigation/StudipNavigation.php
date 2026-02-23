@@ -152,10 +152,7 @@ class StudipNavigation extends Navigation
         $this->addSubNavigation('login', new LoginNavigation(_('Login')));
 
         // evaluation page
-        if (PluginManager::getInstance()->getPlugin(CoreEvaluation::class) &&
-            isset($current_user) &&
-            ($current_user->hasPermissionLevel('root') ||
-                $current_user->hasRole('Zentraler Evaluationsadmin'))) {
+        if (EvaluationHelper::isPermittedEvaluationAccess()) {
             $this->addSubNavigation('evaluation', new EvaluationNavigation());
         }
     }

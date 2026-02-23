@@ -173,8 +173,11 @@ class QuestionnaireController extends AuthenticatedController
             ? $questionnaire_data['stopdate']
             : null;
         $this->questionnaire['is_template'] = $questionnaire_data['is_template'] ?? 0;
-        if(!$this->questionnaire->template_is_enabled && $this->questionnaire->is_template) {
-            $this->questionnaire['template_is_enabled'] = 0;
+        if ($this->questionnaire->is_template) {
+            if (!EvaluationHelper::isPermittedEvaluationAccess()) {
+                throw new Exception(_('Sie haben keine Berechtigung, Vorlagen anzulegen.'));
+            }
+            if (!$this->questionnaire->template_is_enabled) $this->questionnaire['template_is_enabled'] = 0;
         }
 
         $this->questionnaire['user_id'] = User::findCurrent()->id;

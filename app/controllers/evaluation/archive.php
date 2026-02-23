@@ -4,10 +4,7 @@ class Evaluation_ArchiveController extends AuthenticatedController
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-        $current_user = User::findCurrent();
-        if (!(($current_user->hasPermissionLevel('root') ||
-                $current_user->hasRole('Zentraler Evaluationsadmin')) &&
-            PluginManager::getInstance()->getPlugin(CoreEvaluation::class))) {
+        if (!EvaluationHelper::isPermittedEvaluationAccess()) {
             throw new AccessDeniedException();
         }
     }
