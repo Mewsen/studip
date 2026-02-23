@@ -12,15 +12,15 @@ use Studip\Button;
         <caption><?= _('Archivierte Evaluationen') ?></caption>
         <thead>
         <tr>
-            <th style="width: 20px">
+            <th style="width: 20px" scope="col">
                 <input type="checkbox"
                        data-proxyfor="#evaluation_table > tbody input[type=checkbox]"
                        data-activates="#evaluation_table tfoot button">
             </th>
-            <th data-sort="text"><?= _('Titel') ?></th>
-            <th data-sort="text"><?= _('Veranstaltung') ?></th>
-            <th data-sort="digit"><?= _('Start') ?></th>
-            <th data-sort="digit"><?= _('Ende') ?></th>
+            <th data-sort="text" scope="col"><?= _('Titel') ?></th>
+            <th data-sort="text" scope="col"><?= _('Veranstaltung') ?></th>
+            <th data-sort="digit" scope="col"><?= _('Start') ?></th>
+            <th data-sort="digit" scope="col"><?= _('Ende') ?></th>
         </tr>
         </thead>
         <tbody>

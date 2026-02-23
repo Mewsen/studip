@@ -13,21 +13,21 @@ use Studip\Button;
         <caption><?= _('Evaluationsprofile') ?></caption>
         <thead>
             <tr>
-                <th style="width: 20px">
+                <th style="width: 20px" scope="col">
                     <input type="checkbox"
                            data-proxyfor="#eval_profiles_table > tbody input[type=checkbox]"
                            data-activates="#eval_profiles_table tfoot button">
                 </th>
-                <th data-sort="digit"><?= _('Semester') ?></th>
-                <th data-sort="text"><?= _('Vorlage') ?></th>
-                <th data-sort="text"><?= _('Alternative Vorlagen') ?></th>
-                <th data-sort="digit"><?= _('Start') ?></th>
-                <th data-sort="digit"><?= _('Ende') ?></th>
-                <th data-sort="text"><?= _('Anonym') ?></th>
-                <th data-sort="text"><?= _('Revidierbar') ?></th>
-                <th data-sort="text"><?= _('Zeitpunkt Einsicht') ?></th>
-                <th data-sort="text"><?= _('Einsicht für') ?></th>
-                <th data-sort="digit"><?= _('Mindestrücklauf') ?></th>
+                <th data-sort="digit" scope="col"><?= _('Semester') ?></th>
+                <th data-sort="text" scope="col"><?= _('Vorlage') ?></th>
+                <th data-sort="text" scope="col"><?= _('Alternative Vorlagen') ?></th>
+                <th data-sort="digit" scope="col"><?= _('Start') ?></th>
+                <th data-sort="digit" scope="col"><?= _('Ende') ?></th>
+                <th data-sort="text" scope="col"><?= _('Anonym') ?></th>
+                <th data-sort="text" scope="col"><?= _('Revidierbar') ?></th>
+                <th data-sort="text" scope="col"><?= _('Zeitpunkt Einsicht') ?></th>
+                <th data-sort="text" scope="col"><?= _('Einsicht für') ?></th>
+                <th data-sort="digit" scope="col"><?= _('Mindestrücklauf') ?></th>
             </tr>
         </thead>
         <tbody>

@@ -13,15 +13,15 @@ use Studip\Button;
         <caption><?= _('Evaluations-Vorlagen') ?></caption>
         <thead>
             <tr>
-                <th style="width: 20px">
+                <th style="width: 20px" scope="col">
                     <input type="checkbox"
                            data-proxyfor="#template_pool > tbody input[type=checkbox]"
                            data-activates="#template_pool tfoot button">
                 </th>
-                <th data-sort="text"><?= _('Titel') ?></th>
-                <th data-sort="digit"><?= _('Datum') ?></th>
-                <th data-sort="text"><?= _('Status') ?></th>
-                <th class="actions"><?= _('Aktionen') ?></th>
+                <th data-sort="text" scope="col"><?= _('Titel') ?></th>
+                <th data-sort="digit" scope="col"><?= _('Datum') ?></th>
+                <th data-sort="text" scope="col"><?= _('Status') ?></th>
+                <th class="actions" scope="col"><?= _('Aktionen') ?></th>
             </tr>
         </thead>
         <tbody>
