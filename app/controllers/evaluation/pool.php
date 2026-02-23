@@ -1,6 +1,16 @@
 <?php
 class Evaluation_PoolController extends AuthenticatedController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+        $current_user = User::findCurrent();
+        if (!($current_user->hasPermissionLevel('root') ||
+            $current_user->hasRole('Zentraler Evaluationsadmin'))) {
+            throw new AccessDeniedException();
+        }
+    }
+
     public function index_action()
     {
         Navigation::activateItem('/evaluation/pool');
