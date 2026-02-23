@@ -5,8 +5,9 @@ class Evaluation_PoolController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
         $current_user = User::findCurrent();
-        if (!($current_user->hasPermissionLevel('root') ||
-            $current_user->hasRole('Zentraler Evaluationsadmin'))) {
+        if (!(($current_user->hasPermissionLevel('root') ||
+                $current_user->hasRole('Zentraler Evaluationsadmin')) &&
+            PluginManager::getInstance()->getPlugin(CoreEvaluation::class))) {
             throw new AccessDeniedException();
         }
     }
