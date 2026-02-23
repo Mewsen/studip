@@ -4,10 +4,10 @@
  */
 ?>
 
-<form method="post">
-    <?= CSRFProtection::tokenTag() ?>
-    <h2><?= _('Neues Profil anlegen') ?></h2>
-    <div>
+<?php if ($controller->total_sem_count > count($controller->semesters)) :?>
+    <form method="post">
+        <?= CSRFProtection::tokenTag() ?>
+        <h2><?= _('Neues Profil anlegen') ?></h2>
         <div class="clickable">
             <button
                 class="as-link"
@@ -19,22 +19,22 @@
                 <p><?= _('Neu anlegen') ?></p>
             </button>
         </div>
-</form>
+    </form>
 
-<?php if (count($controller->semesters)) : ?>
-    <form method="post">
-        <?= CSRFProtection::tokenTag() ?>
+    <?php if (count($controller->semesters)) : ?>
+        <form method="post">
+            <?= CSRFProtection::tokenTag() ?>
             <h2><?= _('Profildaten übernehmen') ?></h2>
             <label>
-                <?= _('Aus Profil von Semester') ?></br>
+                <?= _('Aus Profil von Semester') ?><br/>
                 <select name="sem_select">
                     <?php foreach ($controller->semesters as $key => $semester) : ?>
                         <option value="<?= $key ?>"><?= htmlReady($semester) ?></option>
                     <?php endforeach ?>
                 </select>
             </label>
-            </br>
-            </br>
+            <br/>
+            <br/>
             <div class="clickable">
                 <button
                     class="as-link"
@@ -45,6 +45,9 @@
                     <p><?= _('Daten übernehmen') ?></p>
                 </button>
             </div>
-        </div>
-    </form>
+        </form>
+    <?php endif ?>
+<?php else : ?>
+    <br/>
+    <p><?= _('Es ist kein Semester ohne Profil vorhanden.') ?></p>
 <?php endif ?>

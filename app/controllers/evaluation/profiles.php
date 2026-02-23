@@ -14,6 +14,7 @@ class Evaluation_ProfilesController extends AuthenticatedController
     public function preedit_action()
     {
         $this->semesters = $this->getAvailableSemesters(true);
+        $this->total_sem_count = Semester::countBySql();
         $this->render_template('evaluation/profiles/preedit');
     }
 
