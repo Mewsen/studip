@@ -118,7 +118,20 @@ class Evaluation_ProfilesController extends AuthenticatedController
                 ]
             ]
         ], $this->url_for('evaluation/profiles')
-        )->setSuccessMessage(_('Erfolgreich gespeichert.'))->autoStore();
+        )
+        ->setSuccessMessage(_('Erfolgreich gespeichert.'))
+        ->addStoreCallback(function ($form) {
+            /** @var QuestionnaireEvalCentralProfile $profile */
+            $profile = $form->getLastPart()->getContextObject();
+            $optional_array = explode(',', $profile->optional_templates);
+            $key = array_search($profile->template_id, $optional_array);
+            if ($key !== false) {
+                unset($optional_array[$key]);
+                $profile->optional_templates = implode(',', $optional_array);
+                $profile->store();
+            }
+        })
+        ->autoStore();
 
         PageLayout::setTitle(
             $id ? _('Profil bearbeiten: ') . htmlReady($profile->semester->name) : _('Neues Profil'));
