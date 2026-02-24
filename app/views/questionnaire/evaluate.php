@@ -57,28 +57,28 @@ if (isset($filtered[$questionnaire->getId()]) && $filtered[$questionnaire->getId
         STUDIP.Questionnaire.initialize();
     </script>
     <div data-dialog-button style="max-height: none; opacity: 1; text-align: center;">
-        <? if ($questionnaire->isAnswerable() && $questionnaire['editanswers']) : ?>
+        <? if ($questionnaire->isAnswerable() && $questionnaire['editanswers'] && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create($questionnaire->isAnswered() ? _("Antwort ändern") : _("Beantworten"), URLHelper::getURL("dispatch.php/questionnaire/answer/".$questionnaire->getId()), ['data-dialog' => '']) ?>
         <? endif ?>
         <? if ($questionnaire->isEditable()) : ?>
             <?= \Studip\LinkButton::create(_("Ergebnisse herunterladen"), URLHelper::getURL("dispatch.php/questionnaire/export/".$questionnaire->getId())) ?>
         <? endif ?>
-        <? if ($questionnaire->isEditable() && (!$questionnaire->isRunning() || !$questionnaire->countAnswers())) : ?>
+        <? if ($questionnaire->isEditable() && (!$questionnaire->isRunning() || !$questionnaire->countAnswers()) && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create(_("Bearbeiten"), URLHelper::getURL("dispatch.php/questionnaire/edit/".$questionnaire->getId()), ['data-dialog' => '']) ?>
         <? endif ?>
-        <? if ($questionnaire->isEditable()) : ?>
+        <? if ($questionnaire->isEditable() && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create(_("Kontext auswählen"), URLHelper::getURL("dispatch.php/questionnaire/context/".$questionnaire->getId()), ['data-dialog' => '']) ?>
         <? endif ?>
-        <? if ($questionnaire->isCopyable()) : ?>
+        <? if ($questionnaire->isCopyable() && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create(_("Kopieren"), URLHelper::getURL("dispatch.php/questionnaire/copy/".$questionnaire->getId()), ['data-dialog' => '']) ?>
         <? endif ?>
-        <? if ($questionnaire->isEditable() && !$questionnaire->isRunning()) : ?>
+        <? if ($questionnaire->isEditable() && !$questionnaire->isRunning() && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create(_("Starten"), URLHelper::getURL("dispatch.php/questionnaire/start/".$questionnaire->getId())) ?>
         <? endif ?>
         <? if ($questionnaire->resultsVisible()) : ?>
             <?= \Studip\LinkButton::create(_('PDF exportieren'), '#', ['onclick' => "STUDIP.Questionnaire.exportEvaluationAsPDF(this.closest('.questionnaire_results'), this); return false;"]) ?>
         <? endif ?>
-        <? if ($questionnaire->isEditable() && $questionnaire->isRunning()) : ?>
+        <? if ($questionnaire->isEditable() && $questionnaire->isRunning() && !$questionnaire->template_id) : ?>
             <?= \Studip\LinkButton::create(_("Beenden"), URLHelper::getURL("dispatch.php/questionnaire/stop/".$questionnaire->getId())) ?>
         <? endif ?>
 

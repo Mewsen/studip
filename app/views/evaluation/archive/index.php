@@ -30,7 +30,11 @@ use Studip\Button;
                     <td>
                         <input type="checkbox" name="assignments[]" value="<?= htmlReady($assignment->id) ?>">
                     <td>
-                        <?= htmlReady($assignment->questionnaire->title ?? '') /*TODO link to statistic*/ ?>
+                        <a href="<?= $controller->link_for('questionnaire/evaluate/' . $assignment->questionnaire_id) ?>"
+                            data-dialog
+                        >
+                            <?= htmlReady($assignment->questionnaire->title ?? '') ?>
+                        </a>
                     </td>
                     </td>
                     <td>

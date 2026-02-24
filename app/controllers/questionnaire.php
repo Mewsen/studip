@@ -335,10 +335,18 @@ class QuestionnaireController extends AuthenticatedController
     {
         $this->questionnaire = new Questionnaire($questionnaire_id);
         if (!$this->questionnaire->isViewable()) {
-            throw new AccessDeniedException(_('Der Fragebogen ist nicht einsehbar.'));
+            if (!$this->questionnaire->template_id) {
+                throw new AccessDeniedException(_('Der Fragebogen ist nicht einsehbar.'));
+            } else {
+                throw new AccessDeniedException(_('Die Evaluation ist nicht einsehbar.'));
+            }
         }
         object_set_visit($questionnaire_id, 'vote');
-        PageLayout::setTitle(sprintf(_("Fragebogen: %s"), $this->questionnaire->title));
+        if (!$this->questionnaire->template_id) {
+            PageLayout::setTitle(sprintf(_("Fragebogen: %s"), $this->questionnaire->title));
+        } else {
+            PageLayout::setTitle(sprintf(_("Evaluation: %s"), $this->questionnaire->title));
+        }
 
         $this->filtered = [];
         if (Request::submitted('filtered')) {
