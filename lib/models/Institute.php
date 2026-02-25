@@ -195,7 +195,7 @@ class Institute extends SimpleORMap implements Range
     public static function findAll()
     {
         $faculties = self::findBySQL(
-            "`Institute`.`fakultaets_id` = `fakultaet`.`Institut_id`
+            "`fakultaets_id` = `Institut_id`
              ORDER BY `Institute`.`Name` ASC"
         );
         $all_institutes = [];
