@@ -201,7 +201,9 @@ class Institute extends SimpleORMap implements Range
         $all_institutes = [];
         foreach ($faculties as $faculty) {
             $all_institutes[] = $faculty;
-            $all_institutes = array_merge($all_institutes, $faculty->sub_institutes);
+            foreach ($faculty->sub_institutes as $institute) {
+                $all_institutes[] = $institute;
+            }
         }
         return $all_institutes;
     }
