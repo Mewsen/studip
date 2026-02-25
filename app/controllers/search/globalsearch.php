@@ -151,9 +151,9 @@ class Search_GlobalsearchController extends AuthenticatedController
         $institutes = [];
         $institutes[''] = _('Alle Einrichtungen');
 
-        $insts = Institute::getInstitutes();
+        $insts = Institute::findAll();
         foreach ($insts as $institute) {
-            $institutes[$institute['Institut_id']] = ($institute['is_fak'] ? '' : '  ') . $institute['Name'];
+            $institutes[$institute->id] = ($institute->isFaculty() ? '' : '  ') . $institute->getFullName();
         }
         return $institutes;
     }

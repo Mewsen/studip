@@ -402,19 +402,19 @@ class Lvgruppen_LvgruppenController extends MVVController
                 new SelectElement('__undefined__', _('Nicht verwendet'), $selected_fachbereich === '__undefined__')
             );
 
-            $institutes = Institute::getInstitutes();
+            $institutes = Institute::findAll();
             foreach ($institutes as $institute) {
-                if (!(count($perm_institutes) === 0 || in_array($institute['Institut_id'], $perm_institutes))) {
+                if (!(count($perm_institutes) === 0 || in_array($institute->id, $perm_institutes))) {
                     continue;
                 }
 
                 $widget->addElement(
                     new SelectElement(
-                        $institute['Institut_id'],
-                        ($institute['is_fak'] ? '' : ' ') . $institute['Name'],
-                        $institute['Institut_id'] === $selected_fachbereich
+                        $institute->id,
+                        ($institute->isFaculty() ? '' : ' ') . $institute->getFullName(),
+                        $institute->id === $selected_fachbereich
                     ),
-                    'select-' . $institute['Name']
+                    'select-' . $institute->name
                 );
 
             }

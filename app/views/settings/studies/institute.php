@@ -76,16 +76,16 @@
                     <?= _('-- Bitte Einrichtung auswählen --') ?>
                 </option>
                 <? foreach ($available_institutes as $i) : ?>
-                    <? if (InstituteMember::countBySql('user_id = ? AND institut_id = ?', [$user->user_id, $i['Institut_id']]) == 0
-                           && (!($i['is_fak'] && $user->perms == 'admin') || $GLOBALS['perm']->have_perm('root'))
+                    <? if (InstituteMember::countBySql('user_id = ? AND institut_id = ?', [$user->user_id, $i->id]) == 0
+                           && (!($i->isFaculty() && $user->perms == 'admin') || $GLOBALS['perm']->have_perm('root'))
                     ): ?>
-                        <option class="<?= $i['is_fak'] ? 'nested-item-header' : 'nested-item' ?>"
-                                value="<?= htmlReady($i['Institut_id']) ?>">
-                            <?= htmlReady($i['Name']) ?>
+                        <option class="<?= $i->isFaculty() ? 'nested-item-header' : 'nested-item' ?>"
+                                value="<?= htmlReady($i->id) ?>">
+                            <?= htmlReady($i->getFullName()) ?>
                         </option>
                     <? else: ?>
-                        <option class="<?= $i['is_fak'] ? 'nested-item-header' : 'nested-item' ?>" disabled>
-                            <?= htmlReady($i['Name']) ?>
+                        <option class="<?= $i->isFaculty() ? 'nested-item-header' : 'nested-item' ?>" disabled>
+                            <?= htmlReady($i->getFullName()) ?>
                         </option>
                     <? endif; ?>
                 <? endforeach; ?>

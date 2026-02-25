@@ -33,7 +33,7 @@ class InstitutesIndexTest extends \Codeception\Test\Unit
         $document = $response->document();
         $this->tester->assertTrue($document->isResourceCollectionDocument());
 
-        $numberOfAllInstitutes = count(\Institute::getInstitutes());
+        $numberOfAllInstitutes = count(\Institute::countAll());
         $this->tester->assertSame($numberOfAllInstitutes, count($document->primaryResources()));
     }
 }

@@ -212,7 +212,7 @@ class Admin_UserController extends AuthenticatedController
         $this->degrees      = Abschluss::findBySQL('1 order by name');
         $this->studycourses = Fach::findBySQL('1 order by name');
         $this->userdomains  = UserDomain::getUserDomains();
-        $this->institutes   = Institute::getInstitutes();
+        $this->institutes   = Institute::findAll();
         foreach ($GLOBALS['STUDIP_AUTH_PLUGIN'] as $ap) {
             $this->available_auth_plugins[mb_strtolower($ap)] = $ap;
         }

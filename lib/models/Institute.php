@@ -207,6 +207,16 @@ class Institute extends SimpleORMap implements Range
     }
 
     /**
+     * Counts the number of institutes and faculties.
+     *
+     * @return int The number of institutes and faculties.
+     */
+    public static function countAll()
+    {
+        return self::countBySQL('TRUE');
+    }
+
+    /**
      * returns an array of all institutes to which the given user belongs,
      * ordered by faculties and name. The user role for each institute is included
      *

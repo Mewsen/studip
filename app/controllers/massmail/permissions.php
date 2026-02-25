@@ -60,8 +60,8 @@ class Massmail_PermissionsController extends \AuthenticatedController
         );
 
         $institutes = [];
-        foreach (Institute::getInstitutes() as $one) {
-            $institutes[$one['Institut_id']] = $one['Name'];
+        foreach (Institute::findAll() as $one) {
+            $institutes[$one->id] = $one->getFullName();
         }
 
         $degrees = [];
