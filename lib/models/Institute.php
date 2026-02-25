@@ -65,11 +65,12 @@ class Institute extends SimpleORMap implements Range
             'on_store' => 'store',
         ];
         $config['has_many']['sub_institutes'] = [
-            'class_name' => Institute::class,
+            'class_name'        => Institute::class,
             'assoc_foreign_key' => 'fakultaets_id',
-            'assoc_func' => 'findByFaculty',
-            'on_delete' => 'delete',
-            'on_store' => 'store',
+            'assoc_func'        => 'findByFaculty',
+            'order_by'          => '`Name` ASC',
+            'on_delete'         => 'delete',
+            'on_store'          => 'store',
         ];
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
@@ -193,11 +194,16 @@ class Institute extends SimpleORMap implements Range
      */
     public static function findAll()
     {
-        return self::findBySQL(
-            "LEFT JOIN `Institute` AS `fakultaet`
-             ON (`Institute`.`fakultaets_id` = `fakultaet`.`Institut_id`)
-             ORDER BY `fakultaet`.`Name` ASC, `is_fak` DESC, `Institute`.`Name` ASC"
+        $faculties = self::findBySQL(
+            "`Institute`.`fakultaets_id` = `fakultaet`.`Institut_id`
+             ORDER BY `Institute`.`Name` ASC"
         );
+        $all_institutes = [];
+        foreach ($faculties as $faculty) {
+            $all_institutes[] = $faculty;
+            $all_institutes = array_merge($all_institutes, $faculty->sub_institutes);
+        }
+        return $all_institutes;
     }
 
     /**
