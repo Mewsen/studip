@@ -1006,7 +1006,10 @@ class Admin_CoursesController extends AuthenticatedController
 
                 if (in_array('room_time', $filter_config)) {
                     $dates = $course->getAllDatesInSemester($this->semester);
-                    $date_strings = $dates->toStringArray(true);
+                    $date_strings = $dates->toStringArray(
+                        as_html: false
+                    );
+
                     $row['room_time'] = implode("\n", $date_strings) ?: _('nicht angegeben');
                 }
 

@@ -236,11 +236,16 @@ class CourseDateList implements Stringable
         return $template->render();
     }
 
-    public function toStringArray(bool $group_by_rooms = false, bool $with_room_names = false, bool $with_cancelled_dates = false) : array
+    public function toStringArray(
+        bool $group_by_rooms = false,
+        bool $with_room_names = false,
+        bool $with_cancelled_dates = false,
+        bool $as_html = true
+    ) : array
     {
         $output = [];
         foreach ($this->regular_dates as $regular_date) {
-            $date_line = $regular_date->toString('long-start');
+            $date_line = $regular_date->toString('long-start', $as_html);
             if ($with_room_names || $group_by_rooms) {
                 $room = $regular_date->getMostBookedRoom();
                 if ($room instanceof Room) {
