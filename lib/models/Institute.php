@@ -172,6 +172,8 @@ class Institute extends SimpleORMap implements Range
     /**
      * returns an array of all institutes ordered by faculties and name
      * @return array
+     *
+     * @deprecated This method will be removed in Stud.IP 7.0. Please use Institute::findAll instead.
      */
     public static function getInstitutes()
     {
@@ -181,6 +183,21 @@ class Institute extends SimpleORMap implements Range
                     "LEFT JOIN Institute as fakultaet ON (Institute.fakultaets_id = fakultaet.Institut_id) " .
                 "ORDER BY fakultaet.Name ASC, is_fak DESC, Institute.Name ASC")->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**
+     * Retrieves all institutes, ordered by faculties and name: A faculty will always come before its institutes.
+     * Objects are ordered alphabetically afterwards.
+     *
+     * @returns Institute[] All institutes from the database.
+     */
+    public static function findAll()
+    {
+        return self::findBySQL(
+            "LEFT JOIN `Institute` AS `fakultaet`
+             ON (`Institute`.`fakultaets_id` = `fakultaet`.`Institut_id`)
+             ORDER BY `fakultaet`.`Name` ASC, `is_fak` DESC, `Institute`.`Name` ASC"
+        );
     }
 
     /**
