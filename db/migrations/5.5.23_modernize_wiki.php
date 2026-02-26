@@ -176,8 +176,8 @@ final class ModernizeWiki extends Migration
             DBManager::get()->exec("
                 INSERT INTO `wiki_pages` (`range_id`, `name`, `content`, `parent_id`, `read_permission`, `write_permission`, `user_id`, `chdate`, `mkdate`)
                 SELECT `superwiki_pages`.`seminar_id`,
-                    CONVERT(`superwiki_pages`.`name` USING utf8mb4),
-                    CONVERT(`superwiki_pages`.`content` USING utf8mb4),
+                    `superwiki_pages`.`name`,
+                    `superwiki_pages`.`content`,
                     NULL,
                     `superwiki_pages`.`read_permission`,
                     `superwiki_pages`.`write_permission`,
@@ -189,13 +189,16 @@ final class ModernizeWiki extends Migration
             DBManager::get()->exec("
                 INSERT INTO `wiki_versions` (`page_id`, `name`, `content`, `user_id`, `mkdate`)
                 SELECT `wiki_pages`.`page_id`,
-                       CONVERT(`superwiki_versions`.`name` USING utf8mb4),
-                       CONVERT(`superwiki_versions`.`content` USING utf8mb4),
+                       `superwiki_versions`.`name`,
+                       `superwiki_versions`.`content`,
                        `superwiki_versions`.`last_author`,
                        `superwiki_versions`.`chdate`
                 FROM `superwiki_versions`
-                    INNER JOIN `superwiki_pages` ON (`superwiki_pages`.`page_id` = `superwiki_versions`.`page_id`)
-                    INNER JOIN `wiki_pages` ON (`wiki_pages`.`range_id` = `superwiki_pages`.`seminar_id` AND `wiki_pages`.`name` = `superwiki_pages`.`name`)
+                JOIN `superwiki_pages` ON (`superwiki_pages`.`page_id` = `superwiki_versions`.`page_id`)
+                JOIN `wiki_pages` ON (
+                    `wiki_pages`.`range_id` = `superwiki_pages`.`seminar_id`
+                    AND `wiki_pages`.`name` = CONVERT(`superwiki_pages`.`name` USING utf8mb4)
+                )
             ");
         }
         DBManager::get()->exec("
