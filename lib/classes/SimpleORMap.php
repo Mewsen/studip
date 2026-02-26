@@ -919,20 +919,19 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $where_param = is_array($arguments[0]) ? $arguments[0] : [$arguments[0]];
         $action = strstr($name, 'by', true);
         $field = substr($name, strlen($action) + 2);
-
         switch ($action) {
             case 'findone':
                 $order = $arguments[1] ?? '';
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $name = 'findonebysql';
+                $method = 'findonebysql';
                 break;
             case 'find':
             case 'findmany':
                 $order = $arguments[1] ?? '';
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $name = 'findbysql';
+                $method = 'findbysql';
                 break;
             case 'findeach':
             case 'findeachmany':
@@ -940,13 +939,13 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 $param_arr[0] = $arguments[0];
                 $param_arr[1] =& $where;
                 $param_arr[2] = [$arguments[1]];
-                $name = 'findeachbysql';
+                $method = 'findeachbysql';
                 break;
             case 'count':
             case 'delete':
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $name = "{$action}bysql";
+                $method = "{$action}bysql";
                 break;
             default:
                 throw new BadMethodCallException("Method " . static::class . "::$name not found");
@@ -956,7 +955,7 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         }
         if (isset($db_fields[$field])) {
             $where = "`$db_table`.`$field` IN(?) " . $order;
-            return call_user_func_array([static::class, $name], $param_arr);
+            return call_user_func_array([static::class, $method], $param_arr);
         }
         throw new BadMethodCallException("Method " . static::class . "::$name not found");
     }
