@@ -8,6 +8,8 @@ use JsonApi\Middlewares\DangerousRouteHandler;
 use JsonApi\Routes\Consultations\SlotCreationCount;
 use JsonApi\Routes\Holidays\HolidaysShow;
 use JsonApi\Routes\Vacations\VacationsShow;
+use ReflectionClass;
+use ReflectionException;
 use Slim\Routing\RouteCollectorProxy;
 use Studip\JsonApi\Routes\AvailableRooms;
 
@@ -815,6 +817,18 @@ class RouteMap
         $group->post('/short-urls', Routes\ShortUrls\ShortUrlCreate::class);
         $group->patch('/short-urls/{id}', Routes\ShortUrls\ShortUrlUpdate::class);
         $group->delete('/short-urls/{id}', Routes\ShortUrls\ShortUrlDelete::class);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    protected function addSORMCrudPaths(RouteCollectorProxy $group, string $class_name): void
+    {
+        $class_name_without_namespace = (new ReflectionClass($class_name))->getShortName();
+        $path = strtokebabcase($class_name_without_namespace);
+
+        $group->map(['GET', 'POST'], "/{$path}", $class_name);
+        $group->map(['GET', 'PATCH', 'DELETE'], "/{$path}/{id}", $class_name);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void
