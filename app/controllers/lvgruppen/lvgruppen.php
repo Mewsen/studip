@@ -404,7 +404,7 @@ class Lvgruppen_LvgruppenController extends MVVController
 
             $institutes = Institute::findAll();
             foreach ($institutes as $institute) {
-                if (!(count($perm_institutes) === 0 || in_array($institute->id, $perm_institutes))) {
+                if ($perm_institutes && !in_array($institute->id, $perm_institutes)) {
                     continue;
                 }
 

@@ -215,7 +215,7 @@ class Institute extends SimpleORMap implements Range
      */
     public static function countAll()
     {
-        return self::countBySQL('TRUE');
+        return self::countBySQL();
     }
 
     /**
