@@ -115,7 +115,7 @@ const swapTopic = event => {
                                 </div>
                             </div>
                             <p v-if="topic.description">
-                                <small class="line-clamp-3">{{ topic.description }}</small>
+                                <small class="line-clamp-3" v-html="topic.description"></small>
                             </p>
                         </div>
                     </div>
@@ -242,7 +242,7 @@ const swapTopic = event => {
                             </div>
                         </div>
                         <p>
-                            <small class="line-clamp-3">{{ topic.description }}</small>
+                            <small class="line-clamp-3" v-html="topic.description "></small>
                         </p>
                     </div>
                     <div>
