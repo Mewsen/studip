@@ -52,11 +52,6 @@ class Task extends \SimpleORMap
             'foreign_key' => 'structural_element_id',
         ];
 
-        $config['belongs_to']['lecturer'] = [
-            'class_name' => User::class,
-            'foreign_key' => 'lecturer_id',
-        ];
-
         $config['belongs_to']['user'] = [
             'class_name' => User::class,
             'foreign_key' => 'solver_id',
