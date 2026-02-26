@@ -907,32 +907,32 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      * @throws BadMethodCallException
      * @return int|static|static[]
      */
-    public static function __callStatic(string $method, array $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         $db_table = static::db_table();
         $alias_fields = static::alias_fields();
         $db_fields = static::db_fields();
-        $method = strtolower($method);
+        $name = strtolower($name);
         $order = '';
         $param_arr = [];
         $where = '';
         $where_param = is_array($arguments[0]) ? $arguments[0] : [$arguments[0]];
-        $action = strstr($method, 'by', true);
-        $field = substr($method, strlen($action) + 2);
+        $action = strstr($name, 'by', true);
+        $field = substr($name, strlen($action) + 2);
 
         switch ($action) {
             case 'findone':
                 $order = $arguments[1] ?? '';
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $method = 'findonebysql';
+                $name = 'findonebysql';
                 break;
             case 'find':
             case 'findmany':
                 $order = $arguments[1] ?? '';
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $method = 'findbysql';
+                $name = 'findbysql';
                 break;
             case 'findeach':
             case 'findeachmany':
@@ -940,25 +940,25 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 $param_arr[0] = $arguments[0];
                 $param_arr[1] =& $where;
                 $param_arr[2] = [$arguments[1]];
-                $method = 'findeachbysql';
+                $name = 'findeachbysql';
                 break;
             case 'count':
             case 'delete':
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $method = "{$action}bysql";
+                $name = "{$action}bysql";
                 break;
             default:
-                throw new BadMethodCallException("Method " . static::class . "::$method not found");
+                throw new BadMethodCallException("Method " . static::class . "::$name not found");
         }
         if (isset($alias_fields[$field])) {
             $field = $alias_fields[$field];
         }
         if (isset($db_fields[$field])) {
             $where = "`$db_table`.`$field` IN(?) " . $order;
-            return call_user_func_array([static::class, $method], $param_arr);
+            return call_user_func_array([static::class, $name], $param_arr);
         }
-        throw new BadMethodCallException("Method " . static::class . "::$method not found");
+        throw new BadMethodCallException("Method " . static::class . "::$name not found");
     }
 
     /**
@@ -2631,7 +2631,6 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
 
     private ?int $limit = null;
     private ?int $offset = null;
-    protected array $withOut = ['contactGroups'];
     protected array $withRelations = [];
     protected static $modelInstance = null;
 
@@ -2755,18 +2754,6 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     public function offset(int $number): static
     {
         $this->offset = $number;
-        return $this;
-    }
-
-    public function with($relation): static
-    {
-        $this->withRelations[] = $relation;
-        return $this;
-    }
-
-    public function withOut($relation): static
-    {
-        $this->withRelations[] = $relation;
         return $this;
     }
 
