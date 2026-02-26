@@ -16,7 +16,7 @@
         '<a href="%s" class="button" data-dialog="size=big">%s</a>',
     ]),
     $controller->create(),
-    _('Terminblöcke anlegen')
+    _('Termine anlegen')
 ))->hideClose() ?>
 
 <? else: ?>
