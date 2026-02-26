@@ -198,7 +198,7 @@ class Institute extends SimpleORMap implements Range
                   FROM `Institute` AS i0
                   LEFT JOIN `Institute` AS i1
                     ON (i0.`fakultaets_id` = i1.`Institut_id`)
-                  ORDER BY i1.`Name`, i0.`Institut_id` = i0.`fakultaets_id` DESC, i0.`Name` ASC";
+                  ORDER BY i1.`Name`, i0.`Institut_id` = i0.`fakultaets_id` DESC, i0.`Name`";
         return DBManager::get()->fetchAll(
             $query,
             callable: fn(array $row) => Institute::build($row, false)
