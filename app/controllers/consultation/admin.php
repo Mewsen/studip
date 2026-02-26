@@ -138,7 +138,7 @@ class Consultation_AdminController extends ConsultationController
 
     public function create_action()
     {
-        PageLayout::setTitle(_('Neue Terminblöcke anlegen'));
+        PageLayout::setTitle(_('Neue Termine anlegen'));
 
         $room = '';
         $responsible = false;
@@ -302,7 +302,7 @@ class Consultation_AdminController extends ConsultationController
         if ($stored === 0) {
             PageLayout::postError(_('In dem von Ihnen gewählten Zeitraum konnten für den gewählten Wochentag keine Termine erzeugt werden.'));
         } else {
-            PageLayout::postSuccess(_('Die Terminblöcke wurden erfolgreich angelegt.'));
+            PageLayout::postSuccess(_('Die Termine wurden erfolgreich angelegt.'));
         }
         $this->relocate('consultation/admin');
     }
@@ -857,7 +857,7 @@ class Consultation_AdminController extends ConsultationController
 
         $actions = $sidebar->addWidget(new ActionsWidget());
         $actions->addLink(
-            _('Terminblöcke anlegen'),
+            _('Termine anlegen'),
             $this->createURL(),
             Icon::create('add')
         )->asDialog('size=big');
@@ -882,7 +882,7 @@ class Consultation_AdminController extends ConsultationController
             $this->toggleURL('messages', 0, $action === 'expired')
         );
         $options->addCheckbox(
-            _('Abgelaufene Terminblöcke automatisch löschen'),
+            _('Abgelaufene Termine automatisch löschen'),
             $config->CONSULTATION_GARBAGE_COLLECT,
             $this->toggleURL('garbage', 1, $action === 'expired'),
             $this->toggleURL('garbage', 0, $action === 'expired')
