@@ -1699,7 +1699,7 @@ class Admin_UserController extends AuthenticatedController
 
         $search = $sidebar->addWidget(new SearchWidget());
         $search->addNeedle(_('Person suchen'),
-            'user_id',
+            'needle',
             true,
             new StandardSearch('user_id'),
             'function (value) { document.location = STUDIP.URLHelper.getURL("dispatch.php/admin/user/edit/" + value); }'
