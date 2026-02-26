@@ -81,11 +81,11 @@
                     ): ?>
                         <option class="<?= $i->isFaculty() ? 'nested-item-header' : 'nested-item' ?>"
                                 value="<?= htmlReady($i->id) ?>">
-                            <?= htmlReady($i->getFullName()) ?>
+                            <?= htmlReady($i->getFullName('name-type')) ?>
                         </option>
                     <? else: ?>
                         <option class="<?= $i->isFaculty() ? 'nested-item-header' : 'nested-item' ?>" disabled>
-                            <?= htmlReady($i->getFullName()) ?>
+                            <?= htmlReady($i->getFullName('name-type')) ?>
                         </option>
                     <? endif; ?>
                 <? endforeach; ?>

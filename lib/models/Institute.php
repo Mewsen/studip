@@ -277,6 +277,7 @@ class Institute extends SimpleORMap implements Range
     public function getFullName($format = 'default'): string
     {
         $template['type-name'] = '%2$s: %1$s';
+        $template['name-type'] = '%1$s (%2$s)';
         if ($format === 'default' || !isset($template[$format])) {
            $format = 'type-name';
         }
