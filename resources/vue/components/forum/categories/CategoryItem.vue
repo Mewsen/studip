@@ -109,7 +109,7 @@ const swapCategory = event => {
                             </div>
                         </div>
                         <p v-if="category.description">
-                            <small class="line-clamp-3">{{ category.description }}</small>
+                            <small class="line-clamp-3" v-html="category.description"></small>
                         </p>
                     </div>
                 </div>
@@ -223,7 +223,7 @@ const swapCategory = event => {
                         </div>
                     </div>
                     <p>
-                        <small class="line-clamp-3">{{ category.description }}</small>
+                        <small class="line-clamp-3" v-html="category.description"></small>
                     </p>
                 </div>
                 <div>
