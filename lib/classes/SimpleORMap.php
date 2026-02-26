@@ -2582,45 +2582,6 @@ abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
          self::$mariadb_column_default_fix = $state;
      }
 
-    public static function firstOrCreate(array $attributes, array $values = []): static
-    {
-        $whereClauses = [];
-        foreach ($attributes as $key => $value) {
-            $whereClauses[] = "$key = :$key";
-        }
-
-        $record = static::findOneBySQL(implode(' AND ', $whereClauses), $attributes);
-        if ($record) {
-            return $record;
-        }
-
-        return static::create([
-            ...$attributes,
-            ...$values
-        ]);
-    }
-
-    public static function updateOrCreate(array $attributes, array $values = []): static
-    {
-        $whereClauses = [];
-        foreach ($attributes as $key => $value) {
-            $whereClauses[] = "$key = :$key";
-        }
-
-        $record = static::findOneBySQL(implode(' AND ', $whereClauses), $attributes);
-
-        if ($record) {
-            $record->setData($values);
-            $record->store();
-            return $record;
-        }
-
-        return static::create([
-            ...$attributes,
-            ...$values
-        ]);
-    }
-
     // new query builder:
 
     private array $wheres = [];
