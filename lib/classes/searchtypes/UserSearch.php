@@ -8,15 +8,30 @@
 class UserSearch extends SQLSearch
 {
     /**
-     * @var SimpleORMap[] The objects for filtering user accounts.
-     * The user accounts must be associated to the objects in this list
+     * @var string[] The institute IDs for filtering user accounts.
+     * The users must be members of the institutes in this list
      * to be included in the result set.
      */
-    protected array $object_filters = [];
+    protected array $institute_filters = [];
+
+    /**
+     * @var string[] The course IDs for filtering user accounts.
+     * The users must be members
+     */
+    protected array $course_filters = [];
+
+    /**
+     * @var string The SQL query string for the getResults or search method.
+     */
+    protected string $sql_query = '';
+
+    /**
+     * @var array The SQL query parameters for the SQL query string in $sql_query.
+     */
+    protected array $sql_params = [];
 
     public function __construct(
-        string $title = '',
-        string $field_name = 'user_id'
+        string $title = ''
     )
     {
         $this->title = $title ?? _('Person suchen');
@@ -24,31 +39,44 @@ class UserSearch extends SQLSearch
     }
 
     /**
-     * Adds a SimpleORMap object as filter. The user account must be associated
-     * to the object in order to be included in the result set.
+     * Adds a filter as a condition.
      *
-     * @param SimpleORMap $object The object to be used as filter.
-     *
-     * @return bool True, if the object can be used as filter, false otherwise.
+     * @param  The condition to add as user account filter.
      */
-    public function addObjectAsFilter(SimpleORMap $object) : bool
+    public function addInstituteFilter(string $institute_id)
     {
-        if ($object instanceof Institute) {
-            //TODO: activate JOIN institute
-        } elseif ($object instanceof Course) {
-            //TODO: activate JOIN seminar_user
-        } else {
-            //Unsupported object.
-            return false;
-        }
+        $this->institute_filters[] = $institute_id;
+    }
+
+    /**
+     * This is a helper method to generate the SQL query and its parameters for the
+     * getResults or search method. The sql_query and sql_params attributes are set
+     * by this method.
+     *
+     * @return void
+     */
+    protected function prepareQuery() : void
+    {
+
     }
 
     /**
      * @inheritDoc
      */
-    public function getResults($input, $contextual_data, $limit = PHP_INT_MAX, $offset = 0)
+    public function getResults($input, $contextual_data = [], $limit = PHP_INT_MAX, $offset = 0)
     {
+        $this->limit  = $limit;
+        $this->offset = $offset;
 
+        $this->prepareQuery();
+        if (!$this->sql_query) {
+            //No query string has been generated.
+            return [];
+        }
+        $db = DBManager::get();
+        $stmt = $db->prepare($this->sql_query);
+        $stmt->execute($this->sql_params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -64,6 +92,15 @@ class UserSearch extends SQLSearch
      */
     public function search(string $search_keyword, int $limit = PHP_INT_MAX, int $offset = 0) : array
     {
+        $this->limit  = $limit;
+        $this->offset = $offset;
 
+        $this->prepareQuery();
+        if (!$this->sql_query) {
+            //No query string has been generated.
+            return [];
+        }
+
+        return User::findBySQL($this->sql_query, $this->sql_query_params);
     }
 }
