@@ -92,7 +92,7 @@ use Studip\Button;
                 <? foreach ($institutes as $institute) : ?>
                     <option value="<?= htmlReady($institute->id) ?>"
                         <?= isset($request['institute']) && $request['institute'] === $institute->id ? 'selected' : ''?>>
-                        <?= htmlReady($institute->getFullName()) ?>
+                        <?= htmlReady($institute->name) ?>
                     </option>
                 <? endforeach ?>
             </select>

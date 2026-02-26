@@ -411,7 +411,7 @@ class Lvgruppen_LvgruppenController extends MVVController
                 $widget->addElement(
                     new SelectElement(
                         $institute->id,
-                        ($institute->isFaculty() ? '' : ' ') . $institute->getFullName(),
+                        ($institute->isFaculty() ? '' : ' ') . $institute->name,
                         $institute->id === $selected_fachbereich
                     ),
                     'select-' . $institute->name
