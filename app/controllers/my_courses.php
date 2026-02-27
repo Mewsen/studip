@@ -100,7 +100,8 @@ class MyCoursesController extends AuthenticatedController
         $this->deputies_edit_about_enabled = Config::get()->DEPUTIES_EDIT_ABOUT_ENABLE;
 
         // Check for new contents
-        if ($tabularasa = $this->flash['tabularasa']) {
+        $tabularasa = $this->flash['tabularasa'];
+        if ($tabularasa) {
             $details = [];
             if ($this->check_for_new($sem_courses, $group_field)) {
                 $details[] = sprintf(
@@ -904,7 +905,13 @@ class MyCoursesController extends AuthenticatedController
             $setting_widget->addLink(
                 _('Alles als gelesen markieren'),
                 $this->url_for("my_courses/tabularasa/{$sem}/" . time()),
-                Icon::create('accept')
+                Icon::create('accept'),
+                [
+                    'data-confirm' => implode("\n", [
+                        _('Sie sind dabei alle Veranstaltungen auf gelesen zu setzen.'),
+                        _('Diesen Schritt können sie nicht rückgängig machen.')
+                    ]),
+                ]
             );
         }
         $setting_widget->addLink(
