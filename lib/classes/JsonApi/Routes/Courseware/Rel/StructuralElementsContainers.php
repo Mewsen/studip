@@ -87,7 +87,7 @@ class StructuralElementsContainers extends RelationshipsController
         }
 
         foreach ($data as $item) {
-            if (self::arrayGet($item, 'type') !== \JsonApi\Schemas\Courseware\Container::TYPE) {
+            if (self::arrayGet($item, 'type') !== \JsonApi\Schemas\Courseware\ContainerSchema::TYPE) {
                 return 'Wrong `type` in document´s `data`.';
             }
 

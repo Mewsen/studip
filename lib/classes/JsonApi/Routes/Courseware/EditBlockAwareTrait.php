@@ -35,7 +35,8 @@ trait EditBlockAwareTrait
         }
 
         // now delete
-        $resource->delete();
+        $res = $resource->delete();
         $dbm->commit();
+        return $res;
     }
 }

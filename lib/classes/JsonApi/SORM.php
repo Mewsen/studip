@@ -3,6 +3,8 @@
 namespace JsonApi;
 
 use DBManager;
+use JsonSerializable;
+use PDO;
 use SimpleORMap;
 
 abstract class SORM extends SimpleORMap implements JsonSerializable
@@ -30,6 +32,9 @@ abstract class SORM extends SimpleORMap implements JsonSerializable
     {
         $baseData = parent::toRawArray($only_these_fields);
         $other_fields = array_merge($this->alias_fields(), $this->additional_fields());
+        if ($only_these_fields) {
+            $other_fields = array_filter($other_fields, fn ($field) => in_array($field, $only_these_fields));
+        }
         foreach ($other_fields as $key => $info) {
             $baseData[$key] = $this->getValue($key);
         }

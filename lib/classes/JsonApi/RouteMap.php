@@ -6,6 +6,7 @@ use JsonApi\Contracts\JsonApiPlugin;
 use JsonApi\Middlewares\Authentication;
 use JsonApi\Middlewares\DangerousRouteHandler;
 use JsonApi\Routes\Consultations\SlotCreationCount;
+use JsonApi\Routes\Courseware\CoursewareContainers;
 use JsonApi\Routes\Holidays\HolidaysShow;
 use JsonApi\Routes\Vacations\VacationsShow;
 use ReflectionClass;
@@ -449,10 +450,7 @@ class RouteMap
         // not a JSON route
         $group->post('/courseware-blocks/{id}/copy', Routes\Courseware\BlocksCopy::class);
 
-        $group->get('/courseware-containers/{id}', Routes\Courseware\ContainersShow::class);
-        $group->post('/courseware-containers', Routes\Courseware\ContainersCreate::class);
-        $group->patch('/courseware-containers/{id}', Routes\Courseware\ContainersUpdate::class);
-        $group->delete('/courseware-containers/{id}', Routes\Courseware\ContainersDelete::class);
+        $this->addSORMCrudPaths($group, CoursewareContainers::class);
         $group->get('/courseware-containers/{id}/blocks', Routes\Courseware\BlocksIndex::class);
         $this->addRelationship(
             $group,

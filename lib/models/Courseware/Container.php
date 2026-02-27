@@ -2,6 +2,7 @@
 
 namespace Courseware;
 
+use JsonApi\SORM;
 use JSONArrayObject;
 use User;
 
@@ -34,7 +35,7 @@ use User;
  * @property StructuralElement $structural_element belongs_to StructuralElement
  * @property-read mixed $type additional field
  */
-class Container extends \SimpleORMap implements \PrivacyObject
+class Container extends SORM implements \PrivacyObject
 {
     protected static function configure($config = [])
     {
@@ -215,5 +216,20 @@ class Container extends \SimpleORMap implements \PrivacyObject
         }
 
         return $blockMap;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'position' => (int) $this->position,
+            'site' => (int) $this->site,
+            'container-type' => $this->container_type,
+            'title' => (string) $this->type->getTitle(),
+            'width' => (string) $this->type->getContainerWidth(),
+            'visible' => (bool) $this->visible,
+            'payload' => $this->payload->getIterator(),
+            'mkdate' => date('c', $this->mkdate),
+            'chdate' => date('c', $this->chdate),
+        ];
     }
 }

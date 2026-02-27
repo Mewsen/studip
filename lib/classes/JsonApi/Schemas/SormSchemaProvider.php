@@ -1,11 +1,12 @@
 <?php
 
-namespace JsonApi;
+namespace JsonApi\Schemas;
 
+use JsonApi\SORM;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
-abstract class SchemaProvider extends \JsonApi\Schemas\SchemaProvider
+abstract class SormSchemaProvider extends SchemaProvider
 {
     /**
      * @param SORM $resource
@@ -32,34 +33,35 @@ abstract class SchemaProvider extends \JsonApi\Schemas\SchemaProvider
 
         $isPrimary = $context->getPosition()->getLevel() === 0;
         foreach ($resource->getRelations() as $relation => $options) {
+            $kebab_relation = str_replace('_', '-', $relation);
             if (!empty($options['internal'])) {
                 continue;
             }
 
-            $should_include = $this->shouldInclude($context, $relation);
+            $should_include = $this->shouldInclude($context, $kebab_relation);
 
             if (!$isPrimary && !$should_include) {
                 continue;
             }
 
             $data = $resource->getValue($relation);
-            if (!$data) {
+            if (!$should_include && !$data) {
+                // we can omit the relation, if it isn't explicitly included
                 continue;
             }
+            $link = $this->getRelationshipRelatedLink($resource, $kebab_relation);
 
-            if (in_array($options['type'], ['has_one', 'belongs_to'])) {
-                $link = $this->createLinkToResource($data);
-            } else {
-                if (!$should_include) {
+            if ($data) {
+                if (in_array($options['type'], ['has_one', 'belongs_to'])) {
+                    $link = $this->createLinkToResource($data);
+                } elseif (!$should_include) {
                     $data = $data->map(function ($rel) use ($options) {
                         return $options['class']::build(['id' => $rel->id], false);
                     });
                 }
-
-                $link = $this->getRelationshipRelatedLink($resource, $relation);
             }
 
-            $relationships[$relation] = [
+            $relationships[$kebab_relation] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $link,
                 ],

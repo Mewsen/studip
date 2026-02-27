@@ -91,7 +91,7 @@ class SchemaMap
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,
             \Courseware\BlockFeedback::class => Schemas\Courseware\BlockFeedback::class,
             \Courseware\Clipboard::class => Schemas\Courseware\Clipboard::class,
-            \Courseware\Container::class => Schemas\Courseware\Container::class,
+            \Courseware\Container::class => Schemas\Courseware\ContainerSchema::class,
             \Courseware\Instance::class => Schemas\Courseware\Instance::class,
             \Courseware\PeerReview::class => Schemas\Courseware\PeerReview::class,
             \Courseware\PeerReviewProcess::class => Schemas\Courseware\PeerReviewProcess::class,

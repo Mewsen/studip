@@ -47,7 +47,7 @@ abstract class SormJsonApiController extends JsonApiController
         return $json;
     }
 
-    public function validateResourceDocument($json, $data)
+    public function validateResourceDocument($json, $data): ?string
     {
         return null;
     }
@@ -258,10 +258,10 @@ abstract class SormJsonApiController extends JsonApiController
      * @param string $name
      * @param class-string<T> $class
      *
-     * @return SORM|SORM
+     * @return SORM|SORM[]
      * @throws Exception
      */
-    protected function resolveRelationData(string $name, string $class): array
+    protected function resolveRelationData(string $name, string $class)
     {
         if (!$this->hasRelation($name) || !$this->hasRelationData($name)) {
             throw new Exception("Cannot resolve missing relation '{$name}'");

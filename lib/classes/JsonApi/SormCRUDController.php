@@ -3,10 +3,8 @@ namespace JsonApi;
 
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\BadRequestException;
-use Psr\Http\Message\{
-    ResponseInterface as Response,
-    ServerRequestInterface as Request
-};
+use Psr\Http\Message\{ResponseInterface as Response, ServerRequestInterface as Request};
+use Studip\JsonApi\Authorities\SORMAuthority;
 
 abstract class SormCRUDController extends SormJsonApiController
 {
@@ -138,9 +136,15 @@ abstract class SormCRUDController extends SormJsonApiController
 
     protected function delete(Request $request, Response $response, array $args): Response
     {
-        $this->requireItem($request, $args['id'])->delete();
-
+        $sucess = $this->performDelete($request, $response, $args);
+        // TODO what if deletion fails?
         return $this->getCodeResponse(204);
+    }
+
+    protected function performDelete(Request $request, Response $response, array $args): bool|int
+    {
+        $item = $this->requireItem($request, $args['id']);
+        return $item->delete();
     }
 
     protected function validateFilters(): void

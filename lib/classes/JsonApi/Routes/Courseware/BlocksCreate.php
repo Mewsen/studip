@@ -8,7 +8,7 @@ use JsonApi\Errors\UnprocessableEntityException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\ValidationTrait;
 use JsonApi\Schemas\Courseware\Block as BlockSchema;
-use JsonApi\Schemas\Courseware\Container as ContainerSchema;
+use JsonApi\Schemas\Courseware\ContainerSchema as ContainerSchema;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Studip\Activity\Activity;

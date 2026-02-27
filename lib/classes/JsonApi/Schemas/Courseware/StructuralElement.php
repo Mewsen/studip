@@ -210,7 +210,7 @@ class StructuralElement extends SchemaProvider
             $relation[self::RELATIONSHIP_DATA] = function () use ($resource) {
                 $sql = 'SELECT id FROM cw_containers WHERE structural_element_id = ?';
                 $containers = \DBManager::get()->fetchAll($sql, [$resource->id], function ($container) {
-                    return new Identifier($container['id'], \JsonApi\Schemas\Courseware\Container::TYPE);
+                    return new Identifier($container['id'], \JsonApi\Schemas\Courseware\ContainerSchema::TYPE);
                 });
 
                 return $containers;

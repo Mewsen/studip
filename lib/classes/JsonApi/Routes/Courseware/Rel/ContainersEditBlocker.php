@@ -73,7 +73,7 @@ class ContainersEditBlocker extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\Container::REL_EDITBLOCKER);
+        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\ContainerSchema::REL_EDITBLOCKER);
     }
 
     /**

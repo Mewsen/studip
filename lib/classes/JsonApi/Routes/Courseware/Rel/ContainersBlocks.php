@@ -63,7 +63,7 @@ class ContainersBlocks extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\Container::REL_BLOCKS);
+        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\ContainerSchema::REL_BLOCKS);
     }
 
     /**
@@ -71,7 +71,7 @@ class ContainersBlocks extends RelationshipsController
      */
     protected function getRelationshipRelatedLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\Container::REL_BLOCKS);
+        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\ContainerSchema::REL_BLOCKS);
     }
 
     protected function validateResourceDocument($json, $data)

@@ -1,6 +1,7 @@
 <?php
-namespace JsonApi;
+namespace JsonApi\Authorities;
 
+use JsonApi\SORM;
 use User;
 
 interface SORMAuthority
