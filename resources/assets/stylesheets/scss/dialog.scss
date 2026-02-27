@@ -163,10 +163,6 @@
         box-sizing: border-box;
         padding: 15px;
         max-height: 60vh;
-        @include icon(before, question-circle-full, $size: 32px, $align: middle, $padding: 16px);
-        &::before {
-            color: var(--color--attention);
-        }
     }
 
     .ui-dialog-buttonpane {
