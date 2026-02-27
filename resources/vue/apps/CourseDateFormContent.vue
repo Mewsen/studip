@@ -78,6 +78,7 @@ import Datepicker from "../components/Datepicker.vue";
 import Timepicker from "../components/Timepicker.vue";
 import Multiselect from "../components/Multiselect.vue";
 import CourseDateRoomFieldset from "../components/CourseDateRoomFieldset.vue";
+import {datetime} from "../../assets/javascripts/lib/datetime";
 
 export default {
     name: 'CourseDateFormContent',
@@ -172,8 +173,8 @@ export default {
         let start_time_str = null;
         let end_time_str   = null;
         if (start_date && end_date) {
-            start_time_str = STUDIP.DateTime.pad(start_date.getHours()) + ':' + STUDIP.DateTime.pad(start_date.getMinutes());
-            end_time_str = STUDIP.DateTime.pad(end_date.getHours()) + ':' + STUDIP.DateTime.pad(end_date.getMinutes());
+            start_time_str = datetime.pad(start_date.getHours()) + ':' + datetime.pad(start_date.getMinutes());
+            end_time_str = datetime.pad(end_date.getHours()) + ':' + datetime.pad(end_date.getMinutes());
         }
 
         return {

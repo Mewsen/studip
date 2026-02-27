@@ -131,6 +131,7 @@ import CourseDateRoomFieldset from "../components/CourseDateRoomFieldset.vue";
 import Timepicker from "../components/Timepicker.vue";
 import Datepicker from "../components/Datepicker.vue";
 import StudipMessageBox from "../components/StudipMessageBox.vue";
+import {datetime} from "../../assets/javascripts/lib/datetime";
 export default {
     name: 'CourseBlockAppointments',
     components: {StudipMessageBox, CourseDateRoomFieldset, Timepicker, Datepicker},
@@ -183,8 +184,8 @@ export default {
         //Use the next half hour as default:
         let start_date     = new Date(Math.ceil(now.getTime() / 1800000) * 1800000);
         let end_date       = new Date((Math.ceil(now.getTime() / 1800000)  * 1800000) + 1800000);
-        let start_time_str = STUDIP.DateTime.pad(start_date.getHours()) + ':' + STUDIP.DateTime.pad(start_date.getMinutes());
-        let end_time_str   = STUDIP.DateTime.pad(end_date.getHours()) + ':' + STUDIP.DateTime.pad(end_date.getMinutes());
+        let start_time_str = datetime.pad(start_date.getHours()) + ':' + datetime.pad(start_date.getMinutes());
+        let end_time_str   = datetime.pad(end_date.getHours()) + ':' + datetime.pad(end_date.getMinutes());
         let selected_date_type = '';
         if (this.date_types.length > 0) {
             selected_date_type = this.date_types[0].id;
