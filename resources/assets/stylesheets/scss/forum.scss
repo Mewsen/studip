@@ -660,10 +660,6 @@ $cardMaxWidth: 350px;
     .discussion {
         background-color: var(--color--main-navigation-background);
 
-        hr {
-            margin: 0;
-        }
-
         &__status,
         &__body,
         &__form-container {
@@ -1013,8 +1009,11 @@ $cardMaxWidth: 350px;
         gap: 15px;
         padding: 15px;
         justify-content: space-between;
-        border: thin solid var(--color--button-inactive-border);
+        border: 1px solid var(--light-gray-color-40);
         max-width: calc(48em - 30px);
+        border-radius: var(--border-radius-default);
+        max-height: 300px;
+        overflow-y: scroll;
 
         .button {
             display: flex;
