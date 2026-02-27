@@ -1577,7 +1577,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $begin_date = date('Ymd', $this->begin);
             $end_date   = date('Ymd', $this->end);
             if($this->resource) {
-                $resource_name = htmlReady($this->resource->getFullName());
+                $resource_name = $this->resource->getFullName();
             }
             if ($begin_date == $end_date) {
                 $strings[] = strftime('%a., %x, %R', $this->begin) . ' - '

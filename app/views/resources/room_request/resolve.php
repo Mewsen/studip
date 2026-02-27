@@ -125,7 +125,7 @@
                     <dd>
                         <? $dates = $request->getDateString(true, false) ?>
                         <? if ($dates) : ?>
-                            <?= implode('<br>', $dates) ?>
+                            <?= implode('<br>', array_map('htmlReady', $dates)) ?>
                         <? else : ?>
                             <?= _('Keine') ?>
                         <? endif ?>

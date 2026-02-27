@@ -272,11 +272,11 @@ class Course_BlockAppointmentsController extends AuthenticatedController
                 }
                 if ($result && $booking_failures) {
                     //Not all selected rooms for the date could be booked:
-                    $partially_booked_dates[] = $d->getFullName();
+                    $partially_booked_dates[] = htmlReady($d->getFullName());
                 }
             }
 
-            return $result ? $d->getFullName() : null;
+            return $result ? htmlReady($d->getFullName()) : null;
         }, $dates));
 
         if ($date_count > 1) {

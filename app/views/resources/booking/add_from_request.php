@@ -12,7 +12,7 @@
             <legend><?= _('Details zur Anfrage') ?></legend>
             <h3><?= _('Angefragte Zeiträume')?></h3>
             <ul>
-                <? $appointments = explode("\n", $request->getDateString()) ?>
+                <? $appointments = $request->getDateString(true) ?>
                 <? foreach ($appointments as $appointment): ?>
                     <li><?= htmlReady($appointment) ?></li>
                 <? endforeach ?>

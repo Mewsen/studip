@@ -371,7 +371,7 @@ class Course_TimesroomsController extends AuthenticatedController
                             PageLayout::postWarning(
                                 studip_interpolate(
                                     _('Die Buchung des Raumes %{room_name} zu diesem Termin wird bei der Verlängerung des Zeitbereiches gelöscht, da sie keine Buchungsrechte an dem Raum haben!'),
-                                    ['room_name' => $room->name]
+                                    ['room_name' => htmlReady($room->name)]
                                 )
                             );
                         }
@@ -759,9 +759,9 @@ class Course_TimesroomsController extends AuthenticatedController
                                             studip_interpolate(
                                                 _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch die Veranstaltung %{course_name} belegt.'),
                                                 [
-                                                    'room_name' => $room->name,
-                                                    'date' => $termin->getFullName(),
-                                                    'course_name' => $course->name
+                                                    'room_name' => htmlReady($room->name),
+                                                    'date' => htmlReady($termin->getFullName()),
+                                                    'course_name' => htmlReady($course->name)
                                                 ]
                                             ),
                                             $message_links
@@ -771,8 +771,8 @@ class Course_TimesroomsController extends AuthenticatedController
                                             studip_interpolate(
                                                 _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
                                                 [
-                                                    'room_name' => $room->name,
-                                                    'date' => $termin->getFullName()
+                                                    'room_name' => htmlReady($room->name),
+                                                    'date' => htmlReady($termin->getFullName())
                                                 ]
                                             ),
                                             $message_links
@@ -1309,7 +1309,7 @@ class Course_TimesroomsController extends AuthenticatedController
                         $error_messages[] = sprintf(
                             studip_interpolate(
                                 _('%{date}: Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d Minuten!'),
-                                ['date' => $singledate->getFullName()]
+                                ['date' => htmlReady($singledate->getFullName())]
                             ),
                             $max_preparation_time
                         );
@@ -1334,17 +1334,17 @@ class Course_TimesroomsController extends AuthenticatedController
                                     $error_messages[] = studip_interpolate(
                                         _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch die Veranstaltung %{course_name} belegt.'),
                                         [
-                                            'room_name' => $room->name,
-                                            'date' => $singledate->getFullName(),
-                                            'course_name' => $course->name
+                                            'room_name' => htmlReady($room->name),
+                                            'date' => htmlReady($singledate->getFullName()),
+                                            'course_name' => htmlReady($course->name)
                                         ]
                                     );
                                 } else {
                                     $error_messages[] = studip_interpolate(
                                         _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
                                         [
-                                            'room_name' => $room->name,
-                                            'date' => $singledate->getFullName()
+                                            'room_name' => htmlReady($room->name),
+                                            'date' => htmlReady($singledate->getFullName())
                                         ]
                                     );
                                 }

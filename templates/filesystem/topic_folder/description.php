@@ -12,7 +12,7 @@
     <?=_('Folgende Termine sind diesem Thema zugeordnet:') ?>
         <div>
             <strong>
-                <?=join('; ', $dates)?>
+                <?= htmlReady(join('; ', $dates)) ?>
             </strong>
         </div>
     <? endif ?>

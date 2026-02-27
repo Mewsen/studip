@@ -5,7 +5,7 @@
 ?>
 <dl>
     <dt><?= _('Termine') ?>:</dt>
-    <dd><?= $request->getDateString() ?></dd>
+    <dd><?= htmlReady($request->getDateString()) ?></dd>
     <dt><?= !empty($timesrooms_page) ? _('Rüstzeit vor dem Termin') : _('Rüstzeit vor der Buchung') ?>:</dt>
     <dd>
         <? $preparation_time_minutes = intval($request->preparation_time / 60) ?>

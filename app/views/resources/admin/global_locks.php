@@ -13,7 +13,7 @@
                 <tr>
                     <td><?= date('d.m.Y H:i', $lock->begin) ?></td>
                     <td><?= date('d.m.Y H:i', $lock->end) ?></td>
-                    <td><?= $lock->getTypeString() ?></td>
+                    <td><?= htmlReady($lock->getTypeString()) ?></td>
                     <td class="actions">
                         <?= ActionMenu::get()->setContext(
                             sprintf(

@@ -12,14 +12,32 @@
 <? if (!$collection->isEmpty()) : ?>
     <ul class="list-unstyled">
         <? foreach ($collection->getRegularDates() as $regular_date) : ?>
-            <li><?= $regular_date->toString('long-start') ?></li>
+            <li>
+                <?= $regular_date->toString('long-start', true) ?>
+            </li>
         <? endforeach ?>
         <? foreach ($collection->getSingleDates() as $single_date) : ?>
-            <li><?= $single_date->getFullName($with_room_names ? 'long-include-room' : 'long') ?></li>
+            <li>
+                <?= htmlReady($single_date->getFullName('long')) ?>
+                <? if ($with_room_names): ?>
+                    <? $rooms = $single_date->getRooms() ?>
+                    <? if ($rooms): ?>
+                        <? foreach ($rooms as $room): ?>
+                            <a href="<?= $room->getActionLink() ?>" data-dialog>
+                                <?= htmlReady($room->name) ?>
+                            </a>
+                        <? endforeach ?>
+                    <? else: ?>
+                        <?= htmlReady($single_date->raum) ?>
+                    <? endif ?>
+                <? endif ?>
+            </li>
         <? endforeach ?>
         <? if ($with_cancelled_dates) : ?>
             <? foreach ($collection->getCancelledDates() as $cancelled_date) : ?>
-                <li><?= $cancelled_date->getFullName() ?></li>
+                <li>
+                    <?= htmlReady($cancelled_date->getFullName()) ?>
+                </li>
             <? endforeach ?>
         <? endif ?>
     </ul>

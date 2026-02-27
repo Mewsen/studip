@@ -285,7 +285,7 @@
                                 <? endif ?>
                             </td>
                             <td>
-                                <?= $request->getTypeString() ?>
+                                <?= htmlReady($request->getTypeString()) ?>
                             </td>
                         </tr>
                     <? endforeach ?>
