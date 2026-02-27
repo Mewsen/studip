@@ -101,7 +101,6 @@
         "postcss-scss": "^4.0.4",
         "qrcode.vue": "^3.6.0",
         "raw-loader": "^4.0.2",
-        "sanitize-html": "^2.7.0",
         "sass": "^1.29.0",
         "sass-loader": "^16.0.4",
         "select2": "4.0.13",
