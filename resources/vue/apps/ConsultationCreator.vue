@@ -160,7 +160,6 @@
             <template v-if="withResponsible.users">
                 <label for="responsible-users">
                     {{ $gettext('Durchführende Personen') }}
-
                 </label>
                 <StudipSelect
                     id="responsible-users"

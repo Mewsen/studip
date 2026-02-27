@@ -1,6 +1,6 @@
 <template>
     <vSelect ref="select"
-             v-bind="{...$props, ...$attrs}"
+             v-bind="{...$props, ...selectAttrs}"
              :model-value="modelValue"
              @update:modelValue="value => updateValue(value)"
              :calculate-position="withPopper"
@@ -38,6 +38,16 @@ export default {
             type: String,
             default: '12em'
         },
+    },
+    computed: {
+        selectAttrs() {
+            const attrs = {...this.$attrs};
+            if (attrs.id !== undefined) {
+                attrs.inputId = attrs.id;
+                delete attrs.id;
+            }
+            return attrs;
+        }
     },
     methods: {
         updateValue(val) {

@@ -159,13 +159,33 @@ form.default {
 
     /* we have to use specific css selectors, otherwise the settings are
        overwritten by other rules  */
-    label.col-1, label.col-2, label.col-3, label.col-4, label.col-5,
-    div.col-1, div.col-2, div.col-3, div.col-4, div.col-5,
-    section.col-1, section.col-2, section.col-3, section.col-4, section.col-5 {
-        display: inline-block;
-        padding-right: 1em;
-        vertical-align: top;
-        word-break: break-all;
+    @for $i from 1 through 5 {
+        label,
+        div,
+        section {
+            &.col-#{$i} {
+                display: inline-block;
+                padding-right: 1em;
+                vertical-align: top;
+                word-break: break-all;
+
+                .studip-v-select {
+                    .vs__dropdown-toggle {
+                        padding-bottom: 2px;
+                    }
+                    margin-top: 3px;
+                }
+            }
+        }
+
+        div,
+        section {
+            &.col-#{$i} {
+                label {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 
     label,
@@ -186,14 +206,6 @@ form.default {
         &.col-5 {
             width: 75%;
         }
-    }
-
-    div.col-1,
-    div.col-2,
-    div.col-3,
-    div.col-4,
-    div.col-5 {
-        margin-top: 2ex;
     }
 
     fieldset:not(.undecorated) {
