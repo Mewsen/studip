@@ -1,7 +1,6 @@
 <script setup>
 import {computed, reactive} from 'vue';
 import StudipIcon from '@/vue/components/StudipIcon.vue';
-import {getDiscussionTypeStoreURL} from '@/vue/components/forum/helpers/urls';
 
 const CSRF = STUDIP.CSRF_TOKEN;
 

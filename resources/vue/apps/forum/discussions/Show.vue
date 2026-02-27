@@ -123,12 +123,12 @@ onMounted(async () => {
         if (urlHash === 'new-post') {
             postCreateForm.value = true;
         }
-        jumpTo(document.getElementById(urlHash))
+        document.getElementById(urlHash).scrollIntoView({ behavior: 'instant' })
     } else if (props.readIndex < posts.value.length) {
         if (props.readIndex === 0) {
-            jumpTo(document.getElementById('discussion_start'));
+            document.getElementById('discussion_start').scrollIntoView({ behavior: 'instant' });
         } else {
-            jumpTo(document.querySelector(`[data-index='${props.readIndex}']`));
+            document.querySelector(`[data-index='${props.readIndex}']`).scrollIntoView({ behavior: 'instant' });
         }
     }
 

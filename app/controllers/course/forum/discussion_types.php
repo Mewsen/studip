@@ -29,7 +29,7 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
         $this->discussion_types = DiscussionType::findBySQL("TRUE ORDER BY mkdate DESC");
     }
 
-    public function edit_action(?DiscussionType $discussion_type = null): void
+    public function edit_action(?DiscussionType $discussionType = null): void
     {
         if ($discussionType->isNew()) {
             PageLayout::setTitle(_('Neuen Diskussionstyp anlegen'));
@@ -54,12 +54,12 @@ class Course_Forum_DiscussionTypesController extends AuthenticatedController
             Studip\VueApp::create('forum/discussions_types/Edit')
                 ->withProps([
                     'icons' => array_unique($icons),
-                    'discussion_type' => $discussion_type->toRawArray()
+                    'discussion_type' => $discussionType->toRawArray()
                 ])
         );
     }
 
-    public function save_action(?DiscussionType $discussion_type = null): void
+    public function save_action(?DiscussionType $discussionType = null): void
     {
         CSRFProtection::verifyUnsafeRequest();
 
