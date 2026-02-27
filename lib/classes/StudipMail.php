@@ -29,7 +29,7 @@ class StudipMail
 
     public const SMTP_TRANSPORTER = 'smtp';
 
-    private static ?Mailer $mailer = null;
+    private ?Mailer $mailer;
 
     private static string $transporter;
 
@@ -153,18 +153,16 @@ class StudipMail
             self::NULL_TRANSPORTER     => 'null://null',
             default => $this->buildSmtpDsn()
         };
-        if (!self::$mailer) {
-            if (self::getDefaultTransporter() === self::DEBUG_TRANSPORTER) {
-                $transport = new StudipDebugTransport(
-                    $GLOBALS['TMP_PATH'] . '/' .
-                    ($GLOBALS['DEBUG_MAIL_LOG_FILE_NAME'] ?? 'studip-mail-debug.log')
-                );
-            } else {
-                $transport = Transport::fromDsn($dsn);
-            }
-            self::$mailer = new Mailer($transport);
+        if (self::getDefaultTransporter() === self::DEBUG_TRANSPORTER) {
+            $transport = new StudipDebugTransport(
+                $GLOBALS['TMP_PATH'] . '/' .
+                ($GLOBALS['DEBUG_MAIL_LOG_FILE_NAME'] ?? 'studip-mail-debug.log')
+            );
+        } else {
+            $transport = Transport::fromDsn($dsn);
         }
-        $this->mailer = self::$mailer;
+
+        $this->mailer = new Mailer($transport);
         $mail_localhost = $GLOBALS['MAIL_LOCALHOST'] ?: $_SERVER['SERVER_NAME'];
         $this->setSenderEmail($GLOBALS['MAIL_ENV_FROM'] ?: "wwwrun@{$mail_localhost}");
         $this->setSenderName($GLOBALS['MAIL_FROM'] ?: 'Stud.IP - ' . Config::get()->UNI_NAME_CLEAN);
