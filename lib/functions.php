@@ -767,7 +767,7 @@ function legacy_studip_utf8decode($data)
  */
 function encode_header_parameter($name, $value)
 {
-    if (preg_match('/[\200-\377]/', $value)) {
+    if (preg_match('/[%\200-\377]/', $value)) {
         // use RFC 5987 encoding (ext-parameter)
         return $name . "*=UTF-8''" . rawurlencode($value);
     } else {
