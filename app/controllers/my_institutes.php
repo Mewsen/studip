@@ -109,7 +109,13 @@ class MyInstitutesController extends AuthenticatedController
             $links->addLink(
                 _('Alles als gelesen markieren'),
                 $this->tabularasaURL(time()),
-                Icon::create('accept')
+                Icon::create('accept'),
+                [
+                    'data-confirm' => implode("\n", [
+                        _('Sie sind dabei alle Einrichtungen auf gelesen zu setzen.'),
+                        _('Diesen Schritt können sie nicht rückgängig machen.')
+                    ]),
+                ]
             );
         }
         if ($GLOBALS['perm']->have_perm('dozent') && count($institutes) > 0) {
