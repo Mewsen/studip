@@ -59,11 +59,6 @@ class Task extends \SimpleORMap
             'assoc_foreign_key' => 'statusgruppe_id',
         ];
 
-        $config['belongs_to']['course'] = [
-            'class_name' => \Course::class,
-            'foreign_key' => 'seminar_id',
-        ];
-
         $config['belongs_to']['task_feedback'] = [
             'class_name' => TaskFeedback::class,
             'foreign_key' => 'feedback_id',
