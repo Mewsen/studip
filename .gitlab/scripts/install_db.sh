@@ -16,8 +16,8 @@ if [ $(mysql -u $MYSQL_USER -h $MYSQL_HOST -p$MYSQL_PASSWORD $MYSQL_DATABASE -e 
 
     # Check if demodata is required
     if [ ! -z $DEMO_DATA ]; then
-        echo "INSTALL DEMODATA"
-        importSQLFile ./db/studip-demo-installation.sql
+        echo "INSTALL DEMODATA FOR TESTS"
+        importSQLFile ./db/studip-test-installation.sql
     else
         echo "INSTALL DB"
         importSQLFile ./db/studip-basic-installation.sql
