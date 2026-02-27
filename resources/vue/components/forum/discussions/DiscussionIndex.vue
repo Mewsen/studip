@@ -251,7 +251,7 @@ onMounted(() => {
 
                                 <dt>{{ $gettext('Anzahl der Beitrage') }}</dt>
                                 <dd class="inline-flex gap-5 items-center">
-                                    <StudipIcon shape="reply" :size="15" role="info" aria-hidden="true" />
+                                    <StudipIcon shape="post" :size="15" role="info" aria-hidden="true" />
                                     {{ discussion.meta.postings_count }}
                                 </dd>
 

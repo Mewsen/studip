@@ -88,7 +88,7 @@ onMounted(async () => {
                             :title="$gettext('Anzahl der Beiträge')"
                             :aria-label="$gettext('Anzahl der Beiträge')"
                         >
-                            <StudipIcon shape="reply" :size="15" role="info" aria-hidden="true" />
+                            <StudipIcon shape="post" :size="15" role="info" aria-hidden="true" />
                             <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                             <small>{{ metadata.postings_count }}</small>
                         </span>
