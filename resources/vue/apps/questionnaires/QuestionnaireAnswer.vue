@@ -8,23 +8,45 @@
           :data-secure="activateFormSecure"
     >
 
-        <div class="questionnaire_answer" v-for="(data, index) in questionnaireData.questions" :key="index">
-            Seite {{ data.page }}:
-            <article v-for="element in data">
 
-                <QuestionnaireInfoView v-if="element.questiontype == 'QuestionnaireInfo'" :question="element" />
-                <HeadlineView v-if="element.questiontype == 'Headline'" :question="element" />
-                <DividerView v-if="element.questiontype == 'Divider'" />
-                <BlankLineView v-if="element.questiontype == 'BlankLine'" />
+        <div v-if="questionnaireData.questions[currentPage]">
 
-                <VoteAnswer v-if="element.questiontype == 'Vote'" :question="element"/>
-                <FreetextAnswer v-if="element.questiontype == 'Freetext'" :question="element"/>
-                <RangescaleAnswer v-if="element.questiontype == 'Rangescale'" :question="element"/>
-                <LikertAnswer v-if="element.questiontype == 'LikertScale'" :question="element"/>
-                <AutomatedDataAnswer v-if="element.questiontype == 'QuestionnaireAutomatedData'" :question="element"/>
-            </article>
+            <div class="questionnaire_answer">
+
+                Seite {{ currentPage + 1 }} von {{ totalPages }}
+
+                <article
+                    v-for="element in questionnaireData.questions[currentPage]"
+                    :key="element.id">
+
+                    <QuestionnaireInfoView v-if="element.questiontype == 'QuestionnaireInfo'" :question="element" />
+                    <HeadlineView v-if="element.questiontype == 'Headline'" :question="element" />
+                    <DividerView v-if="element.questiontype == 'Divider'" />
+                    <BlankLineView v-if="element.questiontype == 'BlankLine'" />
+
+                    <VoteAnswer v-if="element.questiontype == 'Vote'" :question="element"/>
+                    <FreetextAnswer v-if="element.questiontype == 'Freetext'" :question="element"/>
+                    <RangescaleAnswer v-if="element.questiontype == 'Rangescale'" :question="element"/>
+                    <LikertAnswer v-if="element.questiontype == 'LikertScale'" :question="element"/>
+                    <AutomatedDataAnswer v-if="element.questiontype == 'QuestionnaireAutomatedData'" :question="element"/>
+                </article>
+
+            </div>
 
         </div>
+
+        <!-- Navigation -->
+        <div>
+            <button :style="{visibility: currentPage > 0 ? 'visible' : 'hidden'}" class="button arr_left" @click="prevPage">
+                {{ $gettext('zurück') }}
+            </button>
+
+                <button :style="{visibility: currentPage < totalPages - 1 ? 'visible' : 'hidden'}" class="button arr_right" @click="nextPage">
+                    {{ $gettext('weiter') }}
+                </button>
+
+        </div>
+
 
         <div class="terms">
             <span v-if="questionnaireData.anonymous == 1 ">{{ $gettext('Die Teilnahme ist anonym.') }}</span>
@@ -38,7 +60,7 @@
 
 <script setup>
 import { $gettext } from "../../../assets/javascripts/lib/gettext";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 /* Import Design Element views */
 import QuestionnaireInfoView from '../../components/questionnaires/QuestionnaireInfoView.vue';
@@ -57,6 +79,21 @@ import AutomatedDataAnswer from '../../components/questionnaires/AutomatedDataAn
 const props = defineProps({
     questionnaireData: Object
 })
+
+const currentPage = ref(0)
+const totalPages = computed(() => props.questionnaireData.questions.length)
+
+const nextPage = () => {
+    if (currentPage.value < totalPages.value - 1) {
+        currentPage.value++
+    }
+}
+
+const prevPage = () => {
+    if (currentPage.value > 0) {
+        currentPage.value--
+    }
+}
 
 const getFormattedDate = computed(() => {
     if (!props.questionnaireData?.stopdate) return ''
@@ -78,4 +115,6 @@ const getFormattedTime = computed(() => {
             minute: '2-digit'
         })
 })
+
+
 </script>

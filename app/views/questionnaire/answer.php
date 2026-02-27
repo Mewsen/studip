@@ -45,26 +45,26 @@ $questionnaire_data = [
     'title'            => $questionnaire->title,
 ];
 
-$grouped = collect();
-$current = collect();
+$grouped = [];
+$current = [];
 $page = 1;
 
 foreach ($questionnaire_data['questions'] as $question) {
-    $current->push($question);
+    $current[] = $question;
     $current['page'] = $page;
 
     if ($question['questiontype'] === 'Pagebreak') {
-        $grouped->push($current);
-        $current = collect();
+        $grouped[] = $current;
+        $current = [];
         $page++;
     }
 }
 
-if ($current->isNotEmpty()) {
-    $grouped->push($current);
+if (count($current) > 0) {
+    $grouped[] = $current;
 }
 
-$questionnaire_data['questions'] = $grouped->values();
+$questionnaire_data['questions'] = $grouped;
 
 
 ?>
