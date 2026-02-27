@@ -109,7 +109,6 @@ possible settings for $MAIL_TRANSPORT:
 smtp      use smtp to deliver to $MAIL_HOST_NAME
 php       use php's mail() function
 sendmail  use local sendmail script
-qmail     use local Qmail MTA
 debug     mails are only written to a file in $TMP_PATH
 */
 $MAIL_TRANSPORT = $_ENV['STUDIP_MAIL_TRANSPORT'] ?? 'smtp';
@@ -133,8 +132,6 @@ $MAIL_CHARSET = "";                                 //character set of mail body
 $MAIL_ENV_FROM = "";                                //sender mail adress, defaults to wwwrun @ $MAIL_LOCALHOST
 $MAIL_FROM = "";                                    //name of sender, defaults to "Stud.IP"
 $MAIL_ABUSE = "";                                   //mail adress to reply to in case of abuse, defaults to abuse @  $MAIL_LOCALHOST
-
-$MAIL_BULK_DELIVERY = FALSE;                        //try to improve the message queueing rate (experimental, does not work for php transport)
 
 $MAIL_VALIDATE_HOST = TRUE;                             //check for valid mail host when user enters email adress
 $MAIL_VALIDATE_BOX = FALSE;                              //check for valid mail account when user enters email adress; set to false if the webserver got no valid MX record

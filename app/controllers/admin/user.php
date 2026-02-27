@@ -16,7 +16,6 @@
  * @since       2.1
  */
 
-require_once 'vendor/email_message/blackhole_message.php';
 require_once 'lib/statusgruppe.inc.php';
 
 /**
@@ -642,9 +641,8 @@ class Admin_UserController extends AuthenticatedController
             }
 
             if (!Request::int('u_edit_send_mail')) {
-                $dev_null       = new blackhole_message_class();
                 $default_mailer = StudipMail::getDefaultTransporter();
-                StudipMail::setDefaultTransporter($dev_null);
+                StudipMail::setDefaultTransporter(StudipMail::NULL_TRANSPORTER);
                 $GLOBALS['MAIL_VALIDATE_BOX']  = false;
                 $GLOBALS['MAIL_VALIDATE_HOST'] = false;
             }
