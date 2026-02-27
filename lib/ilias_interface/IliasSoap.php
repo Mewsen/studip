@@ -3,8 +3,8 @@
 # Lifter003: TODO
 # Lifter010: TODO
 
-require_once 'vendor/ilias/class.ilSaxParser.php';
-require_once 'vendor/ilias/class.ilObjectXMLParser.php';
+require_once 'lib/classes/ilias/class.ilSaxParser.php';
+require_once 'lib/classes/ilias/class.ilObjectXMLParser.php';
 
 /**
 * class for ILIAS-SOAP-Webservice
@@ -725,7 +725,7 @@ class IliasSoap extends StudipSoapClient
     * get roles
     *
     * gets roles of given type for given object
-    * 
+    *
     * @param string $role_type type of role (global|local|user|user_login|template or empty)
     * @param string $id reference id, user id, or -1 for all available roles of given type
     * @return array|false role-objects
