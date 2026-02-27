@@ -139,10 +139,10 @@ const swapCategory = event => {
                             {{ category.meta.discussions_count }}
                         </dd>
 
-                        <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
+                        <dt>{{ $gettext('Anzahl der Themen') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
-                            {{ category.meta.postings_count }}
+                            <StudipIcon shape="topic" role="info" :size="15" aria-hidden="true" />
+                            {{ category.meta.topics_count }}
                         </dd>
 
                         <dt>{{ $gettext('Letzte Aktivität') }}</dt>
@@ -173,11 +173,11 @@ const swapCategory = event => {
                 <span
                     role="group"
                     class="inline-flex gap-10 items-center"
-                    :title="$gettext('Anzahl der Beiträge')"
-                    :aria-label="$gettext('Anzahl der Beiträge')"
+                    :title="$gettext('Anzahl der Themen')"
+                    :aria-label="$gettext('Anzahl der Themen')"
                 >
-                    <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
-                    <span>{{ category.meta.postings_count }}</span>
+                    <StudipIcon shape="topic" role="info" :size="20" aria-hidden="true" />
+                    <span>{{ category.meta.topics_count }}</span>
                 </span>
             </td>
             <td>
@@ -277,11 +277,11 @@ const swapCategory = event => {
                             </span>
                             <span
                                 class="inline-flex gap-10 items-center"
-                                :title="$gettext('Anzahl der Beiträge')"
-                                :aria-label="$gettext('Anzahl der Beiträge')"
+                                :title="$gettext('Anzahl der Themen')"
+                                :aria-label="$gettext('Anzahl der Themen')"
                             >
-                                <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
-                                <small>{{ category.meta.postings_count }}</small>
+                                <StudipIcon shape="topic" role="info" :size="15" aria-hidden="true" />
+                                <small>{{ category.meta.topics_count }}</small>
                             </span>
                             <span
                                 role="group"

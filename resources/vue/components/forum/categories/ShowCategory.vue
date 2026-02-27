@@ -23,6 +23,9 @@ defineProps({
         <dt>{{ $gettext('Anzahl der Diskussionen') }}</dt>
         <dd>{{ category.meta.discussions_count }}</dd>
 
+        <dt>{{ $gettext('Anzahl der Themen') }}</dt>
+        <dd>{{ category.meta.topics_count }}</dd>
+
         <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
         <dd>{{ category.meta.postings_count }}</dd>
 

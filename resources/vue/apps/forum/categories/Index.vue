@@ -246,16 +246,16 @@ const showCategoryDialog = category => currentCategory.value = category;
                         </th>
                         <th
                             scope="col"
-                            :class="getSortClass('meta.postings_count')"
-                            :aria-sort="getAriaSortString('meta.postings_count')"
-                            :aria-label="getAriaSortLabel('meta.postings_count', $gettext('Anzahl der Beiträge'))"
+                            :class="getSortClass('meta.topics_count')"
+                            :aria-sort="getAriaSortString('meta.topics_count')"
+                            :aria-label="getAriaSortLabel('meta.topics_count', $gettext('Anzahl der Themen'))"
                         >
                             <button
                                 type="button"
                                 class="as-link"
-                                @click="sortBy('meta.postings_count')"
-                                :title="$gettext('Nach Anzahl der Beiträge sortieren')">
-                                {{ $gettext('Beiträge') }}
+                                @click="sortBy('meta.topics_count')"
+                                :title="$gettext('Nach Anzahl der Themen sortieren')">
+                                {{ $gettext('Themen') }}
                             </button>
                         </th>
                         <th
