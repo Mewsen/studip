@@ -245,7 +245,7 @@ class Course_BlockAppointmentsController extends AuthenticatedController
                         $room = Resource::find(Request::option('room_id'))?->getDerivedClassInstance();
                         $d->bookRoom($room);
                     }
-                    return $result ? $d->getFullName() : null;
+                    return $result ? htmlReady($d->getFullName()) : null;
                 }, $dates));
                 if ($date_count > 1) {
                     $dates_created = array_count_values($dates_created);

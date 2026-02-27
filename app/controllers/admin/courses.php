@@ -658,8 +658,7 @@ class Admin_CoursesController extends AuthenticatedController
             $d['type'] = htmlReady($semtype['name']);
         }
         if (in_array('room_time', $activated_fields)) {
-            $strings = $course->getAllDatesInSemester($this->semester)->toStringArray();
-            $d['room_time'] = implode('<br>', $strings) ?: _('nicht angegeben');
+            $d['room_time'] = $course->getAllDatesInSemester($this->semester)->toHtml();
         }
         if (in_array('semester', $activated_fields)) {
             $d['semester'] = htmlReady($course->semester_text);
@@ -1005,9 +1004,7 @@ class Admin_CoursesController extends AuthenticatedController
                 }
 
                 if (in_array('room_time', $filter_config)) {
-                    $dates = $course->getAllDatesInSemester($this->semester);
-                    $date_strings = $dates->toStringArray(true);
-                    $row['room_time'] = implode("\n", $date_strings) ?: _('nicht angegeben');
+                    $row['room_time'] = (string) $course->getAllDatesInSemester($this->semester);
                 }
 
                 if (in_array('requests', $filter_config)) {
