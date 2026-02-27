@@ -13,7 +13,7 @@
 const DEFAULT_ENV = 'production';
 
 //software version - please leave it as it is!
-$SOFTWARE_VERSION = '5.4.10';
+$SOFTWARE_VERSION = '5.4.11';
 
 // Store startup time
 $STUDIP_STARTUP_TIME = microtime(true);
