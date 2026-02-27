@@ -7,7 +7,7 @@
                 <?
                 $dates = $request->getDateString(true);
                 ?>
-                <?= tooltipHtmlIcon(implode('<br>', $dates)) ?>
+                <?= tooltipHtmlIcon(implode('<br>', array_map('htmlReady', $dates))) ?>
             <? endif ?>
         </section>
     </section>

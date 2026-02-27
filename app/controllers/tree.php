@@ -39,7 +39,7 @@ class TreeController extends AuthenticatedController
                 $course->veranstaltungsnummer,
                 $course->getFullName('type-number-name'),
                 $course->getTextualSemester(),
-                strip_tags(implode("\n", $course->getAllDatesInSemester()->toStringArray())),
+                implode("\n", $course->getAllDatesInSemester()->toStringArray()),
                 implode(', ', $lecturers),
                 implode("\n", $studyAreaPaths)
             ];

@@ -49,7 +49,7 @@
     </td>
     <? $intervals = $request->getTimeIntervals() ?>
     <td data-sort-value="<?= htmlReady(isset($intervals[0]) ? $intervals[0]['begin'] : '') ?>">
-        <?= $request->getTypeString() ?>
+        <?= htmlReady($request->getTypeString()) ?>
         <? if ($request->isSimpleRequest()): ?>
             <?
             $begin          = $request->getStartDate();

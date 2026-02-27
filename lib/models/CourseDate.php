@@ -356,11 +356,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         if (in_array($format, ['include-room', 'long-include-room'])) {
             $room = $this->getRoom();
             if ($room) {
-                $string = sprintf('%s <a href="%s" target="_blank">%s</a>',
-                    $string,
-                    $room->getActionURL('booking_plan'),
-                    htmlReady($room->name)
-                );
+                $string .= ' ' . $room->name;
             } elseif ($this->raum) {
                 //Use the freetext room name:
                 $string .= ' ' . $this->raum;
