@@ -41,7 +41,7 @@ trait ConsultationHelper
 
             $now = strtotime('+1 week', $now);
 
-            $temp = holiday($begin);
+            $temp = Holidays::isHoliday($begin);
         } while (is_array($temp) && $temp['col'] === 3);
 
         // Lock blocks?

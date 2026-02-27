@@ -135,7 +135,7 @@ class SemesterHoliday extends SimpleORMap
 
         // Check all other holidays
         if (!$check_vacation_only) {
-            return holiday($time);
+            return Holidays::isHoliday($time);
         }
 
         // Nothing found

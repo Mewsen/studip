@@ -44,6 +44,8 @@
  * @param $tmstamp
  * @return array{name: string, col: int}|false
  * @see Holidays::isHoliday()
+ *
+ * @deprecated Will be removed with Stud.IP 7.0.
  */
 function holiday ($tmstamp) {
     return Holidays::isHoliday($tmstamp);

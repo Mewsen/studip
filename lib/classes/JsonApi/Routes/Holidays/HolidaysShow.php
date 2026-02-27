@@ -39,7 +39,7 @@ final class HolidaysShow extends NonJsonApiController
 
         $holidays = [];
         while ($current < $end) {
-            $holiday = holiday($current);
+            $holiday = \Holidays::isHoliday($current);
             if ($holiday) {
                 $holidays[date('Y-m-d', $current)] = [
                     'holiday'   => $holiday['name'],

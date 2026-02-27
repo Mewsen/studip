@@ -174,7 +174,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
         $warnings = [];
 
         while ($current <= $end) {
-            $temp    = holiday($current);
+            $temp    = Holidays::isHoliday($current);
             $holiday = is_array($temp) && $temp['col'] === 3;
 
             if (!$holiday) {
