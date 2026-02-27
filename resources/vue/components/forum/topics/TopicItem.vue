@@ -140,7 +140,7 @@ const swapTopic = event => {
 
                         <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                            <StudipIcon shape="post" role="info" :size="15" aria-hidden="true" />
                             {{ topic.meta.postings_count }}
                         </dd>
 
@@ -176,7 +176,7 @@ const swapTopic = event => {
                     class="inline-flex gap-10 items-center"
                     :title="$gettext('Anzahl der Beiträge')"
                 >
-                    <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
+                    <StudipIcon shape="post" role="info" :size="20" aria-hidden="true" />
                     <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                     <span>{{ topic.meta.postings_count }}</span>
                 </span>
@@ -266,7 +266,7 @@ const swapTopic = event => {
                             </span>
 
                             <span class="inline-flex gap-10 items-center" :title="$gettext('Anzahl der Beiträge')" role="group">
-                                <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                                <StudipIcon shape="post" role="info" :size="15" aria-hidden="true" />
                                 <span class="sr-only">{{ $gettext('Anzahl der Beiträge') }}:</span>
                                 <small>{{ topic.meta.postings_count }}</small>
                             </span>

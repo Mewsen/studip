@@ -141,7 +141,7 @@ const swapCategory = event => {
 
                         <dt>{{ $gettext('Anzahl der Beiträge') }}</dt>
                         <dd class="inline-flex gap-5 items-center">
-                            <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                            <StudipIcon shape="post" role="info" :size="15" aria-hidden="true" />
                             {{ category.meta.postings_count }}
                         </dd>
 
@@ -176,7 +176,7 @@ const swapCategory = event => {
                     :title="$gettext('Anzahl der Beiträge')"
                     :aria-label="$gettext('Anzahl der Beiträge')"
                 >
-                    <StudipIcon shape="reply" role="info" :size="20" aria-hidden="true" />
+                    <StudipIcon shape="post" role="info" :size="20" aria-hidden="true" />
                     <span>{{ category.meta.postings_count }}</span>
                 </span>
             </td>
@@ -280,7 +280,7 @@ const swapCategory = event => {
                                 :title="$gettext('Anzahl der Beiträge')"
                                 :aria-label="$gettext('Anzahl der Beiträge')"
                             >
-                                <StudipIcon shape="reply" role="info" :size="15" aria-hidden="true" />
+                                <StudipIcon shape="post" role="info" :size="15" aria-hidden="true" />
                                 <small>{{ category.meta.postings_count }}</small>
                             </span>
                             <span
