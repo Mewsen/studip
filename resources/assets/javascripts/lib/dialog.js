@@ -538,7 +538,7 @@ const Dialog = {
             } else if (question === false) {
                 defer.reject();
             } else {
-                Dialog.show(_.escape(question).replace("\n", '<br>'), {
+                Dialog.show(_.escape(question).replace(/\n/g, '<br>'), {
                     id: 'confirmation-dialog',
                     title: $gettext('Bitte bestätigen Sie die Aktion'),
                     size: 'fit',
