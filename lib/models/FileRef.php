@@ -74,6 +74,8 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveFeedbackElements';
         $config['registered_callbacks']['before_delete'][] = 'cbLogDeleteFileRef';
         $config['registered_callbacks']['before_store'][] = 'cbMakeUniqueFilename';
+        $config['registered_callbacks']['after_store'][] = 'cbLogUpdateFileRef';
+        $config['registered_callbacks']['after_create'][] = 'cbLogCreateFileRef';
 
         parent::configure($config);
     }
@@ -82,18 +84,47 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
     protected $download_url;
     public $path_to_blob;
 
+    private function getLogComment(): string
+    {
+        $comment = sprintf(
+            'Kommentar: %s',
+            $this->name
+        );
+
+        $range_fullname = $this->folder->getRangeFullname();
+
+        if ($range_fullname) {
+            $comment .= " - $range_fullname";
+        }
+        return $comment;
+    }
+
+    public function cbLogUpdateFileRef()
+    {
+        StudipLog::log('FILE_UPDATE',
+            User::findCurrent()->id,
+            $this->folder->range_id,
+           $this->getLogComment()
+        );
+    }
 
     public function cbLogDeleteFileRef()
     {
         StudipLog::log('FILE_DELETE',
             User::findCurrent()->id,
-            null,
-            sprintf(
-                'Kommentar: %s',
-                $this->name
-            )
+            $this->folder->range_id,
+           $this->getLogComment()
         );
     }
+    public function cbLogCreateFileRef()
+    {
+        StudipLog::log('FILE_UPLOAD',
+            User::findCurrent()->id,
+            $this->folder->range_id,
+           $this->getLogComment()
+        );
+    }
+
     /**
      * This callback is called after deleting a FileRef.
      * It removes the File object that is associated with the FileRef,
