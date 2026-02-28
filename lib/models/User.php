@@ -479,7 +479,8 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
         //locked user
         if (!empty($attributes['locked'])) {
-            $where[] = "au.`locked` = 1";
+            $joins[] = "LEFT JOIN `config_values` cvl ON (cvl.`range_id` = au.`user_id` AND cvl.`field` = 'EXPIRATION_DATE')";
+            $where[] = "(au.`locked` = 1 OR (cvl.`value` IS NOT NULL AND cvl.`value` < UNIX_TIMESTAMP()))";
         }
 
         // show only users who are not lecturers

@@ -79,6 +79,12 @@ use Studip\Button;
         <label class="col-2" style="padding-top: 1.8em;">
             <input type="checkbox" name="locked" value="1" <?= !empty($request['locked']) ? 'checked' : '' ?>>
             <?= _('nur gesperrt') ?>
+            <?= tooltipHtmlIcon(implode('<br>', [
+                '<strong>' . _('Legende') . '</strong>',
+                '',
+                Icon::create('lock-locked2', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) . ' ' . _('Gesperrtes Konto'),
+                Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) . ' ' . _('Abgelaufenes Konto'),
+            ])) ?>
         </label>
     </fieldset>
 

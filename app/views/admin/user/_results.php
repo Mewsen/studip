@@ -63,11 +63,13 @@
                         <?= htmlReady($user->username) ?>
                     </a>
                 <? if ($user->locked) : ?>
-                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(tooltip2(sprintf(_('%s ist gesperrt'), htmlReady($user->getFullName())))) ?>
+                    <?= Icon::create('lock-locked2', Icon::ROLE_INFO)->asSvg(tooltip2(sprintf(_('%s ist gesperrt'), htmlReady($user->getFullName())))) ?>
+                <? elseif ($user->isExpired()): ?>
+                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(tooltip2(sprintf(_('%s ist abgelaufen'), htmlReady($user->getFullName())))) ?>
                 <? endif ?>
                 </td>
                 <td>
-                    <?
+                <?
                     $userdomains = UserDomain::getUserDomainsForUser($user->user_id);
                     $tooltxt     = _('Sichtbarkeit:') . ' ' . $user->visible;
                     if (!empty($userdomains)) {
@@ -79,10 +81,7 @@
                         });
                         $tooltxt .= "\n" . _('Domänen:') . ' ' . implode(', ', $domains);
                     }
-                    if ($user->locked == '1') {
-                        $tooltxt .= "\n" . _("Nutzer ist gesperrt!");
-                    }
-                    ?>
+                ?>
                     <?= tooltipHtmlIcon(htmlReady($tooltxt, true, true)) ?>
                 </td>
                 <td><?= htmlReady($user->matriculation_number) ?></td>
