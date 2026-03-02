@@ -51,22 +51,6 @@ class PluginManager
     }
 
     /**
-     * Comparison function used to order plugins by position.
-     */
-    private static function positionCompare (array $plugin1, array $plugin2): int
-    {
-        if ($plugin1['core'] && !$plugin2['core']) {
-            return -1;
-        }
-
-        if (!$plugin1['core'] && $plugin2['core']) {
-            return 1;
-        }
-
-        return $plugin1['position'] - $plugin2['position'];
-    }
-
-    /**
      * Read meta data for all plugins registered in the data base.
      */
     private function readPluginInfos ()
@@ -661,8 +645,6 @@ class PluginManager
         $user = isset($GLOBALS['user']) ? $GLOBALS['user']->id : 'nobody';
         $plugin_info = $this->getPluginInfos($type);
         $plugins = [];
-
-        usort($plugin_info, [self::class, 'positionCompare']);
 
         foreach ($plugin_info as $info) {
             $activated = $context == null
