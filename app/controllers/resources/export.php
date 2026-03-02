@@ -408,41 +408,69 @@ class Resources_ExportController extends AuthenticatedController
                         }
                     }
                 }
-                $row = [
-                    date('d.m.Y', $interval->begin),
-                    date('H:i', $interval->begin + $booking->preparation_time),
-                    date('H:i', $interval->end),
-                    strftime('%a', $interval->begin),
-                    sprintf(
-                        _('%u min.'),
-                        intval($booking->preparation_time / 60)
-                    ),
-                    $booking->resource->name,
-                    (
-                    $booking->booking_type == ResourceBooking::TYPE_NORMAL
-                        ? _('Buchung')
-                        : (
-                    $booking->booking_type == ResourceBooking::TYPE_RESERVATION
-                        ? _('Reservierung')
-                        : (
-                    $booking->booking_type == ResourceBooking::TYPE_LOCK
-                        ? _('Sperrbuchung')
-                        : _('sonstiges')
-                    )
-                    )
-                    ),
-                    $description,
-                    $turnout,
-                    $booking->booking_user ? $booking->booking_user->getFullName() : '',
-                    implode(', ', $booking->getAssignedUsers()),
-                    $booking->internal_comment
-                ];
+                //In case the booking spans over several days, several rows must be created:
+                $interval_start = new DateTime();
+                $interval_start->setTimestamp($interval->begin);
+                $interval_end = new DateTime();
+                $interval_end->setTimestamp($interval->end);
+                $current_day = clone $interval_start;
+                while ($current_day < $interval_end) {
+                    $interval_is_on_weekday = in_array($current_day->format('N'), $this->weekdays);
+                    if (!$interval_is_on_weekday) {
+                        //Go directly to the next day:
+                        $current_day = $current_day->add(new DateInterval('P1D'));
+                        continue;
+                    }
+                    $start_time_str = date('H:i', $interval->begin + $booking->preparation_time);
+                    $end_time_str   = date('H:i', $interval->end);
+                    if ($current_day->format('Ymd') !== $interval_start->format('Ymd')) {
+                        //This is not the first day.
+                        $start_time_str = '00:00';
+                    }
+                    if ($current_day->format('Ymd') !== $interval_end->format('Ymd')) {
+                        //This is not the last day.
+                        $end_time_str = '23:59';
+                    }
 
-                if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
-                    $row[] = $number_of_participants;
+                    $row = [
+                        $current_day->format('d.m.Y'),
+                        $start_time_str,
+                        $end_time_str,
+                        getWeekday((int)$current_day->format('w')),
+                        sprintf(
+                            _('%u min.'),
+                            intval($booking->preparation_time / 60)
+                        ),
+                        $booking->resource->name,
+                        (
+                        $booking->booking_type == ResourceBooking::TYPE_NORMAL
+                            ? _('Buchung')
+                            : (
+                        $booking->booking_type == ResourceBooking::TYPE_RESERVATION
+                            ? _('Reservierung')
+                            : (
+                        $booking->booking_type == ResourceBooking::TYPE_LOCK
+                            ? _('Sperrbuchung')
+                            : _('sonstiges')
+                        )
+                        )
+                        ),
+                        $description,
+                        $turnout,
+                        $booking->booking_user ? $booking->booking_user->getFullName() : '',
+                        implode(', ', $booking->getAssignedUsers()),
+                        $booking->internal_comment
+                    ];
+
+                    if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+                        $row[] = $number_of_participants;
+                    }
+                    //Add the row:
+                    $booking_data[] = $row;
+
+                    //Go to the next day:
+                    $current_day = $current_day->add(new DateInterval('P1D'));
                 }
-
-                $booking_data[] = $row;
             }
         }
 
