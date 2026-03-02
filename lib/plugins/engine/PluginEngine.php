@@ -34,33 +34,46 @@ class PluginEngine
      */
     public static function loadPlugins()
     {
-        global $user, $perm;
-
-        // load system plugins
-        self::getPlugins(SystemPlugin::class);
-
-        // load homepage plugins
-        self::getPlugins(HomepagePlugin::class);
-
+        $plugin_manager = PluginManager::getInstance();
+        $plugin_info = $plugin_manager->getPluginInfos();
         $context_id = Context::getId();
 
-        // load course plugins
-        if ($context_id) {
-            $modules = self::getPlugins(StudipModule::class, $context_id);
-            $navigation = Navigation::getItem('/course');
+        uasort($plugin_info, fn($a, $b) =>
+            $b['core'] - $a['core'] ?: $a['position'] - $b['position']
+        );
 
-            foreach ($modules as $module) {
-                $tabs = $module->getTabNavigation($context_id);
+        foreach ($plugin_info as $id => $info) {
+            // load system plugins
+            if (in_array(SystemPlugin::class, $info['type'])) {
+                $plugin_manager->getPluginById($id);
+            }
 
-                if ($navigation && $tabs) {
-                    $navigation->addToolNavigation($module->getPluginId(), $tabs);
+            // load homepage plugins
+            if (in_array(HomepagePlugin::class, $info['type'])) {
+                $plugin_manager->getPluginById($id);
+            }
+
+            // load course plugins
+            if (in_array(StudipModule::class, $info['type'])) {
+                if ($context_id) {
+                    if ($plugin_manager->isPluginActivated($id, $context_id)) {
+                        $navigation = Navigation::getItem('/course');
+                        $module = $plugin_manager->getPluginById($id);
+                        $tabs = $module->getTabNavigation($context_id);
+
+                        if ($navigation && $tabs) {
+                            $navigation->addToolNavigation($id, $tabs);
+                        }
+                    }
                 }
             }
-        }
 
-        // load admin plugins
-        if (is_object($user) && $perm->have_perm('admin')) {
-            self::getPlugins(AdministrationPlugin::class);
+            // load admin plugins
+            if (in_array(AdministrationPlugin::class, $info['type'])) {
+                if ($GLOBALS['perm']->have_perm('admin')) {
+                    $plugin_manager->getPluginById($id);
+                }
+            }
         }
     }
 
