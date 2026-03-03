@@ -4,7 +4,7 @@ use Trails\Dispatcher;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
 
-class Lti_1p3_LoginController extends AuthenticatedController
+final class Lti_1p3_LoginController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;

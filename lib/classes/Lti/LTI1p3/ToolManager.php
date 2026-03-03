@@ -6,6 +6,7 @@ use Keyring;
 use URLHelper;
 use OAT\Library\Lti1p3Core\Tool\Tool;
 use OAT\Library\Lti1p3Core\Tool\ToolInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 
 final class ToolManager
@@ -24,24 +25,24 @@ final class ToolManager
         );
     }
 
-    public static function getKeyring(): ?Keyring
+    public static function getKeyChain(): KeyChain
     {
         $keyring = Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_tool'");
         if (!$keyring) {
             $keyring = Keyring::generate('lti13a_tool', 'global');
         }
 
-        return $keyring;
+        return $keyring->toKeyChain();
     }
 
     public static function getPrivateKey(): KeyInterface
     {
-        return self::getKeyring()->toKeyChain()->getPrivateKey();
+        return self::getKeyChain()->getPrivateKey();
     }
 
     public static function getPublicKey(): KeyInterface
     {
-        return self::getKeyring()->toKeyChain()->getPublicKey();
+        return self::getKeyChain()->getPublicKey();
     }
 
     public static function getJwksUrl(): string

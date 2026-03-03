@@ -10,7 +10,7 @@ use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\GetLineItemServiceServ
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\DeleteLineItemServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\UpdateLineItemServiceServerRequestHandler;
 
-class Lti_1p3_Ags_LineItemController extends AuthenticatedController
+final class Lti_1p3_Ags_LineItemController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;

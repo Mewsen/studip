@@ -8,7 +8,7 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
 
-class Lti_1p3_Ags_LineItemsController extends AuthenticatedController
+final class Lti_1p3_Ags_LineItemsController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;

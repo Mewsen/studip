@@ -95,7 +95,7 @@ final class RegistrationRepository implements RegistrationInterface
             return $this->registration->getKeyChain();
         }
 
-        return PlatformManager::getKeyring()->toKeyChain();
+        return PlatformManager::getKeyChain();
     }
 
     public function getToolKeyChain(): ?KeyChainInterface
@@ -108,7 +108,7 @@ final class RegistrationRepository implements RegistrationInterface
             return $this->registration->getKeyChain();
         }
 
-        return ToolManager::getKeyring()->toKeyChain();
+        return ToolManager::getKeyChain();
     }
 
     public function getPlatformJwksUrl(): ?string

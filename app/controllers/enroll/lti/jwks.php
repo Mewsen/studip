@@ -20,10 +20,10 @@ final class Enroll_Lti_JwksController extends LtiBaseController
 
     public function index_action(): void
     {
-        $toolKeyring = ToolManager::getKeyring();
+        $toolKeyring = ToolManager::getKeyChain();
 
         $this->renderPsrResponse(
-            $this->jwksRequestHandler->handle($toolKeyring->range_id)
+            $this->jwksRequestHandler->handle($toolKeyring->getKeySetName())
         );
     }
 }

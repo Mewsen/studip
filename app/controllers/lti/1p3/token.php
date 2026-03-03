@@ -14,7 +14,7 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerator;
 
-class Lti_1p3_TokenController extends AuthenticatedController
+final class Lti_1p3_TokenController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;
