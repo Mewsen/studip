@@ -19,6 +19,7 @@ use Studip\Button;
             </th>
             <th data-sort="text" scope="col"><?= _('Titel') ?></th>
             <th data-sort="text" scope="col"><?= _('Veranstaltung') ?></th>
+            <th data-sort="text"><?= _('Evaluierte') ?></th>
             <th data-sort="digit" scope="col"><?= _('Start') ?></th>
             <th data-sort="digit" scope="col"><?= _('Ende') ?></th>
         </tr>
@@ -38,7 +39,15 @@ use Studip\Button;
                     </td>
                     </td>
                     <td>
-                        <?= htmlReady($assignment->course_metadata) /*TODO course name*/ ?>
+                        <?= htmlReady(isset($assignment->course_metadata['course_title']) ?
+                            $assignment->course_metadata['course_title'] : '') ?>
+                    </td>
+                    <td>
+                        <?php if (isset($assignment->course_metadata['evaluated_persons'])) : ?>
+                            <?php foreach ($assignment->course_metadata['evaluated_persons'] as $person) : ?>
+                                <?= htmlReady($person) ?><br/>
+                            <?php endforeach ?>
+                        <?php endif ?>
                     </td>
                     <td data-text="<?= (int) $assignment->startdate?>">
                         <?= date('d.m.Y H:i', $assignment->startdate) ?>
@@ -50,7 +59,7 @@ use Studip\Button;
             <?php endforeach ?>
         <?php else : ?>
             <tr>
-                <td colspan="5" style="text-align: center">
+                <td colspan="6" style="text-align: center">
                     <?= _('Es stehen keine Evaluationen zur Verfügung.') ?>
                 </td>
             </tr>
@@ -58,7 +67,7 @@ use Studip\Button;
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5">
+                <td colspan="6">
                     <?= Button::create(_("Löschen"), "bulkdelete", [
                         'formaction' => $controller->bulk('delete'),
                         'data-confirm' => _("Wirklich löschen?")

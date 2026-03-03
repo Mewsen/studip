@@ -17,6 +17,7 @@ class QuestionnaireEvalAssignment extends SimpleORMap
             'foreign_key'       => 'questionnaire_id',
             'assoc_foreign_key' => 'questionnaire_id'
         ];
+        $config['serialized_fields']['course_metadata'] = JSONArrayObject::class;
 
         parent::configure($config);
     }
