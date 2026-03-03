@@ -1,6 +1,7 @@
-<form id="language-selector" method="POST" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
+<form id="language-selector" method="POST" action="<?= URLHelper::getLink('dispatch.php/nobody_settings/store_settings') ?>">
     <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException) {}?>
     <input type="hidden" name="user_config_submitted" value="1">
+    <input type="hidden" name="page" value="<?= htmlReady(Request::url()) ?>">
     <select id="languages" name="set_language" class="select2" onchange="this.form.submit()">
         <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
             <option value="<?= htmlReady($temp_language_key) ?>" <?= array_key_exists('_language', $_SESSION) && $_SESSION['_language'] === $temp_language_key ? 'selected' : '' ?>
