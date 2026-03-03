@@ -139,7 +139,7 @@ const subscribe = async (notificationType = 'all') => {
                 type="button"
                 class="button subscription-button"
                 :class="subscriptionButtonLabel ? 'button--icon-label' : 'button--icon-only'"
-                :title="$gettext(`${type} abonnieren (Menü öffnen)`)"
+                :title="$gettext('%{type} abonnieren (Menü öffnen)', { type })"
                 :aria-label="$gettext('Menü zum Abonnieren für „%{ context }“ öffnen)', { context: computedContext ?? type })"
                 aria-haspopup="menu"
                 :aria-expanded="isOpen"
