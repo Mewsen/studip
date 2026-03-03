@@ -31,7 +31,7 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
             return null;
         }
 
-        $navigation = new Navigation(_('Evaluation'));
+        $navigation = new Navigation(_('Evaluation'), 'dispatch.php/course/evaluation');
         $navigation->setImage(Icon::create('evaluation', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('evaluation', Icon::ROLE_INFO));
 
