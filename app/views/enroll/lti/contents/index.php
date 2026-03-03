@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Enroll_LtiController $controller
+ * @var Enroll_Lti_ContentsController $controller
  * @var ?SimpleORMapCollection<Course> $courses
  * @var string $callbackId
  * @var ?array $errors
@@ -12,7 +12,7 @@
     <? if(empty($errors)): ?>
         <? if (count($courses) > 0): ?>
         <div class="lti-resources">
-            <form action="<?= $controller->link_for('enroll/lti/deeplink_callback') ?>" method="POST" class="default">
+            <form action="<?= $controller->link_for('enroll/lti/launch_deeplink/callback') ?>" method="POST" class="default">
                 <?= CSRFProtection::tokenTag() ?>
                 <input type="hidden" name="callback_id" value="<?= $callbackId ?>" />
                 <table class="default sortable-table">
@@ -67,7 +67,7 @@
         <?= $this->render_partial('enroll/lti/_errors', ['errors' => $errors]); ?>
     <? endif ?>
     <? if (empty($courses)|| !empty($errors)): ?>
-        <form action="<?= $controller->link_for('enroll/lti/reset_account_mapping') ?>" method="POST" class="default use-utility-classes">
+        <form action="<?= $controller->link_for('enroll/lti/provisioning_modes/reset_account_mapping') ?>" method="POST" class="default use-utility-classes">
             <?= CSRFProtection::tokenTag() ?>
             <input type="hidden" name="callback_id" value="<?= $callbackId ?>" />
             <?= MessageBox::info(_('Sie können sich abmelden und es erneut mit einem anderen Konto versuchen.')) ?>

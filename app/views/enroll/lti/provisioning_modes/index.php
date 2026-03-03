@@ -2,7 +2,7 @@
 use Studip\Lti\Enum\UserProvisioningMode;
 
 /**
- * @var Enroll_LtiController $controller
+ * @var Enroll_Lti_ProvisioningModesController $controller
  * @var int $provisioningMode
  * @var string $callbackId
  */
@@ -48,7 +48,7 @@ use Studip\Lti\Enum\UserProvisioningMode;
                 </p>
             </div>
             <footer class="studip-card__footer">
-                <form action="<?= $controller->url_for('enroll/lti/create_new_account') ?>" method="post">
+                <form action="<?= $controller->url_for('enroll/lti/provisioning_modes/create_new_account') ?>" method="post">
                     <?= CSRFProtection::tokenTag() ?>
                     <input type="hidden" name="callback_id" value="<?= $callbackId ?>" />
                     <button type="submit" class="button">

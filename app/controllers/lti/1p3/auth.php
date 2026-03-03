@@ -5,11 +5,7 @@ use Studip\Lti\LTI1p3\KeyManager;
 use Studip\OAuth2\Bridge\ScopeEntity;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
-use Studip\Lti\LTI1p3\UserAuthenticator;
 use Studip\Lti\LTI1p3\RegistrationManager;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
-use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
-use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
@@ -26,25 +22,21 @@ class Lti_1p3_AuthController extends AuthenticatedController
 
     public function login_action(): void
     {
-        $oidcLoginHandler = new OidcAuthenticationRequestHandler(
-            new OidcAuthenticator(
-                new RegistrationManager(),
-                new UserAuthenticator()
-            )
-        );
+        $oidcLoginHandler = app()->get(OidcAuthenticationRequestHandler::class);
 
-        $response = $oidcLoginHandler->handle($this->getPsrRequest());
-        $this->renderPsrResponse($response);
+        $this->renderPsrResponse(
+            $oidcLoginHandler->handle($this->getPsrRequest())
+        );
     }
 
     public function jwks_action(): void
     {
-        $keyChainRepo = new KeyChainRepository();
         $platformKeyring = PlatformManager::getKeyring();
+        $jwksRequestHandler = app()->get(JwksRequestHandler::class);
 
-        $keyChainRepo->addKeyChain($platformKeyring->toKeyChain());
-        $handler = new JwksRequestHandler(new JwksExporter($keyChainRepo));
-        $this->renderPsrResponse($handler->handle($platformKeyring->range_id));
+        $this->renderPsrResponse(
+            $jwksRequestHandler->handle($platformKeyring->range_id)
+        );
     }
 
     public function token_action(): void

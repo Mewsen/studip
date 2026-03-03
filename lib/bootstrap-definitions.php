@@ -10,8 +10,26 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidatorInterface;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidatorInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
+use Studip\Cache\Factory as CacheFactory;
+use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\LTI1p3\RegistrationManager;
+use Studip\Lti\LTI1p3\ToolManager;
+
+use Studip\Lti\LTI1p3\UserAuthenticator;
 
 use function DI\create;
 
@@ -97,4 +115,18 @@ return [
     \Psr\Http\Message\UriFactoryInterface::class => DI\get(Psr17Factory::class),
 
     \Psr\Http\Message\ServerRequestInterface::class => DI\factory([ServerRequestCreator::class, 'fromGlobals']),
+
+    // LTI
+    RegistrationRepositoryInterface::class => DI\get(RegistrationManager::class),
+    NonceRepositoryInterface::class => DI\get(NonceRepository::class),
+    PlatformLaunchValidatorInterface::class => DI\get(PlatformLaunchValidator::class),
+    ToolLaunchValidatorInterface::class => DI\get(ToolLaunchValidator::class),
+    UserAuthenticatorInterface::class => DI\get(UserAuthenticator::class),
+    CacheItemPoolInterface::class => DI\factory(fn() => CacheFactory::getCache()),
+    KeyChainRepositoryInterface::class => DI\factory(function() {
+        return new KeyChainRepository([
+            ToolManager::getKeyring()->toKeyChain(),
+            PlatformManager::getKeyring()->toKeyChain(),
+        ]);
+    }),
 ];
