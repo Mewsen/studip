@@ -28,22 +28,22 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
 
     public function index_action(): void
     {
-        $request = $this->launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+        $result = $this->launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
 
-        if ($request->hasError()) {
-            throw new LtiException($request->getError());
+        if ($result->hasError()) {
+            throw new LtiException($result->getError());
         }
 
-        $publication = $this->getPublication($request->getPayload());
+        $publication = $this->getPublication($result->getPayload());
 
         (new PublicationValidator($publication))->validateLaunch();
 
-        $this->resolveProvisioningMode($request, $publication);
+        $this->resolveProvisioningMode($result, $publication);
     }
 
-    private function resolveProvisioningMode(LaunchValidationResultInterface $request, Publication $publication): void
+    private function resolveProvisioningMode(LaunchValidationResultInterface $result, Publication $publication): void
     {
-        $userLocale = $request->getPayload()->getLaunchPresentation()?->getLocale();
+        $userLocale = $result->getPayload()->getLaunchPresentation()?->getLocale();
         $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "user_id = :user_id AND context = :context",
             [
@@ -59,7 +59,7 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
             return;
         }
 
-        $payload = $request->getPayload();
+        $payload = $result->getPayload();
         $localRoles = RoleMapper::toLocal($payload->getRoles());
         $userManager = new UserManager();
 
@@ -69,7 +69,7 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
                 'context' => UserIdentityMappingContext::ResourceLink->value,
                 'external_email' => $payload->getUserIdentity()->getEmail(),
                 'external_user_id' => $payload->getUserIdentity()->getIdentifier(),
-                'registration_id' => $request->getRegistration()->getIdentifier()
+                'registration_id' => $result->getRegistration()->getIdentifier()
             ]
         );
 
@@ -77,7 +77,7 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
             $userManager
                 ->setUserIdentity($payload->getUserIdentity())
                 ->setUser($userIdentityMapping->user)
-                ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
+                ->enroll($publication, $localRoles, $result->getRegistration()->getIdentifier())
                 ->authenticate();
 
             $this
@@ -97,7 +97,7 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
         if ($provisioningMode === UserProvisioningMode::NewAccountsOnly->value) {
             $userManager
                 ->setUserIdentity($payload->getUserIdentity())
-                ->enroll($publication, $localRoles, $request->getRegistration()->getIdentifier())
+                ->enroll($publication, $localRoles, $result->getRegistration()->getIdentifier())
                 ->authenticate();
 
             $this
@@ -109,8 +109,8 @@ final class Enroll_Lti_LaunchController extends LtiBaseController
         $callbackId = Uuid::uuid4()->toString();
         $_SESSION['callbacks'][$callbackId] = [
             'user_identity' => $payload->getUserIdentity(),
-            'deployment_key' => $request->getPayload()->getDeploymentId(),
-            'registration_id' => $request->getRegistration()->getIdentifier(),
+            'deployment_key' => $result->getPayload()->getDeploymentId(),
+            'registration_id' => $result->getRegistration()->getIdentifier(),
             'publication_id' => $publication->id,
             'local_roles' => $localRoles,
             'provisioning_mode' => $provisioningMode,

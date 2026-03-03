@@ -1,13 +1,13 @@
 <?php
 namespace Studip\Lti\LTI1p3;
 
+use URLHelper;
 use Lti\ResourceLink;
-use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
+use Studip\Lti\Enum\GradeSynchronization;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
 use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
-use Studip\Lti\Enum\GradeSynchronization;
-use URLHelper;
 
 final class ResourceLinkRepository implements LtiResourceLinkInterface
 {

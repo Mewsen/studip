@@ -1,11 +1,11 @@
 <?php
 namespace Studip\Lti\LTI1p3;
 
+use User;
 use Range;
 use Course;
 use Metrics;
 use CourseMember;
-use User;
 use Lti\Publication;
 use Lti\PublicationUser;
 use Lti\UserIdentityMapping;

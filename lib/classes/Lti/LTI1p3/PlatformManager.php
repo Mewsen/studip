@@ -3,11 +3,6 @@ namespace Studip\Lti\LTI1p3;
 
 use Config;
 use Keyring;
-use OAT\Library\Lti1p3Core\Resource\File\FileInterface;
-use OAT\Library\Lti1p3Core\Resource\HtmlFragment\HtmlFragmentInterface;
-use OAT\Library\Lti1p3Core\Resource\Image\ImageInterface;
-use OAT\Library\Lti1p3Core\Resource\Link\LinkInterface;
-use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use URLHelper;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
@@ -17,12 +12,6 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 
 final class PlatformManager
 {
-    /**
-     * Generates an object containing the configuration to use this Stud.IP
-     * as LTI 1.3A platform.
-     *
-     * @return PlatformInterface
-     */
     public static function getPlatformConfiguration(): PlatformInterface
     {
         $config = Config::get();
@@ -31,8 +20,8 @@ final class PlatformManager
             $config->STUDIP_INSTALLATION_ID,
             $config->UNI_NAME_CLEAN,
             rtrim($GLOBALS['ABSOLUTE_URI_STUDIP'], '/'),
-            URLHelper::getURL('dispatch.php/lti/1p3/auth/login', null, true),
-            URLHelper::getURL('dispatch.php/lti/1p3/auth/token', null, true)
+            URLHelper::getURL('dispatch.php/lti/1p3/login', null, true),
+            URLHelper::getURL('dispatch.php/lti/1p3/token', null, true)
         );
     }
 
@@ -82,6 +71,6 @@ final class PlatformManager
 
     public static function getJwksUrl(): string
     {
-        return URLHelper::getURL('dispatch.php/lti/1p3/auth/jwks', null, true);
+        return URLHelper::getURL('dispatch.php/lti/1p3/jwks', null, true);
     }
 }

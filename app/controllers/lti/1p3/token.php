@@ -1,45 +1,34 @@
 <?php
 
+use Trails\Dispatcher;
 use Studip\Cache\Factory;
 use Studip\Lti\LTI1p3\KeyManager;
 use Studip\OAuth2\Bridge\ScopeEntity;
 use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
 use Studip\Lti\LTI1p3\RegistrationManager;
-use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerator;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerator;
 
-class Lti_1p3_AuthController extends AuthenticatedController
+class Lti_1p3_TokenController extends AuthenticatedController
 {
     protected $allow_nobody = true;
     protected $with_session = false;
     use NegotiatesWithPsr7;
 
-    public function login_action(): void
+    public function __construct(
+        protected Dispatcher $dispatcher,
+        protected OidcAuthenticationRequestHandler $oidcLoginHandler
+    )
     {
-        $oidcLoginHandler = app()->get(OidcAuthenticationRequestHandler::class);
-
-        $this->renderPsrResponse(
-            $oidcLoginHandler->handle($this->getPsrRequest())
-        );
+        parent::__construct($dispatcher);
     }
 
-    public function jwks_action(): void
-    {
-        $platformKeyring = PlatformManager::getKeyring();
-        $jwksRequestHandler = app()->get(JwksRequestHandler::class);
-
-        $this->renderPsrResponse(
-            $jwksRequestHandler->handle($platformKeyring->range_id)
-        );
-    }
-
-    public function token_action(): void
+    public function index_action(): void
     {
         $platformEncryptionKey = PlatformManager::getPrivateKey()->getContent();
         $responseGenerator = new AccessTokenResponseGenerator(

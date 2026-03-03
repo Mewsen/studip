@@ -16,7 +16,7 @@ final class Identity implements UserIdentityInterface
 
     public function __construct(
         protected User $user,
-        RegistrationInterface $registration
+        protected RegistrationInterface $registration
     ) {
         $privacySettings = RegistrationPrivacySettings::findOneBySQL(
             "`registration_id` = :registration_id AND `user_id` = :user_id",

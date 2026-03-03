@@ -1,11 +1,10 @@
 <?php
 
+use Trails\Dispatcher;
 use Studip\OAuth2\NegotiatesWithPsr7;
-use Studip\Lti\LTI1p3\LineItemRepository;
-use Studip\Lti\LTI1p3\RegistrationManager;
 use OAT\Library\Lti1p3Core\Service\Server\LtiServiceServer;
 use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidatorInterface;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\ListLineItemsServiceServerRequestHandler;
 use OAT\Library\Lti1p3Ags\Service\LineItem\Server\Handler\CreateLineItemServiceServerRequestHandler;
 
@@ -15,19 +14,28 @@ class Lti_1p3_Ags_LineItemsController extends AuthenticatedController
     protected $with_session = false;
     use NegotiatesWithPsr7;
 
+    public function __construct(
+        protected Dispatcher $dispatcher,
+        protected LineItemRepositoryInterface $lineItemRepo,
+        protected RequestAccessTokenValidatorInterface $tokenValidator
+    )
+    {
+        parent::__construct($dispatcher);
+    }
+
     public function index_action(): void
     {
         $requestHandler = match (Request::method()) {
-            'POST' => new CreateLineItemServiceServerRequestHandler(new LineItemRepository()),
-            'GET' => new ListLineItemsServiceServerRequestHandler(new LineItemRepository()),
+            'POST' => new CreateLineItemServiceServerRequestHandler($this->lineItemRepo),
+            'GET' => new ListLineItemsServiceServerRequestHandler($this->lineItemRepo),
             default => throw new MethodNotAllowedException()
         };
 
-        $requestValidator = new RequestAccessTokenValidator(new RegistrationManager());
+        $serviceServer = new LtiServiceServer($this->tokenValidator, $requestHandler);
 
-        $server = new LtiServiceServer($requestValidator, $requestHandler);
-
-        $this->renderPsrResponse($server->handle($this->getPsrRequest()));
+        $this->renderPsrResponse(
+            $serviceServer->handle($this->getPsrRequest())
+        );
     }
 
 }

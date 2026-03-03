@@ -2,8 +2,8 @@
 namespace Studip\Lti\LTI1p3;
 
 use Grading\Instance;
-use OAT\Library\Lti1p3Ags\Model\Result\ResultCollection;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultInterface;
+use OAT\Library\Lti1p3Ags\Model\Result\ResultCollection;
 use OAT\Library\Lti1p3Ags\Repository\ResultRepositoryInterface;
 use OAT\Library\Lti1p3Ags\Model\Result\ResultCollectionInterface;
 
