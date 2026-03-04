@@ -15,7 +15,7 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
 
     public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        if (!Config::get()->CENTRAL_EVALUATIONS_ENABLE) {
+        if (!$this->isTabActive()) {
             return [];
         }
 
@@ -27,7 +27,7 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
      */
     public function getTabNavigation($course_id)
     {
-        if (!Config::get()->CENTRAL_EVALUATIONS_ENABLE) {
+        if (!$this->isTabActive()) {
             return null;
         }
 
@@ -67,5 +67,15 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
     public function getInfoTemplate($course_id)
     {
         return null;
+    }
+
+    public function isTabActive(): bool
+    {
+        $evaluation = QuestionnaireEvalAssignment::findOneBySQL(
+            "`course_id` = ? AND `applied` = 1 ORDER BY `startdate`",
+            [Context::getId()]);
+        return PluginManager::getInstance()->getPlugin(CoreEvaluation::class) && $evaluation &&
+                (User::findCurrent()->hasPermissionLevel('tutor', Context::get()) ||
+                $evaluation->startdate <= time());
     }
 }
