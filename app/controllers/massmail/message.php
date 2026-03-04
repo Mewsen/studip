@@ -355,7 +355,7 @@ class Massmail_MessageController extends \AuthenticatedController
 
         if (!empty($uploaded['error'])) {
             $this->set_status(400);
-            $this->render_text(implode('<br>' . $uploaded['error']));
+            $this->render_text(implode('<br>',  $uploaded['error']));
         } else {
             $this->render_nothing();
         }
