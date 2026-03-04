@@ -59,10 +59,14 @@ class PluginEngine
                     if ($plugin_manager->isPluginActivated($id, $context_id)) {
                         $navigation = Navigation::getItem('/course');
                         $module = $plugin_manager->getPluginById($id);
-                        $tabs = $module->getTabNavigation($context_id);
 
-                        if ($navigation && $tabs) {
-                            $navigation->addToolNavigation($id, $tabs);
+                        if ($module) {
+                            /** @var StudipModule $module */
+                            $tabs = $module->getTabNavigation($context_id);
+
+                            if ($navigation && $tabs) {
+                                $navigation->addToolNavigation($id, $tabs);
+                            }
                         }
                     }
                 }
