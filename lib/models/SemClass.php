@@ -53,6 +53,8 @@ class SemClass extends SimpleORMap
     {
         $config['db_table'] = 'sem_classes';
 
+        $config['i18n_fields']['name'] = true;
+        $config['i18n_fields']['description'] = true;
         $config['serialized_fields']['modules'] = 'JSONArrayObject';
 
         $config['has_many']['sem_types'] = [
@@ -344,32 +346,5 @@ class SemClass extends SimpleORMap
         \Studip\Cache\Factory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
         self::$sem_classes = null;
         return self::getClasses();
-    }
-
-    /**
-     * Static method only to keep the translationstrings of the values. It is
-     * never used within the system.
-     */
-    static private function localization()
-    {
-        _("Lehre");
-        _("Forschung");
-        _("Organisation");
-        _("Community");
-        _("Arbeitsgruppen");
-        _("importierte Kurse");
-        _("Hauptveranstaltungen");
-
-        _("Hier finden Sie alle in Stud.IP registrierten Lehrveranstaltungen");
-        _("Verwenden Sie diese Kategorie, um normale Lehrveranstaltungen anzulegen");
-        _("Hier finden Sie virtuelle Veranstaltungen zum Thema Forschung an der Universität");
-        _("In dieser Kategorie können Sie virtuelle Veranstaltungen für Forschungsprojekte anlegen.");
-        _("Hier finden Sie virtuelle Veranstaltungen zu verschiedenen Gremien an der Universität");
-        _("Um virtuelle Veranstaltungen für Uni-Gremien anzulegen, verwenden Sie diese Kategorie");
-        _("Hier finden Sie virtuelle Veranstaltungen zu unterschiedlichen Themen");
-        _("Wenn Sie Veranstaltungen als Diskussiongruppen zu unterschiedlichen Themen anlegen möchten, verwenden Sie diese Kategorie.");
-        _("Hier finden Sie verschiedene Arbeitsgruppen an der %s");
-        _("Verwenden Sie diese Kategorie, um unterschiedliche Arbeitsgruppen anzulegen.");
-        _("Veranstaltungen dieser Kategorie dienen als Gruppierungselement, um die Zusammengehörigkeit von Veranstaltungen anderer Kategorien abzubilden.");
     }
 }

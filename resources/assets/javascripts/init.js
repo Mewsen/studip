@@ -3,7 +3,6 @@ import Vue from './lib/studip-vue.js';
 
 import ActionMenu from './lib/actionmenu.js';
 import ActivityFeed from './lib/activityfeed.js';
-import admin_sem_class from './lib/admin_sem_class.js';
 import AdminCourses from './lib/admin-courses.js';
 import Admission from './lib/admission.js';
 import Arbeitsgruppen from './lib/arbeitsgruppen.js';
@@ -83,7 +82,6 @@ const URLHelper = createURLHelper(configURLHelper);
 window.STUDIP = _.assign(window.STUDIP || {}, {
     ActionMenu,
     ActivityFeed,
-    admin_sem_class,
     AdminCourses,
     Admission,
     Arbeitsgruppen,

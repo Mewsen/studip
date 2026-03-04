@@ -30,6 +30,8 @@ class SemType extends SimpleORMap
     {
         $config['db_table'] = 'sem_types';
 
+        $config['i18n_fields']['name'] = true;
+
         $config['has_many']['courses'] = [
             'class_name'        => Course::class,
             'assoc_foreign_key' => 'status'
@@ -108,26 +110,5 @@ class SemType extends SimpleORMap
     {
         $non_grouping = SimpleCollection::createFromArray(SemClass::getClasses())->findBy('is_group', false)->findBy('studygroup_mode', false);
         return SimpleCollection::createFromArray(array_flatten($non_grouping->getSemTypes()))->pluck('id');
-    }
-
-    /**
-     * Static method only to keep the translationstrings of the values. It is
-     * never used within the system.
-     */
-    static private function localization()
-    {
-        _("Vorlesung");
-        _("Seminar");
-        _("Übung");
-        _("Praktikum");
-        _("Colloquium");
-        _("Kolloquium");
-        _("Forschungsgruppe");
-        _("sonstige");
-        _("Gremium");
-        _("Projektgruppe");
-        _("Kulturforum");
-        _("Veranstaltungsboard");
-        _("Studiengruppe");
     }
 }
