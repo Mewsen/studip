@@ -39,17 +39,3 @@
     <? endforeach ?>
     </tbody>
 </table>
-
-<?
-$sidebar = Sidebar::Get();
-$links = new ActionsWidget();
-$links->addLink(
-    _('Neue Kategorie anlegen'),
-    $controller->url_for('admin/sem_classes/add_sem_type'),
-    Icon::create('add'),
-    [
-        'onClick'     => 'STUDIP.sem_classes.add(); return false;',
-        'data-dialog' => 'size=auto'
-    ]
-);
-$sidebar->addWidget($links);

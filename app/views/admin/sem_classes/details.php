@@ -8,87 +8,60 @@
  *  published by the Free Software Foundation; either version 2 of
  *  the License, or (at your option) any later version.
  *
- * @var string $overview_url
  * @var array $sem_class
  * @var array $modules
  */
 
 ?>
-<form action="<?= URLHelper::getLink($overview_url) ?>" method="post" class="default attribute_table collapsable">
-    <input type="hidden" id="sem_class_id" value="<?= Request::int("id") ?>">
+<form action="<?= $controller->link_for('admin/sem_classes/save') ?>" method="post" class="default attribute_table collapsable">
+    <input type="hidden" name="sem_class_id" value="<?= Request::int("id") ?>">
     <fieldset>
         <legend>
             <?= _('Veranstaltungskategorie bearbeiten') ?>
         </legend>
 
-        <label class="sem_class_name">
-            <span><?= _("Name der Veranstaltungskategorie") ?></span>
-            <div>
-                <span class="name"><?= htmlReady($sem_class['name']) ?></span>
-                <a href="#" class="sem_class_edit" onClick="jQuery(this).closest('label').children().toggle().find('input:visible').focus(); return false;">
-                    <?= Icon::create('edit')->asSvg(['class' => 'text-bottom']) ?>
-                </a>
-            </div>
-
-            <div class="name_input" style="display: none;">
-                <input id="sem_class_name" type="text" value="<?= htmlReady($sem_class['name']) ?>" onBlur="jQuery(this).closest('label').children().toggle().find('.name').text(this.value);">
-            </div>
+        <label>
+            <span class="required"><?= _("Name der Veranstaltungskategorie") ?></span>
+            <?= I18N::input('sem_class_name', $sem_class->name, ['required' => true]) ?>
         </label>
 
-
-        <label class="sem_class_name">
+        <label>
             <span><?= _('Beschreibungstext für die Suche') ?></span>
-
-            <div>
-                <span class="description"><?= htmlReady($sem_class['description']) ?></span>
-                <a href="#" class="sem_class_edit" onClick="jQuery(this).closest('label').children().toggle().find('input:visible').focus(); return false;">
-                    <?= Icon::create('edit')->asSvg(['class' => 'text-bottom']) ?></a>
-            </div>
-            <div class="description_input" style="display: none;">
-                <input id="sem_class_description" type="text" value="<?= htmlReady($sem_class['description']) ?>" onBlur="jQuery(this).closest('label.sem_class_name').children().toggle().find('.description').text(this.value);" style="width: 80%;">
-            </div>
+            <?= I18N::textarea('sem_class_description', $sem_class->description) ?>
         </label>
 
-        <section class="sem_type_list">
+        <section>
             <span><?= _("Veranstaltungstypen") ?></span>
 
-            <ul id="sem_type_list">
-                <? foreach ($sem_class->getSemTypes() as $id => $sem_type) : ?>
-                <?= $this->render_partial("admin/sem_classes/_sem_type.php", ['sem_type' => $sem_type]) ?>
-                <? endforeach ?>
-            </ul>
-            <div class="add">
-                <div style="display: none; margin-left: 37px;">
-                    <input type="text" id="new_sem_type" onBlur="if (!this.value) jQuery(this).closest('.add').children().toggle();">
-                    <a href="" onClick="STUDIP.admin_sem_class.add_sem_type(); return false;"><?= Icon::create('arr_2up', 'sort')->asSvg(['class' => 'text-bottom', 'title' => _('hinzufügen')]) ?></a>
+            <? foreach ($sem_class->getSemTypes() as $id => $sem_type) : ?>
+                <? $count = $sem_type->countSeminars() ?>
+                <br>
+                <div style="display: inline-block; max-width: 48em; width: 100%;">
+                    <label>
+                        <span><?= sprintf(_('Typ %d (%d Veranstaltungen)'), $id, $count) ?></span>
+                        <?= I18N::input("sem_type_$id", $sem_type->name) ?>
+                    </label>
                 </div>
-                <div style="margin-left: 21px;">
-                    <a href="#" onClick="jQuery(this).closest('.add').children().toggle(); jQuery('#new_sem_type').focus(); return false;">
-                        <?= Icon::create('add')->asSvg([
-                            'class' => 'text-bottom',
-                            'title' => _('Veranstaltungstyp hinzufügen'),
-                        ]) ?>
-                    </a>
-                </div>
-            </div>
+                <? if ($count === 0): ?>
+                    <?= Icon::create('trash')->asInput(['class' => 'text-bottom', 'formaction' => $controller->url_for('admin/sem_classes/delete_sem_type', $id)]) ?>
+                <? endif ?>
+            <? endforeach ?>
         </section>
-
-
 
         <? foreach (["dozent","tutor","autor"] as $role) : ?>
         <section>
             <?= sprintf(_("Titel der %s"), $GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role][1]) ?>
 
             <label>
-                <input type="radio" id="title_<?= $role ?>_isnull" name="title_<?= $role ?>_isnull" value="1"<?= !$sem_class['title_'.$role] && !$sem_class['title_'.$role.'_plural'] ? " checked" : ""?>>
+                <input type="radio" name="title_<?= $role ?>_isnull" value="1"<?= !$sem_class['title_'.$role] && !$sem_class['title_'.$role.'_plural'] ? " checked" : ""?>>
                 <?= sprintf(_("Systemdefault (%s)"), htmlReady(implode("/", $GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role]))) ?>
             </label>
 
             <div class="hgroup">
                 <label>
                     <input type="radio" name="title_<?= $role ?>_isnull" value="0"<?= $sem_class['title_'.$role] || $sem_class['title_'.$role.'_plural'] ? " checked" : ""?>>
-                    <input placeholder="<?= htmlReady($GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role][0]) ?>" title="<?= _("Singular") ?>" type="text" id="title_<?= $role ?>" name="title_<?= $role ?>" value="<?= htmlReady($sem_class['title_'.$role]) ?>">
-                    <input placeholder="<?= htmlReady($GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role][1]) ?>" title="<?= _("Plural") ?>" type="text" id="title_<?= $role ?>_plural" name="title_<?= $role ?>_plural" value="<?= htmlReady($sem_class['title_'.$role.'_plural']) ?>">
+                    <input placeholder="<?= htmlReady($GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role][0]) ?>" title="<?= _("Singular") ?>" type="text" name="title_<?= $role ?>" value="<?= htmlReady($sem_class['title_'.$role]) ?>">
+                    <input placeholder="<?= htmlReady($GLOBALS['DEFAULT_TITLE_FOR_STATUS'][$role][1]) ?>" title="<?= _("Plural") ?>" type="text" name="title_<?= $role ?>_plural" value="<?= htmlReady($sem_class['title_'.$role.'_plural']) ?>">
                 </label>
             </div>
         </section>
@@ -102,7 +75,7 @@
 
         <label>
             <?= _("Lesbar für Nutzer") ?>
-            <select id="default_read_level">
+            <select name="default_read_level">
                 <option value="0"<?= $sem_class['default_read_level'] == 0 ? " selected" : "" ?>><?= _("Unangemeldet an Veranstaltung") ?></option>
                 <option value="1"<?= $sem_class['default_read_level'] == 1 ? " selected" : "" ?>><?= _("Angemeldet an Veranstaltung") ?></option>
             </select>
@@ -110,7 +83,7 @@
 
         <label>
             <?= _("Schreibbar für Nutzer") ?>
-            <select id="default_write_level">
+            <select name="default_write_level">
                 <option value="0"<?= $sem_class['default_write_level'] == 0 ? " selected" : "" ?>><?= _("Unangemeldet an Veranstaltung") ?></option>
                 <option value="1"<?= $sem_class['default_write_level'] == 1 ? " selected" : "" ?>><?= _("Angemeldet an Veranstaltung") ?></option>
             </select>
@@ -118,7 +91,7 @@
 
         <label>
             <?= _("Anmeldemodus") ?>
-            <select id="admission_prelim_default">
+            <select name="admission_prelim_default">
                 <option value="0"<?= $sem_class['admission_prelim_default'] == 0 ? " selected" : "" ?>><?= _("Direkter Eintrag") ?></option>
                 <option value="1"<?= $sem_class['admission_prelim_default'] == 1 ? " selected" : "" ?>><?= _("Vorläufiger Eintrag") ?></option>
             </select>
@@ -126,7 +99,7 @@
 
         <label>
             <?= _("Anmeldung gesperrt") ?>
-            <select id="admission_type_default">
+            <select name="admission_type_default">
                 <option value="0"<?= $sem_class['admission_type_default'] == 0 ? " selected" : "" ?>><?= _("Nein") ?></option>
                 <option value="3"<?= $sem_class['admission_type_default'] == 3 ? " selected" : "" ?>><?= _("Ja") ?></option>
             </select>
@@ -139,17 +112,17 @@
         </legend>
 
         <label>
-            <input type="checkbox" id="visible" value="1"<?= $sem_class['visible'] ? " checked" : "" ?>>
+            <input type="checkbox" name="visible" value="1"<?= $sem_class['visible'] ? " checked" : "" ?>>
             <?= _("Sichtbar") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="show_browse" value="1"<?= $sem_class['show_browse'] ? " checked" : "" ?>>
+            <input type="checkbox" name="show_browse" value="1"<?= $sem_class['show_browse'] ? " checked" : "" ?>>
             <?= _("Zeige im Veranstaltungsbaum an.") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="show_raumzeit" value="1"<?= $sem_class['show_raumzeit'] ? " checked" : "" ?>>
+            <input type="checkbox" name="show_raumzeit" value="1"<?= $sem_class['show_raumzeit'] ? " checked" : "" ?>>
             <?= _("Zeige Raum-Zeit-Seite an.") ?>
         </label>
     </fieldset>
@@ -160,48 +133,48 @@
         </legend>
 
         <label>
-            <input type="checkbox" id="studygroup_mode" value="1"<?= $sem_class['studygroup_mode'] ? " checked" : "" ?>>
+            <input type="checkbox" name="studygroup_mode" value="1"<?= $sem_class['studygroup_mode'] ? " checked" : "" ?>>
             <?= _("Studentische Arbeitsgruppe") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="only_inst_user" value="1"<?= $sem_class['only_inst_user'] ? " checked" : "" ?>>
+            <input type="checkbox" name="only_inst_user" value="1"<?= $sem_class['only_inst_user'] ? " checked" : "" ?>>
             <?= _("Nur Nutzer der Einrichtungen sind erlaubt.") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="bereiche" value="1"<?= $sem_class['bereiche'] ? " checked" : "" ?>>
+            <input type="checkbox" name="bereiche" value="1"<?= $sem_class['bereiche'] ? " checked" : "" ?>>
             <?= _("Muss Studienbereiche haben (falls nein, darf es keine haben)") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="module" value="1"<?= $sem_class['module'] ? " checked" : "" ?>>
+            <input type="checkbox" name="module" value="1"<?= $sem_class['module'] ? " checked" : "" ?>>
             <?= _("Kann Modulen zugeordnet werden.") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="course_creation_forbidden" value="1"<?= $sem_class['course_creation_forbidden'] ? " checked" : "" ?>>
+            <input type="checkbox" name="course_creation_forbidden" value="1"<?= $sem_class['course_creation_forbidden'] ? " checked" : "" ?>>
             <?= _("Anlegeassistent für diesen Typ sperren.") ?>
         </label>
 
         <label>
-            <input type="checkbox" id="is_group" value="1" <?= $sem_class['is_group'] ? 'checked' : '' ?>>
+            <input type="checkbox" name="is_group" value="1" <?= $sem_class['is_group'] ? 'checked' : '' ?>>
             <?= _('Kann Unterveranstaltungen haben') ?>
         </label>
 
         <label>
-            <input type="checkbox" id="unlimited_forbidden" value="1" <?= $sem_class['unlimited_forbidden'] ? 'checked' : '' ?>>
+            <input type="checkbox" name="unlimited_forbidden" value="1" <?= $sem_class['unlimited_forbidden'] ? 'checked' : '' ?>>
             <?= _('Unbegrenzte Laufzeit verbieten') ?>
         </label>
 
         <label>
-            <input type="checkbox" id="admission_turnout_mandatory" value="1" <?= $sem_class['admission_turnout_mandatory'] ?  'checked' : '' ?>>
+            <input type="checkbox" name="admission_turnout_mandatory" value="1" <?= $sem_class['admission_turnout_mandatory'] ?  'checked' : '' ?>>
             <?= _('Geplante Teilnehmendenzahl muss angegeben werden') ?>
         </label>
 
         <label>
             <?= _('Kurzer Beschreibungstext zum Anlegen einer Veranstaltung') ?>
-            <textarea id="create_description" maxlength="200" style="width: 100%"><?= htmlReady($sem_class['create_description']) ?></textarea>
+            <textarea name="create_description"><?= htmlReady($sem_class['create_description']) ?></textarea>
         </label>
     </fieldset>
 
@@ -217,7 +190,6 @@
                     <?= $this->render_partial("admin/sem_classes/content_plugin.php",
                         [
                             'plugin' => $module_info,
-                            'sem_class' => $sem_class,
                             'plugin_id' => $module_name,
                             'activated' => $sem_class['modules'][$module_name]['activated'] ?? false,
                             'sticky' => $sem_class['modules'][$module_name]['sticky'] ?? false,
@@ -230,20 +202,9 @@
     </fieldset>
 
     <footer>
-        <div id="message_below"></div>
-
-        <?= Studip\Button::create(_("Speichern"), "save", ['onClick' => "STUDIP.admin_sem_class.saveData(); return false;"])?>
+        <?= Studip\Button::create(_("Speichern"), "save") ?>
         <? if ($sem_class->countSeminars() === 0) : ?>
-            <input type="hidden" name="delete_sem_class" value="<?= Request::int("id") ?>">
-            <?= Studip\Button::create(_("Löschen"), "delete", ['onClick' => "return window.confirm('"._("Wirklich löschen?")."');"])?>
+            <?= Studip\Button::create(_("Löschen"), "delete", ['formaction' => $controller->url_for('admin/sem_classes/delete_sem_class', $sem_class->id)]) ?>
         <? endif ?>
     </footer>
 </form>
-
-<div id="sem_type_delete_question_title" style="display: none;"><?= _("Sicherheitsabfrage") ?></div>
-<div id="sem_type_delete_question" style="display: none;">
-    <p class="info"><?= _("Wirklich den Veranstaltungstyp löschen?") ?></p>
-    <input type="hidden" id="sem_type_for_deletion">
-    <?= Studip\LinkButton::create(_("Löschen"), ['onclick' => "STUDIP.admin_sem_class.delete_sem_type(); return false;"]) ?>
-    <?= Studip\LinkButton::create(_("Abbrechen"), ['onclick' => "jQuery(this).closest('#sem_type_delete_question').dialog('close'); return false;"]) ?>
-</div>

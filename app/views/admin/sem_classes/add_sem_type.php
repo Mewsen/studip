@@ -1,24 +1,15 @@
-<form action="?" method="post" class="default" id="add_sem_class_window">
+<form action="<?= $controller->link_for('admin/sem_classes/create_sem_type') ?>" method="post" class="default">
+    <input type="hidden" name="sem_class" value="<?= $sem_class ?>">
     <fieldset>
         <legend>
-            <?= _('Veranstaltungskategorie anlegen') ?>
+            <?= _('Veranstaltungstyp anlegen') ?>
         </legend>
 
         <label>
             <span class="required">
                 <?= _("Name") ?>
             </span>
-            <input type="text" name="add_name" id="add_name" required>
-        </label>
-
-        <label>
-            <?= _("Attribute kopieren von Veranstaltungskategorie") ?>
-            <select name="add_like" id="add_like">
-                <option value=""><?= _("keine") ?></option>
-                <? foreach ($GLOBALS['SEM_CLASS'] as $id => $sem_class) : ?>
-                <option value="<?= $id ?>"><?= htmlReady($sem_class['name']) ?></option>
-                <? endforeach ?>
-            </select>
+            <?= I18N::input('name', new I18NString('', []), ['required' => true]) ?>
         </label>
     </fieldset>
 
