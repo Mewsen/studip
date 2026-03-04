@@ -108,18 +108,12 @@
                                     {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                 </template>
                                 <template #selected-option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                    <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
+                                    <span>{{ option.name }}</span>
                                 </template>
                                 <template #option="option">
-                                        <span
-                                            class="vs__option-color"
-                                            :style="{ 'background-color': option.hex }"
-                                        ></span
-                                        ><span>{{ option.name }}</span>
+                                    <span class="vs__option-color" :style="{ 'background-color': option.hex }"></span>
+                                    <span>{{ option.name }}</span>
                                 </template>
                             </StudipSelect>
                             <template v-if="hasTextBackgroundColor">
@@ -138,18 +132,18 @@
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
                                     <template #selected-option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }">
+                                        </span>
+                                        <span>{{ option.name }}</span>
                                     </template>
                                     <template #option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }">
+                                        </span>
+                                        <span>{{ option.name }}</span>
                                     </template>
                                 </StudipSelect>
                             </template>
@@ -205,18 +199,18 @@
                                         {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
                                     </template>
                                     <template #selected-option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }">
+                                        </span>
+                                        <span>{{ option.name }}</span>
                                     </template>
                                     <template #option="option">
-                                            <span
-                                                class="vs__option-color"
-                                                :style="{ 'background-color': option.hex }"
-                                            ></span
-                                            ><span>{{ option.name }}</span>
+                                        <span
+                                            class="vs__option-color"
+                                            :style="{ 'background-color': option.hex }">
+                                        </span>
+                                        <span>{{ option.name }}</span>
                                     </template>
                                 </StudipSelect>
                             </template>
@@ -387,9 +381,6 @@ export default {
         backgroundType() {
             return this.block?.attributes?.payload?.background_type;
         },
-        complementBackgroundColor() {
-            return this.calcComplement(this.backgroundColor);
-        },
         icons() {
             return this.contentIcons;
         },
@@ -496,7 +487,7 @@ export default {
                         download_url: this.urlHelper.getURL(
                             'sendfile.php',
                             { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
-                            true
+                            true,
                         ),
                     });
                 }
@@ -579,6 +570,37 @@ export default {
             this.currentBackgroundImage = {};
             this.selectedStockImage = null;
         },
+
+        calcRGB(color) {
+            color = color.slice(1);
+            let val = parseInt(color, 16);
+            let r = val >> 16;
+            let g = (val >> 8) & 0x00ff;
+            let b = val & 0x0000ff;
+
+            if (r > 255) {
+                r = 255;
+            } else if (r < 0) {
+                r = 0;
+            }
+            if (g > 255) {
+                g = 255;
+            } else if (g < 0) {
+                g = 0;
+            }
+            if (b > 255) {
+                b = 255;
+            } else if (b < 0) {
+                b = 0;
+            }
+
+            return { r, g, b };
+        },
+        hexToRgbA(hex, a) {
+            const {r, g, b} = this.calcRGB(hex);
+
+            return `rgba(${r}, ${g}, ${b}, ${a})`;
+        },
     },
     watch: {
         currentBackgroundImageId(newValue) {
@@ -586,7 +608,6 @@ export default {
                 this.onSelectFile(newValue);
             }
         },
-
     },
 };
 </script>
