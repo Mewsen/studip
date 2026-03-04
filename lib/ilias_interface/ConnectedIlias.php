@@ -1518,7 +1518,7 @@ class ConnectedIlias
         if ($this->user->isConnected()) {
             $ilias_user_id = $this->soap_client->lookupUser($this->user->getUsername());
             $ilias_user_exists = $this->soap_client->getUser($this->user->getId());
-             if (empty($this->soap_client->error) && empty($ilias_user_id) && ! is_array($ilias_user_exists)) {
+            if (empty($this->soap_client->error) && empty($ilias_user_id) && ! is_array($ilias_user_exists)) {
                 $this->soap_client->setCachingStatus(false);
                 $this->soap_client->clearCache();
                 $user_id = $this->soap_client->lookupUser($this->user->getUsername());
@@ -1530,8 +1530,11 @@ class ConnectedIlias
                     return false;
                 }
             } else if (!empty($this->soap_client->error) && $GLOBALS['user']->perms !== 'root') {
-                $this->error[] = sprintf(_('User-Daten aus dem System %s konnten nicht abgerufen werden.'), $this->ilias_config['name']);
+                $this->error[] = sprintf(_('Fehler beim Zugriff auf das System %s.'), $this->ilias_config['name']);
                 $this->ilias_config['active'] = false;
+            } else if (!empty($this->user->getId()) && !empty($this->user->getId()) && ! is_array($ilias_user_exists)) {
+                $this->error[] = sprintf(_('User-Daten aus dem System %s konnten nicht abgerufen werden.'), $this->ilias_config['name']);
+                return false;
             }
         }
         return true;
