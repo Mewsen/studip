@@ -19,7 +19,12 @@ class Evaluation_ArchiveController extends AuthenticatedController
             $this->url_for('evaluation/archive/set'),
             'sem_select'
         );
-        $selected_sem = $_SESSION['evaluation_archive_sem'] ?? Semester::findCurrent()->id;
+        $selected_sem = $_SESSION['evaluation_archive_sem'] ?? 'all';
+        $sem_list->addElement(new SelectElement(
+           'all',
+           _('Alle'),
+            'all' === $selected_sem
+        ));
         foreach ($semesters as $semester) {
             $sem_list->addElement(new SelectElement(
                 $semester->id,
@@ -35,7 +40,12 @@ class Evaluation_ArchiveController extends AuthenticatedController
             $this->url_for('evaluation/archive/set'),
             'inst_select'
         );
-        $selected_inst = $_SESSION['evaluation_archive_inst'] ?? $institutes[0]['Institut_id'];
+        $selected_inst = $_SESSION['evaluation_archive_inst'] ?? 'all';
+        $inst_list->addElement(new SelectElement(
+            'all',
+           _('Alle'),
+            'all' === $selected_inst
+        ));
         foreach ($institutes as $institute) {
             $inst_list->addElement(
                 new SelectElement(
@@ -46,10 +56,16 @@ class Evaluation_ArchiveController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($inst_list);
 
-        $this->eval_assignments = QuestionnaireEvalAssignment::findBySQL(
-            "`questionnaire_id` IS NOT NULL AND `applied` = 1
-            AND `semester_id` = ? AND `institute_id` = ?",
-            [$selected_sem, $selected_inst]);
+        $query = SQLQuery::table('questionnaire_eval_assignments')
+            ->where('`questionnaire_id` IS NOT NULL AND `applied` = 1');
+        if ($selected_sem !== 'all') {
+            $query->where('semester_id', '`semester_id` = ?', [$selected_sem]);
+        }
+        if ($selected_inst !== 'all') {
+            $query->where('institute_id', '`institute_id` = ?', [$selected_inst]);
+        }
+        $query->orderBy('`questionnaire_eval_assignments`.`startdate` DESC');
+        $this->eval_assignments = $query->fetchAll(QuestionnaireEvalAssignment::class);
     }
 
     public function set_action()
