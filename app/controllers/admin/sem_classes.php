@@ -41,7 +41,7 @@ class Admin_SemClassesController extends AuthenticatedController
         $name = Request::i18n('add_name');
         $copy = Request::get('add_like');
 
-        if (SemClass::countBySql('name = ?', [$add_name])) {
+        if (SemClass::countBySql('name = ?', [$name])) {
             $message = sprintf(_('Es existiert bereits eine Veranstaltungskategorie mit dem Namen "%s"'), htmlReady($name));
             PageLayout::postError($message);
         } else {
