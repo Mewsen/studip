@@ -251,6 +251,13 @@ class QuestionnaireController extends AuthenticatedController
             $new_question['questionnaire_id'] = $this->questionnaire->getid();
             $new_question['questiondata'] = $question['questiondata'];
             $new_question['mkdate'] = time();
+            if ($this->old_questionnaire->is_template) {
+                if (isset($question['template_question_id'])) {
+                    $new_question['template_question_id'] = $question['template_question_id'];
+                } else {
+                    $new_question['template_question_id'] = $question['question_id'];
+                }
+            }
             $new_question->store();
         }
         if (!$this->questionnaire->is_template) {
