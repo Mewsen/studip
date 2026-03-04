@@ -52,7 +52,10 @@ final class MyCoursesHelper
                     $_courses = [];
 
                     foreach ($_outer as $course) {
-                        $_courses[$course['seminar_id']] = $course;
+                        if(!empty($course['sem_number'])) {
+                            $_courses[$course['seminar_id']] = $course;
+                        }
+
                         if (!empty($course['children']) && is_array($course['children'])) {
                             foreach ($course['children'] as $child) {
                                 $_courses[$child['seminar_id']] = $child;
@@ -180,9 +183,9 @@ final class MyCoursesHelper
 
     private function convertCourse($course)
     {
-        $is_teacher = in_array($course['user_status'], ['tutor', 'dozent']);
+        $is_teacher = !empty($course['user_status']) && in_array($course['user_status'], ['tutor', 'dozent']);
 
-        $avatar = $course['sem_class']['studygroup_mode']
+        $avatar = !empty($course['sem_class']['studygroup_mode'])
             ? StudygroupAvatar::getAvatar($course['seminar_id'])
             : CourseAvatar::getAvatar($course['seminar_id']);
 
@@ -199,20 +202,44 @@ final class MyCoursesHelper
             }
         }
 
+        if (!empty($course['children']) && empty($course['seminar_id'])) {
+            foreach ($course['children'] as $_course) {
+                return [
+                    'id'                => (string) $_course['seminar_id'],
+                    'name'              => (string) $_course['name'],
+                    'number'            => (string) $_course['veranstaltungsnummer'],
+                    'group'             => !empty($_course['gruppe']) ? (int) $_course['gruppe'] : '',
+                    'admission_binding' => !empty($_course['admission_binding']),
+                    'children'          => array_column($_course['children'] ?? [], 'seminar_id'),
+                    'parent'            => $_course['parent_course'] ?? null,
+
+                    'is_teacher'    => !empty($_course['user_status']) && in_array($_course['user_status'], ['tutor', 'dozent']),
+                    'is_studygroup' => !empty($_course['sem_class']['studygroup_mode']),
+                    'is_hidden'     => empty($_course['visible']),
+                    'is_deputy'     => !empty($_course['is_deputy']),
+                    'is_group'      => !empty($_course['is_group']),
+
+                    'avatar' => $avatar->getURL(Avatar::MEDIUM),
+
+                    'navigation'       => $this->reduceNavigation($_course['navigation'] ?? null),
+                    'extra_navigation' => $extra_navigation,
+                ];
+            }
+        }
         return [
             'id'                => (string) $course['seminar_id'],
             'name'              => (string) $course['name'],
             'number'            => (string) $course['veranstaltungsnummer'],
-            'group'             => (int) $course['gruppe'],
-            'admission_binding' => (bool) $course['admission_binding'],
+            'group'             => !empty($course['gruppe']) ? (int) $course['gruppe'] : '',
+            'admission_binding' => !empty($course['admission_binding']),
             'children'          => array_column($course['children'] ?? [], 'seminar_id'),
             'parent'            => $course['parent_course'] ?? null,
 
-            'is_teacher'    => in_array($course['user_status'], ['tutor', 'dozent']),
-            'is_studygroup' => (bool) $course['sem_class']['studygroup_mode'],
-            'is_hidden'     => !$course['visible'],
-            'is_deputy'     => (bool) $course['is_deputy'],
-            'is_group'      => (bool) $course['is_group'],
+            'is_teacher'    => !empty($course['user_status']) && in_array($course['user_status'], ['tutor', 'dozent']),
+            'is_studygroup' => !empty($course['sem_class']['studygroup_mode']),
+            'is_hidden'     => empty($course['visible']),
+            'is_deputy'     => !empty($course['is_deputy']),
+            'is_group'      => !empty($course['is_group']),
 
             'avatar' => $avatar->getURL(Avatar::MEDIUM),
 
