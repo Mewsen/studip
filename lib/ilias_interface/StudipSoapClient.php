@@ -32,7 +32,7 @@ class StudipSoapClient
             try {
                 $result = $this->soap_client->__soapCall($method, $params);
             } catch (SoapFault $fault) {
-                $this->faultstring = $fault->faultstring;
+                $this->faultstring = $method . ": " . $fault->faultstring;
                 if (!in_array(mb_strtolower($this->faultstring), ["session not valid","session invalid", "session idled"])) {
                     unset($params['password']);
                     $this->error .= sprintf(_("SOAP-Fehler, Funktion \"%s\":"), $method) . " " . $fault->faultstring . " (" .  $fault->faultcode . ")".print_r($params,1);
