@@ -593,8 +593,8 @@ class Instance
 
         $data = [];
         foreach ($statement as $row) {
-            $structuralElementId = $row['structural_element_id'];
-            unset($row['structural_element_id']);
+            $structuralElementId = $row['id'];
+            unset($row['id']);
 
             if (!isset($data[$structuralElementId])) {
                 $data[$structuralElementId] = [];
