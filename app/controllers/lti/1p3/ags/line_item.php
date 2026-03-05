@@ -28,14 +28,32 @@ final class Lti_1p3_Ags_LineItemController extends AuthenticatedController
 
     public function index_action(): void
     {
-        $requestHandler = match (Request::method()) {
-            'PUT' => new UpdateLineItemServiceServerRequestHandler($this->lineItemRepo),
-            'DELETE' => new DeleteLineItemServiceServerRequestHandler($this->lineItemRepo),
-            'GET' => new GetLineItemServiceServerRequestHandler($this->lineItemRepo),
-            default => throw new MethodNotAllowedException()
-        };
+        try {
+            $requestHandler = match (Request::method()) {
+                'PUT' => new UpdateLineItemServiceServerRequestHandler($this->lineItemRepo),
+                'DELETE' => new DeleteLineItemServiceServerRequestHandler($this->lineItemRepo),
+                'GET' => new GetLineItemServiceServerRequestHandler($this->lineItemRepo),
+                default => throw new MethodNotAllowedException()
+            };
 
-        $this->renderAgsResponse($requestHandler);
+            $this->renderAgsResponse($requestHandler);
+
+        } catch (\Throwable $e) {
+            $requestBody = $this->getPsrRequest()->getBody()->getContents();
+
+            $response = new \Nyholm\Psr7\Response(
+            500,
+            ['Content-Type' => 'application/json'],
+            json_encode([
+            'message' => $e->getMessage(),
+            'request_body' => $requestBody,
+            ])
+            );
+
+            $this->renderPsrResponse($response);
+        }
+
+        $this->set_layout(null);
     }
 
     public function results_action(): void

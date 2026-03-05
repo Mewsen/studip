@@ -20,39 +20,49 @@ final class Lti_1p3_TokenController extends AuthenticatedController
     protected $with_session = false;
     use NegotiatesWithPsr7;
 
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected OidcAuthenticationRequestHandler $oidcLoginHandler
-    )
-    {
-        parent::__construct($dispatcher);
-    }
-
     public function index_action(): void
     {
-        $platformEncryptionKey = PlatformManager::getPrivateKey()->getContent();
-        $responseGenerator = new AccessTokenResponseGenerator(
-            new KeyManager(),
-            new AuthorizationServerFactory(
-                new ClientRepository(new RegistrationManager()),
-                new AccessTokenRepository(Factory::getCache()),
-                new ScopeRepository(
-                    [
-                        new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/lineitem'),
-                        new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly'),
-                        new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/score')
-                    ]
-                ),
-                $platformEncryptionKey
-            )
-        );
+        try {
+            $platformEncryptionKey = PlatformManager::getPrivateKey()->getContent();
+            $responseGenerator = new AccessTokenResponseGenerator(
+                new KeyManager(),
+                new AuthorizationServerFactory(
+                    new ClientRepository(new RegistrationManager()),
+                    new AccessTokenRepository(Factory::getCache()),
+                    new ScopeRepository(
+                        [
+                            new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/lineitem'),
+                            new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly'),
+                            new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly'),
+                            new ScopeEntity('https://purl.imsglobal.org/spec/lti-ags/scope/score')
+                        ]
+                    ),
+                    $platformEncryptionKey
+                )
+            );
 
-        $response = $responseGenerator->generate(
-            $this->getPsrRequest(),
-            $this->getPsrResponse(),
-            '1'
-        );
+            $response = $responseGenerator->generate(
+                $this->getPsrRequest(),
+                $this->getPsrResponse(),
+                '1'
+            );
 
-        $this->renderPsrResponse($response);
+            $this->renderPsrResponse($response);
+        } catch (\Throwable $e) {
+            $requestBody = $this->getPsrRequest()->getBody()->getContents();
+
+            $response = new \Nyholm\Psr7\Response(
+                500,
+                ['Content-Type' => 'application/json'],
+                json_encode([
+                    'message' => $e->getMessage(),
+                    'request_body' => $requestBody,
+                ])
+            );
+
+            $this->renderPsrResponse($response);
+        }
+
+        $this->set_layout(null);
     }
 }

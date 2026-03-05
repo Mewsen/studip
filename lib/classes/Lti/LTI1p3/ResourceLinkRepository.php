@@ -131,8 +131,9 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
     {
         $lineItemsContainerUrl = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_items', ['resource_link_id' => $this->resourceLink->id], true);
         $lineItemURL = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_item', ['resource_link_id' => $this->resourceLink->id], true);
+        $gradeSynchronization = (int) $this->resourceLink->getConfigValues()['grade_synchronization'];
 
-        return match ((int) $this->resourceLink->getConfigValues()['grade_synchronization']) {
+        return match ($gradeSynchronization) {
             GradeSynchronization::GradeSyncOnly->value => new AgsClaim(
                 [
                     'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly',

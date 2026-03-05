@@ -9,7 +9,7 @@ final class KeyManager implements KeyChainRepositoryInterface
 {
     public function find(string $identifier): ?KeyChainInterface
     {
-        return Keyring::findOneByRange_id($identifier)?->toKeyChain();
+        return Keyring::find($identifier)?->toKeyChain();
     }
 
     public function findByKeySetName(string $keySetName): array
