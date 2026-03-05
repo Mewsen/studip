@@ -7,6 +7,7 @@ import { $gettext } from '@/assets/javascripts/lib/gettext';
 
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
+
 const props = defineProps({
     discussion: { type: Object, required: true },
 });
@@ -15,9 +16,30 @@ const posts = computed(() => forumPostStore.posts);
 const currentPostIndex = computed(() => forumPostStore.currentPostIndex);
 const firstUnreadPostIndex = computed(() => forumPostStore.firstUnreadPostIndex);
 
+const currentPost = computed(() => posts.value[currentPostIndex.value]);
+
 const currentPostDate = computed(() => {
-    const post = posts.value[currentPostIndex.value];
+    const post = currentPost.value;
     return post ? new Date(post.mkdate).toLocaleString(String.locale, { month: 'long', year: 'numeric' }) : null;
+});
+
+const ariaValueText = computed(() => {
+    if (!currentPost.value) return '';
+    return $gettext('Beitrag %{current} von %{total}, %{date}')
+        .replace('%{current}', currentPostIndex.value + 1)
+        .replace('%{total}', posts.value.length)
+        .replace('%{date}', currentPostDate.value);
+});
+
+const unreadAnnouncement = computed(() => {
+    if (firstUnreadPostIndex.value < 0 || forumConfig.allowGuestAccess) {
+        return '';
+    }
+
+    return $gettext('Erste ungelesene Nachricht bei Beitrag %{index}').replace(
+        '%{index}',
+        firstUnreadPostIndex.value + 1,
+    );
 });
 
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
@@ -52,25 +74,35 @@ const onKeyDown = (e) => {
         </button>
 
         <div class="slider-container">
+            <span class="sr-only" id="timeline-label">
+                {{ $gettext('Beitragsnavigation der Diskussion') }}
+            </span>
+            <span v-if="unreadAnnouncement" class="sr-only">
+                {{ unreadAnnouncement }}
+            </span>
             <div class="slider-track">
                 <div
                     v-if="isNewFrom"
                     class="unread-marker"
                     :style="{
                         top: ((firstUnreadPostIndex - 1) / (posts.length - 1 || 1)) * 100 + '%',
-                        bottom: 0
+                        bottom: 0,
                     }"
                 ></div>
             </div>
 
-            <div 
-                v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex" 
-                class="new-posts-label" 
-                :style="{ 
-                    top: ((firstUnreadPostIndex - 1) / (posts.length - 1 || 1)) * 100 + '%' 
+            <div
+                v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex"
+                class="new-posts-label"
+                :style="{
+                    top: ((firstUnreadPostIndex - 1) / (posts.length - 1 || 1)) * 100 + '%',
                 }"
             >
-                <button type="button" :title="$gettext('Zum ersten ungelesenen Beitrag')" @click="jumpToPost(firstUnreadPostIndex)">
+                <button
+                    type="button"
+                    :title="$gettext('Zum ersten ungelesenen Beitrag springen')"
+                    @click="jumpToPost(firstUnreadPostIndex)"
+                >
                     {{ $gettext('Neu ab hier') }}
                 </button>
             </div>
@@ -84,7 +116,8 @@ const onKeyDown = (e) => {
                 @input="onSliderInput"
                 @keydown="onKeyDown"
                 class="timeline-slider"
-                :aria-valuetext="currentPostDate"
+                aria-labelledby="timeline-label"
+                :aria-valuetext="ariaValueText"
             />
 
             <div
@@ -165,7 +198,6 @@ const onKeyDown = (e) => {
                 font-weight: 700;
                 margin-top: 40px;
                 padding: 0;
-                
             }
         }
 
@@ -218,7 +250,7 @@ const onKeyDown = (e) => {
                 font-weight: 700;
                 color: var(--color--highlight);
                 line-height: 1.1;
-                background:  var(--color--global-background);
+                background: var(--color--global-background);
                 padding: 2px 0;
             }
         }
