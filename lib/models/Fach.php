@@ -70,10 +70,11 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
             'on_store' => 'store',
             'on_delete' => 'delete'
         ];
-
+/*
         $config['additional_fields']['count_abschluesse']['get'] = function ($fach) {
             return $fach->count_abschluesse;
         };
+*/
         $config['additional_fields']['count_user']['get'] = function ($fach) {
             return $fach->count_user;
         };
@@ -151,7 +152,9 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
      * @return int The number of Fächer
+     * REMOVED
      */
+    /*
     public static function getCount($filter = null)
     {
         $query = '
@@ -163,6 +166,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         $db->execute();
         return $db->fetchColumn(0);
     }
+    */
 
     /**
      * Returns all Faecher which are assigned to Studiengangteile. Sorted and
@@ -240,35 +244,46 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * Retrieves all Faecher implicitly assigned to the given Abschluss.
      *
      * @param string $abschluss_id The id of the Abschluss.
-     * @return object Collection of Faecher assigned to the given Abschluss.
+     * @return static[] An array of Faecher assigned to the given Abschluss.
      */
     public static function findByAbschluss($abschluss_id)
     {
-        return parent::getEnrichedByQuery('
-            SELECT mf.*
-            FROM fach mf
-                LEFT JOIN mvv_stgteil USING (fach_id)
-                LEFT JOIN mvv_stg_stgteil USING (stgteil_id)
-                LEFT JOIN mvv_studiengang ms USING (studiengang_id)
-            WHERE ms.abschluss_id = ?
-            ORDER BY name',
-            [$abschluss_id]
+        return self::findBySQL(
+            'JOIN `mvv_stgteil` USING (`fach_id`)
+                JOIN `mvv_stg_stgteil` USING (`stgteil_id`)
+                JOIN `mvv_studiengang` USING (`studiengang_id`)
+            WHERE `mvv_studiengang`.`abschluss_id` = ?
+            GROUP BY `fach`.`fach_id`
+            ORDER BY `name`',
+            [
+                $abschluss_id
+            ]
         );
     }
 
     /**
-     * Retrieves all Faecher the giveb Fachbereich is assigned to. If the 2nd
+     * Retrieves all Faecher the given Fachbereich is assigned to. If the 2nd
      * parameter is true, only Faecher assigned to Studiengangteile will be
      * returned.
      *
      * @param string $abschluss_id The id of the Abschluss.
-     * @return object Collection of Faecher assigned to the given Abschluss.
+     * @return static[] Collection of Faecher assigned to the given Abschluss.
      */
     public static function findByFachbereich($fachbereich_id, $has_stgteile = false)
     {
         $has_stgteile_sql = $has_stgteile
-                ? 'INNER JOIN mvv_stgteil USING (fach_id) '
+                ? 'INNER JOIN `mvv_stgteil` USING (`fach_id`) '
                 : '';
+        return self::findBySQL(
+            $has_stgteile_sql .
+            'LEFT JOIN `mvv_fach_inst` USING(`fach_id`)
+            WHERE `mvv_fach_inst`.`institut_id` = ?
+            ORDER BY `name`',
+            [
+                $fachbereich_id
+            ]
+        );
+        /*
         return parent::getEnrichedByQuery('
             SELECT mf.*
             FROM fach mf
@@ -278,6 +293,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
             ORDER BY name',
             [$fachbereich_id]
         );
+        */
     }
 
     /**
@@ -430,7 +446,9 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param string $kategorie_id The id of the Abschluss-Kategorie.
      * @param string $abschluss_id The id of the Abschluss.
      * @return array Found Fachbereiche as array. Empty array if none was found.
+     * REMOVED
      */
+    /*
     public static function findUsedFachbereiche($kategorie_id = null,
             $abschluss_id = null)
     {
@@ -479,10 +497,11 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         }
         return $fachbereiche;
     }
+    */
 
 
     /**
-     * Returns names ans ids of all Fachbereiche (institutes) with number of
+     * Returns names and ids of all Fachbereiche (institutes) with number of
      * related Faecher. Sorted and filtered by optional parameters.
      *
      * @param string $sortby Column names to sort by.
@@ -490,7 +509,9 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Array of filter parameters (name of column as key,
      * see ModulManagementModel::getFilterSql()).
      * @return array Associative array of Fachbereiche (id as key).
+     * REMOVED
      */
+    /*
     public static function getAllFachbereiche($sortby = 'name', $order = 'ASC',
             $filter = null)
     {
@@ -513,6 +534,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         }
         return $fachbereiche;
     }
+    */
 
     /**
      * Returns an array with all faecher which are used by given Fachbereich
@@ -550,7 +572,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
     }
 
     /**
-     * Assignes fachbereiche to this fach.
+     * Assigns fachbereiche to this fach.
      * Returns true only if all given fachbereich ids are valid.
      *
      * @param string[]|object[] Array of $fachbereich_ids or
@@ -600,11 +622,14 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * Returns all Abschluesse this Fach is implicitly assigned to.
      *
      * @return A collection of Faecher.
+     * REMOVED
      */
+    /*
     public function getAbschluesse()
     {
         return Abschluss::findByFach($this->getId());
     }
+    */
 
     /**
      * @see MvvTreeItem::getTrailParentId()

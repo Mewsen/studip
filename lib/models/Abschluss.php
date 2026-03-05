@@ -67,20 +67,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             'order_by' => 'GROUP BY fach_id ORDER BY name'
         ];
 
-        $config['additional_fields']['count_faecher']['get'] = function (Abschluss $abschluss) {
-            return $abschluss->count_faecher;
-        };
-        $config['additional_fields']['kategorie_name']['get'] = function (Abschluss $abschluss) {
-            return $abschluss->kategorie_name;
-        };
         $config['additional_fields']['kategorie_id']['get'] = function (Abschluss $abschluss) {
             return $abschluss->category_assignment ? $abschluss->category_assignment->kategorie_id : null;
-        };
-        $config['additional_fields']['count_studiengaenge']['get'] = function (Abschluss $abschluss) {
-            return $abschluss->count_studiengaenge;
-        };
-        $config['additional_fields']['count_objects']['get'] = function (Abschluss $abschluss) {
-            return $abschluss->count_objects;
         };
         $config['additional_fields']['count_user']['get'] = 'countUser';
 
@@ -90,36 +78,6 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
         parent::configure($config);
     }
-
-    /**
-     * Number of assigned Faecher.
-     * @var type int
-     */
-    private $count_faecher;
-
-    /**
-     * Number of Studiengaenge this Abschluss is assigned to.
-     * @var type int
-     */
-    private $count_studiengaenge;
-
-    /**
-     * The name of the assigned Kategorie.
-     * @var type string
-     */
-    private $kategorie_name;
-
-    /**
-     * The id of the assigned Kategorie.
-     * @var type
-     */
-    private $kategorie_id;
-
-    /**
-     * Alias for $count_studiengaenge
-     * @var type
-     */
-    private $count_objects;
 
     public function __construct($id = null)
     {
@@ -139,7 +97,9 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
      * @return object A SimpleORMapCollection of Abschluss objects.
+     * REMOVED
      */
+    /*
     public static function getAllEnriched($sortby = 'name', $order = 'ASC',
             $row_count = null, $offset = null, $filter = null)
     {
@@ -161,6 +121,7 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
                 ORDER BY ' . $sortby,
         [], $row_count, $offset);
     }
+    */
 
     /**
      * Returns the number of Abschlüsse optional filtered by $filter.
@@ -168,7 +129,9 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Key-value pairs of filed names and values
      * to filter the result set.
      * @return int The number of Abschluesse
+     * REMOVED
      */
+    /*
     public static function getCount($filter = null)
     {
         $query = '
@@ -185,26 +148,29 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
         $db->execute();
         return $db->fetchColumn(0);
     }
+    */
 
     /**
      * Returns all Abschluesse assigned to a given Fach.
+     * An Abschluss is assigned to a Fach if a Studiengangteil (that holds the Fach)
+     * is assigned to a Studiengang (as the home of the Abschluss).
      *
      * @param string $fach_id The id of the fach.
-     * @return array An array of abschluss objects.
+     * @return static[] An array of abschluss objects.
+     * REMOVED
      */
     public static function findByFach($fach_id)
     {
-        return parent::getEnrichedByQuery('
-            SELECT ma.*,
-                COUNT(DISTINCT mss.studiengang_id) AS count_studiengaenge
-            FROM mvv_stgteil AS mst
-                INNER JOIN mvv_stg_stgteil AS mss USING (stgteil_id)
-                LEFT JOIN mvv_studiengang USING (studiengang_id)
-                LEFT JOIN abschluss AS ma USING (abschluss_id)
-            WHERE mst.fach_id = ?
-            GROUP BY ma.abschluss_id
-            ORDER BY name',
-            [$fach_id]
+        return self::findBySQL(
+            'JOIN `mvv_studiengang` USING (`abschluss_id`)
+            JOIN `mvv_stg_stgteil` USING (`studiengang_id`)
+            JOIN `mvv_stgteil` USING (`stgteil_id`)
+            WHERE `mvv_stgteil`.`fach_id` = ?
+            GROUP BY `abschluss`.`abschluss_id`
+            ORDER BY `abschluss`.`name`',
+            [
+                $fach_id
+            ]
         );
     }
 
@@ -212,7 +178,9 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * Returns all Abschluesse assigned to Studiengaenge.
      *
      * @return array An array of Abschluesse.
+     * REMOVED
      */
+    /*
     public static function findUsed()
     {
         return parent::getEnrichedByQuery('
@@ -223,6 +191,7 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             ORDER BY name
         ');
     }
+    */
 
     /**
      * Returns all Abschluesse assigned to the given Studiengaenge.
@@ -231,7 +200,9 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * Studiengaenge.
      * @return array An array of Abschluesse with number of assigned
      * Studiengaenge.
+     * REMOVED
      */
+    /*
     public static function findByStudiengaenge($studiengang_ids = [])
     {
         return parent::getEnrichedByQuery('
@@ -243,13 +214,16 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             GROUP BY ma.abschluss_id
             ORDER BY ma.name');
     }
+    */
 
     /**
      * Returns all Abschluesse assigned to the given Fachbereich.
      *
      * @param string $fachbereich_id The id of a Fachbereich.
      * @return array An array of Abschluesse.
+     * REMOVED
      */
+    /*
     public static function findByFachbereich($fachbereich_id)
     {
         return parent::getEnrichedByQuery('
@@ -265,13 +239,16 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             [$fachbereich_id]
         );
     }
+    */
 
     /**
      * Returns all Abschluesse assigned to the given module.
      *
      * @param string $modul_id The id of a module.
      * @return array An array of Abschluesse.
+     * REMOVED
      */
+    /*
     public static function findByModul($modul_id)
     {
         return parent::getEnrichedByQuery('
@@ -287,6 +264,7 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
             [$modul_id]
         );
     }
+    */
 
     /**
      * @see ModuleManagementModel::getClassDisplayName
@@ -303,7 +281,9 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param int Position of this Abschluss in the given Kategorie.
      * @return object|null The assigned Kategorie. Null if assigned
      * Abschluss-Kategorie is unknown
+     * REMOVED
      */
+    /*
     public function assignKategorie($kategorie_id, $position = null)
     {
         $kategorie = AbschlussKategorie::find($kategorie_id);
@@ -318,21 +298,26 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
         return $kategorie;
     }
+    */
 
     /**
      * Returns all Faecher this Abschluss is assigned to.
      *
      * @return array All Faecher this Abschluss is assigned to.
+     * REMOVED
      */
+    /*
     public function getFaecher()
     {
         return Fach::findByAbschluss($this->getId());
     }
+    */
 
     /**
-     * Returns all assigned institutes of this Abschluss.
+     * Returns all institutes implicitly assigned by study courses (responsible institute).
      *
      * @return array An array of institutes.
+     * TODO (remove)
      */
     public function getAssignedInstitutes()
     {
@@ -436,6 +421,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
     }
 
+    // REMOVED
+    /*
     public function validate()
     {
         $ret = parent::validate();
@@ -478,6 +465,7 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
         }
         return $ret;
     }
+    */
 
     public function countUser()
     {

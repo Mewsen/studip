@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var Fach $fach
+ */
+?>
 <td colspan="3">
     <table class="default">
         <colgroup>
@@ -5,8 +10,7 @@
             <col style="width: 40%">
             <col style="width: 1%">
         </colgroup>
-        <?php $abschluesse = $fach->getAbschluesse()?>
-        <? foreach ($abschluesse as $abschluss) : ?>
+        <? foreach ($fach->abschluesse as $abschluss) : ?>
             <tr>
                 <td><?= htmlReady($abschluss->getDisplayName()) ?></td>
                 <td><?= htmlReady($abschluss->category->getDisplayName()) ?></td>

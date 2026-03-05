@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var int $count
+ * @var MVVController $controller
+ * @var Fach[] $faecher
+ * @var string $fach_id
+ * @var int $page
+ */
+?>
 <form method="post">
     <?= CSRFProtection::tokenTag(); ?>
     <table class="default collapsable">
@@ -12,18 +21,19 @@
                 <th style="width: 5%; text-align: right;"><?= _('Aktionen') ?></th>
             </tr>
         </thead>
-        <? foreach ($faecher as $fach): ?>
-            <tbody class="<?= $fach->count_abschluesse ? '' : 'empty' ?>  <?= ($fach_id === $fach->id ? 'not-collapsed' : 'collapsed') ?>">
+        <? foreach ($faecher as $fach_data) : ?>
+            <? $fach = Fach::buildExisting($fach_data); ?>
+            <tbody class="<?= $fach->abschluesse->count() ? '' : 'empty' ?>  <?= ($fach_id === $fach->id ? 'not-collapsed' : 'collapsed') ?>">
                 <tr class="header-row">
                     <td class="toggle-indicator">
-                        <? if ($fach->count_abschluesse) : ?>
+                        <? if ($fach->abschluesse->count()) : ?>
                             <a class="mvv-load-in-new-row"
                                href="<?= $controller->action_link('details/' . $fach->id) ?>"><?= htmlReady($fach->name) ?></a>
                         <? else: ?>
                             <?= htmlReady($fach->name) ?>
                         <? endif; ?>
                     </td>
-                    <td class="dont-hide" style="text-align: center;"><?= $fach->count_abschluesse ?> </td>
+                    <td class="dont-hide" style="text-align: center;"><?= $fach->abschluesse->count() ?> </td>
                     <td class="dont-hide actions" style="white-space: nowrap;">
                         <? if (MvvPerm::havePermWrite($fach)) : ?>
                             <a href="<?= $controller->action_link('fach/' . $fach->id) ?>">
@@ -31,7 +41,7 @@
                             </a>
                         <? endif; ?>
                         <? if (MvvPerm::havePermCreate($fach)) : ?>
-                            <? if ($fach->count_abschluesse == 0): ?>
+                            <? if ($fach->abschluesse->count() == 0): ?>
                                 <?= Icon::create('trash', Icon::ROLE_CLICKABLE, tooltip2(_('Fach löschen')))->asInput(
                                     [
                                         'formaction'   => $controller->action_url('delete/' . $fach->id),
@@ -39,7 +49,7 @@
                                         'name'         => 'delete'
                                     ]); ?>
                             <? else : ?>
-                                <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Fach kann nicht glöscht werden')))->asSvg(); ?>
+                                <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Fach kann nicht gelöscht werden')))->asSvg(); ?>
                             <? endif; ?>
                         <? endif; ?>
                     </td>
@@ -65,7 +75,6 @@
                         $pagination->set_attribute('pagelink', $page_link);
                         echo $pagination->render();
                         ?>
-
                     </td>
                 </tr>
             </tfoot>

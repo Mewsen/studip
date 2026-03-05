@@ -68,7 +68,7 @@
                         ?>
                     <? endif; ?>
                     <? if ($perm->havePerm(MvvPerm::PERM_CREATE)) : ?>
-                        <? if (!$studiengang->count_faecher) : ?>
+                        <? if (!count($studiengang->studiengangteile)) : ?>
                             <? $actionMenu->addButton(
                                 'delete',
                                 _('Studiengang löschen'),

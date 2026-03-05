@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var Studiengaenge_AbschluesseController $controller
+ * @var int $count
+ * @var Abschluss[] $abschluesse
+ * @var string $abschluss_id
+ * @var int $page
+ */
+?>
 <form method="post">
     <?= CSRFProtection::tokenTag(); ?>
     <table class="default collapsable">
@@ -14,25 +23,25 @@
             </tr>
         </thead>
         <? foreach ($abschluesse as $abschluss) : ?>
-        <tbody class="<?= $abschluss->count_faecher ? '' : 'empty' ?> <?= !empty($abschluss_id) ? 'not-collapsed' : 'collapsed' ?>">
+        <tbody class="<?= count($abschluss->faecher) ? '' : 'empty' ?> <?= !empty($abschluss_id) ? 'not-collapsed' : 'collapsed' ?>">
         <tr class="header-row">
             <td class="toggle-indicator">
-                <? if ($abschluss->count_faecher) : ?>
+                <? if (count($abschluss->faecher)) : ?>
                     <a class="mvv-load-in-new-row" href="<?= $controller->action_link('details/' . $abschluss->id) ?>"><?= htmlReady($abschluss->name) ?> </a>
                 <? else: ?>
                     <?= htmlReady($abschluss->name) ?>
                 <? endif; ?>
             </td>
-            <td class="dont-hide"><?= htmlReady($abschluss->kategorie_name) ?></td>
-            <td style="text-align: center;" class="dont-hide"><?= $abschluss->count_faecher ?></td>
+            <td class="dont-hide"><?= htmlReady($abschluss->category->name) ?></td>
+            <td style="text-align: center;" class="dont-hide"><?= count($abschluss->faecher) ?></td>
             <td class="dont-hide actions" style="white-space: nowrap;">
             <? if (MvvPerm::havePermWrite($abschluss)) : ?>
-                <a href="<?=$controller->action_link('abschluss/' . $abschluss->id)?>">
+                <a data-dialog href="<?=$controller->action_link('abschluss/' . $abschluss->id)?>">
                     <?= Icon::create('edit', Icon::ROLE_CLICKABLE, tooltip2(_('Abschluss bearbeiten')))->asSvg(); ?>
                 </a>
             <? endif; ?>
             <? if (MvvPerm::havePermCreate($abschluss)) : ?>
-                <? if (!$abschluss->count_faecher) : ?>
+                <? if (count($abschluss->faecher) === 0) : ?>
                 <?= Icon::create('trash', Icon::ROLE_CLICKABLE, tooltip2(_('Abschluss löschen')))->asInput(
                         [
                             'formaction'   => $controller->action_url('delete/' . $abschluss->id),
@@ -60,11 +69,10 @@
                         $pagination->set_attribute('perPage', MVVController::$items_per_page);
                         $pagination->set_attribute('num_postings', $count);
                         $pagination->set_attribute('page', $page);
-                        $page_link = explode('?', $controller->action_url('index'))[0] . '?page_abschluesse=%s';
+                        $page_link = strtok('?', $controller->indexURL()) . '?page_abschluesse=%s';
                         $pagination->set_attribute('pagelink', $page_link);
                         echo $pagination->render();
                     ?>
-
                     </td>
                 </tr>
             </tfoot>

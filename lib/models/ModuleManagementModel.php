@@ -236,9 +236,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      *
      * @throws InvalidValuesException
      */
-    public function validate() {
-
-    }
+    public function validate() {}
 
     /**
      * @see SimpleOrMap::delete()
@@ -626,7 +624,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param array $additional_fields Calculated columns.
      * @return string The sort query part.
      */
-    protected static function createSortStatement($sort, $order = 'ASC',
+    public static function createSortStatement($sort, $order = 'ASC',
             $standard_field = null, $additional_fields = [])
     {
         $order = mb_strtoupper(trim($order)) !== 'DESC' ? ' ASC' : ' DESC';
