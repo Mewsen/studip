@@ -850,23 +850,22 @@ SQL;
         return null;
     }
 
-    /**
-     * Copies this instance into another course oder users contents.
-     *
-     * @param User $user   this user will be the owner of the copy
-     * @param \Range $parent the target where to copy this instance
-     *
-     * @return StructuralElement the copy of this instance
-     */
-    public function copyToRange(
+    protected function copyBase(
         User $user,
-        string $rangeId,
-        string $rangeType,
+        ?StructuralElement $parent = null,
+        ?string $rangeId = null,
+        ?string $rangeType = null,
         string $purpose = '',
-        bool $duplicate = false
+        bool $duplicate = false,
+        array &$mapping = [],
     ): StructuralElement {
+        $parentId = $parent ? $parent->id : null;
+        $rangeId = $rangeId ?? ($parent ? $parent->range_id : null);
+        $rangeType = $rangeType ?? ($parent ? $parent->range_type : null);
+        $position = $parent ? $parent->countChildren() : 0;
+
         $element = self::build([
-            'parent_id' => null,
+            'parent_id' => $parentId,
             'range_id' => $rangeId,
             'range_type' => $rangeType,
             'owner_id' => $user->id,
@@ -874,7 +873,7 @@ SQL;
             'edit_blocker_id' => null,
             'title' => $this->title,
             'purpose' => $purpose ?: $this->purpose,
-            'position' => 0,
+            'position' => $position,
             'payload' => $this->payload,
             'commentable' => $duplicate ? $this->commentable : 0,
             'permission_type' => $duplicate ? $this->permission_type : 'all',
@@ -889,20 +888,41 @@ SQL;
             'writable_end_date' => $duplicate ? $this->writable_end_date : null,
             'writable_approval' => $duplicate ? $this->writable_approval : '',
             'content_approval' => $duplicate ? $this->content_approval : '',
+            'image_id' => null,
+            'image_type' => $this->image_type,
         ]);
 
         $element->store();
 
-        $image_id = $this->copyImage($user, $element);
-        $element->image_id = $image_id;
-        $element->image_type = $this->image_type;
+        $element->image_id = $this->copyImage($user, $element);
         $element->store();
-
-        $this->copyContainers($user, $element);
-
-        $this->copyChildren($user, $element, $purpose, '', $duplicate);
+        
+        $mapping['elements'][$this->id] = $element->id;
+        $this->copyContainers($user, $element, $mapping);
+        $this->copyChildren($user, $element, $purpose,  $duplicate, $mapping);
 
         return $element;
+    }
+
+    /**
+     * Copies this instance into another course oder users contents.
+     *
+     * @param User $user   this user will be the owner of the copy
+     * @param \Range $parent the target where to copy this instance
+     *
+     * @return StructuralElement the copy of this instance
+     */
+
+
+    public function copyToRange(
+        User $user,
+        string $rangeId,
+        string $rangeType,
+        string $purpose = '',
+        bool $duplicate = false,
+        array &$mapping = [],
+    ): StructuralElement {
+        return $this->copyBase($user, null, $rangeId, $rangeType, $purpose, $duplicate, $mapping);
     }
 
     /**
@@ -919,7 +939,7 @@ SQL;
         User $user,
         StructuralElement $parent,
         string $purpose = '',
-        string $recursiveId = '',
+        array &$mapping = [],
         bool $duplicate = false
     ): StructuralElement {
         $ancestorIds = array_column($parent->findAncestors(), 'id');
@@ -927,65 +947,10 @@ SQL;
         if (in_array($this->id, $ancestorIds)) {
             throw new \InvalidArgumentException('Cannot copy into descendants.');
         }
-        static $mapping = [];
-
-        $image_id = $this->copyImage($user, $parent);
-
-        $element = self::build([
-            'parent_id' => $parent->id,
-            'range_id' => $parent->range_id,
-            'range_type' => $parent->range_type,
-            'owner_id' => $user->id,
-            'editor_id' => $user->id,
-            'edit_blocker_id' => null,
-            'title' => $this->title,
-            'purpose' => empty($purpose) ? $this->purpose : $purpose,
-            'position' => $parent->countChildren(),
-            'payload' => $this->payload,
-            'image_id' => $image_id,
-            'image_type' => $this->image_type,
-            'permission_type' => $duplicate ? $this->permission_type : 'all',
-            'visible' => $duplicate ? $this->visible : 'always',
-            'visible_all' => $duplicate ? $this->visible_all : 0,
-            'visible_start_date' => $duplicate ? $this->visible_start_date : null,
-            'visible_end_date' => $duplicate ? $this->visible_end_date : null,
-            'visible_approval' => $duplicate ? $this->visible_approval : '',
-            'writable' => $duplicate ? $this->writable : 'never',
-            'writable_all' => $duplicate ? $this->writable_all : 0,
-            'writable_start_date' => $duplicate ? $this->writable_start_date : null,
-            'writable_end_date' => $duplicate ? $this->writable_end_date : null,
-            'writable_approval' => $duplicate ? $this->writable_approval : '',
-            'content_approval' => $duplicate ? $this->content_approval : '',
-            'commentable' => $duplicate ? $this->commentable : 0,
-        ]);
-
-        $element->store();
-
-        [$containerMap, $blockMap] = $this->copyContainers($user, $element);
-
-        $mappingId = $recursiveId === '' ? $this->id . '_' . $element->id : $recursiveId;
-        if (!isset($mapping[$mappingId])) {
-            $mapping[$mappingId] = [
-                'elements'   => [],
-                'containers' => [],
-                'blocks'     => [],
-            ];
-        }
-        $mapping[$mappingId]['elements'][$this->id] = $element->id;
-        $mapping[$mappingId]['containers'] = $mapping[$mappingId]['containers'] + $containerMap;
-        $mapping[$mappingId]['blocks'] = $mapping[$mappingId]['blocks'] + $blockMap;
-
-        $this->copyChildren($user, $element, $purpose, $mappingId);
-
-        if ($recursiveId === '') {
-            $this->performMapping($mapping[$mappingId]);
-            unset($mapping[$mappingId]);
-        }
-
-        return $element;
+        return $this->copyBase($user, $parent, null, null, $purpose, $duplicate, $mapping);
     }
 
-    private function copyImage(User $user, StructuralElement $parent) : ?string
+    private function copyImage(User $user, StructuralElement $element) : ?string
     {
         if ($this->image_type === \StockImage::class) {
             return $this->image_id;
@@ -997,7 +962,7 @@ SQL;
             /** @var ?\FileRef $original_file_ref */
             $original_file_ref = \FileRef::find($this->image_id);
             if ($original_file_ref) {
-                $instance = new Instance($this->getCourseware($parent->range_id, $parent->range_type));
+                $instance = new Instance($this->getCourseware($element->range_id, $element->range_type));
                 $folder = \Folder::findTopFolder($instance->getRoot()->id, PublicFolder::class, 'courseware');
                 /** @var \FileRef $file_ref */
                 $file_ref = \FileManager::copyFile($original_file_ref->getFileType(), $folder->getTypedFolder(), $user);
@@ -1061,27 +1026,24 @@ SQL;
         return $this;
     }
 
-    private function copyContainers(User $user, StructuralElement $newElement): array
+    private function copyContainers(User $user, StructuralElement $newElement, array &$mapping = [])
     {
-        $containerMap = [];
-        $blockMap = [];
         foreach ($this->containers as $container) {
             [$newContainer, $blockMapsObjs] = $container->copy($user, $newElement);
-            $containerMap[$container->id] = $newContainer->id;
-            $blockMap = $blockMap + $blockMapsObjs;
+            $mapping['containers'][$container->id] = $newContainer->id;
+            $mapping['blocks'] = array_merge($mapping['blocks'] ?? [], $blockMapsObjs);
         }
-        return [$containerMap, $blockMap];
     }
 
     private function copyChildren(
         User $user,
         StructuralElement $newElement,
         string $purpose = '',
-        string $recursiveId = '',
-        bool $duplicate = false
+        bool $duplicate = false,
+        array &$mapping = []
     ): void {
         foreach ($this->children as $child) {
-            $child->copy($user, $newElement, $purpose, $recursiveId, $duplicate);
+            $child->copy($user, $newElement, $purpose, $mapping, $duplicate);
         }
     }
 
@@ -1208,25 +1170,6 @@ SQL;
         }
 
         return $this->parent->findParentTask();
-    }
-
-    private function performMapping($mapping)
-    {
-        // Blocks mapping.
-        foreach ($mapping['blocks'] as $oldBlockId => $newBlockObj) {
-            if ($newBlockObj->type->getType() === \Courseware\BlockTypes\Link::getType()) {
-                $payload = $newBlockObj->type->getPayload();
-                if ($payload['type'] === 'internal' && '' != $payload['target']) {
-                    if (in_array($payload['target'], array_keys($mapping['elements']))) {
-                        $payload['target'] = $mapping['elements'][intval($payload['target'])];
-                    } else {
-                        $payload['target'] = '';
-                    }
-                    $newBlockObj->type->setPayload($payload);
-                    $newBlockObj->store();
-                }
-            }
-        }
     }
 
     /**

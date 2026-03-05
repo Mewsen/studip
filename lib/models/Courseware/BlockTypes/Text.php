@@ -67,7 +67,7 @@ class Text extends BlockType
 
     public static function getJsonSchema(): string
     {
-        $schemaFile = __DIR__.'/Text.json';
+        $schemaFile = __DIR__ . '/Text.json';
         return file_get_contents($schemaFile);
     }
 
@@ -127,6 +127,59 @@ class Text extends BlockType
         return $payload;
     }
 
+    public function performMapping(array $mapping, \Courseware\Unit $newUnit): void
+    {
+        ['elements' => $elements] = $mapping;
+        $payload = $this->getPayload();
+        if ($payload['text']) {
+            $document = new \DOMDocument();
+            @$document->loadHTML(
+                mb_convert_encoding($payload['text'], 'HTML-ENTITIES', 'UTF-8')
+            );
+
+            $anchors = $document->getElementsByTagName('a');
+            $updated = false;
+
+            foreach ($anchors as $anchor) {
+                $href = $anchor->getAttribute('href');
+                if (preg_match('#/structural_element/(\d+)#', $href, $matches)) {
+                    $oldId = (int) $matches[1];
+                    if (isset($elements[$oldId])) {
+                        $newId = $elements[$oldId];
+                        $newHref = preg_replace('#(/structural_element/)\d+#', '${1}' . $newId, $href);
+                        $updated = true;
+                    }
+                }
+
+                if (preg_match('/cid=[^&#]+/', $href)) {
+                    $newHref = preg_replace('/(cid=)([^&#]+)/', '${1}' . $newUnit->range_id, $newHref);
+                    $updated = true;
+                }
+
+                if (preg_match('#(/courseware/courseware/)\d+#', $href)) {
+                    $newHref = preg_replace('#(/courseware/courseware/)\d+#', '${1}' . $newUnit->id, $newHref);
+                    $updated = true;
+                }
+
+                if ($updated && $newHref !== $href) {
+                    $anchor->setAttribute('href', $newHref);
+                }
+            }
+
+            if ($updated) {
+                $body = $document->getElementsByTagName('body')->item(0);
+                $newHtml = '';
+                foreach ($body->childNodes as $child) {
+                    $newHtml .= $document->saveHTML($child);
+                }
+                $payload['text'] = $newHtml;
+                $this->setPayload($payload);
+                $this->block->store();
+            }
+        }
+
+    }
+
     public static function getCategories(): array
     {
         return ['text'];
@@ -145,14 +198,29 @@ class Text extends BlockType
     public static function getTags(): array
     {
         return [
-            _('Text'), _('Bild'), _('schreiben'), _('WYSIWIG'), _('eintippen'),
-            _('Editor'), _('Eingabe'), _('Eingabefeld'), _('Skript'), _('einfügen'),
-            _('Foto'), _('Inhalt'), _('Tabelle'), _('Inhalt erstellen'),
-            _('Veranschaulichung'), _('Visualisierung'), 'png', 'jpg', 'gif',
+            _('Text'),
+            _('Bild'),
+            _('schreiben'),
+            _('WYSIWIG'),
+            _('eintippen'),
+            _('Editor'),
+            _('Eingabe'),
+            _('Eingabefeld'),
+            _('Skript'),
+            _('einfügen'),
+            _('Foto'),
+            _('Inhalt'),
+            _('Tabelle'),
+            _('Inhalt erstellen'),
+            _('Veranschaulichung'),
+            _('Visualisierung'),
+            'png',
+            'jpg',
+            'gif',
         ];
     }
 
-        /**
+    /**
      * Calls a callback if a given URL is an internal URL.
      *
      * @param string   $url      The url to check
@@ -163,7 +231,7 @@ class Text extends BlockType
      */
     private function applyCallbackOnInternalUrl($url, $callback)
     {
-        if (! \Studip\MarkupPrivate\MediaProxy\isInternalLink($url)) {
+        if (!\Studip\MarkupPrivate\MediaProxy\isInternalLink($url)) {
             return null;
         }
         $components = parse_url($url);
