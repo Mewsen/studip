@@ -85,6 +85,7 @@
 
     // Show available and selected courses next to each others
     .priority-lists {
+        align-items: flex-start;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -101,6 +102,8 @@
 
         .selected {
             margin-left: 0.5em;
+            position: sticky;
+            top: 0;
         }
     }
 }
