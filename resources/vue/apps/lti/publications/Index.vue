@@ -1,7 +1,7 @@
 <script setup>
 import {$gettext} from "../../../../assets/javascripts/lib/gettext";
 import {useSortable} from "../../../composables/useSortable";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import StudipActionMenu from "../../../components/StudipActionMenu.vue";
 import StudipDateTime from "../../../components/StudipDateTime.vue";
 import StudipIcon from "../../../components/StudipIcon.vue";
@@ -39,15 +39,12 @@ const {
     getAriaSortLabel
 } = useSortable(publicationsRef);
 
-const actionMenus = computed(() => {
-    return [
-        { label: $gettext('Konfiguration anzeigen'),  icon: 'info', emit: 'show'},
-        { label: $gettext('Teilnehmenden anzeigen'),  icon: 'community', emit: 'showMembers'},
-        { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
-        { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
-    ];
-});
-
+const actionMenus = [
+    { label: $gettext('Konfiguration anzeigen'),  icon: 'info', emit: 'show'},
+    { label: $gettext('Teilnehmenden anzeigen'),  icon: 'community', emit: 'showMembers'},
+    { label: $gettext('Bearbeiten'),  icon: 'edit', emit: 'edit'},
+    { label: $gettext('Löschen'),  icon: 'trash', emit: 'delete'}
+];
 
 const showPublication = id => STUDIP.Dialog.fromURL(showPublicationURL(id), { width: '700' });
 const showMembers = publication => currentPublication.value = publication;
@@ -217,7 +214,7 @@ const deletePublication = id => {
                     <td>
                         <button
                             type="button"
-                            class="as-link"
+                            class="as-link text-left"
                             @click="showPublication(publication.id)"
                             :title="$gettext('Konfiguration anzeigen')"
                             :aria-label="$gettext('Konfiguration anzeigen')"
@@ -248,7 +245,7 @@ const deletePublication = id => {
                     <td>
                         <button
                             type="button"
-                            class="styleless button-base"
+                            class="as-link"
                             :title="$gettext('Teilnehmenden anschauen')"
                             :aria-label="$gettext('Teilnehmenden anschauen')"
                             @click="showMembers(publication)"

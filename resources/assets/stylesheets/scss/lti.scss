@@ -5,6 +5,7 @@
     }
 
     table.default th button.as-link{
+        text-align: left;
         font-weight: bold;
     }
 
@@ -257,6 +258,12 @@
     }
 
     .use-utility-classes {
+        .text-left {
+            text-align: left;
+        }
+        .text-center {
+            text-align: center;
+        }
         .flex {
             display: flex;
         }
