@@ -120,7 +120,7 @@ class Course_CoursewareController extends CoursewareController
     public function pdf_export_action(Courseware\StructuralElement $element, bool $with_children = false): void
     {
         $this->render_pdf(
-            $element->pdfExport(User::findCurrent(), $with_children), 
+            $element->pdfExport(User::findCurrent(), $with_children),
             trim($element->title).'.pdf'
         );
     }
@@ -288,7 +288,7 @@ class Course_CoursewareController extends CoursewareController
             }
         }
 
-        $encoder = app(\Neomerx\JsonApi\Contracts\Encoder\EncoderInterface::class);
+        $encoder = studipApp(\Neomerx\JsonApi\Contracts\Encoder\EncoderInterface::class);
 
         $data = [
             'units' => $encoder->encodeData($units),

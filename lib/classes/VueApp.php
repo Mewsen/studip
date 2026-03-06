@@ -217,7 +217,7 @@ final class VueApp implements Stringable
      */
     public function getTemplate(): Template
     {
-        $template = app(Factory::class)->open('vue-app.php');
+        $template = studipApp(Factory::class)->open('vue-app.php');
         $template->set_attributes(['app' => $this]);
         return $template;
     }
@@ -228,7 +228,7 @@ final class VueApp implements Stringable
     public function render(): string
     {
         if (Debug\DebugBar::isActivated()) {
-            $debugbar = app()->get(\DebugBar\DebugBar::class);
+            $debugbar = studipApp()->get(\DebugBar\DebugBar::class);
             $collector = new Debug\VueCollector($this);
             $debugbar->addCollector($collector);
         }

@@ -124,13 +124,13 @@ Assets::set_assets_url($GLOBALS['ASSETS_URL']);
 Assets::set_assets_path($GLOBALS['ASSETS_PATH']);
 
 // globale template factory anlegen
-$GLOBALS['template_factory'] = app(Flexi\Factory::class);
+$GLOBALS['template_factory'] = studipApp(Flexi\Factory::class);
 
 // set default pdo connection
 try {
     DBManager::getInstance()->setConnection(
         'studip',
-        app(StudipPDO::class)
+        studipApp(StudipPDO::class)
     );
 } catch (\PDOException $exception) {
     if (Studip\ENV === 'development') {
@@ -280,3 +280,22 @@ $mail_transporter->default_charset = 'UTF-8';
 $mail_transporter->SetBulkMail((int)$GLOBALS['MAIL_BULK_DELIVERY']);
 StudipMail::setDefaultTransporter($mail_transporter);
 unset($mail_transporter);
+
+
+
+// Eloquent ORM Config --start--
+// should be moved to place like app providers or DB Providers
+$eloquentManager = studipApp(Illuminate\Database\Capsule\Manager::class);
+$eloquentManager->addConnection([
+    'driver' => 'mysql',
+    'host' =>  $GLOBALS['DB_STUDIP_HOST'],
+    'database' => $GLOBALS['DB_STUDIP_DATABASE'],
+    'username' => $GLOBALS['DB_STUDIP_USER'],
+    'password' => $GLOBALS['DB_STUDIP_PASSWORD'],
+    'charset' => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix' => '',
+]);
+$eloquentManager->setAsGlobal();
+$eloquentManager->bootEloquent();
+// Eloquent ORM Config --end--

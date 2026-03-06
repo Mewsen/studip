@@ -39,7 +39,7 @@ class Log
     public static function getInstance(): LoggerInterface
     {
         if (!isset(static::$instance)) {
-            static::$instance = app(LoggerInterface::class);
+            static::$instance = studipApp(LoggerInterface::class);
         }
 
         return static::$instance;

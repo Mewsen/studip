@@ -19,7 +19,7 @@ use Slim\Factory\AppFactory;
 require_once __DIR__  .'/../lib/bootstrap.php';
 
 // Build PHP_DI Container
-$container = app();
+$container = studipApp();
 
 // Instantiate the app
 AppFactory::setContainer($container);

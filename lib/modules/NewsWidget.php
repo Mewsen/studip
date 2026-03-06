@@ -25,7 +25,7 @@ class NewsWidget extends CorePlugin implements PortalPlugin
 
     function getPortalTemplate()
     {
-        $controller = app(\Trails\Dispatcher::class)->load_controller('news');
+        $controller = studipApp(\Trails\Dispatcher::class)->load_controller('news');
         $response = $controller->relayWithRedirect('news/display/studip');
         $template = $GLOBALS['template_factory']->open('shared/string');
         $template->content = $response->body;

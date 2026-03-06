@@ -587,7 +587,7 @@ class PluginManager
         }
 
         if ($plugin_class) {
-            $plugin = app()->get($class);
+            $plugin = studipApp()->get($class);
         }
 
         return $this->plugin_cache[$class] = $plugin;

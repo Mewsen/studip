@@ -20,7 +20,7 @@ require '../lib/bootstrap.php';
 URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
 
 // Build PHP_DI Container
-$container = app();
+$container = studipApp();
 
 // Instantiate the app
 AppFactory::setContainer($container);
@@ -28,7 +28,7 @@ $app = AppFactory::create();
 $container->set(App::class, $app);
 $app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'dispatch.php');
 
-$studip_dispatcher = app(\Trails\Dispatcher::class);
+$studip_dispatcher = studipApp(\Trails\Dispatcher::class);
 $route_callable = $studip_dispatcher->getRouteCallable(Request::pathInfo());
 $app->any(Request::pathInfo(), $route_callable);
 

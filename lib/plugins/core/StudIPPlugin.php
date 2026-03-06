@@ -214,8 +214,8 @@ abstract class StudIPPlugin
         $action = $args[0] !== '' ? array_shift($args) . '_action' : 'show_action';
 
         return method_exists($this, $action)
-            ? app(DefaultLegacyRouteStrategy::class)
-            : app(TrailsLegacyRouteStrategy::class);
+            ? studipApp(DefaultLegacyRouteStrategy::class)
+            : studipApp(TrailsLegacyRouteStrategy::class);
     }
 
     /**

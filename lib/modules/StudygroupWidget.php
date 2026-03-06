@@ -25,7 +25,7 @@ class StudygroupWidget extends CorePlugin implements PortalPlugin
     {
         $template = $GLOBALS['template_factory']->open('start/studygroups');
 
-        $controller = app(\Trails\Dispatcher::class)->load_controller('my_studygroups');
+        $controller = studipApp(\Trails\Dispatcher::class)->load_controller('my_studygroups');
         $response = $controller->relayWithRedirect('my_studygroups/proposals');
         $template->proposals = $response->body;
 

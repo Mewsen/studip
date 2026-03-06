@@ -17,7 +17,7 @@ $getJsonApiSchemas = function () {
         array_unique(
             array_map(
                 fn($class) => $class::TYPE,
-                app('json-api-integration-schemas')
+                studipApp('json-api-integration-schemas')
             )
         )
     );
@@ -122,7 +122,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 
 <?php
 if (Studip\Debug\DebugBar::isActivated()) {
-    echo app()->get(\DebugBar\DebugBar::class)->getJavascriptRenderer()->render();
+    echo studipApp()->get(\DebugBar\DebugBar::class)->getJavascriptRenderer()->render();
 }
 ?>
 </body>
