@@ -1037,8 +1037,12 @@ class QuestionnaireController extends AuthenticatedController
             PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
             $this->redirect("profile?username=".get_username(Request::option("range_id")));
         } elseif (Request::get("range_type") === "course") {
-            PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
-            $this->redirect("course/overview?cid=".Request::option("range_id"));
+            PageLayout::postMessage(MessageBox::success(_('Danke für die Teilnahme!')));
+            if ($this->questionnaire->eval_assignment) {
+                $this->redirect("course/evaluation?cid=" . Request::option('range_id'));
+            } else {
+                $this->redirect("course/overview?cid=" . Request::option("range_id"));
+            }
         } elseif (Request::get("range_id") === "start") {
             PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
             $this->redirect("start");
