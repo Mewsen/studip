@@ -19,6 +19,7 @@
  * @property int $mkdate database column
  * @property SimpleORMapCollection<QuestionnaireQuestion> $questions has_many QuestionnaireQuestion
  * @property SimpleORMapCollection<QuestionnaireAssignment> $assignments has_many QuestionnaireAssignment
+ * @property QuestionnaireEvalAssignment|null $eval_assignment has_one QuestionnaireEvalAssignment
  * @property SimpleORMapCollection<QuestionnaireAnonymousAnswer> $anonymousanswers has_many QuestionnaireAnonymousAnswer
  */
 class Questionnaire extends SimpleORMap implements PrivacyObject
@@ -42,6 +43,11 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
             'class_name' => QuestionnaireAnonymousAnswer::class,
             'on_delete' => 'delete',
             'on_store' => 'store'
+        ];
+        $config['has_one']['eval_assignment'] = [
+            'class_name' => QuestionnaireEvalAssignment::class,
+            'assoc_foreign_key' => 'questionnaire_id',
+            'on_delete'  => 'delete'
         ];
 
         parent::configure($config);
