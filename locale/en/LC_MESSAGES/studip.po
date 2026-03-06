@@ -2208,7 +2208,7 @@ msgstr "Seats"
 msgid "Teilnehmende"
 msgstr "Participants "
 
-#: app/controllers/course/dates.php:649 app/controllers/file.php:1938
+#: app/controllers/course/dates.php:649 app/controllers/file.php:1939
 #, fuzzy, php-format
 msgid ""
 "Für den Termin am %s existiert bereits ein Sitzungsordner. Möchten Sie "
