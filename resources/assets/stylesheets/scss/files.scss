@@ -457,7 +457,7 @@ form.default {
         > input[type=radio]:checked + label + div {
             display: block;
             .description {
-                animation-duration: 400ms;
+                animation-duration: var(--transition-duration-slow);
                 animation-name: terms_of_use_fadein;
             }
         }

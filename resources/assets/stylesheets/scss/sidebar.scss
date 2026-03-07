@@ -120,7 +120,7 @@ ul.widget-list {
             gap: 6px;
             width: 100%;
         }
-        
+
         .label-text {
             text-indent: 0;
         }
@@ -337,7 +337,7 @@ div#sidebar-navigation {
     overflow-wrap: break-word;
     padding: 0;
     margin-left: 4px;
-    transition: all 0.5s;
+    transition: all var(--transition-duration-slow);
 }
 
 // TODO: These two should be combined into one widget

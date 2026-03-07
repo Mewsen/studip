@@ -17,7 +17,7 @@ body #scroll-to-top {
     position: fixed;
     right: 0;
     bottom: 0;
-    transition: bottom 250ms ease-in-out;
+    transition: bottom var(--transition-duration) ease-in-out;
     z-index: 1;
 
     &.hide {

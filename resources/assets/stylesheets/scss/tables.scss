@@ -537,7 +537,7 @@ table.default {
 
             > td {
                 border-bottom: 1px solid var(--color--table-border);
-                transition: background-color 0.3s;
+                transition: background-color var(--transition-duration);
             }
 
             &.dragover > td {
@@ -789,14 +789,14 @@ table.withdetails {
         display: none;
         max-height: 0px;
         overflow: hidden;
-        transition: max-height 0.8s;
+        transition: max-height var(--transition-duration-superslow);
     }
 
     tr.open + tr.details {
         display: table-row;
         max-height: 200px;
         overflow: hidden;
-        transition: max-height 0.8s;
+        transition: max-height var(--transition-duration-superslow);
         background-color: transparent !important;
 
         > td {

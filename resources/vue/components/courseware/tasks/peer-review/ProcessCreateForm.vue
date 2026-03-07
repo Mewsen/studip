@@ -311,7 +311,7 @@ fieldset.select_configuration_set {
     > input[type='radio']:checked + label + div {
         display: block;
         > * {
-            animation-duration: 400ms;
+            animation-duration: var(--transition-duration-slow);
             animation-name: terms_of_use_fadein;
         }
     }

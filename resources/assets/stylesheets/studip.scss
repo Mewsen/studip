@@ -693,7 +693,7 @@ input.allow-plaintext-toggle {
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s ease;
+            transition: background-color var(--transition-duration) ease;
 
             &:hover {
                 background-color: $content-color-10;
@@ -824,7 +824,7 @@ input.allow-plaintext-toggle {
 
         li {
             padding: 6px 10px;
-            transition: background-color 0.2s ease-out;
+            transition: background-color var(--transition-duration) ease-out;
             cursor: pointer;
 
             &:not(:first-child) {
@@ -863,7 +863,7 @@ input.allow-plaintext-toggle {
             height: 50px;
             border-radius: 100%;
             border: 1.5px solid white;
-            transition: all .4s ease-in-out;
+            transition: all  var(--transition-duration) ease-in-out;
             background: var(--base-color-20);
         }
 
@@ -907,7 +907,7 @@ input.allow-plaintext-toggle {
         }
 
         li {
-            transition: background-color 0.2s ease-out;
+            transition: background-color var(--transition-duration) ease-out;
 
             &:hover,
             &:focus {
@@ -948,7 +948,7 @@ input.allow-plaintext-toggle {
             height: auto;
             border-radius: 100%;
             border: 1.5px solid white;
-            transition: all .4s ease-in-out;
+            transition: all var(--transition-duration) ease-in-out;
             background: var(--base-color-20);
         }
     }
@@ -957,11 +957,11 @@ input.allow-plaintext-toggle {
   vue Transition:fade-down --start--
 */
 .fade-down-enter-active {
-    transition: all 0.2s ease-out;
+    transition: all var(--transition-duration) ease-out;
 }
 
 .fade-down-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+    transition: all var(--transition-duration) cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .fade-down-enter-from,

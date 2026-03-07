@@ -330,7 +330,7 @@ ul.reviews, ol.reviews {
         padding: 10px;
         width: 819px;
         max-width: calc(100% - 50px);
-        animation: oer-filter-panel-appears 200ms ease-out;
+        animation: oer-filter-panel-appears var(--transition-duration) ease-out;
         border: thin solid var(--content-color-40);
         margin: 46px 0 0;
         height: 183px;
@@ -381,7 +381,7 @@ ul.reviews, ol.reviews {
         padding: 10px;
         width: 819px;
         max-width: calc(100% - 50px);
-        animation: oer-filter-panel-appears 200ms ease-out;
+        animation: oer-filter-panel-appears var(--transition-duration) ease-out;
         margin: 49px 0 0 3px;
         height: 183px;
     }
@@ -431,7 +431,7 @@ ul.reviews, ol.reviews {
             max-width: 100%;
             > li {
                 margin-right: 30px;
-                animation: oer-tag-appears 400ms ease-out;
+                animation: oer-tag-appears var(--transition-duration-slow) ease-out;
                 text-transform: capitalize;
                 a.button {
                     max-width: 200px;

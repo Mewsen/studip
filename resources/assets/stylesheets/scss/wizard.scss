@@ -180,7 +180,7 @@ form.default fieldset.radiobutton-set {
         cursor: pointer;
         border: 1px solid var(--color--radiobuttonset-border);
         background-color: var(--color--radiobuttonset-background);
-        transition: background-color 200ms;
+        transition: background-color var(--transition-duration);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -228,7 +228,7 @@ form.default fieldset.radiobutton-set {
 
     >input[type=radio]:checked+label {
         background-color: var(--color--radiobuttonset-background-selected);
-        transition: background-color 200ms;
+        transition: background-color var(--transition-duration);
 
         >.unchecked {
             display: none;
@@ -243,7 +243,7 @@ form.default fieldset.radiobutton-set {
         display: block;
 
         .description {
-            animation-duration: 400ms;
+            animation-duration: var(--transition-duration-slow);
             animation-name: terms_of_use_fadein;
         }
     }
