@@ -123,7 +123,7 @@
 <script>
 import LabelRequired from '../../../forms/LabelRequired.vue';
 import PeerReviewProcessConfiguration from './ProcessConfiguration.vue';
-import { ASSESSMENT_TYPES, CONFIGURATION_SETS, ProcessConfiguration } from './process-configuration';
+import { ASSESSMENT_TYPES, CONFIGURATION_SETS } from './process-configuration';
 
 let nextId = 0;
 
