@@ -9,6 +9,7 @@
         <system-notification
             v-for="notification in allNotifications"
             :key="`message-${notification.key}`"
+            :autohide="autohide"
             :notification="notification"
             :placement="placement"
             @destroyMe="destroyNotification(notification)"
@@ -42,6 +43,15 @@ export default {
             counter: 0,
             stoppedNotifications: false,
         };
+    },
+    computed: {
+        autohide() {
+            return !document.querySelector('html').classList.contains('a11y-reduce-animations')
+                && (
+                    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                    || document.querySelector('html').classList.contains('a11y-no-reduce-animations')
+                );
+        }
     },
     methods: {
         addNotification(notification) {
