@@ -24,9 +24,16 @@ $getJsonApiSchemas = function () {
 };
 
 $lang_attr = str_replace('_', '-', $_SESSION['_language']);
+
+$html_classes = ['no-js'];
+if (User::findCurrent()?->getConfiguration()->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'yes') {
+    $html_classes[] = 'a11y-reduce-animations';
+} elseif (User::findCurrent()?->getConfiguration()->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'no') {
+    $html_classes[] = 'a11y-no-reduce-animations';
+}
 ?>
 <!DOCTYPE html>
-<html class="no-js" lang="<?= htmlReady($lang_attr) ?>">
+<html class="<?= implode(' ', $html_classes) ?>" lang="<?= htmlReady($lang_attr) ?>">
 <head>
     <meta charset="utf-8">
     <title data-original="<?= htmlReady(PageLayout::getTitle()) ?>">
