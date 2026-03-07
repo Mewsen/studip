@@ -323,7 +323,7 @@ class Icon implements JsonSerializable
 
         if ($without_label) {
              return sprintf(
-                '<input class="input-hidden" type="submit" hidden %s>%s',
+                '<button class="as-link" type="submit" %s>%s</button>',
                 arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
                 $svgContent,
              );
@@ -331,8 +331,9 @@ class Icon implements JsonSerializable
 
         return sprintf(
             '<label class="icon-button undecorated">
-                <input class="input-hidden" type="submit" hidden %s>
-                %s%s
+                <button class="as-link" type="submit" %s>
+                    %s%s
+                </button>
             </label>',
             arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
             $svgContent,
