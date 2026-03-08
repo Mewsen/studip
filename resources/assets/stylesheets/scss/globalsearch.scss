@@ -1,6 +1,3 @@
-#quicksearch_item {
-    align-self: flex-start;
-}
 #globalsearch-searchbar {
     display: flex;
     align-items: center;
@@ -19,10 +16,6 @@
     // Reset alignments among browsers
     > * {
         box-sizing: border-box;
-    }
-
-    &:not(.has-value) #globalsearch-clear {
-        display: none;
     }
 
     .icon-button {
@@ -58,7 +51,7 @@
         font-size: $font-size-small;
         margin: 0 10px;
 
-       @include icon('before', 'arr_1right', 'clickable', $font-size-small, 2px);
+       @include icon(before, arr_1right, $size: $font-size-small, $padding: 2px);
 
         // This is only neccessary to remove the whitespace in front of the text
         // Otherwise, the text would jump when getting replaced
@@ -89,7 +82,7 @@
         color: var(--text-color);
         visibility: hidden;
         opacity: 0;
-        transition: opacity var(--transition-duration) ease; 
+        transition: opacity var(--transition-duration) ease;
         max-height: 90vh;
         overflow: hidden;
         padding: 10px 5px;
@@ -148,7 +141,7 @@
         $icon-size: 32px;
 
         color: var(--dark-gray-color-45);
-        display: none;
+        // display: none;
         text-align: center;
 
         background-image: url("#{$image-path}/loading-indicator.svg");
@@ -159,9 +152,9 @@
         padding-bottom: ($icon-size + 5px);
     }
     &.is-searching {
-        #globalsearch-searching {
-            display: block;
-        }
+        // #globalsearch-searching {
+        //    display: block;
+        // }
         #globalsearch-results {
             display: none;
         }
@@ -187,15 +180,12 @@
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
+                justify-content: space-between;
 
                 font-weight: bold;
                 padding: 3px;
 
-                div.globalsearch-category {
-                    flex: auto;
-                }
-
-                div.globalsearch-more-results {
+                .globalsearch-more-results {
                     font-size: $font-size-small;
                     font-weight: normal;
                     line-height: $font-size-h3;
@@ -217,7 +207,8 @@
                 border-top: 1px solid var(--content-color-40);
                 transition: background-color var(--transition-duration);
 
-                &:hover {
+                &:hover,
+                &:focus {
                     background-color: var(--dark-gray-color-20);
                 }
 

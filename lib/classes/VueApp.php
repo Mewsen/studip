@@ -53,6 +53,7 @@ final class VueApp implements Stringable
     private function __construct(
         private readonly string $appPath
     ) {
+        \NotificationCenter::postNotification('VueAppDidCreate', $this);
     }
 
     /**
