@@ -18,7 +18,7 @@
     <? if (isset($last_one)) : ?>
     <div style="float: left;">
         <a href="<?= URLHelper::getLink('?#admin_top_links', ['cid' => $adminList[$last_one]['Seminar_id']]) ?>" title="<?= htmlReady($adminList[$last_one]['Name']) ?>">
-            <?= Icon::create('arr_1left')->asSvg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('arr_1left')->asImg(['class' => 'text-bottom']) ?>
             <?= _("zurück") ?>
         </a>
     </div>
@@ -27,13 +27,13 @@
     <div style="float: right;">
         <a href="<?= URLHelper::getLink('?#admin_top_links', ['cid' => $adminList[$next_one]['Seminar_id']]) ?>" title="<?= htmlReady($adminList[$next_one]['Name']) ?>">
             <?= _("vor") ?>
-            <?= Icon::create('arr_1right')->asSvg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('arr_1right')->asImg(['class' => 'text-bottom']) ?>
         </a>
     </div>
     <? endif ?>
     <div>
         <a href="<?= URLHelper::getLink('adminarea_start.php', ['list' => 'TRUE']) ?>">
-            <?= Icon::create('arr_1up')->asSvg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('arr_1up')->asImg(['class' => 'text-bottom']) ?>
             <?= _("Liste") ?>
         </a>
     </div>

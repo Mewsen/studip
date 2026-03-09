@@ -3,10 +3,10 @@
     <td class="files-search-icon">
         <? if ($searchResult['folder']->isFileDownloadable($searchResult['fileRef'], $user->id)) : ?>
             <a href="<?= htmlReady($searchResult['fileRef']->getDownloadURL('force_download')) ?>" target="_blank" rel="noopener noreferrer">
-                <?= FileManager::getIconForFileRef($searchResult['fileRef'])->asSvg(24) ?>
+                <?= FileManager::getIconForFileRef($searchResult['fileRef'])->asImg(24) ?>
             </a>
         <? else : ?>
-            <?= FileManager::getIconForFileRef($searchResult['fileRef'], Icon::ROLE_INACTIVE)->asSvg(24) ?>
+            <?= FileManager::getIconForFileRef($searchResult['fileRef'], Icon::ROLE_INACTIVE)->asImg(24) ?>
         <? endif ?>
     </td>
 
@@ -21,7 +21,7 @@
 
                 <? if ($searchResult['fileRef']->terms_of_use &&
                        $searchResult['fileRef']->terms_of_use->download_condition > 0) : ?>
-                    <?= Icon::create('lock-locked', Icon::ROLE_INACTIVE)->asSvg([
+                    <?= Icon::create('lock-locked', Icon::ROLE_INACTIVE)->asImg([
                         'class' => 'text-top',
                         'title' => _('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')]) ?>
                 <? endif; ?>
@@ -35,7 +35,7 @@
 
             <? if ($searchResult['fileRef']->terms_of_use &&
                    $searchResult['fileRef']->terms_of_use->download_condition > 0) : ?>
-                <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg([
+                <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg([
                     'class' => 'text-top',
                     'title' => _('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')]) ?>
             <? endif; ?>

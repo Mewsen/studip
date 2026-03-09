@@ -97,29 +97,29 @@ use Studip\Button, Studip\LinkButton;
                 <td style="text-align: center;"
                     data-sort-value="'<?= (int)($schedule->active && $schedule->task->active) ?>'">
                     <? if (!$schedule->task->active): ?>
-                        <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Cronjob kann nicht aktiviert werden, da die zugehörige ' . 'Aufgabe deaktiviert ist.')]) ?>
+                        <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE)->asImg(['title' => _('Cronjob kann nicht aktiviert werden, da die zugehörige ' . 'Aufgabe deaktiviert ist.')]) ?>
                     <? elseif ($schedule->active): ?>
                         <a href="<?= $controller->deactivate($schedule) ?>"
                            data-behaviour="ajax-toggle">
-                            <?= Icon::create('checkbox-checked')->asSvg(['title' => _('Cronjob deaktivieren')]) ?>
+                            <?= Icon::create('checkbox-checked')->asImg(['title' => _('Cronjob deaktivieren')]) ?>
                         </a>
                     <? else: ?>
                         <a href="<?= $controller->activate($schedule) ?>"
                            data-behaviour="ajax-toggle">
-                            <?= Icon::create('checkbox-unchecked')->asSvg(['title' => _('Cronjob aktivieren')]) ?>
+                            <?= Icon::create('checkbox-unchecked')->asImg(['title' => _('Cronjob aktivieren')]) ?>
                         </a>
                     <? endif; ?>
                 </td>
                 <?= $this->render_partial('admin/cronjobs/schedules/periodic-schedule', $schedule->toArray() + ['display' => 'table-cells']) ?>
                 <td style="text-align: right">
                     <a data-dialog href="<?= $controller->display($schedule) ?>">
-                        <?= Icon::create('admin')->asSvg(['title' => _('Cronjob anzeigen')]) ?>
+                        <?= Icon::create('admin')->asImg(['title' => _('Cronjob anzeigen')]) ?>
                     </a>
                     <a href="<?= $controller->edit($schedule) ?>">
-                        <?= Icon::create('edit')->asSvg(['title' => _('Cronjob bearbeiten')]) ?>
+                        <?= Icon::create('edit')->asImg(['title' => _('Cronjob bearbeiten')]) ?>
                     </a>
                     <a href="<?= $controller->link_for('admin/cronjobs/logs/schedule', $schedule) ?>">
-                        <?= Icon::create('log')->asSvg(['title' => _('Log anzeigen')]) ?>
+                        <?= Icon::create('log')->asImg(['title' => _('Log anzeigen')]) ?>
                     </a>
                     <?= Icon::create('trash')->asInput([
                         'data-confirm' => _('Wollen Sie den ausgewählten Cronjob wirklich löschen?'),

@@ -43,7 +43,7 @@
             <td data-sort-value="<?= $page->chdate ?>"><?= $page->chdate > 0 ? date('d.m.Y H:i:s', $page->chdate) : _('unbekannt') ?></td>
             <td class="actions">
                 <a href="<?= $controller->versiondiff($page) ?>" data-dialog>
-                    <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>
@@ -67,7 +67,7 @@
             <td><?= $version->mkdate > 0 ? date('d.m.Y H:i:s', $version->mkdate) : _('unbekannt') ?></td>
             <td class="actions">
                 <a href="<?= $controller->versiondiff($page, $version->id) ?>" data-dialog>
-                    <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>

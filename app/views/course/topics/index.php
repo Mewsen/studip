@@ -48,7 +48,7 @@ use Studip\Button;
                             <?= htmlReady($topic['title']) ?>
                         </a>
                         <? if ($topic->paper_related): ?>
-                            <?= Icon::create('info-circle')->asSvg(array_merge(
+                            <?= Icon::create('info-circle')->asImg(array_merge(
                                 tooltip2(_('Thema behandelt eine Hausarbeit oder ein Referat'))
                             )) ?>
                         <? endif ?>

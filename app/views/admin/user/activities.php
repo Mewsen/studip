@@ -32,7 +32,7 @@
                     <? if (!empty($query['details'])) : ?>
                         <a href="<?= $controller->url_for('admin/user/activities/' . $user['user_id'], ['view' => $query['details']] + $params) ?>"
                             <?= Request::isXhr() ? 'data-dialog="size=50%"' :  ''?>>
-                            <?= Icon::create('info-circle')->asSvg(['title' => _('Übersicht anzeigen')]) ?>
+                            <?= Icon::create('info-circle')->asImg(['title' => _('Übersicht anzeigen')]) ?>
                         </a>
                     <? endif ?>
                 </td>

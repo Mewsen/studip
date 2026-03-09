@@ -26,7 +26,7 @@
                        href="<?= $controller->versiondiff(!$version || is_a($version, WikiPage::class) ? $version : $version->page, is_a($version, WikiVersion::class) ? $version->id : null) ?>"
                        data-dialog
                        title="<?= _('Änderungen anzeigen') ?>">
-                        <?= Icon::create('log')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
                     </a>
                     <div class="content">
                         <?= wikiReady($collect) ?>

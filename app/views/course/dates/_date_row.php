@@ -18,7 +18,7 @@ $dialog_url = $show_raumzeit
 <tr id="date_<?= $date->id ?>" <? if (!empty($is_next_date)) echo 'class="nextdate" title="' . _('Der nächste Termin') . '"'; ?> data-termin-id="<?= htmlReady($date->id) ?>">
     <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
         <a href="<?= $dialog_url ?>" data-dialog>
-            <?= Icon::create($icon)->asSvg(Icon::SIZE_INLINE,['class' => 'text-bottom']) ?>
+            <?= Icon::create($icon)->asImg(Icon::SIZE_INLINE,['class' => 'text-bottom']) ?>
             <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
         </a>
     <? if (count($date->dozenten) > 0): ?>
@@ -59,7 +59,7 @@ $dialog_url = $show_raumzeit
             <? foreach ($rooms as $room) : ?>
                 <span class="no-break">
                     <a href="<?= $room->getActionLink('show') ?>" data-dialog>
-                        <?= Icon::create('link-intern')->asImg(16, ['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-intern')->asImg(['class' => 'text-bottom']) ?>
                         <?= htmlReady($room->name) ?>
                     </a>
                 </span>

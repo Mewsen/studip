@@ -16,7 +16,7 @@
         <div class="exercise_types">
             <? foreach ($exercise_types as $type => $entry): ?>
                 <button class="exercise_type" name="exercise_type" value="<?= htmlReady($type) ?>">
-                    <?= $type::getTypeIcon()->asSvg(40) ?>
+                    <?= $type::getTypeIcon()->asImg(40) ?>
                     <div class="exercise_type_description">
                         <span class="exercise_type_name"><?= htmlReady($entry['name']) ?></span>
                         <span><?= htmlReady($type::getTypeDescription()) ?></span>

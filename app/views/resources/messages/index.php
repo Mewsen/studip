@@ -23,7 +23,7 @@
                 <span class="selected-room template invisible">
                     <input type="hidden" name="room_ids[]">
                     <span></span>
-                    <?= Icon::create('trash')->asSvg(
+                    <?= Icon::create('trash')->asImg(
                         [
                             'class' => 'remove-icon text-bottom'
                         ]
@@ -35,7 +35,7 @@
                             <input type="hidden" name="room_ids[]"
                                    value="<?= htmlReady($room->id) ?>">
                             <span><?= htmlReady($room->name) ?></span>
-                            <?= Icon::create('trash')->asSvg(
+                            <?= Icon::create('trash')->asImg(
                                 [
                                     'class' => 'remove-icon text-bottom'
                                 ]

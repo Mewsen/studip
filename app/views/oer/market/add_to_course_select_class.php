@@ -10,7 +10,7 @@
 
             <? $icon = $object->oerGetIcon() ?>
             <? if ($icon) : ?>
-                <?= $icon->asSvg(50) ?>
+                <?= $icon->asImg(50) ?>
             <? endif ?>
             <?= htmlReady($metadata['displayname']) ?>
         </a>

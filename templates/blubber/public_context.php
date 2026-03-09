@@ -6,7 +6,7 @@
             <a href="<?= URLHelper::getLink('dispatch.php/blubber/compose/'.$thread->getId()) ?>"
                data-dialog
                title="<?= _('Blubber bearbeiten') ?>">
-                <?= Icon::create('edit')->asSvg(30) ?>
+                <?= Icon::create('edit')->asImg(30) ?>
             </a>
             <form action="<?= URLHelper::getLink('dispatch.php/blubber/delete/'.$thread->getId()) ?>"
                   method="post"

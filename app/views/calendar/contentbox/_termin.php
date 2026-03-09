@@ -11,7 +11,7 @@
     <header>
         <h1>
             <a href="<?= ContentBoxHelper::href($termin->getObjectId()) ?>">
-                <?= Icon::create('date', Icon::ROLE_INACTIVE)->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('date', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-bottom']) ?>
                 <?= htmlReady($titles[$termin->getObjectId()] ?? $termin->getTitle()) ?>
             </a>
         </h1>
@@ -26,19 +26,19 @@
             <? if ($admin && $isProfile && $termin->getObjectClass() === 'CalendarDateAssignment') : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/calendar/calendar') ?>"
                    title="<?= _('Zum Kalender') ?>" aria-label="<?= _('Zum Kalender') ?>">
-                    <?= Icon::create('schedule')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('schedule')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <? if ($termin->calendar_date->isWritable($GLOBALS['user']->id)) : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/calendar/date/edit/' . $termin->getPrimaryObjectId()) ?>"
                        title="<?= _('Termin bearbeiten') ?>" aria-label="<?= _('Termin bearbeiten') ?>"
                        data-dialog>
-                        <?= Icon::create('edit')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
                     </a>
                 <? endif ?>
             <? elseif (!$course_range && in_array($termin->getObjectClass(), [CalendarCourseDate::class, CalendarCourseExDate::class])) : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/dates', ['cid' => $termin->getPrimaryObjectId()]) ?>"
                    title="<?= _('Zur Veranstaltung') ?>" aria-label="<?= _('Zur Veranstaltung') ?>">
-                    <?= Icon::create('seminar')->asSvg(['class'=> 'text-bottom']) ?>
+                    <?= Icon::create('seminar')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             <? endif ?>
         </nav>
@@ -63,7 +63,7 @@
             <? if (count($themen)) : ?>
                 <? foreach ($themen as $thema) : ?>
                     <h3>
-                        <?= Icon::create('topic', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('topic', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
                         <?= htmlReady($thema['title']) ?>
                     </h3>
                     <div>
@@ -91,7 +91,7 @@
         <? if (!$course_range && in_array($termin->getObjectClass(), [CalendarCourseDate::class, CalendarCourseExDate::class])) : ?>
             <div>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/dates', ['cid' => $termin->getPrimaryObjectId()]) ?>">
-                    <?= Icon::create('link-intern')->asSvg(['class'=> 'text-bottom']) ?>
+                    <?= Icon::create('link-intern')->asImg(['class' => 'text-bottom']) ?>
                     <?= _('Zur Veranstaltung') ?>
                 </a>
             </div>

@@ -34,11 +34,11 @@
 
                         <? if ($GLOBALS['perm']->have_studip_perm('admin', $inst_id)) : ?>
                             <a href="<?= URLHelper::getURL('dispatch.php/institute/members', ['cid' => $inst_id, 'admin_view' => 1]) ?>">
-                                <?= Icon::create('link-intern')->asSvg(['title' => _('Zur Einrichtung')]) ?>
+                                <?= Icon::create('link-intern')->asImg(['title' => _('Zur Einrichtung')]) ?>
                             </a>
                         <? else: ?>
                             <a href="<?= URLHelper::getURL('dispatch.php/institute/overview', ['auswahl' => $inst_id]) ?>">
-                                <?= Icon::create('link-intern')->asSvg(['title' => _('Zur Einrichtung')]) ?>
+                                <?= Icon::create('link-intern')->asImg(['title' => _('Zur Einrichtung')]) ?>
                             </a>
                         <? endif; ?>
                     </nav>
@@ -78,11 +78,11 @@
                         <nav>
                             <? if ($GLOBALS['perm']->have_studip_perm('admin', $inst_id) && !$locked) : ?>
                                 <a href="<?= $controller->url_for('settings/statusgruppen/verify/delete/' . $role_id) ?>#<?= $role_id ?>">
-                                    <?= Icon::create('trash')->asSvg(['title' => _('Löschen')]) ?>
+                                    <?= Icon::create('trash')->asImg(['title' => _('Löschen')]) ?>
                                 </a>
 
                                 <a href="<?= URLHelper::getURL('dispatch.php/admin/statusgroups', ['cid' => $inst_id]) ?>#group-<?= $role_id ?>">
-                                    <?= Icon::create('link-intern')->asSvg(['title' => _('Zur Funktion')]) ?>
+                                    <?= Icon::create('link-intern')->asImg(['title' => _('Zur Funktion')]) ?>
                                 </a>
                             <? endif; ?>
                         </nav>

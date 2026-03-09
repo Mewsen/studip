@@ -25,7 +25,7 @@
     <? if (array_key_exists($ilias_index, $courses_list) && count($courses_list[$ilias_index]) > 0) : ?>
         <? foreach ($courses_list[$ilias_index] as $crs_id => $course) : ?>
             <tr>
-                <td><?= Icon::create('learnmodule', Icon::ROLE_INFO)->asSvg(['title' => _('ILIAS-Kurs')]) ?></td>
+                <td><?= Icon::create('learnmodule', Icon::ROLE_INFO)->asImg(['title' => _('ILIAS-Kurs')]) ?></td>
                 <td>
                     <? if ($course['online'] || in_array($course['status'], [2, 4])) : ?>
                         <a href="<?= URLHelper::getLink("dispatch.php/my_ilias_accounts/view_course/{$ilias_index}/{$crs_id}")?>" data-dialog=""><?= htmlReady($course['title']) ?></a>
@@ -37,7 +37,7 @@
                 <td>
                     <? if ($course['studip_object']) : ?>
                         <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $course['studip_object']]) ?>">
-                            <?= Icon::create('seminar')->asSvg(['title' => Course::find($course['studip_object'])->Name]) ?>
+                            <?= Icon::create('seminar')->asImg(['title' => Course::find($course['studip_object'])->Name]) ?>
                         </a>
                     <? endif ?>
                 </td>
@@ -82,7 +82,7 @@
         <? if (!empty($workgroups_list[$ilias_index])) : ?>
             <? foreach ($workgroups_list[$ilias_index] as $cat_id => $workgroup) : ?>
                 <tr>
-                    <td><?= Icon::create('community', Icon::ROLE_INFO)->asSvg(['title' => _('ILIAS-Arbeitsbereich')]) ?></td>
+                    <td><?= Icon::create('community', Icon::ROLE_INFO)->asImg(['title' => _('ILIAS-Arbeitsbereich')]) ?></td>
                     <td>
                         <a href="<?= URLHelper::getLink("dispatch.php/my_ilias_accounts/view_workgroup/{$ilias_index}/{$cat_id}")?>" data-dialog=""><?= htmlReady($workgroup['title']) ?></a>
                     </td>

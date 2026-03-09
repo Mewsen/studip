@@ -61,16 +61,16 @@
             <td><?= $banner->priority ?> (<?= $banner->getViewProbability() ?>)</td>
             <td class="actions">
                 <a class="load-in-new-row" href="<?= $controller->info($banner, ['path' => $banner->banner_path]) ?>">
-                    <?= Icon::create('info')->asSvg(['title' => _('Eigenschaften')]) ?>
+                    <?= Icon::create('info')->asImg(['title' => _('Eigenschaften')]) ?>
                 </a>
                 <a href="<?= $controller->edit($banner, ['path' => $banner->banner_path]) ?>" data-dialog="size=auto">
-                    <?= Icon::create('edit')->asSvg(['title' => _('Banner bearbeiten')]) ?>
+                    <?= Icon::create('edit')->asImg(['title' => _('Banner bearbeiten')]) ?>
                 </a>
                 <a href="<?= $controller->reset($banner) ?>">
-                    <?= Icon::create('refresh')->asSvg(['title' => _('Klicks/Views zurücksetzen')]) ?>
+                    <?= Icon::create('refresh')->asImg(['title' => _('Klicks/Views zurücksetzen')]) ?>
                 </a>
                 <a href="<?= $controller->delete($banner) ?>">
-                    <?= Icon::create('trash')->asSvg(['title' => _('Banner löschen')]) ?>
+                    <?= Icon::create('trash')->asImg(['title' => _('Banner löschen')]) ?>
                 </a>
             </td>
         </tr>

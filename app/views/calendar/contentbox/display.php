@@ -2,7 +2,7 @@
     <article class="studip">
         <header>
             <h1>
-                <?= Icon::create('schedule', 'info')->asSvg() ?>
+                <?= Icon::create('schedule', 'info')->asImg() ?>
                 <?= htmlReady($title) ?>
             </h1>
             <nav>
@@ -11,12 +11,12 @@
                         <a href="<?= URLHelper::getLink('dispatch.php/calendar/date/add') ?>"
                            data-dialog="reload-on-close"
                            title="<?= _('Neuen Termin anlegen') ?>" aria-label="<?= _('Neuen Termin anlegen') ?>">
-                            <?= Icon::create('add')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('add')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? else: ?>
                         <a href="<?= URLHelper::getLink("dispatch.php/course/timesrooms", ['cid' => $range_id]) ?>"
                            title="<?= _('Neuen Termin anlegen') ?>" aria-label="<?= _('Neuen Termin anlegen') ?>">
-                            <?= Icon::create('admin')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('admin')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? endif ?>
                 <? endif ?>

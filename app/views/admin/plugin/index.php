@@ -75,7 +75,7 @@ use Studip\Button, Studip\LinkButton;
                         <td <? if (!$plugin['enabled']) echo 'class="quiet"'; ?>>
                             <?= htmlReady($update_info[$pluginid]['version'] ?? '') ?>
                         <? if ($plugin['automatic_update_url']): ?>
-                            <?= Icon::create('install', Icon::ROLE_STATUS_RED)->asSvg([
+                            <?= Icon::create('install', Icon::ROLE_STATUS_RED)->asImg([
                                 'title' => _('Automatische Updates sind eingerichtet'),
                                 'style' => 'vertical-align: text-bottom',
                             ]) ?>

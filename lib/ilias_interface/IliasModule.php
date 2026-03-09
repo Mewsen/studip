@@ -374,6 +374,6 @@ class IliasModule
         if (!$this->icon_file) {
             $this->icon_file = 'learnmodule';
         }
-        return Icon::create($this->icon_file, 'inactive', [])->asSvg();
+        return Icon::create($this->icon_file, 'inactive', [])->asImg();
     }
 }

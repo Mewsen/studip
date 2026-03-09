@@ -17,7 +17,7 @@
                    accept="image/gif,image/jpeg,image/png"
                    required
                    multiple>
-            <?= Icon::create('upload')->asSvg(['class' => 'text-bottom upload']) ?>
+            <?= Icon::create('upload')->asImg(['class' => 'text-bottom upload']) ?>
         </label>
 
         <label>

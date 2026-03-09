@@ -6,7 +6,7 @@
             <caption>
                 <a href="<?= $controller->url_for('resources/resource/files/' . $resource->id)?>"
                    title="<?= _('Zum Hauptordner') ?>">
-                    <?= Icon::create('folder-home-full', 'clickable')->asSvg(30, ['class' => 'text-bottom']) ?>
+                    <?= Icon::create('folder-home-full', 'clickable')->asImg(30, ['class' => 'text-bottom']) ?>
                 </a>
                 <?= htmlReady($resource->getFullName()) ?></caption>
             <?= $this->render_partial('files/_files_thead') ?>

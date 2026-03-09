@@ -33,13 +33,13 @@ if (!$item) {
     <td class="item-name"><?= htmlReady($item['name'] ?? '') ?></td>
     <td class="actions">
         <a href="<?= Room::getLinkForAction('show', (!empty($item) ? $item['range_id'] : 'RANGE_ID')) ?>" data-dialog>
-            <?= Icon::create('info-circle')->asSvg([
+            <?= Icon::create('info-circle')->asImg([
                 'title' => _('Rauminformationen'),
                 'class' => 'text-bottom'
             ])?>
         </a>
         <a href="<?= Room::getLinkForAction('semester_plan', (!empty($item) ? $item['range_id'] : 'RANGE_ID')) ?>" target="_blank">
-            <?= Icon::create('timetable')->asSvg([
+            <?= Icon::create('timetable')->asImg([
                 'title' => _('Semesterbelegung'),
                 'class' => 'text-bottom'
             ])?>

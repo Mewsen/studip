@@ -37,7 +37,7 @@
                     <th <? if ($sort_var === 1) printf('class="sort%s"', $sort_order) ?>>
                         <? $sortorder = $sort_var !== 1 ? 'desc' : ($sort_order === 'asc' ? 'desc' : 'asc') ?>
                         <a href="<?= URLHelper::getLink(sprintf('?sorting=1&sort_order=%s', $sortorder)) ?>">
-                         <?= Icon::create('radiobutton-checked')->asSvg(
+                         <?= Icon::create('radiobutton-checked')->asImg(
                              [
                                  'title' => _('Markierung')
                              ]

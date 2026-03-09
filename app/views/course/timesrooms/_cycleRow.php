@@ -70,7 +70,7 @@ $is_exTermin = $termin instanceof CourseExDate;
             <span class="no-break">
                 <a href="<?= $room->getActionLink('booking_plan', ['defaultDate' => date('Y-m-d', $termin->date)]) ?>"
                    data-dialog="size=big">
-                    <?= Icon::create('link-intern')->asImg(16, ['class' => 'text-bottom']) ?>
+                    <?= Icon::create('link-intern')->asImg(['class' => 'text-bottom']) ?>
                     <?= htmlReady($room->getFullName()) ?>
                 </a>
             </span>

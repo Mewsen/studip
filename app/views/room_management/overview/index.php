@@ -92,7 +92,7 @@
         <thead>
                 <tr>
                     <th>
-                        <?= Icon::create('radiobutton-checked')->asSvg(
+                        <?= Icon::create('radiobutton-checked')->asImg(
                             [
                                 'class' => 'text-bottom',
                                 'title' => _('Markierung')

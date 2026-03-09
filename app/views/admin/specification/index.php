@@ -43,10 +43,10 @@
                 </td>
                 <td class="actions">
                     <a href="<?= $controller->edit($rule) ?>">
-                        <?= Icon::create('edit')->asSvg(['title' => _('Regel bearbeiten')]) ?>
+                        <?= Icon::create('edit')->asImg(['title' => _('Regel bearbeiten')]) ?>
                     </a>
                 <? if (count($rule->courses) > 0): ?>
-                    <?= Icon::create('trash', Icon::ROLE_INACTIVE)->asSvg(
+                    <?= Icon::create('trash', Icon::ROLE_INACTIVE)->asImg(
                         tooltip2(_('Die Regel kann nicht gelöscht werden, da sie noch verwendet wird.'))
                     ) ?>
                 <? else: ?>

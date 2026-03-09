@@ -36,7 +36,7 @@
                                 </h1>
                             </header>
                             <div id="oer_preview_image">
-                                <?= Icon::create($icon_shape)->asSvg(160) ?>
+                                <?= Icon::create($icon_shape)->asImg(160) ?>
                             </div>
                         </article>
                     </label>

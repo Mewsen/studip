@@ -8,7 +8,7 @@
                 aria-label="<?= $folder_label ?>"
                 title="<?= $folder_label ?>"
             >
-                <?= $folder->getTypedFolder()->getIcon('clickable')->asSvg(['class' => 'text-bottom']) ?>
+                <?= $folder->getTypedFolder()->getIcon('clickable')->asImg(['class' => 'text-bottom']) ?>
                 <span class="<?= $always_show ? '' : 'responsive-hidden' ?>">
                     <?= _('Dateiordner') ?>
                 </span>
@@ -24,7 +24,7 @@
                 aria-label="<?= $ftopic_label ?>"
                 title="<?= $ftopic_label ?>"
             >
-                <?= Icon::create('forum')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('forum')->asImg(['class' => 'text-bottom']) ?>
                 <span class="<?= $always_show ? '' : 'responsive-hidden' ?>">
                     <?= _('Thema im Forum') ?>
                 </span>

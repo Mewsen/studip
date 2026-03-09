@@ -33,7 +33,7 @@
                     </td>
                     <td class="dont-hide actions">
                         <a href="<?= $controller->messagehelper(['fach_id' => $studycourse->fach_id]) ?>" data-dialog>
-                            <?= Icon::create('mail')->asSvg(
+                            <?= Icon::create('mail')->asImg(
                                 ['title' => sprintf(
                                     _('Alle Studierenden des Faches %s benachrichtigen.'),
                                     $studycourse->name)

@@ -198,7 +198,7 @@ class MessagesController extends AuthenticatedController {
             if ($this->default_message->attachment_folder) {
                 foreach ($this->default_message->attachment_folder->getTypedFolder()->getFiles() as $filetype) {
                     $this->default_attachments[] = [
-                        'icon'        => $filetype->getIcon('info')->asSvg(['class' => 'text-bottom']),
+                        'icon'        => $filetype->getIcon('info')->asImg(['class' => 'text-bottom']),
                         'name'        => $filetype->getFilename(),
                         'document_id' => $filetype->getId(),
                         'size'        => $filetype->getSize()
@@ -507,7 +507,7 @@ class MessagesController extends AuthenticatedController {
                                 if ($new_attachment_file_ref->store()) {
                                     $icon = FileManager::getIconForFileRef($new_attachment_file_ref);
                                     $this->default_attachments[] = [
-                                        'icon'        => $icon->asSvg(['class' => 'text-bottom']),
+                                        'icon'        => $icon->asImg(['class' => 'text-bottom']),
                                         'name'        => $new_attachment_file_ref->name,
                                         'document_id' => $new_attachment_file_ref->id,
                                         'size'        => relsize($new_attachment_file_ref->size, false)
@@ -876,7 +876,7 @@ class MessagesController extends AuthenticatedController {
 
         $output['document_id'] = $uploaded['files'][0]->getId();
 
-        $output['icon'] = $uploaded['files'][0]->getIcon(Icon::ROLE_CLICKABLE)->asSvg(['class' => 'text-bottom']);
+        $output['icon'] = $uploaded['files'][0]->getIcon(Icon::ROLE_CLICKABLE)->asImg(['class' => 'text-bottom']);
 
         $this->render_json($output);
     }

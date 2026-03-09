@@ -44,9 +44,9 @@
                                 <?= formatReady($answer['text']) ?>
 
                                 <? if ($exercise->isCorrectAnswer($answer, $i)): ?>
-                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
+                                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
                                 <? else: ?>
-                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
+                                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
                                 <? endif ?>
                             </div>
                         <? endif ?>
@@ -78,9 +78,9 @@
 
             <? if ($solution->id): ?>
                 <? if ($exercise->isCorrectAnswer($answer, -1)): ?>
-                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'correction_inline', 'title' => _('richtig')]) ?>
+                    <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'correction_inline', 'title' => _('richtig')]) ?>
                 <? else: ?>
-                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'correction_inline', 'title' => _('falsch')]) ?>
+                    <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['class' => 'correction_inline', 'title' => _('falsch')]) ?>
                 <? endif ?>
             <? endif ?>
         </div>

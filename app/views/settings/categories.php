@@ -16,22 +16,22 @@
                 <span>
                 <? if ($index > 0): ?>
                     <a href="<?= $controller->url_for('settings/categories/swap', $category->id, $last->id) ?>">
-                        <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asSvg(['class' => 'text-bottom', 'title' =>_('Kategorie nach oben verschieben')]) ?>
+                        <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asImg(['class' => 'text-bottom', 'title' =>_('Kategorie nach oben verschieben')]) ?>
                     </a>
                 <? else: ?>
-                    <?= Icon::create('arr_2up', Icon::ROLE_INACTIVE)->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('arr_2up', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-bottom']) ?>
                 <? endif; ?>
 
                 <? if ($index < $count - 1): ?>
                     <a href="<?= $controller->url_for('settings/categories/swap', $category->id, $categories[$index + 1]->id) ?>">
-                                <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asSvg(['class' => 'text-bottom', 'title' =>_('Kategorie nach unten verschieben')]) ?>
+                                <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg(['class' => 'text-bottom', 'title' =>_('Kategorie nach unten verschieben')]) ?>
                             </a>
                 <? else: ?>
-                    <?= Icon::create('arr_2down', Icon::ROLE_INACTIVE)->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('arr_2down', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-bottom']) ?>
                 <? endif; ?>
 
                     <a href="<?= $controller->url_for('settings/categories/delete', $category->id) ?>">
-                        <?= Icon::create('trash')->asSvg(['class' => 'text-bottom', 'title' => _('Kategorie löschen')]) ?>
+                        <?= Icon::create('trash')->asImg(['class' => 'text-bottom', 'title' => _('Kategorie löschen')]) ?>
                     </a>
                 </span>
             </legend>

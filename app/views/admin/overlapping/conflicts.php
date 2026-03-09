@@ -78,7 +78,7 @@
                                     <div class="mvv-ovl-title">
                                         <?= htmlReady($comp_cycle->comp_course->VeranstaltungsNummer) ?>
                                         <a href="<?= $controller->course_info($comp_cycle->id) ?>" data-dialog>
-                                            <?= Icon::create('info-circle', Icon::ROLE_INFO)->asSvg(['style' => 'vertical-align: text-bottom;', 'title' => _('Veranstaltungsdetails')]) ?>
+                                            <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(['style' => 'vertical-align: text-bottom;', 'title' => _('Veranstaltungsdetails')]) ?>
                                         </a>
                                         <?= htmlReady($comp_cycle->comp_course->getFullName('type-name')) ?>
                                         <? if ($comp_cycle->comp_course->admission_turnout) : ?>

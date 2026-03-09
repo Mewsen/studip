@@ -27,7 +27,7 @@
                     <td class="dont-hide actions" style="white-space: nowrap;">
                         <? if (MvvPerm::havePermWrite($fach)) : ?>
                             <a href="<?= $controller->action_link('fach/' . $fach->id) ?>">
-                                <?= Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Fach bearbeiten')])->asSvg(); ?>
+                                <?= Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Fach bearbeiten')])->asImg(); ?>
                             </a>
                         <? endif; ?>
                         <? if (MvvPerm::havePermCreate($fach)) : ?>
@@ -39,7 +39,7 @@
                                         'name'         => 'delete'
                                     ]); ?>
                             <? else : ?>
-                                <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Fach kann nicht glöscht werden')))->asSvg(); ?>
+                                <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Fach kann nicht glöscht werden')))->asImg(); ?>
                             <? endif; ?>
                         <? endif; ?>
                     </td>

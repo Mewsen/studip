@@ -9,8 +9,8 @@
         <a href="<?= URLHelper::getLink('dispatch.php/messages/read/' . $message->getId() .'/' . ($received ? 'rec' : 'snd') ) ?>" data-dialog>
             <?= trim($message['subject']) ? htmlReady($message['subject']) : htmlReady(mila(kill_format($message['message']), 40)) ?>
             <div class="message-indicators">
-                <span><?= $message->getNumAttachments() ? Icon::create('staple', Icon::ROLE_INFO)->asSvg(['title' => _('Mit Anhang')]) : '' ?></span>
-                <span><?= $message->isAnswered($GLOBALS['user']->id) ? Icon::create('outbox', Icon::ROLE_INFO)->asSvg(['title' => _('Beantwortet')]) : '' ?></span>
+                <span><?= $message->getNumAttachments() ? Icon::create('staple', Icon::ROLE_INFO)->asImg(['title' => _('Mit Anhang')]) : '' ?></span>
+                <span><?= $message->isAnswered($GLOBALS['user']->id) ? Icon::create('outbox', Icon::ROLE_INFO)->asImg(['title' => _('Beantwortet')]) : '' ?></span>
             </div>
         </a>
         <p class="hidden-medium-up responsive_author">

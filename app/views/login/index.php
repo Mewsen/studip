@@ -94,10 +94,10 @@ $enable_news = count($news_entries) > 0;
                 <? if ($enable_faq && $enable_news): ?>
                     <div id="login-infobox-button-wrapper">
                         <button id="hide-faq" class="selected" title="<?= _('Ankündigungen anzeigen') ?>">
-                            <?= Icon::create('news')->asSvg(24, ['style' => 'align-self: end;']) ?>
+                            <?= Icon::create('news')->asImg(24, ['style' => 'align-self: end;']) ?>
                         </button>
                         <button id="show-faq" title="<?= _('Hinweise zum Login anzeigen')?>">
-                            <?= Icon::create('faq')->asSvg(24, ['style' => 'align-self: end;']) ?>
+                            <?= Icon::create('faq')->asImg(24, ['style' => 'align-self: end;']) ?>
                         </button>
 
                     </div>

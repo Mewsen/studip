@@ -208,7 +208,7 @@ class Course_MembersController extends AuthenticatedController
         $results = SimpleCollection::createFromArray($members)->pluck('email');
 
         if (!empty($results)) {
-            return sprintf('<a href="mailto:%s">%s</a>', htmlReady(join(',', $results)), Icon::create('mail', attributes: ['title' => sprintf('E-Mail an alle %s versenden',$textStatus)])->asSvg());
+            return sprintf('<a href="mailto:%s">%s</a>', htmlReady(join(',', $results)), Icon::create('mail', attributes: ['title' => sprintf('E-Mail an alle %s versenden',$textStatus)])->asImg());
         } else {
             return null;
         }

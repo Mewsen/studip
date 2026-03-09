@@ -6,7 +6,7 @@
                     <a href="<?= URLHelper::getLink($navigation->getURL()) ?>" class="content-item-link">
                         <div class="content-item-img-wrapper">
                             <? if ($navigation->getImage()): ?>
-                                <?= $navigation->getImage()->asSvg(32, $navigation->getLinkAttributes()) ?>
+                                <?= $navigation->getImage()->asImg(32, $navigation->getLinkAttributes()) ?>
                             <? endif ?>
                         </div>
                         <div class="content-item-text">

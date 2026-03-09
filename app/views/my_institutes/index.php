@@ -62,7 +62,7 @@
                                 URLHelper::getLink('dispatch.php/institute/overview',
                                     ['auswahl'     => $instid,
                                           'redirect_to' => $nav->getURL()]) ?>" <?= $nav->hasBadgeNumber() ? 'class="badge" data-badge-number="' . intval($nav->getBadgeNumber()) . '"' : '' ?>>
-                                    <?= $nav->getImage()->asSvg($nav->getLinkAttributes()) ?>
+                                    <?= $nav->getImage()->asImg($nav->getLinkAttributes()) ?>
                                 </a>
                             </li>
                         <? else: ?>
@@ -78,7 +78,7 @@
                 <td style="text-align: left; white-space: nowrap">
                 <? if (Config::get()->ALLOW_SELFASSIGN_INSTITUTE && $values['perms'] === 'user') : ?>
                     <a href="<?= $controller->decline_inst($instid) ?>">
-                        <?= Icon::create('door-leave')->asSvg(['title' => _('Aus der Einrichtung austragen')]) ?>
+                        <?= Icon::create('door-leave')->asImg(['title' => _('Aus der Einrichtung austragen')]) ?>
                     </a>
                 <? else : ?>
                     <?= Assets::img('blank.gif', ['size' => Icon::SIZE_DEFAULT]) ?>

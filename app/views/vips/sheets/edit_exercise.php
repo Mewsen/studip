@@ -75,7 +75,7 @@
                             <td>
                                 <input type="hidden" name="file_ids[]" value="<?= $file_ref->id ?>">
                                 <a href="<?= htmlReady($file_ref->getDownloadURL()) ?>" <?= $file_ref->getContentDisposition() === 'inline' ? 'target="_blank"' : '' ?>>
-                                    <?= Icon::create('file')->asSvg(['title' => _('Datei herunterladen')]) ?>
+                                    <?= Icon::create('file')->asImg(['title' => _('Datei herunterladen')]) ?>
                                     <?= htmlReady($file_ref->name) ?>
                                 </a>
                             </td>
@@ -122,8 +122,8 @@
 
         <input id="options-toggle" class="options-toggle" type="checkbox" value="on">
         <a class="caption" href="#" role="button" data-toggles="#options-toggle" aria-controls="options-panel" aria-expanded="false">
-            <?= Icon::create('arr_1down')->asSvg(['class' => 'toggle-open']) ?>
-            <?= Icon::create('arr_1right')->asSvg(['class' => 'toggle-closed']) ?>
+            <?= Icon::create('arr_1down')->asImg(['class' => 'toggle-open']) ?>
+            <?= Icon::create('arr_1right')->asImg(['class' => 'toggle-closed']) ?>
             <?= _('Weitere Einstellungen') ?>
         </a>
 

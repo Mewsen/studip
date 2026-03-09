@@ -14,7 +14,7 @@
         <tr>
             <td>
                 <? if ($material->draft) : ?>
-                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
                 <? endif ?>
             </td>
             <td>
@@ -24,23 +24,23 @@
             </td>
             <td>
                 <? if ($material->rating === null) : ?>
-                    <?= Icon::create('star', Icon::ROLE_INFO)->asSvg($starwidth) ?>
-                    <?= Icon::create('star', Icon::ROLE_INFO)->asSvg($starwidth) ?>
-                    <?= Icon::create('star', Icon::ROLE_INFO)->asSvg($starwidth) ?>
-                    <?= Icon::create('star', Icon::ROLE_INFO)->asSvg($starwidth) ?>
-                    <?= Icon::create('star', Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create('star', Icon::ROLE_INFO)->asImg($starwidth) ?>
+                    <?= Icon::create('star', Icon::ROLE_INFO)->asImg($starwidth) ?>
+                    <?= Icon::create('star', Icon::ROLE_INFO)->asImg($starwidth) ?>
+                    <?= Icon::create('star', Icon::ROLE_INFO)->asImg($starwidth) ?>
+                    <?= Icon::create('star', Icon::ROLE_INFO)->asImg($starwidth) ?>
                 <? else : ?>
                     <? $material->rating = round($material->rating, 1) / 2 ?>
                     <? $v = $material->rating >= 0.75 ? '' : ($material->rating >= 0.25 ? '-halffull' : '-empty') ?>
-                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asImg($starwidth) ?>
                     <? $v = $material->rating >= 1.75 ? '' : ($material->rating >= 1.25 ? '-halffull' : '-empty') ?>
-                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asImg($starwidth) ?>
                     <? $v = $material->rating >= 2.75 ? '' : ($material->rating >= 2.25 ? '-halffull' : '-empty') ?>
-                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asImg($starwidth) ?>
                     <? $v = $material->rating >= 3.75 ? '' : ($material->rating >= 3.25 ? '-halffull' : '-empty') ?>
-                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asImg($starwidth) ?>
                     <? $v = $material->rating >= 4.75 ? '' : ($material->rating >= 4.25 ? '-halffull' : '-empty') ?>
-                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asSvg($starwidth) ?>
+                    <?= Icon::create("star{$v}", Icon::ROLE_INFO)->asImg($starwidth) ?>
                 <? endif ?>
             </td>
             <td>

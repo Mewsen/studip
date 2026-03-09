@@ -4,7 +4,7 @@
             <a class="navigate" href="<?= htmlReady($item->getURL()) ?>">
         <? endif ?>
             <? if ($item->getIcon()) : ?>
-                <?= $item->getIcon()->copyWithRole(Icon::ROLE_INFO)->asSvg(24) ?>
+                <?= $item->getIcon()->copyWithRole(Icon::ROLE_INFO)->asImg(24) ?>
             <? endif ?>
             <?= htmlReady($item->getTitle()) ?>
         <? if (!$item->isActive()) : ?>

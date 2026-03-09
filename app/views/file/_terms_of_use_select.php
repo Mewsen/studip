@@ -24,8 +24,8 @@ if (!$selected_terms_of_use_id) {
                aria-description="<?= htmlReady(kill_format($content_terms_of_use_entry->description)) ?>">
 
         <label for="content_terms_of_use-<?= htmlReady($content_terms_of_use_entry->id) ?>">
-            <?= Icon::create('radiobutton-unchecked')->asSvg(['class' => 'arrow']) ?>
-            <?= Icon::create('radiobutton-checked')->asSvg(['class' => 'check']) ?>
+            <?= Icon::create('radiobutton-unchecked')->asImg(['class' => 'arrow']) ?>
+            <?= Icon::create('radiobutton-checked')->asImg(['class' => 'check']) ?>
             <div class="text">
                 <?= htmlReady($content_terms_of_use_entry->name) ?>
             </div>
@@ -34,7 +34,7 @@ if (!$selected_terms_of_use_id) {
                     <? if (filter_var($content_terms_of_use_entry['icon'], FILTER_VALIDATE_URL)): ?>
                         <img src="<?= htmlReady($content_terms_of_use_entry['icon']) ?>" width="32" height="32">
                     <? else : ?>
-                        <?= Icon::create($content_terms_of_use_entry['icon'])->asSvg(Icon::SIZE_LARGE) ?>
+                        <?= Icon::create($content_terms_of_use_entry['icon'])->asImg(Icon::SIZE_LARGE) ?>
                     <? endif ?>
                 <? endif ?>
             </div>

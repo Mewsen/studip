@@ -424,7 +424,7 @@ class Materialien_FilesController extends MVVController
         }
 
         $output['document_id'] = $file->id;
-        $output['icon'] = $file->getIcon(Icon::ROLE_CLICKABLE)->asSvg(['class' => 'text-bottom']);
+        $output['icon'] = $file->getIcon(Icon::ROLE_CLICKABLE)->asImg(['class' => 'text-bottom']);
 
         $this->render_json($output);
     }

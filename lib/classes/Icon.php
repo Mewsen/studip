@@ -198,7 +198,7 @@ class Icon implements JsonSerializable
      */
     public function __toString()
     {
-        return $this->asSvg();
+        return $this->asImg();
     }
 
     public function jsonSerialize(): mixed
@@ -207,35 +207,49 @@ class Icon implements JsonSerializable
     }
 
     /**
-     * Renders the icon inside an img html tag.
+     * Renders the icon inside as an svg image.
      *
      * @param int   $size             Optional; Defines the dimension in px of the rendered icon; FALSE prevents any
      *                                width or height attributes
      * @param Array $view_attributes  Optional; Additional attributes to pass
      *                                into the rendered output
      * @return String containing the html representation for the icon.
+     *
+     * @deprecated will be removed in Stud.IP 7.0. Use `asImg` instead.
      */
-    public function asImg($size = null, $view_attributes = [])
-    {
-        if (is_array($size)) {
-            [$view_attributes, $size] = [$size, null];
-        }
-        return sprintf(
-            '<img %s>',
-            arrayToHtmlAttributes(
-                $this->prepareHTMLAttributes($size, $view_attributes)
-            )
-        );
-    }
-
     public function asSvg($size = self::SIZE_DEFAULT, $view_attributes = []): string
     {
-        if (self::isStatic($this->shape)) {
-            return $this->asImg($size, $view_attributes);
+        return $this->asImg(...func_get_args());
+    }
+
+    /**
+     * Renders the icon as an HTML image.
+     *
+     * @param int   $size             Optional; Defines the dimension in px of the rendered icon; FALSE prevents any
+     *                                width or height attributes
+     * @param Array $view_attributes  Optional; Additional attributes to pass
+     *                                into the rendered output
+     * @param bool  $force_img_tag    Optional; If true, the icon will always be rendered as an img tag.
+     * @return String containing the html representation for the icon.
+     */
+    public function asImg(
+        $size = self::SIZE_DEFAULT,
+        $view_attributes = [],
+        bool $force_img_tag = false
+    ): string {
+        if (is_array($size)) {
+            [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
 
-        if (is_array($size)) {
-            [$view_attributes, $size] = [$size, $size['size'] ?? self::SIZE_DEFAULT];
+        $size ??= self::SIZE_DEFAULT;
+
+        if ($force_img_tag || self::isStatic($this->shape)) {
+            return sprintf(
+                '<img %s>',
+                arrayToHtmlAttributes(
+                    $this->prepareHTMLAttributes($size, $view_attributes)
+                )
+            );
         }
 
         $cacheKey = md5(json_encode([
@@ -305,7 +319,7 @@ class Icon implements JsonSerializable
 
         $text = isset($view_attributes['text']) ? htmlReady($view_attributes['text']) : '';
 
-        $svgContent = $this->asSvg($size, $view_attributes);
+        $svgContent = $this->asImg($size, $view_attributes);
 
         if ($without_label) {
              return sprintf(

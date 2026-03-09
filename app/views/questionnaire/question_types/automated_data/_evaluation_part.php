@@ -36,7 +36,7 @@
                     <a href=""
                        title="<?= _('Zeige wieder alle Ergebnisse ohne Filterung an.') ?>"
                        onclick="STUDIP.Questionnaire.removeFilter('<?= htmlReady($question['questionnaire_id']) ?>'); return false;">
-                        <?= Icon::create('filter2')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('filter2')->asImg(['class' => 'text-bottom']) ?>
                         (<?= $percentage ?>% | <?= (int) count((array) $answerdata[$key]) ?>/<?= $countAnswers ?>)
                     </a>
                 <? else : ?>

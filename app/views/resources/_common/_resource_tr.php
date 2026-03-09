@@ -112,7 +112,7 @@
                 </span>
             <? else: ?>
                 <?= htmlReady($resource->name) ?>
-                <?= Icon::create('link-intern')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('link-intern')->asImg(['class' => 'text-bottom']) ?>
             <? endif ?>
         </a>
         <? if (!empty($resource_tooltip)): ?>

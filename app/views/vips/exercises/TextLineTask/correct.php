@@ -16,13 +16,13 @@
     <?= htmlReady($response[0]) ?>
 
     <? if ($results[0]['points'] == 1): ?>
-        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('richtig')]) ?>
+        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('richtig')]) ?>
     <? elseif ($results[0]['points'] == 0.5): ?>
-        <?= Icon::create('decline', Icon::ROLE_STATUS_YELLOW)->asSvg(['title' => _('fast richtig')]) ?>
+        <?= Icon::create('decline', Icon::ROLE_STATUS_YELLOW)->asImg(['title' => _('fast richtig')]) ?>
     <? elseif (!$edit_solution || $results[0]['safe']): ?>
-        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('falsch')]) ?>
+        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('falsch')]) ?>
     <? else: ?>
-        <?= Icon::create('question', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('Unbekannte Antwort')]) ?>
+        <?= Icon::create('question', Icon::ROLE_STATUS_RED)->asImg(['title' => _('Unbekannte Antwort')]) ?>
     <? endif ?>
 <? endif ?>
 

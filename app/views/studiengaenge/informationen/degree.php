@@ -34,7 +34,7 @@
                         <? if ($GLOBALS['perm']->have_perm('root', $GLOBALS['user']->id)) : ?>
                             <a href="<?= $controller->messagehelper(['abschluss_id' => $deg->abschluss_id]) ?>"
                                data-dialog>
-                                <?= Icon::create('mail')->asSvg(
+                                <?= Icon::create('mail')->asImg(
                                     ['title' => sprintf(
                                         _('Alle Studierenden mit dem Studienabschluss %s benachrichtigen.'),
                                         $deg->name)

@@ -44,7 +44,7 @@
                             <? if ($perm->havePermWrite()) : ?>
                                 <a data-dialog
                                    href="<?= $controller->action_link('stgteilbezeichnung/' . $stgteilbezeichnung->id) ?>">
-                                    <?= Icon::create('edit',  Icon::ROLE_CLICKABLE ,['title' => _('Studiengangteil-Bezeichnung bearbeiten')])->asSvg(); ?>
+                                    <?= Icon::create('edit',  Icon::ROLE_CLICKABLE ,['title' => _('Studiengangteil-Bezeichnung bearbeiten')])->asImg(); ?>
                                 </a>
                             <? endif; ?>
                             <? if ($perm->havePermCreate() && $stgteilbezeichnung->count_stgteile < 1) : ?>

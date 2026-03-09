@@ -5,7 +5,7 @@
                data-dialog="size=auto"
                style="white-space: nowrap"
            >
-                <?= Icon::create('date')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('date')->asImg(['class' => 'text-bottom']) ?>
                 <?= htmlReady($date->getFullName()) ?>
             </a>
         </li>
