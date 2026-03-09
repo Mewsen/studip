@@ -40,8 +40,12 @@
         <label>
             <?= _('Art') ?>
             <select name="course_type" id="course_type" class="size-s">
+                <?php if ($cycle->isNew() === false) : ?>
+                <!-- Use default as placeholder to avoid accidentally overwrite of modified course_type -->
+                <option value="default">-</option>
+                <?php endif ?>
                 <? foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
-                    <option value="<?= $id ?>" <? if(Request::get('course_type') && Request::get('course_type') == $id) :?>selected="selected"<? endif?>><?= htmlReady($value['name']) ?></option>
+                    <option value="<?= $id ?>"><?= htmlReady($value['name']) ?></option>
                 <? endforeach ?>
             </select>
         </label>
