@@ -46,10 +46,12 @@ export default {
     },
     computed: {
         autohide() {
-            return !document.querySelector('html').classList.contains('a11y-reduce-animations')
+            const a11yMotionDataSetting = document.querySelector('html').dataset.A11yMotion;
+
+            return a11yMotionDataSetting !== 'reduce'
                 && (
                     !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                    || document.querySelector('html').classList.contains('a11y-no-reduce-animations')
+                    || a11yMotionDataSetting === 'allow'
                 );
         }
     },

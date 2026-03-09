@@ -973,12 +973,12 @@ input.allow-plaintext-toggle {
   vue Transition:fade-down --end--
 */
 
-html.a11y-reduce-animations {
+html[data--a11y-motion="reduce"] {
     --transition-duration: 0s;
     --transition-duration-slow: 0s;
     --transition-duration-superslow: 0s;
 }
-html.a11y-no-reduce-animations {
+html[data--a11y-motion="allow"] {
     --transition-duration: #{$transition-duration};
     --transition-duration-slow: #{$transition-duration-slow};
     --transition-duration-superslow: #{$transition-duration-superslow};
