@@ -153,12 +153,6 @@ button,
     @include button-base;
 }
 
-label {
-    &.undecorated.icon-button {
-        cursor: pointer;
-    }
-}
-
 .btn-icon {
     all: unset;
     cursor: pointer;

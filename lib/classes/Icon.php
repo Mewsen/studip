@@ -308,36 +308,16 @@ class Icon implements JsonSerializable
      *                                into the rendered output
      * @return String containing the html representation for the icon.
      */
-    public function asInput($size = self::SIZE_DEFAULT, $view_attributes = [], $without_label = false)
+    public function asInput($size = self::SIZE_DEFAULT, $view_attributes = [])
     {
         if (is_array($size)) {
             [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
 
-        $view_attributes['tabindex'] ??= '0';
-        $view_attributes['role'] ??= 'button';
-
-        $text = isset($view_attributes['text']) ? htmlReady($view_attributes['text']) : '';
-
-        $svgContent = $this->asImg($size, $view_attributes);
-
-        if ($without_label) {
-             return sprintf(
-                '<button class="as-link" type="submit" %s>%s</button>',
-                arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
-                $svgContent,
-             );
-        }
-
         return sprintf(
-            '<label class="icon-button undecorated">
-                <button class="as-link" type="submit" %s>
-                    %s%s
-                </button>
-            </label>',
+            '<button class="as-link" %s>%s</button>',
             arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
-            $svgContent,
-            $text
+            $this->asImg($size, $view_attributes)
         );
     }
 
