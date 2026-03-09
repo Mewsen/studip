@@ -11,7 +11,7 @@ trait RangeTypeAware
 
     protected function preparePossibleRangeTypes(): void
     {
-        foreach (studipApp('json-api-integration-schemas') as $class => $schema) {
+        foreach (app('json-api-integration-schemas') as $class => $schema) {
             if (is_subclass_of($class, FeedbackRange::class) && is_subclass_of($class, SimpleORMap::class)) {
                 $this->possibleRangeTypes[$schema::TYPE] = $class;
             }

@@ -313,7 +313,7 @@ class LtiLink
         // posted form data will always use CR LF
         $launch_params = preg_replace("/\r?\n/", "\r\n", $launch_params);
 
-        $requestFactory = studipApp(ServerRequestFactoryInterface::class);
+        $requestFactory = app(ServerRequestFactoryInterface::class);
         $request = $requestFactory->createServerRequest('POST', $launch_url);
 
         return Studip\OAuth1::signRequest(

@@ -23,7 +23,7 @@ $getJsonApiSchemas = function () {
         array_unique(
             array_map(
                 fn($class) => $class::TYPE,
-                studipApp('json-api-integration-schemas')
+                app('json-api-integration-schemas')
             )
         )
     );

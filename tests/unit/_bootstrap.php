@@ -167,5 +167,5 @@ function app($entryId = null, $parameters = [])
 
 function sess()
 {
-    return studipApp()->get('Studip\Session\Manager');
+    return app()->get('Studip\Session\Manager');
 }

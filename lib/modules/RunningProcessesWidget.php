@@ -16,7 +16,7 @@ class RunningProcessesWidget extends CorePlugin implements PortalPlugin
 
     function getPortalTemplate()
     {
-        $controller = studipApp(\Trails\Dispatcher::class)->load_controller('running_processes');
+        $controller = app(\Trails\Dispatcher::class)->load_controller('running_processes');
         $response = $controller->relayWithRedirect('running_processes/widget');
         $template = $GLOBALS['template_factory']->open('shared/string');
         $template->content = $response->body;

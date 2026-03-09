@@ -288,7 +288,7 @@ class Course_CoursewareController extends CoursewareController
             }
         }
 
-        $encoder = studipApp(\Neomerx\JsonApi\Contracts\Encoder\EncoderInterface::class);
+        $encoder = app(\Neomerx\JsonApi\Contracts\Encoder\EncoderInterface::class);
 
         $data = [
             'units' => $encoder->encodeData($units),

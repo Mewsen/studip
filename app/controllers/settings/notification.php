@@ -71,7 +71,7 @@ class Settings_NotificationController extends Settings_SettingsController
                 ->withProps([
                     'store-url' => $this->storeURL(),
                     'modules' => collect(
-                        studipApp(ModulesNotification::class)->registered_notification_modules
+                        app(ModulesNotification::class)->registered_notification_modules
                     )->map(
                         fn(array $module, int $id): array => array_merge($module, ['id' => $id])
                     )->values(),
@@ -86,7 +86,7 @@ class Settings_NotificationController extends Settings_SettingsController
                 ->withVuexStore(
                     'MyCoursesStore',
                     'mycoursesnotificationstore',
-                    studipApp(MyCoursesHelper::class)->createVueAppData('')
+                    app(MyCoursesHelper::class)->createVueAppData('')
                 )
         );
     }

@@ -12,12 +12,12 @@ trait NegotiatesWithPsr7
 {
     protected function getPsrRequest(): ServerRequestInterface
     {
-        return studipApp(ServerRequestInterface::class);
+        return app(ServerRequestInterface::class);
     }
 
     protected function getPsrResponse(): ResponseInterface
     {
-        return studipApp(ResponseFactoryInterface::class)->createResponse();
+        return app(ResponseFactoryInterface::class)->createResponse();
     }
 
     protected function convertPsrResponse(ResponseInterface $response): TrailsResponse

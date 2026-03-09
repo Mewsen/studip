@@ -124,13 +124,13 @@ Assets::set_assets_url($GLOBALS['ASSETS_URL']);
 Assets::set_assets_path($GLOBALS['ASSETS_PATH']);
 
 // globale template factory anlegen
-$GLOBALS['template_factory'] = studipApp(Flexi\Factory::class);
+$GLOBALS['template_factory'] = app(Flexi\Factory::class);
 
 // set default pdo connection
 try {
     DBManager::getInstance()->setConnection(
         'studip',
-        studipApp(StudipPDO::class)
+        app(StudipPDO::class)
     );
 } catch (\PDOException $exception) {
     if (Studip\ENV === 'development') {
@@ -285,7 +285,7 @@ unset($mail_transporter);
 
 // Eloquent ORM Config --start--
 // should be moved to place like app providers or DB Providers
-$eloquentManager = studipApp(Illuminate\Database\Capsule\Manager::class);
+$eloquentManager = app(Illuminate\Database\Capsule\Manager::class);
 $eloquentManager->addConnection([
     'driver' => 'mysql',
     'host' =>  $GLOBALS['DB_STUDIP_HOST'],

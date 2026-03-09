@@ -18,7 +18,7 @@ $application->run();
 function loadCoreCommands(): array
 {
     $commands = require __DIR__ . '/commands.php';
-    return array_map(fn($command) => studipApp($command), $commands);
+    return array_map(fn($command) => app($command), $commands);
 }
 
 function loadPluginCommands(Application $application): array
@@ -77,7 +77,7 @@ function getPluginCommands(Application $application, array $manifest): array
 
     foreach ($commandsFn($application) as $class => $path) {
         require_once $path;
-        $commands[] = studipApp($class);
+        $commands[] = app($class);
     }
 
     return $commands;

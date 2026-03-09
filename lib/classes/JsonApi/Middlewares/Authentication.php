@@ -60,7 +60,7 @@ class Authentication
     // according to RFC 2616
     private function generateChallenges(array $guards): ResponseInterface
     {
-        $responseFactory = studipApp(ResponseFactoryInterface::class);
+        $responseFactory = app(ResponseFactoryInterface::class);
         $response = $responseFactory->createResponse(401);
 
         foreach ($guards as $guard) {

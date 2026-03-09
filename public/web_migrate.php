@@ -37,6 +37,6 @@ $GLOBALS['template_factory'] = new Flexi\Factory('../templates/');
 # get plugin class from request
 $dispatch_to = Request::pathInfo() ?: '';
 
-$dispatcher = studipApp(\Trails\Dispatcher::class);
+$dispatcher = app(\Trails\Dispatcher::class);
 $dispatcher->trails_uri = $_SERVER['SCRIPT_NAME'];
 $dispatcher->dispatch("web_migrate/{$dispatch_to}");

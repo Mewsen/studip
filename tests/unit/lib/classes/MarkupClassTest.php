@@ -77,7 +77,7 @@ class MarkupClassTest extends \Codeception\Test\Unit
         }));
 
         Config::set($configStub);
-        studipApp()->set('Studip\Session\Manager', new StudipSessionManager());
+        app()->set('Studip\Session\Manager', new StudipSessionManager());
         # exceptions
         $namespace = 'Studip\MarkupPrivate\MediaProxy\\';
         $invalidInternalLink = $namespace . 'InvalidInternalLinkException';

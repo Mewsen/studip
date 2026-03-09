@@ -29,7 +29,7 @@ abstract class StudipController extends Trails\Controller
     {
         parent::__construct($dispatcher);
         if ($this->with_session) {
-            $slimapp = studipApp()->get(Slim\App::class);
+            $slimapp = app()->get(Slim\App::class);
             if ($slimapp) {
                 $slimapp->add(Studip\Middleware\SeminarOpenMiddleware::class);
                 $slimapp->add(Studip\Middleware\AuthenticationMiddleware::class);
@@ -525,7 +525,7 @@ abstract class StudipController extends Trails\Controller
         $this->response->add_header('Pragma', 'public');
 
         $this->render_text(
-            studipApp(Psr\Http\Message\StreamFactoryInterface::class)->createStreamFromFile($file)
+            app(Psr\Http\Message\StreamFactoryInterface::class)->createStreamFromFile($file)
         );
 
         if ($callback) {
@@ -682,7 +682,7 @@ abstract class StudipController extends Trails\Controller
     public function render_template($template_name, $layout = null)
     {
         if (Studip\Debug\DebugBar::isActivated()) {
-            $debugbar = studipApp()->get(Debugbar::class);
+            $debugbar = app()->get(Debugbar::class);
             if (!isset($debugbar['trails'])) {
                 $collector = new \Studip\Debug\TrailsCollector($this);
                 $debugbar->addCollector($collector);

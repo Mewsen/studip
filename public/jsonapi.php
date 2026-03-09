@@ -10,7 +10,7 @@ require __DIR__ . '/../lib/bootstrap.php';
 URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
 
 // Instantiate the app
-$container = studipApp();
+$container = app();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 $container->set(\Slim\App::class, $app);

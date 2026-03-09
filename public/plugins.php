@@ -15,7 +15,7 @@ require '../lib/bootstrap.php';
 URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
 
 // Build PHP_DI Container
-$container = studipApp();
+$container = app();
 
 // Instantiate the app
 AppFactory::setContainer($container);
