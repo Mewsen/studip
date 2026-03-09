@@ -66,11 +66,11 @@
                     <span style="margin-left: 20%" onClick="jQuery('#mvv-lvgruppen-semester').find('.mvv-sem-hidden').slideToggle(); jQuery(this).find('span').toggle(); return false;">
                         <a href="<?= $controller->action_link('details/' . $lvgruppe->id, ['all_sem' => 1]) ?>">
                             <span>
-                                <?= Icon::create('arr_1up', Icon::ROLE_CLICKABLE, ['style' => 'vertical-align:text-bottom;'])->asSvg(); ?>
+                                <?= Icon::create('arr_1up', Icon::ROLE_CLICKABLE, ['style' => 'vertical-align:text-bottom;'])->asImg(); ?>
                                 <?= _('Alle Semester anzeigen') ?>
                             </span>
                             <span style="display: none;">
-                                <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE, ['style' => 'vertical-align:text-bottom;'])->asSvg(); ?>
+                                <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE, ['style' => 'vertical-align:text-bottom;'])->asImg(); ?>
                                 <?= _('Nur aktuelle Semester anzeigen') ?>
                             </span>
                         </a>

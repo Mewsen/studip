@@ -23,7 +23,7 @@
             <td>
                 <?= htmlReady($ncd['name']) ?>
                 <a href="<?= $controller->link_for('course/details/index/' . $ncd['cid']) ?>" data-dialog="size=auto">
-                    <?= Icon::create('info-circle')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('info-circle')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
             <td><?= htmlReady($ncd['start']) ?></td>

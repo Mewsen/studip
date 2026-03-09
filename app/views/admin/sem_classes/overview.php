@@ -32,7 +32,7 @@
             <td><?= date("j.n.Y H:i", $sem_class['chdate']) ?> <?= _("Uhr") ?></td>
             <td class="actions">
                 <a href="<?= URLHelper::getLink('dispatch.php/admin/sem_classes/details', ['id' => $id]) ?>" title="<?= _('Editieren dieser Veranstaltungskategorie') ?>">
-                <?= Icon::create('edit')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>

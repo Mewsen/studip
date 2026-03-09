@@ -79,7 +79,7 @@ foreach ($abschnitte as $abschnitt) {
                             <?= htmlReady($abschnitt_modul->getDisplayName()) ?>
                         </a>
                         <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= URLHelper::getLink('shared/modul/description/' . $modul_id) ?>">
-                            <?= Icon::create('info-circle', 'clickable', [])->asSvg(); ?>
+                            <?= Icon::create('info-circle', 'clickable', [])->asImg(); ?>
                         </a>
                     </td>
                     <? endif;?>

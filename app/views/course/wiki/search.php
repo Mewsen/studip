@@ -102,7 +102,7 @@
             <tr>
                 <td colspan="3">
                     <a href="<?= $controller->searchpage($page_id, ['search' => Request::get('search')]) ?>">
-                        <?= Icon::create('add')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('add')->asImg(['class' => 'text-bottom']) ?>
                         <? if (count($pagedata['versions']) === 1) : ?>
                             <?= _('Weiterer Treffer in einer älteren Version.') ?>
                         <? else : ?>

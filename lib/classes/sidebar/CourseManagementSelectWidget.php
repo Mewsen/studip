@@ -19,7 +19,7 @@ class CourseManagementSelectWidget extends SelectWidget
             '<a href="%s" title="%s" data-dialog="size=auto">%s</a>',
             URLHelper::getURL('dispatch.php/course/management/order_settings', ['cid' => $this->course->id, 'from' => Request::url()]),
             _('Sortiereinstellungen'),
-            Icon::create('settings')->asSvg(['title' => _('Sortiereinstellungen')])
+            Icon::create('settings')->asImg(['title' => _('Sortiereinstellungen')])
         );
         $this->setExtra($extra);
         $this->class = 'nested-select';

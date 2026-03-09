@@ -129,7 +129,7 @@ class Oer_AdminController extends AuthenticatedController
         }
 
         $this->render_text((
-            Icon::create("checkbox-".(Request::int("active") ? "" : "un")."checked")->asSvg()
+            Icon::create("checkbox-".(Request::int("active") ? "" : "un")."checked")->asImg()
         ));
     }
 
@@ -144,7 +144,7 @@ class Oer_AdminController extends AuthenticatedController
         }
 
         $this->render_text((
-            Icon::create('checkbox-'.(Request::int('active') ? '' : 'un').'checked')->asSvg()
+            Icon::create('checkbox-'.(Request::int('active') ? '' : 'un').'checked')->asImg()
         ));
     }
 

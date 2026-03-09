@@ -17,7 +17,7 @@ if ($filter->show_user_count) {
     $fieldText .= ' (' . sprintf(ngettext('Eine Person', '%s Personen', $user_count), $user_count);
     if ($user_count === 0) {
         $fieldText .= '&nbsp;' . Icon::create('exclaim-circle', Icon::ROLE_ATTENTION)
-                ->asSvg(['title' => _('Niemand erfüllt diese Bedingung.')]);
+                ->asImg(['title' => _('Niemand erfüllt diese Bedingung.')]);
     }
     $fieldText .= ')';
 }

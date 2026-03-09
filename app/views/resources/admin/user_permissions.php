@@ -125,7 +125,7 @@
                                         'user_id' => $permission->user_id
                                     ]
                                 ) ?>" data-dialog>
-                                    <?= Icon::create('edit')->asSvg(
+                                    <?= Icon::create('edit')->asImg(
                                         '20px',
                                         [
                                             'class' => 'text-bottom',
@@ -139,7 +139,7 @@
                                     . '/'
                                     . $permission->resource_id
                                 ) ?>" data-dialog>
-                                    <?= Icon::create('log')->asSvg(
+                                    <?= Icon::create('log')->asImg(
                                         [
                                             'class' => 'text-bottom',
                                             'title' => 'Liste mit Buchungen anzeigen'
@@ -222,7 +222,7 @@
                                         'user_id' => $permission->user_id
                                     ]
                                 ) ?>" data-dialog>
-                                    <?= Icon::create('edit')->asSvg(
+                                    <?= Icon::create('edit')->asImg(
                                         [
                                             'class' => 'text-bottom',
                                             'title' => _('Berechtigung bearbeiten')
@@ -235,7 +235,7 @@
                                     . '/'
                                     . $permission->resource_id
                                 ) ?>" data-dialog>
-                                    <?= Icon::create('log')->asSvg(
+                                    <?= Icon::create('log')->asImg(
                                         [
                                             'class' => 'text-bottom',
                                             'title' => _('Liste mit Buchungen anzeigen')
@@ -300,7 +300,7 @@
                                 ['user_id' => $user->id]
                             ) ?>">
                                 <?= htmlReady($user->getFullName('full_rev')) ?>
-                                <?= Icon::create('link-intern')->asSvg(
+                                <?= Icon::create('link-intern')->asImg(
                                     [
                                         'class' => 'text-bottom'
                                     ]

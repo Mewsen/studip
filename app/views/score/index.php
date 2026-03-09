@@ -55,7 +55,7 @@
                     <?= htmlReady($person['fullname']) ?>
                 </a>
             <? foreach ($person['is_king'] as $type => $text): ?>
-                <?= Icon::create('crown', Icon::ROLE_SORT)->asSvg(['title' => $text, 'alt' => $text, 'class' => 'text-top']) ?>
+                <?= Icon::create('crown', Icon::ROLE_SORT)->asImg(['title' => $text, 'alt' => $text, 'class' => 'text-top']) ?>
             <? endforeach ?>
             </td>
             <td class="hidden-small-down">
@@ -68,7 +68,7 @@
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
                     URLHelper::getLink('dispatch.php/profile?username=' . $person['username']),
-                    Icon::create('news', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    Icon::create('news', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
                 $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
@@ -80,7 +80,7 @@
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
                     URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#questionnaire_area'),
-                    Icon::create('vote', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    Icon::create('vote', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
                 $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
@@ -92,7 +92,7 @@
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
                     URLHelper::getLink('dispatch.php/profile?username=' . $person['username'] . '#a'),
-                    Icon::create('schedule', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asSvg()
+                    Icon::create('schedule', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
                 $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
@@ -109,7 +109,7 @@
             <? if($person['user_id'] == $GLOBALS['user']->id): ?>
                 <a href="<?= $controller->url_for('score/unpublish') ?>">
                     <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Ihren Wert von der Liste löschen')])
-                        ->asSvg(['class' => 'text-top'])
+                        ->asImg(['class' => 'text-top'])
                     ?>
                 </a>
             <? endif; ?>

@@ -32,7 +32,7 @@
                         </td>
                         <td>
                             <a href="<?= URLHelper::getLink($nav->getURL(), ['cid' => $course_id]) ?>">
-                                <?= $nav->getImage()->asSvg($nav->getLinkAttributes()) ?>
+                                <?= $nav->getImage()->asImg($nav->getLinkAttributes()) ?>
                             </a>
                         </td>
                     </tr>

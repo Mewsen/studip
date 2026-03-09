@@ -15,7 +15,7 @@
             <?= _('Vorhandene Schritte im Anlegeassistenten für Veranstaltungen') ?>
             <span class="actions">
                 <a href="<?= $controller->url_for('admin/coursewizardsteps/edit') ?>" data-dialog="size=auto">
-                    <?= Icon::create('add')->asSvg(tooltip2(_('Neuen Schritt hinzufügen'))) ?>
+                    <?= Icon::create('add')->asImg(tooltip2(_('Neuen Schritt hinzufügen'))) ?>
                 </a>
             </span>
         </caption>

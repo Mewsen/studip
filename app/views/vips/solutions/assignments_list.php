@@ -109,9 +109,9 @@
                                     <? if (!isset($ass['uncorrected_solutions'])): ?>
                                         &ndash;
                                     <? elseif ($ass['uncorrected_solutions'] == 0): ?>
-                                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['title' => _('ja')]) ?>
+                                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['title' => _('ja')]) ?>
                                     <? else : ?>
-                                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['title' => _('nein')]) ?>
+                                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['title' => _('nein')]) ?>
                                     <? endif ?>
                                 </td>
 

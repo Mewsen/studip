@@ -37,7 +37,7 @@
                             <?= CSRFProtection::tokenTag() ?>
                             <a href="<?=$controller->url_for('resources/property/edit/' . $property->id)?>"
                                data-dialog="size=auto">
-                                <?= Icon::create('edit')->asSvg(
+                                <?= Icon::create('edit')->asImg(
                                     [
                                         'title' => _('Bearbeiten')
                                     ]

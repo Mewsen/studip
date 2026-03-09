@@ -455,7 +455,7 @@
                             'messages/write',
                             ['rec_uname' => $booking->assigned_user->username]
                         ) ?>" data-dialog="size=auto">
-                            <?= Icon::create('mail')->asSvg(
+                            <?= Icon::create('mail')->asImg(
                                 '20px',
                                 ['class' => 'text-bottom']
                             ) ?>
@@ -467,7 +467,7 @@
                         <?= _('Eine andere nutzende Person auswählen') ?>
                         <div class="assigned-user-search-wrapper">
                             <?= $assigned_user_search->render() ?>
-                            <?= Icon::create('refresh')->asSvg(
+                            <?= Icon::create('refresh')->asImg(
                                 '20px', ['class' => 'delete-assigned-user-icon']
                             ) ?>
                         </div>
@@ -477,7 +477,7 @@
                         <?= _('Die nutzende Person zur Buchung') ?>
                         <div class="assigned-user-search-wrapper">
                             <?= $assigned_user_search->render() ?>
-                            <?= Icon::create('refresh')->asSvg(
+                            <?= Icon::create('refresh')->asImg(
                                 '20px', ['class' => 'delete-assigned-user-icon']
                             ) ?>
                         </div>
@@ -498,7 +498,7 @@
                             'messages/write',
                             ['rec_uname' => $booking->booking_user->username]
                         ) ?>" data-dialog="size=auto">
-                            <?= Icon::create('mail')->asSvg(
+                            <?= Icon::create('mail')->asImg(
                                 '20px',
                                 ['class' => 'text-bottom']
                             ) ?>
@@ -582,7 +582,7 @@
                                     <td class="booking-list-interval-actions">
                                         <button class="takes-place-delete takes-place-status-toggle <?= $interval->takes_place ? '' : ' invisible'; ?>"
                                                 data-interval_id="<?= htmlReady($interval->id) ?>">
-                                            <?= Icon::create('trash')->asSvg(
+                                            <?= Icon::create('trash')->asImg(
                                                 [
                                                     'class' => 'text-bottom',
                                                     'title' => _('Löschen')
@@ -592,7 +592,7 @@
 
                                         <button class="takes-place-revive takes-place-status-toggle <?= $interval->takes_place ? ' invisible' : ''; ?>"
                                                 data-interval_id="<?= htmlReady($interval->id) ?>">
-                                            <?= Icon::create('refresh')->asSvg(
+                                            <?= Icon::create('refresh')->asImg(
                                                 [
                                                     'class' => 'text-bottom',
                                                     'title' => _('Wiederherstellen')

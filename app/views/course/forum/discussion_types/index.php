@@ -36,7 +36,7 @@ use Forum\DiscussionType;
             <tr>
                 <td>
                     <?php if ($type->icon) : ?>
-                        <?= Icon::create($type->icon, ['title' => htmlReady($type->icon)])->asSvg(24) ?>
+                        <?= Icon::create($type->icon, ['title' => htmlReady($type->icon)])->asImg(24) ?>
                     <?php endif; ?>
                 </td>
                 <td>

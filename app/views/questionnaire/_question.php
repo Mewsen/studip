@@ -5,19 +5,19 @@
         <div style="float: right; padding-top: 3px; padding-right: 5px;">
             <a href="#" class="move_up" title="<?= _('Frage nach oben verschieben') ?>"
                onClick="STUDIP.Questionnaire.moveQuestionUp.call(this); return false;">
-                <?= Icon::create('arr_1up')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('arr_1up')->asImg(['class' => 'text-bottom']) ?>
             </a>
             <a href="#" class="move_down" title="<?= _('Frage nach unten verschieben') ?>"
                onClick="STUDIP.Questionnaire.moveQuestionDown.call(this); return false;">
-                <?= Icon::create('arr_1down')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('arr_1down')->asImg(['class' => 'text-bottom']) ?>
             </a>
             <a href="#" onClick="var that = this; STUDIP.Dialog.confirm('<?= _('Wirklich löschen?') ?>', function () { jQuery(that).closest('fieldset').remove(); }); return false;"
                title="<?= sprintf(_('%s löschen'), htmlReady($class::getName())) ?>">
-                <?= Icon::create('trash')->asSvg(['class' => 'text-bottom']) ?>
+                <?= Icon::create('trash')->asImg(['class' => 'text-bottom']) ?>
             </a>
         </div>
         <div>
-            <?= $class::getIcon()->asSvg(['class' => 'text-bottom']) ?>
+            <?= $class::getIcon()->asImg(['class' => 'text-bottom']) ?>
             <?= htmlReady($class::getName()) ?>
         </div>
 

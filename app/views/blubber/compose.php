@@ -14,19 +14,19 @@
         <div>
             <a href="#"
                onclick="$('.file_select_possibilities').hide(); $('.private_blubber_composer').show(); return false;">
-                <?= Icon::create('group3')->asSvg(50) ?>
+                <?= Icon::create('group3')->asImg(50) ?>
                 <?= _('Kontakte') ?>
             </a>
 
             <a href="<?= $controller->link_for('blubber/index/global') ?>">
-                <?= Icon::create('globe')->asSvg(50) ?>
+                <?= Icon::create('globe')->asImg(50) ?>
                 <?= _('Öffentlich') ?>
             </a>
 
             <? if (!$GLOBALS['perm']->have_perm('admin')) : ?>
                 <a href="#"
                    onclick="$('.file_select_possibilities').hide(); $('.course_blubber_composer').show(); return false;">
-                    <?= Icon::create('seminar')->asSvg(50) ?>
+                    <?= Icon::create('seminar')->asImg(50) ?>
                     <?= _('Veranstaltung') ?>
                 </a>
             <? endif ?>
@@ -67,10 +67,10 @@
             </span>
 
                 <a href="" onClick="$('#blubber_contacts').trigger('focus').select2('open'); return false;">
-                    <?= Icon::create('search')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <a href="" onClick="$('#blubber_contacts').val(null).trigger('change'); return false;">
-                    <?= Icon::create('decline')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('decline')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </div>
         <? endif ?>
@@ -113,10 +113,10 @@
                     ->fireJSFunctionOnSelect('STUDIP.Blubber.Composer.vue.addUser')->render() ?>
 
                 <a href="" onClick="$('input[name=search_user_id_parameter]').trigger('focus'); return false;">
-                    <?= Icon::create('search')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <a href="" onClick="STUDIP.Blubber.Composer.vue.clearUsers(); return false;">
-                    <?= Icon::create('decline')->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('decline')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </div>
         </div>

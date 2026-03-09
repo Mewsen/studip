@@ -85,7 +85,7 @@
         <? foreach ($ilias_modules as $module_id => $module) : ?>
             <tr>
                 <td>
-                    <?= Icon::create('learnmodule')->asSvg([
+                    <?= Icon::create('learnmodule')->asImg([
                         'title' => $module->getModuleTypeName(),
                     ]) ?>
                 </td>

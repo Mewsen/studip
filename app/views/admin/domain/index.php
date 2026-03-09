@@ -38,7 +38,7 @@
                     <td><?= $domain->countCourses() ?></td>
                     <td class="actions">
                         <a href="<?= $controller->link_for("admin/domain/edit/{$domain->id}") ?>" data-dialog="size=auto">
-                            <?= Icon::create('edit')->asSvg(tooltip2(_('bearbeiten'))) ?>
+                            <?= Icon::create('edit')->asImg(tooltip2(_('bearbeiten'))) ?>
                         </a>
                     <? if ($domain->countUsers() === 0): ?>
                         <?= Icon::create('trash')->asInput(tooltip2(_('löschen')) + [
@@ -47,7 +47,7 @@
                             'data-confirm' => _('Wollen Sie die Nutzerdomäne wirklich löschen?')
                         ]) ?>
                     <? else: ?>
-                        <?= Icon::create('trash', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Domänen, denen noch Personen zugewiesen sind, können nicht gelöscht werden.')]) ?>
+                        <?= Icon::create('trash', Icon::ROLE_INACTIVE)->asImg(['title' => _('Domänen, denen noch Personen zugewiesen sind, können nicht gelöscht werden.')]) ?>
                     <? endif; ?>
                     </td>
                 </tr>

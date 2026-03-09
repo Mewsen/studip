@@ -152,7 +152,7 @@
                                             <?= htmlReady($user['name']) ?>
                                         </span>
                                             <? if (count($material->users) > 1) : ?>
-                                                <?= Icon::create('trash')->asSvg(['class' => 'text-bottom', 'title' => _('Person als Autor entfernen.')]) ?>
+                                                <?= Icon::create('trash')->asImg(['class' => 'text-bottom', 'title' => _('Person als Autor entfernen.')]) ?>
                                             <? endif ?>
                                         </div>
                                     </label>
@@ -170,7 +170,7 @@
                                                 <?= htmlReady($user ? $user->getFullName() : _('unbekannt')) ?>
                                             </span>
                                             <? if (count($material->users) > 1) : ?>
-                                                <?= Icon::create('trash')->asSvg(['class' => 'text-bottom', 'title' => _('Person als Autor/Autorin entfernen.')]) ?>
+                                                <?= Icon::create('trash')->asImg(['class' => 'text-bottom', 'title' => _('Person als Autor/Autorin entfernen.')]) ?>
                                             <? endif ?>
                                         </div>
                                     </label>

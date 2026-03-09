@@ -97,7 +97,7 @@
                         <td>
                             <input type="hidden" name="file_ids[]" value="<?= $file_ref->id ?>">
                             <a href="<?= htmlReady($file_ref->getDownloadURL()) ?>">
-                                <?= Icon::create('file')->asSvg(['title' => _('Datei herunterladen')]) ?>
+                                <?= Icon::create('file')->asImg(['title' => _('Datei herunterladen')]) ?>
                                 <?= htmlReady($file_ref->name) ?>
                             </a>
                         </td>

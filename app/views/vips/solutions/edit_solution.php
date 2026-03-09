@@ -25,10 +25,10 @@
     <? /* previous solver */ ?>
     <? if (isset($prev_solver)): ?>
         <a href="<?= $controller->edit_solution(['assignment_id' => $assignment_id, 'exercise_id' => $exercise_id, 'solver_id' => $prev_solver['user_id'], 'view' => $view]) ?>">
-            <?= Icon::create('arr_1left')->asSvg(['title' => _('Voriger Teilnehmer / vorige Teilnehmerin')]) ?>
+            <?= Icon::create('arr_1left')->asImg(['title' => _('Voriger Teilnehmer / vorige Teilnehmerin')]) ?>
         </a>
     <? else: ?>
-        <?= Icon::create('arr_1left', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Keiner der vorhergehenden Teilnehmenden hat diese Aufgabe bearbeitet')]) ?>
+        <?= Icon::create('arr_1left', Icon::ROLE_INACTIVE)->asImg(['title' => _('Keiner der vorhergehenden Teilnehmenden hat diese Aufgabe bearbeitet')]) ?>
     <? endif ?>
 
     <? /* overview */ ?>
@@ -39,10 +39,10 @@
     <? /* next solver */ ?>
     <? if (isset($next_solver)): ?>
         <a href="<?= $controller->edit_solution(['assignment_id' => $assignment_id, 'exercise_id' => $exercise_id, 'solver_id' => $next_solver['user_id'], 'view' => $view]) ?>">
-            <?= Icon::create('arr_1right')->asSvg(['title' => _('Nächster Teilnehmer / nächste Teilnehmerin')]) ?>
+            <?= Icon::create('arr_1right')->asImg(['title' => _('Nächster Teilnehmer / nächste Teilnehmerin')]) ?>
         </a>
     <? else: ?>
-        <?= Icon::create('arr_1right', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Keiner der nachfolgenden Teilnehmenden hat diese Aufgabe bearbeitet')]) ?>
+        <?= Icon::create('arr_1right', Icon::ROLE_INACTIVE)->asImg(['title' => _('Keiner der nachfolgenden Teilnehmenden hat diese Aufgabe bearbeitet')]) ?>
     <? endif ?>
 
     &nbsp;/&nbsp;
@@ -50,10 +50,10 @@
     <? /* previous exercise */ ?>
     <? if (isset($prev_exercise)): ?>
         <a href="<?= $controller->edit_solution(['assignment_id' => $assignment_id, 'exercise_id' => $prev_exercise['id'], 'solver_id' => $solver_id, 'view' => $view]) ?>">
-            <?= Icon::create('arr_1left')->asSvg(['title' => _('Vorige Aufgabe')]) ?>
+            <?= Icon::create('arr_1left')->asImg(['title' => _('Vorige Aufgabe')]) ?>
         </a>
     <? else: ?>
-        <?= Icon::create('arr_1left', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Die teilnehmende Person hat keine der vorhergehenden Aufgaben bearbeitet')]) ?>
+        <?= Icon::create('arr_1left', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die teilnehmende Person hat keine der vorhergehenden Aufgaben bearbeitet')]) ?>
     <? endif ?>
 
     <? /* exercise name */ ?>
@@ -62,10 +62,10 @@
     <? /* next exercise */ ?>
     <? if (isset($next_exercise)): ?>
         <a href="<?= $controller->edit_solution(['assignment_id' => $assignment_id, 'exercise_id' => $next_exercise['id'], 'solver_id' => $solver_id, 'view' => $view]) ?>">
-            <?= Icon::create('arr_1right')->asSvg(['title' => _('Nächste Aufgabe')]) ?>
+            <?= Icon::create('arr_1right')->asImg(['title' => _('Nächste Aufgabe')]) ?>
         </a>
     <? else: ?>
-        <?= Icon::create('arr_1right', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Die teilnehmende Person hat keine der nachfolgenden Aufgaben bearbeitet')]) ?>
+        <?= Icon::create('arr_1right', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die teilnehmende Person hat keine der nachfolgenden Aufgaben bearbeitet')]) ?>
     <? endif ?>
 </div>
 
@@ -147,7 +147,7 @@
                                 <td>
                                     <input type="hidden" name="file_ids[]" value="<?= htmlReady($file_ref->id) ?>">
                                     <a href="<?= htmlReady($file_ref->getDownloadURL()) ?>">
-                                        <?= Icon::create('file')->asSvg(['title' => _('Datei herunterladen')]) ?>
+                                        <?= Icon::create('file')->asImg(['title' => _('Datei herunterladen')]) ?>
                                         <?= htmlReady($file_ref->name) ?>
                                     </a>
                                 </td>

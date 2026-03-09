@@ -32,7 +32,7 @@
             </a>
         <? if ($filter == $group_id): ?>
             <a href="<?= URLHelper::getLink('dispatch.php/messages/write?', compact('group_id')) ?>">
-                <?= Icon::create('mail')->asSvg(['title' => _('Nachricht an alle Personen dieser Gruppe schicken')]) ?>
+                <?= Icon::create('mail')->asImg(['title' => _('Nachricht an alle Personen dieser Gruppe schicken')]) ?>
             </a>
         <? endif; ?>
         </td>

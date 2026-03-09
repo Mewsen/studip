@@ -9,7 +9,7 @@
                     <? $ampel_icon = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['icon'] ?>
                     <? $ampelstatus = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['name'] ?>
                     <? if ($ampel_icon) : ?>
-                        <?= $ampel_icon->asSvg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                        <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
                     <? endif; ?>
                     <?= htmlReady($version->getDisplayName()) ?>
                     <? if ($version->count_abschnitte) : ?>
@@ -18,7 +18,7 @@
             </td>
             <td class="dont-hide" style="text-align: center;">
                 <? if ($version->count_dokumente) : ?>
-                    <?= Icon::create('staple', Icon::ROLE_INFO, ['title' => sprintf(ngettext('%s Dokument zugeordnet', '%s Dokumente zugeordnet', $version->count_dokumente), $version->count_dokumente)])->asSvg(); ?>
+                    <?= Icon::create('staple', Icon::ROLE_INFO, ['title' => sprintf(ngettext('%s Dokument zugeordnet', '%s Dokumente zugeordnet', $version->count_dokumente), $version->count_dokumente)])->asImg(); ?>
                 <? endif; ?>
             </td>
             <td class="dont-hide" style="white-space: nowrap; text-align: right;">

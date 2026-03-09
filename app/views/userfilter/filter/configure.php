@@ -9,7 +9,7 @@
 </div>
 <br/>
 <a href="#" onclick="return STUDIP.UserFilter.addConditionField('conditionfields', '<?= $controller->configure() ?>')">
-    <?= Icon::create('add')->asSvg(['alt' => _('Auswahlfeld hinzufügen')]) ?>
+    <?= Icon::create('add')->asImg(['alt' => _('Auswahlfeld hinzufügen')]) ?>
     <?= _('Auswahlfeld hinzufügen') ?>
 </a>
 <br/><br/>

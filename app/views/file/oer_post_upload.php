@@ -17,13 +17,13 @@ if (!isset($selected_oer_upload)) {
             <? if (0 == $selected_oer_upload) echo 'checked'; ?>>
         <label for="oer-upload-no">
             <div class="icon">
-                <?= Icon::create('decline')->asSvg(32) ?>
+                <?= Icon::create('decline')->asImg(32) ?>
             </div>
             <div class="text">
                 <?= _('Nicht für den OER-Campus bereitstellen.') ?>
             </div>
-            <?= Icon::create('arr_1down')->asSvg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('check-circle')->asSvg(32, ['class' => 'check']) ?>
+            <?= Icon::create('arr_1down')->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('check-circle')->asImg(32, ['class' => 'check']) ?>
         </label>
         <div class="oer_upload_description">
             <div class="description">
@@ -36,13 +36,13 @@ if (!isset($selected_oer_upload)) {
             <? if (1 == $selected_oer_upload) echo 'checked'; ?>>
         <label for="oer-upload-yes">
             <div class="icon">
-                <?= Icon::create('accept')->asSvg(32) ?>
+                <?= Icon::create('accept')->asImg(32) ?>
             </div>
             <div class="text">
                 <?= _('Jetzt für den OER-Campus bereitstellen.') ?>
             </div>
-            <?= Icon::create('arr_1down')->asSvg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('check-circle')->asSvg(32, ['class' => 'check']) ?>
+            <?= Icon::create('arr_1down')->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('check-circle')->asImg(32, ['class' => 'check']) ?>
         </label>
         <div class="oer_upload_description">
             <div class="description">
@@ -54,13 +54,13 @@ if (!isset($selected_oer_upload)) {
             <? if (2 == $selected_oer_upload) echo 'checked'; ?>>
         <label for="oer-upload-later">
             <div class="icon">
-                <?= Icon::create('date')->asSvg(32) ?>
+                <?= Icon::create('date')->asImg(32) ?>
             </div>
             <div class="text">
                 <?= _('Zu einem späteren Zeitpunkt für den OER-Campus bereitstellen.') ?>
             </div>
-            <?= Icon::create('arr_1down')->asSvg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('check-circle')->asSvg(32, ['class' => 'check']) ?>
+            <?= Icon::create('arr_1down')->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('check-circle')->asImg(32, ['class' => 'check']) ?>
         </label>
         <div class="oer_upload_description">
             <div class="description">

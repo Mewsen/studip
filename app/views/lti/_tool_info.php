@@ -19,12 +19,12 @@
             <dd>
                 <? if ($link && $link->launch_url) : ?>
                     <a href="<?= htmlReady($link->launch_url) ?>">
-                        <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
                         <?= htmlReady($link->launch_url) ?>
                     </a>
                 <? else : ?>
                     <a href="<?= htmlReady($tool->launch_url) ?>">
-                        <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
                         <?= htmlReady($tool->launch_url) ?>
                     </a>
                 <? endif ?>
@@ -69,7 +69,7 @@
                     <ul>
                         <li>
                             <a href="<?= $controller->link_for('course/lti/iframe', $link->id) ?>">
-                                <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                                <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
                                 <?= $controller->link_for('course/lti/iframe', $link->id) ?>
                             </a>
                         </li>

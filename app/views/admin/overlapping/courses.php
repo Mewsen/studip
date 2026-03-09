@@ -30,7 +30,7 @@
                     <? if ($course_obj->admission_turnout) : ?>
                         <?= sprintf(_('(erw. TN %s)'), htmlReady($course_obj->admission_turnout)) ?>
                     <? endif; ?>
-                    <?= Icon::create('date-cycle', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('date-cycle', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
                     <?= sprintf('%s (%sx)', $cycle->toString('short'), count($dates)); ?>
                 </div>
                 <ul>

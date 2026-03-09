@@ -1,7 +1,7 @@
 <div class="blubber_private_info indented">
 
     <div class="icon">
-        <?= Icon::create('group3', Icon::ROLE_INFO)->asSvg(50, ['title' => _('Dies ist ein privater Blubber.')]) ?>
+        <?= Icon::create('group3', Icon::ROLE_INFO)->asImg(50, ['title' => _('Dies ist ein privater Blubber.')]) ?>
     </div>
 
     <ul class="clean members">
@@ -14,7 +14,7 @@
                 <? if ($user) : ?>
                     <? if ($user->getId() !== $GLOBALS['user']->id && count($mentions) > 2) : ?>
                         <a class="float_right" href="<?= URLHelper::getLink('dispatch.php/blubber/write_to/' . $user->getId()) ?>" data-dialog title="<?= _('Anblubbern') ?>">
-                            <?= Icon::create('blubber')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('blubber')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? endif ?>
                     <? if ($user->getId() === $GLOBALS['user']->id) : ?>
@@ -23,7 +23,7 @@
                            data-dialog="size=auto"
                            title="<?= _('Gruppe verlassen') ?>"
                            data-confirm="<?= _('Private Konversation wirklich verlassen?') ?>">
-                            <?= Icon::create('door-leave')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('door-leave')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? endif ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $user['username']]) ?>">
@@ -39,7 +39,7 @@
         <? endforeach ?>
         <li>
             <a href="<?= URLHelper::getLink('dispatch.php/blubber/add_member_to_private/'.$thread->getId()) ?>" data-dialog="width=600;height=300">
-                <?= Icon::create('add')->asSvg(25, ['class' => 'text-bottom']) ?>
+                <?= Icon::create('add')->asImg(25, ['class' => 'text-bottom']) ?>
             </a>
         </li>
     </ul>

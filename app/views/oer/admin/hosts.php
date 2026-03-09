@@ -17,19 +17,19 @@
             <tr id="host_<?= $host->getId() ?>" data-host_id="<?= $host->getId() ?>">
                 <td>
                     <? if ($host->isMe()) : ?>
-                        <?= Icon::create('home', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom', 'title' => _('Das ist Ihr Stud.IP')]) ?>
+                        <?= Icon::create('home', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom', 'title' => _('Das ist Ihr Stud.IP')]) ?>
                     <? endif ?>
                     <?= htmlReady($host['name']) ?></td>
                 <td>
                     <a href="<?= htmlReady($host['url']) ?>" target="_blank">
-                        <?= Icon::create('link-extern')->asSvg(['class' => 'text-bottom']) ?>
+                        <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
                         <?= htmlReady($host['url']) ?>
                     </a>
                 </td>
                 <td>
                     <?= $host['public_key'] ? md5($host['public_key']) : "" ?>
                     <? if (strpos($host['public_key'], "\r") !== false) : ?>
-                        <?= Icon::create('exclaim', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'text-bottom', 'title' => _('Der Key hat ein Carriage-Return-Zeichen, weshalb der Hash des Public-Keys vermutlich vom Original-Hash abweicht.')]) ?>
+                        <?= Icon::create('exclaim', Icon::ROLE_STATUS_RED)->asImg(['class' => 'text-bottom', 'title' => _('Der Key hat ein Carriage-Return-Zeichen, weshalb der Hash des Public-Keys vermutlich vom Original-Hash abweicht.')]) ?>
                     <? endif ?>
                 </td>
                 <td class="index_server">
@@ -45,7 +45,7 @@
                                 <?= Icon::create("checkbox-".($host['allowed_as_index_server'] ? "" : "un")."checked") ?>
                             </a>
                         <? else : ?>
-                            <?= Icon::create("checkbox-unchecked", Icon::ROLE_INACTIVE)->asSvg(['title' => _('Dieser Server steht nicht als Indexserver zur Verfügung.')]) ?>
+                            <?= Icon::create("checkbox-unchecked", Icon::ROLE_INACTIVE)->asImg(['title' => _('Dieser Server steht nicht als Indexserver zur Verfügung.')]) ?>
                         <? endif ?>
                     <? endif ?>
                 </td>
@@ -64,7 +64,7 @@
                     <? if (!$host->isMe()) : ?>
                         <a href="<?= $controller->link_for("oer/admin/ask_for_hosts/".$host->getId()) ?>"
                            title="<?= _('Diesen Server nach weiteren bekannten Hosts fragen.') ?>">
-                            <?= Icon::create('campusnavi')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('campusnavi')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? endif ?>
                 </td>

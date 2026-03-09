@@ -58,7 +58,7 @@
             </td>
             <td class="actions">
                 <a data-dialog="size=auto" href="<?= $controller->url_for('admin/holidays/edit/' . $holiday->id) ?>">
-                    <?= Icon::create('edit')->asSvg(['title' => _('Ferienangaben bearbeiten')]) ?>
+                    <?= Icon::create('edit')->asImg(['title' => _('Ferienangaben bearbeiten')]) ?>
                 </a>
                 <?= Icon::create('trash')->asInput([
                     'title' => _('Ferien löschen'),

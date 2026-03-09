@@ -241,7 +241,7 @@ class LinkElement extends WidgetElement implements ArrayAccess
             '<%1$s %2$s>%3$s%4$s</%1$s>',
             $tag,
             arrayToHtmlAttributes($attributes),
-            $icon->asSvg(),
+            $icon->asImg(),
             htmlReady($this->label)
         );
     }
@@ -257,7 +257,7 @@ class LinkElement extends WidgetElement implements ArrayAccess
             '<button formaction="%s" %s>%s %s</button>',
             htmlReady($this->url),
             arrayToHtmlAttributes((array) $this->attributes),
-            $icon?->asSvg() ?? '',
+            $icon?->asImg() ?? '',
             htmlReady($this->label)
         );
     }

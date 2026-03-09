@@ -36,11 +36,11 @@
                     <td class="dont-hide actions" style="white-space: nowrap;">
                     <? if (MvvPerm::haveFieldPermModul_zuordnungen($abschnitt, MvvPerm::PERM_WRITE)) : ?>
                         <a data-dialog="" href="<?= $controller->action_link('modul_zuordnung', $assignment->id) ?>">
-                            <?= Icon::create('edit', Icon::ROLE_CLICKABLE , tooltip2(_('Modulzuordnung bearbeiten')))->asSvg(); ?>
+                            <?= Icon::create('edit', Icon::ROLE_CLICKABLE , tooltip2(_('Modulzuordnung bearbeiten')))->asImg(); ?>
                         </a>
                     <? endif; ?>
                         <a data-dialog="size=auto" href="<?= $controller->link_for('module/module/description', $assignment->modul_id, ['abschnitt_id' => $assignment->abschnitt_id]) ?>">
-                            <?= Icon::create('log', Icon::ROLE_CLICKABLE, tooltip2(_('Lokale Modulbeschreibung')))->asSvg(); ?>
+                            <?= Icon::create('log', Icon::ROLE_CLICKABLE, tooltip2(_('Lokale Modulbeschreibung')))->asImg(); ?>
                         </a>
                     <? if (MvvPerm::havePermCreate($assignment)) : ?>
                         <?= Icon::create('trash', Icon::ROLE_CLICKABLE , tooltip2(_('Modulzuordnung löschen')))

@@ -55,7 +55,7 @@ $form_id = md5(uniqid());
                  v-if="STUDIPFORM_REQUIRED.length > 0 || STUDIPFORM_VALIDATIONNOTES.length > 0">
             <header>
                 <h1>
-                    <?= Icon::create('info-circle', Icon::ROLE_INFO)->asSvg(['class' => 'text-bottom validation_notes_icon']) ?>
+                    <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom validation_notes_icon']) ?>
                     <?= _('Hinweise zum Ausfüllen des Formulars') ?>
                 </h1>
             </header>

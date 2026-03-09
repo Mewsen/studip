@@ -28,9 +28,9 @@
 
                 <? if (isset($response[$group]) && $response[$group] === "$key"): ?>
                     <? if ($entry['score'] == 1): ?>
-                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asSvg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
+                        <?= Icon::create('accept', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'correction_marker', 'title' => _('richtig')]) ?>
                     <? elseif ($key != -1): ?>
-                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asSvg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
+                        <?= Icon::create('decline', Icon::ROLE_STATUS_RED)->asImg(['class' => 'correction_marker', 'title' => _('falsch')]) ?>
                     <? endif ?>
                 <? endif ?>
             </div>

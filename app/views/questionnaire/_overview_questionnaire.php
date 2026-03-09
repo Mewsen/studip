@@ -74,7 +74,7 @@
     </td>
     <td class="actions">
     <? if ($questionnaire->isRunning() && $countedAnswers) : ?>
-        <?= Icon::create('edit', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Der Fragebogen wurde gestartet und kann nicht mehr bearbeitet werden.')]) ?>
+        <?= Icon::create('edit', Icon::ROLE_INACTIVE)->asImg(['title' => _('Der Fragebogen wurde gestartet und kann nicht mehr bearbeitet werden.')]) ?>
     <? else : ?>
         <a href="<?= $controller->link_for('questionnaire/edit/' . $questionnaire->id) ?>"
            data-dialog="size=big"

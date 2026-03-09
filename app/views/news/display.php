@@ -2,7 +2,7 @@
 <article class="studip">
     <header>
         <h1>
-            <?= Icon::create('news', 'info')->asSvg() ?>
+            <?= Icon::create('news', 'info')->asImg() ?>
 
             <?= _('Ankündigungen') ?>
         </h1>
@@ -10,20 +10,20 @@
         <? if ($perm): ?>
             <a href="<?= $controller->link_for('news/edit_news/new/' . $range); ?>" data-dialog
                title="<?= _('Hinzufügen') ?>" aria-label="<?= _('Hinzufügen') ?>">
-                <?= Icon::create('add')->asSvg() ?>
+                <?= Icon::create('add')->asImg() ?>
             </a>
         <? endif; ?>
         <? if ($perm && Config::get()->NEWS_RSS_EXPORT_ENABLE): ?>
             <a data-dialog="size=auto;reload-on-close" title="<?=_('RSS-Feed konfigurieren') ?>"
                aria-label="<?=_('RSS-Feed konfigurieren') ?>"
                href="<?= $controller->link_for('news/rss_config/' . $range); ?>">
-                <?= Icon::create('admin')->asSvg() ?>
+                <?= Icon::create('admin')->asImg() ?>
             </a>
         <? endif; ?>
         <? if ($rss_id): ?>
             <a href="<?= URLHelper::getLink('rss.php', ['id' => $rss_id]) ?>"
                title="<?= _('RSS-Feed') ?>" aria-label="<?= _('RSS-Feed') ?>">
-                <?= Icon::create('rss')->asSvg() ?>
+                <?= Icon::create('rss')->asImg() ?>
             </a>
         <? endif; ?>
         </nav>
@@ -35,7 +35,7 @@
         <header>
             <h1>
                 <a href="<?= ContentBoxHelper::href($new->id, ['contentbox_type' => 'news']) ?>">
-                    <?= Icon::create('news')->asSvg() ?>
+                    <?= Icon::create('news')->asImg() ?>
                     <?= htmlReady($new['topic']); ?>
                 </a>
             </h1>

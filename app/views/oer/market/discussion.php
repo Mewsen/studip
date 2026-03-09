@@ -1,5 +1,5 @@
 <a href="<?= $controller->link_for("oer/market/details/".$thread['context_id']) ?>">
-    <?= Icon::create('arr_1left')->asSvg(['class' => 'text-bottom']) ?>
+    <?= Icon::create('arr_1left')->asImg(['class' => 'text-bottom']) ?>
     <?= _('Zurück') ?>
 </a>
 

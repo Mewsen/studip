@@ -28,9 +28,9 @@
             <?= _('Standard') ?>
 
             <? if ($config['is_default'] === '1'): ?>
-                <?= Icon::create('checkbox-checked', Icon::ROLE_INFO)->asSvg(['title' => _('Ja')]) ?>
+                <?= Icon::create('checkbox-checked', Icon::ROLE_INFO)->asImg(['title' => _('Ja')]) ?>
             <? elseif ($config['is_default'] === '0'): ?>
-                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INFO)->asSvg(['title' => _('Nein')]) ?>
+                <?= Icon::create('checkbox-unchecked', Icon::ROLE_INFO)->asImg(['title' => _('Nein')]) ?>
             <? elseif ($config['is_default'] === null): ?>
                 <em>- <?= _('kein Eintrag vorhanden') ?> -</em>
             <? endif ?>

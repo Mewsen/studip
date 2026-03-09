@@ -143,7 +143,7 @@
                                     </option>
                                 <? endforeach ?>
                             </select>
-                            <?= Icon::create('add')->asSvg(['class' => 'add-action']) ?>
+                            <?= Icon::create('add')->asImg(['class' => 'add-action']) ?>
                         </td>
                     </tr>
                 </tfoot>

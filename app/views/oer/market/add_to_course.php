@@ -35,7 +35,7 @@
                         <button type="submit"
                                 title="<?= _('Zur Veranstaltung hinzufügen') ?>"
                                 style="border: none; background: none; cursor: pointer;">
-                            <?= Icon::create('add')->asSvg(['class' => 'text-bottom']) ?>
+                            <?= Icon::create('add')->asImg(['class' => 'text-bottom']) ?>
                         </button>
                     </form>
                 </td>

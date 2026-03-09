@@ -3,10 +3,10 @@
         <h1>
 
             <? if ($course->isStudygroup()) : ?>
-                <?= Icon::create('seminar', Icon::ROLE_INFO)->asSvg(['class' => "text-bottom"]) ?>
+                <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(['class' => "text-bottom"]) ?>
                 <?= _('Zugehörige Veranstaltung') ?>
             <? else : ?>
-                <?= Icon::create('studygroup', Icon::ROLE_INFO)->asSvg(['class' => "text-bottom"]) ?>
+                <?= Icon::create('studygroup', Icon::ROLE_INFO)->asImg(['class' => "text-bottom"]) ?>
                 <?= _('Verknüpfte Studiengruppen') ?>
             <? endif ?>
         </h1>

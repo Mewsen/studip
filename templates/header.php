@@ -140,7 +140,7 @@ if ($navigation) {
                                     aria-expanded="false"
                             >
                                 <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
-                                <?= Icon::create('notification2', Icon::ROLE_INFO)->asSvg() ?>
+                                <?= Icon::create('notification2', Icon::ROLE_INFO)->asImg() ?>
                             </button>
                             <input type="checkbox" id="notification_checkbox">
                             <div class="list below" id="notification_list">
@@ -180,13 +180,13 @@ if ($navigation) {
                 <li id="responsive-toggle-fullscreen">
                     <button class="styleless" id="fullscreen-off"
                             title="<?= _('Kompakte Navigation ausschalten') ?>">
-                        <?= Icon::create('screen-standard', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
+                        <?= Icon::create('screen-standard', Icon::ROLE_INFO_ALT)->asImg(24) ?>
                     </button>
                 </li>
                 <li id="responsive-toggle-focusmode">
                     <button class="styleless consuming_mode_trigger" id="focusmode-on"
                             title="<?= _('Vollbild aktivieren') ?>">
-                        <?= Icon::create('screen-full', Icon::ROLE_INFO_ALT)->asSvg(24) ?>
+                        <?= Icon::create('screen-full', Icon::ROLE_INFO_ALT)->asImg(24) ?>
                     </button>
                 </li>
             </ul>
@@ -209,7 +209,7 @@ if ($navigation) {
                 <input type="checkbox" id="header-sink">
                 <label for="header-sink">
                     <a class="canvasready" href="#">
-                        <?= Icon::create('action', 'navigation')->asSvg(28, [
+                        <?= Icon::create('action', 'navigation')->asImg(28, [
                             'class'  => 'headericon original',
                             'title'  => '',
                             'alt'    => '',

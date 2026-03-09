@@ -88,11 +88,11 @@
                         </td>
                         <td class="actions">
                             <a href="<?= $controller->edit_members('accept', ['user' => $p->username]) ?>">
-                                <?= Icon::create('accept')->asSvg(['title' => _('Eintragen')]) ?>
+                                <?= Icon::create('accept')->asImg(['title' => _('Eintragen')]) ?>
                             </a>
 
                             <a href="<?= $controller->edit_members('deny', ['user' => $p->username]) ?>" data-confirm="<?= _('Wollen Sie die Mitgliedschaft wirklich ablehnen?') ?>">
-                                <?= Icon::create('trash')->asSvg(['title' => _('Mitgliedschaft ablehnen')]) ?>
+                                <?= Icon::create('trash')->asImg(['title' => _('Mitgliedschaft ablehnen')]) ?>
                             </a>
                         </td>
                     </tr>
@@ -156,7 +156,7 @@
                         </td>
                         <td class="actions">
                             <a href="<?= $controller->edit_members('cancelInvitation', ['user' => $p->user->username]) ?>" data-confirm="<?= _('Wollen Sie die Einladung wirklich löschen?') ?>">
-                                <?= Icon::create('trash')->asSvg(['title' => _('Einladung löschen')]) ?>
+                                <?= Icon::create('trash')->asImg(['title' => _('Einladung löschen')]) ?>
                             </a>
                         </td>
                     </tr>

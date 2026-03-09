@@ -67,7 +67,7 @@
                                 <?= htmlReady($assignment['test_title']) ?>
 
                                 <a href="<?= $controller->link_for('vips/sheets/show_assignment', ['cid' => $course_id, 'assignment_id' => $assignment['id']]) ?>" target="_blank">
-                                    <?= Icon::create('link-intern')->asSvg(['title' => _('Vorschau anzeigen')]) ?>
+                                    <?= Icon::create('link-intern')->asImg(['title' => _('Vorschau anzeigen')]) ?>
                                 </a>
                             </label>
                         </td>

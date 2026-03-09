@@ -97,7 +97,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             <h1 class="sr-only"><?= htmlReady(PageLayout::getTitle()) ?></h1>
             <? if (PageLayout::isFullscreenModeAllowed()): ?>
                 <button hidden class="fullscreen-toggle unfullscreen" aria-label="<?= _('Vollbildmodus verlassen') ?>" title="<?= _('Vollbildmodus verlassen') ?>">
-                    <?= Icon::create('zoom-out2')->asSvg(24) ?>
+                    <?= Icon::create('zoom-out2')->asImg(24) ?>
                 </button>
             <? endif; ?>
             <?= implode(PageLayout::getMessages(QuestionBox::class)) ?>
@@ -113,7 +113,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
     <!-- End main content -->
 
     <a id="scroll-to-top" class="hide" tabindex="0" title="<?= _('Zurück zum Seitenanfang') ?>">
-        <?= Icon::create('arr_1up', 'info_alt')->asSvg(24, ['class' => '']) ?>
+        <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>
     </a>
 
     <?= $this->render_partial('footer', ['link_params' => $header_template->link_params ?? null]); ?>

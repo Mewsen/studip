@@ -4,7 +4,7 @@
         <?= _('Studiengang') ?>: <?= htmlReady($studiengang->getDisplayName()) ?>
         <? if (Config::get()->ENABLE_STUDYCOURSE_INFO_PAGE) : ?>
             <a href="<?= $controller->link_for('search/studiengaenge/info', $studiengang->id)?>" data-dialog>
-                <?= Icon::create('infopage2')->asSvg(['title' => _('Informationen zum Studiengang')]) ?>
+                <?= Icon::create('infopage2')->asImg(['title' => _('Informationen zum Studiengang')]) ?>
             </a>
         <? endif; ?>
     </caption>
@@ -26,7 +26,7 @@
             <td style="text-align: center;">
             <? if (isset($fach[$teil_bezeichnung->id])) : ?>
                 <a href="<?= $controller->link_for($verlauf_url, $fach[$teil_bezeichnung->id], $teil_bezeichnung->id, $studiengang_id ?? null) ?>">
-                    <?= Icon::create('info-circle-full')->asSvg(['title' => _('Studienverlaufsplan anzeigen')]) ?>
+                    <?= Icon::create('info-circle-full')->asImg(['title' => _('Studienverlaufsplan anzeigen')]) ?>
                 </a>
             <? endif; ?>
             </td>

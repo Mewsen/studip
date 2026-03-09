@@ -35,7 +35,7 @@
                             URLHelper::getLink('dispatch.php/course/go',
                                 ['to'     => $group['seminar_id'],
                                       'redirect_to' => $nav->getURL()]) ?>" <?= $nav->hasBadgeNumber() ? 'class="badge" data-badge-number="' . intval($nav->getBadgeNumber()) . '"' : '' ?>>
-                                <?= $nav->getImage()->asSvg($nav->getLinkAttributes()) ?>
+                                <?= $nav->getImage()->asImg($nav->getLinkAttributes()) ?>
                             </a>
                         </li>
                     <? elseif (is_string($key)) : ?>
@@ -56,18 +56,18 @@
                     <? endif ?>
                     <? if (!empty($adminnavigation)) : ?>
                         <a href="<?= URLHelper::getLink($adminnavigation->getURL(), ['cid' => $group['seminar_id']]) ?>">
-                            <?= $adminnavigation->getImage()->asSvg($adminnavigation->getLinkAttributes())?>
+                            <?= $adminnavigation->getImage()->asImg($adminnavigation->getLinkAttributes())?>
                         </a>
                     <? endif ?>
 
                 <? elseif (!empty($group['binding'])) : ?>
                     <a href="<?= URLHelper::getLink('', ['to' => $group['seminar_id'], 'cmd' => 'no_kill']) ?>">
-                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
+                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
                     </a>
                 <?
                 else : ?>
                     <a href="<?= URLHelper::getLink("dispatch.php/my_courses/decline/{$group['seminar_id']}", ['cmd' => 'suppose_to_kill']) ?>">
-                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asSvg(['title' => _('Aus der Studiengruppe abmelden')]) ?>
+                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('Aus der Studiengruppe abmelden')]) ?>
                     </a>
                 <? endif ?>
             </td>

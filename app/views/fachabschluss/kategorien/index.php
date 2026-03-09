@@ -40,7 +40,7 @@
                         <td style="white-space: nowrap;" class="dont-hide actions">
                             <? if ($perm->havePermWrite()) : ?>
                                 <a href="<?= $controller->action_link('kategorie/' . $kategorie->id) ?>">
-                                    <?= Icon::create('edit', Icon::ROLE_CLICKABLE, tooltip2(_('Abschluss-Kategorie bearbeiten')))->asSvg(); ?>
+                                    <?= Icon::create('edit', Icon::ROLE_CLICKABLE, tooltip2(_('Abschluss-Kategorie bearbeiten')))->asImg(); ?>
                                 </a>
                             <? endif; ?>
                             <? if ($perm->havePermCreate()) : ?>
@@ -52,7 +52,7 @@
                                             'name'         => 'delete'
                                         ]); ?>
                                 <? else : ?>
-                                    <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Löschen nicht möglich')))->asSvg(); ?>
+                                    <?= Icon::create('trash', Icon::ROLE_INACTIVE, tooltip2(_('Löschen nicht möglich')))->asImg(); ?>
                                 <? endif; ?>
                             <? endif; ?>
                         </td>

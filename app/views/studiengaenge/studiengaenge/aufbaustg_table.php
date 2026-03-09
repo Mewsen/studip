@@ -54,7 +54,7 @@ $perm = MvvPerm::get($grund_stg);
                     </div>
                 <? if (trim($aufbau_stg->kommentar)) : ?>
                     <a data-dialog="size=auto" href="<?= $controller->link_for('studiengaenge/studiengaenge/aufbaustg_info', $aufbau_stg->id) ?>">
-                        <?= Icon::create('info')->asSvg(12, tooltip2(_('Bemerkung anzeigen'))) ?>
+                        <?= Icon::create('info')->asImg(12, tooltip2(_('Bemerkung anzeigen'))) ?>
                     </a>
                 <? endif; ?>
                 </td>

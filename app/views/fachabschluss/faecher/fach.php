@@ -70,7 +70,7 @@
                     <? if ($perm->haveFieldPerm('institut_id', MvvPerm::PERM_WRITE)): ?>
                         <div class="mvv-item-list-buttons">
                             <a href="#"
-                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Einrichtung entfernen')])->asSvg(); ?></a>
+                               class="mvv-item-remove"><?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Einrichtung entfernen')])->asImg(); ?></a>
                         </div>
                     <? endif; ?>
                     <input type="hidden" name="institut_items[]" value="<?= $fachbereich->getId() ?>">

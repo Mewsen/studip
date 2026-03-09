@@ -188,21 +188,21 @@ class GlobalSearchStudygroups extends GlobalSearchModule implements GlobalSearch
                         'decline-circle',
                         Icon::ROLE_STATUS_YELLOW,
                         tooltip2(_('Eingeschränkter Zugang'))
-                    )->asSvg();
+                    )->asImg();
                     break;
                 case 2:
                     $admission_state = Icon::create(
                         'decline-circle',
                         Icon::ROLE_STATUS_RED,
                         tooltip2(_('Kein Zugang'))
-                    )->asSvg();
+                    )->asImg();
                     break;
                 default:
                     $admission_state = Icon::create(
                         'check-circle',
                         Icon::ROLE_STATUS_GREEN,
                         tooltip2(_('Uneingeschränkter Zugang'))
-                    )->asSvg();
+                    )->asImg();
             }
         }
 

@@ -22,7 +22,7 @@
                     <? $ampel_icon = $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$studiengang->stat]['icon'] ?? null; ?>
                     <? $ampelstatus = $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$studiengang->stat]['name'] ?? null; ?>
                     <? if ($ampel_icon) : ?>
-                        <?= $ampel_icon->asSvg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                        <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
                     <? endif; ?>
                     <?= htmlReady($studiengang->name) ?> <?= (mb_strlen($studiengang->name_kurz) ? '(' . htmlReady($studiengang->name_kurz) . ')' : '') ?>
                     <? if ($studiengang->count_dokumente) : ?>

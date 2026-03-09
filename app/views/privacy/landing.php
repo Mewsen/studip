@@ -10,7 +10,7 @@
     <li>
         <a href="<?= $controller->link_for("privacy/index/{$user_id}/{$key}") ?>" <? if (Request::isDialog()) echo 'data-dialog="size=big"'; ?>>
             <h3>
-                <?= $row['icon']->asSvg(false) ?>
+                <?= $row['icon']->asImg(false) ?>
                 <?= htmlReady($row['title']) ?>
             </h3>
             <p>

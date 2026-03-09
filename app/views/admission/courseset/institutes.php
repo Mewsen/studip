@@ -5,7 +5,7 @@
  * @var array $selectedInstitutes
  */
 ?>
-<?= Icon::create('arr_2down', Icon::ROLE_SORT)->asSvg([
+<?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg([
     'title'   => _('Einrichtung hinzufügen'),
     'onclick' => "STUDIP.Admission.updateInstitutes($('input[name=\"institute_id\"]').val(), '" . $controller->url_for('admission/courseset/institutes', !empty($courseset) ? $courseset->getId() : '') . "', '" . $controller->url_for('admission/courseset/instcourses', !empty($courseset) ? $courseset->getId() : '') . "', 'add')",
 ]) ?>
@@ -19,7 +19,7 @@
         <span class="hover_box">
             <?= htmlReady($data['Name']) ?>
             <span class="action_icons">
-                <?= Icon::create('trash')->asSvg([
+                <?= Icon::create('trash')->asImg([
                     'title'   => _('Einrichtung entfernen'),
                     'onclick' => "STUDIP.Admission.updateInstitutes('{$institute}', '" . $controller->url_for('admission/courseset/institutes',$institute) . "', '" . $controller->url_for('admission/courseset/instcourses',$institute)."', 'delete')"
                 ]); ?>

@@ -69,7 +69,7 @@
                 }
             ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/go?to='. $id . '&redirect_to=' . str_replace('?', '&', $navigation->getURL())) ?>"<?= $badge ?>>
-                    <?= $navigation->getImage()->asSvg($navigation->getLinkAttributes()) ?>
+                    <?= $navigation->getImage()->asImg($navigation->getLinkAttributes()) ?>
                 </a>
             <? else: ?>
                 <?= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT, 'height' => Icon::SIZE_DEFAULT]) ?>

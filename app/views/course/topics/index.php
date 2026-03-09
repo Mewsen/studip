@@ -6,6 +6,7 @@
  */
 ?>
 <? if (count($topics) > 0) : ?>
+<<<<<<< HEAD
 <table class="default withdetails">
     <colgroup>
         <col width="50%">
@@ -23,7 +24,7 @@
             <td>
                 <a href="#" name="<?=$topic->getId()?>" onClick="jQuery(this).closest('tr').toggleClass('open'); return false;">
                 <? if ($topic->paper_related): ?>
-                    <?= Icon::create('glossary')->asSvg(array_merge(
+                    <?= Icon::create('glossary')->asImg(array_merge(
                         ['class' => 'text-top'],
                         tooltip2(_('Thema behandelt eine Hausarbeit oder ein Referat'))
                     )) ?>
@@ -36,7 +37,7 @@
                     <? foreach ($topic->dates as $date) : ?>
                         <li>
                             <a href="<?= URLHelper::getLink("dispatch.php/course/dates/details/".$date->getId()) ?>" data-dialog="size=auto">
-                                <?= Icon::create('date', 'clickable')->asSvg(['class' => 'text-bottom']) ?>
+                                <?= Icon::create('date', 'clickable')->asImg(['class' => 'text-bottom']) ?>
                                 <?= htmlReady($date->getFullName()) ?>
                             </a>
                         </li>
@@ -64,7 +65,7 @@
                                             <a href="<?= URLHelper::getLink(
                                                 'dispatch.php/course/files/index/' . $folder->id
                                                 ) ?>">
-                                                <?= $folder->getTypedFolder()->getIcon('clickable')->asSvg(['class' => 'text-bottom']) ?>
+                                                <?= $folder->getTypedFolder()->getIcon('clickable')->asImg(['class' => 'text-bottom']) ?>
                                                 <?= _('Dateiordner') ?>
                                             </a>
                                         </li>
@@ -74,7 +75,7 @@
                                     <? if ($forum_activated && ($link_to_thread = $topic->forum_thread_url)) : ?>
                                         <li>
                                             <a href="<?= URLHelper::getLink($link_to_thread) ?>">
-                                                <?= Icon::create('forum', 'clickable')->asSvg(['class' => 'text-bottom']) ?>
+                                                <?= Icon::create('forum', 'clickable')->asImg(['class' => 'text-bottom']) ?>
                                                 <?= _('Thema im Forum') ?>
                                             </a>
                                         </li>
