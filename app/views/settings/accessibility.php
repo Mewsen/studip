@@ -20,28 +20,36 @@
             ) ?>
         </label>
 
-        <label>
+        <label for="a11y-reduce-default">
             <?= _('Bewegungen/Animationen reduzieren') ?>
             <?= tooltipIcon(
                 _('Mit dieser Einstellung werden animierte Effekte in Stud.IP reduziert.')
             ) ?>
-            <select name="reduce_animations">
-                <option value="default"
-                        <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'default') echo 'selected'; ?>
-                >
-                    <?= _('Standard (übernommen vom Betriebssystem)') ?>
-                </option>
-                <option value="yes"
-                        <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'yes') echo 'selected'; ?>
-                >
-                    <?= _('Bewegungen reduzieren') ?>
-                </option>
-                <option value="no"
-                        <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'no') echo 'selected'; ?>
-                >
-                    <?= _('Bewegungen erlauben') ?>
-                </option>
-            </select>
+        </label>
+
+        <label>
+            <input type="radio" name="reduce_animations"
+                   id="a11y-reduce-default"
+                   value="default"
+                   <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'default') echo 'checked'; ?>
+            >
+            <?= _('Standard (übernommen vom Betriebssystem)') ?>
+        </label>
+
+        <label>
+            <input type="radio" name="reduce_animations"
+                   value="yes"
+                   <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'yes') echo 'checked'; ?>
+            >
+            <?= _('Bewegungen reduzieren') ?>
+        </label>
+
+        <label>
+            <input type="radio" name="reduce_animations"
+                   value="no"
+                   <? if ($config->getValue('A11Y_USER_REDUCE_ANIMATIONS') === 'no') echo 'checked'; ?>
+            >
+            <?= _('Bewegungen erlauben') ?>
         </label>
     </fieldset>
 
