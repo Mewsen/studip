@@ -58,9 +58,8 @@ const onSliderInput = (e) => {
 };
 
 const jumpToPost = (index) => {
-    const element = index === 0 
-        ? document.getElementById('discussion_start') 
-        : document.querySelector(`[data-index='${index}']`);
+    const element =
+        index === 0 ? document.getElementById('discussion_start') : document.querySelector(`[data-index='${index}']`);
     element?.scrollIntoView({ behavior: 'smooth' });
 };
 
@@ -94,11 +93,7 @@ onUnmounted(() => {
 
         <div class="slider-container">
             <div class="slider-track">
-                <div
-                    v-if="isNewFrom"
-                    class="unread-marker"
-                    :style="{ top: unreadPosition + '%', bottom: 0 }"
-                ></div>
+                <div v-if="isNewFrom" class="unread-marker" :style="{ top: unreadPosition + '%', bottom: 0 }"></div>
             </div>
 
             <div
@@ -110,6 +105,14 @@ onUnmounted(() => {
                     {{ $gettext('Neu ab hier') }}
                 </button>
             </div>
+
+            <span class="sr-only" id="timeline-instructions">
+                {{
+                    $gettext(
+                        'Nutzen Sie die Pfeiltasten Links und Rechts für eine feine Navigation. Die Tasten Hoch und Runter springen direkt zwischen den einzelnen Beiträgen.',
+                    )
+                }}
+            </span>
 
             <input
                 type="range"
@@ -208,7 +211,7 @@ onUnmounted(() => {
             position: absolute;
             top: 0;
             left: 0;
-            width: 300px; 
+            width: 300px;
             height: 40px;
             margin: 0;
             cursor: pointer;
@@ -225,7 +228,9 @@ onUnmounted(() => {
             }
 
             &:focus-visible + .floating-info .marker {
-                box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color--highlight);
+                box-shadow:
+                    0 0 0 2px white,
+                    0 0 0 4px var(--color--highlight);
             }
         }
 
