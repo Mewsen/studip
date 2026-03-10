@@ -42,7 +42,7 @@
             <select name="course_type" id="course_type" class="size-s">
                 <? if (!$cycle->isNew() && count(array_unique($types)) !== 1) : ?>
                 <!-- Use default as placeholder to avoid accidentally overwrite of modified course_type -->
-                    <option value="default" selected="selected"">-</option>
+                    <option value="default" selected>-</option>
                 <? endif ?>
                 <? foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
                     <option value="<?= htmlReady($id) ?>" <? if(count(array_unique($types)) === 1  && $types[0] == $id) echo 'selected'; ?>>
