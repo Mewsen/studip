@@ -123,7 +123,7 @@ final class Holidays
         ];
     }
 
-    private static function getHolidayId(int $timestamp): ?int
+    public static function getHolidayId(int $timestamp): ?int
     {
         // erstmal brauchen wir den Ostersonntag fuer die meisten kirchlichen Feiertage
         //  $easterday = easter_date(date("Y", $timestamp)); // geht leider nicht
