@@ -27,6 +27,14 @@ const currentPostDate = computed(() => {
 
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
 
+const ariaValueText = computed(() => {
+    if (!currentPost.value) return '';
+    return $gettext('Beitrag %{current} von %{total}, %{date}')
+        .replace('%{current}', currentPostIndex.value + 1)
+        .replace('%{total}', posts.value.length)
+        .replace('%{date}', currentPostDate.value);
+});
+
 const getScrollPercent = () => {
     const root = document.documentElement;
     const scrollable = root.scrollHeight - root.clientHeight;
@@ -92,6 +100,16 @@ onUnmounted(() => {
         </button>
 
         <div class="slider-container">
+            <span class="sr-only" id="timeline-label">
+                {{ $gettext('Beitragsnavigation der Diskussion') }}
+            </span>
+            <span class="sr-only" id="timeline-instructions">
+                {{
+                    $gettext(
+                        'Nutzen Sie die Pfeiltasten Links und Rechts für eine feine Navigation. Die Tasten Hoch und Runter springen direkt zwischen den einzelnen Beiträgen.',
+                    )
+                }}
+            </span>
             <div class="slider-track">
                 <div v-if="isNewFrom" class="unread-marker" :style="{ top: unreadPosition + '%', bottom: 0 }"></div>
             </div>
@@ -106,14 +124,6 @@ onUnmounted(() => {
                 </button>
             </div>
 
-            <span class="sr-only" id="timeline-instructions">
-                {{
-                    $gettext(
-                        'Nutzen Sie die Pfeiltasten Links und Rechts für eine feine Navigation. Die Tasten Hoch und Runter springen direkt zwischen den einzelnen Beiträgen.',
-                    )
-                }}
-            </span>
-
             <input
                 type="range"
                 min="0"
@@ -123,7 +133,9 @@ onUnmounted(() => {
                 @input="onSliderInput"
                 @keydown="onKeyDown"
                 class="timeline-slider"
-                aria-label="Timeline"
+                aria-labelledby="timeline-label"
+                aria-describedby="timeline-instructions"
+                :aria-valuetext="ariaValueText"
             />
 
             <div
