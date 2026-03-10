@@ -1562,11 +1562,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 $this->end_semester_weeks['ende'][] = ['value' => -1, 'label' => _('Alle Semester')];
             }
         }
-        $types  = [];
-        foreach ($this->cycle->dates as $date) {
-            $types[] = $date->date_typ;
-        }
-        $this->types=$types;
+        $this->types = $this->cycle->dates->pluck('date_typ');;
     }
 
     /**
@@ -1694,7 +1690,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         $changed_dates = 0;
 
-        if (Request::get('course_type') && Request::get('course_type') !== "default") {
+        if (Request::get('course_type') && Request::get('course_type') !== 'default') {
             $changed_dates = $cycle->setSingleDateType(Request::int('course_type'));
         } elseif ($cycle->isDirty()) {
             $changed_dates = count($cycle->dates);
@@ -1705,7 +1701,7 @@ class Course_TimesroomsController extends AuthenticatedController
             $cycle->chdate = time();
             $cycle->store();
 
-            if ($changed_dates > 0 && Request::get('course_type') !== "default") {
+            if ($changed_dates > 0 && Request::get('course_type') !== 'default') {
                 PageLayout::postSuccess(sprintf(ngettext(
                 _('Die Art des Termins wurde bei 1 Termin geändert'),
                 _('Die Art des Termins wurde bei %u Terminen geändert'),

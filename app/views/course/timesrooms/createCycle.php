@@ -40,16 +40,15 @@
         <label>
             <?= _('Art') ?>
             <select name="course_type" id="course_type" class="size-s">
-                <?php if ($cycle->isNew() === false && (count(array_unique($types)) !== 1)) : ?>
+                <? if (!$cycle->isNew() && count(array_unique($types)) !== 1) : ?>
                 <!-- Use default as placeholder to avoid accidentally overwrite of modified course_type -->
                     <option value="default" selected="selected"">-</option>
-                <?php endif ?>
-
-                <?php foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
-                    <option value="<?= $id ?>"
-                    <?php if(count(array_unique($types)) === 1  && $types[0] == $id) :?> selected="selected"
-                    <?php endif?>><?= htmlReady($value['name']) ?></option>
-                <?php endforeach ?>
+                <? endif ?>
+                <? foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
+                    <option value="<?= htmlReady($id) ?>" <? if(count(array_unique($types)) === 1  && $types[0] == $id) echo 'selected'; ?>>
+                        <?= htmlReady($value['name']) ?>
+                    </option>
+                <? endforeach ?>
             </select>
         </label>
 
