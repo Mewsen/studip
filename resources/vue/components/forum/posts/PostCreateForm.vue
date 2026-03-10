@@ -130,7 +130,7 @@ const storePost = async () => {
         <label for="post-content">
             <span class="sr-only">{{ $gettext('Inhalt') }}</span>
         </label>
-        <StudipWysiwyg id="post-content" :required="true" v-model="content" />
+        <StudipWysiwyg id="post-content" :required="true" v-model="content" :autofocus="true" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>
