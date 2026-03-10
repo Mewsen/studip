@@ -40,8 +40,14 @@
         <label>
             <?= _('Art') ?>
             <select name="course_type" id="course_type" class="size-s">
+                <? if (!$cycle->isNew() && count(array_unique($types)) !== 1) : ?>
+                <!-- Use default as placeholder to avoid accidentally overwrite of modified course_type -->
+                    <option value="default" selected>-</option>
+                <? endif ?>
                 <? foreach ($GLOBALS['TERMIN_TYP'] as $id => $value) : ?>
-                    <option value="<?= $id ?>" <? if(Request::get('course_type') && Request::get('course_type') == $id) :?>selected="selected"<? endif?>><?= htmlReady($value['name']) ?></option>
+                    <option value="<?= htmlReady($id) ?>" <? if(count(array_unique($types)) === 1  && $types[0] == $id) echo 'selected'; ?>>
+                        <?= htmlReady($value['name']) ?>
+                    </option>
                 <? endforeach ?>
             </select>
         </label>
