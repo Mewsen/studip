@@ -1,9 +1,56 @@
-@use './_colors.scss' as colors;
-@use './_spacing.scss' as spacing;
-@use './_typography.scss' as typography;
+@use 'sass:map';
+@use 'sass:meta';
+
+@use 'base' as base;
+@use 'colors' as colors;
+@use 'opacity' as opacity;
+@use 'radius' as radius;
+@use 'spacing' as spacing;
+@use 'sizes' as sizes;
+@use 'typography' as typography;
 
 
+
+@mixin generate-tokens($map, $prefix) {
+    @each $key, $value in $map {
+        @if meta.type-of($value) == 'map' {
+            @include generate-tokens($value, #{$prefix}-#{$key});
+        } @else {
+            --#{$prefix}-#{$key}: #{$value};
+        }
+    }
+}
+
+@mixin generate-theme($theme-key) {
+    @each $name, $bundle in colors.$semantic-registry {
+        $map: ();
+
+        @if $theme-key == 'dhc' {
+            $dark: map.get($bundle, 'dark');
+            $adj: map.get($bundle, 'dhc-adj');
+            $map: map.merge($dark, $adj);
+        } @else {
+            $map: map.get($bundle, $theme-key);
+        }
+
+        @include generate-tokens($map, 'sys-color-#{$name}');
+    }
+}
 :root {
+    // references
+    @include generate-tokens(colors.$ref-color, 'ref-color');
+    @include generate-tokens(opacity.$ref-opacity, 'ref-opacity');
+    @include generate-tokens(sizes.$ref-sizes, 'ref-sizes');
+
+    // system (semantics)
+    @include generate-theme('light'); // semantic colors
+    @include generate-tokens(spacing.$sys-spacing, 'sys-spacing');
+    @include generate-tokens(radius.$sys-radius, 'sys-radius');
+
+
+    // base & components
+    // @include generate-tokens(base.$base, 'base');
+
     // Farben
 
     --color--black: #{colors.$color--black};
@@ -141,8 +188,9 @@
     --color--image-placeholder-icon: #{colors.$color--image-placeholder-icon};
 
     --color--header-inverted: #{colors.$color-header-inverted};
-
-    // Abstände
-
-    // Schriften
 }
+
+// once when we will have a dark mode
+// [data-theme='dark'] { @include generate-theme('dark'); }
+// [data-theme='high-contrast'] { @include generate-theme('hc'); }
+// [data-theme='dark-high-contrast'] { @include generate-theme('dhc'); }

@@ -1,2 +1,3 @@
-@use 'tokens/index.scss'; 
+@use 'tokens/index.scss' as tokens; 
 @use 'reset';
+@use 'utilities/index.scss' as utilities;

@@ -1,0 +1,48 @@
+$theme-bundle: (
+    'light': (
+        brand: (
+            'permanent': 'var(--ref-color-blue-900)',
+            'accent': 'var(--ref-color-blue-700)',
+        ),
+        canvas: (
+            'default': 'var(--ref-color-gray-50)',
+            'subtle': 'var(--ref-color-gray-100)',
+        ),
+        card: (
+            'default': 'var(--ref-color-white)',
+            'elevated': 'var(--ref-color-white)',
+        ),
+        error: (
+            'subtle': 'var(--ref-color-red-100)',
+            'default': 'var(--ref-color-red-200)',
+        ),
+        info: (
+            'subtle': 'var(--ref-color-blue-100)',
+            'default': 'var(--ref-color-blue-200)',
+        ),
+        interactive: (
+            'hover': 'var(--ref-color-gray-100)',
+            'selected': 'var(--ref-color-blue-50)',
+            'active': 'var(--ref-color-blue-100)',
+        ),
+        modal: (
+            'default': 'var(--ref-color-white)',
+            'overlay':
+                'color-mix(in oklab, var(--ref-color-black) var(--ref-opacity-60), transparent)',
+        ),
+        neutral: (
+            'subtle': 'var(--ref-color-gray-100)',
+            'strong': 'var(--ref-color-gray-300)',
+        ),
+        sunken: (
+            'default': 'var(--ref-color-gray-200)',
+        ),
+        warning: (
+            'subtle': 'var(--ref-color-yellow-100)',
+            'default': 'var(--ref-color-yellow-200)',
+        ),
+    ),
+    'dark': (),
+    'hc': (),
+    'dhc-adj': (),
+);

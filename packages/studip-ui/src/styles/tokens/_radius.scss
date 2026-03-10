@@ -1,0 +1,14 @@
+$sys-radius: (
+    'xs': var(--ref-size-025),
+    'sm': var(--ref-size-050),
+    'md': var(--ref-size-100),
+    'lg': var(--ref-size-200),
+    'container': (
+        'inner-sm': var(--sys-spacing-xs),
+        'outer-sm': calc(var(--sys-radius-sm) + var(--sys-spacing-sm)),
+        'inner-md': var(--sys-spacing-sm),
+        'outer-md': calc(var(--sys-radius-md) + var(--sys-spacing-md)),
+        'inner-lg': var(--sys-spacing-md),
+        'outer-lg': calc(var(--sys-radius-lg) + var(--sys-spacing-lg)),
+    ),
+);

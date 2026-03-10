@@ -1,1 +1,1 @@
-export {};
+export { useSlotFilter } from './useSlotFilter.js';

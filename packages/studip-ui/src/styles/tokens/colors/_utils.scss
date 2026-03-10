@@ -1,0 +1,10 @@
+// _utils.scss
+@use 'sass:map';
+
+@function prepare-tokens($theme, $light, $dark, $hc, $dhc-adj) {
+    @if $theme == 'light' { @return $light; }
+    @if $theme == 'dark' { @return $dark; }
+    @if $theme == 'hc' { @return $hc; }
+    @if $theme == 'dhc' { @return map.merge($dark, $dhc-adj); }
+    @return ();
+}

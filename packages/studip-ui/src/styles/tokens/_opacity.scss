@@ -1,0 +1,9 @@
+@use 'sass:map';
+@use 'sass:math';
+
+$ref-opacity: ();
+
+@for $i from 0 through 10 {
+    $step: $i * 10;
+    $ref-opacity: map.merge($ref-opacity, ("#{$step}": math.div($step, 100)));
+}

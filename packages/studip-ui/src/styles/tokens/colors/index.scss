@@ -1,3 +1,33 @@
+@use 'sass:map';
+
+// references
+@use 'color' as color;
+
+$ref-color: color.$ref-color;
+
+// system (semantics)
+@use 'action' as action;
+@use 'border' as border;
+@use 'brand' as brand;
+@use 'content' as content;
+@use 'feedback' as feedback;
+@use 'graphic' as graphic;
+@use 'text' as text;
+@use 'structure' as structure;
+@use 'surface' as surface;
+
+$semantic-registry: (
+    'action': action.$theme-bundle,
+    'border': border.$theme-bundle,
+    'brand': brand.$theme-bundle,
+    'content': content.$theme-bundle,
+    'feedback': feedback.$theme-bundle,
+    'graphic': graphic.$theme-bundle,
+    'text': text.$theme-bundle,
+    'structure': structure.$theme-bundle,
+    'surface': surface.$theme-bundle,
+);
+
 // base colors
 $color--black: #000;
 $color--blue-1: #28497c;
@@ -27,18 +57,17 @@ $color--font-secondary: $color--gray-3;
 $color--font-inactive: $color--gray-3;
 $color--font-inverted: $color--white;
 
-
 $color--brand-primary: $color--blue-1;
 $color--brand-primary-contrast: $color--font-inverted;
 $color--brand-secondary: $color--gray-2;
 $color--brand-secondary-contrast: $color--font-inverted;
 
-$color--highlight: $color--blue-1;  
-$color--highlight-hover: $color--red-1;  
+$color--highlight: $color--blue-1;
+$color--highlight-hover: $color--red-1;
 $color--highlight-contrast: $color--font-inverted;
 
-$color--content-link: $color--blue-1; 
-$color--content-link-hover: $color--red-1; 
+$color--content-link: $color--blue-1;
+$color--content-link-hover: $color--red-1;
 
 $color--sidebar-item: $color--blue-1;
 $color--sidebar-item-hover: $color--gray-1;

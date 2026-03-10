@@ -1,0 +1,25 @@
+@use 'sass:math';
+@use 'sass:map';
+
+$size-base: 0.5rem;
+
+@function get-size($value) {
+    @return math.div($value, 100) * $size-base;
+}
+
+$ref-sizes: (
+    0: 0,
+    025: get-size(25),
+    050: get-size(50),
+    075: get-size(75),
+    100: get-size(100),
+    150: get-size(150),
+    200: get-size(200),
+    250: get-size(250),
+    300: get-size(300),
+    400: get-size(400),
+    500: get-size(500),
+    600: get-size(600),
+    800: get-size(800),
+    1000: get-size(1000),
+);

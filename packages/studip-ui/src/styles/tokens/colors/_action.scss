@@ -1,0 +1,17 @@
+$theme-bundle: (
+    'light': (
+        'primary': 'var(--ref-color-blue-600)',
+        'subtle': 'var(--ref-color-blue-50)',
+    ),
+    'dark': (
+        'primary': 'var(--ref-color-blue-400)',
+        'subtle': 'var(--ref-color-blue-950)',
+    ),
+    'hc': (
+        'primary': 'var(--ref-color-blue-900)',
+        'subtle': 'var(--ref-white)',
+    ),
+    'dhc-adj': (
+        'primary': 'var(--ref-color-blue-100)',
+    )
+);
