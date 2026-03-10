@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUnmounted, ref, useTemplateRef} from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
