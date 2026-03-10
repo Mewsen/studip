@@ -8,7 +8,7 @@ import { $gettext } from '@/assets/javascripts/lib/gettext';
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
 
-const props = defineProps({
+defineProps({
     discussion: { type: Object, required: true },
 });
 
