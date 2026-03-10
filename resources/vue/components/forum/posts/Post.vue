@@ -61,8 +61,7 @@ const editPost = () => {
     if (!canEditPost.value) {
         return;
     }
-
-    document.getElementById(`post_${props.post.id}`)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(`post_${props.post.id}`)?.scrollIntoView();
     showPostEditForm.value = true;
 }
 
@@ -92,7 +91,6 @@ const addPost = () => {
 }
 
 const addReply = () => {
-    document.getElementById(`create_form_${props.post.id}`)?.scrollIntoView({ behavior: 'smooth' });
     showPostCreateForm.value = true;
     selectedText.value = props.post.content;
 }
@@ -231,16 +229,15 @@ onBeforeUnmount(() => postObserver.disconnect());
                             class="forum-quote"
                         >
                             <template #actions>
-                                <a
-                                    :href="`#create_form_${post.id}`"
-                                    class="ballon-action__button"
+                                <button
+                                    class="ballon-action__button button-base"
                                     v-if="!forumConfig.allowGuestAccess && !showPostCreateForm && !discussion.closed_at"
                                     @click="showPostCreateForm = true; postContentRef.removeSelection()"
                                     :title="$gettext('Auswahl zitieren und antworten')"
                                     :aria-label="$gettext('Auswahl zitieren und antworten')"
                                 >
                                     <StudipIcon shape="quote" :size="20" />
-                                </a>
+                                </button>
                                 <button
                                     type="button"
                                     class="ballon-action__button button-base"
@@ -314,7 +311,7 @@ onBeforeUnmount(() => postObserver.disconnect());
             </div>
         </div>
     </div>
-    <div v-if="showPostCreateForm && !discussion.closed_at" :id="`create_form_${post.id}`" class="post-form-container" style="scroll-margin-top: 200px;">
+    <div v-if="showPostCreateForm && !discussion.closed_at" class="post-form-container">
         <PostCreateForm
             :parentId="post.id"
             :discussionId="props.discussion.discussion_id"

@@ -18,7 +18,6 @@ const props = defineProps({
 const content = defineModel({ type: String, default: '' });
 
 const createdEditor = ref(null);
-const shouldFocus = ref(props.autofocus);
 
 const editor = computed(() => {
     switch (props.editorType) {
@@ -34,14 +33,12 @@ const editor = computed(() => {
 const focus = () => {
     if (createdEditor.value && typeof createdEditor.value.focus === 'function') {
         createdEditor.value.focus();
-    } else {
-        shouldFocus.value = true;
     }
 }
 
 const onReady = editorInstance => {
     createdEditor.value = editorInstance;
-    if (shouldFocus.value) {
+    if (props.autofocus) {
         focus();
     }
     STUDIP.eventBus.emit('editor-loaded', createdEditor.value);

@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from 'vue';
+import {onMounted, onUnmounted, ref, useTemplateRef} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
@@ -66,7 +66,7 @@ const updatePost = async () => {
     }
 }
 
-onMounted(() => {
+onMounted( () => {
     if (window.location.hash) {
         window.history.pushState('', document.title, window.location.href.split('#')[0]);
     }

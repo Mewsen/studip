@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from 'vue';
+import {onMounted, onUnmounted, onUpdated, ref, useTemplateRef} from 'vue';
 import {$gettext} from '@/assets/javascripts/lib/gettext';
 import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
 import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
@@ -29,6 +29,8 @@ const props = defineProps({
     }
 });
 
+const contentEditor = useTemplateRef('contentEditor');
+
 const normalizeQuote = quote => {
     const parser = new DOMParser();
     const document = parser.parseFromString(quote, 'text/html');
@@ -43,7 +45,7 @@ const normalizeQuote = quote => {
     return document.body.innerHTML;
 }
 
-onMounted(() => {
+onMounted(async () => {
     if (window.location.hash) {
         window.history.pushState('', document.title, window.location.href.split('#')[0]);
     }
@@ -54,6 +56,8 @@ onMounted(() => {
             <br />
         `;
     }
+
+    contentEditor.value.scrollIntoView();
 })
 
 onUnmounted(() => {
@@ -61,6 +65,8 @@ onUnmounted(() => {
         window.history.pushState('', document.title, window.location.href.split('#')[0]);
     }
 })
+
+onUpdated (() => contentEditor.value.scrollIntoView());
 
 const content = ref('');
 const anonymous = ref(false);
@@ -127,10 +133,9 @@ const storePost = async () => {
             </a>
             <p class="post-form__author-name">{{ authUser.name }}</p>
         </div>
-        <label for="post-content">
-            <span class="sr-only">{{ $gettext('Inhalt') }}</span>
-        </label>
-        <StudipWysiwyg id="post-content" :required="true" v-model="content" :autofocus="true" />
+       <div ref="contentEditor" style="scroll-margin-top: 200px;">
+           <StudipWysiwyg :required="true" v-model="content" :autofocus="true" />
+       </div>
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>
