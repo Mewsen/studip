@@ -172,7 +172,7 @@
         <section v-if="['MONTHLY', 'YEARLY'].includes(repetition_type_value) && repetition_month_type_value === 'dow'">
             <label>
                 {{ $gettext('Wiederholung an einem bestimmten Wochentag') }}
-                <day-of-week-select :name="name + '_dow'" v-model="repetition_dow_value[0]"
+                <day-of-week-select :name="name + '_dow'" :value="repetition_dow_value[0]"
                                     :with_indeterminate="true"></day-of-week-select>
             </label>
             <label>
