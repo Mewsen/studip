@@ -114,16 +114,6 @@ onUnmounted(() => {
                 <div v-if="isNewFrom" class="unread-marker" :style="{ top: unreadPosition + '%', bottom: 0 }"></div>
             </div>
 
-            <div
-                v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex"
-                class="new-posts-label"
-                :style="{ top: unreadPosition + '%' }"
-            >
-                <button type="button" @click="jumpToPost(firstUnreadPostIndex)">
-                    {{ $gettext('Neu ab hier') }}
-                </button>
-            </div>
-
             <input
                 type="range"
                 min="0"
@@ -149,7 +139,20 @@ onUnmounted(() => {
                 <div class="label">
                     {{ currentPostIndex + 1 }}/{{ posts.length }}<br />
                     <time>{{ currentPostDate }}</time>
+                    <span v-if="isNewFrom && currentPostIndex === firstUnreadPostIndex">
+                        &mdash; {{ $gettext('Neu ab hier') }}
+                    </span>
                 </div>
+            </div>
+
+            <div
+                v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex"
+                class="new-posts-label"
+                :style="{ top: unreadPosition + '%' }"
+            >
+                <button type="button" @click="jumpToPost(firstUnreadPostIndex)">
+                    {{ $gettext('Neu ab hier') }}
+                </button>
             </div>
         </div>
 
@@ -166,7 +169,7 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 10px;
     width: 220px;
 
     .timeline-anchor {
@@ -183,11 +186,11 @@ onUnmounted(() => {
         position: relative;
         height: 300px;
         width: 100%;
-        padding-left: 10px;
+        margin-left: 5px;
 
         .slider-track {
             position: absolute;
-            left: 10px;
+            left: 0;
             top: 0;
             bottom: 0;
             width: 2px;
@@ -203,7 +206,7 @@ onUnmounted(() => {
 
         .new-posts-label {
             position: absolute;
-            left: 25px;
+            left: 14px;
             z-index: 5;
             transform: translateY(-50%);
             white-space: nowrap;
@@ -214,7 +217,7 @@ onUnmounted(() => {
                 color: var(--color--highlight);
                 cursor: pointer;
                 font-weight: 700;
-                margin-top: 40px;
+                margin-top: 15px;
                 padding: 0;
             }
         }
@@ -248,7 +251,7 @@ onUnmounted(() => {
 
         .floating-info {
             position: absolute;
-            left: 10px;
+            left: 0;
             display: flex;
             align-items: center;
             gap: 10px;
