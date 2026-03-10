@@ -4,6 +4,8 @@
  */
 final class FixFilesSearchIndexPk extends Migration
 {
+    use DatabaseMigrationTrait;
+
     public function description()
     {
         return 'Add PK id to files_search_index and remove explicit FTS_DOC_ID if present';
@@ -11,11 +13,7 @@ final class FixFilesSearchIndexPk extends Migration
 
     protected function up()
     {
-        $hasFtsDocId = (bool) DBManager::get()->fetchColumn(
-            "SHOW COLUMNS FROM `files_search_index` LIKE 'FTS_DOC_ID'"
-        );
-
-        if ($hasFtsDocId) {
+        if ($this->columnExists('files_search_index', 'FTS_DOC_ID')) {
             DBManager::get()->exec(
                 "ALTER TABLE `files_search_index`
                  DROP COLUMN `FTS_DOC_ID`,
