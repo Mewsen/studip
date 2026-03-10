@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import StudipDateTime from '@/vue/components/StudipDateTime.vue';
 import { useForumPost } from '@/vue/store/pinia/forum/ForumPost';
 import { useForumConfig } from '@/vue/store/pinia/forum/ForumConfig';
@@ -8,14 +8,16 @@ import { $gettext } from '@/assets/javascripts/lib/gettext';
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
 
-defineProps({
+const props = defineProps({
     discussion: { type: Object, required: true },
 });
+
+const scrollPercentage = ref(0);
+const unreadPosition = ref(0);
 
 const posts = computed(() => forumPostStore.posts);
 const currentPostIndex = computed(() => forumPostStore.currentPostIndex);
 const firstUnreadPostIndex = computed(() => forumPostStore.firstUnreadPostIndex);
-
 const currentPost = computed(() => posts.value[currentPostIndex.value]);
 
 const currentPostDate = computed(() => {
@@ -23,37 +25,43 @@ const currentPostDate = computed(() => {
     return post ? new Date(post.mkdate).toLocaleString(String.locale, { month: 'long', year: 'numeric' }) : null;
 });
 
-const ariaValueText = computed(() => {
-    if (!currentPost.value) return '';
-    return $gettext('Beitrag %{current} von %{total}, %{date}')
-        .replace('%{current}', currentPostIndex.value + 1)
-        .replace('%{total}', posts.value.length)
-        .replace('%{date}', currentPostDate.value);
-});
-
-const unreadAnnouncement = computed(() => {
-    if (firstUnreadPostIndex.value < 0 || forumConfig.allowGuestAccess) {
-        return '';
-    }
-
-    return $gettext('Erste ungelesene Nachricht bei Beitrag %{index}').replace(
-        '%{index}',
-        firstUnreadPostIndex.value + 1,
-    );
-});
-
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
 
-const jumpToPost = (index) => {
-    if (index === 0) {
-        document.getElementById('discussion_start')?.scrollIntoView({ behavior: 'instant' });
-    } else {
-        document.querySelector(`[data-index='${index}']`)?.scrollIntoView({ behavior: 'instant' });
+const getScrollPercent = () => {
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    return scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+};
+
+const getPostPositionPercent = (index) => {
+    if (index <= 0) return 0;
+    const element = document.querySelector(`[data-index='${index}']`);
+    if (!element) return 0;
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    const elementTop = element.getBoundingClientRect().top + window.scrollY;
+    return Math.min(100, (elementTop / scrollable) * 100);
+};
+
+const updateMetrics = () => {
+    scrollPercentage.value = getScrollPercent();
+    if (isNewFrom.value) {
+        unreadPosition.value = getPostPositionPercent(firstUnreadPostIndex.value);
     }
 };
 
 const onSliderInput = (e) => {
-    jumpToPost(parseInt(e.target.value));
+    const percent = parseFloat(e.target.value);
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    window.scrollTo(0, (percent / 100) * scrollable);
+};
+
+const jumpToPost = (index) => {
+    const element = index === 0 
+        ? document.getElementById('discussion_start') 
+        : document.querySelector(`[data-index='${index}']`);
+    element?.scrollIntoView({ behavior: 'smooth' });
 };
 
 const onKeyDown = (e) => {
@@ -65,6 +73,17 @@ const onKeyDown = (e) => {
         jumpToPost(Math.min(posts.value.length - 1, currentPostIndex.value + 1));
     }
 };
+
+onMounted(() => {
+    window.addEventListener('scroll', updateMetrics);
+    window.addEventListener('resize', updateMetrics);
+    updateMetrics();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', updateMetrics);
+    window.removeEventListener('resize', updateMetrics);
+});
 </script>
 
 <template>
@@ -74,35 +93,20 @@ const onKeyDown = (e) => {
         </button>
 
         <div class="slider-container">
-            <span class="sr-only" id="timeline-label">
-                {{ $gettext('Beitragsnavigation der Diskussion') }}
-            </span>
-            <span v-if="unreadAnnouncement" class="sr-only">
-                {{ unreadAnnouncement }}
-            </span>
             <div class="slider-track">
                 <div
                     v-if="isNewFrom"
                     class="unread-marker"
-                    :style="{
-                        top: ((firstUnreadPostIndex - 1) / (posts.length - 1 || 1)) * 100 + '%',
-                        bottom: 0,
-                    }"
+                    :style="{ top: unreadPosition + '%', bottom: 0 }"
                 ></div>
             </div>
 
             <div
                 v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex"
                 class="new-posts-label"
-                :style="{
-                    top: ((firstUnreadPostIndex - 1) / (posts.length - 1 || 1)) * 100 + '%',
-                }"
+                :style="{ top: unreadPosition + '%' }"
             >
-                <button
-                    type="button"
-                    :title="$gettext('Zum ersten ungelesenen Beitrag springen')"
-                    @click="jumpToPost(firstUnreadPostIndex)"
-                >
+                <button type="button" @click="jumpToPost(firstUnreadPostIndex)">
                     {{ $gettext('Neu ab hier') }}
                 </button>
             </div>
@@ -110,21 +114,20 @@ const onKeyDown = (e) => {
             <input
                 type="range"
                 min="0"
-                :max="posts.length - 1"
+                max="100"
                 step="1"
-                :value="currentPostIndex"
+                :value="scrollPercentage"
                 @input="onSliderInput"
                 @keydown="onKeyDown"
                 class="timeline-slider"
-                aria-labelledby="timeline-label"
-                :aria-valuetext="ariaValueText"
+                aria-label="Timeline"
             />
 
             <div
                 class="floating-info"
                 :style="{
-                    top: (currentPostIndex / (posts.length - 1 || 1)) * 100 + '%',
-                    transform: `translateY(-${(currentPostIndex / (posts.length - 1 || 1)) * 100}%)`,
+                    top: scrollPercentage + '%',
+                    transform: `translateY(-${scrollPercentage}%)`,
                 }"
             >
                 <span class="marker"></span>
@@ -205,7 +208,7 @@ const onKeyDown = (e) => {
             position: absolute;
             top: 0;
             left: 0;
-            width: 300px;
+            width: 300px; 
             height: 40px;
             margin: 0;
             cursor: pointer;
@@ -220,12 +223,10 @@ const onKeyDown = (e) => {
                 width: 50px;
                 height: 40px;
             }
-        }
 
-        .timeline-slider:focus-visible + .floating-info .marker {
-            box-shadow:
-                0 0 0 2px white,
-                0 0 0 4px var(--color--highlight);
+            &:focus-visible + .floating-info .marker {
+                box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color--highlight);
+            }
         }
 
         .floating-info {
@@ -244,6 +245,7 @@ const onKeyDown = (e) => {
                 border-radius: 3px;
                 margin-left: -2px;
                 flex-shrink: 0;
+                transition: box-shadow 0.2s ease;
             }
 
             .label {
