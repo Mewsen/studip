@@ -1562,6 +1562,11 @@ class Course_TimesroomsController extends AuthenticatedController
                 $this->end_semester_weeks['ende'][] = ['value' => -1, 'label' => _('Alle Semester')];
             }
         }
+        $types  = [];
+        foreach ($this->cycle->dates as $date) {
+            $types[] = $date->date_typ;
+        }
+        $this->types=$types;
     }
 
     /**
