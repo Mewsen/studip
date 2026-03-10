@@ -95,7 +95,7 @@ onUnmounted(() => {
 
 <template>
     <div class="discussion-timeline">
-        <button class="timeline-anchor" @click="jumpToPost(0)">
+        <button class="timeline-anchor" :title="$gettext('Zum ersten Beitrag')" @click="jumpToPost(0)">
             <StudipDateTime :iso="discussion.mkdate" :relative="true" />
         </button>
 
@@ -150,13 +150,17 @@ onUnmounted(() => {
                 class="new-posts-label"
                 :style="{ top: unreadPosition + '%' }"
             >
-                <button type="button" @click="jumpToPost(firstUnreadPostIndex)">
+                <button
+                    type="button"
+                    :title="$gettext('Zum ersten ungelesenen Beitrag')"
+                    @click="jumpToPost(firstUnreadPostIndex)"
+                >
                     {{ $gettext('Neu ab hier') }}
                 </button>
             </div>
         </div>
 
-        <button class="timeline-anchor" @click="jumpToPost(posts.length - 1)">
+        <button class="timeline-anchor" :title="$gettext('Zum letzten Beitrag')" @click="jumpToPost(posts.length - 1)">
             <StudipDateTime :iso="posts[posts.length - 1]?.mkdate || discussion.mkdate" :relative="true" />
         </button>
     </div>
