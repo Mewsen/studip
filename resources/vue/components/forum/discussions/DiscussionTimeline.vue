@@ -218,19 +218,19 @@ onUnmounted(() => {
                 padding: 0;
             }
         }
-
+        $timeline-width: 200px;
         .timeline-slider {
             position: absolute;
             top: 0;
             left: 0;
             width: 300px;
-            height: 40px;
+            height: $timeline-width;
             margin: 0;
             cursor: pointer;
             opacity: 0;
             z-index: 10;
             transform-origin: 0 0;
-            transform: rotate(90deg) translate(0, -40px);
+            transform: rotate(90deg) translate(0, -$timeline-width);
             appearance: none;
 
             &::-webkit-slider-thumb {
