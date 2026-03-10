@@ -1245,6 +1245,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 $this->end_semester_weeks['ende'][] = ['value' => -1, 'label' => _('Alle Semester')];
             }
         }
+        $this->types = $this->cycle->dates->pluck('date_typ');;
     }
 
     /**
@@ -1335,14 +1336,14 @@ class Course_TimesroomsController extends AuthenticatedController
     {
         $cycle = SeminarCycleDate::find($cycle_id);
         $start = strtotime(Request::get('start_time'));
-        $end   = strtotime(Request::get('end_time'));
+        $end = strtotime(Request::get('end_time'));
 
         // Prepare Request for saving Request
         if ($start === false || $end === false || $start > $end) {
             PageLayout::postError(_('Die Zeitangaben sind nicht korrekt. Bitte überprüfen Sie diese!'));
         } else {
-            $cycle->start_time  = date('H:i:00', $start);
-            $cycle->end_time    = date('H:i:00', $end);
+            $cycle->start_time = date('H:i:00', $start);
+            $cycle->end_time = date('H:i:00', $end);
         }
 
         //Check the duration:
@@ -1361,41 +1362,44 @@ class Course_TimesroomsController extends AuthenticatedController
             return;
         }
 
-        $cycle->weekday     = Request::int('day');
+        $cycle->weekday = Request::int('day');
         $cycle->description = Request::get('description');
-        $cycle->sws         = Request::get('teacher_sws');
-        $cycle->cycle       = Request::get('cycle');
+        $cycle->sws = Request::get('teacher_sws');
+        $cycle->cycle = Request::get('cycle');
         $cycle->week_offset = Request::int('startWeek');
-        $cycle->end_offset  = Request::int('endWeek');
+        $cycle->end_offset = Request::int('endWeek');
 
         if ($cycle->end_offset == -1) {
             $cycle->end_offset = NULL;
         }
 
         $changed_dates = 0;
-        if (Request::int('course_type')) {
+
+        if (Request::get('course_type') && Request::get('course_type') !== 'default') {
             $changed_dates = $cycle->setSingleDateType(Request::int('course_type'));
+        } elseif ($cycle->isDirty()) {
+            $changed_dates = count($cycle->dates);
         }
 
         if ($changed_dates > 0 || $cycle->isDirty()) {
+
             $cycle->chdate = time();
             $cycle->store();
 
-            if ($changed_dates > 0) {
+            if ($changed_dates > 0 && Request::get('course_type') !== 'default') {
                 PageLayout::postSuccess(sprintf(ngettext(
-                    _('Die Art des Termins wurde bei 1 Termin geändert'),
-                    _('Die Art des Termins wurde bei %u Terminen geändert'),
-                    $changed_dates
-                ), $changed_dates));
+                _('Die Art des Termins wurde bei 1 Termin geändert'),
+                _('Die Art des Termins wurde bei %u Terminen geändert'),
+                $changed_dates), $changed_dates));
             } else {
                 PageLayout::postSuccess(_('Änderungen gespeichert!'));
             }
         } else {
             PageLayout::postInfo(_('Es wurden keine Änderungen vorgenommen'));
         }
-
         $this->relocate('course/timesrooms/index');
     }
+
 
     /**
      * Deletes a cycle
