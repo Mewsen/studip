@@ -314,9 +314,14 @@ class Icon implements JsonSerializable
             [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
 
+        $attributes = $this->prepareHTMLAttributes(false, $view_attributes, true);
+        $attributes['class'] = 'as-link';
+        unset($attributes['src']);
+
         return sprintf(
-            '<button class="as-link">%s</button>',
-            $this->asImg($size, $view_attributes)
+            '<button class="as-link" %s>%s</button>',
+            $attributes,
+            $this->asImg($size)
         );
     }
 
@@ -397,9 +402,9 @@ class Icon implements JsonSerializable
      *
      * @param int   $size       Size of the icon
      * @param array $attributes Additional attributes
-     * @return Array containing the merged attributes
+     * @return array|HTMLAttributes containing the merged attributes
      */
-    private function prepareHTMLAttributes($size, array $attributes)
+    private function prepareHTMLAttributes($size, array $attributes, bool $return_object = false)
     {
         $html_attributes = HTMLAttributes::merge($this->attributes, $attributes);
 
@@ -428,7 +433,7 @@ class Icon implements JsonSerializable
             $html_attributes['class'] = 'icon-shape-' . $this->shapeToPath($this->shape);
         }
 
-        return $html_attributes->getAttributes();
+        return $return_object ? $html_attributes : $html_attributes->getAttributes();
     }
 
     /**
