@@ -479,10 +479,10 @@ table.default {
         border-bottom: 1px solid var(--brand-color-darker);
     }
     // Hover effect
-    &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):hover > td:not(.nohover) {
+    &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):is(:hover, :focus-within) > td:not(.nohover) {
         background-color: fadeout(@light-gray-color, 80%);
     }
-    &:not(.nohover) > tbody:not(.nohover) > tr.selected:not(.nohover):hover > td:not(.nohover) {
+    &:not(.nohover) > tbody:not(.nohover) > tr.selected:not(.nohover):is(:hover, :focus-within) > td:not(.nohover) {
         background-color: var(--yellow-40);
     }
     > tfoot {
