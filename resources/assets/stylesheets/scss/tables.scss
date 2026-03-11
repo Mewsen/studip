@@ -595,7 +595,7 @@ table.default {
     }
 
     // Hover effect
-    &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):hover > td:not(.nohover) {
+    &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):is(:hover, :focus-within) > td:not(.nohover) {
         background-color: var(--color--table-header);
     }
 
