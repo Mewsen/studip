@@ -1,18 +1,6 @@
-<!--
-$answers = $vote->questiondata['options'];
-$indexMap = count($answers) ? range(0, count($answers) - 1) : [];
-if ($vote->questiondata['randomize']) {
-shuffle($indexMap);
-}
-
-$response = $vote->getMyAnswer();
-$responseData = $response['answerdata'] ? $response['answerdata']->getArrayCopy() : [];
--->
-
 <template>
 
     <div :class="{ mandatory: question.questiondata.mandatory == 1}">
-        <!-- TODO questionnaire/_answer_description_container as template? -->
         <div class="description_container">
             <div class="icon_container">
                 <StudipIcon shape="vote"
@@ -26,31 +14,50 @@ $responseData = $response['answerdata'] ? $response['answerdata']->getArrayCopy(
                 <div v-html="question.questiondata.description"></div>
             </article>
         </div>
-        <!-- -->
         <!-- hidden invalidation notice -->
 
         <ul class="clean">
 
-            <li v-for="(answer, index) in shuffledOptions"
-                :key="index">
-                <label>
+            <li v-for="option in shuffledOptions" :key="option.index">
+                <!-- name="answers[<?= $vote->getId() ?>][answerdata][answers][<?= $index ?>]" -->
+                    <input
+                        :type="question.questiondata.multiplechoice == 1 ? 'checkbox' : 'radio'"
+                        :name="'answers[' + question.id + '][answerdata][answers][' + option.index + ']'"
+                        :value="option.index"
+                        v-model="userAnswer"
+                        :id="'question-' + question.id + '-' + option.index"
+                    />
+                <label :for="'question-' + question.id + '-' + option.index" class="question-label">{{ option.answer }}</label>
+            </li>
+
+            <template v-if="question.questiondata.freetextfield == 1">
+                <li>
                     <input
                         :type="question.questiondata.multiplechoice == 1 ? 'checkbox' : 'radio'"
                         :name="'question-' + question.id"
-                        :value="answer"
-                        v-model="userAnswer"
-                    />
+                        v-model="freeTextEnabled"
+                        id="free_answer"
+                        :aria-label="$gettext('Geben Sie eine andere Antwort an')"
+                        />
+                    <label id="free_answer_label" for="free_answer" class="question-label">{{ $gettext('Sonstiges') + ':' }}</label>
 
-                    {{ answer }}
-                </label>
+                    <div>
+                        <textarea
+                            v-model="freeTextAnswer"
+                            :disabled="!freeTextEnabled"
+                            aria-labelledby="free_answer_label"
+                        ></textarea>
+                    </div>
 
-            </li>
+                </li>
+            </template>
 
         </ul>
 
     </div>
 
     <pre>{{ userAnswer }}</pre>
+    <pre>{{ freeTextAnswer }}</pre>
 
 </template>
 
@@ -68,31 +75,38 @@ const props = defineProps({
 })
 
 const shuffledOptions = ref([])
-const userAnswer = ref(null) // Radio
-// Für Checkbox später automatisch Array
+const userAnswer = ref([])
+const freeTextAnswer = ref('')
+const freeTextEnabled = ref(false)
 
 function prepareAnswers() {
-    const options = [...props.question.questiondata.options]
+    const options = props.question.questiondata.options
 
+    // Antworten mit Originalindex kombinieren
+    const mapped = options.map((answer, index) => ({
+        answer,
+        index
+    }))
+
+    // Shuffle falls aktiviert
     if (props.question.questiondata.randomize == 1) {
-        for (let i = options.length - 1; i > 0; i--) {
+        for (let i = mapped.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
-            ;[options[i], options[j]] = [options[j], options[i]]
+            ;[mapped[i], mapped[j]] = [mapped[j], mapped[i]]
         }
     }
 
-    shuffledOptions.value = options
+    shuffledOptions.value = mapped
 }
 
+
 function initUserAnswer() {
+    const answers = props.question.responseData?.answers ?? []
+
     if (props.question.questiondata.multiplechoice == 1) {
-        // Checkbox → Array
-        userAnswer.value = Array.isArray(props.question.responseData)
-            ? props.question.responseData
-            : []
+        userAnswer.value = answers
     } else {
-        // Radio → Einzelwert
-        userAnswer.value = props.question.responseData || null
+        userAnswer.value = answers[0] ?? null
     }
 }
 
@@ -112,3 +126,12 @@ watch(
 
 </script>
 
+<style scoped lang="scss">
+
+
+    .question-label {
+        display: inline !important;
+    }
+
+
+</style>

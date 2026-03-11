@@ -7,8 +7,6 @@
           :data-dialog="asDialog ? true : null"
           :data-secure="activateFormSecure"
     >
-
-
         <div v-if="questionnaireData.questions[currentPage]">
 
             <div class="questionnaire_answer">
@@ -40,13 +38,10 @@
             <button :style="{visibility: currentPage > 0 ? 'visible' : 'hidden'}" class="button arr_left" @click="prevPage">
                 {{ $gettext('zurück') }}
             </button>
-
                 <button :style="{visibility: currentPage < totalPages - 1 ? 'visible' : 'hidden'}" class="button arr_right" @click="nextPage">
                     {{ $gettext('weiter') }}
                 </button>
-
         </div>
-
 
         <div class="terms">
             <span v-if="questionnaireData.anonymous == 1 ">{{ $gettext('Die Teilnahme ist anonym.') }}</span>
@@ -55,7 +50,35 @@
             <span v-if="questionnaireData.stopdate">{{ $gettext('Sie können den Fragebogen beantworten bis zum %{date} um %{time} Uhr.', {date:getFormattedDate, time:getFormattedTime}) }}</span>
         </div>
 
+        <div data-dialog-button style="text-align: center;">
+
+            <template v-if="config.isAnswerable">
+                <button class="button">{{ $gettext('Speichern') }}</button>
+            </template>
+            <template v-if="config.resultsVisible">
+                <button class="button">{{ $gettext('Ergebnisse anzeigen') }}</button>
+            </template>
+            <template v-if="config.isEditable && (!config.isRunning || config.countAnswers.length > 0)">
+                <button class="button">{{ $gettext('Bearbeiten') }}</button>
+            </template>
+            <template v-if="config.isEditable">
+                <button class="button">{{ $gettext('Kontext auswählen') }}</button>
+            </template>
+            <template v-if="config.isCopyable">
+                <button class="button">{{ $gettext('Kopieren') }}</button>
+            </template>
+            <template v-if="config.isEditable && !config.isRunning">
+                <button class="button">{{ $gettext('Starten') }}</button>
+            </template>
+            <template v-if="config.isEditable && config.isRunning">
+                <button class="button">{{ $gettext('Beenden') }}</button>
+            </template>
+
+
+        </div>
+
     </form>
+    {{ config }}
 </template>
 
 <script setup>
@@ -77,7 +100,8 @@ import LikertAnswer from '../../components/questionnaires/LikertAnswer.vue';
 import AutomatedDataAnswer from '../../components/questionnaires/AutomatedDataAnswer.vue';
 
 const props = defineProps({
-    questionnaireData: Object
+    questionnaireData: Object,
+    config: Object
 })
 
 const currentPage = ref(0)
@@ -115,6 +139,9 @@ const getFormattedTime = computed(() => {
             minute: '2-digit'
         })
 })
+
+
+
 
 
 </script>

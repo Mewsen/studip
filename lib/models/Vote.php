@@ -72,6 +72,8 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         $answer = $this->getMyAnswer();
 
         $answers = Request::getArray('answers');
+        var_dump($answers);
+        exit;
         $freetext_answer = $answers[$this->getId()]['answerdata']['freetext'];
 
         $userAnswer = null;

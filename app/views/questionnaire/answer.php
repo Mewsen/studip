@@ -72,9 +72,18 @@ $questionnaire_data['questions'] = $grouped;
 
 
 <?= Studip\VueApp::create('questionnaires/QuestionnaireAnswer')
-    ->withProps(['questionnaireData' => $questionnaire_data]) ?>
+    ->withProps(['questionnaireData' => $questionnaire_data,
+        'config' => [
+            'isAnswerable' => $questionnaire->isAnswerable(),
+            'isEditable' => $questionnaire->isEditable(),
+            'isCopyable' => $questionnaire->isCopyable(),
+            'isRunning' => $questionnaire->isRunning(),
+            'resultsVisible' => $questionnaire->resultsVisible(),
+            'countAnswers' => $questionnaire->countAnswers()
+        ]
+        ]) ?>
 
-<!-- TODO check why footer buttons don't work in template -->
+<!-- TODO alte Buttons in die Vue App übernehmen -->
 <div data-dialog-button style="text-align: center;">
     <? if ($questionnaire->isAnswerable()) : ?>
         <?= \Studip\Button::create(_("Speichern"), 'questionnaire_answer', ['onClick' => "return STUDIP.Questionnaire.beforeAnswer.call(this);"]) ?>
