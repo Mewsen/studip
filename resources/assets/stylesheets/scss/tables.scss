@@ -561,7 +561,7 @@ table.default {
                 bottom: 0;
                 left: 0;
                 width: 2px;
-                background-color: color--table-header;
+                background-color: var(--color--table-header);
             }
         }
     }
