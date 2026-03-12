@@ -34,7 +34,7 @@
     height: 36px;
     width: 36px;
     margin-top: -22px;
-    transition: 200ms ease;
+    transition: var(--transition-duration) ease;
     user-select: none;
     border: none;
 

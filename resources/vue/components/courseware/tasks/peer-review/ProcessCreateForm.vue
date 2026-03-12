@@ -123,7 +123,7 @@
 <script>
 import LabelRequired from '../../../forms/LabelRequired.vue';
 import PeerReviewProcessConfiguration from './ProcessConfiguration.vue';
-import { ASSESSMENT_TYPES, CONFIGURATION_SETS, ProcessConfiguration } from './process-configuration';
+import { ASSESSMENT_TYPES, CONFIGURATION_SETS } from './process-configuration';
 
 let nextId = 0;
 
@@ -311,7 +311,7 @@ fieldset.select_configuration_set {
     > input[type='radio']:checked + label + div {
         display: block;
         > * {
-            animation-duration: 400ms;
+            animation-duration: var(--transition-duration-slow);
             animation-name: terms_of_use_fadein;
         }
     }

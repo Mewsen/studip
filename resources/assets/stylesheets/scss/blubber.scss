@@ -2,7 +2,7 @@
     display: flex;
     align-items: stretch;
     height: calc(100vh - 320px);
-    transition: opacity 100ms, filter 100ms;
+    transition: opacity var(--transition-duration), filter var(--transition-duration);
     &.waiting {
         filter: blur(1px);
         opacity: 0.5;

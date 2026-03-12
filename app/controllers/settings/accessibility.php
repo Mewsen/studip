@@ -36,9 +36,15 @@ class Settings_AccessibilityController extends Settings_SettingsController
         CSRFProtection::verifyUnsafeRequest();
 
         $this->config->store('USER_HIGH_CONTRAST', Request::bool('enable_high_contrast'));
+        $this->config->store('A11Y_USER_REDUCE_ANIMATIONS', $this->getReduceAnimationsFromRequest());
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         $this->redirect('settings/accessibility');
     }
 
+    private function getReduceAnimationsFromRequest(): string
+    {
+        $value = Request::get('reduce_animations');
+        return in_array($value, ['default', 'yes', 'no']) ? $value : 'default';
+    }
 }

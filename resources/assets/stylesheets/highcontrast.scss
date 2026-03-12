@@ -738,7 +738,7 @@ table.course-search {
             display: flex;
             height: 130px;
             padding: 10px;
-            transition: 0.5s;
+            transition: var(--transition-duration-slow);
 
             .content-item-img-wrapper > img {
                 filter: brightness(0);

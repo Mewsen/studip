@@ -14,7 +14,7 @@ div.avatar-widget {
             position: absolute;
             left: 0;
             top: 0;
-            transition: opacity .5s ease-in-out;
+            transition: opacity var(--transition-duration-slow) ease-in-out;
             background-color: fade-out($base-color, 0.333);
             opacity: 0;
             width: $avatar-normal;

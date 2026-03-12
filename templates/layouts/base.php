@@ -23,10 +23,18 @@ $getJsonApiSchemas = function () {
     );
 };
 
-$lang_attr = str_replace('_', '-', $_SESSION['_language']);
+$htmlAttributes = HTMLAttributes::from([
+    'lang'              => str_replace('_', '-', $_SESSION['_language']),
+    'class'             => 'no-js',
+    'data--a11y-motion' => match (User::findCurrent()?->getConfiguration()->getValue('A11Y_USER_REDUCE_ANIMATIONS')) {
+        'yes' => 'reduce',
+        'no'  => 'allow',
+        default => 'no-preference',
+    }
+]);
 ?>
 <!DOCTYPE html>
-<html class="no-js" lang="<?= htmlReady($lang_attr) ?>">
+<html <?= $htmlAttributes ?>>
 <head>
     <meta charset="utf-8">
     <title data-original="<?= htmlReady(PageLayout::getTitle()) ?>">

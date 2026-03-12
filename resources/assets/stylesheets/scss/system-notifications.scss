@@ -160,7 +160,8 @@
         text-decoration: unset;
     }
 
-    &:hover {
+    &:hover,
+    &.system-notification-no-timeout {
         .system-notification-close {
             display: unset;
         }

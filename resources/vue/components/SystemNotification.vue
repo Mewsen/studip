@@ -69,6 +69,10 @@ export default {
             type: String,
             default: null
         },
+        autohide: {
+            type: Boolean,
+            default: true
+        },
         notification: {
             type: Object,
             required: true
@@ -96,10 +100,13 @@ export default {
             if (this.isDisrupted) {
                 classes.push('system-notification-disrupted');
             }
+            if (!this.hasTimeout) {
+                classes.push('system-notification-no-timeout');
+            }
             return classes;
         },
         hasTimeout() {
-            return !['exception', 'error'].includes(this.notification.type);
+            return this.autohide && !['exception', 'error'].includes(this.notification.type);
         },
         icon() {
             let iconShape = 'info-circle';
