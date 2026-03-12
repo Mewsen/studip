@@ -648,7 +648,6 @@ input.allow-plaintext-toggle {
         transform: translateY(-50%);
 
         @include icon($position: before, $icon: visibility-invisible, $padding: 6px);
-        color: var(--color--font-primary);
 
         &.password-is-hidden {
             @include icon($position: before, $icon: visibility-checked, $padding: 6px);
