@@ -67,7 +67,7 @@ class LogoutController extends AuthenticatedController
             }, '__invoke', 'PageCloseWillExecute');
             PageLayout::postSuccess(
                 _('Sie sind nun aus dem System abgemeldet.'),
-                is_array($GLOBALS['UNI_LOGOUT_ADD']) ? $GLOBALS['UNI_LOGOUT_ADD'] : [$GLOBALS['UNI_LOGOUT_ADD']]
+                array_filter((array) $GLOBALS['UNI_LOGOUT_ADD'])
             );
         }
 
