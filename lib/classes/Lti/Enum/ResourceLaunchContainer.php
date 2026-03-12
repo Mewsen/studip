@@ -1,7 +1,8 @@
 <?php
 namespace Studip\Lti\Enum;
 
-enum ResourceLaunchContainer: string {
+enum ResourceLaunchContainer: string
+{
     case Window = 'window';
     case Iframe = 'iframe';
 

@@ -88,15 +88,20 @@ class Instance extends \SimpleORMap
         return $this->content['rawgrade'] = number_format($grade, 5, '.', '');
     }
 
-    public function toResult() : Result
+    public function toLti1p3Result(): Result
     {
+        $gradeDefinition = $this->definition;
+
         return new Result(
             $this->user_id,
-            $this->definition_id,
-            $this->user_id . '_' . $this->definition_id,
-            $this->rawgrade,
-            9.99999, //see above
-            $this->feedback
+            $gradeDefinition->id,
+            $this->definition_id. ':' .$this->user_id,
+            $this->rawgrade * 100,
+            $gradeDefinition->weight * 100,
+            $this->feedback,
+            [
+                'isPassed' => (bool) $this->passed
+            ]
         );
     }
 }

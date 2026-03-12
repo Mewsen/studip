@@ -1,7 +1,8 @@
 <?php
 namespace Studip\Lti\Enum;
 
-enum GradeSynchronization: int {
+enum GradeSynchronization: int
+{
     case BasicOutcome = 0;
     case GradeSyncOnly = 1;
     case GradeManagement = 2;

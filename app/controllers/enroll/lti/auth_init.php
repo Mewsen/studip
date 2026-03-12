@@ -1,26 +1,18 @@
 <?php
-require_once __DIR__ . '/LtiBaseController.php';
 
-use Trails\Dispatcher;
-use LTI\LtiBaseController;
+use Studip\Lti\Controller\EnrollBaseController;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcInitiationRequestHandler;
 
-final class Enroll_Lti_AuthInitController extends LtiBaseController
+final class Enroll_Lti_AuthInitController extends EnrollBaseController
 {
     protected $with_session = false;
 
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected OidcInitiationRequestHandler $oidcInitHandler
-    )
-    {
-        parent::__construct($dispatcher);
-    }
-
     public function index_action(): void
     {
+        $oidcInitHandler = app()->get(OidcInitiationRequestHandler::class);
+
         $this->renderPsrResponse(
-            $this->oidcInitHandler->handle($this->getPsrRequest())
+            $oidcInitHandler->handle($this->getPsrRequest())
         );
     }
 }

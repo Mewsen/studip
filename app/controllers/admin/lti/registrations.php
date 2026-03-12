@@ -1,17 +1,16 @@
 <?php
-require_once __DIR__ . '/AdminBaseController.php';
 
 use Lti\Deployment;
 use Studip\Markup;
 use Lti\Registration;
 use Ramsey\Uuid\Uuid;
-use LTI\AdminBaseController;
 use Lti\Config as LtiConfig;
 use Studip\Lti\Enum\LtiVersion;
 use Studip\Lti\LTI1p3\ToolManager;
 use Studip\Lti\Enum\ConfigurableType;
 use Studip\Lti\LTI1p3\PlatformManager;
 use Studip\Lti\Enum\RegistrationStatus;
+use Studip\Lti\Controller\AdminBaseController;
 
 class Admin_Lti_RegistrationsController extends AdminBaseController
 {

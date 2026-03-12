@@ -29,7 +29,7 @@ class Course_LtiController extends StudipController
     }
 
     /**
-     * Display the list of LTI Resources blocks.
+     * Display the list of LTI Resources.
      */
     public function index_action(): void
     {

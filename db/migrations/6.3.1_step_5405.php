@@ -155,7 +155,7 @@ final class Step5405 extends Migration {
             CREATE TABLE IF NOT EXISTS `lti_configs` (
                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 `configurable_id` INT UNSIGNED NOT NULL,
-                `configurable_type` ENUM('registration','publication', 'resource_link') NOT NULL DEFAULT 'registration',
+                `configurable_type` VARCHAR(255) NOT NULL,
                 `name` VARCHAR(100) NOT NULL,
                 `value` TEXT NOT NULL,
                 `mkdate` INT UNSIGNED DEFAULT NULL,

@@ -15,7 +15,7 @@ final class UserAuthenticator implements UserAuthenticatorInterface
 
         return new UserAuthenticationResult(
             $user !== null,
-            new Identity($user, $registration)
+            new UserIdentity($user, $registration)
         );
     }
 }

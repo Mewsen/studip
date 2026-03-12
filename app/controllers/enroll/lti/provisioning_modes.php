@@ -1,13 +1,12 @@
 <?php
-require_once __DIR__ . '/LtiBaseController.php';
 
 use Lti\Publication;
-use LTI\LtiBaseController;
 use Lti\UserIdentityMapping;
 use Studip\Lti\LTI1p3\UserManager;
+use Studip\Lti\Controller\EnrollBaseController;
 use Studip\Lti\Enum\UserIdentityMappingContext;
 
-final class Enroll_Lti_ProvisioningModesController extends LtiBaseController
+final class Enroll_Lti_ProvisioningModesController extends EnrollBaseController
 {
     public function index_action(): void
     {

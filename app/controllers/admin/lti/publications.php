@@ -1,13 +1,12 @@
 <?php
-require_once __DIR__ . '/AdminBaseController.php';
 
-use LTI\AdminBaseController;
 use Lti\Publication;
-use Lti\Config as LtiConfig;
 use Ramsey\Uuid\Uuid;
-use Studip\Lti\Enum\ConfigurableType;
+use Lti\Config as LtiConfig;
 use Studip\Lti\Enum\LtiVersion;
+use Studip\Lti\Enum\ConfigurableType;
 use Studip\Lti\Enum\PublicationStatus;
+use Studip\Lti\Controller\AdminBaseController;
 
 class Admin_Lti_PublicationsController extends AdminBaseController
 {

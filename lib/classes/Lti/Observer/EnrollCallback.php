@@ -1,12 +1,12 @@
 <?php
-namespace Studip\Activity;
+namespace Studip\Lti\Observer;
 
-use Studip\Lti\Enum\UserIdentityMappingContext;
+use User;
 use Lti\Publication;
 use Studip\Lti\LTI1p3\UserManager;
-use User;
+use Studip\Lti\Enum\UserIdentityMappingContext;
 
-final class LtiCallbackProcessor
+final class EnrollCallback
 {
     public static function handle(string $event, User $user, array $eventData): void
     {

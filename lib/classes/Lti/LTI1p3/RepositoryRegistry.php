@@ -3,7 +3,8 @@ namespace Studip\Lti\LTI1p3;
 
 use DI;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
+use OAT\Library\Lti1p3Ags\Repository\ScoreRepositoryInterface;
+use OAT\Library\Lti1p3Ags\Repository\ResultRepositoryInterface;
 use OAT\Library\Lti1p3Ags\Repository\LineItemRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
@@ -14,6 +15,7 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidatorInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidatorInterface;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGeneratorInterface;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidatorInterface;
 
 final class RepositoryRegistry
@@ -27,13 +29,11 @@ final class RepositoryRegistry
             ToolLaunchValidatorInterface::class => DI\get(ToolLaunchValidator::class),
             UserAuthenticatorInterface::class => DI\get(UserAuthenticator::class),
             LineItemRepositoryInterface::class => DI\get(LineItemRepository::class),
+            ScoreRepositoryInterface::class => DI\get(ScoreRepository::class),
+            ResultRepositoryInterface::class => DI\get(ResultRepository::class),
             RequestAccessTokenValidatorInterface::class => DI\get(RequestAccessTokenValidator::class),
-            KeyChainRepositoryInterface::class => DI\factory(function() {
-                return new KeyChainRepository([
-                    PlatformManager::getKeyChain(),
-                    ToolManager::getKeyChain()
-                ]);
-            }),
+            AccessTokenResponseGeneratorInterface::class => DI\get(AccessTokenResponseGenerator::class),
+            KeyChainRepositoryInterface::class => DI\get(KeyChainRepository::class)
         ];
     }
 }

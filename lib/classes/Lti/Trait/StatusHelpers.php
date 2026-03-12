@@ -1,7 +1,8 @@
 <?php
-namespace Studip\Lti\Enum;
+namespace Studip\Lti\Trait;
 
-trait StatusHelpers {
+trait StatusHelpers
+{
 
     public static function all(): array
     {

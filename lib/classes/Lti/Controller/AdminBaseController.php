@@ -1,14 +1,14 @@
 <?php
-namespace LTI;
+namespace Studip\Lti\Controller;
 
+use Icon;
+use Context;
+use Sidebar;
+use LtiToolModule;
+use ViewsWidget;
+use ActionsWidget;
 use AccessDeniedException;
 use AuthenticatedController;
-use Context;
-use Icon;
-use LtiToolModule;
-use Sidebar;
-use ActionsWidget;
-use ViewsWidget;
 
 abstract class AdminBaseController extends AuthenticatedController
 {

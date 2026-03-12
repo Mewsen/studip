@@ -1,7 +1,8 @@
 <?php
 namespace Studip\Lti\Enum;
 
-enum LtiVersion: string {
+enum LtiVersion: string
+{
     case Lti1P1 = '1.1';
     case Lti1p3a = '1.3a';
 

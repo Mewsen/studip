@@ -1,27 +1,16 @@
 <?php
 
-use Trails\Dispatcher;
-use Studip\OAuth2\NegotiatesWithPsr7;
+use Studip\Lti\Controller\PlatformBaseController;
 use OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler;
 
-final class Lti_1p3_LoginController extends AuthenticatedController
+final class Lti_1p3_LoginController extends PlatformBaseController
 {
-    protected $allow_nobody = true;
-    protected $with_session = false;
-    use NegotiatesWithPsr7;
-
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected OidcAuthenticationRequestHandler $oidcLoginHandler
-    )
-    {
-        parent::__construct($dispatcher);
-    }
-
     public function index_action(): void
     {
+        $oidcLoginHandler = app()->get(OidcAuthenticationRequestHandler::class);
+
         $this->renderPsrResponse(
-            $this->oidcLoginHandler->handle($this->getPsrRequest())
+            $oidcLoginHandler->handle($this->getPsrRequest())
         );
     }
 }

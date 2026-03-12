@@ -3,9 +3,9 @@ namespace Studip\Lti\LTI1p3;
 
 use Config;
 use Keyring;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use URLHelper;
 use OAT\Library\Lti1p3Core\Platform\Platform;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use OAT\Library\Lti1p3DeepLinking\Settings\DeepLinkingSettings;

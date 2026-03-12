@@ -1,46 +1,39 @@
 <?php
-require_once __DIR__ . '/LtiBaseController.php';
 
 use Lti\Deployment;
 use Ramsey\Uuid\Uuid;
-use Trails\Dispatcher;
 use Studip\LTIException;
-use LTI\LtiBaseController;
 use Lti\UserIdentityMapping;
 use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\Lti\LTI1p3\UserManager;
 use Studip\Lti\Enum\UserProvisioningMode;
 use Studip\Lti\Enum\UserIdentityMappingContext;
+use Studip\Lti\Controller\EnrollBaseController;
 use OAT\Library\Lti1p3Core\Resource\ResourceCollection;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidatorInterface;
 use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchResponseBuilder;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
 
-final class Enroll_Lti_LaunchDeeplinkController extends LtiBaseController
+final class Enroll_Lti_LaunchDeeplinkController extends EnrollBaseController
 {
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected ToolLaunchValidatorInterface $launchValidator
-    )
-    {
-        parent::__construct($dispatcher);
-    }
 
     public function index_action(): void
     {
-        $request = $this->launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+        $launchValidator = app()->get(ToolLaunchValidatorInterface::class);
 
-        if ($request->hasError()) {
-            throw new LtiException($request->getError());
+        $result = $launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+
+        if ($result->hasError()) {
+            throw new LtiException($result->getError());
         }
 
-        $localRoles = RoleMapper::toLocal($request->getPayload()->getRoles());
+        $localRoles = RoleMapper::toLocal($result->getPayload()->getRoles());
 
         if(!in_array($localRoles['course'], ['dozent', 'tutor'])) {
             throw new AccessDeniedException();
         }
 
-        $this->resolveDeeplinkProvisioningMode($request);
+        $this->resolveDeeplinkProvisioningMode($result);
     }
 
     public function callback_action(): void
@@ -88,16 +81,16 @@ final class Enroll_Lti_LaunchDeeplinkController extends LtiBaseController
         $this->render_text($message->toHtmlRedirectForm());
     }
 
-    private function resolveDeeplinkProvisioningMode(LaunchValidationResultInterface $request): void
+    private function resolveDeeplinkProvisioningMode(LaunchValidationResultInterface $result): void
     {
-        $userLocale = $request->getPayload()->getLaunchPresentation()?->getLocale();
+        $userLocale = $result->getPayload()->getLaunchPresentation()?->getLocale();
 
         $callbackId = Uuid::uuid4()->toString();
         $_SESSION['callbacks'][$callbackId] = [
-            'user_identity' => $request->getPayload()->getUserIdentity(),
-            'deployment_key' => $request->getPayload()->getDeploymentId(),
-            'registration_id' => $request->getRegistration()->getIdentifier(),
-            'settings_claim' => $request->getPayload()->getDeepLinkingSettings(),
+            'user_identity' => $result->getPayload()->getUserIdentity(),
+            'deployment_key' => $result->getPayload()->getDeploymentId(),
+            'registration_id' => $result->getRegistration()->getIdentifier(),
+            'settings_claim' => $result->getPayload()->getDeepLinkingSettings(),
             'provisioning_mode' => UserProvisioningMode::ExistingAccountsOnly->value,
             'context' => 'lti',
             'action' => 'deeplink_callback',
@@ -119,7 +112,7 @@ final class Enroll_Lti_LaunchDeeplinkController extends LtiBaseController
             return;
         }
 
-        $payload = $request->getPayload();
+        $payload = $result->getPayload();
 
         $userIdentityMapping = UserIdentityMapping::findOneBySQL(
             "context = :context AND external_email = :external_email AND external_user_id = :external_user_id AND registration_id = :registration_id",
@@ -127,7 +120,7 @@ final class Enroll_Lti_LaunchDeeplinkController extends LtiBaseController
                 'context' => UserIdentityMappingContext::DeepLink->value,
                 'external_email' => $payload->getUserIdentity()->getEmail(),
                 'external_user_id' => $payload->getUserIdentity()->getIdentifier(),
-                'registration_id' => $request->getRegistration()->getIdentifier()
+                'registration_id' => $result->getRegistration()->getIdentifier()
             ]
         );
 

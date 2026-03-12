@@ -1,10 +1,14 @@
 <?php
 namespace Studip\Lti\Enum;
 
+use Lti\Publication;
+use Lti\Registration;
+use Lti\ResourceLink;
+
 enum ConfigurableType: string {
-    case Registration = 'registration';
-    case Publication = 'publication';
-    case ResourceLink = 'resource_link';
+    case Registration = Registration::class;
+    case Publication = Publication::class;
+    case ResourceLink = ResourceLink::class;
 
     public static function all(): array
     {

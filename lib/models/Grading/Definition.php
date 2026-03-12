@@ -2,6 +2,7 @@
 
 namespace Grading;
 
+use DateTime;
 use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItem;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
@@ -73,27 +74,24 @@ class Definition extends \SimpleORMap
 
     public function toLti1p3LineItem(): LineItemInterface
     {
-        $resourceLinkIdentifier = $this->tool ?? '';
-        $deploymentId = '';
-        if ($resourceLinkIdentifier) {
-            $ltiResourceLink = ResourceLink::find($resourceLinkIdentifier);
-            if ($ltiResourceLink) {
-                $deploymentId = $ltiResourceLink->deployment_id;
-            }
-        }
+        $ltiResourceLink = ResourceLink::find($this->tool);
 
-        $identifier = URLHelper::getURL(sprintf(
-            'dispatch.php/lti/1p3/ags/server/line_item/%1$s/%2$s',
-            $resourceLinkIdentifier,
-            $this->id
-        ));
+        $lineItemURL = URLHelper::getURL(
+            'dispatch.php/lti/1p3/ags/line_item',
+            [
+                'line_item_id' => $this->id,
+                'resource_link_id' => $ltiResourceLink->id
+            ],
+            true
+        );
 
         return new LineItem(
-            PHP_FLOAT_MAX,
+            $this->weight * 100,
             $this->name,
-            $identifier,
-            $deploymentId,
-            $resourceLinkIdentifier
+            $lineItemURL,
+            $this->id,
+            $ltiResourceLink->id,
+            $this->course->getFullName()
         );
     }
 }

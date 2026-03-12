@@ -1,34 +1,27 @@
 <?php
-require_once __DIR__ . '/LtiBaseController.php';
 
 use Lti\Publication;
 use Ramsey\Uuid\Uuid;
-use Trails\Dispatcher;
 use Studip\LTIException;
-use LTI\LtiBaseController;
 use Lti\UserIdentityMapping;
 use Studip\Lti\LTI1p3\RoleMapper;
 use Studip\Lti\LTI1p3\UserManager;
 use Studip\Lti\Enum\UserProvisioningMode;
 use Studip\Lti\LTI1p3\PublicationValidator;
 use Studip\Lti\Enum\UserIdentityMappingContext;
+use Studip\Lti\Controller\EnrollBaseController;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidatorInterface;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Result\LaunchValidationResultInterface;
 
-final class Enroll_Lti_LaunchController extends LtiBaseController
+final class Enroll_Lti_LaunchController extends EnrollBaseController
 {
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected ToolLaunchValidatorInterface $launchValidator
-    )
-    {
-        parent::__construct($dispatcher);
-    }
 
     public function index_action(): void
     {
-        $result = $this->launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+        $launchValidator = app()->get(ToolLaunchValidatorInterface::class);
+
+        $result = $launchValidator->validatePlatformOriginatingLaunch($this->getPsrRequest());
 
         if ($result->hasError()) {
             throw new LtiException($result->getError());

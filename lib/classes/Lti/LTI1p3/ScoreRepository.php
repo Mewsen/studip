@@ -9,21 +9,24 @@ final class ScoreRepository implements ScoreRepositoryInterface
 {
     public function save(ScoreInterface $score): ScoreInterface
     {
-        $userId = $score->getUserIdentifier();
-        $definitionId = $score->getLineItemIdentifier();
-
-        $grade = Instance::findOneBySQL(
-            '`definition_id` = :definition_id AND `user_id` = :user_id',
-            ['definition_id' => $definitionId, 'user_id' => $userId]
+         Instance::updateOrCreate(
+            [
+                'definition_id' => $score->getLineItemIdentifier(),
+                'user_id' => $score->getUserIdentifier()
+            ],
+            [
+                'rawgrade' => $score->getScoreGiven() / 100,
+                'feedback' => $score->getComment(),
+                'passed' => ScoreRepository::isPassed($score->getGradingProgressStatus()),
+                'chdate' => $score->getTimestamp()->getTimestamp()
+            ]
         );
-        if (!$grade) {
-            $grade = new Instance();
-            $grade->definition_id = $definitionId;
-            $grade->user_id       = $userId;
-        }
-        $grade->rawgrade = $score->getScoreGiven();
-        $grade->feedback = $score->getComment();
-        $grade->store();
+
         return $score;
+    }
+
+    private static function isPassed(string $gradingProgressStatus): bool
+    {
+        return $gradingProgressStatus === ScoreInterface::GRADING_PROGRESS_STATUS_FULLY_GRADED;
     }
 }

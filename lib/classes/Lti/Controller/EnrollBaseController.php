@@ -1,5 +1,5 @@
 <?php
-namespace LTI;
+namespace Studip\Lti\Controller;
 
 use User;
 use PageLayout;
@@ -8,10 +8,11 @@ use AccessDeniedException;
 use AuthenticatedController;
 use Studip\OAuth2\NegotiatesWithPsr7;
 
-abstract class LtiBaseController extends AuthenticatedController
+abstract class EnrollBaseController extends AuthenticatedController
 {
-    use NegotiatesWithPsr7;
     protected $allow_nobody = true;
+
+    use NegotiatesWithPsr7;
 
     public function before_filter(&$action, &$args)
     {

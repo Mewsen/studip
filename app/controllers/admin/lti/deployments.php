@@ -1,10 +1,9 @@
 <?php
-require_once __DIR__ . '/AdminBaseController.php';
 
-use LTI\AdminBaseController;
 use Lti\Deployment;
 use Lti\Registration;
 use Ramsey\Uuid\Uuid;
+use Studip\Lti\Controller\AdminBaseController;
 
 class Admin_Lti_DeploymentsController extends AdminBaseController
 {

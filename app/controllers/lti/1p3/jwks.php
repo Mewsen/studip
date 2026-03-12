@@ -1,30 +1,18 @@
 <?php
 
-use Trails\Dispatcher;
-use Studip\OAuth2\NegotiatesWithPsr7;
 use Studip\Lti\LTI1p3\PlatformManager;
+use Studip\Lti\Controller\PlatformBaseController;
 use OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler;
 
-final class Lti_1p3_JwksController extends AuthenticatedController
+final class Lti_1p3_JwksController extends PlatformBaseController
 {
-    protected $allow_nobody = true;
-    protected $with_session = false;
-    use NegotiatesWithPsr7;
-
-    public function __construct(
-        protected Dispatcher $dispatcher,
-        protected JwksRequestHandler $jwksRequestHandler
-    )
-    {
-        parent::__construct($dispatcher);
-    }
-
     public function index_action(): void
     {
         $platformKeyring = PlatformManager::getKeyChain();
+        $jwksRequestHandler = app()->get(JwksRequestHandler::class);
 
         $this->renderPsrResponse(
-            $this->jwksRequestHandler->handle($platformKeyring->getKeySetName())
+            $jwksRequestHandler->handle($platformKeyring->getKeySetName())
         );
     }
 }

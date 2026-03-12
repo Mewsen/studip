@@ -15,29 +15,24 @@ final class ResultRepository implements ResultRepositoryInterface
         ?int $offset = null
     ): ResultCollectionInterface
     {
-        $sqlParams = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
-        if (!$sqlParams) {
-            //Nothing we can search for:
-            return new ResultCollection();
-        }
-        $sql = 'JOIN `grading_definitions` gd
-               ON (`definition_id` = gd.`id`)
-               WHERE gd.`course_id` = :course_id
-               AND gd.`tool` = :tool';
-        if ($limit) {
-            $sql .= 'LIMIT :limit ';
+        [$sqlQuery, $sqlParams]  = $this->resolveBaseSqlQuery($lineItemIdentifier);
+
+        if ($limit !== null) {
+            $sqlQuery .= ' LIMIT :limit';
             $sqlParams['limit'] = $limit;
         }
-        if ($offset) {
-            $sql .= 'OFFSET :offset ';
+        if ($offset !== null) {
+            $sqlQuery .= ' OFFSET :offset';
             $sqlParams['offset'] = $offset;
         }
 
-        $grades = Instance::findBySQL($sql, $sqlParams);
+        $gradeInstances = Instance::findBySQL($sqlQuery, $sqlParams);
+
         $results = new ResultCollection();
-        foreach ($grades as $grade) {
-            $results->add($grade->toResult());
+        foreach ($gradeInstances as $gradeInstance) {
+            $results->add($gradeInstance->toLti1p3Result());
         }
+
         return $results;
     }
 
@@ -46,18 +41,26 @@ final class ResultRepository implements ResultRepositoryInterface
         string $userIdentifier
     ): ?ResultInterface
     {
-        $searchParameters = LineItemRepository::getSearchParametersFromLineItemIdentifier($lineItemIdentifier);
+        [$sqlQuery, $sqlParams] = $this->resolveBaseSqlQuery($lineItemIdentifier);
 
-        return Instance::findOneBySQL(
-            'JOIN `grading_definitions` gd
-               ON (`definition_id` = gd.`id`)
-               WHERE gd.`course_id` = :course_id
-               AND gd.`tool` = :tool
-               AND `user_id` = :user_id',
+        $sqlQuery .= ' AND grading_instances.user_id = :user_id';
+        $sqlParams['user_id'] = $userIdentifier;
+
+        return Instance::findOneBySQL($sqlQuery, $sqlParams)?->toLti1p3Result();
+    }
+
+    private function resolveBaseSqlQuery(string $lineItemIdentifier): array
+    {
+        $parameters = Helper::parseLineItemIdentifier($lineItemIdentifier);
+
+        return [
+            'JOIN grading_definitions ON grading_instances.definition_id = grading_definitions.id
+            WHERE grading_instances.definition_id = :definition_id
+            AND grading_definitions.tool = :tool_id ',
             [
-                ...$searchParameters,
-                'user_id' => $userIdentifier
+                'definition_id' => $parameters['line_item_id'],
+                'tool_id' => $parameters['resource_link_id']
             ]
-        )?->toResult();
+        ];
     }
 }

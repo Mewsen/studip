@@ -3,6 +3,7 @@ namespace Studip\Lti\LTI1p3;
 
 use URLHelper;
 use Lti\ResourceLink;
+use Grading\Definition;
 use Studip\Lti\Enum\GradeSynchronization;
 use OAT\Library\Lti1p3Core\Util\Collection\Collection;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
@@ -129,8 +130,27 @@ final class ResourceLinkRepository implements LtiResourceLinkInterface
 
     public function getAgsClaim(): ?AgsClaim
     {
-        $lineItemsContainerUrl = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_items', ['resource_link_id' => $this->resourceLink->id], true);
-        $lineItemURL = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_item', ['resource_link_id' => $this->resourceLink->id], true);
+        $gradeDefinition = Definition::firstOrCreate(
+            [
+                'tool' => $this->resourceLink->id,
+                'item' => ResourceLink::class,
+                'course_id' => $this->resourceLink->course_id,
+                'category' => 'LTI'
+            ],
+            [
+                'weight' => 1,
+                'name' => $this->resourceLink->title
+            ]
+        );
+
+        $urlParams = [
+            'line_item_id' => $gradeDefinition->id,
+            'resource_link_id' => $this->resourceLink->id
+        ];
+
+        $lineItemURL = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_item', $urlParams, true);
+        $lineItemsContainerUrl = URLHelper::getURL('dispatch.php/lti/1p3/ags/line_items', $urlParams, true);
+
         $gradeSynchronization = (int) $this->resourceLink->getConfigValues()['grade_synchronization'];
 
         return match ($gradeSynchronization) {

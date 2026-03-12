@@ -1,13 +1,12 @@
 <?php
-require_once __DIR__ . '/AdminBaseController.php';
 
-use LTI\AdminBaseController;
-use Lti\Config as LtiConfig;
 use Lti\Registration;
 use Lti\ResourceLink;
+use Lti\Config as LtiConfig;
 use Studip\Lti\Enum\ConfigurableType;
 use Studip\Lti\Enum\RegistrationStatus;
 use Studip\Lti\Enum\ResourceLaunchContainer;
+use Studip\Lti\Controller\AdminBaseController;
 
 class Admin_Lti_ResourcesController extends AdminBaseController
 {

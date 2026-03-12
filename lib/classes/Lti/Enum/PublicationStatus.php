@@ -1,7 +1,10 @@
 <?php
 namespace Studip\Lti\Enum;
 
-enum PublicationStatus: string {
+use Studip\Lti\Trait\StatusHelpers;
+
+enum PublicationStatus: string
+{
     case Active = 'active';
     case Inactive = 'inactive';
 

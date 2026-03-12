@@ -1,9 +1,8 @@
 <?php
-require_once __DIR__ . '/LtiBaseController.php';
 
-use LTI\LtiBaseController;
+use Studip\Lti\Controller\EnrollBaseController;
 
-final class Enroll_Lti_ContentsController extends LtiBaseController
+final class Enroll_Lti_ContentsController extends EnrollBaseController
 {
     protected $allow_nobody = false;
 
@@ -21,7 +20,9 @@ final class Enroll_Lti_ContentsController extends LtiBaseController
         }
 
         if (!$GLOBALS['perm']->have_perm('tutor')) {
-            $this->errors[] = _('Sie haben nicht die Berechtigung, diese Aktion auszuführen.');
+            $this->errors = [
+                _('Sie haben nicht die Berechtigung, diese Aktion auszuführen.')
+            ];
             return;
         }
 

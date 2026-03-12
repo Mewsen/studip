@@ -1,7 +1,8 @@
 <?php
 namespace Studip\Lti\Enum;
 
-enum UserIdentityMappingContext: string {
+enum UserIdentityMappingContext: string
+{
     case DeepLink = 'deep_linking';
     case ResourceLink = 'resource_link';
 
