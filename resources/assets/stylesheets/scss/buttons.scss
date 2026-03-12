@@ -99,8 +99,12 @@ button.button {
 }
 
 @mixin button-base() {
-    color: var(--base-color);
-    transition: color var(--transition-duration);
+    &,
+    &::before,
+    &::after {
+        color: var(--color--content-link);
+        transition: color var(--transition-duration);
+    }
 }
 
 button,
@@ -131,8 +135,12 @@ button,
 
         &:hover,
         &:active {
-            color: var(--active-color);
-            text-decoration: none;
+            &,
+            &::before,
+            &::after {
+                color: var(--color--content-link-hover);
+                text-decoration: none;
+            }
         }
 
         &[disabled] {
