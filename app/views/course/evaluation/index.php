@@ -4,8 +4,24 @@
  */
 ?>
 
-<?php foreach ($controller->evaluations as $evaluation) : ?>
+<?php foreach ($controller->evaluations as $key => $evaluation) : ?>
+    <article class="studip toggle <?= $key == 0 ? 'open' : '' ?>">
+        <header>
+            <h1>
+                <a href="#">
+                    <?= htmlReady((Semester::find($evaluation->eval_assignment->semester_id))->name . ' - ' . $evaluation->title) ?>
+                </a>
+            </h1>
+        </header>
 
+        <?php if ($evaluation->isStopped()) : ?>
+            <?= $this->render_partial('questionnaire/evaluate.php', ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
+        <?php elseif ($evaluation->isAnswerable()) : ?>
+            <?= $this->render_partial('questionnaire/answer.php', ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
+        <?php else : ?>
+            <p><?= _('Die Evaluation ist noch nicht abgeschlossen.') ?></p>
+        <?php endif ?>
+    </article>
 <?php endforeach ?>
 
 <?php

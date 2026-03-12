@@ -141,6 +141,12 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                 }
             }
         }
+
+        if ($this->eval_assignment) {
+            return User::findCurrent()
+                ->hasPermissionLevel('autor', Course::find($this->eval_assignment->course_id));
+        }
+
         return false;
     }
 
@@ -234,12 +240,20 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isStarted()
     {
-        return $this['startdate'] && ($this['startdate'] <= time());
+        if ($this->eval_assignment) {
+            return $this->eval_assignment->startdate && $this->eval_assignment->startdate <= time();
+        } else {
+            return $this['startdate'] && ($this['startdate'] <= time());
+        }
     }
 
     public function isStopped()
     {
-        return $this['stopdate'] && ($this['stopdate'] <= time());
+        if ($this->eval_assignment) {
+            return $this->eval_assignment->stopdate && $this->eval_assignment->stopdate <= time();
+        } else {
+            return $this['stopdate'] && ($this['stopdate'] <= time());
+        }
     }
 
     public function isRunning()

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * @property string semester_id database column
+ * @property string course_id database column
  * @property JSONArrayObject course_metadata database column
  * @property null|int $startdate database column
  * @property null|int $stopdate database column
