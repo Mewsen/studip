@@ -105,7 +105,7 @@
 
     .system-notification-close {
         align-self: normal;
-        display: none;
+        visibility: hidden;
         flex: 0;
         height: 20px;
         width: 20px;
@@ -163,9 +163,10 @@
         text-decoration: unset;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-within {
         .system-notification-close {
-            display: unset;
+            visibility: unset;
         }
     }
 
