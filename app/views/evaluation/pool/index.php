@@ -31,17 +31,22 @@ use Studip\Button;
                         <td>
                             <input type="checkbox" name="q[]" value="<?= htmlReady($template->id) ?>">
                         </td>
-                        <td>
-                            <?php if ($template->isEditable()) : ?>
+                        <?php if ($template->isEditable()) : ?>
+                            <td>
                                 <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id,
                                     ['range_type' => 'pool']) ?>"
                                    data-dialog="size=big">
                                     <?= htmlReady($template->title) ?>
                                 </a>
-                            <?php else : ?>
+                            </td>
+                        <?php else : ?>
+                            <td title="<?= sprintf(
+                                _('Mindestens eine Evaluation der Vorlage %s ist gestartet. Sie kann nicht mehr bearbeitet werden.'),
+                                $template->title)
+                            ?>">
                                 <?= htmlReady($template->title) ?>
-                            <?php endif ?>
-                        </td>
+                            </td>
+                        <?php endif ?>
                         <td data-text="<?= (int) $template->chdate ?>">
                             <?= date('d.m.Y H:i', $template->chdate) ?>
                         </td>
@@ -51,8 +56,9 @@ use Studip\Button;
                         <td class="actions">
                             <? if (!$template->isEditable()) : ?>
                                 <?= Icon::create('edit', Icon::ROLE_INACTIVE)->asSvg(
-                                    ['title' => _('Mindestens eine Evaluation dieser Vorlage ist gestartet.
-                                     Sie kann nicht mehr bearbeitet werden.')]
+                                    ['title' => sprintf(
+                                        _('Mindestens eine Evaluation der Vorlage %s ist gestartet. Sie kann nicht mehr bearbeitet werden.'),
+                                    $template->title)]
                                 ) ?>
                             <? else : ?>
                                 <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"

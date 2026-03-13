@@ -46,4 +46,13 @@ class QuestionnaireEvalCentralProfile extends SimpleORMap
             $is_for ? self::RESULT_VISIBLE_FOR_OPTIONS : self::RESULT_VISIBILITY_OPTIONS
         );
     }
+
+    public function isEditable()
+    {
+        if(EvaluationHelper::isPermittedEvaluationAccess()) {
+            return !QuestionnaireEvalAssignment::countBySQL(
+                "`startdate` <= UNIX_TIMESTAMP() AND `semester_id` = ?", [$this->semester_id]);
+        }
+        return false;
+    }
 }
