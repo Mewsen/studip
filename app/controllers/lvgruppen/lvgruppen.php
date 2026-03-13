@@ -176,7 +176,7 @@ class Lvgruppen_LvgruppenController extends MVVController
 
         $this->trail_classes = [
             'Modulteil',
-            'Modul',
+            'StgteilabschnittModul',
             'StgteilAbschnitt',
             'StgteilVersion',
             'Studiengang',
@@ -269,7 +269,7 @@ class Lvgruppen_LvgruppenController extends MVVController
 
         $search_result = $this->getSearchResult('Lvgruppe');
 
-        if (count($this->filter['mvv_modul_inst.institut_id'])) {
+        if (!empty($this->filter['mvv_modul_inst.institut_id'])) {
             $filter = array_merge(
                 [
                     'mvv_lvgruppe.lvgruppe_id' => $search_result,

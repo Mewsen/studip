@@ -8,6 +8,7 @@
  * @var array $abschnitte_data
  * @var Search_StudiengaengeController $controller
  * @var int $close_sections
+ * @var Semester $active_sem
  */
 ?>
 <div>

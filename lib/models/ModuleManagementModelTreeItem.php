@@ -136,19 +136,27 @@ abstract class ModuleManagementModelTreeItem extends ModuleManagementModel imple
      * @param string $delimiter A string used as the "glue".
      * @param int $display_options Display options set by constants defined
      * in class ModuleManagementModel.
-     * @return type
+     * @return array
      */
     public static function getPathes($trails, $delimiter = ' · ')
     {
-        $pathes =  [];
+        $paths =  [];
         foreach ($trails as $trail) {
-            $pathes[] = join($delimiter, array_map(
-                    function($a) {
-                        return $a->getDisplayName();
-                    }, $trail));
+            $abschnitt = null;
+            $names = [];
+            foreach ($trail as $a) {
+                if ($a instanceof StgteilAbschnitt) {
+                    $abschnitt = $a;
+                }
+                if ($abschnitt && ($a instanceof Modul || $a instanceof Modulteil)) {
+                    $a->setReplaceDfAbschnitt($abschnitt);
+                }
+                $names[] = $a->getDisplayName();
+            }
+            $paths[] = implode($delimiter, $names);
         }
-        sort($pathes, SORT_LOCALE_STRING);
-        return $pathes;
+        sort($paths, SORT_LOCALE_STRING);
+        return $paths;
     }
 
     /**

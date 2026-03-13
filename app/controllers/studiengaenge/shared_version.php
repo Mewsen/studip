@@ -557,6 +557,7 @@ abstract class SharedVersionController extends MVVController
     {
         $this->assignment = StgteilabschnittModul::find($abschnitt_modul_id);
         $this->modul = $this->assignment->modul;
+        $this->modul->setReplaceDfAbschnitt($this->assignment->abschnitt);
         $this->abschnitt_id = $this->assignment->abschnitt_id;
         if ($this->assignment) {
             if (Request::isXhr()) {
@@ -598,7 +599,7 @@ abstract class SharedVersionController extends MVVController
                     foreach ($this->assignment->datafields as $data_field) {
                         $tdf = $data_field->getTypedDatafield();
                         $tdf->setValueFromSubmit($data_field_values[$data_field->datafield_id]);
-                        if ($tdf->isValid() && $tdf->store()) {
+                        if ($tdf->isValid() && $tdf->store() !== false) {
                             $data_fields_updated = true;
                         } else {
                             $invalid_data_fields[] = $tdf->getName();
