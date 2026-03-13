@@ -265,9 +265,49 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
         if (!$this->isViewable()) {
             return false;
         }
-        return $this['resultvisibility'] === "always"
+
+        if ($this->eval_assignment) {
+            $user = User::findCurrent();
+            if ($user->hasPermissionLevel('root')
+                || $user->hasRole('Zentraler Evaluationsadmin')
+                || $user->hasRole('Einrichtungsbezogener Evaluationsadmin', Course::findCurrent()->institut_id)) {
+                return true;
+            }
+
+            $eval_profile = QuestionnaireEvalCentralProfile::find($this->eval_assignment->semester_id);
+
+            if ($eval_profile && $eval_profile->result_visible_for) {
+                $eval_visible = $user->hasPermissionLevel($eval_profile->result_visible_for, Context::get());
+            } else {
+                return false;
+            }
+
+            if ($eval_profile->anonymous) {
+                $statement = DBManager::get()->prepare(
+                    "SELECT DISTINCT count(`user_id`) AS 'amount' FROM `questionnaire_anonymous_answers`
+                    WHERE `questionnaire_id` = :questionnaire_id");
+            } else {
+                $statement = DBManager::get()->prepare(
+                    "SELECT DISTINCT count(`user_id`) AS 'amount' FROM `questionnaire_answers`
+                    INNER JOIN `questionnaire_questions`
+                        ON `questionnaire_questions`.`question_id` = `questionnaire_answers`.`question_id`
+                    WHERE `questionnaire_id` = :questionnaire_id");
+            }
+            $statement->execute([
+                'questionnaire_id' => $this->getId()
+            ]);
+            $response_amount = $statement->fetch()['amount'];
+
+            $eval_visible = $eval_visible && ($response_amount >= $eval_profile->minimum_responses);
+            return $eval_visible
+                && ($eval_profile->resultvisibility === 'always'
+                || $eval_profile->resultvisibility === 'afterending' && $this->isStopped()
+                || $eval_profile->resultvisibility === 'afterparticipation' && $this->isAnswered());
+        }
+
+        return $this['resultvisibility'] === 'always'
             || $this->isEditable()
-            || ($this['resultvisibility'] === "afterending" && $this->isStopped())
+            || ($this['resultvisibility'] === 'afterending' && $this->isStopped())
             || ($this['resultvisibility'] === 'afterparticipation' && $this->isAnswered());
     }
 
