@@ -318,11 +318,7 @@ class Icon implements JsonSerializable
         $attributes['class'] = 'as-link';
         unset($attributes['src']);
 
-        return sprintf(
-            '<button class="as-link" %s>%s</button>',
-            $attributes,
-            $this->asImg($size)
-        );
+        return sprintf('<button %s>%s</button>', $attributes, $this->asImg($size));
     }
 
     /**
