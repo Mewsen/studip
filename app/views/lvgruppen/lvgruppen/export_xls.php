@@ -8,7 +8,7 @@
         <th><?= _('Modul') ?></th>
         <th><?= _('Modulteil') ?></th>
     </tr>
-    <? $trail_classes = words('Modulteil Modul StgteilAbschnitt StgteilVersion '
+    <? $trail_classes = words('Modulteil StgteilabschnittModul StgteilAbschnitt StgteilVersion '
                 . 'Studiengang Fachbereich'); ?>
     <? foreach ($lvgruppen as $lvgruppe) : ?>
         <? $trails = $lvgruppe->getTrails($trail_classes, MvvTreeItem::TRAIL_SHOW_INCOMPLETE); ?>
@@ -18,6 +18,9 @@
                     <td><?= htmlReady($lvgruppe->getDisplayName()) ?></td>
                 <? foreach (array_reverse($trail_classes) as $trail_class) : ?>
                     <? if ($trail[$trail_class]) : ?>
+                        <? if ($trail_class === 'StgteilabschnittModul') : ?>
+                            <? $trail['Modulteil']->setReplaceDfAbschnitt($trail[$trail_class]->abschnitt) ?>
+                        <? endif; ?>
                         <td><?= htmlReady($trail[$trail_class]->getDisplayName()) ?></td>
                     <? else : ?>
                         <td></td>

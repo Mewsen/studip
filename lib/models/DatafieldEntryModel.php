@@ -90,15 +90,12 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
             $range_id = $model->user_id;
             $sec_range_id = $model->institut_id;
         } elseif ($model instanceof ModulDeskriptor) {
-            $params[':institution_ids'] = '';
-            if (!empty($model->modul->responsible_institute->institut_id)) {
-                $params[':institution_ids'] = [$model->modul->responsible_institute->institut_id];
-            }
+            $params[':institution_ids'] = [$model->modul->responsible_institute->institut_id ?? null];
             $object_class = $model->getVariant();
             $object_type = 'moduldeskriptor';
             $range_id = $model->deskriptor_id;
         } elseif ($model instanceof ModulteilDeskriptor) {
-            $params[':institution_ids'] = [$model->modulteil->modul->responsible_institute->institut_id];
+            $params[':institution_ids'] = [$model->modulteil->modul->responsible_institute->institut_id ?? null];
             $object_class = $model->getVariant();
             $object_type = 'modulteildeskriptor';
             $range_id = $model->deskriptor_id;

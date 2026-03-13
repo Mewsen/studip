@@ -107,8 +107,8 @@ class Course_DetailsController extends AuthenticatedController
                     if (!$GLOBALS['MVV_MODUL']['STATUS']['values'][$modul->stat]['public']) {
                         return false;
                     }
-                    $modul_start = Semester::find($modul->start)->beginn ?: 0;
-                    $modul_end = $modul->end ? Semester::find($modul->end)->ende : PHP_INT_MAX;
+                    $modul_start = $modul->start_semester->beginn ?? 0;
+                    $modul_end = $modul->end_semester->ende ?? PHP_INT_MAX;
                     return ($modul_start <= $course_end && $modul_end >= $course_start);
                 });
 
@@ -118,49 +118,56 @@ class Course_DetailsController extends AuthenticatedController
                 });
 
             $trail_classes = ['Modulteil', 'StgteilabschnittModul', 'StgteilAbschnitt', 'StgteilVersion'];
-            $mvv_object_pathes = MvvCourse::get($this->course->getId())->getTrails($trail_classes);
-            if ($mvv_object_pathes) {
+            $mvv_object_paths = MvvCourse::get($this->course->getId())->getTrails($trail_classes);
+            if ($mvv_object_paths) {
                 if (Config::get()->COURSE_SEM_TREE_DISPLAY) {
                     $this->mvv_tree = [];
-                    foreach ($mvv_object_pathes as $mvv_object_path) {
-                        // show only complete pathes
-                        if (count($mvv_object_path) == 4) {
-                            // flatten the pathes to a linked list
-                            $stg = reset($mvv_object_path);
+                    foreach ($mvv_object_paths as $mvv_object_path) {
+                        // show only complete paths
+                        if (count($mvv_object_path) === 4) {
+                            $mvv_object_path['StgteilabschnittModul']->modul->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            $mvv_object_path['Modulteil']->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            // flatten the paths to a linked list
                             $parent_id = 'root';
                             foreach ($mvv_object_path as $mvv_object) {
+                                $tree_id = $mvv_object->id;
                                 $mvv_object_id = $mvv_object instanceof StgteilabschnittModul
                                         ? $mvv_object->modul_id
                                         : $mvv_object->id;
-                                $this->mvv_tree[$parent_id][$mvv_object_id] =
-                                        ['id'    => $mvv_object_id,
-                                         'name'  => $mvv_object->getDisplayName(),
-                                         'class' => get_class($mvv_object)];
-                                $parent_id = $mvv_object_id;
+                                $this->mvv_tree[$parent_id][$tree_id] =
+                                        [
+                                            'id'      => $mvv_object_id,
+                                            'name'    => $mvv_object->getDisplayName(),
+                                            'class'   => get_class($mvv_object),
+                                            'tree_id' => $tree_id,
+                                        ];
+                                $parent_id = $tree_id;
                             }
                         }
                     }
                     if (count($this->mvv_tree)) {
                         // add the root node
                         $this->mvv_tree['start'][] = [
-                            'id'    => 'root',
-                            'name'  => Config::get()->UNI_NAME_CLEAN,
-                            'class' => ''
+                            'id'      => 'root',
+                            'name'    => Config::get()->UNI_NAME_CLEAN,
+                            'class'   => '',
+                            'tree_id' => 'root'
                         ];
                     }
                 } else {
-                    foreach ($mvv_object_pathes as $mvv_object_path) {
-                        // show only complete pathes
-                        if (count($mvv_object_path) == 4) {
+                    foreach ($mvv_object_paths as $mvv_object_path) {
+                        // show only complete paths
+                        if (count($mvv_object_path) === 4) {
                             $mvv_object_names = [];
-                            $modul_id = '';
+                            $mvv_object_path['StgteilabschnittModul']->modul->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            $mvv_object_path['Modulteil']->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
                             foreach ($mvv_object_path as $mvv_object) {
                                 if ($mvv_object instanceof StgteilabschnittModul) {
                                     $modul_id = $mvv_object->modul_id;
                                 }
                                 $mvv_object_names[] = $mvv_object->getDisplayName();
                             }
-                            $this->mvv_pathes[] = [$modul_id => $mvv_object_names];
+                            $this->mvv_paths[] = [$modul_id => $mvv_object_names];
                         }
                     }
                 }

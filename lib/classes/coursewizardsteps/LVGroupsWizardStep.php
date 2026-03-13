@@ -261,8 +261,8 @@ class LVGroupsWizardStep implements CourseWizardStep
                 if (!in_array($modul->stat, $status_modul)) {
                     return false;
                 }
-                $modul_start = Semester::find($modul->start)->beginn ?: 0;
-                $modul_end = Semester::find($modul->end)->ende ?: PHP_INT_MAX;
+                $modul_start = Semester::find($modul->start)->beginn ?? 0;
+                $modul_end = Semester::find($modul->end)->ende ?? PHP_INT_MAX;
                 return ($modul_start <= $course_end && $modul_end >= $course_start);
             });
 

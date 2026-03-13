@@ -183,7 +183,7 @@ class Modulteil extends ModuleManagementModelTreeItem
             $replacements = [
                 $this->nummer,
                 $GLOBALS['MVV_MODULTEIL']['NUM_BEZEICHNUNG']['values'][$this->num_bezeichnung]['name'] ?? '',
-                trim($deskriptor->bezeichnung),
+                trim($deskriptor->getReplacedValue('bezeichnung')),
                 $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$this->lernlehrform]['name'] ?? ''
             ];
             return self::formatDisplayName($template, $placeholders, $replacements);
@@ -197,9 +197,9 @@ class Modulteil extends ModuleManagementModelTreeItem
             $name .= $this->nummer . ': ';
         }
         $name .= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$this->lernlehrform]['name'] ?? '';
-        if (strlen(trim($deskriptor->bezeichnung))) {
-            $name .= $name == '' ? $deskriptor->bezeichnung
-                    : ' (' . $deskriptor->bezeichnung . ')';
+        if (strlen(trim($deskriptor->getReplacedValue('bezeichnung')))) {
+            $name .= $name == '' ? $deskriptor->getReplacedValue('bezeichnung')
+                    : ' (' . $deskriptor->getReplacedValue('bezeichnung') . ')';
         }
         return trim($name);
     }
