@@ -16,7 +16,7 @@ function createMixin(minimal = false) {
                 let name = course.name;
 
                 // Include sem number
-                if (this.displaySemNumber) {
+                if (this.displaySemNumberInCourseName) {
                     name = `${course.number} ${name}`;
                 }
 
@@ -43,7 +43,11 @@ function createMixin(minimal = false) {
             csrf() {
                 return STUDIP.CSRF_TOKEN;
             },
-            displaySemNumber() {
+            displaySemNumberInCourseName() {
+                return !this.displaySemNumberSeparate
+                    || this.getViewConfig('tiled');
+            },
+            displaySemNumberSeparate() {
                 return this.config?.sem_number_always
                     || (
                         this.config?.sem_number
