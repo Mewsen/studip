@@ -9,6 +9,9 @@
     <tr>
         <? foreach (array_reverse($trail_classes) as $trail_class) : ?>
             <? if (isset($trail[$trail_class])) : ?>
+                <? if ($trail_class === 'StgteilabschnittModul') : ?>
+                    <? $trail['Modulteil']->setReplaceDfAbschnitt($trail[$trail_class]->abschnitt) ?>
+                <? endif; ?>
             <td style="vertical-align: top;">
                 <?= htmlReady($trail[$trail_class]->getDisplayName()) ?>
             </td>

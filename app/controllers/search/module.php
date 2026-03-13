@@ -115,14 +115,11 @@ class Search_ModuleController extends MVVController
 
             foreach ($this->search_result['Modul'] as $i => $mod_id) {
                 $modul = Modul::find($mod_id);
-                $start_sem = Semester::find($modul->start);
-                $end_sem = Semester::find($modul->end);
+                $start_sem_begin = $modul->start_semester->beginn ?? 0;
+                $end_sem_end = $modul->end_semester->end ?? PHP_INT_MAX;
                 if (
-                    $start_sem->beginn > $this->selected_semester->beginn
-                    || (
-                        isset($end_sem)
-                        && $this->selected_semester->ende > $end_sem->ende
-                    )
+                    $start_sem_begin > $this->selected_semester->beginn
+                    || $this->selected_semester->ende > $end_sem_end
                 ) {
                     unset($this->search_result['Modul'][$i]);
                 }

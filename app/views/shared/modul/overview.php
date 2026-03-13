@@ -127,7 +127,7 @@
             <tr>
                 <? if ($type === 1): ?>
                 <td>
-                    <b> <?= htmlReady($modulteil_deskriptor->getReplacedValue('bezeichnung')) ?> </b>
+                    <b> <?= htmlReady($modulteil->getDisplayName()) ?> </b>
                     <? if (mb_strlen($modulteil_deskriptor->getReplacedValue('kommentar')) > 0): ?>
                     <?= trim($modulteil_deskriptor->getReplacedValue('kommentar')) ? '<br>(' . formatReady($modulteil_deskriptor->getReplacedValue('kommentar')) . ')' : '' ?>
                     <? endif; ?>

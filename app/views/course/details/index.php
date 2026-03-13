@@ -424,17 +424,19 @@ if (!empty($mvv_tree)) : ?>
     </article>
 <? endif; ?>
 
-<? if (!empty($mvv_pathes)) : ?>
+<? if (!empty($mvv_paths)) : ?>
     <article class="studip">
         <header>
             <h1><?= _('Modulzuordnungen') ?></h1>
         </header>
         <section>
             <ul class="list-unstyled">
-                <? foreach ($mvv_pathes as $mvv_path) : ?>
+                <? foreach ($mvv_paths as $mvv_path) : ?>
+                <? $types = array_keys($mvv_path); ?>
+                <? $values = array_values($mvv_path); ?>
                 <li>
-                    <a data-dialog href="<?= URLHelper::getScriptLink('dispatch.php/search/module/overview/' . reset(array_keys($mvv_path)) . '/' . $course->start_semester->id) ?>">
-                        <?= htmlReady(implode(' > ', reset(array_values($mvv_path)))) ?>
+                    <a data-dialog href="<?= URLHelper::getScriptLink('dispatch.php/search/module/overview/' . $types[0] . '/' . $course->start_semester->id) ?>">
+                        <?= htmlReady(implode(' > ', $values[0])) ?>
                     </a>
                 </li>
                 <? endforeach; ?>
