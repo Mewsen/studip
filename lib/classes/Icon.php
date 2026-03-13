@@ -246,9 +246,7 @@ class Icon implements JsonSerializable
         if ($force_img_tag || self::isStatic($this->shape)) {
             return sprintf(
                 '<img %s>',
-                arrayToHtmlAttributes(
-                    $this->prepareHTMLAttributes($size, $view_attributes)
-                )
+                $this->prepareHTMLAttributes($size, $view_attributes)
             );
         }
 
@@ -396,11 +394,10 @@ class Icon implements JsonSerializable
      * Prepares the html attributes for use assembling HTML attributes
      * from given shape, role, size, semantic and view attributes
      *
-     * @param int   $size       Size of the icon
-     * @param array $attributes Additional attributes
-     * @return array|HTMLAttributes containing the merged attributes
+     * @param int|false $size       Size of the icon
+     * @param array     $attributes Additional attributes
      */
-    private function prepareHTMLAttributes($size, array $attributes, bool $return_object = false)
+    private function prepareHTMLAttributes($size, array $attributes): HTMLAttributes
     {
         $html_attributes = HTMLAttributes::merge($this->attributes, $attributes);
 
@@ -429,7 +426,7 @@ class Icon implements JsonSerializable
             $html_attributes['class'] = 'icon-shape-' . $this->shapeToPath($this->shape);
         }
 
-        return $return_object ? $html_attributes : $html_attributes->getAttributes();
+        return $html_attributes;
     }
 
     /**
