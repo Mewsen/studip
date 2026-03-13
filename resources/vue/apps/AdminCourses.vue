@@ -22,27 +22,23 @@
             </colgroup>
             <thead>
                 <tr class="sortable">
-                    <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
-                        <a
-                            @click.prevent="changeSort('completion')"
-                            class="course-completion"
-                            :title="$gettext('Bearbeitungsstatus')"
-                        >
-                            {{ $gettext('Bearbeitungsstatus') }}
-                        </a>
-                    </th>
-                    <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
-                        <a href="#"
-                           @click.prevent="changeSort(activeField)"
-                           :title="sort.by === activeField && sort.direction === 'ASC' ? $gettext('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettext('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettext('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
-                           v-if="!unsortableFields.includes(activeField)"
-                        >
-                            {{ fields[activeField] }}
-                        </a>
-                        <template v-else>
-                            {{ fields[activeField] }}
-                        </template>
-                    </th>
+                    <sortable-toggle-element v-if="showComplete"
+                                             column="completion"
+                                             v-model:sort-by="sort.by"
+                                             v-model:sort-dir="sort.direction"
+                                             :label="$gettext('Bearbeitungsstatus')"
+                    >
+                        <studip-icon shape="radiobutton-checked" />
+                    </sortable-toggle-element>
+                    <sortable-toggle-element v-for="activeField in sortedActivatedFields"
+                                             :key="`field-${activeField}`"
+                                             :active="!unsortableFields.includes(activeField)"
+                                             :column="activeField"
+                                             v-model:sort-by="sort.by"
+                                             v-model:sort-dir="sort.direction"
+                    >
+                        {{ fields[activeField] }}
+                    </sortable-toggle-element>
                     <th class="actions">
                         {{ $gettext('Aktion') }}
                         <studip-action-menu class="filter" :title="$gettext('Darstellungsfilter')" :items="availableFields" @toggleActiveField="toggleActiveField"></studip-action-menu>
@@ -115,9 +111,11 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import SortableToggleElement from "../components/SortableToggleElement.vue";
 
 export default {
     name: 'AdminCourses',
+    components: {SortableToggleElement},
     props: {
         maxCourses: Number,
         showComplete: {
@@ -244,20 +242,6 @@ export default {
                 this.open_children = this.open_children.filter(cid => cid !== course_id);
             }
         },
-        changeSort(column) {
-            if (this.sort.by === column) {
-                this.sort.direction = this.sort.direction === 'ASC' ? 'DESC' : 'ASC';
-            } else {
-                this.currentLine = null;
-                this.sort.direction = 'ASC';
-            }
-            this.sort.by = column;
-
-            $.post(STUDIP.URLHelper.getURL('dispatch.php/admin/courses/sort'), {
-                sortby: column,
-                sortflag: this.sort.direction,
-            });
-        },
         sortArray (array) {
             const mappedFields = {
                 last_activity: 'last_activity_raw',
@@ -282,7 +266,7 @@ export default {
             let sortby = mappedFields[this.sort.by] ?? this.sort.by;
 
             // Define sort direction by this factor
-            const directionFactor = this.sort.direction === 'ASC' ? 1 : -1;
+            const directionFactor = this.sort.direction === 'asc' ? 1 : -1;
 
             // Default sort function by string comparison of field
             const collator = new Intl.Collator(String.locale, {
@@ -323,5 +307,16 @@ export default {
             return STUDIP.URLHelper.getURL(url, params);
         },
     },
+    watch: {
+        sort: {
+            handler(current) {
+                $.post(STUDIP.URLHelper.getURL('dispatch.php/admin/courses/sort'), {
+                    sortby: current.by,
+                    sortflag: current.direction,
+                });
+            },
+            deep: true
+        }
+    }
 };
 </script>
