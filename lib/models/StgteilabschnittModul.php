@@ -97,7 +97,7 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
         $this->modul->setReplaceDfAbschnitt($this->abschnitt);
         $replacements = [
             trim($this->modulcode) ?: trim($this->modul->code),
-           trim($this->bezeichnung) ?: trim($this->modul->getDeskriptor()->bezeichnung),
+            trim($this->bezeichnung) ?: trim($this->modul->getDeskriptor()->bezeichnung),
             $this->modul->getDisplaySemesterValidity()
         ];
         return self::formatDisplayName($template, $placeholders, $replacements);
