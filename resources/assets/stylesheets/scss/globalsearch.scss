@@ -3,7 +3,6 @@
 }
 #globalsearch-searchbar {
     display: flex;
-    align-items: center;
     border: thin solid var(--color--header-inverted);
     border-radius: var(--border-radius-search);
     background-color: var(--color--brand-primary);
@@ -25,8 +24,9 @@
         display: none;
     }
 
-    .icon-button {
+    > button.as-link {
         margin-left: 4px;
+        margin-top: 1px; // The box and input are 22px, the icon 20px = 1px top margin
         color: var(--color--font-inverted);
     }
 
@@ -35,7 +35,6 @@
         border: none;
         outline: none;
         margin-right: 5px;
-        vertical-align: middle;
         color: var(--color--font-inverted);
         background-color: var(--color--brand-primary);
         min-width: 0;
@@ -43,14 +42,6 @@
         &::placeholder {
             color: var(--color--font-inverted);
         }
-    }
-
-    input[type=image] {
-        cursor: pointer;
-        border: none;
-        background: none;
-        padding: 0;
-        margin: 0 5px;
     }
 
     // Hint toggle text
@@ -89,7 +80,7 @@
         color: var(--text-color);
         visibility: hidden;
         opacity: 0;
-        transition: opacity var(--transition-duration) ease; 
+        transition: opacity var(--transition-duration) ease;
         max-height: 90vh;
         overflow: hidden;
         padding: 10px 5px;
