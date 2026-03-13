@@ -88,6 +88,11 @@ class Evaluation_ProfilesController extends AuthenticatedController
                     'value'    => $is_fill ? $profile->stopdate : time(), //TODO sem
                     'mindate'  => 'startdate'
                 ],
+                'info' => [
+                  'label' => _('Information'),
+                  'type'  => 'info',
+                  'value' => _('Antworten können nicht revidiert werden, wenn sie anonym sind.')
+                ],
                 'anonymous' => [
                     'label' => _('Anonyme Teilnahme'),
                     'type'  => 'checkbox',
@@ -128,6 +133,10 @@ class Evaluation_ProfilesController extends AuthenticatedController
             if ($key !== false) {
                 unset($optional_array[$key]);
                 $profile->optional_templates = implode(',', $optional_array);
+                $profile->store();
+            }
+            if ($profile->anonymous && $profile->editanswers) {
+                $profile->editanswers = false;
                 $profile->store();
             }
         })
