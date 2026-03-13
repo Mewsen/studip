@@ -5,7 +5,7 @@
             <colgroup>
                 <col style="width: 7px">
                 <col style="width: 25px">
-                <col style="width: 70px" v-if="displaySemNumber">
+                <col style="width: 70px" v-if="displaySemNumberSeparate">
                 <col>
                 <col v-if="!responsiveDisplay" :style="{width: (2 * 5 + numberOfNavElements * (iconSize + 2 * 3 + 3) - 3) + 'px'}">
                 <col v-if="!responsiveDisplay" style="width: 24px">
@@ -18,7 +18,7 @@
                         </span>
                     </th>
                     <th></th>
-                    <th v-if="displaySemNumber" :class="getOrderClasses('number')">
+                    <th v-if="displaySemNumberSeparate" :class="getOrderClasses('number')">
                         <a href="#" @click.prevent="changeOrder('number')">
                             {{ $gettext('Nr.') }}
                         </a>
@@ -52,7 +52,7 @@
                     <td :class="{'subcourse-indented': isChild(course)}">
                         <span :style="{backgroundImage: `url(${course.avatar}`}" class="my-courses-avatar course-avatar-small" :title="course.name" alt=""></span>
                     </td>
-                    <td v-if="displaySemNumber"  :class="{'subcourse-indented': isChild(course)}">
+                    <td v-if="displaySemNumberSeparate"  :class="{'subcourse-indented': isChild(course)}">
                         {{ course.number }}
                     </td>
                     <td :class="{'subcourse-indented': isChild(course)}">
