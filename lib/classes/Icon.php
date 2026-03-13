@@ -246,9 +246,7 @@ class Icon implements JsonSerializable
         if ($force_img_tag || self::isStatic($this->shape)) {
             return sprintf(
                 '<img %s>',
-                arrayToHtmlAttributes(
-                    $this->prepareHTMLAttributes($size, $view_attributes)
-                )
+                $this->prepareHTMLAttributes($size, $view_attributes)
             );
         }
 
@@ -308,36 +306,17 @@ class Icon implements JsonSerializable
      *                                into the rendered output
      * @return String containing the html representation for the icon.
      */
-    public function asInput($size = self::SIZE_DEFAULT, $view_attributes = [], $without_label = false)
+    public function asInput($size = self::SIZE_DEFAULT, $view_attributes = [])
     {
         if (is_array($size)) {
             [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
 
-        $view_attributes['tabindex'] ??= '0';
-        $view_attributes['role'] ??= 'button';
+        $attributes = $this->prepareHTMLAttributes(false, $view_attributes);
+        $attributes['class'] = 'as-link';
+        unset($attributes['src']);
 
-        $text = isset($view_attributes['text']) ? htmlReady($view_attributes['text']) : '';
-
-        $svgContent = $this->asImg($size, $view_attributes);
-
-        if ($without_label) {
-             return sprintf(
-                '<input class="input-hidden" type="submit" hidden %s>%s',
-                arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
-                $svgContent,
-             );
-        }
-
-        return sprintf(
-            '<label class="icon-button undecorated">
-                <input class="input-hidden" type="submit" hidden %s>
-                %s%s
-            </label>',
-            arrayToHtmlAttributes($this->prepareHTMLAttributes($size, $view_attributes)),
-            $svgContent,
-            $text
-        );
+        return sprintf('<button %s>%s</button>', $attributes, $this->asImg($size));
     }
 
     /**
@@ -415,11 +394,10 @@ class Icon implements JsonSerializable
      * Prepares the html attributes for use assembling HTML attributes
      * from given shape, role, size, semantic and view attributes
      *
-     * @param int   $size       Size of the icon
-     * @param array $attributes Additional attributes
-     * @return Array containing the merged attributes
+     * @param int|false $size       Size of the icon
+     * @param array     $attributes Additional attributes
      */
-    private function prepareHTMLAttributes($size, array $attributes)
+    private function prepareHTMLAttributes($size, array $attributes): HTMLAttributes
     {
         $html_attributes = HTMLAttributes::merge($this->attributes, $attributes);
 
@@ -448,7 +426,7 @@ class Icon implements JsonSerializable
             $html_attributes['class'] = 'icon-shape-' . $this->shapeToPath($this->shape);
         }
 
-        return $html_attributes->getAttributes();
+        return $html_attributes;
     }
 
     /**

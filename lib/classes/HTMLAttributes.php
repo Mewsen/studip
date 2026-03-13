@@ -189,7 +189,7 @@ class HTMLAttributes implements Stringable, ArrayAccess
         return implode(' ', $result);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->asString();
     }

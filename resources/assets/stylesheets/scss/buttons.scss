@@ -153,18 +153,6 @@ button,
     @include button-base;
 }
 
-label {
-    &.undecorated.icon-button {
-        cursor: pointer;
-        .input-hidden {
-            display: none;
-        }
-        svg {
-            vertical-align: middle;
-        }
-    }
-}
-
 .btn-icon {
     all: unset;
     cursor: pointer;
