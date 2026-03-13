@@ -312,7 +312,7 @@ class Icon implements JsonSerializable
             [$view_attributes, $size] = [$size, self::SIZE_DEFAULT];
         }
 
-        $attributes = $this->prepareHTMLAttributes(false, $view_attributes, true);
+        $attributes = $this->prepareHTMLAttributes(false, $view_attributes);
         $attributes['class'] = 'as-link';
         unset($attributes['src']);
 
