@@ -51,7 +51,7 @@
                         'title' =>  _('Suche zurücksetzen'),
                         'class' => 'reset-search',
                         'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();" . ($onclear ?? ''),
-                    ], without_label: true) ?>
+                    ]) ?>
                 <? else : ?>
                     <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
                        title="<?= _('Suche zurücksetzen') ?>">
