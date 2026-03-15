@@ -8,7 +8,7 @@ use Courseware\ContainerTypes\ContainerType;
 use Courseware\StructuralElement;
 use JsonApi\Errors\UnprocessableEntityException;
 use JsonApi\Schemas\Courseware\ContainerSchema;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use JsonApi\SORM;
 use JsonApi\SormCRUDController;
 use Psr\Http\Message\ResponseInterface as Response;

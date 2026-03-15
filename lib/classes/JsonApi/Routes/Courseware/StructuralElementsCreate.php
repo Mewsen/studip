@@ -5,7 +5,7 @@ namespace JsonApi\Routes\Courseware;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\ValidationTrait;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Studip\Activity\Activity;

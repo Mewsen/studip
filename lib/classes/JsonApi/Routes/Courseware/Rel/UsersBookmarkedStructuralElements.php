@@ -113,7 +113,7 @@ class UsersBookmarkedStructuralElements extends RelationshipsController
         }
 
         foreach ($data as $item) {
-            if (\JsonApi\Schemas\Courseware\StructuralElement::TYPE !== self::arrayGet($item, 'type')) {
+            if (\JsonApi\Schemas\Courseware\StructuralElementSchema::TYPE !== self::arrayGet($item, 'type')) {
                 return 'Wrong `type` in document´s `data`.';
             }
 

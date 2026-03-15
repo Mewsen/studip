@@ -62,7 +62,7 @@ class StructuralElementsChildren extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElement::REL_CHILDREN);
+        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElementSchema::REL_CHILDREN);
     }
 
     /**
@@ -70,7 +70,7 @@ class StructuralElementsChildren extends RelationshipsController
      */
     protected function getRelationshipRelatedLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\StructuralElement::REL_CHILDREN);
+        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\StructuralElementSchema::REL_CHILDREN);
     }
 
     protected function validateResourceDocument($json, $data)
@@ -86,7 +86,7 @@ class StructuralElementsChildren extends RelationshipsController
         }
 
         foreach ($data as $item) {
-            if (self::arrayGet($item, 'type') !== \JsonApi\Schemas\Courseware\StructuralElement::TYPE) {
+            if (self::arrayGet($item, 'type') !== \JsonApi\Schemas\Courseware\StructuralElementSchema::TYPE) {
                 return 'Wrong `type` in document´s `data`.';
             }
 

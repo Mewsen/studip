@@ -3,7 +3,7 @@
 use Courseware\Instance;
 use Courseware\StructuralElement;
 use JsonApi\Routes\Courseware\StructuralElementsShow;
-use JsonApi\Schemas\Courseware\StructuralElement as Schema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as Schema;
 use WoohooLabs\Yang\JsonApi\Response\JsonApiResponse;
 
 class StructuralElementsShowTest extends \Codeception\Test\Unit

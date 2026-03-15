@@ -7,7 +7,7 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\ValidationTrait;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use JsonApi\Schemas\Courseware\StructuralElementFeedback as StructuralElementFeedbackSchema;
 use JsonApi\Schemas\User as UserSchema;
 use Psr\Http\Message\ResponseInterface as Response;

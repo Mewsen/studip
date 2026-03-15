@@ -7,7 +7,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Identifier;
 use Neomerx\JsonApi\Schema\Link;
 
-class StructuralElement extends SchemaProvider
+class StructuralElementSchema extends SchemaProvider
 {
     const TYPE = 'courseware-structural-elements';
 
@@ -26,13 +26,6 @@ class StructuralElement extends SchemaProvider
     const REL_UNIT = 'unit';
     const REL_FEEDBACKELEMENT = 'feedback-element';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId($resource): ?string
-    {
-        return $resource->id;
-    }
 
     /**
      * {@inheritdoc}
@@ -74,7 +67,7 @@ class StructuralElement extends SchemaProvider
     /**
      * {@inheritdoc}
      *
-     * @param StructuralElement $resource
+     * @param StructuralElementSchema $resource
      * @param ContextInterface $context
      */
     public function getRelationships($resource, ContextInterface $context): iterable

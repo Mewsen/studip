@@ -73,7 +73,7 @@ class StructuralElementsEditBlocker extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElement::REL_EDITBLOCKER);
+        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElementSchema::REL_EDITBLOCKER);
     }
 
     /**

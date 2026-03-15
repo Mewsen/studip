@@ -96,7 +96,7 @@ class SchemaMap
             \Courseware\PeerReview::class => Schemas\Courseware\PeerReview::class,
             \Courseware\PeerReviewProcess::class => Schemas\Courseware\PeerReviewProcess::class,
             \Courseware\PublicLink::class => Schemas\Courseware\PublicLink::class,
-            \Courseware\StructuralElement::class => Schemas\Courseware\StructuralElement::class,
+            \Courseware\StructuralElement::class => Schemas\Courseware\StructuralElementSchema::class,
             \Courseware\StructuralElementComment::class => Schemas\Courseware\StructuralElementComment::class,
             \Courseware\StructuralElementFeedback::class => Schemas\Courseware\StructuralElementFeedback::class,
             \Courseware\Task::class => Schemas\Courseware\Task::class,

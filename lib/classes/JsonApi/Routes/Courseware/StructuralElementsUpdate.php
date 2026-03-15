@@ -8,7 +8,7 @@ use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\TimestampTrait;
 use JsonApi\Routes\ValidationTrait;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use JsonApi\Schemas\FileRef as FileRefSchema;
 use JsonApi\Schemas\StockImage as StockImageSchema;
 use Psr\Http\Message\ResponseInterface as Response;

@@ -8,7 +8,7 @@ use JsonApi\Errors\UnprocessableEntityException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\ValidationTrait;
 use JsonApi\Schemas\Courseware\Task as TaskSchema;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

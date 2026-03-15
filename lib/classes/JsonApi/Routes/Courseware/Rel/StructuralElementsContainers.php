@@ -63,7 +63,7 @@ class StructuralElementsContainers extends RelationshipsController
      */
     protected function getRelationshipSelfLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElement::REL_CONTAINERS);
+        return $schema->getRelationshipSelfLink($resource, \JsonApi\Schemas\Courseware\StructuralElementSchema::REL_CONTAINERS);
     }
 
     /**
@@ -71,7 +71,7 @@ class StructuralElementsContainers extends RelationshipsController
      */
     protected function getRelationshipRelatedLink($resource, $schema, $userData)
     {
-        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\StructuralElement::REL_CONTAINERS);
+        return $schema->getRelationshipRelatedLink($resource, \JsonApi\Schemas\Courseware\StructuralElementSchema::REL_CONTAINERS);
     }
 
     protected function validateResourceDocument($json, $data)

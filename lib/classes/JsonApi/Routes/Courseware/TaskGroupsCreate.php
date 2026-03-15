@@ -9,7 +9,7 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\TimestampTrait;
 use JsonApi\Routes\ValidationTrait;
-use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
+use JsonApi\Schemas\Courseware\StructuralElementSchema as StructuralElementSchema;
 use JsonApi\Schemas\Courseware\TaskGroup as TaskGroupSchema;
 use JsonApi\Schemas\StatusGroup as StatusGroupSchema;
 use JsonApi\Schemas\User as UserSchema;
