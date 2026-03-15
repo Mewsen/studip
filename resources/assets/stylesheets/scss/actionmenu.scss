@@ -97,11 +97,11 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         border-left: solid 4px transparent;
 
         > a,
+        > button,
         > label {
             margin: 0;
             padding: 2px 30px 2px 0;
             display: block;
-            align-items: center;
         }
 
         .action-menu-item-icon {
@@ -112,11 +112,10 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
         }
 
         > button {
-            background: transparent;
+            background-color: unset;
             border: 0;
-            line-height: 20px;
-            margin: 0;
-            padding: 3px 0;
+            text-align: left;
+            width: 100%;
         }
 
         > label,
