@@ -451,4 +451,23 @@ class StructuralElement extends SchemaProvider
 
         return $link;
     }
+
+    public function hasResourceMeta($resource): bool
+    {
+        return true;
+    }
+    public function getResourceMeta($resource): Array
+    {
+        $user = $this->currentUser ?? null;
+
+        if (!$user) {
+            return [
+                'can-read-sequential' => false,
+            ];
+        }
+    
+        return [
+            'can-read-sequential' => (bool) $resource->canReadSequential($user),
+        ];
+    }
 }
