@@ -16,7 +16,7 @@
 class QuestionnaireEvalCentralProfile extends SimpleORMap
 {
     public const RESULT_VISIBILITY_OPTIONS =
-        ['never' => 'nie', 'afterending' => 'nach Ende', 'afterparticipation' => 'nach Teilnahme'];
+        ['never' => 'Nie', 'afterending' => 'Nach Ende', 'afterparticipation' => 'Nach Teilnahme'];
     public const RESULT_VISIBLE_FOR_OPTIONS = ['autor' => 'Alle', 'tutor' => 'Tutor/-innen', 'dozent' => 'Lehrende'];
 
     protected static function configure($config = []): void

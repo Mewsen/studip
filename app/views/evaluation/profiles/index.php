@@ -72,7 +72,7 @@ use Studip\Button;
                             <?=
                                 $profile->result_visible_for ?
                                 _(QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS[$profile->result_visible_for]) :
-                                _('Admins')
+                                _('Evaluations-Admins')
                             ?>
                         </td>
                         <td><?= $profile->minimum_responses ?></td>
