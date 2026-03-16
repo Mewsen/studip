@@ -29,7 +29,6 @@
                         <?= Icon::create('decline')->asInput(
                             [
                                 'title' => _('alle Angaben zurücksetzen'),
-                                'type'  => 'image',
                                 'class' => 'text-bottom',
                                 'name'  => 'reset_category',
                                 'style' => 'margin-left: 0.2em; margin-top: 0.6em;'
@@ -39,7 +38,6 @@
                         <?= Icon::create('accept')->asInput(
                             [
                                 'title' => _('Raumtyp auswählen'),
-                                'type'  => 'image',
                                 'class' => 'text-bottom',
                                 'name'  => 'search_by_category',
                                 'value' => _('Raumtyp auswählen'),
@@ -70,7 +68,6 @@
                         <? if (!empty($room_name)) : ?>
                             <?= Icon::create('decline')->asInput([
                                 'title' => _('alle Angaben zurücksetzen'),
-                                'type'  => 'image',
                                 'class' => 'text-bottom',
                                 'name'  => 'reset_name',
                                 'style' => 'margin-left: 0.2em; margin-top: 0.6em;',
