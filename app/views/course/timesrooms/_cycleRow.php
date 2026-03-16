@@ -103,7 +103,6 @@ $is_exTermin = $termin instanceof CourseExDate;
         ) ?>
 
         <? $params = [
-            'type'         => 'image',
             'class'        => 'middle',
             'name'         => 'delete_single_date',
             'data-confirm' => _('Diesen Termin wiederherstellen?'),

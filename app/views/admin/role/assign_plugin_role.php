@@ -56,10 +56,10 @@ use Studip\Button;
                     </select>
                 </td>
                 <td style="text-align: center;">
-                    <?= Icon::create('arr_2left', 'sort', ['title' => _('Markierte Rollen dem Plugin zuweisen')])->asInput(["type" => "image", "class" => "middle", "name" => "assign_role"]) ?>
+                    <?= Icon::create('arr_2left', 'sort', ['title' => _('Markierte Rollen dem Plugin zuweisen')])->asInput(["class" => "middle", "name" => "assign_role"]) ?>
                     <br>
                     <br>
-                    <?= Icon::create('arr_2right', 'sort', ['title' => _('Markierte Rollen entfernen')])->asInput(["type" => "image", "class" => "middle", "name" => "remove_role"]) ?>
+                    <?= Icon::create('arr_2right', 'sort', ['title' => _('Markierte Rollen entfernen')])->asInput(["class" => "middle", "name" => "remove_role"]) ?>
                 </td>
                 <td>
                     <select multiple name="rolesel[]" size="10" style="width: 300px;">
