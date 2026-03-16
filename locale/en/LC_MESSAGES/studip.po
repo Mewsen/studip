@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-17 10:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -2650,9 +2650,8 @@ msgstr "The enrolment is binding, participants cannot unsubscribe themselves."
 
 #: app/controllers/course/details.php:255
 #: app/controllers/course/details.php:261
-#, fuzzy
 msgid "Zum Stundenplan hinzufügen"
-msgstr "Add component"
+msgstr "Add to timetable"
 
 #: app/controllers/course/details.php:270
 msgid "Zurück zur letzten Auswahl"
@@ -2739,18 +2738,17 @@ msgid "Als PDF exportieren"
 msgstr "Export as PDF"
 
 #: app/controllers/course/wiki.php:150
-#, fuzzy, php-format
+#, php-format
 msgid "Version %1$s, geändert von %2$s am %3$s"
-msgstr "Version %1$u, modified by %2$s on %3$s."
+msgstr "Version %1$s, modified by %2$s on %3$s."
 
 #: app/controllers/course/wiki.php:164
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
 #: app/controllers/course/wiki.php:172
-#, fuzzy
 msgid "Seite / Version löschen"
-msgstr "Delete version"
+msgstr "Delete page/version"
 
 #: app/controllers/course/wiki.php:179 app/controllers/siteinfo.php:115
 msgid "Seite löschen"
@@ -2833,9 +2831,8 @@ msgid "Schreibzugriff für"
 msgstr "Write access for"
 
 #: app/controllers/course/wiki.php:312
-#, fuzzy
 msgid "Was genau soll gelöscht werden?"
-msgstr "The whole date series shall be deleted."
+msgstr "What do you want to delete exactly?"
 
 #: app/controllers/course/wiki.php:323
 #, php-format
@@ -2843,9 +2840,8 @@ msgid "Die Seite %s wurde gelöscht."
 msgstr "The page %s has been deleted."
 
 #: app/controllers/course/wiki.php:345
-#, fuzzy
 msgid "Version wurde gelöscht."
-msgstr "File has been deleted."
+msgstr "Version has been deleted."
 
 #: app/controllers/course/wiki.php:395
 msgid "Alle Wiki-Seiten als PDF exportieren"
@@ -2957,19 +2953,17 @@ msgstr[1] ""
 "\"All pages\"."
 
 #: app/controllers/course/wiki.php:1362
-#, fuzzy, php-format
+#, php-format
 msgid "Diese Wikiseite gehört nicht zu dieser %s"
-msgstr "This wiki page does not exist anymore!"
+msgstr "This wiki page does not belong to this %s"
 
 #: app/controllers/course/wiki.php:1369
-#, fuzzy
 msgid "Sie dürfen keine neue Wikiseite anlegen."
-msgstr "Who may create new wiki pages?"
+msgstr "You may not create new wiki pages."
 
 #: app/controllers/course/wiki.php:1371
-#, fuzzy
 msgid "Sie dürfen diese Wikiseite nicht bearbeiten"
-msgstr "You must not edit this profile"
+msgstr "You may not edit this Wiki page."
 
 #: app/controllers/course/archive.php:67
 #: app/views/course/archive/confirm.php:32
@@ -3149,18 +3143,17 @@ msgid "%u Veranstaltungen konnten nicht angelegt werden."
 msgstr "%u courses could not be created."
 
 #: app/controllers/course/wizard.php:202
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt. Sie können sie direkt hier "
 "weiter verwalten."
 msgstr ""
-"The study/working group \"%s\" has been created. Here you can directly "
-"continue managing it."
+"The study/working group %s has been created. You can manage it right here."
 
 #: app/controllers/course/wizard.php:210
-#, fuzzy, php-format
+#, php-format
 msgid "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt."
-msgstr "The studygroup '%s' has been created."
+msgstr "The study/working group %s has been created."
 
 #: app/controllers/course/wizard.php:221
 #, php-format
@@ -3672,37 +3665,34 @@ msgstr[1] "%u persons could not be removed from the group %s."
 
 #: app/controllers/course/statusgroups.php:1481
 #: app/controllers/course/members.php:1141
-#, fuzzy
 msgid "Die folgenden Fehler traten beim Austragen von Personen auf:"
-msgstr "The following errors occurred during import:"
+msgstr "The following errors occurred when removing people:"
 
 #: app/controllers/course/statusgroups.php:1488
 #: app/controllers/course/members.php:1152
-#, fuzzy
 msgid "Die folgenden Personen wurden ausgetragen:"
-msgstr "The following persons have been signed out of the course"
+msgstr "The following persons have been removed from the course:"
 
 #: app/controllers/course/statusgroups.php:1493
 #: app/controllers/course/members.php:1147
-#, fuzzy, php-format
+#, php-format
 msgid "%u Personen wurden ausgetragen."
 msgstr "%u persons have been removed."
 
 #: app/controllers/course/statusgroups.php:1552
-#, fuzzy, php-format
+#, php-format
 msgid "Personen der Gruppe %s"
-msgstr "Calendar of group \"%s\""
+msgstr "People in group %s"
 
 #: app/controllers/course/statusgroups.php:1561
 #: app/views/course/statusgroups/copy.php:12
-#, fuzzy
 msgid "Gruppen in andere Veranstaltung kopieren"
-msgstr "Course's groups"
+msgstr "Copy groups to another course"
 
 #: app/controllers/course/statusgroups.php:1592
-#, fuzzy, php-format
+#, php-format
 msgid "Die Gruppen wurden in die Veranstaltung %s kopiert."
-msgstr "You have been enroled in the course **%s**."
+msgstr "The groups were copied to the course %s."
 
 #: app/controllers/course/grouping.php:51 lib/modules/CoreAdmin.php:127
 msgid "Zuordnung zu Hauptveranstaltung"
@@ -3824,9 +3814,7 @@ msgstr "The sub-course could not be removed."
 msgid ""
 "In folgenden Veranstaltungen sind Probleme beim Eintragen der gewünschten "
 "Personen aufgetreten:"
-msgstr ""
-"Problems occurred during entering the requested person in the following "
-"courses:"
+msgstr "Problems occurred when adding these users to the following courses:"
 
 #: app/controllers/course/grouping.php:562
 msgid "Die gewählte Person wurde eingetragen."
@@ -4039,9 +4027,8 @@ msgstr "Upon request"
 #: app/controllers/course/studygroup.php:187
 #: app/views/course/studygroup/edit.php:42
 #: app/views/course/studygroup/edit.php:48
-#, fuzzy
 msgid "Für Mitglieder der zugehörigen Lehrveranstaltung"
-msgstr "Courses to be displayed"
+msgstr "For members of the associated course"
 
 #: app/controllers/course/studygroup.php:190
 #: app/views/course/studygroup/edit.php:36
@@ -4190,15 +4177,14 @@ msgid "Zugang"
 msgstr "Access"
 
 #: app/controllers/course/studygroup.php:232
-#, fuzzy
 msgid ""
 "Die Moderator:innen der Studiengruppe können Ihren Aufnahmewunsch bestätigen "
 "oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die "
 "Gruppe."
 msgstr ""
 "The moderator of the study group may accept or reject your request for "
-"admission. After receiving confirmation of admission you will obtain full "
-"access to the group."
+"admission. You will receive full access to the group after receiving "
+"confirmation of admission."
 
 #: app/controllers/course/studygroup.php:246 app/views/settings/privacy.php:67
 #: app/views/course/wizard/steps/studygroups/index.php:78
@@ -4209,9 +4195,8 @@ msgstr "Extended settings"
 #: app/controllers/course/studygroup.php:249
 #: app/views/course/wizard/steps/studygroups/index.php:82
 #: app/views/course/wizard/steps/studygroups/index.php:83
-#, fuzzy
 msgid "Ablaufdatum / Löschdatum"
-msgstr "End date"
+msgstr "Expiry date/deletion date"
 
 #: app/controllers/course/studygroup.php:257
 #: app/views/materialien/files/add_dokument.php:126
@@ -4231,9 +4216,8 @@ msgstr "Add label"
 
 #: app/controllers/course/studygroup.php:265
 #: app/views/course/wizard/steps/studygroups/index.php:96
-#, fuzzy
 msgid "Schlagwort suchen"
-msgstr "Labels"
+msgstr "Find keyword"
 
 #: app/controllers/course/studygroup.php:327
 msgid "Diese Studiengruppe löschen"
@@ -4244,15 +4228,14 @@ msgid "Bitte Gruppennamen angeben"
 msgstr "Please enter group name"
 
 #: app/controllers/course/studygroup.php:398
-#, fuzzy
 msgid ""
 "Die für die Moderation zuständigen Personen der Studiengruppe können Ihren "
 "Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie "
 "vollen Zugriff auf die Gruppe."
 msgstr ""
-"The moderator of the study group may accept or reject your request for "
-"admission. After receiving confirmation of admission you will obtain full "
-"access to the group."
+"The moderators of the study group may accept or reject your request for "
+"admission. You will be given full access to the group after confirmation of "
+"admission."
 
 #: app/controllers/course/studygroup.php:409
 msgid "Die Änderungen wurden erfolgreich übernommen."
@@ -4383,20 +4366,17 @@ msgid "%s wurden in die Studiengruppe eingeladen."
 msgstr "%s have been invited to the study group."
 
 #: app/controllers/course/studygroup.php:764
-#, fuzzy
 msgid ""
 "Studiengruppe nicht vorhanden oder Veranstaltung ist keine Studiengruppe"
-msgstr "You are not enroled into the course \"%s\"."
+msgstr "Study group not available or course is not a study group"
 
 #: app/controllers/course/studygroup.php:768
-#, fuzzy
 msgid "Die Studiengruppe konnte nicht gelöscht werden."
-msgstr "Cannot delete partial course of study."
+msgstr "Could not delete study group."
 
 #: app/controllers/course/studygroup.php:770
-#, fuzzy
 msgid "Die Studiengruppe wurde gelöscht."
-msgstr "Rule deleted."
+msgstr "Study group deleted."
 
 #: app/controllers/course/studygroup.php:794
 msgid "Verwaltung studentischer Arbeitsgruppen"
@@ -4499,24 +4479,23 @@ msgid "Bemerkung konnte nicht erfolgreich gespeichert werden."
 msgstr "Comment not saved."
 
 #: app/controllers/course/members.php:313
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurde eine neue Person hinzugefügt."
 msgid_plural "Es wurden %u neue Personen hinzugefügt."
-msgstr[0] "One new person added."
-msgstr[1] "One new person added."
+msgstr[0] "One new person has been added."
+msgstr[1] "%u new people have been added."
 
 #: app/controllers/course/members.php:323
-#, fuzzy
 msgid "Die folgenden Fehler traten beim Eintragen von Personen auf:"
-msgstr "The following errors occurred while editing the date:"
+msgstr "The following errors occurred when adding users:"
 
 #: app/controllers/course/members.php:361
 #: app/controllers/course/members.php:460
-#, fuzzy, php-format
+#, php-format
 msgid "%1$u %2$s wurde hinzugefügt."
 msgid_plural "%1$u %2$s wurden hinzugefügt."
-msgstr[0] "%u %s were added."
-msgstr[1] "%u %s were added."
+msgstr[0] "%1$u %2$s was added."
+msgstr[1] "%1$u %2$s were added."
 
 #: app/controllers/course/members.php:405
 #, php-format
@@ -4599,9 +4578,8 @@ msgstr ""
 "assignment."
 
 #: app/controllers/course/members.php:758
-#, fuzzy
 msgid "Folgende Einträge konnten <b>nicht</b> zugeordnet werden:"
-msgstr "%s could <b>not</b> be assigned!"
+msgstr "The following entries could <b>not</b> be assigned:"
 
 #: app/controllers/course/members.php:816
 msgid "Ihre Sichtbarkeit wurde erfolgreich geändert."
@@ -4615,16 +4593,15 @@ msgstr ""
 "An error occurred while changing the visibility. The setting was not altered."
 
 #: app/controllers/course/members.php:1015
-#, fuzzy
 msgid ""
 "Sie dürfen keine lehrenden Personen oder Hilfspersonen in diese "
 "Veranstaltung eintragen."
-msgstr "You are not allowed to add lecturers or tutors to this course."
+msgstr "You are not allowed to add lecturers or assistants to this course."
 
 #: app/controllers/course/members.php:1061
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s wurde in die Veranstaltung mit dem Status „%2$s“ eingetragen."
-msgstr "%1$s has been enroled into the course with the status <b>%2$s</b>."
+msgstr "%1$s has been enrolled in this course with a status of <b>%2$s</b>."
 
 #: app/controllers/course/members.php:1068
 #, php-format
@@ -4636,18 +4613,17 @@ msgstr ""
 "                         from the registration/waiting list."
 
 #: app/controllers/course/members.php:1073
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%1$s wurde mit dem Status \"%2$s\" endgültig akzeptiert und damit in die "
 "Veranstaltung eingetragen."
 msgstr ""
-"%1$s has been finally accepted with the state <b>%2$s</b>\n"
-"                        and thereby enroled in the course."
+"%1$s has been finally accepted with a status of <b>%2$s</b> and thus "
+"enrolled in the course."
 
 #: app/controllers/course/members.php:1082
-#, fuzzy
 msgid "Es traten Fehler beim Hochstufen von Personen auf:"
-msgstr "Error occurred during request resolving!"
+msgstr "Errors occurred when upgrading users:"
 
 #: app/controllers/course/members.php:1087
 msgid "Sie haben niemanden zum Hochstufen ausgewählt."
@@ -4769,7 +4745,7 @@ msgstr "Send circular mail"
 #: app/views/course/grouping/members.php:88
 #, php-format
 msgid "%s eintragen"
-msgstr "insert %s"
+msgstr "add %s"
 
 #: app/controllers/course/members.php:1578
 #: app/controllers/course/members.php:1635
@@ -4786,7 +4762,7 @@ msgstr[1] "%s of the institutes"
 #: app/controllers/course/members.php:1725
 #: app/controllers/course/members.php:1728
 msgid "Person(en) auf Warteliste eintragen"
-msgstr "Add person(s) to waiting list"
+msgstr "Add user(s) to waiting list"
 
 #: app/controllers/course/members.php:1731
 msgid "Mitglieder der Einrichtung"
@@ -4797,14 +4773,12 @@ msgid "Teilnehmendenliste importieren"
 msgstr "Import participant list"
 
 #: app/controllers/course/members.php:1769
-#, fuzzy
 msgid "Warteliste als Excel-Datei exportieren"
-msgstr "Export waiting list as csv document"
+msgstr "Export wait list as Excel file"
 
 #: app/controllers/course/members.php:1778
-#, fuzzy
 msgid "Warteliste als CSV-Datei exportieren"
-msgstr "Export waiting list as rtf document"
+msgstr "Export waiting list as CSV file"
 
 #: app/controllers/course/members.php:1793
 msgid "Rundmails von Studierenden erlauben"
@@ -4914,9 +4888,8 @@ msgid "Position"
 msgstr "Position"
 
 #: app/controllers/course/members.php:1882
-#, fuzzy
 msgid "Wartelistenexport"
-msgstr "Waiting lists"
+msgstr "Waiting list export"
 
 #: app/controllers/course/members.php:1884
 #: app/controllers/admin/courses.php:482 app/controllers/admin/courses.php:1508
@@ -5227,9 +5200,8 @@ msgid "Forum"
 msgstr "Forum"
 
 #: app/controllers/course/connectedstudygroups.php:37
-#, fuzzy
 msgid "Studiengruppe suchen und verknüpfen"
-msgstr "Search for study groups"
+msgstr "Find and link study group"
 
 #: app/controllers/course/connectedstudygroups.php:71
 #, php-format
@@ -5242,16 +5214,14 @@ msgstr ""
 
 #: app/controllers/course/connectedstudygroups.php:81
 #: lib/classes/StudygroupModel.php:633
-#, fuzzy
 msgid "Verknüpfungsvorschlag angenommen"
-msgstr "Remove link to %s"
+msgstr "Link suggestion accepted"
 
 #: app/controllers/course/connectedstudygroups.php:91
 #: app/controllers/course/connectedcourses.php:45
 #: lib/classes/StudygroupModel.php:643
-#, fuzzy
 msgid "Veranstaltung wurde verknüpft."
-msgstr "Link course"
+msgstr "The course has been linked."
 
 #: app/controllers/course/connectedstudygroups.php:116
 #, php-format
@@ -5264,25 +5234,21 @@ msgstr ""
 "%2$s, You can accept or reject the proposal under the following link:"
 
 #: app/controllers/course/connectedstudygroups.php:126
-#, fuzzy
 msgid "Verknüpfung Ihrer Studiengruppe zu einer Veranstaltung"
-msgstr "Announcements in the course"
+msgstr "Linking your study group to a course"
 
 #: app/controllers/course/connectedstudygroups.php:136
-#, fuzzy
 msgid "Antrag wurde gestellt."
-msgstr "The request has been saved."
+msgstr "The application has been made."
 
 #: app/controllers/course/connectedstudygroups.php:252
-#, fuzzy
 msgid "Verknüpfung zu der Studiengruppe wurde aufgehoben."
-msgstr "Allocation to institute %s removed."
+msgstr "Allocation to study group has been removed."
 
 #: app/controllers/course/connectedstudygroups.php:263
 #: app/controllers/course/connectedcourses.php:183
-#, fuzzy
 msgid "Vorschlag wurde abgewiesen."
-msgstr "Suggestion submitted."
+msgstr "The suggestion has been rejected."
 
 #: app/controllers/course/connectedstudygroups.php:277
 #: app/controllers/course/connectedcourses.php:197
@@ -5296,39 +5262,33 @@ msgstr ""
 
 #: app/controllers/course/connectedstudygroups.php:287
 #: app/controllers/course/connectedcourses.php:207
-#, fuzzy
 msgid "Verknüpfungsvorschlag abgewiesen"
-msgstr "Exam prerequisites"
+msgstr "Link suggestion rejected"
 
 #: app/controllers/course/connectedstudygroups.php:296
 #: app/controllers/course/connectedcourses.php:215
-#, fuzzy
 msgid "Vorschlag wurde zurückgezogen."
-msgstr "Suggestion submitted."
+msgstr "Suggestion withdrawn."
 
 #: app/controllers/course/connectedstudygroups.php:308
-#, fuzzy
 msgid "Studiengruppe verknüpfen"
-msgstr "Join study group"
+msgstr "Link study group"
 
 #: app/controllers/course/connectedcourses.php:38
-#, fuzzy
 msgid "Veranstaltung suchen und zur Verknüpfung vorschlagen"
-msgstr "Link course"
+msgstr "Find course and suggest link"
 
 #: app/controllers/course/connectedcourses.php:48 app/controllers/file.php:617
 msgid "Vorschlag wurde eingereicht."
 msgstr "Suggestion submitted."
 
 #: app/controllers/course/connectedcourses.php:172
-#, fuzzy
 msgid "Verknüpfung zu der Veranstaltung wurde aufgehoben."
-msgstr "Your enrolment to the course **%s** has been revoked."
+msgstr "Link to course removed."
 
 #: app/controllers/course/connectedcourses.php:227
-#, fuzzy
 msgid "Verknüpfung vorschlagen"
-msgstr "Suggest sharing"
+msgstr "Suggest linking"
 
 #: app/controllers/course/gradebook/students.php:87
 #: app/controllers/calendar/date.php:432
@@ -5649,14 +5609,12 @@ msgid "Bei den folgenden Nutzer/-innen ist ein Fehler aufgetreten"
 msgstr "There has been an error with the following users"
 
 #: app/controllers/course/basicdata.php:707
-#, fuzzy
 msgid "Ein Fehler ist aufgetreten."
-msgstr "Errors occurred."
+msgstr "An error has occurred."
 
 #: app/controllers/course/basicdata.php:712
-#, fuzzy
 msgid "%{name} wurde aus der Veranstaltung ausgetragen."
-msgstr "%s %s were removed from the course."
+msgstr "%{name} has been removed from the course."
 
 #: app/controllers/course/basicdata.php:732
 #: app/controllers/course/basicdata.php:758
@@ -5674,9 +5632,8 @@ msgid "%s konnte nicht entfernt werden."
 msgstr "%s could not be removed."
 
 #: app/controllers/course/basicdata.php:829
-#, fuzzy
 msgid "Die Person konnte nicht nach oben verschoben werden."
-msgstr "%u persons could not be moved."
+msgstr "The user could not be moved upwards."
 
 #: app/controllers/course/basicdata.php:859
 #, fuzzy
@@ -6420,9 +6377,8 @@ msgid "LTI-Tool hinzufügen"
 msgstr "Add module"
 
 #: app/controllers/course/lti.php:114
-#, fuzzy
 msgid "Tool mittels LTI Deep Linking hinzufügen"
-msgstr "Add test as achievement"
+msgstr "Add tool using LTI Deep Linking"
 
 #: app/controllers/course/lti.php:121
 msgid ""
@@ -23386,9 +23342,8 @@ msgid "Es sind keine LTI-Tools konfiguriert."
 msgstr "Configure LTI tool"
 
 #: app/views/course/lti/index.php:26
-#, fuzzy
 msgid "LTI Deep Linking noch nicht fertig eingerichtet"
-msgstr "These entries have not been saved yet."
+msgstr "LTI Deep Linking setup still incomplete"
 
 #: app/views/course/lti/index.php:36 app/views/course/lti/index.php:37
 #, fuzzy
