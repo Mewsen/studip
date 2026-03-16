@@ -14,13 +14,11 @@
                 </select>
                 <?= Icon::create('accept')->asInput([
                     'title' => _('NutzerIn hinzufügen'),
-                    'type'  => 'image',
                     'class' => 'middle',
                     'name' => 'add_founder'
                 ]) ?>
                 <?= Icon::create('refresh')->asInput([
                     'title' => _('neue Suche starten'),
-                    'type'  => 'image',
                     'class' => 'middle',
                     'name' => 'new_search',
                 ]) ?>
@@ -31,7 +29,6 @@
                 <input type="text" name="search_for_founder">
                 <?= Icon::create('search')->asInput([
                     'title' => _('Suchen'),
-                    'type'  => 'image',
                     'class' => 'middle',
                     'name' => 'search_founder',
                 ]) ?>
@@ -48,7 +45,7 @@
 
                     <?= htmlReady(get_fullname($user_id, 'full_rev')) ?> (<?= get_username($user_id) ?>)
                     <input type="hidden" name="founders[]" value="<?= $user_id ?>">
-                    <?= Icon::create('refresh', 'clickable', ['title' => _('NutzerIn entfernen')])->asInput(["type" => "image", "class" => "middle", "name" => "remove_founder"]) ?>
+                    <?= Icon::create('refresh', 'clickable', ['title' => _('NutzerIn entfernen')])->asInput(["class" => "middle", "name" => "remove_founder"]) ?>
                     <br>
                 <? endforeach; ?>
             <? endif; ?>
