@@ -300,8 +300,7 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
             $eval_visible = $eval_visible && ($response_amount >= $eval_profile->minimum_responses);
             return $eval_visible
-                && ($eval_profile->resultvisibility === 'always'
-                || $eval_profile->resultvisibility === 'afterending' && $this->isStopped()
+                && ($eval_profile->resultvisibility === 'afterending' && $this->isStopped()
                 || $eval_profile->resultvisibility === 'afterparticipation' && $this->isAnswered());
         }
 
