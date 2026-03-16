@@ -33,20 +33,14 @@
                         <span v-else class="action-menu-no-icon"></span>
                         {{ item.label }}
                     </a>
-                    <label v-else-if="item.icon" class="undecorated" v-on="linkEvents(item)" tabindex="0">
-                        <studip-icon :shape="item.icon"
-                                     :name="item.name"
+                    <button v-else :name="item.name" v-bind="item.attributes" v-on="linkEvents(item)">
+                        <studip-icon v-if="item.icon"
+                                     :shape="item.icon"
                                      class="action-menu-item-icon"
-                                     v-bind="item.attributes"
                         />
+                        <span v-else class="action-menu-no-icon"></span>
                         {{ item.label }}
-                    </label>
-                    <template v-else>
-                        <span class="action-menu-no-icon"></span>
-                        <button :name="item.name" v-bind="item.attributes" v-on="linkEvents(item)">
-                            {{ item.label }}
-                        </button>
-                    </template>
+                    </button>
                 </li>
             </ul>
         </div>
