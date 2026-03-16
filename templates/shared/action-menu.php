@@ -54,21 +54,14 @@
                     <?= htmlReady($action['label']) ?>
                 </a>
             <? elseif ($action['type'] === 'button'): ?>
-                <? if ($action['icon']): ?>
-                    <label class="undecorated" tabindex="0">
-                        <?= $action['icon']->asInput(false, $action['attributes'] + [
-                            'class' => 'action-menu-item-icon',
-                            'name'  => $action['name'],
-                            'title' => $action['label'],
-                        ], true) ?>
-                        <?= htmlReady($action['label']) ?>
-                    </label>
-                <? else: ?>
-                    <span class="action-menu-no-icon"></span>
-                    <button name="<?= htmlReady($action['name']) ?>" <?= arrayToHtmlAttributes($action['attributes']) ?>>
-                        <?= htmlReady($action['label']) ?>
-                    </button>
-                <? endif ?>
+                <button name="<?= htmlReady($action['name']) ?>" <?= arrayToHtmlAttributes($action['attributes']) ?>>
+                    <? if ($action['icon']): ?>
+                        <?= $action['icon']->asImg(false, ['class' => 'action-menu-item-icon']) ?>
+                    <? else: ?>
+                        <span class="action-menu-no-icon"></span>
+                    <? endif ?>
+                    <?= htmlReady($action['label']) ?>
+                </button>
             <? elseif ($action['type'] === 'multi-person-search'): ?>
                 <?= $action['object']->render() ?>
             <? elseif ($action['type'] === 'separator'): ?>
