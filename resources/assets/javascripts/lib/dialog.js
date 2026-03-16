@@ -615,8 +615,8 @@ const Dialog = {
 
         // Actual dialog handler
         function dialogHandler(event) {
-            if (!event.isDefaultPrevented() && checkValidity(event.currentTarget)) {
-                let target = $(event.target).closest('[data-dialog]');
+            if (!event.isDefaultPrevented() && checkValidity(this)) {
+                let target = $(this).closest('[data-dialog]');
                 let options = target.data().dialog;
 
                 if (
@@ -634,13 +634,13 @@ const Dialog = {
         }
 
         function clickHandler(event) {
-            if (!event.isDefaultPrevented() && checkValidity(event.currentTarget)) {
-                const element = $(event.target).closest(':submit,input[type="image"]');
+            if (!event.isDefaultPrevented() && checkValidity(this)) {
+                const element = $(this).closest(':submit,input[type="image"]');
                 const form = element.closest('form');
                 const action = element.attr('formaction');
                 form.data('triggeredBy', {
-                    name: $(event.target).attr('name'),
-                    value: $(event.target).val()
+                    name: $(this).attr('name'),
+                    value: $(this).val()
                 });
                 if (action) {
                     form.data('formaction', action);
