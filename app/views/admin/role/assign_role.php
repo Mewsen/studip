@@ -75,10 +75,10 @@ use Studip\Button, Studip\LinkButton;
                     </select>
                 </td>
                 <td style="text-align: center;">
-                    <?= Icon::create('arr_2left', 'sort', ['title' => _('Markierte Rollen dem Benutzer zuweisen')])->asInput(["type" => "image", "class" => "middle", "name" => "assign_role"]) ?>
+                    <?= Icon::create('arr_2left', 'sort', ['title' => _('Markierte Rollen dem Benutzer zuweisen')])->asInput(["class" => "middle", "name" => "assign_role"]) ?>
                     <br>
                     <br>
-                    <?= Icon::create('arr_2right', 'sort', ['title' => _('Markierte Rollen entfernen')])->asInput(["type" => "image", "class" => "middle", "name" => "remove_role"]) ?>
+                    <?= Icon::create('arr_2right', 'sort', ['title' => _('Markierte Rollen entfernen')])->asInput(["class" => "middle", "name" => "remove_role"]) ?>
                 </td>
                 <td>
                     <select size="10" name="rolesel[]" multiple style="width: 300px;">

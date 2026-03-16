@@ -79,7 +79,6 @@
                         </select>
                         <?= Icon::create('add')->asInput([
                             'title' => _('Filter hinzufügen'),
-                            'type'  => 'image',
                             'class' => 'middle',
                             'name'  => 'add_filter',
                         ]) ?>
@@ -106,7 +105,6 @@
                         <label for="<?= $type ?>"><b><?= $available_filtertypes[$type] ?></b></label>
                         <?= Icon::create('remove')->asInput([
                             'title' => _('Filter entfernen'),
-                            'type'  => 'image',
                             'class' => 'middle',
                             'name'  => "remove_filter[{$type}]",
                         ]) ?>
@@ -161,7 +159,6 @@
                     <?= Studip\Button::create(_('Eintragen'), 'submit') ?>
                     <?= Icon::create('question-circle')->asInput([
                         'title' => _('Vorschau'),
-                        'type' => 'image',
                         'style' => 'vertical-align: middle;',
                         'name' => 'preview'
                     ]) ?>
