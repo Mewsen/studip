@@ -66,7 +66,7 @@ $sidebarOut: -330px;
 
 #responsive-navigation-button:not(.slide-enter-active):not(.slide-leave-active) {
     cursor: pointer;
-    margin-left: -3px;
+    margin-left: 2px;
 }
 
 #responsive-navigation-items {
@@ -455,7 +455,7 @@ $sidebarOut: -330px;
     }
 
     #responsive-menu {
-        margin-left: -7px;
+        margin-left: 2px;
         padding: 0 5px;
         width: calc(100% - 56px);
     }
@@ -482,6 +482,10 @@ $sidebarOut: -330px;
             display: none;
         }
 
+        .contentbar-breadcrumb {
+            margin-left: 0;lign
+        }
+
         &:not(.cw-ribbon) {
             .contentbar-wrapper-left {
                 max-width: 100%;
@@ -495,10 +499,6 @@ $sidebarOut: -330px;
             max-width: 100vw;
             right: 0;
         }
-    }
-
-    #toggle-sidebar {
-        margin-left: -10px;
     }
 
     #sidebar {
