@@ -78,6 +78,7 @@ import "./bootstrap/external_pages.js"
 import "./bootstrap/vips.js"
 import "./bootstrap/admission.js"
 import "./bootstrap/use-vue-components.js"
+import "./bootstrap/profile_score.js"
 
 import "./mvv_course_wizard.js"
 import "./mvv.js"

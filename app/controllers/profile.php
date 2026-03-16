@@ -91,11 +91,10 @@ class ProfileController extends AuthenticatedController
             }
         }
 
-        // GetScroreList
+        // Handle Score
         if (Config::get()->SCORE_ENABLE) {
             if ($this->current_user->user_id === $GLOBALS['user']->id || $this->current_user->score) {
-                $this->score       = Score::GetMyScore($this->current_user);
-                $this->score_title = Score::getTitel($this->score, $this->current_user->geschlecht);
+                $this->can_show_scores = true;
             }
         }
 
@@ -247,23 +246,15 @@ class ProfileController extends AuthenticatedController
         //The profile avatar, profile visits and profile score
         //shall be visible in the sidebar. Therefore we must construct
         //a generic WidgetElement object and its HTML in here.
-        $kings = [];
-        if (Config::Get()->SCORE_ENABLE) {
-            if ($this->current_user->user_id === $GLOBALS['user']->id || $this->current_user->score) {
-                $kings = $this->current_user->getStudipKingIcon();
-            }
-        }
 
         $avatar_widget = new TemplateWidget(
             $this->current_user->getFullName(),
             $this->get_template_factory()->open('profile/widget-avatar.php'),
             [
-                'avatar'      => Avatar::getAvatar($this->current_user->user_id),
-                'kings'       => $kings,
-                'views'       => object_return_views($this->current_user->user_id),
-                'score'       => $this->score,
-                'score_title' => $this->score_title,
-                'current_user' => $this->current_user->user_id
+                'avatar'            => Avatar::getAvatar($this->current_user->user_id),
+                'views'             => object_return_views($this->current_user->user_id),
+                'can_show_scores'   => $this->can_show_scores ?? false,
+                'current_user'      => $this->current_user->user_id
             ]
         );
 

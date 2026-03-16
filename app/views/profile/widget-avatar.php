@@ -14,20 +14,32 @@
     <? endif ?>
 </div>
 <div class="profile-sidebar-details">
-    <? if ($kings): ?>
-        <div><?= $kings ?></div>
-    <? endif; ?>
-        <div class="minor">
-            <?= _('Profilbesuche:') ?>
-            <?= number_format($views, 0, ',', '.') ?>
+    <? if ($can_show_scores): ?>
+        <div id="profile-score-container" role="status" aria-live="polite" aria-busy="true">
+            <div class="minor profile-score-loader">
+                <span>
+                    <?= _('Stud.IP-Punkte wird berechnet...') ?>
+                </span>
+                <img  width="14" height="14"
+                    src="<?= Assets::image_path('loading-indicator.svg') ?>"
+                    alt=""
+                >
+            </div>
+            <div class="profile-score-kings hidden"></div>
+            <div class="minor profile-score-info hidden">
+                <a class="profile-score-link" href="<?= URLHelper::getLink('dispatch.php/score') ?>" title="<?= _('Zur Rangliste') ?>">
+                    <div class="hidden">
+                        <?= _('Stud.IP-Punkte') ?>: <span id="profile-score"></span>
+                    </div>
+                    <div class="hidden">
+                        <?= _('Rang') ?>: <span id="profile-score-title"></span>
+                    </div>
+                </a>
+            </div>
         </div>
-    <? if ($score && $score_title): ?>
-        <div class="minor">
-            <a href="<?= URLHelper::getLink('dispatch.php/score') ?>" title="<?= _('Zur Rangliste') ?>">
-                <?= _('Stud.IP-Punkte') ?>: <?= number_format($score, 0, ',', '.') ?>
-                <br />
-                <?= _('Rang') ?>: <?= htmlReady($score_title) ?>
-            </a>
-        </div>
     <? endif; ?>
+    <div class="minor">
+        <?= _('Profilbesuche:') ?>
+        <?= number_format($views, 0, ',', '.') ?>
+    </div>
 </div>

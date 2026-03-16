@@ -799,16 +799,28 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
     /**
      * Get the decorated StudIP-Kings information
-     * @return String
+     * @param bool $as_array flag to get the result as an array
+     * @return mixed
      */
-    public function getStudipKingIcon()
+    public function getStudipKingIcon(bool $as_array = false): mixed
     {
         $is_king = StudipKing::is_king($this->user_id, TRUE);
 
         $result = '';
+        $result_array = [];
         foreach ($is_king as $type => $text) {
             $type = str_replace('_', '-', $type);
-            $result .= Assets::img('crowns/crown-' . $type . '.png', ['alt' => $text, 'title' => $text]);
+            $path = 'crowns/crown-' . $type . '.png';
+            $result .= Assets::img($path, ['alt' => $text, 'title' => $text]);
+            $result_array[] = [
+                'src' => Assets::url('images/' . $path),
+                'alt' => $text,
+                'title' => $text,
+            ];
+        }
+
+        if ($as_array) {
+            return $result_array;
         }
 
         return $result ?: null;

@@ -1,5 +1,10 @@
 .profile-sidebar-details {
     margin-left: 0.5em;
+    min-height: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
 }
 
 .profile-view {
@@ -16,6 +21,48 @@
     @extend .list-unstyled;
     img {
         vertical-align: text-top;
+    }
+}
+.profile-score-loader {
+    display: flex;
+    justify-content: start;
+    gap: .25em;
+    align-content: center;
+    &.hidden {
+        display: none;
+    }
+}
+
+.profile-score-kings {
+    display: flex;
+    justify-content: start;
+    gap: 5px;
+    flex-wrap: nowrap;
+    max-height: 48px;
+    overflow-y: none;
+    overflow-x: auto;
+}
+
+.profile-score-kings, .profile-score-info {
+    animation-name: fade-in;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes fade-in {
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
     }
 }
 
