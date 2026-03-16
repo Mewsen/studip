@@ -432,14 +432,18 @@ if (!empty($mvv_tree)) : ?>
         <section>
             <ul class="list-unstyled">
                 <? foreach ($mvv_paths as $mvv_path) : ?>
-                <? $types = array_keys($mvv_path); ?>
-                <? $values = array_values($mvv_path); ?>
                 <li>
-                    <a data-dialog href="<?= URLHelper::getScriptLink('dispatch.php/search/module/overview/' . $types[0] . '/' . $course->start_semester->id) ?>">
-                        <?= htmlReady(implode(' > ', $values[0])) ?>
+                    <a data-dialog href="<?= URLHelper::getScriptLink(
+                        'dispatch.php/search/module/overview/'
+                            . $mvv_path['modul_id'] . '/' . $course->start_semester->id,
+                        [
+                            'abschnitt_id' => $mvv_path['abschnitt_id'],
+                        ]
+                    ) ?>">
+                        <?= htmlReady(implode(' > ', $mvv_path['names'])) ?>
                     </a>
                 </li>
-                <? endforeach; ?>
+                <? endforeach ?>
             </ul>
         </section>
     </article>

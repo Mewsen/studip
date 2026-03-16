@@ -127,6 +127,7 @@ class Course_DetailsController extends AuthenticatedController
                         if (count($mvv_object_path) === 4) {
                             $mvv_object_path['StgteilabschnittModul']->modul->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
                             $mvv_object_path['Modulteil']->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            $abschnitt_id = $mvv_object_path['StgteilAbschnitt']->id;
                             // flatten the paths to a linked list
                             $parent_id = 'root';
                             foreach ($mvv_object_path as $mvv_object) {
@@ -140,6 +141,7 @@ class Course_DetailsController extends AuthenticatedController
                                             'name'    => $mvv_object->getDisplayName(),
                                             'class'   => get_class($mvv_object),
                                             'tree_id' => $tree_id,
+                                            'abschnitt_id' => $abschnitt_id
                                         ];
                                 $parent_id = $tree_id;
                             }
@@ -158,16 +160,24 @@ class Course_DetailsController extends AuthenticatedController
                     foreach ($mvv_object_paths as $mvv_object_path) {
                         // show only complete paths
                         if (count($mvv_object_path) === 4) {
+                            $modul_id = '';
+                            $abschnitt_id = '';
                             $mvv_object_names = [];
                             $mvv_object_path['StgteilabschnittModul']->modul->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
                             $mvv_object_path['Modulteil']->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
                             foreach ($mvv_object_path as $mvv_object) {
                                 if ($mvv_object instanceof StgteilabschnittModul) {
                                     $modul_id = $mvv_object->modul_id;
+                                    $abschnitt_id = $mvv_object->abschnitt_id;
                                 }
                                 $mvv_object_names[] = $mvv_object->getDisplayName();
                             }
-                            $this->mvv_paths[] = [$modul_id => $mvv_object_names];
+                            $this->mvv_paths[] =
+                                [
+                                    'modul_id'     => $modul_id,
+                                    'names'        => $mvv_object_names,
+                                    'abschnitt_id' => $abschnitt_id,
+                                ];
                         }
                     }
                 }
