@@ -33,7 +33,6 @@
                         <?= Icon::create('accept')->asInput(
                             [
                                 'title' => _('Raumtyp auswählen'),
-                                'type'  => 'image',
                                 'class' => 'text-bottom',
                                 'name'  => 'select_properties',
                                 'value' => _('Raumtyp auswählen'),
@@ -45,7 +44,6 @@
                             <?= Icon::create('decline')->asInput(
                                 [
                                     'title' => _('alle Angaben zurücksetzen'),
-                                    'type'  => 'image',
                                     'class' => 'text-bottom',
                                     'name'  => 'reset_category',
                                     'style' => 'margin-left: 0.2em; margin-top: 0.6em;'
