@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:10+0200\n"
-"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-17 10:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-5-"
@@ -33,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -1127,14 +1127,14 @@ msgid "Benachrichtigung über neue Inhalte anpassen"
 msgstr "Customise new content notification"
 
 #: app/controllers/settings/notification.php:76
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie "
 "%s<b>Veranstaltung suchen / hinzufügen</b>%s um sich für Veranstaltungen "
 "anzumdelden."
 msgstr ""
-"You are not enroled into any course. Please use %s<b>Search / add courses</"
-"b>%s to enrol yourself into courses."
+"You are not enrolled in any course. Please use %s<b>Find/add courses</b>%s "
+"to enroll yourself in courses."
 
 #: app/controllers/settings/statusgruppen.php:34
 #: app/controllers/my_institutes.php:119
@@ -2098,7 +2098,7 @@ msgid ""
 msgstr ""
 "You are about to change the admission mode to \"Provisional admission\". Do "
 "you want to convert the participants already enrolled in the course to "
-"preliminary participants?"
+"provisional participants?"
 
 #: app/controllers/course/admission.php:135
 msgid ""
@@ -2107,10 +2107,9 @@ msgid ""
 "(ansonsten werden die vorläufigen Teilnehmenden aus der Veranstaltung "
 "entfernt) ?"
 msgstr ""
-"You are about to change the admission mode to \"Direct enrollment\". Do you "
-"want to enroll the provisionally accepted participants in the course ("
-"otherwise the provisionally accepted participants will be removed from the "
-"course) ?"
+"You are about to change the registration mode to \"direct enrolment\". Do "
+"you want to add the provisional participants to the course (otherwise, the "
+"provisional participants will be removed)?"
 
 #: app/controllers/course/admission.php:146
 #, php-format
@@ -2763,18 +2762,17 @@ msgid "%u Veranstaltungen konnten nicht angelegt werden."
 msgstr "%u courses could not be created."
 
 #: app/controllers/course/wizard.php:183
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt. Sie können sie direkt hier "
 "weiter verwalten."
 msgstr ""
-"The study/working group \"%s\" has been created. Here you can directly "
-"continue managing it."
+"The study/working group %s has been created. You can manage it right here."
 
 #: app/controllers/course/wizard.php:191
-#, fuzzy, php-format
+#, php-format
 msgid "Die Studien-/Arbeitsgruppe „%s“ wurde angelegt."
-msgstr "The studygroup '%s' has been created."
+msgstr "The study/working group %s has been created."
 
 #: app/controllers/course/wizard.php:201
 #, php-format
@@ -3270,9 +3268,7 @@ msgstr "The sub-course could not be removed."
 msgid ""
 "In folgenden Veranstaltungen sind Probleme beim Eintragen der gewünschten "
 "Personen aufgetreten:"
-msgstr ""
-"Problems occurred during entering the requested person in the following "
-"courses:"
+msgstr "Problems occurred when adding these users to the following courses:"
 
 #: app/controllers/course/grouping.php:580
 msgid "Die gewählte Person wurde eingetragen."
@@ -4105,7 +4101,7 @@ msgstr "Send circular mail"
 #: app/views/course/grouping/members.php:88
 #, php-format
 msgid "%s eintragen"
-msgstr "insert %s"
+msgstr "add %s"
 
 #: app/controllers/course/members.php:1487
 #: app/controllers/course/members.php:1544
@@ -4122,7 +4118,7 @@ msgstr[1] "%s of the institutes"
 #: app/controllers/course/members.php:1634
 #: app/controllers/course/members.php:1637
 msgid "Person(en) auf Warteliste eintragen"
-msgstr "Add person(s) to waiting list"
+msgstr "Add user(s) to waiting list"
 
 #: app/controllers/course/members.php:1640
 msgid "Mitglieder der Einrichtung"
