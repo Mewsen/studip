@@ -306,6 +306,7 @@ class RouteMap
     private function addAuthenticatedInstitutesRoutes(RouteCollectorProxy $group): void
     {
         $group->get('/institute-memberships/{id}', Routes\InstituteMemberships\InstituteMembershipsShow::class);
+        $group->get('/institutes/{id}/hierarchy', Routes\Institutes\InstituteHierarchy::class);
         $group->get('/institutes/{id}', Routes\Institutes\InstitutesShow::class);
         $group->get('/institutes', Routes\Institutes\InstitutesIndex::class);
 
