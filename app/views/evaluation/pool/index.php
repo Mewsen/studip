@@ -61,7 +61,8 @@ use Studip\Button;
                                     $template->title)]
                                 ) ?>
                             <? else : ?>
-                                <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id) ?>"
+                                <a href="<?= $controller->link_for('questionnaire/edit/' . $template->id,
+                                        ['range_type' => 'pool']) ?>"
                                    data-dialog="size=big"
                                    title="<?= _('Vorlage bearbeiten') ?>">
                                     <?= Icon::create('edit') ?>
@@ -107,7 +108,7 @@ use Studip\Button;
 $actions = new ActionsWidget();
 $actions->addLink(
     _('Vorlage erstellen'),
-    $controller->url_for('questionnaire/edit', ["range_type" => 'pool']),
+    $controller->url_for('questionnaire/edit', ['range_type' => 'pool']),
     Icon::create('add'),
     ['data-dialog' => 'size=big']
 );
