@@ -5,11 +5,28 @@
     <? endif; ?>
         <label for="<?= htmlReady($current['tree_id'] . $id_sfx->c++) ?>"></label>
     <? if ($current['class'] == 'StgteilabschnittModul') : ?>
-        <a data-dialog title="<?= htmlReady($current['name']) ?>" href="<?= URLHelper::getLink('dispatch.php/shared/modul/overview/' . $current['id'] . '/' . $course->start_semester->id) ?>">
+        <a
+            data-dialog
+            title="<?= htmlReady($current['name']) ?>"
+            href="<?= URLHelper::getScriptLink(
+                'dispatch.php/shared/modul/overview/'
+                . $current['id'] . '/' . $course->start_semester->id,
+                [
+                    'abschnitt_id' => $current['abschnitt_id'],
+                ]
+            ) ?>">
             <?= htmlReady($current['name']) ?>
         </a>
-        <a data-dialog="size=auto" title="<?= htmlReady($current['name']) ?>" href="<?= URLHelper::getLink('dispatch.php/shared/modul/description/' . $current['id']) ?>">
-        <?= Icon::create('log', 'clickable', ['title' => _('Modulbeschreibung')]); ?>
+        <a
+            data-dialog="size=auto"
+            title="<?= htmlReady($current['name']) ?>"
+            href="<?= URLHelper::getScriptLink(
+                'dispatch.php/shared/modul/description/'
+                . $current['id'],
+            [
+                'abschnitt_id' => $current['abschnitt_id'],
+            ]) ?>">
+            <?= Icon::create('log', 'clickable', ['title' => _('Modulbeschreibung')]); ?>
         </a>
     <? else : ?>
         <?= htmlReady($current['name']) ?>
