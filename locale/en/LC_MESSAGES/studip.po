@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-17 09:43+0200\n"
-"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-17 13:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-5-"
@@ -36,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -3240,9 +3240,7 @@ msgstr "The sub-course could not be removed."
 msgid ""
 "In folgenden Veranstaltungen sind Probleme beim Eintragen der gewünschten "
 "Personen aufgetreten:"
-msgstr ""
-"Problems occurred during entering the requested person in the following "
-"courses:"
+msgstr "Problems occurred when adding these users to the following courses:"
 
 #: app/controllers/course/grouping.php:580
 msgid "Die gewählte Person wurde eingetragen."
@@ -4090,7 +4088,7 @@ msgstr "Send circular mail"
 #: app/views/course/grouping/members.php:80
 #, php-format
 msgid "%s eintragen"
-msgstr "insert %s"
+msgstr "add %s"
 
 #: app/controllers/course/members.php:1497
 #: app/controllers/course/members.php:1554
@@ -4107,7 +4105,7 @@ msgstr[1] "%s of the institutes"
 #: app/controllers/course/members.php:1644
 #: app/controllers/course/members.php:1647
 msgid "Person(en) auf Warteliste eintragen"
-msgstr "Add person(s) to waiting list"
+msgstr "Add user(s) to waiting list"
 
 #: app/controllers/course/members.php:1650
 msgid "Mitglieder der Einrichtung"
