@@ -40,6 +40,7 @@ $sidebarOut: -330px;
 #responsive-menu {
     font-size: $font-size-base;
     margin-top: 4px;
+    margin-right: 10px;
     z-index: 1002;
 
     .responsive-navigation-header {
@@ -456,6 +457,7 @@ $sidebarOut: -330px;
 
     #responsive-menu {
         margin-left: 2px;
+        margin-right: 0;
         padding: 0 5px;
         width: calc(100% - 56px);
     }
