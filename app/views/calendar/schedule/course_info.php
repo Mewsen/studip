@@ -52,7 +52,7 @@
                     <? endforeach ?>
                 </ul>
                 <h3><?= _('Veranstaltungszeiten') ?></h3>
-                <?= $course->getAllDatesInSemester()->toHtml(false, true) ?>
+                <?= $course->getAllDatesInSemester()->toHtml(true) ?>
             </section>
             <section>
                 <? if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) : ?>
