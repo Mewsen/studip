@@ -37,22 +37,12 @@ use Studip\Button;
                         <td>
                             <input type="checkbox" name="profiles[]" value="<?= htmlReady($profile->semester_id) ?>">
                         </td>
-                        <?php if ($profile->isEditable()) : ?>
-                            <td data-text="<?= $profile->semester->beginn ?>">
-                                <a href="<?= $controller->link_for("evaluation/profiles/edit/" . $profile->semester_id) ?>"
-                                    data-dialog>
-                                    <?= htmlReady($profile->semester->name) ?>
-                                </a>
-                            </td>
-                        <?php else : ?>
-                            <td data-text="<?= $profile->semester->beginn ?>"
-                                title="<?= sprintf(
-                                    _('Mindestens eine Evaluation des Profils %s ist gestartet. Es kann nicht mehr bearbeitet werden.'),
-                                    $profile->semester->name)
-                                ?>">
+                        <td data-text="<?= $profile->semester->beginn ?>">
+                            <a href="<?= $controller->link_for("evaluation/profiles/edit/" . $profile->semester_id) ?>"
+                                data-dialog>
                                 <?= htmlReady($profile->semester->name) ?>
-                            </td>
-                        <?php endif ?>
+                            </a>
+                        </td>
                         <td><?= htmlReady($profile->template->title) ?></td>
                         <td>
                             <?php foreach (Questionnaire::findMany(explode(',', $profile->optional_templates)) as $opt_template) : ?>
