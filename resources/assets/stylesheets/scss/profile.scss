@@ -45,7 +45,7 @@
 
 .profile-score-kings, .profile-score-info {
     animation-name: fade-in;
-    animation-duration: 1s;
+    animation-duration: var(--transition-duration-superslow);
 }
 
 @-webkit-keyframes fade-in {
