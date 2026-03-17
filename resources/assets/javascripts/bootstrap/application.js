@@ -364,7 +364,8 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
     STUDIP.Scroll.addHandler('cke-fix', () => {
         const topBarHeight = document.getElementById('top-bar')?.offsetHeight ?? 0;
         const contentBarHeight = document.getElementById('contentbar')?.offsetHeight ?? 0;
-        const top = topBarHeight + contentBarHeight;
+        const responsiveContentBarHeight = document.getElementById('responsive-contentbar')?.offsetHeight ?? 0;
+        const top = topBarHeight + contentBarHeight + responsiveContentBarHeight;
 
         if (lastTop !== top) {
             STUDIP.CSS.removeRule('.ck .ck-sticky-panel .ck-sticky-panel__content_sticky');
