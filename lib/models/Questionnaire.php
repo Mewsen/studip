@@ -268,9 +268,7 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
         if ($this->eval_assignment) {
             $user = User::findCurrent();
-            if ($user->hasPermissionLevel('root')
-                || $user->hasRole('Zentraler Evaluationsadmin')
-                || $user->hasRole('Einrichtungsbezogener Evaluationsadmin', Course::findCurrent()->institut_id)) {
+            if ($user->hasPermissionLevel('root') || $user->hasRole('Zentraler Evaluationsadmin')) {
                 return true;
             }
 

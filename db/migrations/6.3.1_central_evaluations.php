@@ -5,7 +5,7 @@ class CentralEvaluations extends Migration
 {
     public function description()
     {
-        return 'Adds new roles (Zentraler Evaluationsadmin, Einrichtungsbezogener Evaluationsadmin) and the possibility of evaluation courses with questionnaires.';
+        return 'Adds new role (Zentraler Evaluationsadmin) and functionality for evaluating courses.';
     }
 
     protected function up()
@@ -67,8 +67,7 @@ class CentralEvaluations extends Migration
 
         DBManager::get()->exec("
             INSERT INTO `roles` (`rolename`, `system`)
-            VALUES ('Zentraler Evaluationsadmin', 'n'),
-            ('Einrichtungsbezogener Evaluationsadmin', 'n')
+            VALUES ('Zentraler Evaluationsadmin', 'n')
         ");
 
         DBManager::get()->exec("INSERT INTO plugins (pluginclassname, pluginname, plugintype, enabled, navigationpos)
@@ -170,8 +169,7 @@ class CentralEvaluations extends Migration
 
         DBManager::get()->exec("
             DELETE FROM `roles`
-            WHERE (`rolename` = 'Zentraler Evaluationsadmin' OR `rolename` = 'Einrichtungsbezogener Evaluationsadmin')
-                AND `system` = 'n'
+            WHERE `rolename` = 'Zentraler Evaluationsadmin' AND `system` = 'n'
         ");
 
         DBManager::get()->exec("
