@@ -433,7 +433,7 @@ if (!empty($mvv_tree)) : ?>
             <ul class="list-unstyled">
                 <? foreach ($mvv_paths as $mvv_path) : ?>
                 <li>
-                    <a data-dialog href="<?= URLHelper::getScriptLink(
+                    <a data-dialog href="<?= URLHelper::getLink(
                         'dispatch.php/search/module/overview/'
                             . $mvv_path['modul_id'] . '/' . $course->start_semester->id,
                         [
