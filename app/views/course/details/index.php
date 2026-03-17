@@ -433,11 +433,17 @@ if (!empty($mvv_tree)) : ?>
             <ul class="list-unstyled">
                 <? foreach ($mvv_pathes as $mvv_path) : ?>
                 <li>
-                    <a data-dialog href="<?= URLHelper::getScriptLink('dispatch.php/search/module/overview/' . reset(array_keys($mvv_path)) . '/' . $course->start_semester->id) ?>">
-                        <?= htmlReady(implode(' > ', reset(array_values($mvv_path)))) ?>
+                    <a data-dialog href="<?= URLHelper::getLink(
+                        'dispatch.php/search/module/overview/'
+                            . $mvv_path['modul_id'] . '/' . $course->start_semester->id,
+                        [
+                            'abschnitt_id' => $mvv_path['abschnitt_id'],
+                        ]
+                    ) ?>">
+                        <?= htmlReady(implode(' > ', $mvv_path['names'])) ?>
                     </a>
                 </li>
-                <? endforeach; ?>
+                <? endforeach ?>
             </ul>
         </section>
     </article>
