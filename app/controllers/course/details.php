@@ -131,6 +131,7 @@ class Course_DetailsController extends AuthenticatedController
                             // flatten the paths to a linked list
                             $parent_id = 'root';
                             foreach ($mvv_object_path as $mvv_object) {
+                                $tree_id = $mvv_object->id;
                                 $mvv_object_id = $mvv_object instanceof StgteilabschnittModul
                                         ? $mvv_object->modul_id
                                         : $mvv_object->id;
