@@ -240,7 +240,7 @@ class CourseDateList implements Stringable
     {
         $output = [];
         foreach ($this->regular_dates as $regular_date) {
-            $date_line = $regular_date->toString('long-start');
+            $date_line = $regular_date->toString($with_room_names ? 'long-start' : 'long-start-without-room');
             if ($with_room_names || $group_by_rooms) {
                 $room = $regular_date->getMostBookedRoom();
                 if ($room instanceof Room) {

@@ -20,5 +20,5 @@
     <? else : ?>
         <h4><?= htmlReady($room_name) ?></h4>
     <? endif ?>
-    <?= $grouped_date->toHtml(false, $with_cancelled_dates) ?>
+    <?= $grouped_date->toHtml(false, false, $with_cancelled_dates) ?>
 <? endforeach ?>
