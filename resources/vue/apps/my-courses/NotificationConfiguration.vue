@@ -92,7 +92,7 @@ import { createMixin } from "@/vue/mixins/MyCoursesMixin";
 export default {
     name: 'MyCoursesNotificationConfiguration',
     mixins: [
-        createMixin(true)
+        createMixin()
     ],
     props: {
         storeUrl: String,
@@ -106,7 +106,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('mycoursesnotificationstore', [
+        ...mapState('mycourses', [
             'courses',
             'groups',
             'config',
