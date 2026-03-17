@@ -358,6 +358,16 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
+     * Resets the configuration to it's default value.
+     *
+     * @return int The number of removed value entries
+     */
+    public function reset(string $field): int
+    {
+        return ConfigValue::deleteBySql('field=?', [$field]);
+    }
+
+    /**
      * delete config entry from database
      * @param string name of entry
      * @throws InvalidArgumentException
