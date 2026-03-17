@@ -6,7 +6,6 @@
 
 <!-- TODO min responses -->
 <?php foreach ($controller->evaluations as $key => $evaluation) : ?>
-    <?php $profile = QuestionnaireEvalCentralProfile::find($evaluation->eval_assignment->semester_id) ?>
     <article class="studip toggle <?= $key == 0 ? 'open' : '' ?>">
         <header>
             <h1>
@@ -47,14 +46,14 @@
                     <tr>
                         <th scope="row"><?= _('Einsicht für') ?></th>
                         <td>
-                            <?= $profile->result_visible_for ?
-                                _(QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS[$profile->result_visible_for])
+                            <?= $evaluation->result_visible_for ?
+                                _(QuestionnaireEvalCentralProfile::RESULT_VISIBLE_FOR_OPTIONS[$evaluation->result_visible_for])
                                 : _('Evaluations-Admins') ?>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><?= _('Mindestrücklauf') ?></th>
-                        <td><?= htmlReady($profile->minimum_responses) ?></td>
+                        <td><?= htmlReady($evaluation->minimum_responses) ?></td>
                     </tr>
                 </tbody>
             </table>

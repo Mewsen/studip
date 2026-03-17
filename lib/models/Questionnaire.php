@@ -13,8 +13,10 @@
  * @property int $visible database column
  * @property int $anonymous database column
  * @property string $resultvisibility database column
+ * @property string $result_visible_for database column
  * @property int $editanswers database column
  * @property int $copyable database column
+ * @property int $minimum_responses database column
  * @property int $chdate database column
  * @property int $mkdate database column
  * @property SimpleORMapCollection<QuestionnaireQuestion> $questions has_many QuestionnaireQuestion
@@ -272,15 +274,12 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                 return true;
             }
 
-            $eval_profile = QuestionnaireEvalCentralProfile::find($this->eval_assignment->semester_id);
-
-            if ($eval_profile && $eval_profile->result_visible_for) {
-                $eval_visible = $user->hasPermissionLevel($eval_profile->result_visible_for, Context::get());
-            } else {
+            if (!$this->result_visible_for) {
                 return false;
             }
+            $eval_visible = $user->hasPermissionLevel($this->result_visible_for, Context::get());
 
-            if ($eval_profile->anonymous) {
+            if ($this->anonymous) {
                 $statement = DBManager::get()->prepare(
                     "SELECT DISTINCT count(`user_id`) AS 'amount' FROM `questionnaire_anonymous_answers`
                     WHERE `questionnaire_id` = :questionnaire_id");
@@ -296,10 +295,10 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
             ]);
             $response_amount = $statement->fetch()['amount'];
 
-            $eval_visible = $eval_visible && ($response_amount >= $eval_profile->minimum_responses);
+            $eval_visible = $eval_visible && ($response_amount >= $this->minimum_responses);
             return $eval_visible
-                && ($eval_profile->resultvisibility === 'afterending' && $this->isStopped()
-                || $eval_profile->resultvisibility === 'afterparticipation' && $this->isAnswered());
+                && ($this->resultvisibility === 'afterending' && $this->isStopped()
+                || $this->resultvisibility === 'afterparticipation' && $this->isAnswered());
         }
 
         return $this['resultvisibility'] === 'always'
