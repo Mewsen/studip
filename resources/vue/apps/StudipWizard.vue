@@ -113,32 +113,41 @@ const currentStep = ref(0);
 // HTML content of current step
 let stepContent = ref('');
 let mountedApp = null;
+let appInstance = null;
 const currentStepType = ref(null);
 
 const visibleSteps = ref(props.showAllSteps ? props.steps : [props.steps[0]]);
 
-const checkValidity = () => {
+const validate = async () => {
     if (currentStepType.value === 'form') {
-        STUDIP.Vue.emit('form.submit', props.steps[currentStep.value].id);
+        return appInstance.submit()
+            .then(() => {
+                return true;
+            }).catch(errors => {
+                return false;
+            });
+    } else {
+        return true;
     }
 };
 
-const jumpToStep = (number) => {
-    checkValidity();
+const jumpToStep = async (number) => {
+    const success = await validate();
+    if (success) {
+        if (mountedApp !== null) {
+            mountedApp.unmount();
+        }
 
-    if (mountedApp !== null) {
-        mountedApp.unmount();
+        if (!visibleSteps.value.includes(props.steps[number])) {
+            console.log('Visible steps', visibleSteps.value);
+            visibleSteps.value[number] = props.steps[number];
+        }
+        currentStep.value = number;
+        initializeContent(number);
     }
-
-    if (!visibleSteps.value.includes(props.steps[number])) {
-        visibleSteps.value[number] = props.steps[number];
-    }
-    currentStep.value = number;
-    initializeContent(number);
 };
 
 const finishWizard = () => {
-    checkValidity();
 };
 
 const initializeContent = async (stepNumber) => {
@@ -165,19 +174,12 @@ onMounted(() => {
 
     STUDIP.Vue.on('form.mounted', (mounted) => {
         mountedApp = mounted.app;
+        appInstance = mounted.instance;
     });
     STUDIP.Vue.on('vueApp.mounted', (mounted) => {
         if (mounted.config.appPath === stepContent.value.appPath) {
             mountedApp = mounted.app;
         }
-    });
-
-    visibleSteps.value.push({
-        type: 'Vue',
-        id: 'stock-images',
-        title: 'Bilderpool',
-        content: StockImages,
-        icon: 'block-gallery'
     });
 });
 

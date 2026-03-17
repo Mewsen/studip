@@ -80,6 +80,9 @@ const Forms = {
                             params.STUDIPFORM_SELECTEDLANGUAGES = {};
                             params.STUDIPFORM_EMIT_VALUES = f.dataset.emit;
                             params.STUDIPFORM_USE_STORE = f.dataset.useStore === 'true';
+                            if (params.STUDIPFORM_USE_STORE) {
+                                params.store = useFormsStore();
+                            }
                             params.STUDIPFORM_FORM_ID = f.dataset.formId;
                             for (let i in JSON.parse(f.dataset.inputs)) {
                                 params.STUDIPFORM_INPUTS_ORDER.push(i);
@@ -87,20 +90,25 @@ const Forms = {
                             return params;
                         },
                         methods: {
-                            submit: function (e) {
+                            submit: async function (e) {
                                 if (this.STUDIPFORM_VALIDATED) {
-                                    return;
+                                    return Promise.resolve();
                                 }
                                 this.STUDIPFORM_VALIDATIONNOTES = [];
                                 this.STUDIPFORM_DISPLAYVALIDATION = true;
 
+                                if (e) {
+                                    e.preventDefault();
+                                }
+
                                 // validation:
-                                this.validate()
+                                return this.validate()
                                     .then(() => {
                                         if (this.STUDIPFORM_USE_STORE) {
-                                            const store = useFormsStore();
-                                            store.initialize();
-                                            store.setData(this.STUDIPFORM_FORM_ID, this.getFormValues());
+                                            this.store.setData(this.STUDIPFORM_FORM_ID, this.getFormValues());
+                                            this.STUDIPFORM_VALIDATED = true;
+                                            //this.$el.submit();
+                                            return Promise.resolve();
                                         } else {
                                             if (this.STUDIPFORM_AUTOSAVEURL) {
                                                 let params = this.getFormValues();
@@ -110,21 +118,24 @@ const Forms = {
                                                     if (output === 'STUDIPFORM_STORE_SUCCESS' && this.STUDIPFORM_REDIRECTURL) {
                                                         //The form has been stored successfully:
                                                         window.location.href = this.STUDIPFORM_REDIRECTURL;
+                                                        return Promise.resolve([]);
                                                     } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
                                                         Report.error($gettext('Es ist ein Fehler aufgetreten.'), output);
+                                                        return Promise.reject(output);
                                                     }
                                                 });
                                             } else {
                                                 this.STUDIPFORM_VALIDATED = true;
                                                 this.$el.submit();
+                                                return Promise.resolve();
                                             }
                                         }
                                     }).catch(errors => {
                                         this.STUDIPFORM_VALIDATIONNOTES = errors;
                                         this.$el.scrollIntoView({behavior: 'smooth'});
+                                        return Promise.reject(errors);
                                     }
                                 );
-                                e.preventDefault();
                             },
                             getFormValues() {
                                 let params = {
@@ -179,13 +190,17 @@ const Forms = {
                                     });
 
                                 // Optional server validation
-                                if (this.STUDIPFORM_SERVERVALIDATION && !this.STUDIPFORM_USE_STORE) {
+                                if (this.STUDIPFORM_SERVERVALIDATION) {
                                     let params = this.getFormValues();
                                     if (this.STUDIPFORM_AUTOSAVEURL) {
                                         params.STUDIPFORM_AUTOSTORE = 1;
                                     }
                                     params.STUDIPFORM_SERVERVALIDATION = 1;
                                     params.STUDIPFORM_FORM_ID = this.STUDIPFORM_FORM_ID;
+
+                                    if (this.STUDIPFORM_USE_STORE) {
+                                        params.step_id = this.STUDIPFORM_FORM_ID;
+                                    }
 
                                     const output = await fetch(this.STUDIPFORM_VALIDATION_URL, {
                                         method: 'POST',
@@ -252,11 +267,12 @@ const Forms = {
                                 }
                             }
 
-                            STUDIP.Vue.on('form.submit', id => {
-                                if (this.STUDIPFORM_FORM_ID === id) {
-                                    this.submit(new Event('submit'));
+                            if (this.STUDIPFORM_USE_STORE) {
+                                const storedData = this.store.getData(this.STUDIPFORM_FORM_ID);
+                                if (storedData) {
+                                    this.setInputs(storedData);
                                 }
-                            });
+                            }
                         }
                     });
                     const instance = app.mount(f);

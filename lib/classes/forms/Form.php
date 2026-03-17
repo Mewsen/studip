@@ -314,7 +314,7 @@ class Form extends Part
         return $this;
     }
 
-    public function validate()
+    public function validate(bool $return = false)
     {
         if (\Request::isPost() && \Request::submitted('STUDIPFORM_SERVERVALIDATION')) {
             //verify the user input:
@@ -333,10 +333,14 @@ class Form extends Part
                     }
                 }
             }
-            header('Content-Type: application/json');
-            echo json_encode($output);
             sess()->save();
-            die();
+            if ($return) {
+                return $output;
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode($output);
+                die();
+            }
         }
         return $this;
     }

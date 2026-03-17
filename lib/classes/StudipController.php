@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Studip\WizardPart;
+use Studip\Forms\Form;
 
 /**
  * @property StudipResponse $response
@@ -608,14 +609,26 @@ abstract class StudipController extends Trails\Controller
      */
     public function render_wizard(array $steps, bool $showAllSteps = true): void
     {
-        $this->render_vue_app(
-            Studip\VueApp::create('StudipWizard')
-                ->withProps([
-                    'steps' => $steps,
-                    'showAllSteps' => $showAllSteps
-                ])
-                ->withStore('wizardStore', 'useWizardStore')
-        );
+        if (Request::get('step_id', null) !== null && Request::isXhr()) {
+            $step = array_find($steps, fn ($entry) => $entry->getId() === Request::get('step_id'));
+
+            if ($step && $step->getType() === Form::class) {
+                $validated = $step->getContent()->validate(true);
+                $this->render_json($validated);
+            } else {
+                $this->set_status(404);
+                $this->render_nothing();
+            }
+
+        } else {
+            $this->render_vue_app(
+                Studip\VueApp::create('StudipWizard')
+                    ->withProps([
+                        'steps' => $steps,
+                        'showAllSteps' => $showAllSteps
+                    ])
+            );
+        }
     }
 
 
