@@ -164,7 +164,7 @@ class MyStudygroupsController extends AuthenticatedController
         ]);
 
         // Zufällig sortieren ist in PHP schneller als in SQL
-        $group_ids = shuffle($group_ids);
+        shuffle($group_ids);
 
         $cache->write($cache_id, $group_ids, 15 * 60);
         return Course::findMany($group_ids);
