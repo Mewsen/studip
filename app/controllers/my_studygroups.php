@@ -154,9 +154,7 @@ class MyStudygroupsController extends AuthenticatedController
                       ORDER BY `seminare`.`mkdate` DESC
                       LIMIT 12
                     ) AS `new_groups`
-                ) AS `all_groups`
-
-                LIMIT :amount";
+                ) AS `all_groups`";
         $group_ids = DBManager::get()->fetchFirst($query, [
             ':studygroup_types' => $studygroup_sem_types,
             ':me'               => $user_id,
@@ -165,6 +163,7 @@ class MyStudygroupsController extends AuthenticatedController
 
         // Zufällig sortieren ist in PHP schneller als in SQL
         shuffle($group_ids);
+        $group_ids = array_slice($group_ids, 0, $amount);
 
         $cache->write($cache_id, $group_ids, 15 * 60);
         return Course::findMany($group_ids);
