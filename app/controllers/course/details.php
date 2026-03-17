@@ -126,20 +126,26 @@ class Course_DetailsController extends AuthenticatedController
                 if (Config::get()->COURSE_SEM_TREE_DISPLAY) {
                     $this->mvv_tree = [];
                     foreach ($mvv_object_pathes as $mvv_object_path) {
-                        // show only complete pathes
-                        if (count($mvv_object_path) == 4) {
-                            // flatten the pathes to a linked list
-                            $stg = reset($mvv_object_path);
+                        // show only complete paths
+                        if (count($mvv_object_path) === 4) {
+                            $mvv_object_path['StgteilabschnittModul']->modul->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            $mvv_object_path['Modulteil']->setReplaceDfAbschnitt($mvv_object_path['StgteilAbschnitt']);
+                            $abschnitt_id = $mvv_object_path['StgteilAbschnitt']->id;
+                            // flatten the paths to a linked list
                             $parent_id = 'root';
                             foreach ($mvv_object_path as $mvv_object) {
                                 $mvv_object_id = $mvv_object instanceof StgteilabschnittModul
                                         ? $mvv_object->modul_id
                                         : $mvv_object->id;
-                                $this->mvv_tree[$parent_id][$mvv_object_id] =
-                                        ['id'    => $mvv_object_id,
-                                         'name'  => $mvv_object->getDisplayName(),
-                                         'class' => get_class($mvv_object)];
-                                $parent_id = $mvv_object_id;
+                                $this->mvv_tree[$parent_id][$tree_id] =
+                                        [
+                                            'id'      => $mvv_object_id,
+                                            'name'    => $mvv_object->getDisplayName(),
+                                            'class'   => get_class($mvv_object),
+                                            'tree_id' => $tree_id,
+                                            'abschnitt_id' => $abschnitt_id
+                                        ];
+                                $parent_id = $tree_id;
                             }
                         }
                     }
@@ -153,17 +159,25 @@ class Course_DetailsController extends AuthenticatedController
                     }
                 } else {
                     foreach ($mvv_object_pathes as $mvv_object_path) {
-                        // show only complete pathes
-                        if (count($mvv_object_path) == 4) {
+                        // show only complete paths
+                        if (count($mvv_object_path) === 4) {
+                            $modul_id = '';
+                            $abschnitt_id = '';
                             $mvv_object_names = [];
                             $modul_id = '';
                             foreach ($mvv_object_path as $mvv_object) {
                                 if ($mvv_object instanceof StgteilabschnittModul) {
                                     $modul_id = $mvv_object->modul_id;
+                                    $abschnitt_id = $mvv_object->abschnitt_id;
                                 }
                                 $mvv_object_names[] = $mvv_object->getDisplayName();
                             }
-                            $this->mvv_pathes[] = [$modul_id => $mvv_object_names];
+                            $this->mvv_pathes[] =
+                                [
+                                    'modul_id'     => $modul_id,
+                                    'names'        => $mvv_object_names,
+                                    'abschnitt_id' => $abschnitt_id,
+                                ];
                         }
                     }
                 }
