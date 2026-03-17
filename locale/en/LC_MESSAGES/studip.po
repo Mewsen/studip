@@ -17,7 +17,7 @@
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023, 2025.
 # Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
 # Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
-# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2025, 2026.
 # Oliver Oster <oster@zmml.uni-bremen.de>, 2024.
 #
 # Translators:
@@ -27,16 +27,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2025-08-19 13:00+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-0/en/>\n"
+"PO-Revision-Date: 2026-03-17 13:38+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-5-"
+"0/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.16\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -19038,7 +19039,7 @@ msgstr "Select all courses"
 #: app/controllers/course/members.php:1604
 #, php-format
 msgid "%s eintragen"
-msgstr "insert %s"
+msgstr "add %s"
 
 #: app/views/course/grouping/members.php:71
 msgid "Vertretung/en eintragen"
@@ -32406,9 +32407,7 @@ msgstr "The sub-course could not be removed."
 msgid ""
 "In folgenden Veranstaltungen sind Probleme beim Eintragen der gewünschten "
 "Personen aufgetreten:"
-msgstr ""
-"Problems occurred during entering the requested person in the following "
-"courses:"
+msgstr "Problems occurred when adding these users to the following courses:"
 
 #: app/controllers/course/grouping.php:574
 msgid "Die gewählte Person wurde eingetragen."
@@ -32786,7 +32785,7 @@ msgstr "Message to all participants (Circular mail)"
 #: app/controllers/course/members.php:1640
 #: app/controllers/course/members.php:1643
 msgid "Person(en) auf Warteliste eintragen"
-msgstr "Add person(s) to waiting list"
+msgstr "Add user(s) to waiting list"
 
 #: app/controllers/course/members.php:1646
 msgid "Mitglieder der Einrichtung"
