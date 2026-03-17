@@ -15,8 +15,8 @@ class CentralEvaluations extends Migration
             ADD COLUMN `is_template` tinyint(1) NOT NULL DEFAULT 0 AFTER `user_id`,
             ADD COLUMN `template_is_enabled` tinyint(1) DEFAULT NULL AFTER `is_template`,
             ADD COLUMN `template_id` char(32) DEFAULT NULL AFTER `questionnaire_id`,
-            ADD COLUMN `result_visible_for` enum('autor','tutor','dozent') DEFAULT NULL,
-            ADD COLUMN `minimum_responses` int(11) unsigned NOT NULL DEFAULT 0,
+            ADD COLUMN `result_visible_for` enum('autor','tutor','dozent') DEFAULT NULL AFTER `resultvisibility`,
+            ADD COLUMN `minimum_responses` int(11) unsigned NOT NULL DEFAULT 0 AFTER `result_visible_for`,
             ADD KEY `template_id` (`template_id`)
         ");
 
