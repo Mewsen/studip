@@ -65,7 +65,7 @@ class MyStudygroupsController extends AuthenticatedController
         $cache = \Studip\Cache\Factory::getCache();
         $studygroup_ids = $cache->read($cache_id);
         if ($studygroup_ids !== false) {
-            return  Course::findMany($studygroup_ids);
+            return Course::findMany($studygroup_ids);
         }
 
         // Vorgeschlagen werden sollen Studiengruppen,
@@ -77,64 +77,95 @@ class MyStudygroupsController extends AuthenticatedController
 
         $studygroup_sem_types = array_filter(
             array_keys($GLOBALS['SEM_TYPE']),
-            function ($sem_type_id) {
-                return (bool) $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem_type_id]['class']]['studygroup_mode'];
-            }
+            fn($sem_type_id) => (bool) $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem_type_id]['class']]['studygroup_mode']
         );
 
-        $statement = DBManager::get()->prepare("
-            SELECT `Seminar_id` FROM (
-                SELECT `seminare`.`Seminar_id`, COUNT(`seminar_user`.`user_id`) AS `count_colleages`
-                FROM  `seminar_user` AS `my_courses`
-                    LEFT JOIN `seminar_user` AS `my_colleages` ON (`my_colleages`.`Seminar_id` = `my_courses`.`Seminar_id`)
-                    LEFT JOIN `seminar_user` ON (`my_colleages`.`user_id` = `seminar_user`.`user_id`)
-                    LEFT JOIN `seminar_user` AS `am_i_connected` ON (`seminar_user`.`Seminar_id` = `am_i_connected`.`Seminar_id` AND `am_i_connected`.`user_id` = :me)
-                    LEFT JOIN `seminare` ON (`seminare`.`Seminar_id` = `seminar_user`.`Seminar_id`)
-                WHERE `seminare`.`status` IN (:studygroup_types)
-                    AND `am_i_connected`.`user_id` IS NULL
-                    AND `my_courses`.`user_id` = :me
-                GROUP BY `seminare`.`seminar_id`
-                ORDER BY `count_colleages` DESC
-                LIMIT 12
-            ) AS `colleages_groups`
+        $query = "SELECT DISTINCT `Seminar_id`
+                  FROM (
+                    SELECT `Seminar_id` FROM (
+                      -- Andere Personen aus meinen Veranstaltungen
+                      SELECT `seminare`.`Seminar_id`, COUNT(`seminar_user`.`user_id`) AS `count_colleagues`
+                      FROM (
+                        SELECT colleagues.`user_id`
+                        FROM `seminar_user` AS colleagues
+                        JOIN `seminar_user` AS mine USING (`Seminar_id`)
+                        WHERE mine.`user_id` = :me
+                          AND colleagues.`user_id` != mine.`user_id`
+                      ) AS my_colleagues
+                      JOIN `seminar_user`
+                        ON (`my_colleagues`.`user_id` = `seminar_user`.`user_id`)
+                      JOIN `seminare`
+                        ON (`seminare`.`Seminar_id` = `seminar_user`.`Seminar_id`)
+                      WHERE `seminare`.`status` IN (:studygroup_types)
+                        AND NOT EXISTS(
+                          SELECT 1
+                          FROM `seminar_user`
+                          WHERE `seminar_user`.`Seminar_id` = `seminare`.`Seminar_id`
+                            AND `seminar_user`.`user_id` = :me
+                        )
+                      GROUP BY `seminare`.`seminar_id`
+                      ORDER BY `count_colleagues` DESC
+                      LIMIT 12
+                    ) AS `colleagues_groups`
 
-            UNION SELECT `Seminar_id` FROM (
-                SELECT `seminare`.`Seminar_id`
-                FROM `seminare`
-                    LEFT JOIN `seminar_user` AS `am_i_connected` ON (`am_i_connected`.`Seminar_id` = `seminare`.`Seminar_id` AND `am_i_connected`.`user_id` = :me)
-                    INNER JOIN `studygroup_stgteil` ON (`studygroup_stgteil`.`studygroup_id` = `seminare`.`Seminar_id`)
-                    INNER JOIN `mvv_stgteil` ON (`studygroup_stgteil`.`stgteil_id` = `mvv_stgteil`.`stgteil_id`)
-                    INNER JOIN `user_studiengang` ON (`user_studiengang`.`fach_id` = `mvv_stgteil`.`fach_id`)
-                    INNER JOIN `mvv_stg_stgteil` ON (`mvv_stg_stgteil`.`stgteil_id` = `mvv_stgteil`.`stgteil_id`)
-                    INNER JOIN `mvv_studiengang` ON (`mvv_studiengang`.`studiengang_id` = `mvv_stg_stgteil`.`studiengang_id`
-                                                         AND `mvv_studiengang`.`abschluss_id` = `user_studiengang`.`abschluss_id`)
-                WHERE `am_i_connected`.`user_id` IS NULL
-                    AND `seminare`.`status` IN (:studygroup_types)
-                    AND `user_studiengang`.`user_id` = :me
-                ORDER BY rand()
-                LIMIT 12
-            ) AS `same_studyarea_groups`
+                    UNION ALL
 
-            UNION SELECT `Seminar_id` FROM (
-                SELECT `seminare`.`Seminar_id`
-                FROM `seminare`
-                    LEFT JOIN `seminar_user` AS `am_i_connected` ON (`am_i_connected`.`Seminar_id` = `seminare`.`Seminar_id` AND `am_i_connected`.`user_id` = :me)
-                WHERE `am_i_connected`.`user_id` IS NULL
-                    AND `seminare`.`status` IN (:studygroup_types)
-                ORDER BY `seminare`.`mkdate` DESC
-                LIMIT 12
-            ) AS `new_groups`
+                    SELECT `Seminar_id` FROM (
+                      -- Andere Personen aus meinen Studiengängen
+                      SELECT DISTINCT `seminare`.`Seminar_id`
+                      FROM `user_studiengang`
+                      STRAIGHT_JOIN `mvv_stgteil`
+                        ON (`mvv_stgteil`.`fach_id` = `user_studiengang`.`fach_id`)
+                      STRAIGHT_JOIN `mvv_stg_stgteil`
+                        ON (`mvv_stg_stgteil`.`stgteil_id` = `mvv_stgteil`.`stgteil_id`)
+                      STRAIGHT_JOIN `mvv_studiengang`
+                        ON (
+                          `mvv_studiengang`.`studiengang_id` = `mvv_stg_stgteil`.`studiengang_id`
+                          AND `mvv_studiengang`.`abschluss_id` = `user_studiengang`.`abschluss_id`
+                        )
+                      STRAIGHT_JOIN `studygroup_stgteil`
+                        ON (`studygroup_stgteil`.`stgteil_id` = `mvv_stgteil`.`stgteil_id`)
+                      STRAIGHT_JOIN `seminare`
+                        ON (`seminare`.`Seminar_id` = `studygroup_stgteil`.`studygroup_id`)
+                      WHERE `seminare`.`status` IN (:studygroup_types)
+                        AND `user_studiengang`.`user_id` = :me
+                        AND NOT EXISTS(
+                          SELECT 1
+                          FROM `seminar_user`
+                          WHERE `seminar_user`.`Seminar_id` = `seminare`.`Seminar_id`
+                            AND `seminar_user`.`user_id` = :me
+                        )
+                      LIMIT 12
+                    ) AS `same_studyarea_groups`
 
-            GROUP BY `Seminar_id`
-            ORDER BY rand()
-            LIMIT :amount
-        ");
-        $statement->execute([
-            'studygroup_types' => $studygroup_sem_types,
-            'me' => $user_id,
-            'amount' => $amount
+                    UNION ALL
+
+                    SELECT `Seminar_id` FROM (
+                      -- Neue Studiengruppen
+                      SELECT `seminare`.`Seminar_id`
+                      FROM `seminare`
+                      WHERE `seminare`.`status` IN (:studygroup_types)
+                        AND NOT EXISTS(
+                          SELECT 1
+                          FROM `seminar_user`
+                          WHERE `seminar_user`.`Seminar_id` = `seminare`.`Seminar_id`
+                            AND `seminar_user`.`user_id` = :me
+                        )
+                      ORDER BY `seminare`.`mkdate` DESC
+                      LIMIT 12
+                    ) AS `new_groups`
+                ) AS `all_groups`
+
+                LIMIT :amount";
+        $group_ids = DBManager::get()->fetchFirst($query, [
+            ':studygroup_types' => $studygroup_sem_types,
+            ':me'               => $user_id,
+            ':amount'           => $amount,
         ]);
-        $group_ids = $statement->fetchAll(PDO::FETCH_COLUMN);
+
+        // Zufällig sortieren ist in PHP schneller als in SQL
+        $group_ids = shuffle($group_ids);
+
         $cache->write($cache_id, $group_ids, 15 * 60);
         return Course::findMany($group_ids);
     }
