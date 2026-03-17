@@ -6,7 +6,6 @@
  */
 ?>
 <? if (count($topics) > 0) : ?>
-<<<<<<< HEAD
 <table class="default withdetails">
     <colgroup>
         <col width="50%">
