@@ -204,11 +204,12 @@ class SeminarCycleDate extends SimpleORMap
     /**
      * Generates a string for a regular date. Depending on the selected format, more or less information
      * are present in the generated string:
-     * - short:      Only the weekday, beginning and end
-     * - long:       Weekday, beginning, end and the repetition interval
-     * - long-start: Same as long but with the start date.
-     * - full:       Same as long, but also with the start and end week of the regular date in the semester
-     *               and the description of the regular date, if provided.
+     * - short:                   Only the weekday, beginning and end
+     * - long:                    Weekday, beginning, end and the repetition interval
+     * - long-start:              Same as long but with the start date.
+     * - long-start-without-room: Same as long-start but without the room.
+     * - full:                    Same as long, but also with the start and end week of the regular date in the semester
+     *                            and the description of the regular date, if provided.
      *
      * @param string $format The format string: "short", "long" or "full". Defaults to "short".
      *
@@ -216,7 +217,7 @@ class SeminarCycleDate extends SimpleORMap
      */
     public function toString(string $format = 'short', bool $as_html = false) : string
     {
-        if (!in_array($format, ['short', 'long', 'long-start', 'full'])) {
+        if (!in_array($format, ['short', 'long', 'long-start', 'long-start-without-room', 'full'])) {
             //Invalid format:
             return '';
         }
@@ -241,10 +242,12 @@ class SeminarCycleDate extends SimpleORMap
                     _('%{weekday}, %{beginning} - %{end}, %{interval}'),
                     $parameters
                 );
-            } elseif ($format === 'long-start') {
+            } elseif (in_array($format, ['long-start', 'long-start-without-room'])) {
                 $text = _('%{weekday}, %{beginning} - %{end}, %{interval}');
-                $room = $this->getMostBookedRoom();
-
+                $room = null;
+                if ($format === 'long-start') {
+                    $room = $this->getMostBookedRoom();
+                }
                 if ($room) {
                     if ($as_html) {
                         $parameters['room_name'] = sprintf(
@@ -255,7 +258,7 @@ class SeminarCycleDate extends SimpleORMap
                     } else {
                         $parameters['room_name'] = $room->name;
                     }
-                } else {
+                } elseif ($format !== 'long-start-without-room') {
                     //Use the freetext room name:
                     $room = $this->getMostUsedFreetextRoomName();
                     if ($room) {
