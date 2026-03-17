@@ -658,7 +658,7 @@ class Admin_CoursesController extends AuthenticatedController
             $d['type'] = htmlReady($semtype['name']);
         }
         if (in_array('room_time', $activated_fields)) {
-            $d['room_time'] = $course->getAllDatesInSemester($this->semester)->toHtml();
+            $d['room_time'] = $course->getAllDatesInSemester($this->semester)->toHtml(false, true);
         }
         if (in_array('semester', $activated_fields)) {
             $d['semester'] = htmlReady($course->semester_text);
