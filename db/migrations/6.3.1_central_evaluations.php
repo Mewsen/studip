@@ -48,8 +48,6 @@ class CentralEvaluations extends Migration
                 `applied` tinyint(1) NOT NULL DEFAULT 1,
                 `course_metadata` text DEFAULT NULL,
                 `institute_id` char(32) NOT NULL,
-                `startdate` int(11) DEFAULT NULL,
-                `stopdate` int(11) DEFAULT NULL,
                 `chdate` int(11) NOT NULL,
                 `mkdate` int(11) NOT NULL,
                 PRIMARY KEY (`id`),

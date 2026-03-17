@@ -25,19 +25,20 @@ use Studip\Button;
         </tr>
         </thead>
         <tbody>
-        <?php if (count($controller->eval_assignments)) : ?>
-            <?php foreach ($controller->eval_assignments as $assignment) : ?>
+        <?php if (count($controller->evaluations)) : ?>
+            <?php foreach ($controller->evaluations as $evaluation) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="assignments[]" value="<?= htmlReady($assignment->id) ?>">
+                        <input type="checkbox" name="evaluations[]" value="<?= htmlReady($evaluation->getId()) ?>">
                     <td>
-                        <a href="<?= $controller->link_for('questionnaire/evaluate/' . $assignment->questionnaire_id) ?>"
+                        <a href="<?= $controller->link_for('questionnaire/evaluate/' . $evaluation->getId()) ?>"
                             data-dialog
                         >
-                            <?= htmlReady($assignment->questionnaire->title ?? '') ?>
+                            <?= htmlReady($evaluation->title ?? '') ?>
                         </a>
                     </td>
                     </td>
+                    <?php $assignment = $evaluation->eval_assignment ?>
                     <td>
                         <?= htmlReady(isset($assignment->course_metadata['course_title']) ?
                             $assignment->course_metadata['course_title'] : '') ?>
@@ -49,11 +50,11 @@ use Studip\Button;
                             <?php endforeach ?>
                         <?php endif ?>
                     </td>
-                    <td data-text="<?= (int) $assignment->startdate?>">
-                        <?= date('d.m.Y H:i', $assignment->startdate) ?>
+                    <td data-text="<?= $evaluation->startdate?>">
+                        <?= date('d.m.Y H:i', $evaluation->startdate) ?>
                     </td>
-                    <td data-text="<?= (int) $assignment->stopdate?>">
-                        <?= date('d.m.Y H:i', $assignment->stopdate) ?>
+                    <td data-text="<?= $evaluation->stopdate?>">
+                        <?= date('d.m.Y H:i', $evaluation->stopdate) ?>
                     </td>
                 </tr>
             <?php endforeach ?>

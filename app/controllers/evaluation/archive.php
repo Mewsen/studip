@@ -56,16 +56,18 @@ class Evaluation_ArchiveController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($inst_list);
 
-        $query = SQLQuery::table('questionnaire_eval_assignments')
-            ->where('`questionnaire_id` IS NOT NULL AND `applied` = 1');
+        $query = SQLQuery::table('questionnaires')
+            ->join('questionnaire_eval_assignments', 'questionnaire_eval_assignments',
+                '`questionnaire_eval_assignments`.`questionnaire_id` = `questionnaires`.`questionnaire_id`')
+            ->where('`applied` = 1');
         if ($selected_sem !== 'all') {
             $query->where('semester_id', '`semester_id` = ?', [$selected_sem]);
         }
         if ($selected_inst !== 'all') {
             $query->where('institute_id', '`institute_id` = ?', [$selected_inst]);
         }
-        $query->orderBy('`questionnaire_eval_assignments`.`startdate` DESC');
-        $this->eval_assignments = $query->fetchAll(QuestionnaireEvalAssignment::class);
+        $query->orderBy('`questionnaires`.`startdate` DESC');
+        $this->evaluations = $query->fetchAll(Questionnaire::class);
     }
 
     public function set_action()
@@ -84,10 +86,10 @@ class Evaluation_ArchiveController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
         switch ($action) {
             case 'delete':
-                $assignments = Request::optionArray('assignments');
-                foreach ($assignments as $assignment_id) {
-                    $assignment = QuestionnaireEvalAssignment::find($assignment_id);
-                    if ($assignment->delete()) {
+                $evaluations = Request::optionArray('evaluations');
+                foreach ($evaluations as $evaluation_id) {
+                    $evaluation = Questionnaire::find($evaluation_id);
+                    if ($evaluation->delete()) {
                         PageLayout::postSuccess(_('Evaluation erfolgreich gelöscht.'));
                     } else {
                         PageLayout::postError(_('Es ist ein Fehler aufgetreten.'));
