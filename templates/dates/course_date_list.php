@@ -13,7 +13,7 @@
     <ul class="list-unstyled">
         <? foreach ($collection->getRegularDates() as $regular_date) : ?>
             <li>
-                <?= $regular_date->toString('long-start', true) ?>
+                <?= $regular_date->toString($with_room_names ? 'long-start' : 'long-start-no-room', true) ?>
             </li>
         <? endforeach ?>
         <? foreach ($collection->getSingleDates() as $single_date) : ?>
