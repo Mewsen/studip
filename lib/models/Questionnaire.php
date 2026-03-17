@@ -172,8 +172,7 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
     {
         if($this->is_template) {
             if(EvaluationHelper::isPermittedEvaluationAccess()) {
-                return !QuestionnaireEvalAssignment::countBySQL(
-                    "`startdate` <= UNIX_TIMESTAMP() AND `template_id` = ?", [$this->id]);
+                return !QuestionnaireEvalAssignment::countBySQL("`template_id` = ?", [$this->id]);
             }
             return false;
         }

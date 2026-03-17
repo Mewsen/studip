@@ -41,7 +41,7 @@ use Studip\Button;
                             </td>
                         <?php else : ?>
                             <td title="<?= sprintf(
-                                _('Mindestens eine Evaluation der Vorlage %s ist gestartet. Sie kann nicht mehr bearbeitet werden.'),
+                                _('Die Vorlage %s ist mindestens einer Evaluation zugeordnet. Sie kann nicht mehr bearbeitet werden.'),
                                 $template->title)
                             ?>">
                                 <?= htmlReady($template->title) ?>
@@ -57,7 +57,7 @@ use Studip\Button;
                             <? if (!$template->isEditable()) : ?>
                                 <?= Icon::create('edit', Icon::ROLE_INACTIVE)->asSvg(
                                     ['title' => sprintf(
-                                        _('Mindestens eine Evaluation der Vorlage %s ist gestartet. Sie kann nicht mehr bearbeitet werden.'),
+                                        _('Die Vorlage %s ist mindestens einer Evaluation zugeordnet. Sie kann nicht mehr bearbeitet werden.'),
                                     $template->title)]
                                 ) ?>
                             <? else : ?>
