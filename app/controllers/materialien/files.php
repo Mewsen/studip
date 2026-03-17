@@ -648,20 +648,21 @@ class Materialien_FilesController extends MVVController
             unset($this->filter['mvv_studiengang.institut_id']);
         }
         $own_institutes = MvvPerm::getOwnInstitutes();
+        $search_names = $this->filter['searchnames'] ?? '';
+        unset($this->filter['searchnames']);
         $institute_filter = array_merge(
             [
                 'mvv_studiengang.institut_id' => $own_institutes
             ],
             $this->filter
         );
-        unset($institute_filter['searchnames']);
-        $file_ids = MvvFile::getIdsFiltered($this->filter, true, false);
+        $file_ids = MvvFile::getIdsFiltered($this->filter, true);
         $count_faecher = $this->countFaecher($file_ids, $_SESSION['mvv_filter_files_fach_id'] ?? '');
         $count_abschluesse = $this->countAbschluesse($file_ids, $_SESSION['mvv_filter_files_abschluss_id'] ?? '');
         $semesters = new SimpleCollection(array_reverse(Semester::getAll()));
         $filter_template = $template_factory->render('shared/filter', [
             'name_search'        => true,
-            'selected_name'      => $this->filter['searchnames'] ?? '',
+            'selected_name'      => $search_names,
             'name_caption'       => _('Name, Kategorie, Schlagwort'),
             'semester'           => $semesters,
             'selected_semester'  => $semesters->findOneBy('beginn', $this->filter['start_sem.beginn'])->id,
