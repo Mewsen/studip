@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-03-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-19 14:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-6-"
@@ -5712,9 +5712,8 @@ msgid "Die Person konnte nicht nach oben verschoben werden."
 msgstr "The user could not be moved upwards."
 
 #: app/controllers/course/basicdata.php:859
-#, fuzzy
 msgid "Die Person konnte nicht nach unten verschoben werden."
-msgstr "%u persons could not be moved."
+msgstr "The person could not be moved downwards."
 
 #: app/controllers/course/basicdata.php:885
 #, php-format
@@ -5805,17 +5804,17 @@ msgstr "You have already been registered for assignment."
 
 #: app/controllers/course/enrolment.php:206
 #: app/controllers/course/enrolment.php:233
-#, fuzzy, php-format
+#, php-format
 msgid "Sie wurden in die Veranstaltung %1$s als %2$s eingetragen."
-msgstr "You have been assigned to course %s as %s."
+msgstr "You have been added to course %1$s as %2$s."
 
 #: app/controllers/course/enrolment.php:213
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden auf die Anmeldeliste der Studiengruppe %s eingetragen. Die "
 "Personen, die die Studiengruppe moderieren, können Sie jetzt freischalten."
 msgstr ""
-"You have been entered to the registration list of the study group %s. The "
+"You have been added to the registration list of the study group %s. The "
 "moderators of this study group can now approve your registration."
 
 #: app/controllers/course/enrolment.php:220
@@ -5910,9 +5909,9 @@ msgstr ""
 "because you don't have booking rights for the room!"
 
 #: app/controllers/course/timesrooms.php:406
-#, fuzzy, php-format
+#, php-format
 msgid "Der Termin \"%s\" wurde dupliziert."
-msgstr "The date has been saved."
+msgstr "The date %s has been duplicated."
 
 #: app/controllers/course/timesrooms.php:434
 #: app/controllers/course/timesrooms.php:684
@@ -5922,15 +5921,15 @@ msgid "Die Zeitangaben sind nicht korrekt. Bitte überprüfen Sie diese!"
 msgstr "Please check dates!"
 
 #: app/controllers/course/timesrooms.php:460
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde aus der Liste der regelmäßigen Termine gelöscht und als "
 "unregelmäßiger Termin eingetragen, da Sie die Zeiten des Termins verändert "
 "haben, sodass dieser Termin nun nicht mehr regelmäßig ist."
 msgstr ""
 "The date %s has been removed from the list of periodic dates and has instead "
-"been inserted as aperiodic date. This is because you have modified the times "
-"of the date so that it is no longer periodic."
+"been added as a non-periodic date. This is because you have modified the "
+"times of the date so that it is no longer periodic."
 
 #: app/controllers/course/timesrooms.php:519
 #: app/controllers/resources/room_request.php:714
@@ -5949,10 +5948,10 @@ msgstr "Go to booking plan"
 
 #: app/controllers/course/timesrooms.php:568
 #: app/controllers/course/timesrooms.php:1161
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s"
-msgstr "The specified room could not be allocated for the date %s!"
+msgstr "The specified room could not be booked for the date %1$s: %2$s"
 
 #: app/controllers/course/timesrooms.php:579
 #: app/controllers/course/timesrooms.php:1169
@@ -5973,7 +5972,7 @@ msgstr "The room %{room_name} is already occupied on the date %{date}."
 #: app/controllers/course/timesrooms.php:1188
 #, php-format
 msgid "Der angegebene Raum konnte für den Termin %s nicht gebucht werden!"
-msgstr "The specified room could not be allocated for the date %s!"
+msgstr "The specified room could not be booked on the date %s!"
 
 #: app/controllers/course/timesrooms.php:618
 #, php-format
@@ -5992,22 +5991,22 @@ msgid ""
 msgstr "To book a room you must first select a room from the search results!"
 
 #: app/controllers/course/timesrooms.php:633
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde geändert, Raumbuchungen zu diesem Termin wurden entfernt "
 "und stattdessen der angegebene Freitext eingetragen!"
 msgstr ""
-"The date %s has been changed and all room bookings were removed and the free "
-"location information has been entered!"
+"The date %s has been changed, all room bookings were removed for this date "
+"and the specified free text has been entered!"
 
 #: app/controllers/course/timesrooms.php:643
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde geändert, freie Ortsangaben und Raumbuchungen an diesem "
 "Termin wurden entfernt."
 msgstr ""
 "The date %s has been changed. Any free location information and room "
-"bookings have been removed."
+"bookings for this date have been removed."
 
 #: app/controllers/course/timesrooms.php:743
 #, php-format
@@ -6046,22 +6045,20 @@ msgid "Es wurden keine gültigen Termin-IDs übergeben!"
 msgstr "No valid date-IDs have been specified!"
 
 #: app/controllers/course/timesrooms.php:1095
-#, fuzzy
 msgid "Die zuständigen Personen für die Termine wurden geändert."
-msgstr "Person in charge for the dates has been changed."
+msgstr "The persons in charge for the dates have been changed."
 
 #: app/controllers/course/timesrooms.php:1129
 msgid "Zugewiesene Gruppen für die Termine wurden geändert."
 msgstr "Assigned groups for the dates have been changed."
 
 #: app/controllers/course/timesrooms.php:1146
-#, fuzzy
 msgid ""
 "%{date}: Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d "
 "Minuten!"
 msgstr ""
-"The specified preparation time is longer than the allowed maximum of %d "
-"minutes!"
+"%{date}:The specified preparation time is longer than the allowed maximum of "
+"%d minutes!"
 
 #: app/controllers/course/timesrooms.php:1207
 #, php-format
@@ -6094,14 +6091,12 @@ msgid "Die Änderungen wurden gespeichert."
 msgstr "Your changes have been saved."
 
 #: app/controllers/course/timesrooms.php:1237
-#, fuzzy
 msgid "Es konnten nicht alle Termine geändert werden."
-msgstr "Not all permissions could be saved!"
+msgstr "Some dates could not be changed."
 
 #: app/controllers/course/timesrooms.php:1282
-#, fuzzy
 msgid "Es wurden keine gültigen Termine übergeben!"
-msgstr "No valid date-IDs have been specified!"
+msgstr "No valid dates have been transmitted!"
 
 #: app/controllers/course/timesrooms.php:1292
 msgid "Fehler beim Speichern der Anfrage!"
@@ -6193,9 +6188,9 @@ msgid "Kommentar hinzufügen"
 msgstr "Add comment"
 
 #: app/controllers/course/timesrooms.php:1603
-#, fuzzy, php-format
+#, php-format
 msgid "Der Kommentar des gelöschten Termins %s wurde geändert."
-msgstr "The commentary of the deleted date %s has been changed."
+msgstr "The comment for the deleted date %s has been changed."
 
 #: app/controllers/course/timesrooms.php:1608
 #: app/controllers/course/timesrooms.php:1614
@@ -6228,12 +6223,12 @@ msgid "Zum Ablaufplan"
 msgstr "To Schedule"
 
 #: app/controllers/course/timesrooms.php:1753
-#, fuzzy
 msgid ""
 "Der Termin %{date} wurde gelöscht! Die Buchung für den Raum %{room} wurde "
 "gelöscht."
 msgstr ""
-"The date %s has been deleted! The booking of the room %s has been deleted."
+"The date %{date} has been deleted! The booking of the room %s{room} has been "
+"deleted."
 
 #: app/controllers/course/timesrooms.php:1761
 #, php-format
@@ -6435,14 +6430,12 @@ msgid "Die Mindestanzahl der Sitzplätze beträgt 1!"
 msgstr "The minimum amount of seats is 1!"
 
 #: app/controllers/course/room_requests.php:511
-#, fuzzy
 msgid "Die Mindestanzahl der Sitzplätze muss größer als 0 sein!"
-msgstr "The minimum amount of seats is 1!"
+msgstr "The minimum amount of seats must be greater than 0!"
 
 #: app/controllers/course/room_requests.php:587
-#, fuzzy
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
-msgstr "The request has been processed and rejected."
+msgstr "The room request has been reopened and is active again."
 
 #: app/controllers/course/room_requests.php:603
 #: app/controllers/resources/room_request.php:767
@@ -6464,9 +6457,8 @@ msgid "Möchten Sie die Raumanfrage \"%s\" löschen?"
 msgstr "Are you sure you want to delete the room request \"%s\"?"
 
 #: app/controllers/course/lti.php:106 lib/modules/LtiToolModule.php:112
-#, fuzzy
 msgid "LTI-Tool hinzufügen"
-msgstr "Add module"
+msgstr "Add LTI tool"
 
 #: app/controllers/course/lti.php:115
 msgid "Tool mittels LTI Deep Linking hinzufügen"
@@ -6489,19 +6481,16 @@ msgstr ""
 "course."
 
 #: app/controllers/course/lti.php:188
-#, fuzzy
 msgid "Das ausgewählte LTI-Tool kann nicht genutzt werden."
-msgstr "The shared content cannot be found."
+msgstr "The LTI tool selected cannot be used."
 
 #: app/controllers/course/lti.php:197
-#, fuzzy
 msgid "Das LTI-Tool wurde eingebunden."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool has been embedded."
 
 #: app/controllers/course/lti.php:199
-#, fuzzy
 msgid "Das LTI-Tool konnte nicht eingebunden werden."
-msgstr "Plug-in not found."
+msgstr "The LTI tool could not be embedded."
 
 #: app/controllers/course/lti.php:212
 #, fuzzy
