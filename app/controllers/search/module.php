@@ -116,7 +116,7 @@ class Search_ModuleController extends MVVController
             foreach ($this->search_result['Modul'] as $i => $mod_id) {
                 $modul = Modul::find($mod_id);
                 $start_sem_begin = $modul->start_semester->beginn ?? 0;
-                $end_sem_end = $modul->end_semester->end ?? PHP_INT_MAX;
+                $end_sem_end = $modul->end_semester->ende ?? PHP_INT_MAX;
                 if (
                     $start_sem_begin > $this->selected_semester->beginn
                     || $this->selected_semester->ende > $end_sem_end
@@ -350,21 +350,6 @@ class Search_ModuleController extends MVVController
         URLHelper::removeLinkParam('type');
         unset($this->drill_down_id);
         URLHelper::removeLinkParam('id');
-    }
-
-    private function search_responsible_persons()
-    {
-        $term = '%' . $this->sterm . '%';
-        $stmt = DBManager::get()->prepare('SELECT modul_id, user_id FROM '
-                . 'mvv_modul_user LEFT JOIN auth_user_md5 USING(user_id) '
-                . 'WHERE Vorname LIKE ? OR Nachname LIKE ? '
-                . ' OR username LIKE ?');
-        $stmt->execute([$term, $term, $term]);
-        $ret = [];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $module) {
-            $ret[$module['modul_id']][] = $module['user_id'];
-        }
-        return $ret;
     }
 
     private function search_responsible_institutes()
