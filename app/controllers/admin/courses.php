@@ -117,9 +117,6 @@ class Admin_CoursesController extends AuthenticatedController
      * Depending on the sidebar elements the user has selected some of those
      * elements are shown or not. To find out what elements
      * the user has selected the user configuration is accessed.
-     *
-     * @param string courseTypeFilterConfig The selected value for the course type filter field, defaults to null.
-     * @return null This method does not return any value.
      */
     private function buildSidebar()
     {
@@ -337,10 +334,22 @@ class Admin_CoursesController extends AuthenticatedController
             ]
         );
 
+        $actions = $this->getActions();
+
         return [
             'setActivatedFields' => $this->getFilterConfig(),
             'setActionArea' => $configuration->MY_COURSES_ACTION_AREA ?? '1',
             'setFilter' => array_filter($filters),
+            'setActionAreas' => array_map(
+                fn($id, $area) => [
+                    'id'        => $id,
+                    'label'     => $area['name'],
+                    'url'       => $area['url'],
+                    'multimode' => $area['multimode'] ?? false,
+                ],
+                array_keys($actions),
+                $actions
+            )
         ];
     }
 
@@ -1498,7 +1507,7 @@ class Admin_CoursesController extends AuthenticatedController
             20 => [
                 'name'       => _('Notiz'),
                 'title'      => _('Notiz'),
-                'url'        => $this->noticeURL('%s'),
+                'url'        => str_replace('CID_PARAM', '%s', $this->noticeURL('CID_PARAM')),
                 'attributes' => ['data-dialog' => 'size=auto'],
                 'partial'    => 'notice-action.php',
             ],
@@ -1705,24 +1714,10 @@ class Admin_CoursesController extends AuthenticatedController
 
     /**
      * Adds HTML-Selector to the sidebar
-     * @param null $selected_action
      */
     private function setActionsWidget()
     {
-        $actions = $this->getActions();
-        $sidebar = Sidebar::Get();
-        $list = new SelectWidget(_('Aktionsbereichauswahl'), $this->url_for('admin/courses/set_action_type'), 'action_area');
-
-        foreach ($actions as $index => $action) {
-            $list->addElement(new SelectElement(
-                $index,
-                $action['name'],
-                $GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA == $index),
-                'action-aria-' . $index
-            );
-        }
-        $list->setOnSubmitHandler("STUDIP.AdminCourses.App.changeActionArea($(this).find('select').val()); return false;");
-        $sidebar->addWidget($list, 'editmode');
+        Sidebar::get()->addWidget(new VueWidget('action-area-selector'));
     }
 
 
