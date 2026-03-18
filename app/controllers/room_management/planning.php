@@ -30,6 +30,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if (Navigation::hasItem('/resources/planning/index')) {
             Navigation::activateItem('/resources/planning/index');
         }
+
         $selected_clipboard_id = Request::int('clipboard_id', $selected_clipboard_id);
 
         $this->no_clipboard = false;
@@ -91,24 +92,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
         $sidebar->addWidget($date_selector);
 
-        $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
-        if (!empty($clipboards)) {
-            $clipboard_widget = new SelectWidget(
-                _('Individuelle Raumgruppen'),
-                $this->indexURL(),
-                'clipboard_id',
-                'get'
-            );
-            foreach ($clipboards as $clipboard) {
-                $clipboard_widget->addElement(new SelectElement(
-                    $clipboard->id,
-                    $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
-                ), "clipboard_id-{$clipboard->id}");
-            }
-            $sidebar->addWidget($clipboard_widget);
-        }
-
         $rooms = [];
         if ($selected_clipboard_id) {
             $clipboard = Clipboard::find($selected_clipboard_id);
@@ -129,6 +112,20 @@ class RoomManagement_PlanningController extends AuthenticatedController
             //No rooms could be found.
             $this->no_rooms = true;
             return;
+        }
+
+        $clipboards = Clipboard::getClipboardsForUser(User::findCurrent()->user_id);
+        if ($clipboards) {
+            $sidebar->addWidget(new TemplateWidget(
+                _('Individuelle Raumgruppen'),
+                $this->get_template_factory()->open('room_management/templates/user_room_groups.php'),
+                [
+                    'url' => $this->indexURL(),
+                    'user_groups' => $clipboards,
+                    'active_group' => $this->clipboard,
+                    'rooms' => $rooms
+                ]
+            ));
         }
 
         //Generate the resources array for the fullcalendar scheduler plugin:
@@ -260,6 +257,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
                 'text'   => _('Anfrage')
             ];
         }
+
     }
 
     public function semester_plan_action($selected_clipboard_id = null)
