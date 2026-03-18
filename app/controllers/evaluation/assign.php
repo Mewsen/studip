@@ -2,11 +2,16 @@
 
 class Evaluation_AssignController extends AuthenticatedController
 {
-    public function index_action()
+    public function before_filter(&$action, &$args)
     {
         if (!EvaluationHelper::isPermittedEvaluationAccess()) {
             throw new AccessDeniedException();
         }
+        parent::before_filter($action, $args);
+    }
+
+    public function index_action()
+    {
         $courseIds = Request::optionArray('evaluation_courses');
         $courses = Course::findMany($courseIds);
 
