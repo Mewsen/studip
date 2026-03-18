@@ -15,4 +15,5 @@ $data = [
 ?>
 <div data-vue-app>
      <script type="application/json"><?= json_encode($data) ?></script>
+    <?= $placeholder ?? '' ?>
 </div>

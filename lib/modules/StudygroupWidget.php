@@ -24,14 +24,17 @@ class StudygroupWidget extends CorePlugin implements PortalPlugin
     public function getPortalTemplate()
     {
         $template = $GLOBALS['template_factory']->open('start/studygroups');
+        $template->proposals = Studip\VueApp::create('StudygroupProposals');
 
-        $controller = app(\Trails\Dispatcher::class)->load_controller('my_studygroups');
-        $response = $controller->relayWithRedirect('my_studygroups/proposals');
-        $template->proposals = $response->body;
-
-        $navigation = new Navigation('', 'dispatch.php/course/wizard?studygroup=1');
-        $navigation->setImage(Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neue Studiengruppe anlegen')]));
-        $navigation->setLinkAttributes(['data-dialog' => 'reload-on-close']);
+        $navigation = new Navigation(
+            _('Neue Studiengruppe anlegen'),
+            URLHelper::getURL('dispatch.php/course/wizard', ['studygroup' => 1])
+        );
+        $navigation->setImage(Icon::create('add'));
+        $navigation->setLinkAttributes([
+            'data-dialog' => 'reload-on-close',
+            'title'       => _('Neue Studiengruppe anlegen'),
+        ]);
         $template->icons = [$navigation];
 
         return $template;
