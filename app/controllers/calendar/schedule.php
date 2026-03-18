@@ -166,6 +166,8 @@ class Calendar_ScheduleController extends AuthenticatedController
             //No time range specified.
             throw new InvalidArgumentException('Invalid parameters!');
         }
+        //Set $end to the last second of the day before to get a "Stud.IP time range".
+        $end = $end->sub(new \DateInterval('PT1S'));
 
         $result = [];
 
@@ -178,7 +180,9 @@ class Calendar_ScheduleController extends AuthenticatedController
             //whose day of week lies in the range of the fullcalendar time range:
             $days_of_week = [];
             for ($dow = clone $begin; $dow <= $end; $dow = $dow->add(new DateInterval('P1D'))) {
-                $days_of_week[] = $dow->format('N');
+                //Regular course dates still use Sunday as first day (with the value 0).
+                //This is why the "w" format is used.
+                $days_of_week[] = $dow->format('w');
             }
             $query = "SELECT scd.*
                       FROM (
@@ -225,9 +229,23 @@ class Calendar_ScheduleController extends AuthenticatedController
                 //fullcalendar has specified.
                 $fake_begin = clone $begin;
                 $fake_end = clone $begin;
-                if ($cycle_date->weekday > 1) {
-                    $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
-                    $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+                //Calculate the offset of the day of week for the cycle date from the start of the requested
+                //time range. Then calculate a fake start and end that lie in the requested time range.
+                $date_dow_offset = (int)$cycle_date->weekday;
+                if ($cycle_date->weekday === '0') {
+                    //Special case for sunday: It is day 7 of the week.
+                    $date_dow_offset = 7;
+                }
+                //The requested time range may not start on monday (which is the case when
+                //the schedule starts with the day view in the responsive view).
+                //Therefore, the cycle date may need to be shifted.
+                //$date_dow_offset for the cycle date is the day of week of the cycle date
+                //minus the start of the requested time range.
+                $date_dow_offset -= (int)$begin->format('N');
+                if ($date_dow_offset > 0) {
+                    //The fake time range of the cycle date has to be shifted:
+                    $fake_begin = $fake_begin->add(new DateInterval('P' . $date_dow_offset . 'D'));
+                    $fake_end   = $fake_end->add(new DateInterval('P' . $date_dow_offset . 'D'));
                 }
                 $start_time_parts = explode(':', $cycle_date->start_time);
                 $end_time_parts = explode(':', $cycle_date->end_time);
