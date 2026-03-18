@@ -490,73 +490,59 @@ class Resources
 
 
     static addResourcePropertyToTable(event) {
-        var select = jQuery(event.target).siblings('select')[0];
+        event.preventDefault();
+        event.stopPropagation();
+
+        const select = jQuery(this).siblings('select')[0];
         if (!select) {
             //Something is wrong with the HTML
             return;
         }
 
-        var selected_property_id = jQuery(select).val();
-        var selected_property = jQuery(select).children(
-            'option:selected'
-        )[0];
+        const selected_property = jQuery(select).children('option:selected');
         if (!selected_property) {
             return;
         }
-        var selected_property_name = jQuery(selected_property).text();
 
+        const selected_property_id = jQuery(select).val();
+        const selected_property_name = jQuery(selected_property).text();
         if (!selected_property_id || !selected_property_name) {
             //Invalid option
             return;
         }
 
-        var table = jQuery(event.target).parents(
-            'table'
-        )[0];
+        const table = jQuery(this).closest('table');
         if (!table) {
             return;
         }
 
-        var template = jQuery(table).find('tr.template')[0];
+        const template = jQuery(table).find('tr.template');
         if (!template) {
             return;
         }
 
-        var new_row = jQuery(template).clone();
-        if (!new_row) {
-            return;
-        }
+        const new_row = jQuery(template).clone();
 
-        var text_field = jQuery(new_row).find('.name');
-        jQuery(text_field).text(selected_property_name);
-        var set_input = jQuery(new_row).find('.property-input');
-        jQuery(set_input).attr(
-            'name',
-            'prop[' + selected_property_id + ']'
-        );
-        var value_input = jQuery(new_row).find('.value-input');
-        jQuery(value_input).attr(
-            'name',
-            'prop_value[' + selected_property_id + ']'
-        );
-        var requestable_input = jQuery(new_row).find('.requestable-input');
-        jQuery(requestable_input).attr(
-            'name',
-            'prop_requestable[' + selected_property_id + ']'
-        );
-        var protected_input = jQuery(new_row).find('.protected-input');
-        jQuery(protected_input).attr(
-            'name',
-            'prop_protected[' + selected_property_id + ']'
-        );
+        jQuery(new_row).find('.name').text(selected_property_name);
+        jQuery(new_row).find('.property-input').attr({
+            name: `prop[${selected_property_id}]`
+        });
+        jQuery(new_row).find('.value-input').attr({
+            name: `prop_value[${selected_property_id}]`
+        });
+        jQuery(new_row).find('.requestable-input').attr({
+            name: `prop_requestable[${selected_property_id}]`
+        });
+        jQuery(new_row).find('.protected-input').attr({
+            name: `prop_protected[${selected_property_id}]`
+        });
 
-        var tbody = jQuery(table).find('tbody')[0];
+        const tbody = jQuery(table).find('tbody');
         if (!tbody) {
             return;
         }
 
-        jQuery(new_row).removeClass('invisible');
-        jQuery(new_row).removeClass('template');
+        jQuery(new_row).removeClass(['invisible', 'template']);
         jQuery(new_row).data('property_id', selected_property_id);
         jQuery(tbody).append(new_row);
         jQuery(selected_property).attr('disabled', 'disabled');
