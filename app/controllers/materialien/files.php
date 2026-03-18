@@ -44,16 +44,16 @@ class Materialien_FilesController extends MVVController
             $file_ids = $search_result;
         } else {
             if (!empty($_SESSION['mvv_filter_files_fach_id'])) {
-                $file_ids = $this->findFileIdsByFach($_SESSION['mvv_filter_contacts_fach_id']);
+                $file_ids = $this->findFileIdsByFach($_SESSION['mvv_filter_files_fach_id']);
             }
             if (!empty($_SESSION['mvv_filter_files_abschluss_id'])) {
                 if (count($file_ids) > 0) {
                     $file_ids = array_intersect(
                         $file_ids,
-                        $this->findFileIdsByAbschluss($_SESSION['mvv_filter_contacts_abschluss_id'])
+                        $this->findFileIdsByAbschluss($_SESSION['mvv_filter_files_abschluss_id'])
                     );
                 } else {
-                    $file_ids = $this->findFileIdsByAbschluss($_SESSION['mvv_filter_contacts_abschluss_id']);
+                    $file_ids = $this->findFileIdsByAbschluss($_SESSION['mvv_filter_files_abschluss_id']);
                 }
             }
         }
