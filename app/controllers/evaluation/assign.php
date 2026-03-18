@@ -39,6 +39,28 @@ class Evaluation_AssignController extends AuthenticatedController
                 ['options' => $templates]
             )
         );
+        $part->addInput(
+            new \Studip\Forms\DatetimepickerInput(
+                'startdate',
+                _('Start'),
+                $profile->startdate,
+                [
+                    'mindate' => $profile->semester->beginn,
+                    'maxdate' => $profile->semester->ende
+                ]
+            )
+        );
+        $part->addInput(
+            new \Studip\Forms\DatetimepickerInput(
+                'stopdate',
+                _('Ende'),
+                $profile->stopdate,
+                [
+                    'mindate' => 'startdate',
+                    'maxdate' => $profile->semester->ende
+                ]
+            )
+        );
         $form->addPart($part);
         $this->render_form($form);
     }
