@@ -44,12 +44,13 @@ class Lti_AgsController extends StudipController
         //All the work is done by the OAT-SA library and
         //the implementation of its interfaces in Stud.IP.
         //Only the handler changes for the endpoints.
-        $reg_manager = new RegistrationManager();
+        $reg_manager    = new RegistrationManager();
         $line_item_repo = new LineItemRepository();
-        $validator = new RequestAccessTokenValidator($reg_manager);
-        $handler = null;
-        if ($action === 'line_item') {
-            if (empty($args)) {
+        $validator      = new RequestAccessTokenValidator($reg_manager);
+        $handler        = null;
+        $real_action    = $args[0] ?? '';
+        if ($real_action === 'line_item') {
+            if (count($args) === 1) {
                 if (Request::isPut()) {
                     //Update a line item:
                     $handler = new UpdateLineItemServiceServerRequestHandler($line_item_repo);
@@ -60,12 +61,12 @@ class Lti_AgsController extends StudipController
                     //Get a line item:
                     $handler = new GetLineItemServiceServerRequestHandler($line_item_repo);
                 }
-            } elseif ($args[0] === 'results') {
+            } elseif ($args[1] === 'results') {
                 $handler = new ResultServiceServerRequestHandler($line_item_repo, new Studip\LTI13a\ResultRepository());
-            } elseif ($args[0] === 'scores') {
+            } elseif ($args[1] === 'scores') {
                 $handler = new ScoreServiceServerRequestHandler($line_item_repo,new \Studip\LTI13a\ScoreRepository());
             }
-        } elseif ($action === 'line_items') {
+        } elseif ($real_action === 'line_items') {
             if (Request::isPost()) {
                 //Create a line item:
                 $handler = new CreateLineItemServiceServerRequestHandler($line_item_repo);
@@ -75,7 +76,7 @@ class Lti_AgsController extends StudipController
             }
         } else {
             //Invalid endpoint.
-            throw new AccessDeniedException(studip_interpolate('Invalid endpoint: %{endpoint}', ['endpoint' => $action]));
+            throw new AccessDeniedException(studip_interpolate('Invalid endpoint: %{endpoint}', ['endpoint' => $real_action]));
         }
         if (!$handler) {
             throw new \Studip\LTIException('No handler available for this request.');

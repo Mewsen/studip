@@ -297,7 +297,6 @@ class Course_LtiController extends StudipController
                 $ags_url_parameters = [
                     'cid'           => $this->course_id,
                     'tool_id'       => $this->resource_link->deployment->tool_id,
-                    'deployment_id' => $this->resource_link->deployment_id,
                     'cancel_login'  => '1'
                 ];
 
@@ -329,8 +328,8 @@ class Course_LtiController extends StudipController
                                     'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
                                     'https://purl.imsglobal.org/spec/lti-ags/scope/score'
                                 ],
-                                $this->url_for('lti/ags/line_items', $ags_url_parameters),
-                                $this->url_for('lti/ags/line_item', $ags_url_parameters)
+                                $this->url_for(sprintf('lti/ags/%d/line_items', $this->resource_link->id), $ags_url_parameters),
+                                $this->url_for(sprintf('lti/ags/%d/line_item', $this->resource_link->id), $ags_url_parameters)
                             )
                         ],
                         $this->resource_link->getCustomLtiParameterArray(),
