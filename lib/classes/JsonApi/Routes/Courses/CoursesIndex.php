@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\Courses;
 
+use JsonApi\Schemas\Course as CourseSchema;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
@@ -13,22 +14,19 @@ class CoursesIndex extends JsonApiController
     protected $allowedFilteringParameters = ['q', 'fields', 'semester', 'category', 'scope_choose', 'range_choose', 'df'];
 
     protected $allowedIncludePaths = [
-        'blubber-threads',
-        'end-semester',
-        'events',
-        'feedback-elements',
-        'file-refs',
-        'folders',
-        'forum-categories',
-        'institute',
-        'memberships',
-        'news',
-        'participating-institutes',
-        'sem-class',
-        'sem-type',
-        'start-semester',
-        'status-groups',
-        'wiki-pages',
+        CourseSchema::REL_BLUBBER,
+        CourseSchema::REL_END_SEMESTER,
+        CourseSchema::REL_EVENTS,
+        CourseSchema::REL_FEEDBACK,
+        CourseSchema::REL_INSTITUTE,
+        CourseSchema::REL_MEMBERSHIPS,
+        CourseSchema::REL_NEWS,
+        CourseSchema::REL_PARTICIPATING_INSTITUTES,
+        CourseSchema::REL_SEM_CLASS,
+        CourseSchema::REL_SEM_TYPE,
+        CourseSchema::REL_START_SEMESTER,
+        CourseSchema::REL_STATUS_GROUPS,
+        CourseSchema::REL_WIKI_PAGES,
     ];
 
     protected $allowedPagingParameters = ['offset', 'limit'];
@@ -42,13 +40,14 @@ class CoursesIndex extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        if ($error = $this->validateFilters()) {
+        $error = $this->validateFilters();
+        if ($error) {
             throw new BadRequestException($error);
         }
 
         $courseIds = $this->searchCourses($user, $this->getContextFilters());
 
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        [$offset, $limit] = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
             $this->getCourses(array_slice($courseIds, $offset, $limit)),
