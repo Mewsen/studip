@@ -189,6 +189,8 @@ final class Step5405 extends Migration {
             'section'     => 'LTI',
             'description' => 'Soll die Veranstaltung als LTI-Tool freigegeben werden?'
         ]);
+
+        $this->migrateData();
     }
 
     public function down()
@@ -263,5 +265,87 @@ final class Step5405 extends Migration {
                     'SHARE_COURSE_AS_LTI_TOOL'
                 )"
         );
+    }
+
+    private function migrateData(): void
+    {
+        $db = DBManager::get();
+
+        $ltiTools = $db->fetchAll("SELECT * FROM `lti_tools`");
+
+        foreach ($ltiTools as $tool) {
+            $insertRegistrationStatement = $db->prepare(
+                "INSERT INTO `lti_registrations`
+                (`name`, `status`, `version`, `range_id`, `mkdate`, `chdate`)
+                VALUES
+                (:name, :status, :version, :range_id, :mkdate, :chdate)"
+            );
+
+            $insertRegistrationStatement->execute([
+                'name' => $tool['name'],
+                'status' => 'active',
+                'version' => $tool['lti_version'],
+                'range_id' => $tool['range_id'],
+                'mkdate' => $tool['mkdate'],
+                'chdate' => $tool['chdate']
+            ]);
+
+            $registrationId = $db->lastInsertId('lti_registrations_id_seq');
+
+            DBManager::get()
+                ->prepare(
+                    "UPDATE `lti_deployments` SET `client_id` = :client_id, is_default = :is_default, registration_id = :registration_id WHERE `registration_id` = :tool_id"
+                )->execute([
+                    'is_default' => true,
+                    'client_id' => $tool['oauth2_client_id'] ?? $tool['id'],
+                    'registration_id' => $registrationId,
+                    'tool_id' => (int) $tool['id']
+                ]);
+
+            DBManager::get()
+                ->prepare(
+                    "UPDATE `lti_tool_privacy_settings` SET registration_id = :registration_id WHERE `registration_id` = :tool_id"
+                )->execute([
+                    'is_default' => true,
+                    'client_id' => $tool['oauth2_client_id'] ?? $tool['id'],
+                    'registration_id' => $registrationId,
+                    'tool_id' => (int) $tool['id']
+                ]);
+
+            $configs = array_filter([
+                'launch_container' => 'window',
+                'launch_url' => $tool['launch_url'],
+                'jwks_url' => $tool['jwks_url'],
+                'jwks_key_id' => $tool['jwks_key_id'],
+                'deep_linking_url' => $tool['deep_linking_url'],
+                'data_protection_notes' => $tool['data_protection_notes'],
+                'privacy_policy_url' => $tool['privacy_policy_url'],
+                'terms_of_use_url' => $tool['terms_of_use_url'],
+                'consumer_key' => $tool['consumer_key'],
+                'consumer_secret' => $tool['consumer_secret'],
+                'custom_parameters' => $tool['custom_parameters'],
+                'send_lis_person' => $tool['send_lis_person'],
+                'allow_custom_url' => $tool['allow_custom_url'],
+                'oauth_signature_method' => $tool['oauth_signature_method'],
+                'auth_init_url' => $tool['oidc_init_url']
+            ], static fn($value) => $value !== null);
+
+            foreach ($configs as $configKey => $configValue) {
+                DBManager::get()
+                    ->prepare(
+                        "INSERT INTO `lti_configs`
+                        (`configurable_id`, `configurable_type`, `name`, `value`, `mkdate`, `chdate`)
+                        VALUES
+                        (:configurable_id, :configurable_type, :name, :value, :mkdate, :chdate)"
+                    )->execute([
+                        'configurable_id' => $registrationId,
+                        'configurable_type' => 'Lti\Registration',
+                        'name' => $configKey,
+                        'value' => $configValue,
+                        'mkdate' => $tool['mkdate'],
+                        'chdate' => $tool['chdate']
+                    ]);
+            }
+        }
     }
 }
