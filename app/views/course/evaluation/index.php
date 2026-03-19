@@ -4,7 +4,6 @@
  */
 ?>
 
-<!-- TODO min responses -->
 <?php foreach ($controller->evaluations as $key => $evaluation) : ?>
     <article class="studip toggle <?= $key == 0 ? 'open' : '' ?>">
         <header>
@@ -15,11 +14,13 @@
             </h1>
         </header>
 
-        <?php if (EvaluationHelper::isPermittedEvaluationAccess()) : ?>
+        <?php if ($evaluation->resultsVisible()) : ?>
             <?= $this->render_partial('questionnaire/evaluate.php',
                 ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
-        <?php elseif (User::findCurrent()->hasPermissionLevel('tutor', Context::get())) : ?>
-            <!-- TODO other views -->
+        <?php elseif ($evaluation->isAnswerable()) : ?>
+            <?= $this->render_partial('questionnaire/answer.php',
+                ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
+        <?php else : ?>
             <table class="row-headers">
                 <tbody>
                     <tr>
@@ -58,14 +59,6 @@
                     </tr>
                 </tbody>
             </table>
-        <?php else : ?>
-            <?php if ($evaluation->isStopped()) : ?>
-                <?= $this->render_partial('questionnaire/evaluate.php', ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
-            <?php elseif ($evaluation->isAnswerable()) : ?>
-                <?= $this->render_partial('questionnaire/answer.php', ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
-            <?php else : ?>
-                <p><?= _('Die Evaluation ist noch nicht abgeschlossen.') ?></p>
-            <?php endif ?>
         <?php endif ?>
     </article>
 <?php endforeach ?>

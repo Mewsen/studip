@@ -155,6 +155,11 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isAnswerable()
     {
+        if ($this->template_id && Context::isCourse()
+            && User::findCurrent()->hasPermissionLevel('tutor', Context::get())) {
+            return false;
+        }
+
         if (!$this->isViewable() || !$this->isRunning()) {
             return false;
         }
@@ -273,8 +278,10 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                 && $this->countAnswers() >= $this->minimum_responses;
 
             return $eval_visible
-                && ($this->resultvisibility === 'afterending' && $this->isStopped()
-                || $this->resultvisibility === 'afterparticipation' && $this->isAnswered());
+                && (($this->resultvisibility === 'afterending' && $this->isStopped())
+                || ($this->resultvisibility === 'afterparticipation' && $this->isAnswered())
+                || ($this->resultvisibility === 'afterparticipation'
+                        && $user->hasPermissionLevel('tutor', Context::get())));
         }
 
         return $this['resultvisibility'] === 'always'
