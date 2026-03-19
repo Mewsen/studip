@@ -218,7 +218,11 @@ if ($navigation) {
         <? endforeach; ?>
             <li class="overflow">
                 <input type="checkbox" id="header-sink">
-                <button class="as-link" aria-controls="header-sink" id="header-sink-toggle">
+                <button class="as-link"
+                        aria-controls="header-sink-list"
+                        aria-expanded="false"
+                        data-toggles="#header-sink"
+                >
                     <?= Icon::create('action', 'navigation')->asImg(32, [
                         'class'  => 'headericon original',
                         'title'  => '',
@@ -229,7 +233,7 @@ if ($navigation) {
                     </div>
                 </button>
 
-                <ul aria-expanded="false">
+                <ul id="header-sink-list">
                 <? foreach ($header_nav['hidden'] as $path => $nav) : ?>
                     <?= $this->render_partial(
                         'header-navigation-item.php',

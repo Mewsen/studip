@@ -137,10 +137,6 @@ body:not(.fixed) #navigation-level-1-items {
             transition: opacity var(--transition-duration);
         }
 
-        &::after {
-
-        }
-
         // Display menu on activation
         &:hover button.as-link,
         input[type="checkbox"]:checked {
