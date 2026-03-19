@@ -19,6 +19,10 @@ if (isset($filtered[$questionnaire->getId()]) && $filtered[$questionnaire->getId
      data-title="<?= htmlReady($questionnaire['title']) ?>">
 
     <? if ($questionnaire->resultsVisible()) : ?>
+        <? if (EvaluationHelper::isPermittedEvaluationAccess()
+            && $questionnaire->countAnswers() < $questionnaire->minimum_responses) : ?>
+            <?= MessageBox::warning(_('Der Mindestrücklauf wurde nicht erreicht!')) ?>
+        <? endif ?>
         <? foreach ($questionnaire->questions as $question) : ?>
             <article class="question question_<?= $question->getId() ?>">
                 <? $template = $question->getResultTemplate(
