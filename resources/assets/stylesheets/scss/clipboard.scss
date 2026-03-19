@@ -82,7 +82,7 @@ table.clipboard-area tr.empty-clipboard-message > td {
 
 
 .animated-drop {
-    animation: drop-animation 0.5s;
+    animation: drop-animation var(--transition-duration-slow);
 }
 
 @keyframes drop-animation {

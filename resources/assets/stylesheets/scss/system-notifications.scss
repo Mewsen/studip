@@ -118,7 +118,7 @@
     .system-notification-timeout {
         &.system-notification-timeout-enter-active,
         &.system-notification-timeout-leave-active {
-            transition: width 5s linear;
+            transition: width var(--transition-duration-megaslow) linear;
         }
 
         &.system-notification-timeout-enter-from {

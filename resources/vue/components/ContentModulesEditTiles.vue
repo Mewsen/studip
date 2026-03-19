@@ -213,7 +213,7 @@ export default {
     }
     &.pulse:not(.sortable-ghost) {
         box-shadow: 0 0 0 0 rgb(255, 189, 51, 1);
-        animation: pulse 2s;
+        animation: pulse calc(2 * var(--transition-duration-slow));
         animation-iteration-count: 1;
     }
 

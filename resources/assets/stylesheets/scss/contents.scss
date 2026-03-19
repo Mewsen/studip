@@ -60,7 +60,7 @@
             grid-template-columns: 74px auto;
             grid-gap: 5px;
             padding: 25px 10px 10px;
-            transition: 0.5s;
+            transition: var(--transition-duration-slow);
 
             &:hover {
                 text-decoration: none;

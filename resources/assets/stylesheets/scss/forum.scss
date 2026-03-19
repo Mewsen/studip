@@ -401,7 +401,7 @@ $cardMaxWidth: 350px;
         height: 100%;
         min-height: 180px;
         display: flex;
-        transition: 0.2s;
+        transition: var(--transition-duration);
 
         &__flag {
             width: 10px;
@@ -477,7 +477,7 @@ $cardMaxWidth: 350px;
 
     .post {
         display: flex;
-        transition: background-color 1s ease;
+        transition: background-color var(--transition-duration-superslow) ease;
 
         &--highlight {
             background-color: var(--content-color-10);
@@ -639,7 +639,7 @@ $cardMaxWidth: 350px;
                 align-items: center;
                 justify-content: center;
                 font-size: 18px;
-                transition: 0.3s;
+                transition: var(--transition-duration);
 
                 &.--active {
                     background-color: var(--base-color-20);
@@ -743,7 +743,7 @@ $cardMaxWidth: 350px;
                     padding: 0;
                     width: 100%;
                     text-align: left;
-                    transition: opacity 5s;
+                    transition: opacity var(--transition-duration-megaslow);
                     cursor: pointer;
                     font-weight: bold;
                     margin: 0 10px;
@@ -824,7 +824,7 @@ $cardMaxWidth: 350px;
                 background-color: var(--color--tile-background);
                 border: 1px solid var(--color--action-menu-border);
                 border-radius: 4px;
-                transition: background-color 1s ease;
+                transition: background-color var(--transition-duration-superslow) ease;
                 z-index: 1;
 
                 &:hover,
@@ -905,7 +905,7 @@ $cardMaxWidth: 350px;
                 align-items: center;
                 justify-content: space-between;
                 gap: 10px;
-                transition: background-color 0.2s ease-out;
+                transition: background-color var(--transition-duration) ease-out;
 
                 &:hover,
                 &:focus {
@@ -922,7 +922,7 @@ $cardMaxWidth: 350px;
                         height: 25px;
                         border-radius: 100%;
                         border: 1.5px solid white;
-                        transition: all .4s ease-in-out;
+                        transition: all var(--transition-duration) ease-in-out;
                     }
 
                     p {
@@ -945,7 +945,7 @@ $cardMaxWidth: 350px;
                 position: absolute;
                 right: 0;
                 top: 10px;
-                transition: background-color 0.2s ease;
+                transition: background-color var(--transition-duration) ease;
 
                 &:hover {
                     background-color: var(--content-color-10);
@@ -1594,7 +1594,7 @@ $cardMaxWidth: 350px;
     */
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity 0.5s ease;
+        transition: opacity var(--transition-duration-slow) ease;
     }
 
     .fade-enter-from,
@@ -1603,11 +1603,11 @@ $cardMaxWidth: 350px;
     }
 
     .fade-up-enter-active {
-        transition: all 0.2s ease-out;
+        transition: all var(--transition-duration) ease-out;
     }
 
     .fade-up-leave-active {
-        transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+        transition: all var(--transition-duration) cubic-bezier(1, 0.5, 0.8, 1);
     }
 
     .fade-up-enter-from,

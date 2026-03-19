@@ -19,7 +19,7 @@
         padding: 0 4px;
         top: 0;
         right: -270px;
-        transition: right 0.6s;
+        transition: right var(--transition-duration-slow);
         &.hd {
             width: 480px;
             right: -480px;
@@ -56,11 +56,11 @@
                     border-radius: 0;
                 }
             }
-    
+
             .cw-block-search {
                 width: inherit;
             }
-    
+
             .cw-toolbar-tool-header {
                 border-bottom: solid thin var(--color--content-box-border);
                 margin-bottom: 8px;
@@ -68,7 +68,7 @@
             }
 
         }
-        
+
         .cw-toolbar-containers {
             position: relative;
             height: 100%;
@@ -79,7 +79,7 @@
                 padding-right: 10px;
             }
         }
-        
+
         .cw-toolbar-clipboard {
             .cw-collapsible {
                 margin-bottom: 4px;
@@ -106,7 +106,7 @@
         padding: 2px 8px 0 8px;
         border: none;
         background-color: var(--color--global-background);
-        color: var(--color--highlight);   
+        color: var(--color--highlight);
         cursor: pointer;
         border-bottom: solid 2px transparent;
 

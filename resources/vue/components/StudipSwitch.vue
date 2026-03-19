@@ -67,7 +67,7 @@ const isChecked = defineModel({ default: false });
     border-radius: var(--studip-switch-size);
     background-color: var(--dark-gray-color-15);
     flex-shrink: 0;
-    transition: background-color 0.25s ease-in-out;
+    transition: background-color var(--transition-duration) ease-in-out;
 }
 
 .switch-container .switch {
@@ -78,7 +78,7 @@ const isChecked = defineModel({ default: false });
     border-radius: 9999px;
     background-color: white;
     border: 2px solid var(--dark-gray-color-15);
-    transition: transform 0.375s ease-in-out;
+    transition: transform var(--transition-duration) ease-in-out;
 }
 
 .switch::before {

@@ -7,7 +7,7 @@
     padding: 10px;
     position: fixed;
     transform: translateX(-50%);
-    transition: opacity 0.5s linear;
+    transition: opacity var(--transition-duration-slow) linear;
     top: 20px;
     z-index: 3000;
 

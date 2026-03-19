@@ -977,9 +977,11 @@ html[data--a11y-motion="reduce"] {
     --transition-duration: 0s;
     --transition-duration-slow: 0s;
     --transition-duration-superslow: 0s;
+    --transition-duration-megaslow: 0s;
 }
 html[data--a11y-motion="allow"] {
     --transition-duration: #{$transition-duration};
     --transition-duration-slow: #{$transition-duration-slow};
     --transition-duration-superslow: #{$transition-duration-superslow};
+    --transition-duration-megaslow: #{transition-duration-megaslow};
 }
