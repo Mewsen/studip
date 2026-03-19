@@ -20,9 +20,10 @@ use Studip\Button;
             <th data-sort="text" scope="col"><?= _('Titel') ?></th>
             <th data-sort="text" scope="col"><?= _('Veranstaltung') ?></th>
             <th data-sort="digit" scope="col"><?= _('Nr.') ?></th>
-            <th data-sort="text"><?= _('Evaluierte') ?></th>
+            <th data-sort="text" scope="col"><?= _('Evaluierte') ?></th>
             <th data-sort="digit" scope="col"><?= _('Start') ?></th>
             <th data-sort="digit" scope="col"><?= _('Ende') ?></th>
+            <th data-sort="digit" scope="col"><?= _('Rücklauf') ?></th>
         </tr>
         </thead>
         <tbody>
@@ -41,8 +42,7 @@ use Studip\Button;
                     </td>
                     <?php $assignment = $evaluation->eval_assignment ?>
                     <td>
-                        <?= htmlReady(isset($assignment->course_metadata['course_title']) ?
-                            $assignment->course_metadata['course_title'] : '') ?>
+                        <?= htmlReady($assignment->course_metadata['course_title'] ?? '') ?>
                     </td>
                     <td>
                         <?= htmlReady($assignment->course_metadata['sem_nr']) ?>
@@ -60,11 +60,14 @@ use Studip\Button;
                     <td data-text="<?= $evaluation->stopdate?>">
                         <?= date('d.m.Y H:i', $evaluation->stopdate) ?>
                     </td>
+                    <td>
+                        <?= $evaluation->countAnswers() ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         <?php else : ?>
             <tr>
-                <td colspan="7" style="text-align: center">
+                <td colspan="8" style="text-align: center">
                     <?= _('Es stehen keine Evaluationen zur Verfügung.') ?>
                 </td>
             </tr>
@@ -72,7 +75,7 @@ use Studip\Button;
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <?= Button::create(_("Löschen"), "bulkdelete", [
                         'formaction' => $controller->bulk('delete'),
                         'data-confirm' => _("Wirklich löschen?")
