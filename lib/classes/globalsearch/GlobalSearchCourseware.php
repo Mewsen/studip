@@ -152,7 +152,7 @@ class GlobalSearchCourseware extends GlobalSearchModule implements GlobalSearchF
         return [];
     }
 
-    private static function getPageData(StructuralElement $structural_element, Unit $unit): Array
+    public static function getPageData(StructuralElement $structural_element, Unit $unit): Array
     {
         $url = '';
         $originUrl = '';
