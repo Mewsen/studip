@@ -77,7 +77,7 @@ class Course extends SchemaProvider
         }
 
         $relationships = $this->getParticipatingInstitutes($relationships, $course, $includeList);
-        $relationships = $this->getFilesRelationship($relationships, $course, $includeList);
+        $relationships = $this->getFilesRelationship($relationships, $course);
         $relationships = $this->getForumCategoriesRelationship($relationships, $course, $includeList);
         $relationships = $this->getBlubberRelationship($relationships, $course, $includeList);
         $relationships = $this->getCoursewareRelationship($relationships, $course, $includeList);
