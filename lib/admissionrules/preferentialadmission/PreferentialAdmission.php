@@ -236,7 +236,7 @@ class PreferentialAdmission extends AdmissionRule
      */
     public function getFavorSemester()
     {
-        return $this->favorSemester;
+        return (bool) $this->favorSemester;
     }
 
     /**
