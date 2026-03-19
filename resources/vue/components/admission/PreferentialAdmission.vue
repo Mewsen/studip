@@ -131,7 +131,7 @@ export default {
         setRuleData(data) {
             this.messageText = data.attributes.payload['message'];
             this.conditions = data.attributes.payload['conditions'];
-            this.favorSemester = data.attributes.payload['favor-semester'] === '1';
+            this.favorSemester = data.attributes.payload['favor-semester'];
         },
         validate() {
             if (this.conditions.length === 0 && !this.favorSemester) {
