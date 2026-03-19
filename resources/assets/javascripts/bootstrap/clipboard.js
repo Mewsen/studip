@@ -1,4 +1,4 @@
-STUDIP.ready(function () {
+STUDIP.domReady(function () {
     jQuery('.clipboard-draggable-item').draggable({
         cursorAt: {left: 28, top: 15}, appendTo: 'body', helper: function () {
             let dragged_item = jQuery('<div class="dragged-clipboard-item"></div>');
@@ -29,7 +29,7 @@ STUDIP.ready(function () {
 
         const message = $(this).data('confirm-message');
         STUDIP.Dialog.confirm(message).done(() => {
-            STUDIP.Clipboard.handleRemoveClick(event.target.parentNode);
+            STUDIP.Clipboard.handleRemoveClick(this);
         });
     });
 
