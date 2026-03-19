@@ -46,7 +46,7 @@ if (!$item) {
         </a>
         <?= Icon::create('trash')->asInput([
             'data-confirm-message' => _('Sind Sie sicher?'),
-            'class' => 'text-bottom clipboard-item-remove-button'
+            'class' => 'text-bottom clipboard-remove-button'
         ]) ?>
     </td>
 </tr>

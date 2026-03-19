@@ -1,4 +1,4 @@
-STUDIP.domReady(function () {
+STUDIP.ready(function () {
     jQuery('.clipboard-draggable-item').draggable({
         cursorAt: {left: 28, top: 15}, appendTo: 'body', helper: function () {
             let dragged_item = jQuery('<div class="dragged-clipboard-item"></div>');
@@ -29,7 +29,7 @@ STUDIP.domReady(function () {
 
         const message = $(this).data('confirm-message');
         STUDIP.Dialog.confirm(message).done(() => {
-            STUDIP.Clipboard.handleRemoveClick(event.target);
+            STUDIP.Clipboard.handleRemoveClick(event.target.parentNode);
         });
     });
 
@@ -56,13 +56,6 @@ STUDIP.domReady(function () {
     jQuery(document).on('dragleave', '.clipboard-area', function (event) {
         //TODO:rrv2: use CSS classes!
         event.target.style.backgroundColor = '#FFF';
-    });
-
-    jQuery(document).on('click', '.clipboard-item-remove-button', function (event) {
-        event.preventDefault();
-        STUDIP.Dialog.confirm($(this).data('confirm-message'), function() {
-            STUDIP.Clipboard.removeItem(event.target)
-        });
     });
 
     jQuery(document).on(
