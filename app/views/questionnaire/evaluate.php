@@ -57,7 +57,7 @@ if (isset($filtered[$questionnaire->getId()]) && $filtered[$questionnaire->getId
         STUDIP.Questionnaire.initialize();
     </script>
     <div data-dialog-button style="max-height: none; opacity: 1; text-align: center;">
-        <? if ($questionnaire->isAnswerable() && $questionnaire['editanswers'] && !$questionnaire->template_id) : ?>
+        <? if ($questionnaire->isAnswerable() && $questionnaire['editanswers']) : ?>
             <?= \Studip\LinkButton::create($questionnaire->isAnswered() ? _("Antwort ändern") : _("Beantworten"), URLHelper::getURL("dispatch.php/questionnaire/answer/".$questionnaire->getId()), ['data-dialog' => '']) ?>
         <? endif ?>
         <? if ($questionnaire->isEditable()) : ?>

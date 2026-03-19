@@ -14,7 +14,7 @@
             </h1>
         </header>
 
-        <?php if ($evaluation->resultsVisible()) : ?>
+        <?php if ($evaluation->resultsVisible() || ($evaluation->isAnswerable() && $evaluation->isAnswered() )) : ?>
             <?= $this->render_partial('questionnaire/evaluate.php',
                 ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
         <?php elseif ($evaluation->isAnswerable()) : ?>

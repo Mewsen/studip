@@ -155,8 +155,8 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isAnswerable()
     {
-        if ($this->template_id && Context::isCourse()
-            && User::findCurrent()->hasPermissionLevel('tutor', Context::get())) {
+        if ($this->template_id && (EvaluationHelper::isPermittedEvaluationAccess()
+            || (Context::isCourse() && User::findCurrent()->hasPermissionLevel('tutor', Context::get())))) {
             return false;
         }
 
