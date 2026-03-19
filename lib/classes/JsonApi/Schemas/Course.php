@@ -136,7 +136,7 @@ class Course extends SchemaProvider
         ];
     }
 
-    private function getFilesRelationship(array $relationships, \Course $resource, $includeData)
+    private function getFilesRelationship(array $relationships, \Course $resource)
     {
         $user = $this->currentUser;
 
