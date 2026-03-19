@@ -96,7 +96,7 @@ import { createMixin } from "@/vue/mixins/MyCoursesMixin";
 export default {
     name: "MyCoursesColorGroupSelector",
     mixins: [
-        createMixin(true),
+        createMixin(),
     ],
     props: {
         cid: String,
