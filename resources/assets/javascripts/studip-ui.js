@@ -501,10 +501,8 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
                 return;
             }
 
-            $(input).css({
-                'position': 'relative',
-                'z-index': 1002
-            });
+            input.style.zIndex = input.closest('.ui-dialog') ? 1002 : 1000;
+            input.style.position = 'relative';
         },
         showButtonPanel: true,
         onSelect: function (value, instance) {
