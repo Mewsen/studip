@@ -570,6 +570,7 @@ class Instance
     {
         if (!$formatter) {
             $formatter = function ($row) {
+                unset($row['id']);
                 return \Courseware\Block::build($row, false);
             };
         }
@@ -594,7 +595,6 @@ class Instance
         $data = [];
         foreach ($statement as $row) {
             $structuralElementId = $row['id'];
-            unset($row['id']);
 
             if (!isset($data[$structuralElementId])) {
                 $data[$structuralElementId] = [];
