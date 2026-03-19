@@ -100,7 +100,12 @@ export default {
             let root_element = await this.structuralElementById({id: root_id});
 
             //prevent loss of data
-            root_element = JSON.parse(JSON.stringify(root_element));
+            let export_element = JSON.parse(JSON.stringify(root_element));
+
+            if (root_element.attributes['is-link'] === 1) {
+                const linkedElement = await this.structuralElementById({id: root_element.attributes['target-id']});
+                export_element = JSON.parse(JSON.stringify(linkedElement));
+            }
 
             // load whole courseware nonetheless, only export relevant elements
             let elements = await this.allStructuralElements;
@@ -108,16 +113,16 @@ export default {
             if (withChildren) {
                 this.elementCounter = this.countElements(elements);
             } else {
-                this.elementCounter = root_element.relationships.containers.length;
+                this.elementCounter = export_element.relationships.containers.length;
             }
 
-            root_element.containers = [];
-            if (root_element.relationships.containers?.data?.length) {
-                for (let j = 0; j < root_element.relationships.containers.data.length; j++) {
-                    root_element.containers.push(
+            export_element.containers = [];
+            if (export_element.relationships.containers?.data?.length) {
+                for (let j = 0; j < export_element.relationships.containers.data.length; j++) {
+                    export_element.containers.push(
                         await this.exportContainer(
                             this.containerById({
-                                id: root_element.relationships.containers.data[j].id,
+                                id: export_element.relationships.containers.data[j].id,
                             })
                         )
                     );
@@ -129,13 +134,13 @@ export default {
                 let children = await this.exportStructuralElement(root_id, elements);
 
                 if (children?.length) {
-                    root_element.children = children;
+                    export_element.children = children;
                 }
             }
-            [root_element.imageId, root_element.imageType ] = await this.exportStructuralElementImage(root_element);
+            [export_element.imageId, export_element.imageType ] = await this.exportStructuralElementImage(export_element);
 
-            delete root_element.relationships;
-            delete root_element.links;
+            delete export_element.relationships;
+            delete export_element.links;
 
             let settings = {
                 'editing-permission-level': 'tutor',
@@ -155,7 +160,7 @@ export default {
             }
 
             return {
-                json: root_element,
+                json: export_element,
                 files: this.exportFiles,
                 settings: settings
             };
@@ -220,6 +225,11 @@ export default {
                     content.containers = [];
 
                     let element = this.structuralElementById({ id: content.id });
+
+                    if (element.attributes['is-link'] === 1) {
+                        element = await this.structuralElementById({id: element.attributes['target-id']});
+                    }
+
                     // load containers, if there are any for this struct
                     if (element.relationships.containers?.data?.length) {
                         for (var j = 0; j < element.relationships.containers.data.length; j++) {
