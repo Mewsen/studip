@@ -269,25 +269,9 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
             if (!$this->result_visible_for) {
                 return false;
             }
-            $eval_visible = $user->hasPermissionLevel($this->result_visible_for, Context::get());
+            $eval_visible = $user->hasPermissionLevel($this->result_visible_for, Context::get())
+                && $this->countAnswers() >= $this->minimum_responses;
 
-            if ($this->anonymous) {
-                $statement = DBManager::get()->prepare(
-                    "SELECT DISTINCT count(`user_id`) AS 'amount' FROM `questionnaire_anonymous_answers`
-                    WHERE `questionnaire_id` = :questionnaire_id");
-            } else {
-                $statement = DBManager::get()->prepare(
-                    "SELECT DISTINCT count(`user_id`) AS 'amount' FROM `questionnaire_answers`
-                    INNER JOIN `questionnaire_questions`
-                        ON `questionnaire_questions`.`question_id` = `questionnaire_answers`.`question_id`
-                    WHERE `questionnaire_id` = :questionnaire_id");
-            }
-            $statement->execute([
-                'questionnaire_id' => $this->getId()
-            ]);
-            $response_amount = $statement->fetch()['amount'];
-
-            $eval_visible = $eval_visible && ($response_amount >= $this->minimum_responses);
             return $eval_visible
                 && ($this->resultvisibility === 'afterending' && $this->isStopped()
                 || $this->resultvisibility === 'afterparticipation' && $this->isAnswered());
