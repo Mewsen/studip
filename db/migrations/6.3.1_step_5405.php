@@ -294,21 +294,10 @@ final class Step5405 extends Migration {
 
             DBManager::get()
                 ->prepare(
-                    "UPDATE `lti_deployments` SET `client_id` = :client_id, is_default = :is_default, registration_id = :registration_id WHERE `registration_id` = :tool_id"
+                    "UPDATE `lti_deployments` SET `client_id` = :client_id, is_default = :is_default WHERE `registration_id` = :tool_id"
                 )->execute([
                     'is_default' => true,
                     'client_id' => $tool['oauth2_client_id'] ?? $tool['id'],
-                    'registration_id' => $registrationId,
-                    'tool_id' => (int) $tool['id']
-                ]);
-
-            DBManager::get()
-                ->prepare(
-                    "UPDATE `lti_tool_privacy_settings` SET registration_id = :registration_id WHERE `registration_id` = :tool_id"
-                )->execute([
-                    'is_default' => true,
-                    'client_id' => $tool['oauth2_client_id'] ?? $tool['id'],
-                    'registration_id' => $registrationId,
                     'tool_id' => (int) $tool['id']
                 ]);
 
