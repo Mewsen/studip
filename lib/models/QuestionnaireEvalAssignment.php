@@ -1,9 +1,13 @@
 <?php
 
 /**
- * @property string semester_id database column
- * @property string course_id database column
- * @property JSONArrayObject course_metadata database column
+ * @property string $template_id database column
+ * @property string $questionnaire_id database column
+ * @property string $semester_id database column
+ * @property string $course_id database column
+ * @property int $applied database column
+ * @property JSONArrayObject $course_metadata database column
+ * @property string $institute_id database column
  * @property Questionnaire $questionnaire belongs_to QuestionnaireEvalAssignment
  */
 class QuestionnaireEvalAssignment extends SimpleORMap

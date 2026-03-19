@@ -1,7 +1,5 @@
 <?php
 /**
- * @property Semester $semester belongs_to QuestionnaireEvalCentralProfile
- * @property Questionnaire $template belongs_to QuestionnaireEvalCentralProfile
  * @property string $semester_id database column
  * @property string $template_id database column
  * @property string $optional_templates database column
@@ -12,6 +10,8 @@
  * @property string $resultvisibility database column
  * @property null|string $result_visible_for database column
  * @property int $minimum_responses database column
+ *  @property Semester $semester belongs_to QuestionnaireEvalCentralProfile
+ *  @property Questionnaire $template belongs_to QuestionnaireEvalCentralProfile
  */
 class QuestionnaireEvalCentralProfile extends SimpleORMap
 {

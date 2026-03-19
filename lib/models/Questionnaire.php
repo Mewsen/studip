@@ -3,6 +3,7 @@
  *
  * @property string $id alias column for questionnaire_id
  * @property string $questionnaire_id database column
+ * @property string $template_id database column
  * @property string $title database column
  * @property string|null $description database column
  * @property string $user_id database column
