@@ -90,7 +90,18 @@ class Request implements ArrayAccess, IteratorAggregate
      */
     public static function url()
     {
-        return self::protocol() . '://' . self::server() . self::path();
+        if (!empty($GLOBALS['REVERSE_PROXY_TARGET_URL'])) {
+            //Use ABSOLUTE_URI_STUDIP for the base-URL. Append the remainder of the path that is not in
+            //REVERSE_PROXY_TARGET_URL to ABSOLUTE_URI_STUDIP.
+            $base_url = $GLOBALS['ABSOLUTE_URI_STUDIP'];
+            if ($base_url[-1] === '/') {
+                //Remove the slash at the end, since self::path() always starts with one.
+                $base_url = mb_substr($base_url, 0, -1);
+            }
+            return $base_url . self::path();
+        } else {
+            return self::protocol() . '://' . self::server() . self::path();
+        }
     }
 
     /**
@@ -130,7 +141,22 @@ class Request implements ArrayAccess, IteratorAggregate
      */
     public static function path()
     {
-        return $_SERVER['REQUEST_URI'];
+        if (!empty($GLOBALS['REVERSE_PROXY_TARGET_URL'])) {
+            //Only return the remainder of the path that is not part of REVERSE_PROXY_TARGET_URL.
+            $reverse_proxy_target_path = parse_url($GLOBALS['REVERSE_PROXY_TARGET_URL'], PHP_URL_PATH);
+            if ($reverse_proxy_target_path[-1] === '/') {
+                //Remove the slash at the end since REQUEST_URI will contain one.
+                $reverse_proxy_target_path = mb_substr($reverse_proxy_target_path, 0, -1);
+            }
+
+            $remaining_path = substr($_SERVER['REQUEST_URI'], strlen($reverse_proxy_target_path));
+            if ($remaining_path[0] !== '/') {
+                $remaining_path = '/' . $remaining_path;
+            }
+            return $remaining_path;
+        } else {
+            return $_SERVER['REQUEST_URI'];
+        }
     }
 
     /**
