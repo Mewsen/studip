@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-07 11:10+0200\n"
-"PO-Revision-Date: 2026-03-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-19 15:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-5-"
@@ -5233,7 +5233,7 @@ msgstr ""
 #: app/controllers/course/timesrooms.php:1024
 #, php-format
 msgid "Der angegebene Raum konnte für den Termin %s nicht gebucht werden!"
-msgstr "The specified room could not be allocated for the date %s!"
+msgstr "The specified room could not be booked on the date %s!"
 
 #: app/controllers/course/timesrooms.php:479
 #, php-format
@@ -5766,7 +5766,7 @@ msgstr "No amount of seats has been specified!"
 
 #: app/controllers/course/room_requests.php:931
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
-msgstr "The room request has been reopened and is thereby again put."
+msgstr "The room request has been reopened and is active again."
 
 #: app/controllers/course/room_requests.php:1005
 #, php-format
