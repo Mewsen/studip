@@ -9,21 +9,31 @@ final class Step5405 extends Migration {
     public function up()
     {
         DBManager::get()->exec("
-            CREATE TABLE IF NOT EXISTS `lti_registrations` (
-                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                `name` VARCHAR(255) NOT NULL,
-                `description` TEXT NOT NULL,
-                `role` ENUM('tool', 'platform') NOT NULL DEFAULT 'tool',
-                `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
-                `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a',
-                `range_id` CHAR(32) COLLATE latin1_bin NOT NULL Default 'global',
-                `user_id` CHAR(32) COLLATE latin1_bin NOT NULL,
-                `mkdate` INT UNSIGNED DEFAULT NULL,
-                `chdate` INT UNSIGNED DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                KEY `idx_lti_registrations_range_id` (`range_id`),
-                KEY `idx_lti_registrations_user_id` (`user_id`)
-            )
+            ALTER TABLE `lti_tools` MODIFY `id` INT UNSIGNED NOT NULL AUTO_INCREMENT
+        ");
+
+        DBManager::get()->execute("
+            ALTER TABLE `lti_tools` RENAME TO `lti_registrations`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registrations` CHANGE `lti_version` `version` ENUM('1.1', '1.3a') NOT NULL DEFAULT '1.3a'
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registrations`
+            ADD COLUMN `description` TEXT NOT NULL AFTER `name`,
+            ADD COLUMN `role` ENUM('tool', 'platform') NOT NULL DEFAULT 'tool' AFTER `description`,
+            ADD COLUMN `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive' AFTER `role`,
+            ADD COLUMN `user_id` CHAR(32) COLLATE latin1_bin NOT NULL AFTER `range_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registrations` MODIFY `mkdate` INT UNSIGNED DEFAULT NULL AFTER `user_id`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_registrations` MODIFY `chdate` INT UNSIGNED DEFAULT NULL AFTER `mkdate`
         ");
 
         DBManager::get()->exec("
@@ -271,36 +281,9 @@ final class Step5405 extends Migration {
     {
         $db = DBManager::get();
 
-        $ltiTools = $db->fetchAll("SELECT * FROM `lti_tools`");
+        $ltiTools = $db->fetchAll("SELECT * FROM `lti_registrations`");
 
         foreach ($ltiTools as $tool) {
-            $insertRegistrationStatement = $db->prepare(
-                "INSERT INTO `lti_registrations`
-                (`name`, `status`, `version`, `range_id`, `mkdate`, `chdate`)
-                VALUES
-                (:name, :status, :version, :range_id, :mkdate, :chdate)"
-            );
-
-            $insertRegistrationStatement->execute([
-                'name' => $tool['name'],
-                'status' => 'active',
-                'version' => $tool['lti_version'],
-                'range_id' => $tool['range_id'],
-                'mkdate' => $tool['mkdate'],
-                'chdate' => $tool['chdate']
-            ]);
-
-            $registrationId = $db->lastInsertId('lti_registrations_id_seq');
-
-            DBManager::get()
-                ->prepare(
-                    "UPDATE `lti_deployments` SET `client_id` = :client_id, is_default = :is_default WHERE `registration_id` = :tool_id"
-                )->execute([
-                    'is_default' => true,
-                    'client_id' => $tool['oauth2_client_id'] ?? $tool['id'],
-                    'tool_id' => (int) $tool['id']
-                ]);
-
             $configs = array_filter([
                 'launch_container' => 'window',
                 'launch_url' => $tool['launch_url'],
@@ -320,14 +303,13 @@ final class Step5405 extends Migration {
             ], static fn($value) => $value !== null);
 
             foreach ($configs as $configKey => $configValue) {
-                DBManager::get()
-                    ->prepare(
-                        "INSERT INTO `lti_configs`
+                $db->prepare("
+                        INSERT INTO `lti_configs`
                         (`configurable_id`, `configurable_type`, `name`, `value`, `mkdate`, `chdate`)
                         VALUES
-                        (:configurable_id, :configurable_type, :name, :value, :mkdate, :chdate)"
-                    )->execute([
-                        'configurable_id' => $registrationId,
+                        (:configurable_id, :configurable_type, :name, :value, :mkdate, :chdate)
+                    ")->execute([
+                        'configurable_id' => (int) $tool['id'],
                         'configurable_type' => 'Lti\Registration',
                         'name' => $configKey,
                         'value' => $configValue,
@@ -335,6 +317,31 @@ final class Step5405 extends Migration {
                         'chdate' => $tool['chdate']
                     ]);
             }
+        }
+
+        $columnsToRemove = [
+            'launch_url',
+            'jwks_url',
+            'jwks_key_id',
+            'deep_linking_url',
+            'data_protection_notes',
+            'privacy_policy_url',
+            'terms_of_use_url',
+            'consumer_key',
+            'consumer_secret',
+            'custom_parameters',
+            'send_lis_person',
+            'allow_custom_url',
+            'oauth_signature_method',
+            'oidc_init_url',
+            'deep_linking',
+            'oauth2_client_id'
+        ];
+
+        foreach ($columnsToRemove as $column) {
+            $db->exec("
+                ALTER TABLE `lti_registrations` DROP COLUMN `$column`
+            ");
         }
     }
 }
