@@ -156,7 +156,8 @@ class Evaluation_AssignController extends AuthenticatedController
         $eval->applied = 1;
         $eval->course_metadata = json_encode([
             'course_title' => $course->name,
-            'evaluated_persons' => $persons
+            'evaluated_persons' => $persons,
+            'sem_nr' => $course->veranstaltungsnummer
         ]);
         $eval->institute_id = $course->institut_id;
 
