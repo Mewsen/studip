@@ -94,7 +94,7 @@ class Course extends SchemaProvider
         return $relationships;
     }
 
-    private function getInstitute(\Course $course, $shouldInclude)
+    private function getInstitute(\Course $course)
     {
         return $course->institut_id
             ?  [
