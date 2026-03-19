@@ -1,3 +1,14 @@
+document.addEventListener('click', (event) => {
+    if (!event.target.matches('#header-sink-toggle')) {
+        return;
+    }
+
+    const sink = document.getElementById('header-sink');
+    const list = sink.parentNode.querySelector('ul');
+    sink.checked = !sink.checked;
+    list.setAttribute('aria-expanded', sink.checked ? 'true' : 'false');
+});
+
 // Hide sink on touch elsewhere
 $(document).on('touchstart', function (event) {
     if ($(event.target).closest('li.overflow').length === 0) {
