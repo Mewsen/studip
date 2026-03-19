@@ -33,7 +33,9 @@ if (isset($filtered[$questionnaire->getId()]) && $filtered[$questionnaire->getId
         <? endforeach ?>
     <? else : ?>
         <div style="margin-top: 13px;">
-            <? if ($questionnaire['resultvisibility'] === "afterending") : ?>
+            <? if ($questionnaire->template_id) : ?>
+                <?= MessageBox::info(_('Die Ergebnisse sind momentan nicht einsehbar.')) ?>
+            <? elseif ($questionnaire['resultvisibility'] === "afterending") : ?>
                 <?= MessageBox::info(_("Die Ergebnisse des Fragebogens werden veröffentlich, wenn die Befragung abgeschlossen ist.")) ?>
             <? else : ?>
                 <?= MessageBox::info(_("Die Ergebnisse der Befragung werden nicht über Stud.IP ausgewertet.")) ?>
