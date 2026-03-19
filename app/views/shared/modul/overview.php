@@ -143,7 +143,8 @@
                             <?= formatReady($gruppe->alttext) ?>
                         <? endif; ?>
                         <? $courses = $gruppe->courses->filter(
-                            fn(\Course $course) => $course->isInSemester($semester)
+                            fn(\Course $course) => ($course->isInSemester($semester)
+                                && $GLOBALS['perm']->have_studip_perm('user', $course->id))
                         ) ?>
                         <? if (count($courses)) : ?>
                         <ul>
