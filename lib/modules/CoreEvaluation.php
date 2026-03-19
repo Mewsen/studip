@@ -71,10 +71,10 @@ class CoreEvaluation extends CorePlugin implements StudipModuleExtended
 
     public function isTabActive(): bool
     {
-        $evaluation = QuestionnaireEvalAssignment::findOneBySQL(
-            "INNER JOIN `questionnaires` USING (`questionnaire_id`)
+        $evaluation = Questionnaire::findOneBySQL(
+            "INNER JOIN `questionnaire_eval_assignments` USING (`questionnaire_id`)
             WHERE `course_id` = ? AND `applied` = 1
-            ORDER BY `startdate`",
+            ORDER BY `questionnaires`.`startdate`",
             [Context::getId()]);
         return PluginManager::getInstance()->getPlugin(CoreEvaluation::class) && $evaluation &&
                 (User::findCurrent()->hasPermissionLevel('tutor', Context::get()) ||
