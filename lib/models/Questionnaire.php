@@ -241,20 +241,12 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isStarted()
     {
-        if ($this->eval_assignment) {
-            return $this->eval_assignment->startdate && $this->eval_assignment->startdate <= time();
-        } else {
-            return $this['startdate'] && ($this['startdate'] <= time());
-        }
+        return $this['startdate'] && ($this['startdate'] <= time());
     }
 
     public function isStopped()
     {
-        if ($this->eval_assignment) {
-            return $this->eval_assignment->stopdate && $this->eval_assignment->stopdate <= time();
-        } else {
-            return $this['stopdate'] && ($this['stopdate'] <= time());
-        }
+        return $this['stopdate'] && ($this['stopdate'] <= time());
     }
 
     public function isRunning()

@@ -16,18 +16,19 @@
         </header>
 
         <?php if (EvaluationHelper::isPermittedEvaluationAccess()) : ?>
-            <?= $this->render_partial('questionnaire/evaluate.php', ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
+            <?= $this->render_partial('questionnaire/evaluate.php',
+                ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
         <?php elseif (User::findCurrent()->hasPermissionLevel('tutor', Context::get())) : ?>
             <!-- TODO other views -->
             <table class="row-headers">
                 <tbody>
                     <tr>
                         <th scope="row"><?= _('Evaluationsbeginn') ?></th>
-                        <td><?= date('d.m.Y H:i', $evaluation->eval_assignment->startdate) ?></td>
+                        <td><?= date('d.m.Y H:i', $evaluation->startdate) ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?= _('Evaluationsende') ?></th>
-                        <td><?= date('d.m.Y H:i', $evaluation->eval_assignment->stopdate) ?></td>
+                        <td><?= date('d.m.Y H:i', $evaluation->stopdate) ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?= _('Anonyme Teilnahme') ?></th>
