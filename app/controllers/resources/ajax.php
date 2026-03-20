@@ -14,6 +14,17 @@
 
 class Resources_AjaxController extends AuthenticatedController
 {
+    protected $allow_nobody = true;
+
+    public function before_filter(&$action, &$args)
+    {
+        if ($action !== 'get_booking_plan') {
+            throw new LoginException();
+        }
+
+        parent::before_filter($action, $args);
+    }
+
     public function toggle_marked_action($request_id)
     {
         $request = ResourceRequest::find($request_id);
