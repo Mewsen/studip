@@ -14,7 +14,7 @@
  * @category    Stud.IP
 */
 
-class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
+abstract class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * Defines `_` as character used when joining composite primary keys.
@@ -2581,4 +2581,283 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      {
          self::$mariadb_column_default_fix = $state;
      }
+
+    // new query builder:
+
+    private array $wheres = [];
+    private array $orders = [];
+    private array $joins = [];
+    private array $bindings = [];
+
+    private ?int $limit = null;
+    private ?int $offset = null;
+    protected array $withRelations = [];
+    protected static $modelInstance = null;
+
+    public static function query(): static
+    {
+        if (is_null(static::$modelInstance)) {
+            static::$modelInstance = new static();
+        }
+
+        return static::$modelInstance;
+    }
+
+    public function where(array|string $column, string $operator = '=', $value = null): static
+    {
+        if (is_array($column)) {
+            foreach ($column as $col => $val) {
+                $this->addWhereCondition($col, '=', $val);
+            }
+
+            return $this;
+        }
+
+        if ($value === null) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        $this->addWhereCondition($column, $operator, $value);
+        return $this;
+    }
+
+    public function orWhere(string $column, string $operator = '=', $value = null): static
+    {
+        if ($value === null) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        $this->addWhereCondition($column, $operator, $value, 'OR');
+
+        return $this;
+    }
+
+    public function whereLike(string $column, $value, bool $caseSensitive = false): static
+    {
+        $operator = $caseSensitive ? 'LIKE BINARY' : 'LIKE';
+
+        return $this->where($column, $operator, '%' . $value . '%');
+    }
+
+    public function orWhereLike(string $column, $value, bool $caseSensitive = false): static
+    {
+        $operator = $caseSensitive ? 'LIKE BINARY' : 'LIKE';
+
+        return $this->orWhere($column, $operator, '%' . $value . '%');
+    }
+
+    public function whereIn(string $column, array $values): static
+    {
+        $this->addWhereCondition($column, 'IN', $values);
+
+        return $this;
+    }
+
+    public function orWhereIn(string $column, array $values): static
+    {
+        $this->addWhereCondition($column, 'IN', $values, 'OR');
+
+        return $this;
+    }
+
+    public function pluck(...$columns): array
+    {
+        $sql = "SELECT " . join(', ', $columns) . " FROM " . $this->db_table();
+        $sql .= $this->buildQueryClauses();
+        return DBManager::get()->fetchAll($sql, $this->bindings);
+    }
+
+    public function join(string $table, string $first, string $operator = '=', string $second = null): static
+    {
+        return $this->addJoin('INNER', $table, $first, $operator, $second);
+    }
+
+    public function leftJoin(string $table, string $first, string $operator = '=', string $second = null): static
+    {
+        return $this->addJoin('LEFT', $table, $first, $operator, $second);
+    }
+
+    public function rightJoin(string $table, string $first, string $operator = '=', string $second = null): static
+    {
+        return $this->addJoin('RIGHT', $table, $first, $operator, $second);
+    }
+
+    protected function addJoin(string $type, string $table, string $first, string $operator, string $second): static
+    {
+        $this->joins[] = [
+            'type' => $type,
+            'table' => $table,
+            'first' => $first,
+            'operator' => $operator,
+            'second' => $second,
+        ];
+
+        return $this;
+    }
+
+    public function orderBy(string $column, string $direction = 'ASC')
+    {
+        $direction = strtoupper($direction);
+        $this->orders[] = "$column $direction";
+
+        return $this;
+    }
+
+    public function limit(int $number): static
+    {
+        $this->limit = $number;
+        return $this;
+    }
+
+    public function offset(int $number): static
+    {
+        $this->offset = $number;
+        return $this;
+    }
+
+    public function first()
+    {
+        return $this->limit(1)->hydrateFromStatement($this->buildStatement());
+    }
+
+    public function last(string $column = 'mkdate')
+    {
+        return $this->orderBy($column, 'DESC')->limit(1)->hydrateFromStatement($this->buildStatement());
+    }
+
+    public function all()
+    {
+        return $this->hydrateFromStatement($this->buildStatement());
+    }
+
+    public function countRows(): int
+    {
+        $dbTable = static::db_table();
+        $sql = "SELECT COUNT(*) FROM `{$dbTable}` " . $this->buildQueryClauses();
+
+        $statement = DBManager::get()->prepare($sql);
+        $statement->execute($this->getBindings());
+        return (int) $statement->fetchColumn();
+
+    }
+
+    public function latest(string $column = 'mkdate')
+    {
+        return $this->orderBy($column, 'DESC');
+    }
+
+    public function toSql(): string
+    {
+        $sql = $this->buildBaseQuery();
+        $sql .= $this->buildQueryClauses();
+
+        return $sql;
+    }
+
+    protected function addWhereCondition(string $column, string $operator, $value, $boolean = 'AND'): void
+    {
+        if (is_array($value) && strtoupper($operator) === 'IN') {
+            $placeholders = implode(', ', array_fill(0, count($value), '?'));
+            $condition = "$column IN ($placeholders)";
+
+            if (count($this->wheres) === 0) {
+                $this->wheres[] = $condition;
+            } else {
+                $this->wheres[] = " $boolean " . $condition;
+            }
+
+            foreach ($value as $v) {
+                $this->bindings[] = $v;
+            }
+
+            return;
+        }
+
+        $condition = "$column $operator ?";
+
+        if (count($this->wheres) === 0) {
+            $this->wheres[] = $condition;
+        } else {
+            $this->wheres[] = " $boolean " . $condition;
+        }
+
+        $this->bindings[] = $value;
+    }
+
+    protected function getBindings(): array
+    {
+        return $this->bindings;
+    }
+
+    protected function buildBaseQuery(): string
+    {
+        $dbTable = static::db_table();
+
+        return "SELECT `{$dbTable}`.* FROM `{$dbTable}` ";
+    }
+
+    protected function buildQueryClauses(): string
+    {
+        $sql = '';
+
+        if (!empty($this->joins)) {
+            foreach ($this->joins as $join) {
+                $type = $join['type'] ?? 'INNER';
+                $table = $join['table'];
+                $first = $join['first'];
+                $operator = $join['operator'];
+                $second = $join['second'];
+
+                $sql .= " {$type} JOIN {$table} ON {$first} {$operator} {$second}";
+            }
+        }
+
+        if (!empty($this->wheres)) {
+            $sql .= ' WHERE '.implode(' ', $this->wheres);
+        }
+
+        if (!empty($this->orders)) {
+            $sql .= ' ORDER BY ' . implode(', ', $this->orders);
+        }
+
+        if ($this->limit) {
+            $sql .= ' LIMIT ' . $this->limit;
+        }
+
+        if ($this->offset) {
+            $sql .= ' OFFSET ' . $this->offset;
+        }
+
+        return $sql;
+    }
+
+    protected function buildStatement()
+    {
+        $statement = DBManager::get()->prepare($this->toSql());
+        $statement->execute($this->getBindings());
+
+        return $statement;
+    }
+
+    protected function hydrateFromStatement($statement)
+    {
+        $record = static::build([], false);
+
+        $ret = [];
+        do  {
+            $clone = clone $record;
+            $clone->setNew(false);
+            $statement->setFetchMode(PDO::FETCH_INTO, $clone);
+
+            if ($clone = $statement->fetch()) {
+                $clone->applyCallbacks('after_initialize');
+                $ret[] = $clone;
+            }
+        } while ($clone);
+
+        return $ret;
+    }
+
 }
