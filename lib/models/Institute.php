@@ -65,11 +65,12 @@ class Institute extends SimpleORMap implements Range
             'on_store' => 'store',
         ];
         $config['has_many']['sub_institutes'] = [
-            'class_name' => Institute::class,
+            'class_name'        => Institute::class,
             'assoc_foreign_key' => 'fakultaets_id',
-            'assoc_func' => 'findByFaculty',
-            'on_delete' => 'delete',
-            'on_store' => 'store',
+            'assoc_func'        => 'findByFaculty',
+            'order_by'          => '`Name` ASC',
+            'on_delete'         => 'delete',
+            'on_store'          => 'store',
         ];
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
@@ -172,6 +173,8 @@ class Institute extends SimpleORMap implements Range
     /**
      * returns an array of all institutes ordered by faculties and name
      * @return array
+     *
+     * @deprecated This method will be removed in Stud.IP 7.0. Please use Institute::findAll instead.
      */
     public static function getInstitutes()
     {
@@ -181,6 +184,35 @@ class Institute extends SimpleORMap implements Range
                     "LEFT JOIN Institute as fakultaet ON (Institute.fakultaets_id = fakultaet.Institut_id) " .
                 "ORDER BY fakultaet.Name ASC, is_fak DESC, Institute.Name ASC")->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**
+     * Retrieves all institutes, ordered by faculties and name: A faculty will always come before its institutes.
+     * Objects are ordered alphabetically afterward.
+     *
+     * @returns Institute[] All institutes from the database.
+     */
+    public static function findAll()
+    {
+        $query = "SELECT i0.*
+                  FROM `Institute` AS i0
+                  LEFT JOIN `Institute` AS i1
+                    ON (i0.`fakultaets_id` = i1.`Institut_id`)
+                  ORDER BY i1.`Name`, i0.`Institut_id` = i0.`fakultaets_id` DESC, i0.`Name`";
+        return DBManager::get()->fetchAll(
+            $query,
+            callable: fn(array $row) => Institute::build($row, false)
+        );
+    }
+
+    /**
+     * Counts the number of institutes and faculties.
+     *
+     * @return int The number of institutes and faculties.
+     */
+    public static function countAll()
+    {
+        return self::countBySQL();
     }
 
     /**
@@ -245,6 +277,7 @@ class Institute extends SimpleORMap implements Range
     public function getFullName($format = 'default'): string
     {
         $template['type-name'] = '%2$s: %1$s';
+        $template['name-type'] = '%1$s (%2$s)';
         if ($format === 'default' || !isset($template[$format])) {
            $format = 'type-name';
         }
