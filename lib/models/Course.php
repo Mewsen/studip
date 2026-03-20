@@ -1827,7 +1827,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
      public function getSemClass()
      {
-         return $this->getSemType()->getClass();
+         return $this->getSemType()->getSemClass();
      }
 
     /**

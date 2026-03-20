@@ -50,7 +50,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $typestruct = [];
         $admission_turnout_mandatory_types = [];
         foreach (SemType::getTypes() as $type) {
-            $class = $type->getClass();
+            $class = $type->getSemClass();
             // Creates a studygroup.
             if (!empty($values['studygroup'])) {
                 // Get all studygroup types.
@@ -385,8 +385,8 @@ class BasicDataWizardStep implements CourseWizardStep
                 $errors[] = _('Sie müssen die Nutzungsbedingungen akzeptieren.');
             }
         }
-        $sem_type = new SemType((int)$values['coursetype']);
-        $sem_class = $sem_type->getClass();
+        $sem_type = $GLOBALS['SEM_TYPE'][(int)$values['coursetype']];
+        $sem_class = $sem_type->getSemClass();
         if ($sem_class['admission_turnout_mandatory'] && !$values['maxmembers']) {
             $errors[] = _('Sie müssen die maximale Teilnehmendenzahl angeben');
         }
