@@ -332,7 +332,7 @@ final class Step5405 extends Migration {
         ");
 
         $db->exec("
-            UPDATE `lti_deployments` SET `is_default`= 1, `deployment_key` = `id`, `client_id` = `registration_id`
+            UPDATE `lti_deployments` SET `name` = 'Standard-Deployment', `is_default`= 1, `deployment_key` = `id`, `client_id` = `registration_id`
         ");
 
         $db->exec("
