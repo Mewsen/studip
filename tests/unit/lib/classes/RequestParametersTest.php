@@ -108,6 +108,7 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::int('d'), 12);
         $this->assertSame(Request::int('e'), 3);
         $this->assertNull(Request::int('v1'));
+        $this->assertNull(Request::int('h'));
     }
 
     /**
@@ -121,6 +122,7 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::float('d'), 12.7);
         $this->assertSame(Request::float('e'), 3.14);
         $this->assertNull(Request::float('v1'));
+        $this->assertNull(Request::float('h'));
     }
 
     /**
