@@ -1,5 +1,5 @@
 <template>
-    <div v-if="block.attributes.visible || canEdit" class="cw-default-block" :class="[showEditMode ? 'cw-default-block-active' : '', isActivated ? '' : 'cw-default-block-deactivated']">
+    <div class="cw-default-block" :class="[showEditMode ? 'cw-default-block-active' : '', isActivated ? '' : 'cw-default-block-deactivated']">
         <div class="cw-content-wrapper" :class="[showEditMode ? 'cw-content-wrapper-active' : '']">
             <header v-if="showEditMode" class="cw-block-header">
                 <a href="#" class="cw-block-header-toggle" :aria-expanded="isOpen" @click.prevent="isOpen = !isOpen">
