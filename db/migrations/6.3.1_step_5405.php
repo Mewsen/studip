@@ -162,7 +162,7 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_resource_links` MODIFY `mkdate` INT UNSIGNED DEFAULT NULL AFTER `custom_parameters`
+            ALTER TABLE `lti_resource_links` MODIFY `mkdate` INT UNSIGNED DEFAULT NULL AFTER `options`
         ");
 
         DBManager::get()->exec("
@@ -345,10 +345,6 @@ final class Step5405 extends Migration {
         ->execute([
             'options' => '{"unfinished_deep_linking":"true"}'
         ]);
-
-        $db->exec("
-            ALTER TABLE `lti_resource_links` DROP COLUMN `options`
-        ");
 
         $columnsToRemove = [
             'launch_url',
