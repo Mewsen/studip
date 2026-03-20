@@ -144,7 +144,7 @@
                         <? endif; ?>
                         <? $courses = $gruppe->courses->filter(
                             fn(\Course $course) => ($course->isInSemester($semester)
-                                && $GLOBALS['perm']->have_studip_perm('user', $course->id))
+                                && $course->isVisibleForUser()
                         ) ?>
                         <? if (count($courses)) : ?>
                         <ul>
