@@ -252,31 +252,4 @@ Navigation::setRootNavigation(new StudipNavigation(''));
 /* set default umask to a sane value */
 umask(022);
 
-/*mail settings
-----------------------------------------------------------------*/
-if ($GLOBALS['MAIL_TRANSPORT']) {
-    $mail_transporter_name = mb_strtolower($GLOBALS['MAIL_TRANSPORT']) . '_message';
-} else {
-    $mail_transporter_name = 'smtp_message';
-}
-include 'vendor/email_message/email_message.php';
-include 'vendor/email_message/' . $mail_transporter_name . '.php';
-$mail_transporter_class = $mail_transporter_name . '_class';
-$mail_transporter = new $mail_transporter_class;
-if ($mail_transporter_name == 'smtp_message') {
-    include 'vendor/email_message/smtp.php';
-    $mail_transporter->localhost = $GLOBALS['MAIL_LOCALHOST'] ?: $_SERVER['SERVER_NAME'];
-    $mail_transporter->smtp_host = $GLOBALS['MAIL_HOST_NAME'] ?: 'localhost';
-    if (is_array($GLOBALS['MAIL_SMTP_OPTIONS'])) {
-        foreach ($GLOBALS['MAIL_SMTP_OPTIONS'] as $key => $value) {
-            $mail_transporter->{"smtp_$key"} = $value;
-        }
-        if ($mail_transporter->smtp_user !== '') {
-            include 'vendor/sasl/sasl.php';
-        }
-    }
-}
-$mail_transporter->default_charset = 'UTF-8';
-$mail_transporter->SetBulkMail((int)$GLOBALS['MAIL_BULK_DELIVERY']);
-StudipMail::setDefaultTransporter($mail_transporter);
-unset($mail_transporter);
+StudipMail::setDefaultTransporter($GLOBALS['MAIL_TRANSPORT'] ?? StudipMail::SMTP_TRANSPORTER);

@@ -41,9 +41,7 @@ require $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';;
 require_once __DIR__ . '/../../lib/bootstrap-autoload.php';
 
 // Do not send mails of any kind during tests
-require 'vendor/email_message/email_message.php';
-require 'vendor/email_message/debug_message.php';
-StudipMail::setDefaultTransporter(new debug_message_class());
+StudipMail::setDefaultTransporter(StudipMail::DEBUG_TRANSPORTER);
 
 $GLOBALS['template_factory'] = new Flexi\Factory(dirname(dirname(__DIR__)) . '/templates');
 
