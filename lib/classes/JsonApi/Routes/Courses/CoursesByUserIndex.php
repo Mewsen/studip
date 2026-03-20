@@ -7,6 +7,7 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use JsonApi\Schemas\Course as CourseSchema;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Semester;
@@ -15,22 +16,19 @@ use User;
 class CoursesByUserIndex extends JsonApiController
 {
     protected $allowedIncludePaths = [
-        'blubber-threads',
-        'end-semester',
-        'events',
-        'feedback-elements',
-        'file-refs',
-        'folders',
-        'forum-categories',
-        'institute',
-        'memberships',
-        'news',
-        'participating-institutes',
-        'sem-class',
-        'sem-type',
-        'start-semester',
-        'status-groups',
-        'wiki-pages',
+        CourseSchema::REL_BLUBBER,
+        CourseSchema::REL_END_SEMESTER,
+        CourseSchema::REL_EVENTS,
+        CourseSchema::REL_FEEDBACK,
+        CourseSchema::REL_INSTITUTE,
+        CourseSchema::REL_MEMBERSHIPS,
+        CourseSchema::REL_NEWS,
+        CourseSchema::REL_PARTICIPATING_INSTITUTES,
+        CourseSchema::REL_SEM_CLASS,
+        CourseSchema::REL_SEM_TYPE,
+        CourseSchema::REL_START_SEMESTER,
+        CourseSchema::REL_STATUS_GROUPS,
+        CourseSchema::REL_WIKI_PAGES,
     ];
 
     protected $allowedPagingParameters = ['offset', 'limit'];

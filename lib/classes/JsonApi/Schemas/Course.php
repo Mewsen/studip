@@ -2,12 +2,15 @@
 
 namespace JsonApi\Schemas;
 
+use JsonApi\Routes\CourseMembershipsTrait;
 use JsonApi\Routes\Files\Authority as FilesAuth;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
 class Course extends SchemaProvider
 {
+    use CourseMembershipsTrait;
+
     const TYPE = 'courses';
 
     const REL_BLUBBER = 'blubber-threads';
@@ -61,12 +64,15 @@ class Course extends SchemaProvider
 
         $relationships = [];
 
-        $relationships[self::REL_INSTITUTE] = $this->getInstitute($course, in_array(self::REL_INSTITUTE, $includeList));
+        $relationships[self::REL_INSTITUTE] = $this->getInstitute($course);
 
-        if ($semester = $this->getStartSemester($course)) {
+        $semester = $this->getStartSemester($course);
+        if ($semester) {
             $relationships[self::REL_START_SEMESTER] = $semester;
         }
-        if ($semester = $this->getEndSemester($course)) {
+
+        $semester = $this->getEndSemester($course);
+        if ($semester) {
             $relationships[self::REL_END_SEMESTER] = $semester;
         }
 
@@ -88,10 +94,7 @@ class Course extends SchemaProvider
         return $relationships;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    private function getInstitute(\Course $course, $shouldInclude)
+    private function getInstitute(\Course $course)
     {
         return $course->institut_id
             ?  [
@@ -174,21 +177,22 @@ class Course extends SchemaProvider
         return $relationships;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getBlubberRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-        $relationships[self::REL_BLUBBER] = [
+        $relationship = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_BLUBBER),
             ],
         ];
 
-        return $relationships;
+        if (in_array(self::REL_BLUBBER, $includeData)) {
+            $relationship[self::RELATIONSHIP_DATA] = $course->blubberthreads;
+        }
+
+        return array_merge($relationships, [self::REL_BLUBBER => $relationship]);
     }
 
         /**
@@ -211,98 +215,105 @@ class Course extends SchemaProvider
     }
 
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getEventsRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-        $relationships[self::REL_EVENTS] = [
+        $relation = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_EVENTS)
             ],
         ];
 
-        return $relationships;
+        if (in_array(self::REL_EVENTS, $includeData)) {
+            $relation[self::RELATIONSHIP_DATA] = $course->dates->getArrayCopy();
+        }
+
+        return array_merge($relationships, [self::REL_EVENTS => $relation]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getFeedbackRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-
-        if (\Feedback::isActivated($course->id)) {
-            $relationships[self::REL_FEEDBACK] = [
-                self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_FEEDBACK)
-                ],
-            ];
+        if (!\Feedback::isActivated($course->id)) {
+            return $relationships;
         }
 
-        return $relationships;
+        $relationship = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_FEEDBACK)
+            ],
+        ];
+
+        if (in_array(self::REL_FEEDBACK, $includeData)) {
+            $relationship[self::RELATIONSHIP_DATA] = \FeedbackElement::findBySQL(
+                'course_id = ?',
+                [$course->id]
+            );
+        }
+
+        return array_merge($relationships, [self::REL_FEEDBACK => $relationship]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getMembershipsRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-        $relationships[self::REL_MEMBERSHIPS] = [
+        $relationship = [
             self::RELATIONSHIP_LINKS_SELF => true,
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_MEMBERSHIPS)
             ],
         ];
 
-        return $relationships;
+        if (in_array(self::REL_MEMBERSHIPS, $includeData)) {
+            $relationship[self::RELATIONSHIP_DATA] = $this->getCourseMemberships($course, $this->currentUser);
+        }
+
+        return array_merge($relationships, [self::REL_MEMBERSHIPS => $relationship]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getNewsRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-        $relationships[self::REL_NEWS] = [
+        $relationship = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_NEWS)
             ],
         ];
 
-        return $relationships;
+        if (in_array(self::REL_NEWS, $includeData)) {
+            $relationship[self::RELATIONSHIP_DATA] = $course->news;
+        }
+
+        return array_merge($relationships, [self::REL_NEWS => $relationship]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     private function getWikiPagesRelationship(
         array $relationships,
         \Course $course,
         $includeData
     ) {
-        $relationships[self::REL_WIKI_PAGES] = [
+        $relationship = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_WIKI_PAGES)
             ],
         ];
 
-        return $relationships;
+        if (in_array(self::REL_WIKI_PAGES, $includeData)) {
+            $relationship[self::RELATIONSHIP_DATA] = $course->wiki_pages;
+        }
+
+        return array_merge($relationships, [self::REL_WIKI_PAGES => $relationship]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
+
     private function getToolsRelationship(
         array $relationships,
         \Course $course,
@@ -313,6 +324,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_TOOLS),
             ]
         ];
+
         if (in_array(self::REL_TOOLS, $includeData)) {
             $relation[self::RELATIONSHIP_DATA] = $course->tools->getArrayCopy();
         }
@@ -329,7 +341,7 @@ class Course extends SchemaProvider
         $includeData
     ) {
         $institutes = $course->institutes->filter(
-            function ($institute) use ($course) {
+            function (\Institute $institute) use ($course) {
                 return $institute->id != $course->institut_id;
             }
         );
@@ -382,8 +394,7 @@ class Course extends SchemaProvider
             ]
         ];
         if (in_array(self::REL_STATUS_GROUPS, $includeData)) {
-            $related = \Statusgruppen::findBySeminar_id($resource->id);
-            $relation[self::RELATIONSHIP_DATA] = $related;
+            $relation[self::RELATIONSHIP_DATA] = $resource->statusgruppen;
         }
 
         return array_merge($relationships, [self::REL_STATUS_GROUPS => $relation]);
