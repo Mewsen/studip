@@ -291,6 +291,26 @@ class AddVipsModule extends Migration
             }
         }
 
+        // cw_blocks
+        $sql = 'UPDATE cw_blocks SET payload = :payload, chdate = :chdate WHERE id = :id';
+        $stmt = $db->prepare($sql);
+        $data = $db->query("SELECT id, payload FROM cw_blocks WHERE block_type = 'test'");
+
+        while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
+            $payload = json_decode($row['payload'], true);
+
+            if ($payload && isset($assignment_id[$payload['assignment']])) {
+                $payload['assignment'] = $assignment_id[$payload['assignment']];
+
+                $values = [
+                    'id'          => $row['id'],
+                    'payload'     => json_encode($payload),
+                    'chdate'      => $now
+                ];
+                $stmt->execute($values);
+            }
+        }
+
         // statusgruppen
         $sql = 'INSERT INTO statusgruppen (statusgruppe_id, name, range_id, position, size, mkdate, chdate)
                 VALUES (:statusgruppe_id, :name, :range_id, :position, :size, :mkdate, :chdate)';
