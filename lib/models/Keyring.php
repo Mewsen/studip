@@ -12,6 +12,9 @@
  * @since       6.0
  */
 
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+
 /**
  * The Keyring class stores cryptographic keyrings in the database.
  *
@@ -141,25 +144,25 @@ class Keyring extends SimpleORMap
     /**
      * Converts the keyring to a KeyChain instance of the Lti1p3Core library.
      *
-     * @return \OAT\Library\Lti1p3Core\Security\Key\KeyChain A KeyChain representation
+     * @return KeyChain A KeyChain representation
      *     of the keyring.
      */
-    public function toKeyChain() : \OAT\Library\Lti1p3Core\Security\Key\KeyChain
+    public function toKeyChain() : KeyChain
     {
-        $public_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
+        $public_key = new Key(
             $this->public_key
         );
 
         //A private key is optional.
         $private_key = null;
         if ($this->private_key) {
-            $private_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
+            $private_key = new Key(
                 $this->private_key,
                 $this->passphrase ?? null
             );
         }
 
-        return new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
+        return new KeyChain(
             $this->id,
             $this->range_id,
             $public_key,

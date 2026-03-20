@@ -75,7 +75,7 @@ class BrowseNavigation extends Navigation
             }
 
             if (isset($_SESSION['ContentItemSelection'])) {
-                $navigation->addSubNavigation('content_item', new Navigation(_('Veranstaltung verknüpfen'), 'dispatch.php/lti/content_item'));
+                $navigation->addSubNavigation('content_item', new Navigation(_('Veranstaltung verknüpfen'), 'dispatch.php/lti/1p1/auth/content_item'));
             }
 
             $this->addSubNavigation('my_courses', $navigation);

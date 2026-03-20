@@ -1,16 +1,16 @@
 <?php
+
+use Lti\Grade;
+use Lti\ResourceLink;
+
 /**
- * LtiToolModule.php - LTI consumer API for Stud.IP
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
+ * LtiToolModule.php - LTI consumer and provider API for Stud.IP
  *
  * @author      Elmar Ludwig
+ * @author      Murtaza Sultani <sultani@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
-class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
+final class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
 {
     /**
      * Initialize the LtiToolModule.
@@ -20,33 +20,38 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         parent::__construct();
 
         if ($GLOBALS['perm']->have_perm('root')) {
-            Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Tools'), 'dispatch.php/admin/lti'));
+            Navigation::addItem('/admin/config/lti', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
+
+            if (self::isToolSharingEnabled()) {
+                Navigation::addItem('/admin/config/lti-publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+            }
         }
 
         NotificationCenter::on('UserDidDelete', function ($event, $user) {
-            LtiGrade::deleteBySQL('user_id = ?', [$user->id]);
+            Grade::deleteBySQL('user_id = ?', [$user->id]);
         });
+
         NotificationCenter::on('CourseDidDelete', function ($event, $course) {
-            \LtiResourceLink::deleteBySQL('course_id = ?', [$course->id]);
+            ResourceLink::deleteBySQL('course_id = ?', [$course->id]);
         });
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation($course_id, $last_visit, $user_id): ?Navigation
     {
         if ($user_id === 'nobody') {
             return null;
         }
 
-        $changed = \LtiResourceLink::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
+        $changed = ResourceLink::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
 
         $icon = Icon::create('plugin', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
 
-        $navigation = new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti');
+        $navigation = new Navigation(_('LTI'), 'dispatch.php/course/lti');
         $navigation->setImage($icon);
-        $navigation->setLinkAttributes(['title' => _('LTI-Tools')]);
+        $navigation->setLinkAttributes(['title' => _('LTI')]);
 
         return $navigation;
     }
@@ -54,22 +59,31 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation($course_id): array
     {
         if ($GLOBALS['user']->id === 'nobody') {
-            return [];
+            return ['lti' => null];
         }
 
-        $grades = \LtiResourceLink::countBySQL('course_id = ?', [$course_id]);
+        $grades = ResourceLink::countBySQL('course_id = ?', [$course_id]);
 
-        $navigation = new Navigation(_('LTI-Tools'));
+        $navigation = new Navigation(_('LTI'), 'dispatch.php/course/lti');
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('link-extern', Icon::ROLE_INFO));
-        $navigation->addSubNavigation('index', new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti'));
+        $navigation->addSubNavigation('index', new Navigation(_('LTI-Ressourcen'), 'dispatch.php/course/lti'));
 
         if ($grades) {
             $navigation->addSubNavigation('grades', new Navigation(_('Ergebnisse'), 'dispatch.php/course/lti/grades'));
         }
+
+        if (self::isModerator($course_id)) {
+            if (self::isToolSharingEnabled()) {
+                $navigation->addSubNavigation('publications', new Navigation(_('LTI-Veröffentlichungen'), 'dispatch.php/admin/lti/publications'));
+            }
+
+            $navigation->addSubNavigation('registrations', new Navigation(_('LTI-Registrierungen'), 'dispatch.php/admin/lti/registrations'));
+        }
+
 
         return ['lti' => $navigation];
     }
@@ -82,21 +96,36 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         return null;
     }
 
+    public static function isToolSharingEnabled(): bool
+    {
+        return (bool) Config::get()->ENABLE_SHARING_COURSES_AS_LTI_TOOLS;
+    }
+
+    public static function isAdmin($userId = null): bool
+    {
+        return User::findCurrent()->auth_plugin === 'standard' && $GLOBALS['perm']->have_perm('root', $userId);
+    }
+
+    public static function isModerator($contextId, $userId = null): bool
+    {
+        return
+            User::findCurrent()->auth_plugin === 'standard'
+            && (self::isAdmin($userId) || $GLOBALS['perm']->have_studip_perm('tutor', $contextId, $userId));
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function exportUserData(StoredUserData $storage)
+    public function exportUserData(StoredUserData $storage): void
     {
-        $db = DBManager::get();
-
-        $data = $db->fetchAll('SELECT * FROM lti_grade WHERE user_id = ?', [$storage->user_id]);
+        $data = DBManager::get()->fetchAll("SELECT * FROM `lti_grade` WHERE `user_id` = ?", [$storage->user_id]);
         $storage->addTabularData(_('LTI-Ergebnisse'), 'lti_grade', $data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Anbindung von LTI-Tools'),
@@ -112,7 +141,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
                     0 => ['source' => 'LTI_Tool_hinzufuegen.jpg', 'title' => _('LTI-Tool hinzufügen')],
                 ]
             ],
-            'displayname' => _('LTI-Tools')
+            'displayname' => _('LTI')
         ];
     }
 }

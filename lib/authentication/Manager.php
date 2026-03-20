@@ -33,6 +33,7 @@ class Manager
         'phpCAS',
         'contrast',
         'redirect_after_login',
+        'callbacks'
     ];
 
     private ?array $auth = [];

@@ -10,8 +10,13 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
+use Studip\Cache\Factory as CacheFactory;
+use Studip\Lti\LTI1p3\RepositoryRegistry as LtiRepositoryRegistry;
 
 use function DI\create;
 
@@ -97,4 +102,8 @@ return [
     \Psr\Http\Message\UriFactoryInterface::class => DI\get(Psr17Factory::class),
 
     \Psr\Http\Message\ServerRequestInterface::class => DI\factory([ServerRequestCreator::class, 'fromGlobals']),
+    CacheItemPoolInterface::class => DI\factory(fn() => CacheFactory::getCache()),
+
+    // LTI
+    ...LtiRepositoryRegistry::definitions(),
 ];

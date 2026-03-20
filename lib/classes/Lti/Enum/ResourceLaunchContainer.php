@@ -1,0 +1,35 @@
+<?php
+namespace Studip\Lti\Enum;
+
+enum ResourceLaunchContainer: string
+{
+    case Window = 'window';
+    case Iframe = 'iframe';
+
+    public static function all(): array
+    {
+        return [
+            self::Window->value => [
+                'value' => self::Window->value,
+                'label' => _('Neues Fenster')
+            ],
+            self::Iframe->value => [
+                'value' => self::Iframe->value,
+                'label' => _('Iframe')
+            ]
+        ];
+    }
+
+    public static function get(string $value): array
+    {
+        return self::all()[$value] ?? self::default();
+    }
+
+    public static function default(): array
+    {
+        return [
+            'value' => self::Window->value,
+            'label' => _('Neues Fenster')
+        ];
+    }
+}

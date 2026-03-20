@@ -2,9 +2,11 @@
 
 namespace Grading;
 
+use DateTime;
+use Lti\ResourceLink;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItem;
 use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
-use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemSubmissionReview;
+use URLHelper;
 
 /**
  * @license GPL2 or any later version
@@ -70,29 +72,26 @@ class Definition extends \SimpleORMap
         return Definition::findBySQL('course_id = ? ORDER BY position ASC, name ASC', [$course->id]);
     }
 
-    public function toLineItem() : LineItemInterface
+    public function toLti1p3LineItem(): LineItemInterface
     {
-        $resource_link_identifier = $this->tool ?? '';
-        $deployment_id = '';
-        if ($resource_link_identifier) {
-            $lti_resource_link = \LtiResourceLink::find($resource_link_identifier);
-            if ($lti_resource_link) {
-                $deployment_id = $lti_resource_link->deployment_id;
-            }
-        }
+        $ltiResourceLink = ResourceLink::find($this->tool);
 
-        $identifier = \URLHelper::getURL(sprintf(
-            'dispatch.php/lti/ags/line_item/%1$s/%2$s',
-            $resource_link_identifier,
-            $this->id
-        ));
+        $lineItemURL = URLHelper::getURL(
+            'dispatch.php/lti/1p3/ags/line_item',
+            [
+                'line_item_id' => $this->id,
+                'resource_link_id' => $ltiResourceLink->id
+            ],
+            true
+        );
 
         return new LineItem(
-            PHP_FLOAT_MAX,
+            $this->weight * 100,
             $this->name,
-            $identifier,
-            $deployment_id,
-            $resource_link_identifier
+            $lineItemURL,
+            $this->id,
+            $ltiResourceLink->id,
+            $this->course->getFullName()
         );
     }
 }

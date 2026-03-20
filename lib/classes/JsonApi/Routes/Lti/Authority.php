@@ -2,24 +2,23 @@
 
 namespace JsonApi\Routes\Lti;
 
-use LtiTool;
+use Range;
 use User;
 
 class Authority
 {
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public static function canShowLtiTool(User $user, LtiTool $tool): bool
+    public static function canShowRegistration(Range $range, ?User $user): bool
     {
-        return true;
+        return $range->isAccessibleToUser($user?->user_id);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public static function canIndexLtiTools(User $user): bool
+    public static function canShowLti(User $user, ?Range $range = null): bool
     {
-        return true;
+        return (bool) $range?->isAccessibleToUser($user->user_id);
+    }
+
+    public static function canIndexLtiRegistrations(User $user): bool
+    {
+        return static::canShowLti($user);
     }
 }

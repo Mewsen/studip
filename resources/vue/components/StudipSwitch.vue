@@ -3,6 +3,10 @@ defineProps({
     label: {
         type: String,
         required: true,
+    },
+    title: {
+        type: String,
+        default: null
     }
 });
 
@@ -10,9 +14,9 @@ const isChecked = defineModel({ default: false });
 </script>
 
 <template>
-    <label class="switch-input-container" :title="label">
+    <label class="switch-input-container" :title="title ?? label">
+        <input type="hidden" :value="0" v-bind="$attrs" />
         <input
-            v-bind="$attrs"
             class="input"
             type="checkbox"
             :checked="isChecked"
@@ -20,6 +24,8 @@ const isChecked = defineModel({ default: false });
             :aria-checked="isChecked.toString()"
             :aria-label="label"
             role="switch"
+            :value="1"
+            v-bind="$attrs"
         />
         <span class="switch-container">
             <span class="switch"></span>

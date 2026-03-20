@@ -92,7 +92,7 @@ class Manager
             }
             $_SESSION = [];
         }
-        session_regenerate_id(true);
+//        session_regenerate_id(true);
 
         foreach ($keep_session_vars as $k) {
             $_SESSION[$k] = $keep[$k] ?? null;

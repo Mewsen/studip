@@ -315,10 +315,20 @@ class RouteMap
 
     private function addAuthenticatedLtiRoutes(RouteCollectorProxy $group): void
     {
-        $group->get('/lti-tools/{id}', Routes\Lti\LtiToolsShow::class);
-        $group->get('/lti-tools', Routes\Lti\LtiToolsIndex::class);
-    }
+        $group->group('/courses/{range_id}', function ($lti) {
+            $lti->get('/lti-configs', Routes\Lti\ConfigIndex::class);
+            $lti->get('/lti-registrations', Routes\Lti\RegistrationIndex::class);
+            $lti->get('/lti-resources', Routes\Lti\ResourceIndex::class);
+            $lti->get('/lti-publications', Routes\Lti\PublicationIndex::class);
+        });
 
+        $group->get('/lti-registrations', Routes\Lti\RegistrationIndex::class);
+        $group->get('/lti-registrations/{id}', Routes\Lti\RegistrationShow::class);
+
+        $group->group('/lti-resources', function ($lti) {
+            $lti->patch('/sort', Routes\Lti\ResourceUpdateSort::class);
+        });
+    }
 
     private function addAuthenticatedMassMailRoutes(RouteCollectorProxy $group): void
     {

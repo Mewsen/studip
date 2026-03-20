@@ -164,7 +164,7 @@ export default {
     computed: {
         ...mapGetters({
             urlHelper: 'urlHelper',
-            ltiTools: 'lti-tools/all',
+            ltiRegistrations: 'lti-registrations/all',
         }),
         title() {
             return this.block?.attributes?.payload?.title;
@@ -173,11 +173,11 @@ export default {
             return this.block?.attributes?.payload?.height;
         },
         tools() {
-            return this.ltiTools.map((tool) => ({
-                id: tool.id,
-                name: tool.attributes.name,
-                launch_url: tool.attributes['launch-url'],
-                allow_custom_url: tool.attributes['allow-custom-url'],
+            return this.ltiRegistrations.map(registration => ({
+                id: registration.id,
+                name: registration.attributes.name,
+                launch_url: registration.meta.configs['launch-url'],
+                allow_custom_url: registration.meta.configs['allow-custom-url'],
             }));
         },
         toolId() {
@@ -211,17 +211,17 @@ export default {
             return this.block?.attributes?.payload?.custom_parameters;
         },
         iframeUrl() {
-            return this.urlHelper.getURL('dispatch.php/courseware/lti/iframe/' + this.block.id);
+            return this.urlHelper.getURL('dispatch.php/courseware/lti/launch/' + this.block.id);
         },
     },
     async mounted() {
-        await this.loadLtiTools();
+        await this.loadLtiRegistrations();
         this.initCurrentData();
     },
     methods: {
         ...mapActions({
             updateBlock: 'updateBlockInContainer',
-            loadLtiTools: 'lti-tools/loadAll',
+            loadLtiRegistrations: 'lti-registrations/loadAll',
             companionWarning: 'companionWarning',
         }),
         initCurrentData() {
