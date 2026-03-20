@@ -558,7 +558,7 @@ class Materialien_FilesController extends MVVController
         $this->filter = [];
 
         //Document name
-        $this->sessSet('search_term', Request::get('dokument_suche'));
+        $this->sessSet('search_term', Request::get('name_filter'));
 
         if (trim(Request::get('name_filter'))) {
             $this->filter['searchnames'] = trim(Request::get('name_filter'));
