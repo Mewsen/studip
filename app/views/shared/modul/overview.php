@@ -144,6 +144,7 @@
                         <? endif; ?>
                         <? $courses = $gruppe->courses->filter(
                             fn(\Course $course) => $course->isInSemester($semester)
+                                && $course->isVisibleForUser()
                         ) ?>
                         <? if (count($courses)) : ?>
                         <ul>

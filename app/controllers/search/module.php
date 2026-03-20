@@ -385,7 +385,7 @@ class Search_ModuleController extends MVVController
             $stmt = DBManager::get()->prepare($query);
             $stmt->execute($params);
         }
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);;
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     private function search_studiengaenge()
