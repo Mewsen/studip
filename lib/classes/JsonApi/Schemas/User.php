@@ -56,6 +56,20 @@ class User extends SchemaProvider
             'email' => get_visible_email($user->id),
         ];
 
+        if (UsersAuthority::canEditUser($this->currentUser, $user)) {
+            $attrs += [
+                'auth-plugin' => $user->auth_plugin,
+                'locked' => (bool) $user->locked,
+                'lock-comment' => $user->lock_comment ?: null,
+                'visible' => (bool) $user->visible,
+                'matriculation-number' => $user->matriculation_number,
+                'gender' => (int) $user->geschlecht,
+                'preferred-language' => $user->preferred_language,
+                'mkdate' => date('c', $user->mkdate),
+                'chdate' => date('c', $user->chdate),
+            ];
+        }
+
         return $attrs + iterator_to_array($this->getProfileAttributes($user));
     }
 
@@ -70,14 +84,20 @@ class User extends SchemaProvider
 
         $fields = [
             ['phone', 'privatnr', 'private_phone'],
-            ['homepage', 'Home', 'homepage'],
+            ['cellphone', 'privatcell', 'private_cell'],
             ['address', 'privadr', 'privadr'],
+            ['homepage', 'Home', 'homepage'],
+            ['hobby', 'hobby', 'hobby'],
+            ['cv', 'lebenslauf', 'lebenslauf'],
+            ['publication', 'publi', 'publi'],
+            ['focus', 'schwerp', 'schwerp'],
+            ['motto', 'motto', 'motto'],
         ];
 
         foreach ($fields as list($attr, $field, $vis)) {
             $value =
                 $user[$field] && is_element_visible_for_user($observer->id, $user->id, $visibilities[$vis] ?? null)
-                    ? strip_tags((string) $user[$field])
+                    ? $user[$field]
                     : null;
             yield $attr => $value;
         }
