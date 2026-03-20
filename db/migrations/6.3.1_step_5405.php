@@ -158,7 +158,15 @@ final class Step5405 extends Migration {
         ");
 
         DBManager::get()->exec("
-            ALTER TABLE `lti_resource_links` ADD COLUMN `custom_parameters` TEXT AFTER `options`
+            ALTER TABLE `lti_resource_links` ADD COLUMN `custom_parameters` TEXT AFTER `launch_url`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_resource_links` MODIFY `mkdate` INT UNSIGNED DEFAULT NULL AFTER `custom_parameters`
+        ");
+
+        DBManager::get()->exec("
+            ALTER TABLE `lti_resource_links` MODIFY `chdate` INT UNSIGNED DEFAULT NULL AFTER `mkdate`
         ");
 
         DBManager::get()->exec("
@@ -318,6 +326,29 @@ final class Step5405 extends Migration {
                     ]);
             }
         }
+
+        $db->exec("
+            UPDATE `lti_registrations` SET `status` = 'active'
+        ");
+
+        $db->exec("
+            UPDATE `lti_deployments` SET `is_default`= 1, `deployment_key` = `id`, `client_id` = `registration_id`
+        ");
+
+        $db->exec("
+            DELETE FROM lti_deployments WHERE purpose = 'deep_linking'
+        ");
+
+        $db->prepare("
+            DELETE FROM `lti_resource_links` WHERE `options` = :options
+        ")
+        ->execute([
+            'options' => '{"unfinished_deep_linking":"true"}'
+        ]);
+
+        $db->exec("
+            ALTER TABLE `lti_resource_links` DROP COLUMN `options`
+        ");
 
         $columnsToRemove = [
             'launch_url',
