@@ -120,8 +120,9 @@ class Evaluation_AssignController extends AuthenticatedController
             $new_question = QuestionnaireQuestion::build($question->toArray());
             $new_question->setId($new_question->getNewId());
             $new_question->questionnaire_id = $questionnaire->getId();
-            $new_question->questiondata = $question->questiondata;
+            //$new_question->questiondata = $question->questiondata;
             $new_question->mkdate = time();
+            $new_question->chdate = time();
             if (isset($question->template_question_id)) {
                 $new_question->template_question_id = $question->template_question_id;
             } else {
@@ -149,15 +150,23 @@ class Evaluation_AssignController extends AuthenticatedController
             }
         );
 
+        $study_programs = [];
+        foreach (MvvCourse::get($course->getId())->getTrails(['Studiengang']) as $trail) {
+            if ($trail['Studiengang']) {
+                $study_programs[] = $trail['Studiengang']->name ?? '';
+            }
+        }
+
         $eval->course_id = $course->getId();
         $eval->template_id = $template_id;
         $eval->questionnaire_id = $questionnaire_id;
         $eval->semester_id = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE;
         $eval->applied = 1;
         $eval->course_metadata = json_encode([
-            'course_title' => $course->name,
+            'course_title'      => $course->name,
             'evaluated_persons' => $persons,
-            'sem_nr' => $course->veranstaltungsnummer
+            'sem_nr'            => $course->veranstaltungsnummer,
+            'study_programs'    => $study_programs
         ]);
         $eval->institute_id = $course->institut_id;
 
