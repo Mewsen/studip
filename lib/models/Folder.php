@@ -84,6 +84,8 @@ class Folder extends SimpleORMap implements FeedbackRange
         $config['serialized_fields']['data_content'] = JSONArrayObject::class;
 
         $config['registered_callbacks']['before_store'][] = 'cbMakeUniqueName';
+        $config['registered_callbacks']['after_store'][] = 'cbLogUpdateFolder';
+        $config['registered_callbacks']['after_create'][] = 'cbLogCreateFolder';
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveFeedbackElements';
         $config['registered_callbacks']['before_delete'][] = 'cbLogDeleteFolder';
 
@@ -92,6 +94,53 @@ class Folder extends SimpleORMap implements FeedbackRange
         };
 
         parent::configure($config);
+    }
+
+    public function getRangeFullname(): string
+    {
+        if ($this->user) {
+            return $this->user->getFullname();
+        }
+        if ($this->course) {
+            return $this->course->getFullname();
+        }
+        if ($this->institute) {
+            return $this->institute->getFullname();
+        }
+        return '';
+    }
+
+    public function getLogComment(): string
+    {
+        $comment = sprintf(
+            'Kommentar: %s',
+            $this->name
+        );
+
+        $range_fullname = $this->getRangeFullname();
+
+        if ($range_fullname) {
+            $comment .= " - $range_fullname";
+        }
+        return $comment;
+    }
+
+    public function cbLogCreateFolder()
+    {
+        StudipLog::log('FOLDER_CREATE',
+            User::findCurrent()->id,
+            $this->range_id,
+            $this->getLogComment()
+        );
+    }
+
+    public function cbLogUpdateFolder()
+    {
+        StudipLog::log('FOLDER_UPDATE',
+            User::findCurrent()->id,
+            $this->range_id,
+            $this->getLogComment()
+        );
     }
 
     protected function cbLogDeleteFolder()
