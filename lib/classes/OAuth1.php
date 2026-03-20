@@ -32,10 +32,16 @@ final class OAuth1
             throw new RuntimeException(self::class . ' only supports OAuth 1.0 requests');
         }
 
+        $allowed_replacements_methods = [
+            'sha1'   => 'hmac-sha1',
+            'sha256' => 'hmac-sha256',
+            'sha512' => 'hmac-sha512',
+        ];
+
         return self::hash(
-            $method,
+            $allowed_replacements_methods[$method] ?? $method,
             self::getSignatureBaseString($request),
-            self::urlencode($consumerSecret) . '&' . self::urlencode($tokenSecret)
+            rawurlencode($consumerSecret) . '&' . rawurlencode($tokenSecret)
         );
     }
 
@@ -51,18 +57,24 @@ final class OAuth1
     ): bool {
         $parameters = self::extractParameters($request);
 
-        $required = [
-            'oauth_consumer_key',
-            'oauth_nonce',
-            'oauth_signature',
-            'oauth_signature_method',
-            'oauth_timestamp',
-        ];
-
-        $missing = array_diff($required, array_keys($parameters));
-        if (count($missing) > 0) {
-            throw new RuntimeException('Missing oauth parameters ' . implode(', ', $missing));
+        if ($parameters['oauth_timestamp'] < time() - 5 * 60) {
+            return false;
         }
+
+        return self::verifySignature($request, $consumerSecret, $tokenSecret);
+    }
+
+    /**
+     * Verifies an oauth request.
+     *
+     * @throws RuntimeException if any necessary oauth parameter is missing
+     */
+    public static function verifySignature(
+        Request $request,
+        string  $consumerSecret,
+        string  $tokenSecret
+    ): bool {
+        $parameters = self::extractParameters($request);
 
         $signatureToVerify = $parameters['oauth_signature'];
         unset($parameters['oauth_signature']);
@@ -80,9 +92,19 @@ final class OAuth1
     /**
      * Extracts the oauth parameters either from the Authorization header or
      * from the query string.
+     *
+     * @throws RuntimeException if any necessary oauth parameter is missing
      */
-    public static function extractParameters(Request $request): array
-    {
+    public static function extractParameters(
+        Request $request,
+        array $required = [
+            'oauth_consumer_key',
+            'oauth_nonce',
+            'oauth_signature',
+            'oauth_signature_method',
+            'oauth_timestamp',
+        ]
+    ): array {
         $parameters = $request->getQueryParams();
 
         $header = $request->getHeaderLine('Authorization');
@@ -93,8 +115,13 @@ final class OAuth1
             foreach ($chunks as $chunk) {
                 [$key, $value] = explode('=', $chunk, 2);
                 $value = trim($value, '"');
-                $parameters[$key] = self::urldecode($value);
+                $parameters[$key] = rawurldecode($value);
             }
+        }
+
+        $missing = array_diff($required, array_keys($parameters));
+        if (count($missing) > 0) {
+            throw new RuntimeException('Missing oauth parameters ' . implode(', ', $missing));
         }
 
         return $parameters;
@@ -118,7 +145,7 @@ final class OAuth1
         ksort($parameters);
 
         return implode('&', array_map(
-            self::urlencode(...),
+            rawurlencode(...),
             [
                 strtoupper($request->getMethod()),
                 (string) $request->getUri()->withQuery(''),
@@ -136,32 +163,13 @@ final class OAuth1
     {
         $method = strtolower($method);
         return match ($method) {
-            'hmac-sha1',   'sha1'   => base64_encode(hash_hmac('sha1', $text, $key, true)),
-            'hmac-sha256', 'sha256' => base64_encode(hash_hmac('sha256', $text, $key, true)),
-            'hmac-sha512', 'sha512' => base64_encode(hash_hmac('sha512', $text, $key, true)),
+            'hmac-sha1'   => base64_encode(hash_hmac('sha1', $text, $key, true)),
+            'hmac-sha256' => base64_encode(hash_hmac('sha256', $text, $key, true)),
+            'hmac-sha512' => base64_encode(hash_hmac('sha512', $text, $key, true)),
 
             'plaintext' => $key,
 
             default => throw new RuntimeException('Unsupported sigature method "' . $method . '"'),
         };
-    }
-
-    /**
-     * Urlencodes a given input
-     */
-    public static function urldecode(string $input): string
-    {
-        return rawurldecode($input);
-    }
-
-    /**
-     * Urldecodes a given input
-     */
-    public static function urlencode(string $input): string
-    {
-        $encoded = rawurlencode($input);
-        return str_starts_with($encoded, '/%7E')
-            ? str_replace('/%7E', '/~', $encoded)
-            : $encoded;
     }
 }
