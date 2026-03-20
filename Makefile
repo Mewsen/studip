@@ -6,9 +6,10 @@ PHP_SOURCES = $(shell find app config lib public templates -name '*.php' \( ! -p
 VUE_SOURCES = $(shell find resources -name '*.js' -o -name '*.vue')
 
 STUDIP_UI_PATH = packages/studip-ui
+UI_KIT_SOURCES = $(shell find $(STUDIP_UI_PATH)/src -type f)
 
 # build all needed files
-build: composer webpack-prod build-ui
+build: composer webpack-prod
 
 # remove all generated files
 clean: clean-composer clean-npm clean-webpack clean-doc
@@ -43,12 +44,12 @@ webpack-prod: .webpack.prod
 webpack-watch: npm
 	npm run webpack-watch
 
-.webpack.dev: node_modules/.package-lock.json $(RESOURCES)
+.webpack.dev: node_modules/.package-lock.json $(RESOURCES) $(UI_KIT_SOURCES)
 	@rm -f .webpack.prod
 	npm run webpack-dev
 	@touch $@
 
-.webpack.prod: node_modules/.package-lock.json $(RESOURCES)
+.webpack.prod: node_modules/.package-lock.json $(RESOURCES) $(UI_KIT_SOURCES)
 	@rm -f .webpack.dev
 	npm run webpack-prod
 	@touch $@
@@ -59,6 +60,7 @@ clean-webpack:
 	rm -rf public/assets/javascripts/*.js.map
 	rm -rf public/assets/stylesheets/*.css
 	rm -rf public/assets/stylesheets/*.css.map
+	rm -rf $(STUDIP_UI_PATH)/dist/*
 
 doc: force_update
 	doxygen Doxyfile
