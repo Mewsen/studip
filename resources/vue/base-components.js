@@ -26,6 +26,7 @@ const BaseComponents = {
     StudipDialog: defineAsyncComponent(() => import('./components/StudipDialog.vue')),
     StudipFileSize: defineAsyncComponent(() => import('./components/StudipFileSize.vue')),
     StudipFolderSize: defineAsyncComponent(() => import('./components/StudipFolderSize.vue')),
+    StudipHighlightText: defineAsyncComponent(() => import('./components/StudipHighlightText.vue')),
     StudipIcon: defineAsyncComponent(() => import('./components/StudipIcon.vue')),
     StudipMessageBox: defineAsyncComponent(() => import('./components/StudipMessageBox.vue')),
     StudipMultiPersonSearch: defineAsyncComponent(() => import('./components/StudipMultiPersonSearch.vue')),

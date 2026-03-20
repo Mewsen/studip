@@ -177,7 +177,7 @@
                         <a :href="folder.url"
                            :title="$gettext('Ordner %{foldername} öffnen', { foldername: folder.name}, true)"
                         >
-                            <span v-html="highlightString(folder.name)"></span>
+                            <studip-highlight-text :text="folder.name" :search-term="needleForFilter"></studip-highlight-text>
                         </a>
                     </td>
                     <td class="responsive-hidden" :data-sort-value="folder.object_count">
@@ -189,9 +189,11 @@
                     </td>
                     <td class="responsive-hidden" :class="{'filter-match': valueMatchesFilter(folder.author_name)}">
                         <a v-if="folder.author_url" :href="folder.author_url">
-                            <span v-html="highlightString(folder.author_name)"></span>
+                            <studip-highlight-text :text="folder.author_name" :search-term="needleForFilter"></studip-highlight-text>
                         </a>
-                        <span v-else v-html="highlightString(folder.author_name)"></span>
+                        <template v-else>
+                            <studip-highlight-text :text="folder.author_name" :search-term="needleForFilter"></studip-highlight-text>
+                        </template>
                     </td>
                     <td class="responsive-hidden" style="white-space: nowrap;">
                         <studip-date-time :timestamp="folder.chdate" :relative="true"></studip-date-time>
@@ -245,7 +247,7 @@
                            :id="`file-${file.id}`"
                            :title="$gettext('Details zur Datei %{filename} anzeigen', { filename: file.name }, true)"
                         >
-                            <span v-html="highlightString(file.name)"></span>
+                            <studip-highlight-text :text="file.name" :search-term="needleForFilter"></studip-highlight-text>
                             <studip-icon v-if="file.isAccessible"
                                          shape="accessibility"
                                          role="info"
@@ -270,9 +272,11 @@
                     </td>
                     <td class="responsive-hidden" :class="{'filter-match': valueMatchesFilter(file.author_name)}">
                         <a v-if="file.author_url" :href="file.author_url">
-                            <span v-html="highlightString(file.author_name)"></span>
+                            <studip-highlight-text :text="file.author_name" :search-term="needleForFilter"></studip-highlight-text>
                         </a>
-                        <span v-else v-html="highlightString(file.author_name)"></span>
+                        <template v-else>
+                            <studip-highlight-text :text="file.author_name" :search-term="needleForFilter"></studip-highlight-text>
+                        </template>
                     </td>
                     <td data-sort-value="file.chdate" class="responsive-hidden" style="white-space: nowrap;">
                         <studip-date-time :timestamp="file.chdate" :relative="true"></studip-date-time>
@@ -312,7 +316,6 @@
     </div>
 </template>
 <script>
-import sanitizeHTML from 'sanitize-html';
 
 export default {
     name: 'files-table',
@@ -446,16 +449,6 @@ export default {
                 return false;
             }
             return string.toLowerCase().includes(this.needleForFilter);
-        },
-        highlightString (string) {
-            let highlighted = sanitizeHTML(string);
-            if (this.needleForFilter.length > 0) {
-                // Escape needle for regexp, see https://stackoverflow.com/a/3561711
-                const pattern = this.needleForFilter.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
-                const regExp = new RegExp(pattern, 'gi');
-                highlighted = highlighted.replace(regExp, '<span class="filter-match">$&</span>');
-            }
-            return highlighted;
         },
         getAriaLabelForFolder(folder) {
             return this.$gettext(
