@@ -253,7 +253,7 @@ class MvvFile extends ModuleManagementModel
     {
         $zuordnungen = [];
         foreach (MvvFileRange::findBySQL('mvvfile_id =?', [$this->mvvfile_id]) as $range) {
-            $zuordnungen[$range['range_type']][$range['range_id']] = $range;
+            $zuordnungen[$range->getRangeType()][$range['range_id']] = $range;
         }
         return $zuordnungen;
     }
@@ -334,7 +334,7 @@ class MvvFile extends ModuleManagementModel
     /**
      * Returns the highest current sorting position.
      *
-     * @param sting $range_id Id of the mvv object.
+     * @param string $range_id Id of the mvv object.
      * @return int Number of the highest current sorting position.
      */
     public static function getMaxSortingPos($range_id)
@@ -354,6 +354,7 @@ class MvvFile extends ModuleManagementModel
     public function addToRange($range_id, $range_type)
     {
         $mvvfile_range = new MvvFileRange([$this->mvvfile_id, $range_id]);
+        $mvvfile_range->range_type = $range_type;
         if ($mvvfile_range->isNew()) {
             $mvvfile_range->position = self::getMaxSortingPos($range_id) + 1;
         }
