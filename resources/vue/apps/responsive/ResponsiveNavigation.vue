@@ -1,27 +1,25 @@
 <template>
     <div role="navigation" ref="container" id="responsive-navigation-container" v-if="menuNeeded">
         <div class="responsive-navigation-header">
-            <transition name="slide" appear>
-                <button
-                    id="responsive-navigation-button"
-                    class="styleless"
-                    :aria-label="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
-                    @click.prevent="toggleMenu"
-                    @keydown.prevent.space="toggleMenu"
-                    @keydown.prevent.enter="toggleMenu"
-                    :aria-expanded="showMenu"
-                    aria-controls="responsive-navigation-items"
+            <button
+                id="responsive-navigation-button"
+                class="styleless"
+                :aria-label="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
+                @click.prevent="toggleMenu"
+                @keydown.prevent.space="toggleMenu"
+                @keydown.prevent.enter="toggleMenu"
+                :aria-expanded="showMenu"
+                aria-controls="responsive-navigation-items"
+            >
+                <studip-icon
+                    shape="hamburger"
+                    role="info_alt"
+                    :alt="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
+                    :size="iconSize"
+                    :class="showMenu ? 'menu-open' : 'menu-closed'"
                 >
-                    <studip-icon
-                        shape="hamburger"
-                        role="info_alt"
-                        :alt="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
-                        :size="iconSize"
-                        :class="showMenu ? 'menu-open' : 'menu-closed'"
-                    >
-                    </studip-icon>
-                </button>
-            </transition>
+                </studip-icon>
+            </button>
         </div>
         <transition name="appear" appear>
             <nav v-show="showMenu" id="responsive-navigation-items" class="responsive" ref="navigation">
@@ -629,21 +627,6 @@ export default {
 </script>
 
 <style lang="scss">
-.slide-enter-active,
-.slide-leave-active {
-    transition: all var(--transition-duration) ease;
-}
-
-.slide-enter-from,
-.slide-leave-from {
-    margin-left: -3px;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-    margin-left: -50px;
-}
-
 .appear-enter-active,
 .appear-leave-active {
     transition: opacity var(--transition-duration) ease;
