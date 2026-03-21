@@ -897,6 +897,10 @@ class Resource extends SimpleORMap implements StudipItem
         $booking->internal_comment = $internal_comment;
         $booking->booking_type     = $booking_type;
 
+        if ($booking_type === ResourceBooking::TYPE_LOCK) {
+            $force_booking = true;
+        }
+
         //We can finally store the new booking.
 
         try {
