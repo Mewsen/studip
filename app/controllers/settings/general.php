@@ -68,6 +68,7 @@ class Settings_GeneralController extends Settings_SettingsController
         $this->config->store('TOUR_AUTOSTART_DISABLE', Request::int('tour_autostart_disable'));
         if ($this->show_room_management_autor_config) {
             $this->config->store('RESOURCES_CONFIRM_PLAN_DRAG_AND_DROP', Request::int('resources_confirm_plan_drag_and_drop'));
+            $this->config->store('RESOURCES_DISABLE_MAIL_ON_NEW_REQUEST', Request::int('resources_disable_mail_on_new_request'));
         }
 
         if (Request::int('personal_notifications_activated')) {
