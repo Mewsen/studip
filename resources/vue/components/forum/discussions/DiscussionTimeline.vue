@@ -30,6 +30,12 @@ const currentPostDate = computed(() => {
     return null;
 });
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
+const postProgressText = computed(() => {
+    return $gettext('Aktuell: Beitrag %{current} von %{total}', {
+        current: currentPostIndex.value + 1,
+        total: posts.value.length
+    })
+});
 
 const findPostAtScroll = y => {
     const postElements = document.querySelectorAll('.post');
@@ -50,11 +56,13 @@ const jumpToPost = (targetPost, index = 0) => {
     }
 
     if (parseInt(targetPost?.dataset.index) === 0) {
+        forumPostStore.updateCurrentPostIndex(0);
         document.getElementById('discussion_start').scrollIntoView({ behavior: 'instant' });
         return;
     }
 
     targetPost?.scrollIntoView({ behavior: 'instant' });
+    targetPost?.focus();
 }
 
 const jumpTo = e => {
@@ -76,7 +84,7 @@ const jumpTo = e => {
 
 const startDrag = e => {
     isDragging.value = true;
-    let scrollPosition = 0;
+    let scrollPosition = -1;
     let targetPost = null;
 
     const contentContainer = document.documentElement;
@@ -97,14 +105,22 @@ const startDrag = e => {
     };
 
     const onDrop = () => {
+        if (scrollPosition < 0) {
+            resetDrag();
+            return;
+        }
+
         if (targetPost) {
             jumpToPost(targetPost);
         } else {
             contentContainer.scrollTop = scrollPosition;
         }
 
-        isDragging.value = false;
+        resetDrag();
+    };
 
+    const resetDrag = () => {
+        isDragging.value = false;
         document.removeEventListener('mousemove', onDrag);
         document.removeEventListener('mouseup', onDrop);
     };
@@ -147,6 +163,11 @@ const updateUnreadScrollPosition = () => {
     unreadScrollPosition.value = Math.min(Math.max((elementTop / scrollableHeight) * 100, 0), 90);
 };
 
+const onRangeInput = event => {
+    const index = Number(event.target.value) - 1;
+    jumpToPost(null, index);
+}
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll);
     STUDIP.eventBus.on('forum:jumpToPost', updateUnreadScrollPosition);
@@ -166,12 +187,42 @@ onUnmounted(() => {
                 class="button-base"
                 @click="jumpToPost(null, 0)"
                 :title="$gettext('Zum ersten Beitrag')"
+                :aria-label="$gettext('Zum ersten Beitrag')"
             >
                 <StudipDateTime :iso="discussion.mkdate" :relative="true" />
             </button>
         </div>
-        <div id="scroll-area" class="scroll-area" @click="jumpTo">
-            <div class="scroll-area__track">
+        <nav class="navigation-area sr-only" :aria-label="$gettext('Beitragsnavigation')">
+            <span aria-live="assertive">{{ postProgressText }}</span>
+
+            <button
+                v-if="isNewFrom && currentPostIndex !== firstUnreadPostIndex"
+                type="button"
+                @click="jumpToPost(null, firstUnreadPostIndex)"
+            >
+                {{ $gettext('Zum ersten ungelesenen Beitrag') }}
+            </button>
+
+            <input
+                type="range"
+                min="1"
+                :max="posts.length"
+                step="1"
+                :value="currentPostIndex + 1"
+                @change="onRangeInput"
+                :aria-label="$gettext('Mit Schieberegler durch Beiträge navigieren')"
+                :aria-valuemin="1"
+                :aria-valuemax="posts.length"
+                :aria-valuenow="currentPostIndex + 1"
+            />
+        </nav>
+        <div
+            id="scroll-area"
+            class="scroll-area"
+            aria-hidden="true"
+            @click="jumpTo"
+        >
+            <div class="scroll-area__track" aria-hidden="true">
                 <Transition name="fade">
                     <div
                         v-if="isNewFrom"
@@ -195,6 +246,7 @@ onUnmounted(() => {
                         class="button-base"
                         @click.stop="jumpToPost(null, firstUnreadPostIndex)"
                         :title="$gettext('Zum ersten ungelesenen Beitrag')"
+                        aria-live="polite"
                     >
                         {{ $gettext('Neu ab hier') }}
                     </button>
@@ -204,6 +256,8 @@ onUnmounted(() => {
                 type="button"
                 id="scroller"
                 class="scroll-area__scroller"
+                aria-hidden="true"
+                tabindex="-1"
                 :style="{
                     top: `${scrollerTop}%`,
                     transform: `translateY(-${scrollerTop}%)`,
@@ -212,10 +266,12 @@ onUnmounted(() => {
                 @mousedown.prevent="startDrag"
                 @click.stop
             >
-                <span class="scroll-area__scroll-marker"></span>
+                <span class="scroll-area__scroll-marker" aria-hidden="true"></span>
                 <span class="scroll-area__info">
                     {{ currentPostIndex + 1 }}/{{ posts.length }} <br />
-                    <time v-if="currentPostDate" :datetime="currentPostDate">
+                    <time
+                        v-if="currentPostDate" :datetime="currentPostDate"
+                        :aria-label="`${$gettext('Beitragsdatum')}: ${currentPostDate}`">
                         {{ currentPostDate }}
                     </time>
                     <Transition name="fade">
@@ -232,6 +288,7 @@ onUnmounted(() => {
                 class="button-base"
                 @click="jumpToPost(null, posts.length -1)"
                 :title="$gettext('Zum letzten Beitrag')"
+                :aria-label="$gettext('Zum letzten Beitrag')"
             >
                 <StudipDateTime v-if="posts.length > 0" :iso="posts[posts.length -1].mkdate" :relative="true" />
                 <StudipDateTime v-else :iso="discussion.mkdate" :relative="true" />
