@@ -31,7 +31,9 @@
     <? foreach ($news as $new): ?>
     <? $is_new = ($new['chdate'] >= object_get_visit($new->id, 'news', false, false))
             && ($new['user_id'] != $GLOBALS['user']->id); ?>
-    <article class="studip toggle <?= ContentBoxHelper::classes($new->id, $is_new) ?>" id="<?= $new->id ?>" data-visiturl="<?=URLHelper::getScriptLink('dispatch.php/news/visit')?>">
+
+    <!-- toggle open and mark as read if in course or institute context -->
+    <article class="studip toggle <?= ContentBoxHelper::classes($new->id, $is_new) ?> <?= $mark_as_read ? 'open' : ''?>" id="<?= $new->id ?>" data-visiturl="<?=URLHelper::getScriptLink('dispatch.php/news/visit')?>">
         <header>
             <h1>
                 <a href="<?= ContentBoxHelper::href($new->id, ['contentbox_type' => 'news']) ?>">
