@@ -99,16 +99,25 @@ class GarbageCollectorJob extends CronJob
         //range type 'message', belongs to the folder type 'MessageFolder',
         //is older than 2 hours and has a range-ID that doesn't exist
         //in the "message" table.
-        $unsent_attachment_folders = Folder::deleteBySql(
-            "folder_type = 'MessageFolder'
-            AND
-            range_type = 'message'
-            AND
-            chdate < UNIX_TIMESTAMP(DATE_ADD(NOW(),INTERVAL -2 HOUR))
-            AND
-            range_id NOT IN (
-                SELECT message_id FROM message
-            )"
+        $conditions = [
+            "folder_type = 'MessageFolder'",
+            "range_type = 'message'",
+            "chdate < UNIX_TIMESTAMP(DATE_ADD(NOW(),INTERVAL -2 HOUR))",
+            "range_id NOT IN (SELECT message_id FROM message)",
+        ];
+        $condition = implode(" AND ", $conditions);
+
+        $unsent_attachment_folders = 0;
+        Folder::findEachBySQL(
+            function (Folder $folder) use (&$unsent_attachment_folders) {
+                $folder->file_refs->each(function (FileRef $ref) {
+                    $ref->delete();
+                });
+                $folder->delete();
+
+                $unsent_attachment_folders += 1;
+            },
+            $condition
         );
 
         //delete old attachments of non-stored and deleted mvv objects:
