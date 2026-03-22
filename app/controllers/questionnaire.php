@@ -19,6 +19,10 @@ class QuestionnaireController extends AuthenticatedController
         class_exists('RangeScale');
         class_exists('QuestionnaireInfo');
         class_exists('QuestionnaireAutomatedData');
+        class_exists('Headline');
+        class_exists('Divider');
+        class_exists('BlankLine');
+        class_exists('Pagebreak');
         PageLayout::setHelpKeyword('Basis/Votings');
     }
 

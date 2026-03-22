@@ -16,6 +16,11 @@
  */
 class LikertScale extends QuestionnaireQuestion implements QuestionType
 {
+    public static function isDesignElement()
+    {
+        return false;
+    }
+
     public static function getIcon(bool $active = false) : Icon
     {
         return Icon::create(static::getIconShape(), $active ? 'clickable' : 'info');
@@ -38,6 +43,11 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
     static public function getEditingComponent()
     {
         return ['LikertEdit', ''];
+    }
+
+    static public function getAnsweringComponent()
+    {
+        return ['LikertAnswer', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)

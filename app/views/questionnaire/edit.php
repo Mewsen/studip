@@ -7,7 +7,8 @@ $questiontypes['Vote'] = [
     'name' => Vote::getName(),
     'type' => Vote::class,
     'icon' => Vote::getIconShape(),
-    'component' => Vote::getEditingComponent()
+    'component' => Vote::getEditingComponent(),
+    'is_design_element' => false,
 ];
 foreach (get_declared_classes() as $class) {
     if (
@@ -19,7 +20,8 @@ foreach (get_declared_classes() as $class) {
             'name' => $class::getName(),
             'type' => $class,
             'icon' => $class::getIconShape(),
-            'component' => $class::getEditingComponent()
+            'component' => $class::getEditingComponent(),
+            'is_design_element' => $class::isDesignElement()
         ];
     }
 }
@@ -50,4 +52,5 @@ $questionnaire_data = [
             'question-types' => $questiontypes,
             'range-id'       => Request::get('range_id'),
             'range-type'     => Request::get('range_type'),
+            'data-secure'   => true,
         ]) ?>

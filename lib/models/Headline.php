@@ -14,12 +14,14 @@
  * @property SimpleORMapCollection<QuestionnaireAnswer> $answers has_many QuestionnaireAnswer
  * @property Questionnaire $questionnaire belongs_to Questionnaire
  */
-class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
+class Headline extends QuestionnaireQuestion implements QuestionType
 {
+
     public static function isDesignElement()
     {
         return true;
     }
+
 
     public static function getIcon(bool $active = false) : Icon
     {
@@ -32,22 +34,32 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
      */
     public static function getIconShape()
     {
-        return 'question-info';
+        // TODO we need an icon
+        return 'question-text';
     }
 
     public static function getName()
     {
-        return _('Information');
+        return _('Überschrift');
+    }
+
+
+    public function getDisplayTemplate()
+    {
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
+        $template = $factory->open('questionnaire/question_types/designelements/headline');
+        $template->set_attribute('vote', $this);
+        return $template;
     }
 
     static public function getEditingComponent()
     {
-        return ['QuestionnaireInfoEdit', ''];
+        return ['HeadlineEdit', ''];
     }
 
     static public function getAnsweringComponent()
     {
-        return ['QuestionnaireInfoAnswer', ''];
+        return ['HeadlineAnswer', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)
@@ -56,14 +68,6 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
             \Studip\Markup::purifyHtml($questiondata['description'])
         );
         return $questiondata;
-    }
-
-    public function getDisplayTemplate()
-    {
-        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
-        $template = $factory->open('questionnaire/question_types/info/info');
-        $template->set_attribute('vote', $this);
-        return $template;
     }
 
     public function createAnswer()
@@ -79,7 +83,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
     public function getResultTemplate($only_user_ids = null)
     {
         $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
-        $template = $factory->open('questionnaire/question_types/info/info');
+        $template = $factory->open('questionnaire/question_types/designelements/headline');
         $template->set_attribute('vote', $this);
         return $template;
     }
@@ -89,14 +93,4 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
         return [];
     }
 
-    /**
-     * Return whether a given url is valid.
-     * @return bool
-     */
-    public function hasValidURL(): bool
-    {
-        return !empty($this->questiondata['url'])
-            && trim($this->questiondata['url'])
-            && filter_var($this->questiondata['url'], FILTER_VALIDATE_URL);
-    }
 }

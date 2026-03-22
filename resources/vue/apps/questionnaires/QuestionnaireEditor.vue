@@ -75,8 +75,19 @@
                     </label>
                 </div>
                 <div class="add_question file_select_possibilities" v-else-if="activeTab === 'add_question'">
+                    <strong>{{ $gettext('Fragetypen') }}</strong>
                     <div>
-                        <button v-for="(questiontype, key) in questionTypes" :key="key"
+                        <button v-for="(questiontype, index) in onlyNonDesignElements" :key="index"
+                                href=""
+                                @click.prevent="addQuestion(questiontype.type)"
+                        >
+                            <studip-icon :shape="questiontype.icon" :size="40"></studip-icon>
+                            {{questiontype.name}}
+                        </button>
+                    </div>
+                    <strong>{{ $gettext('Designelemente') }}</strong>
+                    <div>
+                        <button v-for="(questiontype, index) in onlyDesignElements" :key="index"
                                 href=""
                                 @click.prevent="addQuestion(questiontype.type)"
                         >
@@ -334,10 +345,10 @@ export default {
         actionMenuItems() {
             return [
                 {label: this.$gettext('Umbenennen'), icon: 'edit', emit: 'rename'},
-                {label: this.$gettext('Frage kopieren'), icon: 'copy', emit: 'copy'},
-                {label: this.$gettext('Frage nach oben verschieben'), icon: 'arr_1up', emit: 'moveup'},
-                {label: this.$gettext('Frage nach unten verschieben'), icon: 'arr_1down', emit: 'movedown'},
-                {label: this.$gettext('Frage löschen'), icon: 'trash', emit: 'delete'},
+                {label: this.$gettext('Element kopieren'), icon: 'copy', emit: 'copy'},
+                {label: this.$gettext('Element nach oben verschieben'), icon: 'arr_1up', emit: 'moveup'},
+                {label: this.$gettext('Element nach unten verschieben'), icon: 'arr_1down', emit: 'movedown'},
+                {label: this.$gettext('Element löschen'), icon: 'trash', emit: 'delete'},
             ];
         },
         activateFormSecure() {
@@ -346,6 +357,14 @@ export default {
         indexForQuestion() {
             return this.getIndexForQuestion(this.activeTab);
         },
+        onlyDesignElements() {
+            return Object.values(this.questionTypes).filter(q => q.is_design_element);
+        },
+        onlyNonDesignElements() {
+            return Object.values(this.questionTypes).filter(q => !q.is_design_element);
+        }
+
     },
+
 }
 </script>

@@ -17,6 +17,11 @@
  */
 class QuestionnaireAutomatedData extends QuestionnaireQuestion implements QuestionType
 {
+    public static function isDesignElement()
+    {
+        return false;
+    }
+
     public static function getIcon(bool $active = false) : Icon
     {
         return Icon::create(static::getIconShape(), $active ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO);
@@ -43,6 +48,11 @@ class QuestionnaireAutomatedData extends QuestionnaireQuestion implements Questi
             //in this case the question_type is not allowed:
             return [];
         }
+    }
+
+    static public function getAnsweringComponent()
+    {
+        return ['AutomatedDataAnswer', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)

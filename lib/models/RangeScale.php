@@ -16,6 +16,11 @@
  */
 class RangeScale extends QuestionnaireQuestion implements QuestionType
 {
+    public static function isDesignElement()
+    {
+        return false;
+    }
+
     public static function getIcon(bool $active = false) : Icon
     {
         return Icon::create(static::getIconShape(), $active ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO);
@@ -47,6 +52,11 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
     static public function getEditingComponent()
     {
         return ['RangescaleEdit', ''];
+    }
+
+    static public function getAnsweringComponent()
+    {
+        return ['RangescaleAnswer', ''];
     }
 
     public function getDisplayTemplate()
