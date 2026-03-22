@@ -1,241 +1,285 @@
 <script setup>
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import StudipDateTime from '@/vue/components/StudipDateTime.vue';
-import {useForumPost} from '@/vue/store/pinia/forum/ForumPost';
-import {useForumConfig} from '@/vue/store/pinia/forum/ForumConfig';
-import {$gettext} from '@/assets/javascripts/lib/gettext';
+import { useForumPost } from '@/vue/store/pinia/forum/ForumPost';
+import { useForumConfig } from '@/vue/store/pinia/forum/ForumConfig';
+import { $gettext } from '@/assets/javascripts/lib/gettext';
 
 const forumConfig = useForumConfig();
 const forumPostStore = useForumPost();
+
 defineProps({
-    discussion: {
-        type: Object,
-        required: true,
-    }
+    discussion: { type: Object, required: true },
 });
 
-const scrollerTop = ref(0);
-const isDragging = ref(false);
-const unreadScrollPosition = ref(-1);
+const scrollPercentage = ref(0);
+const unreadPosition = ref(0);
 
 const posts = computed(() => forumPostStore.posts);
 const currentPostIndex = computed(() => forumPostStore.currentPostIndex);
 const firstUnreadPostIndex = computed(() => forumPostStore.firstUnreadPostIndex);
-const currentPostDate = computed(() => {
-    if (currentPostIndex.value < posts.value.length) {
-        const date = new Date(posts.value[currentPostIndex.value].mkdate);
-        return date.toLocaleString(String.locale, { month: 'long', year: 'numeric' });
-    }
+const currentPost = computed(() => posts.value[currentPostIndex.value]);
 
-    return null;
+const currentPostDate = computed(() => {
+    const post = currentPost.value;
+    return post ? new Date(post.mkdate).toLocaleString(String.locale, { month: 'long', year: 'numeric' }) : null;
 });
+
 const isNewFrom = computed(() => firstUnreadPostIndex.value > -1 && !forumConfig.allowGuestAccess);
 
-const findPostAtScroll = y => {
-    const postElements = document.querySelectorAll('.post');
-    for (const postElement of postElements) {
-        const postScrollPosition = postElement.getBoundingClientRect().top + window.scrollY;
+const ariaValueText = computed(() => {
+    if (!currentPost.value) return '';
+    return $gettext('Beitrag %{current} von %{total}, %{date}')
+        .replace('%{current}', currentPostIndex.value + 1)
+        .replace('%{total}', posts.value.length)
+        .replace('%{date}', currentPostDate.value);
+});
 
-        if (postScrollPosition > y) {
-            return postElement;
-        }
-    }
+const getScrollPercent = () => {
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    return scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+};
 
-    return null;
-}
+const getPostPositionPercent = (index) => {
+    if (index <= 0) return 0;
+    const element = document.querySelector(`[data-index='${index}']`);
+    if (!element) return 0;
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    const elementTop = element.getBoundingClientRect().top + window.scrollY;
+    return Math.min(100, (elementTop / scrollable) * 100);
+};
 
-const jumpToPost = (targetPost, index = 0) => {
-    if (!targetPost) {
-        targetPost = document.querySelector(`[data-index='${index}']`);
-    }
-
-    if (parseInt(targetPost?.dataset.index) === 0) {
-        document.getElementById('discussion_start').scrollIntoView({ behavior: 'instant' });
-        return;
-    }
-
-    targetPost?.scrollIntoView({ behavior: 'instant' });
-}
-
-const jumpTo = e => {
-    const contentContainer = document.documentElement;
-    const trackRect = e.currentTarget.getBoundingClientRect();
-    const clickY = e.clientY - trackRect.top;
-    const percent = Math.min(Math.max(clickY / trackRect.height, 0), 1);
-
-    const scrollPosition = percent * (contentContainer.scrollHeight - contentContainer.clientHeight);
-    const targetPost = findPostAtScroll(scrollPosition);
-
-    if (targetPost) {
-        jumpToPost(targetPost);
-        updateScroller(scrollPosition);
-    } else {
-        contentContainer.scrollTop = scrollPosition;
-    }
-}
-
-const startDrag = e => {
-    isDragging.value = true;
-    let scrollPosition = 0;
-    let targetPost = null;
-
-    const contentContainer = document.documentElement;
-    const rectScrollArea = document.getElementById('scroll-area').getBoundingClientRect();
-    const scrollerRect = document.getElementById('scroller').getBoundingClientRect();
-
-    const offsetY = e.clientY - (scrollerRect.top + scrollerRect.height / 2);
-
-    const onDrag = e2 => {
-        const y = e2.clientY - rectScrollArea.top - offsetY;
-        const percent = Math.min(Math.max(y / rectScrollArea.height, 0), 1);
-
-        scrollerTop.value = percent * 100;
-        scrollPosition = percent * (contentContainer.scrollHeight - contentContainer.clientHeight);
-        targetPost = findPostAtScroll(scrollPosition);
-        forumPostStore.updateCurrentPostIndex(parseInt(targetPost?.dataset.index ?? 0))
-        updateScroller(scrollPosition);
-    };
-
-    const onDrop = () => {
-        if (targetPost) {
-            jumpToPost(targetPost);
-        } else {
-            contentContainer.scrollTop = scrollPosition;
-        }
-
-        isDragging.value = false;
-
-        document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('mouseup', onDrop);
-    };
-
-    document.addEventListener('mousemove', onDrag);
-    document.addEventListener('mouseup', onDrop);
-}
-
-const updateScroller = (scrollPosition = -1, ignoreOffset = 0) => {
-    const contentContainer = document.documentElement;
-    scrollPosition = scrollPosition > -1 ? scrollPosition : contentContainer.scrollTop;
-    const range = Math.max(1, contentContainer.scrollHeight - contentContainer.clientHeight - ignoreOffset);
-    scrollerTop.value = Math.min(100, Math.max(0, scrollPosition - ignoreOffset) / range * 100);
-
-    if (scrollerTop.value === 0) {
-        forumPostStore.updateCurrentPostIndex(0);
-    }
-}
-
-const handleScroll = () => {
-    if (!isDragging.value) {
-        updateScroller(window.scrollY, 200);
+const updateMetrics = () => {
+    scrollPercentage.value = getScrollPercent();
+    if (isNewFrom.value) {
+        unreadPosition.value = getPostPositionPercent(firstUnreadPostIndex.value);
     }
 };
 
-const updateUnreadScrollPosition = () => {
-    if (firstUnreadPostIndex.value === 0) {
-        unreadScrollPosition.value = 0;
-        return;
-    }
+const onSliderInput = (e) => {
+    const percent = parseFloat(e.target.value);
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    window.scrollTo(0, (percent / 100) * scrollable);
+};
 
-    const firstUnreadPost = document.querySelector(`[data-index='${firstUnreadPostIndex.value}']`);
-    if (!firstUnreadPost) {
-        return;
-    }
+const jumpToPost = (index) => {
+    const element =
+        index === 0 ? document.getElementById('discussion_start') : document.querySelector(`[data-index='${index}']`);
+    element?.scrollIntoView({ behavior: 'smooth' });
+};
 
-    const contentContainer = document.documentElement;
-    const elementTop = firstUnreadPost.getBoundingClientRect().top + window.scrollY - 200;
-    const scrollableHeight = contentContainer.scrollHeight - contentContainer.clientHeight;
-    unreadScrollPosition.value = Math.min(Math.max((elementTop / scrollableHeight) * 100, 0), 90);
+const onKeyDown = (e) => {
+    if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        jumpToPost(Math.max(0, currentPostIndex.value - 1));
+    } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        jumpToPost(Math.min(posts.value.length - 1, currentPostIndex.value + 1));
+    }
 };
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll);
-    STUDIP.eventBus.on('forum:jumpToPost', updateUnreadScrollPosition);
+    window.addEventListener('scroll', updateMetrics);
+    window.addEventListener('resize', updateMetrics);
+    updateMetrics();
 });
 
 onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll);
-    STUDIP.eventBus.off('forum:jumpToPost', updateUnreadScrollPosition);
+    window.removeEventListener('scroll', updateMetrics);
+    window.removeEventListener('resize', updateMetrics);
 });
 </script>
 
 <template>
     <div class="discussion-timeline">
-        <div class="discussion-timeline__start">
-            <button
-                type="button"
-                class="button-base"
-                @click="jumpToPost(null, 0)"
-                :title="$gettext('Zum ersten Beitrag')"
-            >
-                <StudipDateTime :iso="discussion.mkdate" :relative="true" />
-            </button>
-        </div>
-        <div id="scroll-area" class="scroll-area" @click="jumpTo">
-            <div class="scroll-area__track">
-                <Transition name="fade">
-                    <div
-                        v-if="isNewFrom"
-                        class="scroll-area__unread"
-                        :style="{
-                            top: `${unreadScrollPosition}%`
-                        }"
-                    >
-                    </div>
-                </Transition>
+        <button class="timeline-anchor" :title="$gettext('Zum ersten Beitrag')" @click="jumpToPost(0)">
+            <StudipDateTime :iso="discussion.mkdate" :relative="true" />
+        </button>
+
+        <div class="slider-container">
+            <span class="sr-only" id="timeline-label">
+                {{ $gettext('Beitragsnavigation der Diskussion') }}
+            </span>
+            <span class="sr-only" id="timeline-instructions">
+                {{
+                    $gettext(
+                        'Nutzen Sie die Pfeiltasten Links und Rechts für eine feine Navigation. Die Tasten Hoch und Runter springen direkt zwischen den einzelnen Beiträgen.',
+                    )
+                }}
+            </span>
+            <div class="slider-track">
+                <div v-if="isNewFrom" class="unread-marker" :style="{ top: unreadPosition + '%', bottom: 0 }"></div>
             </div>
-            <Transition name="fade">
-                <div
-                    v-if="isNewFrom && currentPostIndex !== firstUnreadPostIndex"
-                    class="scroll-area__new-from"
-                     :style="{
-                        top: `${unreadScrollPosition}%`
-                    }">
-                    <button
-                        type="button"
-                        class="button-base"
-                        @click.stop="jumpToPost(null, firstUnreadPostIndex)"
-                        :title="$gettext('Zum ersten ungelesenen Beitrag')"
-                    >
-                        {{ $gettext('Neu ab hier') }}
-                    </button>
-                </div>
-            </Transition>
-            <button
-                type="button"
-                id="scroller"
-                class="scroll-area__scroller"
+
+            <input
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                :value="scrollPercentage"
+                @input="onSliderInput"
+                @keydown="onKeyDown"
+                class="timeline-slider"
+                aria-labelledby="timeline-label"
+                aria-describedby="timeline-instructions"
+                :aria-valuetext="ariaValueText"
+            />
+
+            <div
+                class="floating-info"
                 :style="{
-                    top: `${scrollerTop}%`,
-                    transform: `translateY(-${scrollerTop}%)`,
-                    cursor: posts.length > 1 ? 'ns-resize' : 'not-allowed'
+                    top: scrollPercentage + '%',
+                    transform: `translateY(-${scrollPercentage}%)`,
                 }"
-                @mousedown.prevent="startDrag"
-                @click.stop
             >
-                <span class="scroll-area__scroll-marker"></span>
-                <span class="scroll-area__info">
-                    {{ currentPostIndex + 1 }}/{{ posts.length }} <br />
-                    <time v-if="currentPostDate" :datetime="currentPostDate">
-                        {{ currentPostDate }}
-                    </time>
-                    <Transition name="fade">
-                        <span v-if="isNewFrom && currentPostIndex === firstUnreadPostIndex">
-                            &mdash; {{ $gettext('Neu ab hier') }}
-                        </span>
-                    </Transition>
-                </span>
-            </button>
-        </div>
-        <div class="discussion-timeline__end">
-            <button
-                type="button"
-                class="button-base"
-                @click="jumpToPost(null, posts.length -1)"
-                :title="$gettext('Zum letzten Beitrag')"
+                <span class="marker"></span>
+                <div class="label">
+                    {{ currentPostIndex + 1 }}/{{ posts.length }}<br />
+                    <time>{{ currentPostDate }}</time>
+                    <span v-if="isNewFrom && currentPostIndex === firstUnreadPostIndex">
+                        &mdash; {{ $gettext('Neu ab hier') }}
+                    </span>
+                </div>
+            </div>
+
+            <div
+                v-if="isNewFrom && currentPostIndex < firstUnreadPostIndex"
+                class="new-posts-label"
+                :style="{ top: unreadPosition + '%' }"
             >
-                <StudipDateTime v-if="posts.length > 0" :iso="posts[posts.length -1].mkdate" :relative="true" />
-                <StudipDateTime v-else :iso="discussion.mkdate" :relative="true" />
-            </button>
+                <button
+                    type="button"
+                    :title="$gettext('Zum ersten ungelesenen Beitrag')"
+                    @click="jumpToPost(firstUnreadPostIndex)"
+                >
+                    {{ $gettext('Neu ab hier') }}
+                </button>
+            </div>
         </div>
+
+        <button class="timeline-anchor" :title="$gettext('Zum letzten Beitrag')" @click="jumpToPost(posts.length - 1)">
+            <StudipDateTime :iso="posts[posts.length - 1]?.mkdate || discussion.mkdate" :relative="true" />
+        </button>
     </div>
 </template>
+
+<style scoped lang="scss">
+.discussion-timeline {
+    position: sticky;
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 220px;
+
+    .timeline-anchor {
+        background: none;
+        border: none;
+        color: var(--color--highlight);
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0;
+        text-align: left;
+    }
+
+    .slider-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+        margin-left: 5px;
+
+        .slider-track {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--dark-gray-color-20);
+
+            .unread-marker {
+                position: absolute;
+                background: var(--red);
+                width: 100%;
+                left: 0;
+            }
+        }
+
+        .new-posts-label {
+            position: absolute;
+            left: 14px;
+            z-index: 5;
+            transform: translateY(-50%);
+            white-space: nowrap;
+
+            button {
+                background: var(--color--global-background);
+                border: none;
+                color: var(--color--highlight);
+                cursor: pointer;
+                font-weight: 700;
+                margin-top: 15px;
+                padding: 0;
+            }
+        }
+        $timeline-width: 200px;
+        .timeline-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: $timeline-width;
+            margin: 0;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 10;
+            transform-origin: 0 0;
+            transform: rotate(90deg) translate(0, -$timeline-width);
+            appearance: none;
+
+            &::-webkit-slider-thumb {
+                appearance: none;
+                width: 50px;
+                height: 40px;
+            }
+
+            &:focus-visible + .floating-info .marker {
+                box-shadow:
+                    0 0 0 2px white,
+                    0 0 0 4px var(--color--highlight);
+            }
+        }
+
+        .floating-info {
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+            z-index: 2;
+
+            .marker {
+                width: 6px;
+                height: 40px;
+                background: var(--color--highlight);
+                border-radius: 3px;
+                margin-left: -2px;
+                flex-shrink: 0;
+                transition: box-shadow 0.2s ease;
+            }
+
+            .label {
+                font-weight: 700;
+                color: var(--color--highlight);
+                line-height: 1.1;
+                background: var(--color--global-background);
+                padding: 2px 0;
+            }
+        }
+    }
+}
+</style>
