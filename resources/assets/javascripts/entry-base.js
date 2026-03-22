@@ -15,6 +15,7 @@ import "./jquery-bundle.js"
 import "./init.js"
 import "./bootstrap/responsive.js"
 import "./bootstrap/vue.js"
+import "./bootstrap/lists.js"
 
 import "./studip-ui.js"
 import "./bootstrap/fullscreen.js"
