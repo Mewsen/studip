@@ -347,12 +347,11 @@ class ExternPageCourses extends ExternPage
      */
     private function getSearchSQL(array &$params): string
     {
-        if ($this->sword && mb_strlen($this->sword) > 2) {
-            $params[':sword'] = $this->sword;
+        if ($this->searchtext && mb_strlen($this->searchtext) > 2) {
+            $params[':searchtext'] = $this->searchtext;
             return "
-                    AND (`seminare`.`Name` LIKE '%:sword%'
-                        OR `seminare`.`VeranstaltungsNummer` LIKE '%:sword%'
-                        OR `auth_user_md5`.`Nachname`)";
+                    AND (`seminare`.`Name` LIKE CONCAT('%',:searchtext,'%')
+                        OR `seminare`.`VeranstaltungsNummer` LIKE CONCAT('%',:searchtext,'%'))";
         }
         return '';
     }
