@@ -13,7 +13,7 @@ async function mountVueApp(node) {
         return;
     }
 
-    const { createApp, h, store } = await STUDIP.Vue.load();
+    const { createApp, h, httpClient, store } = await STUDIP.Vue.load();
 
     const [appComponent, plugins] = await loadAppDependencies(config, store);
     const app = createApp({
@@ -30,7 +30,7 @@ async function mountVueApp(node) {
         ...createLifecycleHooks(),
     });
 
-    plugins.forEach((plugin) => app.use(plugin, { store }));
+    plugins.forEach((plugin) => app.use(plugin, { httpClient, store }));
 
     app.mount(node);
 
@@ -62,7 +62,7 @@ function parseVueAppConfig(node) {
 async function loadAppDependencies(config, store) {
     const promises = [
         import(`@/vue/apps/${config.appPath}.vue`),
-        initializePlugins(config),
+        Promise.all(initializePlugins(config)),
         ...initializeVuexStores(config, store),
         ...initializePiniaStores(config),
     ];
@@ -113,8 +113,9 @@ function initializeVuexStores(config, store) {
             if (!store.hasModule(index)) {
                 store.registerModule(index, storeConfig);
             }
-            Object.entries(config.vuexStoreData[index]).forEach(([type, payload]) =>
-                store.commit(`${index}/${type}`, payload),
+
+            Object.entries(config.vuexStoreData[index] ?? []).forEach(([type, payload]) =>
+                store.commit(storeConfig.namespaced ? `${index}/${type}` : type, payload),
             );
         }),
     );

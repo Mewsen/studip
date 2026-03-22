@@ -1,8 +1,9 @@
-<div
-    id="courseware-shelf-app"
-    entry-type="courses"
-    entry-id="<?= Context::getId() ?>"
-    licenses='<?= $licenses ?>'
-    feedback-settings='<?= htmlReady($feedback_settings) ?>'
-    is-teacher='<?= var_export($isTeacher) ?>'
-></div>
+<?= Studip\VueApp::create('courseware/ShelfApp')
+                 ->withPlugin('CoursewareShelfApp', 'courseware-shelf')
+                 ->withPlugin('StockImagesPlugin', 'stock-images')
+                 ->withVuexStore('courseware/courseware-shelf.module', 'courseware-shelf', [
+                     'setContext' => ['id' => (string) Context::getId(), 'type' => 'courses'],
+                     'setLicenses' => json_decode($licenses),
+                     'setFeedbackSettings' => json_decode($feedback_settings),
+                     'setUserIsTeacher' => (boolean) $isTeacher,
+                 ]) ?>
