@@ -349,6 +349,36 @@ class SimpleOrMapNodbTest extends \Codeception\Test\Unit
     }
 
     /**
+     * @depends testConstruct
+     * @covers SimpleORMap::buildSQLQuery
+     */
+    public function testQueryBuilder(auth_user_md5 $a)
+    {
+        $this->assertEqualsWithoutWhitespace(
+            'SELECT 1 FROM `auth_user_md5` WHERE 1',
+            auth_user_md5::buildSQLQuery('1', '1')
+        );
+
+        $this->assertEqualsWithoutWhitespace(
+            'SELECT 1 FROM `auth_user_md5` JOIN `foo` USING (`bar`) WHERE 1',
+            auth_user_md5::buildSQLQuery('JOIN `foo` USING (`bar`) WHERE 1', '1')
+        );
+    }
+
+    public function assertEqualsWithoutWhitespace(string $expected, string $actual, bool $ignore_case = false): void
+    {
+        $expected = preg_replace('/\s+/', ' ', $expected);
+        $actual = preg_replace('/\s+/', ' ', $actual);
+
+        if ($ignore_case) {
+            $expected = mb_strtolower($expected);
+            $actual = mb_strtolower($actual);
+        }
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * @dataProvider  i18nProvider
      * @covers SimpleORMap::isI18nField
      * @covers SimpleORMap::i18n_fields
