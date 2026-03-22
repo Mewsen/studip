@@ -3,7 +3,7 @@
  * @type {[type]}
  */
 function determineBreakpoint(element) {
-    return $(element).closest('.ui-dialog-content').length > 0 ? '.ui-dialog-content' : '#content';
+    return $(element).closest('.ui-dialog-content').length > 0 ? '.ui-dialog-content' : 'body';
 }
 
 /**
@@ -116,7 +116,14 @@ class ActionMenu
                     $('.action-menu-item button:not([form])', this.element).attr('form', id);
                 }
 
-                this.menu = $('<div class="action-menu-wrapper">').append(this.content);
+                this.menu = $('<div class="action-menu-wrapper">')
+                    .css({
+                        position: 'absolute',
+                        visibility: 'hidden',
+                        top: 0,
+                        left: 0
+                    })
+                    .append(this.content);
                 $('.action-menu-icon', element).clone().data('action-menu-element', element).prependTo(this.menu);
 
                 this.menu
@@ -219,7 +226,12 @@ class ActionMenu
         }
 
         const offset = this.element.offset();
-        requestAnimationFrame(() => this.menu.offset(offset));
+        requestAnimationFrame(() => {
+            this.menu.offset(offset);
+            this.menu.css({
+                visibility: '',
+            });
+        });
     }
 
     /**
