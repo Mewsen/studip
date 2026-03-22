@@ -79,7 +79,7 @@ class Courseware_LtiController extends AuthenticatedController
         // Create LTI Link for setting up launch request
         $lti_link = new LtiLink($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method);
         $lti_link->setResource($id, $title);
-        $lti_link->setUser(User::findCurrent(), $roles, $send_lis_person);
+        $lti_link->setUser(User::findCurrent()->id, $roles, $send_lis_person);
         $lti_link->setCourse($range_id);
         $lti_link->addLaunchParameters([
             'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
