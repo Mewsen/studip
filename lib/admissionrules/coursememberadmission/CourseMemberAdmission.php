@@ -254,7 +254,11 @@ class CourseMemberAdmission extends AdmissionRule
                     $this->getDecodedCourses()
                 ),
                 'modus' => $this->modus,
-                'search' => (string) new StandardSearch('Seminar_id')
+                'search' => (string) new StandardSearch(
+                    User::findCurrent()->hasPermissionLevel('admin')
+                        ? 'AnySeminar_id'
+                        : 'Seminar_id'
+                )
             ]
         );
     }
