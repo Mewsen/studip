@@ -57,7 +57,7 @@ class CourseNavigation extends Navigation
         $found = null;
         $where = null;
 
-        foreach ($this->range->tools as $tool) {
+        foreach ($this->range->context_tools as $tool) {
             if ($found && $tool->metadata['navigation']) {
                 $where = $tool->metadata['navigation'];
                 break;

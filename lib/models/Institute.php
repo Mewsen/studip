@@ -138,6 +138,11 @@ class Institute extends SimpleORMap implements Range
         $config['additional_fields']['all_status_groups']['get'] = function ($institute) {
             return Statusgruppen::findAllByRangeId($institute->id, true);
         };
+        $config['additional_fields']['context_tools'] = [
+            'get' => function (Institute $institute) {
+                return $institute->tools;
+            }
+        ];
 
         $config['i18n_fields'] = ['name', 'url'];
         $config['registered_callbacks']['after_create'][] = 'setDefaultTools';
