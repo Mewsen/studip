@@ -22,11 +22,11 @@
                   placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten werden gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)') ?>"><?= wysiwygReady($tool->data_protection_notes) ?></textarea>
     </label>
     <label>
-        <?= _('URL zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)') ?>
+        <?= _('Link zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)') ?>
         <input type="url" name="terms_of_use_url" value="<?= htmlReady($tool->terms_of_use_url) ?>">
     </label>
     <label>
-        <?= _('URL zur Datenschutzerklärung des LTI-Tools (falls verfügbar)') ?>
+        <?= _('Link zur Datenschutzerklärung des LTI-Tools (falls verfügbar)') ?>
         <input type="url" name="privacy_policy_url" value="<?= htmlReady($tool->privacy_policy_url) ?>">
     </label>
 </fieldset>
