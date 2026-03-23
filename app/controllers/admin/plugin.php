@@ -509,8 +509,12 @@ class Admin_PluginController extends AuthenticatedController
 
     public function unregistered_action()
     {
-        $plugins = $this->plugin_admin->scanPluginDirectory(true);
-        $this->unknown_plugins = $plugins;
+        $this->render_vue_app(
+            Studip\VueApp::create('UnregisteredPlugins')
+                ->withProps([
+                    'plugins' => $this->plugin_admin->scanPluginDirectory(true),
+                ])
+        );
     }
 
     /**
