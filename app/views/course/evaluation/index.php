@@ -18,7 +18,7 @@
             <h2><?= _('Vielen Dank für Ihre Teilnahme!') ?></h2>
         <?php endif ?>
 
-        <?php if ($evaluation->resultsVisible() || ($evaluation->isAnswerable() && $evaluation->isAnswered() )) : ?>
+        <?php if ($evaluation->resultsVisible() || ($evaluation->isAnswerable() && $evaluation->isAnswered())) : ?>
             <?= $this->render_partial('questionnaire/evaluate.php',
                 ['questionnaire' => $evaluation, 'range_type' => 'course', 'range_id' => Context::getId()]) ?>
         <?php elseif ($evaluation->isAnswerable()) : ?>
