@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+mysql_client_args=(--skip-ssl -u "$MYSQL_USER" -h "$MYSQL_HOST" "-p$MYSQL_PASSWORD")
+
 STUDIP='/var/www/studip'
 CONFIGFILE="$STUDIP/config/config_local.inc.php"
 DOCKERCONFIGFILE="/config/config_local.inc.php"
@@ -17,7 +19,7 @@ fi
 maxcounter=45
 
 counter=1
-while ! mysql -u $MYSQL_USER -h $MYSQL_HOST -p$MYSQL_PASSWORD -e "show databases;" > /dev/null 2>&1; do
+while ! mysql "${mysql_client_args[@]}" -e "show databases;" > /dev/null 2>&1; do
     sleep 1
     counter=`expr $counter + 1`
     if [ $counter -gt $maxcounter ]; then

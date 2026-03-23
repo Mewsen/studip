@@ -1,18 +1,21 @@
 #!/bin/bash
 set -e
 
+mysql_client_ssl_flag='--skip-ssl'
+
 importSQLFile() {
     mysql --default-character-set=utf8mb4\
         --init-command="SET NAMES UTF8;"\
-        -u $MYSQL_USER\
-        -h $MYSQL_HOST\
-        -p$MYSQL_PASSWORD\
-        $MYSQL_DATABASE\
-        < $1
+        $mysql_client_ssl_flag\
+        -u "$MYSQL_USER"\
+        -h "$MYSQL_HOST"\
+        -p"$MYSQL_PASSWORD"\
+        "$MYSQL_DATABASE"\
+        < "$1"
 
 }
 
-if [ $(mysql -u $MYSQL_USER -h $MYSQL_HOST -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "show tables;" --batch | wc -l) -eq 0 ]; then
+if [ "$(mysql $mysql_client_ssl_flag -u "$MYSQL_USER" -h "$MYSQL_HOST" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" -e "show tables;" --batch | wc -l)" -eq 0 ]; then
 
     # Check if demodata is required
     if [ ! -z $DEMO_DATA ]; then
