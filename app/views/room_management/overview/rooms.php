@@ -54,6 +54,19 @@
                         'show_picture' => true,
                         'additional_columns' => [
                             $room->category->name,
+                        ],
+                        'additional_actions' => [
+                            '0091' => [
+                                '#',
+                                _('Zur Raumgruppe hinzufügen'),
+                                Icon::create('add'),
+                                [
+                                    'class'             => 'clipboard-add-item-button',
+                                    'data-range_type'   => 'Room',
+                                    'data-range_id'     => $room->id,
+                                    'data-clipboard_id' => ''
+                                ]
+                            ]
                         ]
                     ]
                 ) ?>
