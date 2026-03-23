@@ -122,7 +122,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
                     $userId = _('unbekannt').' '.$countNobodys;
                 }
 
-                $answerOption[$userId] = $this['questiondata']['options'][$answerData['answers'][$statement_key]];
+                $answerOption[$userId] = $this['questiondata']['options'][$answerData['answers'][$statement_key] ?? ''];
             }
             $output[$statement] = $answerOption;
         }

@@ -7,6 +7,7 @@ use eTask\Task;
  *
  * @property string $id alias column for question_id
  * @property string $question_id database column
+ * @property string $template_question_id database column
  * @property string $questionnaire_id database column
  * @property string $questiontype database column
  * @property string|null $internal_name database column

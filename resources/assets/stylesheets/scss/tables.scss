@@ -996,3 +996,28 @@ table.mycourses {
     height: 25px;
     width: 25px;
 }
+
+.row-headers {
+    text-align: left;
+    border-collapse: collapse;
+    width: stretch;
+    tr {
+        border-bottom: 1px solid var(--color--table-border)
+    }
+    th {
+        padding: 10px 5px 10px 10px;
+        width: 40%;
+    }
+    td {
+        padding: 10px 10px 10px 5px;
+        width: 60%;
+    }
+}
+
+article.studip > table.row-headers:last-child {
+    margin-bottom: 0;
+
+    > tbody:last-child > tr:last-child {
+        border-bottom: 0;
+    }
+}

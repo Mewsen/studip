@@ -33,7 +33,9 @@ class QuestionnaireController extends AuthenticatedController
         if (!$GLOBALS['perm']->have_perm('autor')) {
             throw new AccessDeniedException('Only for logged in users.');
         }
-        $this->questionnaires = Questionnaire::findBySQL("user_id = ? ORDER BY chdate DESC", [$GLOBALS['user']->id]);
+        $this->questionnaires = Questionnaire::findBySQL(
+            "user_id = ? AND is_template = 0 AND template_id IS NULL ORDER BY chdate DESC",
+            [$GLOBALS['user']->id]);
         foreach ($this->questionnaires as $questionnaire) {
             if (!$questionnaire['visible'] && $questionnaire->isRunning()) {
                 $questionnaire->start();
@@ -100,12 +102,24 @@ class QuestionnaireController extends AuthenticatedController
         }
         $this->questionnaire = new Questionnaire($questionnaire_id);
         if ($this->questionnaire->isNew()) {
-            PageLayout::setTitle(_("Neuer Fragebogen"));
+            if (!(Request::get('range_type') === 'pool')) {
+                PageLayout::setTitle(_("Neuer Fragebogen"));
+            } else {
+                PageLayout::setTitle(_("Neue Vorlage"));
+            }
         } else {
-            PageLayout::setTitle(_("Fragebogen bearbeiten: ").$this->questionnaire['title']);
+            if (!$this->questionnaire->is_template) {
+                PageLayout::setTitle(_("Fragebogen bearbeiten: ") . $this->questionnaire['title']);
+            } else {
+                PageLayout::setTitle(_("Vorlage bearbeiten: ") . $this->questionnaire['title']);
+            }
         }
         if (!$this->questionnaire->isEditable()) {
-            throw new AccessDeniedException(_('Fragebogen ist nicht bearbeitbar.'));
+            if (!($this->questionnaire->is_template)) {
+                throw new AccessDeniedException(_('Fragebogen ist nicht bearbeitbar.'));
+            } else {
+                throw new AccessDeniedException(_('Vorlage ist nicht bearbeitbar.'));
+            }
         }
         if ($this->questionnaire->isRunning() && $this->questionnaire->countAnswers() > 0) {
             $this->render_text(
@@ -158,6 +172,13 @@ class QuestionnaireController extends AuthenticatedController
         $this->questionnaire['stopdate'] = is_numeric($questionnaire_data['stopdate'])
             ? $questionnaire_data['stopdate']
             : null;
+        $this->questionnaire['is_template'] = $questionnaire_data['is_template'] ?? 0;
+        if ($this->questionnaire->is_template) {
+            if (!EvaluationHelper::isPermittedEvaluationAccess()) {
+                throw new Exception(_('Sie haben keine Berechtigung, Vorlagen anzulegen.'));
+            }
+            if (!$this->questionnaire->template_is_enabled) $this->questionnaire['template_is_enabled'] = 0;
+        }
 
         $this->questionnaire['user_id'] = User::findCurrent()->id;
         $questions_data = json_decode(Request::get('questions_data'), true);
@@ -230,24 +251,49 @@ class QuestionnaireController extends AuthenticatedController
             $new_question['questionnaire_id'] = $this->questionnaire->getid();
             $new_question['questiondata'] = $question['questiondata'];
             $new_question['mkdate'] = time();
+            if ($this->old_questionnaire->is_template) {
+                if (isset($question['template_question_id'])) {
+                    $new_question['template_question_id'] = $question['template_question_id'];
+                } else {
+                    $new_question['template_question_id'] = $question['question_id'];
+                }
+            }
             $new_question->store();
         }
-        PageLayout::postSuccess(_('Der Fragebogen wurde kopiert. Wo soll er angezeigt werden?'));
-        $this->redirect("questionnaire/context/".$this->questionnaire->getId());
+        if (!$this->questionnaire->is_template) {
+            PageLayout::postSuccess(_('Der Fragebogen wurde kopiert. Wo soll er angezeigt werden?'));
+            $this->redirect("questionnaire/context/".$this->questionnaire->getId());
+        } else {
+            PageLayout::postSuccess(_('Die Vorlage wurde kopiert.'));
+            $this->redirect("evaluation/pool/index/" . $this->questionnaire->getId());
+        }
     }
 
     public function delete_action($questionnaire_id)
     {
         $this->questionnaire = new Questionnaire($questionnaire_id);
+        $is_template = $this->questionnaire->is_template;
         if (!$this->questionnaire->isEditable()) {
-            throw new AccessDeniedException(_('Der Fragebogen ist nicht bearbeitbar.'));
+            if(!$is_template) {
+                throw new AccessDeniedException(_('Der Fragebogen ist nicht bearbeitbar.'));
+            } else {
+                throw new AccessDeniedException(_('Die Vorlage ist nicht bearbeitbar.'));
+            }
         }
         $this->questionnaire->delete();
-        PageLayout::postSuccess(_('Der Fragebogen wurde gelöscht.'));
+        if(!$is_template) {
+            PageLayout::postSuccess(_('Der Fragebogen wurde gelöscht.'));
+        } else {
+            PageLayout::postSuccess(_('Die Vorlage wurde gelöscht.'));
+        }
         if (Request::get("redirect")) {
             $this->redirect(Request::get("redirect"));
         } else {
-            $this->redirect("questionnaire/overview");
+            if(!$is_template) {
+                $this->redirect("questionnaire/overview");
+            } else {
+                $this->redirect("evaluation/pool");
+            }
         }
     }
 
@@ -262,14 +308,20 @@ class QuestionnaireController extends AuthenticatedController
                 $questionnaire->delete();
             }
         }
-        PageLayout::postSuccess(_('Fragebögen wurden gelöscht.'));
         if (Request::get("range_type") === "user") {
+            PageLayout::postSuccess(_('Fragebögen wurden gelöscht.'));
             $this->redirect("questionnaire/overview");
         } elseif (Request::get("range_type") === "course") {
+            PageLayout::postSuccess(_('Fragebögen wurden gelöscht.'));
             $this->redirect("questionnaire/courseoverview");
         } elseif (Request::get("range_id") === "start") {
+            PageLayout::postSuccess(_('Fragebögen wurden gelöscht.'));
             $this->redirect("start");
+        } elseif (Request::get("range_type") === "pool") {
+            PageLayout::postSuccess(_('Vorlagen wurden gelöscht.'));
+            $this->redirect("evaluation/pool");
         } else {
+            PageLayout::postSuccess(_('Fragebögen wurden gelöscht.'));
             $this->redirect("questionnaire/overview");
         }
     }
@@ -290,10 +342,18 @@ class QuestionnaireController extends AuthenticatedController
     {
         $this->questionnaire = new Questionnaire($questionnaire_id);
         if (!$this->questionnaire->isViewable()) {
-            throw new AccessDeniedException(_('Der Fragebogen ist nicht einsehbar.'));
+            if (!$this->questionnaire->template_id) {
+                throw new AccessDeniedException(_('Der Fragebogen ist nicht einsehbar.'));
+            } else {
+                throw new AccessDeniedException(_('Die Evaluation ist nicht einsehbar.'));
+            }
         }
         object_set_visit($questionnaire_id, 'vote');
-        PageLayout::setTitle(sprintf(_("Fragebogen: %s"), $this->questionnaire->title));
+        if (!$this->questionnaire->template_id) {
+            PageLayout::setTitle(sprintf(_("Fragebogen: %s"), $this->questionnaire->title));
+        } else {
+            PageLayout::setTitle(sprintf(_("Evaluation: %s"), $this->questionnaire->title));
+        }
 
         $this->filtered = [];
         if (Request::submitted('filtered')) {
@@ -977,8 +1037,12 @@ class QuestionnaireController extends AuthenticatedController
             PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
             $this->redirect("profile?username=".get_username(Request::option("range_id")));
         } elseif (Request::get("range_type") === "course") {
-            PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
-            $this->redirect("course/overview?cid=".Request::option("range_id"));
+            PageLayout::postMessage(MessageBox::success(_('Danke für die Teilnahme!')));
+            if ($this->questionnaire->eval_assignment) {
+                $this->redirect("course/evaluation?cid=" . Request::option('range_id'));
+            } else {
+                $this->redirect("course/overview?cid=" . Request::option("range_id"));
+            }
         } elseif (Request::get("range_id") === "start") {
             PageLayout::postMessage(MessageBox::success(_("Danke für die Teilnahme!")));
             $this->redirect("start");

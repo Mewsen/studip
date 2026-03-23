@@ -24,6 +24,7 @@ foreach (get_declared_classes() as $class) {
     }
 }
 
+$is_template = Request::get('range_type') == 'pool';
 $questionnaire_data = [
     'anonymous'        => $questionnaire->anonymous,
     'copyable'         => $questionnaire->copyable,
@@ -41,6 +42,7 @@ $questionnaire_data = [
     'startdate'        => $questionnaire->isNew() ? _('sofort') : $questionnaire->startdate,
     'stopdate'         => $questionnaire->stopdate,
     'title'            => $questionnaire->title,
+    'is_template'      => $is_template ? 1 : $questionnaire->is_template,
 ];
 ?>
 <?= Studip\VueApp::create('questionnaires/QuestionnaireEditor')

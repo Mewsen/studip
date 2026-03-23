@@ -3,20 +3,26 @@
  *
  * @property string $id alias column for questionnaire_id
  * @property string $questionnaire_id database column
+ * @property string $template_id database column
  * @property string $title database column
  * @property string|null $description database column
  * @property string $user_id database column
+ * @property int $is_template database column
+ * @property int $template_is_enabled database column
  * @property int|null $startdate database column
  * @property int|null $stopdate database column
  * @property int $visible database column
  * @property int $anonymous database column
  * @property string $resultvisibility database column
+ * @property string $result_visible_for database column
  * @property int $editanswers database column
  * @property int $copyable database column
+ * @property int $minimum_responses database column
  * @property int $chdate database column
  * @property int $mkdate database column
  * @property SimpleORMapCollection<QuestionnaireQuestion> $questions has_many QuestionnaireQuestion
  * @property SimpleORMapCollection<QuestionnaireAssignment> $assignments has_many QuestionnaireAssignment
+ * @property QuestionnaireEvalAssignment|null $eval_assignment has_one QuestionnaireEvalAssignment
  * @property SimpleORMapCollection<QuestionnaireAnonymousAnswer> $anonymousanswers has_many QuestionnaireAnonymousAnswer
  */
 class Questionnaire extends SimpleORMap implements PrivacyObject
@@ -40,6 +46,11 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
             'class_name' => QuestionnaireAnonymousAnswer::class,
             'on_delete' => 'delete',
             'on_store' => 'store'
+        ];
+        $config['has_one']['eval_assignment'] = [
+            'class_name' => QuestionnaireEvalAssignment::class,
+            'assoc_foreign_key' => 'questionnaire_id',
+            'on_delete'  => 'delete'
         ];
 
         parent::configure($config);
@@ -133,11 +144,22 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                 }
             }
         }
+
+        if ($this->eval_assignment) {
+            return User::findCurrent()
+                ->hasPermissionLevel('autor', Course::find($this->eval_assignment->course_id));
+        }
+
         return false;
     }
 
     public function isAnswerable()
     {
+        if ($this->template_id && (EvaluationHelper::isPermittedEvaluationAccess()
+            || (Context::isCourse() && User::findCurrent()->hasPermissionLevel('tutor', Context::get())))) {
+            return false;
+        }
+
         if (!$this->isViewable() || !$this->isRunning()) {
             return false;
         }
@@ -154,6 +176,13 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isEditable()
     {
+        if($this->is_template) {
+            if(EvaluationHelper::isPermittedEvaluationAccess()) {
+                return !QuestionnaireEvalAssignment::countBySQL("`template_id` = ?", [$this->id]);
+            }
+            return false;
+        }
+
         if ($this->isNew() || ($this['user_id'] === $GLOBALS['user']->id) || $GLOBALS['perm']->have_perm("root")) {
             return true;
         } else {
@@ -182,6 +211,9 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
     public function isCopyable()
     {
+        if ($this->is_template) {
+            return EvaluationHelper::isPermittedEvaluationAccess();
+        }
         return ($this->copyable && $GLOBALS['perm']->have_perm('autor') && $this->isViewable()) || $this->isEditable();
     }
 
@@ -232,9 +264,29 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
         if (!$this->isViewable()) {
             return false;
         }
-        return $this['resultvisibility'] === "always"
+
+        if ($this->eval_assignment) {
+            $user = User::findCurrent();
+            if ($user->hasPermissionLevel('root') || $user->hasRole('Zentraler Evaluationsadmin')) {
+                return true;
+            }
+
+            if (!$this->result_visible_for) {
+                return false;
+            }
+            $eval_visible = $user->hasPermissionLevel($this->result_visible_for, Context::get())
+                && $this->countAnswers() >= $this->minimum_responses;
+
+            return $eval_visible
+                && (($this->resultvisibility === 'afterending' && $this->isStopped())
+                || ($this->resultvisibility === 'afterparticipation' && $this->isAnswered())
+                || ($this->resultvisibility === 'afterparticipation'
+                        && $user->hasPermissionLevel('tutor', Context::get())));
+        }
+
+        return $this['resultvisibility'] === 'always'
             || $this->isEditable()
-            || ($this['resultvisibility'] === "afterending" && $this->isStopped())
+            || ($this['resultvisibility'] === 'afterending' && $this->isStopped())
             || ($this['resultvisibility'] === 'afterparticipation' && $this->isAnswered());
     }
 

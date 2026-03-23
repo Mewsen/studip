@@ -36,43 +36,46 @@
 
                     <div class="formpart">
                         <label class="studiprequired" for="questionnaire_title">
-                            <span class="textlabel">{{ $gettext('Titel des Fragebogens') }}</span>
+                            <span v-if="data.is_template !== 1" class="textlabel">{{$gettext('Titel des Fragebogens') }}</span>
+                            <span v-else class="textlabel">{{$gettext('Titel der Vorlage') }}</span>
                             <span title="Dies ist ein Pflichtfeld" aria-hidden="true" class="asterisk">*</span>
                         </label>
                         <input type="text" id="questionnaire_title" v-model="data.title" v-autofocus>
                     </div>
 
-                    <div class="hgroup">
+                    <template v-if="data.is_template !== 1">
+                        <div class="hgroup">
+                            <label>
+                                {{ $gettext('Startzeitpunkt') }}
+                                <datetimepicker v-model="data.startdate"></datetimepicker>
+                            </label>
+                            <label>
+                                {{ $gettext('Endzeitpunkt') }}
+                                <datetimepicker v-model="data.stopdate"></datetimepicker>
+                            </label>
+                        </div>
                         <label>
-                            {{ $gettext('Startzeitpunkt') }}
-                            <datetimepicker v-model="data.startdate"></datetimepicker>
+                            <input type="checkbox" v-model="data.copyable" true-value="1" false-value="0">
+                            {{ $gettext('Fragebogen zum Kopieren freigeben') }}
                         </label>
                         <label>
-                            {{ $gettext('Endzeitpunkt') }}
-                            <datetimepicker v-model="data.stopdate"></datetimepicker>
+                            <input type="checkbox" v-model="data.anonymous" true-value="1" false-value="0">
+                            {{ $gettext('Teilnehmende anonymisieren') }}
                         </label>
-                    </div>
-                    <label>
-                        <input type="checkbox" v-model="data.copyable" true-value="1" false-value="0">
-                        {{ $gettext('Fragebogen zum Kopieren freigeben') }}
-                    </label>
-                    <label>
-                        <input type="checkbox" v-model="data.anonymous" true-value="1" false-value="0">
-                        {{ $gettext('Teilnehmende anonymisieren') }}
-                    </label>
-                    <label>
-                        <input type="checkbox" v-model="data.editanswers" true-value="1" false-value="0">
-                        {{ $gettext('Teilnehmende dürfen ihre Antworten revidieren') }}
-                    </label>
-                    <label>
-                        {{ $gettext('Ergebnisse einsehbar') }}
-                        <select v-model="data.resultvisibility">
-                            <option value="always">{{ $gettext('Immer') }}</option>
-                            <option value="afterending">{{ $gettext('Nach Ende der Befragung') }}</option>
-                            <option value="afterparticipation">{{ $gettext('Nach der Teilnahme') }}</option>
-                            <option value="never">{{ $gettext('Niemals') }}</option>
-                        </select>
-                    </label>
+                        <label>
+                            <input type="checkbox" v-model="data.editanswers" true-value="1" false-value="0">
+                            {{ $gettext('Teilnehmende dürfen ihre Antworten revidieren') }}
+                        </label>
+                        <label>
+                            {{ $gettext('Ergebnisse einsehbar') }}
+                            <select v-model="data.resultvisibility">
+                                <option value="always">{{ $gettext('Immer') }}</option>
+                                <option value="afterending">{{ $gettext('Nach Ende der Befragung') }}</option>
+                                <option value="afterparticipation">{{ $gettext('Nach der Teilnahme') }}</option>
+                                <option value="never">{{ $gettext('Niemals') }}</option>
+                            </select>
+                        </label>
+                    </template>
                 </div>
                 <div class="add_question file_select_possibilities" v-else-if="activeTab === 'add_question'">
                     <div>
@@ -240,7 +243,8 @@ export default {
                 editanswers: this.data.editanswers,
                 startdate: this.data.startdate,
                 stopdate: this.data.stopdate,
-                resultvisibility: this.data.resultvisibility
+                resultvisibility: this.data.resultvisibility,
+                is_template: this.data.is_template
             };
             const questions = this.data.questions.map(question => ({
                 id: question.id,

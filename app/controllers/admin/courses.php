@@ -495,6 +495,19 @@ class Admin_CoursesController extends AuthenticatedController
                         'data-dialog' => 'size=big'
                     ]);
                 break;
+            case 24: //Assign evaluations
+                $data['buttons_top'] = '<label>' . _('Alle auswählen') .
+                    '<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
+                $data['buttons_bottom'] = (string) \Studip\Button::createAccept(
+                    _('Evaluation zuweisen'), 'evaluation',
+                    [
+                        'formaction' => URLHelper::getURL('dispatch.php/evaluation/assign'),
+                        'data-dialog' => 'size=big',
+                        $this->semester ? '' : 'disabled' => '',
+                        'title' => $this->semester ? _('Evaluation zuweisen') : _('Bitte erst ein Semester auswählen.')
+                    ]
+                );
+                break;
             default:
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
@@ -845,16 +858,20 @@ class Admin_CoursesController extends AuthenticatedController
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
-            case 22: //Masssenexport Teilnehmendendaten
+            case 22: //Massenexport Teilnehmendendaten
                 $template = $tf->open('admin/courses/export_members');
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
-            case 23: //Masssenexport Teilnehmendendaten
+            case 23: //Massenmail
                 $template = $tf->open('admin/courses/massmail');
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
+            case 24: //Evaluationen zuweisen
+                $template = $tf->open('admin/courses/evaluation');
+                $template->course = $course;
+                $d['action'] = $template->render();
             default:
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
@@ -1526,6 +1543,13 @@ class Admin_CoursesController extends AuthenticatedController
                 'dialogform' => true,
                 'multimode'  => true,
                 'partial'    => 'massmail.php'
+            ],
+            24 => [
+                'name'       => _('Evaluationen'),
+                'title'      => _('Evaluationen'),
+                'url'        => 'dispatch.php/evaluation/assign',
+                'multimode'  => true,
+                'dialogform' => true,
             ]
         ];
 
@@ -1538,6 +1562,9 @@ class Admin_CoursesController extends AuthenticatedController
         if (!$GLOBALS['perm']->have_perm('dozent')) {
             unset($actions[11]);
             unset($actions[16]);
+        }
+        if (!EvaluationHelper::isPermittedEvaluationAccess()) {
+            unset($actions[24]);
         }
 
         ksort($actions);
