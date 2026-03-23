@@ -580,7 +580,7 @@ class Instance
          * all blocks belonging to these elements.
          */
         $sql = $this->recursiveGetStructuralElementsQuery(
-            "SELECT DISTINCT st.`id`, b.*
+            "SELECT DISTINCT st.`id` AS structural_id, b.*
              FROM structural_tree st
              JOIN `cw_containers` c
                  ON c.`structural_element_id` = st.`id`
@@ -593,8 +593,8 @@ class Instance
 
         $data = [];
         foreach ($statement as $row) {
-            $structuralElementId = $row['id'];
-            unset($row['id']);
+            $structuralElementId = $row['structural_id'];
+            unset($row['structural_id']);
 
             if (!isset($data[$structuralElementId])) {
                 $data[$structuralElementId] = [];
