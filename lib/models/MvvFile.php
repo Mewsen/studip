@@ -253,7 +253,7 @@ class MvvFile extends ModuleManagementModel
     {
         $zuordnungen = [];
         foreach (MvvFileRange::findBySQL('mvvfile_id =?', [$this->mvvfile_id]) as $range) {
-            $zuordnungen[$range['range_type']][$range['range_id']] = $range;
+            $zuordnungen[$range->getRangeType()][$range['range_id']] = $range;
         }
         return $zuordnungen;
     }
@@ -334,7 +334,7 @@ class MvvFile extends ModuleManagementModel
     /**
      * Returns the highest current sorting position.
      *
-     * @param sting $range_id Id of the mvv object.
+     * @param string $range_id Id of the mvv object.
      * @return int Number of the highest current sorting position.
      */
     public static function getMaxSortingPos($range_id)
@@ -354,6 +354,7 @@ class MvvFile extends ModuleManagementModel
     public function addToRange($range_id, $range_type)
     {
         $mvvfile_range = new MvvFileRange([$this->mvvfile_id, $range_id]);
+        $mvvfile_range->range_type = $range_type;
         if ($mvvfile_range->isNew()) {
             $mvvfile_range->position = self::getMaxSortingPos($range_id) + 1;
         }
@@ -450,33 +451,21 @@ class MvvFile extends ModuleManagementModel
     public static function getIdsFiltered($filter, $file_ids = false)
     {
         $id_type = $file_ids ? 'mvvfile_id' : 'range_id';
-        $name_filter_join = '';
-        $name_filter_where = '';
-        $parameters = [];
-        if (!empty($filter['searchnames'])) {
-            $name_filter_join = 'LEFT JOIN `mvv_files_filerefs` USING (`mvvfile_id`)
-                INNER JOIN `file_refs` ON (`fileref_id` = `file_refs`.`id`)';
-            $name_filter_where = " AND CONCAT_WS(' ', `file_refs`.`name`, `mvv_files_filerefs`.`name`, `mvv_files`.`category`,`mvv_files`.`tags`) LIKE :needle";
-            $parameters[':needle'] = "%{$filter['searchnames']}%";
-            unset($filter['searchnames']);
-        }
         $sql = "SELECT DISTINCT `mvv_files_ranges`.`{$id_type}`
                 FROM `mvv_files`
-                    LEFT JOIN `mvv_files_ranges` USING (`mvvfile_id`)"
-                    . $name_filter_join .
-                    'LEFT JOIN `mvv_abschl_zuord` ON (`mvv_abschl_zuord`.`kategorie_id` = `mvv_files_ranges`.`range_id`)
+                    LEFT JOIN `mvv_files_ranges` USING (`mvvfile_id`)
+                    LEFT JOIN `mvv_abschl_zuord` ON (`mvv_abschl_zuord`.`kategorie_id` = `mvv_files_ranges`.`range_id`)
                     LEFT JOIN `abschluss` USING(`abschluss_id`)
                     LEFT JOIN `mvv_studiengang` ON (`mvv_studiengang`.`abschluss_id` = `abschluss`.`abschluss_id`
                         OR `mvv_studiengang`.`studiengang_id` = `mvv_files_ranges`.`range_id`)
                     LEFT JOIN `semester_data` `start_sem`
                         ON (`mvv_studiengang`.`start` = `start_sem`.`semester_id`)
                     LEFT JOIN `semester_data` `end_sem`
-                        ON (`mvv_studiengang`.`end` = `end_sem`.`semester_id`)'
-                    . self::getFilterSql($filter, true)
-                    . $name_filter_where;
+                        ON (`mvv_studiengang`.`end` = `end_sem`.`semester_id`)"
+                    . self::getFilterSql($filter, true);
 
         $stm = DBManager::get()->prepare($sql);
-        $stm->execute($parameters);
+        $stm->execute();
         return $stm->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 

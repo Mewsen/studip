@@ -39,9 +39,6 @@ class MvvFileRange extends ModuleManagementModel
             'assoc_func' => 'findCached',
         );
 
-        $config['additional_fields']['range_type']['get'] = 'getRangeType';
-
-
         parent::configure($config);
     }
 
