@@ -3,14 +3,25 @@
  * @var CourseDateList $collection
  * @var bool $with_room_names
  * @var bool $with_cancelled_dates
+ * @var bool $as_collapsible_list
  *
  * @var SeminarCycleDate $regular_date
  * @var CourseDate $single_date
  * @var CourseExDate $cancelled_date
  */
 ?>
+<?php
+$html_attributes = HTMLAttributes::from([
+    'class' => 'list-unstyled',
+]);
+
+if ($as_collapsible_list) {
+    $html_attributes['class'] = 'collapsible-list';
+    $html_attributes['data-label'] = _('Termine');
+}
+?>
 <? if (!$collection->isEmpty()) : ?>
-    <ul class="list-unstyled">
+    <ul <?= $html_attributes ?>>
         <? foreach ($collection->getRegularDates() as $regular_date) : ?>
             <li>
                 <?= $regular_date->toString($with_room_names ? 'long-start' : 'long-start-without-room', true) ?>

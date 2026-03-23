@@ -180,7 +180,8 @@ class CourseDateList implements Stringable
     public function toHtml(
         bool $group_by_rooms = false,
         bool $with_room_names = false,
-        bool $with_cancelled_dates = false
+        bool $with_cancelled_dates = false,
+        bool $as_collapsible_list = false
     ) : string {
         if ($this->isEmpty()) {
             return _('Die Zeiten der Veranstaltung stehen nicht fest.');
@@ -230,6 +231,7 @@ class CourseDateList implements Stringable
         } else {
             $template = $GLOBALS['template_factory']->open('dates/course_date_list');
             $template->with_room_names = $with_room_names;
+            $template->as_collapsible_list = $as_collapsible_list;
             $template->collection = $this;
         }
         $template->with_cancelled_dates = $with_cancelled_dates;
