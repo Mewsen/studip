@@ -1,6 +1,18 @@
 #!/bin/bash
 set -e
 
+for dir in \
+    /var/www/studip/data/upload_doc \
+    /var/www/studip/data/assets_cache \
+    /var/www/studip/data/media_cache \
+    /var/www/studip/public/pictures \
+    /var/www/studip/public/plugins_packages
+do
+    mkdir -p "$dir"
+    chown -R www-data:www-data "$dir"
+    chmod -R u+rwX,g+rwX "$dir"
+done
+
 mysql_client_args=(--skip-ssl -u "$MYSQL_USER" -h "$MYSQL_HOST" "-p$MYSQL_PASSWORD")
 
 STUDIP='/var/www/studip'
