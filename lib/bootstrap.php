@@ -280,3 +280,22 @@ $mail_transporter->default_charset = 'UTF-8';
 $mail_transporter->SetBulkMail((int)$GLOBALS['MAIL_BULK_DELIVERY']);
 StudipMail::setDefaultTransporter($mail_transporter);
 unset($mail_transporter);
+
+
+
+// Eloquent ORM Config --start--
+// should be moved to place like app providers or DB Providers
+$eloquentManager = app(Illuminate\Database\Capsule\Manager::class);
+$eloquentManager->addConnection([
+    'driver' => 'mysql',
+    'host' =>  $GLOBALS['DB_STUDIP_HOST'],
+    'database' => $GLOBALS['DB_STUDIP_DATABASE'],
+    'username' => $GLOBALS['DB_STUDIP_USER'],
+    'password' => $GLOBALS['DB_STUDIP_PASSWORD'],
+    'charset' => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix' => '',
+]);
+$eloquentManager->setAsGlobal();
+$eloquentManager->bootEloquent();
+// Eloquent ORM Config --end--
