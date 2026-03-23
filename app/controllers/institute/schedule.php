@@ -1,19 +1,6 @@
 <?php
 class Institute_ScheduleController extends AuthenticatedController
 {
-    public function before_filter(&$action, &$args)
-    {
-        parent::before_filter($action, $args);
-
-        if (Navigation::hasItem('/course/main')) {
-            Navigation::activateItem('/course/main');
-        }
-
-        if (!$GLOBALS['perm']->have_studip_perm('autor', Context::getId())) {
-            throw new AccessDeniedException();
-        }
-    }
-
     public function index_action($institute_id)
     {
         PageLayout::setTitle(_('Veranstaltungs-Stundenplan'));
