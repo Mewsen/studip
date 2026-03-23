@@ -983,5 +983,5 @@ html[data--a11y-motion="allow"] {
     --transition-duration: #{$transition-duration};
     --transition-duration-slow: #{$transition-duration-slow};
     --transition-duration-superslow: #{$transition-duration-superslow};
-    --transition-duration-megaslow: #{transition-duration-megaslow};
+    --transition-duration-megaslow: #{$transition-duration-megaslow};
 }
