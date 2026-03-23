@@ -206,7 +206,6 @@ class AdminNavigation extends Navigation
         // global config / user administration
         $navigation = new Navigation(_('System'));
 
-
         if ($perm->have_perm('root')) {
             $navigation->addSubNavigation('plugins', new Navigation(_('Plugins'), 'dispatch.php/admin/plugin'));
             $navigation->addSubNavigation('roles', new Navigation(_('Rollen'), 'dispatch.php/admin/role'));
@@ -232,6 +231,7 @@ class AdminNavigation extends Navigation
 
             $navigation->addSubNavigation('globalsearch', new Navigation(_('Globale Suche'), 'dispatch.php/globalsearch/settings'));
             $navigation->addSubNavigation('cache', new Navigation(_('Cache'), 'dispatch.php/admin/cache/settings'));
+
         }
         if ($perm->have_perm(Config::get()->AUX_RULE_ADMIN_PERM ? Config::get()->AUX_RULE_ADMIN_PERM : 'admin')) {
             $navigation->addSubNavigation('specification', new Navigation(_('Zusatzangaben'), 'dispatch.php/admin/specification'));
@@ -259,5 +259,13 @@ class AdminNavigation extends Navigation
         // admin plugins
         $navigation = new Navigation(_('Admin-Plugins'));
         $this->addSubNavigation('plugins', $navigation);
+
+        if ($perm->have_perm('root')) {
+            $navigation = new Navigation(_('Mailqueue'));
+            $navigation->addSubNavigation('index', new Navigation(_('Aktuelle Mailqueue'), 'dispatch.php/admin/mailqueue'));
+            $navigation->addSubNavigation('oldqueue', new Navigation(_('Alte Mailqueue'), 'dispatch.php/admin/mailqueue/showoldqueue'));
+            $this->addSubNavigation('mailqueue', $navigation);
+        }
+
     }
 }
