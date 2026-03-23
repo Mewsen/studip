@@ -357,6 +357,19 @@ class MyRealmModel
             if ($course->isStudygroup()) {
                 foreach ($course->connectedcourses as $connectedcourse) {
                     if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) {
+                        if ($course->isOpenEnded()) {
+                            if ($current_semester_nr >= $min_sem_key && $current_semester_nr <= $max_sem_key) {
+                                $semester_assign[$connectedcourse->id] = $current_semester_nr;
+                            } else {
+                                $semester_assign[$connectedcourse->id] = $max_sem_key;
+                            }
+                        } else {
+                            for ($i = $min_sem_key; $i <= $max_sem_key; $i += 1) {
+                                if ($i >= $_course['sem_number'] && $i <= $_course['sem_number_end']) {
+                                    $semester_assign[$connectedcourse->id] = $i;
+                                }
+                            }
+                        }
                         $children[$connectedcourse->id][] = $_course;
                     }
                 }
@@ -392,12 +405,12 @@ class MyRealmModel
                 uasort($courses, function ($a, $b) {
                     $extra_condition = 0;
                     if (Config::get()->IMPORTANT_SEMNUMBER) {
-                        $extra_condition = strcmp($a['number'], $b['number']);
+                        $extra_condition = !empty($a['number']) && !empty($b['number']) && strcmp($a['number'], $b['number']);
                     }
 
-                    return ($a['gruppe'] - $b['gruppe'])
+                    return (!empty($a['gruppe']) && !empty($b['gruppe']) && $a['gruppe'] - $b['gruppe'])
                         ?: $extra_condition
-                        ?: strcmp($a['temp_name'], $b['temp_name']);
+                        ?: !empty($a['temp_name']) && !empty($b['temp_name']) && strcmp($a['temp_name'], $b['temp_name']);
                 });
                 $sem_courses[$index] = $courses;
             }
@@ -502,18 +515,20 @@ class MyRealmModel
                 null
             );
 
-            foreach ($course['tools'] as $tool) {
-                $studip_module = $tool->getStudipModule();
-                if (
-                    !$studip_module
-                    || $studip_module instanceof CoreAdmin
-                    || $studip_module instanceof CoreStudygroupAdmin
-                ) {
-                    continue;
-                }
-                if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $course_id, $user_id)) {
-                    $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
-                    $activated_tools[$tool['plugin_id']]['courses'][$course_id] = $course_id;
+            if (!empty($course['tools'])) {
+                foreach ($course['tools'] as $tool) {
+                    $studip_module = $tool->getStudipModule();
+                    if (
+                        !$studip_module
+                        || $studip_module instanceof CoreAdmin
+                        || $studip_module instanceof CoreStudygroupAdmin
+                    ) {
+                        continue;
+                    }
+                    if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $course_id, $user_id)) {
+                        $activated_tools[$tool['plugin_id']]['studip_module']       = $studip_module;
+                        $activated_tools[$tool['plugin_id']]['courses'][$course_id] = $course_id;
+                    }
                 }
             }
         }
