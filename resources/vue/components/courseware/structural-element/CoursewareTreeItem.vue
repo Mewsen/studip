@@ -126,6 +126,8 @@ import CoursewareTreeItemAdder from './CoursewareTreeItemAdder.vue';
 import CoursewareTreeItemUpdater from './CoursewareTreeItemUpdater.vue';
 import draggable from 'vuedraggable';
 
+import { datetime } from '@/assets/javascripts/lib/datetime';
+
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -249,12 +251,12 @@ export default {
         },
         visibleStartEndDate() {
             if (this.hasReleaseOrWithdrawDate) {
-                const startDate = STUDIP.DateTime.getStudipDate(
+                const startDate = datetime.getStudipDate(
                     new Date(this.element.attributes?.['visible-start-date']),
                     false,
                     true
                 );
-                const endDate = STUDIP.DateTime.getStudipDate(
+                const endDate = datetime.getStudipDate(
                     new Date(this.element.attributes?.['visible-end-date']),
                     false,
                     true
