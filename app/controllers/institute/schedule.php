@@ -8,10 +8,6 @@ class Institute_ScheduleController extends AuthenticatedController
         if (Navigation::hasItem('/course/main')) {
             Navigation::activateItem('/course/main');
         }
-
-        if (!$GLOBALS['perm']->have_studip_perm('autor', Context::getId())) {
-            throw new AccessDeniedException();
-        }
     }
 
     public function index_action($institute_id)
