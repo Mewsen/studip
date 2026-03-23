@@ -1,6 +1,7 @@
 $icon-colors: (
     accept: good,
     attention: warning,
+    clickable: highlight,
     info_alt: white,
     inactive: font-inactive,
     new: red-1,
@@ -9,7 +10,6 @@ $icon-colors: (
     status-yellow: yellow-1,
 
 // This are disabled for now since they should be coloured in a different way
-//    clickable: blue,
 //    info: black,
 //    navigation: blue,
 //    sort: blue,

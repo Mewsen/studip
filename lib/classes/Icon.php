@@ -22,8 +22,9 @@ class Icon implements JsonSerializable
     public const SIZE_LARGE = 32;
 
     public const DEFAULT_COLOR = 'blue';
-    public const DEFAULT_ROLE = 'clickable';
+    public const DEFAULT_ROLE  = 'default';
 
+    public const ROLE_DEFAULT       = 'default';
     public const ROLE_INFO          = 'info';
     public const ROLE_CLICKABLE     = 'clickable';
     public const ROLE_ACCEPT        = 'accept';
@@ -47,6 +48,7 @@ class Icon implements JsonSerializable
      * This is the magical Role to Color mapping.
      */
     private static array $roles_to_colors = [
+        self::ROLE_DEFAULT       => self::DEFAULT_COLOR,
         self::ROLE_INFO          => 'black',
         self::ROLE_CLICKABLE     => 'blue',
         self::ROLE_ACCEPT        => 'green',

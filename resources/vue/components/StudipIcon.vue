@@ -32,7 +32,7 @@ interface IconProps {
 }
 
 const props = withDefaults(defineProps<IconProps>(),{
-    role: 'clickable',
+    role: 'default',
     size: null,
     inline: false
 });
