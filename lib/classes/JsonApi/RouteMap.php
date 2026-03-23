@@ -97,6 +97,7 @@ class RouteMap
         \PluginEngine::sendMessage(JsonApiPlugin::class, 'registerAuthenticatedRoutes', $group);
 
         $group->get('/users', Routes\Users\UsersIndex::class);
+        $group->get('/users/{id}/score', Routes\Users\UserScore::class);
         $group->get('/users/me', Routes\Users\UsersShow::class)->setName('get-myself');
         $group->get('/users/{id}', Routes\Users\UsersShow::class);
         $group->delete('/users/{id}', Routes\Users\UsersDelete::class)->add(DangerousRouteHandler::class);

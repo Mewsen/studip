@@ -54,4 +54,13 @@ class Authority
 
         return true;
     }
+
+    public static function canShowScore(User $user, User $observer): bool
+    {
+        if ($observer->id !== $user->id || !\Config::get()->SCORE_ENABLE) {
+            return false;
+        }
+
+        return true;
+    }
 }
