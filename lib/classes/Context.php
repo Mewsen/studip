@@ -244,6 +244,8 @@ class Context
                         );
                         header('Location: ' . $url);
                         die;
+                    } else if (!$GLOBALS['perm']->get_studip_perm($context->id)) {
+                        throw new AccessDeniedException();
                     }
                 }
             }
