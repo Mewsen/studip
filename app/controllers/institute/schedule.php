@@ -154,7 +154,7 @@ class Institute_ScheduleController extends AuthenticatedController
                 'course',
                 $cycle_date->seminar_id,
                 [
-                    'show' => $this->url_for('course/details', ['cid' => $cycle_date->seminar_id, 'link_to_course' => '1'])
+                    'show' => $this->url_for('course/details', ['sem_id' => $cycle_date->seminar_id, 'link_to_course' => '1'])
                 ]
             );
 
