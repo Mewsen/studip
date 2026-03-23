@@ -66,7 +66,7 @@ const updatePost = async () => {
     }
 }
 
-onMounted(() => {
+onMounted( () => {
     if (window.location.hash) {
         window.history.pushState('', document.title, window.location.href.split('#')[0]);
     }
@@ -84,7 +84,7 @@ onUnmounted(() => {
         <label :for="`post-content-${post.id}`">
             <span class="sr-only">{{ $gettext('Inhalt') }}</span>
         </label>
-        <StudipWysiwyg :id="`post-content-${post.id}`" required="required" v-model="content" />
+        <StudipWysiwyg :id="`post-content-${post.id}`" required="required" v-model="content" :autofocus="true" />
         <div v-if="forumConfig.anonymousPost" class="mt-10">
             <StudipSwitch name="anonymous" v-model="anonymous" :label="$gettext('Anonym')" />
         </div>

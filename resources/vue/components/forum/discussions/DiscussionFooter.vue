@@ -31,7 +31,6 @@ const hasUnreadPost = computed(() => {
 });
 
 const addPost = () => {
-    document.getElementById(`new-post`)?.scrollIntoView({ behavior: 'smooth' });
     postCreateForm.value = true;
 }
 </script>

@@ -129,9 +129,6 @@ onMounted(async () => {
 
     const urlHash = window.location.hash.split("#")[1];
     if (urlHash) {
-        if (urlHash === 'new-post') {
-            postCreateForm.value = true;
-        }
         jumpTo(document.getElementById(urlHash))
     } else if (props.readIndex < posts.value.length) {
         if (props.readIndex === 0) {
