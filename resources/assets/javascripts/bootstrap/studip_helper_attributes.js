@@ -298,24 +298,24 @@ $(document).on('keydown', '.enter-accessible', function(event) {
 
 $(document).on('click keydown', '[data-toggles]', function (event) {
     if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
-        const target = event.currentTarget.dataset.toggles;
-        //Check if the target is a checkbox. These have to be toggled differently than
-        //other elements:
+        const target = this.dataset.toggles;
+        // Check if the target is a checkbox. These have to be toggled differently than
+        // other elements:
         if ($(target).is(':checkbox')) {
-            //Toggle the checked state of the checkbox:
+            // Toggle the checked state of the checkbox:
             $(target).prop('checked', !$(target).prop('checked'));
         } else {
-            //Do the normal toggle operation:
+            // Do the normal toggle operation:
             $(target).toggle();
         }
 
-        const controls = $(event.currentTarget).attr('aria-controls');
+        const controls = $(this).attr('aria-controls');
         if (controls) {
             // Find elements which control the expanded status of the same element.
             const elements = $('[aria-controls="' + controls + '"]');
-            const expanded = $(event.currentTarget).attr('aria-expanded') === 'true';
+            const expanded = $(this).attr('aria-expanded') === 'true';
             // Set the aria-expanded status accordingly.
-            elements.attr('aria-expanded', !expanded);
+            elements.attr('aria-expanded', expanded ? 'false' : 'true');
         }
 
         event.preventDefault();
