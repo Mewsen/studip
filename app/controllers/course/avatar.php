@@ -13,5 +13,10 @@ class Course_AvatarController extends AuthenticatedController
         Navigation::activateItem('/course/admin/avatar');
         $avatar = CourseAvatar::getAvatar($this->course_id);
         $this->avatar_url = $avatar->getURL(Avatar::NORMAL);
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
+        }
     }
 }
