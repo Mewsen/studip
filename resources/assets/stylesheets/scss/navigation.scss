@@ -16,7 +16,8 @@ body:not(.fixed) #navigation-level-1-items {
         z-index: 2;
         font-size: $font-size-base;
     }
-    a {
+    a,
+    button.as-link {
         color: var(--color--main-navigation-item-inactive);
         display: block;
         padding: 0 0;
@@ -67,7 +68,8 @@ body:not(.fixed) #navigation-level-1-items {
     }
 
     > li > a,
-    > li > label {
+    > li > button.as-link {
+        width: 100%;
         .navtitle {
             position: absolute;
             white-space: nowrap;
@@ -98,12 +100,14 @@ body:not(.fixed) #navigation-level-1-items {
 
     // Recolor on hover and for active items
     li:hover,
+    li button.as-link:focus,
     li a:focus,
     li.active {
         .navtitle {
             opacity: 1;
         }
-        > a {
+        > a,
+        > button.as-link {
             color: var(--color--main-navigation-item);
         }
 
@@ -122,7 +126,7 @@ body:not(.fixed) #navigation-level-1-items {
         }
 
         // Rotate icon
-        > label svg {
+        > button.as-link svg {
             transition: transform var(--transition-duration);
             transform: rotate(90deg);
         }
@@ -132,18 +136,14 @@ body:not(.fixed) #navigation-level-1-items {
             transition: opacity var(--transition-duration);
         }
 
-        &::after {
-
-        }
-
         // Display menu on activation
-        &:hover label,
+        &:hover button.as-link,
         input[type="checkbox"]:checked {
             ~ ul {
                 display: block;
             }
             svg,
-            ~ label svg {
+            ~ button.as-link svg {
                 transform: rotate(180deg);
             }
             > a[data-badge]::before {
