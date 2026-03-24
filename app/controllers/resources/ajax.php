@@ -18,7 +18,7 @@ class Resources_AjaxController extends AuthenticatedController
 
     public function before_filter(&$action, &$args)
     {
-        if ($action !== 'get_booking_plan') {
+        if ($action !== 'get_booking_plan' && !User::findCurrent()) {
             throw new LoginException();
         }
 
