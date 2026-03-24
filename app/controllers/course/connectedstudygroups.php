@@ -146,7 +146,7 @@ class Course_ConnectedstudygroupsController extends AuthenticatedController
             ]
         );
         $proposals = StudygroupCourseProposal::findBySQL(
-            'INNER JOIN seminare ON (seminare.Seminar_id = studygroup_courses_proposals.course_id) WHERE studygroup_courses_proposals.course_id = ? ORDER BY seminare.name ASC', 
+            'INNER JOIN seminare ON (seminare.Seminar_id = studygroup_courses_proposals.course_id) WHERE studygroup_courses_proposals.course_id = ? ORDER BY seminare.name ASC',
             [
                 Context::getId()
             ]
@@ -311,5 +311,10 @@ class Course_ConnectedstudygroupsController extends AuthenticatedController
             ['data-dialog' => 1]
         );
         Sidebar::Get()->addWidget($actions);
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', Context::getId())) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
+        }
     }
 }
