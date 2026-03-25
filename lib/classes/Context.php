@@ -281,19 +281,6 @@ class Context
                     throw new AccessDeniedException();
                 }
             }
-
-            if (
-                !$GLOBALS['perm']->get_studip_perm($context->id)
-                && !match_route('dispatch.php/institute/overview')
-            ) {
-                PageLayout::postWarning(_('Sie sind dieser Einrichtung nicht zugeordnet!'));
-                $url = URLHelper::getURL(
-                    'dispatch.php/institute/overview',
-                    ['cid' => $context->id]
-                );
-                header('Location: ' . $url);
-                die;
-            }
         }
     }
 
