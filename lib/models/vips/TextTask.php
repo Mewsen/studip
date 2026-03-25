@@ -112,7 +112,7 @@ class TextTask extends Exercise
     {
         $result = [];
 
-        $answerDefault   = Studip\Markup::removeHtml($this->task['template']);
+        $answerDefault   = Studip\Markup::removeHtml($this->task['template'] ?? '');
         $musterLoesung   = Studip\Markup::removeHtml($this->task['answers'][0]['text']);
         $studentSolution = Studip\Markup::removeHtml($solution->response[0]);
 
