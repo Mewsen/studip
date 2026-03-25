@@ -130,7 +130,7 @@ class VipsSolution extends SimpleORMap
      */
     public function isSubmitted(): bool
     {
-        return $this->id && !$this->mkdate;
+        return $this->id && $this->mkdate;
     }
 
     /**
