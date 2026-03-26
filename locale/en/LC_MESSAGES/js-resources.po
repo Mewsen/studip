@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2026-02-17 10:38+0000\n"
+"PO-Revision-Date: 2026-03-27 15:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -4033,7 +4033,7 @@ msgstr "Feedback written on: %{ date }"
 
 #: resources/vue/components/feedback/FeedbackCreateDialog.vue:47
 msgid "Feedback kann anonym abgegeben werden"
-msgstr "Feedback can be given anonymously"
+msgstr "Feedback can be submitted anonymously"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:1169
 msgid "Feedback wurde abgegeben."
