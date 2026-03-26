@@ -472,6 +472,9 @@ class Calendar_DateController extends AuthenticatedController
                 $this->date->interval = '';
                 if ($this->date->repetition_type !== 'WORKDAYS') {
                     $this->date->interval = Request::int('repetition_interval');
+                    if ($this->date->interval < 1) {
+                        $this->form_errors[_('Wiederholung')] = _('Bitte wählen Sie ein gültiges Wiederholungsintervall aus.');
+                    }
                 }
 
                 if ($this->date->repetition_type === CalendarDate::REPETITION_WEEKLY) {

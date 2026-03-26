@@ -25,18 +25,16 @@
             </label>
         </section>
         <section v-if="repetition_type_value === 'DAILY'">
-            <label>
-                {{ $gettext('Abstand in Tagen') }}
-                <input type="number" min="1" :name="name + '_interval'"
+            <LabelRequired :label="$gettext('Abstand in Tagen')">
+                <input type="number" min="1" required :name="name + '_interval'"
                        v-model="repetition_interval_value">
-            </label>
+            </LabelRequired>
         </section>
         <section v-else-if="repetition_type_value === 'WEEKLY'">
-            <label>
-                {{ $gettext('Abstand in Wochen') }}
-                <input type="number" min="1" :name="name + '_interval'"
+            <LabelRequired :label="$gettext('Abstand in Wochen')">
+                <input type="number" min="1" required :name="name + '_interval'"
                        v-model="repetition_interval_value">
-            </label>
+            </LabelRequired>
             <div>
                 <p>{{ $gettext('Wiederholung an bestimmten Wochentagen') }}</p>
                 <label>
@@ -77,11 +75,10 @@
             </div>
         </section>
         <section v-else-if="repetition_type_value === 'YEARLY'">
-            <label>
-                {{ $gettext('Abstand in Jahren') }}
-                <input type="number" min="1" :name="name + '_interval'"
+            <LabelRequired :label="$gettext('Abstand in Jahren')">
+                <input type="number" min="1" required name="name + '_interval'"
                        v-model="repetition_interval_value">
-            </label>
+            </LabelRequired>
             <label>
                 {{ $gettext('Art der jährlichen Wiederholung') }}
                 <select :name="name + '_month_type'"
@@ -144,11 +141,10 @@
             </label>
         </section>
         <section v-if="repetition_type_value === 'MONTHLY'">
-            <label>
-                {{ $gettext('Abstand in Monaten') }}
-                <input type="number" min="1" :name="name + '_interval'"
+            <LabelRequired :label="$gettext('Abstand in Monaten')">
+                <input type="number" min="1" required :name="name + '_interval'"
                        v-model="repetition_interval_value">
-            </label>
+            </LabelRequired>
             <label>
                 {{ $gettext('Art der monatlichen Wiederholung') }}
                 <select :name="name + '_month_type'"
@@ -235,8 +231,11 @@
 </template>
 
 <script>
+import LabelRequired from '../forms/LabelRequired.vue';
+
 export default {
     name: "repetition-input",
+    components: { LabelRequired },
     emits: [
         'input_number_of_dates',
         'input_repetition_dom',
