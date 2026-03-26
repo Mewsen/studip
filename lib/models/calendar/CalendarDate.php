@@ -860,8 +860,8 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
         $attributes = [
             'name'                   => $element_name,
             'default_date'           => $this->begin,
-            'repetition_type'        => $this->isNew() ? '' : $this->repetition_type,
-            'repetition_interval'    => $this->isNew() ? '1'  : $this->interval,
+            'repetition_type'        => $this->repetition_type ?? '',
+            'repetition_interval'    => $this->interval > 0 ? $this->interval : '1',
             ':repetition_dow'        => $repetition_dow,
             ':repetition_dow_week'   => $repetition_dow_week,
             ':repetition_month'      => $this->isNew() ? date('m', $this->begin) : $this->month,
