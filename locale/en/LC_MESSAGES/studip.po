@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-03-26 13:38+0000\n"
+"PO-Revision-Date: 2026-03-27 15:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -15184,7 +15184,7 @@ msgstr "Delete all solutions to this worksheet"
 
 #: app/controllers/vips/sheets.php:577 app/controllers/vips/sheets.php:620
 msgid "Wollen Sie die Lösungen dieses Aufgabenblatts wirklich löschen?"
-msgstr "Do you really want to delete the solutions to this test?"
+msgstr "Do you really want to delete the solutions to this worksheet?"
 
 #: app/controllers/vips/sheets.php:582
 msgid "Klausur vorzeitig abgeben"
@@ -15222,9 +15222,9 @@ msgid "Ungültiger Endzeitpunkt, der Wert wurde nicht übernommen."
 msgstr "Invalid ending time, reset to current time."
 
 #: app/controllers/vips/sheets.php:772
-#, fuzzy, php-format
+#, php-format
 msgid "Das Aufgabenblatt „%s“ wurde gelöscht."
-msgstr "%u task has been deleted."
+msgstr "The worksheet %s has been deleted."
 
 # php-format
 #: app/controllers/vips/sheets.php:799
@@ -15236,7 +15236,9 @@ msgstr "%s worksheets have been deleted."
 msgid ""
 "Einige Aufgabenblätter konnten nicht gelöscht werden, da bereits Lösungen "
 "abgegeben wurden."
-msgstr "Some worksheets cannot be deleted due to existing submissions."
+msgstr ""
+"Some worksheets could not be deleted because solutions have already been "
+"submitted."
 
 #: app/controllers/vips/sheets.php:804 app/controllers/vips/pool.php:345
 msgid ""
@@ -15814,9 +15816,8 @@ msgstr[1] "%d solutions were graded."
 #: app/controllers/vips/solutions.php:904
 #: app/views/vips/solutions/view_solution.php:46
 #: app/views/vips/solutions/edit_solution.php:96
-#, fuzzy
 msgid "Nicht abgegeben"
-msgstr "unspecified"
+msgstr "Not submitted"
 
 #: app/controllers/vips/solutions.php:945
 msgid ""
@@ -15860,9 +15861,8 @@ msgid "Die ausgewählte Lösung wurde als aktuelle Version gespeichert."
 msgstr "The selected solution was saved as the current version."
 
 #: app/controllers/vips/solutions.php:1169
-#, fuzzy
 msgid "Die ausgewählten Personen wurden aus der Gruppe entfernt."
-msgstr "%u person has been removed from the group %s."
+msgstr "The selected persons have been removed from the group."
 
 #: app/controllers/vips/solutions.php:1246
 #, php-format
@@ -15895,7 +15895,8 @@ msgstr "The specified due date is not a valid time."
 msgid ""
 "Die Teilnahme wurde zurückgesetzt und ggf. abgegebene Lösungen archiviert."
 msgstr ""
-"The exam has been reset for this user and any solutions have been archived."
+"The exam has been reset for this user and any solutions submitted have been "
+"archived."
 
 #: app/controllers/vips/solutions.php:1379
 msgid "Die Korrekturen wurden noch nicht freigegeben."
@@ -15940,6 +15941,8 @@ msgid ""
 "Diese Seite gibt einen Überblick über die von allen Teilnehmenden erreichten "
 "Punkte und ggf. Noten."
 msgstr ""
+"This page provides an overview of the points and grades (if applicable) "
+"achieved by all participants."
 
 #: app/controllers/vips/solutions.php:1548
 #: app/controllers/vips/solutions.php:1718
@@ -15964,21 +15967,18 @@ msgstr "Item"
 
 #: app/controllers/vips/solutions.php:1647
 #: app/views/vips/solutions/statistics.php:19
-#, fuzzy
 msgid "Erreichbare Punkte"
-msgstr "Your score:"
+msgstr "Achievable points"
 
 #: app/controllers/vips/solutions.php:1648
 #: app/views/vips/solutions/statistics.php:22
-#, fuzzy
 msgid "Durchschn. Punkte"
-msgstr "Average:"
+msgstr "Average points"
 
 #: app/controllers/vips/solutions.php:1649
 #: app/views/vips/solutions/statistics.php:25
-#, fuzzy
 msgid "Korrekte Lösungen"
-msgstr "Accomplished achievements"
+msgstr "Correct solutions"
 
 #: app/controllers/vips/solutions.php:1680
 #: app/views/vips/solutions/statistics.php:72
@@ -15996,6 +15996,8 @@ msgid ""
 "Teilnehmenden erreichten Punkte sowie den Prozentsatz der vollständig "
 "korrekten Lösungen."
 msgstr ""
+"This page provides an overview of the average points achieved by all "
+"participants and the percentage of completely correct solutions."
 
 #: app/controllers/my_courses.php:84 app/controllers/my_courses.php:160
 #: app/views/settings/general.php:4 app/views/file/add_files_window.php:51
@@ -16205,9 +16207,8 @@ msgid "Letztes, aktuelles, nächstes Semester"
 msgstr "Last, current and next semester"
 
 #: app/controllers/my_courses.php:861
-#, fuzzy
 msgid "Aktuelles und vorletztes Semester"
-msgstr "Current and last semester"
+msgstr "Current and last semester but one"
 
 #: app/controllers/shared/download.php:87
 msgid "Modulhandbuch"
@@ -16528,9 +16529,8 @@ msgid "Unbekannte Abschluss-Kategorie"
 msgstr "Unknown category"
 
 #: app/controllers/search/angebot.php:190
-#, fuzzy
 msgid "Zuordnung wurde aufgehoben."
-msgstr "Allocation saved."
+msgstr "The assignment has been cancelled."
 
 #: app/controllers/search/studiengaenge.php:42
 msgid "Modulverzeichnis - Studiengänge"
@@ -16554,18 +16554,16 @@ msgid "Kein Verlaufsplan im gewählten Bereich verfügbar."
 msgstr "No recommendation in selected area."
 
 #: app/controllers/search/studiengaenge.php:306
-#, fuzzy
 msgid "Keine Module mit Veranstaltungen im gewählten Semester verfügbar."
-msgstr "My courses in the next semester"
+msgstr "No modules available with courses in the selected semester."
 
 #: app/controllers/search/studiengaenge.php:333
 msgid "Nur Module mit Veranstaltungen anzeigen"
 msgstr "Display only modules with assigned courses"
 
 #: app/controllers/search/studiengaenge.php:338
-#, fuzzy
 msgid "Alle Abschnitte zuklappen"
-msgstr "Collapse all"
+msgstr "Collapse all sections"
 
 #: app/controllers/search/studiengaenge.php:346
 msgid "Aktuelle Modulhandbücher"
@@ -16576,12 +16574,11 @@ msgid "Originalfassung als PDF"
 msgstr "Original version as PDF"
 
 #: app/controllers/search/studiengaenge.php:356
-#, fuzzy, php-format
+#, php-format
 msgid "Ausgabesprache (%s) als PDF"
-msgstr "Standard language"
+msgstr "Output language (%s) as PDF"
 
 #: app/controllers/search/studiengaenge.php:383
-#, fuzzy
 msgid "Neue Studiengruppe erstellen"
 msgstr "Create new study group"
 
@@ -16822,9 +16819,8 @@ msgid ""
 msgstr "Password request not possible while logged in."
 
 #: app/controllers/new_password.php:51 lib/classes/UserManagement.php:721
-#, fuzzy
 msgid "Passwortänderung angefordert"
-msgstr "[Stud.IP - %s] Requested password change"
+msgstr "Password change requested"
 
 #: app/controllers/new_password.php:54
 #, php-format
@@ -16900,65 +16896,58 @@ msgid "Ihr Wert wurde von der Rangliste gelöscht."
 msgstr "Your score is no longer published on the ranking list."
 
 #: app/controllers/lti/tool.php:23
-#, fuzzy
 msgid "Es wurde kein LTI-Tool angegeben."
-msgstr "No name has been provided!"
+msgstr "No LTI tool has been provided."
 
 #: app/controllers/lti/tool.php:28
-#, fuzzy
 msgid "Das angegebene LTI-Tool wurde nicht gefunden."
-msgstr "The specified date could not be found."
+msgstr "The specified LTI tool could not be found."
 
 #: app/controllers/lti/tool.php:68
-#, fuzzy
 msgid "Die Einrichtung von LTI-Tools in Veranstaltungen ist ausgeschaltet."
-msgstr "The reference management is disabled!"
+msgstr "Setting up LTI tools for courses is disabled."
 
 #: app/controllers/lti/tool.php:74
 msgid "Bitte beachten Sie das geltende europäische Datenschutzrecht (DSGVO)!"
-msgstr ""
+msgstr "Please observe the applicable European data protection law (GDPR)!"
 
 #: app/controllers/lti/tool.php:150
-#, fuzzy
 msgid "Die folgenden Daten zum LTI-Tool sind fehlerhaft:"
-msgstr "The following errors occurred:"
+msgstr "The following data on the LTI tool is incorrect:"
 
 #: app/controllers/lti/tool.php:157
 msgid ""
 "Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool "
 "angegeben."
-msgstr ""
+msgstr "Neither a public key nor a JWKS URL has been specified for the tool."
 
 #: app/controllers/lti/tool.php:165
-#, fuzzy
 msgid "Das LTI-Tool konnte nicht gespeichert werden."
-msgstr "File could not be saved."
+msgstr "The LTI tool could not be saved."
 
 #: app/controllers/lti/tool.php:189
-#, fuzzy
 msgid ""
 "Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden."
-msgstr "Cannot save list."
+msgstr "The public key of the LTI tool could not be saved."
 
 #: app/controllers/lti/tool.php:194
-#, fuzzy
 msgid "Das LTI-Tool wurde gespeichert."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool has been saved."
 
 #: app/controllers/lti/tool.php:229
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ ist in dieser Veranstaltung nicht vorhanden."
-msgstr "You must not copy this course"
+msgstr "The LTI tool %s is not available for this course."
 
 #: app/controllers/lti/tool.php:241
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ wurde gelöscht."
-msgstr "The LTI tool \"%s\" has been deleted."
+msgstr "The LTI tool %s has been deleted."
 
 #: app/controllers/lti/tool.php:243
-#, fuzzy, php-format
+#, php-format
 msgid "Das LTI-Tool „%s“ konnte nicht gelöscht werden."
-msgstr "The image could not be deleted."
+msgstr "The LTI tool %s could not be deleted."
 
 #: app/controllers/lti/auth.php:92 lib/navigation/BrowseNavigation.php:78
 msgid "Veranstaltung verknüpfen"
@@ -17963,9 +17952,8 @@ msgstr "Conditions"
 
 #: app/controllers/my_ilias_accounts.php:49
 #: lib/modules/IliasInterfaceModule.php:33
-#, fuzzy
 msgid "Meine Lernobjekte und Accounts"
-msgstr "My learning objects and ILIAS accounts"
+msgstr "My learning objects and accounts"
 
 #: app/controllers/my_ilias_accounts.php:64
 #: app/controllers/my_ilias_accounts.php:126
@@ -17974,9 +17962,8 @@ msgid "Zur %s-Startseite"
 msgstr "Go to the %s start page"
 
 #: app/controllers/my_ilias_accounts.php:81
-#, fuzzy
 msgid "Meine ILIAS-Kurse"
-msgstr "ILIAS courses"
+msgstr "My ILIAS courses"
 
 #: app/controllers/my_ilias_accounts.php:257
 msgid "ILIAS-Account aktualisiert."
@@ -17996,24 +17983,22 @@ msgid "Account-Zuordnung entfernt."
 msgstr "Remove accound assignment."
 
 #: app/controllers/my_ilias_accounts.php:314
-#, fuzzy, php-format
+#, php-format
 msgid "Es wurde kein Account mit dem Loginnamen \"%s\" gefunden."
-msgstr "An account with username \"%s\" already exists."
+msgstr "No account with the username %s has been found."
 
 #: app/controllers/my_ilias_accounts.php:316
-#, fuzzy, php-format
+#, php-format
 msgid "Account \"%s\" wurde gefunden."
-msgstr "Module \"%s\" changed."
+msgstr "Account %s has been found."
 
 #: app/controllers/my_ilias_accounts.php:324
-#, fuzzy
 msgid "Account zugeordnet."
-msgstr "ILIAS account assigned."
+msgstr "Account assigned."
 
 #: app/controllers/my_ilias_accounts.php:335
-#, fuzzy
 msgid "Account angelegt."
-msgstr "lastly created"
+msgstr "Account created."
 
 #: app/controllers/my_ilias_accounts.php:369
 #: app/views/my_ilias_accounts/index.php:151
@@ -19190,9 +19175,8 @@ msgid "Standard wiederherstellen"
 msgstr "Restore default"
 
 #: app/controllers/start.php:85
-#, fuzzy
 msgid "Sollen wirklich alle Widgets auf den Standard zurückgesetzt werden?"
-msgstr "The widgets have been reset to their default state."
+msgstr "This will reset all widgets to their default state. Are you sure?"
 
 #: app/controllers/start.php:92
 msgid "Standard-Startseite bearbeiten:"
@@ -22918,7 +22902,7 @@ msgstr "Feedback results visible by answer"
 
 #: app/views/course/feedback/_new_edit_feedback_form.php:27
 msgid "Feedback kann anonym abgegeben werden"
-msgstr "Feedback can be given anonymously"
+msgstr "Feedback can be submitted anonymously"
 
 #: app/views/course/feedback/_new_edit_feedback_form.php:33
 msgid "Abgegebenes Feedback kann einen Kommentar beinhalten"
@@ -34400,7 +34384,7 @@ msgstr "Worksheet %s"
 
 #: app/views/vips/solutions/assignment_solutions.php:36
 msgid "Studierende mit abgegebenen Lösungen"
-msgstr "students that submitted solutions"
+msgstr "students who submitted solutions"
 
 #: app/views/vips/solutions/assignment_solutions.php:39
 msgid "Studierende mit unkorrigierten Lösungen"
