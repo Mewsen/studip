@@ -103,19 +103,23 @@ class UnitsCreate extends JsonApiController
             'writable' =>  self::arrayGet($json, 'data.attributes.writable', 'never'),
         ]);
 
-        \Courseware\Container::create([
-            'structural_element_id' => $struct->id,
-            'owner_id'              => $user->id,
-            'editor_id'             => $user->id,
-            'edit_blocker_id'       => '',
-            'position'              => 0,
-            'container_type'        => 'list',
+        $with_default_container = self::arrayGet($json, 'data.withDefaultContainer', true);
 
-            'payload' => json_encode([
-                'colspan' => 'full',
-                'sections' => [['name' => _('erstes Element'), 'icon' => '','blocks' => []]]
-            ]),
-        ]);
+        if ($with_default_container) {
+            \Courseware\Container::create([
+                'structural_element_id' => $struct->id,
+                'owner_id' => $user->id,
+                'editor_id' => $user->id,
+                'edit_blocker_id' => '',
+                'position' => 0,
+                'container_type' => 'list',
+
+                'payload' => json_encode([
+                    'colspan' => 'full',
+                    'sections' => [['name' => _('erstes Element'), 'icon' => '', 'blocks' => []]]
+                ]),
+            ]);
+        }
 
         $unit = Unit::create([
             'range_id' => $range->getRangeId(),

@@ -580,7 +580,7 @@ export const actions = {
         commit('setImportErrors', errors);
     },
 
-    async createStructuralElement({ dispatch }, { attributes, parentId }) {
+    async createStructuralElement({ dispatch }, { attributes, parentId, currentId, withDefaultContainer = true }) {
         const data = {
             attributes,
             relationships: {
@@ -591,10 +591,12 @@ export const actions = {
                     },
                 },
             },
+            withDefaultContainer: withDefaultContainer,
         };
         await dispatch('courseware-structural-elements/create', data, { root: true });
-    },
 
+        return dispatch('loadStructuralElement', currentId);
+    },
 
     async updateStructuralElement({ dispatch }, { element, id }) {
         await dispatch('courseware-structural-elements/update', element, { root: true });
