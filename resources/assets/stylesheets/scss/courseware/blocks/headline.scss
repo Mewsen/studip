@@ -10,7 +10,8 @@ $large-icon-size-px: $large-icon-size * 1px;
 .cw-block-headline {
     .cw-block-headline-content {
         min-height: 600px;
-        overflow: hidden;
+        background-size: cover;
+        background-position: center;
 
         &.half {
             min-height: 300px;
