@@ -345,7 +345,8 @@ export default {
                                 id: this.context.id
                             }
                         }
-                    }
+                    },
+                    withDefaultContainer: false,
                 };
             this.sortChildren(this.loadedZipData.courseware.children);
             await this.createCoursewareUnit(unit, { root: true });
