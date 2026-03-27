@@ -228,11 +228,7 @@ class Context
                         throw new LoginException();
                     }
 
-                    if (
-                        Request::int('from_short_url')
-                        && !$GLOBALS['perm']->get_studip_perm($context->id)
-                        && !match_route('dispatch.php/course/details')
-                    ) {
+                    if (Request::int('from_short_url')) {
                         PageLayout::postWarning(_('Sie sind noch nicht eingetragen. Bitte prüfen Sie eventuell geltende Anmelderegeln!'));
                         $url = URLHelper::getURL(
                             'dispatch.php/course/details',
@@ -245,6 +241,8 @@ class Context
                         header('Location: ' . $url);
                         die;
                     }
+
+                    throw new AccessDeniedException();
                 }
             }
 
