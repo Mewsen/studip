@@ -1756,11 +1756,11 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 );
             }
             if ($this->subsequent_time) {
-                $real_end += $this->subsequent_time;
+                $real_end -= $this->subsequent_time;
                 $begin = new DateTime();
-                $begin->setTimestamp($interval['end']);
+                $begin->setTimestamp($real_end);
                 $end   = new DateTime();
-                $end->setTimestamp($real_end);
+                $end->setTimestamp($real_end + $this->subsequent_time);
                 $events[] = new Studip\Calendar\EventData(
                     $begin,
                     $end,
@@ -1844,7 +1844,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             $begin = new DateTime();
             $begin->setTimestamp($real_begin);
             $end = new DateTime();
-            $end->setTimestamp($interval['end']);
+            $end->setTimestamp($real_end);
             $events[] = new Studip\Calendar\EventData(
                 $begin,
                 $end,
