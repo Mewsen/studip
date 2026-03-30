@@ -801,11 +801,15 @@ class Resources_AjaxController extends AuthenticatedController
             //We must substract the preparation time to the begin timestamp
             //to get the real begin:
             $real_begin = clone $new_booking_begin;
+            $real_end   = clone $new_booking_end;
             if ($booking->preparation_time > 0) {
                 $real_begin->sub(new DateInterval('PT' . ($booking->preparation_time / 60 ) . 'M'));
             }
+            if ($booking->subsequent_time > 0) {
+                $real_end->add(new DateInterval('PT' . ($booking->subsequent_time / 60) . 'M'));
+            }
             $booking->begin = $real_begin->getTimestamp();
-            $booking->end = $new_booking_end->getTimestamp();
+            $booking->end   = $real_end->getTimestamp();
             //The repetition end of the booking must also be updated or the repetition end may lie after
             //the end time and the last interval is not recreated when saving the booking.
             //Applying the calculated difference for the end of the booking to the repetition end will suffice:
@@ -814,14 +818,19 @@ class Resources_AjaxController extends AuthenticatedController
             $new_repetition_end->add($end_diff);
             $booking->repeat_end = $new_repetition_end->getTimestamp();
         } else {
-            //We must substract the preparation time to the begin timestamp
-            //to get the real begin:
+            //We must subtract the preparation time to the start timestamp
+            //to get the real start. The subsequent time must be added to the
+            //end timestamp to get the real end.
             $real_begin = clone $begin;
+            $real_end   = clone $end;
             if ($booking->preparation_time > 0) {
                 $real_begin->sub(new DateInterval('PT' . ($booking->preparation_time / 60 ) . 'M'));
             }
+            if ($booking->subsequent_time > 0) {
+                $real_end->add(new DateInterval('PT' . ($booking->subsequent_time / 60) . 'M'));
+            }
             $booking->begin = $real_begin->getTimestamp();
-            $booking->end = $end->getTimestamp();
+            $booking->end   = $real_end->getTimestamp();
         }
         if ($resource_id) {
             //The resource-ID has changed:
