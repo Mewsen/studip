@@ -1,6 +1,6 @@
-@import '../../../../packages/studip-ui/src/styles/tokens/colors'; // color scss vars
+@import '@studip-ui/styles/tokens/colors'; // color scss vars
 
-@import '../../../../packages/studip-ui/src/styles/tokens/index'; // custom props from ui-kit
+@import '@studip-ui/styles/tokens/index'; // custom props from ui-kit
 
 :root {
     --text-color: #{$color--font-primary};

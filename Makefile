@@ -1,14 +1,12 @@
 CODECEPT  = composer/bin/codecept
 CATALOGS  = locale/en/LC_MESSAGES/studip.mo locale/en/LC_MESSAGES/js-resources.json
-RESOURCES = $(shell find resources -type f)
+RESOURCES = $(shell find resources packages/studip-ui/src -type f)
 
 PHP_SOURCES = $(shell find app config lib public templates -name '*.php' \( ! -path 'public/plugins_packages/*' -o -path 'public/plugins_packages/core/*' \))
 VUE_SOURCES = $(shell find resources -name '*.js' -o -name '*.vue')
 
-STUDIP_UI_PATH = packages/studip-ui
-
 # build all needed files
-build: composer webpack-prod build-ui
+build: composer webpack-prod
 
 # remove all generated files
 clean: clean-composer clean-npm clean-webpack clean-doc
@@ -115,27 +113,6 @@ js-%.json: js-%.po
 
 %.mo: %.po
 	msgfmt -o $@ $<
-
-# --- UI-Kit NPM Install ---
-
-# Führt npm install im UI-Kit-Ordner aus
-npm-ui:
-	@echo "--- Installing studip-ui NPM dependencies ---"
-	npm install --prefix $(STUDIP_UI_PATH)
-
-# --- UI-Kit Targets ---
-
-# Ruft das Build-Skript des UI-Kits auf (build: lint, vite build, icons)
-build-ui: npm-ui
-	@echo "--- Building studip-ui package ---"
-	npm run --prefix $(STUDIP_UI_PATH) build
-
-# --- Storybook Target ---
-
-# Startet den Storybook-Dev-Server für die isolierte Entwicklung
-storybook: build-ui
-	@echo "--- Starting Storybook Development Server ---"
-	npm run --prefix $(STUDIP_UI_PATH) storybook
 
 # dummy target to force update of "doc" target
 force_update:
