@@ -37,7 +37,7 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
         $folder = Folder::findTopFolder($course->id);
         $folder = $folder->getTypedFolder();
         $uploaded_file = [
-            'name' => $material['filename'],
+            'name' => $material['name'],
             'type' => $material['content_type'],
             'content_terms_of_use_id' => "FREE_LICENSE",
             'description' => $material['description']
