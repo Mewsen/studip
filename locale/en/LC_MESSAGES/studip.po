@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-03-27 15:38+0000\n"
+"PO-Revision-Date: 2026-03-31 08:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -20466,7 +20466,7 @@ msgstr "This displays notifications in the header without reloading the page."
 
 #: app/views/settings/general.php:87
 msgid "Platzierung von Systembenachrichtigungen im Browserfenster"
-msgstr ""
+msgstr "Placement of system notifications in the browser window"
 
 #: app/views/settings/general.php:88
 msgid ""
@@ -20474,14 +20474,16 @@ msgid ""
 "Systembenachrichtigungen erscheinen sollen: mittig am oberen Rand oder "
 "rechts unten."
 msgstr ""
+"You can decide where you want system notifications to appear in your browser "
+"window: in the centre, at the top or at the bottom right."
 
 #: app/views/settings/general.php:93
 msgid "zentriert am oberen Rand"
-msgstr ""
+msgstr "in the centre at the top"
 
 #: app/views/settings/general.php:96
 msgid "am rechten unteren Rand"
-msgstr ""
+msgstr "on the bottom right"
 
 #: app/views/settings/general.php:104 lib/navigation/ResourceNavigation.php:27
 #: lib/navigation/ResourceNavigation.php:42
@@ -21010,11 +21012,11 @@ msgid "Dateianhänge:"
 msgstr "File attachments:"
 
 #: app/views/messages/read.php:25 templates/userfilter/display.php:17
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Person"
 msgid_plural "%s Personen"
 msgstr[0] "One user"
-msgstr[1] "One user"
+msgstr[1] "%s users"
 
 #: app/views/messages/read.php:52
 msgid "Schlagwort entfernen"
@@ -21087,14 +21089,12 @@ msgid "Mehrere Adressaten hinzufügen"
 msgstr "Add more recipients"
 
 #: app/views/messages/write.php:93
-#, fuzzy
 msgid "Anhänge verwalten"
-msgstr "Manage tasks"
+msgstr "Manage attachments"
 
 #: app/views/messages/write.php:103
-#, fuzzy
 msgid "Schlagworte verwalten"
-msgstr "Manage categories"
+msgstr "Manage keywords"
 
 #: app/views/messages/write.php:111 app/views/messages/write.php:114
 #: app/views/messages/write.php:170 app/views/admin/cronjobs/tasks/index.php:33
@@ -21143,9 +21143,8 @@ msgid "Wollen Sie diesen Termin wirklich ausfallen lassen?"
 msgstr "Do you really want to cancel this date?"
 
 #: app/views/course/dates/current_day_dates.php:37
-#, fuzzy
 msgid "Es sind noch keine laufenden Termine vorhanden."
-msgstr "No person lists are available yet."
+msgstr "No ongoing dates are available yet."
 
 #: app/views/course/dates/details.php:20
 #: app/views/course/dates/singledate.php:31
@@ -21838,9 +21837,8 @@ msgid "Vertretungen"
 msgstr "Substitutes"
 
 #: app/views/course/wizard/steps/basicdata/index_studygroup.php:38
-#, fuzzy
 msgid "Bezieht sich auf Lehrveranstaltung (optional)"
-msgstr "Personal courses"
+msgstr "Refers to course (optional)"
 
 #: app/views/course/wizard/steps/studyareas/index.php:28
 msgid "Alle Studienbereiche"
@@ -21870,14 +21868,13 @@ msgstr ""
 "you can add further data."
 
 #: app/views/course/wizard/summary.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "Folgende Daten der Ursprungsveranstaltung (%s) kopieren"
-msgstr "Copy basic information from (%s)"
+msgstr "Copy the following information from the original course (%s)"
 
 #: app/views/course/wizard/summary.php:47
-#, fuzzy
 msgid "Reguläre Teilnehmende"
-msgstr "Core participants"
+msgstr "Regular participants"
 
 #: app/views/course/wizard/summary.php:52
 #: app/views/course/timesrooms/editStack.php:158
@@ -21886,9 +21883,8 @@ msgid "Statusgruppen"
 msgstr "Status groups"
 
 #: app/views/course/wizard/summary.php:57
-#, fuzzy
 msgid "Zugeordnete Teilnehmende der Statusgruppen"
-msgstr "List of participants and groups"
+msgstr "Assigned participants of the status groups"
 
 #: app/views/course/wizard/summary.php:79
 msgid "Veranstaltung anlegen"
@@ -22166,9 +22162,9 @@ msgid "Änderungen anzeigen"
 msgstr "Show changes"
 
 #: app/views/course/wiki/search.php:13
-#, fuzzy, php-format
+#, php-format
 msgid "Treffer für Suche nach <em>%s</em>"
-msgstr "Search results for <em>%s</em> in all versions"
+msgstr "Hits for the search for <em>%s</em>"
 
 #: app/views/course/wiki/search.php:18 app/views/course/wiki/searchpage.php:8
 msgid "Treffer"
@@ -22194,14 +22190,12 @@ msgstr "Current version"
 
 #: app/views/course/wiki/search.php:107
 msgid "Weiterer Treffer in einer älteren Version."
-msgstr ""
+msgstr "Additional match in an older version."
 
 #: app/views/course/wiki/search.php:109
-#, fuzzy, php-format
+#, php-format
 msgid "Weitere Treffer in %d älteren Versionen."
-msgstr ""
-"Further research results in %s older version. Click %shere%s for displaying "
-"them."
+msgstr "Further hits in %d older versions."
 
 #: app/views/course/wiki/search.php:119
 #, php-format
@@ -22229,9 +22223,8 @@ msgid "Gelöscht"
 msgstr "Deleted"
 
 #: app/views/course/wiki/newpages.php:106
-#, fuzzy
 msgid "Einzelne Änderung anzeigen"
-msgstr "Show changes"
+msgstr "Show individual change"
 
 #: app/views/course/wiki/history.php:10
 #, php-format
@@ -22261,9 +22254,8 @@ msgid "Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite."
 msgstr "This wiki is still empty. Create the first wiki page."
 
 #: app/views/course/wiki/page.php:37
-#, fuzzy
 msgid "Erstelle die erste Wiki-Seite"
-msgstr "This wiki is still empty. Create the first wiki page."
+msgstr "Create the first wiki page"
 
 #: app/views/course/wiki/admin.php:13
 msgid "Startseite des Wikis"
@@ -22283,24 +22275,21 @@ msgid "Wer darf Wiki-Seiten umbenennen?"
 msgstr "Who may rename wiki pages?"
 
 #: app/views/course/wiki/searchpage.php:3
-#, fuzzy, php-format
+#, php-format
 msgid "Treffer für Suche nach <em>%s</em> auf Seite %s"
-msgstr "Search results for <em>%s</em> in all versions"
+msgstr "Hits for the search for <em>%s</em> on page %s"
 
 #: app/views/course/wiki/ask_deleting.php:15
-#, fuzzy
 msgid "Wirklich die letzte Änderung löschen?"
-msgstr "Are you sure you want to delete this course type?"
+msgstr "Are you sure you want to delete the last change?"
 
 #: app/views/course/wiki/ask_deleting.php:19
-#, fuzzy
 msgid "Nur die letzte Änderung löschen"
-msgstr "Last changes"
+msgstr "Delete only last change"
 
 #: app/views/course/wiki/ask_deleting.php:31
-#, fuzzy
 msgid "Ganze Wikiseite löschen"
-msgstr "Delete selected"
+msgstr "Delete entire Wiki page"
 
 #: app/views/course/shared/order_settings.php:5
 msgid "Letzte Veranstaltungsliste sortieren nach"
@@ -22626,14 +22615,12 @@ msgid "Kommentar für diesen Termin bearbeiten"
 msgstr "Edit comment for this date"
 
 #: app/views/course/timesrooms/_cycleRow.php:132
-#, fuzzy
 msgid "Termin duplizieren"
-msgstr "Save date"
+msgstr "Duplicate date"
 
 #: app/views/course/timesrooms/_cycleRow.php:144
-#, fuzzy
 msgid "Raumanfrage bearbeiten"
-msgstr "Edit requests"
+msgstr "Edit room request"
 
 #: app/views/course/timesrooms/createCycle.php:8
 msgid "Regelmäßiger Termin"
@@ -23272,33 +23259,28 @@ msgstr "Create new category"
 
 #: app/views/course/lti/index.php:9 app/views/course/lti/grades.php:2
 #: app/views/course/lti/grades_user.php:2
-#, fuzzy
 msgid "Es sind keine LTI-Tools konfiguriert."
-msgstr "Configure LTI tool"
+msgstr "No LTI tools are configured."
 
 #: app/views/course/lti/index.php:26
 msgid "LTI Deep Linking noch nicht fertig eingerichtet"
 msgstr "LTI Deep Linking setup still incomplete"
 
 #: app/views/course/lti/index.php:36 app/views/course/lti/index.php:37
-#, fuzzy
 msgid "Nach oben verschieben"
-msgstr "move up"
+msgstr "Move up"
 
 #: app/views/course/lti/index.php:43 app/views/course/lti/index.php:44
-#, fuzzy
 msgid "Nach unten verschieben"
-msgstr "move down"
+msgstr "Move down"
 
 #: app/views/course/lti/index.php:54
-#, fuzzy
 msgid "Konfiguration des LTI-Tools anzeigen"
-msgstr "LTI tool configuration"
+msgstr "Show LTI tool configuration"
 
 #: app/views/course/lti/index.php:61
-#, fuzzy
 msgid "Datenschutzeinstellungen"
-msgstr "Display settings"
+msgstr "Privacy settings"
 
 #: app/views/course/lti/index.php:69 app/views/admin/lti/index.php:65
 #: app/views/admin/lti/index.php:66
@@ -23306,30 +23288,29 @@ msgid "LTI-Tool konfigurieren"
 msgstr "Configure LTI tool"
 
 #: app/views/course/lti/index.php:78
-#, fuzzy, php-format
+#, php-format
 msgid "Wollen Sie das LTI-Tool \"%s\" wirklich entfernen?"
-msgstr "Do you really want to remove the document?"
+msgstr "Do you really want to remove the LTI tool %s?"
 
 #: app/views/course/lti/index.php:81
-#, fuzzy
 msgid "LTI-Tool entfernen"
-msgstr "Configure LTI tool"
+msgstr "Remove LTI tool"
 
 #: app/views/course/lti/index.php:94
-#, fuzzy
 msgid "Einrichtung abschließen"
-msgstr "Search for institutes"
+msgstr "Complete setup"
 
 #: app/views/course/lti/index.php:100
 msgid ""
 "Sie haben der Datenweitergabe an das LTI-Tool noch nicht zugestimmt und "
 "können es deswegen noch nicht nutzen."
 msgstr ""
+"You have not yet consented to the transfer of data to the LTI tool and are "
+"therefore not yet able to use it."
 
 #: app/views/course/lti/index.php:102
-#, fuzzy
 msgid "Datenschutzeinstellungen öffnen"
-msgstr "Display settings"
+msgstr "Open privacy settings"
 
 #: app/views/course/lti/index.php:116 app/views/course/lti/iframe.php:36
 msgid "Anwendung starten"
@@ -23345,29 +23326,27 @@ msgstr "Select tools"
 
 #: app/views/course/lti/config.php:4
 msgid "Datenschutzhinweis beim Wechsel in ein LTI-Tool"
-msgstr ""
+msgstr "Privacy note when switching to an LTI tool"
 
 #: app/views/course/lti/config.php:6
 msgid "Text des Datenschutzhinweises"
-msgstr ""
+msgstr "Text of privacy note"
 
 #: app/views/course/lti/config.php:12
 msgid "Den systemweit konfigurierten Standardtext verwenden."
-msgstr ""
+msgstr "Use the standard text configured for the system"
 
 #: app/views/course/lti/config.php:17
-#, fuzzy
 msgid "LTI Plattform-Konfiguration"
-msgstr "Standard configuration"
+msgstr "LTI platform configuration"
 
 #: app/views/course/lti/grades_user.php:9 lib/models/StgteilAbschnitt.php:87
 msgid "Abschnitt"
 msgstr "Section"
 
 #: app/views/course/lti/consent.php:19 app/views/lti/_tool_form_fields.php:20
-#, fuzzy
 msgid "Datenschutzhinweise"
-msgstr "Data protection"
+msgstr "Privacy information"
 
 #: app/views/course/lti/consent.php:31
 #, fuzzy
@@ -23379,11 +23358,12 @@ msgid ""
 "Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten "
 "übertragen:"
 msgstr ""
+"The following personal information will be transmitted when you switch to "
+"the LTI tool:"
 
 #: app/views/course/lti/consent.php:35
-#, fuzzy
 msgid "Die ID ihres Stud.IP-Kontos"
-msgstr "This is your Stud.IP"
+msgstr "Your Stud.IP account ID"
 
 #: app/views/course/lti/consent.php:39
 msgid "Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel"
@@ -24103,27 +24083,23 @@ msgstr "Really link the study group to this course?"
 
 #: app/views/course/connectedstudygroups/index.php:74
 #: app/views/course/connectedcourses/index.php:74
-#, fuzzy
 msgid "Vorschlag ablehnen"
-msgstr "Deny request"
+msgstr "Reject suggestion"
 
 #: app/views/course/connectedstudygroups/index.php:75
 #: app/views/course/connectedcourses/index.php:75
-#, fuzzy
 msgid "Wirklich den Vorschlag ablehnen?"
-msgstr "Are you sure you want to delete this course type?"
+msgstr "Are you sure you want to reject the suggestion?"
 
 #: app/views/course/connectedstudygroups/index.php:80
 #: app/views/course/connectedcourses/index.php:80
-#, fuzzy
 msgid "Vorschlag zurückziehen"
-msgstr "Clear selection"
+msgstr "Withdraw suggestion"
 
 #: app/views/course/connectedstudygroups/index.php:81
 #: app/views/course/connectedcourses/index.php:81
-#, fuzzy
 msgid "Wirklich den Vorschlag zurückziehen?"
-msgstr "Are you sure you want to delete this course type?"
+msgstr "Are you sure you want to withdraw the suggestion?"
 
 #: app/views/course/connectedstudygroups/index.php:98
 msgid "Verknüpfung zu Studiengruppen"
@@ -40109,6 +40085,8 @@ msgid ""
 "Sendet alle anstehenden Nachrichten an Zielgruppen und räumt bereits "
 "gesendete auf."
 msgstr ""
+"Sends all pending messages to target groups and clears up messages that have "
+"already been sent."
 
 #: lib/cronjobs/studygroup_expiration.php:20
 msgid "Studiengruppen aufräumen"
