@@ -30,9 +30,11 @@ class InstituteMember extends SchemaProvider
             'location' => $defaultNull('raum'),
             'phone' => $defaultNull('telefon'),
             'fax' => $defaultNull('fax'),
-            // 'externdefault' => $defaultNull('externdefault'),
-            // 'priority' => $defaultNull('priority'),
-            // 'visible' => (bool) $defaultNull('visible'),
+            'is-default' => (bool) $resource->externdefault,
+            'priority' => (int) $resource->priority,
+            'visible' => (bool) $resource->visible,
+            'mkdate' => date('c', $resource->mkdate),
+            'chdate' => date('c', $resource->chdate),
         ];
 
         return $attributes;
