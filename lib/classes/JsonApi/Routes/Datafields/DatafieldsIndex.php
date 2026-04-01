@@ -1,17 +1,17 @@
 <?php
 
-namespace JsonApi\Routes;
+namespace JsonApi\Routes\Datafields;
 
+use JsonApi\JsonApiController;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use JsonApi\JsonApiController;
 
 /**
  * List all the semesters.
  */
 class DatafieldsIndex extends JsonApiController
 {
-    protected $allowedFilteringParameters = ['object_type'];
+    protected $allowedFilteringParameters = ['object-type'];
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     public function __invoke(Request $request, Response $response, $args)
@@ -20,8 +20,8 @@ class DatafieldsIndex extends JsonApiController
 
         $params = $this->getQueryParameters();
         $filtering = $params->getFilteringParameters();
-        if (isset($filtering['object_type'])) {
-            $datafields = \DataField::getDataFields($filtering['object_type']);
+        if (isset($filtering['object-type'])) {
+            $datafields = \DataField::getDataFields($filtering['object-type']);
         } else {
             $datafields = \DataField::getDataFields();
         }
