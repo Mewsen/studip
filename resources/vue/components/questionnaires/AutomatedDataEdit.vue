@@ -48,7 +48,7 @@ export default {
             studiengangfachsemester: 0,
             datafields: []
         });
-        axios.get(STUDIP.URLHelper.getURL(`jsonapi.php/v1/datafields?filter[object_type]=user`)).then((response) => {
+        axios.get(STUDIP.URLHelper.getURL(`jsonapi.php/v1/datafields?filter[object-type]=user`)).then((response) => {
             for (let studiengang of response.data.data) {
                 this.datafields.push({
                     datafield_id: studiengang.id,

@@ -130,6 +130,7 @@ class RouteMap
             $this->addAuthenticatedCoursewareRoutes($group);
         }
 
+        $this->addAuthenticatedDatafieldRoutes($group);
         $this->addAuthenticatedAvatarRoutes($group);
         $this->addAuthenticatedMvvRoutes($group);
         $this->addAuthenticatedEventsRoutes($group);
@@ -165,8 +166,6 @@ class RouteMap
         $group->get('/semesters/{id}', Routes\SemestersShow::class)->setName('get-semester');
 
         $group->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
-
-        $group->get('/datafields', Routes\DatafieldsIndex::class);
 
         if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
@@ -621,6 +620,12 @@ class RouteMap
         $group->post('/courseware-peer-reviews', Routes\Courseware\PeerReview\ReviewsCreate::class);
         $group->patch('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsUpdate::class);
         $group->delete('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsDelete::class);
+    }
+
+    private function addAuthenticatedDatafieldRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/datafields', Routes\Datafields\DatafieldsIndex::class);
+        $group->get('/datafields/{id}', Routes\Datafields\DatafieldsShow::class);
     }
 
     private function addAuthenticatedFilesRoutes(RouteCollectorProxy $group): void
