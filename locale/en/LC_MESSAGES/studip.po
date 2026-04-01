@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-17 07:26+0200\n"
-"PO-Revision-Date: 2026-03-31 08:38+0000\n"
+"PO-Revision-Date: 2026-04-02 08:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -4182,7 +4182,7 @@ msgid ""
 "oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die "
 "Gruppe."
 msgstr ""
-"The moderator of the study group may accept or reject your request for "
+"The moderators of the study group may accept or reject your request for "
 "admission. You will receive full access to the group after receiving "
 "confirmation of admission."
 
@@ -4376,7 +4376,7 @@ msgstr "Could not delete study group."
 
 #: app/controllers/course/studygroup.php:770
 msgid "Die Studiengruppe wurde gelöscht."
-msgstr "Study group deleted."
+msgstr "The study group has been deleted."
 
 #: app/controllers/course/studygroup.php:794
 msgid "Verwaltung studentischer Arbeitsgruppen"
@@ -5284,7 +5284,7 @@ msgstr "Suggestion submitted."
 
 #: app/controllers/course/connectedcourses.php:172
 msgid "Verknüpfung zu der Veranstaltung wurde aufgehoben."
-msgstr "Link to course removed."
+msgstr "The link to the course has been removed."
 
 #: app/controllers/course/connectedcourses.php:227
 msgid "Verknüpfung vorschlagen"
@@ -14321,7 +14321,7 @@ msgid ""
 "Schlagwörter dürfen keine Zeilenumbrüche, Leerzeichen, Doppelkreuze (#) oder "
 "Pipe-Zeichen (|) enthalten."
 msgstr ""
-"Keywords must not contain line breaks, spaces, double crosses (#) or pipe "
+"Keywords may not contain line breaks, spaces, double crosses (#) or pipe "
 "characters (|)."
 
 #: app/controllers/admin/tags.php:50
@@ -16897,7 +16897,7 @@ msgstr "Your score is no longer published on the ranking list."
 
 #: app/controllers/lti/tool.php:23
 msgid "Es wurde kein LTI-Tool angegeben."
-msgstr "No LTI tool has been provided."
+msgstr "No LTI tool has been specified."
 
 #: app/controllers/lti/tool.php:28
 msgid "Das angegebene LTI-Tool wurde nicht gefunden."
@@ -17723,7 +17723,7 @@ msgstr "Reference text"
 #: app/controllers/sitemap.php:43
 msgid ""
 "Auf dieser Seite finden Sie eine Übersicht über alle verfügbaren Seiten."
-msgstr "Here you find an overview on all available pages."
+msgstr "Here you will find an overview of all available pages."
 
 #: app/controllers/fachabschluss/abschluesse.php:23
 msgid "Verwaltung der Abschlüsse"
@@ -24870,7 +24870,7 @@ msgid ""
 "Die Teilnehmenden dieser Veranstaltung können sich in genau einer der "
 "Gruppen eintragen, bei denen der Exklusiveintrag aktiviert ist."
 msgstr ""
-"The participants of this course can enrol themselves in exactly one of those "
+"The participants of this course can add themselves to exactly one of the "
 "groups where exclusive enrolment is activated."
 
 #: app/views/course/statusgroups/groupinfo.php:33
@@ -34375,9 +34375,8 @@ msgid "Beendete Klausuren"
 msgstr "Finished exams"
 
 #: app/views/vips/solutions/assignment_solutions.php:49
-#, fuzzy
 msgid "Laufende Klausuren"
-msgstr "Serial number"
+msgstr "Ongoing exams"
 
 #: app/views/vips/solutions/assignment_solutions.php:52
 msgid "Noch nicht begonnene Klausuren"
@@ -38674,7 +38673,6 @@ msgid "Lizenzen auf dem Marktplatz"
 msgstr "Licenses on the market place"
 
 #: app/views/oer/market/licenseinfo.php:21
-#, fuzzy
 msgid ""
 "Zum Glück gibt es kluge Menschen, die sich zum Thema <em>Lizenzen</em> kluge "
 "Gedanken gemacht haben. Daher gibt es die sogenannten CreativeCommons-"
@@ -38688,15 +38686,15 @@ msgid ""
 "alle Autorinnen und Autoren in irgendeiner Form transparent genannt werden "
 "müssen!"
 msgstr ""
-"Fortunately there are smart people that have made clever thoughts regarding "
-"<em>licenses</em>. Therefore the so-called CreativeCommons licenses exist. "
-"These are valid internationally and mean that which is required above. "
-"Thereby, everyone that is using the marketplace has legal certainty. These "
-"licenses are used very often outside of the marketplace. Musicians license "
-"their raw music files with them, writers their poems and lecturers naturally "
-"their slides. The only real requirement is that the authors of the learning "
-"materials must be named transparently in one form or another in case of "
-"distribution or modification!"
+"Fortunately, there are clever people who have given careful thought to the "
+"subject of <em>licences</em>. That is why we have what are known as Creative "
+"Commons licences. These are valid internationally and stipulate exactly what "
+"is required in the preceding text. This provides absolute legal certainty "
+"for everyone using the marketplace. These licences are also used very "
+"frequently outside the marketplace. Musicians use them to licence their raw "
+"music files, writers their poems, and lecturers, quite naturally, their "
+"lecture slides. The only real condition is that, when the materials are "
+"shared or edited, all authors must be credited transparently in some form!"
 
 #: app/views/oer/market/licenseinfo.php:24
 msgid ""
@@ -40076,9 +40074,8 @@ msgid "Entfernt abgelaufene session Daten"
 msgstr "Removes expired session data"
 
 #: lib/cronjobs/send_massmails.php:22
-#, fuzzy
 msgid "Nachrichten an Zielgruppen senden"
-msgstr "Send message to %s"
+msgstr "Send messages to target groups"
 
 #: lib/cronjobs/send_massmails.php:31
 msgid ""
@@ -43283,9 +43280,8 @@ msgid "Sie haben keine alten empfangenen Nachrichten"
 msgstr "You do not have any old received messages"
 
 #: lib/navigation/MessagingNavigation.php:80
-#, fuzzy
 msgid "Nachrichten an Zielgruppen"
-msgstr "Message to all"
+msgstr "Messages to target groups"
 
 #: lib/navigation/MessagingNavigation.php:87
 msgid "Nachrichtenübersicht"
@@ -43990,9 +43986,8 @@ msgid "Liste von Benutzernamen"
 msgstr "List of usernames"
 
 #: lib/models/MassMail/MassMailMessage.php:152
-#, fuzzy
 msgid "Nachricht an Zielgruppen"
-msgstr "Message to all"
+msgstr "Message to target groups"
 
 #: lib/models/HelpTourUser.php:65
 msgid "Hilfetouren"
@@ -48217,7 +48212,7 @@ msgstr "ILIAS category %s could not be created."
 #, php-format
 msgid ""
 "Hier befinden sich die Veranstaltungsdaten zur Stud.IP-Einrichtung \"%s\"."
-msgstr "Here you find all course details of Stud.IP institute \"%s\"."
+msgstr "Here you can find all course details of Stud.IP institute \"%s\"."
 
 #: lib/ilias_interface/ConnectedIlias.php:1170
 #, php-format
@@ -48844,13 +48839,12 @@ msgid "Anbindung von LTI-Tools"
 msgstr "LTI tool connection"
 
 #: lib/modules/LtiToolModule.php:103
-#, fuzzy
 msgid ""
 "Mit diesem Werkzeug können LTI-Tools eingebunden werden, sofern diese LTI in "
 "Version 1.0, 1.1 oder 1.3A unterstützen."
 msgstr ""
-"On this page you can include external applications, if they support the LTI "
-"standard (version 1.x)."
+"You can use this tool to embed LTI tools, provided they support the LTI "
+"standard (version 1.0, 1.1 or 1.3A)."
 
 #: lib/modules/LtiToolModule.php:106
 msgid "E-Learning"
@@ -50574,11 +50568,11 @@ msgstr "Activate desktop notifications"
 
 #: templates/header.php:183
 msgid "Normalen Kontrast aktivieren"
-msgstr "Activate normal contrast"
+msgstr "Enable normal contrast"
 
 #: templates/header.php:184
 msgid "Aktiviert standardmäßige, nicht barrierefreie Kontraste."
-msgstr "Activate default, non-accessible contrasts."
+msgstr "Enables default, non-accessible contrast."
 
 #: templates/header.php:187
 msgid "Hohen Kontrast aktivieren"
@@ -50635,8 +50629,8 @@ msgid ""
 "einzelnen Bereiche dieser Veranstaltung bearbeiten, indem Sie die "
 "entsprechenden Menüpunkte wöhlen."
 msgstr ""
-"You have selected course <b>%s</b>. Now you can edit each area of this "
-"course by selecting the according menu tab."
+"You have selected course <b>%s</b>. You can now edit each area of this "
+"course by selecting the corresponding menu tab."
 
 #: templates/adminarea-start.php:10
 msgid ""
@@ -50657,7 +50651,7 @@ msgstr "Footer navigation"
 
 #: templates/nocookies.php:2
 msgid "Cookies sind nicht aktiviert!"
-msgstr "Cookies not activated!"
+msgstr "Cookies are not enabled!"
 
 #: templates/nocookies.php:3
 msgid ""
@@ -50681,7 +50675,7 @@ msgstr ""
 
 #: templates/unhandled_exception.php:7
 msgid "Fehler! Bitte wenden Sie sich an Ihren Systemadministrator."
-msgstr "Error! Please contact a system administrator."
+msgstr "Error! Please contact your system administrator."
 
 #: templates/unhandled_exception.php:17 templates/check_object_exception.php:17
 msgid "Zurück zur"
@@ -50730,7 +50724,7 @@ msgstr "Continue tour"
 msgid ""
 "Die Veranstaltung wird in der Ansicht für %s angezeigt. Sie können die "
 "Ansicht %shier zurücksetzen%s."
-msgstr "The course is shown in %s view. Reset the view %shere%s."
+msgstr "The course is shown in %s view. You can reset the view %shere%s."
 
 #: templates/access_denied_exception.php:8
 #, php-format
@@ -50757,7 +50751,7 @@ msgstr "Unsubscribe from notifications for this conversation."
 #: templates/blubber/disable-notifications.php:10
 #: templates/blubber/global_context.php:15
 msgid "Benachrichtigungen aktiviert"
-msgstr "Notifications activated"
+msgstr "Notifications enabled"
 
 #: templates/blubber/private_context.php:4
 msgid "Dies ist ein privater Blubber."
@@ -50769,11 +50763,11 @@ msgstr "Exit group"
 
 #: templates/blubber/private_context.php:25
 msgid "Private Konversation wirklich verlassen?"
-msgstr "Really leave private conversion?"
+msgstr "Are you sure you want to leave this private conversation?"
 
 #: templates/blubber/private_context.php:53
 msgid "Aus diesem Blubber eine Studiengruppe machen."
-msgstr "Create a studygroup from this Blubber."
+msgstr "Create a study group from this Blubber."
 
 #: templates/blubber/global_context.php:2
 msgid ""
