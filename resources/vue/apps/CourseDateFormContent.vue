@@ -78,7 +78,7 @@ import Datepicker from "../components/Datepicker.vue";
 import Timepicker from "../components/Timepicker.vue";
 import Multiselect from "../components/Multiselect.vue";
 import CourseDateRoomFieldset from "../components/CourseDateRoomFieldset.vue";
-import {datetime} from "../../assets/javascripts/lib/datetime";
+import datetime from "../../assets/javascripts/lib/datetime";
 
 export default {
     name: 'CourseDateFormContent',

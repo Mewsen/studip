@@ -1,5 +1,5 @@
 import {jsonapi} from "./jsonapi";
-import {datetime} from "./datetime";
+import datetime from "./datetime";
 
 /**
  * The Holiday class represents a holiday in Stud.IP

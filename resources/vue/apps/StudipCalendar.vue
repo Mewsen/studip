@@ -116,7 +116,7 @@ import {Draggable, EventReceiveArg, EventResizeDoneArg} from '@fullcalendar/inte
 
 import {Action} from "../../assets/javascripts/lib/action";
 import {holiday_cache} from "../../assets/javascripts/lib/holiday";
-import {datetime} from "../../assets/javascripts/lib/datetime";
+import datetime from "../../assets/javascripts/lib/datetime";
 import Dialog from "../../assets/javascripts/lib/dialog.js";
 import StudipIcon from "../components/StudipIcon.vue";
 import {EventURLParameters, StudipCalendarConfig} from "../../assets/javascripts/lib/calendar";

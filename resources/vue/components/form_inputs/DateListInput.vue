@@ -22,7 +22,6 @@
 
 <script>
 import StudipDateTime from "../StudipDateTime.vue";
-import {datetime} from "../../../assets/javascripts/lib/datetime";
 
 export default {
     name: "date-list-input",
@@ -41,7 +40,7 @@ export default {
     },
     data () {
         return {
-            selected_date_value: datetime.getStudipDate(new Date(), false, true),
+            selected_date_value: STUDIP.DateTime.getStudipDate(new Date(), false, true),
             selected_date_list: this.selected_dates.map(date => new Date(date)),
             input_name: this.name,
         };
@@ -86,11 +85,11 @@ export default {
 
             this.$refs.list_message_field.innerText = this.$gettext(
                 'Datum %{date} entfernt',
-                { date: datetime.getStudipDate(date, false, true) }
+                { date: STUDIP.DateTime.getStudipDate(date, false, true) }
             );
         },
         getISODate(date) {
-            return datetime.getISODate(date);
+            return STUDIP.DateTime.getISODate(date);
         }
     }
 }

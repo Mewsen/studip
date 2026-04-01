@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, onMounted } from "vue"
-import {datetime} from "../../assets/javascripts/lib/datetime";
 
 const props = defineProps({
     timestamp: {
@@ -33,7 +32,7 @@ const date = computed(() => {
     return null
 })
 
-const current_datetime = computed(() => (date.value ? date.value.toISOString() : ''))
+const datetime = computed(() => (date.value ? date.value.toISOString() : ''))
 
 const displayRelative = () => {
     if (!date.value || !props.relative) {
@@ -48,7 +47,7 @@ const formattedDate = (forceAbsolute = false) => {
         return 'Invalid date'
     }
     const relativeValue = !forceAbsolute && props.relative && displayRelative()
-    return datetime.getStudipDate(date.value, relativeValue, props.date_only)
+    return STUDIP.DateTime.getStudipDate(date.value, relativeValue, props.date_only)
 }
 
 onMounted(() => {
@@ -59,7 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <time :datetime="current_datetime" v-if="date" :title="title">
+    <time :datetime="datetime" v-if="date" :title="title">
         {{ formattedDate() }}
     </time>
 </template>
