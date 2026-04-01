@@ -1166,10 +1166,17 @@ SQL;
         if (!$this->canVisit($user)) {
             return '';
         }
+
+        $element = $this;
+
+        if ($this->is_link) {
+            $element = $this->find($this->target_id);
+        }
+
         $doc->addPage();
-        $doc->Bookmark($this->title, $depth, 0, '', '', array(128,0,0));
-        $html = "<h1>" . htmlReady($this->title) . "</h1>";
-        $html .= $this->getContainerPdfExport();
+        $doc->Bookmark($element->title, $depth, 0, '', '', array(128,0,0));
+        $html = "<h1>" . htmlReady($element->title) . "</h1>";
+        $html .= $element->getContainerPdfExport();
         $doc->writeHTML($html);
 
         if ($with_children) {
