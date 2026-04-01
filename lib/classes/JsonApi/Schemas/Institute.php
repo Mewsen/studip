@@ -111,7 +111,7 @@ class Institute extends SchemaProvider
     {
         $relation = [
             self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_FACULTY),
+                Link::RELATED => $this->createLinkToResource($resource->faculty),
             ],
         ];
 
