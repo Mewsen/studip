@@ -137,5 +137,4 @@ class DateTime
 }
 
 
-export default DateTime;
-export const datetime: DateTime = new DateTime();
+export default new DateTime();
