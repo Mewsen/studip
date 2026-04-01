@@ -349,8 +349,12 @@ class Course extends SchemaProvider
         \Course $course,
         $includeData
     ) {
+        $related = $course->getSemClass();
         $relationships[self::REL_SEM_CLASS] = [
-            self::RELATIONSHIP_DATA => $course->getSemClass()
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->createLinkToResource($related),
+            ],
+            self::RELATIONSHIP_DATA => $related
         ];
 
         return $relationships;
@@ -364,8 +368,12 @@ class Course extends SchemaProvider
         \Course $course,
         $includeData
     ) {
+        $related = $course->getSemType();
         $relationships[self::REL_SEM_TYPE] = [
-            self::RELATIONSHIP_DATA => $course->getSemType()
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->createLinkToResource($related),
+            ],
+            self::RELATIONSHIP_DATA => $related
         ];
 
         return $relationships;
