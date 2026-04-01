@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2026-03-27 15:38+0000\n"
+"PO-Revision-Date: 2026-04-02 14:38+0000\n"
 "Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
 "oldenburg.de>\n"
 "Language-Team: English <https://weblate.studip.de/projects/stud-ip/stud-ip-"
@@ -1552,7 +1552,7 @@ msgstr "Customise new content notification"
 
 #: resources/vue/components/blubber/ThreadSubscriber.vue:27
 msgid "Benachrichtigungen aktiviert"
-msgstr "Notifications activated"
+msgstr "Notifications enabled"
 
 #: resources/vue/components/my-courses/NotificationConfiguration.vue:68
 msgid "Benachrichtigungen für die folgenden Veranstaltungen:"
