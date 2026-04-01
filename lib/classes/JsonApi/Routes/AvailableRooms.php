@@ -189,7 +189,7 @@ class AvailableRooms extends NonJsonApiController
                     _('%{room_name} (%{seats} Sitzplätze)'),
                     [
                         'room_name' => $room->getFullName(),
-                        'seats' => $room->seats
+                        'seats' => $room->seats ?? 0
                     ]
                 )
             ];
