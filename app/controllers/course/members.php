@@ -324,7 +324,7 @@ class Course_MembersController extends AuthenticatedController
         if ($errors) {
             PageLayout::postError(
                 _('Die folgenden Fehler traten beim Eintragen von Personen auf:'),
-                $errors
+                array_map(htmlReady(...), $errors)
             );
         }
         $this->redirect($this->indexURL());
@@ -423,7 +423,7 @@ class Course_MembersController extends AuthenticatedController
                     ),
                     count($errors)
                 ),
-                $errors
+                array_map(htmlReady(...), $errors)
             );
         }
         $this->redirect('course/members/index');
@@ -1098,7 +1098,7 @@ class Course_MembersController extends AuthenticatedController
             if ($errors) {
                 PageLayout::postError(
                     _('Es traten Fehler beim Hochstufen von Personen auf:'),
-                    $errors
+                    array_map(htmlReady(...), $errors)
                 );
             }
         } else {
@@ -1157,7 +1157,7 @@ class Course_MembersController extends AuthenticatedController
                     if (!empty($errors)) {
                         PageLayout::postError(
                             _('Die folgenden Fehler traten beim Austragen von Personen auf:'),
-                            $errors
+                            array_map(htmlReady(...), $errors)
                         );
                     }
                     if (count($removed_users) > 5) {
@@ -1168,13 +1168,13 @@ class Course_MembersController extends AuthenticatedController
                     } elseif (count($removed_users) > 0) {
                         PageLayout::postSuccess(
                             _('Die folgenden Personen wurden ausgetragen:'),
-                            $removed_users
+                            array_map(htmlReady(...), $removed_users)
                         );
                     }
                 } else {
                     PageLayout::postWarning(sprintf(
                         _('Sie haben keine %s zum Austragen ausgewählt'),
-                        $this->status_groups[$status]
+                        htmlReady($this->status_groups[$status])
                     ));
                 }
             } else {
@@ -1370,7 +1370,7 @@ class Course_MembersController extends AuthenticatedController
                         ),
                         ['number' => count($errors)]
                     ),
-                    $errors
+                    array_map(htmlReady(...), $errors)
                 );
             }
         } else {
@@ -2184,7 +2184,7 @@ class Course_MembersController extends AuthenticatedController
                     ),
                     count($added)
                 ),
-                $added
+                array_map(htmlReady(...), $added)
             );
         }
         if (count($failed) > 0) {
@@ -2197,7 +2197,7 @@ class Course_MembersController extends AuthenticatedController
                     ),
                     count($failed),
                 ),
-                $failed
+                array_map(htmlReady(...), $failed)
             );
         }
     }
