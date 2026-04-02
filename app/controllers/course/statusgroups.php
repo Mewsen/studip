@@ -1508,13 +1508,13 @@ class Course_StatusgroupsController extends AuthenticatedController
             function (User $user) use ($course, &$errors, &$removed_users) {
                 try {
                     $course->deleteMember($user, true);
-                    $removed_users[] = $user->getFullName();
+                    $removed_users[] = htmlReady($user->getFullName());
                 } catch (Exception $e) {
-                    $errors[] = $e->getMessage();
+                    $errors[] = htmlReady($e->getMessage());
                 }
 
             },
-            array_column($members, 'user_id')
+            $members
         );
 
         if (!empty($errors)) {
