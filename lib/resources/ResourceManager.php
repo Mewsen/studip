@@ -14,10 +14,6 @@
  * @category    Stud.IP
  */
 
-
-require_once 'lib/dates.inc.php';
-
-
 /**
  * The ResourceManager class contains methods that simplify the use of
  * Resources.

@@ -1,10 +1,4 @@
 <?php
-
-
-//Do not remove! This is still needed for the toString method!
-require_once 'lib/dates.inc.php';
-
-
 /**
  * SeminarCycleDate.php
  * model class for table seminar_cycle_dates
