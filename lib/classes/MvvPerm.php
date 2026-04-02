@@ -569,7 +569,7 @@ class MvvPerm {
             self::$privileges = unserialize($cache->read(MVV::CACHE_KEY . '/privileges')) ?: [];
         }
 
-        if (self::$privileges[$mvv_table] === null) {
+        if (!isset(self::$privileges[$mvv_table])) {
             $config_dir = $GLOBALS['STUDIP_BASE_PATH'] . '/config/mvvconfig';
             if ($config_dir) {
                 $config_file = $config_dir . '/' . $mvv_table . '.php';

@@ -33,7 +33,7 @@ $perm = MvvPerm::get($version)
             </select>
             <? else : ?>
                 <? $sem = Semester::find($version->start_sem) ?>
-                <?= htmlReady($sem->name) ?>
+                <?= htmlReady($sem->name ?? '') ?>
                 <input type="hidden" name="start_sem" value="<?= $version->start_sem ?>">
             <? endif; ?>
         </label>

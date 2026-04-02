@@ -20,13 +20,6 @@
 
 <? use Studip\Button, Studip\LinkButton; ?>
 <?= $controller->jsUrl() ?>
-<?
-$perm   = MvvPerm::get($modul);
-$perm_d = MvvPerm::get($deskriptor);
-if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
-    $perm_d->setVariant($display_language);
-}
-?>
 <? if (!$def_lang) : ?>
     <script>
         STUDIP.MVV.PARENT_ID = '<?= $modul->getId() ?>';
@@ -134,7 +127,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                     </select>
                 <? else : ?>
                     <? $sem = Semester::find($modul->start) ?>
-                    <?= htmlReady($sem->name) ?>
+                    <?= htmlReady($sem->name ?? '') ?>
                     <input type="hidden" name="start" value="<?= htmlReady($modul->start) ?>">
                 <? endif; ?>
             </label>
@@ -606,7 +599,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
                 </label>
             <? endforeach; ?>
         <? else : ?>
-            <input type="text" disabled value="<?= htmlReady($GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->pruef_ebene]['name']) ?>">
+            <input type="text" disabled value="<?= htmlReady($GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->pruef_ebene]['name'] ?? '') ?>">
             <input type="hidden" name="pruef_ebene" value="<?= htmlReady($modul->pruef_ebene) ?>">
         <? endif; ?>
 

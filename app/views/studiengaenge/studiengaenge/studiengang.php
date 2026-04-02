@@ -101,7 +101,7 @@ use Studip\Button, Studip\LinkButton;
             <? else : ?>
                 <? if ($studiengang->end !== '') : ?>
                     <? $sem = Semester::find($studiengang->end) ?>
-                    <?= htmlReady($sem->name) ?>
+                    <?= htmlReady($sem->name ?? '') ?>
                 <? else : ?>
                     <?= _('unbegrenzt gültig') ?>
                 <? endif ?>
