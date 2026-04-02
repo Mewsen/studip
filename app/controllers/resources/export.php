@@ -343,7 +343,6 @@ class Resources_ExportController extends AuthenticatedController
         ];
 
         if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
-            $number_of_participants = null;
             $booking_data[0][] = _('Anzahl der Teilnehmenden');
         }
 
@@ -398,6 +397,7 @@ class Resources_ExportController extends AuthenticatedController
                 }
                 $description = $booking->description;
                 $turnout = 0;
+                $number_of_participants = '';
                 if (!$booking->isSimpleBooking()) {
                     $course = $booking->assigned_course_date->course;
                     if ($course instanceof Course) {
