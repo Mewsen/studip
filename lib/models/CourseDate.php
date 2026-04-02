@@ -337,8 +337,6 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             return '';
         }
 
-        require_once('lib/dates.inc.php');
-
         $day_of_week = '';
         if (in_array($format, ['long', 'long-include-room'])) {
             $day_of_week = getWeekday(date('w', $this->date), false);

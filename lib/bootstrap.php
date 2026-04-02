@@ -116,6 +116,7 @@ require $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
 require 'lib/helpers.php';
 require_once 'lib/functions.php';
+require_once 'lib/dates.inc.php';
 require_once 'lib/language.inc.php';
 require_once 'lib/visual.inc.php';
 

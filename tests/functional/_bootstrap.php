@@ -21,6 +21,7 @@ ini_set('include_path', $inc_path);
 require 'lib/helpers.php';
 require 'lib/functions.php';
 require_once 'lib/language.inc.php';
+require_once 'lib/dates.inc.php';
 require 'lib/visual.inc.php';
 require 'lib/messaging.inc.php';
 

@@ -37,10 +37,10 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property int $import_date database column
- * @property SimpleORMapCollection<CalendarDateAssignment> $calendars 
- * @property SimpleORMapCollection<CalendarDateException> $exceptions 
- * @property User $author 
- * @property User|null $editor 
+ * @property SimpleORMapCollection<CalendarDateAssignment> $calendars
+ * @property SimpleORMapCollection<CalendarDateException> $exceptions
+ * @property User $author
+ * @property User|null $editor
  */
 class CalendarDate extends SimpleORMap implements PrivacyObject
 {
@@ -466,8 +466,6 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
     public function getRepetitionAsString() : string
     {
-        require_once 'lib/dates.inc.php';
-
         $repetition_string = '';
 
         if ($this->repetition_type === self::REPETITION_SINGLE) {
