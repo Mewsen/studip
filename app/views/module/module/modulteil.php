@@ -1,12 +1,5 @@
 <? use Studip\Button, Studip\LinkButton; ?>
 <?= $controller->jsUrl() ?>
-<?php
-$perm   = MvvPerm::get($modulteil);
-$perm_d = MvvPerm::get($deskriptor);
-if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
-    $perm_d->setVariant($display_language);
-}
-?>
 <script>
     STUDIP.MVV.PARENT_ID = '<?= $modulteil->getId() ?>';
 </script>

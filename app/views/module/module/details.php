@@ -33,7 +33,7 @@
                         <? if ($perm->havePermWrite()) : ?>
                             <? foreach ($modulteil->deskriptoren->getAvailableTranslations($modulteil->modul->original_language) as $language) : ?>
                                 <? $lang = $GLOBALS['CONTENT_LANGUAGES'][$language]; ?>
-                                <a href="<?= $controller->action_link('modulteil/' . join('/', [$modulteil->id, $institut_id]), ['display_language' => $language]) ?>">
+                                <a href="<?= $controller->action_link('modulteil', $modulteil->id, $institut_id ?? null, ['display_language' => $language]) ?>">
                                     <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
                                 </a>
                             <? endforeach; ?>

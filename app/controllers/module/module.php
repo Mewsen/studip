@@ -411,6 +411,7 @@ class Module_ModuleController extends MVVController
 
         $this->cancel_url = $this->indexURL();
 
+        $this->addPermissionObjects($this->modul, $this->display_language);
         $this->render_template('module/module/modul', $this->layout);
     }
 
@@ -671,13 +672,13 @@ class Module_ModuleController extends MVVController
         }
         $this->setSidebar();
 
+        $this->display_language = Request::option(
+            'display_language',
+            $this->modul->original_language
+        );
         if ($this->modulteil->isNew()) {
             PageLayout::setTitle(_('Neuen Modulteil anlegen'));
             $success_message = ('Der Modulteil "%s" wurde angelegt.');
-            $this->display_language = Request::option(
-                'display_language',
-                $this->modul->original_language
-            );
             $this->deskriptor = $this->modulteil->getDeskriptor();
             PageLayout::postInfo(sprintf(
                 _('Sie legen einen neuen Modulteil für das Modul <em>%1$s</em> an. Der Modulteil muss zunächst in der Ausgabesprache <em>%2$s</em> angelegt werden.'),
@@ -691,7 +692,6 @@ class Module_ModuleController extends MVVController
                 ]);
             }
         } else {
-            $this->display_language = Request::option('display_language', $this->modul->original_language);
             $this->deskriptor = $this->modulteil->getDeskriptor();
             $this->translations = $this->deskriptor->getAvailableTranslations($this->modul->original_language);
             if (!in_array($this->display_language, $this->translations)) {
@@ -713,7 +713,7 @@ class Module_ModuleController extends MVVController
                 $views_widget->addLink($language['name']
                     .  ' (' . ($code === $this->modul->original_language ? _('Originalfassung') . ', ' : '')
                     . (in_array($code, $this->translations) ? _('bearbeiten') : _('neu anlegen')) . ')',
-                    URLHelper::getLink($this->modulteilURL($this->modulteil->id),
+                    URLHelper::getURL($this->modulteilURL($this->modulteil->id),
                         ['display_language' => $code]
                     )
                 )->setActive($code === $this->display_language);
@@ -847,6 +847,7 @@ class Module_ModuleController extends MVVController
             )->asDialog();
         }
 
+        $this->addPermissionObjects($this->modulteil, $this->display_language);
         $this->render_template('module/module/modulteil', $this->layout);
     }
 
@@ -1766,6 +1767,23 @@ class Module_ModuleController extends MVVController
                     ]
                 )
             );
+        }
+    }
+
+    /**
+     * Add permission objects as properties to this controller to use in views.
+     *
+     * @param Modul|Modulteil $mvv_object Add a permission object for this object.
+     * @param string $display_language The language to display in the view.
+     * @return void
+     */
+    private function addPermissionObjects(Modul|Modulteil $mvv_object, string $display_language): void
+    {
+        $this->perm = MvvPerm::get($mvv_object);
+        $this->perm_d = MvvPerm::get($mvv_object->getDeskriptor());
+        if ($mvv_object->getDefaultLanguage() !== $display_language) {
+            $perm_language = strtoupper(explode('_', $display_language)[0] ?? '');
+            $this->perm_d->setVariant($perm_language);
         }
     }
 }
