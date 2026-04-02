@@ -37,6 +37,7 @@
  * @property int $dialog database column
  * @property string $html_id database column
  * @property int $mkdate database column
+ * @property SimpleORMapCollection<PersonalNotificationsUser> $receivers
  * @property mixed $more_unseen additional field
  */
 class PersonalNotifications extends SimpleORMap
@@ -47,6 +48,12 @@ class PersonalNotifications extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'personal_notifications';
+
+        $config['has_many']['receivers'] = [
+            'class_name' => PersonalNotificationsUser::class,
+            'on_delete'  => 'delete',
+        ];
+
         $config['additional_fields']['more_unseen'] = true;
 
         $config['registered_callbacks']['after_store'][] = 'cbExpireCache';
