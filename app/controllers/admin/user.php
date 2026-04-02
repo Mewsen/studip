@@ -149,7 +149,7 @@ class Admin_UserController extends AuthenticatedController
             // Fehler abfangen
             if ($this->users === false) {
                 PageLayout::postInfo(_('Sie haben keine Suchkriterien ausgewählt!'));
-            } elseif (count($this->users) < 1 && Request::submitted('search')) {
+            } elseif (empty($this->users) && Request::submitted('search')) {
                 PageLayout::postInfo(_('Es wurden keine Personen mit diesen Suchkriterien gefunden.'));
             } elseif (!Request::submitted('export')) {
                 $_SESSION['admin']['user']['results'] = true;
