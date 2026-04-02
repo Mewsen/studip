@@ -26,14 +26,21 @@ class Course extends SchemaProvider
     const REL_SEM_TYPE = 'sem-type';
     const REL_START_SEMESTER = 'start-semester';
     const REL_STATUS_GROUPS = 'status-groups';
-    const REL_WIKI_PAGES = 'wiki-pages';
+    const REL_TAGS = 'tags';
     const REL_TOOLS = 'tools';
+    const REL_WIKI_PAGES = 'wiki-pages';
 
+    /**
+     * @param \Course $course
+     */
     public function getId($course): ?string
     {
-        return $course->seminar_id;
+        return $course->id;
     }
 
+    /**
+     * @param \Course $course
+     */
     public function getAttributes($course, ContextInterface $context): iterable
     {
         $stringOrNull = function ($item) {
@@ -55,6 +62,9 @@ class Course extends SchemaProvider
         ];
     }
 
+    /**
+     * @param \Course $course
+     */
     public function getRelationships($course, ContextInterface $context): iterable
     {
         $includeList = $context->getIncludePaths();
@@ -82,8 +92,9 @@ class Course extends SchemaProvider
         $relationships = $this->getSemClassRelationship($relationships, $course, $includeList);
         $relationships = $this->getSemTypeRelationship($relationships, $course, $includeList);
         $relationships = $this->getStatusGroupsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getWikiPagesRelationship($relationships, $course, $includeList);
+        $relationships = $this->getTagsRelationship($relationships, $course, $includeList);
         $relationships = $this->getToolsRelationship($relationships, $course, $includeList);
+        $relationships = $this->getWikiPagesRelationship($relationships, $course, $includeList);
 
         return $relationships;
     }
@@ -397,6 +408,23 @@ class Course extends SchemaProvider
         return array_merge($relationships, [self::REL_STATUS_GROUPS => $relation]);
     }
 
+    private function getTagsRelationship(
+        array   $relationships,
+        \Course $course,
+        $includeData
+    ) {
+        $relation = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_TAGS),
+            ]
+        ];
+        if (in_array(self::REL_TAGS, $includeData)) {
+            $relation[self::RELATIONSHIP_DATA] = $course->tags;
+        }
+
+        return array_merge($relationships, [self::REL_TAGS => $relation]);
+    }
+
     /**
      * @inheritdoc
      */
@@ -422,6 +450,7 @@ class Course extends SchemaProvider
                 'medium' => $avatar->getURL(\Avatar::MEDIUM),
                 'normal' => $avatar->getURL(\Avatar::NORMAL),
             ],
+            'members-count' => count($resource->members),
         ];
     }
 
