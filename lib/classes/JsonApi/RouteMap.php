@@ -119,6 +119,8 @@ class RouteMap
 
         $group->get('/available-rooms', AvailableRooms::class);
 
+        $group->get('/studygroup-proposals', Routes\Studygroups\Proposals::class);
+
         $this->addAuthenticatedAdmissionRoutes($group);
         $this->addAuthenticatedBlubberRoutes($group);
         $this->addAuthenticatedClipboardRoutes($group);
