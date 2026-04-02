@@ -252,8 +252,8 @@ class LogEvent extends SimpleORMap implements PrivacyObject
      * @return string The singledate.
      */
     protected function formatSingledate($field) {
-        $termin = new CourseDate($this->$field);
-        return '<em>' . $termin . '</em>';
+        $termin = CourseDate::find($this->$field) ?? CourseExDate::find($this->$field);
+        return $termin ? '<em>' . $termin->getFullName() . '</em>' : '';
     }
 
     /**

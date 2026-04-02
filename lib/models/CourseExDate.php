@@ -125,19 +125,19 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
     /**
      * Returns the full qualified name of this date.
      *
-     * @param String $format Optional format type (only 'default' and
+     * @param string $format Optional format type (only 'default' and
      *                       'verbose' are supported by now)
-     * @return String containing the full name of this date.
+     * @return string containing the full name of this date.
      */
-    public function getFullName($format = 'default')
+    public function getFullName(string $format = self::FORMAT_DEFAULT)
     {
-        if (!$this->date || !in_array($format, ['default', 'verbose'])) {
+        if (!$this->date || !in_array($format, [self::FORMAT_DEFAULT, self::FORMAT_VERBOSE])) {
             return '';
         }
 
         if (($this->end_time - $this->date) / 60 / 60 > 23) {
             $date_string = studip_interpolate(
-                $format === 'verbose'
+                $format === self::FORMAT_VERBOSE
                     ? _('%{weekday}, %{date}, %{start} - %{end} Uhr (ganztägig, fällt aus)')
                     : _('%{weekday}, %{date}, %{start} - %{end} (ganztägig, fällt aus)')
                 ,
@@ -152,7 +152,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
         }
 
         $date_string = studip_interpolate(
-            $format === 'verbose'
+            $format === self::FORMAT_VERBOSE
                 ? _('%{weekday}, %{date}, %{start} - %{end} Uhr (fällt aus)')
                 : _('%{weekday}, %{date}, %{start} - %{end} (fällt aus)')
             ,

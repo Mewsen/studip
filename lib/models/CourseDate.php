@@ -327,13 +327,13 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     /**
      * Returns the full qualified name of this date.
      *
-     * @param String $format Optional format type. Only 'default', 'include-room', 'long',
+     * @param string $format Optional format type. Only 'default', 'include-room', 'long',
      *                       'long-include-room' and 'verbose' are supported by now.
-     * @return String containing the full name of this date.
+     * @return string containing the full name of this date.
      */
-    public function getFullName($format = 'default')
+    public function getFullName(string $format = self::FORMAT_DEFAULT)
     {
-        if (!$this->date || !in_array($format, ['default', 'verbose', 'long', 'long-include-room', 'include-room'])) {
+        if (!$this->date || !in_array($format, [self::FORMAT_DEFAULT, self::FORMAT_VERBOSE, 'long', 'long-include-room', 'include-room'])) {
             return '';
         }
 
@@ -353,7 +353,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             );
         } else {
             $formatted_end = sprintf(
-                in_array($format, ['verbose', 'long', 'long-include-room']) ? _('%s Uhr') : '%s',
+                in_array($format, [self::FORMAT_VERBOSE, 'long', 'long-include-room']) ? _('%s Uhr') : '%s',
                 date('H:i', $this->end_time)
             );
             $string = sprintf(
