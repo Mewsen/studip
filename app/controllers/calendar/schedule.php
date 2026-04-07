@@ -220,9 +220,14 @@ class Calendar_ScheduleController extends AuthenticatedController
 
             foreach ($cycle_dates as $cycle_date) {
                 //Calculate a fake begin and end that lies in the week
-                //fullcalendar has specified.
+                //fullcalendar has specified. We need the start of the current week for that.
                 $fake_begin = clone $begin;
-                $fake_end = clone $begin;
+                if ($fake_begin->format('N') > 1) {
+                    //The beginning of the time range does not lie on a monday.
+                    $monday_offset = (int)$fake_begin->format('N') - 1;
+                    $fake_begin->sub(new DateInterval('P' . $monday_offset . 'D'));
+                }
+                $fake_end = clone $fake_begin;
                 if ($cycle_date->weekday > 1) {
                     $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
                     $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
