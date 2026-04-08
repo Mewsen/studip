@@ -54,8 +54,8 @@
         <? if ($selected_lecturer_ids) : ?>
             <ul>
                 <? foreach ($teachers as $teacher) : ?>
-                    <? if (in_array($teacher['user_id'], $selected_lecturer_ids)) : ?>
-                        <li><?= htmlReady($teacher['fullname']) ?></li>
+                    <? if (in_array($teacher->user_id, $selected_lecturer_ids)) : ?>
+                        <li><?= htmlReady($teacher->user->getFullName()) ?></li>
                     <? endif ?>
                 <? endforeach ?>
             </ul>
