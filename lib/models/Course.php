@@ -1089,6 +1089,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             '`seminar_id` = :course_id AND `user_id` = :user_id',
             ['course_id' => $this->id, 'user_id' => $user->id]
         );
+
+        if ($course_member && $course_member->status === $permission_level) {
+            return $course_member;
+        }
+
         $new_member_position = $db->fetchColumn(
             'SELECT MAX(`position`) + 1
              FROM `seminar_user`
