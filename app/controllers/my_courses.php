@@ -176,7 +176,7 @@ class MyCoursesController extends AuthenticatedController
                 ])
                 ->withVuexStore(
                     'MyCoursesStore',
-                    'mycoursesgroupselector',
+                    'mycourses',
                     $this->helper->createVueAppData(''),
                 )
         );

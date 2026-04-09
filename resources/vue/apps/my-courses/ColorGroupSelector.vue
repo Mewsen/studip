@@ -116,7 +116,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('mycoursesgroupselector', [
+        ...mapState('mycourses', [
             'courses',
             'groups',
             'config',
