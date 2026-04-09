@@ -103,7 +103,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
                 $clipboard_widget->addElement(new SelectElement(
                     $clipboard->id,
                     $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
+                    (int)$clipboard->id === $selected_clipboard_id
                 ), "clipboard_id-{$clipboard->id}");
             }
             $sidebar->addWidget($clipboard_widget);
@@ -402,7 +402,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
                 $clipboard_widget->addElement(new SelectElement(
                     $clipboard->id,
                     $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
+                    (int)$clipboard->id === $selected_clipboard_id
                 ), "clipboard_id-{$clipboard->id}");
             }
             $sidebar->addWidget($clipboard_widget);
