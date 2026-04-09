@@ -6,7 +6,9 @@
                 <textarea name="message" rows="4" cols="50" v-model="messageText"></textarea>
             </label>
         </section>
-        <validity-time></validity-time>
+        <validity-time v-model:start="startTime"
+                       v-model:end="endTime"
+        />
         <section>
             <label>
                 <input type="radio" v-model="theMode" :value="0">
@@ -54,7 +56,9 @@ export default {
             ),
             theMode: 0,
             courseList: [],
-            courseSearch: null
+            courseSearch: null,
+            startTime: 0,
+            endTime: 0
         }
     },
     computed: {
@@ -64,7 +68,9 @@ export default {
                 payload: {
                     modus: this.theMode,
                     courses: this.courseList,
-                    message: this.messageText
+                    message: this.messageText,
+                    'start-time': this.startTime === 0 ? null : this.startTime,
+                    'end-time': this.endTime === 0 ? null: this.endTime
                 }
             }
         }
@@ -80,6 +86,8 @@ export default {
             this.courseSearch = data.attributes.payload.search;
             this.courseList = data.attributes.payload.courses;
             this.theMode = data.attributes.payload.modus;
+            this.startTime = parseInt(data.attributes.payload['start-time'], 10);
+            this.endTime = parseInt(data.attributes.payload['end-time'], 10);
         },
         validate() {
             if (this.courseList.length === 0) {
@@ -87,7 +95,7 @@ export default {
             }
 
             return this.invalidData.length === 0;
-        },
+        }
     },
     created() {
         // Get a new rule instance so we can use quicksearch.

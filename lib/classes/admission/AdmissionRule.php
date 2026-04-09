@@ -349,15 +349,9 @@ abstract class AdmissionRule
      */
     public function setAllData($data)
     {
-        if (!empty($data['start_date']) && empty($data['start_time'])) {
-            $data['start_time'] = strtotime($data['start_date']);
-        }
-        if (!empty($data['end_date']) && empty($data['end_time'])) {
-            $data['end_time'] = strtotime($data['end_date'] . ' 23:59:59');
-        }
         $this->message = $data['message'] ?? '';
-        $this->startTime = $data['start_time'] ?? null;
-        $this->endTime = $data['end_time'] ?? null;
+        $this->startTime = $data['start-time'] ?? null;
+        $this->endTime = $data['end-time'] ?? null;
         return $this;
     }
 

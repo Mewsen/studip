@@ -6,7 +6,9 @@
                 <textarea name="message" rows="4" cols="50" v-model="messageText"></textarea>
             </label>
         </section>
-        <validity-time></validity-time>
+        <validity-time v-model:start="startTime"
+                       v-model:end="endTime"
+        />
         <section>
             <h3>
                 {{ $gettext('Anmeldebedingungen') }}
@@ -109,7 +111,9 @@ export default {
             showEditFilter: false,
             currentFilterIndex: null,
             currentFilter: null,
-            selectedFilters: []
+            selectedFilters: [],
+            startTime: 0,
+            endTime: 0
         }
     },
     computed: {
@@ -123,7 +127,9 @@ export default {
                     conditions: this.ungrouped,
                     'grouped-conditions': this.groups,
                     'conditiongroups-allowed': this.groupsAllowed,
-                    message: this.message
+                    message: this.message,
+                    'start-time': this.startTime === 0 ? null : this.startTime,
+                    'end-time': this.endTime === 0 ? null: this.endTime
                 }
             }
         }
@@ -168,6 +174,8 @@ export default {
             this.messageText = data.attributes.payload['message'];
             this.ungrouped = data.attributes.payload['conditions'];
             this.groups = data.attributes.payload['grouped-conditions'];
+            this.startTime = parseInt(data.attributes.payload['start-time'], 10);
+            this.endTime = parseInt(data.attributes.payload['end-time'], 10);
         },
         validate() {
             if (this.ungrouped.length + this.groups.length === 0) {
