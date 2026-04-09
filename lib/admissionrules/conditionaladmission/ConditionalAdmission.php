@@ -640,7 +640,7 @@ class ConditionalAdmission extends AdmissionRule
             parent::getPayload(),
             [
                 'quota' => $this->quota,
-                'conditiongroups-allowed' => $this->conditiongroups_allowed ? 'true' : 'false',
+                'conditiongroups-allowed' => (bool) $this->conditiongroups_allowed,
                 'conditions' => $ungrouped,
                 'grouped-conditions' => $groups
             ]

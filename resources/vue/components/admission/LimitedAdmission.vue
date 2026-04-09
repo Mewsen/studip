@@ -6,7 +6,9 @@
                 <textarea rows="4" cols="50" v-model="messageText"></textarea>
             </label>
         </section>
-        <validity-time></validity-time>
+        <validity-time v-model:start="startTime"
+                       v-model:end="endTime"
+        />
         <section>
             <label for="maxnumber">
                 <span class="required">
@@ -35,7 +37,9 @@ export default {
     data() {
         return {
             messageText: this.message || this.$gettext('Sie sind bereits in die maximale Anzahl von %u Veranstaltungen eingetragen.'),
-            max: this.maxNumber
+            max: this.maxNumber,
+            startTime: 0,
+            endTime: 0
         }
     },
     computed: {
@@ -44,7 +48,9 @@ export default {
                 type: 'LimitedAdmission',
                 payload: {
                     maxnumber: this.max,
-                    message: this.messageText
+                    message: this.messageText,
+                    'start-time': this.startTime === 0 ? null : this.startTime,
+                    'end-time': this.endTime === 0 ? null: this.endTime
                 }
             }
         }
@@ -53,6 +59,8 @@ export default {
         setRuleData(data) {
             this.messageText = data.attributes.payload['message'];
             this.max = data.attributes.payload['maxnumber'];
+            this.startTime = parseInt(data.attributes.payload['start-time'], 10);
+            this.endTime = parseInt(data.attributes.payload['end-time'], 10);
         },
         validate() {
             if (this.max < 1) {
