@@ -2,12 +2,16 @@
 namespace Assets;
 
 use Assets;
+use League\Uri\Contracts\UriInterface;
+use League\Uri\Uri;
+use ScssPhp\ScssPhp\Importer\Importer;
+use ScssPhp\ScssPhp\Importer\ImporterResult;
+use ScssPhp\ScssPhp\Syntax;
 use ScssPhp\ScssPhp\ValueConverter;
-use Studip\Cache\Factory;
-use Studip;
 
 use ScssPhp\ScssPhp\Compiler as ScssCompiler;
 use ScssPhp\ScssPhp\OutputStyle;
+use Studip\Cache\Factory;
 
 /**
  * SCSS Compiler for assets.
@@ -65,8 +69,9 @@ class SASSCompiler implements Compiler
 
         $compiler = new ScssCompiler();
         $compiler->addImportPath("{$GLOBALS['STUDIP_BASE_PATH']}/resources/");
+        $compiler->addImporter($this->getCustomImporter());
         $compiler->addVariables($variables);
-        if (Studip\ENV === 'production') {
+        if (\Studip\ENV === 'production') {
             $compiler->setOutputStyle(OutputStyle::COMPRESSED);
         } else {
             $compiler->setOutputStyle(OutputStyle::EXPANDED);
@@ -88,7 +93,7 @@ class SASSCompiler implements Compiler
      */
     private function getPrefix()
     {
-        $cache = Studip\Cache\Factory::getCache();
+        $cache = Factory::getCache();
 
         $prefix = $cache->read(self::CACHE_KEY);
 
@@ -114,5 +119,92 @@ class SASSCompiler implements Compiler
         }
 
         return $prefix;
+    }
+
+    /**
+     * Creates a custom importer that maps @studip-ui to the corresponding
+     * directory. The importer tries the .sass and .scss extension if no
+     * extensio is present and will also try to find a corresponding file
+     * with a _ in front of it.
+     */
+    private function getCustomImporter(): Importer
+    {
+        return new class extends Importer
+        {
+            private const MAPPINGS = [
+                '@studip-ui' => 'packages/studip-ui/src',
+            ];
+
+            public function __toString(): string
+            {
+                return '';
+            }
+
+            public function canonicalize(UriInterface $url): ?UriInterface
+            {
+                foreach (self::MAPPINGS as $package => $location) {
+                    if (str_starts_with($url->getPath(), $package . '/')) {
+                        $absolutePath = str_replace(
+                            $package . '/',
+                            $GLOBALS['STUDIP_BASE_PATH'] . '/' . $location . '/',
+                            $url->getPath()
+                        );
+
+                        return Uri::new('file://' . $absolutePath);
+                    }
+                }
+
+
+                return null;
+            }
+
+            private function getCandidates(UriInterface $url): array
+            {
+                $extensions = [''];
+                $candidates = [$url->getPath()];
+
+                $extension = pathinfo($url->getPath(), PATHINFO_EXTENSION);
+                if (!$extension) {
+                    $extensions = ['.sass', '.scss'];
+                    $candidates = array_map(
+                        fn($ext) => $url->getPath() . $ext,
+                        $extensions
+                    );
+                }
+
+                $dir = pathinfo($url->getPath(), PATHINFO_DIRNAME);
+                $base = pathinfo($url->getPath(), PATHINFO_BASENAME);
+
+                if (!str_starts_with($base, '_')) {
+                    foreach ($extensions as $ext) {
+                        $candidates[] = $dir . '/_' . $base . $ext;
+                    }
+                }
+
+                return $candidates;
+            }
+
+            public function load(UriInterface $url): ?ImporterResult
+            {
+                $contents = false;
+
+                foreach ($this->getCandidates($url) as $candidate) {
+                    if (file_exists($candidate)) {
+                        $contents = file_get_contents($candidate);
+                        break;
+                    }
+                }
+
+                if ($contents === false) {
+                    throw new \Exception("Could not read file {$url->getPath()}");
+                }
+
+                return new ImporterResult(
+                    $contents,
+                    Syntax::forPath($url->getPath()),
+                    $url
+                );
+            }
+        };
     }
 }
