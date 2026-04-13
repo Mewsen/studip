@@ -229,7 +229,6 @@ class AddVipsModule extends Migration
         while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
             if (isset($test_id[$row['test_id']])) {
                 $options = json_decode($row['options'], true);
-                unset($options['shuffle_answers']);
                 unset($options['printable']);
 
                 $values = [
@@ -288,6 +287,26 @@ class AddVipsModule extends Migration
                 $stmt->bindValue(':id', $row['id']);
                 $stmt->execute();
                 $response_id[$row['id']] = $db->lastInsertId();
+            }
+        }
+
+        // cw_blocks
+        $sql = 'UPDATE cw_blocks SET payload = :payload, chdate = :chdate WHERE id = :id';
+        $stmt = $db->prepare($sql);
+        $data = $db->query("SELECT id, payload FROM cw_blocks WHERE block_type = 'test'");
+
+        while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
+            $payload = json_decode($row['payload'], true);
+
+            if ($payload && isset($assignment_id[$payload['assignment']])) {
+                $payload['assignment'] = (string) $assignment_id[$payload['assignment']];
+
+                $values = [
+                    'id'          => $row['id'],
+                    'payload'     => json_encode($payload),
+                    'chdate'      => $now
+                ];
+                $stmt->execute($values);
             }
         }
 
