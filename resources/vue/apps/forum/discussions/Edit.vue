@@ -70,6 +70,7 @@ onMounted(() => {
             class="default use-utility-classes forum-form"
             :action="formActionURL"
             method="post"
+            data-secure="true"
         >
             <input type="hidden" :name="CSRF.name" :value="CSRF.value">
             <fieldset>
