@@ -24,6 +24,7 @@ return [
     Commands\Make\Plugin::class,
     Commands\DI\Reset::class,
     Commands\Files\Dump::class,
+    Commands\Fix\Biest6378::class,
     Commands\Fix\Biest7789::class,
     Commands\Fix\Biest7866::class,
     Commands\Fix\Biest8136::class,
