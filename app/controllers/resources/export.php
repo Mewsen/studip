@@ -414,7 +414,12 @@ class Resources_ExportController extends AuthenticatedController
                 $interval_end = new DateTime();
                 $interval_end->setTimestamp($interval->end);
                 $current_day = clone $interval_start;
-                while ($current_day < $interval_end) {
+                if ($current_day < $this->begin) {
+                    //The interval starts before the exported time range.
+                    //In this case, the current day starts on the same timestamp as the exported time range.
+                    $current_day = $this->begin;
+                }
+                while ($current_day < $interval_end && $current_day < $this->end) {
                     $interval_is_on_weekday = in_array($current_day->format('N'), $this->weekdays);
                     if (!$interval_is_on_weekday) {
                         //Go directly to the next day:
