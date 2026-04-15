@@ -199,7 +199,7 @@ class MvvFile extends ModuleManagementModel
         }
         unset($filter['searchnames']);
 
-        $parameters[':ranges'] = self::getIdsFiltered($filter);
+        $parameters[':files'] = self::getIdsFiltered($filter, true);
 
         $query = "SELECT `mvv_files`.*,
                          COUNT(`mvv_files_ranges`.`range_id`) AS `count_relations`,
@@ -210,7 +210,7 @@ class MvvFile extends ModuleManagementModel
                   LEFT JOIN `mvv_files_filerefs` USING (`mvvfile_id`)
                   INNER JOIN `file_refs` ON (`fileref_id` = `file_refs`.`id`)
                   INNER JOIN `folders` ON (file_refs.folder_id = folders.id)
-                  WHERE `mvv_files_ranges`.`range_id` IN (:ranges) {$name_filter_sql}
+                  WHERE `mvv_files`.`mvvfile_id` IN (:files) {$name_filter_sql}
                   GROUP BY `mvvfile_id`
                   ORDER BY {$sortby}";
         return parent::getEnrichedByQuery($query, $parameters, $row_count, $offset);
