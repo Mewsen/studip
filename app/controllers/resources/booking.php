@@ -1059,9 +1059,12 @@ class Resources_BookingController extends AuthenticatedController
                     $this->repetition_style = 'monthly';
                     $this->repetition_interval = $interval->m;
                 } else if (($interval->d % 7) == 0) {
-                    $this->repetition_style = 'daily';
+                    //Weekly repetition.
+                    $this->repetition_style = 'weekly';
                     if ($this->booking->weekdays === '12345') {
+                        //Special case: repetition on each work day.
                         $this->repetition_interval = 'workdays';
+                        $this->repetition_style    = 'daily';
                     } else {
                         $this->repetition_interval = $interval->d / 7;
                     }
