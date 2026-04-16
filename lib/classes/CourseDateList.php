@@ -270,7 +270,7 @@ class CourseDateList implements Stringable
             $date_line = $single_date->getFullName($with_room_names ? 'long-include-room' : 'long');
             if ($group_by_rooms) {
                 $room_names = _('Kein Raum');
-                if ($single_date->room_bookingn) {
+                if ($single_date->room_bookings) {
                     $room_names = $single_date->getRoomNames();
                 } elseif ($single_date->raum) {
                     $room_names = $single_date->raum;
