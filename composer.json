@@ -23,7 +23,8 @@
             "Studip\\": [
                 "lib/classes/",
                 "lib/exceptions/",
-                "lib/exceptions/course/"
+                "lib/exceptions/course/",
+                "lib/exceptions/tools/"
             ],
             "Studip\\Middleware\\": "lib/middleware/",
             "Studip\\Plugins\\": "lib/plugins/core/",
@@ -49,6 +50,7 @@
                 "lib/classes/wiki/",
                 "lib/exceptions/",
                 "lib/exceptions/resources/",
+                "lib/exceptions/tools/",
                 "lib/extern/",
                 "lib/filesystem/",
                 "lib/ilias_interface",
