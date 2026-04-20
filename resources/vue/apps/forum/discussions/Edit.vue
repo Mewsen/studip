@@ -182,7 +182,7 @@ onMounted(() => {
                     <StudipWysiwyg :required="true" v-model="discussionForm.content" />
                 </section>
                 <section class="mt-10">
-                    <StudipSwitch name="closed_at" v-model="discussionForm.closed_at" :label="$gettext('Diskussion schließen')" />
+                    <StudipSwitch name="closed_at" v-model="discussionForm.closed_at" :label="$gettext('Diskussion schließen, keine weiteren Beiträge zulassen')" />
                 </section>
                 <section v-if="forumConfig.isModerator" class="mt-10">
                     <StudipSwitch name="sticky" v-model="discussionForm.sticky" :label="$gettext('Anpinnen')" />
