@@ -17,7 +17,7 @@
                 <?= Studip\VueApp::create('ColourSelector')
                     ->withProps([
                         'autofocus' => true,
-                        'colours' => collect()->range(0, 8)->map(
+                        'colours' => collect(range(0, 8))->map(
                             fn($group) => [
                                 'id' => $group,
                                 'class' => 'gruppe' . $group,
