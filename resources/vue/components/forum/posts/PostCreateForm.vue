@@ -141,7 +141,7 @@ const storePost = async () => {
                 class="button button--icon-label"
             >
                 <StudipIcon shape="accept" :size="20" aria-hidden="true" />
-                {{ $gettext('Speichern') }}
+                {{ $gettext('Beitrag erstellen') }}
             </button>
             <button
                 type="button"
