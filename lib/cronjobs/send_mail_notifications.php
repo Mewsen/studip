@@ -32,6 +32,8 @@
 
 class SendMailNotificationsJob extends CronJob
 {
+    private bool $cache_state_before = false;
+
     /**
      * Returns the name of the cronjob.
      */
@@ -60,6 +62,13 @@ class SendMailNotificationsJob extends CronJob
         if (empty($GLOBALS['ABSOLUTE_URI_STUDIP'])) {
             throw new Exception('To use mail notifications you MUST set correct values for $ABSOLUTE_URI_STUDIP in config_local.inc.php!');
         }
+
+        $this->cache_state_before = IconNavigationCache::setEnabled(false);
+    }
+
+    public function tearDown()
+    {
+        IconNavigationCache::setEnabled($this->cache_state_before);
     }
 
     /**
