@@ -33,12 +33,14 @@
                                 : '' ?>>
                             <?= _('Reservierung') ?>
                         </option>
-                        <option value="<?= ResourceBooking::TYPE_LOCK ?>"
-                            <?= $booking_type == ResourceBooking::TYPE_LOCK
-                                ? 'selected="selected"'
-                                : '' ?>>
-                            <?= _('Sperrbuchung') ?>
-                        </option>
+                        <? if ($allow_lock_bookings): ?>
+                            <option value="<?= ResourceBooking::TYPE_LOCK ?>"
+                                <?= $booking_type == ResourceBooking::TYPE_LOCK
+                                    ? 'selected="selected"'
+                                    : '' ?>>
+                                <?= _('Sperrbuchung') ?>
+                            </option>
+                        <? endif ?>
                     </select>
                 </fieldset>
             </div>
