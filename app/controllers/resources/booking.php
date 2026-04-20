@@ -650,6 +650,7 @@ class Resources_BookingController extends AuthenticatedController
         $this->current_user = User::findCurrent();
 
         $only_one_room = true;
+        $this->allow_lock_bookings = false;
 
         if (Request::submitted('semester_id')) {
             URLHelper::addLinkParam('semester_id', Request::get('semester_id'));
@@ -818,41 +819,47 @@ class Resources_BookingController extends AuthenticatedController
 
         //Check permissions:
         if ($mode == 'add') {
-            if ($this->booking_type != ResourceBooking::TYPE_LOCK) {
-                foreach ($this->resources as $resource) {
-                    if (!$resource->userHasBookingRights($this->current_user)) {
-                        //The permissions are insufficient for at least one
-                        //resource. No need to continue the permission check.
-                        if (Request::isDialog()) {
-                            PageLayout::postError(
-                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
-                            );
-                            return;
-                        } else {
-                            throw new AccessDeniedException(
-                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
-                            );
-                        }
-                    }
+            $user_has_admin_permissions = true;
+            $user_has_booking_rights    = true;
+            foreach ($this->resources as $resource) {
+                if (!$resource->userHasPermission($this->current_user, 'admin')) {
+                    //The user has no admin permissions for at least one room.
+                    $user_has_admin_permissions = false;
                 }
-            } else {
-                foreach ($this->resources as $resource) {
-                    if (!$resource->userHasPermission($this->current_user, 'admin')) {
-                        //The permissions are insufficient for at least one
-                        //resource. No need to continue the permission check.
-                        if (Request::isDialog()) {
-                            PageLayout::postError(
-                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
-                            );
-                            return;
-                        } else {
-                            throw new AccessDeniedException(
-                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
-                            );
-                        }
+                if (!$resource->userHasPermission($this->current_user)) {
+                    //The user has no booking rights for at least one room.
+                    $user_has_booking_rights = false;
+                    if (!$user_has_admin_permissions) {
+                        //We have found out everything we were looking for.
+                        break;
                     }
                 }
             }
+            if (!$user_has_booking_rights) {
+                if (Request::isDialog()) {
+                    PageLayout::postError(
+                        _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                    );
+                    return;
+                } else {
+                    throw new AccessDeniedException(
+                        _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                    );
+                }
+            }
+            if ($this->booking_type === ResourceBooking::TYPE_LOCK && !$user_has_admin_permissions) {
+                if (Request::isDialog()) {
+                    PageLayout::postError(
+                        _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                    );
+                    return;
+                } else {
+                    throw new AccessDeniedException(
+                        _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                    );
+                }
+            }
+            $this->allow_lock_bookings = $user_has_admin_permissions;
         } elseif (($mode == 'edit') || ($mode == 'duplicate')) {
             if (!$this->booking->isSimpleBooking()) {
                 throw new AccessDeniedException(
@@ -1142,7 +1149,7 @@ class Resources_BookingController extends AuthenticatedController
                 );
             }
 
-            if (!is_numeric($this->booking_type)) {
+            if (!is_numeric($this->booking_type) && $mode === 'add') {
                 $this->booking_type = Request::int('booking_type');
             }
 
@@ -1193,8 +1200,30 @@ class Resources_BookingController extends AuthenticatedController
                 PageLayout::postError(
                     _('Es wurde ein ungültiger Buchungstyp gewählt.')
                 );
-                $this->show_booking_type_selection = true;
+                $this->show_form                   = false;
+                $this->show_booking_type_selection = false;
                 return;
+            }
+
+            if ($this->booking_type === ResourceBooking::TYPE_LOCK) {
+                //Check if the user has admin permissions for each of the
+                //resources that is going to be locked:
+                foreach ($this->resources as $resource) {
+                    if (!$resource->userHasPermission($this->current_user, 'admin')) {
+                        $this->show_form                   = false;
+                        $this->show_booking_type_selection = false;
+                        if (Request::isDialog()) {
+                            PageLayout::postError(
+                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                            );
+                            return;
+                        } else {
+                            throw new AccessDeniedException(
+                                _('Ihre Berechtigungsstufe ist mindestens für einen der gewählten Räume zu niedrig!')
+                            );
+                        }
+                    }
+                }
             }
 
             if (!$this->begin) {
