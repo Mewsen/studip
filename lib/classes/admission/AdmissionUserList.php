@@ -97,17 +97,26 @@ class AdmissionUserList
      */
     public function delete() {
         // Remove user assignments to this list.
-        DBManager::get()->exec("DELETE FROM `user_factorlist` WHERE `list_id`='".
-            $this->id."'");
+        DBManager::get()->execute(
+            "DELETE FROM `user_factorlist`
+            WHERE `list_id` = ?",
+            [$this->id]
+        );
         // Remove assigned conditions.
         foreach ($this->conditions as $condition) {
             $condition->delete();
         }
-        DBManager::get()->exec("DELETE FROM `user_factorlist` WHERE `list_id`='".
-            $this->id."'");
+        DBManager::get()->execute(
+            "DELETE FROM `user_factorlist`
+             WHERE `list_id` = ?",
+            [$this->id]
+        );
         // Delete list data.
-        DBManager::get()->exec("DELETE FROM `admissionfactor` WHERE `list_id`='".
-            $this->id."'");
+        DBManager::get()->execute(
+            "DELETE FROM `admissionfactor`
+             WHERE `list_id` = ?",
+            [$this->id]
+        );
     }
 
     /**
@@ -364,10 +373,14 @@ class AdmissionUserList
         // Generate new ID if list doesn't exist in DB yet.
         if (!$this->id) {
             do {
-                $newid = md5(uniqid('AdmissionUserList', true));
-                $db = DBManager::get()->query("SELECT `list_id`
-                    FROM `admissionfactor` WHERE `list_id`='.$newid.'");
-            } while ($db->fetch());
+                $newid = md5(uniqid(AdmissionUserList::class, true));
+                $exists = (bool) DBManager::get()->fetchColumn(
+                    "SELECT `list_id`
+                     FROM `admissionfactor`
+                     WHERE `list_id`= ?",
+                    [$newid]
+                );
+            } while ($exists);
             $this->id = $newid;
         }
         // Store basic list data.
@@ -379,9 +392,12 @@ class AdmissionUserList
         $stmt->execute([$this->id, $this->name, $this->factor,
             $this->ownerId, time(), time()]);
         // Clear all old user assignments to this list.
-        DBManager::get()->exec("DELETE FROM `user_factorlist` WHERE `list_id`='".
-            $this->id."' AND `user_id` NOT IN ('".
-            implode("', '", array_keys($this->users))."')");
+        DBManager::get()->execute(
+            "DELETE FROM `user_factorlist`
+             WHERE `list_id` = ?
+               AND `user_id` NOT IN (?)",
+            [$this->id, array_keys($this->users)]
+        );
         // Store assigned users.
         foreach ($this->users as $userId => $assigned) {
             $stmt = DBManager::get()->prepare("INSERT INTO `user_factorlist`

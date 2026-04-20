@@ -326,7 +326,22 @@ class Admission_CoursesetController extends AuthenticatedController
      */
     public function save_action($coursesetId = '')
     {
-        if (!Request::submitted('submit') || !Request::get('name') || !$this->instant_course_set_view && !Request::getArray('institutes')) {
+        $courseset = new CourseSet($coursesetId);
+
+        if (!$courseset->getUserId()) {
+            $courseset->setUserId($GLOBALS['user']->id);
+        }
+
+        if (!$courseset->isUserAllowedToEdit(User::findCurrent()->id)) {
+            throw new AccessDeniedException(_('Sie dürfen diese Anmelderegel nicht bearbeiten.'));
+        }
+
+        if (
+            !Request::submitted('submit')
+            || !Request::get('name')
+            || !$this->instant_course_set_view
+            && !Request::getArray('institutes')
+        ) {
             $this->flash['name'] = Request::get('name');
             $this->flash['institutes'] = Request::getArray('institutes');
             $this->flash['courses'] = Request::getArray('courses');
@@ -349,17 +364,13 @@ class Admission_CoursesetController extends AuthenticatedController
             }
             $this->redirect($this->url_for('admission/courseset/configure', $coursesetId));
         } else {
-            $courseset = new CourseSet($coursesetId);
-            if (!$courseset->getUserId()) {
-                $courseset->setUserId($GLOBALS['user']->id);
-            }
             $courseset->setName(Request::get('name'));
             $courseset->setInstitutes(Request::getArray('institutes'));
             if (Request::option('semester')) {
                 $courseset->setCourses(Request::getArray('courses'));
             }
             $courseset->setUserLists(Request::getArray('userlists'));
-            if (!$this->instant_course_set_view && $courseset->isUserAllowedToEdit($GLOBALS['user']->id)) {
+            if (!$this->instant_course_set_view) {
                 $courseset->setPrivate((bool) Request::get('private'));
             }
             $courseset->setInfoText(Request::get('infotext'));

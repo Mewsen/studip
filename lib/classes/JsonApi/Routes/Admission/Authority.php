@@ -53,25 +53,7 @@ class Authority
      */
     public static function canUpdateCourseSet(User $user, CourseSet $courseset)
     {
-        if ($GLOBALS['perm']->have_perm('root') || $courseset->getUserId() === $user->id) {
-            return true;
-        } else {
-            $institutes = array_map(
-                fn ($i) => $i['Institut_id'],
-                Institute::getMyInstitutes($user->id)
-            );
-
-            $intersection = array_intersect(
-                array_keys($courseset->getInstituteIds()),
-                $institutes
-            );
-
-            // Check access for admin (or dozent if permission is set) accounts.
-            $access = $GLOBALS['perm']->have_perm(Config::get()->ALLOW_DOZENT_COURSESET_ADMIN ? 'dozent' : 'admin')
-                && count($intersection) > 0;
-
-            return $access;
-        }
+        return $courseset->isUserAllowedToEdit($user->id);
     }
 
 }

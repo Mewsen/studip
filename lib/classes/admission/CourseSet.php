@@ -897,9 +897,12 @@ class CourseSet implements UserFilterRange
         $stmt->execute([$this->id, $this->user_id, $this->name, $this->infoText,
             get_class($this->algorithm), $this->hasAlgorithmRun(), intval($this->private), time(), time()]);
         // Delete removed institute assignments from database.
-        DBManager::get()->exec("DELETE FROM `courseset_institute`
-            WHERE `set_id`='".$this->id."' AND `institute_id` NOT IN ('".
-            implode("', '", array_keys($this->institutes))."')");
+        DBManager::get()->execute(
+            "DELETE FROM `courseset_institute`
+             WHERE `set_id` = ?
+               AND `institute_id` NOT IN (?)",
+            [$this->id, array_keys($this->institutes)]
+        );
         // Store associated institute IDs.
         foreach ($this->institutes as $institute => $associated) {
             $stmt = DBManager::get()->prepare("INSERT IGNORE INTO `courseset_institute`
@@ -947,9 +950,12 @@ class CourseSet implements UserFilterRange
         }
 
         // Delete removed user list assignments from database.
-        DBManager::get()->exec("DELETE FROM `courseset_factorlist`
-            WHERE `set_id`='".$this->id."' AND `factorlist_id` NOT IN ('".
-            implode("', '", array_keys($this->userlists))."')");
+        DBManager::get()->execute(
+            "DELETE FROM `courseset_factorlist`
+             WHERE `set_id` = ?
+               AND `factorlist_id` NOT IN (?)",
+            [$this->id, array_keys($this->userlists)]
+        );
         // Store associated user list IDs.
         foreach ($this->userlists as $list => $associated) {
             $stmt = DBManager::get()->prepare("INSERT IGNORE INTO `courseset_factorlist`
@@ -958,9 +964,13 @@ class CourseSet implements UserFilterRange
             $stmt->execute([$this->id, $list, time()]);
         }
         // Delete removed admission rules from database.
-        $stmt = DBManager::get()->query("SELECT `rule_id`, `type` FROM `courseset_rule`
-            WHERE `set_id`='".$this->id."' AND `rule_id` NOT IN ('".
-            implode("', '", array_keys($this->admissionRules))."')");
+        $dta = DBManager::get()->fetchAll(
+            "SELECT `rule_id`, `type`
+             FROM `courseset_rule`
+             WHERE `set_id` = ?
+               AND `rule_id` NOT IN (?)",
+            [$this->id, array_keys($this->admissionRules)]
+        );
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($data as $ruleData) {
             $rule = new $ruleData['type']($ruleData['rule_id']);

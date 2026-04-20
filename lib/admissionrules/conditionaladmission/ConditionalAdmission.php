@@ -409,19 +409,23 @@ class ConditionalAdmission extends AdmissionRule
         }
 
         // Delete removed conditions from DB.
-        $stmt = DBManager::get()->prepare("SELECT `filter_id`, `conditiongroup_id` FROM
-            `admission_condition` WHERE `rule_id`=? AND `filter_id` NOT IN ('".
-                implode("', '", $keys)."')");
-        $stmt->execute([$this->id]);
-        $groups = [];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $entry) {
-            $current = new UserFilter($entry['filter_id']);
-            $current->delete();
-            $groups[] = $entry['conditiongroup_id'];
-        }
-        DBManager::get()->exec("DELETE FROM `admission_condition`
-            WHERE `rule_id`='".$this->id."' AND `filter_id` NOT IN ('".
-                    implode("', '", $keys)."')");
+        DBManager::get()->fetchAll(
+            "SELECT `filter_id`
+             FROM `admission_condition`
+             WHERE `rule_id` = ?
+               AND `filter_id` NOT IN (?)",
+            [$this->id, $keys],
+            function (array $entry) {
+                $current = new UserFilter($entry['filter_id']);
+                $current->delete();
+            }
+        );
+        DBManager::get()->execute(
+            "DELETE FROM `admission_condition`
+             WHERE `rule_id` = ?
+               AND `filter_id` NOT IN (?)",
+            [$this->id, $keys]
+        );
         // Store all conditions.
         $queries = [];
         $parameters = [];

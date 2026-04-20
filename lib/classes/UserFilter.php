@@ -254,9 +254,12 @@ class UserFilter
             ON DUPLICATE KEY UPDATE `chdate` = VALUES(`chdate`), `range_type` = VALUES(`range_type`), `range_id` = VALUES(`range_id`)");
         $stmt->execute([$this->id, $this->range_id, $this->range_type, time(), time()]);
         // Delete removed condition fields from DB.
-        DBManager::get()->exec("DELETE FROM `userfilter_fields`
-            WHERE `filter_id`='" . $this->id . "' AND `field_id` NOT IN ('" .
-            implode("', '", array_keys($this->fields)) . "')");
+        DBManager::get()->execute(
+            "DELETE FROM `userfilter_fields`
+             WHERE `filter_id` = ?
+               AND `field_id` NOT IN (?)",
+            [$this->id, array_keys($this->fields)]
+        );
         // Store all fields.
         foreach ($this->fields as $field) {
             $field->store($this->id);
