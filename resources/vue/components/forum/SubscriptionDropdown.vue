@@ -165,7 +165,7 @@ const subscribe = async (notificationType = 'all') => {
                 >
                     <StudipIcon shape="subscription-all" :size="20" />
                     <span class="subscription-option">
-                        <span class="option-title">{{ $gettext('Alle Benachrichtigungen') }}</span>
+                        <span class="option-title">{{ $gettext('Immer benachrichtigen') }}</span>
                         <StudipIcon
                             v-if="subscription?.notification_type === SubscriptionNotificationType.All"
                             shape="accept"
@@ -186,7 +186,7 @@ const subscribe = async (notificationType = 'all') => {
                 >
                     <StudipIcon shape="subscription-quotes" :size="20" />
                     <span class="subscription-option">
-                        <span class="option-title">{{ $gettext('Nur Zitat') }}</span>
+                        <span class="option-title">{{ $gettext('Nur bei Zitaten benachrichtigen') }}</span>
                         <StudipIcon
                             v-if="subscription?.notification_type === SubscriptionNotificationType.RepliesOnly"
                             shape="accept"
@@ -207,7 +207,7 @@ const subscribe = async (notificationType = 'all') => {
                 >
                     <StudipIcon shape="subscription-none" :size="20" />
                     <span class="subscription-option">
-                        <span class="option-title">{{ $gettext('Keine') }}</span>
+                        <span class="option-title">{{ $gettext('Nie benachrichtigen') }}</span>
                         <StudipIcon
                             v-if="subscription?.notification_type === SubscriptionNotificationType.None"
                             shape="accept"
