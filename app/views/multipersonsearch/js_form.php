@@ -27,10 +27,11 @@
              </select>
         <? endforeach; ?></p>
         <select multiple="multiple" id="<?= $name . '_selectbox'; ?>" name="<?= $name . '_selectbox'; ?>[]" data-init-js="true">
+            <? $defaultSelectedUserIds = array_column($defaultSelectedUsers, 'id'); ?>
             <? foreach ($defaultSelectableUsers as $person): ?>
                 <option value="<?= $person->id ?>"
                         data-avatar="<?= htmlReady(Avatar::getAvatar($person->id)->getURL(Avatar::MEDIUM)) ?>"
-                        <? if ($allowRemoval && in_array($person->id, $defaultSelectedUsers)) echo 'selected'; ?>
+                        <? if ($allowRemoval && in_array($person->id, $defaultSelectedUserIds)) echo 'selected'; ?>
                 ><?= htmlReady($person->getFullName('full_rev')) ?> -- <?= htmlReady($person->perms) ?> (<?= htmlReady($person->username)?>)</option>
             <? endforeach; ?>
         </select>

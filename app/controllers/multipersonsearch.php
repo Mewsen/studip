@@ -105,6 +105,7 @@ class MultipersonsearchController extends AuthenticatedController
         $this->defaultSelectableUsers = $tmp;
         $tmp = User::findFullMany($mp->getDefaultSelectedUsersIDs(), 'ORDER BY Nachname ASC, Vorname ASC');
         $this->defaultSelectedUsers = $tmp;
+        $this->allowRemoval = $mp->getAllowRemoval();
         $this->ajax = Request::isXhr();
 
         if ($this->ajax) {

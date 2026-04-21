@@ -104,10 +104,18 @@ class MultiPersonSearch {
     }
 
     /**
+     * Returns allow removal state.
+     */
+    public function getAllowRemoval(): bool
+    {
+        return $this->allowRemoval;
+    }
+
+    /**
      * Defines whether the removal of pre-selected users should be allowed or
      * not
      */
-    public function allowRemovalOfDefaultSeselectedUsers(bool $allowRemoval): self
+    public function allowRemovalOfDefaultSelectedUsers(bool $allowRemoval): self
     {
         $this->allowRemoval = $allowRemoval;
 
@@ -529,6 +537,7 @@ class MultiPersonSearch {
         $_SESSION['multipersonsearch'][$this->name]['searchObject'] = serialize($this->searchObject);
         $_SESSION['multipersonsearch'][$this->name]['navigationItem'] = $this->navigationItem;
         $_SESSION['multipersonsearch'][$this->name]['dataDialogStatus'] = $this->dataDialogStatus;
+        $_SESSION['multipersonsearch'][$this->name]['allowRemoval'] = $this->allowRemoval;
     }
 
     /**
@@ -550,6 +559,7 @@ class MultiPersonSearch {
             $this->navigationItem = $_SESSION['multipersonsearch'][$this->name]['navigationItem'] ?? null;
             $this->dataDialogStatus = $_SESSION['multipersonsearch'][$this->name]['dataDialogStatus'] ?? '';
             $this->verified = $_SESSION['multipersonsearch'][$this->name]['verified'] ?? null;
+            $this->allowRemoval = $_SESSION['multipersonsearch'][$this->name]['allowRemoval'] ?? false;
         }
     }
 
