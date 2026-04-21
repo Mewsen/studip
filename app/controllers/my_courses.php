@@ -177,7 +177,10 @@ class MyCoursesController extends AuthenticatedController
                 ->withVuexStore(
                     'MyCoursesStore',
                     'mycourses',
-                    $this->helper->createVueAppData(''),
+                    $this->helper->createVueAppData(
+                        sem_key: '',
+                        studygroups: true
+                    ),
                 )
         );
     }

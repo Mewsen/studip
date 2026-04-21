@@ -1,22 +1,29 @@
 <?php
 final class MyCoursesHelper
 {
-    public function createVueAppData(string $sem_key, string $group_field = 'sem_number'): array
-    {
+    public function createVueAppData(
+        string $sem_key,
+        string $group_field = 'sem_number',
+        bool $studygroups = false
+    ): array {
         return $this->getVueAppData(
-            $this->getCourses($sem_key, $group_field),
+            $this->getCourses($sem_key, $group_field, $studygroups),
             $group_field
         );
     }
 
-    public function getCourses(string $sem_key, string $group_field = 'sem_number'): array
-    {
+    public function getCourses(
+        string $sem_key,
+        string $group_field = 'sem_number',
+        bool $studygroups = false
+    ): array {
         return MyRealmModel::getPreparedCourses($sem_key, [
             'group_field'         => $group_field,
             'order_by'            => null,
             'order'               => 'asc',
-            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
-            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
+            'studygroups_enabled' => Config::get()->getValue('MY_COURSES_ENABLE_STUDYGROUPS'),
+            'studygroups_only'    => $studygroups,
+            'deputies_enabled'    => Config::get()->getValue('DEPUTIES_ENABLE'),
         ]);
     }
 
