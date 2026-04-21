@@ -17,13 +17,14 @@ trait IconNavigationTrait
      */
     public function getIconNavigation($course_id, $last_visit, $user_id)
     {
-        if (IconNavigationCache::has($user_id, $course_id)) {
-            return IconNavigationCache::get($user_id, $course_id);
+        if (IconNavigationCache::has($user_id, $course_id, $this->getPluginId())) {
+            return IconNavigationCache::get($user_id, $course_id, $this->getPluginId());
         }
 
         return IconNavigationCache::set(
             $user_id,
             $course_id,
+            $this->getPluginId(),
             $this->getManyIconNavigation([$course_id], $user_id)[$course_id] ?? null
         );
     }
