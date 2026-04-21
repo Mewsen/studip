@@ -46,8 +46,10 @@ section.contentbox {
             line-height: 24px;
 
             > a {
-                img, svg {
+                img,
+                svg {
                     margin-right: 5px;
+                    vertical-align: text-bottom;
                 }
             }
         }
@@ -153,11 +155,13 @@ section.contentbox {
 
         header {
             h1 a {
-                @include icon(before, arr_1right);
+                &:first-of-type {
+                    @include icon(before, arr_1right);
 
-                &::before {
-                    transition: all var(--transition-duration) ease 0s;
-                    margin-right: 2px;
+                    &::before {
+                        transition: all var(--transition-duration) ease 0s;
+                        margin-right: 2px;
+                    }
                 }
 
                 display: flex;
