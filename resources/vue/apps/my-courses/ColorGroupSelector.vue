@@ -92,6 +92,7 @@
 <script>
 import { mapState } from "vuex";
 import { createMixin } from "@/vue/mixins/MyCoursesMixin";
+import {useSecurityHandler} from "@/vue/composables/useSecurityHandler";
 
 export default {
     name: "MyCoursesColorGroupSelector",
@@ -105,6 +106,11 @@ export default {
             default: 9
         },
         storeUrl: String,
+    },
+    setup() {
+        return {
+            securityHandler: useSecurityHandler()
+        };
     },
     data() {
         return {
@@ -145,13 +151,6 @@ export default {
             );
         },
 
-        securityHandler(event) {
-            if (!this.isChanged || !this.secured) {
-                return;
-            }
-
-            event.preventDefault();
-        },
         securityHandlerDialog(event) {
             if (
                 !this.isChanged
@@ -167,26 +166,25 @@ export default {
         }
     },
     created() {
+        this.securityHandler.setPredicate(() => this.isChanged && this.secured);
         this.reset();
     },
     mounted() {
         this.dialog = this.$el?.closest('.studip-dialog');
 
         if (this.dialog !== null) {
+            this.securityHandler.deactivate();
+
             $(this.dialog).on('dialogbeforeclose', this.securityHandlerDialog);
 
             this.$nextTick(() => {
                 this.dialog.querySelector('.ui-dialog-content input[type="radio"]:checked')?.focus();
             });
-        } else {
-            window.addEventListener('beforeunload', this.securityHandler);
         }
     },
     beforeUnmount() {
         if (this.dialog !== null) {
             $(this.dialog).off('dialogbeforeclose', this.securityHandlerDialog);
-        } else {
-            window.removeEventListener('beforeunload', this.securityHandler);
         }
     }
 }

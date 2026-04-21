@@ -88,6 +88,7 @@
 <script>
 import {mapState} from "vuex";
 import { createMixin } from "@/vue/mixins/MyCoursesMixin";
+import { useSecurityHandler } from "@/vue/composables/useSecurityHandler";
 
 export default {
     name: 'MyCoursesNotificationConfiguration',
@@ -98,6 +99,11 @@ export default {
         storeUrl: String,
         modules: Object,
         notifications: Object,
+    },
+    setup() {
+        return {
+            securityHandler: useSecurityHandler()
+        };
     },
     data() {
         return {
@@ -114,8 +120,8 @@ export default {
 
         isChanged() {
             return Object.entries(this.courseModules).some(([id, notifications]) => {
-                const original = this.notifications[id].toSorted();
-                const current = notifications.toSorted();
+                const original = this.notifications[id]?.slice().sort() ?? [];
+                const current = notifications?.slice().sort() ?? [];
                 return JSON.stringify(original) !== JSON.stringify(current);
             });
         }
@@ -161,13 +167,6 @@ export default {
                 {}
             );
         },
-        securityHandler(event) {
-            if (!this.isChanged || !this.secured) {
-                return;
-            }
-
-            event.preventDefault();
-        },
         toggleAll() {
             const value = this.checkedAll().checked ? [] : this.modules.map(m => m.id);
             Object.keys(this.courses).forEach(courseId => {
@@ -196,12 +195,8 @@ export default {
         }
     },
     created() {
+        this.securityHandler.setPredicate(() => this.isChanged && this.secured);
         this.reset();
-
-        window.addEventListener('beforeunload', this.securityHandler);
-    },
-    beforeUnmount() {
-        window.removeEventListener('beforeunload', this.securityHandler);
     }
 };
 </script>

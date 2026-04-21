@@ -1,4 +1,5 @@
 import { $gettext } from '../lib/gettext';
+import {useSecurityHandler} from "@/vue/composables/useSecurityHandler";
 
 /**
  * Secure forms or form elements by displaying a warning on page unload if
@@ -130,16 +131,11 @@ const DataSecurity = {
     }
 }
 
-// Secure browser window on refresh via the beforeunload event
-$(window).on('beforeunload', function(event) {
-    if (DataSecurity.detectChanges() === false) {
-        return;
-    }
-
-    event = event || window.event || {};
-    event.returnValue = $gettext('Ihre Eingaben wurden bislang noch nicht gespeichert.');
-    return event.returnValue;
-});
+const { registerGlobalHandler } = useSecurityHandler(
+    () => DataSecurity.detectChanges(),
+    true
+);
+registerGlobalHandler();
 
 // Secure dialogs on close via the dialogbeforeclose event
 $(document).on('dialogbeforeclose', function(event) {
