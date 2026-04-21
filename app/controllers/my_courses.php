@@ -785,7 +785,7 @@ class MyCoursesController extends AuthenticatedController
         );
     }
 
-    private function getSemesterKey()
+    private function getSemesterKey(): string
     {
         $config_sem = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE;
         if (!Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS && $config_sem === '') {
@@ -809,7 +809,7 @@ class MyCoursesController extends AuthenticatedController
             Request::set('sem_select', $sem);
         }
 
-        return $sem;
+        return $sem ?? Config::get()->getValue('MY_COURSES_DEFAULT_CYCLE');
     }
 
     private function getGroupField()
