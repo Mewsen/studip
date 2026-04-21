@@ -50,7 +50,7 @@
                         </span>
                         <div v-if="arg.event.extendedProps['action-icons']"
                              class="action-icons" ref="action_icons">
-                            <span v-for="[key, action] of Object.entries(arg.event.extendedProps['action-icons'] as Array<Action>)"
+                            <span v-for="[key, action] of Object.entries(arg.event.extendedProps['action-icons'])"
                                   v-bind:key="key">
                                 <button :title="action.label"
                                         @click.stop="openActionIconUrlAsDialog(action)">
