@@ -769,7 +769,8 @@ function encode_header_parameter($name, $value)
 {
     if (preg_match('/[%\200-\377]/', $value)) {
         // use RFC 5987 encoding (ext-parameter)
-        return $name . "*=UTF-8''" . rawurlencode($value);
+        return $name . '="' . addslashes(iconv('UTF-8', 'ASCII//TRANSLIT', $value)) . '"; '
+             . $name . "*=UTF-8''" . rawurlencode($value);
     } else {
         // use RFC 2616 encoding (quoted-string)
         return $name . '="' . addslashes($value) . '"';
