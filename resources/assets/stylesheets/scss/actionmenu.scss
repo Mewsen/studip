@@ -184,7 +184,7 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
     &.is-reversed {
         .action-menu-content {
             top: auto;
-            bottom: -4px;
+            bottom: -8px;
 
             .action-menu-list .action-menu-item:last-of-type {
                 padding-right: 20px;
