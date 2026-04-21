@@ -334,6 +334,7 @@ class Resources_ExportController extends AuthenticatedController
                 _('Rüstzeit'),
                 _('Raumname'),
                 _('Buchungstyp'),
+                _('LV-Nummer'),
                 _('Beschreibung'),
                 _('geplante Teilnehmendenzahl'),
                 _('Buchende Person'),
@@ -395,13 +396,15 @@ class Resources_ExportController extends AuthenticatedController
                 if (!$booking instanceof ResourceBooking || !in_array($booking->booking_type, $types)) {
                     continue;
                 }
+                $number = '';
                 $description = $booking->description;
                 $turnout = 0;
                 $number_of_participants = '';
                 if (!$booking->isSimpleBooking()) {
                     $course = $booking->assigned_course_date->course;
                     if ($course instanceof Course) {
-                        $description = $course->getFullName();
+                        $number = $course->veranstaltungsnummer;
+                        $description = $course->name;
                         $turnout = $course->admission_turnout;
                         if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
                             $number_of_participants = $booking->assigned_course_date->number_of_participants;
@@ -460,6 +463,7 @@ class Resources_ExportController extends AuthenticatedController
                         )
                         )
                         ),
+                        $number,
                         $description,
                         $turnout,
                         $booking->booking_user ? $booking->booking_user->getFullName() : '',
