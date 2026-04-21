@@ -76,7 +76,7 @@ export async function setLocale(locale = getInitialLocale()) {
         state.translations[state.locale] = await getTranslations(state.locale);
     }
 
-    updateTranslations();
+    await updateTranslations();
 
     eventBus.emit('studip:set-locale', state.locale);
 }
