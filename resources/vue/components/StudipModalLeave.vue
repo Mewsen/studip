@@ -22,6 +22,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import StudipDialog from './StudipDialog.vue';
+import {useSecurityHandler} from "../composables/useSecurityHandler";
 
 const props = defineProps({
     hasUnsavedChanges: {
@@ -36,6 +37,7 @@ const props = defineProps({
 
 const showModal = ref(false);
 const pendingHref = ref(null);
+const securityHandler = useSecurityHandler(() => props.hasUnsavedChanges);
 
 function onClick(e) {
     const link = e.target.closest('a[href]');
@@ -53,7 +55,7 @@ function onClick(e) {
 }
 
 function confirmLeave() {
-    window.removeEventListener('beforeunload', onBeforeUnload);
+    securityHandler.deactivate();
     showModal.value = false;
     window.location.href = pendingHref.value;
 }
@@ -63,18 +65,11 @@ function cancelLeave() {
     pendingHref.value = null;
 }
 
-function onBeforeUnload(e) {
-    if (props.hasUnsavedChanges) {
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-    }
-}
 async function saveAndLeave() {
     if (typeof props.onSave === 'function') {
         try {
             await props.onSave();
-            window.removeEventListener('beforeunload', onBeforeUnload);
+            securityHandler.deactivate();
             window.location.href = pendingHref.value;
         } catch (e) {
             console.error('Speichern fehlgeschlagen:', e);
@@ -84,11 +79,9 @@ async function saveAndLeave() {
 
 onMounted(() => {
     document.addEventListener('click', onClick);
-    window.addEventListener('beforeunload', onBeforeUnload);
 });
 
 onUnmounted(() => {
     document.removeEventListener('click', onClick);
-    window.removeEventListener('beforeunload', onBeforeUnload);
 });
 </script>

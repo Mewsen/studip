@@ -89,6 +89,7 @@ import JSUpdater from '@/assets/javascripts/lib/jsupdater';
 import ContentBar from '@/vue/components/ContentBar.vue';
 import ContentBarBreadcrumbs from '@/vue/components/ContentBarBreadcrumbs.vue';
 import { markRaw } from 'vue';
+import { useSecurityHandler } from "@/vue/composables/useSecurityHandler.ts";
 
 export default {
     name: 'wiki-editor',
@@ -138,6 +139,11 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    setup() {
+        return {
+            securityHandler: useSecurityHandler()
+        };
     },
     data() {
         return {
@@ -217,23 +223,14 @@ export default {
 
             return data;
         },
-        toggleSecurityHandler(state = true) {
-            if (state) {
-                window.addEventListener('beforeunload', this.securityHandler);
-            } else {
-                window.removeEventListener('beforeunload', this.securityHandler);
-            }
-        },
-        securityHandler(event) {
-            event.preventDefault();
-
-            event.returnValue = true;
-        },
         saveWikiPage() {
-            this.toggleSecurityHandler(false);
+            this.securityHandler.deactivate();
             this.content = this.editor.getData();
             this.$refs.form.submit();
         },
+    },
+    created() {
+        this.securityHandler.setPredicate(() => this.isChanged);
     },
     mounted() {
         const textarea = this.$refs['wiki_editor'];
@@ -274,9 +271,6 @@ export default {
         );
     },
     watch: {
-        isChanged(current) {
-            this.toggleSecurityHandler(current);
-        },
         autosave(current) {
             this.storingAutosave = true;
 

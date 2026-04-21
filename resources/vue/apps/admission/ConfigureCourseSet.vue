@@ -4,7 +4,6 @@
               :action="storeUrl"
               method="post"
               ref="courseSetForm"
-              data-secure="true"
         >
             <fieldset>
                 <legend>{{ $gettext('Grunddaten') }}</legend>
@@ -364,6 +363,7 @@ import AdmissionRuleTypeSelector from '@/vue/components/admission/AdmissionRuleT
 import AdmissionRuleConfig from '@/vue/components/admission/AdmissionRuleConfig.vue';
 import StudipProgressIndicator from "@/vue/components/StudipProgressIndicator.vue";
 import StudipTooltipIcon from '@/vue/components/StudipTooltipIcon.vue';
+import { useSecurityHandler } from '@/vue/composables/useSecurityHandler';
 
 export default {
     name: 'ConfigureCourseSet',
@@ -398,6 +398,11 @@ export default {
             default: false
         }
     },
+    setup() {
+        return {
+            securityHandler: useSecurityHandler()
+        };
+    },
     data() {
         return {
             name: '',
@@ -421,10 +426,15 @@ export default {
             singleRule: null,
             ruleIndex: null,
             showRuleConfig: false,
-            changed: false
+            initialCoursesetDataAsJSON: null
         }
     },
     computed: {
+        changed() {
+            return this.initialCoursesetDataAsJSON !== null
+                && JSON.stringify(this.coursesetData) !== this.initialCoursesetDataAsJSON;
+
+        },
         isStorable() {
             return this.name !== ''
                 && (this.courseSetId !== '' || this.courseSetId === '' && this.institutes.length > 0)
@@ -457,6 +467,17 @@ export default {
         },
         allCoursesChecked() {
             return this.checkedCourses.length === this.availableCourses.length;
+        },
+        coursesetData() {
+            return {
+                name: this.name,
+                private: this.private,
+                infotext: this.additional,
+                institutes: this.institutes.map(i => i.id),
+                courses: this.courses.map(c => c.id).concat(this.checkedCourses),
+                rules: this.rules,
+                userlists: this.hasUserLists ? this.userLists : []
+            };
         }
     },
     methods: {
@@ -601,15 +622,7 @@ export default {
         storeCourseset() {
             const data = {
                 data: {
-                    attributes: {
-                        name: this.name,
-                        private: this.private,
-                        infotext: this.additional,
-                        institutes: this.institutes.map(i => i.id),
-                        courses: this.courses.map(c => c.id).concat(this.checkedCourses),
-                        rules: this.rules,
-                        userlists: this.hasUserLists ? this.userLists : []
-                    }
+                    attributes: this.coursesetData
                 }
             };
             if (this.courseSetId === '') {
@@ -618,12 +631,7 @@ export default {
                     'course-sets',
                     { data: data }
                 ).then(() => {
-                    this.$refs.courseSetForm.dataset.secure = 'false';
-                    if (!this.instantCourseSetView) {
-                        window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
-                    } else {
-                        window.location.reload();
-                    }
+                    this.relocateToIndex();
                 });
 
             } else {
@@ -632,20 +640,13 @@ export default {
                     'course-sets/' + this.courseSetId,
                     { data: data}
                 ).then(() => {
-                    this.$refs.courseSetForm.dataset.secure = 'false';
-                    if (!this.instantCourseSetView) {
-                        window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
-                    } else {
-                        window.location.reload();
-                    }
+                    this.relocateToIndex();
                 });
 
             }
         },
         cancel() {
-            if (!this.instantCourseSetView) {
-                window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
-            }
+            this.relocateToIndex(true);
         },
         configureCourses() {
             STUDIP.Dialog.fromURL(
@@ -679,37 +680,49 @@ export default {
         },
         checkUncheckAll() {
             this.checkedCourses = this.allCoursesChecked ? [] : this.availableCourses.map(c => c.id);
+        },
+        relocateToIndex(cancel = false) {
+            this.securityHandler.deactivate();
+            if (!this.instantCourseSetView) {
+                window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+            } else if (!cancel) {
+                window.location.reload();
+            } else {
+                this.securityHandler.activate();
+            }
         }
     },
-    created() {
+    async created() {
+        this.securityHandler.setPredicate(() => this.changed);
+
         // Load courseset if an ID is given
         if (this.courseSetId !== '') {
-            STUDIP.jsonapi.withPromises().get(
+            const courseset = await STUDIP.jsonapi.withPromises().get(
                 'course-sets/' + this.courseSetId,
                 {data: {include: 'admission-rules,courses,institutes'}}
-            ).then(courseset => {
-                this.name = courseset.data.attributes.name;
-                this.private = courseset.data.attributes.private;
-                this.additional = courseset.data.attributes.infotext;
-                this.numApplicants = courseset.data.attributes['num-applicants'];
-                this.userLists = courseset.data.attributes['userlists'];
+            );
 
-                courseset.included.forEach(entry => {
-                    switch (entry.type) {
-                        case 'institutes':
-                            this.addInstitute(entry.id, entry.attributes.name);
-                            break;
-                        case 'courses':
-                            this.courses.push(entry);
-                            break;
-                        case 'admission-rules':
-                            this.rules.push(entry);
-                            break;
-                    }
-                });
+            this.name = courseset.data.attributes.name;
+            this.private = courseset.data.attributes.private;
+            this.additional = courseset.data.attributes.infotext;
+            this.numApplicants = courseset.data.attributes['num-applicants'];
+            this.userLists = courseset.data.attributes['userlists'];
 
-                this.checkForUserLists();
+            courseset.included.forEach(entry => {
+                switch (entry.type) {
+                    case 'institutes':
+                        this.addInstitute(entry.id, entry.attributes.name);
+                        break;
+                    case 'courses':
+                        this.courses.push(entry);
+                        break;
+                    case 'admission-rules':
+                        this.rules.push(entry);
+                        break;
+                }
             });
+
+            this.checkForUserLists();
         } else if (this.myInstitutes.length === 1) {
             this.addInstitute(this.myInstitutes[0].id, this.myInstitutes[0].name);
         }
@@ -725,6 +738,8 @@ export default {
         if (this.courseSearchterm) {
             this.getAvailableCourses();
         }
+
+        this.initialCoursesetDataAsJSON = JSON.stringify(this.coursesetData);
     },
     watch: {
         checkedCourses: {
