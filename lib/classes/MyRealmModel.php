@@ -130,13 +130,17 @@ class MyRealmModel
 
     /**
      * Get all courses vor given user in selected semesters
+     *
+     * @return Course[]
      */
     public static function getCourses($min_sem_key, $max_sem_key, $params = [])
     {
         // init
-        $order_by         = $params['order_by'] ?? null;
-        $order            = $params['order'] ?? null;
-        $deputies_enabled = $params['deputies_enabled'];
+        $order_by          = $params['order_by'] ?? null;
+        $order             = $params['order'] ?? null;
+        $deputies_enabled  = !empty($params['deputies_enabled']);
+        $studygroup_filter = !empty($params['studygroups_enabled']);
+        $studygroups_only  = !empty($params['studygroups_only']);
 
         $sem_data = Semester::getAllAsArray();
 
@@ -156,7 +160,6 @@ class MyRealmModel
         }
 
         $semesters = Semester::findMany($semester_ids);
-        $studygroup_filter = !empty($params['studygroups_enabled']);
         $ordering          = '';
         // create ordering
         if (!$order_by) {
@@ -186,19 +189,22 @@ class MyRealmModel
         }
         // create a new collection for more functionality
         $courses = new SimpleCollection($courses);
-        if ($studygroup_filter) {
-            $courses = $courses->filter(function ($a) {
-                return !$a->isStudygroup();
+        if ($studygroup_filter && $studygroups_only) {
+            $courses = $courses->filter(fn($a) => $a->isStudygroup());
+        } else {
+            $courses = $courses->filter(function (Course $a) use ($studygroup_filter, $semesters) {
+                if ($studygroup_filter && $a->isStudygroup()) {
+                    return false;
+                }
+
+                foreach ($semesters as $semester) {
+                    if ($a->isInSemester($semester)) {
+                        return true;
+                    }
+                }
+                return false;
             });
         }
-        $courses = $courses->filter(function ($a) use ($semesters) {
-            foreach ($semesters as $semester) {
-                if ($a->isInSemester($semester)) {
-                    return true;
-                }
-            }
-            return false;
-        });
         return self::sortCourses($courses, $ordering);
     }
 
@@ -263,6 +269,8 @@ class MyRealmModel
      */
     public static function getPreparedCourses($sem = '', $params = [])
     {
+        $studygroups_only = !empty($params['studygroups_only']);
+
         $semesters   = self::getSelectedSemesters($sem);
         $current_semester_nr = Semester::getIndexById(Semester::findCurrent()->id ?? null);
         $min_sem_key = min($semesters);
@@ -334,7 +342,7 @@ class MyRealmModel
 
             // add the course to the correct semester
 
-            if (empty($_course['parent_course']) && !$course->isStudygroup()) {
+            if (empty($_course['parent_course'])) {
                 if ($course->isOpenEnded()) {
                     if ($current_semester_nr >= $min_sem_key && $current_semester_nr <= $max_sem_key) {
                         $sem_courses[$current_semester_nr][$course->id] = $_course;
@@ -351,11 +359,15 @@ class MyRealmModel
                         }
                     }
                 }
-            } elseif(!empty($_course['parent_course'])) {
+            } elseif (!empty($_course['parent_course'])) {
                 $children[$_course['parent_course']][] = $_course;
             }
             if ($course->isStudygroup()) {
                 foreach ($course->connectedcourses as $connectedcourse) {
+                    if ($studygroups_only && !$connectedcourse->isStudygroup()) {
+                        continue;
+                    }
+
                     if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) {
                         $children[$connectedcourse->id][] = $_course;
                     }
