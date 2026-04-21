@@ -32,11 +32,7 @@
                           method="post"
                           data-dialog>
                         <input type="hidden" name="seminar_id" value="<?= htmlReady($course->getId()) ?>">
-                        <button type="submit"
-                                title="<?= _('Zur Veranstaltung hinzufügen') ?>"
-                                style="border: none; background: none; cursor: pointer;">
-                            <?= Icon::create('add')->asImg(['class' => 'text-bottom']) ?>
-                        </button>
+                        <?= Icon::create('add')->asInput(['title' => _('Zur Veranstaltung hinzufügen')]) ?>
                     </form>
                 </td>
             </tr>
