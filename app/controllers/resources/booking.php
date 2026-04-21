@@ -1415,17 +1415,38 @@ class Resources_BookingController extends AuthenticatedController
             //that are relevant to create/edit new bookings.
 
             //Check if there are reservations:
-            foreach ($this->resources as $resource) {
-                $reservations = ResourceBooking::findByResourceAndTimeRanges(
-                    $resource,
-                    $time_intervals,
-                    [1, 3],
-                    isset($this->booking->id) ? [$this->booking->id] : []
-                );
-                $reservations_to_overwrite = array_merge(
-                    $reservations_to_overwrite,
-                    $reservations
-                );
+            foreach ($time_intervals as $index => $interval) {
+                foreach ($this->resources as $resource) {
+                    $booking_time_intervals = [];
+                    if ($this->booking_style === 'repeat') {
+                        //Create a temporary booking for each resource and calculate
+                        //the time intervals of the booking with the data.
+                        $temp_booking = new ResourceBooking();
+                        $temp_booking->booking_user_id  = $this->current_user->id;
+                        $temp_booking->resource_id      = $resource->id;
+                        $temp_booking->begin            = $interval['begin']->getTimestamp();
+                        $temp_booking->end              = $interval['end']->getTimestamp();
+                        $temp_booking->preparation_time = $this->preparation_time;
+                        $temp_booking->subsequent_time  = $this->subsequent_time;
+                        $temp_booking->repeat_end       = $this->repetition_end->getTimestamp();
+                        if ($this->repetition_date_interval) {
+                            $temp_booking->repetition_interval = $this->repetition_date_interval->format('P%YY%MM%DD');
+                        }
+                        $booking_time_intervals = $temp_booking->calculateTimeIntervals();
+                    } else {
+                        $booking_time_intervals = [$interval];
+                    }
+                    $reservations = ResourceBooking::findByResourceAndTimeRanges(
+                        $resource,
+                        $booking_time_intervals,
+                        [1, 3],
+                        isset($this->booking->id) ? [$this->booking->id] : []
+                    );
+                    $reservations_to_overwrite = array_merge(
+                        $reservations_to_overwrite,
+                        $reservations
+                    );
+                }
             }
             if ($reservations_to_overwrite && !$this->overwrite_reservations) {
                 $this->show_reservation_overwrite_button = true;
