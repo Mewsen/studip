@@ -143,7 +143,7 @@
                         <td style="font-weight: bold;">
                             <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['again' => 'yes', 'sso' => $sso, 'to' => $data[0]['seminar_id']]) ?>">
                                 <?= htmlReady($sem_titel) ?>
-                                <?= (($semester = Course::find($data[0]['range_id'])->semester_text) ? ' ('.$semester.')' : '') ?>
+                                <?= (($semester = Course::find($data[0]['seminar_id'])->semester_text) ? ' ('.$semester.')' : '') ?>
                             </a>
                         </td>
                         <td></td>
