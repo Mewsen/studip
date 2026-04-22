@@ -764,25 +764,19 @@ article.studip > section > table.default:last-child {
 
 table.withdetails {
     > tbody > tr:not(.details) > td:first-child {
-        @include icon(before, arr_1right, $align: bottom);
-        &::before {
-            color: var(--color--highlight);
-        }
         > a {
-            margin-left: -20px;
-            padding-left: 20px;
+            @include icon(before, arr_1right, $align: bottom);
+            &::before {
+                transition: transform var(--transition-duration);
+            }
         }
     }
 
     > tbody > tr.open > td {
         background-color: var(--color--table-header);
-        &::before {
-            color: var(--color--highlight);
+        > a::before {
+            transform: rotate(90deg);
         }
-    }
-
-    > tbody > tr.open > td:first-child {
-        @include icon(before, arr_1down, $align: bottom);
     }
 
     tr.details {
