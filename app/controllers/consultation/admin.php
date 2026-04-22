@@ -183,7 +183,7 @@ class Consultation_AdminController extends ConsultationController
                 ->withProps([
                     'as-dialog'            => Request::isXhr(),
                     'cancel-url'           => $this->indexURL(),
-                    'default-room'         => $room,
+                    'default-room'         => $room ?? '',
                     'range-type'           => get_class($this->range),
                     'slot-count-threshold' => self::SLOT_COUNT_THRESHOLD,
                     'store-url'            => $this->storeURL(),
