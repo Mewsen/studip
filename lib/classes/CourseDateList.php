@@ -190,12 +190,18 @@ class CourseDateList implements Stringable
         if ($group_by_rooms) {
             $grouped_dates = [];
             foreach ($this->regular_dates as $regular_date) {
-                $room = $regular_date->getMostBookedRoom();
-                if ($room instanceof Room) {
-                    if (!array_key_exists($room->name, $grouped_dates)) {
-                        $grouped_dates[$room->name] = new CourseDateList();
+                $rooms = $regular_date->getMostBookedRooms();
+                $room_name = '';
+                if ($rooms) {
+                    $room_names = implode(', ', array_column($rooms, 'name'));
+                } else {
+                    $room_name = implode(', ', $regular_date->getMostUsedFreetextRoomNames());
+                }
+                if ($room_name) {
+                    if (!array_key_exists($room_name, $grouped_dates)) {
+                        $grouped_dates[$room_name] = new CourseDateList();
                     }
-                    $grouped_dates[$room->name]->addRegularDate($regular_date);
+                    $grouped_dates[$room_name]->addRegularDate($regular_date);
                 } else {
                     if (!array_key_exists(_('Ohne Raum'), $grouped_dates)) {
                         $grouped_dates[_('Ohne Raum')] = new CourseDateList();
@@ -242,17 +248,23 @@ class CourseDateList implements Stringable
         foreach ($this->regular_dates as $regular_date) {
             $date_line = $regular_date->toString($with_room_names ? 'long-start' : 'long-start-without-room');
             if ($with_room_names || $group_by_rooms) {
-                $room = $regular_date->getMostBookedRoom();
-                if ($room instanceof Room) {
+                $rooms = $regular_date->getMostBookedRooms();
+                $room_name = '';
+                if ($rooms) {
+                    $room_names = implode(', ', array_column($rooms, 'name'));
+                } else {
+                    $room_name = implode(', ', $regular_date->getMostUsedFreetextRoomNames());
+                }
+                if ($room_name) {
                     if ($with_room_names) {
-                        $date_line .= ' (' . sprintf(_('Raum %s'), $room->name) . ')';
+                        $date_line .= ' (' . sprintf(_('Raum %s'), $room_name) . ')';
                         $output[] = $date_line;
                     } else {
                         //Group by rooms.
-                        if (!isset($output[$room->name])) {
-                            $output[$room->name] = [];
+                        if (!isset($output[$room_name])) {
+                            $output[$room_name] = [];
                         }
-                        $output[$room->name][] = $date_line;
+                        $output[$room_name][] = $date_line;
                     }
                 } elseif ($group_by_rooms) {
                     //Use the "null" room name:
