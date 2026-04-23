@@ -193,7 +193,7 @@ class CourseDateList implements Stringable
                 $rooms = $regular_date->getMostBookedRooms();
                 $room_name = '';
                 if ($rooms) {
-                    $room_names = implode(', ', array_column($rooms, 'name'));
+                    $room_name = implode(', ', array_column($rooms, 'name'));
                 } else {
                     $room_name = implode(', ', $regular_date->getMostUsedFreetextRoomNames());
                 }
@@ -251,7 +251,7 @@ class CourseDateList implements Stringable
                 $rooms = $regular_date->getMostBookedRooms();
                 $room_name = '';
                 if ($rooms) {
-                    $room_names = implode(', ', array_column($rooms, 'name'));
+                    $room_name = implode(', ', array_column($rooms, 'name'));
                 } else {
                     $room_name = implode(', ', $regular_date->getMostUsedFreetextRoomNames());
                 }
