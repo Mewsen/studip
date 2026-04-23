@@ -1,15 +1,16 @@
 import {$gettext} from "../../assets/javascripts/lib/gettext";
 import {DirectiveBinding, nextTick} from "vue";
 
-const messages = {
-    0: $gettext('Passwort verstecken'),
-    1: $gettext('Passwort anzeigen'),
-};
 
 function initialize(el: HTMLElement): void {
     if (!el.parentElement) {
         return;
     }
+
+    const messages = {
+        0: $gettext('Passwort verstecken'),
+        1: $gettext('Passwort anzeigen'),
+    };
 
     el.classList.add('allow-plaintext-toggle');
 
