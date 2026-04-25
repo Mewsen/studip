@@ -67,7 +67,9 @@ class Course_OverviewController extends AuthenticatedController
             $this->next_date   = $this->course->getNextDate();
             $this->first_date  = $this->course->getFirstDate();
             $show_link         = $GLOBALS["perm"]->have_studip_perm('autor', $this->course_id) && $this->course->isToolActive('schedule');
-            $this->times_rooms = $this->course->getAllDatesInSemester()->toHtml();
+            $this->times_rooms = $this->course->getAllDatesInSemester()->toHtml(
+                with_room_names: true
+            );
 
             //Load lecturers:
             $lecturers = $this->course->getMembersWithStatus('dozent');

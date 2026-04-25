@@ -186,7 +186,6 @@ class CourseDateList implements Stringable
             return _('Die Zeiten der Veranstaltung stehen nicht fest.');
         }
 
-        $template = null;
         if ($group_by_rooms) {
             $grouped_dates = [];
             foreach ($this->regular_dates as $regular_date) {

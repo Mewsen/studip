@@ -67,7 +67,7 @@
                         </button>
                     </td>
                     <td v-for="active_field in sortedActivatedFields" :key="active_field">
-                        <div v-html="course[active_field]"></div>
+                        <div v-html="course[active_field]" v-collapsible-list.strict></div>
                         <a v-if="active_field === 'name' && getChildren(course).length > 0"
                            @click.prevent="toggleOpenChildren(course.id)"
                            href="">
@@ -115,6 +115,7 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import CollapsibleListDirective from "../directives/collapsible-list";
 
 export default {
     name: 'AdminCourses',
@@ -139,6 +140,9 @@ export default {
             open_children: [],
             contentWidth: null,
         };
+    },
+    directives: {
+        collapsibleList: CollapsibleListDirective
     },
     created() {
         this.loadCourses();
