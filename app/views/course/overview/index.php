@@ -17,12 +17,12 @@
             </dd>
             <? if ($next_date) : ?>
                 <dt><?= _('Nächster Termin') ?></dt>
-                <dd><?= htmlReady($next_date->getFullName('long')) ?></dd>
+                <dd><?= htmlReady($next_date->getFullName('long-include-room')) ?></dd>
             <? else : ?>
                 <dt><?= _('Erster Termin') ?></dt>
                 <dd>
                 <? if ($first_date) : ?>
-                    <?= htmlReady($first_date->getFullName('long')) ?>
+                    <?= htmlReady($first_date->getFullName('long-include-room')) ?>
                 <? else : ?>
                     <?= _('Die Zeiten der Veranstaltung stehen nicht fest.') ?>
                 <? endif ?>

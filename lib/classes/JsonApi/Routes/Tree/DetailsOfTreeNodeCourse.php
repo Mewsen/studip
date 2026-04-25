@@ -27,7 +27,7 @@ class DetailsOfTreeNodeCourse extends NonJsonApiController
             'semester' => $course->semester_text,
             'lecturers' => [],
             'admissionstate' => null,
-            'dates' => $dates->toHtml(false, true)
+            'dates' => $dates->toHtml(with_room_names: true),
         ];
 
         // Get lecturers

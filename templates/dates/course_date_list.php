@@ -10,7 +10,7 @@
  */
 ?>
 <? if (!$collection->isEmpty()) : ?>
-    <ul class="list-unstyled">
+    <ul class="list-unstyled collapsible-list" data-label="<?= _('Termine') ?>">
         <? foreach ($collection->getRegularDates() as $regular_date) : ?>
             <li>
                 <?= $regular_date->toString($with_room_names ? 'long-start' : 'long-start-without-room', true) ?>

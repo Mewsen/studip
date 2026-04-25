@@ -21,19 +21,22 @@
                 </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
             </span>
         </div>
-        <Teleport :to="'#course-dates-' + course" :append="true">
-            <span v-html="details.dates"></span>
+        <Teleport :to="'#course-dates-' + course">
+            <div v-html="details.dates" v-collapsible-list></div>
         </Teleport>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { TreeMixin } from '../../mixins/TreeMixin';
+import { TreeMixin } from '@/vue/mixins/TreeMixin';
+import CollapsibleListDirective from '@/vue/directives/collapsible-list';
 
 export default {
     name: 'TreeCourseDetails',
     mixins: [ TreeMixin ],
+    directives: {
+        'collapsible-list': CollapsibleListDirective
+    },
     props: {
         course: {
             type: String,
@@ -45,12 +48,8 @@ export default {
             details: null
         }
     },
-    mounted() {
-        axios.get(
-            STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/course/details/' + this.course)
-        ).then(response => {
-            this.details = response.data;
-        });
+    async mounted() {
+        this.details = await STUDIP.jsonapi.withPromises().GET(`tree-node/course/details/${this.course}`);
     }
 }
 </script>

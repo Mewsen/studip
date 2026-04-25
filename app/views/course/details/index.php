@@ -178,14 +178,14 @@
         <? if ($next_date) : ?>
             <tr>
                 <td><strong><?= _('Nächster Termin') ?></strong></td>
-                <td><?= htmlReady($next_date->getFullname()) ?></td>
+                <td><?= htmlReady($next_date->getFullname('long-include-room')) ?></td>
             </tr>
         <? else : ?>
             <? $firstTerm = $course->getFirstDate() ?>
             <? if ($firstTerm) : ?>
                 <tr>
                     <td><strong><?= _('Erster Termin') ?></strong></td>
-                    <td><?= htmlReady($firstTerm->getFullname()) ?></td>
+                    <td><?= htmlReady($firstTerm->getFullname('long-include-room')) ?></td>
                 </tr>
             <? endif ?>
         <? endif ?>
