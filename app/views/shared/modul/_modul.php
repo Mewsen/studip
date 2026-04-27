@@ -176,7 +176,7 @@ $deskriptor = $modul->getDeskriptor($display_language ?? null);
         <tr>
             <td><strong><?= _('Prüfungsebene') ?></strong></td>
             <td data-mvv-field="mvv_modul.pruef_ebene">
-                <?= htmlReady($GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->getReplacedValue('pruef_ebene')] ?? '') ?>
+                <?= htmlReady($GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->getReplacedValue('pruef_ebene')]['name'] ?? '') ?>
             </td>
         </tr>
         <tr>
