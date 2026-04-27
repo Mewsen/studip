@@ -179,7 +179,7 @@ class MyCoursesController extends AuthenticatedController
                     'mycourses',
                     $this->helper->createVueAppData(
                         sem_key: '',
-                        studygroups: true
+                        studygroups: $studygroups
                     ),
                 )
         );
