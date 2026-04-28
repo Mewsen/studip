@@ -283,41 +283,6 @@ td.index_box_cell {
     padding: 4px;
 }
 
-/* --- Editor Toolbar ------------------------------------------------------- */
-.add_toolbar {
-    box-sizing: border-box;
-}
-.editor_toolbar {
-    display: inline-block;
-
-    .buttons {
-        font-size: 0.75em;
-
-        @include clearfix;
-        margin: 0 !important;  // Locked since .buttons is pretty generic
-        padding: 0 !important; // and other styles could easily interfere
-
-        border-spacing: 0; // Chrome needs this
-
-        .left  { float: left; }
-        .right { float: right; }
-
-        .ui-button {
-            background: var(--dark-gray-color-15);
-            display: inline-block;
-            height: 1.4em;
-            line-height: 1.4;
-            padding-top: 6px;
-            padding-bottom: 6px;
-
-            &:hover {
-                background-color: var(--base-color-60);
-                color: var(--contrast-content-white);
-            }
-        }
-    }
-}
-
 /* --- User Administration -------------------------------------------------- */
 
 

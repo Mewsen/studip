@@ -19,7 +19,7 @@
  * @property I18NString $lebenslauf database column
  * @property I18NString $publi database column
  * @property I18NString $schwerp database column
- * @property string $home database column
+ * @property I18NString $home database column
  * @property string $privatnr database column
  * @property string $privatcell database column
  * @property string $privadr database column
@@ -55,6 +55,7 @@ class UserInfo extends SimpleORMap
         $config['i18n_fields']['lebenslauf'] = true;
         $config['i18n_fields']['schwerp'] = true;
         $config['i18n_fields']['publi'] = true;
+        $config['i18n_fields']['home'] = true;
         parent::configure($config);
     }
 }

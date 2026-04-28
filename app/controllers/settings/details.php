@@ -110,6 +110,9 @@ class Settings_DetailsController extends Settings_SettingsController
             }
 
             $value = Request::get($key);
+            if (in_array($key, ['home'])) {
+                $value = Request::i18n($key);
+            }
             if (in_array($key, ['hobby', 'lebenslauf', 'schwerp', 'publi'])) {
                 // purify HTML input for these fields if wysiwyg is used
                 $value = Studip\Markup::purifyHtml(Request::i18n($key));

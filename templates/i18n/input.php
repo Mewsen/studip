@@ -31,6 +31,6 @@
         }
     ?>
     <div class="i18n" data-lang="<?= $lang['name'] ?>" data-icon="url(<?= Assets::image_path("languages/{$lang['picture']}") ?>)">
-        <input type="text" <?= arrayToHtmlAttributes($attr) ?>>
+        <input <?= arrayToHtmlAttributes($attr) ?>>
     </div>
 <? endforeach; ?>

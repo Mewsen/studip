@@ -35,9 +35,7 @@
         </label>
         <label>
             <?= _('Homepage') ?>
-            <input type="url" name="home" id="homepage"
-                   value="<?= htmlReady($user->Home) ?>"
-                    <? if (!$controller->shallChange('user_info.Home')) echo 'disabled'; ?>>
+            <?= I18N::input('home', $user->Home, ['type' => 'url'] + (!$controller->shallChange('user_info.Home') ? ['disabled' => true] : [])) ?>
         </label>
         <label>
             <?= _('Hobbys') ?>
