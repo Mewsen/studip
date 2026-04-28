@@ -28,7 +28,7 @@
                         <form method="post">
                             <?= CSRFProtection::tokenTag(); ?>
                             <? $actionMenu = ActionMenu::get()->setContext($abschnitt->name) ?>
-                            <? if (MvvPerm::havePermWrite($version)) : ?>
+                            <? if (MvvPerm::havePermWrite($abschnitt)) : ?>
                                 <? $actionMenu->addLink(
                                     $controller->action_url('abschnitt/' . $abschnitt->id),
                                     _('Studiengangteil-Abschnitt bearbeiten'),
@@ -36,7 +36,7 @@
                                     tooltip2(_('Studiengangteil-Abschnitt bearbeiten')) + ['data-dialog' => true])
                                 ?>
                             <? endif; ?>
-                            <? if (MvvPerm::haveFieldPermAbschnitte($version, MvvPerm::PERM_CREATE)) : ?>
+                            <? if (MvvPerm::havePermCreate($abschnitt)) : ?>
                                 <? if (!$abschnitt->count_module) : ?>
                                     <? $actionMenu->addButton(
                                         'delete',
