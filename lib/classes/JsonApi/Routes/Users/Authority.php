@@ -36,7 +36,7 @@ class Authority
 
     public static function canEditUser(User $user, User $userToShow)
     {
-        return $user->id === $userToShow->id;
+        return $user->id === $userToShow->id || $GLOBALS['perm']->have_perm('root', $user->id);
     }
 
     /**
