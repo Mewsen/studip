@@ -162,9 +162,8 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
         $link = [];
         $params = [];
         $type = '0';
-        $file_name = $this->file->name ?: $this->name;
+        $file_name = $this->name ?: $this->file->name;
         $file_id = $this->id;
-
         switch($mode) {
             case 'rewrite':
                 $link[] = 'download/';
