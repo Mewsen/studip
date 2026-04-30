@@ -51,7 +51,7 @@ class Settings_StudiesController extends Settings_SettingsController
     {
         $this->faecher              = StudyCourse::findBySQL('1 ORDER BY name');
         $this->abschluesse          = Abschluss::findBySQL('1 ORDER by name');
-        $this->available_institutes = Institute::getInstitutes();
+        $this->available_institutes = Institute::findAll();
         $this->institutes           = $this->user->institute_memberships->filter(function ($a) {
             return $a->inst_perms === 'user';
         });

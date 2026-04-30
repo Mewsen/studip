@@ -90,9 +90,9 @@ use Studip\Button;
             <select name="institute">
                 <option value=""><?= _('Alle')?></option>
                 <? foreach ($institutes as $institute) : ?>
-                    <option value="<?= htmlReady($institute['Institut_id']) ?>"
-                        <?= isset($request['institute']) && $request['institute'] === $institute['Institut_id'] ? 'selected' : ''?>>
-                        <?= htmlReady($institute['Name'])?>
+                    <option value="<?= htmlReady($institute->id) ?>"
+                        <?= isset($request['institute']) && $request['institute'] === $institute->id ? 'selected' : ''?>>
+                        <?= htmlReady($institute->getFullName('name-type')) ?>
                     </option>
                 <? endforeach ?>
             </select>
