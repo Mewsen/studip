@@ -7,6 +7,7 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use JsonApi\Routes\Users\Authority as UsersAuthority;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Semester;
@@ -43,11 +44,13 @@ class CoursesByUserIndex extends JsonApiController
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         $user = User::find($args['id']);
+        $observer = $this->getUser($request);
+
         if (!$user) {
             throw new RecordNotFoundException();
         }
 
-        if (!Authority::canIndexMembershipsOfUser($this->getUser($request), $user)) {
+        if (!UsersAuthority::canShowUser($observer, $user)) {
             throw new AuthorizationFailedException();
         }
 
@@ -56,9 +59,16 @@ class CoursesByUserIndex extends JsonApiController
             throw new BadRequestException($error);
         }
 
+        if ($observer->id === $user->id || $GLOBALS['perm']->have_perm('root', $observer->id)) {
+            $permission = null;
+        } else {
+            $permission = 'dozent';
+        }
+
         $courses = $this->findCoursesByUser(
             $user,
-            $this->getSemesterFilter()
+            $this->getSemesterFilter(),
+            $permission
         );
         [$offset, $limit] = $this->getOffsetAndLimit();
 
@@ -96,25 +106,20 @@ class CoursesByUserIndex extends JsonApiController
     /**
      * @param User $user
      * @param Semester|null $semester
+     * @param string|null $permission
      *
      * @return Course[]
      */
-    private function findCoursesByUser(User $user, ?Semester $semester): array
+    private function findCoursesByUser(User $user, ?Semester $semester, ?string $permission): array
     {
-        $courses = Course::findBySQL(
-            'LEFT JOIN `semester_courses`
-            ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
-            LEFT JOIN `semester_data` USING (`semester_id`)
-            WHERE
-            `seminare`.`seminar_id` IN ( :course_ids )
-            ORDER BY `semester_data`.`beginn`, `seminare`.`name`',
-            ['course_ids' => $user->course_memberships->pluck('seminar_id')]
-        );
+        if ($permission) {
+            $courses = Course::findBySQL('JOIN seminar_user USING(Seminar_id) WHERE user_id = ? AND seminare.visible = 1 AND seminar_user.status = ?', [$user->id, $permission]);
+        } else {
+            $courses = Course::findBySQL('JOIN seminar_user USING(Seminar_id) WHERE user_id = ?', [$user->id]);
+        }
 
         if ($semester) {
-            $courses = array_filter($courses, function (Course $course) use ($semester): bool {
-                return $course->isInSemester($semester);
-            });
+            $courses = array_filter($courses, fn(Course $course) => $course->isInSemester($semester));
         }
 
         return $courses;
