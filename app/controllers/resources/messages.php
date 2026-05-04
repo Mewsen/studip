@@ -23,6 +23,30 @@
  */
 class Resources_MessagesController extends AuthenticatedController
 {
+    /**
+     * return Room[]
+     */
+    protected function buildRoomList(array $room_ids) : array
+    {
+        $rooms = [];
+        if (count($room_ids) > 0) {
+            Room::findEachMany(
+                function (Room $room) use (&$rooms) {
+                    // The current user must have at least user permissions to preselect a room.
+                    if (!$room->userHasPermission($this->current_user)) {
+                        return;
+                    }
+
+                    // Set the room as selected room and put its ID in the new room-ID list.
+                    $rooms[$room->id] = $room;
+                },
+                $room_ids,
+                'ORDER BY name'
+            );
+        }
+        return $rooms;
+    }
+
     public function index_action()
     {
         if (Navigation::hasItem('/resources/messages/index')) {
@@ -44,23 +68,8 @@ class Resources_MessagesController extends AuthenticatedController
         $this->recipient_selection = 'permission';
         $this->clipboard_id = '';
         $this->min_permission = '';
-        $this->room_ids = Request::getArray('room_ids');
-        $this->selected_rooms = [];
-        $new_room_id_list     = [];
-        if (count($this->room_ids) > 0) {
-            $rooms = Room::findMany($this->room_ids, 'ORDER BY name ASC');
-            foreach ($rooms as $room) {
-                //The current user must have at least user permissions to preselect a room.
-                if ($room->userHasPermission($this->current_user)) {
-                    //Set the room as selected room and put its ID in the new room-ID list.
-                    $this->selected_rooms[] = $room;
-                    $new_room_id_list[]     = $room->id;
-                }
-            }
-        }
-        //Filter out all rooms from the room-ID list where the user does not have user permissions:
-        $old_room_id_list = $this->room_ids;
-        $this->room_ids   = $new_room_id_list;
+        $initial_room_ids     = Request::getArray('room_ids');
+        $this->selected_rooms = $this->buildRoomList($initial_room_ids);
 
         $this->room_search = new QuickSearch(
             'room_name',
@@ -89,15 +98,6 @@ class Resources_MessagesController extends AuthenticatedController
             $this->clipboard_id = Request::int('clipboard_id');
 
             //First validation:
-
-            if (empty($this->room_ids)) {
-                if (empty($old_room_id_list)) {
-                    PageLayout::postError(_('Sie haben keinen Raum ausgewählt.'));
-                } else {
-                    PageLayout::postError(_('Sie haben an den ausgewählten Räumen nicht die erforderlichen Berechtigungen, um eine Rundmail zu senden.'));
-                }
-                return;
-            }
 
             if (!in_array($this->room_selection, ['search', 'clipboard'])) {
                 PageLayout::postError(
@@ -167,24 +167,23 @@ class Resources_MessagesController extends AuthenticatedController
                 }
             }
 
-            //Validation complete. We can collect the rooms and then the
-            //recipients and send the mails.
-
-            //First we collect all room-IDs, if they are not already there
-            //from the search selection method:
+            //We now collect the rooms and check if all the permissions are present:
             if ($this->room_selection == 'clipboard') {
+                //We need to collect the room-IDs differently than when a room is selected directly.
                 $selected_clipboard = Clipboard::find($this->clipboard_id);
-
                 if ($selected_clipboard) {
-                    $this->room_ids = $selected_clipboard->getAllRangeIds('Room');
+                    $initial_room_ids     = $selected_clipboard->getAllRangeIds('Room');
+                    $this->selected_rooms = $this->buildRoomList($initial_room_ids);
                 }
             }
 
-            //If we haven't found any rooms here we must stop:
-            if (!$this->room_ids) {
-                PageLayout::postError(
-                    _('Es konnte keine Raumliste erstellt werden!')
-                );
+            //If we haven't found any rooms with sufficient permissions here we must stop:
+            if (empty($this->selected_rooms)) {
+                if (empty($initial_room_ids)) {
+                    PageLayout::postError(_('Sie haben keinen Raum ausgewählt.'));
+                } else {
+                    PageLayout::postError(_('Sie haben an den ausgewählten Räumen nicht die erforderlichen Berechtigungen, um eine Rundmail zu senden.'));
+                }
                 return;
             }
 
@@ -221,19 +220,15 @@ class Resources_MessagesController extends AuthenticatedController
                         end >= :now
                     )",
                     [
-                        'room_ids' => $this->room_ids,
+                        'room_ids' => array_keys($this->selected_rooms),
                         'perms' => $perm_levels,
                         'now' => $now
                     ]
                 );
             } elseif ($this->recipient_selection == 'booking') {
-                foreach ($this->room_ids as $room_id) {
-                    $resource = Resource::find($room_id);
-                    if (!$resource) {
-                        continue;
-                    }
+                foreach ($this->selected_rooms as $room) {
                     $relevant_room_bookings = ResourceBooking::findByResourceAndTimeRanges(
-                        $resource,
+                        $room,
                         [
                             [
                                 'begin' => $this->begin,
