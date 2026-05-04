@@ -53,6 +53,7 @@ class SchemaMap
             \Forum\DTO\Tag::class => \JsonApi\Schemas\Forum\Tag::class,
             \Institute::class => Schemas\Institute::class,
             \InstituteMember::class => Schemas\InstituteMember::class,
+            \Kategorie::class => Schemas\ProfileCategory::class,
             \LtiTool::class => Schemas\LtiTool::class,
             \MassMail\MassMailMessage::class => Schemas\MassMailMessage::class,
             \MassMail\MassMailPermission::class => Schemas\MassMailPermission::class,

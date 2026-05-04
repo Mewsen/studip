@@ -26,6 +26,7 @@ class User extends SchemaProvider
     const REL_INSTITUTE_MEMBERSHIPS = 'institute-memberships';
     const REL_NEWS = 'news';
     const REL_OUTBOX = 'outbox';
+    const REL_PROFILE_CATEGORIES = 'profile-categories';
     const REL_SCHEDULE = 'schedule';
 
     /**
@@ -191,6 +192,11 @@ class User extends SchemaProvider
             );
             $relationships = $this->getNewsRelationship($relationships, $user, $this->shouldInclude($context, self::REL_NEWS));
             $relationships = $this->getOutboxRelationship($relationships, $user, $this->shouldInclude($context, self::REL_OUTBOX));
+            $relationships = $this->getProfileCategoriesRelationship(
+                $relationships,
+                $user,
+                $this->shouldInclude($context, self::REL_PROFILE_CATEGORIES)
+            );
             $relationships = $this->getScheduleRelationship($relationships, $user, $this->shouldInclude($context, self::REL_SCHEDULE));
             $relationships = $this->getCoursewareBookmarksRelationship($relationships, $user, $this->shouldInclude($context, self::REL_COURSEWARE_BOOKMARKS));
         }
@@ -237,6 +243,20 @@ class User extends SchemaProvider
                 ];
             }
         }
+
+        return $relationships;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    private function getProfileCategoriesRelationship(array $relationships, \User $user, $includeData)
+    {
+        $relationships[self::REL_PROFILE_CATEGORIES] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($user, self::REL_PROFILE_CATEGORIES),
+            ],
+        ];
 
         return $relationships;
     }
