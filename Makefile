@@ -6,10 +6,10 @@ PHP_SOURCES = $(shell find app config lib public templates -name '*.php' \( ! -p
 VUE_SOURCES = $(shell find resources -name '*.js' -o -name '*.vue')
 
 # build all needed files
-build: composer webpack-prod
+build: composer assets-prod
 
 # remove all generated files
-clean: clean-composer clean-npm clean-webpack clean-doc
+clean: clean-composer clean-npm clean-assets clean-doc
 
 composer: composer/composer/installed.json
 
@@ -34,25 +34,25 @@ node_modules/.package-lock.json: package.json package-lock.json
 clean-npm:
 	rm -rf node_modules
 
-webpack-dev: .webpack.dev
+assets-dev: .assets.dev
 
-webpack-prod: .webpack.prod
+assets-prod: .assets.prod
 
-webpack-watch: npm
-	npm run webpack-watch
+watch-assets: npm
+	npm run watch
 
-.webpack.dev: node_modules/.package-lock.json $(RESOURCES)
-	@rm -f .webpack.prod
-	npm run webpack-dev
+.assets.dev: node_modules/.package-lock.json $(RESOURCES)
+	@rm -f .assets.prod
+	npm run build -- --mode=development
 	@touch $@
 
-.webpack.prod: node_modules/.package-lock.json $(RESOURCES)
-	@rm -f .webpack.dev
-	npm run webpack-prod
+.assets.prod: node_modules/.package-lock.json $(RESOURCES)
+	@rm -f .assets.dev
+	npm run build -- --mode=production
 	@touch $@
 
-clean-webpack:
-	@rm -f .webpack.dev .webpack.prod
+clean-assets:
+	@rm -f .assets.dev .assets.prod
 	rm -rf public/assets/javascripts/*.js
 	rm -rf public/assets/javascripts/*.js.map
 	rm -rf public/assets/stylesheets/*.css

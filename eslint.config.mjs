@@ -9,10 +9,18 @@ export default [
     ...tseslint.configs.recommended,
     ...pluginVue.configs["flat/essential"],
     {
+        files: ['*.config.{js,mjs,cjs}'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+            sourceType: 'commonjs',
+        },
+    },
+    {
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.node,
                 "STUDIP": "writable",
                 "CKEDITOR": "writable",
                 "$": "writable",

@@ -153,6 +153,17 @@ class PageLayout
         } catch (Exception) {
         }
 
+        self::addScript('jquery.min.js?v=' . $v);
+        self::addScript('jquery-ui.min.js?v=' . $v);
+        self::addScript('select2.full.min.js?v=' . $v);
+        self::addScript('jquery.tablesorter.combined.min.js?v=' . $v);
+        self::addScript('jquery-ui-timepicker-addon.min.js?v=' . $v);
+        self::addScript('jquery.scrollTo.min.js?v=' . $v);
+        self::addScript('jquery.qrcode.min.js?v=' . $v);
+        self::addScript('jquery.ui.touch-punch.min.js?v=' . $v);
+        self::addScript('lodash.min.js?v=' . $v);
+        self::addStylesheet('jquery-ui-timepicker-addon.min.css?v=' . $v);
+
         self::addScript('studip-base.js?v=' . $v);
         self::addScript('studip-wysiwyg.js?v=' . $v);
 

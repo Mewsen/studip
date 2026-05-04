@@ -427,7 +427,7 @@ test-assets:
   before_script:
     - npm install
   script:
-    - npm run webpack-dev
+    - npm run build
 
 test-e2e:
   stage: test

@@ -2,6 +2,7 @@
 
 .env
 
+.assets.*
 .webpack.*
 composer
 node_modules
