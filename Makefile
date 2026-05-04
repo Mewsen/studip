@@ -38,7 +38,7 @@ assets-dev: .assets.dev
 
 assets-prod: .assets.prod
 
-watch-assets: npm
+assets-watch: npm
 	npm run watch
 
 .assets.dev: node_modules/.package-lock.json $(RESOURCES)
