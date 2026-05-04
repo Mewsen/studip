@@ -16,6 +16,8 @@
 
 class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
 {
+    use SimpleORMapHelpers;
+
     /**
      * Defines `_` as character used when joining composite primary keys.
      */
