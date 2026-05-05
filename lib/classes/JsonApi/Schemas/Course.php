@@ -26,6 +26,7 @@ class Course extends SchemaProvider
     const REL_SEM_TYPE = 'sem-type';
     const REL_START_SEMESTER = 'start-semester';
     const REL_STATUS_GROUPS = 'status-groups';
+    const REL_STUDY_AREAS = 'study-areas';
     const REL_TAGS = 'tags';
     const REL_TOOLS = 'tools';
     const REL_WIKI_PAGES = 'wiki-pages';
@@ -92,6 +93,7 @@ class Course extends SchemaProvider
         $relationships = $this->getSemClassRelationship($relationships, $course, $includeList);
         $relationships = $this->getSemTypeRelationship($relationships, $course, $includeList);
         $relationships = $this->getStatusGroupsRelationship($relationships, $course, $includeList);
+        $relationships = $this->getStudyAreasRelationship($relationships, $course, $includeList);
         $relationships = $this->getTagsRelationship($relationships, $course, $includeList);
         $relationships = $this->getToolsRelationship($relationships, $course, $includeList);
         $relationships = $this->getWikiPagesRelationship($relationships, $course, $includeList);
@@ -406,6 +408,23 @@ class Course extends SchemaProvider
         }
 
         return array_merge($relationships, [self::REL_STATUS_GROUPS => $relation]);
+    }
+
+    private function getStudyAreasRelationship(
+        array $relationships,
+        \Course $resource,
+        $includeData
+    ) {
+        $relation = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_STUDY_AREAS),
+            ]
+        ];
+        if (in_array(self::REL_STUDY_AREAS, $includeData)) {
+            $relation[self::RELATIONSHIP_DATA] = $resource->study_areas;
+        }
+
+        return array_merge($relationships, [self::REL_STUDY_AREAS => $relation]);
     }
 
     private function getTagsRelationship(

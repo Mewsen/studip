@@ -29,6 +29,7 @@ class CoursesShow extends JsonApiController
         'sem-type',
         'start-semester',
         'status-groups',
+        'study-areas',
         'wiki-pages',
     ];
 

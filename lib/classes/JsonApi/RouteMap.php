@@ -362,6 +362,8 @@ class RouteMap
         $group->get('/study-areas/{id}/courses', Routes\StudyAreas\CoursesOfStudyAreas::class);
         $group->get('/study-areas/{id}/institute', Routes\StudyAreas\InstituteOfStudyAreas::class);
         $group->get('/study-areas/{id}/parent', Routes\StudyAreas\ParentOfStudyAreas::class);
+
+        $group->get('/courses/{id}/study-areas', Routes\StudyAreas\ByCourseIndex::class);
     }
 
     private function addUnauthenticatedTreeRoutes(RouteCollectorProxy $group): void
