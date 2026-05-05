@@ -316,6 +316,7 @@ class RouteMap
         $group->get('/institutes/{id}/sub-institutes', Routes\Institutes\ByFacultyIndex::class);
         $group->get('/institutes/{id}/memberships', Routes\Institutes\InstituteMembershipsIndex::class);
         $group->get('/institutes/{id}/status-groups', Routes\Institutes\StatusGroupsOfInstitutes::class);
+        $group->get('/institutes/{id}/courses', Routes\Courses\CoursesByInstituteIndex::class);
     }
 
     private function addAuthenticatedLtiRoutes(RouteCollectorProxy $group): void

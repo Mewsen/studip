@@ -10,6 +10,7 @@ class Institute extends SchemaProvider
     const TYPE = 'institutes';
 
     const REL_BLUBBER = 'blubber-threads';
+    const REL_COURSES = 'courses';
     const REL_FACULTY = 'faculty';
     const REL_FILES = 'file-refs';
     const REL_FOLDERS = 'folders';
@@ -53,6 +54,12 @@ class Institute extends SchemaProvider
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relationships = [];
+
+        $relationships[self::REL_COURSES] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_COURSES),
+            ],
+        ];
 
         $relationships[self::REL_FILES] = [
             self::RELATIONSHIP_LINKS => [
