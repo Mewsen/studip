@@ -323,6 +323,19 @@ class Resources_ExportController extends AuthenticatedController
 
         $resources = array_merge($resources, $this->selected_rooms, $this->selected_resources);
 
+        //Filter out the rooms where the user does not have sufficient permissions to
+        //export bookings:
+        $resources = array_filter(
+            $resources,
+            function (Resource $resource) {
+                $resource = $resource->getDerivedClassInstance();
+                if (!$resource) {
+                    return false;
+                }
+                return $resource->userHasPermission(User::findCurrent());
+            }
+        );
+
         //Collect all bookings in the selected time range and export them.
 
         $booking_data = [
