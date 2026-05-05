@@ -5,9 +5,11 @@ const { rspack } = require('@rspack/core');
 const { RsdoctorRspackPlugin } = require('@rsdoctor/rspack-plugin');
 
 const assetsPath = path.resolve(__dirname, 'resources/assets/javascripts');
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    devtool: false,
+    stats: isProduction ? 'errors-only' : true,
+    devtool: isProduction ? 'source-map' : 'eval',
     entry: {
         'studip-base': assetsPath + '/entry-base.js',
         'studip-statusgroups': assetsPath + '/entry-statusgroups.js',
@@ -95,12 +97,23 @@ module.exports = {
                 loader: 'vue-loader',
                 options: {
                     experimentalInlineMatchResource: true,
+                    compilerOptions: {
+                        whitespace: 'preserve',
+                        isCustomElement(tag) {
+                            return ['altcha-widget'].includes(tag);
+                        },
+                    },
                 },
             },
         ],
     },
     plugins: [
         process.env.RSDOCTOR && new RsdoctorRspackPlugin({}),
+        new rspack.DefinePlugin({
+            __VUE_OPTIONS_API__: 'true',
+            __VUE_PROD_DEVTOOLS__: isProduction ? 'false' : 'true',
+            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: isProduction ? 'false' : 'true',
+        }),
         new VueLoaderPlugin(),
         new rspack.CssExtractRspackPlugin({
             filename: 'stylesheets/[name].css',
@@ -119,7 +132,13 @@ module.exports = {
                     './node_modules/jquery.qrcode/jquery.qrcode.min.js',
                     './node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js',
                     './node_modules/lodash/lodash.min.js',
+                    './node_modules/vue/dist/vue.global.prod.js',
+                    './node_modules/vuex/dist/vuex.global.prod.js',
                 ].map((from) => ({ from, to: 'javascripts/' })),
+                {
+                    from: './node_modules/@studip/pdfjs-studip',
+                    to: './javascripts/pdfjs'
+                },
                 {
                     from: './node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css',
                     to: 'stylesheets/',
@@ -154,4 +173,12 @@ module.exports = {
             buffer: require.resolve('buffer/'),
         },
     },
+    watchOptions: {
+        ignored: [/[\\/](?:\.git|node_modules)[\\/]/, /\.d\.[cm]ts$/],
+    },
+    externals: {
+        vue: 'Vue',
+        vuex: 'Vuex',
+    },
+    externalsType: 'global',
 };
