@@ -118,11 +118,17 @@ const Dialog = {
 
         // Predefine options
         if ($(element).is('form,button,input')) {
+            let form = $(element).closest('form');
+            const formId = $(element).attr('form');
+            if (formId) {
+                form = $(`#${formId}`);
+            }
+
             url = $(element).attr('formaction') ||
-                $(element).closest('form').data('formaction') ||
-                $(element).closest('form').attr('action');
-            options.method = $(element).closest('form').attr('method');
-            options.data = $(element).closest('form').serializeArray();
+                form.data('formaction') ||
+                form.attr('action');
+            options.method = form.attr('method');
+            options.data = form.serializeArray();
 
             if ($(element).is('button,input')) {
                 options.data.push({
@@ -132,9 +138,9 @@ const Dialog = {
             } else if ($(element).data().triggeredBy) {
                 options.data.push($(element).data().triggeredBy);
             }
-            $(element).closest('form').removeData('formaction');
+            form.removeData('formaction');
 
-            if ($(element).closest('form').attr('enctype') === 'multipart/form-data') {
+            if (form.attr('enctype') === 'multipart/form-data') {
                 options.processData = false;
 
                 fd = new FormData();
@@ -142,7 +148,7 @@ const Dialog = {
                     fd.append(item.name, item.value);
                 });
 
-                $(element).closest('form').find('input[type=file]').each(function() {
+                form.find('input[type=file]').each(function() {
                     let name = $(this).attr('name');
                     for (let i = 0; i < this.files.length; i += 1) {
                         fd.append(name, this.files[i]);
