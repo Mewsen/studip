@@ -93,14 +93,14 @@ onMounted(() => {
                     scope="col"
                     :class="getSortClass('title')"
                     :aria-sort="getAriaSortString('title')"
-                    :aria-label="getAriaSortLabel('title', $gettext('Diskussionstitel'))"
+                    :aria-label="getAriaSortLabel('title', $gettext('Titel'))"
                 >
                     <button
                         type="button"
                         class="as-link"
                         @click="sortBy('title')"
-                        :title="$gettext('Nach Diskussionstitel sortieren')">
-                        {{ $gettext('Diskussion') }}
+                        :title="$gettext('Nach Titel sortieren')">
+                        {{ $gettext('Titel') }}
                     </button>
                 </th>
                 <th
