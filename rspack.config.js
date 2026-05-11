@@ -174,7 +174,7 @@ module.exports = {
         },
     },
     watchOptions: {
-        ignored: [/[\\/](?:\.git|node_modules)[\\/]/, /\.d\.[cm]ts$/],
+        ignored: /[\\/](?:\.git|node_modules)[\\/]|\.d\.[cm]ts$/
     },
     externals: {
         vue: 'Vue',
