@@ -47,8 +47,8 @@ onMounted(() => {
 
                 <section>
                     <label class="studiprequired m-0">
-                        <span class="textlabel">{{ $gettext('Name') }}</span>
-                        <span :title="$gettext('Name ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
+                        <span class="textlabel">{{ $gettext('Titel') }}</span>
+                        <span :title="$gettext('Titel ist ein Pflichtfeld')" aria-hidden="true" class="asterisk">*</span>
                         <input
                             required
                             type="text"

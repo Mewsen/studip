@@ -206,14 +206,14 @@ const showCategoryDialog = category => currentCategory.value = category;
                             scope="col"
                             :class="getSortClass('name')"
                             :aria-sort="getAriaSortString('name')"
-                            :aria-label="getAriaSortLabel('name', $gettext('Name'))"
+                            :aria-label="getAriaSortLabel('name', $gettext('Titel'))"
                         >
                             <button
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('name')"
-                                :title="$gettext('Nach Name sortieren')">
-                                {{ $gettext('Name') }}
+                                :title="$gettext('Nach Titel sortieren')">
+                                {{ $gettext('Titel') }}
                             </button>
                         </th>
                         <th

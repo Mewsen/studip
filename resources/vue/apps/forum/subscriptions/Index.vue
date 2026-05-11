@@ -108,16 +108,16 @@ onMounted(async () => {
                             scope="col"
                             :class="getSortClass('subject.name')"
                             :aria-sort="getAriaSortString('subject.name')"
-                            :aria-label="getAriaSortLabel('subject.name', $gettext('Thema Name'))"
+                            :aria-label="getAriaSortLabel('subject.name', $gettext('Titel'))"
                         >
                             <button
                                 type="button"
                                 class="as-link"
                                 @click="sortBy('subject.name')"
-                                :title="$gettext('Nach Name des Thema sortieren')"
-                                :aria-label="$gettext('Nach Name des Thema sortieren')"
+                                :title="$gettext('Nach Titel sortieren')"
+                                :aria-label="$gettext('Nach Titel sortieren')"
                             >
-                                {{ $gettext('Thema') }}
+                                {{ $gettext('Titel') }}
                             </button>
                         </th>
                         <th scope="col">
@@ -236,6 +236,11 @@ onMounted(async () => {
                                     @deleted="removeSubscription(subscription.id)"
                                 />
                             </div>
+                        </td>
+                    </tr>
+                    <tr v-if="sortedData.length === 0">
+                        <td colspan="6">
+                            {{ $gettext('Sie haben noch kein Thema oder keine Diskussion abonniert.') }}
                         </td>
                     </tr>
                 </tbody>
