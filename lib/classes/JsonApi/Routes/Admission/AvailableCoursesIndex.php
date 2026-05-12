@@ -30,7 +30,8 @@ class AvailableCoursesIndex extends JsonApiController
             $body['courseset'],
             $body['exclude'],
             $semester->id,
-            $body['filter']
+            $body['filter'],
+            $body['courseType'] ?? ''
         );
 
         $courses = count($courses) > 0

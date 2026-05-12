@@ -117,8 +117,24 @@
                                 </option>
                             </select>
                         </label>
+                        <label class="col-1">
+                            {{ $gettext('Typ') }}
+                            <select ref="typeSelector"
+                                    v-model="selectedCourseType"
+                                    @change.prevent="getAvailableCourses">
+                                <optgroup v-for="semClass in allSemClasses"
+                                        :key="semClass.id"
+                                        :label="semClass.name">
+                                    <option v-for="courseType in semClass.types"
+                                            :key="courseType.id"
+                                            :value="courseType.id">
+                                        {{ courseType.name }}
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </label>
                         <label class="col-3">
-                            {{ $gettext('Suche nach Titel, Nummer, Lehrenden') }}
+                            {{ $gettext('Titel, Nummer, lehrende Person') }}
                             <studip-tooltip-icon :text="$gettext('Geben Sie einen Suchbegriff mit mehr als 3 '
                                 + 'Zeichen an oder lassen Sie das Feld leer, um nach allem zu suchen.')"/>
                             <input type="text"
@@ -377,6 +393,10 @@ export default {
             type: Object,
             required: true
         },
+        allSemClasses: {
+            type: Object,
+            required: true
+        },
         semester: {
             type: String,
             default: ''
@@ -409,6 +429,7 @@ export default {
             private: true,
             numApplicants: 0,
             institutes: [],
+            selectedCourseType: '',
             selectedSemester: this.semester,
             courseSearchterm: '',
             availableCourses: [],
@@ -505,6 +526,7 @@ export default {
                             courseset: this.courseSetId ? this.courseSetId : null,
                             exclude: this.courses.map(course => course.id),
                             semester: this.selectedSemester,
+                            courseType: this.selectedCourseType,
                             filter: term
                         }
                     }

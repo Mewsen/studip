@@ -277,6 +277,21 @@ class Admission_CoursesetController extends AuthenticatedController
             );
         }
 
+        $semClasses = [];
+        foreach (SemClass::getClasses() as $semClass) {
+            if ($semClass['studygroup_mode']) {
+                continue;
+            }
+            $semClasses[$semClass['id']] = [
+                'id'    => $semClass['id'],
+                'name'  => $semClass['name'],
+                'types' => array_map(
+                    fn($type) => ['id' => $type['id'], 'name' => $type['name']],
+                    $semClass->getSemTypes()
+                ),
+            ];
+        }
+
         $props = [
             'all-semesters' => $this->semesters,
             'my-institutes'=> $this->myinst,
@@ -292,7 +307,8 @@ class Admission_CoursesetController extends AuthenticatedController
                 )
             ),
             'institute-search' => (string) $this->isearch,
-            'instant-course-set-view' => $this->instant_course_set_view
+            'instant-course-set-view' => $this->instant_course_set_view,
+            'all-sem-classes' => $semClasses
         ];
 
         if ($this->courseset) {

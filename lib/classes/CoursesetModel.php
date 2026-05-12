@@ -23,10 +23,11 @@ class CoursesetModel
      * @param Array  $selectedCourses Courses that have already been selected manually
      * @param String $semester_id Get only courses belonging to the given semester
      * @param mixed  $filter Fetch only courses fulfilling a search string or of a certain lecturer?
+     * @param string $courseType The course type for filtering courses.
      *
      * @return Array Found courses.
      */
-    public static function getInstCourses($instituteIds, $coursesetId = '', $selectedCourses = [], $semester_id = null, $filter = false)
+    public static function getInstCourses($instituteIds, $coursesetId = '', $selectedCourses = [], $semester_id = null, $filter = false, string $courseType = '')
     {
         // Get semester dates for course sorting.
         $currentSemester = $semester_id ? Semester::find($semester_id) : Semester::findCurrent();
@@ -45,15 +46,21 @@ class CoursesetModel
                       FROM `seminar_user` su
                       INNER JOIN `seminare` s USING (`Seminar_id`)
                       LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
-                      WHERE s.status NOT IN(?)
-                        AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
-                        AND su.`user_id` = ?
+                      WHERE s.status NOT IN ( :excludedTypes ) ";
+            if ($courseType) {
+                $query .= "AND s.status = :courseType ";
+            }
+            $query .= " AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semesterId)
+                        AND su.`user_id` = :userId
                       GROUP BY su.`Seminar_id`";
             $parameters = [
-                $excludeTypes,
-                $currentSemester->id,
-                $GLOBALS['user']->id
+                'excludedTypes' => $excludeTypes,
+                'semesterId'    => $currentSemester->id,
+                'userId'        => $GLOBALS['user']->id
             ];
+            if ($courseType) {
+                $parameters['courseType'] = $courseType;
+            }
 
             if (Config::get()->DEPUTIES_ENABLE) {
                 $query .= " UNION ";
@@ -61,14 +68,10 @@ class CoursesetModel
                            FROM `seminare` s
                            INNER JOIN `deputies` d ON (s.`Seminar_id`=d.`range_id`)
                            LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
-                           WHERE (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
-                             AND d.`user_id` = ?
+                           WHERE (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semesterId)
+                             AND d.`user_id` = :userId
                            GROUP BY s.`Seminar_id`
                              ";
-                $parameters = array_merge(
-                    $parameters,
-                    [$currentSemester->id, $GLOBALS['user']->id]
-                );
             }
             $courses = $db->fetchFirst($query, $parameters);
         } elseif (mb_strlen($filter) > 1) {
@@ -84,20 +87,27 @@ class CoursesetModel
                       LEFT JOIN seminar_inst si ON si.seminar_id = s.Seminar_id
                       LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
                       INNER JOIN auth_user_md5 aum USING (user_id)
-                      WHERE s.status NOT IN (:exclude_types)
-                        AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id)
+                      WHERE s.status NOT IN (:exclude_types) ";
+            if ($courseType) {
+                $query .= "AND s.status = :courseType ";
+            }
+            $query .= "  AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id)
                         AND $sem_inst.Institut_id IN (:institutes)
                         AND (
                             s.name LIKE :filter
                             OR s.Veranstaltungsnummer LIKE :filter
                             OR Nachname LIKE :filter
                         )";
-            $courses = $db->fetchFirst($query, [
+            $parameters = [
                 'exclude_types' => $excludeTypes,
                 'semester_id'   => $currentSemester->id,
                 'institutes'    => $instituteIds,
                 'filter'        => '%' . $filter .'%',
-            ]);
+            ];
+            if ($courseType) {
+                $parameters['courseType'] = $courseType;
+            }
+            $courses = $db->fetchFirst($query, $parameters);
         }
         //filter courses from other sets out
         if (count($courses)) {
