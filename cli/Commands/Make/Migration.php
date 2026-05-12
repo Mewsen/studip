@@ -53,7 +53,7 @@ final class Migration extends Command
         $name        = $input->getArgument('name');
         $path        = $input->getOption('path');
         $description = $input->getOption('description');
-        $verbose     = $input->getOption('verbose');
+        $verbose     = $output->isVerbose();
 
         $version  = $this->getNextMigrationVersion($branch, $domain, $path, $verbose);
         $filename = $this->createMigrationFile($path, $version, $name, $description);

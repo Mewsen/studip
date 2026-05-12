@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-
 final class Model extends Command
 {
     protected static $defaultName = 'make:model';
@@ -23,6 +22,7 @@ final class Model extends Command
         $this->addArgument('name', InputArgument::REQUIRED, 'The name of the sorm-model');
         $this->addArgument('db-table', InputArgument::OPTIONAL, 'The name of the related db-table');
         $this->addOption('namespace', 's', InputOption::VALUE_OPTIONAL, 'Namespace', '');
+        $this->addOption('migration', 'm', InputOption::VALUE_NONE, 'Create a database migration');
         $defaultPath = $GLOBALS['STUDIP_BASE_PATH'] . '/lib/models';
         $this->addOption(
             'path',
@@ -40,9 +40,10 @@ final class Model extends Command
         $name      = $input->getArgument('name');
         $dbTable   = $input->getArgument('db-table');
         $path      = $input->getOption('path');
-        $verbose   = $input->getOption('verbose');
+        $migration = $input->getOption('migration');
+        $verbose   = $output->isVerbose();
 
-        $filename = $this->createModelFile(
+        [$filename, $dbTable] = $this->createModelFile(
             $path,
             $name,
             $input,
@@ -55,6 +56,13 @@ final class Model extends Command
             $output->writeln('Model file ' . $filename . ' created.');
         }
 
+        if ($migration) {
+            $result = $this->createMigrationFile($dbTable, $output);
+            if ($result) {
+                return $result;
+            }
+        }
+
         return Command::SUCCESS;
     }
 
@@ -65,8 +73,7 @@ final class Model extends Command
         OutputInterface $output,
         ?string $dbTable = null,
         ?string $namespace = null,
-    ): string
-    {
+    ): array {
         if (!$dbTable) {
             $dbTable = strtosnakecase($name);
         }
@@ -112,15 +119,28 @@ final class Model extends Command
         }
 
         if ($describeModel) {
-            $greetInput = new ArrayInput([
+            $describeInput = new ArrayInput([
                 'command' => 'sorm:describe',
-                'name'    => 'Fabien',
-                '--yell'  => true,
             ]);
 
-            $returnCode = $this->getApplication()->doRun($greetInput, $output);
+            $this->getApplication()->doRun($describeInput, $output);
         }
 
-        return $filename;
+        return [$filename, $dbTable];
+    }
+
+    private function createMigrationFile(string $dbTable, OutputInterface $output): int
+    {
+        $safeDbTable = preg_replace('/\W+/', '_', $dbTable);
+        $name = 'create_' . $safeDbTable . '_table';
+
+         $makeMigrationInput = new ArrayInput([
+             'command' => 'make:migration',
+             'name'    => $name,
+         ]);
+
+        $makeMigrationInput->setInteractive(false);
+
+        return $this->getApplication()->doRun($makeMigrationInput, $output);
     }
 }
