@@ -14,7 +14,8 @@ const fetchConfigs = async () => {
             isTutor: response.meta['is-tutor'],
             isCategoriesHidden: response.meta['is-categories-hidden'],
             anonymousPost: response.meta['anonymous-post'],
-            tileLayout: response.meta['tile-layout']
+            tileLayout: response.meta['tile-layout'],
+            reactionEmojis: response.meta['reaction-emojis']
         });
     } catch (error) {
         STUDIP.Report.error(error);
