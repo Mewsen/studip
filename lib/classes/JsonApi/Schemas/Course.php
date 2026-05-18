@@ -12,6 +12,7 @@ class Course extends SchemaProvider
 
     const REL_BLUBBER = 'blubber-threads';
     const REL_COURSEWARE = 'courseware';
+    const REL_CYCLE_DATES = 'cycle-dates';
     const REL_END_SEMESTER = 'end-semester';
     const REL_EVENTS = 'events';
     const REL_FEEDBACK = 'feedback-elements';
@@ -86,6 +87,7 @@ class Course extends SchemaProvider
         $relationships = $this->getForumCategoriesRelationship($relationships, $course, $includeList);
         $relationships = $this->getBlubberRelationship($relationships, $course, $includeList);
         $relationships = $this->getCoursewareRelationship($relationships, $course, $includeList);
+        $relationships = $this->getCycleDatesRelationship($relationships, $course, $includeList);
         $relationships = $this->getEventsRelationship($relationships, $course, $includeList);
         $relationships = $this->getFeedbackRelationship($relationships, $course, $includeList);
         $relationships = $this->getMembershipsRelationship($relationships, $course, $includeList);
@@ -223,6 +225,22 @@ class Course extends SchemaProvider
         return $relationships;
     }
 
+    private function getCycleDatesRelationship(
+        array $relationships,
+        \Course $resource,
+        $includeData
+    ) {
+        $relation = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CYCLE_DATES),
+            ]
+        ];
+        if (in_array(self::REL_CYCLE_DATES, $includeData)) {
+            $relation[self::RELATIONSHIP_DATA] = $resource->cycles;
+        }
+
+        return array_merge($relationships, [self::REL_CYCLE_DATES => $relation]);
+    }
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

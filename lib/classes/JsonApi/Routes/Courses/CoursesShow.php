@@ -28,6 +28,7 @@ class CoursesShow extends JsonApiController
         'participating-institutes',
         'sem-class',
         'sem-type',
+        'cycle-dates',
         'start-semester',
         'status-groups',
         'study-areas',

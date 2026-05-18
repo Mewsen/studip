@@ -26,6 +26,7 @@ class CourseEvent extends SchemaProvider
         return [
             'title' => isset($resource->course) ? $resource->course->getFullName() : '',
             'description' => $resource->getDescription(),
+            'display-value' => $resource->getFullName(),
             'start' => date('c', $resource->date),
             'end' => date('c', $resource->end_time),
             'type' => (int) $resource->date_typ,

@@ -24,6 +24,7 @@ class SeminarCycleDate extends SchemaProvider
         return [
             'title' => self::createTitle($course),
             'description' => mb_strlen(trim($entry->description)) ? $entry->description : null,
+            'display-value' => $entry->toString(),
 
             'start' => sprintf('%02d:%02d', $entry->start_hour, $entry->start_minute),
             'end' => sprintf('%02d:%02d', $entry->end_hour, $entry->end_minute),

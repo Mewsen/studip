@@ -405,6 +405,7 @@ class RouteMap
             Routes\Courses\Rel\Memberships::class
         );
 
+        $group->get('/courses/{id}/cycle-dates', Routes\Courses\SeminarCycleDatesIndex::class);
         $group->get('/courses/{id}/status-groups', Routes\Courses\StatusGroupsOfCourses::class);
 
         $group->get('/sem-classes', Routes\Courses\SemClassesIndex::class);
