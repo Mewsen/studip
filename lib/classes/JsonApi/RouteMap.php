@@ -413,6 +413,7 @@ class RouteMap
         $group->get('/sem-types', Routes\Courses\SemTypesIndex::class);
         $group->get('/sem-types/{id}', Routes\Courses\SemTypesShow::class);
 
+        $group->get('/courses/{id}/module-components', Routes\Mvv\ModuleComponentsByCourseIndex::class);
         $group->get('/module-components/{id}/courses', Routes\Courses\CoursesByModuleComponentsIndex::class);
     }
 

@@ -7,6 +7,7 @@ use Neomerx\JsonApi\Schema\Link;
 class ModuleComponent extends SchemaProvider
 {
     const REL_COURSES = 'courses';
+    const REL_MODULE = 'module';
     const TYPE = 'module-components';
 
     public function getId($resource): ?string
@@ -53,6 +54,13 @@ class ModuleComponent extends SchemaProvider
         $relationships = [];
 
         $relationships = $this->addCoursesRelationship($relationships, $resource, $this->shouldInclude($context, self::REL_COURSES));
+
+        $relationships[self::REL_MODULE] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->createLinkToResource($resource->modul),
+            ],
+            self::RELATIONSHIP_DATA => $resource->modul,
+        ];
 
         return $relationships;
     }

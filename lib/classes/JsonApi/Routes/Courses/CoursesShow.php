@@ -23,6 +23,7 @@ class CoursesShow extends JsonApiController
         'forum-categories',
         'institute',
         'memberships',
+        'module-components',
         'news',
         'participating-institutes',
         'sem-class',
