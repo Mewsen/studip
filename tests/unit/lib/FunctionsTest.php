@@ -106,4 +106,24 @@ class FunctionsTest extends \Codeception\Test\Unit
         $this->expectException(Exception::class);
         studip_interpolate('%{foo}', []);
     }
+
+    /**
+     * @covers ::resolveValue
+     */
+    public function testResolveValue()
+    {
+        $this->assertSame(1, resolveValue(1));
+        $this->assertSame('string', resolveValue('string'));
+        $this->assertSame(null, resolveValue(null));
+        $this->assertSame(false, resolveValue(false));
+
+        $this->assertSame(1, resolveValue(fn() => 1));
+        $this->assertSame('string', resolveValue(fn() => 'string'));
+        $this->assertSame(null, resolveValue(fn() => null));
+        $this->assertSame(false, resolveValue(fn() => false));
+
+        $this->assertSame('foobar', resolveValue(fn($a, $b) => $a . $b, 'foo', 'bar'));
+
+        $this->assertSame('trim', resolveValue('trim', ' foo '));
+    }
 }

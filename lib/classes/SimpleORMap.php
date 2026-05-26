@@ -1555,7 +1555,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                  }
              }
          } else {
-             $default_value = $this->default_values()[$field];
+             $default_value = resolveValue($this->default_values()[$field], $field);
          }
          return $default_value;
      }

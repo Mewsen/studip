@@ -1590,3 +1590,13 @@ function studip_interpolate(string $source_string, array $parameters) : string
         $source_string
     );
 }
+
+/**
+ * Returns the given value or executes it if it is callable.
+ *
+ * @param mixed ...$args Arguments passed to the callable.
+ */
+function resolveValue(mixed $value, mixed ...$args): mixed
+{
+    return $value instanceof Closure ? $value(...$args) : $value;
+}
