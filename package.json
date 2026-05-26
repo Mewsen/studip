@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "build": "rspack build",
-        "watch": "rspack --watch",
+        "watch": "NODE_ENV=development rspack --watch",
         "test": "jest tests/jest/",
         "lint-css": "stylelint \"resources/assets/**/*.{css,scss,vue}\"",
         "lint-js": "eslint --config eslint.config.mjs"
