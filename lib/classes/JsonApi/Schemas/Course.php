@@ -69,11 +69,9 @@ class Course extends SchemaProvider
      */
     public function getRelationships($course, ContextInterface $context): iterable
     {
-        $includeList = $context->getIncludePaths();
-
         $relationships = [];
 
-        $relationships[self::REL_INSTITUTE] = $this->getInstitute($course, in_array(self::REL_INSTITUTE, $includeList));
+        $relationships[self::REL_INSTITUTE] = $this->getInstitute($course, $this->shouldInclude($context, self::REL_INSTITUTE));
 
         if ($semester = $this->getStartSemester($course)) {
             $relationships[self::REL_START_SEMESTER] = $semester;
@@ -82,23 +80,23 @@ class Course extends SchemaProvider
             $relationships[self::REL_END_SEMESTER] = $semester;
         }
 
-        $relationships = $this->getParticipatingInstitutes($relationships, $course, $includeList);
+        $relationships = $this->getParticipatingInstitutes($relationships, $course, $this->shouldInclude($context, self::REL_PARTICIPATING_INSTITUTES));
         $relationships = $this->getFilesRelationship($relationships, $course);
-        $relationships = $this->getForumCategoriesRelationship($relationships, $course, $includeList);
-        $relationships = $this->getBlubberRelationship($relationships, $course, $includeList);
-        $relationships = $this->getCoursewareRelationship($relationships, $course, $includeList);
-        $relationships = $this->getCycleDatesRelationship($relationships, $course, $includeList);
-        $relationships = $this->getEventsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getFeedbackRelationship($relationships, $course, $includeList);
-        $relationships = $this->getMembershipsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getNewsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getSemClassRelationship($relationships, $course, $includeList);
-        $relationships = $this->getSemTypeRelationship($relationships, $course, $includeList);
-        $relationships = $this->getStatusGroupsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getStudyAreasRelationship($relationships, $course, $includeList);
-        $relationships = $this->getTagsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getToolsRelationship($relationships, $course, $includeList);
-        $relationships = $this->getWikiPagesRelationship($relationships, $course, $includeList);
+        $relationships = $this->getForumCategoriesRelationship($relationships, $course, $this->shouldInclude($context, self::REL_FORUM_CATEGORIES));
+        $relationships = $this->getBlubberRelationship($relationships, $course, $this->shouldInclude($context, self::REL_BLUBBER));
+        $relationships = $this->getCoursewareRelationship($relationships, $course, $this->shouldInclude($context, self::REL_COURSEWARE));
+        $relationships = $this->getCycleDatesRelationship($relationships, $course, $this->shouldInclude($context, self::REL_CYCLE_DATES));
+        $relationships = $this->getEventsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_EVENTS));
+        $relationships = $this->getFeedbackRelationship($relationships, $course, $this->shouldInclude($context, self::REL_FEEDBACK));
+        $relationships = $this->getMembershipsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_MEMBERSHIPS));
+        $relationships = $this->getNewsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_NEWS));
+        $relationships = $this->getSemClassRelationship($relationships, $course, $this->shouldInclude($context, self::REL_SEM_CLASS));
+        $relationships = $this->getSemTypeRelationship($relationships, $course, $this->shouldInclude($context, self::REL_SEM_TYPE));
+        $relationships = $this->getStatusGroupsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_STATUS_GROUPS));
+        $relationships = $this->getStudyAreasRelationship($relationships, $course, $this->shouldInclude($context, self::REL_STUDY_AREAS));
+        $relationships = $this->getTagsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_TAGS));
+        $relationships = $this->getToolsRelationship($relationships, $course, $this->shouldInclude($context, self::REL_TOOLS));
+        $relationships = $this->getWikiPagesRelationship($relationships, $course, $this->shouldInclude($context, self::REL_WIKI_PAGES));
 
         return $relationships;
     }
@@ -235,7 +233,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CYCLE_DATES),
             ]
         ];
-        if (in_array(self::REL_CYCLE_DATES, $includeData)) {
+        if ($includeData) {
             $relation[self::RELATIONSHIP_DATA] = $resource->cycles;
         }
 
@@ -344,7 +342,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_TOOLS),
             ]
         ];
-        if (in_array(self::REL_TOOLS, $includeData)) {
+        if ($includeData) {
             $relation[self::RELATIONSHIP_DATA] = $course->tools->getArrayCopy();
         }
 
@@ -420,7 +418,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_STATUS_GROUPS),
             ]
         ];
-        if (in_array(self::REL_STATUS_GROUPS, $includeData)) {
+        if ($includeData) {
             $relation[self::RELATIONSHIP_DATA] = $resource->statusgruppen;
         }
 
@@ -437,7 +435,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_STUDY_AREAS),
             ]
         ];
-        if (in_array(self::REL_STUDY_AREAS, $includeData)) {
+        if ($includeData) {
             $relation[self::RELATIONSHIP_DATA] = $resource->study_areas;
         }
 
@@ -454,7 +452,7 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_TAGS),
             ]
         ];
-        if (in_array(self::REL_TAGS, $includeData)) {
+        if ($includeData) {
             $relation[self::RELATIONSHIP_DATA] = $course->tags;
         }
 
