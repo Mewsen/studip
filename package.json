@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "build": "rspack build",
-        "watch": "NODE_ENV=development rspack --watch",
+        "watch": "rspack --watch",
         "test": "jest tests/jest/",
         "lint-css": "stylelint \"resources/assets/**/*.{css,scss,vue}\"",
         "lint-js": "eslint --config eslint.config.mjs"
@@ -101,7 +101,6 @@
         "qrcode.vue": "^3.6.0",
         "raw-loader": "^4.0.2",
         "sanitize-html": "^2.7.0",
-        "sass": "^1.29.0",
         "sass-loader": "^16.0.4",
         "select2": "4.0.13",
         "sprintf-js": "^1.0.3",
@@ -119,7 +118,6 @@
         "vue": "^3.5.13",
         "vue-color": "^3.0.0",
         "vue-dragscroll": "^4.0.6",
-        "vue-loader": "^17.4.2",
         "vue-resizable": "^2.1.7",
         "vue-router": "^4.5.0",
         "vue-select": "^4.0.0-beta.6",
@@ -157,6 +155,8 @@
         "@fullcalendar/vue3": "^6.1.19",
         "@vojtechlanka/vue-tags-input": "^3.1.1",
         "eslint-rspack-plugin": "^4.4.1",
-        "jsonapi-serializer": "^3.6.9"
+        "jsonapi-serializer": "^3.6.9",
+        "rspack-vue-loader": "^17.5.0",
+        "sass-embedded": "^1.100.0"
     }
 }
