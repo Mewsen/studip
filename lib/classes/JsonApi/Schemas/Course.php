@@ -54,13 +54,24 @@ class Course extends SchemaProvider
 
             'title' => (string) $course->name,
             'subtitle' => $stringOrNull($course->untertitel),
-            'course-type' => (int) $course->status,
+            'course-type' => $stringOrNull($course->art),
             'description' => $stringOrNull($course->beschreibung),
             'location' => $stringOrNull($course->ort),
             'miscellaneous' => $stringOrNull($course->sonstiges),
 
             // 'read-access' => (int) $course->lesezugriff,
             // 'write-access' => (int) $course->schreibzugriff,
+
+            'audience' => $stringOrNull($course->teilnehmer),
+            'requirements' => $stringOrNull($course->vorrausetzungen),
+            'teaching-method' => $stringOrNull($course->lernorga),
+            'achievement' => $stringOrNull($course->leistungsnachweis),
+            'credits' => $stringOrNull($course->ects),
+            'capacity' => (int) $course->admission_turnout ?: null,
+            'visible' => (bool) $course->visible,
+
+            'mkdate' => date('c', $course->mkdate),
+            'chdate' => date('c', $course->chdate),
         ];
     }
 
