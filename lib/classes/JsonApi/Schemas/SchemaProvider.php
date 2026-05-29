@@ -91,4 +91,13 @@ abstract class SchemaProvider extends BaseSchema
 
         return $allowedIncludePaths;
     }
+
+    /**
+     * @param mixed $resource
+     * @param ContextInterface $context
+     */
+    public function getRelationshipBuilder($resource, ContextInterface $context): RelationshipBuilder
+    {
+        return new RelationshipBuilder($this, $resource, $context);
+    }
 }
