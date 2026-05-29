@@ -95,8 +95,19 @@ class PluginAdministration
             // on NFS file system, removing the plugin may fail (see ticket #1892)
             if (file_exists($plugindir)) {
                 $plugindir_old = $plugindir . '.old';
-                rmdirr($plugindir_old);
-                rename($plugindir, $plugindir_old);
+                if (file_exists($plugindir_old) && !rmdirr($plugindir_old)) {
+                    throw new PluginInstallationException(sprintf(
+                       _('Der Backup-Ordner "%s" für das Plugin existiert schon und konnte nicht entfernt werden.'),
+                       studip_relative_path($plugindir_old)
+                    ));
+                }
+                if (!rename($plugindir, $plugindir_old)) {
+                    throw new PluginInstallationException(sprintf(
+                        _('Der Ordner "%s" konnte nicht zu "%s" umbenannt werden.'),
+                        studip_relative_path($plugindir),
+                        studip_relative_path($plugindir_old)
+                    ));
+                }
             }
 
             // avoid loading old version of the class from opcache (see ticket #569)

@@ -371,18 +371,29 @@ class PluginManager
     private function getPluginType ($class, $path)
     {
         $plugin_class = $this->loadPlugin($class, $path);
-        $types = [];
 
-        if ($plugin_class) {
-            $plugin_base = new ReflectionClass('StudIPPlugin');
-            $interfaces = $plugin_class->getInterfaces();
-
-            if ($plugin_class->isSubclassOf($plugin_base)) {
-                foreach ($interfaces as $interface) {
-                    $types[] = $interface->getName();
-                }
-            }
+        if (!$plugin_class) {
+            throw new Exception(sprintf(
+                _('Pluginklasse "%s" konnte nicht im Pfad "%s" geladen werden.'),
+                $class,
+                studip_relative_path($path)
+            ));
         }
+
+        $plugin_base = new ReflectionClass(StudIPPlugin::class);
+
+        if (!$plugin_class->isSubclassOf($plugin_base)) {
+            throw new Exception(sprintf(
+                _('Pluginklasse "%s" ist nicht von Basisklasse "%s" abgeleitet'),
+                $class,
+                StudIPPlugin::class
+            ));
+        }
+
+        $types = array_map(
+            fn($interface) => $interface->getName(),
+            $plugin_class->getInterfaces()
+        );
 
         sort($types);
 
@@ -406,8 +417,8 @@ class PluginManager
         $position = 1;
 
         // plugin must implement at least one interface
-        if (count($type) == 0) {
-            throw new Exception(_("Plugin implementiert kein gültiges Interface."));
+        if (count($type) === 0) {
+            throw new Exception(_('Plugin implementiert kein gültiges Interface.'));
         }
 
         if ($info) {
