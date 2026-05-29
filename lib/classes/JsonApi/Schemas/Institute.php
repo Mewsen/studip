@@ -2,6 +2,7 @@
 
 namespace JsonApi\Schemas;
 
+use JsonApi\Routes\Mvv\Authority;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
@@ -174,7 +175,7 @@ class Institute extends SchemaProvider
 
     private function getCoursesOfStudyRelationship(
         array $relationships,
-        $resource,
+        \Institute $resource,
         $includeData
     ): array {
         $relation = [
@@ -183,10 +184,14 @@ class Institute extends SchemaProvider
             ],
         ];
 
+        $cos = $resource->courses_of_study->filter(
+            fn(\Studiengang $c) => Authority::canShowCourseOfStudy($this->currentUser, $c)
+        );
+
         if ($includeData) {
-            $relation[self::RELATIONSHIP_DATA] = $resource->courses_of_study;
+            $relation[self::RELATIONSHIP_DATA] = $cos;
         } else {
-            $relation[self::RELATIONSHIP_DATA] = $resource->courses_of_study->map(function (\Studiengang $cos): \Studiengang {
+            $relation[self::RELATIONSHIP_DATA] = $cos->map(function (\Studiengang $cos): \Studiengang {
                 return \Studiengang::build(['id' => $cos->id]);
             });
         }
