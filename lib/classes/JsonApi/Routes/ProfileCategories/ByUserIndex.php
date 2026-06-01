@@ -6,13 +6,11 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\Users\Authority as UserAuthority;
-use JsonApi\Schemas\ProfileCategory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ByUserIndex extends JsonApiController
 {
-    protected $allowedIncludePaths = [ProfileCategory::REL_USER];
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     /**

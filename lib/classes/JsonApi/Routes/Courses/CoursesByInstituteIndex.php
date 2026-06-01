@@ -12,8 +12,6 @@ use Semester;
 
 class CoursesByInstituteIndex extends JsonApiController
 {
-    protected $allowedIncludePaths = null;
-
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     protected $allowedFilteringParameters = ['semester'];

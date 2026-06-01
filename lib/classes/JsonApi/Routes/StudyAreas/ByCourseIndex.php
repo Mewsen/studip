@@ -11,8 +11,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ByCourseIndex extends JsonApiController
 {
-    protected $allowedIncludePaths = null;
-
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     public function __invoke(Request $request, Response $response, array $args): Response
