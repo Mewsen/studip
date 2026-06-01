@@ -16,13 +16,14 @@ class InstitutesIndex extends JsonApiController
         InstituteSchema::REL_COURSES_OF_STUDY,
     ];
 
-    protected $allowedFilteringParameters = ['is-faculty'];
+    protected $allowedFilteringParameters = ['is-faculty', 'search'];
 
     protected $allowedPagingParameters = ['offset', 'limit'];
 
     public function __invoke(Request $request, Response $response, $args)
     {
         [$offset, $limit] = $this->getOffsetAndLimit();
+        $parameters = compact('offset', 'limit');
 
         $filters = $this->getFilters();
 
@@ -34,8 +35,13 @@ class InstitutesIndex extends JsonApiController
             $condition = 'fakultaets_id != Institut_id';
         }
 
-        $institutes = \Institute::findBySql("{$condition} ORDER BY Name LIMIT ? OFFSET ?", [$limit, $offset]);
-        $total = \Institute::countBySql($condition);
+        if (isset($filters['search'])) {
+            $condition .= ' AND Name LIKE :search';
+            $parameters['search'] = $filters['search'];
+        }
+
+        $institutes = \Institute::findBySql("{$condition} ORDER BY Name LIMIT :limit OFFSET :offset", $parameters);
+        $total = \Institute::countBySql($condition, $parameters);
 
         return $this->getPaginatedContentResponse($institutes, $total);
     }
@@ -48,6 +54,10 @@ class InstitutesIndex extends JsonApiController
 
         if (isset($filtering['is-faculty'])) {
             $filters['is-faculty'] = (bool) $filtering['is-faculty'];
+        }
+
+        if (isset($filtering['search'])) {
+            $filters['search'] = '%' . $filtering['search'] . '%';
         }
 
         return $filters;
