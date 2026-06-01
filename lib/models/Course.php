@@ -353,9 +353,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             }
         ];
 
-        $config['notification_map']['after_create'] = 'CourseDidCreateOrUpdate';
-        $config['notification_map']['after_store'] = 'CourseDidCreateOrUpdate';
-
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['untertitel'] = true;
         $config['i18n_fields']['beschreibung'] = true;

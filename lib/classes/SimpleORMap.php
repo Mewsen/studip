@@ -229,18 +229,6 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * assoc array used to map SORM callback to NotificationCenter
-     * keys are SORM callbacks, values notifications
-     * eg. 'after_create' => 'FooDidCreate'
-     *
-     * @return array
-     */
-    protected static function notification_map()
-    {
-        return static::config('notification_map');
-    }
-
-    /**
      * assoc array for mapping get/set Methods
      *
      * @return array
@@ -341,31 +329,6 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         foreach ($callbacks as $callback) {
             if (!isset($config['registered_callbacks'][$callback])) {
                 $config['registered_callbacks'][$callback] = [];
-            }
-        }
-
-        $auto_notification_map['after_create'] = $class . 'DidCreate';
-        $auto_notification_map['after_store'] = $class . 'DidStore';
-        $auto_notification_map['after_delete'] = $class . 'DidDelete';
-        $auto_notification_map['after_update'] = $class . 'DidUpdate';
-        $auto_notification_map['before_create'] = $class . 'WillCreate';
-        $auto_notification_map['before_store'] = $class . 'WillStore';
-        $auto_notification_map['before_delete'] = $class . 'WillDelete';
-        $auto_notification_map['before_update'] = $class . 'WillUpdate';
-
-        foreach ($auto_notification_map as $cb => $notification) {
-            if (isset($config['notification_map'][$cb])) {
-                if (strpos($config['notification_map'][$cb], $notification) !== false) {
-                    $config['notification_map'][$cb] .= ' ' . $notification;
-                }
-            } else {
-                $config['notification_map'][$cb] = $notification;
-            }
-        }
-
-        if (is_array($config['notification_map'])) {
-            foreach (array_keys($config['notification_map']) as $cb) {
-                $config['registered_callbacks'][$cb][] = 'cbNotificationMapper';
             }
         }
 
@@ -2420,6 +2383,30 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 break;
             }
         }
+
+        try {
+            $notification = match ($type) {
+                'after_create' => 'DidCreate',
+                'after_delete' => 'DidDelete',
+                'after_initialize' => null,
+                'after_store' => 'DidStore',
+                'after_update' => 'DidUpdate',
+                'before_create' => 'WillCreate',
+                'before_delete' => 'WillDelete',
+                'before_initialize' => null,
+                'before_store' => 'WillStore',
+                'before_update' => 'WillUpdate',
+            };
+            if ($notification) {
+                NotificationCenter::postNotification(
+                    static::class . $notification,
+                    $this
+                );
+            }
+        } catch (NotificationVetoException $e) {
+            $ok = false;
+        }
+
         return $ok;
     }
 
@@ -2477,25 +2464,6 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             }
         }
         return $unreg;
-    }
-
-    /**
-     * default callback used to map specific callbacks to NotificationCenter
-     *
-     * @param string $cb_type callback type
-     * @return void|boolean
-     */
-    protected function cbNotificationMapper($cb_type)
-    {
-        if (isset($this->notification_map()[$cb_type])) {
-            try {
-                foreach(words($this->notification_map()[$cb_type]) as $notification) {
-                    NotificationCenter::postNotification($notification, $this);
-                }
-            } catch (NotificationVetoException $e) {
-                return false;
-            }
-        }
     }
 
     /**
