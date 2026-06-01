@@ -11,6 +11,10 @@ class ProfileCategory extends SchemaProvider
 
     const REL_USER = 'user';
 
+    protected array $allowedIncludes = [
+        self::REL_USER,
+    ];
+
     /**
      * @param \Kategorie $resource
      */

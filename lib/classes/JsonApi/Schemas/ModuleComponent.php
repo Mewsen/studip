@@ -8,6 +8,11 @@ class ModuleComponent extends SchemaProvider
 {
     const REL_COURSES = 'courses';
     const REL_MODULE = 'module';
+
+    protected array $allowedIncludes = [
+        self::REL_COURSES,
+        self::REL_MODULE,
+    ];
     const TYPE = 'module-components';
 
     public function getId($resource): ?string
