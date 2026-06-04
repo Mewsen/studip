@@ -9,7 +9,7 @@ class ModuleComponent extends SchemaProvider
     const REL_COURSES = 'courses';
     const REL_MODULE = 'module';
 
-    protected array $allowedIncludes = [
+    protected ?array $allowedIncludes = [
         self::REL_COURSES,
         self::REL_MODULE,
     ];

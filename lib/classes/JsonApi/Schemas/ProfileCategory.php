@@ -11,7 +11,7 @@ class ProfileCategory extends SchemaProvider
 
     const REL_USER = 'user';
 
-    protected array $allowedIncludes = [
+    protected ?array $allowedIncludes = [
         self::REL_USER,
     ];
 
