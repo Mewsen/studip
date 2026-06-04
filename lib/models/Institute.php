@@ -350,7 +350,7 @@ class Institute extends SimpleORMap implements Range
      */
     public function isEditableByUser($user_id = null): bool
     {
-        return $GLOBALS['perm']->have_studip_perm('admin', $this->id);
+        return $GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id);
     }
 
     /**
