@@ -26,12 +26,12 @@ RUN sed -i -e 's/# en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen \
 RUN docker-php-ext-configure gd --with-jpeg --with-webp
 RUN docker-php-ext-install gettext gd zip pdo_mysql mysqli intl
 
-FROM node:18 AS nodejs
+FROM node:20 AS nodejs
 
 # Install node modules
 COPY . /studip
 WORKDIR /studip
-RUN make webpack-prod
+RUN make assets-prod
 
 FROM base AS build
 
